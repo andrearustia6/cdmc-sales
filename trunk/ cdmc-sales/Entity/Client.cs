@@ -9,7 +9,8 @@ namespace Entity
     {
         public string Title { get; set; }
         public string Name { get; set; }
-        public virtual Comapany Company { get; set; }
+        public string Contact { get; set; }
+        public virtual Company Company { get; set; }
         public int? CompanyID { get; set; }
     }
 }

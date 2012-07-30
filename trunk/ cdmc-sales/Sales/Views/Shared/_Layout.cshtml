@@ -1,29 +1,41 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>@ViewBag.Title</title>
-	<link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
-@(Html.Telerik().StyleSheetRegistrar().DefaultGroup(group => group.Add("telerik.common.css").Add("telerik.black.css").Combined(true).Compress(true)))</head>
-
+    <title>@ViewBag.Title</title>
+    <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
+    @* <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />*@
+    @(Html.Telerik().StyleSheetRegistrar().DefaultGroup(group => group.Add("telerik.common.css").Add("telerik.black.css").Combined(true).Compress(true)))
+    <script type="text/javascript" src=@Url.Content(@"~/vjs/view.js")></script>@*确保在页面能引用到jquery*@
+</head>
 <body>
-	<div class="page">
-		<header>
+    <div class="page">
+        <header>
 			<div id="title">
 				<h1>My MVC Application</h1>
 			</div>
 
 			@(Html.Telerik().Menu()
-					.Name("menu")
-					.Items(menu => {
-						menu.Add().Text("Home").Action("Index", "Home");
-						menu.Add().Text("About").Action("About", "Home");
-					}))
+                    .Name("menu")
+                    .Items(menu =>
+                    {
+                        menu.Add().Text("Home").Action("Index", "Home");
+                        menu.Add().Text("About").Action("About", "Home");
+                    }))
 		</header>
-		<section id="main">
-			@RenderBody()
+        <section id="main">
+        <div style="float:left;">
+        @(Html.Telerik().Menu()
+                    .Name("function").Orientation(MenuOrientation.Vertical)
+                    .Items(menu =>
+                    {
+                        menu.Add().Text("公司类型名称").Action("index", "CompanyType");
+                    }))
+        </div>
+        <div>@RenderBody()</div>
+			
 		</section>
-		<footer>
+        <footer>
 		</footer>
-	</div>
-@(Html.Telerik().ScriptRegistrar().Globalization(true).DefaultGroup(group => group.Combined(true).Compress(true)))</body>
+    </div>
+    @(Html.Telerik().ScriptRegistrar().Globalization(true).DefaultGroup(group => group.Combined(true).Compress(true)))</body>
 </html>

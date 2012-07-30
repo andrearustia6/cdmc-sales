@@ -10,8 +10,9 @@ namespace Utilities
 {
     public class DB : DbContext
     {
-        public DbSet<Comapany> Comapanys { get; set; }
+        public DbSet<Company> Companys { get; set; }
         public DbSet<Client> Clients { get; set; }
+        public DbSet<CompanyType> CompanyTypes { get; set; }
         public DbSet<CallingRecord> CallRecords { get; set; }
 
         public DB()

@@ -7,7 +7,7 @@ namespace Entity
 {
     public class CallingRecord:EntityBase
     {
-        public virtual Comapany Comapany { get; set; }
+        public virtual Company Comapany { get; set; }
         public int? CompanyID { get; set; }
         public Client Client { get; set; }
         public int? ClientID { get; set; }

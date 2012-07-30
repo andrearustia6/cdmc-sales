@@ -1,0 +1,19 @@
+﻿@using Entity
+@Html.ActionLink("公司类型创建", "Create")
+@(Html.Telerik().Grid<CompanyType>().ClientEvents(e => e.OnError("bindingError")).Name("Article").DataBinding(databinding => databinding.Ajax().Select("AjaxCompanyTypeIndex", "CompanyType"))
+                .DataKeys(keys =>
+                {
+                    keys.Add(s => s.ID);
+                })
+                .Columns(c =>
+                {
+                    c.Bound(item => item.ComapanyTypeName).Width(200);
+                    c.Bound(item => item.Description).Width(200);
+                    c.Bound(item => item.ID).Title("操作").ClientTemplate("<a href='/CompanyType/edit/" + "<#= ID #>'>编辑</a> | <a href='/CompanyType/details/" + "<#= ID #>'>详细</a> | <a href='/CompanyType/delete/" + "<#= ID #>'>删除</a>"); 
+                   })
+              
+                .Resizable(resizing => resizing.Columns(true))
+                .Filterable().Sortable().Groupable()
+                .Pageable(p => p.PageSize(20))
+                .Scrollable(scrolling => scrolling.Height(350))
+)
