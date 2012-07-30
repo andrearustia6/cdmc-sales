@@ -4,10 +4,8 @@
     ViewBag.Title = "公司"+SR.Edit;
 }
 
-<h2>@SR.Edit</h2>
-
 @using (Html.BeginForm()) {
-    Html.Partial("change", Model);
+    @Html.Partial("change", Model)
 }
 
 <div>

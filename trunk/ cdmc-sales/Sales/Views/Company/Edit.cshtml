@@ -11,71 +11,7 @@
 
 @using (Html.BeginForm()) {
     @Html.ValidationSummary(true)
-    <fieldset>
-        <legend>Company</legend>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.ComapanyTitle)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.ComapanyTitle)
-            @Html.ValidationMessageFor(model => model.ComapanyTitle)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Contact)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Contact)
-            @Html.ValidationMessageFor(model => model.Contact)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Address)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Address)
-            @Html.ValidationMessageFor(model => model.Address)
-        </div>
-
-        @Html.HiddenFor(model => model.ID)
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Description)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Description)
-            @Html.ValidationMessageFor(model => model.Description)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Sequence)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Sequence)
-            @Html.ValidationMessageFor(model => model.Sequence)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.User)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.User)
-            @Html.ValidationMessageFor(model => model.User)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.ModifiedTime)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.ModifiedTime)
-            @Html.ValidationMessageFor(model => model.ModifiedTime)
-        </div>
-
-        <p>
-            <input type="submit" value="Save" />
-        </p>
-    </fieldset>
+ 
 }
 
 <div>

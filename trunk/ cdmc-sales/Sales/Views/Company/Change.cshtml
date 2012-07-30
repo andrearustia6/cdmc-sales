@@ -1,0 +1,36 @@
+﻿@model Entity.Company
+@using Utl
+@using (Html.BeginForm())
+{
+    @Html.Partial("change", Model)
+}
+<fieldset>
+    <legend>@SR.Form</legend>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.ComapanyTitle)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.ComapanyTitle)
+        @Html.ValidationMessageFor(model => model.ComapanyTitle)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.Contact)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.Contact)
+        @Html.ValidationMessageFor(model => model.Contact)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.Address)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.Address)
+        @Html.ValidationMessageFor(model => model.Address)
+    </div>
+</fieldset>
+<center>
+    <p>
+        <input type="submit" value=@SR.Save />
+        @Html.ActionLink(SR.GobackToList, "Index")
+    </p>
+</center>

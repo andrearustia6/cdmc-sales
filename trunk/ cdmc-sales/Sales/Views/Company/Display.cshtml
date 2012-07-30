@@ -1,0 +1,22 @@
+﻿@using Utl;
+@model Entity.Company
+<fieldset>
+    <legend>@SR.Form</legend>
+
+    <div class="display-label">公司名称</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.ComapanyTitle)
+    </div>
+
+    <div class="display-label">联系方式</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Contact)
+    </div>
+
+    <div class="display-label">公司地址</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Address)
+    </div>
+</fieldset>
+@Html.Partial("displaycommon", Model)
+

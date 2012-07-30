@@ -4,14 +4,16 @@
     <title>@ViewBag.Title</title>
     <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
     @* <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />*@
-    @(Html.Telerik().StyleSheetRegistrar().DefaultGroup(group => group.Add("telerik.common.css").Add("telerik.black.css").Combined(true).Compress(true)))
+    @(Html.Telerik().StyleSheetRegistrar().DefaultGroup(group => group.Add("telerik.common.css").Add("telerik.telerik.css").Combined(true).Compress(true)))
     <script type="text/javascript" src=@Url.Content(@"~/vjs/view.js")></script>@*确保在页面能引用到jquery*@
 </head>
 <body>
     <div class="page">
         <header>
 			<div id="title">
-				<h1>My MVC Application</h1>
+            <center>
+				<h1>系统</h1>
+                </center>
 			</div>
 
 			@(Html.Telerik().Menu()
@@ -22,8 +24,8 @@
                         menu.Add().Text("About").Action("About", "Home");
                     }))
 		</header>
-        <section id="main">
-        <div style="float:left;">
+        <section >
+        <div style="float:left; width:13%">
         @(Html.Telerik().Menu()
                     .Name("function").Orientation(MenuOrientation.Vertical)
                     .Items(menu =>
@@ -31,7 +33,7 @@
                         menu.Add().Text("公司类型名称").Action("index", "CompanyType");
                     }))
         </div>
-        <div>@RenderBody()</div>
+        <section id="main" style="float:left;width:87%">@RenderBody()</section>
 			
 		</section>
         <footer>
