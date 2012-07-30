@@ -8,10 +8,46 @@ using System.Web.Script.Serialization;
 using System.Web.Mvc;
 using System.Web;
 using Entity;
+using Telerik.Web.Mvc;
 
 namespace Utl
 {
+    public class CT
+    {
+        //public static GridModel GetViewModel<M, V>(Func<M, bool> filters, params string[] properties)
+        //    where M : EntityBase
+        //    where V : ViewBase
+        //{
+        //    var data = CH.GetAllData<M>(filters, properties);
+        //    var list = new List<V>();
+        //    data.ForEach(d =>
+        //    {
+        //        V view = (V)Activator.CreateInstance(typeof(V), d);
+        //        list.Add(view);
+        //    });
+        //    return new GridModel(list);
+        //}
 
+        //public static GridModel GetViewModel<M, V>(params string[] properties)
+        //    where M : EntityBase
+        //    where V : ViewBase
+        //{
+        //    return GetViewModel<M, V>(null, properties);
+        //}
+
+        public static GridModel GetViewModel<M>(Func<M, bool> filters, params string[] properties)
+            where M : EntityBase
+        {
+            var data = CH.GetAllData<M>(filters, properties);
+            return new GridModel(data);
+        }
+
+        public static GridModel GetViewModel<M>(params string[] properties)
+            where M : EntityBase
+        {
+            return GetViewModel<M>(null, properties);
+        }
+    }
     public static class AppConfig
     {
         public static string ConnectionStringSetting

@@ -1,9 +1,5 @@
 ﻿@model Entity.Company
 @using Utl
-@using (Html.BeginForm())
-{
-    @Html.Partial("change", Model)
-}
 <fieldset>
     <legend>@SR.Form</legend>
     <div class="editor-label">
@@ -21,13 +17,28 @@
         @Html.ValidationMessageFor(model => model.Contact)
     </div>
     <div class="editor-label">
+        @Html.LabelFor(model => model.CompanyType.CompanyTypeName)
+    </div>
+    <div class="editor-field">
+        @Html.DropDownListFor(model => model.CompanyTypeID, new SelectList(CH.GetAllData<Entity.CompanyType>(),"ID","CompanyTypeName"),"-请选择-")
+        @Html.ValidationMessageFor(model => model.CompanyTypeID)
+    </div>
+    <div class="editor-label">
         @Html.LabelFor(model => model.Address)
     </div>
     <div class="editor-field">
         @Html.EditorFor(model => model.Address)
         @Html.ValidationMessageFor(model => model.Address)
     </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.ForeignAssetPercentage)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.ForeignAssetPercentage)
+        @Html.ValidationMessageFor(model => model.ForeignAssetPercentage)
+    </div>
 </fieldset>
+@Html.Partial("editcommon", Model)
 <center>
     <p>
         <input type="submit" value=@SR.Save />

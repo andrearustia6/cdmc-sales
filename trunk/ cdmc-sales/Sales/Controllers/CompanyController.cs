@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using Entity;
 using Utilities;
 using Utl;
+using Telerik.Web.Mvc;
 
 namespace Sales.Controllers
 {
@@ -16,11 +17,16 @@ namespace Sales.Controllers
         {
             return View(CH.GetAllData<Company>());
         }
-
+        [GridAction]
         public ActionResult AjaxCompanyIndex()
         {
-            return new DataJsonResult<Company>() { Data = CH.GetAllData<Company>() };
+            return View(new GridModel(CH.GetAllData<Company>()));
         }
+
+        //public ActionResult AjaxCompanyIndex()
+        //{
+        //    return new DataJsonResult<Company>() { Data = CH.GetAllData<Company>() };
+        //}
 
         public ViewResult Details(int id)
         {

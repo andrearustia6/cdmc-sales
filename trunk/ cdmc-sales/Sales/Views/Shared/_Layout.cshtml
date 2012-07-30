@@ -12,7 +12,7 @@
         <header>
 			<div id="title">
             <center>
-				<h1>系统</h1>
+				<h1>决策者</h1>
                 </center>
 			</div>
 
@@ -20,17 +20,23 @@
                     .Name("menu")
                     .Items(menu =>
                     {
-                        menu.Add().Text("Home").Action("Index", "Home");
+                        menu.Add().Text("登录").Action("Index", "Login");
                         menu.Add().Text("About").Action("About", "Home");
                     }))
 		</header>
         <section >
         <div style="float:left; width:13%">
-        @(Html.Telerik().Menu()
-                    .Name("function").Orientation(MenuOrientation.Vertical)
+                    @(Html.Telerik().Menu()
+                    .Name("f1").Orientation(MenuOrientation.Vertical)
                     .Items(menu =>
                     {
-                        menu.Add().Text("公司类型名称").Action("index", "CompanyType");
+                        menu.Add().Text("公司类型").Action("index", "CompanyType");
+                    }))
+                    @(Html.Telerik().Menu()
+                    .Name("f2").Orientation(MenuOrientation.Vertical)
+                    .Items(menu =>
+                    {
+                        menu.Add().Text("公司").Action("index", "Company");
                     }))
         </div>
         <section id="main" style="float:left;width:87%">@RenderBody()</section>
