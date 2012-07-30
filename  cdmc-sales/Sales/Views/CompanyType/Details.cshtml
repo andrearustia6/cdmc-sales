@@ -1,0 +1,15 @@
+﻿@model Entity.CompanyType
+@using Utl
+@{
+    ViewBag.Title = "公司"+SR.Details;
+}
+
+<h2>@SR.Details</h2>
+
+<h2>Details</h2>
+
+@Html.Partial("display",Model)
+<p>
+    @Html.ActionLink(SR.Edit, "Edit", new { id=Model.ID }) |
+    @Html.ActionLink(SR.GobackToList, "Index")
+</p>

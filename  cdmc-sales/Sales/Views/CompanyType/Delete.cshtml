@@ -1,0 +1,15 @@
+﻿@model Entity.CompanyType
+@using Utl
+@{
+    ViewBag.Title = "公司类型"+SR.Delete;
+}
+
+<h2>@SR.Delete</h2>
+
+@Html.Partial("display",Model)
+@using (Html.BeginForm()) {
+    <p>
+        <input type="submit" value=@SR.Delete /> |
+        @Html.ActionLink(SR.GobackToList, "Index")
+    </p>
+}

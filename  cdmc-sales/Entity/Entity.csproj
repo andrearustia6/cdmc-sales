@@ -46,15 +46,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Comapany.cs" />
+    <Compile Include="Company.cs" />
     <Compile Include="Client.cs" />
     <Compile Include="EntityBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CallingRecord.cs" />
-    <Compile Include="Utl\CH.cs" />
-    <Compile Include="Utl\DB.cs" />
-    <Compile Include="Utl\Log.cs" />
-    <Compile Include="Utl\Utl.cs" />
+    <Compile Include="Utl\CH.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Utl\DB.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Utl\Log.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
