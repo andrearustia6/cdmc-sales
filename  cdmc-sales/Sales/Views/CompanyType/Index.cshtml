@@ -7,7 +7,7 @@
                 })
                 .Columns(c =>
                 {
-                    c.Bound(item => item.ComapanyTypeName).Width(200);
+                    c.Bound(item => item.CompanyTypeName).Width(200);
                     c.Bound(item => item.Description).Width(300);
                     c.Bound(item => item.ID).Width(200).Title("操作").ClientTemplate("<a href='/CompanyType/edit/" + "<#= ID #>'>编辑</a> | <a href='/CompanyType/details/" + "<#= ID #>'>详细</a> | <a href='/CompanyType/delete/" + "<#= ID #>'>删除</a>"); 
                  })

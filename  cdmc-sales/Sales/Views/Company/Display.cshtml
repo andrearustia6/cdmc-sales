@@ -12,10 +12,21 @@
     <div class="display-field">
         @Html.DisplayFor(model => model.Contact)
     </div>
-
+    <div class="display-label">公司类型</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.CompanyType.CompanyTypeName)
+    </div>
     <div class="display-label">公司地址</div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Address)
+    </div>
+    <div class="display-label">外资比例</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.ForeignAssetPercentage)
+    </div>
+    <div class="display-label">内资比例</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.DomesticAssetPercentage)
     </div>
 </fieldset>
 @Html.Partial("displaycommon", Model)

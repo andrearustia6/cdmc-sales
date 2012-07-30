@@ -6,7 +6,7 @@ using Entity;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
 
-namespace Utilities
+namespace Utl
 {
     public class DB : DbContext
     {

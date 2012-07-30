@@ -1,6 +1,6 @@
 ﻿@using Entity
 
-@(Html.Telerik().Grid<Company>().ClientEvents(e => e.OnError("bindingError")).Name("Article").DataBinding(databinding => databinding.Ajax().Select("AjaxCompanyIndex", "Company"))
+@(Html.Telerik().Grid<Company>().ClientEvents(e => e.OnError("bindingError")).Name("Company").DataBinding(databinding => databinding.Ajax().Select("AjaxCompanyIndex", "Company"))
                 .DataKeys(keys =>
                 {
                     keys.Add(s => s.ID);
@@ -8,27 +8,16 @@
                 .Columns(c =>
                 {
                     c.Bound(item => item.ComapanyTitle).Width(200);
-                    c.Bound(item => item.Contact).Width(200);
-                    c.Bound(item => item.ForeignAssetPercentage).Width(150);
-                    c.Bound(item => item.DomesticAssetPercentage).Width(150);
-                    c.Bound(item => item.Address).Width(200);
+                    c.Bound(item => item.Contact).Width(150);
+                    c.Bound(item => item.ForeignAssetPercentage).Width(100);
+                    c.Bound(item => item.CompanyType.CompanyTypeName).Width(100);
                     c.Bound(item => item.ID).Title("操作").ClientTemplate("<a href='/Company/edit/" + "<#= ID #>'>编辑</a> | <a href='/Company/details/" + "<#= ID #>'>详细</a>  | <a href='/Client/Create/?RelateType=Company&RelateId=" + "<#= ID #>'>添加客户</a>| <a href='/Company/delete/" + "<#= ID #>'>删除</a>"); 
-                   })
-                //.DetailView(details => details.ClientTemplate(
-                //                            Html.Telerik().Grid<Client>().Name("Client<#= ID #>")
-                //                        .Columns(columns =>
-                //                        {
-                //                            columns.Bound(item => item.Name);
-                //                            columns.Bound(item => item.Title);
-                //                            columns.Bound(item => item.Contact);
-                //                            columns.Bound(item => item.ID).Title("操作").ClientTemplate("<a href='/Client/edit/?RelateType=Company&id=" + "<#= ID #>'>编辑</a> | <a href='/Client/details/" + "<#= ID #>'>详细</a> | <a href='/Client/delete/?RelateType=Client&id=" + "<#= ID #>'>删除</a>");
-            
-                //                        })
-                //                        .DataBinding(dataBinding => dataBinding.Ajax().Select("AjaxImageIndex", "Image", new {  RelateType = "Article", RelateId = "<#= ID #>" }))
-                //                        .Pageable().Sortable().Filterable().ToHtmlString()))
-                .Resizable(resizing => resizing.Columns(true))
-                .Filterable().Sortable().Groupable()
-                .Pageable(p => p.PageSize(20))
-                .Scrollable(scrolling => scrolling.Height(350))
+                 })
+                    .Resizable(resizing => resizing.Columns(true))
+                    .Groupable()
+                    .Pageable(p => p.PageSize(20))
+                    .Sortable()
+                    .Filterable()
+                    .Scrollable(scrolling => scrolling.Height(350))
 )
 @Html.ActionLink("公司创建", "Create")

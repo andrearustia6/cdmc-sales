@@ -7,8 +7,9 @@ using System.Data;
 using System.Collections;
 using System.Reflection;
 using Entity;
+using Utilities;
 
-namespace Utilities
+namespace Utl
 {
     public class MappingRecords
     {
