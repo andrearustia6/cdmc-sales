@@ -3,11 +3,9 @@
 @{
     ViewBag.Title = "公司类型" + SR.Create;
 }
-<h2>@SR.Create</h2>
+@*<h2>@SR.Create</h2>*@
 @using (Html.BeginForm())
 {
-    Html.Partial("change", Model);
+    @Html.Partial("change", Model)
 }
-<div>
-    @Html.ActionLink(SR.GobackToList, "Index")
-</div>
+

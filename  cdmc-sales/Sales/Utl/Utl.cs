@@ -156,6 +156,7 @@ namespace Utl
         public static string Edit { get { return "编辑"; } }
         public static string Create { get { return "创建"; } }
         public static string Required { get { return "此栏位不能为空"; } }
+        public static string Form { get { return "表单"; } }
     }
 
     public class Utl
