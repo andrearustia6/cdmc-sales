@@ -18,6 +18,8 @@ namespace Entity
         [Display(Name = "公司地址"), MaxLength(100)]
         public string Address { get; set; }
 
+
+        public List<Client> Clients { get; set; }
         
         [Display(Name = "公司类型")]
         public virtual CompanyType CompanyType { get; set; }
@@ -29,7 +31,6 @@ namespace Entity
         [Required]
         public int? AreaID { get; set; }
 
-        public List<Client> Clients;
         [Display(Name = "外资比率"),Range(0,100)]
         public double ForeignAssetPercentage { get; set; }
 

@@ -15,7 +15,7 @@ namespace Sales.Controllers
     {
         public ViewResult Index()
         {
-            return View(CH.GetAllData<Company>());
+            return View(CH.GetAllData<Company>("Clients"));
         }
         //[GridAction]
         //public ActionResult AjaxCompanyIndex()
