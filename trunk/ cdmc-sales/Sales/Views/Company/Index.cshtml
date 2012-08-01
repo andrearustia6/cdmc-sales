@@ -1,16 +1,41 @@
 ﻿@using Entity
-
-@(Html.Telerik().Grid<Company>().ClientEvents(e => e.OnError("bindingError")).Name("Company").DataBinding(databinding => databinding.Ajax().Select("AjaxCompanyIndex", "Company"))
+@using Utl
+@model List<Company>
+@(Html.Telerik().Grid<Company>(Model).Name("Company")
                 .DataKeys(keys =>
                 {
                     keys.Add(s => s.ID);
                 })
                 .Columns(c =>
                 {
-                    c.Bound(item => item.ComapanyTitle).Width(200);
+                    c.Bound(item => item.Name).Width(150);
                     c.Bound(item => item.Contact).Width(150);
+                    c.Bound(item => item.Area.Name).Width(100);
                     c.Bound(item => item.ForeignAssetPercentage).Width(100);
-                    c.Bound(item => item.CompanyType.CompanyTypeName).Width(100);
+                    c.Bound(item => item.CompanyType.Name).Width(100);
+                    c.Bound(item => item.ID).Title("操作").Template(@<span>
+                    <a href=@Url.Content("~/Company/Edit/" + item.ID) >编辑</a> | <a href=@Url.Content("~/Company/Details/" + item.ID)>详细</a>  | <a href=@Url.Content("~/Client/Create/?CompanyId="+item.ID)>添加客户</a>| <a href=@Url.Content("~/Company/delete/" + item.ID) >删除</a> 
+                   </span>);
+                })
+                    .Resizable(resizing => resizing.Columns(true))
+                    .Groupable()
+                    .Pageable(p => p.PageSize(20))
+                    .Sortable()
+                    .Filterable()
+                    .Scrollable(scrolling => scrolling.Height(350))
+)
+@*@(Html.Telerik().Grid<Company>().ClientEvents(e => e.OnError("bindingError")).Name("Company").DataBinding(databinding => databinding.Ajax().Select("AjaxCompanyIndex", "Company"))
+                .DataKeys(keys =>
+                {
+                    keys.Add(s => s.ID);
+                })
+                .Columns(c =>
+                {
+                    c.Bound(item => item.Name).Width(200);
+                    c.Bound(item => item.Contact).Width(150);
+                    c.Bound(item => item.Area.Name).Width(150);
+                    c.Bound(item => item.ForeignAssetPercentage).Width(100);
+                    //c.Bound(item => item.CompanyType.CompanyTypeName).Width(100);
                     c.Bound(item => item.ID).Title("操作").ClientTemplate("<a href='/Company/edit/" + "<#= ID #>'>编辑</a> | <a href='/Company/details/" + "<#= ID #>'>详细</a>  | <a href='/Client/Create/?RelateType=Company&RelateId=" + "<#= ID #>'>添加客户</a>| <a href='/Company/delete/" + "<#= ID #>'>删除</a>"); 
                  })
                     .Resizable(resizing => resizing.Columns(true))
@@ -19,5 +44,5 @@
                     .Sortable()
                     .Filterable()
                     .Scrollable(scrolling => scrolling.Height(350))
-)
+)*@
 @Html.ActionLink("公司创建", "Create")

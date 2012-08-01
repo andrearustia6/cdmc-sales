@@ -11,13 +11,15 @@ namespace Utl
     public class DB : DbContext
     {
         public DbSet<Company> Companys { get; set; }
-        public DbSet<Client> Clients { get; set; }
         public DbSet<CompanyType> CompanyTypes { get; set; }
+        public DbSet<Client> Clients { get; set; }
+        public DbSet<ClientType> ClientTypes { get; set; }
+        public DbSet<Area> Areas { get; set; }
         public DbSet<CallingRecord> CallRecords { get; set; }
 
         public DB()
         {
-            Database.SetInitializer<DB>(new WorkflowInitializer());
+            Database.SetInitializer<DB>(new DBInitializer());
             this.Configuration.ValidateOnSaveEnabled = false;
         }
 
@@ -27,13 +29,12 @@ namespace Utl
         }
     }
 
-    public class WorkflowInitializer : DropCreateDatabaseIfModelChanges<DB>
+    public class DBInitializer : DropCreateDatabaseIfModelChanges<DB>
     {
         protected override void Seed(DB context)
         {
             FackData();
             context.SaveChanges();
-          
         }
 
         private void FackData()

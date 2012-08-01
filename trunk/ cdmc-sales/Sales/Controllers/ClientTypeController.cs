@@ -6,32 +6,34 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Entity;
-using Utilities;
-using Utl;
+using Sales;
 using Telerik.Web.Mvc;
+using Utl;
 
 namespace Sales.Controllers
 {
-    public class CompanyTypeController : Controller
+    public class ClientTypeController : Controller
     {
         public ViewResult Index()
         {
-            return View(CH.GetAllData<CompanyType>());
+            return View();
         }
         //[GridAction]
-        //public ActionResult AjaxCompanyTypeIndex()
+        //public ActionResult AjaxClientIndex()
         //{
-        //    return View(new GridModel(CH.GetAllData<CompanyType>()));
+        //    var data = CH.GetAllData<Client>();
+        //    return View(new GridModel(data));
         //}
-       [GridAction]
-        public ActionResult AjaxCompanyTypeIndex()
+        [GridAction()]
+        public ActionResult AjaxClientTypeIndex()
         {
-            return new DataJsonResult<CompanyType>() { Data = CH.GetAllData<CompanyType>() };
+            var data = CH.GetAllData<ClientType>();
+            return new DataJsonResult<ClientType>() { Data = data };
         }
 
         public ViewResult Details(int id)
         {
-            return View(CH.GetDataById<CompanyType>(id));
+            return View(CH.GetDataById<ClientType>(id));
         }
 
         public ActionResult Create()
@@ -40,26 +42,26 @@ namespace Sales.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create(CompanyType item)
+        public ActionResult Create(ClientType item)
         {
             if (ModelState.IsValid)
             {
-                CH.Create<CompanyType>(item);
+                CH.Create<ClientType>(item);
                 return RedirectToAction("Index");
             }
             return View(item);
         }
         public ActionResult Edit(int id)
         {
-            return View(CH.GetDataById<CompanyType>(id));
+            return View(CH.GetDataById<ClientType>(id));
         }
 
         [HttpPost]
-        public ActionResult Edit(CompanyType item)
+        public ActionResult Edit(ClientType item)
         {
             if (ModelState.IsValid)
             {
-                CH.Edit<CompanyType>(item);
+                CH.Edit<ClientType>(item);
                 return RedirectToAction("Index");
             }
             return View(item);
@@ -67,13 +69,13 @@ namespace Sales.Controllers
 
         public ActionResult Delete(int id)
         {
-            return View(CH.GetDataById<CompanyType>(id));
+            return View(CH.GetDataById<ClientType>(id));
         }
 
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {
-            CH.Delete<CompanyType>(id);
+            CH.Delete<ClientType>(id);
             return RedirectToAction("Index");
         }
     }

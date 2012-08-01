@@ -17,16 +17,18 @@ namespace Sales.Controllers
         {
             return View(CH.GetAllData<Company>());
         }
-        [GridAction]
-        public ActionResult AjaxCompanyIndex()
-        {
-            return View(new GridModel(CH.GetAllData<Company>()));
-        }
-
+        //[GridAction]
         //public ActionResult AjaxCompanyIndex()
         //{
-        //    return new DataJsonResult<Company>() { Data = CH.GetAllData<Company>() };
+        //    var data = CH.GetAllData<Company>();
+        //    return View(new GridModel(data));
         //}
+        //[GridAction()]
+        public ActionResult AjaxCompanyIndex()
+        {
+            var data = CH.GetAllData<Company>();
+            return new DataJsonResult<Company>() { Data = data };
+        }
 
         public ViewResult Details(int id)
         {
@@ -39,7 +41,6 @@ namespace Sales.Controllers
         }
 
         [HttpPost]
-        [ValidateInput(false)]
         public ActionResult Create(Company item)
         {
             if (ModelState.IsValid)
@@ -55,7 +56,6 @@ namespace Sales.Controllers
         }
 
         [HttpPost]
-        [ValidateInput(false)]
         public ActionResult Edit(Company item)
         {
             if (ModelState.IsValid)

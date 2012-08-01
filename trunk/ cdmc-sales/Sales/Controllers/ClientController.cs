@@ -6,74 +6,79 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Entity;
-using Utilities;
+using Sales;
 using Utl;
 using Telerik.Web.Mvc;
 
 namespace Sales.Controllers
 {
-    public class CompanyTypeController : Controller
+    public class ClientController : Controller
     {
         public ViewResult Index()
         {
-            return View(CH.GetAllData<CompanyType>());
+            return View();
         }
         //[GridAction]
-        //public ActionResult AjaxCompanyTypeIndex()
+        //public ActionResult AjaxClientIndex()
         //{
-        //    return View(new GridModel(CH.GetAllData<CompanyType>()));
+        //    var data = CH.GetAllData<Client>();
+        //    return View(new GridModel(data));
         //}
-       [GridAction]
-        public ActionResult AjaxCompanyTypeIndex()
+        [GridAction()]
+        public ActionResult AjaxClientIndex()
         {
-            return new DataJsonResult<CompanyType>() { Data = CH.GetAllData<CompanyType>() };
+            var data = CH.GetAllData<Client>();
+            return new DataJsonResult<Client>() { Data = data };
         }
 
         public ViewResult Details(int id)
         {
-            return View(CH.GetDataById<CompanyType>(id));
+            return View(CH.GetDataById<Client>(id));
         }
 
-        public ActionResult Create()
+        public ActionResult Create(int? companyid)
         {
+            ViewBag.CompanyID = companyid;
             return View();
         }
 
         [HttpPost]
-        public ActionResult Create(CompanyType item)
+        public ActionResult Create(Client item)
         {
             if (ModelState.IsValid)
             {
-                CH.Create<CompanyType>(item);
+                CH.Create<Client>(item);
                 return RedirectToAction("Index");
             }
+            ViewBag.CompanyID = item.CompanyID;
             return View(item);
         }
         public ActionResult Edit(int id)
         {
-            return View(CH.GetDataById<CompanyType>(id));
+            return View(CH.GetDataById<Client>(id));
         }
 
         [HttpPost]
-        public ActionResult Edit(CompanyType item)
+        public ActionResult Edit(Client item)
         {
             if (ModelState.IsValid)
             {
-                CH.Edit<CompanyType>(item);
+                CH.Edit<Client>(item);
                 return RedirectToAction("Index");
             }
+            ViewBag.CompanyID = item.CompanyID;
             return View(item);
         }
 
         public ActionResult Delete(int id)
         {
-            return View(CH.GetDataById<CompanyType>(id));
+            return View(CH.GetDataById<Client>(id));
         }
 
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {
-            CH.Delete<CompanyType>(id);
+            CH.Delete<Client>(id);
             return RedirectToAction("Index");
         }
     }
