@@ -1,0 +1,10 @@
+﻿@model Entity.ClientType
+@using Utl
+@{
+    ViewBag.Title = "客户类型"+SR.Create;
+}
+
+@using (Html.BeginForm())
+{
+    @Html.Partial("change", Model)
+}

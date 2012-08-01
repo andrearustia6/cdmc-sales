@@ -26,18 +26,37 @@
 		</header>
         <section >
         <div style="float:left; width:13%">
-                    @(Html.Telerik().Menu()
-                    .Name("f1").Orientation(MenuOrientation.Vertical)
+                    @(Html.Telerik().Menu().Orientation(MenuOrientation.Vertical)
+                    .Name("f1")
                     .Items(menu =>
                     {
                         menu.Add().Text("公司类型").Action("index", "CompanyType");
                     }))
-                    @(Html.Telerik().Menu()
-                    .Name("f2").Orientation(MenuOrientation.Vertical)
+                     @(Html.Telerik().Menu().Orientation(MenuOrientation.Vertical)
+                    .Name("f2")
                     .Items(menu =>
                     {
-                        menu.Add().Text("公司").Action("index", "Company");
+                        menu.Add().Text("行业类型").Action("index", "Area");
                     }))
+                     @(Html.Telerik().Menu().Orientation(MenuOrientation.Vertical)
+                    .Name("f3")
+                    .Items(menu =>
+                    {
+                        menu.Add().Text("客户类型").Action("index", "ClientType");
+                    }))
+                    @(Html.Telerik().Menu().Orientation(MenuOrientation.Vertical)
+                    .Name("f4")
+                    .Items(menu =>
+                    {
+                        menu.Add().Text("公司维护").Action("index", "Company");
+                    }))
+                    @(Html.Telerik().Menu().Orientation(MenuOrientation.Vertical)
+                    .Name("f5")
+                    .Items(menu =>
+                    {
+                        menu.Add().Text("客户维护").Action("index", "Client");
+                    }))
+                   
         </div>
         <section id="main" style="float:left;width:87%">@RenderBody()</section>
 			

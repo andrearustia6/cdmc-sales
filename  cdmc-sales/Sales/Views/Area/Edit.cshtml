@@ -1,0 +1,15 @@
+﻿@model Entity.Area
+
+@using Utl
+@{
+    ViewBag.Title = "行业"+SR.Edit;
+}
+
+
+@using (Html.BeginForm()) {
+   @Html.Partial("change", Model)
+}
+
+<div>
+    @Html.ActionLink(SR.GobackToList, "Index")
+</div>
