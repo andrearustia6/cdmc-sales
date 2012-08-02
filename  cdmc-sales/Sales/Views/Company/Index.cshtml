@@ -18,20 +18,7 @@
                 })
                 .DetailView(e => e.Template(
                         @<text>
-                        @(Html.Telerik().Grid(item.Clients).Name("clients" + item.ID)
-                            .Columns(c =>
-                            {
-                                 //<img alt=o.ClientImageID src=@Url.Content("~/Image/DisplayClientImage/" + o.ClientImageID) />
-                              c.Template(
-                                
-                            }).Title("客户照片").Width(140);
-                                c.Bound(o => o.Name).Width(140);
-                                c.Bound(o => o.Title).Width(140);
-                                c.Bound(o => o.Contact).Width(200);
-                            })
-                        .Resizable(resizing => resizing.Columns(true))
-                        .Pageable(p => p.PageSize(20))
-                        .Sortable())
+                         @RenderGrid(item.Clients, item.ID)
                         </text>
                     ))
                 .Resizable(resizing => resizing.Columns(true))
@@ -44,3 +31,18 @@
 
 
 @Html.ActionLink("公司创建", "Create")
+
+@helper RenderGrid(List<Client> clients, int companyuid)
+    { 
+     @(Html.Telerik().Grid(clients).Name("clients" + companyuid)
+                            .Columns(c =>
+                            {
+                                c.Template(@<text><img alt=@item.ClientImageID style="width:130px;height:100px" src=@Url.Content("~/Image/DisplayClientImage/" + item.ClientImageID) /></text>).Title("客户照片").Width(150);
+                                c.Bound(o => o.Name).Width(140);
+                                c.Bound(o => o.Title).Width(140);
+                                c.Bound(o => o.Contact).Width(200);
+                            })
+                        .Resizable(resizing => resizing.Columns(true))
+                        .Pageable(p => p.PageSize(20))
+                        .Sortable())
+} 
