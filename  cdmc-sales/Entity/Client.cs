@@ -22,6 +22,9 @@ namespace Entity
         public virtual ClientType ClientType { get; set; }
         [Display(Name = "客户类型"),Required]
         public int? ClientTypeID { get; set; }
+
+        public virtual ClientImage ClientImage { get; set; }
+        public int?  ClientImageID { get; set; }
     }
 
     public class ClientType : EntityBase

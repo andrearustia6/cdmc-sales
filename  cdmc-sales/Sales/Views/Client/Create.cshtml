@@ -4,7 +4,7 @@
     ViewBag.Title = "客户"+SR.Create;
 }
 
-@using (Html.BeginForm())
+@using(Html.BeginForm("Create","Client",null,FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.Partial("change", Model)
 }
