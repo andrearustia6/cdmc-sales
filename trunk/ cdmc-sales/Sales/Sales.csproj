@@ -227,6 +227,7 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utl\CH.cs" />
+    <Compile Include="Utl\ImageController.cs" />
     <Compile Include="Utl\Utl.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -460,6 +461,7 @@
     <Content Include="Scripts\2011.3.1115\telerik.treeview.min.js" />
     <Content Include="Scripts\2011.3.1115\telerik.upload.min.js" />
     <Content Include="Scripts\2011.3.1115\telerik.window.min.js" />
+    <Content Include="Scripts\jquery-1.6.4.min.js" />
     <Content Include="VJS\view.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>

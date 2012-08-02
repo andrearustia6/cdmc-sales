@@ -21,6 +21,10 @@
                         @(Html.Telerik().Grid(item.Clients).Name("clients" + item.ID)
                             .Columns(c =>
                             {
+                                 //<img alt=o.ClientImageID src=@Url.Content("~/Image/DisplayClientImage/" + o.ClientImageID) />
+                              c.Template(
+                                
+                            }).Title("客户照片").Width(140);
                                 c.Bound(o => o.Name).Width(140);
                                 c.Bound(o => o.Title).Width(140);
                                 c.Bound(o => o.Contact).Width(200);
