@@ -9,9 +9,9 @@ namespace Utl
 {
     public class ImageController : Controller
     {
-        public static ClientImage UploadImg(HttpRequestBase request, ClientImage img = null)
+        public static Image UploadImg(HttpRequestBase request, Image img = null)
         {
-            if (img == null) img = new ClientImage();
+            if (img == null) img = new Image();
 
             var file = request.Files["attachments"];
             if (!string.IsNullOrWhiteSpace(file.FileName))
@@ -27,20 +27,20 @@ namespace Utl
             {
                 if (img.ImageData == null)
                 {
-                    var o = CH.GetDataById<ClientImage>(img.ID);
+                    var o = CH.GetDataById<Image>(img.ID);
                     img.ImageData = o.ImageData;
                     img.ContentType = o.ContentType;
                 }
-                CH.Edit<ClientImage>(img);
+                CH.Edit<Image>(img);
             }
             else
-                CH.Create<ClientImage>(img);
+                CH.Create<Image>(img);
             return img;
         }
 
-        public ActionResult DisplayClientImage(int id)
+        public ActionResult DisplayImage(int id)
         {
-            var image = CH.GetDataById<ClientImage>(id);
+            var image = CH.GetDataById<Image>(id);
             if (image != null)
             {
                 byte[] imageData = image.ImageData;
