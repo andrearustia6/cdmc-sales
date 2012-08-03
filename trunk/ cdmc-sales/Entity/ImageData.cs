@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Entity
 {
-    public class ClientImage:EntityBase
+    public class Image:EntityBase
     {
         [Column(TypeName = "image")]
         public Byte[] ImageData { get; set; }
@@ -16,7 +16,5 @@ namespace Entity
 
         [Display(Name = "图片名称")]
         public string Name { get; set; }
-
-       
     }
 }

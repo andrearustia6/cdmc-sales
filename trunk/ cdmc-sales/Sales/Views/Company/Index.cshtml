@@ -37,7 +37,7 @@
      @(Html.Telerik().Grid(clients).Name("clients" + companyuid)
                             .Columns(c =>
                             {
-                                c.Template(@<text><img alt=@item.ClientImageID style="width:130px;height:100px" src=@Url.Content("~/Image/DisplayClientImage/" + item.ClientImageID) /></text>).Title("客户照片").Width(150);
+                                c.Template(@<text><img alt=@item.ImageID style="width:80px;height:70px" src=@Url.Content("~/Image/DisplayImage/" + item.ImageID) /></text>).Title("客户照片").Width(150);
                                 c.Bound(o => o.Name).Width(140);
                                 c.Bound(o => o.Title).Width(140);
                                 c.Bound(o => o.Contact).Width(200);

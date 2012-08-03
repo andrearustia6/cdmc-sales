@@ -52,6 +52,7 @@
     <Compile Include="ImageData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CallingRecord.cs" />
+    <Compile Include="Research.cs" />
     <Compile Include="Utl\Attributes.cs" />
     <Compile Include="Utl\DB.cs">
       <SubType>Code</SubType>
