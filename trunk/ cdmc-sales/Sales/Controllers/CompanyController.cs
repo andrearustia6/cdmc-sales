@@ -45,6 +45,7 @@ namespace Sales.Controllers
         {
             if (ModelState.IsValid)
             {
+                ImageController.UploadImg(Request, item.Image);
                 CH.Create<Company>(item);
                 return RedirectToAction("Index");
             }
@@ -60,6 +61,7 @@ namespace Sales.Controllers
         {
             if (ModelState.IsValid)
             {
+                ImageController.UploadImg(Request, item.Image);
                 CH.Edit<Company>(item);
                 return RedirectToAction("Index");
             }
