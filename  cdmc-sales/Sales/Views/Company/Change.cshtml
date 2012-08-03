@@ -19,6 +19,20 @@
         @Html.EditorFor(model => model.Contact)
         @Html.ValidationMessageFor(model => model.Contact)
     </div>
+       <div class="editor-label">
+        @Html.Label("公司架构")
+    </div>
+    <div class="editor-field">
+        @{if (Model != null)
+          {
+            <img  alt="上传文件" width="300" height="200" src=@Url.Action("ShowImage", "Image", new { id = Model.ImageID }) />
+          }
+        }
+        @Html.Telerik().Upload().Async(a=>a.AutoUpload(true)).Name("attachments").Multiple(false)
+  
+        @*@Html.EditorFor(model => model.ClientImage.)
+        @Html.ValidationMessageFor(model => model.Name)*@
+    </div>
     <div class="editor-label">
         @Html.LabelFor(model => model.CompanyType.Name)
     </div>
