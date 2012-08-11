@@ -1,0 +1,11 @@
+Number of Cold Calls (total): _________ 就是每天拨出电话的数量
+
+Number of DMs reached (total): _________
+
+Number of New DMs reached (total): _________
+
+Number of Full Pitches (total):___________
+
+Number of Qualified Decisions (total): _________
+
+Deals (total): _________
