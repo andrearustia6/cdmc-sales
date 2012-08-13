@@ -221,6 +221,7 @@
     <Compile Include="Controllers\ClientTypeController.cs" />
     <Compile Include="Controllers\CompanyController.cs" />
     <Compile Include="Controllers\CompanyTypeController.cs" />
+    <Compile Include="Controllers\FAQController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ResearchController.cs" />
     <Compile Include="DB.cs" />
@@ -849,6 +850,15 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Research\Change.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\FAQ\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\FAQ\Change.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\FAQ\Display.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
