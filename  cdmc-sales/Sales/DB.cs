@@ -17,5 +17,7 @@ namespace Sales
         public DbSet<Research> Researches { get; set; }
 
         public DbSet<Image> Images { get; set; }
+
+        public DbSet<FAQ> FAQs { get; set; }
     }
 }
