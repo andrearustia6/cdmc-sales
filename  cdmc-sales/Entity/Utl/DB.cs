@@ -16,7 +16,8 @@ namespace Utl
         public DbSet<ClientType> ClientTypes { get; set; }
         public DbSet<Area> Areas { get; set; }
         public DbSet<CallingRecord> CallRecords { get; set; }
-
+        public DbSet<Research> Researchs { get; set; }
+        public DbSet<FAQ> FAQs { get; set; }
         public DB()
         {
             Database.SetInitializer<DB>(new DBInitializer());

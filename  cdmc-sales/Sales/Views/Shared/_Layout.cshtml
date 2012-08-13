@@ -57,6 +57,12 @@
                     {
                         menu.Add().Text("客户维护").Action("index", "Client");
                     }))
+                     @(Html.Telerik().Menu().Orientation(MenuOrientation.Vertical)
+                    .Name("f6")
+                    .Items(menu =>
+                    {
+                        menu.Add().Text("调研维护").Action("index", "Research");
+                    }))
                    
         </div>
         <section id="main" style="float:left;width:87%">@RenderBody()</section>
