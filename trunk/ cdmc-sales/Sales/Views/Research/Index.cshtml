@@ -1,0 +1,20 @@
+﻿@using Entity
+
+@(Html.Telerik().Grid<Research>().ClientEvents(e => e.OnError("bindingError")).Name("Research").DataBinding(databinding => databinding.Ajax().Select("AjaxResearchIndex", "Research"))
+                .DataKeys(keys =>
+                {
+                    keys.Add(s => s.ID);
+                })
+                .Columns(c =>
+                {
+                    c.Bound(item => item.Name).Width(200);
+                    c.Bound(item => item.Contents).Width(300);
+                    c.Bound(item => item.ID).Width(200).Title("操作").ClientTemplate("<a href='/Research/edit/" + "<#= ID #>'>编辑</a> | <a href='/Research/details/" + "<#= ID #>'>详细</a> | <a href='/Research/delete/" + "<#= ID #>'>删除</a>"); 
+                 })
+                .Resizable(resizing => resizing.Columns(true))
+                .Filterable().Sortable().Groupable()
+                .Pageable(p => p.PageSize(20))
+                .Scrollable(scrolling => scrolling.Height(350))
+              
+)
+@Html.ActionLink("创建", "Create")

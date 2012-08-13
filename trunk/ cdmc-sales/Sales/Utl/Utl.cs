@@ -95,7 +95,9 @@ namespace Utl
                 serializer.RegisterConverters(new JavaScriptConverter[] 
                 {   new DataToJson<Company>(),
                     new DataToJson<CompanyType>(),
-                    new DataToJson<Client>()
+                    new DataToJson<Client>(),
+                    new DataToJson<Area>(),
+                    new DataToJson<Research>()
                 });
                 string sJSON = serializer.Serialize(Data);
                 response.Write(sJSON);

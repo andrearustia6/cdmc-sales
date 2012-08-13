@@ -8,3 +8,9 @@
 {
     @Html.Partial("change", Model)
 }
+<center>
+    <p>
+        <input type="submit" value=@SR.Save />
+        @Html.ActionLink(SR.GobackToList, "Index")
+    </p>
+</center>
