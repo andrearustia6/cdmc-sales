@@ -1,0 +1,35 @@
+﻿@model FAQ
+@using Utl
+@using Entity
+@Html.ValidationSummary(true)
+<fieldset>
+    <legend>@SR.Form</legend>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.Name)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.Name)
+        @Html.ValidationMessageFor(model => model.Name)
+    </div>
+ 
+    <div class="editor-label">
+        @Html.LabelFor(model => model.Question)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.Question)
+        @Html.ValidationMessageFor(model => model.Question)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.Code)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.Code)
+        @Html.ValidationMessageFor(model => model.Code)
+    </div>
+     <div class="editor-field">
+        @Html.Telerik().EditorFor(model => model.Answer)
+        @Html.ValidationMessageFor(model => model.Answer)
+    </div>
+</fieldset>
+@Html.Partial("editcommon", Model)
+

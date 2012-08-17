@@ -1,0 +1,13 @@
+﻿@model Entity.Client
+@using Utl
+@{
+    ViewBag.Title = "行业类型" + SR.Details;
+}
+
+@Html.Partial("display",Model)
+<center>
+<p>
+    @Html.ActionLink(SR.Edit, "Edit", new { id=Model.ID }) |
+    @Html.ActionLink(SR.GobackToList, "Index")
+</p>
+</center>

@@ -1,0 +1,41 @@
+﻿@using Utl;
+@model Entity.Company
+<fieldset>
+    <legend>@SR.Form</legend>
+
+    <div class="display-label">公司名称</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Name)
+    </div>
+
+    <div class="display-label">联系方式</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Contact)
+    </div>
+    <div class="display-label">公司类型</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.CompanyType.Name)
+    </div>
+    <div class="display-label">行业类型</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Area.Name)
+    </div>
+    <div class="display-label">公司架构</div>
+    <div class="display-field">
+      <img alt="上传文件" width="500" height="500" src=@Url.Content("~/Image/DisplayImage/" + Model.ImageID) />
+    </div>
+    <div class="display-label">公司地址</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Address)
+    </div>
+    <div class="display-label">外资比例</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.ForeignAssetPercentage)
+    </div>
+    <div class="display-label">内资比例</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.DomesticAssetPercentage)
+    </div>
+</fieldset>
+@Html.Partial("displaycommon", Model)
+
