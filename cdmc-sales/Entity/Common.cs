@@ -102,9 +102,19 @@ namespace Entity
     /// </summary>
     public class CurrencyType : EntityBase
     {
-        [Display(Name = "名称")]
+        [Display(Name = "货币类型")]
         public string Name { get; set; }
     }
+
+      /// <summary>
+    /// 付款类型
+    /// </summary>
+    public class PaymentType : EntityBase
+    {
+        [Display(Name = "付款类型")]
+        public string Name { get; set; }
+    }
+    
 
     /// <summary>
     /// 图片
