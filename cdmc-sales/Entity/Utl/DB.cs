@@ -14,8 +14,8 @@ namespace Utl
         public DbSet<CompanyType> CompanyTypes { get; set; }
         public DbSet<Client> Clients { get; set; }
         public DbSet<ClientType> ClientTypes { get; set; }
-        public DbSet<Area> Areas { get; set; }
-        public DbSet<CallingRecord> CallRecords { get; set; }
+        public DbSet<Category> Areas { get; set; }
+        public DbSet<CallingResult> CallRecords { get; set; }
         public DbSet<Research> Researchs { get; set; }
         public DbSet<FAQ> FAQs { get; set; }
         public DB()

@@ -27,13 +27,13 @@ namespace Sales.Controllers
         [GridAction()]
         public ActionResult AjaxAreaIndex()
         {
-            var data = CH.GetAllData<Area>();
-            return new DataJsonResult<Area>() { Data = data };
+            var data = CH.GetAllData<Category>();
+            return new DataJsonResult<Category>() { Data = data };
         }
 
         public ViewResult Details(int id)
         {
-            return View(CH.GetDataById<Area>(id));
+            return View(CH.GetDataById<Category>(id));
         }
 
         public ActionResult Create()
@@ -42,26 +42,26 @@ namespace Sales.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create(Area item)
+        public ActionResult Create(Category item)
         {
             if (ModelState.IsValid)
             {
-                CH.Create<Area>(item);
+                CH.Create<Category>(item);
                 return RedirectToAction("Index");
             }
             return View(item);
         }
         public ActionResult Edit(int id)
         {
-            return View(CH.GetDataById<Area>(id));
+            return View(CH.GetDataById<Category>(id));
         }
 
         [HttpPost]
-        public ActionResult Edit(Area item)
+        public ActionResult Edit(Category item)
         {
             if (ModelState.IsValid)
             {
-                CH.Edit<Area>(item);
+                CH.Edit<Category>(item);
                 return RedirectToAction("Index");
             }
             return View(item);
@@ -69,13 +69,13 @@ namespace Sales.Controllers
 
         public ActionResult Delete(int id)
         {
-            return View(CH.GetDataById<Area>(id));
+            return View(CH.GetDataById<Category>(id));
         }
 
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {
-            CH.Delete<Area>(id);
+            CH.Delete<Category>(id);
             return RedirectToAction("Index");
         }
     }
