@@ -50,7 +50,7 @@ namespace Entity
     /// <summary>
     /// 通用模板管理
     /// </summary>
-    public class TemplateType : EntityBase
+    public class Template : EntityBase
     {
         [Display(Name = "模板名称")]
         public string Name { get; set; }

@@ -36,7 +36,7 @@ namespace Entity
     /// <summary>
     /// 部门管理
     /// </summary>
-    public class Department:EntityBase
+    public class Department : EntityBase
     {
         [Display(Name = "部门名称"), Required]
         public String Name { get; set; }
@@ -45,12 +45,46 @@ namespace Entity
     /// <summary>
     /// 项目
     /// </summary>
-     public class Project:EntityBase
+    public class Project : EntityBase
     {
         [Display(Name = "项目名称"), Required]
         public String Name { get; set; }
+
+        [Display(Name = "开始时间"), Required]
+        public DateTime StartDay { get; set; }
+
+        [Display(Name = "结束时间"), Required]
+        public DateTime EndDay { get; set; }
+
+        [Display(Name = "销售目标"), Required]
+        public decimal Target { get; set; }
+
+        [Display(Name = "板块负责人"), Required]
+        public Member Supervisor { get; set; }
+
+        public List<Member> Members { get; set; }
+
+        public List<Template> Templates { get; set; }
+
+        public List<Keyword> Keywords { get; set; }
+
+        [Display(Name = "项目背景")]
+        public string SaleBrief { get; set; }
+
+        [Display(Name = "其它")]
+        public string Others { get; set; }
+        
+        public List<Package> Templates { get; set; }
+
+        public List<News> News { get; set; }
+
+        public List<Message> Messages { get; set; }
+
+        public List<Progress> Progresses { get; set; }
+        
+        
     }
-    
+
     /// <summary>
     /// 月目标管理
     /// </summary>
@@ -131,7 +165,7 @@ namespace Entity
         [Display(Name = "字头")]
         public string Character { get; set; }
 
-        public List<Target_W> Target_Ws{get;set;} 
+        public List<Target_W> Target_Ws { get; set; }
 
         public Department Department { get; set; }
         [Display(Name = "所在部门"), Required]
@@ -159,7 +193,7 @@ namespace Entity
         public int? MarketID { get; set; }
 
         public Member Product { get; set; }
-         [Display(Name = "市场部接口人")]
+        [Display(Name = "市场部接口人")]
         public int? ProductID { get; set; }
 
         public List<Member> Members { get; set; }
@@ -186,18 +220,18 @@ namespace Entity
         [Display(Name = "实际入账")]
         public decimal Income { get; set; }
 
-        [Display(Name = "应付款"),Required]
+        [Display(Name = "应付款"), Required]
         public decimal Payment { get; set; }
 
         [Display(Name = "出单描述"), MaxLength(1000)]
         public string PaymentDetail { get; set; }
 
         public int? ProjectID { get; set; }
-         [Display(Name = "所属项目")]
+        [Display(Name = "所属项目")]
         public Project Project { get; set; }
     }
 
-    
+
     public class Progress
     {
         public Company Company { get; set; }
@@ -205,11 +239,11 @@ namespace Entity
         public int CompanyID { get; set; }
 
         [Display(Name = "完成度")]
-         public int Complement { get; set; }
+        public int Complement { get; set; }
 
         public virtual Member Member { get; set; }
         [Display(Name = "销售员工")]
-        public int? MemberID { get; set; } 
+        public int? MemberID { get; set; }
     }
 
 
