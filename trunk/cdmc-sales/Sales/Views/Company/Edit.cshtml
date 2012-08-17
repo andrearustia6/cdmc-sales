@@ -1,0 +1,14 @@
+﻿@model Entity.Company
+@using Utl
+@{
+    ViewBag.Title = "Edit";
+}
+
+
+@using (Html.BeginForm()) {
+   @Html.Partial("change", Model)
+}
+
+<div>
+    @Html.ActionLink(SR.GobackToList, "Index")
+</div>

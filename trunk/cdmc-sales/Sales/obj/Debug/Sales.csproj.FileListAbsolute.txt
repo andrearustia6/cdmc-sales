@@ -1,0 +1,10 @@
+D:\My_Projects\CDMC\ cdmc-sales\Sales\obj\Debug\ResolveAssemblyReference.cache
+D:\My_Projects\CDMC\ cdmc-sales\Sales\bin\Sales.dll
+D:\My_Projects\CDMC\ cdmc-sales\Sales\bin\Sales.pdb
+D:\My_Projects\CDMC\ cdmc-sales\Sales\bin\Entity.dll
+D:\My_Projects\CDMC\ cdmc-sales\Sales\bin\Telerik.Web.Mvc.dll
+D:\My_Projects\CDMC\ cdmc-sales\Sales\bin\Entity.pdb
+D:\My_Projects\CDMC\ cdmc-sales\Sales\bin\Telerik.Web.Mvc.pdb
+D:\My_Projects\CDMC\ cdmc-sales\Sales\bin\Telerik.Web.Mvc.xml
+D:\My_Projects\CDMC\ cdmc-sales\Sales\obj\Debug\Sales.dll
+D:\My_Projects\CDMC\ cdmc-sales\Sales\obj\Debug\Sales.pdb

@@ -1,0 +1,12 @@
+﻿
+@model Entity.CompanyType
+<fieldset>
+    <legend>公司类型</legend>
+
+    <div class="display-label">公司类型名称</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Name)
+    </div>
+</fieldset>
+@Html.Partial("displaycommon",Model)
+
