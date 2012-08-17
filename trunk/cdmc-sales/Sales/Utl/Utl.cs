@@ -96,7 +96,7 @@ namespace Utl
                 {   new DataToJson<Company>(),
                     new DataToJson<CompanyType>(),
                     new DataToJson<Client>(),
-                    new DataToJson<Area>(),
+                    new DataToJson<Category>(),
                     new DataToJson<Research>()
                 });
                 string sJSON = serializer.Serialize(Data);
