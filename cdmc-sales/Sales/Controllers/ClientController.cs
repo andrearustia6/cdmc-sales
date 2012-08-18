@@ -27,13 +27,13 @@ namespace Sales.Controllers
         [GridAction()]
         public ActionResult AjaxClientIndex()
         {
-            var data = CH.GetAllData<Client>();
-            return new DataJsonResult<Client>() { Data = data };
+            var data = CH.GetAllData<Lead>();
+            return new DataJsonResult<Lead>() { Data = data };
         }
 
         public ViewResult Details(int id)
         {
-            return View(CH.GetDataById<Client>(id));
+            return View(CH.GetDataById<Lead>(id));
         }
 
         public ActionResult Create(int? companyid)
@@ -43,13 +43,13 @@ namespace Sales.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create(Client item)
+        public ActionResult Create(Lead item)
         {
             if (ModelState.IsValid)
             {
                 Image image = ImageController.UploadImg(Request, item.Image);
                 item.ImageID = image.ID;
-                CH.Create<Client>(item);
+                CH.Create<Lead>(item);
                 return RedirectToAction("Index");
             }
             ViewBag.CompanyID = item.CompanyID;
@@ -57,16 +57,16 @@ namespace Sales.Controllers
         }
         public ActionResult Edit(int id)
         {
-            return View(CH.GetDataById<Client>(id));
+            return View(CH.GetDataById<Lead>(id));
         }
 
         [HttpPost]
-        public ActionResult Edit(Client item)
+        public ActionResult Edit(Lead item)
         {
             if (ModelState.IsValid)
             {
                 ImageController.UploadImg(Request, item.Image);
-                CH.Edit<Client>(item);
+                CH.Edit<Lead>(item);
                 return RedirectToAction("Index");
             }
             ViewBag.CompanyID = item.CompanyID;
@@ -75,13 +75,13 @@ namespace Sales.Controllers
 
         public ActionResult Delete(int id)
         {
-            return View(CH.GetDataById<Client>(id));
+            return View(CH.GetDataById<Lead>(id));
         }
 
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {
-            CH.Delete<Client>(id);
+            CH.Delete<Lead>(id);
             return RedirectToAction("Index");
         }
     }

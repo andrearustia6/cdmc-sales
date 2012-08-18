@@ -31,6 +31,9 @@ namespace Entity
 
         [Display(Name = "新闻内容"), Required]
         public string Content { get; set; }
+
+        [Display(Name = "新闻链接"), Required]
+        public string Link { get; set; }
     }
 
     /// <summary>

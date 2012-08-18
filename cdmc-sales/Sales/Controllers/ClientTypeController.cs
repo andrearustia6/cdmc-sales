@@ -27,13 +27,13 @@ namespace Sales.Controllers
         [GridAction()]
         public ActionResult AjaxClientTypeIndex()
         {
-            var data = CH.GetAllData<ClientType>();
-            return new DataJsonResult<ClientType>() { Data = data };
+            var data = CH.GetAllData<LeadtType>();
+            return new DataJsonResult<LeadtType>() { Data = data };
         }
 
         public ViewResult Details(int id)
         {
-            return View(CH.GetDataById<ClientType>(id));
+            return View(CH.GetDataById<LeadtType>(id));
         }
 
         public ActionResult Create()
@@ -42,26 +42,26 @@ namespace Sales.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create(ClientType item)
+        public ActionResult Create(LeadtType item)
         {
             if (ModelState.IsValid)
             {
-                CH.Create<ClientType>(item);
+                CH.Create<LeadtType>(item);
                 return RedirectToAction("Index");
             }
             return View(item);
         }
         public ActionResult Edit(int id)
         {
-            return View(CH.GetDataById<ClientType>(id));
+            return View(CH.GetDataById<LeadtType>(id));
         }
 
         [HttpPost]
-        public ActionResult Edit(ClientType item)
+        public ActionResult Edit(LeadtType item)
         {
             if (ModelState.IsValid)
             {
-                CH.Edit<ClientType>(item);
+                CH.Edit<LeadtType>(item);
                 return RedirectToAction("Index");
             }
             return View(item);
@@ -69,13 +69,13 @@ namespace Sales.Controllers
 
         public ActionResult Delete(int id)
         {
-            return View(CH.GetDataById<ClientType>(id));
+            return View(CH.GetDataById<LeadtType>(id));
         }
 
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {
-            CH.Delete<ClientType>(id);
+            CH.Delete<LeadtType>(id);
             return RedirectToAction("Index");
         }
     }
