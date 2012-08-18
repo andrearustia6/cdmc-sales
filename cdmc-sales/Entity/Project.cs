@@ -73,8 +73,6 @@ namespace Entity
 
         [Display(Name = "其它")]
         public string Others { get; set; }
-        
-        public List<Package> Templates { get; set; }
 
         public List<News> News { get; set; }
 
@@ -108,27 +106,27 @@ namespace Entity
     }
 
 
-    /// <summary>
-    /// 月目标管理
-    /// </summary>
-    public class Target_M : EntityBase
-    {
-        public virtual Project Project { get; set; }
-        [Display(Name = "项目名称"), Required]
-        public int ProjectID { get; set; }
+    ///// <summary>
+    ///// 月目标管理
+    ///// </summary>
+    //public class Target_M : EntityBase
+    //{
+    //    public virtual Project Project { get; set; }
+    //    [Display(Name = "项目名称"), Required]
+    //    public int ProjectID { get; set; }
 
-        [Display(Name = "目标月份"), Required]
-        public DateTime Month { get; set; }
+    //    [Display(Name = "目标月份"), Required]
+    //    public DateTime Month { get; set; }
 
-        [Display(Name = "销售目标"), Required]
-        public decimal Deal { get; set; }
+    //    [Display(Name = "销售目标"), Required]
+    //    public decimal Deal { get; set; }
 
-        [Display(Name = "保底目标"), Required]
-        public decimal BaseDeal { get; set; }
+    //    [Display(Name = "保底目标"), Required]
+    //    public decimal BaseDeal { get; set; }
 
-        [Display(Name = "入账目标"), Required]
-        public decimal CheckIn { get; set; }
-    }
+    //    [Display(Name = "入账目标"), Required]
+    //    public decimal CheckIn { get; set; }
+    //}
 
     /// <summary>
     /// 周目标管理

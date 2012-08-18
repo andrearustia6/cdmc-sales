@@ -31,8 +31,8 @@ namespace Entity
         [Display(Name = "所属项目"), Required]
         public int? ProjectID { get; set; }
 
-        public virtual CallResultType CallResultType { get; set; }
-        public int? CallResultType { get; set; }
+        //public virtual CallResultType CallResultType { get; set; }
+        //public int? CallResultType { get; set; }
     }
 
     /// <summary>

@@ -89,7 +89,7 @@ namespace Entity
         public string Name_EN { get; set; }
 
         public TitleType TitleType { get; set; }
-         [Display(Name = "职位"))]
+         [Display(Name = "职位")]
         public int? TitleTypeID { get; set; }
 
         [Display(Name = "联系方式"),Required]

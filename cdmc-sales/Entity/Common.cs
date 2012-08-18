@@ -64,7 +64,7 @@ namespace Entity
         public String Name { get; set; }
 
         [Display(Name = "问题单号"), Required]
-        public String Name { get; set; }
+        public String FlowNumber { get; set; }
 
         [Display(Name = "求助人"),  Required]
         public String Applier { get; set; }
@@ -87,14 +87,8 @@ namespace Entity
     /// </summary>
     public class Keyword : EntityBase
     {
-        [Display(Name = "名称")]
+        [Display(Name = "名称"), Required]
         public string Name { get; set; }
-
-        [Display(Name = "关键字")]
-        public string Keyword { get; set; }
-
-        [Display(Name = "关键字"), Required]
-        public string Keyword { get; set; }
 
         [Display(Name = "关键字解释")]
         public string Explanation { get; set; }

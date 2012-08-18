@@ -3,3 +3,8 @@ D:\My_Projects\CDMC\ cdmc-sales\Entity\bin\Debug\Entity.pdb
 D:\My_Projects\CDMC\ cdmc-sales\Entity\obj\Debug\ResolveAssemblyReference.cache
 D:\My_Projects\CDMC\ cdmc-sales\Entity\obj\Debug\Entity.dll
 D:\My_Projects\CDMC\ cdmc-sales\Entity\obj\Debug\Entity.pdb
+C:\Projects\CDMC\cdmc-sales\Entity\obj\Debug\ResolveAssemblyReference.cache
+C:\Projects\CDMC\cdmc-sales\Entity\obj\Debug\Entity.dll
+C:\Projects\CDMC\cdmc-sales\Entity\obj\Debug\Entity.pdb
+C:\Projects\CDMC\cdmc-sales\Entity\bin\Debug\Entity.dll
+C:\Projects\CDMC\cdmc-sales\Entity\bin\Debug\Entity.pdb
