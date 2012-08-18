@@ -39,9 +39,9 @@ namespace Entity
         [Display(Name = "参会客户"), Required]
         public Lead Client { get; set; }
 
-        public ParticipantType ParticipantType { get; set; }
+        public virtual ParticipantType ParticipantType { get; set; }
         [Display(Name = "参会类型"),Required]
-        public ParticipantType ParticipantType { get; set; }
+        public int? ParticipantTypeID { get; set; }
 
         [Display(Name = "套餐内容")]
         public string Content { get; set; }
@@ -62,10 +62,8 @@ namespace Entity
 
         public ParticipantType ParticipantType { get; set; }
         [Display(Name = "参会类型"), Required]
-        public ParticipantType ParticipantType { get; set; }
+        public int? ParticipantTypeID { get; set; }
 
-        [Display(Name = "套餐内容")]
-        public string Content { get; set; }
     }
 
 }

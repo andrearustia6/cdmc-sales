@@ -7,12 +7,12 @@ using System.Web;
 using System.Web.Mvc;
 using Entity;
 using Sales;
-using Telerik.Web.Mvc;
 using Utl;
+using Telerik.Web.Mvc;
 
 namespace Sales.Controllers
 {
-    public class ClientTypeController : Controller
+    public class LeadController : Controller
     {
         public ViewResult Index()
         {
@@ -25,57 +25,63 @@ namespace Sales.Controllers
         //    return View(new GridModel(data));
         //}
         [GridAction()]
-        public ActionResult AjaxClientTypeIndex()
+        public ActionResult AjaxClientIndex()
         {
-            var data = CH.GetAllData<LeadtType>();
-            return new DataJsonResult<LeadtType>() { Data = data };
+            var data = CH.GetAllData<Lead>();
+            return new DataJsonResult<Lead>() { Data = data };
         }
 
         public ViewResult Details(int id)
         {
-            return View(CH.GetDataById<LeadtType>(id));
+            return View(CH.GetDataById<Lead>(id));
         }
 
-        public ActionResult Create()
+        public ActionResult Create(int? companyid)
         {
+            ViewBag.CompanyID = companyid;
             return View();
         }
 
         [HttpPost]
-        public ActionResult Create(LeadtType item)
+        public ActionResult Create(Lead item)
         {
             if (ModelState.IsValid)
             {
-                CH.Create<LeadtType>(item);
+                Image image = ImageController.UploadImg(Request, item.Image);
+                item.ImageID = image.ID;
+                CH.Create<Lead>(item);
                 return RedirectToAction("Index");
             }
+            ViewBag.CompanyID = item.CompanyID;
             return View(item);
         }
         public ActionResult Edit(int id)
         {
-            return View(CH.GetDataById<LeadtType>(id));
+            return View(CH.GetDataById<Lead>(id));
         }
 
         [HttpPost]
-        public ActionResult Edit(LeadtType item)
+        public ActionResult Edit(Lead item)
         {
             if (ModelState.IsValid)
             {
-                CH.Edit<LeadtType>(item);
+                ImageController.UploadImg(Request, item.Image);
+                CH.Edit<Lead>(item);
                 return RedirectToAction("Index");
             }
+            ViewBag.CompanyID = item.CompanyID;
             return View(item);
         }
 
         public ActionResult Delete(int id)
         {
-            return View(CH.GetDataById<LeadtType>(id));
+            return View(CH.GetDataById<Lead>(id));
         }
 
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {
-            CH.Delete<LeadtType>(id);
+            CH.Delete<Lead>(id);
             return RedirectToAction("Index");
         }
     }

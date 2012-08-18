@@ -7,33 +7,33 @@ using System.Web;
 using System.Web.Mvc;
 using Entity;
 using Sales;
-using Utl;
 using Telerik.Web.Mvc;
+using Utl;
 
 namespace Sales.Controllers
 {
-    public class AreaController : Controller
+    public class LeadTypeController : Controller
     {
         public ViewResult Index()
         {
             return View();
         }
         //[GridAction]
-        //public ActionResult AjaxAreaIndex()
+        //public ActionResult AjaxClientIndex()
         //{
-        //    var data = CH.GetAllData<Area>();
+        //    var data = CH.GetAllData<Client>();
         //    return View(new GridModel(data));
         //}
         [GridAction()]
-        public ActionResult AjaxAreaIndex()
+        public ActionResult AjaxClientTypeIndex()
         {
-            var data = CH.GetAllData<Category>();
-            return new DataJsonResult<Category>() { Data = data };
+            var data = CH.GetAllData<LeadtType>();
+            return new DataJsonResult<LeadtType>() { Data = data };
         }
 
         public ViewResult Details(int id)
         {
-            return View(CH.GetDataById<Category>(id));
+            return View(CH.GetDataById<LeadtType>(id));
         }
 
         public ActionResult Create()
@@ -42,26 +42,26 @@ namespace Sales.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create(Category item)
+        public ActionResult Create(LeadtType item)
         {
             if (ModelState.IsValid)
             {
-                CH.Create<Category>(item);
+                CH.Create<LeadtType>(item);
                 return RedirectToAction("Index");
             }
             return View(item);
         }
         public ActionResult Edit(int id)
         {
-            return View(CH.GetDataById<Category>(id));
+            return View(CH.GetDataById<LeadtType>(id));
         }
 
         [HttpPost]
-        public ActionResult Edit(Category item)
+        public ActionResult Edit(LeadtType item)
         {
             if (ModelState.IsValid)
             {
-                CH.Edit<Category>(item);
+                CH.Edit<LeadtType>(item);
                 return RedirectToAction("Index");
             }
             return View(item);
@@ -69,13 +69,13 @@ namespace Sales.Controllers
 
         public ActionResult Delete(int id)
         {
-            return View(CH.GetDataById<Category>(id));
+            return View(CH.GetDataById<LeadtType>(id));
         }
 
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {
-            CH.Delete<Category>(id);
+            CH.Delete<LeadtType>(id);
             return RedirectToAction("Index");
         }
     }

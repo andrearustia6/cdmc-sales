@@ -216,9 +216,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>UploadLocalization.zh-CN.resx</DependentUpon>
     </Compile>
-    <Compile Include="Controllers\AreaController.cs" />
-    <Compile Include="Controllers\ClientController.cs" />
-    <Compile Include="Controllers\ClientTypeController.cs" />
+    <Compile Include="Controllers\CategoryController.cs" />
+    <Compile Include="Controllers\LeadController.cs" />
+    <Compile Include="Controllers\LeadTypeController.cs" />
     <Compile Include="Controllers\CompanyController.cs" />
     <Compile Include="Controllers\CompanyTypeController.cs" />
     <Compile Include="Controllers\FAQController.cs" />
@@ -768,67 +768,67 @@
     <Content Include="Views\Company\Display.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Client\Index.cshtml" />
+    <Content Include="Views\Lead\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Client\Details.cshtml" />
+    <Content Include="Views\Lead\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Client\Create.cshtml" />
+    <Content Include="Views\Lead\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Client\Edit.cshtml" />
+    <Content Include="Views\Lead\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Client\Delete.cshtml" />
+    <Content Include="Views\Lead\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Client\Change.cshtml" />
+    <Content Include="Views\Lead\Change.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Client\Display.cshtml" />
+    <Content Include="Views\Lead\Display.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\ClientType\Index.cshtml" />
+    <Content Include="Views\LeadType\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\ClientType\Details.cshtml" />
+    <Content Include="Views\LeadType\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\ClientType\Create.cshtml" />
+    <Content Include="Views\LeadType\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\ClientType\Edit.cshtml" />
+    <Content Include="Views\LeadType\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\ClientType\Delete.cshtml" />
+    <Content Include="Views\LeadType\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\ClientType\Change.cshtml" />
+    <Content Include="Views\LeadType\Change.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\ClientType\Display.cshtml" />
+    <Content Include="Views\LeadType\Display.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Area\Index.cshtml" />
+    <Content Include="Views\Category\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Area\Details.cshtml" />
+    <Content Include="Views\Category\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Area\Create.cshtml" />
+    <Content Include="Views\Category\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Area\Edit.cshtml" />
+    <Content Include="Views\Category\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Area\Delete.cshtml" />
+    <Content Include="Views\Category\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Area\Change.cshtml" />
+    <Content Include="Views\Category\Change.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Area\Display.cshtml" />
+    <Content Include="Views\Category\Display.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Research\Index.cshtml" />

@@ -12,76 +12,70 @@ using Telerik.Web.Mvc;
 
 namespace Sales.Controllers
 {
-    public class ClientController : Controller
+    public class CategoryController : Controller
     {
         public ViewResult Index()
         {
             return View();
         }
         //[GridAction]
-        //public ActionResult AjaxClientIndex()
+        //public ActionResult AjaxAreaIndex()
         //{
-        //    var data = CH.GetAllData<Client>();
+        //    var data = CH.GetAllData<Area>();
         //    return View(new GridModel(data));
         //}
         [GridAction()]
-        public ActionResult AjaxClientIndex()
+        public ActionResult AjaxAreaIndex()
         {
-            var data = CH.GetAllData<Lead>();
-            return new DataJsonResult<Lead>() { Data = data };
+            var data = CH.GetAllData<Category>();
+            return new DataJsonResult<Category>() { Data = data };
         }
 
         public ViewResult Details(int id)
         {
-            return View(CH.GetDataById<Lead>(id));
+            return View(CH.GetDataById<Category>(id));
         }
 
-        public ActionResult Create(int? companyid)
+        public ActionResult Create()
         {
-            ViewBag.CompanyID = companyid;
             return View();
         }
 
         [HttpPost]
-        public ActionResult Create(Lead item)
+        public ActionResult Create(Category item)
         {
             if (ModelState.IsValid)
             {
-                Image image = ImageController.UploadImg(Request, item.Image);
-                item.ImageID = image.ID;
-                CH.Create<Lead>(item);
+                CH.Create<Category>(item);
                 return RedirectToAction("Index");
             }
-            ViewBag.CompanyID = item.CompanyID;
             return View(item);
         }
         public ActionResult Edit(int id)
         {
-            return View(CH.GetDataById<Lead>(id));
+            return View(CH.GetDataById<Category>(id));
         }
 
         [HttpPost]
-        public ActionResult Edit(Lead item)
+        public ActionResult Edit(Category item)
         {
             if (ModelState.IsValid)
             {
-                ImageController.UploadImg(Request, item.Image);
-                CH.Edit<Lead>(item);
+                CH.Edit<Category>(item);
                 return RedirectToAction("Index");
             }
-            ViewBag.CompanyID = item.CompanyID;
             return View(item);
         }
 
         public ActionResult Delete(int id)
         {
-            return View(CH.GetDataById<Lead>(id));
+            return View(CH.GetDataById<Category>(id));
         }
 
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {
-            CH.Delete<Lead>(id);
+            CH.Delete<Category>(id);
             return RedirectToAction("Index");
         }
     }
