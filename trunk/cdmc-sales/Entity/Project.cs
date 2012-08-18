@@ -59,8 +59,9 @@ namespace Entity
         [Display(Name = "销售目标"), Required]
         public decimal Target { get; set; }
 
-        [Display(Name = "板块负责人"), Required]
-        public Member Supervisor { get; set; }
+        //[Display(Name = "板块负责人"), Required]
+        //public Member Supervisor { get; set; }
+        //public int? SupervisorID { get; set; }
 
         public List<Member> Members { get; set; }
 
@@ -106,27 +107,6 @@ namespace Entity
     }
 
 
-    ///// <summary>
-    ///// 月目标管理
-    ///// </summary>
-    //public class Target_M : EntityBase
-    //{
-    //    public virtual Project Project { get; set; }
-    //    [Display(Name = "项目名称"), Required]
-    //    public int ProjectID { get; set; }
-
-    //    [Display(Name = "目标月份"), Required]
-    //    public DateTime Month { get; set; }
-
-    //    [Display(Name = "销售目标"), Required]
-    //    public decimal Deal { get; set; }
-
-    //    [Display(Name = "保底目标"), Required]
-    //    public decimal BaseDeal { get; set; }
-
-    //    [Display(Name = "入账目标"), Required]
-    //    public decimal CheckIn { get; set; }
-    //}
 
     /// <summary>
     /// 周目标管理
@@ -150,7 +130,7 @@ namespace Entity
     /// <summary>
     /// 团队成员
     /// </summary>
-    public class Member
+    public class Member:EntityBase
     {
         [Display(Name = "成员姓名"), Required]
         public string Name { get; set; }
@@ -177,7 +157,7 @@ namespace Entity
     /// <summary>
     /// 团队
     /// </summary>
-    public class Team
+    public class Team:EntityBase
     {
         [Display(Name = "团队名称"), Required]
         public string Name { get; set; }
@@ -204,7 +184,7 @@ namespace Entity
     /// <summary>
     /// 出单
     /// </summary>
-    public class Deal
+    public class Deal : EntityBase
     {
         public virtual ParticipantType ParticipantType { get; set; }
         public int? ParticipantTypeID { get; set; }
@@ -230,7 +210,7 @@ namespace Entity
     }
 
 
-    public class Progress
+    public class Progress : EntityBase
     {
         public Company Company { get; set; }
         [Display(Name = "对应公司"), Required]

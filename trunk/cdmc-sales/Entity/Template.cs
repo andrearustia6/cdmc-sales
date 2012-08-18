@@ -9,7 +9,7 @@ namespace Entity
     /// <summary>
     /// 电话结果
     /// </summary>
-    public class CallResultType : EntityBase
+    public class LeadSheetType : EntityBase
     {
         [Display(Name = "电话结果")]
         public string Name { get; set; }
@@ -18,22 +18,22 @@ namespace Entity
         public int Code { get; set; }
     }
 
-    /// <summary>
-    /// 电话结果管理
-    /// </summary>
-    public class CallingResult : EntityBase
-    {
-        public virtual Lead Client { get; set; }
-        [Display(Name = "致电客户"), Required]
-        public int? ClientID { get; set; }
+    ///// <summary>
+    ///// 电话结果管理
+    ///// </summary>
+    //public class LeadSheet : EntityBase
+    //{
+    //    public virtual Lead Client { get; set; }
+    //    [Display(Name = "致电客户"), Required]
+    //    public int? ClientID { get; set; }
 
-        public virtual Project Project { get; set; }
-        [Display(Name = "所属项目"), Required]
-        public int? ProjectID { get; set; }
+    //    public virtual Project Project { get; set; }
+    //    [Display(Name = "所属项目"), Required]
+    //    public int? ProjectID { get; set; }
 
-        //public virtual CallResultType CallResultType { get; set; }
-        //public int? CallResultType { get; set; }
-    }
+    //    public virtual LeadSheetType CallResultType { get; set; }
+    //    public int? LeadSheetType { get; set; }
+    //}
 
     /// <summary>
     /// 模板类型

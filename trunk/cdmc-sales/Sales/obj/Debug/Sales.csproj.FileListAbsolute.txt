@@ -8,12 +8,10 @@ D:\My_Projects\CDMC\ cdmc-sales\Sales\bin\Telerik.Web.Mvc.pdb
 D:\My_Projects\CDMC\ cdmc-sales\Sales\bin\Telerik.Web.Mvc.xml
 D:\My_Projects\CDMC\ cdmc-sales\Sales\obj\Debug\Sales.dll
 D:\My_Projects\CDMC\ cdmc-sales\Sales\obj\Debug\Sales.pdb
-C:\Projects\CDMC\cdmc-sales\Sales\obj\Debug\ResolveAssemblyReference.cache
-C:\Projects\CDMC\cdmc-sales\Sales\obj\Debug\Sales.dll
-C:\Projects\CDMC\cdmc-sales\Sales\obj\Debug\Sales.pdb
 C:\Projects\CDMC\cdmc-sales\Sales\bin\Sales.dll
 C:\Projects\CDMC\cdmc-sales\Sales\bin\Sales.pdb
 C:\Projects\CDMC\cdmc-sales\Sales\bin\Entity.dll
 C:\Projects\CDMC\cdmc-sales\Sales\bin\Entity.pdb
-C:\Projects\CDMC\cdmc-sales\Sales\bin\Telerik.Web.Mvc.pdb
-C:\Projects\CDMC\cdmc-sales\Sales\bin\Telerik.Web.Mvc.xml
+C:\Projects\CDMC\cdmc-sales\Sales\obj\Debug\ResolveAssemblyReference.cache
+C:\Projects\CDMC\cdmc-sales\Sales\obj\Debug\Sales.dll
+C:\Projects\CDMC\cdmc-sales\Sales\obj\Debug\Sales.pdb

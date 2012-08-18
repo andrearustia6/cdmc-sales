@@ -10,22 +10,28 @@ namespace Utl
 {
     public class DB : DbContext
     {
+        public DbSet<CurrencyType> LeadtTypes { get; set; }
         public DbSet<Company> Companys { get; set; }
         public DbSet<CompanyType> CompanyTypes { get; set; }
-        public DbSet<Lead> Clients { get; set; }
-        public DbSet<LeadtType> ClientTypes { get; set; }
-        public DbSet<Category> Areas { get; set; }
-        public DbSet<CallingResult> CallRecords { get; set; }
+        public DbSet<Lead> Leads { get; set; }
+        
+        public DbSet<Category> Categorys { get; set; }
+        //public DbSet<LeadSheet> LeadSheets { get; set; }
         public DbSet<Research> Researchs { get; set; }
         public DbSet<FAQ> FAQs { get; set; }
         public DB()
         {
+            //Database.SetInitializer(new DropCreateDatabaseIfModelChanges<DbContext>()); 
             Database.SetInitializer<DB>(new DBInitializer());
             this.Configuration.ValidateOnSaveEnabled = false;
         }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+           
+
+            //modelBuilder.Conventions..Remove<>();
+            // Ensure that IncludeMetadataConvention has been added to the DbModelBuilder conventions.
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
         }
     }
