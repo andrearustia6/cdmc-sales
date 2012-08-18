@@ -1,6 +1,6 @@
 ﻿@using Entity
-
-@(Html.Telerik().Grid<Area>().ClientEvents(e => e.OnError("bindingError")).Name("Area").DataBinding(databinding => databinding.Ajax().Select("AjaxAreaIndex", "Area"))
+@model List<Category>
+@(Html.Telerik().Grid<Category>(Model).Name("Category")
                 .DataKeys(keys =>
                 {
                     keys.Add(s => s.ID);
@@ -9,7 +9,7 @@
                 {
                     c.Bound(item => item.Name).Width(200);
                     c.Bound(item => item.Description).Width(300);
-                    c.Bound(item => item.ID).Width(200).Title("操作").ClientTemplate("<a href='/Area/edit/" + "<#= ID #>'>编辑</a> | <a href='/Area/details/" + "<#= ID #>'>详细</a> | <a href='/Area/delete/" + "<#= ID #>'>删除</a>"); 
+                    c.Bound(item => item.ID).Width(200).Title("操作").ClientTemplate("<a href='/Category/edit/" + "<#= ID #>'>编辑</a> | <a href='/Category/details/" + "<#= ID #>'>详细</a> | <a href='/Category/delete/" + "<#= ID #>'>删除</a>"); 
                  })
                 .Resizable(resizing => resizing.Columns(true))
                 .Filterable().Sortable().Groupable()
@@ -17,4 +17,5 @@
                 .Scrollable(scrolling => scrolling.Height(350))
               
 )
+
 @Html.ActionLink("行业类型创建", "Create")

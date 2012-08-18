@@ -7,33 +7,20 @@ using System.Web;
 using System.Web.Mvc;
 using Entity;
 using Sales;
-using Telerik.Web.Mvc;
 using Utl;
 
 namespace Sales.Controllers
 {
-    public class LeadTypeController : Controller
+    public class CurrencyTypeController : Controller
     {
         public ViewResult Index()
         {
-            return View();
-        }
-        //[GridAction]
-        //public ActionResult AjaxClientIndex()
-        //{
-        //    var data = CH.GetAllData<Client>();
-        //    return View(new GridModel(data));
-        //}
-        [GridAction()]
-        public ActionResult AjaxClientTypeIndex()
-        {
-            var data = CH.GetAllData<LeadType>();
-            return new DataJsonResult<LeadType>() { Data = data };
+            return View(CH.GetAllData<CurrencyType>());
         }
 
         public ViewResult Details(int id)
         {
-            return View(CH.GetDataById<LeadType>(id));
+            return View(CH.GetDataById<CurrencyType>(id));
         }
 
         public ActionResult Create()
@@ -42,26 +29,26 @@ namespace Sales.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create(LeadType item)
+        public ActionResult Create(CurrencyType item)
         {
             if (ModelState.IsValid)
             {
-                CH.Create<LeadType>(item);
+                CH.Create<CurrencyType>(item);
                 return RedirectToAction("Index");
             }
             return View(item);
         }
         public ActionResult Edit(int id)
         {
-            return View(CH.GetDataById<LeadType>(id));
+            return View(CH.GetDataById<CurrencyType>(id));
         }
 
         [HttpPost]
-        public ActionResult Edit(LeadType item)
+        public ActionResult Edit(CurrencyType item)
         {
             if (ModelState.IsValid)
             {
-                CH.Edit<LeadType>(item);
+                CH.Edit<CurrencyType>(item);
                 return RedirectToAction("Index");
             }
             return View(item);
@@ -69,13 +56,13 @@ namespace Sales.Controllers
 
         public ActionResult Delete(int id)
         {
-            return View(CH.GetDataById<LeadType>(id));
+            return View(CH.GetDataById<CurrencyType>(id));
         }
 
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {
-            CH.Delete<LeadType>(id);
+            CH.Delete<CurrencyType>(id);
             return RedirectToAction("Index");
         }
     }

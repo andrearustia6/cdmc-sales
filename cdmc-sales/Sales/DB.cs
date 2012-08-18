@@ -19,5 +19,7 @@ namespace Sales
         public DbSet<Image> Images { get; set; }
 
         public DbSet<FAQ> FAQs { get; set; }
+
+        public DbSet<CurrencyType> CurrencyTypes { get; set; }
     }
 }

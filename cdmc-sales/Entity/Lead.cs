@@ -78,7 +78,7 @@ namespace Entity
     /// </summary>
     public class Lead : EntityBase
     {
-        public virtual TitleType PositionType { get; set; }
+        public virtual Title PositionType { get; set; }
         [Display(Name = "客户职位"),Required]
         public int? PositionTypeID { get; set; }
 
@@ -88,7 +88,7 @@ namespace Entity
         [Display(Name = "英文名称"), MaxLength(100)]
         public string Name_EN { get; set; }
 
-        public TitleType TitleType { get; set; }
+        public Title TitleType { get; set; }
          [Display(Name = "职位")]
         public int? TitleTypeID { get; set; }
 
@@ -99,7 +99,7 @@ namespace Entity
         [Display(Name = "所属公司"),Required]
         public int? CompanyID { get; set; }
 
-        public virtual LeadtType ClientType { get; set; }
+        public virtual LeadType ClientType { get; set; }
         [Display(Name = "客户类型"),Required]
         public int? ClientTypeID { get; set; }
 
@@ -110,7 +110,7 @@ namespace Entity
     /// <summary>
     /// 客户类型
     /// </summary>
-    public class LeadtType : EntityBase
+    public class LeadType : EntityBase
     {
         [Display(Name = "Lead类型名称"), Required]
         public string Name { get; set; }
@@ -128,7 +128,7 @@ namespace Entity
     /// <summary>
     /// 职位类型
     /// </summary>
-    public class TitleType : EntityBase
+    public class Title : EntityBase
     {
         [Display(Name = "职位类型"), Required]
         public string Name { get; set; }

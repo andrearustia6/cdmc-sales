@@ -1,5 +1,6 @@
 ﻿@using Entity
-@(Html.Telerik().Grid<LeadType>().ClientEvents(e => e.OnError("bindingError")).Name("ClientType").DataBinding(databinding => databinding.Ajax().Select("AjaxClientTypeIndex", "ClientType"))
+@model List<CurrencyType>
+@(Html.Telerik().Grid<CurrencyType>(Model).Name("CurrencyType")
                 .DataKeys(keys =>
                 {
                     keys.Add(s => s.ID);
@@ -8,7 +9,7 @@
                 {
                     c.Bound(item => item.Name).Width(200);
                     c.Bound(item => item.Description).Width(300);
-                    c.Bound(item => item.ID).Width(200).Title("操作").ClientTemplate("<a href='/ClientType/edit/" + "<#= ID #>'>编辑</a> | <a href='/ClientType/details/" + "<#= ID #>'>详细</a> | <a href='/ClientType/delete/" + "<#= ID #>'>删除</a>"); 
+                    c.Bound(item => item.ID).Width(200).Title("操作").ClientTemplate("<a href='/CurrencyType/edit/" + "<#= ID #>'>编辑</a> | <a href='/CurrencyType/details/" + "<#= ID #>'>详细</a> | <a href='/CurrencyType/delete/" + "<#= ID #>'>删除</a>"); 
                  })
                 .Resizable(resizing => resizing.Columns(true))
                 .Filterable().Sortable().Groupable()
@@ -16,4 +17,5 @@
                 .Scrollable(scrolling => scrolling.Height(350))
               
 )
-@Html.ActionLink("客户类型创建", "Create")
+
+@Html.ActionLink("货币类型创建", "Create")

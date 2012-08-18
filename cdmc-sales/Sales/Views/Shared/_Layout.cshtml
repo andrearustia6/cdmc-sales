@@ -27,18 +27,23 @@
 		</header>
         <section >
         <div style="float:left; width:13%">
+         @(Html.Telerik().Menu().Orientation(MenuOrientation.Vertical)
+                    .Name("f2")
+                    .Items(menu =>
+                    {
+                        menu.Add().Text("行业类型").Action("index", "Category");
+                        menu.Add().Text("货币类型").Action("index", "CurrencyType");
+                    }))
+
+
+
                     @(Html.Telerik().Menu().Orientation(MenuOrientation.Vertical)
                     .Name("f1")
                     .Items(menu =>
                     {
                         menu.Add().Text("公司类型").Action("index", "CompanyType");
                     }))
-                     @(Html.Telerik().Menu().Orientation(MenuOrientation.Vertical)
-                    .Name("f2")
-                    .Items(menu =>
-                    {
-                        menu.Add().Text("行业类型").Action("index", "Area");
-                    }))
+                    
                      @(Html.Telerik().Menu().Orientation(MenuOrientation.Vertical)
                     .Name("f3")
                     .Items(menu =>
