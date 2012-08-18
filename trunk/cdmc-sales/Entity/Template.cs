@@ -23,7 +23,7 @@ namespace Entity
     /// </summary>
     public class CallingResult : EntityBase
     {
-        public virtual Client Client { get; set; }
+        public virtual Lead Client { get; set; }
         [Display(Name = "致电客户"), Required]
         public int? ClientID { get; set; }
 

@@ -37,7 +37,7 @@ namespace Entity
     public class Participant : EntityBase
     {
         [Display(Name = "参会客户"), Required]
-        public Client Client { get; set; }
+        public Lead Client { get; set; }
 
         public ParticipantType ParticipantType { get; set; }
         [Display(Name = "参会类型"),Required]

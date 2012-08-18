@@ -23,7 +23,7 @@ namespace Entity
         [Display(Name = "公司地址"), MaxLength(100)]
         public string Address { get; set; }
 
-        public List<Client> Clients { get; set; }
+        public List<Lead> Clients { get; set; }
 
         [Display(Name = "关键字")]
         public string KeyWords { get; set; }
@@ -76,9 +76,9 @@ namespace Entity
     /// <summary>
     /// 客户
     /// </summary>
-    public class Client : EntityBase
+    public class Lead : EntityBase
     {
-        public virtual PositionType PositionType { get; set; }
+        public virtual TitleType PositionType { get; set; }
         [Display(Name = "客户职位"),Required]
         public int? PositionTypeID { get; set; }
 
@@ -88,6 +88,10 @@ namespace Entity
         [Display(Name = "英文名称"), MaxLength(100)]
         public string Name_EN { get; set; }
 
+        public TitleType TitleType { get; set; }
+         [Display(Name = "职位"))]
+        public int? TitleTypeID { get; set; }
+
         [Display(Name = "联系方式"),Required]
         public string Contact { get; set; }
 
@@ -95,7 +99,7 @@ namespace Entity
         [Display(Name = "所属公司"),Required]
         public int? CompanyID { get; set; }
 
-        public virtual ClientType ClientType { get; set; }
+        public virtual LeadtType ClientType { get; set; }
         [Display(Name = "客户类型"),Required]
         public int? ClientTypeID { get; set; }
 
@@ -106,18 +110,9 @@ namespace Entity
     /// <summary>
     /// 客户类型
     /// </summary>
-    public class ClientType : EntityBase
+    public class LeadtType : EntityBase
     {
-        [Display(Name = "客户类型名称"), Required]
-        public string Name { get; set; }
-    }
-
-    /// <summary>
-    /// 公司区域
-    /// </summary>
-    public class Region : EntityBase
-    {
-        [Display(Name = "公司区域"), Required]
+        [Display(Name = "Lead类型名称"), Required]
         public string Name { get; set; }
     }
 
@@ -133,7 +128,7 @@ namespace Entity
     /// <summary>
     /// 职位类型
     /// </summary>
-    public class PositionType : EntityBase
+    public class TitleType : EntityBase
     {
         [Display(Name = "职位类型"), Required]
         public string Name { get; set; }
