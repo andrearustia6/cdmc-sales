@@ -724,31 +724,7 @@
     <Content Include="Views\Company\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Company\Details.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Company\Create.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Company\Edit.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Company\Delete.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Views\CompanyType\Index.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\CompanyType\Details.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\CompanyType\Create.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\CompanyType\Edit.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\CompanyType\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\CompanyType\Change.cshtml" />
@@ -772,18 +748,6 @@
     <Content Include="Views\Lead\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Lead\Details.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Lead\Create.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Lead\Edit.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Lead\Delete.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Views\Lead\Change.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -791,15 +755,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\LeadType\Index.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\LeadType\Details.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\LeadType\Delete.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\LeadType\Change.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\LeadType\Display.cshtml" />
@@ -851,6 +806,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\CurrencyType\Display.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\LeadType\Change.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

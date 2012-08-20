@@ -1,7 +1,6 @@
 ﻿@model FAQ
 @using Utl
 @using Entity
-@Html.ValidationSummary(true)
 <fieldset>
     <legend>@SR.Form</legend>
     <div class="editor-label">
@@ -31,5 +30,4 @@
         @Html.ValidationMessageFor(model => model.Answer)
     </div>
 </fieldset>
-@Html.Partial("editcommon", Model)
 
