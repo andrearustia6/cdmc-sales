@@ -93,6 +93,12 @@ namespace Entity
         [Display(Name = "联系方式"),Required]
         public string Contact { get; set; }
 
+        [Display(Name = "电子邮箱"), Required]
+        public string EMail { get; set; }
+
+        [Display(Name = "移动电话"), Required]
+        public string Mobile { get; set; }
+
         public virtual Company Company { get; set; }
         [Display(Name = "所属公司"),Required]
         public int? CompanyID { get; set; }
