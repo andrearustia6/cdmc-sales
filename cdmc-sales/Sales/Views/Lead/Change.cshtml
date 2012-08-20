@@ -29,8 +29,7 @@
         }
         @Html.Telerik().Upload().Async(a=>a.AutoUpload(true)).Name("attachments").Multiple(false)
   
-        @*@Html.EditorFor(model => model.ClientImage.)
-        @Html.ValidationMessageFor(model => model.Name)*@
+
     </div>
     <div class="editor-label">
         @Html.LabelFor(model => model.Gender)
@@ -52,6 +51,20 @@
     <div class="editor-field">
         @Html.EditorFor(model => model.Contact)
         @Html.ValidationMessageFor(model => model.Contact)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.EMail)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.EMail)
+        @Html.ValidationMessageFor(model => model.EMail)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.Mobile)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.Mobile)
+        @Html.ValidationMessageFor(model => model.Mobile)
     </div>
     <div class="editor-label">
         @Html.Label("Lead类型")
