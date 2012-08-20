@@ -1,6 +1,7 @@
 ﻿@using Entity
 @using Utl
-@(Html.Telerik().Grid<Client>(CH.GetAllData<Client>()).Name("Client")
+@model List<Lead>
+@(Html.Telerik().Grid<Lead>().Name("Client")
                 .DataKeys(keys =>
                 {
                     keys.Add(s => s.ID);

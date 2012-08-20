@@ -8,9 +8,10 @@
                 })
                 .Columns(c =>
                 {
-                    c.Bound(item => item.Name).Width(150);
-                    c.Bound(item => item.Contact).Width(150);
-                    c.Bound(item => item.Area.Name).Width(100);
+                    c.Bound(item => item.Name_EN).Width(150);
+                    c.Bound(item => item.Name_CH).Width(150);
+                    c.Bound(item => item.Contact).Width(100);
+                    c.Bound(item => item.Category.Name).Width(100);
                     c.Bound(item => item.CompanyType.Name).Width(100);
                     c.Bound(item => item.ID).Title("操作").Template(@<span>
                     <a href=@Url.Content("~/Company/Edit/" + item.ID) >编辑</a> | <a href=@Url.Content("~/Company/Details/" + item.ID)>详细</a>  | <a href=@Url.Content("~/Client/Create/?CompanyId=" + item.ID)>添加客户</a>| <a href=@Url.Content("~/Company/delete/" + item.ID) >删除</a> 
@@ -32,14 +33,15 @@
 
 @Html.ActionLink("公司创建", "Create")
 
-@helper RenderGrid(List<Client> clients, int companyuid)
+@helper RenderGrid(List<Lead> clients, int companyuid)
     { 
      @(Html.Telerik().Grid(clients).Name("clients" + companyuid)
                             .Columns(c =>
                             {
                                 c.Template(@<text><img alt=@item.ImageID style="width:80px;height:70px" src=@Url.Content("~/Image/DisplayImage/" + item.ImageID) /></text>).Title("客户照片").Width(150);
-                                c.Bound(o => o.Name).Width(140);
-                                c.Bound(o => o.Title).Width(140);
+                                c.Bound(o => o.Name_EN).Width(140);
+                                c.Bound(o => o.Name_CH).Width(140);
+                                c.Bound(o => o.PositionType).Width(140);
                                 c.Bound(o => o.Contact).Width(200);
                             })
                         .Resizable(resizing => resizing.Columns(true))

@@ -1,7 +1,6 @@
 ﻿@model Entity.CurrencyType
 @using Utl
 
-@Html.ValidationSummary(true)
 <fieldset>
     <legend>@SR.Form</legend>
 
@@ -12,7 +11,5 @@
             @Html.EditorFor(model => model.Name)
             @Html.ValidationMessageFor(model => model.Name)
         </div>
-         
 </fieldset>
-@Html.Partial("editcommon", Model)
 

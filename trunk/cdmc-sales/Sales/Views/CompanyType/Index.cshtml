@@ -1,6 +1,6 @@
 ﻿@using Entity
-
-@(Html.Telerik().Grid<CompanyType>().ClientEvents(e => e.OnError("bindingError")).Name("CompanyType").DataBinding(databinding => databinding.Ajax().Select("AjaxCompanyTypeIndex", "CompanyType"))
+@model List<CompanyType>
+@(Html.Telerik().Grid<CompanyType>().Name("CompanyType")
                 .DataKeys(keys =>
                 {
                     keys.Add(s => s.ID);
