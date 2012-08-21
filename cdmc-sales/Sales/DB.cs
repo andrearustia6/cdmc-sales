@@ -29,5 +29,11 @@ namespace Sales
         public DbSet<ParticipantType> ParticipantType { get; set; }
 
         public DbSet<PackageServiceType> PackageServiceType { get; set; }
+
+        public DbSet<PackageType> PackageType { get; set; }
+
+        public DbSet<LeadSheetType> LeadSheetType { get; set; }
+
+        public DbSet<TemplateType> TemplateType { get; set; }
     }
 }
