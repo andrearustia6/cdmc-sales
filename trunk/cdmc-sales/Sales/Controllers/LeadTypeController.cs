@@ -16,20 +16,10 @@ namespace Sales.Controllers
     {
         public ViewResult Index()
         {
-            return View();
+            return View(CH.GetAllData<LeadType>());
         }
-        //[GridAction]
-        //public ActionResult AjaxClientIndex()
-        //{
-        //    var data = CH.GetAllData<Client>();
-        //    return View(new GridModel(data));
-        //}
-        [GridAction()]
-        public ActionResult AjaxClientTypeIndex()
-        {
-            var data = CH.GetAllData<LeadType>();
-            return new DataJsonResult<LeadType>() { Data = data };
-        }
+
+
 
         public ViewResult Details(int id)
         {

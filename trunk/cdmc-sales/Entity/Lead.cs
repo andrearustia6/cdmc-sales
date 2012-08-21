@@ -23,7 +23,7 @@ namespace Entity
         [Display(Name = "公司地址"), MaxLength(100)]
         public string Address { get; set; }
 
-        public List<Lead> Clients { get; set; }
+        public List<Lead> Leads { get; set; }
 
         [Display(Name = "关键字")]
         public string KeyWords { get; set; }
