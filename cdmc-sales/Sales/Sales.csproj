@@ -216,15 +216,19 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>UploadLocalization.zh-CN.resx</DependentUpon>
     </Compile>
-    <Compile Include="Controllers\CategoryController.cs" />
-    <Compile Include="Controllers\CurrencyTypeController.cs" />
+    <Compile Include="Controllers\Type\CategoryController.cs" />
+    <Compile Include="Controllers\Type\CurrencyTypeController.cs" />
     <Compile Include="Controllers\LeadController.cs" />
-    <Compile Include="Controllers\LeadTypeController.cs" />
+    <Compile Include="Controllers\Type\LeadTypeController.cs" />
     <Compile Include="Controllers\CompanyController.cs" />
-    <Compile Include="Controllers\CompanyTypeController.cs" />
+    <Compile Include="Controllers\Type\CompanyTypeController.cs" />
     <Compile Include="Controllers\FAQController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ResearchController.cs" />
+    <Compile Include="Controllers\Type\PackageServiceTypeController.cs" />
+    <Compile Include="Controllers\Type\ParticipantController.cs" />
+    <Compile Include="Controllers\Type\PaymentTypeController.cs" />
+    <Compile Include="Controllers\Type\TitleController.cs" />
     <Compile Include="DB.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -808,6 +812,36 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\LeadType\Change.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Title\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Title\Change.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Title\Display.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\PaymentType\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\PaymentType\Change.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\PaymentType\Display.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\ParticipantType\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\ParticipantType\Change.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\ParticipantType\Display.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\PackageServiceType\Index.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

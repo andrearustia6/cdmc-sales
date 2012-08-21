@@ -1,5 +1,5 @@
 ﻿@using Entity
-@(Html.Telerik().Grid<LeadType>().Name("LeadType")
+@(Html.Telerik().Grid<ParticipantType>().Name("ParticipantType")
                 .DataKeys(keys =>
                 {
                     keys.Add(s => s.ID);
@@ -8,8 +8,8 @@
                 {
                     c.Bound(item => item.Name).Width(200);
                     c.Bound(item => item.Description).Width(300);
-                    c.Bound(item => item.ID).Title("操作").Template(@<span> <a href=@Url.Content("~/LeadType/Edit/" + item.ID) >
-                        编辑</a> | <a href=@Url.Content("~/LeadType/Details/" + item.ID)>详细</a> | <a href=@Url.Content("~/LeadType/delete/" + item.ID) >
+                    c.Bound(item => item.ID).Title("操作").Template(@<span> <a href=@Url.Content("~/ParticipantType/Edit/" + item.ID) >
+                        编辑</a> | <a href=@Url.Content("~/ParticipantType/Details/" + item.ID)>详细</a> | <a href=@Url.Content("~/ParticipantType/delete/" + item.ID) >
                             删除</a> </span>);
                 })
                                             .Resizable(resizing => resizing.Columns(true))
@@ -19,4 +19,3 @@
 
                             )
 @Html.ActionLink("创建", "Create")
-
