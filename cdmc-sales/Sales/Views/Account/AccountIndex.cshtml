@@ -1,0 +1,35 @@
+﻿@{
+    ViewBag.Title = "AccountIndex";
+}
+@model List<MembershipUser>
+
+
+@using Entity
+
+@(Html.Telerik().Grid<MembershipUser>(Model).Name("MembershipUser")
+                .DataKeys(keys =>
+                {
+                    keys.Add(s => s.UserName);
+                })
+                .Columns(c =>
+                {
+                    c.Bound(item => item.UserName).Width(200);
+                    c.Bound(item => item.Email).Width(200);
+                    c.Bound(item => item.IsOnline).Width(100);
+                    c.Bound(item => item.UserName).Title("职级").Template(@<span>
+                    @System.Web.Security.Roles.GetRolesForUser(item.UserName)[0]
+                    </span>);
+                   // c.Bound(item => ).Width(100);
+                    c.Bound(item => item.UserName).Title("操作").Template(@<span> <a href=@Url.Content("~/MembershipUser/Edit/" + item.UserName) >
+                        编辑</a> | <a href=@Url.Content("~/MembershipUser/Details/" + item.UserName)>详细</a> | <a href=@Url.Content("~/MembershipUser/delete/" + item.UserName) >
+                            删除</a> </span>);
+                })
+                                            .Resizable(resizing => resizing.Columns(true))
+                                            .Filterable().Sortable().Groupable()
+                                            .Pageable(p => p.PageSize(20))
+                                            .Scrollable(scrolling => scrolling.Height(350))
+
+                            )
+@Html.ActionLink("创建", "Create")
+
+

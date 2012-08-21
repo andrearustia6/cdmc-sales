@@ -14,6 +14,7 @@ namespace Sales
     {
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
+            filters.Add(new LogonRequired());
             filters.Add(new HandleErrorAttribute());
         }
 
