@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AccountModels.cs" />
     <Compile Include="Common.cs" />
     <Compile Include="Conference.cs" />
     <Compile Include="Lead.cs" />
