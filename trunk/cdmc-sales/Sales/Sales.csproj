@@ -216,6 +216,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>UploadLocalization.zh-CN.resx</DependentUpon>
     </Compile>
+    <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\Type\CategoryController.cs" />
     <Compile Include="Controllers\Type\CurrencyTypeController.cs" />
     <Compile Include="Controllers\LeadController.cs" />
@@ -236,12 +237,18 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Model\AccountModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utl\Attributes.cs" />
     <Compile Include="Utl\CH.cs" />
     <Compile Include="Utl\ImageController.cs" />
     <Compile Include="Utl\Utl.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\ASPNETDB.MDF" />
+    <Content Include="App_Data\aspnetdb_log.ldf">
+      <DependentUpon>ASPNETDB.MDF</DependentUpon>
+    </Content>
     <Content Include="Content\2011.3.1115\Black\editor.png" />
     <Content Include="Content\2011.3.1115\Black\imagebrowser.png" />
     <Content Include="Content\2011.3.1115\Black\loading.gif" />
@@ -505,7 +512,7 @@
     <Content Include="Views\Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
+    <Content Include="Views\Account\AccountIndex.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Home\About.cshtml" />
