@@ -21,5 +21,13 @@ namespace Sales
         public DbSet<FAQ> FAQs { get; set; }
 
         public DbSet<CurrencyType> CurrencyTypes { get; set; }
+
+        public DbSet<Title> Title { get; set; }
+
+        public DbSet<PaymentType> PaymentType { get; set; }
+
+        public DbSet<ParticipantType> ParticipantType { get; set; }
+
+        public DbSet<PackageServiceType> PackageServiceType { get; set; }
     }
 }

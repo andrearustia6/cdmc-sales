@@ -1,4 +1,4 @@
-﻿@model Entity.Research
+﻿@model Entity.EntityBase
 @using Utl
 @{
     ViewBag.Title = SR.Details;
@@ -6,7 +6,7 @@
 
 <fieldset>
 
-    @Html.Partial("change", Model)
+    @Html.Partial("display", Model)
 </fieldset>
 <p>
     @Html.ActionLink(SR.Edit, "Edit", new { id = Model.ID }) |

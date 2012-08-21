@@ -33,6 +33,9 @@
                     {
                         menu.Add().Text("行业类型").Action("index", "Category");
                         menu.Add().Text("货币类型").Action("index", "CurrencyType");
+                        menu.Add().Text("职位类型").Action("index", "CurrencyType");
+                        menu.Add().Text("公司类型").Action("index", "CompanyType");
+                        menu.Add().Text("Lead类型").Action("index", "LeadType");
                     }))
 
 
@@ -41,14 +44,14 @@
                     .Name("f1")
                     .Items(menu =>
                     {
-                        menu.Add().Text("公司类型").Action("index", "CompanyType");
+                       
                     }))
                     
                      @(Html.Telerik().Menu().Orientation(MenuOrientation.Vertical)
                     .Name("f3")
                     .Items(menu =>
                     {
-                        menu.Add().Text("客户类型").Action("index", "ClientType");
+                       
                     }))
                     @(Html.Telerik().Menu().Orientation(MenuOrientation.Vertical)
                     .Name("f4")

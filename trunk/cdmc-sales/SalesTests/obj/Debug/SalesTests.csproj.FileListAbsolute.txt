@@ -24,11 +24,8 @@ D:\My_Projects\CDMC\cdmc-sales\SalesTests\bin\Debug\SalesTests.dll
 D:\My_Projects\CDMC\cdmc-sales\SalesTests\bin\Debug\SalesTests.pdb
 D:\My_Projects\CDMC\cdmc-sales\SalesTests\bin\Debug\Sales.dll
 D:\My_Projects\CDMC\cdmc-sales\SalesTests\bin\Debug\Entity.dll
-D:\My_Projects\CDMC\cdmc-sales\SalesTests\bin\Debug\Telerik.Web.Mvc.dll
 D:\My_Projects\CDMC\cdmc-sales\SalesTests\bin\Debug\Sales.pdb
 D:\My_Projects\CDMC\cdmc-sales\SalesTests\bin\Debug\Entity.pdb
-D:\My_Projects\CDMC\cdmc-sales\SalesTests\bin\Debug\Telerik.Web.Mvc.pdb
-D:\My_Projects\CDMC\cdmc-sales\SalesTests\bin\Debug\Telerik.Web.Mvc.xml
 D:\My_Projects\CDMC\cdmc-sales\SalesTests\obj\Debug\ResolveAssemblyReference.cache
 D:\My_Projects\CDMC\cdmc-sales\SalesTests\obj\Debug\SalesTests.dll
 D:\My_Projects\CDMC\cdmc-sales\SalesTests\obj\Debug\SalesTests.pdb
