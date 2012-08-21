@@ -29,8 +29,7 @@
         }
         @Html.Telerik().Upload().Async(a=>a.AutoUpload(true)).Name("attachments").Multiple(false)
   
-        @*@Html.EditorFor(model => model.ClientImage.)
-        @Html.ValidationMessageFor(model => model.Name)*@
+
     </div>
     <div class="editor-label">
         @Html.LabelFor(model => model.CompanyType.Name)

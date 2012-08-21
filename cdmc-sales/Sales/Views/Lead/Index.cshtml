@@ -1,23 +1,26 @@
 ﻿@using Entity
 @using Utl
 @model List<Lead>
-@(Html.Telerik().Grid<Lead>().Name("Client")
+@(Html.Telerik().Grid<Lead>().Name("Lead")
                 .DataKeys(keys =>
                 {
                     keys.Add(s => s.ID);
                 })
                 .Columns(c =>
                 {
-                    c.Bound(item => item.Name).Width(200);
+                    c.Bound(item => item.Name_EN).Width(150);
+                    c.Bound(item => item.Name_CH).Width(150);
                     c.Bound(item => item.Title).Width(200);
                     c.Bound(item => item.Contact).Width(150);
-                    c.Bound(item => item.ID).Title("操作").ClientTemplate("<a href='/Client/edit/" + "<#= ID #>'>编辑</a> | <a href='/Client/details/" + "<#= ID #>'>详细</a>  | <a href='/Client/delete/" + "<#= ID #>'>删除</a>"); 
-                 })
-                    .Resizable(resizing => resizing.Columns(true))
-                    .Groupable()
-                    .Pageable(p => p.PageSize(20))
-                    .Sortable()
-                    .Filterable()
-                    .Scrollable(scrolling => scrolling.Height(350))
-)
-@Html.ActionLink("客户创建", "Create")
+                    c.Bound(item => item.ID).Title("操作").Template(@<span> <a href=@Url.Content("~/Lead/Edit/" + item.ID) >
+                        编辑</a> | <a href=@Url.Content("~/Lead/Details/" + item.ID)>详细</a> | <a href=@Url.Content("~/Lead/delete/" + item.ID) >
+                            删除</a> </span>);
+                })
+                                            .Resizable(resizing => resizing.Columns(true))
+                                            .Groupable()
+                                            .Pageable(p => p.PageSize(20))
+                                            .Sortable()
+                                            .Filterable()
+                                            .Scrollable(scrolling => scrolling.Height(350))
+                        )
+@Html.ActionLink("Lead创建", "Create")

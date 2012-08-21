@@ -16,20 +16,9 @@ namespace Sales.Controllers
     {
         public ViewResult Index()
         {
-            return View();
+            return View(CH.GetAllData<FAQ>());
         }
-        //[GridAction]
-        //public ActionResult AjaxFAQIndex()
-        //{
-        //    var data = CH.GetAllData<FAQ>();
-        //    return View(new GridModel(data));
-        //}
-        [GridAction()]
-        public ActionResult AjaxFAQIndex()
-        {
-            var data = CH.GetAllData<FAQ>();
-            return new DataJsonResult<FAQ>() { Data = data };
-        }
+
 
         public ViewResult Details(int id)
         {

@@ -18,16 +18,6 @@ namespace Sales.Controllers
         {
             return View(CH.GetAllData<CompanyType>());
         }
-        //[GridAction]
-        //public ActionResult AjaxCompanyTypeIndex()
-        //{
-        //    return View(new GridModel(CH.GetAllData<CompanyType>()));
-        //}
-       [GridAction]
-        public ActionResult AjaxCompanyTypeIndex()
-        {
-            return new DataJsonResult<CompanyType>() { Data = CH.GetAllData<CompanyType>() };
-        }
 
         public ViewResult Details(int id)
         {
