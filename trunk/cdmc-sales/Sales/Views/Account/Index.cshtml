@@ -3,7 +3,7 @@
 }
 @model List<MembershipUser>
 
-
+@using Utl
 @using Entity
 
 @(Html.Telerik().Grid<MembershipUser>(Model).Name("MembershipUser")
@@ -17,7 +17,10 @@
                     c.Bound(item => item.Email).Width(200);
                     c.Bound(item => item.IsOnline).Width(100);
                     c.Bound(item => item.UserName).Title("职级").Template(@<span>
-                    @System.Web.Security.Roles.GetRolesForUser(item.UserName)[0]
+                     @Employee.GetRoleName(item.UserName)
+                        
+                    
+                       
                     </span>);
                    // c.Bound(item => ).Width(100);
                     c.Bound(item => item.UserName).Title("操作").Template(@<span> <a href=@Url.Content("~/Account/UpdateProfile/?name=" + item.UserName) >
@@ -30,6 +33,6 @@
                                             .Scrollable(scrolling => scrolling.Height(350))
 
                             )
-@Html.ActionLink("创建", "Create")
+@Html.ActionLink("创建", "register")
 
 

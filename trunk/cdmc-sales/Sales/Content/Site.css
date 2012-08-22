@@ -133,6 +133,7 @@ footer, #footer
     position: relative;
     margin: 0;
     text-align: right;
+    list-style-type:none
 }
 
 #menu .t-item
@@ -140,7 +141,7 @@ footer, #footer
     border-width: 0 0 0 1px;
 }
 
-#menu .t-link
+#menu a
 {
     padding: 5px 20px;
     font-weight: bold;

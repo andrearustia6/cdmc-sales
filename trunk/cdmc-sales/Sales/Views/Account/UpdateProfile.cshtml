@@ -18,7 +18,7 @@
             @Html.LabelFor(m => m.RoleLevelID)
         </div>
         <div class="editor-field">
-            @Html.Display(CH.GetDataById<Entity.RoleLevel>(Model.RoleLevelID).Name)
+            @Html.Display(CH.GetDataById<Entity.Role>(Model.RoleLevelID).Name)
         </div>
         <div class="editor-label">
             @Html.LabelFor(m => m.Email)

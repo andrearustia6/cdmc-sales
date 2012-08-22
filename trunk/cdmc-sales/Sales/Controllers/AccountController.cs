@@ -25,7 +25,7 @@ namespace MvcGlobalAuthorize.Controllers
 
         //
         // POST: /Account/LogOn
-
+        [AllowAnonymous]
         [HttpPost]
         public ActionResult LogOn(LogOnModel model, string returnUrl)
         {
@@ -61,11 +61,11 @@ namespace MvcGlobalAuthorize.Controllers
         {
             FormsAuthentication.SignOut();
 
-            return RedirectToAction("Index", "Front");
+            return RedirectToAction("LogOn", "account");
         }
 
         //
-        // GET: /Account/Register
+        [ManagerRequired]
         public ActionResult Register()
         {
             return View();
@@ -85,6 +85,9 @@ namespace MvcGlobalAuthorize.Controllers
 
                 if (createStatus == MembershipCreateStatus.Success)
                 {
+                    ProfileBase objProfile = ProfileBase.Create(model.UserName);
+
+                    objProfile.SetPropertyValue("RoleLevelID", 0);
                     //FormsAuthentication.SetAuthCookie(model.UserName, false /* createPersistentCookie */);
                     return RedirectToAction("Index", "Home");
                 }
@@ -262,13 +265,14 @@ namespace MvcGlobalAuthorize.Controllers
 
         public ActionResult Index()
         {
-            var level = (int)Employee.GetProfile("RoleLevelID");
-            List<MembershipUser> users = null;
-            if (level >= 500)
-                users = Membership.GetAllUsers().Cast<MembershipUser>().ToList<MembershipUser>();
-            else
-                users = Membership.GetAllUsers().Cast<MembershipUser>().ToList<MembershipUser>().FindAll(i => Employee.IsEqualToCurrentUserName(i.UserName));
-            return View(users);
+            var level = (int)Employee.GetCurrentProfile("RoleLevelID");
+            var role = CH.GetDataById<Role>(level);
+            var list = Membership.GetAllUsers().Cast<MembershipUser>().ToList<MembershipUser>();
+            if (role.Level < 1000 && role.Level>=500)
+                list = list.FindAll(i => Employee.GetRoleLevel(i.UserName)<=500);
+            else if (role.Level < 500)
+                list = list.FindAll(i => Employee.IsEqualToCurrentUserName(i.UserName));
+            return View(list);
         }
 
         #region Status Codes
