@@ -1,0 +1,32 @@
+﻿@{
+    ViewBag.Title = "设置职级";
+}
+@using Utl
+@model Entity.UserInfoModel
+@using (Html.BeginForm())
+{
+    <fieldset>
+        <legend>账号信息</legend>
+        <div class="editor-label">
+            @Html.LabelFor(m=>m.UserName)
+        </div>
+        <div class="editor-field">
+            @Html.DisplayFor(m => m.UserName)
+            @Html.HiddenFor(m => m.UserName)
+        </div>
+        <div class="editor-label">
+            @Html.Label("职级")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownListFor(m => m.RoleLevelID, new SelectList(CH.GetAllData<Entity.RoleLevel>(), "ID", "Name"), "-请选择-")
+            @Html.ValidationMessageFor(m => m.RoleLevelID)
+        </div>
+    </fieldset>
+    
+    <div>
+        <center>
+            <input type="submit" value=@SR.Save />
+            @Html.ActionLink(SR.GobackToList, "Index")
+        </center>
+    </div>
+}

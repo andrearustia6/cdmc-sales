@@ -21,7 +21,7 @@
                     </span>);
                    // c.Bound(item => ).Width(100);
                     c.Bound(item => item.UserName).Title("操作").Template(@<span> <a href=@Url.Content("~/Account/UpdateProfile/?name=" + item.UserName) >
-                        更新个人信息</a> | <a href=@Url.Content("~/Account/Details/" + item.UserName)>详细</a> | <a href=@Url.Content("~/Account/delete/" + item.UserName) >
+                        更新个人信息</a> | <a href=@Url.Content("~/Account/SetRoleLevel/?name=" + item.UserName)>设置职级</a> | <a href=@Url.Content("~/Account/delete/" + item.UserName) >
                             删除</a> </span>);
                 })
                                             .Resizable(resizing => resizing.Columns(true))
