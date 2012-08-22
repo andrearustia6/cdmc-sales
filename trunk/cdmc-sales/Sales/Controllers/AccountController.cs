@@ -27,7 +27,6 @@ namespace MvcGlobalAuthorize.Controllers
         // POST: /Account/LogOn
 
         [HttpPost]
-        [AllowAnonymous]
         public ActionResult LogOn(LogOnModel model, string returnUrl)
         {
             if (ModelState.IsValid)
@@ -67,7 +66,6 @@ namespace MvcGlobalAuthorize.Controllers
 
         //
         // GET: /Account/Register
-        [AllowAnonymous]
         public ActionResult Register()
         {
             return View();
@@ -77,7 +75,6 @@ namespace MvcGlobalAuthorize.Controllers
         // POST: /Account/Register
 
         [HttpPost]
-        [AllowAnonymous]
         public ActionResult Register(UserInfoModel model)
         {
             if (ModelState.IsValid)
@@ -101,7 +98,7 @@ namespace MvcGlobalAuthorize.Controllers
             return View(model);
         }
 
-        [AllowAnonymous]
+
         public ActionResult UpdateProfile(string name)
         {
             if (Employee.IsEqualToCurrentUserName(name))
@@ -132,7 +129,7 @@ namespace MvcGlobalAuthorize.Controllers
                 return RedirectToAction("Index");
         }
 
-        [AllowAnonymous]
+
         [HttpPost]
         public ActionResult UpdateProfile(UserInfoModel model)
         {
@@ -154,7 +151,6 @@ namespace MvcGlobalAuthorize.Controllers
                     objProfile.SetPropertyValue("Mobile", model.Mobile);
                     objProfile.SetPropertyValue("Gender", model.Gender);
                     objProfile.SetPropertyValue("BirthDay", model.BirthDay);
-                    objProfile.SetPropertyValue("RoleLevelID", model.RoleLevelID);
                     objProfile.SetPropertyValue("DisplayName", model.DisplayName);
                     objProfile.Save();
                     return RedirectToAction("Index");
@@ -165,45 +161,42 @@ namespace MvcGlobalAuthorize.Controllers
             return View(model);
         }
 
-        [AllowAnonymous]
-        public ActionResult Create()
-        {
 
-            return View();
+        public ActionResult SetRoleLevel(string name)
+        {
+            var um = new UserInfoModel();
+
+            ProfileBase objProfile = ProfileBase.Create(name);
+            object data = null;
+            int roleid;
+            data = objProfile.GetPropertyValue("RoleLevelID");
+            Int32.TryParse(data.ToString(), out roleid);
+            um.RoleLevelID = roleid;
+            um.UserName = name;
+            return View(um);
         }
 
         [HttpPost]
-        [AllowAnonymous]
-        public ActionResult Create(UserInfoModel model)
+        public ActionResult SetRoleLevel(UserInfoModel model)
         {
-            if (Employee.IsEqualToCurrentUserName(model.UserName))
+            if (Employee.IsEqualToCurrentUserName(model.UserName) || model.RoleLevelID>0)
             {
+                ModelState.Remove("Password");
+                ModelState.Remove("UserName");
                 if (ModelState.IsValid)
                 {
-                    // Attempt to register the user
-                    MembershipCreateStatus createStatus;
-                    var user = Membership.CreateUser(model.UserName, model.Password, model.Email, null, null, true, null, out createStatus);
+                    MembershipUser user = Membership.GetUser(model.UserName);
 
-                    if (createStatus == MembershipCreateStatus.Success)
-                    {
-                        ProfileBase objProfile = ProfileBase.Create(user.UserName);
+                    user.Email = model.Email;
+                    Membership.UpdateUser(user);
 
-                        objProfile.SetPropertyValue("Contact", model.Contact);
-                        objProfile.SetPropertyValue("Mobile", model.Mobile);
-                        objProfile.SetPropertyValue("Gender", model.Gender);
-                        objProfile.SetPropertyValue("Birth", model.BirthDay);
-                        objProfile.SetPropertyValue("RoleLevelID", model.RoleLevelID);
-
-                        return RedirectToAction("Index", "Home");
-                    }
-                    else
-                    {
-                        ModelState.AddModelError("", ErrorCodeToString(createStatus));
-                    }
+                    ProfileBase objProfile = ProfileBase.Create(model.UserName);
+                    objProfile.SetPropertyValue("RoleLevelID", model.RoleLevelID);
+                    objProfile.Save();
+                    return RedirectToAction("Index");
                 }
             }
 
-            // If we got this far, something failed, redisplay form
             return View(model);
         }
 
@@ -270,12 +263,12 @@ namespace MvcGlobalAuthorize.Controllers
         public ActionResult Index()
         {
             var level = (int)Employee.GetProfile("RoleLevelID");
-            List<MembershipUser> users=null;
-        if(level >=500)
-             users = Membership.GetAllUsers().Cast<MembershipUser>().ToList<MembershipUser>();
-        else
-            users = Membership.GetAllUsers().Cast<MembershipUser>().ToList<MembershipUser>().FindAll(i => Employee.IsEqualToCurrentUserName(i.UserName));
-        return View(users);
+            List<MembershipUser> users = null;
+            if (level >= 500)
+                users = Membership.GetAllUsers().Cast<MembershipUser>().ToList<MembershipUser>();
+            else
+                users = Membership.GetAllUsers().Cast<MembershipUser>().ToList<MembershipUser>().FindAll(i => Employee.IsEqualToCurrentUserName(i.UserName));
+            return View(users);
         }
 
         #region Status Codes
