@@ -7,6 +7,20 @@ using System.Web.Mvc;
 using System.Web.Security;
 
 namespace Entity {
+    public class LogOnModel
+    {
+        [Required]
+        [Display(Name = "用户名称")]
+        public string UserName { get; set; }
+
+        [Required]
+        [DataType(DataType.Password)]
+        [Display(Name = "用户密码")]
+        public string Password { get; set; }
+
+        [Display(Name = "记录密码?")]
+        public bool RememberMe { get; set; }
+    }
 
     public class ChangePasswordModel {
         [Required]
@@ -26,7 +40,7 @@ namespace Entity {
         public string ConfirmPassword { get; set; }
     }
 
-    public class RegisterModel {
+    public class UserInfoModel {
         [Required]
         [Display(Name = "用户名")]
         public string UserName { get; set; }
@@ -35,10 +49,8 @@ namespace Entity {
         [Display(Name = "邮件地址")]
         public string Email { get; set; }
 
-        //[Required]
-        //[DataType(DataType.PhoneNumber)]
-        //[Display(Name = "个人电话")]
-        //public string Tel { get; set; }
+        [Display(Name = "全名")]
+        public string DisplayName { get; set; }
 
         [Required]
         [StringLength(100, ErrorMessage = "密码长度最少为{0}.", MinimumLength = 6)]
@@ -50,5 +62,25 @@ namespace Entity {
         [Display(Name = "密码确认")]
         [Compare("Password", ErrorMessage = "密码确认和新设密码不匹配.")]
         public string ConfirmPassword { get; set; }
+
+        [Display(Name = "联系电话")]
+        [DataType(DataType.PhoneNumber)]
+        public string Contact { get; set; }
+
+        [DataType(DataType.PhoneNumber)]
+        [Display(Name = "移动电话")]
+        public string Mobile { get; set; }
+
+        [Display(Name = "生日")]
+        public DateTime BirthDay { get; set; }
+
+        [Display(Name = "工作职级"),Required]
+        public int RoleLevelID { get; set; }
+        public virtual RoleLevel RoleLevel { get; set; }
+
+        [Display(Name = "员工性别")]
+        public string Gender { get; set; }
+
+
     }
 }

@@ -5,6 +5,7 @@ using System.Web;
 using Entity;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
+using System.Data.Entity.Infrastructure;
 
 namespace Utl
 {
@@ -22,12 +23,15 @@ namespace Utl
         public DB()
         {
             Database.SetInitializer<DB>(new DBInitializer());
+            //Database.SetInitializer(new DropCreateDatabaseIfModelChanges<DB>()); 
             this.Configuration.ValidateOnSaveEnabled = false;
         }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
+            
+
         }
     }
 

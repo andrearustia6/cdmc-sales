@@ -10,6 +10,8 @@ using System.Web;
 using Entity;
 using Telerik.Web.Mvc;
 using Attributes;
+using System.Web.Security;
+using System.Web.Profile;
 
 namespace Utl
 {
@@ -30,6 +32,54 @@ namespace Utl
     //        IgnoreProperties.AddRange(properties);
     //    }
     //}
+
+    public class Employee
+    {
+        public static object GetProfile(string propertyName)
+        { 
+            var user =HttpContext.Current.User.Identity.Name;
+            ProfileBase objProfile = ProfileBase.Create(user);
+
+             return objProfile.GetPropertyValue(propertyName);  
+        }
+
+        public static bool IsEqualToCurrentUserName(string name)
+        {
+            var user = HttpContext.Current.User.Identity.Name;
+
+
+            return user.ToLower() == user?true:false;
+        }
+        //public static User GetUser(string nameoremail)
+        //{
+        //    var data = Membership.GetUser(nameoremail);
+        //    if (data == null)
+        //    {
+        //        string name = Membership.GetUserNameByEmail(nameoremail);
+        //        if (!string.IsNullOrEmpty(name))
+        //            data = Membership.GetUser(name);
+        //    }
+
+        //    if (data == null)
+        //        throw new Exception("输入的名字");
+        //    else
+        //    {
+        //        var user = new User() { UserName = data.UserName, Email = data.Email, Contact = GetContact(data.UserName) };
+        //        return user;
+        //    }
+        //}
+
+        /// <summary>
+        /// 通过Outlook取得
+        /// </summary>
+        /// <param name="Name"></param>
+        /// <returns></returns>
+        public static string GetContact(string Name)
+        {
+            return "";
+        }
+    }
+
 
     public class DataToJson<T> : JavaScriptConverter where T : class
     {
