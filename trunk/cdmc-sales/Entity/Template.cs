@@ -30,9 +30,9 @@ namespace Entity
         [Display(Name = "致电客户"), Required]
         public int? LeadID { get; set; }
 
-        public virtual Project Project { get; set; }
-        [Display(Name = "所属项目"), Required]
-        public int? ProjectID { get; set; }
+     
+        //[Display(Name = "所属项目"), Required]
+        //public int? ProjectID { get; set; }
 
         public virtual LeadSheetType CallResultType { get; set; }
         public int? LeadSheetType { get; set; }

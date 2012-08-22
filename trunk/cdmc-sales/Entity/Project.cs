@@ -133,7 +133,7 @@ namespace Entity
     public class Member:EntityBase
     {
         [Display(Name = "成员"), Required]
-        public LogOnModel LogOnModel { get; set; }
+        public string MemberName { get; set; }
 
         public RoleLevel RoleLevel { get; set; }
         [Display(Name = "角色职级"), Required]

@@ -1,0 +1,75 @@
+﻿@{
+    ViewBag.Title = "UpdateProfile";
+}
+@model Entity.UserInfoModel
+@using Utl
+@using (Html.BeginForm())
+{
+    <fieldset>
+        <legend>账号信息</legend>
+        <div class="editor-label">
+            @Html.LabelFor(m => m.UserName)
+        </div>
+        <div class="editor-field">
+            @Html.DisplayFor(m => m.UserName)
+            @Html.HiddenFor(m => m.UserName)
+        </div>
+         <div class="editor-label">
+            @Html.LabelFor(m => m.RoleLevelID)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownListFor(m => m.RoleLevelID, new SelectList(CH.GetAllData<Entity.RoleLevel>(), "ID", "Name"), "-请选择-")
+            @Html.ValidationMessageFor(m => m.RoleLevelID)
+        </div>
+        <div class="editor-label">
+            @Html.LabelFor(m => m.Email)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(m => m.Email)
+            @Html.ValidationMessageFor(m => m.Email)
+        </div>
+        <div class="editor-label">
+            @Html.LabelFor(m => m.DisplayName)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(m => m.DisplayName)
+            @Html.ValidationMessageFor(m => m.DisplayName)
+        </div>
+        <div class="editor-label">
+            @Html.LabelFor(m => m.Contact)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(m => m.Contact)
+            @Html.ValidationMessageFor(m => m.Contact)
+        </div>
+        <div class="editor-label">
+            @Html.LabelFor(m => m.Mobile)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(m => m.Mobile)
+            @Html.ValidationMessageFor(m => m.Mobile)
+        </div>
+        <div class="editor-label">
+            @Html.LabelFor(m => m.BirthDay)
+        </div>
+        <div class="editor-field">
+            @Html.Telerik().DatePickerFor(m => m.BirthDay)
+            @Html.ValidationMessageFor(m => m.BirthDay)
+        </div>
+       
+        <div class="editor-label">
+            @Html.LabelFor(m => m.Gender)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownListFor(m => m.Gender, new SelectList(new List<string>() { "男", "女" }), "-请选择-")
+            @Html.ValidationMessageFor(m => m.Gender)
+        </div>
+    </fieldset>
+    
+      <div>
+        <center>
+            <input type="submit" value=@SR.Save />
+            @Html.ActionLink(SR.GobackToList, "Index")
+        </center>
+    </div>
+}

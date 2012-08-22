@@ -4,6 +4,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using System.Data.Entity;
+using Utl;
 
 namespace Sales
 {
@@ -36,6 +38,7 @@ namespace Sales
 
             RegisterGlobalFilters(GlobalFilters.Filters);
             RegisterRoutes(RouteTable.Routes);
+            //Database.SetInitializer<DB>(new DBInitializer());
         }
     }
 }
