@@ -17,18 +17,18 @@
                 </center>
 			</div>
 
-			@(Html.Telerik().Menu()
-                    .Name("menu")
-                    .Items(menu =>
-                    {
-                        menu.Add().Text("登录").Action("Index", "Login");
-                        menu.Add().Text("About").Action("About", "Home");
-                    }))
+			
 		</header>
         <section >
+          @Html.ActionLink("[关于]", "Index", "About", null, new { style = "float:right;margin-top:-20px;margin-right:50px;color: #FFFFFF;text-decoration: none;z-index:1000;" })
+          @Html.ActionLink("[退出]", "LogOff", "Account", null, new { style = "float:right;margin-top:-20px;color: #FFFFFF;text-decoration: none;z-index:1000;" })
         <div style="float:left; width:13%">
-         @(Html.Telerik().Menu().Orientation(MenuOrientation.Vertical)
-                    .Name("f2")
+        <ul  id="menu">
+        <li><a href=@Url.Action("index", "Category")>行业类型</a></li>
+        <li><a href=@Url.Action("index", "CurrencyType")>货币类型</a></li>
+        </ul>
+       @*  @(Html.Telerik().Menu().Orientation(MenuOrientation.Vertical)
+                            .Name("menu")
                     .Items(menu =>
                     {
                         menu.Add().Text("行业类型").Action("index", "Category");
@@ -40,41 +40,8 @@
                         menu.Add().Text("Package服务类型").Action("index", "PackageServiceType");
                         menu.Add().Text("Package类型").Action("index", "PackageType");
                         menu.Add().Text("Package类型").Action("index", "PackageType");
-                    }))
-
-
-
-                    @(Html.Telerik().Menu().Orientation(MenuOrientation.Vertical)
-                    .Name("f1")
-                    .Items(menu =>
-                    {
-                       
-                    }))
-                    
-                     @(Html.Telerik().Menu().Orientation(MenuOrientation.Vertical)
-                    .Name("f3")
-                    .Items(menu =>
-                    {
-                       
-                    }))
-                    @(Html.Telerik().Menu().Orientation(MenuOrientation.Vertical)
-                    .Name("f4")
-                    .Items(menu =>
-                    {
-                        menu.Add().Text("公司维护").Action("index", "Company");
-                    }))
-                    @(Html.Telerik().Menu().Orientation(MenuOrientation.Vertical)
-                    .Name("f5")
-                    .Items(menu =>
-                    {
-                        menu.Add().Text("客户维护").Action("index", "Client");
-                    }))
-                     @(Html.Telerik().Menu().Orientation(MenuOrientation.Vertical)
-                    .Name("f6")
-                    .Items(menu =>
-                    {
-                        menu.Add().Text("调研维护").Action("index", "Research");
-                    }))
+                    }))*@
+                   
                    
         </div>
         <section id="main" style="float:left;width:87%">@RenderBody()</section>

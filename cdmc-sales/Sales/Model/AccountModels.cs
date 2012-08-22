@@ -76,7 +76,7 @@ namespace Entity {
 
         [Display(Name = "工作职级"),Required]
         public int RoleLevelID { get; set; }
-        public virtual RoleLevel RoleLevel { get; set; }
+        public virtual Role RoleLevel { get; set; }
 
         [Display(Name = "员工性别")]
         public string Gender { get; set; }

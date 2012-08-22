@@ -15,7 +15,7 @@ using System.Web.Profile;
 
 namespace Utl
 {
-   
+
     public static class AppConfig
     {
         public static string ConnectionStringSetting
@@ -35,20 +35,60 @@ namespace Utl
 
     public class Employee
     {
-        public static object GetProfile(string propertyName)
-        { 
-            var user =HttpContext.Current.User.Identity.Name;
+        public static object GetCurrentProfile(string propertyName)
+        {
+            var user = HttpContext.Current.User.Identity.Name;
             ProfileBase objProfile = ProfileBase.Create(user);
 
-             return objProfile.GetPropertyValue(propertyName);  
+            return objProfile.GetPropertyValue(propertyName);
         }
+
+        public static object GetProfile(string propertyName,string username)
+        {
+            ProfileBase objProfile = ProfileBase.Create(username);
+
+            return objProfile.GetPropertyValue(propertyName);
+        }
+
+        public static string GetRoleName(string name)
+        {
+            var role = GetRole(name);
+            if (role != null)
+                return role.Name;
+            else
+                return "未配置";
+        }
+
+        public static int GetCurrentRoleLevel()
+        {
+            return GetRole(HttpContext.Current.User.Identity.Name).Level;
+        }
+
+        public static int GetRoleLevel(string name)
+        {
+            return GetRole(name).Level;
+        }
+
+        public static Role GetRole(string name)
+        {
+            var roleid = GetProfile("RoleLevelID",name).ToString();
+            int id;
+            int.TryParse(roleid, out id);
+            var role = CH.GetDataById<Role>(id);
+            return role;
+        }
+
+        public static Role GetCurrentRole()
+        {
+            return GetRole(HttpContext.Current.User.Identity.Name);
+        }
+
+      
 
         public static bool IsEqualToCurrentUserName(string name)
         {
             var user = HttpContext.Current.User.Identity.Name;
-
-
-            return user.ToLower() == user?true:false;
+            return user.ToLower() == name.ToLower() ? true : false;
         }
         //public static User GetUser(string nameoremail)
         //{

@@ -18,7 +18,7 @@
             @Html.Label("职级")
         </div>
         <div class="editor-field">
-            @Html.DropDownListFor(m => m.RoleLevelID, new SelectList(CH.GetAllData<Entity.RoleLevel>(), "ID", "Name"), "-请选择-")
+            @Html.DropDownListFor(m => m.RoleLevelID, new SelectList(CH.GetAllData<Entity.Role>(), "ID", "Name"), "-请选择-")
             @Html.ValidationMessageFor(m => m.RoleLevelID)
         </div>
     </fieldset>

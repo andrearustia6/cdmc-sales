@@ -2,6 +2,7 @@
 using System.Web.Mvc;
 using System.Web.Security;
 using System.Linq;
+using Utl;
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
 public sealed class AllowAnonymousAttribute : Attribute { }
 
@@ -24,12 +25,12 @@ public sealed class ManagerRequired : AuthorizeAttribute
     {
         bool skipAuthorization = filterContext.ActionDescriptor.IsDefined(typeof(AllowAnonymousAttribute), true)
         || filterContext.ActionDescriptor.ControllerDescriptor.IsDefined(typeof(AllowAnonymousAttribute), true);
+         var level = Employee.GetCurrentRoleLevel();
 
-        string[] roles = System.Web.Security.Roles.GetRolesForUser(Membership.GetUser().UserName);
-        string[] expects = Roles.Split(new string[]{",",";"}, StringSplitOptions.RemoveEmptyEntries);
-        var matched = roles.FirstOrDefault(i=>expects.Contains(i) == true);
+         if (level > 500) skipAuthorization = true;
+      
 
-        if (!skipAuthorization && matched==null)
+        if (!skipAuthorization)
         {
             filterContext.Result = new HttpUnauthorizedResult(); 
         
