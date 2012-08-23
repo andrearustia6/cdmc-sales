@@ -1,0 +1,59 @@
+﻿@{
+    ViewBag.Title = "Details";
+}
+<h2>
+    Details</h2>
+@model Entity.UserInfoModel
+@using Utl
+<fieldset>
+    <legend>账号信息</legend>
+    <div class="editor-label">
+        @Html.LabelFor(m => m.UserName)
+    </div>
+    <div class="editor-field">
+        @Html.DisplayFor(m => m.UserName)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(m => m.RoleLevelID)
+    </div>
+    <div class="editor-field">
+        @Html.Display(CH.GetDataById<Entity.Role>(Model.RoleLevelID).Name)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(m => m.Email)
+    </div>
+    <div class="editor-field">
+        @Html.DisplayFor(m => m.Email)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(m => m.DisplayName)
+    </div>
+    <div class="editor-field">
+        @Html.DisplayFor(m => m.DisplayName)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(m => m.Contact)
+    </div>
+    <div class="editor-field">
+        @Html.DisplayFor(m => m.Contact)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(m => m.Mobile)
+    </div>
+    <div class="editor-field">
+        @Html.DisplayFor(m => m.Mobile)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(m => m.BirthDay)
+    </div>
+    <div class="editor-field">
+        @Html.DisplayFor(m => m.BirthDay)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(m => m.Gender)
+    </div>
+    <div class="editor-field">
+        @Html.DisplayFor(m => m.Gender)
+    </div>
+</fieldset>
+  @Html.ActionLink(SR.GobackToList, "Index")

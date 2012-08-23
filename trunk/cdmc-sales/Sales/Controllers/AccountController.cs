@@ -71,6 +71,34 @@ namespace MvcGlobalAuthorize.Controllers
             return View();
         }
 
+        public ActionResult Details(string name)
+        {
+            if (Employee.IsEqualToCurrentUserName(name))
+                return RedirectToAction("UpdateProfile", "account", new { name = name });
+
+            var membershipuser = Membership.GetUser(name);
+
+            var um = new UserInfoModel();
+            um.UserName = membershipuser.UserName;
+            um.Email = membershipuser.Email;
+
+            ProfileBase objProfile = ProfileBase.Create(membershipuser.UserName);
+            DateTime b;
+            object data = null;
+            data = objProfile.GetPropertyValue("BirthDay");
+            DateTime.TryParse(data.ToString(), out b);
+            um.BirthDay = b;
+            um.Contact = objProfile.GetPropertyValue("Contact") as string;
+            um.Mobile = objProfile.GetPropertyValue("Mobile") as string;
+            um.Gender = objProfile.GetPropertyValue("Gender") as string;
+            um.DisplayName = objProfile.GetPropertyValue("DisplayName") as string;
+            int roleid;
+            data = objProfile.GetPropertyValue("RoleLevelID");
+            Int32.TryParse(data.ToString(), out roleid);
+            um.RoleLevelID = roleid;
+            return View(um);
+        }
+
         //
         // POST: /Account/Register
 
