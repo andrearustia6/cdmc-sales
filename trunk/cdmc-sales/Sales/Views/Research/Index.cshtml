@@ -1,6 +1,6 @@
 ﻿@using Entity
-
-@(Html.Telerik().Grid<Research>().ClientEvents(e => e.OnError("bindingError")).Name("Research").DataBinding(databinding => databinding.Ajax().Select("AjaxResearchIndex", "Research"))
+@model List<Research>
+@(Html.Telerik().Grid<Research>(Model).Name("Research")
                 .DataKeys(keys =>
                 {
                     keys.Add(s => s.ID);

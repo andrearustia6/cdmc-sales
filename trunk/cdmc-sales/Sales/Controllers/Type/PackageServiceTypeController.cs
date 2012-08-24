@@ -9,7 +9,7 @@ using Entity;
 using Sales;
 using Utl;
 
-namespace Sales.Controllers.Type
+namespace Sales.Controllers
 {
     public class PackageServiceTypeController : Controller
     {

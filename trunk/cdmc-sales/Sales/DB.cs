@@ -35,5 +35,7 @@ namespace Sales
         public DbSet<LeadSheetType> LeadSheetType { get; set; }
 
         public DbSet<TemplateType> TemplateType { get; set; }
+
+        public DbSet<Template> Templates { get; set; }
     }
 }
