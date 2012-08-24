@@ -1,0 +1,57 @@
+﻿@model Entity.Template
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>Template</legend>
+
+    <div class="display-label">Name</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Name)
+    </div>
+
+    <div class="display-label">SubName</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.SubName)
+    </div>
+
+    <div class="display-label">Content</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Content)
+    </div>
+
+    <div class="display-label">Language</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Language)
+    </div>
+
+    <div class="display-label">TemplateType</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.TemplateType.Name)
+    </div>
+
+    <div class="display-label">Description</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Description)
+    </div>
+
+    <div class="display-label">Sequence</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Sequence)
+    </div>
+
+    <div class="display-label">User</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.User)
+    </div>
+
+    <div class="display-label">ModifiedTime</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.ModifiedTime)
+    </div>
+</fieldset>
+

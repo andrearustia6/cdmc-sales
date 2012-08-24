@@ -1,63 +1,21 @@
-﻿@model IEnumerable<Entity.TemplateType>
-
-@{
-    ViewBag.Title = "Index";
-}
-
-<h2>Index</h2>
-
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table>
-    <tr>
-        <th>
-            Name
-        </th>
-        <th>
-            Code
-        </th>
-        <th>
-            Description
-        </th>
-        <th>
-            Sequence
-        </th>
-        <th>
-            User
-        </th>
-        <th>
-            ModifiedTime
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Code)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Description)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Sequence)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.User)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ModifiedTime)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
-        </td>
-    </tr>
-}
-
-</table>
+﻿@using Entity
+@model List<TemplateType>
+@(Html.Telerik().Grid<TemplateType>(Model).Name("TemplateType")
+                .DataKeys(keys =>
+                {
+                    keys.Add(s => s.ID);
+                })
+                .Columns(c =>
+                {
+                    c.Bound(item => item.Name).Width(200);
+                    c.Bound(item => item.Code).Width(100);
+                    c.Bound(item => item.Description).Width(300);
+                    c.Bound(item => item.ID).Width(200).Title("操作").ClientTemplate("<a href='/TemplateType/edit/" + "<#= ID #>'>编辑</a> | <a href='/TemplateType/details/" + "<#= ID #>'>详细</a> | <a href='/TemplateType/delete/" + "<#= ID #>'>删除</a>"); 
+                 })
+                .Resizable(resizing => resizing.Columns(true))
+                .Filterable().Sortable().Groupable()
+                .Pageable(p => p.PageSize(20))
+                .Scrollable(scrolling => scrolling.Height(350))
+              
+)
+@Html.ActionLink("创建", "Create")

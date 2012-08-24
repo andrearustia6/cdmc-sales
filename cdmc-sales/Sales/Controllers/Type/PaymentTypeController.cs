@@ -8,7 +8,7 @@ using System.Web.Mvc;
 using Entity;
 using Sales;
 
-namespace Sales.Controllers.Type
+namespace Sales.Controllers
 { 
     public class PaymentTypeController : Controller
     {
