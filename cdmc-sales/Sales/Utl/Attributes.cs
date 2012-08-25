@@ -43,9 +43,9 @@ public class RoleRequired : AuthorizeAttribute
 /// <summary>
 /// 1000
 /// </summary>
-public sealed class SupervisorRequired : RoleRequired
+public sealed class DirectorRequired : RoleRequired
 {
-    public static const int LVL = 1000;
+    public  const int LVL = 1000;
     public override int Level
     {
         get { return LVL; }
@@ -57,7 +57,7 @@ public sealed class SupervisorRequired : RoleRequired
 /// </summary>
 public sealed class ManagerRequired : RoleRequired
 {
-    public static const int LVL = 500;
+    public  const int LVL = 500;
     public override int Level
     {
         get { return LVL; }
@@ -69,7 +69,7 @@ public sealed class ManagerRequired : RoleRequired
 /// </summary>
 public sealed class SalesRequired : RoleRequired
 {
-    public static const int LVL = 10;
+    public  const int LVL = 10;
     public override int Level
     {
         get { return LVL; }
@@ -81,7 +81,7 @@ public sealed class SalesRequired : RoleRequired
 /// </summary>
 public sealed class MarketInterfaceRequired : RoleRequired
 {
-    public static const int LVL = 1;
+    public  const int LVL = 1;
     public override int Level
     {
         get { return LVL; }
@@ -93,7 +93,7 @@ public sealed class MarketInterfaceRequired : RoleRequired
 /// </summary>
 public sealed class ProductInterfaceRequired : RoleRequired
 {
-    public static const int LVL = 5;
+    public  const int LVL = 5;
     public override int Level
     {
         get { return LVL; }

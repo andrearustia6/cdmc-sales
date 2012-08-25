@@ -10,9 +10,13 @@
                 {
                     c.Bound(item => item.Name_EN).Width(150);
                     c.Bound(item => item.Name_CH).Width(150);
+                    c.Bound(item => item.DistrictNumber).Width(100);
                     c.Bound(item => item.Contact).Width(100);
-                    c.Bound(item => item.Category.Name).Width(100);
+                    c.Bound(item => item.Available).Width(100);
+                    c.Bound(item => item.Category.Name_CH).Title("行业").Width(100);
                     c.Bound(item => item.CompanyType.Name).Width(100);
+                    c.Bound(item => item.Cerator).Width(100);
+                    c.Bound(item => item.From).Width(100);
                     c.Bound(item => item.ID).Title("操作").Template(@<span>
                     <a href=@Url.Content("~/Company/Edit/" + item.ID) >编辑</a> | <a href=@Url.Content("~/Company/Details/" + item.ID)>详细</a>  | <a href=@Url.Content("~/Lead/Create/?CompanyId=" + item.ID)>添加客户</a>| <a href=@Url.Content("~/Company/delete/" + item.ID) >删除</a> 
                    </span>);

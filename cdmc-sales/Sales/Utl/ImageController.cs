@@ -11,9 +11,10 @@ namespace Utl
     {
         public static Image UploadImg(HttpRequestBase request, Image img = null)
         {
-            if (img == null) img = new Image();
-
             var file = request.Files["attachments"];
+            if (file == null) return null;
+ 
+            if (img == null) img = new Image();
             if (!string.IsNullOrWhiteSpace(file.FileName))
             {
                 byte[] buf = new byte[file.ContentLength];

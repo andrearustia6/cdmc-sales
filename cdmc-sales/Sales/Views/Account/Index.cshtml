@@ -14,18 +14,19 @@
                 .Columns(c =>
                 {
                     c.Bound(item => item.UserName).Width(200);
-                    c.Bound(item => item.Email).Width(300);
+                    c.Bound(item => item.Email).Width(200);
+                    c.Bound(item => item.IsOnline).Width(100);
+                    c.Bound(item => item.UserName).Template(@<span>
+                        @Employee.GetProfile("Department",item.UserName)
+                    </span>).Width(100).Title("Department");
                     c.Bound(item => item.IsOnline).Width(100);
                     c.Bound(item => item.UserName).Title("职级").Width(200).Template(@<span>
                      @Employee.GetRoleName(item.UserName)
-                        
-                    
-                       
                     </span>);
                    // c.Bound(item => ).Width(100);
                     c.Bound(item => item.UserName).Title("操作").Template(@<span> 
                     <a href=@Url.Content("~/Account/Details/?name=" + item.UserName) >个人信息</a> 
-                     @if (Employee.AsSupervisor())
+                     @if (Employee.AsDirector())
                      {
                       <span> | </span><a href=@Url.Content("~/Account/SetRoleLevel/?name=" + item.UserName)>设置职级</a>
                      }

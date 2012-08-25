@@ -2,9 +2,13 @@
 @model Entity.Category
 <fieldset>
     <legend>@SR.Form</legend>
-    <div class="display-label">行业类型</div>
+    <div class="display-label">行业类型中文名</div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.Name)
+        @Html.DisplayFor(model => model.Name_CH)
+    </div>
+    <div class="display-label">行业类型英文名</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Name_EN)
     </div>
 </fieldset>
 

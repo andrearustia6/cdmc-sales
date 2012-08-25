@@ -81,6 +81,9 @@ namespace Entity {
         [Display(Name = "员工性别")]
         public string Gender { get; set; }
 
+        [Display(Name = "部门")]
+        public string Department { get; set; }
+
 
     }
 }

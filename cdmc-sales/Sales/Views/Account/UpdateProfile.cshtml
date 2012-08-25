@@ -70,6 +70,13 @@
             @Html.DropDownListFor(m => m.Gender, new SelectList(new List<string>() { "男", "女" }), "-请选择-")
             @Html.ValidationMessageFor(m => m.Gender)
         </div>
+        <div class="editor-label">
+            @Html.LabelFor(m => m.Department)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownListFor(m => m.Department, new SelectList(new List<string>() { "销售部", "会务部","市场部","产品部" }), "-请选择-")
+            @Html.ValidationMessageFor(m => m.Department)
+        </div>
     </fieldset>
     
       <div>

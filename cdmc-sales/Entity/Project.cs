@@ -60,8 +60,8 @@ namespace Entity
         public decimal Target { get; set; }
 
         //[Display(Name = "板块负责人"), Required]
-        //public Member Supervisor { get; set; }
-        //public int? SupervisorID { get; set; }
+        //public Member Director { get; set; }
+        //public int? DirectorID { get; set; }
 
         public List<Member> Members { get; set; }
 
