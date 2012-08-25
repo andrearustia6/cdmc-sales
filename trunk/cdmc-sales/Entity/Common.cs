@@ -11,8 +11,11 @@ namespace Entity
     /// </summary>
     public class Category : EntityBase
     {
-        [Display(Name = "行业名称"), Required]
-        public string Name { get; set; }
+        [Display(Name = "中文名称"), Required]
+        public string Name_CH { get; set; }
+
+        [Display(Name = "英文名称"), Required]
+        public string Name_EN { get; set; }
     }
 
     /// <summary>

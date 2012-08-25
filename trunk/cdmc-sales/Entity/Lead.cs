@@ -54,11 +54,12 @@ namespace Entity
         [Display(Name = "内资比率")]
         public double DomesticAssetPercentage { get { return 100 - ForeignAssetPercentage; } }
 
-        public virtual Member Cerator { get; set; }
-        public int CeratorID  { get; set; }
+        [Display(Name = "上传员工")]
+        public string  Cerator { get; set; }
+
 
         [Display(Name = "来源部门")]
-        public int From { get; set; }
+        public string From { get; set; }
              
     
     }
@@ -134,7 +135,10 @@ namespace Entity
     /// </summary>
     public class Title : EntityBase
     {
-        [Display(Name = "职位类型"), Required]
-        public string Name { get; set; }
+        [Display(Name = "中文名称"), Required]
+        public string Name_CH { get; set; }
+
+        [Display(Name = "英文名称"), Required]
+        public string Name_EN { get; set; }
     }
 }

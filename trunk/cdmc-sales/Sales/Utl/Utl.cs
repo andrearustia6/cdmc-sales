@@ -64,9 +64,9 @@ namespace Utl
             return GetRole(HttpContext.Current.User.Identity.Name).Level;
         }
 
-        public static bool AsSupervisor()
+        public static bool AsDirector()
         {
-            return GetCurrentRoleLevel() >= SupervisorRequired.LVL;
+            return GetCurrentRoleLevel() >= DirectorRequired.LVL;
         }
 
         public static bool AsManager()

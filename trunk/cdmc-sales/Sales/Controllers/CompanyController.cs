@@ -34,6 +34,8 @@ namespace Sales.Controllers
             if (ModelState.IsValid)
             {
                 ImageController.UploadImg(Request, item.Image);
+                item.Cerator = User.Identity.Name;
+                item.From = Employee.GetCurrentProfile("Department").ToString();
                 CH.Create<Company>(item);
                 return RedirectToAction("Index");
             }

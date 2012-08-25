@@ -12,6 +12,14 @@
             @Html.EditorFor(model => model.Name)
             @Html.ValidationMessageFor(model => model.Name)
         </div>
+
+         <div class="editor-label">
+            @Html.LabelFor(model => model.Language)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownListFor(model => model.Language, new SelectList(new List<string>() { "CH","EN"}))
+            @Html.ValidationMessageFor(model => model.Language)
+        </div>
          
 </fieldset>
 

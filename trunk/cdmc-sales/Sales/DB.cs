@@ -37,5 +37,7 @@ namespace Sales
         public DbSet<TemplateType> TemplateType { get; set; }
 
         public DbSet<Template> Templates { get; set; }
+
+        public DbSet<Department> Department { get; set; }
     }
 }

@@ -151,6 +151,7 @@ namespace MvcGlobalAuthorize.Controllers
                 um.Mobile = objProfile.GetPropertyValue("Mobile") as string;
                 um.Gender = objProfile.GetPropertyValue("Gender") as string;
                 um.DisplayName = objProfile.GetPropertyValue("DisplayName") as string;
+                um.Department = objProfile.GetPropertyValue("Department") as string;
                 int roleid;
                 data = objProfile.GetPropertyValue("RoleLevelID");
                 Int32.TryParse(data.ToString(), out roleid);
@@ -176,7 +177,6 @@ namespace MvcGlobalAuthorize.Controllers
                     user.Email = model.Email;
                     Membership.UpdateUser(user);
 
-
                     ProfileBase objProfile = ProfileBase.Create(model.UserName);
 
                     objProfile.SetPropertyValue("Contact", model.Contact);
@@ -184,6 +184,7 @@ namespace MvcGlobalAuthorize.Controllers
                     objProfile.SetPropertyValue("Gender", model.Gender);
                     objProfile.SetPropertyValue("BirthDay", model.BirthDay);
                     objProfile.SetPropertyValue("DisplayName", model.DisplayName);
+                    objProfile.SetPropertyValue("Department", model.Department);
                     objProfile.Save();
                     return RedirectToAction("Index");
                 }
@@ -193,7 +194,7 @@ namespace MvcGlobalAuthorize.Controllers
             return View(model);
         }
 
-        [SupervisorRequired]
+        [DirectorRequired]
         public ActionResult SetRoleLevel(string name)
         {
             var um = new UserInfoModel();
@@ -209,7 +210,7 @@ namespace MvcGlobalAuthorize.Controllers
         }
 
         [HttpPost]
-        [SupervisorRequired]
+        [DirectorRequired]
         public ActionResult SetRoleLevel(UserInfoModel model)
         {
             if (Employee.IsEqualToCurrentUserName(model.UserName) || model.RoleID>0)

@@ -6,7 +6,8 @@
                 })
                 .Columns(c =>
                 {
-                    c.Bound(item => item.Name).Width(200);
+                    c.Bound(item => item.Name_CH).Width(200);
+                    c.Bound(item => item.Name_EN).Width(200);
                     c.Bound(item => item.Description).Width(300);
                     c.Bound(item => item.ID).Title("操作").Template(@<span> <a href=@Url.Content("~/Title/Edit/" + item.ID) >
                         编辑</a> | <a href=@Url.Content("~/Title/Details/" + item.ID)>详细</a> | <a href=@Url.Content("~/Title/delete/" + item.ID) >
