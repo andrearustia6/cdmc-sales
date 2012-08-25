@@ -75,8 +75,8 @@ namespace Entity {
         public DateTime BirthDay { get; set; }
 
         [Display(Name = "工作职级"),Required]
-        public int RoleLevelID { get; set; }
-        public virtual Role RoleLevel { get; set; }
+        public int RoleID { get; set; }
+        public virtual Role Role { get; set; }
 
         [Display(Name = "员工性别")]
         public string Gender { get; set; }
