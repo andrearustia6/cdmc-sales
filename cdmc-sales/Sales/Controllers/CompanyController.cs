@@ -15,6 +15,7 @@ namespace Sales.Controllers
     {
         public ViewResult Index()
         {
+           Employee.
             return View(CH.GetAllData<Company>("Leads"));
         }
 
@@ -41,9 +42,22 @@ namespace Sales.Controllers
             }
             return View(item);
         }
+
+
         public ActionResult Edit(int id)
         {
+             var c = CH.GetDataById<Company>(id);
+
+            if(Employee.AsManager())
             return View(CH.GetDataById<Company>(id));
+            else if(Employee.IsEqualToCurrentUserName(c.Cerator))
+            {
+               
+                    return View(CH.GetDataById<Company>(id));
+             
+            }
+            else 
+              return RedirectToAction("Index");
         }
 
         [HttpPost]
@@ -51,8 +65,12 @@ namespace Sales.Controllers
         {
             if (ModelState.IsValid)
             {
-                ImageController.UploadImg(Request, item.Image);
-                CH.Edit<Company>(item);
+                if (Employee.AsManager()||Employee.IsEqualToCurrentUserName(item.Cerator))
+                {
+                    ImageController.UploadImg(Request, item.Image);
+                    CH.Edit<Company>(item);
+                }
+
                 return RedirectToAction("Index");
             }
             return View(item);

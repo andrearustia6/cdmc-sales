@@ -69,6 +69,11 @@ namespace Utl
             return GetCurrentRoleLevel() >= DirectorRequired.LVL;
         }
 
+        public static bool AsLeader()
+        {
+            return GetCurrentRoleLevel() >= LeaderRequired.LVL;
+        }
+
         public static bool AsManager()
         {
             return GetCurrentRoleLevel() >= ManagerRequired.LVL;

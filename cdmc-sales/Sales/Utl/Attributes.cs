@@ -65,6 +65,18 @@ public sealed class ManagerRequired : RoleRequired
 }
 
 /// <summary>
+/// 100
+/// </summary>
+public sealed class LeaderRequired : RoleRequired
+{
+    public const int LVL = 100;
+    public override int Level
+    {
+        get { return LVL; }
+    }
+}
+
+/// <summary>
 /// 10
 /// </summary>
 public sealed class SalesRequired : RoleRequired
