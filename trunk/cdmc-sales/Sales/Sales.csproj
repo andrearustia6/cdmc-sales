@@ -217,7 +217,6 @@
       <DependentUpon>UploadLocalization.zh-CN.resx</DependentUpon>
     </Compile>
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\TemplateTypeController.cs" />
     <Compile Include="Controllers\Type\CategoryController.cs" />
     <Compile Include="Controllers\Type\CurrencyTypeController.cs" />
     <Compile Include="Controllers\LeadController.cs" />

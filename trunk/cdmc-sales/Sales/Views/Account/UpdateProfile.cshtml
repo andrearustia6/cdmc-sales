@@ -15,10 +15,17 @@
             @Html.HiddenFor(m => m.UserName)
         </div>
          <div class="editor-label">
-            @Html.LabelFor(m => m.RoleLevelID)
+            @Html.LabelFor(m => m.RoleID)
         </div>
         <div class="editor-field">
-            @Html.Display(CH.GetDataById<Entity.Role>(Model.RoleLevelID).Name)
+            @if (Model.Role == null)
+            {
+        <p>未配置</p> 
+            }
+            else
+            {
+        @Html.Display(Model.Role.Name)
+            }
         </div>
         <div class="editor-label">
             @Html.LabelFor(m => m.Email)

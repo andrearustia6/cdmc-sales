@@ -23,7 +23,7 @@ namespace Utl
         public DB()
         {
             Database.SetInitializer<DB>(new DBInitializer());
-            //Database.SetInitializer(new DropCreateDatabaseIfModelChanges<DB>()); 
+            
             this.Configuration.ValidateOnSaveEnabled = false;
         }
 

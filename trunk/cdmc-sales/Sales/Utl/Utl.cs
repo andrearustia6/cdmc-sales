@@ -64,6 +64,31 @@ namespace Utl
             return GetRole(HttpContext.Current.User.Identity.Name).Level;
         }
 
+        public static bool AsSupervisor()
+        {
+            return GetCurrentRoleLevel() >= SupervisorRequired.LVL;
+        }
+
+        public static bool AsManager()
+        {
+            return GetCurrentRoleLevel() >= ManagerRequired.LVL;
+        }
+
+        public static bool AsProductInterface()
+        {
+            return GetCurrentRoleLevel() >= ProductInterfaceRequired.LVL;
+        }
+
+        public static bool AsMarketInterface()
+        {
+            return GetCurrentRoleLevel() >= MarketInterfaceRequired.LVL;
+        }
+
+        public static bool AsSale()
+        {
+            return GetCurrentRoleLevel() >= SalesRequired.LVL;
+        }
+
         public static int GetRoleLevel(string name)
         {
             return GetRole(name).Level;

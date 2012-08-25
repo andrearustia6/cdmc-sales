@@ -95,7 +95,7 @@ namespace MvcGlobalAuthorize.Controllers
             int roleid;
             data = objProfile.GetPropertyValue("RoleLevelID");
             Int32.TryParse(data.ToString(), out roleid);
-            um.RoleLevelID = roleid;
+            um.RoleID = roleid;
             return View(um);
         }
 
@@ -103,6 +103,7 @@ namespace MvcGlobalAuthorize.Controllers
         // POST: /Account/Register
 
         [HttpPost]
+        [ManagerRequired]
         public ActionResult Register(UserInfoModel model)
         {
             if (ModelState.IsValid)
@@ -153,7 +154,7 @@ namespace MvcGlobalAuthorize.Controllers
                 int roleid;
                 data = objProfile.GetPropertyValue("RoleLevelID");
                 Int32.TryParse(data.ToString(), out roleid);
-                um.RoleLevelID = roleid;
+                um.RoleID = roleid;
                 return View(um);
             }
             else
@@ -192,7 +193,7 @@ namespace MvcGlobalAuthorize.Controllers
             return View(model);
         }
 
-
+        [SupervisorRequired]
         public ActionResult SetRoleLevel(string name)
         {
             var um = new UserInfoModel();
@@ -202,15 +203,16 @@ namespace MvcGlobalAuthorize.Controllers
             int roleid;
             data = objProfile.GetPropertyValue("RoleLevelID");
             Int32.TryParse(data.ToString(), out roleid);
-            um.RoleLevelID = roleid;
+            um.RoleID = roleid;
             um.UserName = name;
             return View(um);
         }
 
         [HttpPost]
+        [SupervisorRequired]
         public ActionResult SetRoleLevel(UserInfoModel model)
         {
-            if (Employee.IsEqualToCurrentUserName(model.UserName) || model.RoleLevelID>0)
+            if (Employee.IsEqualToCurrentUserName(model.UserName) || model.RoleID>0)
             {
                 ModelState.Remove("Password");
                 ModelState.Remove("UserName");
@@ -222,7 +224,7 @@ namespace MvcGlobalAuthorize.Controllers
                     Membership.UpdateUser(user);
 
                     ProfileBase objProfile = ProfileBase.Create(model.UserName);
-                    objProfile.SetPropertyValue("RoleLevelID", model.RoleLevelID);
+                    objProfile.SetPropertyValue("RoleLevelID", model.RoleID);
                     objProfile.Save();
                     return RedirectToAction("Index");
                 }
@@ -284,7 +286,6 @@ namespace MvcGlobalAuthorize.Controllers
 
         //
         // GET: /Account/ChangePasswordSuccess
-
         public ActionResult ChangePasswordSuccess()
         {
             return View();
