@@ -51,6 +51,13 @@ namespace Utl
             context.Roles.Add(new Role() { Name = "销售专员", Level = 10 });
             context.Roles.Add(new Role() { Name = "产品部接口人", Level = 5 });
             context.Roles.Add(new Role() { Name = "市场部接口人", Level = 1 });
+
+            context.CompanyTypes.Add(new CompanyType { Name = "外企独资企业"});
+            context.CompanyTypes.Add(new CompanyType { Name = "外企办事处" });
+            context.CompanyTypes.Add(new CompanyType { Name = "合资企业" });
+            context.CompanyTypes.Add(new CompanyType { Name = "国有企业" });
+            context.CompanyTypes.Add(new CompanyType { Name = "合资企业" });
+            context.CompanyTypes.Add(new CompanyType { Name = "民营企业" });
         }
     }
 
