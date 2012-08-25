@@ -135,9 +135,9 @@ namespace Entity
         [Display(Name = "成员"), Required]
         public string MemberName { get; set; }
 
-        public Role RoleLevel { get; set; }
+        public Role Role { get; set; }
         [Display(Name = "角色职级"), Required]
-        public int? RoleLevelID { get; set; }
+        public int? RoleID { get; set; }
 
         [Display(Name = "字头")]
         public string Character { get; set; }
