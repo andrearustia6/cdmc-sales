@@ -23,11 +23,11 @@
           @Html.ActionLink("[关于]", "Index", "About", null, new { style = "float:right;margin-top:-20px;margin-right:50px;color: #FFFFFF;text-decoration: none;z-index:1000;" })
           @Html.ActionLink("[退出]", "LogOff", "Account", null, new { style = "float:right;margin-top:-20px;color: #FFFFFF;text-decoration: none;z-index:1000;" })
         <div style="float:left; width:13%">
-        <ul  id="menu">
+       @* <ul  id="menu">
         <li><a href=@Url.Action("index", "Category")>行业类型</a></li>
         <li><a href=@Url.Action("index", "CurrencyType")>货币类型</a></li>
-        </ul>
-       @*  @(Html.Telerik().Menu().Orientation(MenuOrientation.Vertical)
+        </ul>*@
+         @(Html.Telerik().Menu().Orientation(MenuOrientation.Vertical)
                             .Name("menu")
                     .Items(menu =>
                     {
@@ -40,7 +40,7 @@
                         menu.Add().Text("Package服务类型").Action("index", "PackageServiceType");
                         menu.Add().Text("Package类型").Action("index", "PackageType");
                         menu.Add().Text("Package类型").Action("index", "PackageType");
-                    }))*@
+                    }))
                    
                    
         </div>
