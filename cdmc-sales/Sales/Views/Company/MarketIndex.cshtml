@@ -1,0 +1,20 @@
+﻿@using Entity
+@using Utl
+@model List<Lead>
+@(Html.Telerik().Grid<Lead>(Model).Name("Lead")
+                .DataKeys(keys =>
+                {
+                    keys.Add(s => s.ID);
+                })
+                .Columns(c =>
+                {
+                    c.Bound(item => item.EMail);
+                })
+                                            .Resizable(resizing => resizing.Columns(true))
+                                            .Groupable()
+                                            .Pageable(p => p.PageSize(20))
+                                            .Sortable()
+                                            .Filterable()
+                                            .Scrollable(scrolling => scrolling.Height(350))
+                        )
+

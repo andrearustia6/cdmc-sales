@@ -15,7 +15,7 @@
                     c.Bound(item => item.Available).Width(100);
                     c.Bound(item => item.Category.Name_CH).Title("行业").Width(100);
                     c.Bound(item => item.CompanyType.Name).Width(100);
-                    c.Bound(item => item.Cerator).Width(100);
+                    c.Bound(item => item.Cerator).Width(50);
                     c.Bound(item => item.From).Width(100);
                     c.Bound(item => item.ID).Title("操作").Template(@<span>
                     <a href=@Url.Content("~/Company/Edit/" + item.ID) >编辑</a> | <a href=@Url.Content("~/Company/Details/" + item.ID)>详细</a>  | <a href=@Url.Content("~/Lead/Create/?CompanyId=" + item.ID)>添加客户</a>| <a href=@Url.Content("~/Company/delete/" + item.ID) >删除</a> 
@@ -42,13 +42,16 @@
      @(Html.Telerik().Grid(Leads).Name("Leads" + companyuid)
                             .Columns(c =>
                             {
-                                c.Template(@<text><img alt=@item.ImageID style="width:80px;height:70px" src=@Url.Content("~/Image/DisplayImage/" + item.ImageID) /></text>).Title("客户照片").Width(150);
+                                c.Template(@<text><img  style="width:80px;height:70px" src=@Url.Content("~/Image/DisplayImage/" + item.ImageID) /></text>).Title("客户照片").Width(150);
                                 c.Bound(o => o.Name_EN).Width(140);
                                 c.Bound(o => o.Name_CH).Width(140);
-                                c.Bound(o => o.Title).Width(140);
+                                c.Bound(o => o.Title.Name_EN).Width(140);
                                 c.Bound(o => o.Contact).Width(200);
+                                c.Bound(item => item.ID).Title("操作").Template(@<span>
+                    <a href=@Url.Content("~/lead/Edit/" + item.ID) >编辑</a> | <a href=@Url.Content("~/lead/Details/" + item.ID)>详细</a>  <a href=@Url.Content("~/Company/delete/" + item.ID) >删除</a> 
+                   </span>);
                             })
-                        .Resizable(resizing => resizing.Columns(true))
-                        .Pageable(p => p.PageSize(20))
-                        .Sortable())
+                                               .Resizable(resizing => resizing.Columns(true))
+                                               .Pageable(p => p.PageSize(20))
+                                               .Sortable())
 } 

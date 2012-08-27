@@ -89,7 +89,7 @@ namespace Utl
             return GetCurrentRoleLevel() >= MarketInterfaceRequired.LVL;
         }
 
-        public static bool AsSale()
+        public static bool AsSales()
         {
             return GetCurrentRoleLevel() >= SalesRequired.LVL;
         }

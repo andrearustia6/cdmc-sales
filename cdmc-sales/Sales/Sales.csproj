@@ -233,7 +233,6 @@
     <Compile Include="Controllers\Type\PaymentTypeController.cs" />
     <Compile Include="Controllers\Type\TemplateTypeController.cs" />
     <Compile Include="Controllers\Type\TitleController.cs" />
-    <Compile Include="DB.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -909,6 +908,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Template\Change.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Company\MarketIndex.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Company\ProductIndex.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

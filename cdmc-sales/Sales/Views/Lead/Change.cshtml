@@ -21,16 +21,7 @@
     <div class="editor-label">
         @Html.Label("个人照片")
     </div>
-    <div class="editor-field">
-        @{if (Model != null)
-          {
-            <img  alt="上传文件" width="300" height="200" src=@Url.Action("ShowImage", "Image", new { id = Model.ImageID }) />
-          }
-        }
-        @Html.Telerik().Upload().Async(a=>a.AutoUpload(true)).Name("attachments").Multiple(false)
-  
-
-    </div>
+    
     <div class="editor-label">
         @Html.LabelFor(model => model.Gender)
     </div>
@@ -39,11 +30,11 @@
         @Html.ValidationMessageFor(model => model.Gender)
     </div>
     <div class="editor-label">
-        @Html.LabelFor(model => model.Title)
+        @Html.LabelFor(model => model.TitleID)
     </div>
     <div class="editor-field">
-        @Html.DropDownListFor(model => model.Title, new SelectList(new List<Title>(CH.GetAllData<Title>())), "-请选择-")
-        @Html.ValidationMessageFor(model => model.Title)
+        @Html.DropDownListFor(model => model.TitleID, new SelectList(CH.GetAllData<Title>(), "ID", "Name_CH"), "-请选择-")
+        @Html.ValidationMessageFor(model => model.TitleID)
     </div>
     <div class="editor-label">
         @Html.LabelFor(model => model.Contact)
@@ -70,7 +61,7 @@
         @Html.Label("Lead类型")
     </div>
     <div class="editor-field">
-        @Html.DropDownListFor(model => model.LeadTypeID, new SelectList(CH.GetAllData<Lead>(), "ID", "Name"), "-请选择-")
+        @Html.DropDownListFor(model => model.LeadTypeID, new SelectList(CH.GetAllData<LeadType>(), "ID", "Name"), "-请选择-")
         @Html.ValidationMessageFor(model => model.LeadTypeID)
     </div>
     <div class="editor-label">
@@ -91,6 +82,14 @@
             @Html.Label(en) 
             @Html.HiddenFor(m => m.CompanyID, cid)
         }
+    </div>
+    <div class="editor-field">
+        @{if (Model != null)
+          {
+            <img  alt="上传文件" width="300" height="200" src=@Url.Action("ShowImage", "Image", new { id = Model.ImageID }) />
+          }
+        }
+        @Html.Telerik().Upload().Async(a=>a.AutoUpload(true)).Name("attachments").Multiple(false)
     </div>
 </fieldset>
 
