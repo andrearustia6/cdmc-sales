@@ -87,16 +87,19 @@ namespace Entity
         [Display(Name = "英文名称"), MaxLength(100)]
         public string Name_EN { get; set; }
 
-        public Title Title { get; set; }
+        public virtual Title Title { get; set; }
          [Display(Name = "职位")]
         public int? TitleID { get; set; }
 
+        [DataType(DataType.PhoneNumber)]
         [Display(Name = "联系方式"),Required]
         public string Contact { get; set; }
 
+        [DataType(DataType.EmailAddress)]
         [Display(Name = "电子邮箱"), Required]
         public string EMail { get; set; }
 
+        [DataType( DataType.PhoneNumber)]
         [Display(Name = "移动电话"), Required]
         public string Mobile { get; set; }
 
@@ -104,8 +107,8 @@ namespace Entity
         [Display(Name = "所属公司"),Required]
         public int? CompanyID { get; set; }
 
-        public virtual LeadType ClientType { get; set; }
-        [Display(Name = "Lead类型"), Required]
+        public virtual LeadType LeadType { get; set; }
+        [Display(Name = "Lead类型")]
         public int? LeadTypeID { get; set; }
 
         public virtual Image Image { get; set; }

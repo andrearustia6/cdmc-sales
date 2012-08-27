@@ -13,9 +13,23 @@ namespace Sales.Controllers
 {
     public class CompanyController : Controller
     {
-        public ViewResult Index()
+        public ActionResult Index()
         {
-           Employee.
+            if (Employee.AsSales())
+                return View(CH.GetAllData<Company>("Leads"));
+            else if (Employee.AsProductInterface())
+                return RedirectToAction("ProductIndex");
+            else
+                return RedirectToAction("MarketIndex");
+        }
+
+        public ViewResult MarketIndex()
+        {
+            return View(CH.GetAllData<Lead>());
+        }
+
+        public ViewResult ProductIndex()
+        {
             return View(CH.GetAllData<Company>("Leads"));
         }
 
@@ -30,11 +44,14 @@ namespace Sales.Controllers
         }
 
         [HttpPost]
+        [SalesRequired]
         public ActionResult Create(Company item)
         {
             if (ModelState.IsValid)
             {
-                ImageController.UploadImg(Request, item.Image);
+                Image image = ImageController.UploadImg(Request, item.Image);
+                if (image != null)
+                    item.ImageID = image.ID;
                 item.Cerator = User.Identity.Name;
                 item.From = Employee.GetCurrentProfile("Department").ToString();
                 CH.Create<Company>(item);
@@ -43,7 +60,7 @@ namespace Sales.Controllers
             return View(item);
         }
 
-
+        [SalesRequired]
         public ActionResult Edit(int id)
         {
              var c = CH.GetDataById<Company>(id);
@@ -61,10 +78,15 @@ namespace Sales.Controllers
         }
 
         [HttpPost]
+        [SalesRequired]
         public ActionResult Edit(Company item)
         {
             if (ModelState.IsValid)
             {
+                Image image = ImageController.UploadImg(Request, item.Image);
+                if (image != null)
+                    item.ImageID = image.ID;
+
                 if (Employee.AsManager()||Employee.IsEqualToCurrentUserName(item.Cerator))
                 {
                     ImageController.UploadImg(Request, item.Image);
@@ -75,12 +97,12 @@ namespace Sales.Controllers
             }
             return View(item);
         }
-
+        [SalesRequired]
         public ActionResult Delete(int id)
         {
             return View(CH.GetDataById<Company>(id));
         }
-
+        [SalesRequired]
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {
