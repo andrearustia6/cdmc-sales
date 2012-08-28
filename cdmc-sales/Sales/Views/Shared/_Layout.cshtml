@@ -19,34 +19,57 @@
 
 			
 		</header>
-        <section >
-          @Html.ActionLink("[关于]", "Index", "About", null, new { style = "float:right;margin-top:-20px;margin-right:50px;color: #FFFFFF;text-decoration: none;z-index:1000;" })
-          @Html.ActionLink("[退出]", "LogOff", "Account", null, new { style = "float:right;margin-top:-20px;color: #FFFFFF;text-decoration: none;z-index:1000;" })
-        <div style="float:left; width:13%">
-       @* <ul  id="menu">
-        <li><a href=@Url.Action("index", "Category")>行业类型</a></li>
-        <li><a href=@Url.Action("index", "CurrencyType")>货币类型</a></li>
-        </ul>*@
-         @(Html.Telerik().Menu().Orientation(MenuOrientation.Vertical)
-                            .Name("menu")
-                    .Items(menu =>
-                    {
-                        menu.Add().Text("行业类型").Action("index", "Category");
-                        menu.Add().Text("货币类型").Action("index", "CurrencyType");
-                        menu.Add().Text("职位类型").Action("index", "Title");
-                        menu.Add().Text("公司类型").Action("index", "CompanyType");
-                        menu.Add().Text("Lead类型").Action("index", "LeadType");
-                        menu.Add().Text("LeadSheet类型").Action("index", "LeadSheetType");
-                        menu.Add().Text("Package服务类型").Action("index", "PackageServiceType");
-                        menu.Add().Text("Package类型").Action("index", "PackageType");
-                        menu.Add().Text("Package类型").Action("index", "PackageType");
-                    }))
-                   
-                   
+        <div>
+            @Html.ActionLink("[关于]", "Index", "About", null, new { style = "float:right;margin-top:-20px;margin-right:50px;color: #FFFFFF;text-decoration: none;z-index:1000;" })
+            @Html.ActionLink("[退出]", "LogOff", "Account", null, new { style = "float:right;margin-top:-20px;color: #FFFFFF;text-decoration: none;z-index:1000;" })
+            @{ Html.Telerik().Menu().Name("Menu1").Items(menu =>
+               {
+                   menu.Add().Text("类型字典管理").ImageUrl("~/Content/Common/Icons/mvc.png").Items(item =>
+                   {
+                       item.Add().Text("行业").Url("~/Category/index").ImageUrl("~/Content/Common/Icons/Scheduler.png");
+                       item.Add().Text("货币").Url("~/CurrencyType/index").ImageUrl("~/Content/Common/Icons/GridView.gif");
+                       item.Add().Text("职位").Url("~/Title/index").ImageUrl("~/Content/Common/Icons/Scheduler.gif");
+                       item.Add().Text("公司").Url("~/CompanyType/index").ImageUrl("~/Content/Common/Icons/Grid.png");
+                       item.Add().Text("Lead").Url("~/LeadType/index").ImageUrl("~/Content/Common/Icons/Menu.png");
+                       item.Add().Text("LeadSheet").Url("~/LeadSheetType/index").ImageUrl("~/Content/Common/Icons/Docking.gif");
+                       item.Add().Text("Package服务").Url("~/PackageServiceType/index").ImageUrl("~/Content/Common/Icons/GridView.gif");
+                       item.Add().Text("Package").Url("~/PackageType/index").ImageUrl("~/Content/Common/Icons/Editor.png");
+                       item.Add().Text("付款").Url("~/Paymenttype/index").ImageUrl("~/Content/Common/Icons/TabStrip.png");
+                       item.Add().Text("参会").Url("~/ParticipantType/index").ImageUrl("~/Content/Common/Icons/Chart.gif");
+                       item.Add().Text("模板").Url("~/Template/index").ImageUrl("~/Content/Common/Icons/TabStrip.png");
+                   });
+                   menu.Add().Text("Silverlight").ImageUrl("~/Content/Common/Icons/Suites/sl.png").Items(item =>
+                   {
+                       item.Add().Text("GridView").ImageUrl("~/Content/Common/Icons/Sl/GridView.gif");
+                       item.Add().Text("Scheduler").ImageUrl("~/Content/Common/Icons/Sl/Scheduler.gif");
+                       item.Add().Text("Docking").ImageUrl("~/Content/Common/Icons/Sl/Docking.gif");
+                       item.Add().Text("Chart").ImageUrl("~/Content/Common/Icons/Sl/Chart.gif");
+                       item.Add().Text("... and 28 more!").Url("http://www.telerik.com/products/silverlight.aspx");
+                   });
+                   menu.Add().Text("ASP.NET AJAX").ImageUrl("~/Content/Common/Icons/Suites/ajax.png").Items(item =>
+                   {
+                       item.Add().Text("Grid").ImageUrl("~/Content/Common/Icons/Ajax/Grid.png");
+                       item.Add().Text("Editor").ImageUrl("~/Content/Common/Icons/Ajax/Editor.png");
+                       item.Add().Text("Scheduler").ImageUrl("~/Content/Common/Icons/Ajax/Scheduler.png");
+                       item.Add().Text("... and 28 more!").Url("http://www.telerik.com/products/aspnet-ajax.aspx");
+                   });
+                   menu.Add().Text("OpenAccess ORM").ImageUrl("~/Content/Common/Icons/Suites/orm.png").Content(@<text>
+                <img src="@Url.Content("~/Content/Common/orm-comparison.png") " alt="Telerik OpenAccess" />
+                <a id="buy" href="http://www.telerik.com/purchase/individual/orm.aspx">Telerik OpenAccess
+                    ORM </a><a id="express" href="http://www.telerik.com/community/license-agreement.aspx?pId=639">
+                        Telerik OpenAccess ORM Express </a></text>);
+                   menu.Add().Text("Reporting").ImageUrl("~/Content/Common/Icons/Suites/rep.png");
+                   menu.Add().Text("Sitefinity ASP.NET CMS").ImageUrl("~/Content/Common/Icons/Suites/sitefinity.png");
+                   menu.Add().HtmlAttributes(new { style = "border-right: 0;" }).Text("Other products").Items(item =>
+                   {
+                       item.Add().Text("Web Testing Tools").ImageUrl("~/Content/Common/Icons/Suites/test.png");
+                       item.Add().Text("WinForms UI Controls").ImageUrl("~/Content/Common/Icons/Suites/win.png");
+                       item.Add().Text("WPF UI Controls").ImageUrl("~/Content/Common/Icons/Suites/wpf.png");
+                   });
+               }).Render();}
+          
+            <section id="main" style="float: left; width: 87%">@RenderBody()</section>
         </div>
-        <section id="main" style="float:left;width:87%">@RenderBody()</section>
-			
-		</section>
         <footer>
 		</footer>
     </div>
