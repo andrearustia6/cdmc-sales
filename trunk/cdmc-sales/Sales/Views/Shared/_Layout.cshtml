@@ -1,3 +1,4 @@
+@using Utl
 <!DOCTYPE html>
 <html>
 <head>
@@ -24,50 +25,66 @@
             @Html.ActionLink("[退出]", "LogOff", "Account", null, new { style = "float:right;margin-top:-20px;color: #FFFFFF;text-decoration: none;z-index:1000;" })
             @{ Html.Telerik().Menu().Name("Menu1").Items(menu =>
                {
-                   menu.Add().Text("类型字典管理").ImageUrl("~/Content/Common/Icons/mvc.png").Items(item =>
+                   if (Employee.AsDirector())
                    {
-                       item.Add().Text("行业").Url("~/Category/index").ImageUrl("~/Content/Common/Icons/Scheduler.png");
-                       item.Add().Text("货币").Url("~/CurrencyType/index").ImageUrl("~/Content/Common/Icons/GridView.gif");
-                       item.Add().Text("职位").Url("~/Title/index").ImageUrl("~/Content/Common/Icons/Scheduler.gif");
-                       item.Add().Text("公司").Url("~/CompanyType/index").ImageUrl("~/Content/Common/Icons/Grid.png");
-                       item.Add().Text("Lead").Url("~/LeadType/index").ImageUrl("~/Content/Common/Icons/Menu.png");
-                       item.Add().Text("LeadSheet").Url("~/LeadSheetType/index").ImageUrl("~/Content/Common/Icons/Docking.gif");
-                       item.Add().Text("Package服务").Url("~/PackageServiceType/index").ImageUrl("~/Content/Common/Icons/GridView.gif");
-                       item.Add().Text("Package").Url("~/PackageType/index").ImageUrl("~/Content/Common/Icons/Editor.png");
-                       item.Add().Text("付款").Url("~/Paymenttype/index").ImageUrl("~/Content/Common/Icons/TabStrip.png");
-                       item.Add().Text("参会").Url("~/ParticipantType/index").ImageUrl("~/Content/Common/Icons/Chart.gif");
-                       item.Add().Text("模板").Url("~/Template/index").ImageUrl("~/Content/Common/Icons/TabStrip.png");
-                   });
-                   menu.Add().Text("Silverlight").ImageUrl("~/Content/Common/Icons/Suites/sl.png").Items(item =>
+                       menu.Add().Text("类型字典管理").ImageUrl("~/Content/Common/Icons/mvc.png").Items(item =>
+                       {
+                           item.Add().Text("行业").Url("~/Category/index").ImageUrl("~/Content/Common/Icons/Scheduler.png");
+                           item.Add().Text("货币").Url("~/CurrencyType/index").ImageUrl("~/Content/Common/Icons/GridView.gif");
+                           item.Add().Text("职位").Url("~/Title/index").ImageUrl("~/Content/Common/Icons/Scheduler.gif");
+                           item.Add().Text("公司").Url("~/CompanyType/index").ImageUrl("~/Content/Common/Icons/Grid.png");
+                           item.Add().Text("Lead").Url("~/LeadType/index").ImageUrl("~/Content/Common/Icons/Menu.png");
+                           item.Add().Text("LeadSheet").Url("~/LeadSheetType/index").ImageUrl("~/Content/Common/Icons/Docking.gif");
+                           item.Add().Text("Package服务").Url("~/PackageServiceType/index").ImageUrl("~/Content/Common/Icons/GridView.gif");
+                           item.Add().Text("Package").Url("~/PackageType/index").ImageUrl("~/Content/Common/Icons/Editor.png");
+                           item.Add().Text("付款").Url("~/Paymenttype/index").ImageUrl("~/Content/Common/Icons/TabStrip.png");
+                           item.Add().Text("参会").Url("~/ParticipantType/index").ImageUrl("~/Content/Common/Icons/Chart.gif");
+                           item.Add().Text("模板").Url("~/Template/index").ImageUrl("~/Content/Common/Icons/TabStrip.png");
+                       });
+                   }
+
+                   menu.Add().Text("员工信息").ImageUrl("~/Content/Common/Icons/GridView.gif").Items(item =>
                    {
-                       item.Add().Text("GridView").ImageUrl("~/Content/Common/Icons/Sl/GridView.gif");
-                       item.Add().Text("Scheduler").ImageUrl("~/Content/Common/Icons/Sl/Scheduler.gif");
-                       item.Add().Text("Docking").ImageUrl("~/Content/Common/Icons/Sl/Docking.gif");
-                       item.Add().Text("Chart").ImageUrl("~/Content/Common/Icons/Sl/Chart.gif");
-                       item.Add().Text("... and 28 more!").Url("http://www.telerik.com/products/silverlight.aspx");
+                       item.Add().Url("~/Account/index").Text("账号管理").ImageUrl("~/Content/Common/Icons/Docking.gif");
                    });
-                   menu.Add().Text("ASP.NET AJAX").ImageUrl("~/Content/Common/Icons/Suites/ajax.png").Items(item =>
+                   menu.Add().Text("项目管理").ImageUrl("~/Content/Common/Icons/GridView.gif").Items(item =>
                    {
-                       item.Add().Text("Grid").ImageUrl("~/Content/Common/Icons/Ajax/Grid.png");
-                       item.Add().Text("Editor").ImageUrl("~/Content/Common/Icons/Ajax/Editor.png");
-                       item.Add().Text("Scheduler").ImageUrl("~/Content/Common/Icons/Ajax/Scheduler.png");
-                       item.Add().Text("... and 28 more!").Url("http://www.telerik.com/products/aspnet-ajax.aspx");
+                       item.Add().Url("~/Project/index").Text("项目WIKI").ImageUrl("~/Content/Common/Icons/Docking.gif");
                    });
-                   menu.Add().Text("OpenAccess ORM").ImageUrl("~/Content/Common/Icons/Suites/orm.png").Content(@<text>
-                <img src="@Url.Content("~/Content/Common/orm-comparison.png") " alt="Telerik OpenAccess" />
-                <a id="buy" href="http://www.telerik.com/purchase/individual/orm.aspx">Telerik OpenAccess
-                    ORM </a><a id="express" href="http://www.telerik.com/community/license-agreement.aspx?pId=639">
-                        Telerik OpenAccess ORM Express </a></text>);
-                   menu.Add().Text("Reporting").ImageUrl("~/Content/Common/Icons/Suites/rep.png");
-                   menu.Add().Text("Sitefinity ASP.NET CMS").ImageUrl("~/Content/Common/Icons/Suites/sitefinity.png");
-                   menu.Add().HtmlAttributes(new { style = "border-right: 0;" }).Text("Other products").Items(item =>
+                   menu.Add().Text("工作任务").ImageUrl("~/Content/Common/Icons/GridView.gif").Items(item =>
                    {
-                       item.Add().Text("Web Testing Tools").ImageUrl("~/Content/Common/Icons/Suites/test.png");
-                       item.Add().Text("WinForms UI Controls").ImageUrl("~/Content/Common/Icons/Suites/win.png");
-                       item.Add().Text("WPF UI Controls").ImageUrl("~/Content/Common/Icons/Suites/wpf.png");
+                       item.Add().Url("~/Research/index").Text("调研上传").ImageUrl("~/Content/Common/Icons/Docking.gif");
+                       item.Add().Url("~/Company/index").Text("项目公司").ImageUrl("~/Content/Common/Icons/Docking.gif");
+                       item.Add().Url("~/Lead/index").Text("项目客户").ImageUrl("~/Content/Common/Icons/Docking.gif");
                    });
+                   menu.Add().Text("个人主页").ImageUrl("~/Content/Common/Icons/GridView.gif").Items(item =>
+                   {
+                       item.Add().Url("~/Project/index").Text("项目WIKI").ImageUrl("~/Content/Common/Icons/Docking.gif");
+                   });
+                   menu.Add().Text("客户管理").ImageUrl("~/Content/Common/Icons/GridView.gif").Items(item =>
+                   {
+                       item.Add().Url("~/Company/index").Text("公司").ImageUrl("~/Content/Common/Icons/Docking.gif");
+                       item.Add().Url("~/Company/index").Text("客户").ImageUrl("~/Content/Common/Icons/Docking.gif");
+                       
+                   });
+                   menu.Add().Text("会议管理").ImageUrl("~/Content/Common/Icons/GridView.gif").Items(item =>
+                   {
+                       item.Add().Url("~/Conference/index").Text("会议信息").ImageUrl("~/Content/Common/Icons/Docking.gif");
+                       item.Add().Url("~/Company/index").Text("参会嘉宾").ImageUrl("~/Content/Common/Icons/Docking.gif");
+                       item.Add().Url("~/Conference/index").Text("Package").ImageUrl("~/Content/Common/Icons/Docking.gif");
+
+                   });
+                   if (Employee.AsManager())
+                   {
+                       menu.Add().Text("模板管理").ImageUrl("~/Content/Common/Icons/GridView.gif").Items(item =>
+                       {
+                           item.Add().Url("~/Template/index").Text("通用模板").ImageUrl("~/Content/Common/Icons/Editor.png");
+                           item.Add().Url("~/OnPhoneTemplate/index").Text("电话模板").ImageUrl("~/Content/Common/Icons/Docking.gif");
+                       });
+                   }
+
+             
                }).Render();}
-          
             <section id="main" style="float: left; width: 87%">@RenderBody()</section>
         </div>
         <footer>

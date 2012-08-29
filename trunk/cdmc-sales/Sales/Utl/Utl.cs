@@ -61,7 +61,11 @@ namespace Utl
 
         public static int GetCurrentRoleLevel()
         {
-            return GetRole(HttpContext.Current.User.Identity.Name).Level;
+            var name = HttpContext.Current.User.Identity.Name;
+            if (!string.IsNullOrEmpty(name))
+                return GetRole(HttpContext.Current.User.Identity.Name).Level;
+            else
+                return -100;
         }
 
         public static bool AsDirector()
@@ -311,6 +315,15 @@ namespace Utl
         public static string ShortTime(DateTime time)
         {
             return time.ToShortDateString();
+        }
+
+
+        public static string ShortText(string str, int length)
+        {
+            if (str.Length > length)
+                return str.Remove(length, str.Length - length) + "...";
+            else
+                return str;
         }
     }
 }

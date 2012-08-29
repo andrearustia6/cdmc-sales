@@ -8,7 +8,9 @@
 
     @Html.Partial("display", Model)
 </fieldset>
+<center>
 <p>
     @Html.ActionLink(SR.Edit, "Edit", new { id = Model.ID }) |
     @Html.ActionLink(SR.GobackToList, "Index")
 </p>
+</center>

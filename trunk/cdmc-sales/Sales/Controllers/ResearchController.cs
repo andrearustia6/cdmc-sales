@@ -41,14 +41,18 @@ namespace Sales.Controllers
         }
         public ActionResult Edit(int id)
         {
-            return View(CH.GetDataById<Research>(id));
+            var data = CH.GetDataById<Research>(id);
+            
+            return View(data);
         }
 
         [HttpPost]
         public ActionResult Edit(Research item)
         {
+            
             if (ModelState.IsValid)
             {
+                item.Contents = HttpUtility.HtmlDecode(item.Contents);
                 CH.Edit<Research>(item);
                 return RedirectToAction("Index");
             }
