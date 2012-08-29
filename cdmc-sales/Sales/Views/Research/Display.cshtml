@@ -11,7 +11,7 @@
 
     <div class="display-label">调研内容</div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.Contents)
+     @HtmlExtensions.GetHtmlString(@Model.Contents)
     </div>
 </fieldset>
 

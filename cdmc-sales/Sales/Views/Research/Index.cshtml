@@ -1,4 +1,5 @@
 ﻿@using Entity
+@using Utl;
 @model List<Research>
 @(Html.Telerik().Grid<Research>(Model).Name("Research")
                 .DataKeys(keys =>
@@ -8,8 +9,11 @@
                 .Columns(c =>
                 {
                     c.Bound(item => item.Name).Width(200);
-                    c.Bound(item => item.Contents).Width(300);
-                    c.Bound(item => item.ID).Width(200).Title("操作").ClientTemplate("<a href='/Research/edit/" + "<#= ID #>'>编辑</a> | <a href='/Research/details/" + "<#= ID #>'>详细</a> | <a href='/Research/delete/" + "<#= ID #>'>删除</a>"); 
+                    c.Bound(item => item.Contents).Template(@<span>
+                    @Utl.ShortText(item.Contents,100)</span>);
+                    c.Bound(item => item.ID).Width(200).Title("操作").Template(@<span> <a href=@Url.Content("~/Research/Edit/" + item.ID) >
+                        编辑</a> | <a href=@Url.Content("~/Research/Details/" + item.ID)>详细</a> | <a href=@Url.Content("~/Research/delete/" + item.ID) >
+                            删除</a> </span>);
                  })
                 .Resizable(resizing => resizing.Columns(true))
                 .Filterable().Sortable().Groupable()
