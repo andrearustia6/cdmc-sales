@@ -1,0 +1,45 @@
+﻿@model Entity.PackageType
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>PackageType</legend>
+
+    <div class="display-label">Name</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Name)
+    </div>
+
+    <div class="display-label">ParticipantType</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.ParticipantType.Name)
+    </div>
+
+    <div class="display-label">Description</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Description)
+    </div>
+
+    <div class="display-label">Sequence</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Sequence)
+    </div>
+
+    <div class="display-label">User</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.User)
+    </div>
+
+    <div class="display-label">ModifiedTime</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.ModifiedTime)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

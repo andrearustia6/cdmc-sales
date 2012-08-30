@@ -26,8 +26,10 @@ namespace Utl
         public DbSet<OnPhoneBlockType> OnPhoneBlockTypes { get; set; }
         public DbSet<LeadSheetType> LeadSheetTypes { get; set; }
         public DbSet<CurrencyType> CurrencyTypes { get; set; }
-        
+        public DbSet<PackageServiceType> PackageServiceTypes { get; set; }
+        public DbSet<PackageItem> PackageItems { get; set; }
         public DbSet<FAQ> FAQs { get; set; }
+        public DbSet<PaymentType> PaymentTypes { get; set; }
         public DB()
         {
             Database.SetInitializer<DB>(new DBInitializer());
@@ -83,22 +85,60 @@ namespace Utl
             context.Categorys.Add(new Category() { Name_EN = "", Name_CH = "化工" });
             context.Categorys.Add(new Category() { Name_EN = "", Name_CH = "医疗" });
 
-            context.OnPhoneBlockTypes.Add(new OnPhoneBlockType() { Name = "没有预算" });
-            context.OnPhoneBlockTypes.Add(new OnPhoneBlockType() { Name = "无战略规划" });
-            context.OnPhoneBlockTypes.Add(new OnPhoneBlockType() { Name = "请假" });
-            context.OnPhoneBlockTypes.Add(new OnPhoneBlockType() { Name = "无人接听"});
-            context.OnPhoneBlockTypes.Add(new OnPhoneBlockType() { Name = "不是决策人" });
+            context.OnPhoneBlockTypes.Add(new OnPhoneBlockType() { Name = "没有预算",Code=1 });
+            context.OnPhoneBlockTypes.Add(new OnPhoneBlockType() { Name = "无战略规划", Code = 2 });
+            context.OnPhoneBlockTypes.Add(new OnPhoneBlockType() { Name = "请假", Code = 3 });
+            context.OnPhoneBlockTypes.Add(new OnPhoneBlockType() { Name = "无人接听", Code = 4 });
+            context.OnPhoneBlockTypes.Add(new OnPhoneBlockType() { Name = "不是决策人", Code = 5 });
 
             context.LeadSheetTypes.Add(new LeadSheetType() { Name="Others", Code=1});
-            context.LeadSheetTypes.Add(new LeadSheetType() { Name = "Not Pitched", Code = 1 });
-            context.LeadSheetTypes.Add(new LeadSheetType() { Name = "Waiting for Approval", Code = 1 });
-            context.LeadSheetTypes.Add(new LeadSheetType() { Name = "Closed", Code = 1 });
-            context.LeadSheetTypes.Add(new LeadSheetType() { Name = "Blowed", Code = 1 });
-            context.LeadSheetTypes.Add(new LeadSheetType() { Name = "Pitched", Code = 1 });
-            context.LeadSheetTypes.Add(new LeadSheetType() { Name = "Call-Backed", Code = 1 });
+            context.LeadSheetTypes.Add(new LeadSheetType() { Name = "Not Pitched", Code = 2 });
+            context.LeadSheetTypes.Add(new LeadSheetType() { Name = "Waiting for Approval", Code = 3 });
+            context.LeadSheetTypes.Add(new LeadSheetType() { Name = "Closed", Code = 4 });
+            context.LeadSheetTypes.Add(new LeadSheetType() { Name = "Blowed", Code = 5 });
+            context.LeadSheetTypes.Add(new LeadSheetType() { Name = "Pitched", Code = 6 });
+            context.LeadSheetTypes.Add(new LeadSheetType() { Name = "Call-Backed", Code = 7 });
 
             context.CurrencyTypes.Add(new CurrencyType() { Name="RMB"});
             context.CurrencyTypes.Add(new CurrencyType() { Name = "$" });
+
+            context.PackageTypes.Add(new PackageType() { Name = "PLATINUM" });
+            context.PackageTypes.Add(new PackageType() { Name = "GLOD" });
+            context.PackageTypes.Add(new PackageType() { Name = "SILVER" });
+            context.PackageTypes.Add(new PackageType() { Name = "BRONZE" });
+            context.PackageTypes.Add(new PackageType() { Name = "ASSOCIATE" });
+
+            context.ParticipantTypes.Add(new ParticipantType() {  Name="Delegate"});
+            context.ParticipantTypes.Add(new ParticipantType() { Name = "VIP" });
+            context.ParticipantTypes.Add(new ParticipantType() { Name = "Sponsor" });
+            context.ParticipantTypes.Add(new ParticipantType() { Name = "Others" });
+
+            context.PaymentTypes.Add(new PaymentType() { Name = "现金" });
+            context.PaymentTypes.Add(new PaymentType() { Name = "刷卡" });
+            context.PaymentTypes.Add(new PaymentType() { Name = "汇款" });
+            context.PaymentTypes.Add(new PaymentType() { Name = "其他" });
+
+            context.PackageServiceTypes.Add(new PackageServiceType() { Name = "Opening Remark" });
+            context.PackageServiceTypes.Add(new PackageServiceType() { Name = "Keynote Address" });
+            context.PackageServiceTypes.Add(new PackageServiceType() { Name = "Pre-scheduled One-to-one Meetings" });
+            context.PackageServiceTypes.Add(new PackageServiceType() { Name = "Featured Speech" });
+            context.PackageServiceTypes.Add(new PackageServiceType() { Name = "Chairperson" });
+            context.PackageServiceTypes.Add(new PackageServiceType() { Name = "Panel Discussion" });
+            context.PackageServiceTypes.Add(new PackageServiceType() { Name = "VIP Reception" });
+            context.PackageServiceTypes.Add(new PackageServiceType() { Name = "On Site Logo Exposure" });
+            context.PackageServiceTypes.Add(new PackageServiceType() { Name = "Exhibit Space" });
+            context.PackageServiceTypes.Add(new PackageServiceType() { Name = "Insertion" });
+            context.PackageServiceTypes.Add(new PackageServiceType() { Name = "Complimentary Sponsorship" });
+            context.PackageServiceTypes.Add(new PackageServiceType() { Name = "Press Interview" });
+            context.PackageServiceTypes.Add(new PackageServiceType() { Name = "Free delegate passes" });
+            context.PackageServiceTypes.Add(new PackageServiceType() { Name = "Additional registration discount" });
+            context.PackageServiceTypes.Add(new PackageServiceType() { Name = "Wishing Clients Invitation" });
+            context.PackageServiceTypes.Add(new PackageServiceType() { Name = "Media Exposure" });
+            context.PackageServiceTypes.Add(new PackageServiceType() { Name = "Event Website Advertising" });
+            context.PackageServiceTypes.Add(new PackageServiceType() { Name = "Conference Facsimile Promotions" });
+            context.PackageServiceTypes.Add(new PackageServiceType() { Name = "Conference Email Promotion" });
+            context.PackageServiceTypes.Add(new PackageServiceType() { Name = "Color Glossy Summit Brochures" });
+            context.PackageServiceTypes.Add(new PackageServiceType() { Name = "Value-added Services" });
         }
     }
 

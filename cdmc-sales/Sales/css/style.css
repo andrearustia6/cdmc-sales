@@ -1,0 +1,16 @@
+body{ height:700px;font-size:12px; margin:0; padding:0; font-family: Arial; background:url(../images/bj.gif) repeat-x;}
+div,form,input,img,ul,li,dl,dt,dd,textarea,h1,p,h2,h3{ margin:0; padding:0;}
+ul{ list-style-type: none;}
+img{vertical-align:top; border:0; margin:0px; padding:0px;}
+.clear{ clear:both; height:0; overflow:hidden}
+
+.logo{ width:930px; margin:0 auto;}
+.login{ width:930px; height:349px; background:url(../images/bj_2.jpg) no-repeat; margin:0 auto; }
+.login_2{ padding:50px 0 0 550px;}
+.login_2 h2{ font-size:24px; font-family:"微软雅黑"; color:#065a89; padding-left:95px; padding-bottom:20px;}
+.login_2 dl{ color:#065c8b; clear:both; width:350px; padding:0px 0 0 40px;}
+.login_2 dt{ float:left; line-height:35px; width:50px; }
+.login_2 dd{ float:left; width:270px; padding-bottom:15px;}
+.login_2 dd a{ color:#065c8b; text-decoration:none;_margin-top:-80px;}
+.login_2 dd input{ width:190px; height:22px; border:1px solid #2d8fd8; line-height:24px; padding-left:5px; font-size:12px; color:#8ba6ba;}
+.login_2 .login_3 input{ width:62px; height:25px; border:none; padding:0;}

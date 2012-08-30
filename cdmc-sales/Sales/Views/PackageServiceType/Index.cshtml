@@ -1,5 +1,6 @@
 ﻿@using Entity
-@(Html.Telerik().Grid<PackageServiceType>().Name("PackageServiceType")
+@model List<PackageServiceType>
+@(Html.Telerik().Grid<PackageServiceType>(Model).Name("PackageServiceType")
                 .DataKeys(keys =>
                 {
                     keys.Add(s => s.ID);
@@ -7,8 +8,8 @@
                 .Columns(c =>
                 {
                     c.Bound(item => item.Name).Width(200);
-                    c.Bound(item => item.Description).Width(300);
-                    c.Bound(item => item.ID).Title("操作").Template(@<span> <a href=@Url.Content("~/PackageServiceType/Edit/" + item.ID) >
+                    c.Bound(item => item.Description);
+                    c.Bound(item => item.ID).Title("操作").Width(200).Template(@<span> <a href=@Url.Content("~/PackageServiceType/Edit/" + item.ID) >
                         编辑</a> | <a href=@Url.Content("~/PackageServiceType/Details/" + item.ID)>详细</a> | <a href=@Url.Content("~/PackageServiceType/delete/" + item.ID) >
                             删除</a> </span>);
                 })
