@@ -1,0 +1,45 @@
+﻿@model OnPhoneTemplate
+@using Utl
+@using Entity
+
+@Html.ValidationSummary(true)
+<fieldset>
+    <legend>@SR.Form</legend>
+    <div class="editor-label">
+        @Html.Label("mingcheng")
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.Name)
+        @Html.ValidationMessageFor(model => model.Name)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.OnPhoneBlockTypeID)
+    </div>
+    <div class="editor-field">
+        @Html.DropDownListFor(model => model.OnPhoneBlockTypeID,new SelectList(CH.GetAllData<OnPhoneBlockType>(),"ID","Name"),"-请选择-")
+        @Html.ValidationMessageFor(model => model.OnPhoneBlockTypeID)
+    </div>
+    
+    <div class="editor-label">
+        @Html.LabelFor(model => model.Block)
+    </div>
+    <div class="editor-field">
+        @Html.TextAreaFor(model => model.Block)
+        @Html.ValidationMessageFor(model => model.Block)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.Answer)
+    </div>
+    <div class="editor-field">
+        @Html.TextAreaFor(model => model.Answer)
+        @Html.ValidationMessageFor(model => model.Answer)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.ProjectID)
+    </div>
+    <div class="editor-field">
+        @Html.DropDownListFor(model => model.ProjectID, new SelectList(CH.GetAllData<Project>(), "ID", "Name"), "-请选择-")
+        @Html.ValidationMessageFor(model => model.ProjectID)
+    </div>
+</fieldset>
+

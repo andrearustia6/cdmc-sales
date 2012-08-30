@@ -39,7 +39,8 @@
                            item.Add().Text("Package").Url("~/PackageType/index").ImageUrl("~/Content/Common/Icons/Editor.png");
                            item.Add().Text("付款").Url("~/Paymenttype/index").ImageUrl("~/Content/Common/Icons/TabStrip.png");
                            item.Add().Text("参会").Url("~/ParticipantType/index").ImageUrl("~/Content/Common/Icons/Chart.gif");
-                           item.Add().Text("模板").Url("~/Template/index").ImageUrl("~/Content/Common/Icons/TabStrip.png");
+                           item.Add().Text("模板").Url("~/TemplateType/index").ImageUrl("~/Content/Common/Icons/TabStrip.png");
+                           item.Add().Text("Block").Url("~/OnPhoneBlockType/index").ImageUrl("~/Content/Common/Icons/TabStrip.png");
                        });
                    }
 
@@ -59,7 +60,7 @@
                    });
                    menu.Add().Text("个人主页").ImageUrl("~/Content/Common/Icons/GridView.gif").Items(item =>
                    {
-                       item.Add().Url("~/Project/index").Text("项目WIKI").ImageUrl("~/Content/Common/Icons/Docking.gif");
+                       item.Add().Url("~/Project/index").Text("工作页面").ImageUrl("~/Content/Common/Icons/Docking.gif");
                    });
                    menu.Add().Text("客户管理").ImageUrl("~/Content/Common/Icons/GridView.gif").Items(item =>
                    {
@@ -79,7 +80,8 @@
                        menu.Add().Text("模板管理").ImageUrl("~/Content/Common/Icons/GridView.gif").Items(item =>
                        {
                            item.Add().Url("~/Template/index").Text("通用模板").ImageUrl("~/Content/Common/Icons/Editor.png");
-                           item.Add().Url("~/OnPhoneTemplate/index").Text("电话模板").ImageUrl("~/Content/Common/Icons/Docking.gif");
+                           item.Add().Url("~/LeadSheet/index").Text("致电结果").ImageUrl("~/Content/Common/Icons/Docking.gif");
+                           item.Add().Url("~/OnPhoneTemplate/index").Text("话术").ImageUrl("~/Content/Common/Icons/Docking.gif");
                        });
                    }
 
