@@ -20,7 +20,10 @@ namespace Utl
         public DbSet<Category> Categorys { get; set; }
         public DbSet<LeadSheet> LeadSheets { get; set; }
         public DbSet<Research> Researchs { get; set; }
+        public DbSet<PackageType> PackageTypes { get; set; }
+        public DbSet<ParticipantType> ParticipantTypes { get; set; }
         public DbSet<OnPhoneTemplate> OnPhoneTemplates { get; set; }
+        public DbSet<OnPhoneBlockType> OnPhoneBlockTypes { get; set; }
         public DbSet<FAQ> FAQs { get; set; }
         public DB()
         {
@@ -77,10 +80,11 @@ namespace Utl
             context.Categorys.Add(new Category() { Name_EN = "", Name_CH = "化工" });
             context.Categorys.Add(new Category() { Name_EN = "", Name_CH = "医疗" });
 
-            context.OnPhoneTemplates.Add(new OnPhoneTemplates() { Name_EN = "", Name_CH = "航天" });
-            context.OnPhoneTemplates.Add(new OnPhoneTemplates() { Name_EN = "", Name_CH = "石油" });
-            context.OnPhoneTemplates.Add(new OnPhoneTemplates() { Name_EN = "", Name_CH = "化工" });
-            context.OnPhoneTemplates.Add(new OnPhoneTemplates() { Name_EN = "", Name_CH = "医疗" });
+            context.OnPhoneBlockTypes.Add(new OnPhoneBlockType() { Name = "没有预算" });
+            context.OnPhoneBlockTypes.Add(new OnPhoneBlockType() { Name = "无战略规划" });
+            context.OnPhoneBlockTypes.Add(new OnPhoneBlockType() { Name = "请假" });
+            context.OnPhoneBlockTypes.Add(new OnPhoneBlockType() { Name = "无人接听"});
+            context.OnPhoneBlockTypes.Add(new OnPhoneBlockType() { Name = "不是决策人" });
 
         }
     }

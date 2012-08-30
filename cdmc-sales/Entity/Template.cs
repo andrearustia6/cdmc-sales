@@ -99,8 +99,7 @@ namespace Entity
         [Display(Name = "拒绝理由"),Required]
         public string Block { get; set; }
 
-        [Display(Name = "备用字段")]
-        public int Code { get; set; }
+        public virtual OnPhoneBlockType OnPhoneBlockType { get; set; }
         
         public virtual Project Project { get; set; }
 
@@ -109,5 +108,18 @@ namespace Entity
 
         [Display(Name = "答案"),Required,MaxLength(1000)]
         public string Answer { get; set; }
+    }
+
+    /// <summary>
+    /// 话术模板
+    /// </summary>
+    public class OnPhoneBlockType : EntityBase
+    {
+        [Display(Name = "Block名称")]
+        public string Name { get; set; }
+
+        [Display(Name = "代码")]
+        public int Code { get; set; }
+
     }
 }
