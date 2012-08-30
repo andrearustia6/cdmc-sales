@@ -62,7 +62,7 @@
     <Reference Include="System.EnterpriseServices" />
     <Reference Include="System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="Telerik.Web.Mvc">
-      <HintPath>..\..\..\Haisheng_web\bin\Telerik.Web.Mvc.dll</HintPath>
+      <HintPath>..\..\..\HS\bin\Telerik.Web.Mvc.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -235,7 +235,6 @@
     <Compile Include="Controllers\Type\PaymentTypeController.cs" />
     <Compile Include="Controllers\Type\TemplateTypeController.cs" />
     <Compile Include="Controllers\Type\TitleController.cs" />
-    <Compile Include="DB.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
