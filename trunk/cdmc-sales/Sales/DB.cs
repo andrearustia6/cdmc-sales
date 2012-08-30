@@ -19,5 +19,7 @@ namespace Sales
         public DbSet<OnPhoneTemplate> OnPhoneTemplate { get; set; }
 
         public DbSet<Project> Project { get; set; }
+
+        public DbSet<CurrencyType> CurrencyTypes { get; set; }
     }
 }

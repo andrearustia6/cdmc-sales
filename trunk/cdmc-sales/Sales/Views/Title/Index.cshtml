@@ -1,5 +1,6 @@
 ﻿@using Entity
-@(Html.Telerik().Grid<Title>().Name("Title")
+@model List<Title>
+@(Html.Telerik().Grid<Title>(Model).Name("Title")
                 .DataKeys(keys =>
                 {
                     keys.Add(s => s.ID);

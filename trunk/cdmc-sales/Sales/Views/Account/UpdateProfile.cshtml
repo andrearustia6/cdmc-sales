@@ -18,13 +18,14 @@
             @Html.LabelFor(m => m.RoleID)
         </div>
         <div class="editor-field">
-            @if (Model.Role == null)
+            @if (Model.RoleID==0 )
             {
         <p>未配置</p> 
             }
             else
             {
-        @Html.Display(Model.Role.Name)
+              var l = Employee.GetRoleName(Model.UserName);
+             <P>@l</p>
             }
         </div>
         <div class="editor-label">

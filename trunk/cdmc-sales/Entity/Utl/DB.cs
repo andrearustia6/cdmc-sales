@@ -24,6 +24,9 @@ namespace Utl
         public DbSet<ParticipantType> ParticipantTypes { get; set; }
         public DbSet<OnPhoneTemplate> OnPhoneTemplates { get; set; }
         public DbSet<OnPhoneBlockType> OnPhoneBlockTypes { get; set; }
+        public DbSet<LeadSheetType> LeadSheetTypes { get; set; }
+        public DbSet<CurrencyType> CurrencyTypes { get; set; }
+        
         public DbSet<FAQ> FAQs { get; set; }
         public DB()
         {
@@ -86,6 +89,16 @@ namespace Utl
             context.OnPhoneBlockTypes.Add(new OnPhoneBlockType() { Name = "无人接听"});
             context.OnPhoneBlockTypes.Add(new OnPhoneBlockType() { Name = "不是决策人" });
 
+            context.LeadSheetTypes.Add(new LeadSheetType() { Name="Others", Code=1});
+            context.LeadSheetTypes.Add(new LeadSheetType() { Name = "Not Pitched", Code = 1 });
+            context.LeadSheetTypes.Add(new LeadSheetType() { Name = "Waiting for Approval", Code = 1 });
+            context.LeadSheetTypes.Add(new LeadSheetType() { Name = "Closed", Code = 1 });
+            context.LeadSheetTypes.Add(new LeadSheetType() { Name = "Blowed", Code = 1 });
+            context.LeadSheetTypes.Add(new LeadSheetType() { Name = "Pitched", Code = 1 });
+            context.LeadSheetTypes.Add(new LeadSheetType() { Name = "Call-Backed", Code = 1 });
+
+            context.CurrencyTypes.Add(new CurrencyType() { Name="RMB"});
+            context.CurrencyTypes.Add(new CurrencyType() { Name = "$" });
         }
     }
 

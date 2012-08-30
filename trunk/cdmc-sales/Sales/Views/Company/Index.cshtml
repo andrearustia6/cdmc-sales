@@ -18,7 +18,7 @@
                     c.Bound(item => item.Cerator).Width(50);
                     c.Bound(item => item.From).Width(100);
                     c.Bound(item => item.ID).Title("操作").Template(@<span>
-                    <a href=@Url.Content("~/Company/Edit/" + item.ID) >编辑</a> | <a href=@Url.Content("~/Company/Details/" + item.ID)>详细</a>  | <a href=@Url.Content("~/Lead/Create/?CompanyId=" + item.ID)>添加客户</a>| <a href=@Url.Content("~/Company/delete/" + item.ID) >删除</a> 
+                    <a href=@Url.Content("~/Company/Edit/" + item.ID) >编辑</a> | <a href=@Url.Content("~/Company/Details/" + item.ID)>详细</a>  | <a href=@Url.Content("~/Lead/Create/?from=company&CompanyId=" + item.ID)>添加客户</a>| <a href=@Url.Content("~/Company/delete/" + item.ID) >删除</a> 
                    </span>);
                 })
                 .DetailView(e => e.Template(
@@ -48,7 +48,7 @@
                                 c.Bound(o => o.Title.Name_EN).Width(140);
                                 c.Bound(o => o.Contact).Width(200);
                                 c.Bound(item => item.ID).Title("操作").Template(@<span>
-                    <a href=@Url.Content("~/lead/Edit/" + item.ID) >编辑</a> | <a href=@Url.Content("~/lead/Details/" + item.ID)>详细</a>  <a href=@Url.Content("~/Company/delete/" + item.ID) >删除</a> 
+                    <a href=@Url.Content("~/lead/Edit/?from=company&id=" + item.ID) >编辑</a> | <a href=@Url.Content("~/lead/Details/" + item.ID)>详细</a>  <a href=@Url.Content("~/Company/delete/" + item.ID) >删除</a> 
                    </span>);
                             })
                                                .Resizable(resizing => resizing.Columns(true))

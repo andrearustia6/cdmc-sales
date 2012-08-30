@@ -17,7 +17,7 @@ namespace Entity
         [Display(Name = "预备字段"), Required]
         public int Code { get; set; }
 
-        [Display(Name = "致电结果描述"),Required]
+        [Display(Name = "致电结果描述")]
         public string ResultDescription { get; set; }
     }
 
