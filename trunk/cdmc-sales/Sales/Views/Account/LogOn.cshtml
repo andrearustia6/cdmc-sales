@@ -1,50 +1,40 @@
-﻿@model  Entity.LogOnModel
-
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+<link href="/css/style.css" rel="stylesheet" type="text/css" />
+</head>
 @{
+    Layout = null;
     ViewBag.Title = "登陆";
 }
-
-<h2>登陆</h2>
-<p>
-    @*请输入您的用户名和密码. 如果您还没有账号,请先 @Html.ActionLink("注册", "Register") .*@
-</p>
-
-<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
-<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
-
-@Html.ValidationSummary(true, "登陆失败,请你更新你的录入信息后再尝试.")
-
-@using (Html.BeginForm()) {
-   
-    <div  style="width:33%">
-        <fieldset>
-            <legend>账号信息</legend>
-
-            <div class="editor-label">
-                @Html.LabelFor(m => m.UserName)
-            </div>
-            <div class="editor-field">
-                @Html.TextBoxFor(m => m.UserName)
-                @Html.ValidationMessageFor(m => m.UserName)
-            </div>
-
-            <div class="editor-label">
-                @Html.LabelFor(m => m.Password)
-            </div>
-            <div class="editor-field">
-                @Html.PasswordFor(m => m.Password)
+@model  Entity.LogOnModel
+@using (Html.BeginForm())
+{
+<body>
+<div class="logo"><img src="/images/logo.jpg" width="929" height="191" alt="logo" /></div>
+<div class="login">
+  <div class="login_2">
+	<h2>决策者销售系统</h2>
+    <dl>
+    	<dt>用户名：</dt>
+        <dd>  @Html.TextBoxFor(m => m.UserName)
+                @Html.ValidationMessageFor(m => m.UserName)</dd>
+    </dl>
+    <dl>
+   	  <dt>密　码：</dt>
+      <dd> @Html.PasswordFor(m => m.Password)
                 @Html.ValidationMessageFor(m => m.Password)
-            </div>
-
-            <div class="editor-label">
-                @Html.CheckBoxFor(m => m.RememberMe)
-                @Html.LabelFor(m => m.RememberMe)
-            </div>
-
-            <p>
-                <input type="submit" value="登陆" />
-            </p>
-        </fieldset>
+        <a href="#">忘记密码</a></dd>
+    </dl>
+    <dl>
+   	  <dt>&nbsp;</dt>
+      <dd class="login_3"><input type="submit"  id="submit" value="" style="background: url('/images/denglu.gif') no-repeat top left;
+                            border-width: 0px;" /></dd>
+    </dl>
     </div>
-   
+</div>
+</body>
 }
+</html>

@@ -23,10 +23,6 @@ namespace Entity
     {
         [Display(Name = "Package类型")]
         public string Name { get; set; }
-
-        public virtual ParticipantType ParticipantType { get; set; }
-        [Display(Name = "参会类型"), Required]
-        public int? ParticipantTypeID { get; set; }
     }
 
     /// <summary>
@@ -36,10 +32,6 @@ namespace Entity
     {
         [Display(Name = "服务名称")]
         public string Name { get; set; }
-
-        public virtual ParticipantType ParticipantType { get; set; }
-        [Display(Name = "参会类型"), Required]
-        public int? ParticipantTypeID { get; set; }
     }
 
     /// <summary>
@@ -67,6 +59,7 @@ namespace Entity
         public virtual PackageServiceType PackageServiceType { get; set; }
         [Display(Name = "参会服务类型"), Required]
         public int? PackageServiceTypeID { get; set; }
+
     }
 
     /// <summary>

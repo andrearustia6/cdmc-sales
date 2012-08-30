@@ -1,6 +1,7 @@
 ﻿@using Entity
+@model List<LeadSheetType>
 
-@(Html.Telerik().Grid<LeadSheetType>().Name("LeadSheetType")
+@(Html.Telerik().Grid<LeadSheetType>(Model).Name("LeadSheetType")
                 .DataKeys(keys =>
                 {
                     keys.Add(s => s.ID);

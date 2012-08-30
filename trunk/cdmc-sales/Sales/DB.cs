@@ -21,5 +21,9 @@ namespace Sales
         public DbSet<Project> Project { get; set; }
 
         public DbSet<CurrencyType> CurrencyTypes { get; set; }
+
+        public DbSet<PackageType> PackageTypes { get; set; }
+
+        public DbSet<ParticipantType> ParticipantTypes { get; set; }
     }
 }

@@ -468,7 +468,12 @@
     <Content Include="Content\Common\Icons\test.png" />
     <Content Include="Content\Common\Icons\win.png" />
     <Content Include="Content\Common\Icons\wpf.png" />
+    <Content Include="css\style.css" />
     <Content Include="Global.asax" />
+    <Content Include="images\bj.gif" />
+    <Content Include="images\bj_2.jpg" />
+    <Content Include="images\denglu.gif" />
+    <Content Include="images\logo.jpg" />
     <Content Include="Scripts\2011.3.1115\jquery-1.6.4.min.js" />
     <Content Include="Scripts\2011.3.1115\jquery.validate.min.js" />
     <Content Include="Scripts\2011.3.1115\telerik.autocomplete.min.js" />
@@ -955,6 +960,24 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\OnPhoneTemplate\Display.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Account\Copy of LogOn.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Package\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Package\Details.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Package\Create.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Package\Edit.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Package\Delete.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

@@ -1,6 +1,6 @@
 ﻿@using Entity
 @model List<CompanyType>
-@(Html.Telerik().Grid<CompanyType>().Name("CompanyType")
+@(Html.Telerik().Grid<CompanyType>(Model).Name("CompanyType")
                 .DataKeys(keys =>
                 {
                     keys.Add(s => s.ID);
