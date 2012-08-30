@@ -30,9 +30,10 @@ namespace Entity
         [Display(Name = "致电客户"), Required]
         public int? LeadID { get; set; }
 
-     
-        //[Display(Name = "所属项目"), Required]
-        //public int? ProjectID { get; set; }
+
+        [Display(Name = "所属项目"), Required]
+        public int? ProjectID { get; set; }
+        public virtual Project Project { get; set; }
 
         public virtual LeadSheetType CallResultType { get; set; }
         public int? LeadSheetType { get; set; }
@@ -98,8 +99,10 @@ namespace Entity
 
         [Display(Name = "拒绝理由"),Required]
         public string Block { get; set; }
-
+        
         public virtual OnPhoneBlockType OnPhoneBlockType { get; set; }
+        [Display(Name = "理由类型"), Required]
+        public int? OnPhoneBlockTypeID { get; set; }
         
         public virtual Project Project { get; set; }
 
@@ -115,7 +118,7 @@ namespace Entity
     /// </summary>
     public class OnPhoneBlockType : EntityBase
     {
-        [Display(Name = "Block名称")]
+        [Display(Name = "Blockleixing")]
         public string Name { get; set; }
 
         [Display(Name = "代码")]

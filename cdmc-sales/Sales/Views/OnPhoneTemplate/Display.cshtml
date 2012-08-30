@@ -1,0 +1,45 @@
+﻿@using Utl;
+@model Entity.OnPhoneTemplate
+<fieldset>
+    <legend>@SR.Form</legend>
+    <div class="editor-label">
+        @Html.Label("名称")
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Name)
+    </div>
+    <div class="display-label">
+        Block类型</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.OnPhoneBlockType.Name)
+    </div>
+    <div class="editor-label">
+        原因
+    </div>
+    <div class="editor-field">
+        @Html.DisplayFor(model => model.Block)
+    </div>
+    <div class="editor-label">
+        回答提示
+    </div>
+    <div class="editor-field">
+        @Html.DisplayFor(model => model.Answer)
+    </div>
+    <div class="editor-label">
+        对应项目
+    </div>
+    <div class="editor-field">
+        @{
+            if (Model.Project != null)
+            {
+            @Html.DisplayFor(model => model.Project.Name)
+            }
+            else
+            {
+                <p>适用所有项目</p>
+            }
+     
+        }
+    </div>
+</fieldset>
+@Html.Partial("displaycommon", Model)

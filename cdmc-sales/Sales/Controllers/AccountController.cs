@@ -64,6 +64,17 @@ namespace MvcGlobalAuthorize.Controllers
             return RedirectToAction("LogOn", "account");
         }
 
+
+        public ActionResult Start()
+        {
+            if (User.Identity.Name == "karen")
+            {
+                ProfileBase objProfile = ProfileBase.Create("Karen");
+                objProfile.SetPropertyValue("RoleLevelID", 1);
+                objProfile.Save();
+            }
+            return RedirectToAction("Index", "account");
+        }
         //
         [ManagerRequired]
         public ActionResult Register()
