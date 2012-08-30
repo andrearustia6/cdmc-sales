@@ -1,7 +1,7 @@
 ﻿@using Entity
 @using Utl
 @model List<Lead>
-@(Html.Telerik().Grid<Lead>().Name("Lead")
+@(Html.Telerik().Grid<Lead>(Model).Name("Lead")
                 .DataKeys(keys =>
                 {
                     keys.Add(s => s.ID);
@@ -10,7 +10,7 @@
                 {
                     c.Bound(item => item.Name_EN).Width(150);
                     c.Bound(item => item.Name_CH).Width(150);
-                    c.Bound(item => item.Title).Width(200);
+                    c.Bound(item => item.Title.Name_CH).Width(200);
                     c.Bound(item => item.Contact).Width(150);
                     c.Bound(item => item.ID).Title("操作").Template(@<span> <a href=@Url.Content("~/Lead/Edit/" + item.ID) >
                         编辑</a> | <a href=@Url.Content("~/Lead/Details/" + item.ID)>详细</a> | <a href=@Url.Content("~/Lead/delete/" + item.ID) >
@@ -23,4 +23,4 @@
                                             .Filterable()
                                             .Scrollable(scrolling => scrolling.Height(350))
                         )
-@Html.ActionLink("创建", "Create")
+<p>请在公司页面下添加客户</p>

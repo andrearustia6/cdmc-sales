@@ -77,10 +77,11 @@
             {
                 cn = c.Name_CH;
                 en = c.Name_EN;
-            } 
-            @Html.Label(cn) 
-            @Html.Label(en) 
+                @Html.Label(cn) 
+                @Html.Label(en) 
             @Html.HiddenFor(m => m.CompanyID, cid)
+            } 
+           
         }
     </div>
     <div class="editor-field">
@@ -89,7 +90,8 @@
             <img  alt="上传文件" width="300" height="200" src=@Url.Action("ShowImage", "Image", new { id = Model.ImageID }) />
           }
         }
-        @Html.Telerik().Upload().Async(a=>a.AutoUpload(true)).Name("attachments").Multiple(false)
+        @Html.Telerik().Upload().Async(a => a.AutoUpload(true)).Name("attachments").Multiple(false)
     </div>
 </fieldset>
 
+q

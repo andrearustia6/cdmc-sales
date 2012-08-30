@@ -53,7 +53,7 @@
         @Html.DropDownListFor(model => model.CompanyTypeID, new SelectList(CH.GetAllData<Entity.CompanyType>(),"ID","Name"),"-请选择-")
         @Html.ValidationMessageFor(model => model.CompanyTypeID)
     </div>
-    
+   
     </div>
     <div class="editor-label">
         @Html.Label("行业名称")
@@ -66,7 +66,7 @@
         @Html.LabelFor(model => model.ForeignAssetPercentage)
     </div>
     <div class="editor-field">
-        @Html.EditorFor(model => model.ForeignAssetPercentage)
+        @Html.Telerik().PercentTextBoxFor(model => model.ForeignAssetPercentage)
         @Html.ValidationMessageFor(model => model.ForeignAssetPercentage)
     </div>
     <div class="editor-label">

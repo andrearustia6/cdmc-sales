@@ -24,9 +24,13 @@ namespace Sales.Controllers
             return View(CH.GetDataById<Lead>(id));
         }
 
-        public ActionResult Create(int? companyid)
+        public ActionResult Create(int? companyid, string from)
         {
             ViewBag.CompanyID = companyid;
+            if (from == "company")
+            {
+                ViewBag.From = "company";
+            }
             return View();
         }
 
