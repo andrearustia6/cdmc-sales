@@ -57,6 +57,7 @@
     <Compile Include="Utl\DB.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Utl\EntityUtl.cs" />
     <Compile Include="Utl\Log.cs">
       <SubType>Code</SubType>
     </Compile>

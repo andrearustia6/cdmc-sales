@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<timespan>
+  <Available start="9:00" end="6:00" />
+  <District>
+  <node country="Australia" district="61" time="2"></node>
+  <node country="Austria" district="43" time="-7"></node>
+  <node country="Bahrain" district="880" time="-2"></node>
+  <node country="Bangladesh" district="880" time="-2"></node>
+  <node country="Belgium" district="32" time="-7"></node>
+  <node country="Brazil" district="55" time="-11"></node>
+  </District>
+</timespan>
+
+		
+		
+		
+		
+
+

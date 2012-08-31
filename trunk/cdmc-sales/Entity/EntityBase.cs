@@ -22,4 +22,20 @@ namespace Entity
         [Display(Name = "更改时间")]
         public DateTime? ModifiedTime { get; set; }
     }
+
+    public class FullNameEntity : EntityBase
+    {
+        [Display(Name = "名称")]
+        public string FullName { get { return EntityUtl.GetFullName(this); } }
+
+        [Display(Name = "中文名称"), MaxLength(100)]
+        public string Name_CH { get; set; }
+
+        [Display(Name = "英文名称"), MaxLength(100)]
+        public string Name_EN { get; set; }
+       
+    }
+
+   
+
 }
