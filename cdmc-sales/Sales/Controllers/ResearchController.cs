@@ -52,7 +52,8 @@ namespace Sales.Controllers
             
             if (ModelState.IsValid)
             {
-                item.Contents = HttpUtility.HtmlDecode(item.Contents);
+                //item.Contents = HttpUtility.HtmlDecode(item.Contents);
+              
                 CH.Edit<Research>(item);
                 return RedirectToAction("Index");
             }
