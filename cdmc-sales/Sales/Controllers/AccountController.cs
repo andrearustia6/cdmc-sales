@@ -129,7 +129,7 @@ namespace MvcGlobalAuthorize.Controllers
 
                     objProfile.SetPropertyValue("RoleLevelID", 0);
                     //FormsAuthentication.SetAuthCookie(model.UserName, false /* createPersistentCookie */);
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Account");
                 }
                 else
                 {

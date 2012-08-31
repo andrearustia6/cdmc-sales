@@ -8,8 +8,8 @@
                 .Columns(c =>
                 {
                     c.Bound(item => item.Name).Width(200);
-                    c.Bound(item => item.Description).Width(300);
-                    c.Bound(item => item.ID).Title("操作").Template(@<span> <a href=@Url.Content("~/CurrencyType/Edit/" + item.ID) >
+                    c.Bound(item => item.Description);
+                    c.Bound(item => item.ID).Title("操作").Width(200).Template(@<span> <a href=@Url.Content("~/CurrencyType/Edit/" + item.ID) >
                         编辑</a> | <a href=@Url.Content("~/CurrencyType/Details/" + item.ID)>详细</a> | <a href=@Url.Content("~/CurrencyType/delete/" + item.ID) >
                             删除</a> </span>);
                 })
