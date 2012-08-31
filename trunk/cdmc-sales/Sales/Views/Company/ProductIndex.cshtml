@@ -40,9 +40,10 @@
                             .Columns(c =>
                             {
                                 c.Template(@<text><img  style="width:80px;height:70px" src=@Url.Content("~/Image/DisplayImage/" + item.ImageID) /></text>).Title("客户照片").Width(150);
-                                c.Bound(o => o.Name_EN).Width(140);
-                                c.Bound(o => o.Name_CH).Width(140);
-                                c.Bound(o => o.Title.Name_EN).Width(140);
+                                c.Bound(o => o.Name_EN).Width(120);
+                                c.Bound(o => o.Name_CH).Width(120);
+                                c.Bound(o => o.Title.Name_EN).Title("职位").Width(120);
+                                c.Bound(o => o.EMail).Title("邮箱").Width(120);
                                 c.Bound(o => o.Contact).Width(200);
                             })
                         .Resizable(resizing => resizing.Columns(true))

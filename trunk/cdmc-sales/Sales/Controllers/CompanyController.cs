@@ -15,12 +15,20 @@ namespace Sales.Controllers
     {
         public ActionResult Index()
         {
-            if (Employee.AsSales())
+            if(Employee.AsManager())
                 return View(CH.GetAllData<Company>("Leads"));
+            else if (Employee.AsSales())
+                return RedirectToAction("SalesIndex");
             else if (Employee.AsProductInterface())
                 return RedirectToAction("ProductIndex");
             else
                 return RedirectToAction("MarketIndex");
+        }
+
+        public ViewResult SalesIndex()
+        {
+            var data = CH.GetAllData<Company>("Leads");
+            return View(data);
         }
 
         public ViewResult MarketIndex()

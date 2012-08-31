@@ -15,7 +15,6 @@
                 {
                     c.Bound(item => item.UserName).Width(200);
                     c.Bound(item => item.Email).Width(200);
-                    c.Bound(item => item.IsOnline).Width(100);
                     c.Bound(item => item.UserName).Template(@<span>
                         @Employee.GetProfile("Department",item.UserName)
                     </span>).Width(100).Title("Department");
