@@ -12,6 +12,7 @@ using Telerik.Web.Mvc;
 using Attributes;
 using System.Web.Security;
 using System.Web.Profile;
+using System.Xml;
 
 namespace Utl
 {
@@ -299,6 +300,16 @@ namespace Utl
             source = source.Replace("\r\n ", " <br/> ");
             return source;
         }
+
+        public static TimeSpan GetAvailableTimeSpan(int district)
+        {
+            XmlDocument doc = new XmlDocument();
+            doc.Load("~/TimeSpan.xml");
+          
+
+            return new TimeSpan();
+        }
+        
 
         //public static string GetImageUrls(List<Image> imgs)
         //{

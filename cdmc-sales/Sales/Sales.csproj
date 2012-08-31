@@ -247,6 +247,7 @@
     <Compile Include="Utl\Utl.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="TimeSpan.xml" />
     <Content Include="Content\2011.3.1115\Black\editor.png" />
     <Content Include="Content\2011.3.1115\Black\imagebrowser.png" />
     <Content Include="Content\2011.3.1115\Black\loading.gif" />

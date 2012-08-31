@@ -9,13 +9,8 @@ namespace Entity
     /// <summary>
     /// 公司
     /// </summary>
-    public class Company : EntityBase
+    public class Company : FullNameEntity
     {
-        [Display(Name = "中文名称"), MaxLength(100)]
-        public string Name_CH { get; set; }
-
-        [Display(Name = "英文名称"), MaxLength(100)]
-        public string Name_EN { get; set; }
 
         [Display(Name = "联系方式"), Required, MaxLength(100)]
         public string Contact { get; set; }
@@ -77,30 +72,34 @@ namespace Entity
     /// <summary>
     /// Lead
     /// </summary>
-    public class Lead : EntityBase
+    public class Lead :FullNameEntity
     {
         public string Gender { get; set; }
 
-        [Display(Name = "中文名称"), MaxLength(100)]
-        public string Name_CH { get; set; }
+        
+        //[Display(Name = "中文名称"), MaxLength(100)]
+        //public string Name_CH { get; set; }
 
-        [Display(Name = "英文名称"), MaxLength(100)]
-        public string Name_EN { get; set; }
+        //[Display(Name = "英文名称"), MaxLength(100)]
+        //public string Name_EN { get; set; }
 
         public virtual Title Title { get; set; }
          [Display(Name = "职位")]
         public int? TitleID { get; set; }
 
         [DataType(DataType.PhoneNumber)]
-        [Display(Name = "联系方式"),Required]
+        [Display(Name = "联系方式")]
         public string Contact { get; set; }
 
         [DataType(DataType.EmailAddress)]
-        [Display(Name = "电子邮箱"), Required]
+        [Display(Name = "电子邮箱")]
         public string EMail { get; set; }
 
+        [Display(Name = "传真")]
+        public string Fax { get; set; }
+
         [DataType( DataType.PhoneNumber)]
-        [Display(Name = "移动电话"), Required]
+        [Display(Name = "移动电话")]
         public string Mobile { get; set; }
 
         public virtual Company Company { get; set; }
@@ -136,12 +135,12 @@ namespace Entity
     /// <summary>
     /// 职位类型
     /// </summary>
-    public class Title : EntityBase
+    public class Title:FullNameEntity
     {
-        [Display(Name = "中文名称"), Required]
-        public string Name_CH { get; set; }
+        //[Display(Name = "中文名称"), Required]
+        //public string Name_CH { get; set; }
 
-        [Display(Name = "英文名称"), Required]
-        public string Name_EN { get; set; }
+        //[Display(Name = "英文名称"), Required]
+        //public string Name_EN { get; set; }
     }
 }
