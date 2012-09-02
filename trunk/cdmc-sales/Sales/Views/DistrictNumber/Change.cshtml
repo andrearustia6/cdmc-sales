@@ -1,0 +1,33 @@
+﻿@model Entity.DistrictNumber
+@using Utl
+
+@Html.ValidationSummary(true)
+<fieldset>
+    <legend>@SR.Form</legend>
+
+         <div class="editor-label">
+            @Html.LabelFor(model => model.Number)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Number)
+            @Html.ValidationMessageFor(model => model.Number)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Country)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Country)
+            @Html.ValidationMessageFor(model => model.Country)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.TimeDifference)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.TimeDifference)
+            @Html.ValidationMessageFor(model => model.TimeDifference)
+        </div>
+         
+</fieldset>
+

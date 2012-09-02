@@ -58,6 +58,25 @@ namespace Entity
         public string Answer { get; set; }
     }
 
+
+    /// <summary>
+    /// 区号
+    /// </summary>
+    public class DistrictNumber : EntityBase
+    {
+         [Display(Name = "时差选择")]
+        public string FullName { get { return Country + ":" + Number.ToString() + "(" + TimeDifference.ToString() + ")"; } }
+         
+        [Display(Name = "区号"),  Required]
+        public int Number { get; set; }
+
+        [Display(Name = "国家"), Required]
+        public string Country { get; set; }
+
+        [Display(Name = "时差"), Required]
+        public double TimeDifference { get; set; }
+    }
+
     /// <summary>
     /// 留言
     /// </summary>

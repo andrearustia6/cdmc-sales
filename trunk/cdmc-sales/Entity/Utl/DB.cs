@@ -30,6 +30,7 @@ namespace Utl
         public DbSet<PackageItem> PackageItems { get; set; }
         public DbSet<FAQ> FAQs { get; set; }
         public DbSet<PaymentType> PaymentTypes { get; set; }
+        public DbSet<DistrictNumber> DistrictNumbers { get; set; }
         public DB()
         {
             Database.SetInitializer<DB>(new DBInitializer());
