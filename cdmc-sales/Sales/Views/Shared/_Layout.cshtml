@@ -42,6 +42,10 @@
                            item.Add().Text("模板").Url("~/TemplateType/index").ImageUrl("~/Content/Common/Icons/TabStrip.png");
                            item.Add().Text("Block").Url("~/OnPhoneBlockType/index").ImageUrl("~/Content/Common/Icons/TabStrip.png");
                        });
+                       menu.Add().Text("配置").ImageUrl("~/Content/Common/Icons/GridView.gif").Items(item =>
+                      {
+                           item.Add().Url("~/DistrictNumber/index").Text("区号管理").ImageUrl("~/Content/Common/Icons/Docking.gif");
+                       });
                    }
 
                    menu.Add().Text("员工信息").ImageUrl("~/Content/Common/Icons/GridView.gif").Items(item =>
@@ -66,7 +70,7 @@
                    {
                        item.Add().Url("~/Company/index").Text("公司").ImageUrl("~/Content/Common/Icons/Docking.gif");
                        item.Add().Url("~/Company/index").Text("客户").ImageUrl("~/Content/Common/Icons/Docking.gif");
-                       
+
                    });
                    menu.Add().Text("会议管理").ImageUrl("~/Content/Common/Icons/GridView.gif").Items(item =>
                    {
@@ -85,9 +89,9 @@
                        });
                    }
 
-             
+
                }).Render();}
-            <section id="main" >@RenderBody()</section>
+            <section id="main">@RenderBody()</section>
         </div>
         <footer>
 		</footer>

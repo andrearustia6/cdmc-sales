@@ -1,5 +1,6 @@
 ﻿@model Entity.Company
 @using Utl
+@using Entity
 
 @Html.ValidationSummary(true)
 <fieldset>
@@ -19,11 +20,11 @@
         @Html.ValidationMessageFor(model => model.Name_CH)
     </div>
     <div class="editor-label">
-        @Html.LabelFor(model => model.DistrictNumber)
+        @Html.LabelFor(model => model.DistrictNumberID)
     </div>
     <div class="editor-field">
-        @Html.EditorFor(model => model.DistrictNumber)
-        @Html.ValidationMessageFor(model => model.DistrictNumber)
+        @Html.DropDownListFor(model =>model.DistrictNumberID,new SelectList(CH.GetAllData<DistrictNumber>(),"ID","FullName"), "-请选择-")
+        @Html.ValidationMessageFor(model => model.DistrictNumberID)
     </div>
     <div class="editor-label">
         @Html.LabelFor(model => model.Contact)

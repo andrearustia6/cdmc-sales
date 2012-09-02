@@ -32,7 +32,8 @@ namespace Entity
         public int? CompanyTypeID { get; set; }
 
         [Display(Name = "区号")]
-        public string DistrictNumber { get; set; }
+        public virtual DistrictNumber DistrictNumber { get; set; }
+        public int? DistrictNumberID { get; set; }
 
         [Display(Name = "行业类型")]
         public virtual Category Category { get; set; }

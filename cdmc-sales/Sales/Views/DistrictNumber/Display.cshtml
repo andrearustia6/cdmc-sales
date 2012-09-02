@@ -1,0 +1,24 @@
+﻿@using Utl;
+@model Entity.DistrictNumber
+<fieldset>
+    <div class="display-label">FullName</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.FullName)
+    </div>
+
+    <div class="display-label">Number</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Number)
+    </div>
+
+    <div class="display-label">Country</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Country)
+    </div>
+
+    <div class="display-label">TimeDifference</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.TimeDifference)
+    </div>
+</fieldset>
+
