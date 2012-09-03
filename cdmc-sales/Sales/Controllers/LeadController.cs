@@ -37,10 +37,10 @@ namespace Sales.Controllers
         [HttpPost]
         public ActionResult Create(Lead item)
         {
-            if (EntityUtl.CheckPropertyOneOfAllNotNull(item, "Name_EN,Name_CH"))
+            if (!EntityUtl.CheckPropertyAllNull(item, "Name_EN", "Name_CH"))
                 ModelState.AddModelError("", "名字不完整,中文名和英文名不能同时为空");
 
-            if (EntityUtl.CheckPropertyOneOfAllNotNull(item, "Email,Fax"))
+            if (EntityUtl.CheckPropertyAllNull(item, "Email", "Fax"))
                 ModelState.AddModelError("", "联系方式不完整,座机和传真号不能同时为空");
 
             if (ModelState.IsValid)
@@ -62,10 +62,10 @@ namespace Sales.Controllers
         [HttpPost]
         public ActionResult Edit(Lead item)
         {
-            if (EntityUtl.CheckPropertyOneOfAllNotNull(item, "Name_EN,Name_CH"))
+            if (EntityUtl.CheckPropertyAllNull(item, "Name_EN", "Name_CH"))
                 ModelState.AddModelError("", "名字不完整,中文名和英文名不能同时为空");
 
-            if (EntityUtl.CheckPropertyOneOfAllNotNull(item, "Email,Fax"))
+            if (EntityUtl.CheckPropertyAllNull(item, "Email", "Fax"))
                 ModelState.AddModelError("", "联系方式不完整,座机和传真号不能同时为空");
 
             if (ModelState.IsValid)

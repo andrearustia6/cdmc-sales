@@ -11,7 +11,6 @@ namespace Entity
     /// </summary>
     public class Company : FullNameEntity
     {
-
         [Display(Name = "联系方式"), Required, MaxLength(100)]
         public string Contact { get; set; }
 
@@ -24,15 +23,24 @@ namespace Entity
         public string KeyWords { get; set; }
 
         [Display(Name = "可打时间")]
-        public string Available{ get; set; }
+        public string Available 
+        { 
+            get 
+            {
+                var dt1 = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DBSR.WorkTimeStart,0,0);
+                var dt2 = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DBSR.WorkTimeEnd, 0, 0);
+                return dt1.AddHours(DistrictNumber.TimeDifference).ToShortTimeString()+"~"+dt2.AddHours(DistrictNumber.TimeDifference).ToShortTimeString();
+            } 
+        }
 
         [Display(Name = "公司类型")]
         public virtual CompanyType CompanyType { get; set; }
         [Required]
         public int? CompanyTypeID { get; set; }
 
-        [Display(Name = "区号")]
+        
         public virtual DistrictNumber DistrictNumber { get; set; }
+        [Display(Name = "区号/时差")]
         public int? DistrictNumberID { get; set; }
 
         [Display(Name = "行业类型")]

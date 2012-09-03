@@ -8,12 +8,11 @@
                 })
                 .Columns(c =>
                 {
-                    c.Bound(item => item.Name_EN).Width(150);
-                    c.Bound(item => item.Name_CH).Width(150);
-                    c.Bound(item => item.DistrictNumber).Width(100);
+                    c.Bound(item => item.FullName).Width(150);
+                    c.Bound(item => item.DistrictNumber.FullName).Width(100);
+                    c.Bound(item => item.Available).Width(200);
                     c.Bound(item => item.Contact).Width(100);
-                    c.Bound(item => item.Available).Width(100);
-                    c.Bound(item => item.Category.Name_CH).Title("行业").Width(100);
+                    c.Bound(item => item.Category.FullName).Title("行业").Width(100);
                     c.Bound(item => item.CompanyType.Name).Width(100);
                     c.Bound(item => item.Cerator).Width(100);
                     c.Bound(item => item.From).Width(100);

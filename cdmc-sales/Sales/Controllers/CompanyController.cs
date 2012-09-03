@@ -56,7 +56,7 @@ namespace Sales.Controllers
         public ActionResult Create(Company item)
         {
 
-            if (EntityUtl.CheckPropertyOneOfAllNotNull(item, "Name_EN,Name_CH"))
+            if (EntityUtl.CheckPropertyAllNull(item, "Name_EN", "Name_CH"))
                 ModelState.AddModelError("", "名字不完整,中文名和英文名不能同时为空");
 
             if (ModelState.IsValid)
@@ -93,7 +93,7 @@ namespace Sales.Controllers
         [SalesRequired]
         public ActionResult Edit(Company item)
         {
-            if (EntityUtl.CheckPropertyOneOfAllNotNull(item, "Name_EN,Name_CH"))
+            if (EntityUtl.CheckPropertyAllNull(item, "Name_EN", "Name_CH"))
                 ModelState.AddModelError("", "名字不完整,中文名和英文名不能同时为空");
 
             if (ModelState.IsValid)
