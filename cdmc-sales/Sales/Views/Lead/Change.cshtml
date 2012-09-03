@@ -21,7 +21,15 @@
     <div class="editor-label">
         @Html.Label("个人照片")
     </div>
-    
+     <div class="editor-field">
+        @{if (Model != null)
+          {
+            <img  alt="上传文件" width="300" height="200" src=@Url.Action("ShowImage", "Image", new { id = Model.ImageID }) />
+          }
+        }
+        @Html.Telerik().Upload().Async(a=>a.AutoUpload(true)).Name("attachments").Multiple(false)
+    </div>
+
     <div class="editor-label">
         @Html.LabelFor(model => model.Gender)
     </div>
@@ -50,6 +58,15 @@
         @Html.EditorFor(model => model.EMail)
         @Html.ValidationMessageFor(model => model.EMail)
     </div>
+
+     <div class="editor-label">
+        @Html.LabelFor(model => model.Fax)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.Fax)
+        @Html.ValidationMessageFor(model => model.Fax)
+    </div>
+
     <div class="editor-label">
         @Html.LabelFor(model => model.Mobile)
     </div>
@@ -57,13 +74,7 @@
         @Html.EditorFor(model => model.Mobile)
         @Html.ValidationMessageFor(model => model.Mobile)
     </div>
-    <div class="editor-label">
-        @Html.Label("Lead类型")
-    </div>
-    <div class="editor-field">
-        @Html.DropDownListFor(model => model.LeadTypeID, new SelectList(CH.GetAllData<LeadType>(), "ID", "Name"), "-请选择-")
-        @Html.ValidationMessageFor(model => model.LeadTypeID)
-    </div>
+
     <div class="editor-label">
         @Html.Label("所属公司")
     </div>
@@ -84,14 +95,4 @@
            
         }
     </div>
-    <div class="editor-field">
-        @{if (Model != null)
-          {
-            <img  alt="上传文件" width="300" height="200" src=@Url.Action("ShowImage", "Image", new { id = Model.ImageID }) />
-          }
-        }
-        @Html.Telerik().Upload().Async(a => a.AutoUpload(true)).Name("attachments").Multiple(false)
-    </div>
 </fieldset>
-
-q

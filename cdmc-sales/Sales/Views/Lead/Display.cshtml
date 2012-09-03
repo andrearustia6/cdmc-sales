@@ -1,5 +1,5 @@
 ﻿@using Utl;
-@model Entity.Client
+@model Entity.Lead
 <fieldset>
     <legend>@SR.Form</legend>
     <div class="display-label">客户照片</div>
@@ -14,7 +14,7 @@
 
     <div class="display-label">客户姓名</div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.Name)
+        @Html.DisplayFor(model => model.FullName)
     </div>
 
     <div class="display-label">联系方式</div>
@@ -22,9 +22,24 @@
         @Html.DisplayFor(model => model.Contact)
     </div>
 
+    <div class="display-label"></div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Fax)
+    </div>
+
+    <div class="display-label"></div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.EMail)
+    </div>
+
+    <div class="display-label"></div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Mobile)
+    </div>
+
     <div class="display-label">所属公司</div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.Company.Name)
+        @Html.DisplayFor(model => model.Company.FullName)
     </div>
 </fieldset>
 @Html.Partial("displaycommon", Model)
