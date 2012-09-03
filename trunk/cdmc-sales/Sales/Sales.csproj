@@ -223,7 +223,6 @@
     <Compile Include="Controllers\Type\CurrencyTypeController.cs" />
     <Compile Include="Controllers\LeadController.cs" />
     <Compile Include="Controllers\Type\LeadSheetTypeController.cs" />
-    <Compile Include="Controllers\Type\LeadTypeController.cs" />
     <Compile Include="Controllers\CompanyController.cs" />
     <Compile Include="Controllers\Type\CompanyTypeController.cs" />
     <Compile Include="Controllers\FAQController.cs" />
@@ -793,12 +792,6 @@
     <Content Include="Views\Lead\Display.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\LeadType\Index.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\LeadType\Display.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Views\Category\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -845,9 +838,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\CurrencyType\Display.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\LeadType\Change.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Title\Index.cshtml" />

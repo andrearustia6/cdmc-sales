@@ -30,30 +30,14 @@
                         )
 @helper RenderGrid(Lead Lead)
 { 
+    @*<label>dsgfsdgdfggerg</label>*@
         Html.Telerik().TabStrip().Name("TabStrip_" + Lead.ID).SelectedIndex(0).Items(items =>
         {
-            items.Add().Text("Packages").Content(@<text></text>);
-            items.Add().Text("LeadSheet").Content(@<text></text>);
-            items.Add().Text("Target").Content(@<text></text>);
+            items.Add().Text("Packages").Content(@<text>sgdfgdgdg</text>);
+            items.Add().Text("LeadSheet").Content(@<text>dgfdfgdfg</text>);
+            items.Add().Text("Target").Content(@<text>dgdfgdg</text>);
         }
       );
 }
-          
-   @*@(Html.Telerik().Grid(Lead).Name("Lead" + Lead.ID)
-                            .Columns(c =>
-                            {
-                                c.Template(@<text><img  style="width:80px;height:70px" src=@Url.Content("~/Image/DisplayImage/" + item.ImageID) /></text>).Title("客户照片").Width(150);
-                                c.Bound(o => o.Name_EN).Width(120);
-                                c.Bound(o => o.Name_CH).Width(120);
-                                c.Bound(o => o.Title.Name_EN).Title("职位").Width(120);
-                                c.Bound(o => o.EMail).Title("邮箱").Width(120);
-                                c.Bound(o => o.Contact).Width(200);
-                                c.Bound(item => item.ID).Title("操作").Template(@<span>
-                    <a href=@Url.Content("~/lead/Edit/?from=company&id=" + item.ID) >编辑</a> | <a href=@Url.Content("~/lead/Details/" + item.ID)>详细</a>  <a href=@Url.Content("~/Company/delete/" + item.ID) >删除</a> 
-                   </span>);
-                            })
-                                               .Resizable(resizing => resizing.Columns(true))
-                                               .Pageable(p => p.PageSize(20))
-                                               .Sortable())*@
 
 <p>请在公司页面下添加客户</p>

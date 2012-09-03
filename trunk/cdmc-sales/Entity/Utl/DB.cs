@@ -11,7 +11,6 @@ namespace Utl
 {
     public class DB : DbContext
     {
-        public DbSet<LeadType> LeadTypes { get; set; }
         public DbSet<Company> Companys { get; set; }
         public DbSet<CompanyType> CompanyTypes { get; set; }
         public DbSet<Title> Titles { get; set; }
@@ -70,11 +69,6 @@ namespace Utl
             context.CompanyTypes.Add(new CompanyType { Name = "合资企业" });
             context.CompanyTypes.Add(new CompanyType { Name = "民营企业" });
             context.CompanyTypes.Add(new CompanyType { Name = "事业单位" });
-
-            context.LeadTypes.Add(new LeadType { Name = "First Pitch" });
-            context.LeadTypes.Add(new LeadType { Name = "Potential" });
-            context.LeadTypes.Add(new LeadType { Name = "Blow" });
-            context.LeadTypes.Add(new LeadType { Name = "Normal" });
 
             context.Titles.Add(new Title() { Name_EN = "CEO",Name_CH="首席执行官" });
             context.Titles.Add(new Title() { Name_EN = "CFO",Name_CH="财务总监"});

@@ -37,8 +37,7 @@ namespace Entity
         public virtual CompanyType CompanyType { get; set; }
         [Required]
         public int? CompanyTypeID { get; set; }
-
-        
+ 
         public virtual DistrictNumber DistrictNumber { get; set; }
         [Display(Name = "区号/时差")]
         public int? DistrictNumberID { get; set; }
@@ -61,10 +60,11 @@ namespace Entity
         [Display(Name = "上传员工")]
         public string  Cerator { get; set; }
 
-
         [Display(Name = "来源部门")]
         public string From { get; set; }
-             
+
+        [Display(Name = "传真")]
+        public string Fax { get; set; }
     
     }
 
@@ -115,31 +115,22 @@ namespace Entity
         [Display(Name = "所属公司"),Required]
         public int? CompanyID { get; set; }
 
-        public virtual LeadType LeadType { get; set; }
-        [Display(Name = "Lead类型")]
-        public int? LeadTypeID { get; set; }
+        //public virtual LeadType LeadType { get; set; }
+        //[Display(Name = "Lead类型")]
+        //public int? LeadTypeID { get; set; }
 
         public virtual Image Image { get; set; }
         public int?  ImageID { get; set; }
     }
 
-    /// <summary>
-    /// 客户类型
-    /// </summary>
-    public class LeadType : EntityBase
-    {
-        [Display(Name = "Lead类型名称"), Required]
-        public string Name { get; set; }
-    }
-
-    /// <summary>
-    /// 公司区域
-    /// </summary>
-    public class Region : EntityBase
-    {
-        [Display(Name = "公司区域"), Required]
-        public string Name { get; set; }
-    }
+    ///// <summary>
+    ///// 公司区域
+    ///// </summary>
+    //public class Region : EntityBase
+    //{
+    //    [Display(Name = "公司区域"), Required]
+    //    public string Name { get; set; }
+    //}
 
     /// <summary>
     /// 职位类型
