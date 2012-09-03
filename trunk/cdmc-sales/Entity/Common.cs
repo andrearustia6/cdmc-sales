@@ -9,13 +9,8 @@ namespace Entity
     /// <summary>
     /// 行业类型
     /// </summary>
-    public class Category : EntityBase
+    public class Category : FullNameEntity
     {
-        [Display(Name = "中文名称"), Required]
-        public string Name_CH { get; set; }
-
-        [Display(Name = "英文名称"), Required]
-        public string Name_EN { get; set; }
     }
 
     /// <summary>
@@ -64,7 +59,7 @@ namespace Entity
     /// </summary>
     public class DistrictNumber : EntityBase
     {
-         [Display(Name = "时差选择")]
+         [Display(Name = "时差")]
         public string FullName { get { return Country + ":" + Number.ToString() + "(" + TimeDifference.ToString() + ")"; } }
          
         [Display(Name = "区号"),  Required]

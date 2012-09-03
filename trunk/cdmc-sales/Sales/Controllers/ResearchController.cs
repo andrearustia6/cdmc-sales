@@ -42,7 +42,7 @@ namespace Sales.Controllers
         public ActionResult Edit(int id)
         {
             var data = CH.GetDataById<Research>(id);
-            
+            data.Contents = HttpUtility.HtmlEncode(data.Contents);
             return View(data);
         }
 
@@ -52,7 +52,7 @@ namespace Sales.Controllers
             
             if (ModelState.IsValid)
             {
-                //item.Contents = HttpUtility.HtmlDecode(item.Contents);
+                item.Contents = HttpUtility.HtmlDecode(item.Contents);
               
                 CH.Edit<Research>(item);
                 return RedirectToAction("Index");

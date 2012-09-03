@@ -140,6 +140,9 @@ namespace Utl
             context.PackageServiceTypes.Add(new PackageServiceType() { Name = "Conference Email Promotion" });
             context.PackageServiceTypes.Add(new PackageServiceType() { Name = "Color Glossy Summit Brochures" });
             context.PackageServiceTypes.Add(new PackageServiceType() { Name = "Value-added Services" });
+
+            context.DistrictNumbers.Add(new DistrictNumber() { Country = "kuwait", Number = 965, TimeDifference = -5 });
+            context.DistrictNumbers.Add(new DistrictNumber() { Country = "Australia", Number = 61, TimeDifference = 2 });
         }
     }
 

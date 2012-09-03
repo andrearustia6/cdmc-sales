@@ -24,16 +24,16 @@ namespace Entity
             }
         }
 
-        public static bool CheckPropertyOneOfAllNotNull(object o, params string[] properties)
+        public static bool CheckPropertyAllNull(object o, params string[] properties)
         {
             foreach (var p in properties)
             {
                 var property = o.GetType().GetProperty(p);
                 var v = property.GetValue(o, null).ToString();
                 if (!string.IsNullOrEmpty(v))
-                    return true;
+                    return false;
             }
-            return false;
+            return true;
         }
     }
 }
