@@ -1,0 +1,24 @@
+﻿@using Entity
+@model List<PackageItem>
+@(Html.Telerik().Grid<PackageItem>(Model).Name("PackageItem")
+                .DataKeys(keys =>
+                {
+                    keys.Add(s => s.ID);
+                })
+                .Columns(c =>
+                {
+                    c.Bound(item => item.Name).Width(200);
+                    c.Bound(item => item.ParticipantType.Name).Width(200);
+                    c.Bound(item => item.PackageType.Name).Width(200);
+                    c.Bound(item => item.PackageServiceType.Name).Width(200);
+                    c.Bound(item => item.ID).Title("操作").Width(200).Template(@<span> <a href=@Url.Content("~/PackageItem/Edit/" + item.ID) >
+                        编辑</a> | <a href=@Url.Content("~/PackageItem/Details/" + item.ID)>详细</a> | <a href=@Url.Content("~/PackageItem/delete/" + item.ID) >
+                            删除</a> </span>);
+                })
+                                            .Resizable(resizing => resizing.Columns(true))
+                                            .Filterable().Sortable().Groupable()
+                                            .Pageable(p => p.PageSize(20))
+                                            .Scrollable(scrolling => scrolling.Height(350))
+
+                            )
+@Html.ActionLink("创建", "Create")
