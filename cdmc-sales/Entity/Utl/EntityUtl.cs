@@ -11,8 +11,12 @@ namespace Entity
         {
             var pe = e.GetType().GetProperty("Name_EN");
             var pc = e.GetType().GetProperty("Name_CH");
-            string en = pe.GetValue(e, null).ToString();
-            string ch = pc.GetValue(e, null).ToString();
+            var eno = pe.GetValue(e, null);
+            string en = eno == null ? string.Empty : eno.ToString();
+
+            var cho = pc.GetValue(e, null);
+            string ch = cho == null ? string.Empty : cho.ToString();
+      
 
             if (!string.IsNullOrEmpty(en) && !string.IsNullOrEmpty(ch))
             {
