@@ -1,4 +1,4 @@
-﻿@using Entity
+﻿@*@using Entity
 @model List<PackageServiceType>
 @(Html.Telerik().Grid<PackageServiceType>(Model).Name("PackageServiceType")
                 .DataKeys(keys =>
@@ -21,3 +21,4 @@
                             )
 @Html.ActionLink("创建", "Create")
 
+*@

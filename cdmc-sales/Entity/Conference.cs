@@ -10,69 +10,79 @@ namespace Entity
     /// <summary>
     /// 参会类型
     /// </summary>
-    public class ParticipantType : EntityBase
+    public class ParticipantType : FullNameEntity
     {
-        [Display(Name = "参会类型")]
-        public string Name { get; set; }
+        //[Display(Name = "参会类型")]
+        //public string Name { get; set; }
     }
 
      /// <summary>
     /// Package类型
     /// </summary>
-    public class PackageType : EntityBase
+    public class PackageType : FullNameEntity
     {
-        [Display(Name = "Package类型")]
-        public string Name { get; set; }
+        //[Display(Name = "Package类型")]
+        //public string Name { get; set; }
     }
 
-    /// <summary>
-    /// 参会助商参会服务
-    /// </summary>
-    public class PackageServiceType : EntityBase
-    {
-        [Display(Name = "服务名称")]
-        public string Name { get; set; }
-    }
+    ///// <summary>
+    ///// 参会助商参会服务
+    ///// </summary>
+    //public class PackageServiceType : EntityBase
+    //{
+    //    [Display(Name = "服务名称")]
+    //    public string Name { get; set; }
+    //}
 
     /// <summary>
     /// 套餐子项
     /// </summary>
-    public class PackageItem : EntityBase
+    public class PackageItem : FullNameEntity
     {
         [Display(Name = "参考图片")]
         public Image Image { get; set; }
 
-        [Display(Name = "子项名称"), Required]
-        public string Name { get; set; }
-
         [Display(Name = "子项内容"), Required]
         public string Content { get; set; }
 
-        public virtual PackageType PackageType { get; set; }
-        [Display(Name = "Package类型"), Required]
-        public int? PackageTypeID { get; set; }
+        [Display(Name = "Package"), Required]
+        public int? PackageID { get; set; }
+        public virtual Package Package { get; set; }
 
-        public virtual PackageServiceType PackageServiceType { get; set; }
-        [Display(Name = "参会服务类型"), Required]
-        public int? PackageServiceTypeID { get; set; }
+        [Display(Name = "费用"), Required]
+        public decimal Prize { get; set; }
 
-        public virtual ParticipantType ParticipantType { get; set; }
-        [Display(Name = "参会类型"), Required]
-        public int? ParticipantTypeID { get; set; }
+        [Display(Name = "Package"), Required]
+        public int? CurrencyTypeID { get; set; }
+        public virtual CurrencyType CurrencyType  { get; set; }
+
+        //public virtual PackageType PackageType { get; set; }
+        //[Display(Name = "Package类型"), Required]
+        //public int? PackageTypeID { get; set; }
+
+        //public virtual PackageServiceType PackageServiceType { get; set; }
+        //[Display(Name = "参会服务类型"), Required]
+        //public int? PackageServiceTypeID { get; set; }
+
+        //public virtual ParticipantType ParticipantType { get; set; }
+        //[Display(Name = "参会类型"), Required]
+        //public int? ParticipantTypeID { get; set; }
 
     }
 
     /// <summary>
     /// 参会套餐项目
     /// </summary>
-    public class Package : EntityBase
+    public class Package : FullNameEntity
     {
         public virtual ParticipantType ParticipantType { get; set; }
         [Display(Name = "参会类型"), Required]
         public int? ParticipantTypeID { get; set; }
 
-        [Display(Name = "套餐名称"), Required]
-        public string Name { get; set; }
+
+        public virtual PackageType PackageType { get; set; }
+        [Display(Name = "Package类型"), Required]
+        public int? PackageTypeID { get; set; }
 
         [Display(Name = "套餐描述"), Required]
         public string SubName { get; set; }

@@ -14,22 +14,8 @@ namespace Sales
         // 
         // System.Data.Entity.Database.SetInitializer(new System.Data.Entity.DropCreateDatabaseIfModelChanges<Sales.DB>());
 
-        public DbSet<OnPhoneBlockType> OnPhoneBlockType { get; set; }
+        public DbSet<Package> Package { get; set; }
 
-        public DbSet<OnPhoneTemplate> OnPhoneTemplate { get; set; }
-
-        public DbSet<Project> Project { get; set; }
-
-        public DbSet<CurrencyType> CurrencyTypes { get; set; }
-
-        public DbSet<PackageType> PackageTypes { get; set; }
-
-        public DbSet<ParticipantType> ParticipantTypes { get; set; }
-
-        public DbSet<DistrictNumber> DistrictNumbers { get; set; }
-
-        public DbSet<PackageItem> PackageItem { get; set; }
-
-        public DbSet<PackageServiceType> PackageServiceType { get; set; }
+        public DbSet<ParticipantType> ParticipantType { get; set; }
     }
 }

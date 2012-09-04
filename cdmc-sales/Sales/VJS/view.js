@@ -1,3 +1,3 @@
-﻿function bindingError(e) {
-    e.preventDefault();
+﻿function updatePackageItem() {
+    
 }
