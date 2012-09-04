@@ -136,17 +136,23 @@ namespace Utl
             context.PackageServiceTypes.Add(new PackageServiceType() { Name = "Color Glossy Summit Brochures" });
             context.PackageServiceTypes.Add(new PackageServiceType() { Name = "Value-added Services" });
 
-            
-            context.PackageItems.Add(new PackageItem() { Name="两天三夜", Content="提供三天晚上的五星级酒店标准住宿", PackageServiceTypeID=1, PackageTypeID=1, ParticipantTypeID=1 });
-            context.PackageItems.Add(new PackageItem() { Name="15分钟演讲", Content="15分钟大会演讲", PackageServiceTypeID=2, PackageTypeID=1, ParticipantTypeID=1 });
+            //context.PackageItems.Add(new PackageItem() { Name = "两天三夜", Content = "提供三天晚上的五星级酒店标准住宿", PackageTypeID = 1, ParticipantTypeID = 1 });
+            //context.PackageItems.Add(new PackageItem() { Name = "15分钟演讲", Content = "15分钟大会演讲", PackageTypeID = 1, ParticipantTypeID = 1 });
 
-            var data = context.PackageItems.ToList();
-            var pakage = new Package() { Name = "Sponsor Package", ParticipantTypeID = 1 };
-            pakage.PackageItems.AddRange(data);
-            context.Packages.Add(pakage);
+            
+            //context.PackageItems.Add(new PackageItem() { Name="两天三夜", Content="提供三天晚上的五星级酒店标准住宿", PackageServiceTypeID=1, PackageTypeID=1, ParticipantTypeID=1 });
+            //context.PackageItems.Add(new PackageItem() { Name="15分钟演讲", Content="15分钟大会演讲", PackageServiceTypeID=2, PackageTypeID=1, ParticipantTypeID=1 });
+
+            //context.SaveChanges();
+
+            //var data = context.PackageItems.ToList();
+            //var pakage = new Package() { Name = "Sponsor Package", ParticipantTypeID = 1 };
+            //pakage.PackageItems.AddRange(data);
+            //context.Packages.Add(pakage);
 
             context.DistrictNumbers.Add(new DistrictNumber() { Country = "kuwait", Number = 965, TimeDifference = -5 });
             context.DistrictNumbers.Add(new DistrictNumber() { Country = "Australia", Number = 61, TimeDifference = 2 });
+   
         }
     }
 
