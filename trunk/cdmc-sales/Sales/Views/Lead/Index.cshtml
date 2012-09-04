@@ -17,45 +17,41 @@
                             删除</a> </span>);
                 })
                  .DetailView(detailView => detailView.Template(e =>
-                 
-                      
-                        @<text>
-                         @RenderGrid(e)
-                        </text>
-                 ))
+                              Html.Telerik().TabStrip().Name("TabStrip_").SelectedIndex(0).Items(items =>
+                              {
+                                items.Add().Text("Packages").Content(@<text>
+                                @RenderGrid(e)
+                                </text>);
+                                items.Add().Text("LeadSheet").Content(@<text></text>);
+                                items.Add().Text("Target").Content(@<text></text>);
+                              }
+                 )))
                 .Resizable(resizing => resizing.Columns(true))
                 .Groupable()
-                .Pageable(p => p.PageSize(20))
+                .Pageable(p => p.PageSize(50))
                 .Sortable()
                 .Filterable()
-                .Scrollable(scrolling => scrolling.Height(350))
+                .Scrollable(scrolling => scrolling.Height(650))
 )
+
 @helper RenderGrid(Lead Lead)
-    { 
-    Html.Telerik().TabStrip().Name("TabStrip_" + Lead.ID).Items(items =>
-    {
-        items.Add().Text("Packages").Content(@<text>
-         @(Html.Telerik().Grid<Package>(CH.GetAllData<Package>()).Name("Lead")
-                .DataKeys(keys =>
-                {
-                    keys.Add(s => s.ID);
-                })
-                .Columns(c =>
-                {
-                    c.Bound(item => item.Name_EN).Width(150);
-                    c.Bound(item => item.Name_CH).Width(150);
-                    c.Bound(item => item.Title.Name_CH).Title("职位").Width(200);
-                    c.Bound(item => item.Contact).Width(150);
-                    c.Bound(item => item.ID).Title("操作").Template(@<span> <a href=@Url.Content("~/Lead/Edit/" + item.ID) >
-                        编辑</a> | <a href=@Url.Content("~/Lead/Details/" + item.ID)>详细</a> | <a href=@Url.Content("~/Lead/delete/" + item.ID) >
-                            删除</a> </span>);
-                })
-         )
-        </text>);
-        items.Add().Text("LeadSheet").Content(@<text></text>);
-        items.Add().Text("Target").Content(@<text></text>);
-    }
-    ).Render();
+{ 
+   
+        @(Html.Telerik().Grid<Package>(CH.GetAllData<Package>()).Name("Packages" + Lead.ID)
+            .DataKeys(keys =>
+            {
+                keys.Add(s => s.ID);
+            })
+            .Columns(i =>
+            {
+                i.Bound(c => c.Name).Width(150);
+                i.Bound(c => c.ParticipantType.Name).Width(150);
+                i.Bound(c => c.ID).Title("操作").Template(@<span> <a href=@Url.Content("~/Lead/Edit/" + item.ID) >
+                    编辑</a> | <a href=@Url.Content("~/Lead/Details/" + item.ID)>详细</a> | <a href=@Url.Content("~/Lead/delete/" + item.ID) >
+                        删除</a> </span>);
+            })
+        )
 }
+
 
 <p>请在公司页面下添加客户</p>

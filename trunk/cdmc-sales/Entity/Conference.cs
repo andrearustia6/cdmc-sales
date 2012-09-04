@@ -42,10 +42,6 @@ namespace Entity
         [Display(Name = "参考图片")]
         public Image Image { get; set; }
 
-        public virtual ParticipantType ParticipantType { get; set; }
-        [Display(Name = "参会类型"), Required]
-        public int? ParticipantTypeID { get; set; }
-
         [Display(Name = "子项名称"), Required]
         public string Name { get; set; }
 
@@ -59,6 +55,10 @@ namespace Entity
         public virtual PackageServiceType PackageServiceType { get; set; }
         [Display(Name = "参会服务类型"), Required]
         public int? PackageServiceTypeID { get; set; }
+
+        public virtual ParticipantType ParticipantType { get; set; }
+        [Display(Name = "参会类型"), Required]
+        public int? ParticipantTypeID { get; set; }
 
     }
 
