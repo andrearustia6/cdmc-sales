@@ -5,13 +5,21 @@
 <fieldset>
     <legend>@SR.Form</legend>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Name)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Name)
-            @Html.ValidationMessageFor(model => model.Name)
-        </div>
+       <div class="editor-label">
+        @Html.LabelFor(model => model.Name_EN)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.Name_EN)
+        @Html.ValidationMessageFor(model => model.Name_EN)
+    </div>
+
+    <div class="editor-label">
+        @Html.LabelFor(model => model.Name_CH)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.Name_CH)
+        @Html.ValidationMessageFor(model => model.Name_CH)
+    </div>
          
 </fieldset>
 

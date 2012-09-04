@@ -82,13 +82,10 @@
         @{
             int cid = (int)ViewBag.CompanyID;
             var c = CH.GetDataById<Company>(cid);
-            string cn = "未发现匹配公司";
             string en = "未发现匹配公司";
             if (c != null)
             {
-                cn = c.Name_CH;
-                en = c.Name_EN;
-                @Html.Label(cn) 
+                en = c.FullName;
                 @Html.Label(en) 
             @Html.HiddenFor(m => m.CompanyID, cid)
             } 

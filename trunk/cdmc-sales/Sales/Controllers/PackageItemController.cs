@@ -23,8 +23,13 @@ namespace Sales.Controllers
             return View(CH.GetDataById<PackageItem>(id));
         }
 
-        public ActionResult Create()
+        public ActionResult Create(int? packageid,string from)
         {
+            ViewBag.PackageID = packageid;
+            if (from == "package")
+            {
+                ViewBag.From = "package";
+            }
             return View();
         }
 
@@ -36,6 +41,7 @@ namespace Sales.Controllers
                 CH.Create<PackageItem>(item);
                 return RedirectToAction("Index");
             }
+            ViewBag.PackageID = item.PackageID;
             return View(item);
         }
         public ActionResult Edit(int id)
@@ -47,13 +53,12 @@ namespace Sales.Controllers
         [HttpPost]
         public ActionResult Edit(PackageItem item)
         {
-
             if (ModelState.IsValid)
             {
-
                 CH.Edit<PackageItem>(item);
                 return RedirectToAction("Index");
             }
+            ViewBag.PackageID = item.PackageID;
             return View(item);
         }
 

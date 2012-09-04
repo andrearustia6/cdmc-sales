@@ -25,7 +25,7 @@ namespace Utl
         public DbSet<OnPhoneBlockType> OnPhoneBlockTypes { get; set; }
         public DbSet<LeadSheetType> LeadSheetTypes { get; set; }
         public DbSet<CurrencyType> CurrencyTypes { get; set; }
-        public DbSet<PackageServiceType> PackageServiceTypes { get; set; }
+        //public DbSet<PackageServiceType> PackageServiceTypes { get; set; }
         public DbSet<PackageItem> PackageItems { get; set; }
         public DbSet<Package> Packages { get; set; }
         public DbSet<FAQ> FAQs { get; set; }
@@ -103,52 +103,44 @@ namespace Utl
             context.PaymentTypes.Add(new PaymentType() { Name = "汇款" });
             context.PaymentTypes.Add(new PaymentType() { Name = "其他" });
 
-            context.PackageTypes.Add(new PackageType() { Name = "PLATINUM" });
-            context.PackageTypes.Add(new PackageType() { Name = "GLOD" });
-            context.PackageTypes.Add(new PackageType() { Name = "SILVER" });
-            context.PackageTypes.Add(new PackageType() { Name = "BRONZE" });
-            context.PackageTypes.Add(new PackageType() { Name = "ASSOCIATE" });
+            context.PackageTypes.Add(new PackageType() {  Name_EN = "PLATINUM" });
+            context.PackageTypes.Add(new PackageType() { Name_EN = "GLOD" });
+            context.PackageTypes.Add(new PackageType() { Name_EN = "SILVER" });
+            context.PackageTypes.Add(new PackageType() { Name_EN = "BRONZE" });
+            context.PackageTypes.Add(new PackageType() { Name_EN = "ASSOCIATE" });
 
-            context.ParticipantTypes.Add(new ParticipantType() { Name = "Sponsor" });
-            context.ParticipantTypes.Add(new ParticipantType() {  Name="Delegate"});
-            context.ParticipantTypes.Add(new ParticipantType() { Name = "VIP" });
-            context.ParticipantTypes.Add(new ParticipantType() { Name = "Others" });
+            context.ParticipantTypes.Add(new ParticipantType() { Name_EN = "Sponsor" });
+            context.ParticipantTypes.Add(new ParticipantType() { Name_EN = "Delegate" });
+            context.ParticipantTypes.Add(new ParticipantType() { Name_EN = "VIP" });
+            context.ParticipantTypes.Add(new ParticipantType() { Name_EN = "Others" });
 
-            context.PackageServiceTypes.Add(new PackageServiceType() { Name = "Opening Remark" });
-            context.PackageServiceTypes.Add(new PackageServiceType() { Name = "Keynote Address" });
-            context.PackageServiceTypes.Add(new PackageServiceType() { Name = "Pre-scheduled One-to-one Meetings" });
-            context.PackageServiceTypes.Add(new PackageServiceType() { Name = "Featured Speech" });
-            context.PackageServiceTypes.Add(new PackageServiceType() { Name = "Chairperson" });
-            context.PackageServiceTypes.Add(new PackageServiceType() { Name = "Panel Discussion" });
-            context.PackageServiceTypes.Add(new PackageServiceType() { Name = "VIP Reception" });
-            context.PackageServiceTypes.Add(new PackageServiceType() { Name = "On Site Logo Exposure" });
-            context.PackageServiceTypes.Add(new PackageServiceType() { Name = "Exhibit Space" });
-            context.PackageServiceTypes.Add(new PackageServiceType() { Name = "Insertion" });
-            context.PackageServiceTypes.Add(new PackageServiceType() { Name = "Complimentary Sponsorship" });
-            context.PackageServiceTypes.Add(new PackageServiceType() { Name = "Press Interview" });
-            context.PackageServiceTypes.Add(new PackageServiceType() { Name = "Free delegate passes" });
-            context.PackageServiceTypes.Add(new PackageServiceType() { Name = "Additional registration discount" });
-            context.PackageServiceTypes.Add(new PackageServiceType() { Name = "Wishing Clients Invitation" });
-            context.PackageServiceTypes.Add(new PackageServiceType() { Name = "Media Exposure" });
-            context.PackageServiceTypes.Add(new PackageServiceType() { Name = "Event Website Advertising" });
-            context.PackageServiceTypes.Add(new PackageServiceType() { Name = "Conference Facsimile Promotions" });
-            context.PackageServiceTypes.Add(new PackageServiceType() { Name = "Conference Email Promotion" });
-            context.PackageServiceTypes.Add(new PackageServiceType() { Name = "Color Glossy Summit Brochures" });
-            context.PackageServiceTypes.Add(new PackageServiceType() { Name = "Value-added Services" });
+            //context.PackageServiceTypes.Add(new PackageServiceType() { Name = "Opening Remark" });
+            //context.PackageServiceTypes.Add(new PackageServiceType() { Name = "Keynote Address" });
+            //context.PackageServiceTypes.Add(new PackageServiceType() { Name = "Pre-scheduled One-to-one Meetings" });
+            //context.PackageServiceTypes.Add(new PackageServiceType() { Name = "Featured Speech" });
+            //context.PackageServiceTypes.Add(new PackageServiceType() { Name = "Chairperson" });
+            //context.PackageServiceTypes.Add(new PackageServiceType() { Name = "Panel Discussion" });
+            //context.PackageServiceTypes.Add(new PackageServiceType() { Name = "VIP Reception" });
+            //context.PackageServiceTypes.Add(new PackageServiceType() { Name = "On Site Logo Exposure" });
+            //context.PackageServiceTypes.Add(new PackageServiceType() { Name = "Exhibit Space" });
+            //context.PackageServiceTypes.Add(new PackageServiceType() { Name = "Insertion" });
+            //context.PackageServiceTypes.Add(new PackageServiceType() { Name = "Complimentary Sponsorship" });
+            //context.PackageServiceTypes.Add(new PackageServiceType() { Name = "Press Interview" });
+            //context.PackageServiceTypes.Add(new PackageServiceType() { Name = "Free delegate passes" });
+            //context.PackageServiceTypes.Add(new PackageServiceType() { Name = "Additional registration discount" });
+            //context.PackageServiceTypes.Add(new PackageServiceType() { Name = "Wishing Clients Invitation" });
+            //context.PackageServiceTypes.Add(new PackageServiceType() { Name = "Media Exposure" });
+            //context.PackageServiceTypes.Add(new PackageServiceType() { Name = "Event Website Advertising" });
+            //context.PackageServiceTypes.Add(new PackageServiceType() { Name = "Conference Facsimile Promotions" });
+            //context.PackageServiceTypes.Add(new PackageServiceType() { Name = "Conference Email Promotion" });
+            //context.PackageServiceTypes.Add(new PackageServiceType() { Name = "Color Glossy Summit Brochures" });
+            //context.PackageServiceTypes.Add(new PackageServiceType() { Name = "Value-added Services" });
 
             //context.PackageItems.Add(new PackageItem() { Name = "两天三夜", Content = "提供三天晚上的五星级酒店标准住宿", PackageTypeID = 1, ParticipantTypeID = 1 });
             //context.PackageItems.Add(new PackageItem() { Name = "15分钟演讲", Content = "15分钟大会演讲", PackageTypeID = 1, ParticipantTypeID = 1 });
 
             
-            //context.PackageItems.Add(new PackageItem() { Name="两天三夜", Content="提供三天晚上的五星级酒店标准住宿", PackageServiceTypeID=1, PackageTypeID=1, ParticipantTypeID=1 });
-            //context.PackageItems.Add(new PackageItem() { Name="15分钟演讲", Content="15分钟大会演讲", PackageServiceTypeID=2, PackageTypeID=1, ParticipantTypeID=1 });
-
-            //context.SaveChanges();
-
-            //var data = context.PackageItems.ToList();
-            //var pakage = new Package() { Name = "Sponsor Package", ParticipantTypeID = 1 };
-            //pakage.PackageItems.AddRange(data);
-            //context.Packages.Add(pakage);
+       
 
             context.DistrictNumbers.Add(new DistrictNumber() { Country = "kuwait", Number = 965, TimeDifference = -5 });
             context.DistrictNumbers.Add(new DistrictNumber() { Country = "Australia", Number = 61, TimeDifference = 2 });
