@@ -27,5 +27,9 @@ namespace Sales
         public DbSet<ParticipantType> ParticipantTypes { get; set; }
 
         public DbSet<DistrictNumber> DistrictNumbers { get; set; }
+
+        public DbSet<PackageItem> PackageItem { get; set; }
+
+        public DbSet<PackageServiceType> PackageServiceType { get; set; }
     }
 }

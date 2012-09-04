@@ -219,6 +219,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\DistrictNumberController.cs" />
     <Compile Include="Controllers\OnPhoneTemplateController.cs" />
+    <Compile Include="Controllers\PackageItemController.cs" />
     <Compile Include="Controllers\Type\CategoryController.cs" />
     <Compile Include="Controllers\Type\CurrencyTypeController.cs" />
     <Compile Include="Controllers\LeadController.cs" />
@@ -982,6 +983,15 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\DistrictNumber\Display.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\PackageItem\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\PackageItem\Change.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\PackageItem\Display.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

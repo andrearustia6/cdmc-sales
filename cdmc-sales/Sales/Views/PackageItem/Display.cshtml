@@ -1,0 +1,29 @@
+﻿@using Utl;
+@model Entity.PackageItem
+<fieldset>
+   <div class="display-label">ParticipantType</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.ParticipantType.Name)
+    </div>
+
+    <div class="display-label">Name</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Name)
+    </div>
+
+    <div class="display-label">Content</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Content)
+    </div>
+
+    <div class="display-label">PackageType</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.PackageType.Name)
+    </div>
+
+    <div class="display-label">PackageServiceType</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.PackageServiceType.Name)
+    </div>
+</fieldset>
+@Html.Partial("displaycommon", Model)
