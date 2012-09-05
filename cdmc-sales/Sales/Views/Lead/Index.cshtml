@@ -1,6 +1,22 @@
 ﻿@using Entity
 @using Utl
 @model List<Lead>
+@{ Html.Telerik().Window().Name("Window").Effects(fx =>
+   {
+       fx.Expand();
+       fx.Opacity();
+       fx.OpenDuration(200);
+       fx.CloseDuration(200);
+   }).HtmlAttributes(new { style = "float:left;" }).Buttons(b => b.Maximize().Close())
+       .Content(@<text>
+    <p style="text-align: center">
+        he Telerik Window for ASP.NET MVC is<br />
+        the right choice for creating Window dialogs<br />
+        and alert/prompt/confirm boxes<br />
+        in your ASP.NET MVC applications.
+    </p>
+    </text>).Draggable(true).Resizable().Scrollable(true).Modal(true).Width(550).Height(300).Visible(false).Render(); 
+}
 @(Html.Telerik().Grid<Lead>(Model).Name("Lead")
                 .DataKeys(keys =>
                 {
@@ -17,13 +33,12 @@
                             删除</a> </span>);
                 })
                  .DetailView(detailView => detailView.Template(e =>
-                              Html.Telerik().TabStrip().Name("TabStrip_").SelectedIndex(0).Items(items =>
+                              Html.Telerik().TabStrip().Name("TabStrip_" + e.ID).SelectedIndex(0).Items(items =>
                               {
-                                items.Add().Text("Packages").Content(@<text>
-                                @RenderGrid(e)
-                                </text>);
-                                items.Add().Text("LeadSheet").Content(@<text></text>);
-                                items.Add().Text("Target").Content(@<text></text>);
+                                  items.Add().Text("客户信息").Content(@<text>@Lead(e)</text>);
+                                  items.Add().Text("Packages").Content(@<text>@Package(e)</text>);
+                                  items.Add().Text("LeadSheet").Content(@<text>@LeadSheet(e)</text>);
+                                  items.Add().Text("Target").Content(@<text></text>);
                               }
                  )))
                 .Resizable(resizing => resizing.Columns(true))
@@ -31,27 +46,71 @@
                 .Pageable(p => p.PageSize(50))
                 .Sortable()
                 .Filterable()
-                .Scrollable(scrolling => scrolling.Height(650))
+                .Scrollable(scrolling => scrolling.Height(550))
 )
-
-@helper RenderGrid(Lead Lead)
-{ 
-   
-        @(Html.Telerik().Grid<Package>(CH.GetAllData<Package>()).Name("Packages" + Lead.ID)
+@helper Lead(Lead lead)
+    { 
+    var company = lead.Company;
+    <div style="width: 500;">
+        <img alt="photo"  style="width:80px;height:70px;float:right;" src=@Url.Content("~/Image/DisplayImage/" + lead.ImageID) />
+        <ul>
+            <li>
+                <label>
+                    Lead姓名:</label>@lead.FullName</li>
+            <li>
+                <label>
+                    职位:</label>@lead.Title.FullName</li>
+            <li>
+                <label>
+                    性别:</label>@lead.Gender</li>
+            <li>
+                <label>
+                    公司电话:</label>@company.Contact</li>
+            <li>
+                <label>
+                    可打时间:</label>@company.Available</li>
+            <li>
+                <label>
+                    座机:</label>@lead.Contact</li>
+            <li>
+                <label>
+                    电子邮箱:</label>@lead.EMail</li>
+            <li>
+                <label>
+                    传真:</label>@lead.Fax</li>
+        </ul>
+    </div>
+     
+}
+@helper Package(Lead lead)
+    { 
+    @(Html.Telerik().Grid<Package>(CH.GetAllData<Package>()).Name("Packages" + lead.ID)
             .DataKeys(keys =>
             {
                 keys.Add(s => s.ID);
             })
             .Columns(i =>
             {
-                i.Bound(c => c.Name).Width(150);
-                i.Bound(c => c.ParticipantType.Name).Width(150);
+                i.Bound(c => c.FullName).Width(150);
+                i.Bound(c => c.PackageType.FullName).Width(150);
+                i.Bound(c => c.ParticipantType.FullName).Width(150);
                 i.Bound(c => c.ID).Title("操作").Template(@<span> <a href=@Url.Content("~/Lead/Edit/" + item.ID) >
                     编辑</a> | <a href=@Url.Content("~/Lead/Details/" + item.ID)>详细</a> | <a href=@Url.Content("~/Lead/delete/" + item.ID) >
                         删除</a> </span>);
             })
         )
 }
-
-
-<p>请在公司页面下添加客户</p>
+@helper LeadSheet(Lead lead)
+    { 
+    <input class="addLeadCallSheet" id=@lead.ID type="button" value="添加通话结果" />
+}
+<p>
+    请在公司页面下添加客户</p>
+@{ Html.Telerik().ScriptRegistrar().OnDocumentReady(@<text> 
+    var tWindow = $('#Window');
+    tWindow.css("margin-left",tWindow.width()/2);
+    var undoButton = $('.addLeadCallSheet'); 
+    undoButton.click(function(){ tWindow.data('tWindow').open();
+    });
+    </text>);
+}
