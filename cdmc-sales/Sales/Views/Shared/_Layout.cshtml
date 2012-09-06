@@ -96,5 +96,9 @@
         <footer>
 		</footer>
     </div>
-    @(Html.Telerik().ScriptRegistrar().Globalization(true).DefaultGroup(group => group.Combined(true).Compress(true)))</body>
+      @(Html.Telerik().ScriptRegistrar().Globalization(true).DefaultGroup(group => group
+                .Add(@"json2.js")
+                .Add(@"~/VJS/alextre.tableDesigner.js")
+                .Add(@"~/VJS/alextre.peopleFinder.js")
+                .Combined(false).Compress(false)))
 </html>
