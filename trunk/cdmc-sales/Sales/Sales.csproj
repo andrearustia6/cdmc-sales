@@ -250,6 +250,7 @@
     <Compile Include="Utl\Utl.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Scripts\json2.js" />
     <Content Include="TimeSpan.xml" />
     <Content Include="Content\2011.3.1115\Black\editor.png" />
     <Content Include="Content\2011.3.1115\Black\imagebrowser.png" />
@@ -507,6 +508,8 @@
     <Content Include="Scripts\2011.3.1115\telerik.upload.min.js" />
     <Content Include="Scripts\2011.3.1115\telerik.window.min.js" />
     <Content Include="Scripts\jquery-1.6.4.min.js" />
+    <Content Include="VJS\alextre.peopleFinder.js" />
+    <Content Include="VJS\alextre.tableDesigner.js" />
     <Content Include="VJS\view.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
