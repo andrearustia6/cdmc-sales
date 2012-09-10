@@ -1,0 +1,62 @@
+﻿ @using Entity
+ @using Utl
+ @model LeadCallSheet 
+           
+ 
+ @{ Html.Telerik().Window().Name("Window").Effects(fx =>
+   {
+       fx.Expand();
+       fx.Opacity();
+       fx.OpenDuration(200);
+       fx.CloseDuration(200);
+   }).Buttons(b => b.Maximize().Close()).Content(@<text>@CallResultWindow()</text>)
+      .Draggable(true).Resizable().Scrollable(true).Modal(true).Visible(false).Render(); 
+}  
+
+@helper CallResultWindow()
+    {
+    <table>
+        <tr>
+            <td width="100px">
+                First Pitch?
+            </td>
+            <td>
+                @Html.DropDownListFor(m => m.IsFirstPitch, new SelectList(new List<Boolean>(){true,false }))
+            </td>
+        </tr>
+        <tr>
+            <td >
+                Result:
+            </td>
+            <td>
+                @Html.DropDownListFor(m => m.LeadCallSheetTypeID, new SelectList(new List<LeadCallSheetType>(CH.GetAllData<LeadCallSheetType>()),"ID", "Name"), "-请选择-")
+            </td>
+        </tr>
+        
+        <tr>
+        <td>CallBack:</td>
+        <td> @(Html.Telerik().DateTimePicker().Name("callBback").HtmlAttributes(new { id = "DateTimePicker_wrapper" }).Interval(10))</td>
+        </tr>
+        <tr>
+            <td>
+                Common:
+            </td>
+            <td width="500px">
+             @Html.TextAreaFor(m => m.Result)
+            </td>
+        </tr>
+         <tr>
+            <td  colspan=2 align="center">
+                <button id="editor_submit">确定</button><button id="editor_cancel">取消</button>
+            </td>
+        </tr>
+    </table>
+}
+
+@{ Html.Telerik().ScriptRegistrar().OnDocumentReady(@<text> 
+    var tWindow = $('#Window');
+    tWindow.css("margin-left",tWindow.width()/2);
+     var addLeadCallSheet = $('.addLeadCallSheet');
+    initialaddLeadCallSheet(addLeadCallSheet, tWindow);
+    </text>);
+}

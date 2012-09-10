@@ -6,54 +6,6 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Entity
 {
-    /// <summary>
-    /// 电话结果
-    /// </summary>
-    public class LeadSheetType : EntityBase
-    {
-        [Display(Name = "电话结果"), Required]
-        public string Name { get; set; }
-
-        [Display(Name = "预备字段"), Required]
-        public int Code { get; set; }
-
-        [Display(Name = "致电结果描述")]
-        public string ResultDescription { get; set; }
-    }
-
-    /// <summary>
-    /// 电话结果管理
-    /// </summary>
-    public class LeadSheet : EntityBase
-    {
-        public virtual Lead Lead { get; set; }
-        [Display(Name = "致电客户"), Required]
-        public int? LeadID { get; set; }
-
-
-        [Display(Name = "所属项目"), Required]
-        public int? ProjectID { get; set; }
-        public virtual Project Project { get; set; }
-
-        public virtual LeadSheetType CallResultType { get; set; }
-        public int? LeadSheetType { get; set; }
-
-        [Display(Name = "致电客户")]
-        public bool FaxOut
-        {
-            get
-            {
-                return true;
-            }
-        }
-
-        [Display(Name = "结果描述")]
-        public string Result { get; set; }
-
-         [Display(Name = "回电时间")]
-        public DateTime CallBackDate { get; set; }
-
-    }
 
     /// <summary>
     /// 模板类型
