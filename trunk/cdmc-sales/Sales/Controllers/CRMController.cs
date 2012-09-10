@@ -61,9 +61,9 @@ namespace Sales.Controllers
         [HttpPost]
         public ActionResult Save_LeadCall(LeadCall callresult)
         {
-            CH.Create<LeadCall>(callresult);
+           // CH.Create<LeadCall>(callresult);
             //return PartialView("LeadCallSheet",CH.GetAllData<LeadCallType>());
-            return new DataJsonResult<LeadCall>() { Data = CH.GetAllData<LeadCall>() };
+            return new DataJsonResult<test>() { Data = callresult };
         }
 
         [HttpPost]
