@@ -80,15 +80,24 @@
     </div>
     <div class="editor-label">
         @{
-            int cid = (int)ViewBag.CompanyID;
-            var c = CH.GetDataById<Company>(cid);
-            string en = "未发现匹配公司";
-            if (c != null)
+             int cid=0;
+            if(ViewBag.CompanyID!=null)
             {
-                en = c.FullName;
-                @Html.Label(en) 
-            @Html.HiddenFor(m => m.CompanyID, cid)
-            } 
+                cid = (int)ViewBag.CompanyID;
+                var c = CH.GetDataById<Company>(cid);
+                string en = "未发现匹配公司";
+                if (c != null)
+                {
+                    en = c.FullName;
+                    @Html.Label(en) 
+                    @Html.HiddenFor(m => m.CompanyID, cid)
+                } 
+            }
+            else
+            {
+                @Html.Label(Model.Company.FullName);
+                @Html.HiddenFor(m => m.CompanyID)
+            }
            
         }
     </div>

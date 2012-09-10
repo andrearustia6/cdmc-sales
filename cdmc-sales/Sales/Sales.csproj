@@ -217,6 +217,7 @@
       <DependentUpon>UploadLocalization.zh-CN.resx</DependentUpon>
     </Compile>
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\CRMController.cs" />
     <Compile Include="Controllers\DistrictNumberController.cs" />
     <Compile Include="Controllers\OnPhoneTemplateController.cs" />
     <Compile Include="Controllers\PackageController.cs" />
@@ -992,10 +993,28 @@
     <Content Include="Views\Package\Display.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Lead\CRM.cshtml" />
+    <Content Include="Views\CRM\Management.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Lead\LeadCallSheetEditor.cshtml" />
+    <Content Include="Views\CRM\LeadCallEditor.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\CRM\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\CRM\Details.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\CRM\Create.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\CRM\Edit.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\CRM\Delete.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\CRM\LeadCallSheet.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

@@ -17,19 +17,20 @@ namespace Utl
         public DbSet<Lead> Leads { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<Category> Categorys { get; set; }
-        public DbSet<LeadCallSheet> LeadCallSheets { get; set; }
+        public DbSet<LeadCall> LeadCalls { get; set; }
         public DbSet<Research> Researchs { get; set; }
         public DbSet<PackageType> PackageTypes { get; set; }
         public DbSet<ParticipantType> ParticipantTypes { get; set; }
         public DbSet<OnPhoneTemplate> OnPhoneTemplates { get; set; }
         public DbSet<OnPhoneBlockType> OnPhoneBlockTypes { get; set; }
-        public DbSet<LeadCallSheetType> LeadCallSheetTypes { get; set; }
+        public DbSet<LeadCallType> LeadCallTypes { get; set; }
         public DbSet<CurrencyType> CurrencyTypes { get; set; }
         //public DbSet<PackageServiceType> PackageServiceTypes { get; set; }
         public DbSet<PackageItem> PackageItems { get; set; }
         public DbSet<Package> Packages { get; set; }
         public DbSet<FAQ> FAQs { get; set; }
         public DbSet<PaymentType> PaymentTypes { get; set; }
+        public DbSet<CRM> CRMs { get; set; }
         public DbSet<DistrictNumber> DistrictNumbers { get; set; }
         public DB()
         {
@@ -41,8 +42,6 @@ namespace Utl
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
-
-
         }
     }
 
@@ -87,13 +86,13 @@ namespace Utl
             context.OnPhoneBlockTypes.Add(new OnPhoneBlockType() { Name = "无人接听", Code = 4 });
             context.OnPhoneBlockTypes.Add(new OnPhoneBlockType() { Name = "不是决策人", Code = 5 });
 
-            context.LeadCallSheetTypes.Add(new LeadCallSheetType() { Name = "Others", Code = 1 });
-            context.LeadCallSheetTypes.Add(new LeadCallSheetType() { Name = "Not Pitched", Code = 2 });
-            context.LeadCallSheetTypes.Add(new LeadCallSheetType() { Name = "Waiting for Approval", Code = 3 });
-            context.LeadCallSheetTypes.Add(new LeadCallSheetType() { Name = "Closed", Code = 4 });
-            context.LeadCallSheetTypes.Add(new LeadCallSheetType() { Name = "Blowed", Code = 5 });
-            context.LeadCallSheetTypes.Add(new LeadCallSheetType() { Name = "Pitched", Code = 6 });
-            context.LeadCallSheetTypes.Add(new LeadCallSheetType() { Name = "Call-Backed", Code = 7 });
+            context.LeadCallTypes.Add(new LeadCallType() { Name = "Others", Code = 1 });
+            context.LeadCallTypes.Add(new LeadCallType() { Name = "Not Pitched", Code = 2 });
+            context.LeadCallTypes.Add(new LeadCallType() { Name = "Waiting for Approval", Code = 3 });
+            context.LeadCallTypes.Add(new LeadCallType() { Name = "Closed", Code = 4 });
+            context.LeadCallTypes.Add(new LeadCallType() { Name = "Blowed", Code = 5 });
+            context.LeadCallTypes.Add(new LeadCallType() { Name = "Pitched", Code = 6 });
+            context.LeadCallTypes.Add(new LeadCallType() { Name = "Call-Backed", Code = 7 });
 
             context.CurrencyTypes.Add(new CurrencyType() { Name="RMB"});
             context.CurrencyTypes.Add(new CurrencyType() { Name = "$" });
