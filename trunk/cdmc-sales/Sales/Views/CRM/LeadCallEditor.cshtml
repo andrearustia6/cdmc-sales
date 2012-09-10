@@ -1,6 +1,6 @@
 ﻿ @using Entity
  @using Utl
- @model LeadCallSheet 
+ @model LeadCall
            
  
  @{ Html.Telerik().Window().Name("Window").Effects(fx =>
@@ -15,6 +15,7 @@
 
 @helper CallResultWindow()
     {
+        @Html.HiddenFor(m => m.LeadID)
     <table>
         <tr>
             <td width="100px">
@@ -29,7 +30,7 @@
                 Result:
             </td>
             <td>
-                @Html.DropDownListFor(m => m.LeadCallSheetTypeID, new SelectList(new List<LeadCallSheetType>(CH.GetAllData<LeadCallSheetType>()),"ID", "Name"), "-请选择-")
+                @Html.DropDownListFor(m => m.LeadCallTypeID, new SelectList(new List<LeadCallType>(CH.GetAllData<LeadCallType>()),"ID", "Name"), "-请选择-")
             </td>
         </tr>
         

@@ -3,21 +3,25 @@
     $win.find('#editor_submit').click(function () {
 
 
-        var fp = $win.find('IsFirstPitch').val();
-        var sheet = $win.find('LeadCallSheetTypeID').val();
-        var date = $win.find('CallBackDate').val();
-        var common = $win.find('Result').val();
+        var fp = $win.find('#IsFirstPitch').val();
+        var sheet = $win.find('#LeadCallSheetTypeID').val();
+        var date = $win.find('#callBback').val();
+        var common = $win.find('#Result').val();
+         var projectid = $win.find('#ProjectID').val();
+         var leadid = $win.find('#LeadID').val();
+         var callresult = { IsFirstPitch: fp, LeadCallSheetTypeID: sheet, CallBackDate: date, Result: common, ProjectID: projectid, LeadID: leadid };
 
-        var callresult = {IsFirstPitch:fp,LeadCallSheetTypeID:sheet,CallBackDate:date,Result:common};
-
-         callresult = JSON.stringify(callresult);
+        callresult = JSON.stringify(callresult);
 
         $.ajax({
-            url: "/Lead/CRM_Save",
+            url: "/CRM/Save_LeadCall",
             type: 'POST',
             dataType: 'json',
             contentType: 'application/json; charset=utf-8',
-            data: { callresult: callresult },
+            data:  callresult,
+            error: function (jqXHR, textStatus, errorThrown) {
+                alert(jqXHR.responseText);
+            },
             success: function (result) {
                 if (result) {
 

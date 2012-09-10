@@ -4,17 +4,19 @@
 @using Entity
 @using Utl
 <h2>CRM</h2>
-@model Lead
+@model CRM
            
+ @Html.HiddenFor(m=> m.LeadID)
 
- @Html.Partial("LeadCallSheetEditor",new LeadCallSheet())     
+ @Html.Partial("LeadCallEditor", new LeadCall() { LeadID=Model.ID}) 
+      
 
 
 @(Html.Telerik().TabStrip().Name("TabStrip").SelectedIndex(0).Items(items =>
 {
-    items.Add().Text("客户信息").Content(@<text>@Lead(Model)</text>);
-    items.Add().Text("Packages").Content(@<text>@Package(Model)</text>);
-    items.Add().Text("LeadSheet").Content(@<text>@LeadCallSheet(Model)</text>);
+    items.Add().Text("客户信息").Content(@<text>@Lead(Model.Lead)</text>);
+    items.Add().Text("Packages").Content(@<text>@Package(Model.Lead)</text>);
+    items.Add().Text("LeadSheet").Content(@<text>@LeadCallSheet(Model.Lead)</text>);
     items.Add().Text("Target").Content(@<text></text>);
 })
 )
@@ -62,7 +64,7 @@
             {
                 keys.Add(s => s.ID);
             })
-            .Columns(i =>
+            .Columns(i =>   
             {
                 i.Bound(c => c.FullName).Width(150);
                 i.Bound(c => c.PackageType.FullName).Width(150);

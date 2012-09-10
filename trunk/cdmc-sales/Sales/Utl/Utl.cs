@@ -24,15 +24,15 @@ namespace Utl
             get { return ConfigurationManager.AppSettings["ConnectionStringSetting"]; }
         }
     }
-    //public class JsonIgnoreAttribute : Attribute
-    //{
-    //    public List<string> IgnoreProperties { get; set; }
-    //    public JsonIgnoreAttribute(params string[] properties)
-    //    {
-    //        IgnoreProperties = new List<string>();
-    //        IgnoreProperties.AddRange(properties);
-    //    }
-    //}
+    public class JsonIgnoreAttribute : Attribute
+    {
+        public List<string> IgnoreProperties { get; set; }
+        public JsonIgnoreAttribute(params string[] properties)
+        {
+            IgnoreProperties = new List<string>();
+            IgnoreProperties.AddRange(properties);
+        }
+    }
 
     public class Employee
     {
@@ -222,7 +222,8 @@ namespace Utl
                     new DataToJson<CompanyType>(),
                     new DataToJson<Lead>(),
                     new DataToJson<Category>(),
-                    new DataToJson<Research>()
+                    new DataToJson<Research>(),
+                    new DataToJson<LeadCall>()
                 });
                 string sJSON = serializer.Serialize(Data);
                 response.Write(sJSON);

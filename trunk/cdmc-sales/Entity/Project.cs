@@ -47,6 +47,9 @@ namespace Entity
     /// </summary>
     public class Project : EntityBase
     {
+        [Display(Name = "正在进行"), Required]
+        public bool IsActived { get; set; }
+
         [Display(Name = "项目名称"), Required]
         public String Name { get; set; }
 

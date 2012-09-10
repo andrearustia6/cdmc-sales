@@ -3,13 +3,30 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.ComponentModel.DataAnnotations;
+using Attributes;
 
 namespace Entity
 {
     /// <summary>
+    /// 
+    /// </summary>
+    public class CRM : EntityBase
+    {
+        public virtual Lead Lead { get; set; }
+        [Display(Name = "客户"), Required]
+        public int? LeadID { get; set; }
+
+        public List<LeadCall> LeadCallSheet { get; set; }
+
+        public List<Deal> Deals { get; set; }
+
+        public List<Conference> Conferences { get; set; }
+    }
+
+    /// <summary>
     /// 电话结果
     /// </summary>
-    public class LeadCallSheetType : EntityBase
+    public class LeadCallType : EntityBase
     {
         [Display(Name = "电话结果"), Required]
         public string Name { get; set; }
@@ -24,7 +41,8 @@ namespace Entity
     /// <summary>
     /// 电话结果管理
     /// </summary>
-    public class LeadCallSheet : EntityBase
+    [JsonIgnoreAttribute("ModifiedTime", "Lead", "Project")]
+    public class LeadCall : EntityBase
     {
         [Display(Name = "First Pitch"), Required]
         public bool IsFirstPitch { get; set; }
@@ -34,12 +52,12 @@ namespace Entity
         public int? LeadID { get; set; }
 
 
-        [Display(Name = "所属项目"), Required]
+        [Display(Name = "所属项目")]
         public int? ProjectID { get; set; }
         public virtual Project Project { get; set; }
 
-        public virtual LeadCallSheetType LeadCallSheetType { get; set; }
-        public int? LeadCallSheetTypeID { get; set; }
+        public virtual LeadCallType LeadCallType { get; set; }
+        public int? LeadCallTypeID { get; set; }
 
         [Display(Name = "是否有效")]
         public bool FaxOut

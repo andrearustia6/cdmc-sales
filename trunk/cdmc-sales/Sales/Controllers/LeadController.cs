@@ -34,10 +34,6 @@ namespace Sales.Controllers
             return View();
         }
 
-        public ActionResult CRM(int id)
-        {
-            return View(CH.GetDataById<Lead>(id));
-        }
 
         [HttpPost]
         public ActionResult Create(Lead item)
@@ -54,7 +50,7 @@ namespace Sales.Controllers
                 if(image!=null)
                   item.ImageID = image.ID;
                 CH.Create<Lead>(item);
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Company");
             }
             ViewBag.CompanyID = item.CompanyID;
             return View(item);
@@ -79,7 +75,7 @@ namespace Sales.Controllers
                 if (image != null)
                     item.ImageID = image.ID;
                 CH.Edit<Lead>(item);
-                return RedirectToAction("Index");
+                return RedirectToAction("Index","Company");
             }
             ViewBag.CompanyID = item.CompanyID;
             return View(item);
@@ -94,7 +90,7 @@ namespace Sales.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             CH.Delete<Lead>(id);
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "Company");
         }
     }
 }
