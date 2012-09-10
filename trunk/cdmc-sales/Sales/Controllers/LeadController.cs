@@ -34,6 +34,11 @@ namespace Sales.Controllers
             return View();
         }
 
+        public ActionResult CRM(int id)
+        {
+            return View(CH.GetDataById<Lead>(id));
+        }
+
         [HttpPost]
         public ActionResult Create(Lead item)
         {

@@ -17,13 +17,13 @@ namespace Utl
         public DbSet<Lead> Leads { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<Category> Categorys { get; set; }
-        public DbSet<LeadSheet> LeadSheets { get; set; }
+        public DbSet<LeadCallSheet> LeadCallSheets { get; set; }
         public DbSet<Research> Researchs { get; set; }
         public DbSet<PackageType> PackageTypes { get; set; }
         public DbSet<ParticipantType> ParticipantTypes { get; set; }
         public DbSet<OnPhoneTemplate> OnPhoneTemplates { get; set; }
         public DbSet<OnPhoneBlockType> OnPhoneBlockTypes { get; set; }
-        public DbSet<LeadSheetType> LeadSheetTypes { get; set; }
+        public DbSet<LeadCallSheetType> LeadCallSheetTypes { get; set; }
         public DbSet<CurrencyType> CurrencyTypes { get; set; }
         //public DbSet<PackageServiceType> PackageServiceTypes { get; set; }
         public DbSet<PackageItem> PackageItems { get; set; }
@@ -87,13 +87,13 @@ namespace Utl
             context.OnPhoneBlockTypes.Add(new OnPhoneBlockType() { Name = "无人接听", Code = 4 });
             context.OnPhoneBlockTypes.Add(new OnPhoneBlockType() { Name = "不是决策人", Code = 5 });
 
-            context.LeadSheetTypes.Add(new LeadSheetType() { Name="Others", Code=1});
-            context.LeadSheetTypes.Add(new LeadSheetType() { Name = "Not Pitched", Code = 2 });
-            context.LeadSheetTypes.Add(new LeadSheetType() { Name = "Waiting for Approval", Code = 3 });
-            context.LeadSheetTypes.Add(new LeadSheetType() { Name = "Closed", Code = 4 });
-            context.LeadSheetTypes.Add(new LeadSheetType() { Name = "Blowed", Code = 5 });
-            context.LeadSheetTypes.Add(new LeadSheetType() { Name = "Pitched", Code = 6 });
-            context.LeadSheetTypes.Add(new LeadSheetType() { Name = "Call-Backed", Code = 7 });
+            context.LeadCallSheetTypes.Add(new LeadCallSheetType() { Name = "Others", Code = 1 });
+            context.LeadCallSheetTypes.Add(new LeadCallSheetType() { Name = "Not Pitched", Code = 2 });
+            context.LeadCallSheetTypes.Add(new LeadCallSheetType() { Name = "Waiting for Approval", Code = 3 });
+            context.LeadCallSheetTypes.Add(new LeadCallSheetType() { Name = "Closed", Code = 4 });
+            context.LeadCallSheetTypes.Add(new LeadCallSheetType() { Name = "Blowed", Code = 5 });
+            context.LeadCallSheetTypes.Add(new LeadCallSheetType() { Name = "Pitched", Code = 6 });
+            context.LeadCallSheetTypes.Add(new LeadCallSheetType() { Name = "Call-Backed", Code = 7 });
 
             context.CurrencyTypes.Add(new CurrencyType() { Name="RMB"});
             context.CurrencyTypes.Add(new CurrencyType() { Name = "$" });
@@ -139,8 +139,6 @@ namespace Utl
             //context.PackageItems.Add(new PackageItem() { Name = "两天三夜", Content = "提供三天晚上的五星级酒店标准住宿", PackageTypeID = 1, ParticipantTypeID = 1 });
             //context.PackageItems.Add(new PackageItem() { Name = "15分钟演讲", Content = "15分钟大会演讲", PackageTypeID = 1, ParticipantTypeID = 1 });
 
-            
-       
 
             context.DistrictNumbers.Add(new DistrictNumber() { Country = "kuwait", Number = 965, TimeDifference = -5 });
             context.DistrictNumbers.Add(new DistrictNumber() { Country = "Australia", Number = 61, TimeDifference = 2 });

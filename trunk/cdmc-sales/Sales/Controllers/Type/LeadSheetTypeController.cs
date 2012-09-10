@@ -15,12 +15,12 @@ namespace Sales.Controllers
     {
         public ViewResult Index()
         {
-            return View(CH.GetAllData<LeadSheetType>());
+            return View(CH.GetAllData<LeadCallSheetType>());
         }
 
         public ViewResult Details(int id)
         {
-            return View(CH.GetDataById<LeadSheetType>(id));
+            return View(CH.GetDataById<LeadCallSheetType>(id));
         }
 
         public ActionResult Create()
@@ -29,26 +29,26 @@ namespace Sales.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create(LeadSheetType item)
+        public ActionResult Create(LeadCallSheetType item)
         {
             if (ModelState.IsValid)
             {
-                CH.Create<LeadSheetType>(item);
+                CH.Create<LeadCallSheetType>(item);
                 return RedirectToAction("Index");
             }
             return View(item);
         }
         public ActionResult Edit(int id)
         {
-            return View(CH.GetDataById<LeadSheetType>(id));
+            return View(CH.GetDataById<LeadCallSheetType>(id));
         }
 
         [HttpPost]
-        public ActionResult Edit(LeadSheetType item)
+        public ActionResult Edit(LeadCallSheetType item)
         {
             if (ModelState.IsValid)
             {
-                CH.Edit<LeadSheetType>(item);
+                CH.Edit<LeadCallSheetType>(item);
                 return RedirectToAction("Index");
             }
             return View(item);
@@ -56,13 +56,13 @@ namespace Sales.Controllers
 
         public ActionResult Delete(int id)
         {
-            return View(CH.GetDataById<LeadSheetType>(id));
+            return View(CH.GetDataById<LeadCallSheetType>(id));
         }
 
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {
-            CH.Delete<LeadSheetType>(id);
+            CH.Delete<LeadCallSheetType>(id);
             return RedirectToAction("Index");
         }
     }

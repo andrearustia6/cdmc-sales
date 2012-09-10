@@ -1,15 +1,7 @@
 ﻿@using Entity
 @using Utl
 @model List<Lead>
-@{ Html.Telerik().Window().Name("Window").Effects(fx =>
-   {
-       fx.Expand();
-       fx.Opacity();
-       fx.OpenDuration(200);
-       fx.CloseDuration(200);
-   }).HtmlAttributes(new { style = "float:left;" }).Buttons(b => b.Maximize().Close()).Content(@<text>@CallResultWindow()</text>)
-      .Draggable(true).Resizable().Scrollable(true).Modal(true).Width(640).Height(300).Visible(false).Render(); 
-}
+
 @(Html.Telerik().Grid<Lead>(Model).Name("Lead")
                 .DataKeys(keys =>
                 {
@@ -25,15 +17,6 @@
                         编辑</a> | <a href=@Url.Content("~/Lead/Details/" + item.ID)>详细</a> | <a href=@Url.Content("~/Lead/delete/" + item.ID) >
                             删除</a> </span>);
                 })
-                 .DetailView(detailView => detailView.Template(e =>
-                              Html.Telerik().TabStrip().Name("TabStrip_" + e.ID).SelectedIndex(0).Items(items =>
-                              {
-                                  items.Add().Text("客户信息").Content(@<text>@Lead(e)</text>);
-                                  items.Add().Text("Packages").Content(@<text>@Package(e)</text>);
-                                  items.Add().Text("LeadSheet").Content(@<text>@LeadCallSheet(e)</text>);
-                                  items.Add().Text("Target").Content(@<text></text>);
-                              }
-                 )))
                 .Resizable(resizing => resizing.Columns(true))
                 .Groupable()
                 .Pageable(p => p.PageSize(50))
@@ -42,7 +25,7 @@
                 .Scrollable(scrolling => scrolling.Height(550))
 )
 @helper Lead(Lead lead)
-    { 
+{ 
         var company = lead.Company;
     <div style="width: 500;">
         <img alt="photo"  style="width:80px;height:70px;float:right;" src=@Url.Content("~/Image/DisplayImage/" + lead.ImageID) />
@@ -75,81 +58,7 @@
     </div>
      
 }
-@helper Package(Lead lead)
-    { 
-    @(Html.Telerik().Grid<Package>(CH.GetAllData<Package>()).Name("Packages" + lead.ID)
-            .DataKeys(keys =>
-            {
-                keys.Add(s => s.ID);
-            })
-            .Columns(i =>
-            {
-                i.Bound(c => c.FullName).Width(150);
-                i.Bound(c => c.PackageType.FullName).Width(150);
-                i.Bound(c => c.ParticipantType.FullName).Width(150);
-                i.Bound(c => c.ID).Title("操作").Template(@<span> <a href=@Url.Content("~/Lead/Edit/" + item.ID) >
-                    编辑</a> | <a href=@Url.Content("~/Lead/Details/" + item.ID)>详细</a> | <a href=@Url.Content("~/Lead/delete/" + item.ID) >
-                        删除</a> </span>);
-            })
-        )
-}
-@helper LeadCallSheet(Lead lead)
-    { 
-    <input class="addLeadCallSheet" id=@lead.ID type="button" value="添加通话结果" />
-}
-@helper CallResultWindow()
-    {
-    <table>
-        <tr>
-            <td>
-                First Pitch?
-            </td>
-            <td>@Html.RadioButton("firstpitch", true)<label>Yes</label>
-                @Html.RadioButton("firstpitch", false)<label>No</label>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                Result:
-            </td>
-            <td>
-                @Html.RadioButton("result", "Not Pitched")<label>Not Pitched</label>
-                @Html.RadioButton("result", "Pitched")<label>Pitched</label>
-                @Html.RadioButton("result", "Call-Backed")<label>Call-Backed</label>
-                @Html.RadioButton("result", "Waiting for Approval")<label>Waiting for Approval</label>
-                @Html.RadioButton("result", "Closed")<label>Closed</label>
-                @Html.RadioButton("result", "Blowed")<label>Blowed</label>
-            </td>
-        </tr>
-        <tr>
-        <td>CallBack:</td>
-        <td> @(Html.Telerik().DateTimePicker().Name("callBback").HtmlAttributes(new { id = "DateTimePicker_wrapper" }).Interval(10))</td>
-        </tr>
-        <tr>
-            <td>
-                Common:
-            </td>
-            <td>
-                <textarea></textarea>
-            </td>
-        </tr>
-         <tr>
-            <td  colspan=2 align="center">
-                <button>确定</button><button>取消</button>
-            </td>
-        </tr>
-    </table>
 
-    
-
- 
-   
-    
-}
 <p>
     请在公司页面下添加客户</p>
-@{ Html.Telerik().ScriptRegistrar().OnDocumentReady(@<text> var tWindow = $('#Window');
-    tWindow.css("margin-left",tWindow.width()/2); var addLeadCallSheet = $('.addLeadCallSheet');
-    @*initialaddLeadCallSheet(addLeadCallSheet, tWindow);*@
-    </text>);
-}
+

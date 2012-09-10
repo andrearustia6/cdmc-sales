@@ -1,0 +1,80 @@
+﻿@{
+    ViewBag.Title = "CRM";
+}
+@using Entity
+@using Utl
+<h2>CRM</h2>
+@model Lead
+           
+
+ @Html.Partial("LeadCallSheetEditor",new LeadCallSheet())     
+
+
+@(Html.Telerik().TabStrip().Name("TabStrip").SelectedIndex(0).Items(items =>
+{
+    items.Add().Text("客户信息").Content(@<text>@Lead(Model)</text>);
+    items.Add().Text("Packages").Content(@<text>@Package(Model)</text>);
+    items.Add().Text("LeadSheet").Content(@<text>@LeadCallSheet(Model)</text>);
+    items.Add().Text("Target").Content(@<text></text>);
+})
+)
+
+
+
+@helper Lead(Lead lead)
+    { 
+        var company = lead.Company;
+    <div style="width: 500;">
+        <img alt="photo"  style="width:80px;height:70px;float:right;" src=@Url.Content("~/Image/DisplayImage/" + lead.ImageID) />
+        <ul>
+            <li>
+                <label>
+                    Lead姓名:</label>@lead.FullName</li>
+            <li>
+                <label>
+                    职位:</label>@lead.Title.FullName</li>
+            <li>
+                <label>
+                    性别:</label>@lead.Gender</li>
+            <li>
+                <label>
+                    公司电话:</label>@company.Contact</li>
+            <li>
+                <label>
+                    可打时间:</label>@company.Available</li>
+            <li>
+                <label>
+                    座机:</label>@lead.Contact</li>
+            <li>
+                <label>
+                    电子邮箱:</label>@lead.EMail</li>
+            <li>
+                <label>
+                    传真:</label>@lead.Fax</li>
+        </ul>
+    </div>
+     
+}
+@helper Package(Lead lead)
+    { 
+    @(Html.Telerik().Grid<Package>(CH.GetAllData<Package>()).Name("Packages" + lead.ID)
+            .DataKeys(keys =>
+            {
+                keys.Add(s => s.ID);
+            })
+            .Columns(i =>
+            {
+                i.Bound(c => c.FullName).Width(150);
+                i.Bound(c => c.PackageType.FullName).Width(150);
+                i.Bound(c => c.ParticipantType.FullName).Width(150);
+                i.Bound(c => c.ID).Title("操作").Template(@<span> <a href=@Url.Content("~/Lead/Edit/" + item.ID) >
+                    编辑</a> | <a href=@Url.Content("~/Lead/Details/" + item.ID)>详细</a> | <a href=@Url.Content("~/Lead/delete/" + item.ID) >
+                        删除</a> </span>);
+            })
+        )
+}
+@helper LeadCallSheet(Lead lead)
+    { 
+    <input class="addLeadCallSheet" id=@lead.ID type="button" value="添加通话结果" />
+}
+
