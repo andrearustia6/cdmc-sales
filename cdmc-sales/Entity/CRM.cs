@@ -38,6 +38,7 @@ namespace Entity
         public string ResultDescription { get; set; }
     }
 
+
     /// <summary>
     /// 电话结果管理
     /// </summary>
@@ -46,7 +47,8 @@ namespace Entity
     {
         [Display(Name = "First Pitch"), Required]
         public bool IsFirstPitch { get; set; }
-    
+
+
         public virtual Lead Lead { get; set; }
         [Display(Name = "致电客户"), Required]
         public int? LeadID { get; set; }

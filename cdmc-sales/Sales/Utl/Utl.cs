@@ -16,7 +16,10 @@ using System.Xml;
 
 namespace Utl
 {
-
+    [TestAttribute]
+    public class test
+    { 
+    }
     public static class AppConfig
     {
         public static string ConnectionStringSetting
@@ -24,10 +27,10 @@ namespace Utl
             get { return ConfigurationManager.AppSettings["ConnectionStringSetting"]; }
         }
     }
-    public class JsonIgnoreAttribute : Attribute
+    public class TestAttribute : Attribute
     {
         public List<string> IgnoreProperties { get; set; }
-        public JsonIgnoreAttribute(params string[] properties)
+        public TestAttribute(params string[] properties)
         {
             IgnoreProperties = new List<string>();
             IgnoreProperties.AddRange(properties);
@@ -162,8 +165,8 @@ namespace Utl
         {
             T theSource = obj as T;
             var ps = theSource.GetType().GetProperties();
-            var c = theSource.GetType().GetCustomAttributes(typeof(JsonIgnoreAttribute), true).FirstOrDefault();
-
+            var c = theSource.GetType().GetCustomAttributes(typeof(JsonIgnoreAttribute), false).FirstOrDefault();
+            var oo = theSource.GetType().Attributes;
             Dictionary<string, object> OutputJson = new Dictionary<string, object>();
 
             foreach (var p in ps)
@@ -223,7 +226,10 @@ namespace Utl
                     new DataToJson<Lead>(),
                     new DataToJson<Category>(),
                     new DataToJson<Research>(),
-                    new DataToJson<LeadCall>()
+                    new DataToJson<LeadCall>(),
+                    new DataToJson<Project>(),
+                    new DataToJson<LeadCallType>(),
+                    new DataToJson<test>()
                 });
                 string sJSON = serializer.Serialize(Data);
                 response.Write(sJSON);
