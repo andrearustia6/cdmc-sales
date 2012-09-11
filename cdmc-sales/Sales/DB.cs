@@ -15,8 +15,6 @@ namespace Sales
         // System.Data.Entity.Database.SetInitializer(new System.Data.Entity.DropCreateDatabaseIfModelChanges<Sales.DB>());
 
 
-        public DbSet<CRM> CRM { get; set; }
-
-        public DbSet<Lead> Lead { get; set; }
+     
     }
 }

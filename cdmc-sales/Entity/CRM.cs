@@ -10,13 +10,14 @@ namespace Entity
     /// <summary>
     /// 
     /// </summary>
+    [JsonIgnoreAttribute("Lead")]
     public class CRM : EntityBase
     {
         public virtual Lead Lead { get; set; }
         [Display(Name = "客户"), Required]
         public int? LeadID { get; set; }
 
-        public List<LeadCall> LeadCallSheet { get; set; }
+        public List<LeadCall> LeadCalls{ get; set; }
 
         public List<Deal> Deals { get; set; }
 

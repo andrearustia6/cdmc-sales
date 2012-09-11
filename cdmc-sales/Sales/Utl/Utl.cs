@@ -165,7 +165,7 @@ namespace Utl
         {
             T theSource = obj as T;
             var ps = theSource.GetType().GetProperties();
-            var c = theSource.GetType().GetCustomAttributes(typeof(JsonIgnoreAttribute), false).FirstOrDefault();
+            var c = typeof(T).GetCustomAttributes(typeof(JsonIgnoreAttribute), false).FirstOrDefault();
             var oo = theSource.GetType().Attributes;
             Dictionary<string, object> OutputJson = new Dictionary<string, object>();
 
@@ -229,7 +229,7 @@ namespace Utl
                     new DataToJson<LeadCall>(),
                     new DataToJson<Project>(),
                     new DataToJson<LeadCallType>(),
-                    new DataToJson<test>()
+                    new DataToJson<CRM>()
                 });
                 string sJSON = serializer.Serialize(Data);
                 response.Write(sJSON);
