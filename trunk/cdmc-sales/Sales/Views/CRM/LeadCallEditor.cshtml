@@ -1,9 +1,9 @@
-﻿ @using Entity
- @using Utl
- @model LeadCall
+﻿@using Entity
+@using Utl
+@model LeadCall
            
- 
- @{ Html.Telerik().Window().Name("Window").Effects(fx =>
+
+    @{ Html.Telerik().Window().Name("Window").Effects(fx =>
    {
        fx.Expand();
        fx.Opacity();
@@ -11,53 +11,57 @@
        fx.CloseDuration(200);
    }).Buttons(b => b.Maximize().Close()).Content(@<text>@CallResultWindow()</text>)
       .Draggable(true).Resizable().Scrollable(true).Modal(true).Visible(false).Render(); 
-}  
+  }  
 
 @helper CallResultWindow()
     {
-        @Html.HiddenFor(m => m.LeadID)
+    @Html.HiddenFor(m => m.LeadID)
     <table>
         <tr>
             <td width="100px">
                 First Pitch?
             </td>
             <td>
-                @Html.DropDownListFor(m => m.IsFirstPitch, new SelectList(new List<Boolean>(){true,false }))
+                @Html.DropDownListFor(m => m.IsFirstPitch, new SelectList(new List<Boolean>() { true, false }))
             </td>
         </tr>
         <tr>
-            <td >
+            <td>
                 Result:
             </td>
             <td>
-                @Html.DropDownListFor(m => m.LeadCallTypeID, new SelectList(new List<LeadCallType>(CH.GetAllData<LeadCallType>()),"ID", "Name"), "-请选择-")
+                @Html.DropDownListFor(m => m.LeadCallTypeID, new SelectList(new List<LeadCallType>(CH.GetAllData<LeadCallType>()), "ID", "Name"), "-请选择-")
             </td>
         </tr>
-        
         <tr>
-        <td>CallBack:</td>
-        <td> @(Html.Telerik().DateTimePicker().Name("callBback").HtmlAttributes(new { id = "DateTimePicker_wrapper" }).Interval(10))</td>
+            <td>
+                CallBack:
+            </td>
+            <td>
+                @(Html.Telerik().DateTimePicker().Name("callBback").HtmlAttributes(new { id = "DateTimePicker_wrapper" }).Interval(10))
+            </td>
         </tr>
         <tr>
             <td>
                 Common:
             </td>
             <td width="500px">
-             @Html.TextAreaFor(m => m.Result)
+                @Html.TextAreaFor(m => m.Result)
             </td>
         </tr>
-         <tr>
-            <td  colspan=2 align="center">
-                <button id="editor_submit">确定</button><button id="editor_cancel">取消</button>
+        <tr>
+            <td colspan="2" align="center">
+                <input type="submit" value=@SR.Save />
+                <button id="editor_submit">
+                    确定</button>
+                <button id="editor_cancel">
+                        取消</button>
             </td>
         </tr>
     </table>
 }
-
-@{ Html.Telerik().ScriptRegistrar().OnDocumentReady(@<text> 
-    var tWindow = $('#Window');
-    tWindow.css("margin-left",tWindow.width()/2);
-     var addLeadCallSheet = $('.addLeadCallSheet');
+@{ Html.Telerik().ScriptRegistrar().OnDocumentReady(@<text> var tWindow = $('#Window');
+    tWindow.css("margin-left",tWindow.width()/2); var addLeadCallSheet = $('.addLeadCallSheet');
     initialaddLeadCallSheet(addLeadCallSheet, tWindow);
     </text>);
 }

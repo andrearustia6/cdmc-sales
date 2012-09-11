@@ -70,9 +70,11 @@ namespace Sales.Controllers
         {
            
             CH.Create<LeadCall>(callresult);
+
+            callresult = CH.GetAllData<LeadCall>(lc => lc.LeadID == callresult.LeadID, "LeadCallType").FirstOrDefault();
            
-            var data = CH.GetDataById<Lead>(callresult.LeadID);
-            return new DataJsonResult<Lead>() { Data = data };
+            //return new DataJsonResult<Lead>() { Data = data };
+            return new DataJsonResult<LeadCall>() { Data = callresult };
         }
 
         [HttpPost]

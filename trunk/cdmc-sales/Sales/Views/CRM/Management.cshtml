@@ -8,8 +8,9 @@
            
  @Html.HiddenFor(m=> m.LeadID)
 
- @Html.Partial("LeadCallEditor", new LeadCall() { LeadID=Model.ID}) 
-      
+
+ @Html.Partial("LeadCallEditor", new LeadCall() { LeadID = Model.ID }) 
+
 
 
 @(Html.Telerik().TabStrip().Name("TabStrip").SelectedIndex(0).Items(items =>
@@ -82,7 +83,7 @@
         if (calls != null && calls.Count>0)
         {
             <table id="leadcalllist">
-            <tr><td>FaxOut</td><td>FirstPitch</td><td>结果</td><td>回打时间</td><td>录入时间</td></tr>
+            <tr id="callheader"><td>FaxOut</td><td>FirstPitch</td><td>结果</td><td>回打时间</td><td>录入时间</td></tr>
             @for (int i=0; i < 10 && i < calls.Count; i++)
             {
                <tr><td>@calls[i].FaxOut</td><td>@calls[i].IsFirstPitch</td><td>@calls[i].LeadCallType.Name</td><td>@calls[i].CallBackDate</td><td>@calls[i].ModifiedTime</td></tr>
@@ -94,5 +95,8 @@
             </table>
         }
     
+        <table>
+        <tr></tr>
+        </table>
 }
 
