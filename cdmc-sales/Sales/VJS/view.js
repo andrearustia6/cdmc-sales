@@ -37,14 +37,9 @@
             },
             success: function (result) {
                 if (result) {
-                    $('#leadcalllist').children('tr').remove();
-                    if (result.LeadCalls && result.LeadCalls.length > 0) {
-                        for (var i = 0; i < result.LeadCalls.length; i++) {
-                            if (i == 0)
-                                $('#leadcalllist').append('<tr><td>FaxOut</td><td>FirstPitch</td><td>结果</td><td>回打时间</td><td>录入时间</td></tr>')
-                        }
-                    }
-                    $win.data('tWindow').close();
+                    window.location.reload(true); 
+                 
+                   // $win.data('tWindow').close();
                 }
             }
         });

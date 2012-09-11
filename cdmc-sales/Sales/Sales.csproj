@@ -1014,9 +1014,6 @@
     <Content Include="Views\CRM\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\CRM\LeadCallSheet.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Views\CRM\LeadCallIndex.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
