@@ -5,6 +5,7 @@ using System.Text;
 
 namespace Attributes
 {
+    [AttributeUsage(AttributeTargets.All)]
     public class JsonIgnoreAttribute : Attribute
     {
         public List<string> IgnoreProperties { get; set; }

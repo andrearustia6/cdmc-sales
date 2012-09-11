@@ -62,7 +62,7 @@
     <Reference Include="System.EnterpriseServices" />
     <Reference Include="System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="Telerik.Web.Mvc">
-      <HintPath>..\..\..\HS\bin\Telerik.Web.Mvc.dll</HintPath>
+      <HintPath>C:\Program Files\Telerik\Extensions for ASP.NET MVC Q3 2011\Binaries\Mvc3\Telerik.Web.Mvc.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -1015,6 +1015,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\CRM\LeadCallSheet.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\CRM\LeadCallIndex.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

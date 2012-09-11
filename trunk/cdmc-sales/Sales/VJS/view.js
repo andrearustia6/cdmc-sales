@@ -4,12 +4,25 @@
 
 
         var fp = $win.find('#IsFirstPitch').val();
-        var sheet = $win.find('#LeadCallSheetTypeID').val();
+        var type = $win.find('#LeadCallTypeID').val();
         var date = $win.find('#callBback').val();
         var common = $win.find('#Result').val();
-         var projectid = $win.find('#ProjectID').val();
-         var leadid = $win.find('#LeadID').val();
-         var callresult = { IsFirstPitch: fp, LeadCallSheetTypeID: sheet, CallBackDate: date, Result: common, ProjectID: projectid, LeadID: leadid };
+        var projectid = $win.find('#ProjectID').val();
+        var leadid = $win.find('#LeadID').val();
+        var callresult = { IsFirstPitch: fp, LeadCallTypeID: type, CallBackDate: date, Result: common, ProjectID: projectid, LeadID: leadid };
+
+        if (!fp) {
+            alert("请选择是否属于First Pitch");
+            return;
+        }
+        if (!callresult) {
+            alert("请选择致电结果");
+            return;
+        }
+        if (!leadid) {
+            alert("LeadID 丢失");
+            return;
+        }
 
         callresult = JSON.stringify(callresult);
 
@@ -18,13 +31,22 @@
             type: 'POST',
             dataType: 'json',
             contentType: 'application/json; charset=utf-8',
-            data:  callresult,
+            data: callresult,
             error: function (jqXHR, textStatus, errorThrown) {
                 alert(jqXHR.responseText);
             },
             success: function (result) {
                 if (result) {
-
+                    $('#leadcalllist').children('tr').remove();
+                    if(result.LeadCalls && result.LeadCalls.length>0)
+                    {
+                        for(int i=0;i<result.LeadCalls.length;i++)
+                        {
+                            if(i==0)
+                             $('#leadcalllist').append('<tr><td>FaxOut</td><td>FirstPitch</td><td>结果</td><td>回打时间</td><td>录入时间</td></tr>')
+                        }
+                    }
+                    $win.data('tWindow').close();
                 }
             }
         });

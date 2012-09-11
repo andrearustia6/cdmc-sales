@@ -14,6 +14,7 @@ namespace Sales.Controllers
 {
     public class CategoryController : Controller
     {
+    
         public ViewResult Index()
         {
             return View(CH.GetAllData<Category>());

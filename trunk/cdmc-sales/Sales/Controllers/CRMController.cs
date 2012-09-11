@@ -45,7 +45,7 @@ namespace Sales.Controllers
 
         public ActionResult Management(int leadid)
         {
-            var crm = CH.GetAllData<CRM>(i => i.LeadID == leadid).FirstOrDefault();
+            var crm = CH.GetAllData<CRM>(i => i.LeadID == leadid,"LeadCalls").FirstOrDefault();
 
             if (crm == null)
             {
@@ -58,12 +58,21 @@ namespace Sales.Controllers
             return View(crm);
         }
 
+        public ActionResult LeadCallIndex(int leadid)
+        {
+            var data = CH.GetAllData<LeadCall>(i=>i.LeadID == leadid);
+            return View(data);
+        }
+
+
         [HttpPost]
         public ActionResult Save_LeadCall(LeadCall callresult)
         {
-           // CH.Create<LeadCall>(callresult);
-            //return PartialView("LeadCallSheet",CH.GetAllData<LeadCallType>());
-            return new DataJsonResult<test>() { Data = callresult };
+           
+            CH.Create<LeadCall>(callresult);
+           
+            var data = CH.GetDataById<Lead>(callresult.LeadID);
+            return new DataJsonResult<Lead>() { Data = data };
         }
 
         [HttpPost]

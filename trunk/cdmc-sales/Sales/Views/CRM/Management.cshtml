@@ -78,5 +78,21 @@
 @helper LeadCallSheet(Lead lead)
     { 
     <input class="addLeadCallSheet" id=@lead.ID type="button" value="添加通话结果" />
+        var calls = CH.GetAllData<LeadCall>(call => call.LeadID == lead.ID).OrderByDescending(item => item.ModifiedTime).ToList();
+        if (calls != null && calls.Count>0)
+        {
+            <table id="leadcalllist">
+            <tr><td>FaxOut</td><td>FirstPitch</td><td>结果</td><td>回打时间</td><td>录入时间</td></tr>
+            @for (int i=0; i < 10 && i < calls.Count; i++)
+            {
+               <tr><td>@calls[i].FaxOut</td><td>@calls[i].IsFirstPitch</td><td>@calls[i].LeadCallType.Name</td><td>@calls[i].CallBackDate</td><td>@calls[i].ModifiedTime</td></tr>
+            }
+            @if(calls.Count>10)
+            {
+                <tr><td colspan="5"><a target="_blank" href=@Url.Content("~/CRM/LeadCallIndex/?leadid=" + lead.ID)>更多...</a></td></tr>
+            }
+            </table>
+        }
+    
 }
 

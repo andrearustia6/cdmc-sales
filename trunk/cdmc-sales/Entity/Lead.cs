@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.ComponentModel.DataAnnotations;
+using Attributes;
 
 namespace Entity
 {
@@ -79,8 +80,9 @@ namespace Entity
     }
 
     /// <summary>
-    /// Lead
+    /// 
     /// </summary>
+    [JsonIgnoreAttribute("ModifiedTime","Company","Image")]
     public class Lead :FullNameEntity
     {
         public string Gender { get; set; }
@@ -115,9 +117,7 @@ namespace Entity
         [Display(Name = "所属公司"),Required]
         public int? CompanyID { get; set; }
 
-        //public virtual LeadType LeadType { get; set; }
-        //[Display(Name = "Lead类型")]
-        //public int? LeadTypeID { get; set; }
+        public List<LeadCall> LeadCalls { get; set; }
 
         public virtual Image Image { get; set; }
         public int?  ImageID { get; set; }

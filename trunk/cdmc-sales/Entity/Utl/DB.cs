@@ -49,11 +49,11 @@ namespace Utl
     {
         protected override void Seed(DB context)
         {
-            FackData(context);
+            FakeData(context);
             context.SaveChanges();
         }
 
-        private void FackData(DB context)
+        private void FakeData(DB context)
         {
             context.Roles.Add(new Role() { Name = "高层", Level = 1000 });
             context.Roles.Add(new Role() { Name = "版块负责人", Level = 500 });
