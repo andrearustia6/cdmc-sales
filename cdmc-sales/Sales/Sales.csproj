@@ -892,15 +892,6 @@
     <Content Include="Views\PackageType\Display.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\LeadSheetType\Index.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\LeadSheetType\Change.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\LeadSheetType\Display.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Views\TemplateType\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -1016,6 +1007,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\CRM\LeadCallIndex.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\CRM\LeadPackageEditor.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

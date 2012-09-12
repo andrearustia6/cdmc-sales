@@ -45,7 +45,7 @@ namespace Sales.Controllers
 
         public ActionResult Management(int leadid)
         {
-            var crm = CH.GetAllData<CRM>(i => i.LeadID == leadid,"LeadCalls").FirstOrDefault();
+            var crm = CH.GetAllData<CRM>(i => i.LeadID == leadid).FirstOrDefault();
 
             if (crm == null)
             {

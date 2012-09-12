@@ -87,13 +87,6 @@ namespace Entity
     {
         public string Gender { get; set; }
 
-        
-        //[Display(Name = "中文名称"), MaxLength(100)]
-        //public string Name_CH { get; set; }
-
-        //[Display(Name = "英文名称"), MaxLength(100)]
-        //public string Name_EN { get; set; }
-
         public virtual Title Title { get; set; }
          [Display(Name = "职位")]
         public int? TitleID { get; set; }
@@ -119,18 +112,13 @@ namespace Entity
 
         public List<LeadCall> LeadCalls { get; set; }
 
+        public List<Package> Packages { get; set; }
+
+        public List<Deal> Deals { get; set; }
+
         public virtual Image Image { get; set; }
         public int?  ImageID { get; set; }
     }
-
-    ///// <summary>
-    ///// 公司区域
-    ///// </summary>
-    //public class Region : EntityBase
-    //{
-    //    [Display(Name = "公司区域"), Required]
-    //    public string Name { get; set; }
-    //}
 
     /// <summary>
     /// 职位类型

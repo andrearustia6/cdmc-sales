@@ -3,7 +3,7 @@
 @model LeadCall
            
 
-    @{ Html.Telerik().Window().Name("Window").Effects(fx =>
+    @{ Html.Telerik().Window().Name("LeadCallWindow").Effects(fx =>
    {
        fx.Expand();
        fx.Opacity();
@@ -15,7 +15,7 @@
 
 @helper CallResultWindow()
     {
-    @Html.HiddenFor(m => m.LeadID)
+  
     <table>
         <tr>
             <td width="100px">
@@ -51,16 +51,10 @@
         </tr>
         <tr>
             <td colspan="2" align="center">
-                <button id="editor_submit">
-                    确定</button>
-                <button id="editor_cancel">
-                        取消</button>
+                <button id="call_editor_submit">确定</button>
+                <button id="call_editor_cancel">取消</button>
             </td>
         </tr>
     </table>
 }
-@{ Html.Telerik().ScriptRegistrar().OnDocumentReady(@<text> var tWindow = $('#Window');
-    tWindow.css("margin-left",tWindow.width()/2); var addLeadCallSheet = $('.addLeadCallSheet');
-    initialaddLeadCallSheet(addLeadCallSheet, tWindow);
-    </text>);
-}
+
