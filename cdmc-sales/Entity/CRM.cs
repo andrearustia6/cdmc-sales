@@ -67,6 +67,9 @@ namespace Entity
         {
             get
             {
+                if (LeadCallType ==null || LeadCallType.Name == "Not Pitched" || LeadCallType.Name == "Blowed")
+                    return false;
+                else
                 return true;
             }
         }
@@ -75,7 +78,10 @@ namespace Entity
         public string Result { get; set; }
 
         [Display(Name = "回电时间")]
-        public DateTime CallBackDate { get; set; }
+        public DateTime? CallBackDate { get; set; }
+
+        [Display(Name = "致电时间")]
+        public DateTime CallingTime { get; set; }
 
     }
 

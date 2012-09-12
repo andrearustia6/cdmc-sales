@@ -15,7 +15,7 @@ namespace Sales.Controllers
     {
         public ViewResult Index()
         {
-            return View(CH.GetAllData<Package>());
+            return View(CH.GetAllData<Package>("PackageItems"));
         }
 
         public ViewResult Details(int id)
