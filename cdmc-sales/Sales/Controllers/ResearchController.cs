@@ -21,7 +21,9 @@ namespace Sales.Controllers
 
         public ViewResult Details(int id)
         {
-            return View(CH.GetDataById<Research>(id));
+            var data = CH.GetDataById<Research>(id);
+            data.Contents = HttpUtility.HtmlDecode(data.Contents);
+            return View(data);
         }
 
         public ActionResult Create()
@@ -34,6 +36,7 @@ namespace Sales.Controllers
         {
             if (ModelState.IsValid)
             {
+               // item.Contents = HttpUtility.HtmlEncode(item.Contents);
                 CH.Create<Research>(item);
                 return RedirectToAction("Index");
             }
@@ -42,7 +45,7 @@ namespace Sales.Controllers
         public ActionResult Edit(int id)
         {
             var data = CH.GetDataById<Research>(id);
-            data.Contents = HttpUtility.HtmlEncode(data.Contents);
+            data.Contents = HttpUtility.HtmlDecode(data.Contents);
             return View(data);
         }
 
@@ -52,7 +55,7 @@ namespace Sales.Controllers
             
             if (ModelState.IsValid)
             {
-                item.Contents = HttpUtility.HtmlDecode(item.Contents);
+                //item.Contents = HttpUtility.HtmlDecode(item.Contents);
               
                 CH.Edit<Research>(item);
                 return RedirectToAction("Index");
@@ -62,7 +65,9 @@ namespace Sales.Controllers
 
         public ActionResult Delete(int id)
         {
-            return View(CH.GetDataById<Research>(id));
+            var data = CH.GetDataById<Research>(id);
+            data.Contents = HttpUtility.HtmlDecode(data.Contents);
+            return View(data);
         }
 
         [HttpPost, ActionName("Delete")]
