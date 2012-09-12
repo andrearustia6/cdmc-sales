@@ -10,15 +10,22 @@
         var projectid = $win.find('#ProjectID').val();
         var leadid = $win.find('#LeadID').val();
         var callresult = { IsFirstPitch: fp, LeadCallTypeID: type, CallBackDate: date, Result: common, ProjectID: projectid, LeadID: leadid };
+        var typetext = $win.find("#LeadCallTypeID").find("option:selected").text();
+        //var sv = $("select[selected='selected']").val();
 
         if (!fp) {
             alert("请选择是否属于First Pitch");
             return;
         }
-        if (!callresult) {
+        if (!type) {
             alert("请选择致电结果");
             return;
         }
+        if (typetext == "Call-Backed" && date=="") {
+            alert("请输入回访时间");
+            return;
+        }
+
         if (!leadid) {
             alert("LeadID 丢失");
             return;
@@ -37,9 +44,9 @@
             },
             success: function (result) {
                 if (result) {
-                    window.location.reload(true); 
-                 
-                   // $win.data('tWindow').close();
+                    window.location.reload(true);
+
+                    // $win.data('tWindow').close();
                 }
             }
         });

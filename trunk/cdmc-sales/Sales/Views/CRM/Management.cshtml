@@ -3,10 +3,11 @@
 }
 @using Entity
 @using Utl
-<h2>CRM</h2>
+@using BLL
+<h2>客户关系管理</h2>
 @model CRM
            
- @Html.HiddenFor(m=> m.LeadID)
+ @Html.HiddenFor(m => m.LeadID)
 
 
  @Html.Partial("LeadCallEditor", new LeadCall() { LeadID = Model.ID }) 
@@ -65,7 +66,7 @@
             {
                 keys.Add(s => s.ID);
             })
-            .Columns(i =>   
+            .Columns(i =>
             {
                 i.Bound(c => c.FullName).Width(150);
                 i.Bound(c => c.PackageType.FullName).Width(150);
@@ -78,25 +79,39 @@
 }
 @helper LeadCallSheet(Lead lead)
     { 
-    <input class="addLeadCallSheet" id=@lead.ID type="button" value="添加通话结果" />
+    <input class="addLeadCallSheet" id=@lead.ID style="float:right" type="button" value="添加通话结果" />
         var calls = CH.GetAllData<LeadCall>(call => call.LeadID == lead.ID).OrderByDescending(item => item.ModifiedTime).ToList();
-        if (calls != null && calls.Count>0)
+        if (calls != null && calls.Count > 0)
         {
-            <table id="leadcalllist">
-            <tr id="callheader"><td>FaxOut</td><td>FirstPitch</td><td>结果</td><td>回打时间</td><td>录入时间</td></tr>
-            @for (int i=0; i < 10 && i < calls.Count; i++)
+            <br />
+            <label>致电结果列表：</label>
+            <table style="width:700px" id="leadcalllist">
+            <tr id="callheader"><td>FaxOut</td><td>FirstPitch</td><td>结果</td><td>回打时间</td><td>致电时间</td></tr>
+            @for (int i = 0; i < 10 && i < calls.Count; i++)
             {
-               <tr><td>@calls[i].FaxOut</td><td>@calls[i].IsFirstPitch</td><td>@calls[i].LeadCallType.Name</td><td>@calls[i].CallBackDate</td><td>@calls[i].ModifiedTime</td></tr>
+               <tr><td>@calls[i].FaxOut</td><td>@calls[i].IsFirstPitch</td><td>@calls[i].LeadCallType.Name</td><td>@calls[i].CallBackDate</td><td>@calls[i].CallingTime</td></tr>
             }
-            @if(calls.Count>10)
+            @if (calls.Count > 10)
             {
                 <tr><td colspan="5"><a target="_blank" href=@Url.Content("~/CRM/LeadCallIndex/?leadid=" + lead.ID)>更多...</a></td></tr>
             }
             </table>
+        <br />
+            var todaycalls = calls.FindAll(c => Utl.IsToday(c.CallingTime));
+            var dms = todaycalls.FindAll(c => CRM_Logical.IsDMS(c));
+            var newDMS = todaycalls.FindAll(c => CRM_Logical.IsNewDMS(c));
+            var qualifyDMS = todaycalls.FindAll(c => CRM_Logical.IsQualifiedDecision(c));
+            var deal = todaycalls.FindAll(c => CRM_Logical.IsDealClosed(c));
+         <label>Daily Call Sheet:</label>   
+        <table style="width:700px">
+        <tr><td>Cold Calls</td><td>DMs reached</td><td>New DMs reached</td><td>Full Pitches</td><td>Qualified Decisions</td><td>Deals</td><td>Duration</td></tr>
+        <tr align="center"><td>@todaycalls.Count</td><td>@dms.Count</td><td>@newDMS.Count</td><td>Full Pitches</td><td>@qualifyDMS.Count</td><td>@deal.Count</td><td>Deals</td></tr>
+       </table>
         }
     
-        <table>
-        <tr></tr>
-        </table>
+      
+      
 }
+
+
 

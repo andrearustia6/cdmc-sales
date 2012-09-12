@@ -25,14 +25,22 @@
             @Html.LabelFor(model => model.SubName)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.SubName)
+            @Html.TextAreaFor(model => model.SubName)
             @Html.ValidationMessageFor(model => model.SubName)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Prize)
+        </div>
+        <div class="editor-field">
+            @Html.Telerik().CurrencyTextBoxFor(model => model.Prize)
+            @Html.ValidationMessageFor(model => model.Prize)
         </div>
 
         <div class="editor-label">
             @Html.LabelFor(model => model.PackageTypeID)
         </div>
-        <<div class="editor-field">
+        <div class="editor-field">
             @Html.DropDownList("PackageTypeID", new SelectList(CH.GetAllData<PackageType>(), "ID", "FullName"), "-请选择-")
             @Html.ValidationMessageFor(model => model.PackageTypeID)
         </div>

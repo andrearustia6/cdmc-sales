@@ -21,18 +21,10 @@ namespace Entity
     /// </summary>
     public class PackageType : FullNameEntity
     {
-        //[Display(Name = "Package类型")]
-        //public string Name { get; set; }
+
     }
 
-    ///// <summary>
-    ///// 参会助商参会服务
-    ///// </summary>
-    //public class PackageServiceType : EntityBase
-    //{
-    //    [Display(Name = "服务名称")]
-    //    public string Name { get; set; }
-    //}
+
 
     /// <summary>
     /// 套餐子项
@@ -49,25 +41,8 @@ namespace Entity
         public int? PackageID { get; set; }
         public virtual Package Package { get; set; }
 
-        [Display(Name = "费用"), Required]
-        public decimal Prize { get; set; }
-
-        [Display(Name = "Package"), Required]
         public int? CurrencyTypeID { get; set; }
         public virtual CurrencyType CurrencyType  { get; set; }
-
-        //public virtual PackageType PackageType { get; set; }
-        //[Display(Name = "Package类型"), Required]
-        //public int? PackageTypeID { get; set; }
-
-        //public virtual PackageServiceType PackageServiceType { get; set; }
-        //[Display(Name = "参会服务类型"), Required]
-        //public int? PackageServiceTypeID { get; set; }
-
-        //public virtual ParticipantType ParticipantType { get; set; }
-        //[Display(Name = "参会类型"), Required]
-        //public int? ParticipantTypeID { get; set; }
-
     }
 
     /// <summary>
@@ -88,8 +63,10 @@ namespace Entity
         public string SubName { get; set; }
 
         public List<PackageItem> PackageItems { get; set; }
-    }
 
+        [Display(Name = "费用"), Required]
+        public decimal Prize { get; set; }
+    }
 
     /// <summary>
     /// 参会客户

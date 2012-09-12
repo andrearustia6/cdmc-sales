@@ -87,12 +87,15 @@ namespace Utl
             context.OnPhoneBlockTypes.Add(new OnPhoneBlockType() { Name = "不是决策人", Code = 5 });
 
             context.LeadCallTypes.Add(new LeadCallType() { Name = "Others", Code = 1 });
-            context.LeadCallTypes.Add(new LeadCallType() { Name = "Not Pitched", Code = 2 });
-            context.LeadCallTypes.Add(new LeadCallType() { Name = "Waiting for Approval", Code = 3 });
-            context.LeadCallTypes.Add(new LeadCallType() { Name = "Closed", Code = 4 });
-            context.LeadCallTypes.Add(new LeadCallType() { Name = "Blowed", Code = 5 });
-            context.LeadCallTypes.Add(new LeadCallType() { Name = "Pitched", Code = 6 });
-            context.LeadCallTypes.Add(new LeadCallType() { Name = "Call-Backed", Code = 7 });
+            context.LeadCallTypes.Add(new LeadCallType() { Name = "Blowed", Code = 2 });
+            context.LeadCallTypes.Add(new LeadCallType() { Name = "Not Pitched", Code = 3 });
+            context.LeadCallTypes.Add(new LeadCallType() { Name = "Pitched", Code = 4 });
+            context.LeadCallTypes.Add(new LeadCallType() { Name = "Call-Backed", Code = 5 });
+            context.LeadCallTypes.Add(new LeadCallType() { Name = "Waiting for Approval", Code = 6 });
+            context.LeadCallTypes.Add(new LeadCallType() { Name = "Qualified Decision", Code = 7 });
+            context.LeadCallTypes.Add(new LeadCallType() { Name = "Closed", Code = 8 });
+            
+            
 
             context.CurrencyTypes.Add(new CurrencyType() { Name="RMB"});
             context.CurrencyTypes.Add(new CurrencyType() { Name = "$" });

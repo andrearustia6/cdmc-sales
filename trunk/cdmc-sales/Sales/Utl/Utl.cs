@@ -343,5 +343,17 @@ namespace Utl
             else
                 return str;
         }
+
+        public static bool IsToday(DateTime dt)
+        {
+            DateTime today = DateTime.Today;
+            DateTime tempToday = new DateTime(dt.Year, dt.Month, dt.Day);
+            if (today == tempToday)
+                return true;
+            else
+                return false;
+        }
+
+
     }
 }

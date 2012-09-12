@@ -70,7 +70,7 @@ namespace Entity
     /// </summary>
     public class OnPhoneBlockType : EntityBase
     {
-        [Display(Name = "Blockleixing")]
+        [Display(Name = "Block类型")]
         public string Name { get; set; }
 
         [Display(Name = "代码")]
