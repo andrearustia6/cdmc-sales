@@ -1,0 +1,38 @@
+﻿@using Entity
+@using Utl
+@model Package
+           
+
+    @{ Html.Telerik().Window().Name("LeadPackageWindow").Effects(fx =>
+   {
+       fx.Expand();
+       fx.Opacity();
+       fx.OpenDuration(200);
+       fx.CloseDuration(200);
+   }).Buttons(b => b.Maximize().Close()).Content(@<text>@PagckageSetWindow()</text>)
+      .Draggable(true).Resizable().Scrollable(true).Modal(true).Visible(false).Render(); 
+  }  
+
+@helper PagckageSetWindow()
+    {
+   
+      @(Html.Telerik().Grid(CH.GetAllData<Package>()).Name("PackageList")
+       .DataKeys(keys =>
+                {
+                    keys.Add(s => s.ID);
+                })
+                .Columns(c =>
+                {
+                    c.Bound(item => item.FullName).Width(200);
+                    c.Bound(item => item.SubName);
+                    c.Bound(item => item.Prize).Width(100);
+                    c.Bound(item => item.PackageType.FullName).Width(200);
+                    c.Bound(item => item.ParticipantType.FullName).Width(200);
+                })
+                .Resizable(resizing => resizing.Columns(true))
+                .Filterable().Sortable().Groupable()
+                .Pageable(p => p.PageSize(20))
+                .Scrollable(scrolling => scrolling.Height(350))
+                )
+}
+

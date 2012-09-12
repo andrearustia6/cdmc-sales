@@ -188,6 +188,9 @@ namespace Entity
     /// </summary>
     public class Deal : EntityBase
     {
+        public virtual Lead Lead { get; set; }
+        public int? LeadID { get; set; }
+
         public virtual ParticipantType ParticipantType { get; set; }
         public int? ParticipantTypeID { get; set; }
 

@@ -17,11 +17,14 @@ namespace Entity
         [Display(Name = "客户"), Required]
         public int? LeadID { get; set; }
 
-        public List<LeadCall> LeadCalls{ get; set; }
+        public int? ConferenceID { get; set; }
+        public virtual Conference Conference { get; set; }
 
-        public List<Deal> Deals { get; set; }
+        public int? DealID { get; set; }
+        public virtual Deal Deal { get; set; }
 
-        public List<Conference> Conferences { get; set; }
+        public int? PackageID { get; set; }
+        public virtual Package Package { get; set; }
     }
 
     /// <summary>
@@ -48,7 +51,6 @@ namespace Entity
     {
         [Display(Name = "First Pitch"), Required]
         public bool IsFirstPitch { get; set; }
-
 
         public virtual Lead Lead { get; set; }
         [Display(Name = "致电客户"), Required]
