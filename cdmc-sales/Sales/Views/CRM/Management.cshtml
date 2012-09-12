@@ -7,12 +7,12 @@
 <h2>客户关系管理</h2>
 @model CRM
            
- @Html.HiddenFor(m => m.LeadID)
+@Html.HiddenFor(m => m.LeadID)
 
 
- @Html.Partial("LeadCallEditor", new LeadCall() { LeadID = Model.ID }) 
+@Html.Partial("LeadCallEditor", new LeadCall() { LeadID = Model.ID }) 
 
-@Html.Partial("LeadPackageEditor", new Package() {}) 
+@Html.Partial("LeadPackageEditor", Model.LeadID) 
 
 @(Html.Telerik().TabStrip().Name("TabStrip").SelectedIndex(0).Items(items =>
 {
@@ -61,7 +61,7 @@
 }
 @helper Package(Lead lead)
     { 
-        <input class="setLeadPackage" id=@lead.ID style="float:right" type="button" value="设置销售Package" />
+        <input class="setLeadPackage" id=@lead.ID  type="button" value="设置销售Package" />
     @(Html.Telerik().Grid<Package>(CH.GetAllData<Package>()).Name("Packages" + lead.ID)
             .DataKeys(keys =>
             {
@@ -80,7 +80,7 @@
 }
 @helper LeadCallSheet(Lead lead)
     { 
-    <input class="addLeadCall" id=@lead.ID style="float:right" type="button" value="添加通话结果" />
+    <input class="addLeadCall" id=@lead.ID  type="button" value="添加通话结果" />
         var calls = CH.GetAllData<LeadCall>(call => call.LeadID == lead.ID).OrderByDescending(item => item.ModifiedTime).ToList();
         if (calls != null && calls.Count > 0)
         {
@@ -118,12 +118,12 @@
     var leadCallWindow = $('#LeadCallWindow');
     leadCallWindow.css("margin-left",leadCallWindow.width()/2); 
     var addLeadCall = $('.addLeadCall');
-    initialaddLeadCall(addLeadCall, leadCallWindow);
+    initialAddLeadCall(addLeadCall, leadCallWindow);
 
     var leadPackageWindow = $('#LeadPackageWindow');
     leadPackageWindow.css("margin-left",leadCallWindow.width()/2); 
-    var addLeadPackage = $('.addLeadPackage');
-    initialaddLeadCall(addLeadPackage, leadPackageWindow);
+    var setLeadPackage = $('.setLeadPackage');
+    initialSetLeadPackage(setLeadPackage, leadPackageWindow);
     </text>);
 }
 

@@ -1,6 +1,6 @@
 ﻿@using Entity
 @using Utl
-@model Package
+@model int
            
 
     @{ Html.Telerik().Window().Name("LeadPackageWindow").Effects(fx =>
@@ -15,7 +15,7 @@
 
 @helper PagckageSetWindow()
     {
-   
+      @Html.Hidden("LeadID",Model)
       @(Html.Telerik().Grid(CH.GetAllData<Package>()).Name("PackageList")
        .DataKeys(keys =>
                 {
