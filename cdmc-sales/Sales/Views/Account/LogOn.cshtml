@@ -12,29 +12,35 @@
 @model  Entity.LogOnModel
 @using (Html.BeginForm())
 {
-<body>
+    <body>
 <div class="logo"><img src="/images/logo.jpg" width="929" height="191" alt="logo" /></div>
 <div class="login">
   <div class="login_2">
-	<h2>决策者销售系统</h2>
+	<h2><img src="/images/文字.gif" width="227" height="57" alt="文字" />
+    <p>CDMC Events Sales System</p></h2>
     <dl>
-    	<dt>用户名：</dt>
-        <dd>  @Html.TextBoxFor(m => m.UserName)
+    <dt>用户名/Account：</dt>
+        <dd> @Html.TextBoxFor(m => m.UserName)
                 @Html.ValidationMessageFor(m => m.UserName)</dd>
     </dl>
+     
     <dl>
-   	  <dt>密　码：</dt>
+    
+   	  <dt>密码/password：</dt>
       <dd> @Html.PasswordFor(m => m.Password)
                 @Html.ValidationMessageFor(m => m.Password)
-        <a href="#">忘记密码</a></dd>
+       <br /><br />
+ <a href="#">忘记密码/forget password
+</a></dd>
     </dl>
     <dl>
    	  <dt>&nbsp;</dt>
-      <dd class="login_3"><input type="submit"  id="submit" value="" style="background: url('/images/denglu.gif') no-repeat top left;
-                            border-width: 0px;" /></dd>
+      <dd class="login_3"><input type="image" src="/images/denglu.gif"/></dd>
     </dl>
-    </div>
+  </div>
 </div>
 </body>
+    
+
 }
 </html>

@@ -253,6 +253,7 @@
     <Compile Include="Utl\Utl.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="images\文字.gif" />
     <Content Include="Scripts\json2.js" />
     <Content Include="TimeSpan.xml" />
     <Content Include="Content\2011.3.1115\Black\editor.png" />
