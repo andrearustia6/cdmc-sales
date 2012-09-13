@@ -39,7 +39,7 @@ namespace Sales.Controllers
             if (ModelState.IsValid)
             {
                 CH.Create<PackageItem>(item);
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Package");
             }
             ViewBag.PackageID = item.PackageID;
             return View(item);
@@ -56,7 +56,7 @@ namespace Sales.Controllers
             if (ModelState.IsValid)
             {
                 CH.Edit<PackageItem>(item);
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Package");
             }
             ViewBag.PackageID = item.PackageID;
             return View(item);
@@ -71,7 +71,7 @@ namespace Sales.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             CH.Delete<PackageItem>(id);
-            return RedirectToAction("Index");
+            return RedirectToAction("Index","Package");
         }
     }
 }
