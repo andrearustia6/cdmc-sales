@@ -117,16 +117,16 @@ namespace Entity
     {
         public virtual Project Project { get; set; }
         [Display(Name = "项目名称")]
-        public int ProjectID { get; set; }
+        public int? ProjectID { get; set; }
 
         public virtual Lead Lead { get; set; }
         [Display(Name = "Lead")]
-        public int LeadID { get; set; }
+        public int? LeadID { get; set; }
 
         
         public Package Package { get; set; }
         [Display(Name = "销售目标")]
-        public int PackageID { get; set; }
+        public int? PackageID { get; set; }
     }
 
 

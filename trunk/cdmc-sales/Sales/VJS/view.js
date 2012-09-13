@@ -7,7 +7,7 @@
         var type = $win.find('#LeadCallTypeID').val();
         var date = $win.find('#callBback').val();
         var common = $win.find('#Result').val();
-        var projectid = ('#ProjectID').val();
+        var projectid = $('#ProjectID').val();
         var leadid = $('#ID').val();
         var callresult = { IsFirstPitch: fp, LeadCallTypeID: type, CallBackDate: date, Result: common, ProjectID: projectid, LeadID: leadid };
         var typetext = $win.find("#LeadCallTypeID").find("option:selected").text();
@@ -42,11 +42,7 @@
                 alert(jqXHR.responseText);
             },
             success: function (result) {
-                if (result) {
                     window.location.reload(true);
-
-                    // $win.data('tWindow').close();
-                }
             }
         });
 
@@ -63,11 +59,11 @@
 
 function initialSetLeadPackage($luncher, $win) {
     
-    $win.find('input[typ=checkbox]').click(function () {
-        $win.find('input[typ=checkbox]').each(function () {
+    $win.find('input[type=checkbox]').click(function () {
+        $win.find('input[type=checkbox]').each(function () {
             $(this).removeAttr("checked");
         });
-        $this.attr('checked', 'checked');
+        $(this).attr('checked', 'checked');
     });
 
 
@@ -96,9 +92,7 @@ function initialSetLeadPackage($luncher, $win) {
                 alert(jqXHR.responseText);
             },
             success: function (result) {
-                if (result) {
-                    window.location.reload(true);
-                }
+                window.location.reload(true);
             }
         });
 

@@ -11,16 +11,17 @@ namespace BLL
         public static Target_Package GetTarget_Package(Lead lead,object projectid)
         {
             if (projectid == null)
-                return new Target_Package();
+                return new Target_Package() { LeadID = lead.ID };
 
             var pid = (int)projectid;
 
             if (lead.Target_Packages != null)
             {
-                var tp = lead.Target_Packages.FirstOrDefault(i => i.PackageID == pid && i.LeadID == lead.ID);
+                var tp = lead.Target_Packages.FirstOrDefault(i => i.ProjectID == pid && i.LeadID == lead.ID);
+                if (tp == null) tp = new Target_Package() { LeadID = lead.ID, ProjectID = pid };
                 return tp;
             }
-            return new Target_Package();
+            return new  Target_Package() { LeadID = lead.ID, ProjectID = pid };
         }
         public static bool IsDMS(string leadCallType)
         {
