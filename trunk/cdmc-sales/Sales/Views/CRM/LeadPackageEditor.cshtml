@@ -1,9 +1,9 @@
 ﻿@using Entity
 @using Utl
-@model int
+@model Target_Package
            
 
-    @{ Html.Telerik().Window().Name("LeadPackageWindow").Effects(fx =>
+@{ Html.Telerik().Window().Name("LeadPackageWindow").Effects(fx =>
    {
        fx.Expand();
        fx.Opacity();
@@ -12,6 +12,8 @@
    }).Buttons(b => b.Maximize().Close()).Content(@<text>@PagckageSetWindow()</text>)
       .Draggable(true).Resizable().Scrollable(true).Modal(true).Visible(false).Render(); 
   }  
+
+
 
 @helper PagckageSetWindow()
     {
@@ -23,16 +25,22 @@
                 })
                 .Columns(c =>
                 {
+                    c.Template(@<text><input name="checkedRecords" type="checkbox" value="@item.ID " title="checkedRecords"  
+                    @if (Model!=null && Model.PackageID == item.ID)                                                                                                                                                               
+                    {                            
+                        <text>checked="checked"</text> 
+                     }/>               
+                     </text>).Title("").Width(36).HtmlAttributes(new { style = "text-align:center" });
                     c.Bound(item => item.FullName).Width(200);
-                    c.Bound(item => item.SubName);
                     c.Bound(item => item.Prize).Width(100);
-                    c.Bound(item => item.PackageType.FullName).Width(200);
-                    c.Bound(item => item.ParticipantType.FullName).Width(200);
+                    c.Bound(item => item.PackageType.FullName).Width(150);
+                    c.Bound(item => item.ParticipantType.FullName).Width(150);
                 })
-                .Resizable(resizing => resizing.Columns(true))
-                .Filterable().Sortable().Groupable()
-                .Pageable(p => p.PageSize(20))
-                .Scrollable(scrolling => scrolling.Height(350))
-                )
+                                       .Resizable(resizing => resizing.Columns(true))
+                                       .Pageable(p => p.PageSize(20))
+                                       .Scrollable(scrolling => scrolling.Height(350))
+                                       )
+   <center><button id="package_editor_submit">确定</button>
+                <button id="package_editor_cancel">取消</button></center>
 }
 

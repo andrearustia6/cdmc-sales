@@ -11,16 +11,16 @@ using Utl;
 
 namespace Sales.Controllers
 {
-    public class LeadCallTypeController : Controller
+    public class ProjectController : Controller
     {
         public ViewResult Index()
         {
-            return View(CH.GetAllData<LeadCallType>());
+            return View(CH.GetAllData<Project>());
         }
 
         public ViewResult Details(int id)
         {
-            return View(CH.GetDataById<LeadCallType>(id));
+            return View(CH.GetDataById<Project>(id));
         }
 
         public ActionResult Create()
@@ -29,26 +29,28 @@ namespace Sales.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create(LeadCallType item)
+        public ActionResult Create(Project item)
         {
             if (ModelState.IsValid)
             {
-                CH.Create<LeadCallType>(item);
+                CH.Create<Project>(item);
                 return RedirectToAction("Index");
             }
             return View(item);
         }
         public ActionResult Edit(int id)
         {
-            return View(CH.GetDataById<LeadCallType>(id));
+            var data = CH.GetDataById<Project>(id);
+            data.SaleBrief = HttpUtility.HtmlDecode(data.SaleBrief);
+            return View();
         }
 
         [HttpPost]
-        public ActionResult Edit(LeadCallType item)
+        public ActionResult Edit(Project item)
         {
             if (ModelState.IsValid)
             {
-                CH.Edit<LeadCallType>(item);
+                CH.Edit<Project>(item);
                 return RedirectToAction("Index");
             }
             return View(item);
@@ -56,13 +58,15 @@ namespace Sales.Controllers
 
         public ActionResult Delete(int id)
         {
-            return View(CH.GetDataById<LeadCallType>(id));
+            var data = CH.GetDataById<Project>(id);
+            data.SaleBrief = HttpUtility.HtmlDecode(data.SaleBrief);
+            return View(data);
         }
 
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {
-            CH.Delete<LeadCallType>(id);
+            CH.Delete<Project>(id);
             return RedirectToAction("Index");
         }
     }

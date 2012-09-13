@@ -223,6 +223,7 @@
     <Compile Include="Controllers\OnPhoneTemplateController.cs" />
     <Compile Include="Controllers\PackageController.cs" />
     <Compile Include="Controllers\PackageItemController.cs" />
+    <Compile Include="Controllers\ProjectController.cs" />
     <Compile Include="Controllers\Type\CategoryController.cs" />
     <Compile Include="Controllers\Type\CurrencyTypeController.cs" />
     <Compile Include="Controllers\LeadController.cs" />
@@ -1010,6 +1011,24 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\CRM\LeadPackageEditor.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\LeadCallType\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\LeadCallType\Change.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\LeadCallType\Display.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Project\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Project\Change.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Project\Display.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

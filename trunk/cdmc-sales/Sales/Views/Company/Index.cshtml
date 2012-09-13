@@ -43,7 +43,7 @@
                             {
                                 c.Template(@<text><img alt="photo"  style="width:80px;height:70px" src=@Url.Content("~/Image/DisplayImage/" + item.ImageID) /></text>).Title("客户照片").Width(150);
                                 c.Bound(o => o.FullName).Width(200);
-                                c.Bound(o => o.Title.FullName).Title("职位").Width(200);
+                                c.Bound(o => o.Title).Width(200);
                                 c.Bound(o => o.EMail).Title("邮箱").Width(150);
                                 c.Bound(o => o.Fax).Title("传真").Width(150);
                                 c.Bound(o => o.Contact).Width(150);

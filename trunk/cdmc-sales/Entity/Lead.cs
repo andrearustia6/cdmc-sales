@@ -20,8 +20,8 @@ namespace Entity
 
         public List<Lead> Leads { get; set; }
 
-        [Display(Name = "关键字")]
-        public string KeyWords { get; set; }
+        [Display(Name = "业务范围")]
+        public string Areas { get; set; }
 
         [Display(Name = "可打时间")]
         public string Available 
@@ -87,9 +87,8 @@ namespace Entity
     {
         public string Gender { get; set; }
 
-        public virtual Title Title { get; set; }
-         [Display(Name = "职位")]
-        public int? TitleID { get; set; }
+        [Display(Name = "职位")]
+        public string Title { get; set; }
 
         [DataType(DataType.PhoneNumber)]
         [Display(Name = "联系方式")]
@@ -112,7 +111,7 @@ namespace Entity
 
         public List<LeadCall> LeadCalls { get; set; }
 
-        public List<Package> Packages { get; set; }
+        public List<Target_Package> Target_Packages { get; set; }
 
         public List<Deal> Deals { get; set; }
 

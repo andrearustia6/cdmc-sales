@@ -38,11 +38,11 @@
         @Html.ValidationMessageFor(model => model.Gender)
     </div>
     <div class="editor-label">
-        @Html.LabelFor(model => model.TitleID)
+        @Html.LabelFor(model => model.Title)
     </div>
     <div class="editor-field">
-        @Html.DropDownListFor(model => model.TitleID, new SelectList(CH.GetAllData<Title>(), "ID", "Name_CH"), "-请选择-")
-        @Html.ValidationMessageFor(model => model.TitleID)
+        @Html.EditorFor(model => model.Title)
+        @Html.ValidationMessageFor(model => model.Title)
     </div>
     <div class="editor-label">
         @Html.LabelFor(model => model.Contact)

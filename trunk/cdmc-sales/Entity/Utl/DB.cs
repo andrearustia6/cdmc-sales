@@ -90,10 +90,11 @@ namespace Utl
             context.LeadCallTypes.Add(new LeadCallType() { Name = "Blowed", Code = 2 });
             context.LeadCallTypes.Add(new LeadCallType() { Name = "Not Pitched", Code = 3 });
             context.LeadCallTypes.Add(new LeadCallType() { Name = "Pitched", Code = 4 });
-            context.LeadCallTypes.Add(new LeadCallType() { Name = "Call-Backed", Code = 5 });
-            context.LeadCallTypes.Add(new LeadCallType() { Name = "Waiting for Approval", Code = 6 });
-            context.LeadCallTypes.Add(new LeadCallType() { Name = "Qualified Decision", Code = 7 });
-            context.LeadCallTypes.Add(new LeadCallType() { Name = "Closed", Code = 8 });
+            context.LeadCallTypes.Add(new LeadCallType() { Name = "Full Pitched", Code = 5 });
+            context.LeadCallTypes.Add(new LeadCallType() { Name = "Call-Backed", Code = 6 });
+            context.LeadCallTypes.Add(new LeadCallType() { Name = "Waiting for Approval", Code = 7 });
+            context.LeadCallTypes.Add(new LeadCallType() { Name = "Qualified Decision", Code = 8 });
+            context.LeadCallTypes.Add(new LeadCallType() { Name = "Closed", Code = 9 });
             
             
 
