@@ -16,7 +16,7 @@
     </fieldset>
 }
 @Html.Partial("LeadCallEditor", new LeadCall() { LeadID = Model.ID })
-@Html.Partial("LeadPackageEditor", new Target_Package() { LeadID = Model.ID })
+@Html.Partial("LeadPackageEditor", CRM_Logical.GetTarget_Package(Model,(object)ViewBag.ProjectID))
 @(Html.Telerik().TabStrip().Name("TabStrip").SelectedIndex(0).Items(items =>
 {
     items.Add().Text("客户信息").Content(@<text>@Lead(Model)</text>);
@@ -87,22 +87,29 @@
                                 详细：</div>
                             <div>@p.SubName</div>
                         </fieldset>
-                        <fieldset>
-                            <legend>Items</legend>
-                            @if (p.PackageItems != null)
-                            {
-                                <ul>
-                                    @foreach (var pi in p.PackageItems)
-                                    {
-                                        <li><span>名称：@pi.FullName</span> </li>
-                                        <li><span>名称：@pi.Content</span> </li>
-                                    }
-                                </ul>
+                        @{
+                            var pis = CH.GetAllData<PackageItem>(i=>i.PackageID == p.ID);
+                            <fieldset>
+                                <legend>Items</legend>
+                                @if (pis != null)
+                                {
+                                    <ul>
+                                        @foreach (var pi in pis)
+                                        {
+                                            <li><span>名称：@pi.FullName</span> </li>
+                                            <li><span>内容：@pi.Content</span> </li>
+                                        }
+                                    </ul>
+                                }
+                            </fieldset>
                             }
-                        </fieldset>
                     </div>
                 }
             }
+        }
+        else
+        {
+            <p>未选定项目</p>
         }
      
 }

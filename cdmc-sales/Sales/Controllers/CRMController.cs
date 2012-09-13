@@ -57,6 +57,10 @@ namespace Sales.Controllers
 
         public ActionResult Save_LeadPackage(int leadid,int projectid, int packageid)
         {
+            var old = CH.GetAllData<Target_Package>(i => i.LeadID == leadid &&  i.ProjectID == packageid).FirstOrDefault();
+            if (old != null && old.PackageID == packageid)
+                CH.Delete<Target_Package>(old.ID);
+
             CH.Create<Target_Package>(new Target_Package() { PackageID = packageid, LeadID = leadid, ProjectID = projectid });
             return new JsonResult();
         }
