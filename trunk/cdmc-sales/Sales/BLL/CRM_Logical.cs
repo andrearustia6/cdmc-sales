@@ -8,6 +8,20 @@ namespace BLL
 {
     public class CRM_Logical
     {
+        public static Target_Package GetTarget_Package(Lead lead,object projectid)
+        {
+            if (projectid == null)
+                return new Target_Package();
+
+            var pid = (int)projectid;
+
+            if (lead.Target_Packages != null)
+            {
+                var tp = lead.Target_Packages.FirstOrDefault(i => i.PackageID == pid && i.LeadID == lead.ID);
+                return tp;
+            }
+            return new Target_Package();
+        }
         public static bool IsDMS(string leadCallType)
         {
             if (leadCallType == "Others" || leadCallType == "Blowed" || leadCallType == "Not Pitched")
