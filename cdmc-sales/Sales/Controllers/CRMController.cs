@@ -43,19 +43,10 @@ namespace Sales.Controllers
             return View(CH.GetDataById<CRM>(id));
         }
 
-        public ActionResult Management(int leadid)
+        public ActionResult Management(int leadid,int? ProjectID)
         {
-            var crm = CH.GetAllData<CRM>(i => i.LeadID == leadid).FirstOrDefault();
-
-            if (crm == null)
-            {
-                CH.Create<CRM>(crm = new CRM() { LeadID = leadid});
-                crm.Lead = CH.GetDataById<Lead>(leadid);
-                if (crm.Lead == null)
-                    throw new Exception("客户ID在数据库中不存在");
-            }
-
-            return View(crm);
+            ViewBag.ProjectID = ProjectID;
+            return View(CH.GetAllData<Lead>(i => i.ID == leadid, "Target_Packages").FirstOrDefault());
         }
 
         public ActionResult LeadCallIndex(int leadid)
@@ -64,7 +55,11 @@ namespace Sales.Controllers
             return View(data);
         }
 
-
+        public ActionResult Save_LeadPackage(int leadid,int projectid, int packageid)
+        {
+            CH.Create<Target_Package>(new Target_Package() { PackageID = packageid, LeadID = leadid, ProjectID = projectid });
+            return new JsonResult();
+        }
         [HttpPost]
         public ActionResult Save_LeadCall(LeadCall callresult)
         {

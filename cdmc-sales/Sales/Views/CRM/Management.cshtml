@@ -4,27 +4,27 @@
 @using Entity
 @using Utl
 @using BLL
-<h2>客户关系管理</h2>
-@model CRM
-           
-@Html.HiddenFor(m => m.LeadID)
-
-
-@Html.Partial("LeadCallEditor", new LeadCall() { LeadID = Model.ID }) 
-
-@Html.Partial("LeadPackageEditor", Model.LeadID) 
-
+@model Lead
+<h2>
+    客户关系管理</h2>
+@using (Html.BeginForm())
+{
+    <fieldset>
+        <legend>目标项目</legend>
+        @Html.HiddenFor(m => m.ID)
+        @Html.DropDownList("ProjectID", new SelectList(CH.GetAllData<Project>(), "ID", "Name"), "-请选择-", new { onchange = "this.form.submit();" })
+    </fieldset>
+}
+@Html.Partial("LeadCallEditor", new LeadCall() { LeadID = Model.ID })
+@Html.Partial("LeadPackageEditor", new Target_Package() { LeadID = Model.ID })
 @(Html.Telerik().TabStrip().Name("TabStrip").SelectedIndex(0).Items(items =>
 {
-    items.Add().Text("客户信息").Content(@<text>@Lead(Model.Lead)</text>);
-    items.Add().Text("Packages").Content(@<text>@Package(Model.Lead)</text>);
-    items.Add().Text("LeadSheet").Content(@<text>@LeadCallSheet(Model.Lead)</text>);
+    items.Add().Text("客户信息").Content(@<text>@Lead(Model)</text>);
+    items.Add().Text("Packages").Content(@<text>@Package(Model.Target_Packages)</text>);
+    items.Add().Text("LeadSheet").Content(@<text>@LeadCallSheet(Model)</text>);
     items.Add().Text("Target").Content(@<text></text>);
 })
 )
-
-
-
 @helper Lead(Lead lead)
     { 
         var company = lead.Company;
@@ -36,7 +36,7 @@
                     Lead姓名:</label>@lead.FullName</li>
             <li>
                 <label>
-                    职位:</label>@lead.Title.FullName</li>
+                    职位:</label>@lead.Title</li>
             <li>
                 <label>
                     性别:</label>@lead.Gender</li>
@@ -59,71 +59,165 @@
     </div>
      
 }
-@helper Package(Lead lead)
+@helper Package(List<Target_Package> target_Packages)
     { 
-        <input class="setLeadPackage" id=@lead.ID  type="button" value="设置销售Package" />
-    @(Html.Telerik().Grid<Package>(CH.GetAllData<Package>()).Name("Packages" + lead.ID)
-            .DataKeys(keys =>
+        if (ViewBag.ProjectID != null)
+        {
+            var ProjectID = (int)ViewBag.ProjectID;
+      
+            if (target_Packages != null && target_Packages.Count > 0)
             {
-                keys.Add(s => s.ID);
-            })
-            .Columns(i =>
-            {
-                i.Bound(c => c.FullName).Width(150);
-                i.Bound(c => c.PackageType.FullName).Width(150);
-                i.Bound(c => c.ParticipantType.FullName).Width(150);
-                i.Bound(c => c.ID).Title("操作").Template(@<span> <a href=@Url.Content("~/Lead/Edit/" + item.ID) >
-                    编辑</a> | <a href=@Url.Content("~/Lead/Details/" + item.ID)>详细</a> | <a href=@Url.Content("~/Lead/delete/" + item.ID) >
-                        删除</a> </span>);
-            })
-        )
+                var tp = target_Packages.FirstOrDefault(i => i.ProjectID == ProjectID && i.LeadID == Model.ID);
+                if (tp!=null)
+                {
+                    var p = CH.GetDataById<Package>(tp.PackageID);
+                    <input class="setLeadPackage" id=@tp.PackageID  type="button" value="设置销售Package" />
+                    <div>
+                        <fieldset>
+                            <legend>Package</legend>
+                            <div>
+                                Package名称：@p.FullName</div>
+                            <div>
+                                价格（美元）：@p.Prize</div>
+                            <div>
+                                参会类型：@p.ParticipantType.FullName</div>
+                            <div>
+                                Package类型：@p.FullName</div>
+                            <div>
+                                详细：</div>
+                            <div>@p.SubName</div>
+                        </fieldset>
+                        <fieldset>
+                            <legend>Items</legend>
+                            @if (p.PackageItems != null)
+                            {
+                                <ul>
+                                    @foreach (var pi in p.PackageItems)
+                                    {
+                                        <li><span>名称：@pi.FullName</span> </li>
+                                        <li><span>名称：@pi.Content</span> </li>
+                                    }
+                                </ul>
+                            }
+                        </fieldset>
+                    </div>
+                }
+            }
+        }
+     
 }
-@helper LeadCallSheet(Lead lead)
+    @helper LeadCallSheet(Lead lead)
     { 
-    <input class="addLeadCall" id=@lead.ID  type="button" value="添加通话结果" />
+        <input class="addLeadCall" id=@lead.ID  type="button" value="添加通话结果" />
         var calls = CH.GetAllData<LeadCall>(call => call.LeadID == lead.ID).OrderByDescending(item => item.ModifiedTime).ToList();
         if (calls != null && calls.Count > 0)
         {
-            <br />
-            <label>致电结果列表：</label>
-            <table style="width:700px" id="leadcalllist">
-            <tr id="callheader"><td>FaxOut</td><td>FirstPitch</td><td>结果</td><td>回打时间</td><td>致电时间</td></tr>
-            @for (int i = 0; i < 10 && i < calls.Count; i++)
-            {
-               <tr><td>@calls[i].FaxOut</td><td>@calls[i].IsFirstPitch</td><td>@calls[i].LeadCallType.Name</td><td>@calls[i].CallBackDate</td><td>@calls[i].CallingTime</td></tr>
-            }
-            @if (calls.Count > 10)
-            {
-                <tr><td colspan="5"><a target="_blank" href=@Url.Content("~/CRM/LeadCallIndex/?leadid=" + lead.ID)>更多...</a></td></tr>
-            }
-            </table>
         <br />
-            var todaycalls = calls.FindAll(c => Utl.IsToday(c.CallingTime));
-            var dms = todaycalls.FindAll(c => CRM_Logical.IsDMS(c));
-            var newDMS = todaycalls.FindAll(c => CRM_Logical.IsNewDMS(c));
-            var qualifyDMS = todaycalls.FindAll(c => CRM_Logical.IsQualifiedDecision(c));
-            var deal = todaycalls.FindAll(c => CRM_Logical.IsDealClosed(c));
-         <label>Daily Call Sheet:</label>   
-        <table style="width:700px">
-        <tr><td>Cold Calls</td><td>DMs reached</td><td>New DMs reached</td><td>Full Pitches</td><td>Qualified Decisions</td><td>Deals</td><td>Duration</td></tr>
-        <tr align="center"><td>@todaycalls.Count</td><td>@dms.Count</td><td>@newDMS.Count</td><td>Full Pitches</td><td>@qualifyDMS.Count</td><td>@deal.Count</td><td>Deals</td></tr>
-       </table>
+        <label>
+            致电结果列表：</label>
+        <table style="width: 700px" id="leadcalllist">
+            <tr id="callheader">
+                <td>
+                    FaxOut
+                </td>
+                <td>
+                    FirstPitch
+                </td>
+                <td>
+                    结果
+                </td>
+                <td>
+                    回打时间
+                </td>
+                <td>
+                    致电时间
+                </td>
+            </tr>
+            @for (int i = 0; i < 10 && i < calls.Count; i++)
+        {
+                <tr>
+                    <td>@calls[i].FaxOut
+                    </td>
+                    <td>@calls[i].IsFirstPitch
+                    </td>
+                    <td>@calls[i].LeadCallType.Name
+                    </td>
+                    <td>@calls[i].CallBackDate
+                    </td>
+                    <td>@calls[i].CallingTime
+                    </td>
+                </tr>
+        }
+            @if (calls.Count > 10)
+        {
+                <tr>
+                    <td colspan="5">
+                        <a target="_blank" href=@Url.Content("~/CRM/LeadCallIndex/?leadid=" + lead.ID)>更多...</a>
+                    </td>
+                </tr>
+        }
+        </table>
+        <br />
+        var todaycalls = calls.FindAll(c => Utl.IsToday(c.CallingTime));
+        var dms = todaycalls.FindAll(c => CRM_Logical.IsDMS(c));
+        var newDMS = todaycalls.FindAll(c => CRM_Logical.IsNewDMS(c));
+        var qualifyDMS = todaycalls.FindAll(c => CRM_Logical.IsQualifiedDecision(c));
+        var deal = todaycalls.FindAll(c => CRM_Logical.IsDealClosed(c));
+        <label>
+            Daily Call Sheet:</label>   
+        <table style="width: 700px">
+            <tr>
+                <td>
+                    Cold Calls
+                </td>
+                <td>
+                    DMs reached
+                </td>
+                <td>
+                    New DMs reached
+                </td>
+                <td>
+                    Full Pitches
+                </td>
+                <td>
+                    Qualified Decisions
+                </td>
+                <td>
+                    Deals
+                </td>
+                <td>
+                    Duration
+                </td>
+            </tr>
+            <tr align="center">
+                <td>@todaycalls.Count
+                </td>
+                <td>@dms.Count
+                </td>
+                <td>@newDMS.Count
+                </td>
+                <td>
+                    Full Pitches
+                </td>
+                <td>@qualifyDMS.Count
+                </td>
+                <td>@deal.Count
+                </td>
+                <td>
+                    Deals
+                </td>
+            </tr>
+        </table>
         }
     
       
       
-}
-
-@{ Html.Telerik().ScriptRegistrar().OnDocumentReady(@<text> 
-    var leadCallWindow = $('#LeadCallWindow');
-    leadCallWindow.css("margin-left",leadCallWindow.width()/2); 
-    var addLeadCall = $('.addLeadCall');
-    initialAddLeadCall(addLeadCall, leadCallWindow);
-
-    var leadPackageWindow = $('#LeadPackageWindow');
-    leadPackageWindow.css("margin-left",leadCallWindow.width()/2); 
-    var setLeadPackage = $('.setLeadPackage');
-    initialSetLeadPackage(setLeadPackage, leadPackageWindow);
+    }
+    @{ Html.Telerik().ScriptRegistrar().OnDocumentReady(@<text> var leadCallWindow =
+    $('#LeadCallWindow'); leadCallWindow.css("margin-left",leadCallWindow.width()/2);
+    var addLeadCall = $('.addLeadCall'); initialAddLeadCall(addLeadCall, leadCallWindow);
+    var leadPackageWindow = $('#LeadPackageWindow'); leadPackageWindow.css("margin-left",leadCallWindow.width()/2);
+    var setLeadPackage = $('.setLeadPackage'); initialSetLeadPackage(setLeadPackage,
+    leadPackageWindow);
     </text>);
 }
-

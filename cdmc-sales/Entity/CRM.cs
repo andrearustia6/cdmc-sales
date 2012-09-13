@@ -17,11 +17,8 @@ namespace Entity
         [Display(Name = "客户"), Required]
         public int? LeadID { get; set; }
 
-        public int? ConferenceID { get; set; }
-        public virtual Conference Conference { get; set; }
-
-        public int? DealID { get; set; }
-        public virtual Deal Deal { get; set; }
+        public int? ProjectID { get; set; }
+        public virtual Project Project { get; set; }
 
         public int? PackageID { get; set; }
         public virtual Package Package { get; set; }

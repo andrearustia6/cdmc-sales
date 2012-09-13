@@ -1,0 +1,17 @@
+﻿@using Utl;
+@model Entity.OnPhoneBlockType
+<fieldset>
+    <legend>@SR.Form</legend>
+    <div class="display-label">
+        类型名称</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Name)
+    </div>
+    <legend>@SR.Form</legend>
+    <div class="display-label">
+       类型代码 </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Name)
+    </div>
+</fieldset>
+@Html.Partial("displaycommon", Model)

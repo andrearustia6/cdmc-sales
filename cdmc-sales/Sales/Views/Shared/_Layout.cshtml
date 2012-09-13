@@ -38,6 +38,7 @@
                            item.Add().Text("参会").Url("~/ParticipantType/index").ImageUrl("~/Content/Common/Icons/Chart.gif");
                            item.Add().Text("模板").Url("~/TemplateType/index").ImageUrl("~/Content/Common/Icons/TabStrip.png");
                            item.Add().Text("Block").Url("~/OnPhoneBlockType/index").ImageUrl("~/Content/Common/Icons/TabStrip.png");
+                           item.Add().Text("LeadCall").Url("~/LeadCallType/index").ImageUrl("~/Content/Common/Icons/TabStrip.png");
                        });
 
                        menu.Add().Text("Pakage管理").ImageUrl("~/Content/Common/Icons/GridView.gif").Items(item =>
@@ -45,6 +46,13 @@
                            item.Add().Url("~/Package/index").Text("Package").ImageUrl("~/Content/Common/Icons/Docking.gif");
                            item.Add().Url("~/PackageItem/index").Text("Package项目").ImageUrl("~/Content/Common/Icons/Docking.gif");
 
+                       });
+
+                       menu.Add().Text("项目").ImageUrl("~/Content/Common/Icons/GridView.gif").Items(item =>
+                       {
+                           
+                          item.Add().Url("~/Project/index").Text("项目管理").ImageUrl("~/Content/Common/Icons/Docking.gif");
+                         
                        });
                      
                    }

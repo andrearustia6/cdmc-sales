@@ -1,0 +1,54 @@
+﻿@model Entity.Project
+<fieldset>
+    <legend>Project</legend>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.IsActived)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.IsActived)
+        @Html.ValidationMessageFor(model => model.IsActived)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.Name)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.Name)
+        @Html.ValidationMessageFor(model => model.Name)
+    </div>
+    
+    <div class="editor-label">
+        @Html.LabelFor(model => model.StartDate)
+    </div>
+    <div class="editor-field">
+        @Html.Telerik().DatePickerFor(model => model.StartDate)
+        @Html.ValidationMessageFor(model => model.StartDate)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.EndDate)
+    </div>
+    <div class="editor-field">
+        @Html.Telerik().DatePickerFor(model => model.EndDate)
+        @Html.ValidationMessageFor(model => model.EndDate)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.Target)
+    </div>
+    <div class="editor-field">
+        @Html.Telerik().CurrencyTextBoxFor(model => model.Target)
+        @Html.ValidationMessageFor(model => model.Target)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.SaleBrief)
+    </div>
+    <div class="editor-field">
+        @Html.Telerik().EditorFor(model => model.SaleBrief)
+        @Html.ValidationMessageFor(model => model.SaleBrief)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.Others)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.Others)
+        @Html.ValidationMessageFor(model => model.Others)
+    </div>
+</fieldset>

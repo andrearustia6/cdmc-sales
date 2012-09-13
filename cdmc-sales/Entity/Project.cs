@@ -54,17 +54,21 @@ namespace Entity
         public String Name { get; set; }
 
         [Display(Name = "开始时间"), Required]
-        public DateTime StartDay { get; set; }
+        public DateTime StartDate { get; set; }
 
         [Display(Name = "结束时间"), Required]
-        public DateTime EndDay { get; set; }
+        public DateTime EndDate { get; set; }
 
         [Display(Name = "销售目标"), Required]
         public decimal Target { get; set; }
 
-        //[Display(Name = "板块负责人"), Required]
-        //public Member Director { get; set; }
-        //public int? DirectorID { get; set; }
+        public virtual Member Manager { get; set; }
+        [Display(Name = "板块负责人")]
+        public int? ManagerID { get; set; }
+
+        public virtual Member TeamLeader { get; set; }
+        [Display(Name = "TL")]
+        public int? TeamLeaderID { get; set; }
 
         public List<Member> Members { get; set; }
 
@@ -107,6 +111,22 @@ namespace Entity
 
         [Display(Name = "入账目标"), Required]
         public decimal CheckIn { get; set; }
+    }
+
+    public class Target_Package : EntityBase
+    {
+        public virtual Project Project { get; set; }
+        [Display(Name = "项目名称")]
+        public int ProjectID { get; set; }
+
+        public virtual Lead Lead { get; set; }
+        [Display(Name = "Lead")]
+        public int LeadID { get; set; }
+
+        
+        public Package Package { get; set; }
+        [Display(Name = "销售目标")]
+        public int PackageID { get; set; }
     }
 
 

@@ -27,7 +27,11 @@
     </div>
     <div class="display-label">行业类型</div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.Category.Name_CH)
+        @Html.DisplayFor(model => model.Category.FullName)
+    </div>
+    <div class="display-label">业务范围</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Areas)
     </div>
     <div class="display-label">公司架构</div>
     <div class="display-field">

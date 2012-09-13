@@ -1,0 +1,36 @@
+﻿@model Entity.Project
+
+
+<fieldset>
+    <legend>Project</legend>
+
+    <div class="display-label">IsActived</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.IsActived)
+    </div>
+
+    <div class="display-label">Name</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Name)
+    </div>
+
+    <div class="display-label">StartDay</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.StartDay)
+    </div>
+
+    <div class="display-label">EndDay</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.EndDay)
+    </div>
+
+    <div class="display-label">Target</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Target)
+    </div>
+
+    <div class="display-label">SaleBrief</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.SaleBrief)
+    </div>
+</fieldset>

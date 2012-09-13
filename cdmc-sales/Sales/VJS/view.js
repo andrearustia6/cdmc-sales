@@ -7,11 +7,10 @@
         var type = $win.find('#LeadCallTypeID').val();
         var date = $win.find('#callBback').val();
         var common = $win.find('#Result').val();
-        var projectid = $win.find('#ProjectID').val();
-        var leadid = $win.find('#LeadID').val();
+        var projectid = ('#ProjectID').val();
+        var leadid = $('#ID').val();
         var callresult = { IsFirstPitch: fp, LeadCallTypeID: type, CallBackDate: date, Result: common, ProjectID: projectid, LeadID: leadid };
         var typetext = $win.find("#LeadCallTypeID").find("option:selected").text();
-        //var sv = $("select[selected='selected']").val();
 
         if (!fp) {
             alert("请选择是否属于First Pitch");
@@ -63,30 +62,42 @@
 }
 
 function initialSetLeadPackage($luncher, $win) {
+    
+    $win.find('input[typ=checkbox]').click(function () {
+        $win.find('input[typ=checkbox]').each(function () {
+            $(this).removeAttr("checked");
+        });
+        $this.attr('checked', 'checked');
+    });
+
+
 
     $win.find('#package_editor_submit').click(function () {
 
+     
+        var leadid = $('#ID').val();
         if (!leadid) {
             alert("LeadID 丢失");
             return;
         }
-
-       // callresult = JSON.stringify(callresult);
-
+        var projectid = $('#ProjectID').val();
+        if (!projectid) {
+            alert("ProjectID 丢失");
+            return;
+        }
+        var id = $win.find("input[type=checkbox]:checked").val();
         $.ajax({
-            url: "/CRM/Save_LeadCall",
+            url: "/CRM/Save_LeadPackage?leadid=" + leadid + "&projectid=" + projectid+"&packageid="+id,
             type: 'POST',
             dataType: 'json',
             contentType: 'application/json; charset=utf-8',
-            data: callresult,
+
             error: function (jqXHR, textStatus, errorThrown) {
                 alert(jqXHR.responseText);
             },
             success: function (result) {
                 if (result) {
                     window.location.reload(true);
-
-                    // $win.data('tWindow').close();
                 }
             }
         });
