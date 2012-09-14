@@ -103,7 +103,7 @@
         {
             var ProjectID = (int)ViewBag.ProjectID;
     <input class="setLeadPackage" type="button" value="设置销售Package" />
-        target_Packages = target_Packages.FindAll(i=>i.ProjectID==ProjectID);
+            target_Packages = target_Packages.FindAll(i => i.ProjectID == ProjectID);
             if (target_Packages != null && target_Packages.Count > 0)
             {
                 var tp = target_Packages.FirstOrDefault(i => i.ProjectID == ProjectID && i.LeadID == Model.ID);
@@ -160,13 +160,13 @@
 }
 @helper LeadCallSheet(Lead lead)
     { 
-            if (ViewBag.ProjectID != null)
-            {
-                var ProjectID = (int)ViewBag.ProjectID;
+        if (ViewBag.ProjectID != null)
+        {
+            var ProjectID = (int)ViewBag.ProjectID;
     <input class="addLeadCall" id=@lead.ID  type="button" value="添加通话结果" />
-                var calls = CH.GetAllData<LeadCall>(call => call.LeadID == lead.ID && call.ProjectID == ProjectID).OrderByDescending(item => item.ModifiedTime).ToList();
-                if (calls != null && calls.Count > 0)
-                {
+            var calls = CH.GetAllData<LeadCall>(call => call.LeadID == lead.ID && call.ProjectID == ProjectID).OrderByDescending(item => item.ModifiedTime).ToList();
+            if (calls != null && calls.Count > 0)
+            {
     <br />
     <label>
         致电结果列表：</label>
@@ -218,6 +218,8 @@
         var newDMS = todaycalls.FindAll(c => CRM_Logical.IsNewDMS(c));
         var qualifyDMS = todaycalls.FindAll(c => CRM_Logical.IsQualifiedDecision(c));
         var deal = todaycalls.FindAll(c => CRM_Logical.IsDealClosed(c));
+        var pitchs = todaycalls.FindAll(c => CRM_Logical.IsPitched(c));
+        var fullpitchs = todaycalls.FindAll(c => CRM_Logical.IsFullPitched(c));
     <label>
         Daily Call Sheet:</label>   
     <table style="width: 700px">
@@ -230,6 +232,9 @@
             </td>
             <td>
                 New DMs reached
+            </td>
+            <td>
+                Pitches
             </td>
             <td>
                 Full Pitches
@@ -250,9 +255,11 @@
             <td>@dms.Count
             </td>
             <td>@newDMS.Count
+            <td>
+                @pitchs.Count
             </td>
             <td>
-                Full Pitches
+                @fullpitchs.Count
             </td>
             <td>@qualifyDMS.Count
             </td>
@@ -263,10 +270,10 @@
             </td>
         </tr>
     </table>
-                }
             }
-            else
-            {<p>未选定项目</p>}
+        }
+        else
+        {<p>未选定项目</p>}
          
 }
 @{ Html.Telerik().ScriptRegistrar().OnDocumentReady(@<text> var leadCallWindow = $('#LeadCallWindow');

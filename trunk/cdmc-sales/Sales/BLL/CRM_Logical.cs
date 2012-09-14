@@ -8,6 +8,16 @@ namespace BLL
 {
     public class CRM_Logical
     {
+         public static bool IsFullPitched(LeadCall call)
+        {
+            return call.LeadCallType.Name=="Full Pitched"?true:false;
+        }
+         public static bool IsPitched(LeadCall call)
+        {
+            return call.LeadCallType.Name == "Pitched" ? true : false;
+        }
+        
+        
         public static Target_Package GetTarget_Package(Lead lead,object projectid)
         {
             if (projectid == null)
