@@ -9,8 +9,7 @@
                 })
                 .Columns(c =>
                 {
-                    c.Bound(item => item.Name_EN).Width(150);
-                    c.Bound(item => item.Name_CH).Width(150);
+                    c.Bound(item => item.FullName).Width(150);
                     c.Bound(item => item.Title).Title("职位").Width(200);
                     c.Bound(item => item.Contact).Width(150);
                     c.Bound(item => item.ID).Title("操作").Template(@<span> <a href=@Url.Content("~/Lead/Edit/" + item.ID) >
@@ -35,7 +34,7 @@
                     Lead姓名:</label>@lead.FullName</li>
             <li>
                 <label>
-                    职位:</label>@lead.Title.FullName</li>
+                    职位:</label>@lead.Title</li>
             <li>
                 <label>
                     性别:</label>@lead.Gender</li>
