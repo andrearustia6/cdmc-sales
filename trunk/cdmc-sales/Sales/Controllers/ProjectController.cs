@@ -28,6 +28,12 @@ namespace Sales.Controllers
             return View();
         }
 
+        public ActionResult Management(int? id)
+        {
+            var Data = CH.GetAllData<Project>(i => i.ID == id, "Members", "Templates", "Messages","Target_Ms").FirstOrDefault();
+            return View(Data);
+        }
+
         [HttpPost]
         public ActionResult Create(Project item)
         {

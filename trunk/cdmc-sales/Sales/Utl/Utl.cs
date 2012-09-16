@@ -39,6 +39,14 @@ namespace Utl
 
     public class Employee
     {
+      
+
+        public static List<MembershipUser> GetAllEmployees()
+        {
+            var list = Membership.GetAllUsers().Cast<MembershipUser>().ToList<MembershipUser>();
+        
+            return list;
+        }
         public static object GetCurrentProfile(string propertyName)
         {
             var user = HttpContext.Current.User.Identity.Name;

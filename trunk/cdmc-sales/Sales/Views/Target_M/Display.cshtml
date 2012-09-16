@@ -1,0 +1,35 @@
+﻿@model Entity.Target_M
+
+<fieldset>
+    <legend>Target_M</legend>
+
+    <div class="display-label">项目名称</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Project.Name)
+    </div>
+
+    <div class="display-label">开始时间</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.StartDate)
+    </div>
+
+    <div class="display-label">结束时间</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.EndDate)
+    </div>
+
+    <div class="display-label">出单目标</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Deal)
+    </div>
+
+    <div class="display-label">最低目标</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.BaseDeal)
+    </div>
+
+    <div class="display-label">入账目标</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.CheckIn)
+    </div>
+</fieldset>

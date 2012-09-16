@@ -1,4 +1,6 @@
-﻿@model Entity.Project
+﻿@using Entity
+@using Utl
+@model Project
 <fieldset>
     <legend>Project</legend>
     <div class="editor-label">
@@ -31,6 +33,21 @@
         @Html.ValidationMessageFor(model => model.EndDate)
     </div>
     <div class="editor-label">
+        @Html.LabelFor(model => model.Manager)
+    </div>
+    <div class="editor-field">
+         @Html.Telerik().ComboBoxFor(model => model.Manager).BindTo(new SelectList(Employee.GetAllEmployees(), "UserName", "UserName"))
+        @Html.ValidationMessageFor(model => model.Manager)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.TeamLeader)
+    </div>
+    <div class="editor-field">
+         
+        @Html.Telerik().ComboBoxFor(model => model.TeamLeader).BindTo(new SelectList(Employee.GetAllEmployees(), "UserName", "UserName"))
+        @Html.ValidationMessageFor(model => model.TeamLeader)
+    </div>
+    <div class="editor-label">
         @Html.LabelFor(model => model.Target)
     </div>
     <div class="editor-field">
@@ -48,7 +65,7 @@
         @Html.LabelFor(model => model.Others)
     </div>
     <div class="editor-field">
-        @Html.EditorFor(model => model.Others)
+        @Html.TextAreaFor(model => model.Others)
         @Html.ValidationMessageFor(model => model.Others)
     </div>
 </fieldset>

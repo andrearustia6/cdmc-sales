@@ -1,0 +1,223 @@
+﻿@{
+    ViewBag.Title = "Project";
+}
+@using Entity
+@using Utl
+@using BLL
+@model Project
+<h2>
+    项目管理</h2>
+
+@*@Html.Partial("MemberEditor", new LeadCall() { LeadID = Model.ID })
+@Html.Partial("LeadPackageEditor", CRM_Logical.GetTarget_Package(Model, (object)ViewBag.ProjectID))*@
+@(Html.Telerik().TabStrip().Name("TabStrip").SelectedIndex(0).Items(items =>
+{
+    items.Add().Text("基本信息").Content(@<text>@BaseInfo(Model)</text>);
+    items.Add().Text("成员信息").Content(@<text>@Member(Model)</text>);
+    items.Add().Text("每月目标").Content(@<text>@Target(Model)</text>);
+
+})
+)
+@helper BaseInfo(Project project)
+    { 
+   
+    <div style="width: 500;">
+        <ul>
+            <li>
+                <label>
+                    项目名称:</label>@project.Name</li>
+            <li>
+                <label>
+                    开始时间:</label>@project.StartDate</li>
+            <li>
+                <label>
+                    结束时间:</label>@project.EndDate</li>
+            <li>
+                <label>
+                    项目状态:</label>@project.IsActived</li>
+            <li>
+                <label>
+                    销售目标:</label>@project.Target</li>
+            <li>
+                <label>
+                    激活:</label>@project.IsActived</li>
+                    <li>
+            <label>
+                    板块负责人:</label>@project.Manager</li>
+            <li>
+                <label>
+                    团队负责人:</label>@project.TeamLeader</li>
+        </ul>
+    </div>
+     
+}
+@helper Member(Project p)
+    { 
+
+    @(Html.Telerik().Grid<Member>(p.Members).Name("members")
+                .DataKeys(keys =>
+                {
+                    keys.Add(s => s.ID);
+                })
+                .Columns(c =>
+                {
+                    c.Bound(item => item.Name).Width(200);
+                    c.Bound(item => item.Characters).Width(100);
+                    c.Bound(item => item.ID).Title("操作").Width(200).Template(@<span> <a href=@Url.Content("~/Member/Edit/" + item.ID) >
+                        编辑</a> | <a href=@Url.Content("~/Member/Details/" + item.ID)>详细</a> | <a href=@Url.Content("~/Member/delete/" + item.ID) >
+                            删除</a> </span>);
+                }).Scrollable(scrolling => scrolling.Height(350))
+
+)
+        
+@Html.ActionLink("创建新成员", "Create", "Member", new { projectid = Model.ID }, null)
+}
+
+@helper Target(Project p)
+    { 
+       
+      @(Html.Telerik().Grid<Target_M>(p.Target_Ms).Name("Target_Ms")
+                .DataKeys(keys =>
+                {
+                    keys.Add(s => s.ID);
+                })
+                .Columns(c =>
+                {
+                    c.Bound(item => item.BaseDeal).Width(100);
+                    c.Bound(item => item.Deal).Width(100);
+                    c.Bound(item => item.CheckIn).Width(100);
+                    c.Bound(item => item.StartDate).Template(@<text><p>@item.StartDate.ToShortDateString()</p></text>).Width(100);
+                    c.Bound(item => item.EndDate).Template(@<text><p>@item.EndDate.ToShortDateString()</p></text>).Width(100);
+                    c.Bound(item => item.ID).Title("操作").Width(200).Template(@<span> <a href=@Url.Content("~/Target_M/Edit/" + item.ID) >
+                        编辑</a> | <a href=@Url.Content("~/Target_M/Details/" + item.ID)>详细</a> | <a href=@Url.Content("~/Target_M/delete/" + item.ID) >
+                            删除</a> </span>);
+                }).Scrollable(scrolling => scrolling.Height(350))
+                                                            )
+      
+@Html.ActionLink("创建新月目标", "Create", "Target_M", new { projectid = Model.ID }, null)     
+}
+@helper LeadCallSheet(Lead lead)
+    { 
+        if (ViewBag.ProjectID != null)
+        {
+            var ProjectID = (int)ViewBag.ProjectID;
+    <input class="addLeadCall" id=@lead.ID  type="button" value="添加通话结果" />
+            var calls = CH.GetAllData<LeadCall>(call => call.LeadID == lead.ID && call.ProjectID == ProjectID).OrderByDescending(item => item.ModifiedTime).ToList();
+            if (calls != null && calls.Count > 0)
+            {
+    <br />
+    <label>
+        致电结果列表：</label>
+    <table style="width: 700px" id="leadcalllist">
+        <tr id="callheader">
+            <td>
+                FaxOut
+            </td>
+            <td>
+                FirstPitch
+            </td>
+            <td>
+                结果
+            </td>
+            <td>
+                回打时间
+            </td>
+            <td>
+                致电时间
+            </td>
+        </tr>
+        @for (int i = 0; i < 10 && i < calls.Count; i++)
+        {
+            <tr>
+                <td>@calls[i].FaxOut
+                </td>
+                <td>@calls[i].IsFirstPitch
+                </td>
+                <td>@calls[i].LeadCallType.Name
+                </td>
+                <td>@calls[i].CallBackDate
+                </td>
+                <td>@calls[i].CallingTime
+                </td>
+            </tr>
+        }
+        @if (calls.Count > 10)
+        {
+            <tr>
+                <td colspan="5">
+                    <a target="_blank" href=@Url.Content("~/CRM/LeadCallIndex/?leadid=" + lead.ID)>更多...</a>
+                </td>
+            </tr>
+        }
+    </table>
+    <br />
+        var todaycalls = calls.FindAll(c => Utl.IsToday(c.CallingTime));
+        var dms = todaycalls.FindAll(c => CRM_Logical.IsDMS(c));
+        var newDMS = todaycalls.FindAll(c => CRM_Logical.IsNewDMS(c));
+        var qualifyDMS = todaycalls.FindAll(c => CRM_Logical.IsQualifiedDecision(c));
+        var deal = todaycalls.FindAll(c => CRM_Logical.IsDealClosed(c));
+        var pitchs = todaycalls.FindAll(c => CRM_Logical.IsPitched(c));
+        var fullpitchs = todaycalls.FindAll(c => CRM_Logical.IsFullPitched(c));
+    <label>
+        Daily Call Sheet:</label>   
+    <table style="width: 700px">
+        <tr>
+            <td>
+                Cold Calls
+            </td>
+            <td>
+                DMs reached
+            </td>
+            <td>
+                New DMs reached
+            </td>
+            <td>
+                Pitches
+            </td>
+            <td>
+                Full Pitches
+            </td>
+            <td>
+                Qualified Decisions
+            </td>
+            <td>
+                Deals
+            </td>
+            <td>
+                Duration
+            </td>
+        </tr>
+        <tr align="center">
+            <td>@todaycalls.Count
+            </td>
+            <td>@dms.Count
+            </td>
+            <td>@newDMS.Count
+            <td>
+                @pitchs.Count
+            </td>
+            <td>
+                @fullpitchs.Count
+            </td>
+            <td>@qualifyDMS.Count
+            </td>
+            <td>@deal.Count
+            </td>
+            <td>
+                Deals
+            </td>
+        </tr>
+    </table>
+            }
+        }
+        else
+        {<p>未选定项目</p>}
+         
+}
+@{ Html.Telerik().ScriptRegistrar().OnDocumentReady(@<text> var leadCallWindow = $('#LeadCallWindow');
+    leadCallWindow.css("margin-left",leadCallWindow.width()/2); var addLeadCall = $('.addLeadCall');
+    initialAddLeadCall(addLeadCall, leadCallWindow); var leadPackageWindow = $('#LeadPackageWindow');
+    leadPackageWindow.css("margin-left",leadCallWindow.width()/2); var setLeadPackage
+    = $('.setLeadPackage'); initialSetLeadPackage(setLeadPackage, leadPackageWindow);
+    </text>);
+}
