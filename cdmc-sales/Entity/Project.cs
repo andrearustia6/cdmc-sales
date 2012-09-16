@@ -62,13 +62,9 @@ namespace Entity
         [Display(Name = "销售目标"), Required]
         public decimal Target { get; set; }
 
-        public virtual Member Manager { get; set; }
-        [Display(Name = "板块负责人")]
-        public int? ManagerID { get; set; }
+        public string  Manager { get; set; }
 
-        public virtual Member TeamLeader { get; set; }
-        [Display(Name = "TL")]
-        public int? TeamLeaderID { get; set; }
+        public string TeamLeader { get; set; }
 
         public List<Member> Members { get; set; }
 
@@ -87,6 +83,8 @@ namespace Entity
         public List<Message> Messages { get; set; }
 
         public List<Progress> Progresses { get; set; }
+
+        public List<Target_M> Target_Ms { get; set; }
         
         
     }
@@ -100,8 +98,11 @@ namespace Entity
         [Display(Name = "项目名称"), Required]
         public int ProjectID { get; set; }
 
+        [Display(Name = "开始日期"), Required]
+        public DateTime StartDate { get; set; }
+
         [Display(Name = "目标月份"), Required]
-        public DateTime Month { get; set; }
+        public DateTime EndDate { get; set; }
 
         [Display(Name = "销售目标"), Required]
         public decimal Deal { get; set; }
@@ -155,21 +156,13 @@ namespace Entity
     /// </summary>
     public class Member:EntityBase
     {
-        [Display(Name = "成员"), Required]
-        public string MemberName { get; set; }
-
-        public Role Role { get; set; }
-        [Display(Name = "角色职级"), Required]
-        public int? RoleID { get; set; }
+        [Display(Name = "成员")]
+        public string Name { get; set; }
 
         [Display(Name = "字头")]
-        public string Character { get; set; }
+        public string Characters { get; set; }
 
         public List<Target_W> Target_Ws { get; set; }
-
-        public Department Department { get; set; }
-        [Display(Name = "所在部门"), Required]
-        public int? DepartmentID { get; set; }
 
         [Display(Name = "所在项目"), Required]
         public int? ProjectID { get; set; }

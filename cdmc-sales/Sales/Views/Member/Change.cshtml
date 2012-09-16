@@ -1,0 +1,32 @@
+﻿@model Member
+@using Utl
+@using Entity
+@{
+    ViewBag.Title = "Create";
+}
+<fieldset>
+    <legend>Member</legend>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.Name)
+    </div>
+    <div class="editor-field">
+        @Html.Telerik().ComboBoxFor(model => model.Name).BindTo(new SelectList(Employee.GetAllEmployees(), "UserName", "UserName"))
+        @Html.ValidationMessageFor(model => model.Name)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.Characters)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.Characters)
+        @Html.ValidationMessageFor(model => model.Characters)
+    </div>
+
+    <div class="editor-label">
+        @Html.LabelFor(model => model.ProjectID)
+    </div>
+    <div class="editor-field">
+        @Html.HiddenFor(model => model.ProjectID)
+        @Html.DisplayFor(model => model.ProjectID)
+        @Html.ValidationMessageFor(model => model.ProjectID)
+    </div>
+</fieldset>

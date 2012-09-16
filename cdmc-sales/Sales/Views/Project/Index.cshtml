@@ -8,19 +8,46 @@
                 })
                 .Columns(c =>
                 {
-                    c.Bound(item => item.Name).Width(200);
-                    c.Bound(item => item.StartDate).Width(200);
-                    c.Bound(item => item.EndDate).Width(200);
-                    c.Bound(item => item.IsActived).Width(200);
+                    c.Bound(item => item.Name).Width(150);
+                    c.Bound(item => item.StartDate).Template(@<text><p>@item.StartDate.ToShortDateString()</p></text>).Width(100);
+                    c.Bound(item => item.EndDate).Template(@<text><p>@item.EndDate.ToShortDateString()</p></text>).Width(100);
+                    c.Bound(item => item.IsActived).Width(50);
                     c.Bound(item => item.Keywords).Width(200);
                     c.Bound(item => item.ID).Width(200).Title("操作").Template(@<span> <a href=@Url.Content("~/Project/Edit/" + item.ID) >
-                        编辑</a> | <a href=@Url.Content("~/Project/Details/" + item.ID)>详细</a> | <a href=@Url.Content("~/Project/delete/" + item.ID) >
+                        编辑</a> | <a href=@Url.Content("~/Project/Details/" + item.ID)>详细</a> | <a href=@Url.Content("~/Project/Management/" + item.ID)>项目管理</a>| <a href=@Url.Content("~/Project/delete/" + item.ID) >
                             删除</a> </span>);
-                 })
-                .Resizable(resizing => resizing.Columns(true))
-                .Filterable().Sortable().Groupable()
-                .Pageable(p => p.PageSize(20))
-                .Scrollable(scrolling => scrolling.Height(350))
-              
-)
+                })
+                  @*  .DetailView(e => e.Template(
+                         @<text>
+                         @RenderGrid(item)
+                        </text>
+                                                 ))*@
+.Resizable(resizing => resizing.Columns(true))
+                                                                         .Filterable().Sortable().Groupable()
+                                                                         .Pageable(p => p.PageSize(20))
+                                                                         .Scrollable(scrolling => scrolling.Height(350))
+
+                                                         )
 @Html.ActionLink("立项", "Create")
+
+@*@helper RenderGrid(Project p)
+    { 
+     @(Html.Telerik().Grid<Member>(p.Members).Name("Members" + p.ID)
+                            .Columns(c =>
+                            {
+
+                                //c.Template(@<text><img alt="photo"  style="width:80px;height:70px" src=@Url.Content("~/Image/DisplayImage/" + item.ImageID) /></text>).Title("客户照片").Width(100);
+                                c.Bound(o => o.Name).Width(100);
+                                c.Bound(o => o.Characters).Width(150);
+                                //c.Bound(o => o.EMail).Title("邮箱").Width(150);
+                                //c.Bound(o => o.Fax).Title("传真").Width(150);
+                                //c.Bound(o => o.Contact).Width(150);
+
+                                c.Bound(item => item.ID).Title("操作").Template(@<span>
+                    <a href=@Url.Content("~/Member/Edit/"+item.ID) >编辑</a> | <a href=@Url.Content("~/Member/Details/" + item.ID)>详细</a> | <a href=@Url.Content("~/Member/delete/" + item.ID) >删除</a>> 
+                   </span>);
+                            })
+                                               .Resizable(resizing => resizing.Columns(true))
+                                               .Pageable(p => p.PageSize(20))
+                                               .Sortable())
+} *@

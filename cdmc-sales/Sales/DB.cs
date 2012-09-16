@@ -17,5 +17,11 @@ namespace Sales
 
 
         public DbSet<Project> Project { get; set; }
+
+        public DbSet<Member> Members { get; set; }
+
+        public DbSet<Department> Departments { get; set; }
+
+        public DbSet<Target_M> Target_M { get; set; }
     }
 }
