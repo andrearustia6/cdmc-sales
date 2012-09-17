@@ -3,11 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using Entity;
+using Utl;
 
 namespace BLL
 {
     public class CRM_Logical
     {
+        public static bool IsSameMemberExistInProject(string name, int? projectid)
+        {
+            var p = CH.GetAllData<Project>(i => i.ID == projectid, "Members").FirstOrDefault();
+            if (p != null && p.Members.FirstOrDefault(c => c.Name == name)!=null)
+                return true;
+            else
+                return false;
+        }
+
          public static bool IsFullPitched(LeadCall call)
         {
             return call.LeadCallType.Name=="Full Pitched"?true:false;

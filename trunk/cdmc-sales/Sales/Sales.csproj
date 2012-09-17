@@ -956,9 +956,6 @@
     <Content Include="Views\OnPhoneTemplate\Display.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Account\Copy of LogOn.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Views\Package\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>

@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "设置职级";
+    ViewBag.Title = "设账号设置";
 }
 @using Utl
 @model Entity.UserInfoModel
@@ -20,6 +20,13 @@
         <div class="editor-field">
             @Html.DropDownListFor(m => m.RoleID, new SelectList(CH.GetAllData<Entity.Role>(), "ID", "Name"), "-请选择-")
             @Html.ValidationMessageFor(m => m.RoleID)
+        </div>
+         <div class="editor-label">
+            @Html.Label("是否激活")
+        </div>
+        <div class="editor-field">
+            @Html.CheckBoxFor(m => m.IsActivated)
+            @Html.ValidationMessageFor(m => m.IsActivated)
         </div>
     </fieldset>
     

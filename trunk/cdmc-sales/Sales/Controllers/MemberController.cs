@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using Entity;
 using Sales;
 using Utl;
+using BLL;
 
 namespace Sales.Controllers
 {
@@ -33,10 +34,14 @@ namespace Sales.Controllers
         [HttpPost]
         public ActionResult Create(Member item)
         {
+            if (CRM_Logical.IsSameMemberExistInProject(item.Name, item.ProjectID))
+            {
+                ModelState.AddModelError("", "该员工以加入此项目");
+            }
             if (ModelState.IsValid)
             {
                 CH.Create<Member>(item);
-                return RedirectToAction("Management", "Project", new { projectid = item.ProjectID});
+                return View(@"~\views\Project\Management.cshtml", CH.GetDataById<Project>(item.ProjectID));
             }
             ViewBag.ProjectID = item.ProjectID;
             return View(item);
@@ -49,10 +54,14 @@ namespace Sales.Controllers
         [HttpPost]
         public ActionResult Edit(Member item)
         {
+            if (CRM_Logical.IsSameMemberExistInProject(item.Name, item.ProjectID))
+            {
+                ModelState.AddModelError("", "该员工以加入此项目");
+            }
             if (ModelState.IsValid)
             {
                 CH.Edit<Member>(item);
-                return RedirectToAction("Management", "Project", new { projectid = item.ProjectID });
+                return View(@"~\views\Project\Management.cshtml", CH.GetDataById<Project>(item.ProjectID));
             }
             return View(item);
         }
@@ -67,7 +76,7 @@ namespace Sales.Controllers
         {
             var item = CH.GetDataById<Member>(id);
             CH.Delete<Member>(id);
-            return RedirectToAction("Management", "Project", new { projectid = item.ProjectID });
+            return View(@"~\views\Project\Management.cshtml", CH.GetDataById<Project>(item.ProjectID));
         }
     }
 }
