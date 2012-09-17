@@ -13,9 +13,6 @@ namespace MvcGlobalAuthorize.Controllers
 {
     public class AccountController : Controller
     {
-
-
-        //
         // GET: /Account/LogOn
         [AllowAnonymous]
         public ActionResult LogOn()
@@ -29,7 +26,8 @@ namespace MvcGlobalAuthorize.Controllers
         [HttpPost]
         public ActionResult LogOn(LogOnModel model, string returnUrl)
         {
-            if (ModelState.IsValid)
+            var activate = (bool)Employee.GetProfile("IsActivated", model.UserName);
+            if (ModelState.IsValid && activate)
             {
                 if (Membership.ValidateUser(model.UserName, model.Password))
                 {
@@ -128,6 +126,7 @@ namespace MvcGlobalAuthorize.Controllers
                     ProfileBase objProfile = ProfileBase.Create(model.UserName);
 
                     objProfile.SetPropertyValue("RoleLevelID", 0);
+                    objProfile.SetPropertyValue("IsActivated", false);
                     //FormsAuthentication.SetAuthCookie(model.UserName, false /* createPersistentCookie */);
                     return RedirectToAction("Index", "Account");
                 }
@@ -217,6 +216,12 @@ namespace MvcGlobalAuthorize.Controllers
             Int32.TryParse(data.ToString(), out roleid);
             um.RoleID = roleid;
             um.UserName = name;
+
+            object activate = null;
+            bool isactivated;
+            activate = objProfile.GetPropertyValue("IsActivated");
+            Boolean.TryParse(activate.ToString(), out isactivated);
+            um.IsActivated = isactivated;
             return View(um);
         }
 
@@ -237,6 +242,7 @@ namespace MvcGlobalAuthorize.Controllers
 
                     ProfileBase objProfile = ProfileBase.Create(model.UserName);
                     objProfile.SetPropertyValue("RoleLevelID", model.RoleID);
+                    objProfile.SetPropertyValue("IsActivated", model.IsActivated);
                     objProfile.Save();
                     return RedirectToAction("Index");
                 }

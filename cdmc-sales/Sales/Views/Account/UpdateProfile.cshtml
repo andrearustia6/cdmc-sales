@@ -78,6 +78,10 @@
             @Html.DropDownListFor(m => m.Department, new SelectList(new List<string>() { "销售部", "会务部","市场部","产品部" }), "-请选择-")
             @Html.ValidationMessageFor(m => m.Department)
         </div>
+        <div class="editor-label">
+           @Html.ActionLink("更新密码","ChangePassword","Account"); 
+        </div>
+        
     </fieldset>
     
       <div>
