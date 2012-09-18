@@ -1,0 +1,6 @@
+﻿@model DisplayCurrency
+@using Utl
+@(Html.Telerik().CurrencyTextBox().Value(Model.Value)
+          .Name(Model.Name).Enable(false).CurrencySymbol(Model.Symbol).InputHtmlAttributes(new { style = "border:0px" })
+        
+)

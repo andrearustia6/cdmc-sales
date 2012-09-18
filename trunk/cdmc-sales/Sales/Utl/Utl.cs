@@ -364,4 +364,21 @@ namespace Utl
 
 
     }
+
+    public class DisplayCurrency
+    {
+        public static DisplayCurrency Instance(string name,decimal value,string symbole)
+        {
+            return new DisplayCurrency() { Name = name, Symbol = symbole, Value = value };
+        }
+        public static DisplayCurrency Dollars(EntityBase e,string Property)
+        {
+            var name = e.GetType().GetProperty("ID").GetValue(e,null).ToString();
+            var value = (decimal)e.GetType().GetProperty(Property).GetValue(e, null);
+            return new DisplayCurrency() { Name = name + Property, Symbol = "$", Value = value };
+        }
+        public string  Symbol { get; set; }
+        public decimal Value { get; set; }
+        public string Name { get; set; }
+    }
 }

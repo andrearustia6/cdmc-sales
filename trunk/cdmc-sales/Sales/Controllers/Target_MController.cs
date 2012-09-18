@@ -36,7 +36,7 @@ namespace Sales.Controllers
             if (ModelState.IsValid)
             {
                 CH.Create<Target_M>(item);
-                return View(@"~\views\Project\Management.cshtml", CH.GetDataById<Project>(item.ProjectID));
+                return RedirectToAction("Management", "Project", new { id = item.ProjectID });
             }
             ViewBag.ProjectID = item.ProjectID;
             return View(item);
@@ -52,7 +52,7 @@ namespace Sales.Controllers
             if (ModelState.IsValid)
             {
                 CH.Edit<Target_M>(item);
-                return View(@"~\views\Project\Management.cshtml", CH.GetDataById<Project>(item.ProjectID));
+                return RedirectToAction("Management", "Project", new { id = item.ProjectID });
             }
             return View(item);
         }
@@ -66,8 +66,10 @@ namespace Sales.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             var item = CH.GetDataById<Target_M>(id);
+            var pid = item.ProjectID;
             CH.Delete<Target_M>(id);
-            return View(@"~\views\Project\Management.cshtml", CH.GetDataById<Project>(item.ProjectID));
+
+            return RedirectToAction("Management", "Project", new { id = pid });
         }
     }
 }

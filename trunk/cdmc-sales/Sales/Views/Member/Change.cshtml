@@ -26,7 +26,8 @@
     </div>
     <div class="editor-field">
         @Html.Hidden("ProjectID", (int)ViewBag.ProjectID)
-        @Html.DisplayFor(model => model.Project.Name)
+
+        @Html.Label(CH.GetDataById<Project>((int)ViewBag.ProjectID).Name)
         @Html.ValidationMessageFor(model => model.ProjectID)
     </div>
 </fieldset>
