@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using Entity;
 using Utl;
+using System.Web.Security;
 
 namespace BLL
 {
@@ -16,6 +17,12 @@ namespace BLL
                 return true;
             else
                 return false;
+        }
+
+        public static bool IsMemberExist(string name)
+        {
+            var user = Membership.GetUser(name);
+            return user == null ? false : true;
         }
 
          public static bool IsFullPitched(LeadCall call)

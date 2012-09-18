@@ -1,5 +1,6 @@
 ﻿@model Entity.Member
-
+@using Utl
+@using Entity
 <fieldset>
     <legend>Member</legend>
 
@@ -13,6 +14,9 @@
         @Html.DisplayFor(model => model.Characters)
     </div>
 
+     <div class="editor-field">
+        @Html.HiddenFor(m=>m.ProjectID)
+    </div>
 
     <div class="display-label">Project</div>
     <div class="display-field">
@@ -38,5 +42,6 @@
     <div class="display-field">
         @Html.DisplayFor(model => model.ModifiedTime)
     </div>
+   
 </fieldset>
 

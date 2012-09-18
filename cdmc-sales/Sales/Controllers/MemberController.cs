@@ -34,14 +34,20 @@ namespace Sales.Controllers
         [HttpPost]
         public ActionResult Create(Member item)
         {
+            if (!CRM_Logical.IsMemberExist(item.Name))
+            {
+                ModelState.AddModelError("", "该员工不存在");
+            }
             if (CRM_Logical.IsSameMemberExistInProject(item.Name, item.ProjectID))
             {
                 ModelState.AddModelError("", "该员工以加入此项目");
             }
+
             if (ModelState.IsValid)
             {
                 CH.Create<Member>(item);
-                return View(@"~\views\Project\Management.cshtml", CH.GetDataById<Project>(item.ProjectID));
+                return RedirectToAction("Management", "Project", new { id = item.ProjectID });
+                //return View(@"~\views\Project\Management.cshtml", CH.GetDataById<Project>(item.ProjectID));
             }
             ViewBag.ProjectID = item.ProjectID;
             return View(item);
@@ -54,6 +60,10 @@ namespace Sales.Controllers
         [HttpPost]
         public ActionResult Edit(Member item)
         {
+            if (!CRM_Logical.IsMemberExist(item.Name))
+            {
+                ModelState.AddModelError("", "该员工不存在");
+            }
             if (CRM_Logical.IsSameMemberExistInProject(item.Name, item.ProjectID))
             {
                 ModelState.AddModelError("", "该员工以加入此项目");
@@ -61,7 +71,7 @@ namespace Sales.Controllers
             if (ModelState.IsValid)
             {
                 CH.Edit<Member>(item);
-                return View(@"~\views\Project\Management.cshtml", CH.GetDataById<Project>(item.ProjectID));
+                return RedirectToAction("Management", "Project", new { id = item.ProjectID });
             }
             return View(item);
         }
@@ -75,8 +85,9 @@ namespace Sales.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             var item = CH.GetDataById<Member>(id);
+            var pid = item.ProjectID;
             CH.Delete<Member>(id);
-            return View(@"~\views\Project\Management.cshtml", CH.GetDataById<Project>(item.ProjectID));
+            return RedirectToAction("Management", "Project", new { id = pid });
         }
     }
 }
