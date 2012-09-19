@@ -10,6 +10,18 @@ namespace BLL
 {
     public class CRM_Logical
     {
+        public static bool IsCompanySelectedForProject(Company c, int projectid)
+        {
+            var p = CH.GetAllData<Project>(i=>i.ID == projectid,"Companys").FirstOrDefault();
+
+            if (p != null && p.Companys.FirstOrDefault(child => child.ID == c.ID) != null)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
         public static bool IsSameMemberExistInProject(string name, int? projectid)
         {
             var p = CH.GetAllData<Project>(i => i.ID == projectid, "Members").FirstOrDefault();

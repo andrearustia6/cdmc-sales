@@ -13,7 +13,6 @@ namespace Utl
     {
         public DbSet<Company> Companys { get; set; }
         public DbSet<CompanyType> CompanyTypes { get; set; }
-        public DbSet<Title> Titles { get; set; }
         public DbSet<Lead> Leads { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<Category> Categorys { get; set; }
@@ -70,10 +69,7 @@ namespace Utl
             context.CompanyTypes.Add(new CompanyType { Name = "民营企业" });
             context.CompanyTypes.Add(new CompanyType { Name = "事业单位" });
 
-            context.Titles.Add(new Title() { Name_EN = "CEO",Name_CH="首席执行官" });
-            context.Titles.Add(new Title() { Name_EN = "CFO",Name_CH="财务总监"});
-            context.Titles.Add(new Title() { Name_EN = "CTO",Name_CH="技术总监" });
-            context.Titles.Add(new Title() { Name_EN = "MarketDirector", Name_CH="市场总监" });
+         
 
             context.Categorys.Add(new Category (){ Name_EN="",Name_CH="航天" });
             context.Categorys.Add(new Category() { Name_EN = "", Name_CH = "石油" });

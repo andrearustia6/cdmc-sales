@@ -12,7 +12,10 @@ body
     padding: 0;
     color: #696969;
 }
-
+.link-create
+{
+	margin:5px; padding:5px;
+}
 header,
 footer,
 nav,
