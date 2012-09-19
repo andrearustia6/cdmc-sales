@@ -18,6 +18,31 @@ namespace Sales.Controllers
             return View(CH.GetAllData<Project>());
         }
 
+        public ViewResult SelectCompany(int? projectid)
+        {
+            ViewBag.ProjectID = projectid;
+            return View(CH.GetAllData<Company>());
+        }
+
+        [HttpPost]
+        public ActionResult SelectCompany(int[] checkedRecords, int projectid)
+        {
+            var p = CH.GetAllData<Project>(i => i.ID == projectid, "Companys").FirstOrDefault();
+            p.Companys.Clear();
+            if (p != null)
+            {
+                foreach (int i in checkedRecords)
+                {
+                    if (!p.Companys.Any(c => c.ID == i))
+                    {
+                        p.Companys.Add(CH.GetDataById<Company>(i));
+                    }
+                }
+            }
+            CH.Edit<Project>(p);
+            return RedirectToAction("Management", "Project", new { id = projectid });
+        }
+
         public ViewResult Details(int id)
         {
             return View(CH.GetDataById<Project>(id));
@@ -30,7 +55,7 @@ namespace Sales.Controllers
 
         public ActionResult Management(int? id)
         {
-            var Data = CH.GetAllData<Project>(i => i.ID == id, "Members", "Templates", "Messages","Target_Ms").FirstOrDefault();
+            var Data = CH.GetAllData<Project>(i => i.ID == id, "Members", "Templates", "Messages", "Target_Ms").FirstOrDefault();
             return View(Data);
         }
 

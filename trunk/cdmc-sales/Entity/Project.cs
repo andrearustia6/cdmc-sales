@@ -85,6 +85,8 @@ namespace Entity
         public List<Progress> Progresses { get; set; }
 
         public List<Target_M> Target_Ms { get; set; }
+
+        public List<Company> Companys { get; set; }
         
         
     }

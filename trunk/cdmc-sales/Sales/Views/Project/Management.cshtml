@@ -15,6 +15,7 @@
     items.Add().Text("基本信息").Content(@<text>@BaseInfo(Model)</text>);
     items.Add().Text("成员信息").Content(@<text>@Member(Model)</text>);
     items.Add().Text("每月目标").Content(@<text>@Target(Model)</text>);
+    items.Add().Text("核心公司").Content(@<text>@Company(Model)</text>);
 
 })
 )
@@ -73,6 +74,11 @@
 @Html.ActionLink("创建新成员", "Create", "Member", new { projectid = Model.ID }, null)
 }
 
+@helper Company(Project p)
+    {  
+    @Html.ActionLink("管理销售对象", "SelectCompany", "Project", new { projectid = Model.ID }, null)
+}
+
 @helper Target(Project p)
     { 
       @(Html.Telerik().Grid<Target_M>(p.Target_Ms).Name("Target_Ms")
@@ -82,7 +88,7 @@
                 })
                 .Columns(c =>
                 {
-                    
+
                     c.Bound(item => item.BaseDeal).Template(@<text>@Html.Partial("DisplayCurrency", DisplayCurrency.Dollars(item, "BaseDeal")) </text>).Width(100);
                     c.Bound(item => item.Deal).Width(100).Template(@<text>@Html.Partial("DisplayCurrency", DisplayCurrency.Dollars(item, "Deal")) </text>).Width(100);
                     c.Bound(item => item.CheckIn).Template(@<text>@Html.Partial("DisplayCurrency", DisplayCurrency.Dollars(item, "CheckIn")) </text>).Width(100);
