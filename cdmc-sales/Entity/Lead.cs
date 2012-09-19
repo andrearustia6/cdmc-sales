@@ -66,6 +66,8 @@ namespace Entity
 
         [Display(Name = "传真")]
         public string Fax { get; set; }
+
+        public List<Project> Projects { get; set; }
     
     }
 
@@ -117,17 +119,5 @@ namespace Entity
 
         public virtual Image Image { get; set; }
         public int?  ImageID { get; set; }
-    }
-
-    /// <summary>
-    /// 职位类型
-    /// </summary>
-    public class Title:FullNameEntity
-    {
-        //[Display(Name = "中文名称"), Required]
-        //public string Name_CH { get; set; }
-
-        //[Display(Name = "英文名称"), Required]
-        //public string Name_EN { get; set; }
     }
 }
