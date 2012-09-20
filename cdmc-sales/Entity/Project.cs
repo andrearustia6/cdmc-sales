@@ -170,7 +170,7 @@ namespace Entity
         public int? ProjectID { get; set; }
         public virtual Project Project { get; set; }
 
-        public string[] CharactersSet{get{return Characters.Split('|');}}
+        public string[] CharactersSet { get { return string.IsNullOrEmpty(Characters)?new string[]{}: Characters.Split('|'); } }
      
         public List<Company> Companys { get; set; }
     }
