@@ -41,6 +41,39 @@ namespace Sales.Controllers
         [HttpPost]
         public ActionResult Distribution(List<string> mc,int? projectid)
         {
+            //清空原有的字头分配
+            List<Member> temp = CH.GetAllData<Member>(m => m.ProjectID == projectid);
+            temp.ForEach(m =>
+            {
+                m.Characters = string.Empty;
+            });
+
+            if (mc != null)
+            {
+                mc.ForEach(child =>
+                {
+                    //解析提交的数据
+                    var data = child.Split('|');
+                    var id = Int32.Parse(data[0]);
+                    var value = data[1];
+
+                    
+                    Member member = temp.FirstOrDefault(m => m.ID == id);
+
+                    if (string.IsNullOrEmpty(member.Characters))
+                        member.Characters = value;
+                    else
+                        member.Characters += "|" + value;
+                });
+                
+            }
+
+            //把更新的charatacter写到数据库
+            temp.ForEach(tm =>
+            {
+                CH.Edit<Member>(tm);
+            });
+
             return RedirectToAction("Management", "Project", new { id = projectid });
           
         }

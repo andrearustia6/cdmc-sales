@@ -37,29 +37,32 @@
             {
            
             <h3>@m.Name:</h3>
-            <ul class="drop-container t-group connectedSortable pane">
+            <ul class="drop-container t-group connectedSortable pane" mid=@m.ID>
                 @foreach (var c in m.CharactersSet)
                {
-                <input name="mc" type="hidden" value=@m.ID|@c /> 
-                <li>@c</li> 
+               
+                <li>@c<input name="mc" type="hidden" value=@m.ID|@c /> </li> 
                }
             </ul>
             }
         }
     </div>
 }
-@{ Html.BeginForm(); }
-@Html.Hidden("ProjectID", (int)ViewBag.ProjectID)
+
+
 <div>
     <div style="float:left; width:25%">
         @CompanysTree()
     </div>
+@{ Html.BeginForm(); }
+    @Html.Hidden("ProjectID", (int)ViewBag.ProjectID)
     <div style="float:left; width:75%">
         @Members()
     </div>
-</div>
-<p> <button type="submit" class="t-button t-state-default">提交</button></p>
+    <p> <button type="submit" class="t-button t-state-default">提交</button></p>
 @{ Html.EndForm(); }
+</div>
+
 <style type="text/css" type="text/css">
     #TreeView
     {
