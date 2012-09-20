@@ -33,8 +33,8 @@ namespace Entity
             foreach (var p in properties)
             {
                 var property = o.GetType().GetProperty(p);
-                var v = property.GetValue(o, null).ToString();
-                if (!string.IsNullOrEmpty(v))
+                var v = property.GetValue(o, null);
+                if (v!=null)
                     return false;
             }
             return true;

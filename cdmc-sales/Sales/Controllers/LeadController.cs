@@ -34,7 +34,6 @@ namespace Sales.Controllers
             return View();
         }
 
-
         [HttpPost]
         public ActionResult Create(Lead item)
         {
@@ -91,6 +90,39 @@ namespace Sales.Controllers
         {
             CH.Delete<Lead>(id);
             return RedirectToAction("Index", "Company");
+        }
+
+        public ActionResult Management(int leadid, int? ProjectID)
+        {
+            ViewBag.ProjectID = ProjectID;
+            return View(CH.GetAllData<Lead>(i => i.ID == leadid, "Target_Packages").FirstOrDefault());
+        }
+
+        public ActionResult LeadCallIndex(int leadid)
+        {
+            var data = CH.GetAllData<LeadCall>(i => i.LeadID == leadid);
+            return View(data);
+        }
+
+        public ActionResult Save_LeadPackage(int leadid, int projectid, int packageid)
+        {
+            var old = CH.GetAllData<Target_Package>(i => i.LeadID == leadid).FirstOrDefault();
+            if (old != null && old.PackageID != packageid)
+                CH.Delete<Target_Package>(old.ID);
+
+            CH.Create<Target_Package>(new Target_Package() { PackageID = packageid, LeadID = leadid, ProjectID = projectid });
+            return new JsonResult();
+        }
+        [HttpPost]
+        public ActionResult Save_LeadCall(LeadCall callresult)
+        {
+            callresult.CallingTime = DateTime.Now;
+            CH.Create<LeadCall>(callresult);
+
+            callresult = CH.GetAllData<LeadCall>(lc => lc.LeadID == callresult.LeadID, "LeadCallType").FirstOrDefault();
+
+            //return new DataJsonResult<Lead>() { Data = data };
+            return new DataJsonResult<LeadCall>() { Data = callresult };
         }
     }
 }

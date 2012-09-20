@@ -9,7 +9,11 @@
     Layout = null;
     ViewBag.Title = "登陆";
 }
+<script type="text/javascript" src=@Url.Content(@"/scripts/jquery-1.6.4.min.js")></script>@*确保在页面能引用到jquery*@   
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
 @model  Entity.LogOnModel
+
 @using (Html.BeginForm())
 {
     <body>
@@ -39,6 +43,11 @@
     </dl>
   </div>
 </div>
+<center style=" margin-top:50px;">
+<h3>
+@Html.ValidationSummary(true)
+</h3>
+</center>
 </body>
     
 

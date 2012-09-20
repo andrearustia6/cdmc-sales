@@ -73,7 +73,7 @@ namespace Sales.Controllers
         {
             var data = CH.GetDataById<Project>(id);
             data.SaleBrief = HttpUtility.HtmlDecode(data.SaleBrief);
-            return View();
+            return View(data);
         }
 
         [HttpPost]

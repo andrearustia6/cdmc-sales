@@ -7,7 +7,7 @@ img{vertical-align:top; border:0; margin:0px; padding:0px;}
 .logo{ width:930px; margin:0 auto;}
 .login{ width:930px; height:349px; background:url(../images/bj_2.jpg) no-repeat; margin:0 auto; }
 .login_2{ padding:40px 0 0 0px;}
-.login_2 h2{ font-size:24px; font-family:"微软雅黑"; color:#333; padding-left:570px; padding-bottom:20px;}
+.login_2 h2{ font-size:24px; font-family:"微软雅黑"; color:#da5000; padding-left:570px; padding-bottom:20px;}
 .login_2 h2 img{ padding-left:40px;}
 .login_2 dl{ color:#8e3f0f; clear:both; width:350px; padding:10px 0 0 575px;}
 .login_2 dt{ float:left; line-height:37px; width:95px; }

@@ -26,8 +26,12 @@ namespace MvcGlobalAuthorize.Controllers
         [HttpPost]
         public ActionResult LogOn(LogOnModel model, string returnUrl)
         {
-            var activate = (bool)Employee.GetProfile("IsActivated", model.UserName);
-            if (ModelState.IsValid && activate)
+            var activated = (bool)Employee.GetProfile("IsActivated", model.UserName);
+            if (!activated && model.UserName != "karen")
+            {
+                ModelState.AddModelError("","该账号为非激活状态,请联系管理员");
+            }
+            if (ModelState.IsValid)
             {
                 if (Membership.ValidateUser(model.UserName, model.Password))
                 {
@@ -62,15 +66,15 @@ namespace MvcGlobalAuthorize.Controllers
             return RedirectToAction("LogOn", "account");
         }
 
-
+        [AllowAnonymous]
         public ActionResult Start()
         {
-            if (User.Identity.Name == "karen")
-            {
-                ProfileBase objProfile = ProfileBase.Create("Karen");
-                objProfile.SetPropertyValue("RoleLevelID", 1);
-                objProfile.Save();
-            }
+            ProfileBase objProfile = ProfileBase.Create("karen");
+            objProfile.SetPropertyValue("RoleLevelID", 1);
+            objProfile.SetPropertyValue("IsActivated", true);
+            objProfile.Save();
+            MembershipCreateStatus createStatus;
+            Membership.CreateUser("karen", "1111111", "234234234", null, null, true, null, out createStatus);
             return RedirectToAction("Index", "account");
         }
         //
