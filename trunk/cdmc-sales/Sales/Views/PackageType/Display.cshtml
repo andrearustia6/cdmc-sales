@@ -3,9 +3,13 @@
 <fieldset>
     <legend>@SR.Form</legend>
     <div class="display-label">
-        类型名称</div>
+       英文名称</div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.Name)
+        @Html.DisplayFor(model => model.Name_EN)
+    </div>
+    <div class="display-label">
+       中文名称</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Name_CH)
     </div>
 </fieldset>
-@Html.Partial("displaycommon", Model)

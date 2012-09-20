@@ -13,27 +13,36 @@ namespace Sales.Controllers
 {
     public class CompanyController : Controller
     {
+        [ManagerRequired]
         public ActionResult Index()
         {
-            if(Employee.AsManager())
-                return View(CH.GetAllData<Company>("Leads"));
-            else if (Employee.AsSales())
-                return RedirectToAction("SalesIndex");
-            else if (Employee.AsProductInterface())
-                return RedirectToAction("ProductIndex");
-            else
-                return RedirectToAction("MarketIndex");
+           return View(CH.GetAllData<Company>("Leads"));
         }
 
+        [LeaderRequired]
         public ViewResult SalesIndex()
         {
-            var data = CH.GetAllData<Company>("Leads");
-            return View(data);
+          
+            var members = CH.GetAllData<Member>(m => m.Name == User.Identity.Name);
+
+            var member = members.FirstOrDefault();
+            if (member != null&&member.CharactersSet!=null)
+            {
+                var data = CH.GetAllData<Company>("Leads");
+                 data = data.FindAll(c => member.CharactersSet.Any(ca=>(c.Name_EN.ToUpper().StartsWith(ca))));
+                 return View(data);
+            }
+            return View();
         }
 
         public ViewResult MarketIndex()
         {
             return View(CH.GetAllData<Lead>());
+        }
+
+        public ViewResult CompanyMaintainIndex()
+        {
+            return View(CH.GetAllData<Company>(c => c.Cerator == User.Identity.Name,"Leads"));
         }
 
         public ViewResult ProductIndex()

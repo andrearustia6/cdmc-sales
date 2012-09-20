@@ -10,27 +10,21 @@
                 {
                     c.Bound(item => item.Name_EN).Width(150);
                     c.Bound(item => item.Name_CH).Width(150);
-                    c.Bound(item => item.DistrictNumber).Width(100);
+                    c.Bound(item => item.Category.FullName).Title("行业").Width(100);
+                    c.Bound(item => item.Areas);
                     c.Bound(item => item.Contact).Width(100);
                     c.Bound(item => item.Available).Width(100);
-                    c.Bound(item => item.Category.FullName).Title("行业").Width(100);
+                    
                     c.Bound(item => item.CompanyType.Name).Width(100);
                     c.Bound(item => item.Cerator).Width(100);
                     c.Bound(item => item.From).Width(100);
-
-                    c.Bound(item => item.ID).Title("操作").Template(@<span>
+                    c.Bound(item => item.ID).Title("操作").Width(200).Template(@<text>
                     
-                       @if (User.Identity.Name != item.Cerator)
-                       {
-                           <a href=@Url.Content("~/Company/Details/" + item.ID)>详细</a>  <span> | </span>  <a href=@Url.Content("~/Lead/Create/?from=company&CompanyId=" + item.ID)>添加客户</a>
-                  
-                       }
-                       else
-                       {
-                            <a href=@Url.Content("~/Company/Edit/" + item.ID) >编辑</a> <span> | </span> <a href=@Url.Content("~/Company/Details/" + item.ID)>详细</a> <span> | </span><a href=@Url.Content("~/Lead/Create/?from=company&CompanyId=" + item.ID)>添加客户</a><span> | </span> <a href=@Url.Content("~/Company/delete/" + item.ID) >删除</a> 
-                  
-                       }
-                    </span>);
+                     
+                            <a href=@Url.Content("~/Company/Details/" + item.ID)>详细</a>
+                  </text>
+                    
+                   );
                 })
                 .DetailView(e => e.Template(
                         @<text>
@@ -54,13 +48,15 @@
                             .Columns(c =>
                             {
                                 c.Template(@<text><img  style="width:80px;height:70px" src=@Url.Content("~/Image/DisplayImage/" + item.ImageID) /></text>).Title("客户照片").Width(150);
-                                c.Bound(o => o.Name_EN).Width(120);
-                                c.Bound(o => o.Name_CH).Width(120);
-                                c.Bound(o => o.Title).Title("职位").Width(120);
-                                c.Bound(o => o.EMail).Title("邮箱").Width(120);
+                                c.Bound(o => o.Name_EN);
+                                c.Bound(o => o.Name_CH);
+                                c.Bound(o => o.Title).Width(120);
+                                c.Bound(o => o.Contact).Width(150);
+                                c.Bound(o => o.Mobile).Width(150);
+                                c.Bound(o => o.EMail).Width(120);
                                 c.Bound(o => o.Contact).Width(200);
-                                c.Bound(item => item.ID).Title("操作").Template(@<span>
-                    <a href=@Url.Content("~/lead/Edit/?from=company&id=" + item.ID) >编辑</a> | <a href=@Url.Content("~/lead/Details/" + item.ID)>详细</a>  <a href=@Url.Content("~/Company/delete/" + item.ID) >删除</a> 
+                                c.Bound(item => item.ID).Title("操作").Width(120).Template(@<span>
+                    <a href=@Url.Content("~/lead/Details/" + item.ID)>详细</a> 
                    </span>);
                             })
                                                .Resizable(resizing => resizing.Columns(true))

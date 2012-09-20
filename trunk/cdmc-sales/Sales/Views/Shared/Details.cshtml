@@ -4,10 +4,10 @@
     ViewBag.Title = SR.Details;
 }
 
-<fieldset>
 
-    @Html.Partial("display", Model)
-</fieldset>
+@Html.Partial("display", Model)
+
+@Html.Partial("displaycommon", Model)
 <center>
 <p>
     @Html.ActionLink(SR.Edit, "Edit", new { id = Model.ID }) |

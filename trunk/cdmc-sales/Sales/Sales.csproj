@@ -987,10 +987,10 @@
     <Content Include="Views\Package\Display.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\CRM\Management.cshtml" />
+    <Content Include="Views\Lead\Management.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\CRM\LeadCallEditor.cshtml" />
+    <Content Include="Views\Lead\LeadCallEditor.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\CRM\Index.cshtml" />
@@ -1008,10 +1008,10 @@
     <Content Include="Views\CRM\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\CRM\LeadCallIndex.cshtml" />
+    <Content Include="Views\Lead\LeadCallIndex.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\CRM\LeadPackageEditor.cshtml" />
+    <Content Include="Views\Lead\LeadPackageEditor.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\LeadCallType\Index.cshtml" />
@@ -1060,6 +1060,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Member\Distribution.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Company\CompanyMaintainIndex.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
