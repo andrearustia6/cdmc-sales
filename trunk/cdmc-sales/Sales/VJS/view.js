@@ -11,6 +11,32 @@ function initoalCompanySelect() {
     $(".charatacter, .pane").sortable({
         connectWith: ".connectedSortable"
     });
+
+    $(".pane").droppable({
+        activeClass: "ui-state-hover",
+        hoverClass: "ui-state-active",
+        drop: function (event, ui) {
+            var $this = $(this);
+            var mid = $this.closest('.pane').attr('mid');
+            ui.draggable.find('input').remove();
+            var c = ui.draggable.text();
+            ui.draggable.append('<input name="mc" type="hidden" value="' + mid + '|' + c + '"/>');
+            $this.append(ui.draggable);
+            return false;
+        }
+    });
+
+    $(".charatacter").droppable({
+        activeClass: "ui-state-hover",
+        hoverClass: "ui-state-active",
+        drop: function (event, ui) {
+            var $drag = ui.draggable;
+            $drag.find('input').remove();
+            return false;
+        }
+    });
+
+    
 }
 function initialAddLeadCall($luncher, $win) {
 
