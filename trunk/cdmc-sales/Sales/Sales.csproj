@@ -256,6 +256,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="images\文字.gif" />
+    <Content Include="Scripts\jquery-ui-1.8.23.custom.min.js" />
     <Content Include="Scripts\json2.js" />
     <Content Include="TimeSpan.xml" />
     <Content Include="Content\2011.3.1115\Black\editor.png" />
@@ -1056,6 +1057,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Project\SelectCompany.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Member\Distribution.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

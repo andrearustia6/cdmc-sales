@@ -72,6 +72,8 @@
 )
         
 @Html.ActionLink("创建新成员", "Create", "Member", new { projectid = Model.ID }, null)
+<span>     </span>
+@Html.ActionLink("分配公司", "Distribution", "Member", new { projectid = Model.ID }, null)
 }
 
 @helper Company(Project p)

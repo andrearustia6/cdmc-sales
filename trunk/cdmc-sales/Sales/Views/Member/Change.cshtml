@@ -25,9 +25,9 @@
         @Html.LabelFor(model => model.ProjectID)
     </div>
     <div class="editor-field">
-        @Html.Hidden("ProjectID", (int)ViewBag.ProjectID)
+        @Html.Hidden("ProjectID", ViewBag.ProjectID==null?Model.ProjectID:(int)ViewBag.ProjectID)
 
-        @Html.Label(CH.GetDataById<Project>((int)ViewBag.ProjectID).Name)
+        @Html.Label(CH.GetDataById<Project>(ViewBag.ProjectID == null ? Model.ProjectID : (int)ViewBag.ProjectID).Name)
         @Html.ValidationMessageFor(model => model.ProjectID)
     </div>
 </fieldset>

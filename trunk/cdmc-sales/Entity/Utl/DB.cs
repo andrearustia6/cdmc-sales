@@ -31,6 +31,7 @@ namespace Utl
         public DbSet<PaymentType> PaymentTypes { get; set; }
         public DbSet<CRM> CRMs { get; set; }
         public DbSet<DistrictNumber> DistrictNumbers { get; set; }
+        public DbSet<Member> Members { get; set; }
         public DB()
         {
             Database.SetInitializer<DB>(new DBInitializer());

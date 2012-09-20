@@ -1,4 +1,18 @@
-﻿function initialAddLeadCall($luncher, $win) {
+﻿function onDistributionCompanyNodeDrop(e) {
+    var dropContainer = $(e.dropTarget).closest('.drop-container');
+    var treeview = $('#TreeView').data('tTreeView');
+    var nodeText = treeview.getItemText(e.item);
+    if (dropContainer.length > 0 && dropContainer[0].innerHTML.indexOf(nodeText) == -1) {
+        $('<div><strong>' + nodeText + '</strong></div>').hide().appendTo(dropContainer).slideDown('fast');
+     e.preventDefault(); }
+}
+
+function initoalCompanySelect() {
+    $(".charatacter, .pane").sortable({
+        connectWith: ".connectedSortable"
+    });
+}
+function initialAddLeadCall($luncher, $win) {
 
     $win.find('#call_editor_submit').click(function () {
 
