@@ -1,0 +1,102 @@
+﻿@{
+    ViewBag.Title = "Distribution";
+}
+@using Entity
+@using Utl
+@model List<Member>
+@*@(
+ 
+ Html.Telerik().Splitter().Name("Splitter1").HtmlAttributes(new { style = "min-height: 600px;" })
+.Orientation(SplitterOrientation.Horizontal).Panes(panes =>
+{
+    panes.Add().Size("25%").Scrollable(false).MinSize("200px").Collapsible(true).Content(@<text>@CompanysTree()</text>);
+    panes.Add().Size("75%").Collapsible(true).Content(@<text>@Members()</text>);
+})
+)*@
+@helper CompanysTree()
+    {
+        <h3 style=" margin-left:50px">备选字头：</h3>
+    <ul class="charatacter connectedSortable">
+     @if(ViewBag.DC!=null)
+     {
+         var dc = (List<string>)ViewBag.DC;
+         foreach (var c in dc)
+         {
+            <li>@c</li> 
+         }
+     }
+    </ul>
+}
+@helper Members()
+    {
+        var Members = CH.GetAllData<Member>(i => i.ProjectID == (int)ViewBag.ProjectID);
+    <div>
+        @if (Members != null)
+        {
+            foreach (var m in Members)
+            {
+           
+            <h3>@m.Name:</h3>
+            <ul class="drop-container t-group connectedSortable pane">
+                @foreach (var c in m.CharactersSet)
+               {
+                <input name="mc" type="hidden" value=@m.ID|@c /> 
+                <li>@c</li> 
+               }
+            </ul>
+            }
+        }
+    </div>
+}
+@{ Html.BeginForm(); }
+@Html.Hidden("ProjectID", (int)ViewBag.ProjectID)
+<div>
+    <div style="float:left; width:25%">
+        @CompanysTree()
+    </div>
+    <div style="float:left; width:75%">
+        @Members()
+    </div>
+</div>
+<p> <button type="submit" class="t-button t-state-default">提交</button></p>
+@{ Html.EndForm(); }
+<style type="text/css" type="text/css">
+    #TreeView
+    {
+        height: 24em;
+        padding: .5em;
+    }
+    .drop-container
+    {
+        height: 8em;
+        overflow: auto;
+        margin-top: -15px;
+        margin-left: 15px;
+        border-width: 1px;
+        border-style: solid;
+        width: 93%;
+        padding-top: 15px;
+    }
+     .charatacter
+    {
+        
+        overflow: auto;
+        margin-top: -15px;
+        margin-left: 15px;
+  
+     
+    }
+    .charatacter li, .pane li
+    {
+        float: left;
+        border-width: 1px;
+        border-style: solid;
+        list-style-type: none;
+        min-width: 50px;
+        text-align: center;
+        margin: 3px;
+    }
+</style>
+@{ Html.Telerik().ScriptRegistrar().OnDocumentReady(@<text> initoalCompanySelect()
+    </text>);
+}

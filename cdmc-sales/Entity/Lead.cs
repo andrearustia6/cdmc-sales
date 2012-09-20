@@ -68,6 +68,8 @@ namespace Entity
         public string Fax { get; set; }
 
         public List<Project> Projects { get; set; }
+
+        public List<Member> Members { get; set; }
     
     }
 

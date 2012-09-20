@@ -10,6 +10,12 @@ namespace BLL
 {
     public class CRM_Logical
     {
+        public static List<string> GetDefaultCharatracter()
+        {
+            return new List<string>() { "A", "B", "C", "D", "E", "F", "G", "H", "I", "Z", "K", "L", "M", "N", 
+                "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z" };
+        }
+       
         public static bool IsCompanySelectedForProject(Company c, int projectid)
         {
             var p = CH.GetAllData<Project>(i=>i.ID == projectid,"Companys").FirstOrDefault();

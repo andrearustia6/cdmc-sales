@@ -169,6 +169,10 @@ namespace Entity
         [Display(Name = "所在项目"), Required]
         public int? ProjectID { get; set; }
         public virtual Project Project { get; set; }
+
+        public string[] CharactersSet{get{return Characters.Split('|');}}
+     
+        public List<Company> Companys { get; set; }
     }
 
     /// <summary>

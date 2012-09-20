@@ -25,6 +25,26 @@ namespace Sales.Controllers
             return View(CH.GetDataById<Member>(id));
         }
 
+        public ActionResult Distribution(int? projectid)
+        {
+            var member = CH.GetAllData<Member>(i => i.ProjectID == projectid);
+            var dc= CRM_Logical.GetDefaultCharatracter();
+            member.ForEach(m => { 
+                dc.RemoveAll(i => m.CharactersSet.Contains(i.ToUpper()));
+            });
+            ViewBag.ProjectID = projectid;
+            ViewBag.DC = dc;
+
+            return View(member);
+        }
+
+        [HttpPost]
+        public ActionResult Distribution(List<string> mc,int? projectid)
+        {
+            return RedirectToAction("Management", "Project", new { id = projectid });
+          
+        }
+
         public ActionResult Create(int? projectid)
         {
             ViewBag.ProjectID = projectid;
@@ -64,10 +84,16 @@ namespace Sales.Controllers
             {
                 ModelState.AddModelError("", "该员工不存在");
             }
-            if (CRM_Logical.IsSameMemberExistInProject(item.Name, item.ProjectID))
-            {
-                ModelState.AddModelError("", "该员工以加入此项目");
-            }
+            //var memberoldname = CH.DB.Members.AsNoTracking().FirstOrDefault(i => i.ID == item.ID);
+            //if (CRM_Logical.IsSameMemberExistInProject(item.Name, item.ProjectID) && memberoldname.Name != item.Name)
+            //{
+            //    ModelState.AddModelError("", "该员工以加入此项目");
+            //}
+            //else
+            //{
+            //    CH.DB.Entry(memberoldname).State = EntityState.Detached; 
+            //    CH.DB.Members.Attach(item);
+            //}
             if (ModelState.IsValid)
             {
                 CH.Edit<Member>(item);
