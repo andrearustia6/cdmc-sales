@@ -10,7 +10,7 @@
 @(
 
 
-            @*  Html.Telerik().Grid<Company>(Model).Name("noselected").DataKeys(keys =>
+              Html.Telerik().Grid<Company>(Model).Name("noselected").DataKeys(keys =>
                 {
                     keys.Add(s => s.ID);
                 })
@@ -25,7 +25,7 @@
                                                         .Pageable(p => p.PageSize(10))
                                                         .Sortable()
                                                         .Filterable()
-                                                        .Scrollable(scrolling => scrolling.Height(450))*@
+                                                        .Scrollable(scrolling => scrolling.Height(450))
 )
 <p> <button type="submit" class="t-button t-state-default">提交</button></p>
 @{ Html.EndForm(); }
@@ -40,6 +40,6 @@
      
 }
 @{ Html.Telerik().ScriptRegistrar().OnDocumentReady(@<text> 
-        initoalCompanySelect();
+        initialCompanySelect();
     </text>);
 }

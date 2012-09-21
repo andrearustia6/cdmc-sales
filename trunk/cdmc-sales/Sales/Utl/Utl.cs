@@ -18,7 +18,7 @@ namespace Utl
 {
     [TestAttribute]
     public class test
-    { 
+    {
     }
     public static class AppConfig
     {
@@ -39,12 +39,12 @@ namespace Utl
 
     public class Employee
     {
-      
+
 
         public static List<MembershipUser> GetAllEmployees()
         {
             var list = Membership.GetAllUsers().Cast<MembershipUser>().ToList<MembershipUser>();
-        
+
             return list;
         }
         public static object GetCurrentProfile(string propertyName)
@@ -55,7 +55,7 @@ namespace Utl
             return objProfile.GetPropertyValue(propertyName);
         }
 
-        public static object GetProfile(string propertyName,string username)
+        public static object GetProfile(string propertyName, string username)
         {
             ProfileBase objProfile = ProfileBase.Create(username);
 
@@ -117,7 +117,7 @@ namespace Utl
 
         public static Role GetRole(string name)
         {
-            var roleid = GetProfile("RoleLevelID",name).ToString();
+            var roleid = GetProfile("RoleLevelID", name).ToString();
             int id;
             int.TryParse(roleid, out id);
             var role = CH.GetDataById<Role>(id);
@@ -129,7 +129,7 @@ namespace Utl
             return GetRole(HttpContext.Current.User.Identity.Name);
         }
 
-      
+
 
         public static bool IsEqualToCurrentUserName(string name)
         {
@@ -236,8 +236,7 @@ namespace Utl
                     new DataToJson<Research>(),
                     new DataToJson<LeadCall>(),
                     new DataToJson<Project>(),
-                    new DataToJson<LeadCallType>(),
-                    new DataToJson<CRM>()
+                    new DataToJson<LeadCallType>()
                 });
                 string sJSON = serializer.Serialize(Data);
                 response.Write(sJSON);
@@ -284,10 +283,10 @@ namespace Utl
                     context.HttpContext.Response.ContentType = "application/pdf";
                 if (extession == ".jpg")
                     context.HttpContext.Response.ContentType = "image/jpeg";
-
+           
             }
 
-
+        
             context.HttpContext.Response.TransmitFile(filePath);
         }
     }
@@ -320,11 +319,11 @@ namespace Utl
         {
             XmlDocument doc = new XmlDocument();
             doc.Load("~/TimeSpan.xml");
-          
+
 
             return new TimeSpan();
         }
-        
+
 
         //public static string GetImageUrls(List<Image> imgs)
         //{
@@ -367,18 +366,43 @@ namespace Utl
 
     public class DisplayCurrency
     {
-        public static DisplayCurrency Instance(string name,decimal value,string symbole)
+        public static DisplayCurrency Instance(string name, decimal value, string symbole)
         {
             return new DisplayCurrency() { Name = name, Symbol = symbole, Value = value };
         }
-        public static DisplayCurrency Dollars(EntityBase e,string Property)
+        public static DisplayCurrency Dollars(EntityBase e, string Property)
         {
-            var name = e.GetType().GetProperty("ID").GetValue(e,null).ToString();
+            var name = e.GetType().GetProperty("ID").GetValue(e, null).ToString();
             var value = (decimal)e.GetType().GetProperty(Property).GetValue(e, null);
             return new DisplayCurrency() { Name = name + Property, Symbol = "$", Value = value };
         }
-        public string  Symbol { get; set; }
+        public string Symbol { get; set; }
         public decimal Value { get; set; }
         public string Name { get; set; }
+    }
+
+    public static class DateTimeExtensions
+    {
+        public static DateTime StartOfWeek(this DateTime dt)
+        {
+            int diff = dt.DayOfWeek - DayOfWeek.Monday; if (diff < 0) { diff += 7; }
+            return dt.AddDays(-1 * diff).Date;
+        }
+
+        public static DateTime EndOfWeek(this DateTime dt)
+        {
+            int diff = DayOfWeek.Friday - dt.DayOfWeek; if (diff < 0) { diff += 7; }
+            return dt.AddDays(-1 * diff).Date;
+        }
+        public static DateTime FirstDayOfMonth(this DateTime dt)
+        {
+            return new DateTime(dt.Year, dt.Month, 1);
+        }
+
+        public static DateTime LastDayOfMonthFrom(DateTime dt)
+        {
+            DateTime firstDayOfTheMonth = new DateTime(dt.Year, dt.Month, 1);
+            return firstDayOfTheMonth.AddMonths(1).AddDays(-1);
+        }
     }
 }

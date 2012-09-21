@@ -11,17 +11,17 @@ using Utl;
 
 namespace Sales.Controllers
 {
-    public class Target_MController : Controller
+    public class TargetOfMonthController : Controller
     {
 
         public ViewResult Index()
         {
-            return View(CH.GetAllData<Target_M>());
+            return View(CH.GetAllData<TargetOfMonth>());
         }
 
         public ViewResult Details(int id)
         {
-            return View(CH.GetDataById<Target_M>(id));
+            return View(CH.GetDataById<TargetOfMonth>(id));
         }
 
         public ActionResult Create(int? projectid)
@@ -31,11 +31,11 @@ namespace Sales.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create(Target_M item)
+        public ActionResult Create(TargetOfMonth item)
         {
             if (ModelState.IsValid)
             {
-                CH.Create<Target_M>(item);
+                CH.Create<TargetOfMonth>(item);
                 return RedirectToAction("Management", "Project", new { id = item.ProjectID });
             }
             ViewBag.ProjectID = item.ProjectID;
@@ -43,15 +43,15 @@ namespace Sales.Controllers
         }
         public ActionResult Edit(int id)
         {
-            return View(CH.GetDataById<Target_M>(id));
+            return View(CH.GetDataById<TargetOfMonth>(id));
         }
 
         [HttpPost]
-        public ActionResult Edit(Target_M item)
+        public ActionResult Edit(TargetOfMonth item)
         {
             if (ModelState.IsValid)
             {
-                CH.Edit<Target_M>(item);
+                CH.Edit<TargetOfMonth>(item);
                 return RedirectToAction("Management", "Project", new { id = item.ProjectID });
             }
             return View(item);
@@ -59,15 +59,15 @@ namespace Sales.Controllers
 
         public ActionResult Delete(int id)
         {
-            return View(CH.GetDataById<Target_M>(id));
+            return View(CH.GetDataById<TargetOfMonth>(id));
         }
 
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {
-            var item = CH.GetDataById<Target_M>(id);
+            var item = CH.GetDataById<TargetOfMonth>(id);
             var pid = item.ProjectID;
-            CH.Delete<Target_M>(id);
+            CH.Delete<TargetOfMonth>(id);
 
             return RedirectToAction("Management", "Project", new { id = pid });
         }

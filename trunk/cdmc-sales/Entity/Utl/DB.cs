@@ -24,14 +24,18 @@ namespace Utl
         public DbSet<OnPhoneBlockType> OnPhoneBlockTypes { get; set; }
         public DbSet<LeadCallType> LeadCallTypes { get; set; }
         public DbSet<CurrencyType> CurrencyTypes { get; set; }
-        //public DbSet<PackageServiceType> PackageServiceTypes { get; set; }
         public DbSet<PackageItem> PackageItems { get; set; }
         public DbSet<Package> Packages { get; set; }
         public DbSet<FAQ> FAQs { get; set; }
         public DbSet<PaymentType> PaymentTypes { get; set; }
-        public DbSet<CRM> CRMs { get; set; }
+        public DbSet<TargetOfMonth> TargetOfMonths { get; set; }
+        public DbSet<TargetOfWeek> TargetOfWeeks { get; set; }
         public DbSet<DistrictNumber> DistrictNumbers { get; set; }
         public DbSet<Member> Members { get; set; }
+
+        public DbSet<Project> Projects { get; set; }
+        public DbSet<Department> Departments { get; set; }
+        
         public DB()
         {
             Database.SetInitializer<DB>(new DBInitializer());

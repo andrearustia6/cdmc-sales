@@ -59,7 +59,7 @@
     <div style="float:left; width:75%">
         @Members()
     </div>
-    <p> <button type="submit" class="t-button t-state-default">提交</button></p>
+    <p> <button type="submit" class="t-button t-state-default">@SR.Save</button></p>
 @{ Html.EndForm(); }
 </div>
 
@@ -100,6 +100,6 @@
         margin: 3px;
     }
 </style>
-@{ Html.Telerik().ScriptRegistrar().OnDocumentReady(@<text> initoalCompanySelect()
+@{ Html.Telerik().ScriptRegistrar().OnDocumentReady(@<text> initialCompanySelect()
     </text>);
 }
