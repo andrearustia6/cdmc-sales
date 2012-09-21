@@ -1,0 +1,56 @@
+﻿@{
+    ViewBag.Title = "Breakdown";
+}
+
+@using Entity
+@using Utl
+@using BLL
+@model List<Member>
+@{ Html.BeginForm(); }
+@Html.Hidden("projectid", (int)ViewBag.ProjectID)
+@Html.Hidden("TargetOfMonthid", (int)ViewBag.TargetOfMonthID)
+<div>
+<label>开始时间：</label>
+@Html.Telerik().DatePicker().Name("startdate").Value(DateTime.Now.StartOfWeek())
+<label>结束时间：</label>
+@Html.Telerik().DatePicker().Name("enddate").Value(DateTime.Now.EndOfWeek())
+<table class="tb_breakdown">
+@if (Model != null)
+{
+    foreach (var m in Model)
+    {
+        var v = CRM_Logical.GetTargetOfWeekValue((int)ViewBag.ProjectID, (int)ViewBag.TargetOfMonthID, m.Name, DateTime.Now.StartOfWeek(), DateTime.Now.EndOfWeek());
+      <tr><td>@m.Name</td><td>
+      <div class="targetbreakdown" TargetOfWeek=@v ></div>
+      </td><td><p>$0</p><input type="hidden" mname=@m.Name value=@v  name="mtw" /></td></tr>
+    
+    }
+}
+</table>
+</div>
+ <p> <button type="submit" class="t-button t-state-default">@SR.Save</button></p>
+@{ Html.EndForm(); }
+
+@{ Html.Telerik().ScriptRegistrar().OnDocumentReady(@<text> 
+        initialTargetbreakdown();
+    </text>);
+}
+<style type="text/css" >
+.tb_breakdown
+{
+}
+input[type=text]
+{
+	border:0; color:#f6931f; font-weight:bold;
+}
+.tb_breakdown tr td p
+{
+	max-width:150px;
+}
+.targetbreakdown
+{
+	width:300px;
+	margin:15px;
+}
+ table
+</style>

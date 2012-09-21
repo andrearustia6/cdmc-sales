@@ -10,6 +10,20 @@ namespace BLL
 {
     public class CRM_Logical
     {
+        public static TargetOfWeek GetTargetOfWeek(int projectid,int targetofmonth,string member,DateTime startdate,DateTime enddate)
+        {
+            var data = CH.GetAllData<TargetOfWeek>(tw => tw.ProjectID == projectid && tw.TargetOfMonthID == targetofmonth&&tw.Member==member);
+            var result = data.FirstOrDefault(t => t.StartDate == startdate && t.EndDate == enddate);
+            return result;
+        }
+
+        public static decimal GetTargetOfWeekValue(int projectid, int targetofmonth, string member, DateTime startdate, DateTime enddate)
+        {
+            var data = GetTargetOfWeek(projectid, targetofmonth, member, startdate, enddate);
+            if (data != null) return data.Deal;
+            return 0;
+        }
+
         public static List<string> GetDefaultCharatracter()
         {
             return new List<string>() { "A", "B", "C", "D", "E", "F", "G", "H", "I", "Z", "K", "L", "M", "N", 

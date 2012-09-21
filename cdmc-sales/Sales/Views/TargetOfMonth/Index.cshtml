@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Entity.CRM>
+﻿@model IEnumerable<Entity.TargetOfMonth>
 
 @{
     ViewBag.Title = "Index";
@@ -12,7 +12,19 @@
 <table>
     <tr>
         <th>
-            Lead
+            Project
+        </th>
+        <th>
+            Month
+        </th>
+        <th>
+            Deal
+        </th>
+        <th>
+            BaseDeal
+        </th>
+        <th>
+            CheckIn
         </th>
         <th>
             Description
@@ -32,7 +44,19 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.Lead.Gender)
+            @Html.DisplayFor(modelItem => item.Project.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Month)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Deal)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.BaseDeal)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CheckIn)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Description)

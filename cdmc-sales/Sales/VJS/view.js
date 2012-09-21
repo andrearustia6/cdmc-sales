@@ -1,13 +1,30 @@
-﻿function onDistributionCompanyNodeDrop(e) {
-    var dropContainer = $(e.dropTarget).closest('.drop-container');
-    var treeview = $('#TreeView').data('tTreeView');
-    var nodeText = treeview.getItemText(e.item);
-    if (dropContainer.length > 0 && dropContainer[0].innerHTML.indexOf(nodeText) == -1) {
-        $('<div><strong>' + nodeText + '</strong></div>').hide().appendTo(dropContainer).slideDown('fast');
-     e.preventDefault(); }
-}
+﻿
 
-function initoalCompanySelect() {
+function initialTargetbreakdown() {
+
+    $(".targetbreakdown").each(function () {
+        var $this = $(this);
+        $this.slider({
+            value: getSliderValue($this),
+            min: 0,
+            max: 20000,
+            step: 1000,
+            slide: function (event, ui) {
+                var $this = $(this);
+                var mid = $this.attr('mid');
+                $this.closest('tr').find('p').text("$" + ui.value);
+                var mname = $this.closest('tr').find('input').attr('mname');
+                $this.closest('tr').find('input').val(mname+'|'+ui.value);
+            }
+        });
+    });
+
+}
+function getSliderValue(s) {
+    var v = s.attr('TargetOfWeek');
+    return v;
+}
+function initialCompanySelect() {
     $(".charatacter, .pane").sortable({
         connectWith: ".connectedSortable"
     });
@@ -27,8 +44,6 @@ function initoalCompanySelect() {
     });
 
     $(".charatacter").droppable({
-        activeClass: "ui-state-hover",
-        hoverClass: "ui-state-active",
         drop: function (event, ui) {
             var $drag = ui.draggable;
             $drag.find('input').remove();

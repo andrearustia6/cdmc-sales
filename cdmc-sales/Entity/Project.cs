@@ -47,6 +47,23 @@ namespace Entity
     /// </summary>
     public class Project : EntityBase
     {
+
+        [Display(Name = "板块负责人")]
+        public string Manager { get; set; }
+
+        [Display(Name = "Leader")]
+        public string Leader { get; set; }
+
+
+        [Display(Name = "市场部接口人")]
+        public string Market { get; set; }
+
+
+        [Display(Name = "产品部接口人")]
+        public string Product { get; set; }
+
+        public List<Member> Members { get; set; }
+
         [Display(Name = "正在进行"), Required]
         public bool IsActived { get; set; }
 
@@ -62,11 +79,7 @@ namespace Entity
         [Display(Name = "销售目标"), Required]
         public decimal Target { get; set; }
 
-        public string  Manager { get; set; }
-
         public string TeamLeader { get; set; }
-
-        public List<Member> Members { get; set; }
 
         public List<Template> Templates { get; set; }
 
@@ -84,7 +97,9 @@ namespace Entity
 
         public List<Progress> Progresses { get; set; }
 
-        public List<Target_M> Target_Ms { get; set; }
+        public List<TargetOfMonth> TargetOfMonths { get; set; }
+
+        public List<TargetOfWeek> TargetOfWeeks { get; set; }
 
         public List<Company> Companys { get; set; }
         
@@ -94,7 +109,7 @@ namespace Entity
     /// <summary>
     /// 月目标管理
     /// </summary>
-    public class Target_M : EntityBase
+    public class TargetOfMonth : EntityBase
     {
         public virtual Project Project { get; set; }
         [Display(Name = "项目名称"), Required]
@@ -103,7 +118,7 @@ namespace Entity
         [Display(Name = "开始日期"), Required]
         public DateTime StartDate { get; set; }
 
-        [Display(Name = "目标月份"), Required]
+        [Display(Name = "结束日期"), Required]
         public DateTime EndDate { get; set; }
 
         [Display(Name = "销售目标"), Required]
@@ -137,20 +152,30 @@ namespace Entity
     /// <summary>
     /// 周目标管理
     /// </summary>
-    public class Target_W : EntityBase
+    public class TargetOfWeek : EntityBase
     {
         public virtual Project Project { get; set; }
         [Display(Name = "项目名称"), Required]
         public int ProjectID { get; set; }
 
-        [Display(Name = "开始时间"), Required]
-        public DateTime StartDay { get; set; }
+        [Display(Name = "开始日期"), Required]
+        public DateTime StartDate { get; set; }
+
+        [Display(Name = "结束日期"), Required]
+        public DateTime EndDate { get; set; }
 
         [Display(Name = "销售目标"), Required]
         public decimal Deal { get; set; }
 
         [Display(Name = "入账目标"), Required]
         public decimal CheckIn { get; set; }
+
+        public string Member { get; set; }
+     
+        [Display(Name = "关联的月目标"), Required]
+        public int? TargetOfMonthID { get; set; }
+
+
     }
 
     /// <summary>
@@ -164,7 +189,7 @@ namespace Entity
         [Display(Name = "字头")]
         public string Characters { get; set; }
 
-        public List<Target_W> Target_Ws { get; set; }
+        public List<TargetOfWeek> TargetOfWeeks { get; set; }
 
         [Display(Name = "所在项目"), Required]
         public int? ProjectID { get; set; }
@@ -173,33 +198,6 @@ namespace Entity
         public string[] CharactersSet { get { return string.IsNullOrEmpty(Characters)?new string[]{}: Characters.Split('|'); } }
      
         public List<Company> Companys { get; set; }
-    }
-
-    /// <summary>
-    /// 团队
-    /// </summary>
-    public class Team:EntityBase
-    {
-        [Display(Name = "团队名称"), Required]
-        public string Name { get; set; }
-
-        public Member LeaderID { get; set; }
-        [Display(Name = "角色职级"), Required]
-        public Member Leader { get; set; }
-
-        public virtual Member Market { get; set; }
-        [Display(Name = "市场部接口人")]
-        public int? MarketID { get; set; }
-
-        public Member Product { get; set; }
-        [Display(Name = "市场部接口人")]
-        public int? ProductID { get; set; }
-
-        public List<Member> Members { get; set; }
-
-        public int? ProjectID { get; set; }
-        [Display(Name = "所属项目")]
-        public Project Project { get; set; }
     }
 
     /// <summary>

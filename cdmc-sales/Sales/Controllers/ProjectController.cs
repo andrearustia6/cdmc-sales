@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using Entity;
 using Sales;
 using Utl;
+using BLL;
 
 namespace Sales.Controllers
 {
@@ -18,6 +19,7 @@ namespace Sales.Controllers
             return View(CH.GetAllData<Project>());
         }
 
+        #region 添加公司
         public ViewResult SelectCompany(int? projectid)
         {
             ViewBag.ProjectID = projectid;
@@ -42,7 +44,101 @@ namespace Sales.Controllers
             CH.Edit<Project>(p);
             return RedirectToAction("Management", "Project", new { id = projectid });
         }
+        #endregion
 
+        #region 分配字头
+        public ActionResult Distribution(int? projectid)
+        {
+            var member = CH.GetAllData<Member>(i => i.ProjectID == projectid);
+            var dc = CRM_Logical.GetDefaultCharatracter();
+            member.ForEach(m =>
+            {
+                dc.RemoveAll(i => m.CharactersSet.Contains(i.ToUpper()));
+            });
+            ViewBag.ProjectID = projectid;
+            ViewBag.DC = dc;
+
+            return View(member);
+        }
+
+        [HttpPost]
+        public ActionResult Distribution(List<string> mc, int? projectid)
+        {
+            //清空原有的字头分配
+            List<Member> temp = CH.GetAllData<Member>(m => m.ProjectID == projectid);
+            temp.ForEach(m =>
+            {
+                m.Characters = string.Empty;
+            });
+
+            if (mc != null)
+            {
+                mc.ForEach(child =>
+                {
+                    //解析提交的数据
+                    var data = child.Split('|');
+                    var id = Int32.Parse(data[0]);
+                    var value = data[1];
+
+
+                    Member member = temp.FirstOrDefault(m => m.ID == id);
+
+                    if (string.IsNullOrEmpty(member.Characters))
+                        member.Characters = value;
+                    else
+                        member.Characters += "|" + value;
+                });
+
+            }
+
+            //把更新的charatacter写到数据库
+            temp.ForEach(tm =>
+            {
+                CH.Edit<Member>(tm);
+            });
+
+            return RedirectToAction("Management", "Project", new { id = projectid });
+
+        }
+        #endregion
+
+        #region 目标划分
+        public ActionResult Breakdown(int? projectid,int? TargetOfMonthid)
+        {
+            ViewBag.ProjectID = projectid;
+            ViewBag.TargetOfMonthID = TargetOfMonthid;
+
+            return View(CH.GetAllData<Member>(m => m.ProjectID == projectid));
+        }
+
+        [HttpPost]
+        public ActionResult Breakdown(List<string> mtw, int projectid,int TargetOfMonthid,DateTime startdate,DateTime enddate)
+        {
+            if(startdate.DayOfWeek != DayOfWeek.Monday || enddate.DayOfWeek != DayOfWeek.Friday)
+            {
+               ViewBag.ProjectID = projectid;
+               ViewBag.TargetOfMonthID = TargetOfMonthid;
+                  
+                return View(CH.GetAllData<Member>(m => m.ProjectID == projectid));
+            }
+            if(mtw!=null)
+            {
+                foreach (var v in mtw)
+                {
+                    var s=v.Split('|');
+                    var name = s[0];
+                    var value = s[1];
+                    var ts = CH.GetAllData<TargetOfWeek>(t =>t.Member == name && t.ProjectID == projectid && t.TargetOfMonthID == TargetOfMonthid && startdate == t.StartDate && t.EndDate == enddate);
+                    if (ts.Count == 0)
+                    {
+                        CH.Create<TargetOfWeek>(new TargetOfWeek() {  Deal=Decimal.Parse(value), EndDate=enddate, Member=name, StartDate= startdate, ProjectID=projectid, TargetOfMonthID=TargetOfMonthid });
+                    }
+                }
+            }
+           
+            return RedirectToAction("Management", "Project", new { id = projectid });
+        }
+        #endregion
         public ViewResult Details(int id)
         {
             return View(CH.GetDataById<Project>(id));
@@ -55,7 +151,7 @@ namespace Sales.Controllers
 
         public ActionResult Management(int? id)
         {
-            var Data = CH.GetAllData<Project>(i => i.ID == id, "Members", "Templates", "Messages", "Target_Ms").FirstOrDefault();
+            var Data = CH.GetAllData<Project>(i => i.ID == id, "Members", "Templates", "Messages", "TargetOfMonths").FirstOrDefault();
             return View(Data);
         }
 
