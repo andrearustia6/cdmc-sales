@@ -113,10 +113,11 @@ namespace Sales.Controllers
         {
             ViewBag.ProjectID = projectid;
             ViewBag.TargetOfMonthID = targetofmonthid;
+            ViewBag.OldStartDate = startdate;
             if (startdate != null)
             {
 
-                var targets = CH.GetAllData<TargetOfWeek>(i => i.StartDate.ToShortDateString() == startdate);
+                var targets = CH.GetAllData<TargetOfWeek>(i => i.StartDate.ToShortDateString() == startdate).OrderBy(i=>i.StartDate).ToList();
                 ViewBag.Targets = targets;
             }
 
@@ -124,7 +125,7 @@ namespace Sales.Controllers
         }
 
         [HttpPost]
-        public ActionResult Breakdown(List<string> mtw, int projectid,int TargetOfMonthid,DateTime startdate,DateTime enddate)
+        public ActionResult Breakdown(List<string> mtw, int projectid,int TargetOfMonthid,DateTime startdate,DateTime enddate,string OldDate)
         {
             if(startdate.DayOfWeek != DayOfWeek.Monday || enddate.DayOfWeek != DayOfWeek.Friday)
             {
@@ -132,12 +133,11 @@ namespace Sales.Controllers
                ViewBag.TargetOfMonthID = TargetOfMonthid;
                if (startdate != null)
                {
-
-                   var targets = CH.GetAllData<TargetOfWeek>(i => i.StartDate.ToShortDateString() == startdate.ToShortDateString());
+                   var targets = CH.GetAllData<TargetOfWeek>(i => i.StartDate.ToShortDateString() == OldDate).OrderBy(i => i.StartDate).ToList(); ;
                    ViewBag.Targets = targets;
                }
-               //return redirectto error
-               // return View(CH.GetAllData<Member>(m => m.ProjectID == projectid));
+               ModelState.AddModelError("","开始时间不是周一或者结束时间不是周五");
+               return View(CH.GetAllData<Member>(m => m.ProjectID == projectid));
             }
             if(mtw!=null)
             {
@@ -156,7 +156,6 @@ namespace Sales.Controllers
                         var item = ts.FirstOrDefault();
                         item.Deal =Decimal.Parse(value);
                         CH.Edit<TargetOfWeek>(item);
-               
                     }
                 }
             }

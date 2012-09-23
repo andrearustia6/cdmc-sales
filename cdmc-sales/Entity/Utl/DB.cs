@@ -32,7 +32,7 @@ namespace Utl
         public DbSet<TargetOfWeek> TargetOfWeeks { get; set; }
         public DbSet<DistrictNumber> DistrictNumbers { get; set; }
         public DbSet<Member> Members { get; set; }
-
+        public DbSet<Deal> Deals { get; set; }
         public DbSet<Project> Projects { get; set; }
         public DbSet<Department> Departments { get; set; }
         

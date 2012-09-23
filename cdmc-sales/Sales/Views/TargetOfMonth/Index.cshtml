@@ -35,7 +35,7 @@
         var tmid = tm.ID;
         var projectid = tm.ProjectID;
         var tw = CH.GetAllData<TargetOfWeek>(t => t.ProjectID == projectid);
-        var datas = tw.GroupBy(sd => sd.StartDate);
+        var datas = tw.OrderBy(i=>i.StartDate).GroupBy(sd => sd.StartDate);
     @(Html.Telerik().TabStrip().Name("TabStrip" + tmid).SelectedIndex(0).Items(items =>
       {
           if (datas.Count() != 0)
@@ -48,11 +48,13 @@
               }
           }
       }))
+        <br />
       @Html.ActionLink("周目标创建", "Breakdown", "Project", new { projectid = projectid, targetofmonthid = tm.ID }, null)    
         
 }
 @helper RenderMembersTargetOfWeek(string key, List<TargetOfWeek> tm, int projectid, int targetofmonthid)
     {
+         @Html.ActionLink("编辑", "Breakdown", "Project", new { projectid = projectid, targetofmonthid = targetofmonthid, startdate = key }, null)   
     @(Html.Telerik().Grid(tm).Name("TargetOfWeek" + key)
                             .Columns(c =>
                             {
@@ -61,5 +63,5 @@
                             })
                             .Resizable(resizing => resizing.Columns(true))
                             .Pageable(p => p.PageSize(20)).Sortable())
-    @Html.ActionLink("周目标编辑", "Breakdown", "Project", new { projectid = projectid, targetofmonthid = targetofmonthid, startdate = key }, null)   
+   
 }

@@ -209,10 +209,22 @@ namespace Entity
         public int? LeadID { get; set; }
 
         public virtual ParticipantType ParticipantType { get; set; }
+        [Display(Name = "参会类型"), Required]
         public int? ParticipantTypeID { get; set; }
 
-        public virtual CurrencyType CurrencyType { get; set; }
-        public int? CurrencyTypeID { get; set; }
+        public virtual PackageType PackageType { get; set; }
+        [Display(Name = "Package类型"), Required]
+        public int? PackageTypeeID { get; set; } 
+
+        //public virtual CurrencyType CurrencyType { get; set; }
+        //[Display(Name = "合约付款日期"), Required]
+        //public int? CurrencyTypeID { get; set; }
+
+        [Display(Name = "合约付款日期"),Required]
+        public DateTime ExpectedPaymentDate { get; set; }
+
+        [Display(Name = "实际付款日期")]
+        public DateTime ExpectedPaymentDate { get; set; }
 
         [Display(Name = "是否付款")]
         public bool IsClosed { get; set; }
