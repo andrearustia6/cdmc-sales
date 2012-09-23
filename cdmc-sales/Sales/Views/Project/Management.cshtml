@@ -15,7 +15,7 @@
     items.Add().Text("基本信息").Content(@<text>@BaseInfo(Model)</text>);
     items.Add().Text("成员信息").Content(@<text>@Member(Model)</text>);
     items.Add().Text("每月目标").Content(@<text>@Target(Model)</text>);
-    items.Add().Text("目标划分").Content(@<text>@BreakDown(Model)</text>);
+@*    items.Add().Text("目标划分").Content(@<text>@BreakDown(Model)</text>);*@
     items.Add().Text("核心公司").Content(@<text>@Company(Model)</text>);
 
 })
@@ -74,7 +74,7 @@
         
 @Html.ActionLink("创建新成员", "Create", "Member", new { projectid = Model.ID }, null)
 <span>     </span>
-@Html.ActionLink("分配公司", "Distribution", "Project", new { projectid = Model.ID }, null)
+@Html.ActionLink("分配字头", "Distribution", "Project", new { projectid = Model.ID }, null)
 }
 
 @helper Company(Project p)
@@ -82,10 +82,7 @@
     @Html.ActionLink("管理销售对象", "SelectCompany", "Project", new { projectid = Model.ID }, null)
 }
 
-@helper BreakDown(Project p)
-    {  
-    @Html.ActionLink("目标划分", "Breakdown", "Project", new { projectid = Model.ID }, null)
-}
+
 
 @helper Target(Project p)
     { 
@@ -103,12 +100,13 @@
                     c.Bound(item => item.StartDate).Template(@<text><p>@item.StartDate.ToShortDateString()</p></text>).Width(100);
                     c.Bound(item => item.EndDate).Template(@<text><p>@item.EndDate.ToShortDateString()</p></text>).Width(100);
                     c.Bound(item => item.ID).Title("操作").Width(200).Template(@<span> <a href=@Url.Content("~/TargetOfMonth/Edit/" + item.ID) >
-                        编辑</a> | <a href=@Url.Content("~/TargetOfMonth/Details/" + item.ID)>详细</a> | <a href=@Url.Content("~/Project/Breakdown/?projectid=" +item.ProjectID+"&TargetOfMonthid="+ item.ID) >
-                            目标划分</a>| <a href=@Url.Content("~/TargetOfMonth/delete/" + item.ID) >删除</a> </span>);
+                        编辑</a> | <a href=@Url.Content("~/TargetOfMonth/Details/" + item.ID)>详细</a> | <a href=@Url.Content("~/TargetOfMonth/delete/" + item.ID) >删除</a> </span>);
                 }).Scrollable(scrolling => scrolling.Height(350))
            )
       
-@Html.ActionLink("创建新月目标", "Create", "TargetOfMonth", new { projectid = Model.ID }, null)     
+@Html.ActionLink("创建新月目标", "Create", "TargetOfMonth", new { projectid = Model.ID }, null)    
+<span>     </span>
+ @Html.ActionLink("目标划分", "Index", "TargetOfMonth", new { projectid = Model.ID }, null)     
 }
 
 
