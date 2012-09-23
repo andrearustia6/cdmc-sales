@@ -1,81 +1,65 @@
-﻿@model IEnumerable<Entity.TargetOfMonth>
-
-@{
-    ViewBag.Title = "Index";
+﻿@using Entity
+@using Utl
+@model List<TargetOfMonth>
+@(Html.Telerik().Grid(Model).Name("TargetOfMonth")
+                .DataKeys(keys =>
+                {
+                    keys.Add(s => s.ID);
+                })
+                .Columns(c =>
+                {
+                    c.Bound(item => item.BaseDeal).Width(150);
+                    c.Bound(item => item.Deal).Width(120); ;
+                    c.Bound(item => item.CheckIn).Width(120); ;
+                    c.Bound(item => item.StartDate).Template(@<text>@item.StartDate.ToShortDateString()</text>).Width(120);
+                    c.Bound(item => item.EndDate).Template(@<text>@item.EndDate.ToShortDateString()</text>).Width(120);
+                    c.Bound(item => item.ID).Title("操作").Width(150).Template(@<span> <a href=@Url.Content("~/TargetOfMonth/Edit/" + item.ID) >
+                        编辑</a> | <a href=@Url.Content("~/TargetOfMonth/Details/" + item.ID)>详细</a>
+                        | <a href=@Url.Content("~/project/breakdown/?projectid="+item.ProjectID+"&targetofmonthid=" + item.ID)>添加周目标</a>
+                         | <a href=@Url.Content("~/TargetOfMonth/delete/" + item.ID) > 删除</a> </span>);
+                })
+                .DetailView(e => e.Template(
+                        @<text>
+@RenderGrid(item)
+</text>
+                    ))
+                .Resizable(resizing => resizing.Columns(true))
+                .Groupable()
+                .Pageable(p => p.PageSize(20))
+                .Sortable()
+                .Filterable()
+                .Scrollable(scrolling => scrolling.Height(350))
+                        )
+@helper RenderGrid(TargetOfMonth tm)
+    { 
+        var tmid = tm.ID;
+        var projectid = tm.ProjectID;
+        var tw = CH.GetAllData<TargetOfWeek>(t => t.ProjectID == projectid);
+        var datas = tw.GroupBy(sd => sd.StartDate);
+    @(Html.Telerik().TabStrip().Name("TabStrip" + tmid).SelectedIndex(0).Items(items =>
+      {
+          if (datas.Count() != 0)
+          {
+              foreach (var data in datas)
+              {
+                  var did = data.Key.ToShortDateString();
+                  var list = data.ToList();
+                  items.Add().Text(data.Key.ToShortDateString() + "~" + data.Key.AddDays(4).ToShortDateString()).Content(@<text>@RenderMembersTargetOfWeek(did, list,tm.ProjectID, tm.ID)</text>);
+              }
+          }
+      }))
+      @Html.ActionLink("周目标创建", "Breakdown", "Project", new { projectid = projectid, targetofmonthid = tm.ID }, null)    
+        
 }
-
-<h2>Index</h2>
-
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table>
-    <tr>
-        <th>
-            Project
-        </th>
-        <th>
-            Month
-        </th>
-        <th>
-            Deal
-        </th>
-        <th>
-            BaseDeal
-        </th>
-        <th>
-            CheckIn
-        </th>
-        <th>
-            Description
-        </th>
-        <th>
-            Sequence
-        </th>
-        <th>
-            User
-        </th>
-        <th>
-            ModifiedTime
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Project.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Month)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Deal)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.BaseDeal)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CheckIn)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Description)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Sequence)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.User)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ModifiedTime)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
-        </td>
-    </tr>
+@helper RenderMembersTargetOfWeek(string key, List<TargetOfWeek> tm, int projectid, int targetofmonthid)
+    {
+    @(Html.Telerik().Grid(tm).Name("TargetOfWeek" + key)
+                            .Columns(c =>
+                            {
+                                c.Bound(tw => tw.Deal);
+                                c.Bound(tw => tw.Member);
+                            })
+                            .Resizable(resizing => resizing.Columns(true))
+                            .Pageable(p => p.PageSize(20)).Sortable())
+    @Html.ActionLink("周目标编辑", "Breakdown", "Project", new { projectid = projectid, targetofmonthid = targetofmonthid, startdate = key }, null)   
 }
-
-</table>

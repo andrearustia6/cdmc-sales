@@ -103,10 +103,22 @@ namespace Sales.Controllers
         #endregion
 
         #region 目标划分
-        public ActionResult Breakdown(int? projectid,int? TargetOfMonthid)
+        public ActionResult BreakdownIndex(int? projectid)
         {
             ViewBag.ProjectID = projectid;
-            ViewBag.TargetOfMonthID = TargetOfMonthid;
+
+            return View(CH.GetAllData<TargetOfMonth>(m => m.ProjectID == projectid));
+        }
+        public ActionResult Breakdown(int? projectid, int? targetofmonthid, string startdate)
+        {
+            ViewBag.ProjectID = projectid;
+            ViewBag.TargetOfMonthID = targetofmonthid;
+            if (startdate != null)
+            {
+
+                var targets = CH.GetAllData<TargetOfWeek>(i => i.StartDate.ToShortDateString() == startdate);
+                ViewBag.Targets = targets;
+            }
 
             return View(CH.GetAllData<Member>(m => m.ProjectID == projectid));
         }
@@ -118,8 +130,14 @@ namespace Sales.Controllers
             {
                ViewBag.ProjectID = projectid;
                ViewBag.TargetOfMonthID = TargetOfMonthid;
-                  
-                return View(CH.GetAllData<Member>(m => m.ProjectID == projectid));
+               if (startdate != null)
+               {
+
+                   var targets = CH.GetAllData<TargetOfWeek>(i => i.StartDate.ToShortDateString() == startdate.ToShortDateString());
+                   ViewBag.Targets = targets;
+               }
+               //return redirectto error
+               // return View(CH.GetAllData<Member>(m => m.ProjectID == projectid));
             }
             if(mtw!=null)
             {
@@ -128,15 +146,22 @@ namespace Sales.Controllers
                     var s=v.Split('|');
                     var name = s[0];
                     var value = s[1];
-                    var ts = CH.GetAllData<TargetOfWeek>(t =>t.Member == name && t.ProjectID == projectid && t.TargetOfMonthID == TargetOfMonthid && startdate == t.StartDate && t.EndDate == enddate);
+                    var ts = CH.GetAllData<TargetOfWeek>(t =>t.Member == name && t.ProjectID == projectid && t.TargetOfMonthID == TargetOfMonthid && startdate == t.StartDate);
                     if (ts.Count == 0)
                     {
-                        CH.Create<TargetOfWeek>(new TargetOfWeek() {  Deal=Decimal.Parse(value), EndDate=enddate, Member=name, StartDate= startdate, ProjectID=projectid, TargetOfMonthID=TargetOfMonthid });
+                        CH.Create<TargetOfWeek>(new TargetOfWeek() { Deal = Decimal.Parse(value), EndDate = enddate, Member = name, StartDate = startdate, ProjectID = projectid, TargetOfMonthID = TargetOfMonthid });
+                    }
+                    else
+                    {
+                        var item = ts.FirstOrDefault();
+                        item.Deal =Decimal.Parse(value);
+                        CH.Edit<TargetOfWeek>(item);
+               
                     }
                 }
             }
            
-            return RedirectToAction("Management", "Project", new { id = projectid });
+            return RedirectToAction("Index", "TargetOfMonth", new { id = projectid });
         }
         #endregion
         public ViewResult Details(int id)
