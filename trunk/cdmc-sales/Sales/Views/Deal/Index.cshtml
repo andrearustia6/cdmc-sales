@@ -1,0 +1,111 @@
+﻿@model IEnumerable<Entity.Deal>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table>
+    <tr>
+        <th>
+            Lead
+        </th>
+        <th>
+            ParticipantType
+        </th>
+        <th>
+            PackageTypeeID
+        </th>
+        <th>
+            ExpectedPaymentDate
+        </th>
+        <th>
+            ActualPaymentDate
+        </th>
+        <th>
+            IsClosed
+        </th>
+        <th>
+            Income
+        </th>
+        <th>
+            Payment
+        </th>
+        <th>
+            PaymentDetail
+        </th>
+        <th>
+            Project
+        </th>
+        <th>
+            Description
+        </th>
+        <th>
+            Sequence
+        </th>
+        <th>
+            User
+        </th>
+        <th>
+            ModifiedTime
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Lead.Gender)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ParticipantType.Name_CH)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PackageTypeeID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ExpectedPaymentDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ActualPaymentDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IsClosed)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Income)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Payment)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PaymentDetail)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Project.Manager)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Description)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Sequence)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.User)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ModifiedTime)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
+        </td>
+    </tr>
+}
+
+</table>

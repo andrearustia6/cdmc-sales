@@ -218,6 +218,7 @@
     </Compile>
     <Compile Include="BLL\CRM_Logical.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\DealController.cs" />
     <Compile Include="Controllers\DistrictNumberController.cs" />
     <Compile Include="Controllers\MemberController.cs" />
     <Compile Include="Controllers\OnPhoneTemplateController.cs" />
@@ -1049,6 +1050,21 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Project\Breakdown.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Deal\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Deal\Display.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Deal\MakeDeal.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Deal\Change.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Deal\MyDealIndex.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

@@ -1,0 +1,85 @@
+﻿@model Entity.Deal
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>Deal</legend>
+
+    <div class="display-label">Lead</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Lead.Gender)
+    </div>
+
+    <div class="display-label">ParticipantType</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.ParticipantType.Name_CH)
+    </div>
+
+    <div class="display-label">PackageTypeeID</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.PackageTypeeID)
+    </div>
+
+    <div class="display-label">ExpectedPaymentDate</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.ExpectedPaymentDate)
+    </div>
+
+    <div class="display-label">ActualPaymentDate</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.ActualPaymentDate)
+    </div>
+
+    <div class="display-label">IsClosed</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.IsClosed)
+    </div>
+
+    <div class="display-label">Income</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Income)
+    </div>
+
+    <div class="display-label">Payment</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Payment)
+    </div>
+
+    <div class="display-label">PaymentDetail</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.PaymentDetail)
+    </div>
+
+    <div class="display-label">Project</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Project.Manager)
+    </div>
+
+    <div class="display-label">Description</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Description)
+    </div>
+
+    <div class="display-label">Sequence</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Sequence)
+    </div>
+
+    <div class="display-label">User</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.User)
+    </div>
+
+    <div class="display-label">ModifiedTime</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.ModifiedTime)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

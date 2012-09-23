@@ -208,23 +208,18 @@ namespace Entity
         public virtual Lead Lead { get; set; }
         public int? LeadID { get; set; }
 
-        public virtual ParticipantType ParticipantType { get; set; }
-        [Display(Name = "参会类型"), Required]
-        public int? ParticipantTypeID { get; set; }
+        public virtual Package Package { get; set; }
+        public int? PackageID { get; set; }
 
-        public virtual PackageType PackageType { get; set; }
-        [Display(Name = "Package类型"), Required]
-        public int? PackageTypeeID { get; set; } 
+        public bool Abandoned { get; set; }
 
-        //public virtual CurrencyType CurrencyType { get; set; }
-        //[Display(Name = "合约付款日期"), Required]
-        //public int? CurrencyTypeID { get; set; }
+        public string AbandonReason { get; set; } 
 
         [Display(Name = "合约付款日期"),Required]
-        public DateTime ExpectedPaymentDate { get; set; }
+        public DateTime? ExpectedPaymentDate { get; set; }
 
         [Display(Name = "实际付款日期")]
-        public DateTime ExpectedPaymentDate { get; set; }
+        public DateTime? ActualPaymentDate { get; set; }
 
         [Display(Name = "是否付款")]
         public bool IsClosed { get; set; }
@@ -232,10 +227,13 @@ namespace Entity
         [Display(Name = "实际入账")]
         public decimal Income { get; set; }
 
+        [Display(Name = "出单人")]
+        public string Sales { get; set; }
+
         [Display(Name = "应付款"), Required]
         public decimal Payment { get; set; }
 
-        [Display(Name = "出单描述"), MaxLength(1000)]
+        [Display(Name = "出单描述"), MaxLength(2000)]
         public string PaymentDetail { get; set; }
 
         public int? ProjectID { get; set; }

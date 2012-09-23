@@ -23,12 +23,17 @@
     items.Add().Text("客户信息").Content(@<text>@Lead(Model)</text>);
     if (ViewBag.ProjectID != null)
     {
-        items.Add().Text("Packages").Content(@<text>@Package(Model.Target_Packages)</text>);
-        items.Add().Text("LeadSheet").Content(@<text>@LeadCallSheet(Model)</text>);
-
+        items.Add().Text("Packages").Content(@<text>@Package(Model)</text>);
+        items.Add().Text("LeadCall").Content(@<text>@LeadCallSheet(Model)</text>);
+        items.Add().Text("出单").Content(@<text>@MakeDeal(Model)</text>);
     }
 })
 )
+
+@helper MakeDeal(Lead lead)
+{
+    
+    }
 @helper Company(Lead lead)
     { 
         var company = lead.Company;
@@ -96,9 +101,9 @@
     </div>
      
 }
-@helper Package(List<Target_Package> target_Packages)
+@helper Package(Lead lead)
     { 
-       
+        var target_Packages = lead.Target_Packages;
         if (ViewBag.ProjectID != null)
         {
             var ProjectID = (int)ViewBag.ProjectID;
@@ -146,6 +151,7 @@
                     </ul>
                 }
             </fieldset>
+            @Html.ActionLink("出单", "MakeDeal", "Deal", new { projectid = ProjectID, packageid = p.ID,leadid=Model.ID }, null)
         }
     </div>
                 }

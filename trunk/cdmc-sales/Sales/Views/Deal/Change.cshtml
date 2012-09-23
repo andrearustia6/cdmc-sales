@@ -1,0 +1,75 @@
+﻿@model Entity.Deal
+@{
+    ViewBag.Title = "Edit";
+}
+@using Entity
+@using Utl
+@model Deal
+<fieldset>
+    <legend>Deal</legend>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.LeadID, "Lead信息")
+    </div>
+    <div class="editor-field">
+        @Html.DropDownListFor("LeadID", new SelectList(CH.GetAllData<Lead>(l => l.Company.ID == Model.Lead.Company.ID), "ID", "Name"), "-请选择-")
+        @Html.ValidationMessageFor(model => model.LeadID)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.PackageID, "Package")
+    </div>
+    <div class="editor-field">
+        @Html.DropDownList("PackageID", new SelectList(CH.GetAllData<Package>),"ID","FullName"), "-请选择-")
+        @Html.ValidationMessageFor(model => model.PackageID)
+    </div>
+
+    <div class="editor-label">
+        @Html.LabelFor(model => model.ExpectedPaymentDate)
+    </div>
+    <div class="editor-field">
+        @Html.Telerik().DatePickerFor(model => model.ExpectedPaymentDate)
+        @Html.ValidationMessageFor(model => model.ExpectedPaymentDate)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.ActualPaymentDate)
+    </div>
+    <div class="editor-field">
+        @Html.Telerik().DatePickerFor(model => model.ActualPaymentDate)
+        @Html.ValidationMessageFor(model => model.ActualPaymentDate)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.IsClosed)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.IsClosed)
+        @Html.ValidationMessageFor(model => model.IsClosed)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.Income)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.Income)
+        @Html.ValidationMessageFor(model => model.Income)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.Payment)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.Payment)
+        @Html.ValidationMessageFor(model => model.Payment)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.PaymentDetail)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.PaymentDetail)
+        @Html.ValidationMessageFor(model => model.PaymentDetail)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.ProjectID, "Project")
+    </div>
+    <div class="editor-field">
+        @Html.HiddenFor(model => model.ProjectID)
+        @Html.ValidationMessageFor(model => model.ProjectID)
+    </div>
+    @Html.HiddenFor(model => model.ID)
+</fieldset>
