@@ -106,6 +106,7 @@
                        if(Employee.AsSales())
                        {
                            item.Add().Url("~/Company/SalesIndex").Text("公司/客户信息").ImageUrl("~/Content/Common/Icons/Docking.gif");
+                           item.Add().Url("~/Deal/MyDealIndex").Text("出单信息").ImageUrl("~/Content/Common/Icons/Docking.gif");
                        }
                        if (Employee.AsProductInterface())
                        {
@@ -115,6 +116,7 @@
                        {
                            item.Add().Url("~/Company/ProductViewIndex").Text("项目公司/客户信息查看").ImageUrl("~/Content/Common/Icons/Docking.gif");
                        }
+                      
                        item.Add().Url("~/Project/index").Text("工作页面").ImageUrl("~/Content/Common/Icons/Docking.gif");
                    });
 

@@ -88,7 +88,7 @@ function initialAddLeadCall($luncher, $win) {
         callresult = JSON.stringify(callresult);
 
         $.ajax({
-            url: "/CRM/Save_LeadCall",
+            url: "/Lead/Save_LeadCall",
             type: 'POST',
             dataType: 'json',
             contentType: 'application/json; charset=utf-8',
@@ -138,7 +138,7 @@ function initialSetLeadPackage($luncher, $win) {
         }
         var id = $win.find("input[type=checkbox]:checked").val();
         $.ajax({
-            url: "/CRM/Save_LeadPackage?leadid=" + leadid + "&projectid=" + projectid+"&packageid="+id,
+            url: "/Lead/Save_LeadPackage?leadid=" + leadid + "&projectid=" + projectid + "&packageid=" + id,
             type: 'POST',
             dataType: 'json',
             contentType: 'application/json; charset=utf-8',

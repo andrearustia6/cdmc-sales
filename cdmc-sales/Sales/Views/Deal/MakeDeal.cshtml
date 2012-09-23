@@ -1,0 +1,69 @@
+﻿@model Entity.Deal
+@{
+    ViewBag.Title = "Create";
+}
+@using Entity
+@using Utl
+
+<h2>
+    出单</h2>
+@Html.ValidationSummary(true)
+@using (Html.BeginForm())
+{
+<fieldset>
+    <legend>Deal</legend>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.LeadID, "Lead名称")
+    </div>
+    <div class="editor-field">
+        @Html.Label(CH.GetDataById<Lead>((int)ViewBag.LeadID).FullName)
+        @Html.Hidden("LeadID", (int)ViewBag.LeadID)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.PackageID, "Package名称")
+    </div>
+    <div class="editor-field">
+         @Html.Label(CH.GetDataById<Package>((int)ViewBag.PackageID).FullName)
+         @Html.Hidden("PackageID", (int)ViewBag.PackageID)
+    </div>
+
+       <div class="editor-label">
+        @Html.LabelFor(model => model.ProjectID, "项目名称")
+    </div>
+    <div class="editor-field">
+         @Html.Label(CH.GetDataById<Project>((int)ViewBag.ProjectID).Name)
+          @Html.Hidden("ProjectID", (int)ViewBag.ProjectID)
+    </div>
+
+    <div class="editor-label">
+        @Html.LabelFor(model => model.ExpectedPaymentDate)
+    </div>
+    <div class="editor-field">
+        @Html.Telerik().DatePickerFor(model => model.ExpectedPaymentDate)
+        @Html.ValidationMessageFor(model => model.ExpectedPaymentDate)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.Payment)
+    </div>
+    <div class="editor-field">
+        @Html.Telerik().CurrencyTextBoxFor(model => model.Payment)
+        @Html.ValidationMessageFor(model => model.Payment)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.PaymentDetail)
+    </div>
+    <div class="editor-field">
+        @Html.TextAreaFor(model => model.PaymentDetail)
+        @Html.ValidationMessageFor(model => model.PaymentDetail)
+    </div>
+
+</fieldset>
+  @Html.Partial("editcommon", Model)
+
+      <div>
+        <center>
+            <input type="submit" value=@SR.Save />
+            @Html.ActionLink(SR.GobackToList, "Index")
+        </center>
+    </div>
+}
