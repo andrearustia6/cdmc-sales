@@ -5,9 +5,12 @@
     <title>@ViewBag.Title</title>
     <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
      <link href="@Url.Content("~/Content/jquery-ui-1.8.23.custom.css")" rel="stylesheet" type="text/css" />
+     <script type="text/javascript" src=@Url.Content(@"/scripts/jquery-1.6.4.min.js")></script>@*确保在页面能引用到jquery*@   
+     <script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+     <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
     @* <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />*@
     @(Html.Telerik().StyleSheetRegistrar().DefaultGroup(group => group.Add("telerik.common.css").Add("telerik.telerik.css").Combined(true).Compress(true)))
-    <script type="text/javascript" src=@Url.Content(@"/scripts/jquery-1.6.4.min.js")></script>@*确保在页面能引用到jquery*@   
+   
     <script type="text/javascript" src=@Url.Content(@"~/vjs/view.js")></script>@*确保在页面能引用到jquery*@
 </head>
 <body>

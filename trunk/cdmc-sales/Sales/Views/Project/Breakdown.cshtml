@@ -9,6 +9,7 @@
 @{ Html.BeginForm(); }
 @Html.Hidden("projectid", (int)ViewBag.ProjectID)
 @Html.Hidden("TargetOfMonthid", (int)ViewBag.TargetOfMonthID)
+@Html.Hidden("OldStartDate", (string)ViewBag.StartDate)
 <div>
 <label>开始时间：</label>
 @Html.Telerik().DatePicker().Name("startdate").Value(DateTime.Now.StartOfWeek())
@@ -27,13 +28,17 @@
         decimal v=0;
         if (vs!=null)
         {
-            v = vs.FirstOrDefault(child => child.Member == @m.Name).Deal;
+            var item = vs.FirstOrDefault(child => child.Member == @m.Name);
+            if (item != null)
+            {
+                v = item.Deal;
+            }
         }
             
             
       <tr><td>@m.Name</td><td>
       <div class="targetbreakdown" TargetOfWeek=@v ></div>
-      </td><td><p>$@v</p><input type="hidden" mname=@m.Name value=@v  name="mtw" /></td></tr>
+      </td><td><p>$@v</p><input type="hidden" mname=@m.Name value=@m.Name|@v  name="mtw" /></td></tr>
     
     }
 }
@@ -46,6 +51,8 @@
         initialTargetbreakdown();
     </text>);
 }
+@Html.ValidationSummary(true)
+
 <style type="text/css" >
 .tb_breakdown
 {
