@@ -1,0 +1,17 @@
+ryfvqnhn
+
+公司fax/个人fax：都为可选
+
+leadtype 取消
+
+行业中文改业务
+
+//region 取消 
+
+//lead要有手机号，分机或直线
+
+target 要对应到各个客户，包括package/价格
+packet 要加价格/要可不同
+lead
+项目里面的最后联系时间要显示
+客户下的子页：对应package。对应leadsheet,对应target. 
