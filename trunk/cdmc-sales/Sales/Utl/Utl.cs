@@ -391,8 +391,10 @@ namespace Utl
 
         public static DateTime EndOfWeek(this DateTime dt)
         {
-            int diff = DayOfWeek.Friday - dt.DayOfWeek; if (diff < 0) { diff += 7; }
-            return dt.AddDays(-1 * diff).Date;
+            int diff = DayOfWeek.Friday - dt.DayOfWeek; 
+            if (diff < 0) 
+            { diff += 7; }
+            return dt.AddDays(1 * diff).Date;
         }
         public static DateTime FirstDayOfMonth(this DateTime dt)
         {

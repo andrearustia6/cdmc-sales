@@ -47,7 +47,6 @@ namespace Entity
     /// </summary>
     public class Project : EntityBase
     {
-
         [Display(Name = "板块负责人")]
         public string Manager { get; set; }
 
@@ -102,6 +101,10 @@ namespace Entity
         public List<TargetOfWeek> TargetOfWeeks { get; set; }
 
         public List<Company> Companys { get; set; }
+
+        public List<Lead> Leads { get; set; }
+
+        public List<Deal> Deals { get; set; }
         
         
     }
@@ -216,7 +219,7 @@ namespace Entity
         public string AbandonReason { get; set; } 
 
         [Display(Name = "合约付款日期"),Required]
-        public DateTime? ExpectedPaymentDate { get; set; }
+        public DateTime ExpectedPaymentDate { get; set; }
 
         [Display(Name = "实际付款日期")]
         public DateTime? ActualPaymentDate { get; set; }

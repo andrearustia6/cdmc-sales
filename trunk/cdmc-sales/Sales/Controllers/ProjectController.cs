@@ -19,6 +19,18 @@ namespace Sales.Controllers
             return View(CH.GetAllData<Project>());
         }
 
+        public ViewResult GotoReports()
+        {
+            return View();
+        }
+
+        public ViewResult Reports(DateTime setdate)
+        {
+            var projects = CH.GetAllData<Project>("Members", "TargetOfWeeks", "Leads", "Deals");
+            var weeklyreports = CRM_Logical.GenerateWeeklyReports(projects, setdate);
+            return View(weeklyreports);
+        }
+
         #region 添加公司
         public ViewResult SelectCompany(int? projectid)
         {
@@ -29,15 +41,19 @@ namespace Sales.Controllers
         [HttpPost]
         public ActionResult SelectCompany(int[] checkedRecords, int projectid)
         {
-            var p = CH.GetAllData<Project>(i => i.ID == projectid, "Companys").FirstOrDefault();
+            var p = CH.GetAllData<Project>(i => i.ID == projectid, "Companys","Leads").FirstOrDefault();
             p.Companys.Clear();
+            p.Leads.Clear();
             if (p != null)
             {
                 foreach (int i in checkedRecords)
                 {
                     if (!p.Companys.Any(c => c.ID == i))
                     {
-                        p.Companys.Add(CH.GetDataById<Company>(i));
+                        var company = CH.GetAllData<Company>(c => c.ID == i, "Leads").FirstOrDefault();
+                        p.Companys.Add(company);
+                        p.Leads.AddRange(company.Leads);
+
                     }
                 }
             }
