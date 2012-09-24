@@ -66,20 +66,20 @@ namespace Utl
             context.Roles.Add(new Role() { Name = "产品部接口人", Level = 5 });
             context.Roles.Add(new Role() { Name = "市场部接口人", Level = 1 });
 
-            context.CompanyTypes.Add(new CompanyType { Name = "外企独资企业" });
-            context.CompanyTypes.Add(new CompanyType { Name = "外企办事处" });
-            context.CompanyTypes.Add(new CompanyType { Name = "合资企业" });
-            context.CompanyTypes.Add(new CompanyType { Name = "国有企业" });
-            context.CompanyTypes.Add(new CompanyType { Name = "合资企业" });
-            context.CompanyTypes.Add(new CompanyType { Name = "民营企业" });
-            context.CompanyTypes.Add(new CompanyType { Name = "事业单位" });
+            context.CompanyTypes.Add(new CompanyType { Name = "外企独资企业",ID=1 });
+            context.CompanyTypes.Add(new CompanyType { Name = "外企办事处",ID=2 });
+            context.CompanyTypes.Add(new CompanyType { Name = "合资企业",ID=3 });
+            context.CompanyTypes.Add(new CompanyType { Name = "国有企业",ID=4 });
+            context.CompanyTypes.Add(new CompanyType { Name = "合资企业",ID=5 });
+            context.CompanyTypes.Add(new CompanyType { Name = "民营企业",ID=6 });
+            context.CompanyTypes.Add(new CompanyType { Name = "事业单位" ,ID=7});
 
          
 
-            context.Categorys.Add(new Category (){ Name_EN="",Name_CH="航天" });
-            context.Categorys.Add(new Category() { Name_EN = "", Name_CH = "石油" });
-            context.Categorys.Add(new Category() { Name_EN = "", Name_CH = "化工" });
-            context.Categorys.Add(new Category() { Name_EN = "", Name_CH = "医疗" });
+            context.Categorys.Add(new Category (){ Name_EN="",Name_CH="航天",ID=1 });
+            context.Categorys.Add(new Category() { Name_EN = "", Name_CH = "石油",ID=2 });
+            context.Categorys.Add(new Category() { Name_EN = "", Name_CH = "化工",ID=3 });
+            context.Categorys.Add(new Category() { Name_EN = "", Name_CH = "医疗",ID=4 });
 
             context.OnPhoneBlockTypes.Add(new OnPhoneBlockType() { Name = "没有预算",Code=1 });
             context.OnPhoneBlockTypes.Add(new OnPhoneBlockType() { Name = "无战略规划", Code = 2 });
@@ -97,7 +97,8 @@ namespace Utl
             context.LeadCallTypes.Add(new LeadCallType() { Name = "Qualified Decision", Code = 8 });
             context.LeadCallTypes.Add(new LeadCallType() { Name = "Closed", Code = 9 });
             
-            
+             context.DistrictNumbers.Add(new DistrictNumber() { Country = "kuwait", Number = 965, TimeDifference = -5 ,ID=1});
+            context.DistrictNumbers.Add(new DistrictNumber() { Country = "Australia", Number = 61, TimeDifference = 2  ,ID=2});
 
             context.CurrencyTypes.Add(new CurrencyType() { Name="RMB"});
             context.CurrencyTypes.Add(new CurrencyType() { Name = "$" });
@@ -107,46 +108,32 @@ namespace Utl
             context.PaymentTypes.Add(new PaymentType() { Name = "汇款" });
             context.PaymentTypes.Add(new PaymentType() { Name = "其他" });
 
-            context.PackageTypes.Add(new PackageType() {  Name_EN = "PLATINUM" });
-            context.PackageTypes.Add(new PackageType() { Name_EN = "GLOD" });
-            context.PackageTypes.Add(new PackageType() { Name_EN = "SILVER" });
-            context.PackageTypes.Add(new PackageType() { Name_EN = "BRONZE" });
-            context.PackageTypes.Add(new PackageType() { Name_EN = "ASSOCIATE" });
+            context.PackageTypes.Add(new PackageType() {  Name_EN = "PLATINUM",ID=1 });
+            context.PackageTypes.Add(new PackageType() { Name_EN = "GLOD", ID = 2 });
+            context.PackageTypes.Add(new PackageType() { Name_EN = "SILVER", ID = 3 });
+            context.PackageTypes.Add(new PackageType() { Name_EN = "BRONZE", ID = 4 });
+            context.PackageTypes.Add(new PackageType() { Name_EN = "ASSOCIATE", ID = 5 });
 
-            context.ParticipantTypes.Add(new ParticipantType() { Name_EN = "Sponsor" });
-            context.ParticipantTypes.Add(new ParticipantType() { Name_EN = "Delegate" });
-            context.ParticipantTypes.Add(new ParticipantType() { Name_EN = "VIP" });
-            context.ParticipantTypes.Add(new ParticipantType() { Name_EN = "Others" });
+            context.ParticipantTypes.Add(new ParticipantType() { Name_EN = "Sponsor", ID = 1 });
+            context.ParticipantTypes.Add(new ParticipantType() { Name_EN = "Delegate", ID = 2 });
+            context.ParticipantTypes.Add(new ParticipantType() { Name_EN = "VIP", ID = 3 });
+            context.ParticipantTypes.Add(new ParticipantType() { Name_EN = "Others", ID = 4 });
+            context.Packages.Add(new Package { Name_CH = "黄金展商", Name_EN = "30 minutes speechs", Prize = 20000, PackageTypeID=1, ParticipantTypeID=1,ID=1, SubName="" });
 
-            //context.PackageServiceTypes.Add(new PackageServiceType() { Name = "Opening Remark" });
-            //context.PackageServiceTypes.Add(new PackageServiceType() { Name = "Keynote Address" });
-            //context.PackageServiceTypes.Add(new PackageServiceType() { Name = "Pre-scheduled One-to-one Meetings" });
-            //context.PackageServiceTypes.Add(new PackageServiceType() { Name = "Featured Speech" });
-            //context.PackageServiceTypes.Add(new PackageServiceType() { Name = "Chairperson" });
-            //context.PackageServiceTypes.Add(new PackageServiceType() { Name = "Panel Discussion" });
-            //context.PackageServiceTypes.Add(new PackageServiceType() { Name = "VIP Reception" });
-            //context.PackageServiceTypes.Add(new PackageServiceType() { Name = "On Site Logo Exposure" });
-            //context.PackageServiceTypes.Add(new PackageServiceType() { Name = "Exhibit Space" });
-            //context.PackageServiceTypes.Add(new PackageServiceType() { Name = "Insertion" });
-            //context.PackageServiceTypes.Add(new PackageServiceType() { Name = "Complimentary Sponsorship" });
-            //context.PackageServiceTypes.Add(new PackageServiceType() { Name = "Press Interview" });
-            //context.PackageServiceTypes.Add(new PackageServiceType() { Name = "Free delegate passes" });
-            //context.PackageServiceTypes.Add(new PackageServiceType() { Name = "Additional registration discount" });
-            //context.PackageServiceTypes.Add(new PackageServiceType() { Name = "Wishing Clients Invitation" });
-            //context.PackageServiceTypes.Add(new PackageServiceType() { Name = "Media Exposure" });
-            //context.PackageServiceTypes.Add(new PackageServiceType() { Name = "Event Website Advertising" });
-            //context.PackageServiceTypes.Add(new PackageServiceType() { Name = "Conference Facsimile Promotions" });
-            //context.PackageServiceTypes.Add(new PackageServiceType() { Name = "Conference Email Promotion" });
-            //context.PackageServiceTypes.Add(new PackageServiceType() { Name = "Color Glossy Summit Brochures" });
-            //context.PackageServiceTypes.Add(new PackageServiceType() { Name = "Value-added Services" });
+            context.Companys.Add(new Company() { CategoryID = 1, CompanyTypeID = 1, Cerator = "karen", Areas = "航天上下游相关企业", Contact = "210000000", DistrictNumberID = 1, From="销售部", ID=1, Name_CH="天空之星", Name_EN="Sky Start",  Fax="213000" });
 
-            //context.PackageItems.Add(new PackageItem() { Name = "两天三夜", Content = "提供三天晚上的五星级酒店标准住宿", PackageTypeID = 1, ParticipantTypeID = 1 });
-            //context.PackageItems.Add(new PackageItem() { Name = "15分钟演讲", Content = "15分钟大会演讲", PackageTypeID = 1, ParticipantTypeID = 1 });
+            context.Leads.Add(new Lead() {  ID = 1, Name_CH = "马克", Name_EN = "Mike", Fax = "213000", CompanyID=1, Contact="23422232", Mobile="1243323233", Title="CEO", Gender="Mr", EMail="Mike@123.com"  });
 
+            context.Projects.Add(new Project() { ID = 1, EndDate=DateTime.Now, StartDate=DateTime.Now, Target=50000000, IsActived=true, Leader="susie", Manager="john", Name="CTC 航空峰会" });
+            context.Projects.Add(new Project() { ID = 2, EndDate = DateTime.Now, StartDate = DateTime.Now, Target = 30000000, IsActived = true, Leader = "susie", Manager = "john", Name = "万国博览会" });
 
-            context.DistrictNumbers.Add(new DistrictNumber() { Country = "kuwait", Number = 965, TimeDifference = -5 });
-            context.DistrictNumbers.Add(new DistrictNumber() { Country = "Australia", Number = 61, TimeDifference = 2 });
-   
+            context.Members.Add(new Member() { ID = 1, ProjectID=1, Name="Mike"  });
+            context.Members.Add(new Member() { ID = 2, ProjectID = 1, Name = "susie" });
+            context.Members.Add(new Member() { ID = 3, ProjectID = 1, Name = "flora" });
+
+            context.Members.Add(new Member() { ID = 4, ProjectID = 2, Name = "Mike" });
+            context.Members.Add(new Member() { ID = 5, ProjectID = 2, Name = "susie" });
+            context.Members.Add(new Member() { ID = 6, ProjectID = 2, Name = "flora" });
         }
     }
 
