@@ -5,6 +5,7 @@ using System.Web;
 using Entity;
 using Utl;
 using System.Web.Security;
+using Sales.Model;
 
 namespace BLL
 {
@@ -114,6 +115,20 @@ namespace BLL
             return call.LeadCallType.Name == "Qualified Decision" ? true : false;
         }
 
-        
+        public static WeeklyReport GenerateSingleWeeklyReport(Project project,DateTime settime)
+        {
+            var result = new WeeklyReport(project, settime);
+            return result;
+        }
+
+        public static List<WeeklyReport> GenerateWeeklyReports(List<Project> projects, DateTime settime)
+        {
+            var result = new List<WeeklyReport>();
+            foreach (var p in projects)
+            {
+                result.Add(GenerateSingleWeeklyReport(p, settime));
+            }
+            return result;
+        }
     }
 }

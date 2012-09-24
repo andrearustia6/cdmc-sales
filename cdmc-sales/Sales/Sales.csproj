@@ -246,6 +246,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Model\AccountModels.cs" />
+    <Compile Include="Model\WeeklyReport.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utl\Attributes.cs" />
     <Compile Include="Utl\CH.cs" />
@@ -1065,6 +1066,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Deal\MyDealIndex.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Project\Reports.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Project\GotoReports.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

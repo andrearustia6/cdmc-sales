@@ -103,10 +103,20 @@
                    });
                    menu.Add().Text("个人主页").ImageUrl("~/Content/Common/Icons/GridView.gif").Items(item =>
                    {
-                       if(Employee.AsSales())
+                       if (Employee.AsDirector())
+                       {
+                           item.Add().Url("~/Project/GotoReports").Text("项目周报").ImageUrl("~/Content/Common/Icons/Docking.gif");
+                       }
+                       if (Employee.AsSales())
                        {
                            item.Add().Url("~/Company/SalesIndex").Text("公司/客户信息").ImageUrl("~/Content/Common/Icons/Docking.gif");
                            item.Add().Url("~/Deal/MyDealIndex").Text("出单信息").ImageUrl("~/Content/Common/Icons/Docking.gif");
+                       }
+                       
+                       if(Employee.AsSales())
+                       {
+                           item.Add().Url("~/Company/SalesIndex").Text("我的公司/客户").ImageUrl("~/Content/Common/Icons/Docking.gif");
+                           item.Add().Url("~/Deal/MyDealIndex").Text("我的出单").ImageUrl("~/Content/Common/Icons/Docking.gif");
                        }
                        if (Employee.AsProductInterface())
                        {

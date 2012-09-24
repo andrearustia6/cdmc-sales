@@ -18,8 +18,8 @@
                     c.Bound(item => item.Income).Width(150);
                     c.Bound(item => item.IsClosed).Width(50);
                     c.Bound(item => item.Abandoned).Width(50);
-                    c.Bound(item => item.ExpectedPaymentDate).Template(@<text>@item.ExpectedPaymentDate.Value.ToShortDateString()</text>).Width(150);
-                    c.Bound(item => item.ActualPaymentDate).Template(@<text>@item.ExpectedPaymentDate!=null?@item.ExpectedPaymentDate.Value.ToShortDateString():@string.Empty</text>).Width(150);
+                    c.Bound(item => item.ExpectedPaymentDate).Template(@<text>@item.ExpectedPaymentDate.ToShortDateString()</text>).Width(150);
+                    c.Bound(item => item.ActualPaymentDate).Template(@<text>@item.ActualPaymentDate</text>).Width(150);
                     c.Bound(item => item.ID).Width(200).Title("操作").Template(@<span>
                     <a href=@Url.Content("~/Category/Edit/" + item.ID) >编辑</a> | <a href=@Url.Content("~/Category/Details/" + item.ID)>详细</a>  | <a href=@Url.Content("~/Category/delete/" + item.ID) >删除</a> 
                    </span>);

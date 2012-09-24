@@ -119,6 +119,8 @@ namespace Entity
 
         public List<Deal> Deals { get; set; }
 
+        public List<Project> Projects { get; set; }
+
         public virtual Image Image { get; set; }
         public int?  ImageID { get; set; }
     }
@@ -152,7 +154,6 @@ namespace Entity
         [Display(Name = "致电客户"), Required]
         public int? LeadID { get; set; }
 
-
         [Display(Name = "所属项目")]
         public int? ProjectID { get; set; }
         public virtual Project Project { get; set; }
@@ -180,6 +181,9 @@ namespace Entity
 
         [Display(Name = "致电时间")]
         public DateTime CallingTime { get; set; }
+
+        [Display(Name = "致电人")]
+        public string Caller { get; set; }
 
     }
 }
