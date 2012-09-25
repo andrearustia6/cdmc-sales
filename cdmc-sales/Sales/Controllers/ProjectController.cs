@@ -193,7 +193,7 @@ namespace Sales.Controllers
 
         public ActionResult Management(int? id)
         {
-            var Data = CH.GetAllData<Project>(i => i.ID == id,"Companys", "Members", "Templates", "Messages", "TargetOfMonths").FirstOrDefault();
+            var Data = CH.GetAllData<Project>(i => i.ID == id,"Deals","Companys", "Members", "Templates", "Messages", "TargetOfMonths").FirstOrDefault();
             return View(Data);
         }
 

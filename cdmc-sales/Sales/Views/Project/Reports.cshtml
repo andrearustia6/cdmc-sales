@@ -1,10 +1,56 @@
 ﻿@{
     ViewBag.Title = "Reports";
 }
+@using Sales.Model
+@model List<WeeklyReport>
 @using Utl
-<h2>Reports</h2>
-@using (Html.BeginForm("Reports","Project"))
+<h2>
+    Reports</h2>
+@using (Html.BeginForm("Reports", "Project"))
 {
- @Html.Telerik().DatePicker().Name("setdate").Value(DateTime.Now.StartOfWeek())
-<input  type="submit" value="产生报表"/>
+    @Html.Telerik().DatePicker().Name("setdate").Value(DateTime.Now.StartOfWeek())
+    <input type="submit" value="产生报表" />
 }
+@if (Model != null)
+{
+    foreach (var report in Model)
+    {
+    @(Html.Telerik().TabStrip().Name("TabStrip").SelectedIndex(0).Items(items =>
+{
+    items.Add().Text("工作量").Content(@<text>@AmountOfWork(report)</text>);
+    items.Add().Text("出单").Content(@<text>@DealAndTarget(report)</text>);
+    items.Add().Text("到账").Content(@<text>@PaymentAndTarget(report)</text>);
+    items.Add().Text("进度").Content(@<text>@Progress(report)</text>);
+
+})
+)
+    }
+}
+
+@helper AmountOfWork(WeeklyReport report)
+{
+    if(report.MemberItems!=null)
+    {
+        <table>
+        <tr><td>本周工作量</td><td>个人工作量小计</td><td>本周电话时间</td></tr>
+        @foreach (var mi in report.MemberItems)
+        {
+            mi.LeadCalls.FindAll(lc => lc.LeadCallType.Name != "Others" && lc.LeadCallType.Name != "Blowed" && lc.LeadCallType.Name != "Not Pitched").Count();
+        }
+        </table>
+    }
+   
+}
+
+@helper DealAndTarget(WeeklyReport report)
+{
+}
+
+ @helper PaymentAndTarget(WeeklyReport report)
+{
+}
+
+@helper Progress(WeeklyReport report)
+{
+    <p></p>
+ }

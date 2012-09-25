@@ -1,0 +1,41 @@
+﻿@using Entity
+@using Utl
+@model List<Lead>
+@using (Html.BeginForm())
+{
+    <fieldset>
+        <legend>目标项目</legend>
+        @Html.HiddenFor(m => m.ID)
+        @Html.DropDownList("ProjectID", new SelectList(CH.GetAllData<Project>(), "ID", "Name"), "-请选择-", new { onchange = "this.form.submit();" })
+    </fieldset>
+}
+@(Html.Telerik().Grid<Lead>(Model).Name("Lead")
+                .DataKeys(keys =>
+                {
+                    keys.Add(s => s.ID);
+                })
+                .Columns(c =>
+                {
+                    c.Bound(o => o.Name_EN);
+                    c.Bound(o => o.Name_CH);
+                    c.Bound(o => o.Company.FullName).Title("所在公司");
+                    c.Bound(o => o.Title).Width(120);
+                    c.Bound(o => o.Contact).Width(150);
+                    c.Bound(o => o.Mobile).Width(150);
+                    c.Bound(o => o.EMail).Width(120);
+                    c.Bound(o => o.Contact).Width(200);
+                    c.Bound(item => item.ID).Title("操作").Template(@<span> 
+                   <a href=@Url.Content("~/Lead/Details/" + item.ID)>详细</a> | <a href=@Url.Content("~/Lead/Management/" + item.ID)>客户关系</a> 
+                            </span>);
+                })
+                .Resizable(resizing => resizing.Columns(true))
+                .Groupable()
+                .Pageable(p => p.PageSize(50))
+                .Sortable()
+                .Filterable()
+                .Scrollable(scrolling => scrolling.Height(550))
+)
+
+
+
+
