@@ -8,23 +8,17 @@
                 })
                 .Columns(c =>
                 {
-                    c.Bound(item => item.Name_EN).Width(150);
-                    c.Bound(item => item.Name_CH).Width(150);
+                    c.Bound(item => item.FullName).Width(150);
                     c.Bound(item => item.Category.FullName).Title("行业").Width(100);
-                    c.Bound(item => item.Areas);
+                    c.Bound(item => item.Areas).Width(120);
+                    c.Bound(item => item.Available).Width(120);
                     c.Bound(item => item.Contact).Width(100);
-                    c.Bound(item => item.Available).Width(100);
-                    
                     c.Bound(item => item.CompanyType.Name).Width(100);
-                    c.Bound(item => item.Cerator).Width(100);
-                    c.Bound(item => item.From).Width(100);
-                    c.Bound(item => item.ID).Title("操作").Width(200).Template(@<text>
-                    
-                     
-                            <a href=@Url.Content("~/Company/Details/" + item.ID)>详细</a>
-                  </text>
-                    
-                   );
+                    c.Bound(item => item.Cerator).Width(70);
+                    c.Bound(item => item.From).Width(70);
+                    c.Bound(item => item.ID).Title("操作").Width(150).Template(@<span>
+                    <a href=@Url.Content("~/Company/Edit/" + item.ID) >编辑</a> | <a href=@Url.Content("~/Company/Details/" + item.ID)>详细</a>  | <a href=@Url.Content("~/Lead/Create/?from=company&CompanyId=" + item.ID)>添加客户</a>| <a href=@Url.Content("~/Company/delete/" + item.ID) >删除</a> 
+                   </span>);
                 })
                 .DetailView(e => e.Template(
                         @<text>
@@ -47,16 +41,16 @@
      @(Html.Telerik().Grid(Leads).Name("Leads" + companyuid)
                             .Columns(c =>
                             {
-                                c.Template(@<text><img  style="width:80px;height:70px" src=@Url.Content("~/Image/DisplayImage/" + item.ImageID) /></text>).Title("客户照片").Width(150);
-                                c.Bound(o => o.Name_EN);
-                                c.Bound(o => o.Name_CH);
-                                c.Bound(o => o.Title).Width(120);
+
+                                c.Template(@<text><img alt="photo"  style="width:80px;height:70px" src=@Url.Content("~/Image/DisplayImage/" + item.ImageID) /></text>).Title("客户照片").Width(100);
+                                c.Bound(o => o.FullName).Width(150);
+                                c.Bound(o => o.Title).Width(150);
+                                c.Bound(o => o.EMail).Title("邮箱").Width(150);
+                                c.Bound(o => o.Fax).Title("传真").Width(150);
                                 c.Bound(o => o.Contact).Width(150);
-                                c.Bound(o => o.Mobile).Width(150);
-                                c.Bound(o => o.EMail).Width(120);
-                                c.Bound(o => o.Contact).Width(200);
-                                c.Bound(item => item.ID).Title("操作").Width(120).Template(@<span>
-                    <a href=@Url.Content("~/lead/Details/" + item.ID)>详细</a> 
+
+                                c.Bound(item => item.ID).Title("操作").Template(@<span>
+                    <a href=@Url.Content("~/lead/Edit/?from=company&id=" + item.ID) >编辑</a> | <a href=@Url.Content("~/lead/Details/" + item.ID)>详细</a> | <a href=@Url.Content("~/Company/delete/" + item.ID) >删除</a> | <a href=@Url.Content("~/Lead/Management/?leadid=" + item.ID) >关系管理</a> 
                    </span>);
                             })
                                                .Resizable(resizing => resizing.Columns(true))

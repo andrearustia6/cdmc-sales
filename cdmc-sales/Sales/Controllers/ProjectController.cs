@@ -24,8 +24,10 @@ namespace Sales.Controllers
             return View();
         }
 
-        public ViewResult Reports(DateTime setdate)
+        public ViewResult Reports(DateTime? setdate)
         {
+            if (setdate == null)
+                return View();
             var projects = CH.GetAllData<Project>("Members", "TargetOfWeeks", "Leads", "Deals");
             var weeklyreports = CRM_Logical.GenerateWeeklyReports(projects, setdate);
             return View(weeklyreports);
@@ -191,7 +193,7 @@ namespace Sales.Controllers
 
         public ActionResult Management(int? id)
         {
-            var Data = CH.GetAllData<Project>(i => i.ID == id, "Members", "Templates", "Messages", "TargetOfMonths").FirstOrDefault();
+            var Data = CH.GetAllData<Project>(i => i.ID == id,"Companys", "Members", "Templates", "Messages", "TargetOfMonths").FirstOrDefault();
             return View(Data);
         }
 

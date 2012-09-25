@@ -68,20 +68,20 @@ namespace BLL
         }
         
         
-        public static Target_Package GetTarget_Package(Lead lead,object projectid)
+        public static TargetOfPackage GetTargetOfPackage(Lead lead,object projectid)
         {
             if (projectid == null)
-                return new Target_Package() { LeadID = lead.ID };
+                return new TargetOfPackage() { LeadID = lead.ID };
 
             var pid = (int)projectid;
 
-            if (lead.Target_Packages != null)
+            if (lead.TargetOfPackages != null)
             {
-                var tp = lead.Target_Packages.FirstOrDefault(i => i.ProjectID == pid && i.LeadID == lead.ID);
-                if (tp == null) tp = new Target_Package() { LeadID = lead.ID, ProjectID = pid };
+                var tp = lead.TargetOfPackages.FirstOrDefault(i => i.ProjectID == pid && i.LeadID == lead.ID);
+                if (tp == null) tp = new TargetOfPackage() { LeadID = lead.ID, ProjectID = pid };
                 return tp;
             }
-            return new  Target_Package() { LeadID = lead.ID, ProjectID = pid };
+            return new  TargetOfPackage() { LeadID = lead.ID, ProjectID = pid };
         }
         public static bool IsDMS(string leadCallType)
         {
@@ -115,13 +115,13 @@ namespace BLL
             return call.LeadCallType.Name == "Qualified Decision" ? true : false;
         }
 
-        public static WeeklyReport GenerateSingleWeeklyReport(Project project,DateTime settime)
+        public static WeeklyReport GenerateSingleWeeklyReport(Project project,DateTime? settime)
         {
-            var result = new WeeklyReport(project, settime);
+            var result = new WeeklyReport(project, (DateTime)settime);
             return result;
         }
 
-        public static List<WeeklyReport> GenerateWeeklyReports(List<Project> projects, DateTime settime)
+        public static List<WeeklyReport> GenerateWeeklyReports(List<Project> projects, DateTime? settime)
         {
             var result = new List<WeeklyReport>();
             foreach (var p in projects)

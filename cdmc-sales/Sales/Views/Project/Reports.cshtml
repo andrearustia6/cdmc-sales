@@ -1,7 +1,10 @@
 ﻿@{
     ViewBag.Title = "Reports";
 }
-
+@using Utl
 <h2>Reports</h2>
-
-
+@using (Html.BeginForm("Reports","Project"))
+{
+ @Html.Telerik().DatePicker().Name("setdate").Value(DateTime.Now.StartOfWeek())
+<input  type="submit" value="产生报表"/>
+}

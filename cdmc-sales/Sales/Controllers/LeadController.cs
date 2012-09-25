@@ -6,14 +6,43 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Entity;
+using EntityUtl;
 using Sales;
 using Utl;
 using Telerik.Web.Mvc;
 
 namespace Sales.Controllers
 {
+    [SalesRequired]
     public class LeadController : Controller
     {
+        [MarketInterfaceRequired]
+        public ViewResult MarketIndex()
+        {
+            return View(CH.GetAllData<Lead>());
+        }
+
+        [SalesRequired]
+        public ViewResult DistributionIndex()
+        {
+            var members = CH.GetAllData<Member>(m => m.Name == User.Identity.Name);
+
+            var member = members.FirstOrDefault();
+            if (member != null && member.CharactersSet != null)
+            {
+                var data = CH.GetAllData<Company>("Leads");
+                data = data.FindAll(c => member.CharactersSet.Any(ca => (c.Name_EN.ToUpper().StartsWith(ca))));
+                var leads = new List<Lead>();
+                data.ForEach(c => {
+                    leads.AddRange(c.Leads);
+                });
+                return View(data);
+            }
+            return View();
+        }
+
+        
+
         public ViewResult Index()
         {
             return View(CH.GetAllData<Lead>());
@@ -37,10 +66,10 @@ namespace Sales.Controllers
         [HttpPost]
         public ActionResult Create(Lead item)
         {
-            if (EntityUtl.CheckPropertyAllNull(item, "Name_EN", "Name_CH"))
+            if (EntityUtl.Utl.CheckPropertyAllNull(item, "Name_EN", "Name_CH"))
                 ModelState.AddModelError("", "名字不完整,中文名和英文名不能同时为空");
 
-            if (EntityUtl.CheckPropertyAllNull(item, "EMail", "Fax"))
+            if (EntityUtl.Utl.CheckPropertyAllNull(item, "EMail", "Fax"))
                 ModelState.AddModelError("", "联系方式不完整,座机和传真号不能同时为空");
 
             if (ModelState.IsValid)
@@ -62,10 +91,10 @@ namespace Sales.Controllers
         [HttpPost]
         public ActionResult Edit(Lead item)
         {
-            if (EntityUtl.CheckPropertyAllNull(item, "Name_EN", "Name_CH"))
+            if (EntityUtl.Utl.CheckPropertyAllNull(item, "Name_EN", "Name_CH"))
                 ModelState.AddModelError("", "名字不完整,中文名和英文名不能同时为空");
 
-            if (EntityUtl.CheckPropertyAllNull(item, "EMail", "Fax"))
+            if (EntityUtl.Utl.CheckPropertyAllNull(item, "EMail", "Fax"))
                 ModelState.AddModelError("", "联系方式不完整,座机和传真号不能同时为空");
 
             if (ModelState.IsValid)
@@ -95,7 +124,7 @@ namespace Sales.Controllers
         public ActionResult Management(int leadid, int? ProjectID)
         {
             ViewBag.ProjectID = ProjectID;
-            return View(CH.GetAllData<Lead>(i => i.ID == leadid, "Target_Packages").FirstOrDefault());
+            return View(CH.GetAllData<Lead>(i => i.ID == leadid, "TargetOfPackages").FirstOrDefault());
         }
 
         public ActionResult LeadCallIndex(int leadid)
@@ -106,11 +135,11 @@ namespace Sales.Controllers
 
         public ActionResult Save_LeadPackage(int leadid, int projectid, int packageid)
         {
-            var old = CH.GetAllData<Target_Package>(i => i.LeadID == leadid).FirstOrDefault();
+            var old = CH.GetAllData<TargetOfPackage>(i => i.LeadID == leadid).FirstOrDefault();
             if (old != null && old.PackageID != packageid)
-                CH.Delete<Target_Package>(old.ID);
+                CH.Delete<TargetOfPackage>(old.ID);
 
-            CH.Create<Target_Package>(new Target_Package() { PackageID = packageid, LeadID = leadid, ProjectID = projectid });
+            CH.Create<TargetOfPackage>(new TargetOfPackage() { PackageID = packageid, LeadID = leadid, ProjectID = projectid });
             return new JsonResult();
         }
         [HttpPost]

@@ -19,6 +19,9 @@ namespace Entity
         [Display(Name = "内容")]
         public String Contents { get; set; }
 
+        [Display(Name = "上传人")]
+        public String Creator { get; set; }
+
     }
 
     /// <summary>
@@ -134,7 +137,7 @@ namespace Entity
         public decimal CheckIn { get; set; }
     }
 
-    public class Target_Package : EntityBase
+    public class TargetOfPackage : EntityBase
     {
         public virtual Project Project { get; set; }
         [Display(Name = "项目名称")]
@@ -200,7 +203,7 @@ namespace Entity
 
         public string[] CharactersSet { get { return string.IsNullOrEmpty(Characters)?new string[]{}: Characters.Split('|'); } }
      
-        public List<Company> Companys { get; set; }
+        //public List<Company> Companys { get; set; }
     }
 
     /// <summary>

@@ -19,7 +19,11 @@ namespace Sales.Controllers
            return View(CH.GetAllData<Company>("Leads"));
         }
 
-        [LeaderRequired]
+        /// <summary>
+        /// 根据字头分配显示
+        /// </summary>
+        /// <returns></returns>
+        [SalesRequired]
         public ViewResult SalesIndex()
         {
           
@@ -35,18 +39,20 @@ namespace Sales.Controllers
             return View();
         }
 
-        public ViewResult MarketIndex()
-        {
-            return View(CH.GetAllData<Lead>());
-        }
-
+        /// <summary>
+        /// 个人页面/维护自己上传的公司信息
+        /// </summary>
+        /// <returns></returns>
         public ViewResult CompanyMaintainIndex()
         {
             return View(CH.GetAllData<Company>(c => c.Cerator == User.Identity.Name,"Leads"));
         }
 
+
+        [ProductInterfaceRequired]
         public ViewResult ProductIndex()
         {
+           // var p = CH.GetAllData<Project>(p => p.Members.Any(m => m.Name == User.Identity.Name));
             return View(CH.GetAllData<Company>("Leads"));
         }
 
@@ -65,7 +71,7 @@ namespace Sales.Controllers
         public ActionResult Create(Company item)
         {
 
-            if (EntityUtl.CheckPropertyAllNull(item, "Name_EN", "Name_CH"))
+            if (EntityUtl.Utl.CheckPropertyAllNull(item, "Name_EN", "Name_CH"))
                 ModelState.AddModelError("", "名字不完整,中文名和英文名不能同时为空");
 
             if (ModelState.IsValid)
@@ -102,7 +108,7 @@ namespace Sales.Controllers
         [SalesRequired]
         public ActionResult Edit(Company item)
         {
-            if (EntityUtl.CheckPropertyAllNull(item, "Name_EN", "Name_CH"))
+            if (EntityUtl.Utl.CheckPropertyAllNull(item, "Name_EN", "Name_CH"))
                 ModelState.AddModelError("", "名字不完整,中文名和英文名不能同时为空");
 
             if (ModelState.IsValid)

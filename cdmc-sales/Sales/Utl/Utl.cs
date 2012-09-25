@@ -39,8 +39,6 @@ namespace Utl
 
     public class Employee
     {
-
-
         public static List<MembershipUser> GetAllEmployees()
         {
             var list = Membership.GetAllUsers().Cast<MembershipUser>().ToList<MembershipUser>();
@@ -80,6 +78,26 @@ namespace Utl
                 return -100;
         }
 
+        public static bool EqualToDirector()
+        {
+            return GetCurrentRoleLevel() == DirectorRequired.LVL;
+        }
+
+        public static bool EqualToSales()
+        {
+            return GetCurrentRoleLevel() == SalesRequired.LVL;
+        }
+
+        public static bool EqualToLeader()
+        {
+            return GetCurrentRoleLevel() == LeaderRequired.LVL;
+        }
+
+        public static bool EqualToManager()
+        {
+            return GetCurrentRoleLevel() >= ManagerRequired.LVL;
+        }
+
         public static bool AsDirector()
         {
             return GetCurrentRoleLevel() >= DirectorRequired.LVL;
@@ -90,14 +108,23 @@ namespace Utl
             return GetCurrentRoleLevel() >= LeaderRequired.LVL;
         }
 
+       
+
         public static bool AsManager()
         {
             return GetCurrentRoleLevel() >= ManagerRequired.LVL;
         }
 
+       
+
         public static bool AsProductInterface()
         {
             return GetCurrentRoleLevel() >= ProductInterfaceRequired.LVL;
+        }
+
+        public static bool EqualToProductInterface()
+        {
+            return GetCurrentRoleLevel() == ProductInterfaceRequired.LVL;
         }
 
         public static bool AsMarketInterface()
@@ -105,10 +132,17 @@ namespace Utl
             return GetCurrentRoleLevel() >= MarketInterfaceRequired.LVL;
         }
 
+        public static bool EqualToMarketInterface()
+        {
+            return GetCurrentRoleLevel() == MarketInterfaceRequired.LVL;
+        }
+
         public static bool AsSales()
         {
             return GetCurrentRoleLevel() >= SalesRequired.LVL;
         }
+
+        
 
         public static int GetRoleLevel(string name)
         {
@@ -396,12 +430,12 @@ namespace Utl
             { diff += 7; }
             return dt.AddDays(1 * diff).Date;
         }
-        public static DateTime FirstDayOfMonth(this DateTime dt)
+        public static DateTime StartOfMonth(this DateTime dt)
         {
             return new DateTime(dt.Year, dt.Month, 1);
         }
 
-        public static DateTime LastDayOfMonthFrom(DateTime dt)
+        public static DateTime EndOfMonth(this DateTime dt)
         {
             DateTime firstDayOfTheMonth = new DateTime(dt.Year, dt.Month, 1);
             return firstDayOfTheMonth.AddMonths(1).AddDays(-1);
