@@ -115,7 +115,7 @@ namespace Entity
 
         public List<LeadCall> LeadCalls { get; set; }
 
-        public List<Target_Package> Target_Packages { get; set; }
+        public List<TargetOfPackage> TargetOfPackages { get; set; }
 
         public List<Deal> Deals { get; set; }
 

@@ -16,7 +16,7 @@
     </fieldset>
 }
 @Html.Partial("LeadCallEditor", new LeadCall() { LeadID = Model.ID })
-@Html.Partial("LeadPackageEditor", CRM_Logical.GetTarget_Package(Model, (object)ViewBag.ProjectID))
+@Html.Partial("LeadPackageEditor", CRM_Logical.GetTargetOfPackage(Model, (object)ViewBag.ProjectID))
 @(Html.Telerik().TabStrip().Name("TabStrip").SelectedIndex(0).Items(items =>
 {
     items.Add().Text("公司信息").Content(@<text>@Company(Model)</text>);
@@ -103,15 +103,15 @@
 }
 @helper Package(Lead lead)
     { 
-        var target_Packages = lead.Target_Packages;
+        var TargetOfPackages = lead.TargetOfPackages;
         if (ViewBag.ProjectID != null)
         {
             var ProjectID = (int)ViewBag.ProjectID;
     <input class="setLeadPackage" type="button" value="设置销售Package" />
-            target_Packages = target_Packages.FindAll(i => i.ProjectID == ProjectID);
-            if (target_Packages != null && target_Packages.Count > 0)
+            TargetOfPackages = TargetOfPackages.FindAll(i => i.ProjectID == ProjectID);
+            if (TargetOfPackages != null && TargetOfPackages.Count > 0)
             {
-                var tp = target_Packages.FirstOrDefault(i => i.ProjectID == ProjectID && i.LeadID == Model.ID);
+                var tp = TargetOfPackages.FirstOrDefault(i => i.ProjectID == ProjectID && i.LeadID == Model.ID);
                 if (tp != null)
                 {
                     var p = CH.GetDataById<Package>(tp.PackageID);

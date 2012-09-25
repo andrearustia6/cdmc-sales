@@ -10,7 +10,7 @@
                 {
                     c.Bound(item => item.Name_EN).Width(150);
                     c.Bound(item => item.Name_CH).Width(150);
-                    c.Bound(item => item.DistrictNumber).Width(100);
+                    c.Bound(item => item.DistrictNumber.FullName).Width(100);
                     c.Bound(item => item.Contact).Width(100);
                     c.Bound(item => item.Available).Width(100);
                     c.Bound(item => item.Category.Name_CH).Title("行业").Width(100);
@@ -18,11 +18,6 @@
                     c.Bound(item => item.Cerator).Width(100);
                     c.Bound(item => item.From).Width(100);
                 })
-                .DetailView(e => e.Template(
-                        @<text>
-                         @RenderGrid(item.Leads, item.ID)
-                        </text>
-                    ))
                 .Resizable(resizing => resizing.Columns(true))
                 .Groupable()
                 .Pageable(p => p.PageSize(20))
@@ -34,18 +29,4 @@
 
 @Html.ActionLink("公司创建", "Create")
 
-@helper RenderGrid(List<Lead> Leads, int companyuid)
-    { 
-     @(Html.Telerik().Grid(Leads).Name("Leads" + companyuid)
-                            .Columns(c =>
-                            {
-                                c.Template(@<text><img  style="width:80px;height:70px" src=@Url.Content("~/Image/DisplayImage/" + item.ImageID) /></text>).Title("客户照片").Width(150);
-                                c.Bound(o => o.Name_EN).Width(120);
-                                c.Bound(o => o.Name_CH).Width(120);
-                                c.Bound(o => o.Title).Width(120);
-                                c.Bound(o => o.EMail).Title("邮箱").Width(120);
-                            })
-                        .Resizable(resizing => resizing.Columns(true))
-                        .Pageable(p => p.PageSize(20))
-                        .Sortable())
-} 
+

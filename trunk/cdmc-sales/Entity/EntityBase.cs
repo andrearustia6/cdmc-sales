@@ -26,7 +26,7 @@ namespace Entity
     public class FullNameEntity : EntityBase
     {
         [Display(Name = "名称")]
-        public string FullName { get { return EntityUtl.GetFullName(this); } }
+        public string FullName { get { return EntityUtl.Utl.GetFullName(this); } }
 
         [Display(Name = "中文名称"), MaxLength(100)]
         public string Name_CH { get; set; }

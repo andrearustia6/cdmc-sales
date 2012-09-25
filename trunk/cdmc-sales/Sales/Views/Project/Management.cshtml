@@ -9,7 +9,7 @@
     项目管理</h2>
 
 @*@Html.Partial("MemberEditor", new LeadCall() { LeadID = Model.ID })
-@Html.Partial("LeadPackageEditor", CRM_Logical.GetTarget_Package(Model, (object)ViewBag.ProjectID))*@
+@Html.Partial("LeadPackageEditor", CRM_Logical.GetTargetOfPackage(Model, (object)ViewBag.ProjectID))*@
 @(Html.Telerik().TabStrip().Name("TabStrip").SelectedIndex(0).Items(items =>
 {
     items.Add().Text("基本信息").Content(@<text>@BaseInfo(Model)</text>);
@@ -79,6 +79,30 @@
 
 @helper Company(Project p)
     {  
+     @(Html.Telerik().Grid(p.Companys).Name("Company")
+                .DataKeys(keys =>
+                {
+                    keys.Add(s => s.ID);
+                })
+                .Columns(c =>
+                {
+                    c.Bound(item => item.Name_EN).Width(150);
+                    c.Bound(item => item.Name_CH).Width(150);
+                    c.Bound(item => item.DistrictNumber.FullName).Width(100);
+                    c.Bound(item => item.Contact).Width(100);
+                    c.Bound(item => item.Available).Width(100);
+                    c.Bound(item => item.Category.Name_CH).Title("行业").Width(100);
+                    c.Bound(item => item.CompanyType.Name).Width(100);
+                    c.Bound(item => item.Cerator).Width(100);
+                    c.Bound(item => item.From).Width(100);
+                })
+                .Resizable(resizing => resizing.Columns(true))
+                .Groupable()
+                 .Pageable(page => page.PageSize(10))
+                .Sortable()
+                .Filterable()
+                .Scrollable(scrolling => scrolling.Height(350))
+                        )
     @Html.ActionLink("管理销售对象", "SelectCompany", "Project", new { projectid = Model.ID }, null)
 }
 

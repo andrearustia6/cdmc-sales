@@ -2,10 +2,38 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Entity;
 
-namespace Entity
+namespace EntityUtl
 {
-    public class EntityUtl
+    public static class DateTimeExtensions
+    {
+        public static DateTime StartOfWeek(this DateTime dt)
+        {
+            int diff = dt.DayOfWeek - DayOfWeek.Monday; if (diff < 0) { diff += 7; }
+            return dt.AddDays(-1 * diff).Date;
+        }
+
+        public static DateTime EndOfWeek(this DateTime dt)
+        {
+            int diff = DayOfWeek.Friday - dt.DayOfWeek;
+            if (diff < 0)
+            { diff += 7; }
+            return dt.AddDays(1 * diff).Date;
+        }
+        public static DateTime StartOfMonth(this DateTime dt)
+        {
+            return new DateTime(dt.Year, dt.Month, 1);
+        }
+
+        public static DateTime EndOfMonth(this DateTime dt)
+        {
+            DateTime firstDayOfTheMonth = new DateTime(dt.Year, dt.Month, 1);
+            return firstDayOfTheMonth.AddMonths(1).AddDays(-1);
+        }
+    }
+
+    public class Utl
     {
         public static string GetFullName(EntityBase e)
         {

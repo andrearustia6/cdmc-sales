@@ -50,7 +50,7 @@
                                 c.Bound(o => o.Contact).Width(150);
 
                                 c.Bound(item => item.ID).Title("操作").Template(@<span>
-                    <a href=@Url.Content("~/lead/Edit/?from=company&id=" + item.ID) >编辑</a> | <a href=@Url.Content("~/lead/Details/" + item.ID)>详细</a> | <a href=@Url.Content("~/Company/delete/" + item.ID) >删除</a> | <a href=@Url.Content("~/Lead/Management/?leadid=" + item.ID) >关系管理</a> 
+                    <a href=@Url.Content("~/lead/Edit/?from=company&id=" + item.ID) >编辑</a> | <a href=@Url.Content("~/lead/Details/" + item.ID)>详细</a> | <a href=@Url.Content("~/Company/delete/" + item.ID) >删除</a> 
                    </span>);
                             })
                                                .Resizable(resizing => resizing.Columns(true))

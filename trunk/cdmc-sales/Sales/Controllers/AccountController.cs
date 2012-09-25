@@ -69,12 +69,68 @@ namespace MvcGlobalAuthorize.Controllers
         [AllowAnonymous]
         public ActionResult Start()
         {
+            MembershipCreateStatus createStatus;
+
             ProfileBase objProfile = ProfileBase.Create("karen");
+            Membership.CreateUser("karen", "111111", "karen@cdmc.org.cn", null, null, true, null, out createStatus);
             objProfile.SetPropertyValue("RoleLevelID", 1);
             objProfile.SetPropertyValue("IsActivated", true);
             objProfile.Save();
-            MembershipCreateStatus createStatus;
-            Membership.CreateUser("karen", "1111111", "234234234", null, null, true, null, out createStatus);
+
+            Membership.CreateUser("flora", "111111", "flora@cdmc.org.cn", null, null, true, null, out createStatus);
+            ProfileBase flora = ProfileBase.Create("flora");
+            flora.SetPropertyValue("RoleLevelID", 5);
+            flora.SetPropertyValue("IsActivated", true);
+            flora.Save();
+
+            Membership.CreateUser("mike", "111111", "mike@cdmc.org.cn", null, null, true, null, out createStatus);
+            ProfileBase mike = ProfileBase.Create("mike");
+            mike.SetPropertyValue("RoleLevelID", 2);
+            mike.SetPropertyValue("IsActivated", true);
+            mike.Save();
+
+            Membership.CreateUser("sean", "111111", "sean@cdmc.org.cn", null, null, true, null, out createStatus);
+            ProfileBase sean = ProfileBase.Create("sean");
+            sean.SetPropertyValue("RoleLevelID", 3);
+            sean.SetPropertyValue("IsActivated", true);
+            sean.Save();
+
+            Membership.CreateUser("stone", "111111", "stone@cdmc.org.cn", null, null, true, null, out createStatus);
+            ProfileBase stone = ProfileBase.Create("stone");
+            stone.SetPropertyValue("RoleLevelID", 3);
+            stone.SetPropertyValue("IsActivated", true);
+            stone.Save();
+
+            Membership.CreateUser("susie", "111111", "susie@cdmc.org.cn", null, null, true, null, out createStatus);
+            ProfileBase susie = ProfileBase.Create("susie");
+            susie.SetPropertyValue("RoleLevelID", 4);
+            susie.SetPropertyValue("IsActivated", true);
+            susie.Save();
+
+            Membership.CreateUser("john", "111111", "john@cdmc.org.cn", null, null, true, null, out createStatus);
+            ProfileBase john = ProfileBase.Create("john");
+            john.SetPropertyValue("RoleLevelID", 4);
+            john.SetPropertyValue("IsActivated", true);
+            john.Save();
+
+            Membership.CreateUser("tina", "111111", "tina@cdmc.org.cn", null, null, true, null, out createStatus);
+            ProfileBase tina = ProfileBase.Create("tina");
+            tina.SetPropertyValue("RoleLevelID", 4);
+            tina.SetPropertyValue("IsActivated", true);
+            tina.Save();
+
+            Membership.CreateUser("lucas", "111111", "lucas@cdmc.org.cn", null, null, true, null, out createStatus);
+            ProfileBase lucas = ProfileBase.Create("lucas");
+            lucas.SetPropertyValue("RoleLevelID", 4);
+            lucas.SetPropertyValue("IsActivated", true);
+            lucas.Save();
+
+            Membership.CreateUser("amy", "111111", "amy@cdmc.org.cn", null, null, true, null, out createStatus);
+            ProfileBase amy = ProfileBase.Create("amy");
+            amy.SetPropertyValue("RoleLevelID", 7);
+            amy.SetPropertyValue("IsActivated", true);
+            amy.Save();
+
             return RedirectToAction("Index", "account");
         }
         //

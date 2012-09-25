@@ -28,6 +28,40 @@
                 .Filterable()
                 .Scrollable(scrolling => scrolling.Height(550))
 )
+@*@helper Lead(Lead lead)
+{ 
+        var company = lead.Company;
+    <div style="width: 500;">
+        <img alt="photo"  style="width:80px;height:70px;float:right;" src=@Url.Content("~/Image/DisplayImage/" + lead.ImageID) />
+        <ul>
+            <li>
+                <label>
+                    Lead姓名:</label>@lead.FullName</li>
+            <li>
+                <label>
+                    职位:</label>@lead.Title</li>
+            <li>
+                <label>
+                    性别:</label>@lead.Gender</li>
+            <li>
+                <label>
+                    公司电话:</label>@company.Contact</li>
+            <li>
+                <label>
+                    可打时间:</label>@company.Available</li>
+            <li>
+                <label>
+                    座机:</label>@lead.Contact</li>
+            <li>
+                <label>
+                    电子邮箱:</label>@lead.EMail</li>
+            <li>
+                <label>
+                    传真:</label>@lead.Fax</li>
+        </ul>
+    </div>
+     
+}*@
 
 <p>
     请在公司页面下添加客户</p>

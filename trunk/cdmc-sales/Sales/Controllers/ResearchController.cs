@@ -14,6 +14,12 @@ namespace Sales.Controllers
 {
     public class ResearchController : Controller
     {
+        public ViewResult MyIndex()
+        {
+            return View(CH.GetAllData<Research>(r=>r.Creator==User.Identity.Name));
+        }
+
+
         public ViewResult Index()
         {
             return View(CH.GetAllData<Research>());
@@ -37,6 +43,7 @@ namespace Sales.Controllers
             if (ModelState.IsValid)
             {
                // item.Contents = HttpUtility.HtmlEncode(item.Contents);
+                item.Creator = User.Identity.Name;
                 CH.Create<Research>(item);
                 return RedirectToAction("Index");
             }
