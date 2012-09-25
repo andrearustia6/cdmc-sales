@@ -153,6 +153,16 @@ namespace Utl
             var tw3 = new TargetOfWeek() { ID = 1, Member = "tina", TargetOfMonthID = 1, ProjectID = 1, CheckIn = 6000, Deal = 6000, EndDate = DateTime.Now.EndOfWeek(), StartDate = DateTime.Now.StartOfWeek() };
             context.TargetOfWeeks.Add(tw3);
 
+            var d1 = new Deal() { ExpectedPaymentDate=DateTime.Now.AddDays(-2), ID=1, Income=30000, Payment=30000, PackageID=1, LeadID=1, ProjectID=1, Sales="sean", IsClosed=true };
+            var d2 = new Deal() { ExpectedPaymentDate = DateTime.Now.AddDays(-1), ID = 2, Income = 50000, Payment = 30000, PackageID = 1, LeadID = 2, ProjectID = 1, Sales = "sean", IsClosed = true };
+
+            context.Deals.Add(d1);
+            context.Deals.Add(d2);
+
+            p1.Deals = new List<Deal>();
+            p1.Deals.Add(d1);
+            p1.Deals.Add(d2);
+
             context.Projects.Add(p1);
             var p2 = new Project() { ID = 2, EndDate = DateTime.Now, StartDate = DateTime.Now, Target = 30000000, IsActived = true, Leader = "sean", Manager = "mike", Name = "万国博览会" };
             context.Projects.Add(p2);

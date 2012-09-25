@@ -36,7 +36,7 @@ namespace Sales.Controllers
                 data.ForEach(c => {
                     leads.AddRange(c.Leads);
                 });
-                return View(data);
+                return View(leads);
             }
             return View();
         }

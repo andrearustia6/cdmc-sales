@@ -13,10 +13,10 @@
 @(Html.Telerik().TabStrip().Name("TabStrip").SelectedIndex(0).Items(items =>
 {
     items.Add().Text("基本信息").Content(@<text>@BaseInfo(Model)</text>);
-    items.Add().Text("成员信息").Content(@<text>@Member(Model)</text>);
-    items.Add().Text("每月目标").Content(@<text>@Target(Model)</text>);
-@*    items.Add().Text("目标划分").Content(@<text>@BreakDown(Model)</text>);*@
-    items.Add().Text("核心公司").Content(@<text>@Company(Model)</text>);
+    items.Add().Text("成员信息").Content(@<text>@Members(Model)</text>);
+    items.Add().Text("每月目标").Content(@<text>@Targets(Model)</text>);
+    items.Add().Text("核心公司").Content(@<text>@Companys(Model)</text>);
+    items.Add().Text("出单情况").Content(@<text>@Deals(Model)</text>);
 
 })
 )
@@ -53,7 +53,7 @@
     </div>
      
 }
-@helper Member(Project p)
+@helper Members(Project p)
     { 
 
     @(Html.Telerik().Grid<Member>(p.Members).Name("members")
@@ -69,15 +69,34 @@
                         编辑</a> | <a href=@Url.Content("~/Member/Details/" + item.ID)>详细</a> | <a href=@Url.Content("~/Member/delete/" + item.ID) >
                             删除</a> </span>);
                 }).Scrollable(scrolling => scrolling.Height(350))
+                )
+
+}
+        
+@helper Deals(Project p)
+    { 
+
+    @(Html.Telerik().Grid<Deal>(p.Deals).Name("Deals")
+                .DataKeys(keys =>
+                {
+                    keys.Add(s => s.ID);
+                })
+                .Columns(c =>
+                {
+                    c.Bound(item => item.Payment).Width(200);
+                    c.Bound(item => item.IsClosed).Width(100);
+                    c.Bound(item => item.Lead.FullName).Width(100);
+                    c.Bound(item => item.Lead.Company.FullName).Width(100);
+                    c.Bound(item => item.ID).Title("操作").Width(200).Template(@<span> <a href=@Url.Content("~/Member/Edit/" + item.ID) >
+                        编辑</a> | <a href=@Url.Content("~/Member/Details/" + item.ID)>详细</a> | <a href=@Url.Content("~/Member/delete/" + item.ID) >
+                            删除</a> </span>);
+                }).Scrollable(scrolling => scrolling.Height(350))
 
 )
-        
-@Html.ActionLink("创建新成员", "Create", "Member", new { projectid = Model.ID }, null)
-<span>     </span>
-@Html.ActionLink("分配字头", "Distribution", "Project", new { projectid = Model.ID }, null)
+       
 }
 
-@helper Company(Project p)
+@helper Companys(Project p)
     {  
      @(Html.Telerik().Grid(p.Companys).Name("Company")
                 .DataKeys(keys =>
@@ -108,7 +127,7 @@
 
 
 
-@helper Target(Project p)
+@helper Targets(Project p)
     { 
       @(Html.Telerik().Grid<TargetOfMonth>(p.TargetOfMonths).Name("TargetOfMonths")
                 .DataKeys(keys =>
