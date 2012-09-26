@@ -24,13 +24,25 @@ namespace Sales.Model
             EndDate = SetDate.EndOfWeek();
         }
 
-        protected bool InTheWeek(DateTime d)
+        protected bool InTheWeek(DateTime? d)
         {
+            if (d == null) return false;
+
             if (d >= StartDate && d <= EndDate)
                 return true;
             else
                 return false;
         }
+        protected bool InNextWeek(DateTime? d)
+        {
+            if (d == null) return false;
+
+            if (d >= StartDate.AddDays(7) && d <= EndDate.AddDays(7))
+                return true;
+            else
+                return false;
+        }
+        
     }
     public class WeeklyReport : WeeklyItem
     {
@@ -60,22 +72,133 @@ namespace Sales.Model
 
         
         public Member Member { get; set; }
+
+        public decimal DealsAmount
+        {
+            get
+            {
+                decimal amount=0;
+                Deals.ForEach(d =>
+                {
+                    amount += d.Payment;
+                }); 
+
+                 return amount;
+            }
+        }
+        public decimal IncomesAmount
+        {
+            get
+            {
+                decimal amount = 0;
+                Deals.ForEach(d =>
+                {
+                    amount += d.Income;
+                });
+
+                return amount;
+            }
+        }
+        public double CompleteRate{
+            get { return TargetAmount == 0 ? 100 : (int)((DealsAmount / TargetAmount) * 100); }
+        }
+
+        public double CollectRate
+        {
+            get { return TotalDealsAmount == 0 ? 100 : (int)((TotalIncomesAmount / TotalDealsAmount) * 100); }
+        }
+
+
         public List<Deal> Deals
         {
             get
             {
-                var data = Project.Deals.FindAll(d => InTheWeek(d.ExpectedPaymentDate) && d.Sales == Member.Name);
+                var data = Project.Deals.FindAll(d => InTheWeek(d.ActualPaymentDate) && d.Sales == Member.Name && d.Abandoned == false);
                 return data;
             }
         }
-        public TargetOfWeek Targets
+        public TargetOfWeek Target
         {
             get
             {
-                var data = Member.TargetOfWeeks.FindAll(t=> InTheWeek(t.StartDate));
-                return data!=null?data.FirstOrDefault():null;
+                var ts = CH.GetAllData<TargetOfWeek>(t=>t.Member == Member.Name);
+                var data = ts.FindAll(t => InTheWeek(t.StartDate));
+                return data.FirstOrDefault();
             }
         }
+        public decimal TargetAmount
+        {
+            get
+            {
+                return Target == null ? 0 : Target.Deal;
+            }
+        }
+        public TargetOfWeek NextWeekTarget
+        {
+            get
+            {
+                var ts = CH.GetAllData<TargetOfWeek>(t => t.Member == Member.Name);
+                var data = ts.FindAll(t => InNextWeek(t.StartDate));
+                return data.FirstOrDefault();
+            }
+        }
+        public decimal NextWeekTargetAmount
+        {
+            get
+            {
+                return NextWeekTarget==null?0:NextWeekTarget.Deal;
+            }
+        }
+
+        public List<Deal> NextWeekExpectedDeals
+        {
+            get
+            {
+                var data = Project.Deals.FindAll(d => InNextWeek(d.ExpectedPaymentDate) && d.Sales == Member.Name && d.Abandoned == false);
+                return data;
+            }
+        }
+   
+
+        public decimal NextWeekExpectedDealsAmount
+        {
+            get
+            {
+                decimal amount =0;
+                NextWeekExpectedDeals.ForEach(d => { amount += d.Payment; });
+                return amount;
+            }
+        }
+
+        public List<Deal> TotalDeals
+        {
+            get
+            {
+                var data = Project.Deals.FindAll(d => d.Sales == Member.Name && d.Abandoned==false);
+                return data;
+            }
+        }
+
+        public decimal TotalDealsAmount
+        {
+            get
+            {
+                decimal amount = 0;
+                TotalDeals.ForEach(d => { amount += d.Payment; });
+                return amount;
+            }
+        }
+
+        public decimal TotalIncomesAmount
+        {
+            get
+            {
+                decimal amount = 0;
+                TotalDeals.ForEach(d => { amount += d.Income; });
+                return amount;
+            }
+        }
+
         public List<Lead> Leads
         {
             get

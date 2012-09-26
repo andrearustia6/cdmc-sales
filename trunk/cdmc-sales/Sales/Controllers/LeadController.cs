@@ -23,9 +23,10 @@ namespace Sales.Controllers
         }
 
         [SalesRequired]
-        public ViewResult DistributionIndex()
+        public ViewResult DistributionIndex(int? projectid)
         {
-            var members = CH.GetAllData<Member>(m => m.Name == User.Identity.Name);
+            ViewBag.ProjectID = projectid;
+            var members = CH.GetAllData<Member>(m => m.Name == User.Identity.Name&&m.ProjectID == projectid);
 
             var member = members.FirstOrDefault();
             if (member != null && member.CharactersSet != null)

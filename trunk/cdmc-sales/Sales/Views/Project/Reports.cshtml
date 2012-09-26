@@ -13,44 +13,66 @@
 }
 @if (Model != null)
 {
+    var i = 0;
     foreach (var report in Model)
     {
-    @(Html.Telerik().TabStrip().Name("TabStrip").SelectedIndex(0).Items(items =>
+    @(Html.Telerik().TabStrip().Name("TabStrip" + i).SelectedIndex(0).Items(items =>
 {
     items.Add().Text("工作量").Content(@<text>@AmountOfWork(report)</text>);
     items.Add().Text("出单").Content(@<text>@DealAndTarget(report)</text>);
     items.Add().Text("到账").Content(@<text>@PaymentAndTarget(report)</text>);
     items.Add().Text("进度").Content(@<text>@Progress(report)</text>);
-
+    i++;
 })
 )
     }
 }
 
 @helper AmountOfWork(WeeklyReport report)
-{
-    if(report.MemberItems!=null)
     {
+        if (report.MemberItems != null)
+        {
         <table>
-        <tr><td>本周工作量</td><td>个人工作量小计</td><td>本周电话时间</td></tr>
+        <tr><td>出单员工</td><td>本周工作量</td><td>个人工作量小计</td><td>本周电话时间</td></tr>
         @foreach (var mi in report.MemberItems)
         {
-            mi.LeadCalls.FindAll(lc => lc.LeadCallType.Name != "Others" && lc.LeadCallType.Name != "Blowed" && lc.LeadCallType.Name != "Not Pitched").Count();
+            var all = mi.LeadCalls;
+            var pitched = all.FindAll(lc => lc.LeadCallType.Name != "Others" && lc.LeadCallType.Name != "Blowed" && lc.LeadCallType.Name != "Not Pitched");
+             
+            <tr><td>@mi.Member.Name</td><td>@pitched.Count</td><td>@all.Count</td><td>本周电话时间</td></tr>
         }
         </table>
-    }
+        }
    
 }
 
 @helper DealAndTarget(WeeklyReport report)
-{
+    {
+    <table>
+        <tr><td>出单员工</td><td>本周出单</td><td>本周目标</td><td>完成率</td><td>下周完成目标</td><td>销售总额</td></tr>
+        @foreach (var mi in report.MemberItems)
+        {
+           
+            <tr><td>@mi.Member.Name</td><td>@mi.DealsAmount</td><td>@mi.TargetAmount</td><td>@mi.CompleteRate%</td><td>@mi.NextWeekTargetAmount</td><td>@mi.TotalDealsAmount</td></tr>
+        }
+        </table>
+        
+      
+
 }
 
  @helper PaymentAndTarget(WeeklyReport report)
-{
+     {
+          <table>
+        <tr><td>出单员工</td><td>到账总额</td><td>本周到账</td><td>下周到账</td><td>到账率</td></tr>
+        @foreach (var mi in report.MemberItems)
+        {
+            <tr><td>@mi.Member.Name</td><td>@mi.TotalIncomesAmount</td><td>@mi.IncomesAmount</td><td>@mi.NextWeekExpectedDealsAmount</td><td>@mi.CollectRate%</td></tr>
+        }
+        </table>
 }
 
 @helper Progress(WeeklyReport report)
-{
+    {
     <p></p>
  }
