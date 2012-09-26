@@ -11,6 +11,32 @@ namespace BLL
 {
     public class CRM_Logical
     {
+        public List<Project> GetProjectByCurrentRole()
+        {
+            var currentuser = HttpContext.Current.User.Identity.Name;
+            List<Project> projects = null;
+            if (Employee.AsDirector())
+            {
+                projects = CH.GetAllData<Project>();
+            }
+            else
+            {
+                if (Employee.EqualToManager())
+                {
+                    projects = CH.GetAllData<Project>(p => Employee.IsEqualToCurrentUserName(p.Manager));
+                }
+                else if (Employee.EqualToLeader())
+                {
+                    projects = CH.GetAllData<Project>(p => Employee.IsEqualToCurrentUserName(p.Leader));
+                }
+                else
+                {
+                    projects = CH.GetAllData<Project>("Members");
+                    projects = projects.FindAll(p=>p.Members.Any(m=>Employee.IsEqualToCurrentUserName(m.Name)));
+                }
+            }
+            return projects;
+        }
         public static TargetOfWeek GetTargetOfWeek(int projectid,int targetofmonth,string member,DateTime startdate,DateTime enddate)
         {
             var data = CH.GetAllData<TargetOfWeek>(tw => tw.ProjectID == projectid && tw.TargetOfMonthID == targetofmonth&&tw.Member==member);

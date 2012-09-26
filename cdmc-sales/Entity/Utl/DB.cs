@@ -89,15 +89,15 @@ namespace Utl
             context.OnPhoneBlockTypes.Add(new OnPhoneBlockType() { Name = "无人接听", Code = 4 });
             context.OnPhoneBlockTypes.Add(new OnPhoneBlockType() { Name = "不是决策人", Code = 5 });
 
-            context.LeadCallTypes.Add(new LeadCallType() { Name = "Others", Code = 1 });
-            context.LeadCallTypes.Add(new LeadCallType() { Name = "Blowed", Code = 2 });
-            context.LeadCallTypes.Add(new LeadCallType() { Name = "Not Pitched", Code = 3 });
-            context.LeadCallTypes.Add(new LeadCallType() { Name = "Pitched", Code = 4 });
-            context.LeadCallTypes.Add(new LeadCallType() { Name = "Full Pitched", Code = 5 });
-            context.LeadCallTypes.Add(new LeadCallType() { Name = "Call-Backed", Code = 6 });
-            context.LeadCallTypes.Add(new LeadCallType() { Name = "Waiting for Approval", Code = 7 });
-            context.LeadCallTypes.Add(new LeadCallType() { Name = "Qualified Decision", Code = 8 });
-            context.LeadCallTypes.Add(new LeadCallType() { Name = "Closed", Code = 9 });
+            context.LeadCallTypes.Add(new LeadCallType() { Name = "Others", Code = 1, ID=1 });
+            context.LeadCallTypes.Add(new LeadCallType() { Name = "Blowed", Code = 2, ID = 2 });
+            context.LeadCallTypes.Add(new LeadCallType() { Name = "Not Pitched", Code = 3, ID = 3 });
+            context.LeadCallTypes.Add(new LeadCallType() { Name = "Pitched", Code = 4, ID = 4 });
+            context.LeadCallTypes.Add(new LeadCallType() { Name = "Full Pitched", Code = 5, ID = 5 });
+            context.LeadCallTypes.Add(new LeadCallType() { Name = "Call-Backed", Code = 6, ID = 6 });
+            context.LeadCallTypes.Add(new LeadCallType() { Name = "Waiting for Approval", Code = 7, ID = 7 });
+            context.LeadCallTypes.Add(new LeadCallType() { Name = "Qualified Decision", Code = 8, ID = 8 });
+            context.LeadCallTypes.Add(new LeadCallType() { Name = "Closed", Code = 9, ID = 9 });
             
              context.DistrictNumbers.Add(new DistrictNumber() { Country = "kuwait", Number = 965, TimeDifference = -5 ,ID=1});
             context.DistrictNumbers.Add(new DistrictNumber() { Country = "Australia", Number = 61, TimeDifference = 2  ,ID=2});
@@ -120,6 +120,7 @@ namespace Utl
             context.ParticipantTypes.Add(new ParticipantType() { Name_EN = "Delegate", ID = 2 });
             context.ParticipantTypes.Add(new ParticipantType() { Name_EN = "VIP", ID = 3 });
             context.ParticipantTypes.Add(new ParticipantType() { Name_EN = "Others", ID = 4 });
+
             context.Packages.Add(new Package { Name_CH = "黄金展商", Name_EN = "30 minutes speechs", Prize = 20000, PackageTypeID=1, ParticipantTypeID=1,ID=1, SubName="" });
 
             var c1 = new Company() { CategoryID = 1, CompanyTypeID = 1, Cerator = "sean", Areas = "航天上下游相关企业", Contact = "2100000", DistrictNumberID = 1, From = "销售部", ID = 1, Name_CH = "天空之星", Name_EN = "Sky Start", Fax = "213000" };
@@ -129,15 +130,27 @@ namespace Utl
             var c3 = new Company() { CategoryID = 3, CompanyTypeID = 1, Cerator = "susie", Areas = "航空燃油", Contact = "21566500", DistrictNumberID = 1, From = "销售部", ID = 3, Name_CH = "高精行空油业", Name_EN = "Elite Sky Oil", Fax = "563000" };
             context.Companys.Add(c3);
 
-            context.Leads.Add(new Lead() {  ID = 1, Name_CH = "马克", Name_EN = "Mike", Fax = "213000", CompanyID=1, Contact="23422232", Mobile="1243323233", Title="CEO", Gender="Mr", EMail="Mike@123.com"  });
-            context.Leads.Add(new Lead() { ID = 2, Name_CH = "马丁", Name_EN = "Martin", Fax = "254000", CompanyID = 2, Contact = "2342752", Mobile = "1343323233", Title = "Sales Director", Gender = "Mr", EMail = "Martin@123.com" });
-            context.Leads.Add(new Lead() { ID = 3, Name_CH = "汤玛斯", Name_EN = "Tomas", Fax = "563000", CompanyID = 3, Contact = "23674232", Mobile = "1256423233", Title = "CTO", Gender = "Mr", EMail = "Tomas@123.com" });
+            var l1 = new Lead() { ID = 1, Name_CH = "马克", Name_EN = "Mike", Fax = "213000", CompanyID = 1, Contact = "23422232", Mobile = "1243323233", Title = "CEO", Gender = "Mr", EMail = "Mike@123.com" };
+            context.Leads.Add(l1);
+
+            var l2 = new Lead() { ID = 2, Name_CH = "艾利克斯", Name_EN = "Alex", Fax = "214500", CompanyID = 1, Contact = "23422232", Mobile = "1248903233", Title = "CFO", Gender = "Mr", EMail = "Alex@123.com" };
+            context.Leads.Add(l2);
+            var l3 = new Lead() { ID = 3, Name_CH = "马丁", Name_EN = "Martin", Fax = "254000", CompanyID = 2, Contact = "2342752", Mobile = "1343323233", Title = "Sales Director", Gender = "Mr", EMail = "Martin@123.com" };
+            context.Leads.Add(l3);
+
+            var l4 = new Lead() { ID = 4, Name_CH = "汤玛斯", Name_EN = "Tomas", Fax = "563000", CompanyID = 3, Contact = "23674232", Mobile = "1256423233", Title = "CTO", Gender = "Mr", EMail = "Tomas@123.com" };
+            context.Leads.Add(l4);
 
             var p1 = new Project() { ID = 1, EndDate = DateTime.Now, StartDate = DateTime.Now, Target = 50000000, IsActived = true, Leader = "stone", Manager = "mike", Name = "CTC 航空峰会" };
             p1.Companys = new List<Company>();
             p1.Companys.Add(c1);
             p1.Companys.Add(c2);
             p1.Companys.Add(c3);
+            p1.Leads = new List<Lead>();
+            p1.Leads.Add(l1);
+            p1.Leads.Add(l2);
+            p1.Leads.Add(l3);
+            p1.Leads.Add(l4);
 
             var tm1 = new TargetOfMonth() { ID = 1, BaseDeal = 50000, CheckIn = 50000, Deal = 70000, StartDate = DateTime.Now.StartOfMonth(), EndDate = DateTime.Now.EndOfMonth() };
             context.TargetOfMonths.Add(tm1);
@@ -147,25 +160,46 @@ namespace Utl
             var tw1 = new TargetOfWeek() { ID = 1, Member="sean", TargetOfMonthID=1, ProjectID=1, CheckIn = 10000, Deal = 10000, EndDate = DateTime.Now.EndOfWeek(), StartDate=DateTime.Now.StartOfWeek()};
             context.TargetOfWeeks.Add(tw1);
 
-            var tw2 = new TargetOfWeek() { ID = 1, Member = "susie", TargetOfMonthID = 1, ProjectID = 1, CheckIn = 8000, Deal = 8000, EndDate = DateTime.Now.EndOfWeek(), StartDate = DateTime.Now.StartOfWeek() };
+            var tw2 = new TargetOfWeek() { ID = 2, Member = "sean", TargetOfMonthID = 1, ProjectID = 1, CheckIn = 10000, Deal = 10000, EndDate = DateTime.Now.EndOfWeek().AddDays(7), StartDate = DateTime.Now.StartOfWeek().AddDays(7) };
             context.TargetOfWeeks.Add(tw2);
 
-            var tw3 = new TargetOfWeek() { ID = 1, Member = "tina", TargetOfMonthID = 1, ProjectID = 1, CheckIn = 6000, Deal = 6000, EndDate = DateTime.Now.EndOfWeek(), StartDate = DateTime.Now.StartOfWeek() };
+            var tw3 = new TargetOfWeek() { ID = 3, Member = "susie", TargetOfMonthID = 1, ProjectID = 1, CheckIn = 8000, Deal = 8000, EndDate = DateTime.Now.EndOfWeek(), StartDate = DateTime.Now.StartOfWeek() };
             context.TargetOfWeeks.Add(tw3);
 
-            var d1 = new Deal() { ExpectedPaymentDate=DateTime.Now.AddDays(-2), ID=1, Income=30000, Payment=30000, PackageID=1, LeadID=1, ProjectID=1, Sales="sean", IsClosed=true };
-            var d2 = new Deal() { ExpectedPaymentDate = DateTime.Now.AddDays(-1), ID = 2, Income = 50000, Payment = 30000, PackageID = 1, LeadID = 2, ProjectID = 1, Sales = "sean", IsClosed = true };
+            var tw4 = new TargetOfWeek() { ID = 4, Member = "tina", TargetOfMonthID = 1, ProjectID = 1, CheckIn = 6000, Deal = 6000, EndDate = DateTime.Now.EndOfWeek(), StartDate = DateTime.Now.StartOfWeek() };
+            context.TargetOfWeeks.Add(tw4);
+
+            var d1 = new Deal() { ExpectedPaymentDate=DateTime.Now.AddDays(-2), ActualPaymentDate=DateTime.Now, ID=1, Income=30000, Payment=30000, PackageID=1, LeadID=1, ProjectID=1, Sales="sean", IsClosed=true };
+            var d2 = new Deal() { ExpectedPaymentDate = DateTime.Now.AddDays(-1), ActualPaymentDate = DateTime.Now, ID = 2, Income = 50000, Payment = 50000, PackageID = 1, LeadID = 2, ProjectID = 1, Sales = "sean", IsClosed = true };
+            var d3 = new Deal() { ExpectedPaymentDate = DateTime.Now.AddDays(7), ID = 3, Income = 0, Payment = 60000, PackageID = 1, LeadID = 2, ProjectID = 1, Sales = "sean", IsClosed = false };
 
             context.Deals.Add(d1);
             context.Deals.Add(d2);
-
+            context.Deals.Add(d3);
             p1.Deals = new List<Deal>();
             p1.Deals.Add(d1);
             p1.Deals.Add(d2);
-
+            p1.Deals.Add(d3);
             context.Projects.Add(p1);
             var p2 = new Project() { ID = 2, EndDate = DateTime.Now, StartDate = DateTime.Now, Target = 30000000, IsActived = true, Leader = "sean", Manager = "mike", Name = "万国博览会" };
             context.Projects.Add(p2);
+
+
+            var lc1 = new LeadCall() { ID = 1, Caller = "sean", CallingTime = DateTime.Now, LeadCallTypeID = 3, LeadID=1, ProjectID=1 };
+            var lc2 = new LeadCall() { ID = 2, Caller = "sean", CallingTime = DateTime.Now, LeadCallTypeID = 4, LeadID = 1, ProjectID = 1 };
+            var lc3 = new LeadCall() { ID = 3, Caller = "sean", CallingTime = DateTime.Now, LeadCallTypeID = 5, LeadID = 1, ProjectID = 1 };
+            var lc5 = new LeadCall() { ID = 4, Caller = "sean", CallingTime = DateTime.Now, LeadCallTypeID = 6, LeadID = 1, ProjectID = 1 };
+            var lc6 = new LeadCall() { ID = 5, Caller = "sean", CallingTime = DateTime.Now, LeadCallTypeID = 7, LeadID = 1, ProjectID = 1 };
+            var lc7 = new LeadCall() { ID = 5, Caller = "sean", CallingTime = DateTime.Now, LeadCallTypeID = 2, LeadID = 1, ProjectID = 1 };
+            var lc4 = new LeadCall() { ID = 5, Caller = "sean", CallingTime = DateTime.Now, LeadCallTypeID = 2, LeadID = 1, ProjectID = 1 };
+
+            context.LeadCalls.Add(lc1);
+            context.LeadCalls.Add(lc2);
+            context.LeadCalls.Add(lc3);
+            context.LeadCalls.Add(lc4);
+            context.LeadCalls.Add(lc5);
+            context.LeadCalls.Add(lc6);
+            context.LeadCalls.Add(lc7);
 
             context.Members.Add(new Member() { ID = 1, ProjectID = 1, Name = "sean", Characters = "R|S" });
             context.Members.Add(new Member() { ID = 2, ProjectID = 1, Name = "susie" });

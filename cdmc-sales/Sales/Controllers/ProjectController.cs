@@ -28,7 +28,7 @@ namespace Sales.Controllers
         {
             if (setdate == null)
                 return View();
-            var projects = CH.GetAllData<Project>("Members", "TargetOfWeeks", "Leads", "Deals");
+            var projects = CH.GetAllData<Project>("Members", "TargetOfWeeks", "Leads", "Deals","Companys","Leads");
             var weeklyreports = CRM_Logical.GenerateWeeklyReports(projects, setdate);
             return View(weeklyreports);
         }
