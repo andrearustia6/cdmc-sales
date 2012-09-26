@@ -32,14 +32,14 @@
     </div>
     <div class="editor-label">
         @{
-            int cid = (int)ViewBag.PackageID;
+            int cid = ViewBag.PackageID==null?(int)Model.PackageID:(int)ViewBag.PackageID;
             var c = CH.GetDataById<Package>(cid);
             string en = "未发现匹配Package";
             if (c != null)
             {
                 en = c.FullName;
                 @Html.Label(en) 
-                @Html.HiddenFor(m => m.PackageID, cid)
+                @Html.Hidden("PackageID", cid)
             } 
            
         }

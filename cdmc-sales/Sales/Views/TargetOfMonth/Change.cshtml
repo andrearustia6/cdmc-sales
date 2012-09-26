@@ -6,14 +6,14 @@
         @Html.LabelFor(model => model.StartDate)
     </div>
     <div class="editor-field">
-        @Html.Telerik().DatePickerFor(model => model.StartDate).Value(Model == null?DateTime.Now.StartOfWeek():Model.StartDate)
+        @Html.Telerik().DatePickerFor(model => model.StartDate).Value(Model == null?DateTime.Now.StartOfMonth():Model.StartDate)
         @Html.ValidationMessageFor(model => model.StartDate)
     </div>
     <div class="editor-label">
         @Html.LabelFor(model => model.EndDate)
     </div>
     <div class="editor-field">
-        @Html.Telerik().DatePickerFor(model => model.EndDate).Value(Model == null ? DateTime.Now.EndOfWeek() : Model.EndDate)
+        @Html.Telerik().DatePickerFor(model => model.EndDate).Value(Model == null ? DateTime.Now.EndOfMonth() : Model.EndDate)
         @Html.ValidationMessageFor(model => model.EndDate)
     </div>
     <div class="editor-label">

@@ -70,7 +70,7 @@
                             删除</a> </span>);
                 }).Scrollable(scrolling => scrolling.Height(350))
                 )
-
+  @Html.ActionLink("添加成员", "Create", "Member", new { projectid = Model.ID }, null)    
 }
         
 @helper Deals(Project p)
@@ -93,7 +93,7 @@
                 }).Scrollable(scrolling => scrolling.Height(350))
 
 )
-       
+  
 }
 
 @helper Companys(Project p)
