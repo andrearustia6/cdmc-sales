@@ -1,7 +1,9 @@
 ﻿@model Package
 @using Utl
 @using Entity
-
+@{
+    ViewBag.ControlName = "Company";
+}
 @Html.ValidationSummary(true)
 <fieldset>
     <legend>@SR.Form</legend>
