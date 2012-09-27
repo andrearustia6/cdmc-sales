@@ -2,8 +2,9 @@
 @using Utl
 @using (Html.BeginForm())
 {
-    <fieldset>
-        <legend>目标项目</legend>
+<div  style="margin:10px; margin-left:0px;">
+        <span ><b>目标项目：</b>
         @Html.DropDownList("ProjectID", new SelectList(CH.GetAllData<Project>(), "ID", "Name"), "-请选择-", new { onchange = "this.form.submit();" })
-    </fieldset>
+        </span>
+       </div>
 }

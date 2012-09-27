@@ -1,11 +1,11 @@
 ﻿@{
-    ViewBag.Title = "AccountIndex";
+    ViewBag.Title = "个人信息";
 }
 @model List<MembershipUser>
 
 @using Utl
 @using Entity
-
+@Html.Partial("contenttitle","个人信息")
 @(Html.Telerik().Grid<MembershipUser>(Model).Name("MembershipUser")
                 .DataKeys(keys =>
                 {
@@ -13,8 +13,8 @@
                 })
                 .Columns(c =>
                 {
-                    c.Bound(item => item.UserName).Width(200);
-                    c.Bound(item => item.Email).Width(200);
+                    c.Bound(item => item.UserName).Title("用户名称").Width(200);
+                    c.Bound(item => item.Email).Title("电子邮箱").Width(200);
                     
                     c.Bound(item => item.UserName).Template(@<span>
                         @Employee.GetProfile("Department",item.UserName)
@@ -26,7 +26,7 @@
                      @Employee.GetRoleName(item.UserName)
                     </span>);
                     // c.Bound(item => ).Width(100);
-                    c.Bound(item => item.UserName).Title("操作").Width(100).Template(@<span> 
+                    c.Bound(item => item.UserName).Title("操作").Width(150).Template(@<span> 
                     <a href=@Url.Content("~/Account/Details/?name=" + item.UserName) >个人信息</a> 
                      @if (Employee.AsDirector())
                      {
@@ -41,6 +41,12 @@
                                                                   .Scrollable(scrolling => scrolling.Height(350))
 
                                                   )
-@Html.ActionLink("创建", "register", null,new { @class = "link-create" })
+
+<div class="anniu">
+    <ul>
+        <li>@Html.ActionLink("创建", "register")</li>
+    </ul>
+</div>
+
 
 

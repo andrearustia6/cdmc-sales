@@ -12,6 +12,7 @@ body
     padding: 0;
     color: #696969;
 }
+
 .link-create
 {
 	margin:5px; padding:5px;
@@ -83,13 +84,12 @@ first child of the left and right table columns */
 
 /* you can specify a greater or lesser percentage for the 
 page width. Or, you can specify an exact pixel width. */
-.page
-{
-    width: 90%;
+.page {
     margin-left: auto;
     margin-right: auto;
+    padding-top: 130px;
+    width: 930px;
 }
-
 header, #header
 {
     position: relative;

@@ -256,6 +256,16 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\jquery-ui-1.8.23.custom.css" />
+    <Content Include="css\css.css" />
+    <Content Include="images\anniu.gif" />
+    <Content Include="images\anniu_1.gif" />
+    <Content Include="images\bj_3.gif" />
+    <Content Include="images\logo_2.gif" />
+    <Content Include="images\tubiao.gif" />
+    <Content Include="images\yuanjiao.gif" />
+    <Content Include="images\yuanjiao_2.gif" />
+    <Content Include="images\yuanjiao_3.gif" />
+    <Content Include="images\yuanjiao_4.gif" />
     <Content Include="images\文字.gif" />
     <Content Include="Scripts\jquery-ui-1.8.23.custom.min.js" />
     <Content Include="Scripts\json2.js" />
@@ -879,15 +889,6 @@
     <Content Include="Views\ParticipantType\Display.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\PackageServiceType\Index.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\PackageServiceType\Display.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\PackageServiceType\Change.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Views\PackageType\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -1053,7 +1054,7 @@
     <Content Include="Views\Project\Breakdown.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Deal\Index.cshtml" />
+    <Content Include="Views\Project\Deals.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Deal\Display.cshtml" />
@@ -1081,6 +1082,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\ProjectSelector.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\ContentTitle.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

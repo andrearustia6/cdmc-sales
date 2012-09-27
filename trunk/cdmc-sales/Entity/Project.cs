@@ -212,13 +212,17 @@ namespace Entity
     public class Deal : EntityBase
     {
         public virtual Lead Lead { get; set; }
+        [Display(Name = "Lead"), Required]
         public int? LeadID { get; set; }
 
         public virtual Package Package { get; set; }
+        [Display(Name = "销售Package"), Required]
         public int? PackageID { get; set; }
 
+        [Display(Name = "坏账")]
         public bool Abandoned { get; set; }
 
+        [Display(Name = "坏账原因")]
         public string AbandonReason { get; set; } 
 
         [Display(Name = "合约付款日期"),Required]

@@ -1,6 +1,7 @@
 ﻿@using Entity
 @using Utl;
 @model List<Project>
+@Html.Partial("contenttitle","项目管理")
 @(Html.Telerik().Grid<Project>(Model).Name("Project")
                 .DataKeys(keys =>
                 {
@@ -14,8 +15,9 @@
                     c.Bound(item => item.IsActived).Width(50);
                     c.Bound(item => item.Keywords).Width(200);
                     c.Bound(item => item.ID).Width(200).Title("操作").Template(@<span> <a href=@Url.Content("~/Project/Edit/" + item.ID) >
-                        编辑</a> | <a href=@Url.Content("~/Project/Details/" + item.ID)>详细</a> | <a href=@Url.Content("~/Project/Management/" + item.ID)>项目管理</a>| <a href=@Url.Content("~/Project/delete/" + item.ID) >
-                            删除</a> </span>);
+                        编辑</a> | <a href=@Url.Content("~/Project/Details/" + item.ID)>详细</a> | <a href=@Url.Content("~/Project/Management/" + item.ID)>
+                            项目管理</a>| <a href=@Url.Content("~/Project/delete/" + item.ID) >删除</a>
+</span>);
                 })
 .Resizable(resizing => resizing.Columns(true))
                                                                          .Filterable().Sortable().Groupable()
@@ -23,4 +25,8 @@
                                                                          .Scrollable(scrolling => scrolling.Height(350))
 
 )
-@Html.ActionLink("立项", "Create")
+<div class="anniu">
+    <ul>
+        <li>@Html.ActionLink("立项", "Create")</li>
+    </ul>
+</div>

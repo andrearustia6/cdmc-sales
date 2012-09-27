@@ -181,6 +181,14 @@ namespace Sales.Controllers
             return RedirectToAction("Index", "TargetOfMonth", new { id = projectid });
         }
         #endregion
+
+        #region
+        public ViewResult Deals(int? projectid)
+        {
+            return View(CH.GetAllData<Deal>(d=>d.ProjectID == projectid));
+        }
+        #endregion
+
         public ViewResult Details(int id)
         {
             return View(CH.GetDataById<Project>(id));

@@ -1,5 +1,6 @@
 ﻿@using Entity
 @model List<LeadCall>
+@Html.Partial("contenttitle", "通话列表")
 @(Html.Telerik().Grid<LeadCall>(Model).Name("LeadCall")
                 .DataKeys(keys =>
                 {

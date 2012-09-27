@@ -1,5 +1,6 @@
 ﻿@using Entity
 @model List<PaymentType>
+@Html.Partial("contenttitle", "付款类型")
 @(Html.Telerik().Grid<PaymentType>(Model).Name("PaymentType")
                 .DataKeys(keys =>
                 {
@@ -19,5 +20,9 @@
                                             .Scrollable(scrolling => scrolling.Height(350))
 
                             )
-@Html.ActionLink("创建", "Create")
 
+<div class="anniu">
+    <ul>
+        <li>@Html.ActionLink("付款类型创建", "Create")</li>
+    </ul>
+</div>
