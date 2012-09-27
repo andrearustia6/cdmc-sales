@@ -70,7 +70,7 @@ namespace Sales.Model
             Member = m;
         }
 
-        
+        public string Duration { get { return StartDate.ToShortDateString() + "~" + EndDate.ToShortDateString(); } }
         public Member Member { get; set; }
 
         public decimal DealsAmount
