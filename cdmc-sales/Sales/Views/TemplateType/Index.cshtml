@@ -1,5 +1,6 @@
 ﻿@using Entity
 @model List<TemplateType>
+@Html.Partial("contenttitle", "模版类型")
 @(Html.Telerik().Grid<TemplateType>(Model).Name("TemplateType")
                 .DataKeys(keys =>
                 {
@@ -10,12 +11,16 @@
                     c.Bound(item => item.Name).Width(200);
                     c.Bound(item => item.Code).Width(100);
                     c.Bound(item => item.Description).Width(300);
-                    c.Bound(item => item.ID).Width(200).Title("操作").ClientTemplate("<a href='/TemplateType/edit/" + "<#= ID #>'>编辑</a> | <a href='/TemplateType/details/" + "<#= ID #>'>详细</a> | <a href='/TemplateType/delete/" + "<#= ID #>'>删除</a>"); 
-                 })
+                    c.Bound(item => item.ID).Width(200).Title("操作").ClientTemplate("<a href='/TemplateType/edit/" + "<#= ID #>'>编辑</a> | <a href='/TemplateType/details/" + "<#= ID #>'>详细</a> | <a href='/TemplateType/delete/" + "<#= ID #>'>删除</a>");
+                })
                 .Resizable(resizing => resizing.Columns(true))
                 .Filterable().Sortable().Groupable()
                 .Pageable(p => p.PageSize(20))
                 .Scrollable(scrolling => scrolling.Height(350))
-              
+
 )
-@Html.ActionLink("创建", "Create")
+<div class="anniu">
+    <ul>
+        <li>@Html.ActionLink("模版类型创建", "Create")</li>
+    </ul>
+</div>

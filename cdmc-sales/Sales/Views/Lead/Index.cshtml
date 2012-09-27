@@ -1,7 +1,7 @@
 ﻿@using Entity
 @using Utl
 @model List<Lead>
-@Html.Partial("projectselector")
+@Html.Partial("contenttitle", "客户列表")
 @(Html.Telerik().Grid<Lead>(Model).Name("Lead")
                 .DataKeys(keys =>
                 {
@@ -19,7 +19,7 @@
                     c.Bound(o => o.Contact).Width(200);
                     c.Bound(item => item.ID).Title("操作").Template(@<span> 
                    <a href=@Url.Content("~/Lead/Details/" + item.ID)>详细</a> 
-                            | <a href=@Url.Content("~/Lead/Management/?&leadid="+ item.ID)>客户关系</a> </span>);
+                            | <a href=@Url.Content("~/Lead/Management/?&leadid=" + item.ID)>客户关系</a> </span>);
                 })
                 .Resizable(resizing => resizing.Columns(true))
                 .Groupable()
@@ -28,7 +28,7 @@
                 .Filterable()
                 .Scrollable(scrolling => scrolling.Height(550))
 )
-
+@Html.Partial("projectselector")
 <p>
     请在公司页面下添加客户</p>
 

@@ -4,34 +4,31 @@
 <head>
     <title>@ViewBag.Title</title>
     <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/css/css.css")" rel="stylesheet" type="text/css" />
     <link href="@Url.Content("~/Content/jquery-ui-1.8.23.custom.css")" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src=@Url.Content(@"/scripts/jquery-1.6.4.min.js")></script>@*确保在页面能引用到jquery*@
     <script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
     <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
-    @* <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />*@
     @(Html.Telerik().StyleSheetRegistrar().DefaultGroup(group => group.Add("telerik.common.css").Add("telerik.telerik.css").Combined(true).Compress(true)))
     <script type="text/javascript" src=@Url.Content(@"~/vjs/view.js")></script>@*确保在页面能引用到jquery*@
 </head>
 <body>
-    <div class="page">
-        <header>
-			<div id="title">
-            <center>
-				<h1>决策者销售管理系统</h1>
-                </center>
-			</div>
-
-			
-		</header>
-        <div>
-            @Html.ActionLink("[" + User.Identity.Name + "]", "Index", "Account", null, new { style = "float:right;margin-top:-20px;margin-right:100px;color: #FFFFFF;text-decoration: none;z-index:1000;" })
-            @Html.ActionLink("[关于]", "Index", "About", null, new { style = "float:right;margin-top:-20px;margin-right:50px;color: #FFFFFF;text-decoration: none;z-index:1000;" })
-            @Html.ActionLink("[退出]", "LogOff", "Account", null, new { style = "float:right;margin-top:-20px;color: #FFFFFF;text-decoration: none;z-index:1000;" })
-            @{ Html.Telerik().Menu().Name("Menu1").Items(menu =>
+    @*                  *@
+    <div class="top">
+        <div class="top_1">
+           @Html.ActionLink("[" + User.Identity.Name + "]", "Index", "Account")
+           @Html.ActionLink("[关于]", "Index", "About" ) 
+           @Html.ActionLink("[退出]", "LogOff", "Account")
+        </div>
+        <div class="logo">
+            <img src="/images/logo_2.gif" width="509" height="59" alt="logo" /></div>
+        <div class="page">
+            <div>
+                @{ Html.Telerik().Menu().Name("Menu1").Items(menu =>
                {
                    if (Employee.AsDirector())
                    {
-                       menu.Add().Text("类型字典管理").ImageUrl("~/Content/Common/Icons/mvc.png").Items(item =>
+                       menu.Add().Text("类型字典").ImageUrl("~/Content/Common/Icons/mvc.png").Items(item =>
                        {
                            item.Add().Text("行业").Url("~/Category/index").ImageUrl("~/Content/Common/Icons/Scheduler.png");
                            item.Add().Text("货币").Url("~/CurrencyType/index").ImageUrl("~/Content/Common/Icons/GridView.gif");
@@ -58,10 +55,11 @@
                        {
                            item.Add().Url("~/Project/Reports").Text("项目周报").ImageUrl("~/Content/Common/Icons/Docking.gif");
                            item.Add().Url("~/Project/index").Text("项目管理").ImageUrl("~/Content/Common/Icons/Docking.gif");
+                           item.Add().Url("~/Project/Deals").Text("出单查看").ImageUrl("~/Content/Common/Icons/Docking.gif");
                            item.Add().Url("~/Research/index").Text("调研查看").ImageUrl("~/Content/Common/Icons/Docking.gif");
 
                        });
-                       
+
                        menu.Add().Text("配置").ImageUrl("~/Content/Common/Icons/GridView.gif").Items(item =>
                        {
                            item.Add().Url("~/DistrictNumber/index").Text("区号管理").ImageUrl("~/Content/Common/Icons/Docking.gif");
@@ -94,7 +92,7 @@
                        {
                            item.Add().Url("~/Research/MyIndex").Text("调研上传").ImageUrl("~/Content/Common/Icons/Docking.gif");
                            item.Add().Url("~/Company/DistributionIndex").Text("分配的公司").ImageUrl("~/Content/Common/Icons/Docking.gif");
-                           item.Add().Url("~/Lead/DistributionIndex").Text("分配的客户").ImageUrl("~/Content/Common/Icons/Docking.gif");                 
+                           item.Add().Url("~/Lead/DistributionIndex").Text("分配的客户").ImageUrl("~/Content/Common/Icons/Docking.gif");
                            item.Add().Url("~/Deal/MyDealIndex").Text("我的出单").ImageUrl("~/Content/Common/Icons/Docking.gif");
                            item.Add().Url("~/Lead/DailyLeadCall").Text("今日电话统计").ImageUrl("~/Content/Common/Icons/Docking.gif");
                            item.Add().Url("~/Project/MyWeeklyReport").Text("我的周报").ImageUrl("~/Content/Common/Icons/Docking.gif");
@@ -123,11 +121,18 @@
                    });
 
                }).Render();}
+            </div>
+        </div>
+    </div>
+    <div class="bottom">
+        <div class="bottom_2">
             <section id="main">@RenderBody()</section>
         </div>
-        <footer>
-		</footer>
     </div>
+</body>
+<footer>
+		</footer>
+</div>
 @(Html.Telerik().ScriptRegistrar().Globalization(true).DefaultGroup(group => group
                .Add(@"jquery-ui-1.8.23.custom.min.js")
                 .Add(@"json2.js")

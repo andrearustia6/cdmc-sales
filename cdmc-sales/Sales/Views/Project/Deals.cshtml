@@ -1,11 +1,9 @@
-﻿@{
-    ViewBag.Title = "我的出单";
-}
-
-@using Entity
+﻿@using Entity
 @model List<Deal>
-
-@Html.Partial("contenttitle", "我的出单")
+@{
+    ViewBag.Title = "出单管理";
+}
+@Html.Partial("contenttitle", "出单管理")
 
 @(Html.Telerik().Grid<Deal>(Model).Name("Deal")
                 .DataKeys(keys =>

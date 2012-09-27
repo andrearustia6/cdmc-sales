@@ -1,6 +1,7 @@
 ﻿@using Entity
 @using Utl
 @model List<Company>
+@Html.Partial("contenttitle", "公司列表") 
 @(Html.Telerik().Grid(Model).Name("Company")
                 .DataKeys(keys =>
                 {
@@ -11,12 +12,12 @@
                     c.Bound(item => item.FullName).Width(150);
                     c.Bound(item => item.Category.FullName).Title("行业").Width(100);
                     c.Bound(item => item.Areas).Width(120);
-                    c.Bound(item => item.Available).Width(120);
+                    c.Bound(item => item.Available).Width(80);
                     c.Bound(item => item.Contact).Width(100);
                     c.Bound(item => item.CompanyType.Name).Width(100);
                     c.Bound(item => item.Cerator).Width(70);
                     c.Bound(item => item.From).Width(70);
-                    c.Bound(item => item.ID).Title("操作").Width(150).Template(@<span>
+                    c.Bound(item => item.ID).Title("操作").Width(180).Template(@<span>
                     <a href=@Url.Content("~/Company/Edit/" + item.ID) >编辑</a> | <a href=@Url.Content("~/Company/Details/" + item.ID)>详细</a>  | <a href=@Url.Content("~/Lead/Create/?from=company&CompanyId=" + item.ID)>添加客户</a>| <a href=@Url.Content("~/Company/delete/" + item.ID) >删除</a> 
                    </span>);
                 })
@@ -33,23 +34,24 @@
                 .Scrollable(scrolling => scrolling.Height(350))
                         )
 
-
-@Html.ActionLink("公司创建", "Create")
+<div class="anniu">
+    <ul>
+        <li>@Html.ActionLink("公司创建", "Create")</li>
+    </ul>
+</div>
 
 @helper RenderGrid(List<Lead> Leads, int companyuid)
     { 
      @(Html.Telerik().Grid(Leads).Name("Leads" + companyuid)
                             .Columns(c =>
                             {
-
-                                c.Template(@<text><img alt="photo"  style="width:80px;height:70px" src=@Url.Content("~/Image/DisplayImage/" + item.ImageID) /></text>).Title("客户照片").Width(100);
                                 c.Bound(o => o.FullName).Width(150);
                                 c.Bound(o => o.Title).Width(150);
-                                c.Bound(o => o.EMail).Title("邮箱").Width(150);
+                                c.Bound(o => o.EMail).Title("电子邮箱").Width(150);
                                 c.Bound(o => o.Fax).Title("传真").Width(150);
                                 c.Bound(o => o.Contact).Width(150);
 
-                                c.Bound(item => item.ID).Title("操作").Template(@<span>
+                                c.Bound(item => item.ID).Title("操作").Width(150).Template(@<span>
                     <a href=@Url.Content("~/lead/Edit/?from=company&id=" + item.ID) >编辑</a> | <a href=@Url.Content("~/lead/Details/" + item.ID)>详细</a> | <a href=@Url.Content("~/Company/delete/" + item.ID) >删除</a> 
                    </span>);
                             })

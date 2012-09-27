@@ -1,5 +1,6 @@
 ﻿@using Entity
 @model List<PackageItem>
+@Html.Partial("contenttitle", "Package列子项")
 @(Html.Telerik().Grid<PackageItem>(Model).Name("PackageItem")
                 .DataKeys(keys =>
                 {
