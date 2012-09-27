@@ -1,0 +1,36 @@
+﻿@{
+    ViewBag.Title = "我的出单";
+}
+
+@using Entity
+@model List<Deal>
+
+@Html.Partial("contenttitle", "项目出单")
+
+@(Html.Telerik().Grid<Deal>(Model).Name("Deal")
+                .DataKeys(keys =>
+                {
+                    keys.Add(s => s.ID);
+                })
+                .Columns(c =>
+                {
+                    c.Bound(item => item.Lead.FullName).Title("客户名称").Width(150);
+                    c.Bound(item => item.Project.Name).Width(150);
+                    c.Bound(item => item.Package.FullName).Width(150);
+                    c.Bound(item => item.Payment).Width(150);
+                    c.Bound(item => item.Income).Width(150);
+                    c.Bound(item => item.IsClosed).Width(50);
+                    c.Bound(item => item.Abandoned).Width(50);
+                    c.Bound(item => item.ExpectedPaymentDate).Template(@<text>@item.ExpectedPaymentDate.ToShortDateString()</text>).Width(150);
+                    c.Bound(item => item.ActualPaymentDate).Template(@<text>@item.ActualPaymentDate</text>).Width(150);
+                    c.Bound(item => item.ID).Width(200).Title("操作").Template(@<span>
+                    <a href=@Url.Content("~/Deal/Edit/" + item.ID) >编辑</a> | <a href=@Url.Content("~/Deal/Details/" + item.ID)>详细</a>  | <a href=@Url.Content("~/Deal/delete/" + item.ID) >删除</a> 
+                   </span>);
+                })
+                                        .Resizable(resizing => resizing.Columns(true))
+                                        .Filterable().Sortable().Groupable()
+                                        .Pageable(p => p.PageSize(20))
+                                        .Scrollable(scrolling => scrolling.Height(350))
+
+)
+@Html.Partial("projectselector")

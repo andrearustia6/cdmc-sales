@@ -4,21 +4,20 @@
 }
 @using Entity
 @using Utl
-@model Deal
 <fieldset>
     <legend>Deal</legend>
     <div class="editor-label">
         @Html.LabelFor(model => model.LeadID, "Lead信息")
     </div>
     <div class="editor-field">
-        @Html.DropDownListFor("LeadID", new SelectList(CH.GetAllData<Lead>(l => l.Company.ID == Model.Lead.Company.ID), "ID", "Name"), "-请选择-")
+        @Html.DropDownListFor(m=>m.LeadID, new SelectList(CH.GetAllData<Lead>(l => l.Company.ID == Model.Lead.Company.ID), "ID", "FullName"), "-请选择-")
         @Html.ValidationMessageFor(model => model.LeadID)
     </div>
     <div class="editor-label">
         @Html.LabelFor(model => model.PackageID, "Package")
     </div>
     <div class="editor-field">
-        @Html.DropDownList("PackageID", new SelectList(CH.GetAllData<Package>),"ID","FullName"), "-请选择-")
+        @Html.DropDownListFor(m => m.PackageID, new SelectList(CH.GetAllData<Package>(), "ID", "FullName"),"-请选择-")
         @Html.ValidationMessageFor(model => model.PackageID)
     </div>
 
@@ -47,14 +46,14 @@
         @Html.LabelFor(model => model.Income)
     </div>
     <div class="editor-field">
-        @Html.EditorFor(model => model.Income)
+        @Html.Telerik().CurrencyTextBoxFor(model => model.Income)
         @Html.ValidationMessageFor(model => model.Income)
     </div>
     <div class="editor-label">
         @Html.LabelFor(model => model.Payment)
     </div>
     <div class="editor-field">
-        @Html.EditorFor(model => model.Payment)
+        @Html.Telerik().CurrencyTextBoxFor(model => model.Payment)
         @Html.ValidationMessageFor(model => model.Payment)
     </div>
     <div class="editor-label">

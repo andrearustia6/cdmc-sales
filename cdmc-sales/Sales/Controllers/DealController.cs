@@ -13,9 +13,11 @@ namespace Sales.Controllers
     public class DealController : Controller
     {
 
-        public ViewResult Index()
+        public ViewResult Index(int? projectid)
         {
-            return View(CH.GetAllData<Deal>());
+            if (projectid == null)
+                return null;
+            return View(CH.GetAllData<Deal>(d=>d.ProjectID == projectid));
         }
 
         public ViewResult MyDealIndex()

@@ -83,8 +83,7 @@
                        menu.Add().Text("模板管理").ImageUrl("~/Content/Common/Icons/GridView.gif").Items(item =>
                        {
                            item.Add().Url("~/Template/index").Text("通用模板").ImageUrl("~/Content/Common/Icons/Editor.png");
-                           item.Add().Url("~/LeadSheet/index").Text("致电结果").ImageUrl("~/Content/Common/Icons/Docking.gif");
-                           item.Add().Url("~/OnPhoneTemplate/index").Text("话术").ImageUrl("~/Content/Common/Icons/Docking.gif");
+                           item.Add().Url("~/OnPhoneTemplate/index").Text("话术模板").ImageUrl("~/Content/Common/Icons/Docking.gif");
                        });
                    }
                    if (Employee.EqualToLeader() | Employee.EqualToSales())
