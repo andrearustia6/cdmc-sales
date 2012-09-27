@@ -33,6 +33,15 @@ namespace Sales.Controllers
             return View(weeklyreports);
         }
 
+        public ViewResult Compare(DateTime? setdate, int? projectid)
+        {
+            if (setdate == null)
+                return View();
+            var projects = CH.GetAllData<Project>("Members", "TargetOfWeeks", "Leads", "Deals", "Companys", "Leads");
+            var weeklyreports = CRM_Logical.GenerateWeeklyReports(projects, setdate);
+            return View(weeklyreports);
+        }
+
         #region 添加公司
         public ViewResult SelectCompany(int? projectid)
         {
