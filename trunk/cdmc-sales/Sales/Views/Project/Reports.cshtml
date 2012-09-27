@@ -4,8 +4,7 @@
 @using Sales.Model
 @model List<WeeklyReport>
 @using Utl
-<h2>
-    Reports</h2>
+@Html.Partial("contenttitle", "项目周报")
 @using (Html.BeginForm("Reports", "Project"))
 {
     @Html.Telerik().DatePicker().Name("setdate").Value(DateTime.Now.StartOfWeek())

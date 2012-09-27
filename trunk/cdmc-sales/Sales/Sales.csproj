@@ -235,7 +235,7 @@
     <Compile Include="Controllers\FAQController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ResearchController.cs" />
-    <Compile Include="Controllers\Type\OnPhoneBlockController.cs" />
+    <Compile Include="Controllers\Type\OnPhoneBlockTypeController.cs" />
     <Compile Include="Controllers\Type\PackageServiceTypeController.cs" />
     <Compile Include="Controllers\Type\PackageTypeController.cs" />
     <Compile Include="Controllers\Type\ParticipantTypeController.cs" />
@@ -1088,6 +1088,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Project\Compare.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Deal\Index.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

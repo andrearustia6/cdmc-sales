@@ -1,6 +1,6 @@
 ﻿@using Entity
 @model List<PackageItem>
-@Html.Partial("contenttitle", "Package列子项")
+@Html.Partial("contenttitle", "子项列表")
 @(Html.Telerik().Grid<PackageItem>(Model).Name("PackageItem")
                 .DataKeys(keys =>
                 {
@@ -8,8 +8,8 @@
                 })
                 .Columns(c =>
                 {
-                    c.Bound(item => item.FullName).Width(200);
-                    c.Bound(item => item.Package.FullName).Width(150);
+                    c.Bound(item => item.FullName).Title("子项名称").Width(200);
+                    c.Bound(item => item.Package.FullName).Title("所属Package").Width(150);
                     c.Bound(item => item.Content);
                     c.Bound(item => item.ID).Title("操作").Width(150).Template(@<span> <a href=@Url.Content("~/PackageItem/Edit/" + item.ID) >
                         编辑</a> | <a href=@Url.Content("~/PackageItem/Details/" + item.ID)>详细</a> | <a href=@Url.Content("~/PackageItem/delete/" + item.ID) >
