@@ -5,16 +5,19 @@
 @using Utl
 @using BLL
 @model Lead
-<h2>
-    客户关系管理</h2>
+@Html.Partial("contenttitle", "客户关系")
+@Html.HiddenFor(m => m.ID)
+@Html.Hidden("ProjectID", (int)ViewBag.ProjectID)
 @*@using (Html.BeginForm())
 {
     <fieldset>
         <legend>目标项目</legend>
-        @Html.HiddenFor(m => m.ID)
+       
         @Html.DropDownList("ProjectID", new SelectList(CH.GetAllData<Project>(), "ID", "Name"), "-请选择-", new { onchange = "this.form.submit();" })
     </fieldset>
 }*@
+@Html.HiddenFor(m => m.ID)
+
 @Html.Partial("LeadCallEditor", new LeadCall() { LeadID = Model.ID })
 @Html.Partial("LeadPackageEditor", CRM_Logical.GetTargetOfPackage(Model, (object)ViewBag.ProjectID))
 @(Html.Telerik().TabStrip().Name("TabStrip").SelectedIndex(0).Items(items =>

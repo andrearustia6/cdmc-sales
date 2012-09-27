@@ -1,7 +1,7 @@
 ﻿@using Entity
 @using Utl
 @model List<Lead>
-
+@Html.Partial("contenttitle", "我的客户")
 @(Html.Telerik().Grid<Lead>(Model).Name("Lead")
                 .DataKeys(keys =>
                 {
@@ -12,12 +12,12 @@
                     c.Bound(o => o.FullName);
                     c.Bound(o => o.Company.FullName).Title("所在公司");
                     c.Bound(o => o.Title).Width(120);
-                    c.Bound(o => o.Contact).Width(150);
-                    c.Bound(o => o.Mobile).Width(150);
+                    c.Bound(o => o.Contact).Width(120);
+                    c.Bound(o => o.Mobile).Width(120);
                     c.Bound(o => o.EMail).Width(120);
                     c.Bound(o => o.Contact).Width(150);
-                    c.Bound(item => item.ID).Title("操作").Template(@<span> 
-                   <a href=@Url.Content("~/Lead/Details/" + item.ID)>详细</a> | <a href=@Url.Content("~/Lead/Management/?projectid=" + (int)ViewBag.ProjectID +"&leadid="+ item.ID)>客户关系</a> 
+                    c.Bound(item => item.ID).Title("操作").Width(120).Template(@<span> 
+                   <a href=@Url.Content("~/Lead/Details/" + item.ID)>详细</a> | <a href=@Url.Content("~/Lead/Management/?projectid=" + (int)ViewBag.ProjectID + "&leadid=" + item.ID)>客户关系</a> 
                             </span>);
                 })
                 .Resizable(resizing => resizing.Columns(true))
@@ -25,9 +25,9 @@
                 .Pageable(p => p.PageSize(50))
                 .Sortable()
                 .Filterable()
-                .Scrollable(scrolling => scrolling.Height(550))
+                .Scrollable(scrolling => scrolling.Height(450))
 )
-
+@Html.Partial("projectselector")
 
 
 

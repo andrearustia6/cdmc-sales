@@ -71,6 +71,8 @@
                 }).Scrollable(scrolling => scrolling.Height(350))
                 )
   @Html.ActionLink("添加成员", "Create", "Member", new { projectid = Model.ID }, null)    
+   <span> </span>     
+  @Html.ActionLink("分配字头", "Distribution", "Project", new { projectid = Model.ID }, null)   
 }
         
 @helper Deals(Project p)
