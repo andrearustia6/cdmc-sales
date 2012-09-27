@@ -99,7 +99,7 @@ namespace Utl
             context.LeadCallTypes.Add(new LeadCallType() { Name = "Qualified Decision", Code = 8, ID = 8 });
             context.LeadCallTypes.Add(new LeadCallType() { Name = "Closed", Code = 9, ID = 9 });
             
-             context.DistrictNumbers.Add(new DistrictNumber() { Country = "kuwait", Number = 965, TimeDifference = -5 ,ID=1});
+            context.DistrictNumbers.Add(new DistrictNumber() { Country = "kuwait", Number = 965, TimeDifference = -5 ,ID=1});
             context.DistrictNumbers.Add(new DistrictNumber() { Country = "Australia", Number = 61, TimeDifference = 2  ,ID=2});
 
             context.CurrencyTypes.Add(new CurrencyType() { Name="RMB"});
@@ -169,13 +169,15 @@ namespace Utl
             var tw4 = new TargetOfWeek() { ID = 4, Member = "tina", TargetOfMonthID = 1, ProjectID = 1, CheckIn = 6000, Deal = 6000, EndDate = DateTime.Now.EndOfWeek(), StartDate = DateTime.Now.StartOfWeek() };
             context.TargetOfWeeks.Add(tw4);
 
-            var d1 = new Deal() { ExpectedPaymentDate=DateTime.Now.AddDays(-2), ActualPaymentDate=DateTime.Now, ID=1, Income=30000, Payment=30000, PackageID=1, LeadID=1, ProjectID=1, Sales="sean", IsClosed=true };
-            var d2 = new Deal() { ExpectedPaymentDate = DateTime.Now.AddDays(-1), ActualPaymentDate = DateTime.Now, ID = 2, Income = 50000, Payment = 50000, PackageID = 1, LeadID = 2, ProjectID = 1, Sales = "sean", IsClosed = true };
+            var d1 = new Deal() { ExpectedPaymentDate = DateTime.Now.AddDays(-2), ActualPaymentDate = DateTime.Now, ID = 1, Income = 12000, Payment = 12000, PackageID = 1, LeadID = 1, ProjectID = 1, Sales = "sean", IsClosed = true };
+            var d2 = new Deal() { ExpectedPaymentDate = DateTime.Now.AddDays(-1), ActualPaymentDate = DateTime.Now, ID = 2, Income = 5000, Payment = 5000, PackageID = 1, LeadID = 2, ProjectID = 1, Sales = "susie", IsClosed = true };
+            var d4 = new Deal() { ExpectedPaymentDate = DateTime.Now.AddDays(-3), ActualPaymentDate = DateTime.Now, ID = 4, Income = 7500, Payment = 7500, PackageID = 1, LeadID = 2, ProjectID = 1, Sales = "tina", IsClosed = true };
             var d3 = new Deal() { ExpectedPaymentDate = DateTime.Now.AddDays(7), ID = 3, Income = 0, Payment = 60000, PackageID = 1, LeadID = 2, ProjectID = 1, Sales = "sean", IsClosed = false };
 
             context.Deals.Add(d1);
             context.Deals.Add(d2);
             context.Deals.Add(d3);
+            context.Deals.Add(d4);
             p1.Deals = new List<Deal>();
             p1.Deals.Add(d1);
             p1.Deals.Add(d2);

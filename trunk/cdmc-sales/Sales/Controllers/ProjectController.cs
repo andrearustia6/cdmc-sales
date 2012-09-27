@@ -39,7 +39,8 @@ namespace Sales.Controllers
                 return View();
             var projects = CH.GetAllData<Project>("Members", "TargetOfWeeks", "Leads", "Deals", "Companys", "Leads");
             var weeklyreports = CRM_Logical.GenerateWeeklyReports(projects, setdate);
-            return View(weeklyreports);
+            var rp=weeklyreports.FirstOrDefault(w => w.Project.ID == projectid);
+            return View(rp.MemberItems);
         }
 
         #region 添加公司
