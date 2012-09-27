@@ -2,6 +2,7 @@
 @using Utl
 @model List<Lead>
 @(Html.Telerik().Grid<Lead>(Model).Name("Lead")
+     .ToolBar(commands => commands.Custom().HtmlAttributes(new { id = "export" }).Text("Export to CSV").Action("EmailExportCsv", "Lead", new { page = 1, orderBy = "~", filter = "~" }))
                 .DataKeys(keys =>
                 {
                     keys.Add(s => s.ID);

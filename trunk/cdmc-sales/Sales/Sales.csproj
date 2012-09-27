@@ -931,7 +931,7 @@
     <Content Include="Views\Template\Change.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Company\MarketIndex.cshtml" />
+    <Content Include="Views\Lead\MarketIndex.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Company\ProductIndex.cshtml" />
