@@ -1,13 +1,7 @@
 ﻿@using Entity
 @using Utl
 @model List<Lead>
-@using (Html.BeginForm())
-{
-    <fieldset>
-        <legend>目标项目</legend>
-        @Html.DropDownList("ProjectID", new SelectList(CH.GetAllData<Project>(), "ID", "Name"), "-请选择-", new { onchange = "this.form.submit();" })
-    </fieldset>
-}
+
 @(Html.Telerik().Grid<Lead>(Model).Name("Lead")
                 .DataKeys(keys =>
                 {

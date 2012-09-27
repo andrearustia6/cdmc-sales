@@ -1,6 +1,7 @@
 ﻿@using Entity
 @using Utl
 @model List<Company>
+@Html.Partial("projectselector")
 @(Html.Telerik().Grid(Model).Name("Company")
                 .DataKeys(keys =>
                 {

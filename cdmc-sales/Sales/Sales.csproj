@@ -960,7 +960,7 @@
     <Content Include="Views\Package\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Company\SalesIndex.cshtml" />
+    <Content Include="Views\Company\DistributionIndex.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\DistrictNumber\Change.cshtml" />
@@ -1078,6 +1078,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Lead\DistributionIndex.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\ProjectSelector.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

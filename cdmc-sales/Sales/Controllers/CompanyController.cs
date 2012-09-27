@@ -19,6 +19,23 @@ namespace Sales.Controllers
            return View(CH.GetAllData<Company>("Leads"));
         }
 
+        [SalesRequired]
+        public ViewResult DistributionIndex(int? projectid)
+        {
+            ViewBag.ProjectID = projectid;
+            var members = CH.GetAllData<Member>(m => m.Name == User.Identity.Name && m.ProjectID == projectid);
+
+            var member = members.FirstOrDefault();
+            if (member != null && member.CharactersSet != null)
+            {
+                var data = CH.GetAllData<Company>("Leads");
+                data = data.FindAll(c => member.CharactersSet.Any(ca => (c.Name_EN.ToUpper().StartsWith(ca))));
+
+                return View(data);
+            }
+            return View();
+        }
+
         /// <summary>
         /// 根据字头分配显示
         /// </summary>

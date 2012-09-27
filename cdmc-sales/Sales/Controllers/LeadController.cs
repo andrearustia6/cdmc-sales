@@ -124,8 +124,16 @@ namespace Sales.Controllers
 
         public ActionResult Management(int leadid, int? ProjectID)
         {
-            ViewBag.ProjectID = ProjectID;
-            return View(CH.GetAllData<Lead>(i => i.ID == leadid, "TargetOfPackages").FirstOrDefault());
+            if (ProjectID != null)
+            {
+                ViewBag.ProjectID = ProjectID;
+             
+                var leads = CH.GetAllData<Lead>(i => i.ID == leadid, "TargetOfPackages","Projects");
+                var data = leads.FirstOrDefault(l=>l.Projects.Any(p=>p.ID==ProjectID));
+                return View(data);
+            }
+            else
+               return View(CH.GetAllData<Lead>(i => i.ID == leadid, "TargetOfPackages").FirstOrDefault());
         }
 
         public ActionResult LeadCallIndex(int leadid)
