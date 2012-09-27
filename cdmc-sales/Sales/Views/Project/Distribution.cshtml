@@ -4,20 +4,12 @@
 @using Entity
 @using Utl
 @model List<Member>
-@*@(
- 
- Html.Telerik().Splitter().Name("Splitter1").HtmlAttributes(new { style = "min-height: 600px;" })
-.Orientation(SplitterOrientation.Horizontal).Panes(panes =>
-{
-    panes.Add().Size("25%").Scrollable(false).MinSize("200px").Collapsible(true).Content(@<text>@CompanysTree()</text>);
-    panes.Add().Size("75%").Collapsible(true).Content(@<text>@Members()</text>);
-})
-)*@
+@Html.Partial("contenttitle", "字头分配")
 @helper CompanysTree()
     {
         <h3 style=" margin-left:50px">备选字头：</h3>
     <ul class="charatacter connectedSortable">
-     @if(ViewBag.DC!=null)
+     @if (ViewBag.DC != null)
      {
          var dc = (List<string>)ViewBag.DC;
          foreach (var c in dc)
@@ -39,10 +31,10 @@
             <h3>@m.Name:</h3>
             <ul class="drop-container t-group connectedSortable pane" mid=@m.ID>
                 @foreach (var c in m.CharactersSet)
-               {
+                {
                
                 <li>@c<input name="mc" type="hidden" value=@m.ID|@c /> </li> 
-               }
+                }
             </ul>
             }
         }
