@@ -28,6 +28,11 @@ img{vertical-align:top; border:0; margin:0px; padding:0px;}
 .anniu li a{ color:#fff; text-decoration:none;}
 .anniu li a:hover{ color:#fff;}
 
+.anniu_2{ padding-top:7px;clear:both;  font-size:12px; padding-left:80px;_margin-left:-280px;}
+.anniu_2 li{ width:96px; height:31px; float:left;background:url(../images/anniu_2.gif) no-repeat; text-align:center; line-height:28px; margin-right:5px;}
+.anniu_2 li a{ color:#fff; text-decoration:none;}
+.anniu_2 li a:hover{ color:#fff;}
+
 
 
 /*menu*/
@@ -40,3 +45,15 @@ img{vertical-align:top; border:0; margin:0px; padding:0px;}
 #nav .mainlevel ul {display:none; position:absolute;}
 #nav .mainlevel li {border-top:1px solid #fff; background:#ef6b00; padding:0 0px;/*IE6 only*/}
 #nav .mainlevel li a{ color:#fff;}
+
+/*字母分配*/
+.zimu_left{ float:left; width:200px;}
+.zimu_left h2{ font-family:"微软雅黑"; font-size:14px; color:#d76000; padding-bottom:10px;}
+.zimu_left li{ float:left; width:34px; height:17px; background:url(../images/bj_4.gif); text-align:center; line-height:17px; border:1px solid #f5cdab; margin-right:5px; color:#d96a10; margin-bottom:5px;}
+.zimu_right li{ float:left; width:34px; height:17px; background:url(../images/bj_4.gif); text-align:center; line-height:17px; border:1px solid #f5cdab; margin-right:5px; color:#d96a10; margin-bottom:5px;}
+
+.zimu_right{ float:left; width:650px; margin-left:20px; font-family:"Trebuchet MS", Arial, Helvetica, sans-serif; color:#d96a10; font-size:14px;}
+.zimu_right dt{ clear:both; padding-bottom:10px; }
+.zimu_right dl{ width:70px; text-align:right; float:left; line-height:30px;}
+.zimu_right dd{  width:520px; float:left; margin-left:10px; display:inline; font-size:12px;}
+.zimu_right dd textarea{ width:500px; border:1px solid #feead7; background:#fff; padding:5px;}

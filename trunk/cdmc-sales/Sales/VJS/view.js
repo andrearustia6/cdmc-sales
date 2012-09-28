@@ -30,8 +30,6 @@ function initialCompanySelect() {
     });
 
     $(".pane").droppable({
-        activeClass: "ui-state-hover",
-        hoverClass: "ui-state-active",
         drop: function (event, ui) {
             var $this = $(this);
             var mid = $this.closest('.pane').attr('mid');
@@ -39,6 +37,7 @@ function initialCompanySelect() {
             var c = ui.draggable.text();
             ui.draggable.append('<input name="mc" type="hidden" value="' + mid + '|' + c + '"/>');
             $this.append(ui.draggable);
+            $(".cc").addClass('xiangmu_3');
             return false;
         }
     });

@@ -7,54 +7,74 @@
 @Html.Partial("contenttitle", "字头分配")
 @helper CompanysTree()
     {
-        <h3 style=" margin-left:50px">备选字头：</h3>
-    <ul class="charatacter connectedSortable">
-     @if (ViewBag.DC != null)
-     {
-         var dc = (List<string>)ViewBag.DC;
-         foreach (var c in dc)
-         {
-            <li>@c</li> 
-         }
-     }
-    </ul>
+    <div class="zimu_left">
+        <h2>
+            备选字母</h2>
+        <ul class="charatacter connectedSortable">
+            @if (ViewBag.DC != null)
+            {
+                var dc = (List<string>)ViewBag.DC;
+                foreach (var c in dc)
+                {
+                <li>@c</li> 
+                }
+            }
+        </ul>
+    </div>
 }
 @helper Members()
     {
         var Members = CH.GetAllData<Member>(i => i.ProjectID == (int)ViewBag.ProjectID);
-    <div>
+    <div class="zimu_right">
         @if (Members != null)
         {
             foreach (var m in Members)
             {
-           
-            <h3>@m.Name:</h3>
-            <ul class="drop-container t-group connectedSortable pane" mid=@m.ID>
-                @foreach (var c in m.CharactersSet)
-                {
+            <div>
+                <h3>@m.Name:</h3>
+                <ul class="drop-container connectedSortable pane" mid=@m.ID>
+                    @foreach (var c in m.CharactersSet)
+                    {
                
-                <li>@c<input name="mc" type="hidden" value=@m.ID|@c /> </li> 
-                }
-            </ul>
+                        <li>@c<input name="mc" type="hidden" value=@m.ID|@c />
+                        </li> 
+                    }
+                </ul>
+            </div>
             }
         }
     </div>
+        
+           
+
+       
+
+   
 }
-
-
-<div>
-    <div style="float:left; width:25%">
+<div class="xiangmu_2">
+    <div class="yuanjiao">
+    </div>
+    <div class="xiangmu_3">
+     @{ Html.BeginForm(); }
         @CompanysTree()
-    </div>
-@{ Html.BeginForm(); }
-    @Html.Hidden("ProjectID", (int)ViewBag.ProjectID)
-    <div style="float:left; width:75%">
         @Members()
+       
+        @Html.Hidden("ProjectID", (int)ViewBag.ProjectID)
+       
+      @*  <div class="anniu_2">
+            <ul>
+                <li>
+               
+                  </li>
+            </ul>
+        </div>*@
+         <input type="submit"  value="提交" style="margin-top:450px; margin-left:-600px;"  />
+        @{ Html.EndForm(); }
     </div>
-    <p> <button type="submit" class="t-button t-state-default">@SR.Save</button></p>
-@{ Html.EndForm(); }
+     
+    <div class="yuanjiao_2">
+    </div>
 </div>
-
 <style type="text/css" type="text/css">
     #TreeView
     {
@@ -65,21 +85,15 @@
     {
         height: 8em;
         overflow: auto;
-        margin-top: -15px;
         margin-left: 15px;
         border-width: 1px;
         border-style: solid;
         width: 93%;
         padding-top: 15px;
     }
-     .charatacter
+    .charatacter
     {
-        
-        overflow: auto;
-        margin-top: -15px;
-        margin-left: 15px;
-  
-     
+         max-width:200px; min-height:350px;
     }
     .charatacter li, .pane li
     {
@@ -89,7 +103,13 @@
         list-style-type: none;
         min-width: 50px;
         text-align: center;
-        margin: 3px;
+        margin-left: 5px;
+    }
+    h3
+    {
+        font-family: "Trebuchet MS" , Arial, Helvetica, sans-serif;
+        color: #d96a10;
+        font-size: 14px;
     }
 </style>
 @{ Html.Telerik().ScriptRegistrar().OnDocumentReady(@<text> initialCompanySelect()
