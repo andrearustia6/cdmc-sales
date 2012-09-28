@@ -425,11 +425,13 @@ namespace Utl
 
         public static DateTime EndOfWeek(this DateTime dt)
         {
-            int diff = DayOfWeek.Friday - dt.DayOfWeek; 
+            int diff = DayOfWeek.Saturday - dt.DayOfWeek; 
             if (diff < 0) 
             { diff += 7; }
-            return dt.AddDays(1 * diff).Date;
+            var re= dt.AddDays(1 * diff).AddHours(23).Date;
+            return re;
         }
+            
         public static DateTime StartOfMonth(this DateTime dt)
         {
             return new DateTime(dt.Year, dt.Month, 1);
