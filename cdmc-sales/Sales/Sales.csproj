@@ -259,7 +259,9 @@
     <Content Include="css\css.css" />
     <Content Include="images\anniu.gif" />
     <Content Include="images\anniu_1.gif" />
+    <Content Include="images\anniu_2.gif" />
     <Content Include="images\bj_3.gif" />
+    <Content Include="images\bj_4.gif" />
     <Content Include="images\logo_2.gif" />
     <Content Include="images\tubiao.gif" />
     <Content Include="images\yuanjiao.gif" />
