@@ -5,6 +5,8 @@
 @model List<WeeklyReport>
 @using Utl
 @Html.Partial("contenttitle", "项目周报")
+<br />
+<br />
 @using (Html.BeginForm("Reports", "Project"))
 {
     @Html.Telerik().DatePicker().Name("setdate").Value(DateTime.Now.StartOfWeek())
@@ -15,6 +17,8 @@
     var i = 0;
     foreach (var report in Model)
     {
+        <div style=" margin:10px; margin-left:0px;">
+        <p>@report.Project.Name</p>
     @(Html.Telerik().TabStrip().Name("TabStrip" + i).SelectedIndex(0).Items(items =>
 {
     items.Add().Text("工作量").Content(@<text>@AmountOfWork(report)</text>);
@@ -24,6 +28,7 @@
     i++;
 })
 )
+</div>
     }
 }
 

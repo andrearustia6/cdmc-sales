@@ -16,7 +16,7 @@ using System.Text;
 
 namespace Sales.Controllers
 {
-    [SalesRequired]
+    
     public class LeadController : Controller
     {
         [MarketInterfaceRequired]
@@ -44,6 +44,7 @@ namespace Sales.Controllers
             }
             return View();
         }
+        [MarketInterfaceRequired]
         public ActionResult EmailExportCsv(int page, string orderBy, string filter)
         {
              var leads = CH.GetAllData<Lead>();           
