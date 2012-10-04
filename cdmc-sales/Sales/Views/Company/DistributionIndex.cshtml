@@ -1,7 +1,8 @@
 ﻿@using Entity
 @using Utl
 @model List<Company>
-@Html.Partial("projectselector")
+@Html.Partial("contenttitle","我的公司")
+
 @(Html.Telerik().Grid(Model).Name("Company")
                 .DataKeys(keys =>
                 {
@@ -34,7 +35,7 @@
                 .Scrollable(scrolling => scrolling.Height(350))
                         )
 
-
+@Html.Partial("projectselector")
 <div class="anniu">
     <ul>
         <li>@Html.ActionLink("创建", "Create")</li>
@@ -48,10 +49,10 @@
                             {
 
                                 c.Template(@<text><img alt="photo"  style="width:80px;height:70px" src=@Url.Content("~/Image/DisplayImage/" + item.ImageID) /></text>).Title("客户照片").Width(100);
-                                c.Bound(o => o.FullName).Width(150);
-                                c.Bound(o => o.Title).Width(150);
-                                c.Bound(o => o.EMail).Title("邮箱").Width(150);
-                                c.Bound(o => o.Fax).Title("传真").Width(150);
+                                c.Bound(o => o.FullName).Width(120);
+                                c.Bound(o => o.Title).Width(120);
+                                c.Bound(o => o.EMail).Title("邮箱").Width(100);
+                                c.Bound(o => o.Fax).Title("传真").Width(100);
                                 c.Bound(o => o.Contact).Width(150);
 
                                 c.Bound(item => item.ID).Title("操作").Template(@<span>
