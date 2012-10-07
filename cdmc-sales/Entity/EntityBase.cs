@@ -17,10 +17,16 @@ namespace Entity
         public int? Sequence { get; set; }
 
         [Display(Name = "更改用户")]
-        public string User { get; set; }
+        public string ModifiedUser { get; set; }
 
         [Display(Name = "更改时间")]
-        public DateTime? ModifiedTime { get; set; }
+        public DateTime? ModifiedDate { get; set; }
+
+        [Display(Name = "创建用户")]
+        public string Creator { get; set; }
+
+        [Display(Name = "创建时间")]
+        public DateTime? CreatedDate { get; set; }
     }
 
     public class FullNameEntity : EntityBase

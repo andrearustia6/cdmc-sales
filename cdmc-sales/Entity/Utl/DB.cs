@@ -48,6 +48,8 @@ namespace Utl
         {
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
         }
+
+        public DbSet<Image> Images { get; set; }
     }
 
     public class DBInitializer : DropCreateDatabaseIfModelChanges<DB>
@@ -123,11 +125,11 @@ namespace Utl
 
             context.Packages.Add(new Package { Name_CH = "黄金展商", Name_EN = "30 minutes speechs", Prize = 20000, PackageTypeID=1, ParticipantTypeID=1,ID=1, SubName="" });
 
-            var c1 = new Company() { CategoryID = 1, CompanyTypeID = 1, Cerator = "sean", Areas = "航天上下游相关企业", Contact = "2100000", DistrictNumberID = 1, From = "销售部", ID = 1, Name_CH = "天空之星", Name_EN = "Sky Start", Fax = "213000" };
+            var c1 = new Company() { CategoryID = 1, CompanyTypeID = 1, Cerator = "sean", Areas = "航天上下游相关企业", Creator = "karen", Contact = "2100000", DistrictNumberID = 1, From = "销售部", ID = 1, Name_CH = "天空之星", Name_EN = "Sky Start", Fax = "213000" };
             context.Companys.Add(c1);
-            var c2 = new Company() { CategoryID = 2, CompanyTypeID = 1, Cerator = "sean", Areas = "火箭发射", Contact = "214545400", DistrictNumberID = 1, From = "销售部", ID = 2, Name_CH = "火箭之家", Name_EN = "Rocket Me", Fax = "214500" };
+            var c2 = new Company() { CategoryID = 2, CompanyTypeID = 1, Cerator = "sean", Areas = "火箭发射", Contact = "214545400", Creator = "karen", DistrictNumberID = 1, From = "销售部", ID = 2, Name_CH = "火箭之家", Name_EN = "Rocket Me", Fax = "214500" };
             context.Companys.Add(c2);
-            var c3 = new Company() { CategoryID = 3, CompanyTypeID = 1, Cerator = "susie", Areas = "航空燃油", Contact = "21566500", DistrictNumberID = 1, From = "销售部", ID = 3, Name_CH = "高精行空油业", Name_EN = "Elite Sky Oil", Fax = "563000" };
+            var c3 = new Company() { CategoryID = 3, CompanyTypeID = 1, Cerator = "susie", Areas = "航空燃油", Contact = "21566500", Creator = "karen", DistrictNumberID = 1, From = "销售部", ID = 3, Name_CH = "高精行空油业", Name_EN = "Elite Sky Oil", Fax = "563000" };
             context.Companys.Add(c3);
 
             var l1 = new Lead() { ID = 1, Name_CH = "马克", Name_EN = "Mike", Fax = "213000", CompanyID = 1, Contact = "23422232", Mobile = "1243323233", Title = "CEO", Gender = "Mr", EMail = "Mike@123.com" };
@@ -141,7 +143,7 @@ namespace Utl
             var l4 = new Lead() { ID = 4, Name_CH = "汤玛斯", Name_EN = "Tomas", Fax = "563000", CompanyID = 3, Contact = "23674232", Mobile = "1256423233", Title = "CTO", Gender = "Mr", EMail = "Tomas@123.com" };
             context.Leads.Add(l4);
 
-            var p1 = new Project() { ID = 1, EndDate = DateTime.Now, StartDate = DateTime.Now, Target = 50000000, IsActived = true, Leader = "stone", Manager = "mike", Name = "CTC 航空峰会" };
+            var p1 = new Project() { ID = 1, EndDate = DateTime.Now, StartDate = DateTime.Now, Target = 50000000, IsActived = true, Leader = "stone", Manager = "mike", Name = "CTC 航空峰会", ProjectCode="ACYY" };
             p1.Companys = new List<Company>();
             p1.Companys.Add(c1);
             p1.Companys.Add(c2);
@@ -183,7 +185,7 @@ namespace Utl
             p1.Deals.Add(d2);
             p1.Deals.Add(d3);
             context.Projects.Add(p1);
-            var p2 = new Project() { ID = 2, EndDate = DateTime.Now, StartDate = DateTime.Now, Target = 30000000, IsActived = true, Leader = "sean", Manager = "mike", Name = "万国博览会" };
+            var p2 = new Project() { ID = 2, EndDate = DateTime.Now, StartDate = DateTime.Now, Target = 30000000, IsActived = true, Leader = "sean", Manager = "mike", Name = "万国博览会", ProjectCode="BTEC" };
             context.Projects.Add(p2);
 
 

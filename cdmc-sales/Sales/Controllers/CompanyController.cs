@@ -13,12 +13,14 @@ namespace Sales.Controllers
 {
     public class CompanyController : Controller
     {
+        
         [ManagerRequired]
         public ActionResult Index()
         {
            return View(CH.GetAllData<Company>("Leads"));
         }
 
+        #region sales
         [SalesRequired]
         public ViewResult DistributionIndex(int? projectid)
         {
@@ -55,6 +57,7 @@ namespace Sales.Controllers
             }
             return View();
         }
+        #endregion
 
         /// <summary>
         /// 个人页面/维护自己上传的公司信息
@@ -67,12 +70,12 @@ namespace Sales.Controllers
 
 
         [ProductInterfaceRequired]
-        public ViewResult ProductIndex()
+        public ViewResult ProductIndex(int projectid)
         {
-           // var p = CH.GetAllData<Project>(p => p.Members.Any(m => m.Name == User.Identity.Name));
-            return View(CH.GetAllData<Company>("Leads"));
+            return View(CH.GetAllData<Company>(c=>c.Projects.Any(p=>p.ID == projectid),"Leads"));
         }
 
+        [SalesRequired]
         public ViewResult Details(int id)
         {
             return View(CH.GetDataById<Company>(id));
@@ -87,7 +90,6 @@ namespace Sales.Controllers
         [SalesRequired]
         public ActionResult Create(Company item)
         {
-
             if (EntityUtl.Utl.CheckPropertyAllNull(item, "Name_EN", "Name_CH"))
                 ModelState.AddModelError("", "名字不完整,中文名和英文名不能同时为空");
 
