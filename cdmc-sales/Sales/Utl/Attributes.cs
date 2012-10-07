@@ -86,39 +86,7 @@ public class RoleRequired : AuthorizeAttribute
         }
     }
 }
-public class RoleEqualRequired : AuthorizeAttribute
-{
-    protected bool IsCreatorCallTheController(string actionname, string controllername, int id, string user)
-    {
-        var types = Assembly.Load("Entity").GetTypes();
-        var type = types.First(t => t.Name == controllername);
-        var tar = CH.DB.Set(type).Find(id);
-        var exist = tar as EntityBase;
-        if (exist != null && exist.Creator == user)
-        {
-            return true;
-        }
-        return false;
-    }
 
-    public virtual int Level { get; set; }
-    public override void OnAuthorization(AuthorizationContext filterContext)
-    {
-        bool skipAuthorization = filterContext.ActionDescriptor.IsDefined(typeof(AllowAnonymousAttribute), true)
-        || filterContext.ActionDescriptor.ControllerDescriptor.IsDefined(typeof(AllowAnonymousAttribute), true);
-        var level = Employee.GetCurrentRoleLevel();
-
-        if (level == Level) skipAuthorization = true;
-
-
-        if (!skipAuthorization)
-        {
-            filterContext.Result = new HttpUnauthorizedResult();
-
-            base.OnAuthorization(filterContext);
-        }
-    }
-}
 /// <summary>
 /// 1000
 /// </summary>

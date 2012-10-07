@@ -61,8 +61,6 @@ namespace Sales.Controllers
         public ActionResult SelectCompanyByProjectCode(int[] checkedRecords, int projectid)
         {
             var p = CH.GetAllData<Project>(i => i.ID == projectid, "Companys", "Leads").FirstOrDefault();
-            p.Companys.Clear();
-            p.Leads.Clear();
             if (p != null)
             {
                 foreach (int i in checkedRecords)
@@ -71,8 +69,13 @@ namespace Sales.Controllers
                     {
                         var company = CH.GetAllData<Company>(c => c.ID == i, "Leads").FirstOrDefault();
                         p.Companys.Add(company);
+                        company.Leads.ForEach(l => {
+                            if (!p.Leads.Exists(pl => pl.ID == l.ID))
+                            {
+                                p.Leads.Add(l);
+                            }
+                        });
                         p.Leads.AddRange(company.Leads);
-
                     }
                 }
             }
