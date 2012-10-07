@@ -124,7 +124,7 @@
                 .Filterable()
                 .Scrollable(scrolling => scrolling.Height(350))
                         )
-    @Html.ActionLink("管理销售对象", "SelectCompany", "Project", new { projectid = Model.ID }, null)
+    @Html.ActionLink("管理销售对象", "SelectCompanyByProjectCode", "Project", new { projectid = Model.ID }, null)
 }
 
 

@@ -82,20 +82,30 @@ namespace Utl
             return GetAllRowData<T>().Find(id);
         }
 
-        static void AddStamp(object entity)
+        static void AddCreatedStamp(object entity)
         {
             if (entity is EntityBase)
             {
                 var eb = entity as EntityBase;
-                eb.ModifiedTime = DateTime.Now;
-                eb.User = HttpContext.Current.User.Identity.Name;
+                eb.ModifiedDate = DateTime.Now;
+                eb.ModifiedUser = HttpContext.Current.User.Identity.Name;
+            }
+        }
+
+         static void AddModifiedStamp(object entity)
+        {
+            if (entity is EntityBase)
+            {
+                var eb = entity as EntityBase;
+                eb.ModifiedDate = DateTime.Now;
+                eb.ModifiedUser = HttpContext.Current.User.Identity.Name;
             }
         }
 
         public static int Create<T>(T entity)
             where T : class
         {
-            AddStamp(entity);
+            AddCreatedStamp(entity);
             DB.Set<T>().Add(entity);
             var re = DB.SaveChanges();
             return re;
@@ -109,7 +119,7 @@ namespace Utl
         public static int Edit<T>(T entity, params string[] properties)
              where T : class
         {
-            AddStamp(entity);
+            AddModifiedStamp(entity);
             foreach (var p in properties)
             {
                 string propertyname = string.Empty;

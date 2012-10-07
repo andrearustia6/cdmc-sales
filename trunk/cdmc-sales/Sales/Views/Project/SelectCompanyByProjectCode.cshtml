@@ -1,0 +1,42 @@
+﻿@{
+    ViewBag.Title = "SelectCompanyByProjectCode";
+}
+
+@using Entity
+@using Utl
+@using BLL
+@model List<Project>
+@{ Html.BeginForm(); }
+
+ @Html.Hidden("ProjectID",(int)ViewBag.ProjectID)
+@(
+
+
+              Html.Telerik().Grid<Project>(Model).Name("noselected").DataKeys(keys =>
+                {
+                    keys.Add(s => s.ID);
+                })
+                .Columns(c =>
+                {
+                    c.Bound(ic => ic.ID).Template(@<text>@Checkbox(item)</text>).Title("已选？").Width(36).HtmlAttributes(new { style = "text-align:center" });
+                    c.Bound(ic => ic.ProjectCode).Width(200);
+                    c.Bound(ic => ic.Name).Title("项目名称").Width(200);
+                })
+                                                        .Resizable(resizing => resizing.Columns(true))
+                                                        .Pageable(p => p.PageSize(10))
+                                                        .Sortable()
+                                                        .Filterable()
+                                                        .Scrollable(scrolling => scrolling.Height(450))
+)
+<p> <button type="submit" class="t-button t-state-default">提交</button></p>
+@{ Html.EndForm(); }
+@helper Checkbox(Project c)
+{ 
+     <input name="checkedRecords" type="checkbox" value="@c.ID"  
+                    @if (CRM_Logical.IsProjectReferedbyCurrentProject(c, (int)ViewBag.ProjectID))
+                    {                            
+                        <text>checked="checked"</text> 
+                    }
+                    />     
+     
+}

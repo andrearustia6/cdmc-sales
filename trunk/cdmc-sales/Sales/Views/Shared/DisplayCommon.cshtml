@@ -8,14 +8,24 @@
         @Html.DisplayFor(model => model.Sequence)
     </div>
     <div class="display-label">
-        用户</div>
+        创建用户</div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.User)
+        @Html.DisplayFor(model => model.Creator)
     </div>
     <div class="display-label">
-        更改时间</div>
+        创建时间</div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.ModifiedTime)
+        @Html.DisplayFor(model => model.CreatedDate)
+    </div>
+    <div class="display-label">
+        更新用户</div>
+    <div class="display-field">
+        @Html.DisplayTextFor(model => model.Creator)
+    </div>
+    <div class="display-label">
+        更新时间</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.CreatedDate)
     </div>
     <div class="display-label">
         描述</div>

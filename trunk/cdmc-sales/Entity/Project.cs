@@ -56,6 +56,8 @@ namespace Entity
         [Display(Name = "Leader")]
         public string Leader { get; set; }
 
+        [Display(Name = "项目编号"), Required]
+        public string ProjectCode { get; set; }
 
         [Display(Name = "市场部接口人")]
         public string Market { get; set; }
@@ -99,11 +101,24 @@ namespace Entity
 
         public List<Progress> Progresses { get; set; }
 
+        /// <summary>
+        /// 被参考的项目的CoreList自动加入本项目的CoreList
+        /// </summary>
+        public string References { get; set; }
+
         public List<TargetOfMonth> TargetOfMonths { get; set; }
 
         public List<TargetOfWeek> TargetOfWeeks { get; set; }
 
+        /// <summary>
+        /// 所有项目公司
+        /// </summary>
         public List<Company> Companys { get; set; }
+
+        /// <summary>
+        /// 项目公司 Core List
+        /// </summary>
+        public List<Company> CoreList { get; set; }
 
         public List<Lead> Leads { get; set; }
 

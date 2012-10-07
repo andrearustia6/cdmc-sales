@@ -1,35 +1,39 @@
 ﻿@model Entity.Project
-
+@using Utl
 
 <fieldset>
-    <legend>Project</legend>
-
-    <div class="display-label">IsActived</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.IsActived)
-    </div>
-
-    <div class="display-label">Name</div>
+    <legend>@SR.Form</legend>
+    <div class="display-label">项目名称</div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Name)
     </div>
 
-    <div class="display-label">StartDay</div>
+    <div class="display-label">激活</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.IsActived)
+    </div>
+
+     <div class="display-label">项目编号</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.ProjectCode)
+    </div>
+
+    <div class="display-label">开始时间</div>
     <div class="display-field">
         @Html.DisplayFor(model => model.StartDate)
     </div>
 
-    <div class="display-label">EndDay</div>
+    <div class="display-label">结束时间</div>
     <div class="display-field">
         @Html.DisplayFor(model => model.EndDate)
     </div>
 
-    <div class="display-label">Target</div>
+    <div class="display-label">销售目标</div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Target)
     </div>
 
-    <div class="display-label">SaleBrief</div>
+    <div class="display-label">销售简介</div>
     <div class="display-field">
         @Html.DisplayFor(model => model.SaleBrief)
     </div>

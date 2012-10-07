@@ -24,6 +24,7 @@ namespace Sales.Controllers
             return View();
         }
 
+        [ManagerRequired]
         public ViewResult Reports(DateTime? setdate)
         {
             if (setdate == null)
@@ -32,7 +33,7 @@ namespace Sales.Controllers
             var weeklyreports = CRM_Logical.GenerateWeeklyReports(projects, setdate);
             return View(weeklyreports);
         }
-
+        [ManagerRequired]
         public ViewResult Compare(DateTime? setdate, int? projectid)
         {
             if (setdate == null)
@@ -44,6 +45,42 @@ namespace Sales.Controllers
         }
 
         #region 添加公司
+        [ManagerRequired(AccessType=AccessType.Equal)]
+        [ProductInterfaceRequired(AccessType = AccessType.Equal)]
+        [DirectorRequired(AccessType = AccessType.Equal)]
+        public ViewResult SelectCompanyByProjectCode(int projectid)
+        {
+            ViewBag.ProjectID = projectid;
+            return View(CH.GetAllData<Project>());
+        }
+
+        [ManagerRequired(AccessType = AccessType.Equal)]
+        [ProductInterfaceRequired(AccessType = AccessType.Equal)]
+        [DirectorRequired(AccessType = AccessType.Equal)]
+        [HttpPost]
+        public ActionResult SelectCompanyByProjectCode(int[] checkedRecords, int projectid)
+        {
+            var p = CH.GetAllData<Project>(i => i.ID == projectid, "Companys", "Leads").FirstOrDefault();
+            p.Companys.Clear();
+            p.Leads.Clear();
+            if (p != null)
+            {
+                foreach (int i in checkedRecords)
+                {
+                    if (!p.Companys.Any(c => c.ID == i))
+                    {
+                        var company = CH.GetAllData<Company>(c => c.ID == i, "Leads").FirstOrDefault();
+                        p.Companys.Add(company);
+                        p.Leads.AddRange(company.Leads);
+
+                    }
+                }
+            }
+            CH.Edit<Project>(p);
+            return RedirectToAction("Management", "Project", new { id = projectid });
+        }
+
+
         public ViewResult SelectCompany(int? projectid)
         {
             ViewBag.ProjectID = projectid;

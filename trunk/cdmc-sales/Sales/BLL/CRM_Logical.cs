@@ -69,6 +69,21 @@ namespace BLL
             return false;
         }
 
+        public static bool IsProjectReferedbyCurrentProject(Project c, int projectid)
+        {
+            var p = CH.GetAllData<Project>(i => i.ID == projectid).FirstOrDefault();
+            if (p.References != null)
+            {
+                var references = p.References.Split('|');
+                if (p != null && references.Contains(c.ProjectCode))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         public static bool IsSameMemberExistInProject(string name, int? projectid)
         {
             var p = CH.GetAllData<Project>(i => i.ID == projectid, "Members").FirstOrDefault();
