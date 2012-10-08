@@ -11,6 +11,7 @@ using Utl;
 
 namespace Sales.Controllers
 {
+    [DirectorRequired]
     public class PackageItemController : Controller
     {
         public ViewResult Index()

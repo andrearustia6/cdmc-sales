@@ -12,8 +12,10 @@ using BLL;
 
 namespace Sales.Controllers
 {
+
     public class ProjectController : Controller
     {
+        [DirectorRequired]
         public ViewResult Index()
         {
             return View(CH.GetAllData<Project>());
@@ -54,9 +56,7 @@ namespace Sales.Controllers
             return View(CH.GetAllData<Project>());
         }
 
-        [ManagerRequired(AccessType = AccessType.Equal)]
-        [ProductInterfaceRequired(AccessType = AccessType.Equal)]
-        [DirectorRequired(AccessType = AccessType.Equal)]
+        [MultipleRoleAccess(new Role() { lev})]
         [HttpPost]
         public ActionResult SelectCompanyByProjectCode(int[] checkedRecords, int projectid)
         {
@@ -69,7 +69,8 @@ namespace Sales.Controllers
                     {
                         var company = CH.GetAllData<Company>(c => c.ID == i, "Leads").FirstOrDefault();
                         p.Companys.Add(company);
-                        company.Leads.ForEach(l => {
+                        company.Leads.ForEach(l =>
+                        {
                             if (!p.Leads.Exists(pl => pl.ID == l.ID))
                             {
                                 p.Leads.Add(l);
@@ -251,7 +252,7 @@ namespace Sales.Controllers
 
         public ActionResult Management(int? id)
         {
-            var Data = CH.GetAllData<Project>(i => i.ID == id,"Deals","Companys", "Members", "Templates", "Messages", "TargetOfMonths").FirstOrDefault();
+            var Data = CH.GetAllData<Project>(i => i.ID == id,"Deals","Companys", "Members", "Templates", "Messages", "TargetOfMonths","CoreList").FirstOrDefault();
             return View(Data);
         }
 
