@@ -25,7 +25,7 @@ public sealed class LogonRequired : AuthorizeAttribute
 
 public enum AccessType
 {
-    Equal, Upper, Lower
+    Equal, Upper, Lower,Multiple
 }
 
 public class RoleRequired : AuthorizeAttribute
@@ -84,6 +84,30 @@ public class RoleRequired : AuthorizeAttribute
 
             base.OnAuthorization(filterContext);
         }
+    }
+}
+
+/// <summary>
+/// Multiple
+/// </summary>
+public sealed class MultipleRoleAccess : AuthorizeAttribute
+{
+    public RoleRequired[] Roles { get; set; }
+    public MultipleRoleAccess(params RoleRequired[] roles)
+    {
+        Roles = roles;
+    }
+
+    public override void OnAuthorization(AuthorizationContext filterContext)
+    {
+        bool skipAuthorization = false;
+        var level = Employee.GetCurrentRoleLevel();
+        if (Roles.Any(r => r.Level == level))
+        {
+            skipAuthorization = true;
+        }
+        if (!skipAuthorization)
+          base.OnAuthorization(filterContext);
     }
 }
 
