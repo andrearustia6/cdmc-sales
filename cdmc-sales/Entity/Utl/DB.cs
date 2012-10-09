@@ -148,11 +148,11 @@ namespace Utl
             p1.Companys.Add(c1);
             p1.Companys.Add(c2);
             p1.Companys.Add(c3);
-            p1.Leads = new List<Lead>();
-            p1.Leads.Add(l1);
-            p1.Leads.Add(l2);
-            p1.Leads.Add(l3);
-            p1.Leads.Add(l4);
+            //p1.Leads = new List<Lead>();
+            //p1.Leads.Add(l1);
+            //p1.Leads.Add(l2);
+            //p1.Leads.Add(l3);
+            //p1.Leads.Add(l4);
 
             var tm1 = new TargetOfMonth() { ID = 1, BaseDeal = 50000, CheckIn = 50000, Deal = 70000, StartDate = DateTime.Now.StartOfMonth(), EndDate = DateTime.Now.EndOfMonth() };
             context.TargetOfMonths.Add(tm1);

@@ -133,7 +133,7 @@ namespace Sales.Controllers
         {
             var p = CH.GetAllData<Project>(i => i.ID == projectid, "Companys","Leads").FirstOrDefault();
             p.Companys.Clear();
-            p.Leads.Clear();
+            //p.Leads.Clear();
             if (p != null)
             {
                 foreach (int i in checkedRecords)
@@ -142,7 +142,7 @@ namespace Sales.Controllers
                     {
                         var company = CH.GetAllData<Company>(c => c.ID == i, "Leads").FirstOrDefault();
                         p.Companys.Add(company);
-                        p.Leads.AddRange(company.Leads);
+                        //p.Leads.AddRange(company.Leads);
 
                     }
                 }

@@ -199,11 +199,17 @@ namespace Sales.Model
             }
         }
 
+        List<Lead> _leads;
         public List<Lead> Leads
         {
             get
             {
-                return Project.Leads;
+                if (_leads == null)
+                {
+                    var project = CH.GetAllData<Company>(c => c.pro == Project.ID,"Companys");
+                    project
+                }
+                return _leads;
             }
         }
 
