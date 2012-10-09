@@ -5,9 +5,8 @@
 @using Utl
 @using BLL
 @model Project
-<h2>
-    项目管理</h2>
 
+@Html.Partial("contenttitle", "项目管理")
 @*@Html.Partial("MemberEditor", new LeadCall() { LeadID = Model.ID })
 @Html.Partial("LeadPackageEditor", CRM_Logical.GetTargetOfPackage(Model, (object)ViewBag.ProjectID))*@
 @(Html.Telerik().TabStrip().Name("TabStrip").SelectedIndex(0).Items(items =>
@@ -23,7 +22,8 @@
 @helper BaseInfo(Project project)
     { 
    
-    <div style="width: 500;">
+    <div style="width: 500; padding:15px; min-height:350px;">
+     @Html.ActionLink("基本信息编辑", "Edit", "Project", new { id = Model.ID }, new { style="margin-bottom:15px;"})
         <ul>
             <li>
                 <label>
@@ -59,7 +59,9 @@
 @helper Members(Project p)
     { 
 
-    @(Html.Telerik().Grid<Member>(p.Members).Name("members")
+    @(Html.Telerik().Grid<Member>(p.Members).Name("members").ToolBar(commands => 
+                    commands.Custom().Text("添加成员").Action("Create", "Member", new { projectid = Model.ID }))
+                            .ToolBar(commands =>commands.Custom().Text("分配字头").Action("Distribution", "Project", new { projectid = Model.ID }))
                 .DataKeys(keys =>
                 {
                     keys.Add(s => s.ID);
@@ -73,9 +75,6 @@
                             删除</a> </span>);
                 }).Scrollable(scrolling => scrolling.Height(350))
                 )
-  @Html.ActionLink("添加成员", "Create", "Member", new { projectid = Model.ID }, null)    
-   <span> </span>     
-  @Html.ActionLink("分配字头", "Distribution", "Project", new { projectid = Model.ID }, null)   
 }
         
 @helper Deals(Project p)
@@ -110,8 +109,8 @@
                 })
                 .Columns(c =>
                 {
-                    c.Bound(item => item.Name_EN).Width(150);
-                    c.Bound(item => item.Name_CH).Width(150);
+                    c.Bound(item => item.FullName).Width(150);
+                    c.Bound(item => item).Title("拨打人").Template(@<text>@CRM_Logical.GetMemberNameWhoCallTheCompany(item.ID, p.ID)</text>).Width(150);
                     c.Bound(item => item.DistrictNumber.FullName).Width(100);
                     c.Bound(item => item.Contact).Width(100);
                     c.Bound(item => item).Template(@<text>@if (p.CoreList.Any(pc => pc.ID == item.ID))
@@ -125,20 +124,20 @@
                     c.Bound(item => item.From).Width(100);
                 })
                                        .Resizable(resizing => resizing.Columns(true))
-                                       .Groupable()
                                         .Pageable(page => page.PageSize(10))
                                        .Sortable()
                                        .Filterable()
                                        .Scrollable(scrolling => scrolling.Height(350))
                                                )
-    @Html.ActionLink("管理项目公司", "SelectCompanyByProjectCode", "Project", new { projectid = Model.ID }, null)
 }
 
 
 
 @helper Targets(Project p)
     { 
-      @(Html.Telerik().Grid<TargetOfMonth>(p.TargetOfMonths).Name("TargetOfMonths")
+      @(Html.Telerik().Grid<TargetOfMonth>(p.TargetOfMonths).Name("TargetOfMonths").ToolBar(commands =>
+                                    commands.Custom().Text("创建新月目标").Action("Create", "TargetOfMonth", new { projectid = Model.ID }))
+                                                    .ToolBar(commands => commands.Custom().Text("目标划分").Action("TargetOfMonth", "Project", new { projectid = Model.ID }))
                 .DataKeys(keys =>
                 {
                     keys.Add(s => s.ID);
@@ -155,10 +154,6 @@
                         编辑</a> | <a href=@Url.Content("~/TargetOfMonth/Details/" + item.ID)>详细</a> | <a href=@Url.Content("~/TargetOfMonth/delete/" + item.ID) >删除</a> </span>);
                 }).Scrollable(scrolling => scrolling.Height(350))
            )
-      
-@Html.ActionLink("创建新月目标", "Create", "TargetOfMonth", new { projectid = Model.ID }, null)    
-<span>     </span>
- @Html.ActionLink("目标划分", "Index", "TargetOfMonth", new { projectid = Model.ID }, null)     
-}
+        }
 
 

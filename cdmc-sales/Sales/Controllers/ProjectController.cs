@@ -47,16 +47,14 @@ namespace Sales.Controllers
         }
 
         #region 添加公司
-        [ManagerRequired(AccessType=AccessType.Equal)]
-        [ProductInterfaceRequired(AccessType = AccessType.Equal)]
-        [DirectorRequired(AccessType = AccessType.Equal)]
+        [ProjectAccess]
         public ViewResult SelectCompanyByProjectCode(int projectid)
         {
             ViewBag.ProjectID = projectid;
             return View(CH.GetAllData<Project>());
         }
 
-        [MultipleRoleAccess(new Role() { lev})]
+        [ProjectAccess]
         [HttpPost]
         public ActionResult SelectCompanyByProjectCode(int[] checkedRecords, int projectid)
         {
