@@ -9,7 +9,7 @@
 @Html.Partial("contenttitle", "项目管理")
 @*@Html.Partial("MemberEditor", new LeadCall() { LeadID = Model.ID })
 @Html.Partial("LeadPackageEditor", CRM_Logical.GetTargetOfPackage(Model, (object)ViewBag.ProjectID))*@
-@(Html.Telerik().TabStrip().Name("TabStrip").SelectedIndex(0).Items(items =>
+@(Html.Telerik().TabStrip().Name("TabStrip").SelectedIndex(ViewBag.TabIndex == null ? 0 : (int)ViewBag.TabIndex).Items(items =>
 {
     items.Add().Text("基本信息").Content(@<text>@BaseInfo(Model)</text>);
     items.Add().Text("成员信息").Content(@<text>@Members(Model)</text>);
@@ -21,7 +21,6 @@
 )
 @helper BaseInfo(Project project)
     { 
-   
     <div style="width: 500; padding:15px; min-height:350px;">
      @Html.ActionLink("基本信息编辑", "Edit", "Project", new { id = Model.ID }, new { style="margin-bottom:15px;"})
         <ul>
@@ -102,7 +101,8 @@
 
 @helper Companys(Project p)
     {  
-     @(Html.Telerik().Grid(p.Companys).Name("Company").ToolBar(commands => commands.Custom().Text("管理项目公司").Action("SelectCompanyByProjectCode", "Project", new { projectid = Model.ID }))
+     @(Html.Telerik().Grid(p.Companys).Name("Company").ToolBar(commands => commands.Custom().Text("通过已有项目添加").Action("SelectCompanyByProjectCode", "Project", new { projectid = Model.ID }))
+             .ToolBar(commands => commands.Custom().Text("直接添加").Action("AddCompanyToCoreList", "Project", new { projectid = Model.ID }))
                 .DataKeys(keys =>
                 {
                     keys.Add(s => s.ID);
@@ -137,7 +137,7 @@
     { 
       @(Html.Telerik().Grid<TargetOfMonth>(p.TargetOfMonths).Name("TargetOfMonths").ToolBar(commands =>
                                     commands.Custom().Text("创建新月目标").Action("Create", "TargetOfMonth", new { projectid = Model.ID }))
-                                                    .ToolBar(commands => commands.Custom().Text("目标划分").Action("TargetOfMonth", "Project", new { projectid = Model.ID }))
+                                    .ToolBar(commands => commands.Custom().Text("目标划分").Action("TargetOfMonth", "Project", new { projectid = Model.ID }))
                 .DataKeys(keys =>
                 {
                     keys.Add(s => s.ID);

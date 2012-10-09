@@ -12,7 +12,7 @@ namespace Entity
     /// </summary>
     public class Company : FullNameEntity
     {
-        [Display(Name = "联系方式"), Required, MaxLength(100)]
+        [Display(Name = "联系方式"), MaxLength(100)]
         public string Contact { get; set; }
 
         [Display(Name = "公司地址"), MaxLength(100)]
@@ -28,6 +28,7 @@ namespace Entity
         { 
             get 
             {
+                if (DistrictNumber == null) return string.Empty;
                 var dt1 = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DBSR.WorkTimeStart,0,0);
                 var dt2 = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DBSR.WorkTimeEnd, 0, 0);
                 return dt1.AddHours(DistrictNumber.TimeDifference).ToShortTimeString()+"~"+dt2.AddHours(DistrictNumber.TimeDifference).ToShortTimeString();
@@ -36,7 +37,6 @@ namespace Entity
 
         [Display(Name = "公司类型")]
         public virtual CompanyType CompanyType { get; set; }
-        [Required]
         public int? CompanyTypeID { get; set; }
  
         public virtual DistrictNumber DistrictNumber { get; set; }
@@ -45,7 +45,6 @@ namespace Entity
 
         [Display(Name = "行业类型")]
         public virtual Category Category { get; set; }
-        [Required]
         public int? CategoryID { get; set; }
 
         [Display(Name = "公司架构")]

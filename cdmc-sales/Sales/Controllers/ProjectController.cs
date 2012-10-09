@@ -47,14 +47,53 @@ namespace Sales.Controllers
         }
 
         #region 添加公司
-        [ProjectAccess]
+        [ProjectInformationAccess]
         public ViewResult SelectCompanyByProjectCode(int projectid)
         {
             ViewBag.ProjectID = projectid;
             return View(CH.GetAllData<Project>());
         }
 
-        [ProjectAccess]
+        [ProjectInformationAccess]
+        public ViewResult AddCompanyToCoreList(int projectid)
+        {
+            ViewBag.ProjectID = projectid;
+            return View(CH.GetAllData<Company>("Projects"));
+        }
+
+        [ProjectInformationAccess]
+        [HttpPost]
+        public ActionResult AddCompanyToCoreList(int projectid, string enname)
+        {
+            ViewBag.ProjectID = projectid;
+            var project =CH.GetAllData<Project>(p=>p.ID == projectid,"Companys","CoreList","Members","Templates","News","Messages","Progresses").FirstOrDefault();
+            if (!project.CoreList.Any(core => core.Name_EN == enname))
+            {
+                Company nc = new Company() { Name_EN = enname, Creator = User.Identity.Name };
+                CH.Create<Company>(nc);
+                project.CoreList.Add(nc);
+                project.Companys.Add(nc);
+                CH.Edit<Project>(project);
+                
+            }
+            else
+            {
+                var company = CH.GetAllData<Company>(c => c.Name_EN == enname).FirstOrDefault();
+                if (project.Companys.Any(pc => pc.Name_EN == enname))
+                {
+                    project.Companys.Add(company);
+                }
+
+                if (project.CoreList.Any(pc => pc.Name_EN == enname))
+                {
+                    project.CoreList.Add(company);
+                }
+            }
+            return RedirectToAction("Management", new {tabindex=3,id= projectid});
+            //return View(CH.GetAllData<Company>("Projects"));
+        }
+
+        [ProjectInformationAccess]
         [HttpPost]
         public ActionResult SelectCompanyByProjectCode(int[] checkedRecords, int projectid)
         {
@@ -67,14 +106,14 @@ namespace Sales.Controllers
                     {
                         var company = CH.GetAllData<Company>(c => c.ID == i, "Leads").FirstOrDefault();
                         p.Companys.Add(company);
-                        company.Leads.ForEach(l =>
-                        {
-                            if (!p.Leads.Exists(pl => pl.ID == l.ID))
-                            {
-                                p.Leads.Add(l);
-                            }
-                        });
-                        p.Leads.AddRange(company.Leads);
+                        //company.Leads.ForEach(l =>
+                        //{
+                        //    if (!p.Leads.Exists(pl => pl.ID == l.ID))
+                        //    {
+                        //        p.Leads.Add(l);
+                        //    }
+                        //});
+                        //p.Leads.AddRange(company.Leads);
                     }
                 }
             }
@@ -248,8 +287,9 @@ namespace Sales.Controllers
             return View();
         }
 
-        public ActionResult Management(int? id)
+        public ActionResult Management(int? id,int?tabindex)
         {
+            ViewBag.TabIndex = tabindex;
             var Data = CH.GetAllData<Project>(i => i.ID == id,"Deals","Companys", "Members", "Templates", "Messages", "TargetOfMonths","CoreList").FirstOrDefault();
             return View(Data);
         }

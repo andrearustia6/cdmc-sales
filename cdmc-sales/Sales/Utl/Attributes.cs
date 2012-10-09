@@ -90,12 +90,12 @@ public class RoleRequired : AuthorizeAttribute
 }
 
 /// <summary>
-/// Multiple
+/// 提供权限给产品接口人 项目管理人员 
 /// </summary>
-public sealed class ProjectAccess : AuthorizeAttribute
+public sealed class ProjectInformationAccess : AuthorizeAttribute
 {
     public int[] Levels { get; set; }
-    public ProjectAccess(params int[] levels)
+    public ProjectInformationAccess(params int[] levels)
     {
         Levels = new int[]{RoleLevel.ProductInterface,RoleLevel.Director,RoleLevel.Manager};
     }

@@ -79,7 +79,7 @@ namespace Sales.Controllers
             if (ModelState.IsValid)
             {
                 CH.Edit<Member>(item);
-                return RedirectToAction("Management", "Project", new { id = item.ProjectID });
+                return RedirectToAction("Management", "Project", new { id = item.ProjectID,tabindex=1 });
             }
             return View(item);
         }
