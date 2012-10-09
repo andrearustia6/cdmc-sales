@@ -36,7 +36,8 @@ namespace Utl
         public DbSet<Deal> Deals { get; set; }
         public DbSet<Project> Projects { get; set; }
         public DbSet<Department> Departments { get; set; }
-        
+        public DbSet<CompanyRelationship> CompanyRelationships { get; set; }
+
         public DB()
         {
             Database.SetInitializer<DB>(new DBInitializer());
@@ -144,10 +145,13 @@ namespace Utl
             context.Leads.Add(l4);
 
             var p1 = new Project() { ID = 1, EndDate = DateTime.Now, StartDate = DateTime.Now, Target = 50000000, IsActived = true, Leader = "stone", Manager = "mike", Name = "CTC 航空峰会", ProjectCode="ACYY" };
-            p1.Companys = new List<Company>();
-            p1.Companys.Add(c1);
-            p1.Companys.Add(c2);
-            p1.Companys.Add(c3);
+            p1.CompanyRelationships = new List<CompanyRelationship>();
+            var cr1 = new CompanyRelationship() { ProjectID = 1, CompanyID = 1 };
+            var cr2 = new CompanyRelationship() { ProjectID = 1, CompanyID = 2 };
+            context.CompanyRelationships.Add(cr1);
+            context.CompanyRelationships.Add(cr2);
+            p1.CompanyRelationships.Add(cr1);
+            p1.CompanyRelationships.Add(cr2);
             //p1.Leads = new List<Lead>();
             //p1.Leads.Add(l1);
             //p1.Leads.Add(l2);
@@ -180,10 +184,10 @@ namespace Utl
             context.Deals.Add(d2);
             context.Deals.Add(d3);
             context.Deals.Add(d4);
-            p1.Deals = new List<Deal>();
-            p1.Deals.Add(d1);
-            p1.Deals.Add(d2);
-            p1.Deals.Add(d3);
+            //p1.Deals = new List<Deal>();
+            //p1.Deals.Add(d1);
+            //p1.Deals.Add(d2);
+            //p1.Deals.Add(d3);
             context.Projects.Add(p1);
             var p2 = new Project() { ID = 2, EndDate = DateTime.Now, StartDate = DateTime.Now, Target = 30000000, IsActived = true, Leader = "sean", Manager = "mike", Name = "万国博览会", ProjectCode="BTEC" };
             context.Projects.Add(p2);

@@ -62,7 +62,7 @@ namespace BLL
         {
             var p = CH.GetAllData<Project>(i=>i.ID == projectid,"Companys").FirstOrDefault();
 
-            if (p != null && p.Companys.FirstOrDefault(child => child.ID == c.ID) != null)
+            if (p != null && p.CompanyRelationships.FirstOrDefault(child => child.CompanyID == c.ID) != null)
             {
                 return true;
             }
@@ -166,21 +166,21 @@ namespace BLL
         }
         
         
-        public static TargetOfPackage GetTargetOfPackage(Lead lead,object projectid)
-        {
-            if (projectid == null)
-                return new TargetOfPackage() { LeadID = lead.ID };
+        //public static TargetOfPackage GetTargetOfPackage(Lead lead,object projectid)
+        //{
+        //    if (projectid == null)
+        //        return new TargetOfPackage() { LeadID = lead.ID };
 
-            var pid = (int)projectid;
+        //    var pid = (int)projectid;
 
-            if (lead.TargetOfPackages != null)
-            {
-                var tp = lead.TargetOfPackages.FirstOrDefault(i => i.ProjectID == pid && i.LeadID == lead.ID);
-                if (tp == null) tp = new TargetOfPackage() { LeadID = lead.ID, ProjectID = pid };
-                return tp;
-            }
-            return new  TargetOfPackage() { LeadID = lead.ID, ProjectID = pid };
-        }
+        //    if (lead.TargetOfPackages != null)
+        //    {
+        //        var tp = lead.TargetOfPackages.FirstOrDefault(i => i.ProjectID == pid && i.LeadID == lead.ID);
+        //        if (tp == null) tp = new TargetOfPackage() { LeadID = lead.ID, ProjectID = pid };
+        //        return tp;
+        //    }
+        //    return new  TargetOfPackage() { LeadID = lead.ID, ProjectID = pid };
+        //}
         public static bool IsDMS(string leadCallType)
         {
             if (leadCallType == "Others" || leadCallType == "Blowed" || leadCallType == "Not Pitched")
@@ -229,6 +229,31 @@ namespace BLL
                 result.Add(GenerateSingleWeeklyReport(p, settime));
             }
             return result;
+        }
+        #endregion
+
+        #region Add.....
+        public static bool TryAddCompany(Company c)
+        {
+            bool exist = CH.GetAllData<Company>().Any(ex => ex.Name_EN == c.Name_EN || (!string.IsNullOrEmpty(ex.Name_CH) && ex.Name_CH == c.Name_CH));
+            if (!exist)
+            {
+                CH.Create<Company>(c);
+                return true;
+            }
+            return false;
+        }
+
+        public static bool TryAddCompanyRelationship(CompanyRelationship c, int projectid)
+        {
+            var p = CH.GetDataById<Project>(projectid, "CompanyRelationships");
+            bool exist = p.CompanyRelationships.Any(ex => ex.CompanyID == c.CompanyID);
+            if (!exist)
+            {
+                CH.Create<CompanyRelationship>(c);
+                return true;
+            }
+            return false;
         }
         #endregion
     }
