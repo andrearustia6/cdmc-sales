@@ -120,7 +120,7 @@ namespace Entity
         /// </summary>
         public List<Company> CoreList { get; set; }
 
-        public List<Lead> Leads { get; set; }
+        //public List<Lead> Leads { get; set; }
 
         public List<Deal> Deals { get; set; }
         
