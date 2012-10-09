@@ -11,6 +11,7 @@ namespace BLL
 {
     public class CRM_Logical
     {
+        #region Project Management
         public List<Project> GetProjectByCurrentRole()
         {
             var currentuser = HttpContext.Current.User.Identity.Name;
@@ -99,7 +100,63 @@ namespace BLL
             return user == null ? false : true;
         }
 
-         public static bool IsFullPitched(LeadCall call)
+        /// <summary>
+        /// 查看当前谁在给这家公司打电话 
+        /// </summary>
+        /// <param name="companyid"></param>
+        /// <param name="projectid"></param>
+        /// <returns></returns>
+        public static List<Member> GetMemberWhoCallTheCompany(int companyid, int projectid)
+        {
+            var com =CH.GetAllData<Company>(c => c.ID == companyid, "Members").FirstOrDefault();
+            var project = CH.GetAllData<Project>(p => p.ID == projectid, "Members").FirstOrDefault();
+            List<Member> result = new List<Member>();
+            
+            com.Members.ForEach(m => {
+                if (project.Members.Any(pm => pm.ID == m.ID))
+                    result.Add(m);
+            });
+
+            //如果公司上没有直接指定，按字头分配查找
+            if (result.Count == 0)
+            {
+                project.Members.ForEach(m=>{
+                    if (!string.IsNullOrEmpty(m.Characters))
+                    {
+                        var chars = m.Characters.Split('|').ToList();
+                        chars.ForEach(ch =>
+                        {
+                            if (com.Name_EN.StartsWith(ch) || com.Name_EN.StartsWith(ch.ToLower()))
+                            {
+                                result.Add(m);
+                            }
+                        });
+                    }
+                   
+                });
+            }
+
+            return result;
+        }
+
+        public static string GetMemberNameWhoCallTheCompany(int companyid, int projectid)
+        {
+            var ml = GetMemberWhoCallTheCompany(companyid, projectid);
+            string ms = string.Empty;
+
+            ml.ForEach(m => {
+                if(ms==string.Empty)
+                    ms += m.Name;
+                else
+                    ms += "|"+ m.Name;
+            });
+
+            return ms;
+        }
+        #endregion 
+
+        #region Call Management
+        public static bool IsFullPitched(LeadCall call)
         {
             return call.LeadCallType.Name=="Full Pitched"?true:false;
         }
@@ -155,7 +212,9 @@ namespace BLL
         {
             return call.LeadCallType.Name == "Qualified Decision" ? true : false;
         }
+        #endregion
 
+        #region Reports
         public static WeeklyReport GenerateSingleWeeklyReport(Project project,DateTime? settime)
         {
             var result = new WeeklyReport(project, (DateTime)settime);
@@ -171,5 +230,6 @@ namespace BLL
             }
             return result;
         }
+        #endregion
     }
 }

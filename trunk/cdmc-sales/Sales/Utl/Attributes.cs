@@ -28,13 +28,15 @@ public enum AccessType
     Equal, Upper, Lower,Multiple
 }
 
+
+
 public class RoleRequired : AuthorizeAttribute
 {
     public AccessType AccessType { get; set; }
 
     public RoleRequired()
     {
-        AccessType = AccessType.Equal;
+        AccessType = AccessType.Upper;
     }
 
     public RoleRequired(AccessType access)
@@ -90,19 +92,19 @@ public class RoleRequired : AuthorizeAttribute
 /// <summary>
 /// Multiple
 /// </summary>
-public sealed class MultipleRoleAccess : AuthorizeAttribute
+public sealed class ProjectAccess : AuthorizeAttribute
 {
-    public RoleRequired[] Roles { get; set; }
-    public MultipleRoleAccess(params RoleRequired[] roles)
+    public int[] Levels { get; set; }
+    public ProjectAccess(params int[] levels)
     {
-        Roles = roles;
+        Levels = new int[]{RoleLevel.ProductInterface,RoleLevel.Director,RoleLevel.Manager};
     }
 
     public override void OnAuthorization(AuthorizationContext filterContext)
     {
         bool skipAuthorization = false;
         var level = Employee.GetCurrentRoleLevel();
-        if (Roles.Any(r => r.Level == level))
+        if (Levels.Any(l=>l == level))
         {
             skipAuthorization = true;
         }
@@ -207,6 +209,16 @@ public sealed class ProductInterfaceRequired : RoleRequired
     {
         get { return LVL; }
     }
+}
+
+public class RoleLevel
+{
+    public static int Director = 1000;
+    public static int Manager = 500;
+    public static int Leader = 100;
+    public static int Sales = 10;
+    public static int ProductInterface = 5;
+    public static int MarketInterface = 1;
 }
 
 
