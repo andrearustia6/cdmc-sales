@@ -82,6 +82,13 @@ namespace Utl
             return GetAllRowData<T>().Find(id);
         }
 
+        public static T GetDataById<T>(int? id, params string[] property)
+            where T : class
+        {
+            return GetAllData<T>(item => (item as EntityBase).ID == id, property).FirstOrDefault();
+            //return GetAllRowData<T>().Find(id);
+        }
+
         static void AddCreatedStamp(object entity)
         {
             if (entity is EntityBase)

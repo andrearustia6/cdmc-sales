@@ -158,13 +158,13 @@ namespace Sales.Controllers
             return View(data);
         }
 
-        public ActionResult Save_LeadPackage(int leadid, int projectid, int packageid)
+        public ActionResult Save_LeadPackage(int leadid, int companyrelationshipid, int packageid)
         {
             var old = CH.GetAllData<TargetOfPackage>(i => i.LeadID == leadid).FirstOrDefault();
             if (old != null && old.PackageID != packageid)
                 CH.Delete<TargetOfPackage>(old.ID);
 
-            CH.Create<TargetOfPackage>(new TargetOfPackage() { PackageID = packageid, LeadID = leadid, ProjectID = projectid });
+            CH.Create<TargetOfPackage>(new TargetOfPackage() { PackageID = packageid, LeadID = leadid,  CompanyRelationshipID = companyrelationshipid });
             return new JsonResult();
         }
         [HttpPost]

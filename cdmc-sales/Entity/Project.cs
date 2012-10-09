@@ -18,10 +18,6 @@ namespace Entity
 
         [Display(Name = "内容")]
         public String Contents { get; set; }
-
-        [Display(Name = "上传人")]
-        public String Creator { get; set; }
-
     }
 
     /// <summary>
@@ -99,7 +95,21 @@ namespace Entity
 
         public List<Message> Messages { get; set; }
 
-        public List<Progress> Progresses { get; set; }
+        List<Deal> _deals;
+        public List<Deal> Deals
+        {
+            get
+            {
+                if (_deals == null)
+                {
+                    this.CompanyRelationships.ForEach(cr =>
+                    {
+                        _deals.AddRange(cr.Deals);
+                    });
+                }
+                return _deals;
+            }
+        }
 
         /// <summary>
         /// 被参考的项目的CoreList自动加入本项目的CoreList
@@ -113,18 +123,26 @@ namespace Entity
         /// <summary>
         /// 所有项目公司
         /// </summary>
-        public List<Company> Companys { get; set; }
+        public List<CompanyRelationship> CompanyRelationships { get; set; }
+    }
 
-        /// <summary>
-        /// 项目公司 Core List
-        /// </summary>
-        public List<Company> CoreList { get; set; }
-
-        //public List<Lead> Leads { get; set; }
+    public class CompanyRelationship : EntityBase
+    {
+        public virtual Company Company { get; set; }
+        [Display(Name = "目标公司")]
+        public int? CompanyID { get; set; }
 
         public List<Deal> Deals { get; set; }
-        
-        
+
+        public virtual Project Project { get; set; }
+
+        [Display(Name = "所属项目")]
+        public int? ProjectID { get; set; }
+
+        [Display(Name = "核心程度"), Range(0, 10)]
+        public int Importancy { get; set; }
+
+        public List<Progress> Progresses { get; set; }
     }
 
     /// <summary>
@@ -154,15 +172,15 @@ namespace Entity
 
     public class TargetOfPackage : EntityBase
     {
-        public virtual Project Project { get; set; }
-        [Display(Name = "项目名称")]
-        public int? ProjectID { get; set; }
+        public virtual CompanyRelationship CompanyRelationship { get; set; }
+        [Required]
+        public int? CompanyRelationshipID { get; set; }
 
         public virtual Lead Lead { get; set; }
         [Display(Name = "Lead")]
         public int? LeadID { get; set; }
 
-        
+
         public Package Package { get; set; }
         [Display(Name = "销售目标")]
         public int? PackageID { get; set; }
@@ -192,7 +210,7 @@ namespace Entity
         public decimal CheckIn { get; set; }
 
         public string Member { get; set; }
-     
+
         [Display(Name = "关联的月目标"), Required]
         public int? TargetOfMonthID { get; set; }
 
@@ -202,7 +220,7 @@ namespace Entity
     /// <summary>
     /// 团队成员
     /// </summary>
-    public class Member:EntityBase
+    public class Member : EntityBase
     {
         [Display(Name = "成员")]
         public string Name { get; set; }
@@ -216,8 +234,8 @@ namespace Entity
         public int? ProjectID { get; set; }
         public virtual Project Project { get; set; }
 
-        public string[] CharactersSet { get { return string.IsNullOrEmpty(Characters)?new string[]{}: Characters.Split('|'); } }
-     
+        public string[] CharactersSet { get { return string.IsNullOrEmpty(Characters) ? new string[] { } : Characters.Split('|'); } }
+
         //public List<Company> Companys { get; set; }
     }
 
@@ -238,9 +256,9 @@ namespace Entity
         public bool Abandoned { get; set; }
 
         [Display(Name = "坏账原因")]
-        public string AbandonReason { get; set; } 
+        public string AbandonReason { get; set; }
 
-        [Display(Name = "合约付款日期"),Required]
+        [Display(Name = "合约付款日期"), Required]
         public DateTime ExpectedPaymentDate { get; set; }
 
         [Display(Name = "实际付款日期")]

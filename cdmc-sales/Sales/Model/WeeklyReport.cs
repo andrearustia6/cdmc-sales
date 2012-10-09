@@ -113,7 +113,16 @@ namespace Sales.Model
         {
             get
             {
-                var data = Project.Deals.FindAll(d => InTheWeek(d.ActualPaymentDate) && d.Sales == Member.Name && d.Abandoned == false);
+                var data = new List<Deal>();
+                Project.CompanyRelationships.ForEach(c=>{
+                    c.Deals.ForEach(d=>{
+                        if(InTheWeek(d.ActualPaymentDate) && d.Sales == Member.Name && d.Abandoned == false)
+                        {
+                            data.Add(d);
+                        }
+                    });
+                });
+             
                 return data;
             }
         }
@@ -206,8 +215,8 @@ namespace Sales.Model
             {
                 if (_leads == null)
                 {
-                    var project = CH.GetAllData<Company>(c => c.pro == Project.ID,"Companys");
-                    project
+                    Project.CompanyRelationships.ForEach(c => { _leads.AddRange(c.Company.Leads); });
+               
                 }
                 return _leads;
             }
