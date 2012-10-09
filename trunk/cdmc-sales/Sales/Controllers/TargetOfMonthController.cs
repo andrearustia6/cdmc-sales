@@ -36,7 +36,7 @@ namespace Sales.Controllers
             if (ModelState.IsValid)
             {
                 CH.Create<TargetOfMonth>(item);
-                return RedirectToAction("Management", "Project", new { id = item.ProjectID });
+                return RedirectToAction("Management", "Project", new { id = item.ProjectID,tabindex=2 });
             }
             ViewBag.ProjectID = item.ProjectID;
             return View(item);

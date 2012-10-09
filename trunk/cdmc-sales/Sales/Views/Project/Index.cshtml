@@ -2,7 +2,7 @@
 @using Utl;
 @model List<Project>
 @Html.Partial("contenttitle","项目管理")
-@(Html.Telerik().Grid<Project>(Model).Name("Project")
+@(Html.Telerik().Grid<Project>(Model).Name("Project").ToolBar(commands => commands.Custom().Text("项目立项").Action("Create", "Project"))
                 .DataKeys(keys =>
                 {
                     keys.Add(s => s.ID);
@@ -12,8 +12,10 @@
                     c.Bound(item => item.Name).Width(150);
                     c.Bound(item => item.StartDate).Template(@<text><p>@item.StartDate.ToShortDateString()</p></text>).Width(100);
                     c.Bound(item => item.EndDate).Template(@<text><p>@item.EndDate.ToShortDateString()</p></text>).Width(100);
-                    c.Bound(item => item.IsActived).Width(50);
-                    c.Bound(item => item.Keywords).Width(200);
+                    c.Bound(item => item.IsActived).Width(70);
+                    c.Bound(item => item.Manager).Width(70);
+                    c.Bound(item => item.Target).Width(120).Format("{0:C}");
+                    c.Bound(item => item).Template(@<text>@item.EndDate.ToShortDateString()</text>).Width(70);
                     c.Bound(item => item.ID).Width(200).Title("操作").Template(@<span> <a href=@Url.Content("~/Project/Edit/" + item.ID) >
                         编辑</a> | <a href=@Url.Content("~/Project/Details/" + item.ID)>详细</a> | <a href=@Url.Content("~/Project/Management/" + item.ID)>
                             项目管理</a>| <a href=@Url.Content("~/Project/delete/" + item.ID) >删除</a>
@@ -23,10 +25,5 @@
                                                                          .Filterable().Sortable().Groupable()
                                                                          .Pageable(p => p.PageSize(20))
                                                                          .Scrollable(scrolling => scrolling.Height(350))
-
 )
-<div class="anniu">
-    <ul>
-        <li>@Html.ActionLink("立项", "Create")</li>
-    </ul>
-</div>
+
