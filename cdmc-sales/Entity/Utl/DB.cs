@@ -146,17 +146,13 @@ namespace Utl
 
             var p1 = new Project() { ID = 1, EndDate = DateTime.Now, StartDate = DateTime.Now, Target = 50000000, IsActived = true, Leader = "stone", Manager = "mike", Name = "CTC 航空峰会", ProjectCode="ACYY" };
             p1.CompanyRelationships = new List<CompanyRelationship>();
-            var cr1 = new CompanyRelationship() { ProjectID = 1, CompanyID = 1 };
-            var cr2 = new CompanyRelationship() { ProjectID = 1, CompanyID = 2 };
+            var cr1 = new CompanyRelationship() {ID=1, ProjectID = 1, CompanyID = 1,Importancy=6 };
+            var cr2 = new CompanyRelationship() {ID=2, ProjectID = 1, CompanyID = 2 ,Importancy=3};
             context.CompanyRelationships.Add(cr1);
             context.CompanyRelationships.Add(cr2);
+
             p1.CompanyRelationships.Add(cr1);
             p1.CompanyRelationships.Add(cr2);
-            //p1.Leads = new List<Lead>();
-            //p1.Leads.Add(l1);
-            //p1.Leads.Add(l2);
-            //p1.Leads.Add(l3);
-            //p1.Leads.Add(l4);
 
             var tm1 = new TargetOfMonth() { ID = 1, BaseDeal = 50000, CheckIn = 50000, Deal = 70000, StartDate = DateTime.Now.StartOfMonth(), EndDate = DateTime.Now.EndOfMonth() };
             context.TargetOfMonths.Add(tm1);
@@ -175,31 +171,23 @@ namespace Utl
             var tw4 = new TargetOfWeek() { ID = 4, Member = "tina", TargetOfMonthID = 1, ProjectID = 1, CheckIn = 6000, Deal = 6000, EndDate = DateTime.Now.EndOfWeek(), StartDate = DateTime.Now.StartOfWeek() };
             context.TargetOfWeeks.Add(tw4);
 
-            var d1 = new Deal() { ExpectedPaymentDate = DateTime.Now.AddDays(-2), ActualPaymentDate = DateTime.Now, ID = 1, Income = 12000, Payment = 12000, PackageID = 1, LeadID = 1, ProjectID = 1, Sales = "sean", IsClosed = true };
-            var d2 = new Deal() { ExpectedPaymentDate = DateTime.Now.AddDays(-1), ActualPaymentDate = DateTime.Now, ID = 2, Income = 5000, Payment = 5000, PackageID = 1, LeadID = 2, ProjectID = 1, Sales = "susie", IsClosed = true };
-            var d4 = new Deal() { ExpectedPaymentDate = DateTime.Now.AddDays(-3), ActualPaymentDate = DateTime.Now, ID = 4, Income = 7500, Payment = 7500, PackageID = 1, LeadID = 2, ProjectID = 1, Sales = "tina", IsClosed = true };
-            var d3 = new Deal() { ExpectedPaymentDate = DateTime.Now.AddDays(7), ID = 3, Income = 0, Payment = 60000, PackageID = 1, LeadID = 2, ProjectID = 1, Sales = "sean", IsClosed = false };
+            var d1 = new Deal() { ExpectedPaymentDate = DateTime.Now.AddDays(-2), ActualPaymentDate = DateTime.Now, ID = 1, Income = 12000, Payment = 12000, PackageID = 1, CompanyRelationshipID = 1, Sales = "sean", IsClosed = true };
+            var d2 = new Deal() { ExpectedPaymentDate = DateTime.Now.AddDays(-1), ActualPaymentDate = DateTime.Now, ID = 2, Income = 5000, Payment = 5000, PackageID = 1, CompanyRelationshipID = 1, Sales = "sean", IsClosed = true };
+            var d4 = new Deal() { ExpectedPaymentDate = DateTime.Now.AddDays(-3), ActualPaymentDate = DateTime.Now, ID = 4, Income = 7500, Payment = 7500, PackageID = 1, CompanyRelationshipID = 2, Sales = "tina", IsClosed = true };
+            var d3 = new Deal() { ExpectedPaymentDate = DateTime.Now.AddDays(7), ID = 3, Income = 0, Payment = 60000, PackageID = 1, CompanyRelationshipID  = 1, Sales = "sean", IsClosed = false };
 
             context.Deals.Add(d1);
             context.Deals.Add(d2);
             context.Deals.Add(d3);
             context.Deals.Add(d4);
-            //p1.Deals = new List<Deal>();
-            //p1.Deals.Add(d1);
-            //p1.Deals.Add(d2);
-            //p1.Deals.Add(d3);
-            context.Projects.Add(p1);
-            var p2 = new Project() { ID = 2, EndDate = DateTime.Now, StartDate = DateTime.Now, Target = 30000000, IsActived = true, Leader = "sean", Manager = "mike", Name = "万国博览会", ProjectCode="BTEC" };
-            context.Projects.Add(p2);
 
-
-            var lc1 = new LeadCall() { ID = 1, Caller = "sean", CallingTime = DateTime.Now, LeadCallTypeID = 3, LeadID=1, ProjectID=1 };
-            var lc2 = new LeadCall() { ID = 2, Caller = "sean", CallingTime = DateTime.Now, LeadCallTypeID = 4, LeadID = 1, ProjectID = 1 };
-            var lc3 = new LeadCall() { ID = 3, Caller = "sean", CallingTime = DateTime.Now, LeadCallTypeID = 5, LeadID = 1, ProjectID = 1 };
-            var lc5 = new LeadCall() { ID = 4, Caller = "sean", CallingTime = DateTime.Now, LeadCallTypeID = 6, LeadID = 1, ProjectID = 1 };
-            var lc6 = new LeadCall() { ID = 5, Caller = "sean", CallingTime = DateTime.Now, LeadCallTypeID = 7, LeadID = 1, ProjectID = 1 };
-            var lc7 = new LeadCall() { ID = 5, Caller = "sean", CallingTime = DateTime.Now, LeadCallTypeID = 2, LeadID = 1, ProjectID = 1 };
-            var lc4 = new LeadCall() { ID = 5, Caller = "sean", CallingTime = DateTime.Now, LeadCallTypeID = 2, LeadID = 1, ProjectID = 1 };
+            var lc1 = new LeadCall() { ID = 1, CreatedDate = DateTime.Now.AddDays(-5), Creator = "sean", LeadCallTypeID = 3, LeadID = 1, CompanyRelationshipID = 1 };
+            var lc2 = new LeadCall() { ID = 2, CreatedDate = DateTime.Now.AddDays(-4), Creator = "sean", LeadCallTypeID = 4, LeadID = 1, CompanyRelationshipID = 1 };
+            var lc3 = new LeadCall() { ID = 3, CreatedDate = DateTime.Now.AddDays(-3), Creator = "sean", LeadCallTypeID = 5, LeadID = 1, CompanyRelationshipID = 1 };
+            var lc5 = new LeadCall() { ID = 4, CreatedDate = DateTime.Now.AddDays(-2), Creator = "sean", LeadCallTypeID = 6, LeadID = 1, CompanyRelationshipID = 1 };
+            var lc6 = new LeadCall() { ID = 5,  CreatedDate = DateTime.Now.AddDays(-1), Creator = "sean", LeadCallTypeID = 7, LeadID = 1, CompanyRelationshipID = 1 };
+            var lc7 = new LeadCall() { ID = 6, CreatedDate = DateTime.Now.AddDays(-3), Creator = "susie", LeadCallTypeID = 2, LeadID = 3, CompanyRelationshipID = 2 };
+            var lc4 = new LeadCall() { ID = 7, CreatedDate = DateTime.Now.AddDays(-1), Creator = "susie", LeadCallTypeID = 2, LeadID = 3, CompanyRelationshipID = 2 };
 
             context.LeadCalls.Add(lc1);
             context.LeadCalls.Add(lc2);
@@ -208,6 +196,13 @@ namespace Utl
             context.LeadCalls.Add(lc5);
             context.LeadCalls.Add(lc6);
             context.LeadCalls.Add(lc7);
+
+            context.Projects.Add(p1);
+            var p2 = new Project() { ID = 2, EndDate = DateTime.Now, StartDate = DateTime.Now, Target = 30000000, IsActived = true, Leader = "sean", Manager = "mike", Name = "万国博览会", ProjectCode="BTEC" };
+            context.Projects.Add(p2);
+
+
+           
 
             context.Members.Add(new Member() { ID = 1, ProjectID = 1, Name = "sean", Characters = "R|S" });
             context.Members.Add(new Member() { ID = 2, ProjectID = 1, Name = "susie" });

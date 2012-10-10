@@ -170,8 +170,7 @@ namespace Sales.Controllers
         [HttpPost]
         public ActionResult Save_LeadCall(LeadCall callresult)
         {
-            callresult.CallingTime = DateTime.Now;
-            callresult.Caller = User.Identity.Name;
+
             CH.Create<LeadCall>(callresult);
 
             callresult = CH.GetAllData<LeadCall>(lc => lc.LeadID == callresult.LeadID, "LeadCallType").FirstOrDefault();

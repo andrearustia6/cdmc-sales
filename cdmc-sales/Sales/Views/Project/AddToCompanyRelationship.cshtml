@@ -1,0 +1,54 @@
+﻿@{
+    ViewBag.Title = "添加核心公司";
+}
+@using Entity
+@using Utl
+@model List<CompanyRelationship>
+
+@using (Html.BeginForm())
+{
+    @Html.Hidden("projectid", (int)ViewBag.ProjectID)
+    <fieldset style=" margin:10px;">
+        <legend>添加公司</legend>
+        <div class="editor-label">
+            @Html.Label("公司英文名:")
+        </div>
+        <div class="editor-field">
+            @{var cs = new List<Company>();
+              Model.ForEach(m =>
+              {
+                  cs.Add(m.Company);
+              });
+            }
+            @Html.Telerik().ComboBox().Name("fullname").BindTo(new SelectList(cs, "Name_EN", "FullName")).HtmlAttributes(new { style = "width:50%;" })
+        </div>
+        <div class="editor-label">
+            @Html.Label("优先级别:")
+        </div>
+        <div class="editor-field">
+            @(Html.Telerik().Slider<int>().Name("importancy").Value(6).Max(10).Min(1).HtmlAttributes(new { style = "width:50%;" }))
+        </div>
+        <div class="editor-label">
+            @Html.Label("公司描述:")
+        </div>
+        <div class="editor-field">
+            @Html.TextArea("description")
+        </div>
+        
+        <br />
+        <center>
+        <input type="submit" style="line-height: 22px; width:65px;" value="提交" />
+        </center>
+    </fieldset>
+}
+@(Html.Telerik().Grid(Model).Name("CompanyRelationship").DataKeys(dk => dk.Add(s => s.ID))
+.Columns(c =>
+{
+    c.Bound(item => item.Company.FullName).Width(200);
+    c.Bound(item => item.Importancy).Width(300);
+})
+     .Resizable(resizing => resizing.Columns(true))
+                    .Filterable().Sortable()
+                    .Pageable(p => p.PageSize(20))
+                    .Scrollable(scrolling => scrolling.Height(350))
+)

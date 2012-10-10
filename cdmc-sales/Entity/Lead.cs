@@ -112,11 +112,10 @@ namespace Entity
         [Display(Name = "所属公司"),Required]
         public int? CompanyID { get; set; }
 
-        public List<LeadCall> LeadCalls { get; set; }
 
         public List<TargetOfPackage> TargetOfPackages { get; set; }
 
-        public List<Deal> Deals { get; set; }
+
 
         public List<Project> Projects { get; set; }
 
@@ -143,8 +142,7 @@ namespace Entity
     /// <summary>
     /// 电话结果管理
     /// </summary>
-    [JsonIgnoreAttribute("ModifiedTime", "Lead", "Project")]
-    public class LeadCall : EntityBase
+    public class LeadCall : CompanyRelationshipChildItem
     {
         [Display(Name = "First Pitch"), Required]
         public bool IsFirstPitch { get; set; }
@@ -153,9 +151,9 @@ namespace Entity
         [Display(Name = "致电客户"), Required]
         public int? LeadID { get; set; }
 
-        [Display(Name = "所属项目")]
-        public int? ProjectID { get; set; }
-        public virtual Project Project { get; set; }
+        //[Display(Name = "所属客户关系")]
+        //public int? CompanyRelationshipID { get; set; }
+        //public virtual CompanyRelationship CompanyRelationship { get; set; }
 
         public virtual LeadCallType LeadCallType { get; set; }
         public int? LeadCallTypeID { get; set; }
@@ -177,12 +175,6 @@ namespace Entity
 
         [Display(Name = "回电时间")]
         public DateTime? CallBackDate { get; set; }
-
-        [Display(Name = "致电时间")]
-        public DateTime CallingTime { get; set; }
-
-        [Display(Name = "致电人")]
-        public string Caller { get; set; }
 
     }
 }
