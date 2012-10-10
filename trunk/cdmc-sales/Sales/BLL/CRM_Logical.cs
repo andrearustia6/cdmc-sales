@@ -108,7 +108,7 @@ namespace BLL
         /// <returns></returns>
         public static List<Member> GetMemberWhoCallTheCompany(int companyid, int projectid)
         {
-            var com =CH.GetAllData<Company>(c => c.ID == companyid, "Members").FirstOrDefault();
+            var com = CH.GetAllData<CompanyRelationship>(c => c.ID == companyid, "Members").FirstOrDefault();
             var project = CH.GetAllData<Project>(p => p.ID == projectid, "Members").FirstOrDefault();
             List<Member> result = new List<Member>();
             
@@ -126,7 +126,8 @@ namespace BLL
                         var chars = m.Characters.Split('|').ToList();
                         chars.ForEach(ch =>
                         {
-                            if (com.Name_EN.StartsWith(ch) || com.Name_EN.StartsWith(ch.ToLower()))
+                            if ((!string.IsNullOrEmpty(com.Company.Name_CH)&&com.Company.Name_CH.StartsWith(ch)) ||
+                                (!string.IsNullOrEmpty(com.Company.Name_EN) && com.Company.Name_EN.StartsWith(ch.ToLower())))
                             {
                                 result.Add(m);
                             }
@@ -212,7 +213,30 @@ namespace BLL
         {
             return call.LeadCallType.Name == "Qualified Decision" ? true : false;
         }
+
+        public static string GetLeadStatus(int porjectid, Lead lead)
+        {
+            var call = CH.GetAllData<LeadCall>(lc => lc.CompanyRelationship.ProjectID == porjectid && lc.LeadID == lead.ID).OrderByDescending(o=>o.CreatedDate).FirstOrDefault();
+            if (call == null)
+                return "未打";
+            else
+                return call.LeadCallType.Name;
+
+        }
         #endregion
+
+        public static List<Deal> GetProjectDeals(Project p)
+        {
+            List<Deal> deals = new List<Deal>();
+             if (p.CompanyRelationships != null)
+             {
+                 p.CompanyRelationships.ForEach(cr =>
+                 {
+                     deals.AddRange(CH.GetAllData<Deal>(d=>d.CompanyRelationshipID == cr.ID));
+                 });
+             }
+             return deals;
+        }
 
         #region Reports
         public static WeeklyReport GenerateSingleWeeklyReport(Project project,DateTime? settime)

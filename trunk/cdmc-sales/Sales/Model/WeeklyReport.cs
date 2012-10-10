@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using Entity;
 using Utl;
+using BLL;
 
 namespace Sales.Model
 {
@@ -163,7 +164,7 @@ namespace Sales.Model
         {
             get
             {
-                var data = Project.Deals.FindAll(d => InNextWeek(d.ExpectedPaymentDate) && d.Sales == Member.Name && d.Abandoned == false);
+                var data =CRM_Logical.GetProjectDeals(Project).FindAll(d => InNextWeek(d.ExpectedPaymentDate) && d.Sales == Member.Name && d.Abandoned == false);
                 return data;
             }
         }
@@ -183,7 +184,7 @@ namespace Sales.Model
         {
             get
             {
-                var data = Project.Deals.FindAll(d => d.Sales == Member.Name && d.Abandoned==false);
+                var data = CRM_Logical.GetProjectDeals(Project).FindAll(d => d.Sales == Member.Name && d.Abandoned == false);
                 return data;
             }
         }
@@ -233,7 +234,7 @@ namespace Sales.Model
                     var ls = lsall.FindAll(lc => lc.LeadID == l.ID);
                     ls.ForEach(call =>
                     {
-                        if (InTheWeek(call.CallingTime) && call.Caller.ToLower() == Member.Name.ToLower())
+                        if (InTheWeek(call.CreatedDate) && call.Creator.ToLower() == Member.Name.ToLower())
                         {
                             result.Add(call);
                         }

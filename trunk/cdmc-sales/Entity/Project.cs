@@ -76,7 +76,8 @@ namespace Entity
         [Display(Name = "结束时间"), Required]
         public DateTime EndDate { get; set; }
 
-        [Display(Name = "销售目标"), Required]
+        [Display(Name = "销售目标"), Required, DisplayFormat(DataFormatString = "{0:c}")]
+
         public decimal Target { get; set; }
 
         public string TeamLeader { get; set; }
@@ -95,24 +96,8 @@ namespace Entity
 
         public List<Message> Messages { get; set; }
 
-        List<Deal> _deals;
-        public List<Deal> Deals
-        {
-            get
-            {
-                if (_deals == null)
-                {
-                    this.CompanyRelationships.ForEach(cr =>
-                    {
-                        _deals.AddRange(cr.Deals);
-                    });
-                }
-                return _deals;
-            }
-        }
-
         /// <summary>
-        /// 被参考的项目的CoreList自动加入本项目的CoreList
+        /// 被参考的项目的crm自动加入本项目的crm
         /// </summary>
         public string References { get; set; }
 
@@ -142,7 +127,29 @@ namespace Entity
         [Display(Name = "核心程度"), Range(0, 10)]
         public int Importancy { get; set; }
 
-        public List<Progress> Progresses { get; set; }
+        public virtual Progress Progress { get; set; }
+        public int? ProgressID { get; set; }
+        public List<LeadCall> LeadCalls { get; set; }
+
+        public List<Member> Members { get; set; }
+
+        public string SalesOnTheCompany
+        {
+            get
+            {
+                string v = string.Empty;
+                if (Members != null)
+                    Members.ForEach(s =>
+                    {
+                        if (string.IsNullOrEmpty(v))
+                            v = s.Name;
+                        else
+                            v += "|" + s.Name;
+
+                    });
+                return v;
+            }
+        }
     }
 
     /// <summary>
@@ -236,17 +243,17 @@ namespace Entity
 
         public string[] CharactersSet { get { return string.IsNullOrEmpty(Characters) ? new string[] { } : Characters.Split('|'); } }
 
-        //public List<Company> Companys { get; set; }
+        public List<CompanyRelationship> CompanyRelationships { get; set; }
     }
 
     /// <summary>
     /// 出单
     /// </summary>
-    public class Deal : EntityBase
+    public class Deal : CompanyRelationshipChildItem
     {
-        public virtual Lead Lead { get; set; }
-        [Display(Name = "Lead"), Required]
-        public int? LeadID { get; set; }
+        //public virtual CompanyRelationship CompanyRelationship { get; set; }
+        //[Display(Name = "客户公司"), Required]
+        //public int? CompanyRelationshipID { get; set; }
 
         public virtual Package Package { get; set; }
         [Display(Name = "销售Package"), Required]
@@ -278,10 +285,6 @@ namespace Entity
 
         [Display(Name = "出单描述"), MaxLength(2000)]
         public string PaymentDetail { get; set; }
-
-        public int? ProjectID { get; set; }
-        [Display(Name = "所属项目")]
-        public Project Project { get; set; }
     }
 
 

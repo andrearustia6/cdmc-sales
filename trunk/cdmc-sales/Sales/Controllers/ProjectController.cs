@@ -58,42 +58,31 @@ namespace Sales.Controllers
         public ViewResult AddToCompanyRelationship(int projectid)
         {
             ViewBag.ProjectID = projectid;
-            return View(CH.GetAllData<Company>("Projects"));
+            return View(CH.GetAllData<CompanyRelationship>(c => c.ProjectID == projectid));
         }
 
         [ProjectInformationAccess]
         [HttpPost]
-        public ActionResult AddToCompanyRelationships(int projectid, string enname)
+        public ActionResult AddToCompanyRelationship(int projectid, string enname, string description, int importancy)
+        //public ActionResult AddToCompanyRelationships(FormCollection c)
         {
+            //int projectid = Int32.Parse(c.GetValue("projectid").AttemptedValue);
+            //string enname = c.GetValue("enname").AttemptedValue;
+            //string description = c.GetValue("description").AttemptedValue;
+            //int importancy = Int32.Parse(c.GetValue("importancy").AttemptedValue);
+
             ViewBag.ProjectID = projectid;
             var project = CH.GetDataById<Project>(projectid, "CompanyRelationships");
-            if (!project.CompanyRelationships.Any(core => core.Company.Name_EN == enname))
+            Company company = CH.GetAllData<Company>(co => co.Name_EN == enname).FirstOrDefault();
+            if (company == null)
             {
-                Company nc = CH.GetAllData<Company>(c => c.Name_EN == enname).FirstOrDefault();
-                if (nc == null)
-                {
-                    nc = new Company() { Name_EN = enname, Creator = User.Identity.Name };
-                    if (CRM_Logical.TryAddCompany(nc))
-                    {
-                        CompanyRelationship cr1 = new CompanyRelationship() { CompanyID = nc.ID, ProjectID = projectid };
-                        if (CRM_Logical.TryAddCompanyRelationship(cr1, projectid))
-                        {
-                            project.CompanyRelationships.Add(cr1);
-                            CH.Edit<Project>(project);
-                        }
-                    }
-                }
-                else
-                {
-
-                    if (project.CompanyRelationships.Any(pc => pc.Company.Name_EN == enname))
-                    {
-                        CompanyRelationship cr1 = new CompanyRelationship() { CompanyID = nc.ID, ProjectID = projectid };
-                        project.CompanyRelationships.Add(cr1);
-                    }
-                }
+                company = new Company() { Name_EN = enname, Creator = User.Identity.Name, Description = description };
+                CRM_Logical.TryAddCompany(company);
             }
 
+            CompanyRelationship cr1 = new CompanyRelationship() { CompanyID = company.ID, ProjectID = projectid, Importancy = importancy };
+            project.CompanyRelationships.Add(cr1);
+            CH.Edit<Project>(project);
             return RedirectToAction("Management", new { tabindex = 3, id = projectid });
             //return View(CH.GetAllData<Company>("Projects"));
         }
@@ -307,7 +296,7 @@ namespace Sales.Controllers
         public ActionResult Management(int? id, int? tabindex)
         {
             ViewBag.TabIndex = tabindex;
-            var Data = CH.GetAllData<Project>(i => i.ID == id, "Deals", "Companys", "Members", "Templates", "Messages", "TargetOfMonths", "CoreList").FirstOrDefault();
+            var Data = CH.GetAllData<Project>(i => i.ID == id, "CompanyRelationships", "Members", "Templates", "Messages", "TargetOfMonths").FirstOrDefault();
             return View(Data);
         }
 

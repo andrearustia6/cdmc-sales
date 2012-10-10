@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 using Entity;
 using Utl;
+using BLL;
 
 namespace Sales.Controllers
 {
@@ -17,7 +18,9 @@ namespace Sales.Controllers
         {
             if (projectid == null)
                 return null;
-            return View(CH.GetAllData<Deal>(d=>d.ProjectID == projectid));
+            
+            var  p = CH.GetDataById<Project>(projectid,"CompanyRelationships");
+            return View(CRM_Logical.GetProjectDeals(p));
         }
 
         public ViewResult MyDealIndex()
@@ -30,11 +33,11 @@ namespace Sales.Controllers
             return View(CH.GetDataById<Deal>(id));
         }
 
-        public ActionResult MakeDeal(int projectid,int packageid,int leadid)
+        public ActionResult MakeDeal(int projectid, int packageid, int companyrelationshipid)
         {
             ViewBag.ProjectID = projectid;
             ViewBag.PackageID = packageid;
-            ViewBag.LeadID = leadid;
+            ViewBag.CompanyRelationshipID = companyrelationshipid;
             return View();
         }
 
@@ -45,7 +48,7 @@ namespace Sales.Controllers
             {
                 item.Sales = User.Identity.Name;
                 CH.Create<Deal>(item);
-                return RedirectToAction("Management", "Lead", new { leadid=item.LeadID,projectid=item.ProjectID});
+                return RedirectToAction("Management", "Lead", new { leadid=item.CompanyRelationshipID,projectid=item.ProjectID});
             }
             return View(item);
         }
