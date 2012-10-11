@@ -50,10 +50,15 @@ namespace EntityUtl
             {
                 return en + "|" + ch;
             }
-            else
+            else if (!string.IsNullOrEmpty(en) && string.IsNullOrEmpty(ch))
             {
-                return en + ch;
+                return en;
             }
+            else if (string.IsNullOrEmpty(en) && !string.IsNullOrEmpty(ch))
+            {
+                return en;
+            }
+            return string.Empty;
         }
 
         public static bool CheckPropertyAllNull(object o, params string[] properties)

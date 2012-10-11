@@ -232,7 +232,8 @@ namespace BLL
              {
                  p.CompanyRelationships.ForEach(cr =>
                  {
-                     deals.AddRange(CH.GetAllData<Deal>(d=>d.CompanyRelationshipID == cr.ID));
+                     var ds = CH.GetAllData<Deal>(d => d.CompanyRelationshipID == cr.ID);
+                     deals.AddRange(ds);
                  });
              }
              return deals;
