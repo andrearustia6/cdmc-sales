@@ -64,12 +64,7 @@ namespace Sales.Controllers
         [ProjectInformationAccess]
         [HttpPost]
         public ActionResult AddToCompanyRelationship(int projectid, string enname, string description, int importancy)
-        //public ActionResult AddToCompanyRelationships(FormCollection c)
         {
-            //int projectid = Int32.Parse(c.GetValue("projectid").AttemptedValue);
-            //string enname = c.GetValue("enname").AttemptedValue;
-            //string description = c.GetValue("description").AttemptedValue;
-            //int importancy = Int32.Parse(c.GetValue("importancy").AttemptedValue);
 
             ViewBag.ProjectID = projectid;
             var project = CH.GetDataById<Project>(projectid, "CompanyRelationships");
@@ -83,24 +78,26 @@ namespace Sales.Controllers
             CompanyRelationship cr1 = new CompanyRelationship() { CompanyID = company.ID, ProjectID = projectid, Importancy = importancy };
             project.CompanyRelationships.Add(cr1);
             CH.Edit<Project>(project);
-            return RedirectToAction("Management", new { tabindex = 3, id = projectid });
-            //return View(CH.GetAllData<Company>("Projects"));
+            //return RedirectToAction("Management", new { tabindex = 3, id = projectid });
+
+            return View(CH.GetAllData<CompanyRelationship>(c => c.ProjectID == projectid));
         }
 
         [ProjectInformationAccess]
         [HttpPost]
         public ActionResult SelectCompanyByProjectCode(int[] checkedRecords, int projectid)
         {
-            var allselectedprojects = CH.GetAllData<Project>(item => checkedRecords.Any(cr => cr == item.ID), "CompanyRelationships");
-            var p = allselectedprojects.FirstOrDefault(i => i.ID == projectid);
+            var ps = CH.GetAllData<Project>("CompanyRelationships");
+            var allselectedprojects = ps.FindAll(item => checkedRecords.Any(cr => cr == item.ID));
+            var p = ps.FirstOrDefault(i => i.ID == projectid);
             if (p != null)
             {
 
-                var alreadyrefers = p.References.Split('|');
-                var alreadyreferprojects = allselectedprojects.FindAll(item => alreadyrefers.Any(already => already == item.ProjectCode));
-                var notreferprojects = allselectedprojects.FindAll(item => alreadyrefers.Any(already => already != item.ProjectCode));
+                //var alreadyrefers = p.References==null?new string[]{}:p.References.Split('|');
+                //var alreadyreferprojects = allselectedprojects.FindAll(item => alreadyrefers.Any(already => already == item.ProjectCode));
+                //var notreferprojects = allselectedprojects.FindAll(item => alreadyrefers.Any(already => already != item.ProjectCode));
 
-                notreferprojects.ForEach(nr =>
+                allselectedprojects.ForEach(nr =>
                 {
                     nr.CompanyRelationships.ForEach(cr =>
                     {

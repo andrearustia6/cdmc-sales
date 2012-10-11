@@ -20,7 +20,7 @@
                   cs.Add(m.Company);
               });
             }
-            @Html.Telerik().ComboBox().Name("fullname").BindTo(new SelectList(cs, "Name_EN", "FullName")).HtmlAttributes(new { style = "width:50%;" })
+            @Html.Telerik().ComboBox().Name("enname").BindTo(new SelectList(cs, "Name_EN", "FullName")).HtmlAttributes(new { style = "width:50%;" })
         </div>
         <div class="editor-label">
             @Html.Label("优先级别:")

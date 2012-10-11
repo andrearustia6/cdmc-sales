@@ -1,0 +1,12 @@
+﻿@using Entity
+@using Utl
+@using (Html.BeginForm())
+{
+<div  style="margin:10px; margin-left:0px;">
+        <span ><b>开始时间：</b>
+        @Html.Telerik().TimePicker().Name("StartDate")
+        ~
+        <b>结束时间：</b> @Html.Telerik().TimePicker().Name("EndDate")
+        </span>
+       </div>
+}
