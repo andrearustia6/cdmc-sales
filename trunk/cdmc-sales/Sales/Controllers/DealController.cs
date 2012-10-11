@@ -13,6 +13,7 @@ namespace Sales.Controllers
 {
     public class DealController : Controller
     {
+      
 
         public ViewResult Index(int? projectid)
         {
@@ -20,7 +21,7 @@ namespace Sales.Controllers
                 return null;
             
             var  p = CH.GetDataById<Project>(projectid,"CompanyRelationships");
-            return View(CRM_Logical.GetProjectDeals(p));
+            return View(CRM_Logical.GetProjectDeals(p,null,null));
         }
 
         public ViewResult MyDealIndex()

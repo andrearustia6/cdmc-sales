@@ -1,12 +1,28 @@
 ﻿@using Entity
 @using Utl
-@using (Html.BeginForm())
+@using (Html.BeginForm((string)ViewBag.Action, (string)ViewBag.Controller, (object)ViewBag.RouteValue))
 {
-<div  style="margin:10px; margin-left:0px;">
-        <span ><b>开始时间：</b>
-        @Html.Telerik().TimePicker().Name("StartDate")
-        ~
-        <b>结束时间：</b> @Html.Telerik().TimePicker().Name("EndDate")
+    <div style="margin: 10px; margin-left: 0px;">
+        <span>
+            <label> <b>开始时间：</b></label>
+            @Html.Telerik().DatePicker().Name("StartDate").Value(ViewBag.StartDate as string)
+            <span>~ </span>
+            <label>
+                <b>结束时间：</b></label>
+            @Html.Telerik().DatePicker().Name("EndDate").Value(ViewBag.EndDate as string)
+            <span>  </span>
+            <input type="submit" value="提交" />
         </span>
-       </div>
+    </div>
 }
+<style type="text/css">
+    span label
+    {
+        line-height: 25px;
+    }
+    
+    input[type=submit]
+    {
+    	 line-height: 25px; min-width:75px; height:25px; 
+   }
+</style>

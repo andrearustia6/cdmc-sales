@@ -70,29 +70,37 @@
                     c.Bound(item => item.ID).Title("操作").Width(200).Template(@<span> <a href=@Url.Content("~/Member/Edit/" + item.ID) >
                         编辑</a> | <a href=@Url.Content("~/Member/Details/" + item.ID)>详细</a> | <a href=@Url.Content("~/Member/delete/" + item.ID) >
                             删除</a> </span>);
-                }).Scrollable(scrolling => scrolling.Height(350))
+                }) .Resizable(resizing => resizing.Columns(true)).Scrollable(scrolling => scrolling.Height(350))
                 )
 }
         
 @helper Deals(Project p)
-    { 
-
-    @(Html.Telerik().Grid<Deal>(CRM_Logical.GetProjectDeals(p)).Name("Deals")
+    {  
+    ViewBag.Action = "Deals";
+    ViewBag.Controller = "Project";
+    ViewBag.RouteValue = new{projectid=p.ID};
+    ViewBag.StartDate = ViewBag.DealStartDate;
+    ViewBag.EndDate = ViewBag.DealEndDate;
+    @Html.Partial("durationselector")
+    @(Html.Telerik().Grid<Deal>(CRM_Logical.GetProjectDeals(p, ViewBag.DealStartDate as DateTime?, ViewBag.DealEndDate as DateTime?)).Name("Deals")
                 .DataKeys(keys =>
                 {
                     keys.Add(s => s.ID);
                 })
                 .Columns(c =>
                 {
-                    c.Bound(item => item.Payment).Width(100);
-                    c.Bound(item => item.Income).Width(100);
+                    c.Bound(item => item.Payment).Format("{0:c}").Width(100);
+                    c.Bound(item => item.Income).Format("{0:c}").Width(100);
                     c.Bound(item => item.IsClosed).Width(100);
-                    c.Bound(item => item.CompanyRelationship.Company.FullName).Title("客户公司").Width(100);
+                    c.Bound(item => item.ExpectedPaymentDate).Format("{0:d}").Width(100);
+                    c.Bound(item => item.CompanyRelationship.Company.FullName).Title("客户公司").Width(130);
                     c.Bound(item => item.Sales).Width(100);
-                    c.Bound(item => item.ID).Title("操作").Width(200).Template(@<span> <a href=@Url.Content("~/Member/Edit/" + item.ID) >
-                        编辑</a> | <a href=@Url.Content("~/Member/Details/" + item.ID)>详细</a> | <a href=@Url.Content("~/Member/delete/" + item.ID) >
+                    c.Bound(item => item.ID).Title("操作").Width(200).Template(@<span> <a href=@Url.Content("~/Deal/Edit/" + item.ID) >
+                        编辑</a> | <a href=@Url.Content("~/Deal/Details/" + item.ID)>详细</a> | <a href=@Url.Content("~/Deal/delete/" + item.ID) >
                             删除</a> </span>);
-                }).Scrollable(scrolling => scrolling.Height(350))
+                }) .Resizable(resizing => resizing.Columns(true))
+                                        .Filterable()
+                                          .Pageable(page => page.PageSize(20)).Scrollable(scrolling => scrolling.Height(350))
 
 )
   
@@ -110,7 +118,7 @@
                 {
                     c.Bound(item => item.Company.FullName).Width(150);
                     c.Bound(item => item).Title("拨打人").Template(@<text>@CRM_Logical.GetMemberNameWhoCallTheCompany(item.ID, p.ID)</text>).Width(70);
-                    c.Bound(item => item.Importancy).Width(60);
+                    c.Bound(item => item.Importancy).Width(80);
                     c.Bound(item => item.Company.Areas).Title("分类").Width(150);
                     c.Bound(item => item.Company.CompanyType.Name).Width(100);
                     c.Bound(item => item.Company.Cerator).Width(100);
@@ -125,7 +133,6 @@
                                                                             ))
                             .Resizable(resizing => resizing.Columns(true))
                             .Pageable(page => page.PageSize(10))
-                            .Sortable()
                             .Filterable()
                             .Scrollable(scrolling => scrolling.Height(350))
                                                                                                        )
@@ -137,7 +144,6 @@
     { 
       @(Html.Telerik().Grid<TargetOfMonth>(p.TargetOfMonths).Name("TargetOfMonths").ToolBar(commands =>
                                     commands.Custom().Text("创建新月目标").Action("Create", "TargetOfMonth", new { projectid = Model.ID }))
-                                    .ToolBar(commands => commands.Custom().Text("目标划分").Action("TargetOfMonth", "Project", new { projectid = Model.ID }))
                 .DataKeys(keys =>
                 {
                     keys.Add(s => s.ID);
@@ -148,12 +154,14 @@
                     c.Bound(item => item.BaseDeal).Format("{0:c}").Width(100);
                     c.Bound(item => item.Deal).Width(100).Format("{0:c}").Width(100);
                     c.Bound(item => item.CheckIn).Format("{0:c}").Width(100);
-                    c.Bound(item => item.StartDate).Template(@<text><p>@item.StartDate.ToShortDateString()</p></text>).Width(100);
-                    c.Bound(item => item.EndDate).Template(@<text><p>@item.EndDate.ToShortDateString()</p></text>).Width(100);
+                    c.Bound(item => item.StartDate).Format("{0:d}").Width(100);
+                    c.Bound(item => item.EndDate).Format("{0:d}").Width(100);
                     c.Bound(item => item.ID).Title("操作").Width(200).Template(@<span> <a href=@Url.Content("~/TargetOfMonths/Edit/" + item.ID) >
-                        编辑</a> | <a href=@Url.Content("~/TargetOfMonths/Details/" + item.ID)>详细</a> | <a href=@Url.Content("~/TargetOfMonths/delete/" + item.ID) >
+                        编辑</a> | <a href=@Url.Content("~/TargetOfMonths/Details/" + item.ID)>详细</a> | 
+                        <a href=@Url.Content("~/project/Breakdown/?projectid=" + item.ID + "&startdate=" + item.StartDate.ToShortDateString() + "&targetofmonthid="+item.ID) >划分</a> 
+                        | <a href=@Url.Content("~/TargetOfMonths/delete/" + item.ID) >
                             删除</a> </span>);
-                }).Scrollable(scrolling => scrolling.Height(350))
+                }) .Resizable(resizing => resizing.Columns(true)).Scrollable(scrolling => scrolling.Height(350))
                                                                                          )
         }
 
@@ -165,10 +173,10 @@
                                 c.Bound(o => o.FullName);
                                 c.Bound(o => o.Title);
                                 c.Bound(o => o).Title("状态").Template(@<text>@CRM_Logical.GetLeadStatus(Model.ID, item)</text>);
-                                c.Bound(o => o).Title("致电列表").Template(@<span>  <a  target="_blank" href=@Url.Content("~/LeadCall/LeadIndex/?projectid=" + cr.ProjectID + "&leadid=" + item.ID+"&companyid="+item.CompanyID) >致电查看</a> </span>);
+                                c.Bound(o => o).Title("致电列表").Template(@<span>  <a  target="_blank" href=@Url.Content("~/LeadCall/LeadIndex/?projectid=" + cr.ProjectID + "&leadid=" + item.ID + "&companyid=" + item.CompanyID) >致电查看</a> </span>);
                             })
                                          .Resizable(resizing => resizing.Columns(true))
                                          .Pageable(p => p.PageSize(20))
-                                         .Sortable())
+                                         )
 } 
 
