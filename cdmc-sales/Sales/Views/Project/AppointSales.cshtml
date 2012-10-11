@@ -1,0 +1,44 @@
+﻿@{
+    ViewBag.Title = "指定销售";
+}
+@using Entity
+@using Utl
+@using BLL
+@model List<Member>
+@{ Html.BeginForm(); }
+ @Html.Hidden("CompanyRelationshipID", (int)ViewBag.CompanyRelationshipID)
+@(
+
+
+              Html.Telerik().Grid<Member>(Model).Name("noselected").DataKeys(keys =>
+                {
+                    keys.Add(s => s.ID);
+                })
+                .Columns(c =>
+                {
+                    c.Bound(ic => ic.ID).Template(@<text>@Checkbox(item)</text>).Title("已选？").Width(36).HtmlAttributes(new { style = "text-align:center" });
+                    c.Bound(ic => ic.Name).Width(150);
+                    c.Bound(ic => ic.Characters).Width(200);
+                })
+                                                        .Resizable(resizing => resizing.Columns(true))
+                                                        .Pageable(p => p.PageSize(10))
+                                                        .Sortable()
+                                                        .Filterable()
+                                                        .Scrollable(scrolling => scrolling.Height(450))
+)
+<p> <button type="submit" class="t-button t-state-default">提交</button></p>
+@{ Html.EndForm(); }
+@helper Checkbox(Member m)
+{ 
+     <input name="checkedRecords" type="checkbox" value="@m.ID"  
+                    @if (CRM_Logical.IsMemberSelectedForCompanyRelationship(m, (int?)ViewBag.CompanyRelationshipID))
+                    {                            
+                        <text>checked="checked"</text> 
+                    }
+                    />     
+     
+}
+@*@{ Html.Telerik().ScriptRegistrar().OnDocumentReady(@<text> 
+        initialCompanySelect();
+    </text>);
+}*@

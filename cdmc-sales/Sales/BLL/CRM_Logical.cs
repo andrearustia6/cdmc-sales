@@ -38,6 +38,7 @@ namespace BLL
             }
             return projects;
         }
+
         public static TargetOfWeek GetTargetOfWeek(int projectid,int targetofmonth,string member,DateTime startdate,DateTime enddate)
         {
             var data = CH.GetAllData<TargetOfWeek>(tw => tw.ProjectID == projectid && tw.TargetOfMonthID == targetofmonth&&tw.Member==member);
@@ -100,6 +101,14 @@ namespace BLL
             return user == null ? false : true;
         }
 
+        public static bool IsMemberSelectedForCompanyRelationship(Member m, int? companyrelationshipid)
+        {
+            var c = CH.GetDataById<CompanyRelationship>(companyrelationshipid,"Members");
+            if (c.Members.Any(cm => cm.ID == m.ID))
+                return true;
+            else
+                return false;
+        }
         /// <summary>
         /// 查看当前谁在给这家公司打电话 
         /// </summary>

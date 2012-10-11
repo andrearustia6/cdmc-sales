@@ -19,7 +19,7 @@ namespace Sales.Controllers
             return View(CH.GetAllData<LeadCall>().OrderByDescending(o=>o.CreatedDate).ToList());
         }
 
-        public ViewResult CompanyIndex(int projectid, int companyid)
+        public ViewResult CompanyRelationshipIndex(int projectid, int companyid)
         {
 
             return View("Index",CH.GetAllData<LeadCall>().FindAll(lc => lc.CompanyRelationship.ProjectID == projectid && lc.CompanyRelationship.CompanyID == companyid).OrderByDescending(o => o.CreatedDate).ToList());
