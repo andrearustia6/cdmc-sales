@@ -3,20 +3,20 @@
 @using (Html.BeginForm((string)ViewBag.Action, (string)ViewBag.Controller, (object)ViewBag.RouteValue))
 {
     <div style="margin: 10px; margin-left: 0px;">
-        <span>
-            <label> <b>开始时间：</b></label>
+        <b><span>
+            <label> 开始时间：</label>
             @Html.Telerik().DatePicker().Name("StartDate").Value(ViewBag.StartDate as string)
             <span>~ </span>
             <label>
-                <b>结束时间：</b></label>
+                结束时间：</label>
             @Html.Telerik().DatePicker().Name("EndDate").Value(ViewBag.EndDate as string)
             <span>  </span>
             <input type="submit" value="提交" />
-        </span>
+        </span></b>
     </div>
 }
 <style type="text/css">
-    span label
+    span label 
     {
         line-height: 25px;
     }

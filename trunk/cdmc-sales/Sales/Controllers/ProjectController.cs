@@ -155,6 +155,38 @@ namespace Sales.Controllers
         //}
         #endregion
 
+         #region 指定成员到公司
+        public ViewResult AppointSales(int? projectid, int? companyrelationshipid)
+        {
+            var p = CH.GetDataById<Project>(projectid, "Members");
+            ViewBag.CompanyRelationshipID = companyrelationshipid;
+            return View(p.Members);
+        }
+
+        [HttpPost]
+        public ActionResult AppointSales(int[] checkedRecords, int companyrelationshipid)
+        {
+            var c = CH.GetAllData<CompanyRelationship>(i => i.ID == companyrelationshipid, "Members").FirstOrDefault();
+            
+            if (c != null)
+            {
+                c.Members.Clear();
+                foreach (int i in checkedRecords)
+                {
+                    if (!c.Members.Any(m => m.ID == i))
+                    {
+                        var mem = CH.GetDataById<Member>(i);
+                        c.Members.Add(mem);
+
+                    }
+                }
+                CH.Edit<CompanyRelationship>(c);
+            }
+           
+            return RedirectToAction("Management", "Project", new { id = c.ProjectID, tabindex=2 });
+        }
+         #endregion
+
         #region 分配字头
         public ActionResult Distribution(int? projectid)
         {
