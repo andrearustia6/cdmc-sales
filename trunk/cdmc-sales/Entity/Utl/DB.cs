@@ -172,8 +172,8 @@ namespace Utl
             context.TargetOfWeeks.Add(tw4);
 
             var d1 = new Deal() { ExpectedPaymentDate = DateTime.Now.AddDays(-2), ActualPaymentDate = DateTime.Now, ID = 1, Income = 12000, Payment = 12000, PackageID = 1, CompanyRelationshipID = 1, Sales = "sean", IsClosed = true };
-            var d2 = new Deal() { ExpectedPaymentDate = DateTime.Now.AddDays(-1), ActualPaymentDate = DateTime.Now, ID = 2, Income = 5000, Payment = 5000, PackageID = 1, CompanyRelationshipID = 1, Sales = "sean", IsClosed = true };
-            var d4 = new Deal() { ExpectedPaymentDate = DateTime.Now.AddDays(-3), ActualPaymentDate = DateTime.Now, ID = 4, Income = 7500, Payment = 7500, PackageID = 1, CompanyRelationshipID = 2, Sales = "tina", IsClosed = true };
+            var d2 = new Deal() { ExpectedPaymentDate = DateTime.Now.AddDays(-1), ActualPaymentDate = DateTime.Now, ID = 2, Income = 5000, Payment = 5000, PackageID = 1, CompanyRelationshipID = 1, Sales = "tina", IsClosed = true };
+            var d4 = new Deal() { ExpectedPaymentDate = DateTime.Now.AddDays(-3), ActualPaymentDate = DateTime.Now, ID = 4, Income = 7500, Payment = 7500, PackageID = 1, CompanyRelationshipID = 2, Sales = "sean", IsClosed = true };
             var d3 = new Deal() { ExpectedPaymentDate = DateTime.Now.AddDays(7), ID = 3, Income = 0, Payment = 60000, PackageID = 1, CompanyRelationshipID  = 1, Sales = "sean", IsClosed = false };
 
             context.Deals.Add(d1);
