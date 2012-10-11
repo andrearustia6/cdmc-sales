@@ -273,10 +273,17 @@ namespace Sales.Controllers
         }
         #endregion
 
-        #region
-        public ViewResult Deals(int? projectid)
+        #region 出单
+        //public ViewResult Deals(int? projectid)
+        //{
+        //    return View(CH.GetAllData<Deal>(d => d.ProjectID == projectid));
+        //}
+
+        [HttpPost]
+        public ActionResult Deals(DateTime? startdate, DateTime? enddate, int? projectid)
         {
-            return View(CH.GetAllData<Deal>(d => d.ProjectID == projectid));
+
+            return RedirectToAction("Management", new { id = projectid, tabindex = 4, dealstartdate = startdate, dealenddate = enddate });
         }
         #endregion
 
@@ -290,8 +297,10 @@ namespace Sales.Controllers
             return View();
         }
 
-        public ActionResult Management(int? id, int? tabindex)
+        public ActionResult Management(int? id, int? tabindex, DateTime? dealstartdate, DateTime? dealenddate)
         {
+            ViewBag.DealStartDate = dealstartdate;
+            ViewBag.DealEndDate = dealenddate;
             ViewBag.TabIndex = tabindex;
             var Data = CH.GetAllData<Project>(i => i.ID == id, "CompanyRelationships", "Members", "Templates", "Messages", "TargetOfMonths").FirstOrDefault();
             return View(Data);

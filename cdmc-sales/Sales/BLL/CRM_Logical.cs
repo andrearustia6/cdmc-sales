@@ -225,18 +225,27 @@ namespace BLL
         }
         #endregion
 
+        public static List<Deal> GetProjectDeals(Project p, DateTime? startdate, DateTime? enddate)
+        {
+            if (startdate == null) startdate = new DateTime(1000, 1, 1);
+            if (enddate == null) enddate = new DateTime(9000, 1, 1);
+            var deals = GetProjectDeals(p);
+            deals = deals.FindAll(d => d.ExpectedPaymentDate >= startdate.Value && d.ExpectedPaymentDate <= enddate.Value.AddDays(1));
+            return deals;
+        }
+
         public static List<Deal> GetProjectDeals(Project p)
         {
             List<Deal> deals = new List<Deal>();
-             if (p.CompanyRelationships != null)
-             {
-                 p.CompanyRelationships.ForEach(cr =>
-                 {
-                     var ds = CH.GetAllData<Deal>(d => d.CompanyRelationshipID == cr.ID);
-                     deals.AddRange(ds);
-                 });
-             }
-             return deals;
+            if (p.CompanyRelationships != null)
+            {
+                p.CompanyRelationships.ForEach(cr =>
+                {
+                    var ds = CH.GetAllData<Deal>(d => d.CompanyRelationshipID == cr.ID);
+                    deals.AddRange(ds);
+                });
+            }
+            return deals;
         }
 
         #region Reports
