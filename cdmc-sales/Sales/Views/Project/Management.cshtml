@@ -89,8 +89,8 @@
                 })
                 .Columns(c =>
                 {
-                    c.Bound(item => item.Payment).Format("{0:c}").Width(100);
-                    c.Bound(item => item.Income).Format("{0:c}").Width(100);
+                    c.Bound(item => item.Payment).Format("{0:c}").Aggregate(aggregates => aggregates.Sum()).FooterTemplate(@<text>应付款: @item.Sum.Format("{0:c}")</text>).GroupFooterTemplate(@<text>应付款: @item.Sum.Format("{0:c}")</text>).Width(100);
+                    c.Bound(item => item.Income).Format("{0:c}").Aggregate(aggregates => aggregates.Sum()).FooterTemplate(@<text>实收: @item.Sum.Format("{0:c}")</text>).GroupFooterTemplate(@<text>实收: @item.Sum.Format("{0:c}")</text>).Width(100);
                     c.Bound(item => item.IsClosed).Width(100);
                     c.Bound(item => item.ExpectedPaymentDate).Format("{0:d}").Width(100);
                     c.Bound(item => item.CompanyRelationship.Company.FullName).Title("客户公司").Width(130);
@@ -99,7 +99,7 @@
                         编辑</a> | <a href=@Url.Content("~/Deal/Details/" + item.ID)>详细</a> | <a href=@Url.Content("~/Deal/delete/" + item.ID) >
                             删除</a> </span>);
                 }) .Resizable(resizing => resizing.Columns(true))
-                                        .Filterable()
+                                        .Filterable().Groupable()
                                           .Pageable(page => page.PageSize(20)).Scrollable(scrolling => scrolling.Height(350))
 
 )
@@ -127,8 +127,8 @@
 
                 })
                                          .DetailView(e => e.Template(
-                                                 @<text>
-                         @RenderGrid(CH.GetAllData<Lead>(l => l.CompanyID == item.CompanyID), item)
+                          @<text>
+                         @RenderLead(CH.GetAllData<Lead>(l => l.CompanyID == item.CompanyID), item)
                         </text>
                                                                             ))
                             .Resizable(resizing => resizing.Columns(true))
@@ -158,14 +158,19 @@
                     c.Bound(item => item.EndDate).Format("{0:d}").Width(100);
                     c.Bound(item => item.ID).Title("操作").Width(200).Template(@<span> <a href=@Url.Content("~/TargetOfMonths/Edit/" + item.ID) >
                         编辑</a> | <a href=@Url.Content("~/TargetOfMonths/Details/" + item.ID)>详细</a> | 
-                        <a href=@Url.Content("~/project/Breakdown/?projectid=" + item.ID + "&startdate=" + item.StartDate.ToShortDateString() + "&targetofmonthid="+item.ID) >划分</a> 
+                        <a href=@Url.Content("~/project/Breakdown/?projectid=" + item.ID + "&startdate=" + item.StartDate.ToShortDateString() + "&targetofmonthid=" + item.ID) >添加划分</a> 
                         | <a href=@Url.Content("~/TargetOfMonths/delete/" + item.ID) >
                             删除</a> </span>);
-                }) .Resizable(resizing => resizing.Columns(true)).Scrollable(scrolling => scrolling.Height(350))
-                                                                                         )
+                }).DetailView(e => e.Template(
+                         @<text>
+                         @RenderTargetOfWeek(item)
+                        </text>
+                   ))
+                  .Resizable(resizing => resizing.Columns(true)).Scrollable(scrolling => scrolling.Height(350))
+                                                                                                                    )
         }
 
-@helper RenderGrid(List<Lead> Leads, CompanyRelationship cr)
+@helper RenderLead(List<Lead> Leads, CompanyRelationship cr)
     { 
      @(Html.Telerik().Grid(Leads).Name("Leads" + cr.CompanyID)
                             .Columns(c =>
@@ -180,3 +185,36 @@
                                          )
 } 
 
+@helper RenderTargetOfWeek(TargetOfMonth tm)
+    { 
+        var tmid = tm.ID;
+        var projectid = tm.ProjectID;
+        var tw = CH.GetAllData<TargetOfWeek>(t => t.ProjectID == projectid);
+        var datas = tw.OrderBy(i => i.StartDate).GroupBy(sd => sd.StartDate);
+    @(Html.Telerik().TabStrip().Name("TabStrip" + tmid).SelectedIndex(0).Items(items =>
+{
+    if (datas.Count() != 0)
+    {
+        foreach (var data in datas)
+        {
+            var did = data.Key.ToShortDateString();
+            var list = data.ToList();
+            items.Add().Text(data.Key.ToShortDateString() + "~" + data.Key.AddDays(4).ToShortDateString()).Content(@<text>@RenderMembersTargetOfWeek(did, list, tm.ProjectID, tm.ID)</text>);
+        }
+    }
+}))
+        <br />
+}
+@helper RenderMembersTargetOfWeek(string key, List<TargetOfWeek> tm, int projectid, int targetofmonthid)
+    {
+         @Html.ActionLink("编辑划分", "Breakdown", "Project", new { projectid = projectid, targetofmonthid = targetofmonthid, startdate = key }, null)   
+    @(Html.Telerik().Grid(tm).Name("TargetOfWeek" + key)
+                            .Columns(c =>
+                            {
+                                c.Bound(tw => tw.Deal);
+                                c.Bound(tw => tw.Member);
+                            })
+                            .Resizable(resizing => resizing.Columns(true))
+                            .Pageable(p => p.PageSize(20)).Sortable())
+   
+}

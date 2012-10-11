@@ -269,7 +269,7 @@ namespace Sales.Controllers
                 }
             }
 
-            return RedirectToAction("Index", "TargetOfMonth", new { id = projectid });
+            return RedirectToAction("management", "project", new { id = projectid,tabindex=2 });
         }
         #endregion
 
