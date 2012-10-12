@@ -115,7 +115,7 @@ namespace BLL
         /// <param name="companyid"></param>
         /// <param name="projectid"></param>
         /// <returns></returns>
-        public static List<Member> GetMemberWhoCallTheCompany(int companyid, int projectid)
+        public static List<Member> GetMemberWhoCallTheCompany(int? companyid, int? projectid)
         {
             var com = CH.GetAllData<CompanyRelationship>(c => c.ID == companyid, "Members").FirstOrDefault();
             var project = CH.GetAllData<Project>(p => p.ID == projectid, "Members").FirstOrDefault();
@@ -136,7 +136,7 @@ namespace BLL
                         chars.ForEach(ch =>
                         {
                             if ((!string.IsNullOrEmpty(com.Company.Name_CH)&&com.Company.Name_CH.StartsWith(ch)) ||
-                                (!string.IsNullOrEmpty(com.Company.Name_EN) && com.Company.Name_EN.StartsWith(ch.ToLower())))
+                                (!string.IsNullOrEmpty(com.Company.Name_EN) && com.Company.Name_EN.StartsWith(ch.ToUpper())))
                             {
                                 result.Add(m);
                             }
@@ -149,7 +149,7 @@ namespace BLL
             return result;
         }
 
-        public static string GetMemberNameWhoCallTheCompany(int companyid, int projectid)
+        public static string GetMemberNameWhoCallTheCompany(int? companyid, int? projectid)
         {
             var ml = GetMemberWhoCallTheCompany(companyid, projectid);
             string ms = string.Empty;
@@ -223,7 +223,7 @@ namespace BLL
             return call.LeadCallType.Name == "Qualified Decision" ? true : false;
         }
 
-        public static string GetLeadStatus(int porjectid, Lead lead)
+        public static string GetLeadStatus(int? porjectid, Lead lead)
         {
             var call = CH.GetAllData<LeadCall>(lc => lc.CompanyRelationship.ProjectID == porjectid && lc.LeadID == lead.ID).OrderByDescending(o=>o.CreatedDate).FirstOrDefault();
             if (call == null)
@@ -299,5 +299,19 @@ namespace BLL
             return false;
         }
         #endregion
+
+        /// <summary>
+        /// 取得sales正在参与的，已经激活，并且当前时间在项目周期内的项目
+        /// </summary>
+        /// <returns></returns>
+        public static List<Project> GetSalesInvolveProject()
+        {
+            var name = HttpContext.Current.User.Identity.Name;
+            var now = DateTime.Now;
+            var projects = CH.GetAllData<Project>("Members");
+
+            var data = projects.FindAll(p=>p.Members.Any(m=>m.Name == name)&& p.IsActived==true && now>p.StartDate && now<p.EndDate);
+            return data;
+        }
     }
 }

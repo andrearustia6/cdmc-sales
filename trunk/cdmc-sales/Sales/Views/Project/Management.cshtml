@@ -81,8 +81,8 @@
     ViewBag.RouteValue = new{projectid=p.ID};
     ViewBag.StartDate = ViewBag.DealStartDate;
     ViewBag.EndDate = ViewBag.DealEndDate;
-    @Html.Partial("durationselector")
-    @(Html.Telerik().Grid<Deal>(CRM_Logical.GetProjectDeals(p, ViewBag.DealStartDate as DateTime?, ViewBag.DealEndDate as DateTime?)).Name("Deals")
+    @*@Html.Partial("durationselector")*@
+    @(Html.Telerik().Grid<Deal>(CRM_Logical.GetProjectDeals(p, ViewBag.DealStartDate as DateTime?, ViewBag.DealEndDate as DateTime?)).ToolBar(commands=>commands.Template(@<text>@Html.Partial("durationselector")</text>)).Name("Deals")
                 .DataKeys(keys =>
                 {
                     keys.Add(s => s.ID);
@@ -123,7 +123,7 @@
                     c.Bound(item => item.Company.CompanyType.Name).Width(100);
                     c.Bound(item => item.Company.Cerator).Width(100);
                     c.Bound(item => item.Company.From).Width(100);
-                    c.Bound(item => item.ID).Title("操作").Width(200).Template(@<span><a target="_blank" href=@Url.Content("~/Project/AppointSales/?projectid=" + p.ID + "&companyrelationshipid=" + item.ID) >指定销售</a> | <a target="_blank" href=@Url.Content("~/LeadCall/CompanyRelationshipIndex/?projectid=" + p.ID + "&companyrelationshipid=" + item.ID) >致电查看</a> </span>);
+                    c.Bound(item => item.ID).Title("操作").Width(200).Template(@<span><a  href=@Url.Content("~/Project/AppointSales/?projectid=" + p.ID + "&companyrelationshipid=" + item.ID) >指定销售</a> | <a target="_blank" href=@Url.Content("~/LeadCall/CompanyRelationshipIndex/?projectid=" + p.ID + "&companyrelationshipid=" + item.ID) >致电查看</a> </span>);
 
                 })
                                          .DetailView(e => e.Template(
