@@ -19,47 +19,6 @@ namespace Sales.Controllers
     
     public class LeadController : Controller
     {
-        [MarketInterfaceRequired]
-        public ViewResult MarketIndex()
-        {
-            return View(CH.GetAllData<Lead>());
-        }
-
-        [SalesRequired]
-        public ViewResult DistributionIndex(int? projectid)
-        {
-            ViewBag.ProjectID = projectid;
-            var members = CH.GetAllData<Member>(m => m.Name == User.Identity.Name&&m.ProjectID == projectid);
-
-            var member = members.FirstOrDefault();
-            if (member != null && member.CharactersSet != null)
-            {
-                var data = CH.GetAllData<Company>("Leads");
-                data = data.FindAll(c => member.CharactersSet.Any(ca => (c.Name_EN.ToUpper().StartsWith(ca))));
-                var leads = new List<Lead>();
-                data.ForEach(c => {
-                    leads.AddRange(c.Leads);
-                });
-                return View(leads);
-            }
-            return View();
-        }
-        [MarketInterfaceRequired]
-        public ActionResult EmailExportCsv(int page, string orderBy, string filter)
-        {
-             var leads = CH.GetAllData<Lead>();           
-             MemoryStream output = new MemoryStream();            
-             StreamWriter writer = new StreamWriter(output, Encoding.UTF8);  
-             foreach (var lead in leads)            
-             {
-                 writer.Write(lead.EMail); 
-                 writer.WriteLine();            
-             }           
-             writer.Flush();           
-             output.Position = 0;                       
-             return File(output, "text/comma-separated-values", "Emails.csv");        }
-        
-
         public ViewResult Index()
         {
             return View(CH.GetAllData<Lead>());

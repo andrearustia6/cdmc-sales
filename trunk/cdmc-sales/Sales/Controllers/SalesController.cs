@@ -12,7 +12,7 @@ namespace Sales.Controllers
     [SalesRequired]
     public class SalesController : Controller
     {
-        #region sales
+   
         /// <summary>
         /// id = companyrelationshipid
         /// </summary>
@@ -76,7 +76,23 @@ namespace Sales.Controllers
             }
             return View();
         }
-        #endregion
 
+        public ViewResult LeadCall(int? companyrelationshipid, int? leadid)
+        {
+            ViewBag.CompanyRelationshipID = companyrelationshipid;
+            ViewBag.LeadID = leadid;
+            return View();
+        }
+
+        [HttpPost]
+        public ViewResult LeadCall(LeadCall lc)
+        {
+            ViewBag.CompanyRelationshipID = lc.CompanyRelationship;
+            ViewBag.LeadID = lc.LeadID;
+
+            var c = CH.Create<LeadCall>(lc);
+
+            return View();
+        }
     }
 }

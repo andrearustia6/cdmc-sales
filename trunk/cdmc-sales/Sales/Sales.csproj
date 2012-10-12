@@ -221,6 +221,7 @@
     <Compile Include="Controllers\DealController.cs" />
     <Compile Include="Controllers\DistrictNumberController.cs" />
     <Compile Include="Controllers\LeadCallController.cs" />
+    <Compile Include="Controllers\MarketInterfaceController.cs" />
     <Compile Include="Controllers\MemberController.cs" />
     <Compile Include="Controllers\OnPhoneTemplateController.cs" />
     <Compile Include="Controllers\PackageController.cs" />
@@ -1135,6 +1136,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Sales\DisplayLead.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Sales\LeadCall.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
