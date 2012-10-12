@@ -1,10 +1,11 @@
 ﻿@using Entity
 @using Utl
+@using BLL
 @using (Html.BeginForm())
 {
 <div  style="margin:10px; margin-left:0px;">
         <span ><b>目标项目：</b>
-        @Html.DropDownList("ProjectID", new SelectList(CH.GetAllData<Project>(), "ID", "Name"), "-请选择-", new { onchange = "this.form.submit();" })
+        @Html.DropDownList("ProjectID", new SelectList(CRM_Logical.GetSalesInvolveProject(), "ID", "Name"), "-请选择-", new { onchange = "this.form.submit();" })
         </span>
        </div>
 }

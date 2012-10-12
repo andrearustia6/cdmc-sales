@@ -24,7 +24,12 @@ function getSliderValue(s) {
     var v = s.attr('TargetOfWeek');
     return v;
 }
-function initialCompanySelect() {
+
+function initialMemberSelect() {
+    $('input[type=checkbox]').click(function () { 
+    });
+}
+function initialCharDistribution() {
     $(".charatacter, .pane").sortable({
         connectWith: ".connectedSortable"
     });

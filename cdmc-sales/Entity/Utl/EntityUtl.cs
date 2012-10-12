@@ -56,7 +56,7 @@ namespace EntityUtl
             }
             else if (string.IsNullOrEmpty(en) && !string.IsNullOrEmpty(ch))
             {
-                return en;
+                return ch;
             }
             return string.Empty;
         }

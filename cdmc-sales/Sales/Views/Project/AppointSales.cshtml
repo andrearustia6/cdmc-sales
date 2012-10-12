@@ -8,8 +8,6 @@
 @{ Html.BeginForm(); }
  @Html.Hidden("CompanyRelationshipID", (int)ViewBag.CompanyRelationshipID)
 @(
-
-
               Html.Telerik().Grid<Member>(Model).Name("noselected").DataKeys(keys =>
                 {
                     keys.Add(s => s.ID);
@@ -38,7 +36,9 @@
                     />     
      
 }
-@*@{ Html.Telerik().ScriptRegistrar().OnDocumentReady(@<text> 
-        initialCompanySelect();
+@*没下面，不能提交所选的checkbox*@
+@*@{ 
+    Html.Telerik().ScriptRegistrar().OnDocumentReady(@<text> 
+        initialMemberSelect();
     </text>);
 }*@

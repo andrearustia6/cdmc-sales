@@ -171,19 +171,22 @@ namespace Sales.Controllers
             if (c != null)
             {
                 c.Members.Clear();
-                foreach (int i in checkedRecords)
+                if (checkedRecords != null)
                 {
-                    if (!c.Members.Any(m => m.ID == i))
+                    foreach (int i in checkedRecords)
                     {
-                        var mem = CH.GetDataById<Member>(i);
-                        c.Members.Add(mem);
+                        if (!c.Members.Any(m => m.ID == i))
+                        {
+                            var mem = CH.GetDataById<Member>(i);
+                            c.Members.Add(mem);
 
+                        }
                     }
                 }
                 CH.Edit<CompanyRelationship>(c);
             }
            
-            return RedirectToAction("Management", "Project", new { id = c.ProjectID, tabindex=2 });
+            return RedirectToAction("Management", "Project", new { id = c.ProjectID, tabindex=3 });
         }
          #endregion
 

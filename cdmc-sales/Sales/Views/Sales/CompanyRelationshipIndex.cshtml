@@ -1,0 +1,50 @@
+﻿@{
+    ViewBag.Title = "需联系的客户公司";
+}
+@using Entity
+@using Utl
+@using BLL
+@model List<CompanyRelationship>
+ @Html.Partial("contenttitle","致电公司")
+ @(Html.Telerik().Grid(Model).Name("Company").ToolBar(commands => commands.Template(@<text>@Html.Partial("projectselector")</text>))
+                .DataKeys(keys =>
+                {
+                    keys.Add(s => s.ID);
+                })
+                .Columns(c =>
+                {
+                    c.Bound(item => item.Company.FullName).Width(150);
+                    c.Bound(item => item).Title("拨打人").Template(@<text>@CRM_Logical.GetMemberNameWhoCallTheCompany(item.CompanyID,item.ProjectID)</text>).Width(70);
+                    c.Bound(item => item.Importancy).Width(80);
+                    c.Bound(item => item.Company.Areas).Title("分类").Width(250);
+                    c.Bound(item => item.Company.From).Width(100);
+                    c.Bound(item => item.ID).Title("操作").Width(150).Template(@<span>  <a target="_blank" href=@Url.Content("~/Sales/DisplayCompany/" + item.ID) >公司查看</a> | <a target="_blank" href=@Url.Content("~/LeadCall/CompanyRelationshipIndex/?projectid=" + item.ProjectID + "&companyrelationshipid=" + item.ID) >致电查看</a> </span>);
+
+                })
+                        .DetailView(e => e.Template(
+                          @<text>
+                         @RenderLead(CH.GetAllData<Lead>(l => l.CompanyID == item.CompanyID), item)
+                        </text>
+                                                                            ))
+                            .Resizable(resizing => resizing.Columns(true))
+                            .Pageable(page => page.PageSize(10))
+                            .Filterable()
+                            .Scrollable(scrolling => scrolling.Height(350))
+)
+@helper RenderLead(List<Lead> Leads, CompanyRelationship cr)
+    { 
+     @(Html.Telerik().Grid(Leads).Name("Leads" + cr.CompanyID)
+                            .Columns(c =>
+                            {
+                                c.Bound(o => o.FullName);
+                                c.Bound(o => o.Title);
+                                c.Bound(o => o).Title("状态").Template(@<text>@CRM_Logical.GetLeadStatus(cr.ProjectID, item)</text>);
+                                c.Bound(o => o).Title("操作").Template(@<span><a  target="_blank" href=@Url.Content("~/sales/displaylead/" + item.ID + "&companyrelationshipid="+cr.ID) >Lead查看</a> 
+                                | <a  target="_blank" href=@Url.Content("~/Sales/LeadCall/?projectid=" + cr.ProjectID + "&leadid=" + item.ID + "&companyid=" + item.CompanyID) >致电记录</a>
+                                 | <a   href=@Url.Content("~/Sales/LeadCall/?projectid=" + cr.ProjectID + "&leadid=" + item.ID + "&companyid=" + item.CompanyID) >添加记录</a> 
+                                  </span>);
+                            })
+                                         .Resizable(resizing => resizing.Columns(true))
+                                         .Pageable(p => p.PageSize(20))
+)
+} 
