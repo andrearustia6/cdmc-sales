@@ -12,7 +12,18 @@ namespace Sales.Controllers
     [SalesRequired]
     public class SalesController : Controller
     {
-   
+        #region Leadcall
+        public ViewResult CompanyRelationshipLeadCallsIndex(int? companyrelationshipid)
+        {
+           var data = CH.GetDataById<CompanyRelationship>(companyrelationshipid,"LeadCalls");
+           return View("SalesLeadCallsIndex",data.LeadCalls);
+        }
+        public ViewResult LeadCallsIndex(int? companyrelationshipid, int? leadid)
+        {
+            var data = CH.GetDataById<CompanyRelationship>(companyrelationshipid, "LeadCalls");
+            return View("SalesLeadCallsIndex", data.LeadCalls.FindAll(l=>l.LeadID==leadid));
+        }
+        #endregion
         /// <summary>
         /// id = companyrelationshipid
         /// </summary>
@@ -31,7 +42,7 @@ namespace Sales.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public ViewResult DisplayLead(int? leadid,int? companyrelationshipid)
+        public ViewResult DisplayLead(int? leadid, int? companyrelationshipid)
         {
             if (CRM_Logical.IsTheSalesAbleToAccessTheCompanyRelationship(companyrelationshipid))
             {
@@ -41,7 +52,7 @@ namespace Sales.Controllers
             else
                 return View();
 
-            
+
         }
 
         /// <summary>
@@ -50,7 +61,7 @@ namespace Sales.Controllers
         /// <returns></return
         public ViewResult CompanyRelationshipIndex(int? projectid)
         {
-            var project = CH.GetDataById<Project>(projectid,"Members");
+            var project = CH.GetDataById<Project>(projectid, "Members");
             if (project != null)
             {
                 var cs = CH.GetAllData<CompanyRelationship>(c => c.ProjectID == projectid);
