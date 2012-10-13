@@ -184,7 +184,7 @@ namespace Utl
             var lc1 = new LeadCall() { ID = 1, CreatedDate = DateTime.Now.AddDays(-5), Creator = "sean", LeadCallTypeID = 3, LeadID = 1, CompanyRelationshipID = 1 };
             var lc2 = new LeadCall() { ID = 2, CreatedDate = DateTime.Now.AddDays(-4), Creator = "sean", LeadCallTypeID = 4, LeadID = 1, CompanyRelationshipID = 1 };
             var lc3 = new LeadCall() { ID = 3, CreatedDate = DateTime.Now.AddDays(-3), Creator = "sean", LeadCallTypeID = 5, LeadID = 1, CompanyRelationshipID = 1 };
-            var lc5 = new LeadCall() { ID = 4, CreatedDate = DateTime.Now.AddDays(-2), Creator = "sean", LeadCallTypeID = 6, LeadID = 1, CompanyRelationshipID = 1 };
+            var lc5 = new LeadCall() { ID = 4, CreatedDate = DateTime.Now.AddDays(-2), Creator = "sean", LeadCallTypeID = 6, LeadID = 2, CompanyRelationshipID = 1 };
             var lc6 = new LeadCall() { ID = 5,  CreatedDate = DateTime.Now.AddDays(-1), Creator = "sean", LeadCallTypeID = 7, LeadID = 1, CompanyRelationshipID = 1 };
             var lc7 = new LeadCall() { ID = 6, CreatedDate = DateTime.Now.AddDays(-3), Creator = "susie", LeadCallTypeID = 2, LeadID = 3, CompanyRelationshipID = 2 };
             var lc4 = new LeadCall() { ID = 7, CreatedDate = DateTime.Now.AddDays(-1), Creator = "susie", LeadCallTypeID = 2, LeadID = 3, CompanyRelationshipID = 2 };
