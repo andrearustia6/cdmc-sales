@@ -4,9 +4,14 @@
     <legend>@SR.Form</legend>
     <div class="display-label">客户照片</div>
     <div class="display-field">
-      <img alt="上传文件" width="300" height="200" src=@Url.Action("ShowImage", "Image", new { id = Model.ImageID }) />
+   
+     @if (Model != null)
+     {
+        <div style="max-width:300px; max-height:250px;">
+      <img alt="客户照片"  src=@Url.Content("~/Image/DisplayImage/" + Model.ImageID) />
+      </div>
+     }
     </div>
-
    <div class="display-label">客户职位</div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Title)

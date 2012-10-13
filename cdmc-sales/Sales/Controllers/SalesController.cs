@@ -20,9 +20,8 @@ namespace Sales.Controllers
         /// <returns></returns>
         public ViewResult DisplayCompany(int? id)
         {
-            var cr = CH.GetDataById<CompanyRelationship>(id,"Members");
-            if (cr.Members.Any(m => m.Name == User.Identity.Name))
-                return View(cr.Company);
+            if (CRM_Logical.IsTheSalesAbleToAccessTheCompanyRelationship(id))
+                return View(CH.GetDataById<CompanyRelationship>(id).Company);
             else
                 return View();
         }
@@ -32,12 +31,11 @@ namespace Sales.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public ViewResult DisplayLead(int? id,int? companyrelationshipid)
+        public ViewResult DisplayLead(int? leadid,int? companyrelationshipid)
         {
-            var cr = CH.GetDataById<CompanyRelationship>(companyrelationshipid, "Members");
-            if (cr.Members.Any(m => m.Name == User.Identity.Name))
+            if (CRM_Logical.IsTheSalesAbleToAccessTheCompanyRelationship(companyrelationshipid))
             {
-                var lead = CH.GetDataById<Lead>(id);
+                var lead = CH.GetDataById<Lead>(leadid);
                 return View(lead);
             }
             else

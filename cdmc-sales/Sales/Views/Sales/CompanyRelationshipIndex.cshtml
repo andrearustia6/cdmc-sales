@@ -39,7 +39,7 @@
                                 c.Bound(o => o.FullName);
                                 c.Bound(o => o.Title);
                                 c.Bound(o => o).Title("状态").Template(@<text>@CRM_Logical.GetLeadStatus(cr.ProjectID, item)</text>);
-                                c.Bound(o => o).Title("操作").Template(@<span><a  target="_blank" href=@Url.Content("~/sales/displaylead/" + item.ID + "&companyrelationshipid="+cr.ID) >Lead查看</a> 
+                                c.Bound(o => o).Title("操作").Template(@<span><a  target="_blank" href=@Url.Content("~/sales/displaylead/?leadid=" + item.ID + "&companyrelationshipid="+cr.ID) >Lead查看</a> 
                                 | <a  target="_blank" href=@Url.Content("~/Sales/LeadCall/?projectid=" + cr.ProjectID + "&leadid=" + item.ID + "&companyid=" + item.CompanyID) >致电记录</a>
                                  | <a   href=@Url.Content("~/Sales/LeadCall/?projectid=" + cr.ProjectID + "&leadid=" + item.ID + "&companyid=" + item.CompanyID) >添加记录</a> 
                                   </span>);

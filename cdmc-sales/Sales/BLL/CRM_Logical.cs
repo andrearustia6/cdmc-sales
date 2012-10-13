@@ -234,6 +234,18 @@ namespace BLL
         }
         #endregion
 
+        public static bool IsTheSalesAbleToAccessTheCompanyRelationship(int? companyrelationshipid)
+        {
+            var cr = CH.GetDataById<CompanyRelationship>(companyrelationshipid, "Members");
+            var d = CRM_Logical.GetMemberNameWhoCallTheCompany(cr.CompanyID, cr.ProjectID);
+            string[] names = d.Split('|');
+            if (names.Any(m => m == HttpContext.Current.User.Identity.Name))
+            {
+                return true;
+            }
+            return false;
+        }
+
         public static List<Deal> GetProjectDeals(Project p, DateTime? startdate, DateTime? enddate)
         {
             if (startdate == null) startdate = new DateTime(1000, 1, 1);
