@@ -46,6 +46,7 @@ namespace Entity
     /// </summary>
     public class Project : EntityBase
     {
+        public string OpeningDate { get { return} }
         [Display(Name = "板块负责人")]
         public string Manager { get; set; }
 
@@ -84,7 +85,11 @@ namespace Entity
 
         public List<Template> Templates { get; set; }
 
-        public List<Keyword> Keywords { get; set; }
+        [Display(Name="公司类型")]
+        public string Categorys { get; set; }
+
+        [Display(Name = "公司类型")]
+        public string[] CategorysSet { get { return Categorys.Split('|'); } }
 
         [Display(Name = "项目背景")]
         public string SaleBrief { get; set; }
@@ -111,11 +116,21 @@ namespace Entity
         public List<CompanyRelationship> CompanyRelationships { get; set; }
     }
 
+    public class Category:EntityBase
+    {
+        public virtual Project Project { get; set; }
+        public int? ProjectID { get; set; }
+        [Display(Name="内容")]
+        public string Contents { get; set; }
+    }
+
     public class CompanyRelationship : EntityBase
     {
         public virtual Company Company { get; set; }
         [Display(Name = "目标公司")]
         public int? CompanyID { get; set; }
+
+        public string Categorys { get; set; }
 
         public List<Deal> Deals { get; set; }
 

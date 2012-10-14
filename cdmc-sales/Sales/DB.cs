@@ -21,5 +21,9 @@ namespace Sales
         public DbSet<CompanyRelationship> CompanyRelationship { get; set; }
 
         public DbSet<LeadCallType> LeadCallType { get; set; }
+
+        public DbSet<Category> Categories { get; set; }
+
+        public DbSet<Project> Projects { get; set; }
     }
 }

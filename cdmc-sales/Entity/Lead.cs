@@ -44,8 +44,8 @@ namespace Entity
         public int? DistrictNumberID { get; set; }
 
         [Display(Name = "行业类型")]
-        public virtual Category Category { get; set; }
-        public int? CategoryID { get; set; }
+        public virtual Area Area { get; set; }
+        public int? AreaID { get; set; }
 
         [Display(Name = "公司架构")]
         public virtual Image Image { get; set; }
@@ -66,9 +66,6 @@ namespace Entity
         [Display(Name = "传真")]
         public string Fax { get; set; }
 
-        public List<Project> Projects { get; set; }
-
-        public List<Member> Members { get; set; }
     
     }
 

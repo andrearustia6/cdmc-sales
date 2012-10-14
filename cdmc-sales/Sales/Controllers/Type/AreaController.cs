@@ -8,20 +8,21 @@ using System.Web.Mvc;
 using Entity;
 using Sales;
 using Utl;
+using Telerik.Web.Mvc;
 
 namespace Sales.Controllers
 {
-    public class CategoryController : Controller
+    public class AreaController : Controller
     {
-
+    
         public ViewResult Index()
         {
-            return View(CH.GetAllData<Category>());
+            return View(CH.GetAllData<Area>());
         }
 
         public ViewResult Details(int id)
         {
-            return View(CH.GetDataById<Category>(id));
+            return View(CH.GetDataById<Area>(id));
         }
 
         public ActionResult Create()
@@ -30,26 +31,26 @@ namespace Sales.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create(Category item)
+        public ActionResult Create(Area item)
         {
             if (ModelState.IsValid)
             {
-                CH.Create<Category>(item);
+                CH.Create<Area>(item);
                 return RedirectToAction("Index");
             }
             return View(item);
         }
         public ActionResult Edit(int id)
         {
-            return View(CH.GetDataById<Category>(id));
+            return View(CH.GetDataById<Area>(id));
         }
 
         [HttpPost]
-        public ActionResult Edit(Category item)
+        public ActionResult Edit(Area item)
         {
             if (ModelState.IsValid)
             {
-                CH.Edit<Category>(item);
+                CH.Edit<Area>(item);
                 return RedirectToAction("Index");
             }
             return View(item);
@@ -57,13 +58,13 @@ namespace Sales.Controllers
 
         public ActionResult Delete(int id)
         {
-            return View(CH.GetDataById<Category>(id));
+            return View(CH.GetDataById<Area>(id));
         }
 
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {
-            CH.Delete<Category>(id);
+            CH.Delete<Area>(id);
             return RedirectToAction("Index");
         }
     }

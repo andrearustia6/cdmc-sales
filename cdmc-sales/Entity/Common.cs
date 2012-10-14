@@ -9,7 +9,7 @@ namespace Entity
     /// <summary>
     /// 行业类型
     /// </summary>
-    public class Category : FullNameEntity
+    public class Area : FullNameEntity
     {
     }
 

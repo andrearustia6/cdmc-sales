@@ -19,15 +19,15 @@ namespace Sales.Controllers
             return View(CH.GetAllData<LeadCall>().OrderByDescending(o=>o.CreatedDate).ToList());
         }
 
-        public ViewResult CompanyRelationshipIndex(int projectid, int companyid)
+        public ViewResult CompanyRelationshipIndex(int projectid, int companyrelationshipid)
         {
 
-            return View("Index",CH.GetAllData<LeadCall>().FindAll(lc => lc.CompanyRelationship.ProjectID == projectid && lc.CompanyRelationship.CompanyID == companyid).OrderByDescending(o => o.CreatedDate).ToList());
+            return View("Index", CH.GetAllData<LeadCall>().FindAll(lc => lc.CompanyRelationship.ProjectID == projectid && lc.CompanyRelationship.ID == companyrelationshipid).OrderByDescending(o => o.CreatedDate).ToList());
         }
 
-        public ViewResult LeadIndex(int projectid,int companyid, int leadid)
+        public ViewResult LeadIndex(int projectid, int companyrelationshipid, int leadid)
         {
-            return View("Index", CH.GetAllData<LeadCall>().FindAll(lc => lc.CompanyRelationship.ProjectID == projectid && lc.CompanyRelationship.CompanyID == companyid && lc.LeadID == leadid).OrderByDescending(o => o.CreatedDate).ToList());
+            return View("Index", CH.GetAllData<LeadCall>().FindAll(lc => lc.CompanyRelationship.ProjectID == projectid && lc.CompanyRelationship.ID == companyrelationshipid && lc.LeadID == leadid).OrderByDescending(o => o.CreatedDate).ToList());
         }
 
         public ViewResult Details(int id)

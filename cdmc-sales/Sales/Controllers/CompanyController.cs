@@ -20,21 +20,21 @@ namespace Sales.Controllers
            return View(CH.GetAllData<Company>("Leads"));
         }
 
-        /// <summary>
-        /// 个人页面/维护自己上传的公司信息
-        /// </summary>
-        /// <returns></returns>
-        public ViewResult CompanyMaintainIndex()
-        {
-            return View(CH.GetAllData<Company>(c => c.Cerator == User.Identity.Name,"Leads"));
-        }
+        ///// <summary>
+        ///// 个人页面/维护自己上传的公司信息
+        ///// </summary>
+        ///// <returns></returns>
+        //public ViewResult CompanyMaintainIndex()
+        //{
+        //    return View(CH.GetAllData<Company>(c => c.Cerator == User.Identity.Name,"Leads"));
+        //}
 
 
-        [ProductInterfaceRequired]
-        public ViewResult ProductIndex(int projectid)
-        {
-            return View(CH.GetAllData<Company>(c=>c.Projects.Any(p=>p.ID == projectid),"Leads"));
-        }
+        //[ProductInterfaceRequired]
+        //public ViewResult ProductIndex(int projectid)
+        //{
+        //    return View(CH.GetAllData<Company>(c=>c.Projects.Any(p=>p.ID == projectid),"Leads"));
+        //}
 
         [SalesRequired]
         public ViewResult Details(int id)

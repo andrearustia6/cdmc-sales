@@ -178,7 +178,7 @@
                                 c.Bound(o => o.FullName);
                                 c.Bound(o => o.Title);
                                 c.Bound(o => o).Title("状态").Template(@<text>@CRM_Logical.GetLeadStatus(Model.ID, item)</text>);
-                                c.Bound(o => o).Title("致电列表").Template(@<span>  <a  target="_blank" href=@Url.Content("~/LeadCall/LeadIndex/?projectid=" + cr.ProjectID + "&leadid=" + item.ID + "&companyid=" + item.CompanyID) >致电查看</a> </span>);
+                                c.Bound(o => o).Title("致电列表").Template(@<span>  <a  target="_blank" href=@Url.Content("~/LeadCall/LeadIndex/?projectid=" + cr.ProjectID + "&leadid=" + item.ID + "&companyrelationshipid=" + item.CompanyID) >致电查看</a> </span>);
                             })
                                          .Resizable(resizing => resizing.Columns(true))
                                          .Pageable(p => p.PageSize(20))
