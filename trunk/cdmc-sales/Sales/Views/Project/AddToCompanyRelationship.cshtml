@@ -29,6 +29,24 @@
             @(Html.Telerik().Slider<int>().Name("importancy").Value(6).Max(10).Min(1).HtmlAttributes(new { style = "width:50%;" }))
         </div>
         <div class="editor-label">
+            @Html.Label("Catagory:")
+        </div>
+        <div class="editor-field">
+         @{
+            Project p = CH.GetDataById<Project>(ViewBag.ProjectID);
+              if (!string.IsNullOrEmpty(p.Categorys))
+              { 
+                  <ul>
+                  @foreach (var c in p.CategorysSet)
+                  {
+                      <li><input name="checkedCategorys" type="checkbox" value=@c />@c</li> 
+                  }
+                  </ul>
+              }
+           }
+         
+        </div>
+        <div class="editor-label">
             @Html.Label("公司描述:")
         </div>
         <div class="editor-field">

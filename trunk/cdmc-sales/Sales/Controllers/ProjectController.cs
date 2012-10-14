@@ -63,7 +63,7 @@ namespace Sales.Controllers
 
         [ProjectInformationAccess]
         [HttpPost]
-        public ActionResult AddToCompanyRelationship(int projectid, string enname, string description, int importancy)
+        public ActionResult AddToCompanyRelationship(int projectid, string enname, string description, int importancy, string[] checkedCategorys)
         {
 
             ViewBag.ProjectID = projectid;
@@ -74,8 +74,18 @@ namespace Sales.Controllers
                 company = new Company() { Name_EN = enname, Creator = User.Identity.Name, Description = description };
                 CRM_Logical.TryAddCompany(company);
             }
-
-            CompanyRelationship cr1 = new CompanyRelationship() { CompanyID = company.ID, ProjectID = projectid, Importancy = importancy };
+            string categorys= string.Empty;
+            if(checkedCategorys!=null)
+            {
+                checkedCategorys.ToList().ForEach(c => {
+                    if (string.IsNullOrEmpty(categorys))
+                        categorys = c;
+                    else
+                        categorys += "|" + c;
+                });
+            }
+            
+            CompanyRelationship cr1 = new CompanyRelationship() { CompanyID = company.ID, ProjectID = projectid, Importancy = importancy, Categorys=categorys };
             project.CompanyRelationships.Add(cr1);
             CH.Edit<Project>(project);
             //return RedirectToAction("Management", new { tabindex = 3, id = projectid });

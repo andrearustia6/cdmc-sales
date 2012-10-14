@@ -266,7 +266,7 @@ namespace Utl
                 {   new DataToJson<Company>(),
                     new DataToJson<CompanyType>(),
                     new DataToJson<Lead>(),
-                    new DataToJson<Category>(),
+                    new DataToJson<Area>(),
                     new DataToJson<Research>(),
                     new DataToJson<LeadCall>(),
                     new DataToJson<Project>(),
