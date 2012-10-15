@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using Entity;
 using Sales;
 using Utl;
+using Sales.Model;
 
 namespace Sales.Controllers
 {
@@ -24,19 +25,24 @@ namespace Sales.Controllers
             return View(CH.GetDataById<Category>(id));
         }
 
-        public ActionResult Create()
+        public ActionResult Create(int? projectid)
         {
+            ViewBag.ProjectID = projectid;
             return View();
         }
 
         [HttpPost]
         public ActionResult Create(Category item)
         {
+            
+            this.AddErrorStateIfFieldExist(item,"Name");
+
             if (ModelState.IsValid)
             {
                 CH.Create<Category>(item);
-                return RedirectToAction("Index");
+                return RedirectToAction("index", "Project");
             }
+            ViewBag.ProjectID = item.ProjectID;
             return View(item);
         }
         public ActionResult Edit(int id)
@@ -47,11 +53,13 @@ namespace Sales.Controllers
         [HttpPost]
         public ActionResult Edit(Category item)
         {
+            this.AddErrorStateIfFieldExist(item, "Name");
             if (ModelState.IsValid)
             {
                 CH.Edit<Category>(item);
-                return RedirectToAction("Index");
+                return RedirectToAction("index", "Project");
             }
+            ViewBag.ProjectID = item.ProjectID;
             return View(item);
         }
 
@@ -64,7 +72,7 @@ namespace Sales.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             CH.Delete<Category>(id);
-            return RedirectToAction("Index");
+            return RedirectToAction("index", "Project");
         }
     }
 }

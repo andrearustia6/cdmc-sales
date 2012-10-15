@@ -73,7 +73,7 @@ namespace Sales.Controllers
                     var data = new List<CompanyRelationship>();
                     cs.ForEach(i =>
                     {
-                        var members = CRM_Logical.GetMemberWhoCallTheCompany((int)i.CompanyID, (int)projectid);
+                        var members =i.WhoCallTheCompanyMember();
                         if (members.Any(m => m.Name == User.Identity.Name))
                         {
                             data.Add(i);

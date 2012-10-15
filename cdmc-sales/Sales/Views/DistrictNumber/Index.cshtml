@@ -1,7 +1,7 @@
 ﻿@using Entity
 @model List<DistrictNumber>
 @Html.Partial("contenttitle", "区号配置")
-@(Html.Telerik().Grid<DistrictNumber>(Model).Name("DistrictNumber")
+@(Html.Telerik().Grid<DistrictNumber>(Model).Name("DistrictNumber").ToolBar(commands => commands.Custom().Text("区域号码创建").Action("Create", "DistrictNumber"))
                 .DataKeys(keys =>
                 {
                     keys.Add(s => s.ID);
@@ -20,9 +20,3 @@
                 .Scrollable(scrolling => scrolling.Height(350))
 
 )
-
-<div class="anniu">
-    <ul>
-        <li>@Html.ActionLink("区域号码创建", "Create")</li>
-    </ul>
-</div>

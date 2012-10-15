@@ -46,7 +46,7 @@ namespace Entity
     /// </summary>
     public class Project : EntityBase
     {
-        public string OpeningDate { get { return} }
+        public string OpeningDate { get { return EndDate.Year.ToString(); } }
         [Display(Name = "板块负责人")]
         public string Manager { get; set; }
 
@@ -85,11 +85,29 @@ namespace Entity
 
         public List<Template> Templates { get; set; }
 
-        [Display(Name="公司类型")]
-        public string Categorys { get; set; }
+        [Display(Name = "公司类型")]
+        public List<Category> Categorys { get; set; }
 
         [Display(Name = "公司类型")]
-        public string[] CategorysSet { get { return Categorys.Split('|'); } }
+        public string CategorysSet
+        {
+            get
+            {
+                if (Categorys != null)
+                {
+                    var val = string.Empty;
+                    Categorys.ForEach(c =>
+                    {
+                        if (string.IsNullOrEmpty(val))
+                            val = c.Name;
+                        else
+                            val += "|" + c.Name;
+                    });
+                    return val;
+                }
+                return string.Empty;
+            }
+        }
 
         [Display(Name = "项目背景")]
         public string SaleBrief { get; set; }
@@ -100,6 +118,7 @@ namespace Entity
         public List<News> News { get; set; }
 
         public List<Message> Messages { get; set; }
+
 
         /// <summary>
         /// 被参考的项目的crm自动加入本项目的crm
@@ -116,12 +135,15 @@ namespace Entity
         public List<CompanyRelationship> CompanyRelationships { get; set; }
     }
 
-    public class Category:EntityBase
+    public class Category : EntityBase
     {
         public virtual Project Project { get; set; }
+        [Display(Name = "项目名称")]
         public int? ProjectID { get; set; }
-        [Display(Name="内容")]
-        public string Contents { get; set; }
+        [Display(Name = "类型")]
+        public string Name { get; set; }
+
+        public List<CompanyRelationship> CompanyRelationships { get; set; }
     }
 
     public class CompanyRelationship : EntityBase
@@ -130,7 +152,7 @@ namespace Entity
         [Display(Name = "目标公司")]
         public int? CompanyID { get; set; }
 
-        public string Categorys { get; set; }
+        public List<Category> Categorys { get; set; }
 
         public List<Deal> Deals { get; set; }
 

@@ -1,0 +1,51 @@
+﻿@model Entity.CompanyRelationship
+@using Utl
+@{
+    ViewBag.Title = "客户关系";
+}
+
+    <fieldset>
+        <legend>@SR.Form</legend>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ProjectID, "Project")
+        </div>
+        <div class="editor-field">
+            @Html.HiddenFor(m => m.ProjectID)
+            @Html.ValidationMessageFor(model => model.ProjectID)
+        </div>
+        <div class="editor-label">
+            @Html.Label("Catagory:")
+        </div>
+        <div class="editor-field">
+         @{
+            Project p = CH.GetDataById<Project>(ViewBag.ProjectID,"Categorys");
+              if (p.Categorys != null)
+              { 
+                  <ul>
+                  @foreach (var c in p.Categorys)
+                  {
+                      <li><input name="checkedCategorys" type="checkbox" value=@c.ID />  @c.Name</li> 
+                  }
+                  </ul>
+              }
+           }
+         
+        </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Importancy)
+        </div>
+        <div class="editor-field">
+             @(Html.Telerik().Slider<int>().Name("Importancy").Value(6).Max(10).Min(1).HtmlAttributes(new { style = "width:50%;" }))
+            @Html.ValidationMessageFor(model => model.Importancy)
+        </div>
+        
+        @*<div class="editor-label">
+            @Html.LabelFor(model => model.ProgressID, "Progress")
+        </div>
+        <div class="editor-field">
+            @Html.HiddenFor(m=>m.ProjectID)
+            @Html.ValidationMessageFor(model => model.ProgressID)
+        </div>*@
+    </fieldset>
+}
+

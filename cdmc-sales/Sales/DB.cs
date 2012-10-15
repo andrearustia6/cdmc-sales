@@ -25,5 +25,9 @@ namespace Sales
         public DbSet<Category> Categories { get; set; }
 
         public DbSet<Project> Projects { get; set; }
+
+        public DbSet<Company> Company { get; set; }
+
+        public DbSet<Progress> Progress { get; set; }
     }
 }

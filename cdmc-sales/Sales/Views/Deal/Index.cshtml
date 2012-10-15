@@ -7,15 +7,15 @@
 
 @Html.Partial("contenttitle", "项目出单")
 
-@(Html.Telerik().Grid<Deal>(Model).Name("Deal")
+@(Html.Telerik().Grid<Deal>(Model).Name("Deal").ToolBar(commands => commands.Custom().Text("出单创建").Action("Create", "Deal"))
                 .DataKeys(keys =>
                 {
                     keys.Add(s => s.ID);
                 })
                 .Columns(c =>
                 {
-                    c.Bound(item => item.Lead.FullName).Title("客户名称").Width(150);
-                    c.Bound(item => item.Project.Name).Width(150);
+                    c.Bound(item => item.CompanyRelationship.Company.FullName).Title("客户名公司").Width(150);
+                    c.Bound(item => item.CompanyRelationship.Project.Name).Width(150);
                     c.Bound(item => item.Package.FullName).Width(150);
                     c.Bound(item => item.Payment).Width(150);
                     c.Bound(item => item.Income).Width(150);

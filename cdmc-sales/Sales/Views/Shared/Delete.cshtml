@@ -5,12 +5,13 @@
 }
 
 @Html.Partial("display", Model)
+@Html.Partial("displaycommon", Model)
 @using (Html.BeginForm())
 {
     <center>
     <p>
-        <input type="submit" value=@SR.Delete /> |
-        @*@Html.ActionLink(SR.GobackToList, "Index")*@
+        <input type="submit" value=@SR.Delete /> @* |
+        @Html.ActionLink(SR.GobackToList, "Index")*@
     </p>
     </center>
 }
