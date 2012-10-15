@@ -3,49 +3,78 @@
 @{
     ViewBag.Title = "客户关系";
 }
-
-    <fieldset>
-        <legend>@SR.Form</legend>
-        <div class="editor-label">
-            @Html.LabelFor(model => model.ProjectID, "Project")
-        </div>
-        <div class="editor-field">
-            @Html.HiddenFor(m => m.ProjectID)
-            @Html.ValidationMessageFor(model => model.ProjectID)
-        </div>
-        <div class="editor-label">
-            @Html.Label("Catagory:")
-        </div>
-        <div class="editor-field">
-         @{
-            Project p = CH.GetDataById<Project>(ViewBag.ProjectID,"Categorys");
-              if (p.Categorys != null)
-              { 
-                  <ul>
-                  @foreach (var c in p.Categorys)
-                  {
-                      <li><input name="checkedCategorys" type="checkbox" value=@c.ID />  @c.Name</li> 
-                  }
-                  </ul>
-              }
-           }
-         
-        </div>
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Importancy)
-        </div>
-        <div class="editor-field">
-             @(Html.Telerik().Slider<int>().Name("Importancy").Value(6).Max(10).Min(1).HtmlAttributes(new { style = "width:50%;" }))
-            @Html.ValidationMessageFor(model => model.Importancy)
-        </div>
-        
-        @*<div class="editor-label">
+@using Entity
+<fieldset>
+    <legend>@SR.Form</legend>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.ProjectID, "项目名称：")
+    </div>
+    <div class="editor-field">
+        @Html.HiddenFor(m => m.ProjectID)
+        @Html.DisplayFor(model => model.Project.Name)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.CompanyID, "公司名称：")
+    </div>
+    <div class="editor-field">
+        @Html.HiddenFor(m => m.CompanyID)
+        @Html.DisplayFor(model => model.Company.Name)
+    </div>
+    @*<div class="editor-label">
+        @Html.Label("英文名称：")
+    </div>
+    <div class="editor-field">
+        @Html.Edit("enname")
+    </div>
+     <div class="editor-label">
+        @Html.Label("中文名称：")
+    </div>
+    <div class="editor-field">
+         @Html.Edit("chname")
+    </div>*@
+     <div class="editor-label">
+        @Html.LabelFor(model => model.ProjectID, "Project:")
+    </div>
+    <div class="editor-field">
+        @Html.HiddenFor(m => m.ProjectID)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.Importancy)
+    </div>
+    <div class="editor-field">
+        @(Html.Telerik().Slider<int>().Name("Importancy").Value(6).Max(10).Min(1).HtmlAttributes(new { style = "width:50%;" }))
+        @Html.ValidationMessageFor(model => model.Importancy)
+    </div>
+    <div class="editor-label">
+        @Html.Label("Catagory:")
+    </div>
+    <div class="editor-field">
+        @{
+            Project p = CH.GetDataById<Project>((int)ViewBag.ProjectID, "Categorys");
+            if (p.Categorys != null)
+            { 
+            <ul>
+                @foreach (var c in p.Categorys)
+                {
+                    <li>
+                        <input  name="checkedCategorys" type="checkbox" value=@c.ID 
+                        @if(Model.Categorys.Any(mc=>mc.ID == c.ID))
+                        {
+                            <text> checked="checked"</text>
+                            
+                        }/>
+                        @c.Name</li> 
+                }
+            </ul>
+            }
+        }
+    </div>
+    
+    @*<div class="editor-label">
             @Html.LabelFor(model => model.ProgressID, "Progress")
         </div>
         <div class="editor-field">
             @Html.HiddenFor(m=>m.ProjectID)
             @Html.ValidationMessageFor(model => model.ProgressID)
         </div>*@
-    </fieldset>
-}
-
+</fieldset>

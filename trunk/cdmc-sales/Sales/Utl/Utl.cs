@@ -16,10 +16,7 @@ using System.Xml;
 
 namespace Utl
 {
-    [TestAttribute]
-    public class test
-    {
-    }
+    
     public static class AppConfig
     {
         public static string ConnectionStringSetting
@@ -27,15 +24,7 @@ namespace Utl
             get { return ConfigurationManager.AppSettings["ConnectionStringSetting"]; }
         }
     }
-    public class TestAttribute : Attribute
-    {
-        public List<string> IgnoreProperties { get; set; }
-        public TestAttribute(params string[] properties)
-        {
-            IgnoreProperties = new List<string>();
-            IgnoreProperties.AddRange(properties);
-        }
-    }
+
 
     public class Employee
     {
