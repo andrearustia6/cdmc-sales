@@ -20,7 +20,7 @@
                   cs.Add(m.Company);
               });
             }
-            @Html.Telerik().ComboBox().Name("enname").BindTo(new SelectList(cs, "Name_EN", "FullName")).HtmlAttributes(new { style = "width:50%;" })
+            @Html.Editor("enname")
         </div>
         <div class="editor-label">
             @Html.Label("优先级别:")
@@ -33,13 +33,13 @@
         </div>
         <div class="editor-field">
          @{
-            Project p = CH.GetDataById<Project>(ViewBag.ProjectID);
-              if (!string.IsNullOrEmpty(p.Categorys))
+            Project p = CH.GetDataById<Project>(ViewBag.ProjectID,"Categorys");
+              if (p.Categorys != null)
               { 
                   <ul>
-                  @foreach (var c in p.CategorysSet)
+                  @foreach (var c in p.Categorys)
                   {
-                      <li><input name="checkedCategorys" type="checkbox" value=@c />@c</li> 
+                      <li><input name="checkedCategorys" type="checkbox" value=@c.ID />  @c.Name</li> 
                   }
                   </ul>
               }
@@ -55,7 +55,7 @@
         
         <br />
         <center>
-        <input type="submit" style="line-height: 22px; width:65px;" value="提交" />
+        <input type="submit" style="line-height: 22px; width:65px;" value="提交" /> | @Html.ActionLink("回到列表", "Management", new { projectid = (int)ViewBag.ProjectID, })
         </center>
     </fieldset>
 }

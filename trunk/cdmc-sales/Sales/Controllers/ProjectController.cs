@@ -18,7 +18,7 @@ namespace Sales.Controllers
         [DirectorRequired]
         public ViewResult Index()
         {
-            return View(CH.GetAllData<Project>());
+            return View(CH.GetAllData<Project>("Categorys"));
         }
 
         public ViewResult GotoReports()
@@ -63,7 +63,7 @@ namespace Sales.Controllers
 
         [ProjectInformationAccess]
         [HttpPost]
-        public ActionResult AddToCompanyRelationship(int projectid, string enname, string description, int importancy, string[] checkedCategorys)
+        public ActionResult AddToCompanyRelationship(int projectid, string enname, string description, int importancy, int[] checkedCategorys)
         {
 
             ViewBag.ProjectID = projectid;
@@ -71,21 +71,20 @@ namespace Sales.Controllers
             Company company = CH.GetAllData<Company>(co => co.Name_EN == enname).FirstOrDefault();
             if (company == null)
             {
-                company = new Company() { Name_EN = enname, Creator = User.Identity.Name, Description = description };
-                CRM_Logical.TryAddCompany(company);
-            }
-            string categorys= string.Empty;
-            if(checkedCategorys!=null)
-            {
-                checkedCategorys.ToList().ForEach(c => {
-                    if (string.IsNullOrEmpty(categorys))
-                        categorys = c;
-                    else
-                        categorys += "|" + c;
-                });
+                company = new Company() { Name_EN = enname,Name_CH="" };
+                CH.Create<Company>(company);
             }
             
-            CompanyRelationship cr1 = new CompanyRelationship() { CompanyID = company.ID, ProjectID = projectid, Importancy = importancy, Categorys=categorys };
+            
+            CompanyRelationship cr1 = new CompanyRelationship() { CompanyID = company.ID, ProjectID = projectid, Importancy = importancy,Description = description };
+            cr1.Categorys = new List<Category>();
+        
+            if (checkedCategorys != null)
+            {
+                var ck = CH.GetAllData<Category>(i => checkedCategorys.Contains(i.ID));
+                cr1.Categorys.AddRange(ck);
+            }
+            
             project.CompanyRelationships.Add(cr1);
             CH.Edit<Project>(project);
             //return RedirectToAction("Management", new { tabindex = 3, id = projectid });
@@ -165,7 +164,7 @@ namespace Sales.Controllers
         //}
         #endregion
 
-         #region 指定成员到公司
+        #region 指定成员到公司
         public ViewResult AppointSales(int? projectid, int? companyrelationshipid)
         {
             var p = CH.GetDataById<Project>(projectid, "Members");
@@ -334,13 +333,14 @@ namespace Sales.Controllers
 
         public ViewResult Details(int id)
         {
-            return View(CH.GetDataById<Project>(id));
+            return View(CH.GetDataById<Project>(id,"Categorys"));
         }
 
         public ActionResult Create()
         {
             return View();
         }
+
 
         public ActionResult Management(int? id, int? tabindex, DateTime? dealstartdate, DateTime? dealenddate)
         {

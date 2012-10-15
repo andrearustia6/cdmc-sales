@@ -1,0 +1,36 @@
+﻿@model Entity.CompanyRelationship
+
+@{
+    ViewBag.Title = "客户关系删除";
+}
+
+
+<fieldset>
+    <legend>客户关系</legend>
+
+    <div class="display-label">Company</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Company.FullName)
+    </div>
+
+    <div class="display-label">Project</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Project.Name)
+    </div>
+
+    <div class="display-label">Importancy</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Importancy)
+    </div>
+
+@*    <div class="display-label">Progress</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Progress.Description)
+    </div>*@
+
+    <div class="display-label">SalesOnTheCompany</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.SalesOnTheCompany)
+    </div>
+</fieldset>
+

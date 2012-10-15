@@ -94,8 +94,8 @@ namespace Utl
             if (entity is EntityBase)
             {
                 var eb = entity as EntityBase;
-                eb.ModifiedDate = DateTime.Now;
-                eb.ModifiedUser = HttpContext.Current.User.Identity.Name;
+                eb.CreatedDate = DateTime.Now;
+                eb.Creator = HttpContext.Current.User.Identity.Name;
             }
         }
 

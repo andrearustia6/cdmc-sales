@@ -1,69 +1,23 @@
-﻿@model IEnumerable<Entity.Member>
+﻿@using Entity
+@model List<Member>
+@Html.Partial("contenttitle", "成员管理")
+@(Html.Telerik().Grid<Member>(Model).Name("Member")
+                .DataKeys(keys =>
+                {
+                    keys.Add(s => s.ID);
+                })
+                .Columns(c =>
+                {
+                    c.Bound(item => item.Name).Width(200);
+                    c.Bound(item => item.Description);
+                    c.Bound(item => item.ID).Title("操作").Width(200).Template(@<span> <a href=@Url.Content("~/Member/Edit/" + item.ID) >
+                        编辑</a> | <a href=@Url.Content("~/Member/Details/" + item.ID)>详细</a> | <a href=@Url.Content("~/Member/delete/" + item.ID) >
+                            删除</a> </span>);
+                })
+                                            .Resizable(resizing => resizing.Columns(true))
+                                            .Filterable().Sortable().Groupable()
+                                            .Pageable(p => p.PageSize(20))
+                                            .Scrollable(scrolling => scrolling.Height(350))
 
-@{
-    ViewBag.Title = "Index";
-}
+)
 
-<h2>Index</h2>
-
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table>
-    <tr>
-        <th>
-            Name
-        </th>
-        <th>
-            Characters
-        </th>
-        <th>
-            Project
-        </th>
-        <th>
-            Description
-        </th>
-        <th>
-            Sequence
-        </th>
-        <th>
-            User
-        </th>
-        <th>
-            ModifiedTime
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Characters)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Project.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Description)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Sequence)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.User)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ModifiedTime)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
-        </td>
-    </tr>
-}
-
-</table>

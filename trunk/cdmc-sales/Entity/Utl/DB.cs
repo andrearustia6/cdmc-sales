@@ -16,7 +16,8 @@ namespace Utl
         public DbSet<CompanyType> CompanyTypes { get; set; }
         public DbSet<Lead> Leads { get; set; }
         public DbSet<Role> Roles { get; set; }
-        public DbSet<Area> Categorys { get; set; }
+        public DbSet<Area> Areas { get; set; }
+        public DbSet<Category> Categorys { get; set; }
         public DbSet<LeadCall> LeadCalls { get; set; }
         public DbSet<Research> Researchs { get; set; }
         public DbSet<PackageType> PackageTypes { get; set; }
@@ -81,10 +82,10 @@ namespace Utl
 
          
 
-            context.Categorys.Add(new Area (){ Name_EN="",Name_CH="航天",ID=1 });
-            context.Categorys.Add(new Area() { Name_EN = "", Name_CH = "石油",ID=2 });
-            context.Categorys.Add(new Area() { Name_EN = "", Name_CH = "化工",ID=3 });
-            context.Categorys.Add(new Area() { Name_EN = "", Name_CH = "医疗",ID=4 });
+            context.Areas.Add(new Area (){ Name_EN="",Name_CH="航天",ID=1 });
+            context.Areas.Add(new Area() { Name_EN = "", Name_CH = "石油", ID = 2 });
+            context.Areas.Add(new Area() { Name_EN = "", Name_CH = "化工", ID = 3 });
+            context.Areas.Add(new Area() { Name_EN = "", Name_CH = "医疗", ID = 4 });
 
             context.OnPhoneBlockTypes.Add(new OnPhoneBlockType() { Name = "没有预算",Code=1 });
             context.OnPhoneBlockTypes.Add(new OnPhoneBlockType() { Name = "无战略规划", Code = 2 });

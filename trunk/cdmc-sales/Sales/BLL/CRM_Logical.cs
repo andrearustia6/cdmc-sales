@@ -109,60 +109,7 @@ namespace BLL
             else
                 return false;
         }
-        /// <summary>
-        /// 查看当前谁在给这家公司打电话 
-        /// </summary>
-        /// <param name="companyid"></param>
-        /// <param name="projectid"></param>
-        /// <returns></returns>
-        public static List<Member> GetMemberWhoCallTheCompany(int? companyid, int? projectid)
-        {
-            var com = CH.GetAllData<CompanyRelationship>(c => c.ID == companyid, "Members").FirstOrDefault();
-            var project = CH.GetAllData<Project>(p => p.ID == projectid, "Members").FirstOrDefault();
-            List<Member> result = new List<Member>();
-            
-            com.Members.ForEach(m => {
-                if (project.Members.Any(pm => pm.ID == m.ID))
-                    result.Add(m);
-            });
 
-            //如果公司上没有直接指定，按字头分配查找
-            if (result.Count == 0)
-            {
-                project.Members.ForEach(m=>{
-                    if (!string.IsNullOrEmpty(m.Characters))
-                    {
-                        var chars = m.Characters.Split('|').ToList();
-                        chars.ForEach(ch =>
-                        {
-                            if ((!string.IsNullOrEmpty(com.Company.Name_CH)&&com.Company.Name_CH.StartsWith(ch)) ||
-                                (!string.IsNullOrEmpty(com.Company.Name_EN) && com.Company.Name_EN.StartsWith(ch.ToUpper())))
-                            {
-                                result.Add(m);
-                            }
-                        });
-                    }
-                   
-                });
-            }
-
-            return result;
-        }
-
-        public static string GetMemberNameWhoCallTheCompany(int? companyid, int? projectid)
-        {
-            var ml = GetMemberWhoCallTheCompany(companyid, projectid);
-            string ms = string.Empty;
-
-            ml.ForEach(m => {
-                if(ms==string.Empty)
-                    ms += m.Name;
-                else
-                    ms += "|"+ m.Name;
-            });
-
-            return ms;
-        }
         #endregion 
 
         #region Call Management
@@ -237,13 +184,11 @@ namespace BLL
         public static bool IsTheSalesAbleToAccessTheCompanyRelationship(int? companyrelationshipid)
         {
             var cr = CH.GetDataById<CompanyRelationship>(companyrelationshipid, "Members");
-            var d = CRM_Logical.GetMemberNameWhoCallTheCompany(cr.CompanyID, cr.ProjectID);
-            string[] names = d.Split('|');
-            if (names.Any(m => m == HttpContext.Current.User.Identity.Name))
-            {
+            var d = cr.WhoCallTheCompanyMember();
+            if (d.Any(i => i.Name == HttpContext.Current.User.Identity.Name))
                 return true;
-            }
-            return false;
+            else
+                return false;
         }
 
         public static List<Deal> GetProjectDeals(Project p, DateTime? startdate, DateTime? enddate)
@@ -288,16 +233,7 @@ namespace BLL
         #endregion
 
         #region Add.....
-        public static bool TryAddCompany(Company c)
-        {
-            bool exist = CH.GetAllData<Company>().Any(ex => ex.Name_EN == c.Name_EN || (!string.IsNullOrEmpty(ex.Name_CH) && ex.Name_CH == c.Name_CH));
-            if (!exist)
-            {
-                CH.Create<Company>(c);
-                return true;
-            }
-            return false;
-        }
+      
 
         public static bool TryAddCompanyRelationship(CompanyRelationship c, int projectid)
         {

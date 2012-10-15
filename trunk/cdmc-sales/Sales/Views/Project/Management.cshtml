@@ -117,25 +117,27 @@
                 .Columns(c =>
                 {
                     c.Bound(item => item.Company.FullName).Width(150);
-                    c.Bound(item => item).Title("拨打人").Template(@<text>@CRM_Logical.GetMemberNameWhoCallTheCompany(item.ID, p.ID)</text>).Width(70);
+                    c.Bound(item => item).Template(@<text>@item.WhoCallTheCompanyMemberName()</text>).Title("拨打人").Width(70);
                     c.Bound(item => item.Importancy).Width(80);
-                    c.Bound(item => item.Company.Areas).Title("分类").Width(150);
+                    c.Bound(item => item).Template(@<text>@item.CategoryString()</text>).Title("分类").Width(150);
                     c.Bound(item => item.Company.CompanyType.Name).Width(100);
-                    c.Bound(item => item.Company.Cerator).Width(100);
+                    c.Bound(item => item.Company.Cerator).Width(50);
                     c.Bound(item => item.Company.From).Width(100);
-                    c.Bound(item => item.ID).Title("操作").Width(200).Template(@<span><a  href=@Url.Content("~/Project/AppointSales/?projectid=" + p.ID + "&companyrelationshipid=" + item.ID) >指定销售</a> | <a target="_blank" href=@Url.Content("~/LeadCall/CompanyRelationshipIndex/?projectid=" + p.ID + "&companyrelationshipid=" + item.ID) >致电查看</a> </span>);
+                    c.Bound(item => item.ID).Title("操作").Width(200).Template(@<span><a  href=@Url.Content("~/Project/CompanyRelationshipEdit/?projectid=" + p.ID + "&companyrelationshipid=" + item.ID) >编辑</a> | 
+                    <a  href=@Url.Content("~/Project/AppointSales/?projectid=" + p.ID + "&companyrelationshipid=" + item.ID) >指定销售</a>
+                     | <a target="_blank" href=@Url.Content("~/LeadCall/CompanyRelationshipIndex/?projectid=" + p.ID + "&companyrelationshipid=" + item.ID) >致电查看</a> </span>);
 
                 })
-                                         .DetailView(e => e.Template(
-                          @<text>
+                                                                .DetailView(e => e.Template(
+                                                 @<text>
                          @RenderLead(CH.GetAllData<Lead>(l => l.CompanyID == item.CompanyID), item)
                         </text>
-                                                                            ))
-                            .Resizable(resizing => resizing.Columns(true))
-                            .Pageable(page => page.PageSize(10))
-                            .Filterable()
-                            .Scrollable(scrolling => scrolling.Height(350))
-                                                                                                       )
+                                                                                                        ))
+                                                        .Resizable(resizing => resizing.Columns(true))
+                                                        .Pageable(page => page.PageSize(10))
+                                                        .Filterable()
+                                                        .Scrollable(scrolling => scrolling.Height(350))
+                                              )
 }
 
 
@@ -177,6 +179,7 @@
                             {
                                 c.Bound(o => o.FullName);
                                 c.Bound(o => o.Title);
+                                c.Bound(o => o.Mobile);
                                 c.Bound(o => o).Title("状态").Template(@<text>@CRM_Logical.GetLeadStatus(Model.ID, item)</text>);
                                 c.Bound(o => o).Title("致电列表").Template(@<span>  <a  target="_blank" href=@Url.Content("~/LeadCall/LeadIndex/?projectid=" + cr.ProjectID + "&leadid=" + item.ID + "&companyrelationshipid=" + item.CompanyID) >致电查看</a> </span>);
                             })
