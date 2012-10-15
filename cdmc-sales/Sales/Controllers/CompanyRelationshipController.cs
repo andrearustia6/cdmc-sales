@@ -50,19 +50,22 @@ namespace Sales.Controllers
                 }
 
                 CH.Create<CompanyRelationship>(item);
-                return RedirectToAction("Index");
+                return RedirectToAction("management", "project", new { id=item.ProjectID,tabindex=3});
             }
             ViewBag.ProjectID = item.ProjectID;
             return View(item);
         }
         public ActionResult Edit(int id)
         {
-            return View(CH.GetDataById<CompanyRelationship>(id));
+            var data = CH.GetDataById<CompanyRelationship>(id);
+            ViewBag.ProjectID = data.ProjectID;
+            return View(data);
         }
 
         [HttpPost]
-        public ActionResult Edit(CompanyRelationship item, int[] checkedCategorys)
+        public ActionResult Edit(string enname,string chname,CompanyRelationship item, int[] checkedCategorys)
         {
+           
             if (ModelState.IsValid)
             {
                 if (checkedCategorys != null)
@@ -73,7 +76,7 @@ namespace Sales.Controllers
                 }
 
                 CH.Edit<CompanyRelationship>(item);
-                return RedirectToAction("Index");
+                return RedirectToAction("management", "project", new { id = item.ProjectID, tabindex = 3 });
             }
             ViewBag.ProjectID = item.ProjectID;
             return View(item);
@@ -87,8 +90,9 @@ namespace Sales.Controllers
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {
+            var item = CH.GetDataById<CompanyRelationship>(id);
             CH.Delete<CompanyRelationship>(id);
-            return RedirectToAction("Index");
+            return RedirectToAction("management", "project", new { id = item.ProjectID, tabindex = 3 });
         }
     }
 }
