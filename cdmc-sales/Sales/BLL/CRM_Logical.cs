@@ -101,14 +101,23 @@ namespace BLL
             return user == null ? false : true;
         }
 
-        public static bool IsMemberSelectedForCompanyRelationship(Member m, int? companyrelationshipid)
-        {
-            var c = CH.GetDataById<CompanyRelationship>(companyrelationshipid,"Members");
-            if (c.Members.Any(cm => cm.ID == m.ID))
-                return true;
-            else
-                return false;
-        }
+        //public static bool IsMemberSelectedForCompanyRelationship(Member m, int? companyrelationshipid)
+        //{
+        //    var c = CH.GetDataById<CompanyRelationship>(companyrelationshipid,"Members");
+        //    if (c.Members.Any(cm => cm.ID == m.ID))
+        //        return true;
+        //    else
+        //        return false;
+        //}
+
+        //public static bool IsMemberSelectedForCompanyRelationship(Member m, int? companyrelationshipid)
+        //{
+        //    var c = CH.GetDataById<CompanyRelationship>(companyrelationshipid, "Members");
+        //    if (c.Members.Any(cm => cm.ID == m.ID))
+        //        return true;
+        //    else
+        //        return false;
+        //}
 
         #endregion 
 
@@ -180,16 +189,6 @@ namespace BLL
 
         }
         #endregion
-
-        public static bool IsTheSalesAbleToAccessTheCompanyRelationship(int? companyrelationshipid)
-        {
-            var cr = CH.GetDataById<CompanyRelationship>(companyrelationshipid, "Members");
-            var d = cr.WhoCallTheCompanyMember();
-            if (d.Any(i => i.Name == HttpContext.Current.User.Identity.Name))
-                return true;
-            else
-                return false;
-        }
 
         public static List<Deal> GetProjectDeals(Project p, DateTime? startdate, DateTime? enddate)
         {

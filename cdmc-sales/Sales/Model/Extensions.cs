@@ -18,6 +18,52 @@ namespace Entity
       
     }
 
+    public enum RoleInProject
+    {
+        Director,Manager,Leader,Member,MarketInterface,ProductInterface,NotIn
+    }
+
+    public static class MemberExtensions
+    {
+         public static bool IsAbleToAccessTheCompanyRelationship(this Member item, CompanyRelationship cr)
+         {
+             var d = cr.WhoCallTheCompanyMember();
+             if (d.Any(i => i.Name == HttpContext.Current.User.Identity.Name))
+                 return true;
+             else
+                 return false;
+         }
+
+         public static bool IsAbleToAccessTheCompanyRelationship(this Member item, int? crid)
+         {
+             var cr = CH.GetDataById<CompanyRelationship>(crid);
+             return item.IsAbleToAccessTheCompanyRelationship(cr);
+         }
+
+         public static RoleInProject RoleInProject(this Member item, int? projectid)
+         {
+             var p = CH.GetDataById<Project>(projectid, "Members");
+             var name = HttpContext.Current.User.Identity.Name;
+
+             if (Employee.GetCurrentRoleLevel() == 1000)
+                 return Entity.RoleInProject.Director;
+             else if (p.Manager == name)
+                 return Entity.RoleInProject.Manager;
+             else if (p.Leader == name)
+                 return Entity.RoleInProject.Leader;
+             else if (p.Product == name)
+                 return Entity.RoleInProject.ProductInterface;
+             else if (p.Market == name)
+                 return Entity.RoleInProject.MarketInterface;
+             else if (p.Members.Any(m => m.Name == name))
+                 return Entity.RoleInProject.Member;
+             else
+                 return Entity.RoleInProject.NotIn;
+            
+
+         }
+     }
+     
     
     public static class CompanyRelationshipExtensions
     {
