@@ -26,5 +26,17 @@ namespace System.Web.Mvc
                 item.ModelState.AddModelError("", "已经存在相同的字段，字段名为：" + fieldname);
             }
         }
+
+        public static void AddErrorStateIfSalesNoAccessRight(this Controller item, int? crid) 
+        {
+            IsAbleToAccessTheCompanyRelationship
+            var cr = CH.GetDataById<CompanyRelationship>(crid);
+            var members = cr.WhoCallTheCompanyMember();
+            var data = CH.GetAllData<T>(child => child.GetType().GetProperty(fieldname).GetValue(child, null).ToString() == value.ToString());
+            if (data.Count > 0)
+            {
+                item.ModelState.AddModelError("", "已经存在相同的字段，字段名为：" + fieldname);
+            }
+        }
     }
 }

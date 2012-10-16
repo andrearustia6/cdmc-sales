@@ -51,8 +51,22 @@ namespace Sales.Controllers
             }
             else
                 return View();
+        }
 
-
+        /// <summary>
+        /// id = leadid
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public ViewResult EditLead(int? leadid, int? companyrelationshipid)
+        {
+            if (CRM_Logical.IsTheSalesAbleToAccessTheCompanyRelationship(companyrelationshipid))
+            {
+                var lead = CH.GetDataById<Lead>(leadid);
+                return View(lead);
+            }
+            else
+                return View();
         }
 
         /// <summary>
