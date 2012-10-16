@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using Entity;
 using Sales;
 using Utl;
+using System.Data.Objects;
 
 namespace Sales.Controllers
 {
@@ -30,27 +31,32 @@ namespace Sales.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create(string enname,CompanyRelationship item, int[] checkedCategorys)
+        public ActionResult Create(string enname,string chname,CompanyRelationship item, int[] checkedCategorys)
         {
-            Company company = CH.GetAllData<Company>(co => co.Name_EN == enname).FirstOrDefault();
-            if (company == null)
-            {
-                company = new Company() { Name_EN = enname, Name_CH = "" };
-                CH.Create<Company>(company);
-            }
+
+            this.AddErrorStateIfFieldExist<Company>(enname,"Name_EN");
+            this.AddErrorStateIfFieldExist<Company>(enname, "Name_CH");
 
             if (ModelState.IsValid)
             {
-                if (checkedCategorys != null)
+
+                    var company = new Company() { Name_EN = enname, Name_CH = chname };
+                    CH.Create<Company>(company);
+           
+     
+                if (ModelState.IsValid)
                 {
+                    if (checkedCategorys != null)
+                    {
 
-                    item.Categorys = new List<Category>();
-                    var ck = CH.GetAllData<Category>(i => checkedCategorys.Contains(i.ID));
-                    item.Categorys.AddRange(ck);
+                     
+                        var ck = CH.GetAllData<Category>(i => checkedCategorys.Contains(i.ID));
+                        item.Categorys = ck;
+                    }
+                    item.CompanyID = company.ID;
+                    CH.Create<CompanyRelationship>(item);
+                    return RedirectToAction("management", "project", new { id = item.ProjectID, tabindex = 3 });
                 }
-
-                CH.Create<CompanyRelationship>(item);
-                return RedirectToAction("management", "project", new { id=item.ProjectID,tabindex=3});
             }
             ViewBag.ProjectID = item.ProjectID;
             return View(item);
@@ -63,19 +69,31 @@ namespace Sales.Controllers
         }
 
         [HttpPost]
-        public ActionResult Edit(string enname,string chname,CompanyRelationship item, int[] checkedCategorys)
+        public ActionResult Edit(CompanyRelationship item, int[] checkedCategorys)
         {
            
             if (ModelState.IsValid)
             {
                 if (checkedCategorys != null)
                 {
-                    item.Categorys = new List<Category>();
-                    var ck = CH.GetAllData<Category>(i => checkedCategorys.Contains(i.ID));
-                    item.Categorys.AddRange(ck);
-                }
+                   // var old = CH.GetDataById<CompanyRelationship>(item.ID, "Categorys");
 
+                    var ck = CH.GetAllData<Category>(c => checkedCategorys.Any(cc=>cc == c.ID));
+                  
+                    CH.DB.Entry(item).Collection("Categorys").CurrentValue = ck;
+                    CH.DB.SaveChanges();
+               
+                    CH.Edit<CompanyRelationship>(item);
+                 
+           
+                    
+                
+                
+       
+                }
+                else
                 CH.Edit<CompanyRelationship>(item);
+               
                 return RedirectToAction("management", "project", new { id = item.ProjectID, tabindex = 3 });
             }
             ViewBag.ProjectID = item.ProjectID;

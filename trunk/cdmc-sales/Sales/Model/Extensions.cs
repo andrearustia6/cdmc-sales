@@ -8,13 +8,14 @@ namespace Entity
 {
     public static class EntityBaseExtensions
     {
-        public static bool SameFieldExist<T>(this EntityBase item,string fieldname) where T: EntityBase
+        public static bool SameFieldValueExist<T>(this EntityBase item,string fieldname) where T: EntityBase
         {
             var value = item.GetType().GetProperty(fieldname).GetValue(item,null);
             var data = CH.GetAllData<T>(child=>child.GetType().GetProperty(fieldname).GetValue(child,null).ToString()==value.ToString());
             if (data.Count > 0) return true;
             return false;
         }
+      
     }
 
     
@@ -27,8 +28,8 @@ namespace Entity
         /// <param name="projectid"></param>
         /// <returns></returns>
         public static List<Member> WhoCallTheCompanyMember(this CompanyRelationship item)
-        { 
-             var ms = CH.GetAllData<Member>(c => c.ID == item.ID);
+        {
+            var ms = CH.GetAllData<Member>(m => m.CompanyRelationships.Any(c => c.ID == item.ID), "CompanyRelationships");
             List<Member> result = new List<Member>();
             result.AddRange(ms);
 

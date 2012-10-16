@@ -13,36 +13,40 @@
         @Html.HiddenFor(m => m.ProjectID)
         @Html.DisplayFor(model => model.Project.Name)
     </div>
+      @if (Model != null)
+      {
     <div class="editor-label">
         @Html.LabelFor(model => model.CompanyID, "公司名称：")
     </div>
     <div class="editor-field">
+    
         @Html.HiddenFor(m => m.CompanyID)
-        @Html.DisplayFor(model => model.Company.Name)
+        @Html.DisplayFor(model => model.Company.FullName)
+     
     </div>
-    @*<div class="editor-label">
-        @Html.Label("英文名称：")
-    </div>
-    <div class="editor-field">
-        @Html.Edit("enname")
-    </div>
-     <div class="editor-label">
-        @Html.Label("中文名称：")
-    </div>
-    <div class="editor-field">
-         @Html.Edit("chname")
-    </div>*@
-     <div class="editor-label">
-        @Html.LabelFor(model => model.ProjectID, "Project:")
-    </div>
-    <div class="editor-field">
-        @Html.HiddenFor(m => m.ProjectID)
-    </div>
+      }
+      else
+      {
+        <div class="editor-label">
+            @Html.Label("英文名称：")
+        </div>
+        <div class="editor-field">
+            @Html.Editor("enname")
+        </div>
+         <div class="editor-label">
+            @Html.Label("中文名称：")
+        </div>
+        <div class="editor-field">
+             @Html.Editor("chname")
+        </div>
+      }
+    
     <div class="editor-label">
-        @Html.LabelFor(model => model.Importancy)
+        @Html.LabelFor(model => model.Importancy):
     </div>
     <div class="editor-field">
-        @(Html.Telerik().Slider<int>().Name("Importancy").Value(6).Max(10).Min(1).HtmlAttributes(new { style = "width:50%;" }))
+         
+        @(Html.Telerik().Slider<int>().Name("Importancy").Value(Model==null?6:Model.Importancy).Max(10).Min(1).HtmlAttributes(new { style = "width:50%;" }))
         @Html.ValidationMessageFor(model => model.Importancy)
     </div>
     <div class="editor-label">
@@ -58,7 +62,7 @@
                 {
                     <li>
                         <input  name="checkedCategorys" type="checkbox" value=@c.ID 
-                        @if(Model.Categorys.Any(mc=>mc.ID == c.ID))
+                        @if (Model != null && Model.Categorys!=null && Model.Categorys.Any(mc => mc.ID == c.ID))
                         {
                             <text> checked="checked"</text>
                             
