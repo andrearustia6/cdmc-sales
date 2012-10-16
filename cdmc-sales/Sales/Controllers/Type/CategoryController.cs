@@ -34,8 +34,8 @@ namespace Sales.Controllers
         [HttpPost]
         public ActionResult Create(Category item)
         {
-            
-            this.AddErrorStateIfFieldExist(item,"Name");
+
+            this.AddErrorStateIfFieldExist<Category>(item, "Name");
 
             if (ModelState.IsValid)
             {
@@ -53,7 +53,7 @@ namespace Sales.Controllers
         [HttpPost]
         public ActionResult Edit(Category item)
         {
-            this.AddErrorStateIfFieldExist(item, "Name");
+            this.AddErrorStateIfFieldExist<Category>(item, "Name");
             if (ModelState.IsValid)
             {
                 CH.Edit<Category>(item);

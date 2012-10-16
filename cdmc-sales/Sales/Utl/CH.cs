@@ -202,11 +202,14 @@ namespace Utl
                     DB.Set<T>().Add(e);
             }
 
-            var toremove = origins.FindAll(o => changes.FirstOrDefault(c => GetID(c) == GetID(o)) == null);
-
-            foreach (var r in toremove)
+            if (origins != null)
             {
-                DB.Set<T>().Remove(DB.Set<T>().Find(GetID(r)));
+                var toremove = origins.FindAll(o => changes.FirstOrDefault(c => GetID(c) == GetID(o)) == null);
+
+                foreach (var r in toremove)
+                {
+                    DB.Set<T>().Remove(DB.Set<T>().Find(GetID(r)));
+                }
             }
             var re = DB.SaveChanges();
             return re;
