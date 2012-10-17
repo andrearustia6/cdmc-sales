@@ -109,10 +109,7 @@ namespace Entity
         [Display(Name = "所属公司"),Required]
         public int? CompanyID { get; set; }
 
-
         public List<TargetOfPackage> TargetOfPackages { get; set; }
-
-
 
         public List<Project> Projects { get; set; }
 
@@ -148,12 +145,16 @@ namespace Entity
         [Display(Name = "致电客户"), Required]
         public int? LeadID { get; set; }
 
-        //[Display(Name = "所属客户关系")]
-        //public int? CompanyRelationshipID { get; set; }
-        //public virtual CompanyRelationship CompanyRelationship { get; set; }
+        [Display(Name = "所属客户关系")]
+        public int? CompanyRelationshipID { get; set; }
+        public virtual CompanyRelationship CompanyRelationship { get; set; }
 
         public virtual LeadCallType LeadCallType { get; set; }
         public int? LeadCallTypeID { get; set; }
+
+        public virtual Member Member { get; set; }
+        [Required,Display( Name="拨打人")]
+        public int? MemberID { get; set; }
 
         [Display(Name = "是否有效")]
         public bool FaxOut

@@ -51,11 +51,38 @@ namespace Entity
              return item.IsAbleToAccessTheCompanyRelationship(cr);
          }
 
+         public static List<LeadCall> MemberCallList(this Member item, DateTime? startdate, DateTime? enddate,string username=null)
+         {
+             var p = CH.GetDataById<Project>(item.ProjectID,"Members");
+            
+             var member = p.GetProjectMemberByName(username);
+
+             var calllist = CH.GetAllData<LeadCall>(l => l.MemberID == member.ID);
+
+             return calllist;
+         }
+
         
      }
 
     public static class ProjectExtensions
     {
+        public static Member GetProjectMemberByName(this Project item, string username=null)
+        {
+            if (username == null) username = HttpContext.Current.User.Identity.Name;
+            return item.Members.FirstOrDefault(m => m.Name == username);
+        }
+
+ 
+
+        public static List<Lead> ProjectLeads(this Project item)
+        {
+            var list = new List<Lead>();
+            item.CompanyRelationships.ForEach(c => {
+                list.AddRange(CH.GetAllData<Lead>(l => l.CompanyID == c.CompanyID));
+            });
+            return list;
+        }
         public static RoleInProject RoleInProject(this Project item)
         {
             var p = CH.GetDataById<Project>(item.ID, "Members");
@@ -65,7 +92,7 @@ namespace Entity
                 return Entity.RoleInProject.Director;
             else if (p.Manager == name)
                 return Entity.RoleInProject.Manager;
-            else if (p.Leader == name)
+            else if (p.TeamLeader == name)
                 return Entity.RoleInProject.Leader;
             else if (p.Product == name)
                 return Entity.RoleInProject.ProductInterface;
