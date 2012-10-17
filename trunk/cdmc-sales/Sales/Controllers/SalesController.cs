@@ -13,26 +13,64 @@ namespace Sales.Controllers
     public class SalesController : Controller
     {
         #region Leadcall
-        public ViewResult CompanyRelationshipLeadCallsIndex(int? companyrelationshipid)
+        public ViewResult CompanyRelationshipLeadCallsIndex(int? crid)
         {
-           var data = CH.GetDataById<CompanyRelationship>(companyrelationshipid,"LeadCalls");
-           return View("SalesLeadCallsIndex",data.LeadCalls);
+            var data = new List<LeadCall>();
+            this.AddErrorStateIfSalesNoAccessRight(crid);
+
+            if (ModelState.IsValid)
+            {
+                data = CH.GetDataById<CompanyRelationship>(crid, "LeadCalls").LeadCalls;
+            }
+            return View("SalesLeadCallsIndex", data);
         }
-        public ViewResult LeadCallsIndex(int? companyrelationshipid, int? leadid)
+
+        public ViewResult LeadCallsIndex(int? crid, int? leadid)
         {
-            var data = CH.GetDataById<CompanyRelationship>(companyrelationshipid, "LeadCalls");
-            return View("SalesLeadCallsIndex", data.LeadCalls.FindAll(l=>l.LeadID==leadid));
+            var data = new List<LeadCall>();
+            this.AddErrorStateIfSalesNoAccessRight(crid);
+
+            if (ModelState.IsValid)
+            {
+                data = CH.GetDataById<CompanyRelationship>(crid, "LeadCalls").LeadCalls.FindAll(l => l.LeadID == leadid);
+            }
+            return View("SalesLeadCallsIndex", data);
+        }
+
+        public ActionResult AddLeadCall(int? crid,int? leadid)
+        {
+            ViewBag.CompanyRelationshipID = crid;
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult AddLeadCall(LeadCall leadcall, int? crid)
+        {
+         
+            if (ModelState.IsValid)
+            {
+                CH.Create<LeadCall>(leadcall);
+                return RedirectToAction("CompanyRelationshipLeadCallsIndex", new { crid = crid });
+            }
+            else
+            {
+                ViewBag.CompanyRelationshipID = crid;
+                return View(leadcall);
+            }
         }
         #endregion
+
         /// <summary>
         /// id = companyrelationshipid
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public ViewResult DisplayCompany(int? id)
+        public ViewResult DisplayCompany(int? crid)
         {
-            if (CRM_Logical.IsTheSalesAbleToAccessTheCompanyRelationship(id))
-                return View(CH.GetDataById<CompanyRelationship>(id).Company);
+            this.AddErrorStateIfSalesNoAccessRight(crid);
+
+            if (ModelState.IsValid)
+                return View(CH.GetDataById<CompanyRelationship>(crid).Company);
             else
                 return View();
         }
@@ -42,9 +80,11 @@ namespace Sales.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public ViewResult DisplayLead(int? leadid, int? companyrelationshipid)
+        public ViewResult DisplayLead(int? leadid, int? crid)
         {
-            if (CRM_Logical.IsTheSalesAbleToAccessTheCompanyRelationship(companyrelationshipid))
+            this.AddErrorStateIfSalesNoAccessRight(crid);
+
+            if (ModelState.IsValid)
             {
                 var lead = CH.GetDataById<Lead>(leadid);
                 return View(lead);
@@ -54,16 +94,79 @@ namespace Sales.Controllers
         }
 
         /// <summary>
-        /// id = leadid
+        /// 
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public ViewResult EditLead(int? leadid, int? companyrelationshipid)
+        public ViewResult EditLead(int? leadid, int? crid)
         {
-            if (CRM_Logical.IsTheSalesAbleToAccessTheCompanyRelationship(companyrelationshipid))
+            this.AddErrorStateIfSalesNoAccessRight(crid);
+            if (ModelState.IsValid)
             {
                 var lead = CH.GetDataById<Lead>(leadid);
                 return View(lead);
+            }
+            else
+                return View();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public ViewResult AddLead(int? crid)
+        {
+            this.AddErrorStateIfSalesNoAccessRight(crid);
+            if (ModelState.IsValid)
+            {
+                var cr = CH.GetDataById<CompanyRelationship>(crid);
+                if (cr != null)
+                {
+                    ViewBag.CompanyID = cr.CompanyID;
+                    ViewBag.ProjectID = cr.ProjectID;
+                }
+                return View();
+            }
+            else
+                return View();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult AddLead(Lead lead, int? projectid)
+        {
+            this.AddErrorIfOneOfNamesEmpty(lead);
+            if (ModelState.IsValid)
+            {
+                CH.Create<Lead>(lead);
+                return RedirectToAction("CompanyRelationshipIndex", new { projectid = projectid });
+            }
+            else
+            {
+                ViewBag.CompanyID = lead.CompanyID;
+                ViewBag.ProjectID = projectid;
+                return View(lead);
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public ViewResult EditCompany(int? crid)
+        {
+            this.AddErrorStateIfSalesNoAccessRight(crid);
+            if (ModelState.IsValid)
+            {
+                var cr = CH.GetDataById<CompanyRelationship>(crid);
+                ViewBag.ProjectID = cr.ProjectID;
+                return View(cr.Company);
             }
             else
                 return View();
@@ -75,6 +178,7 @@ namespace Sales.Controllers
         /// <returns></return
         public ViewResult CompanyRelationshipIndex(int? projectid)
         {
+            ViewBag.ProjectID = projectid;
             var project = CH.GetDataById<Project>(projectid, "Members");
             if (project != null)
             {
@@ -87,7 +191,7 @@ namespace Sales.Controllers
                     var data = new List<CompanyRelationship>();
                     cs.ForEach(i =>
                     {
-                        var members =i.WhoCallTheCompanyMember();
+                        var members = i.WhoCallTheCompanyMember();
                         if (members.Any(m => m.Name == User.Identity.Name))
                         {
                             data.Add(i);
@@ -97,24 +201,6 @@ namespace Sales.Controllers
                     return View(data);
                 }
             }
-            return View();
-        }
-
-        public ViewResult LeadCall(int? companyrelationshipid, int? leadid)
-        {
-            ViewBag.CompanyRelationshipID = companyrelationshipid;
-            ViewBag.LeadID = leadid;
-            return View();
-        }
-
-        [HttpPost]
-        public ViewResult LeadCall(LeadCall lc)
-        {
-            ViewBag.CompanyRelationshipID = lc.CompanyRelationship;
-            ViewBag.LeadID = lc.LeadID;
-
-            var c = CH.Create<LeadCall>(lc);
-
             return View();
         }
     }

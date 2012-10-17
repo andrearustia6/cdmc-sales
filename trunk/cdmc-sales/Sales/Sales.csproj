@@ -1112,16 +1112,10 @@
     <Content Include="Views\LeadCall\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\LeadCall\Details.cshtml" />
+    <Content Include="Views\LeadCall\Change.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\LeadCall\Create.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\LeadCall\Edit.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\LeadCall\Delete.cshtml" />
+    <Content Include="Views\LeadCall\Display.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\DurationSelector.cshtml" />
@@ -1164,6 +1158,18 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\CompanyRelationship\Display.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Sales\EditLead.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Sales\EditCompany.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Sales\AddLead.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Sales\AddLeadCall.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

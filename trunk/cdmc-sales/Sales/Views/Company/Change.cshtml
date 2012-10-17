@@ -57,13 +57,6 @@
    
     </div>
     <div class="editor-label">
-        @Html.Label("行业名称")
-    </div>
-    <div class="editor-field">
-        @Html.DropDownListFor(model => model.CategoryID, new SelectList(CH.GetAllData<Entity.Category>(), "ID", "Name_CH"), "-请选择-")
-        @Html.ValidationMessageFor(model => model.CategoryID)
-    </div>
-    <div class="editor-label">
         @Html.LabelFor(model => model.ForeignAssetPercentage)
     </div>
     <div class="editor-field">

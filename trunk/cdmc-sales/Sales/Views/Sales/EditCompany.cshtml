@@ -1,0 +1,19 @@
+﻿@model Entity.Company
+@using Utl
+@{
+    ViewBag.Title = "编辑公司";
+}
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+    @Html.Hidden("ProjectID", (int)ViewBag.ProjectID)
+    @Html.Partial(@"~\views\company\change.cshtml", Model);
+    @Html.Partial(@"editcommon", Model);
+<div>
+  <center>
+        <p>
+            <input type="submit" value=@SR.Save />
+        </p>
+   </center>
+</div>
+}

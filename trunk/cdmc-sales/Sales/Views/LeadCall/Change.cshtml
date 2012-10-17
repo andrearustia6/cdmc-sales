@@ -1,0 +1,68 @@
+﻿@model Entity.LeadCall
+@using Utl
+@using Entity
+
+    <fieldset>
+        <legend>致电结果</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.IsFirstPitch)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownListFor(model => model.IsFirstPitch, new SelectList(new List<bool>() { true,false}), "-请选择-")
+            @Html.ValidationMessageFor(model => model.IsFirstPitch)
+        </div>
+
+        <div class="editor-label">
+            @Html.Label("Lead姓名")
+        </div>
+        <div class="editor-field">
+        @{
+            var cid = CH.GetDataById<CompanyRelationship>((int)ViewBag.CompanyRelationshipID).CompanyID;
+            var leads = CH.GetAllData<Lead>(l=>l.CompanyID == cid);
+            
+           @Html.DropDownListFor(m => m.LeadID, new SelectList(leads, "ID", "FullName"), "-请选择-")
+           @Html.ValidationMessageFor(model => model.LeadID)
+            }
+        </div>
+
+        <div class="editor-label">
+            @Html.Label("公司名称")
+        </div>
+        <div class="editor-field">
+        @{
+          
+            var crid = Model==null?(int)ViewBag.CompanyrelationshipID:Model.CompanyRelationshipID;
+       
+            @Html.Label(CH.GetDataById<CompanyRelationship>(crid).Company.FullName)
+            @Html.Hidden("CompanyRelationshipID", crid)
+         }
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.LeadCallTypeID, "致电结果")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("LeadCallTypeID", new SelectList(CH.GetAllData<LeadCallType>(),"ID","Name"),"-请选择-")
+            @Html.ValidationMessageFor(model => model.LeadCallTypeID)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Result)
+        </div>
+        <div class="editor-field">
+            @Html.TextAreaFor(model => model.Result)
+            @Html.ValidationMessageFor(model => model.Result)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.CallBackDate)
+        </div>
+        <div class="editor-field">
+            @Html.Telerik().DateTimePickerFor(m=>m.CallBackDate)
+            @Html.ValidationMessageFor(model => model.CallBackDate)
+        </div>
+    </fieldset>
+
+
+

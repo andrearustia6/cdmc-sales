@@ -79,26 +79,10 @@
         @Html.Label("所属公司")
     </div>
     <div class="editor-label">
-        @{
-             int cid=0;
-            if(ViewBag.CompanyID!=null)
-            {
-                cid = (int)ViewBag.CompanyID;
-                var c = CH.GetDataById<Company>(cid);
-                string en = "未发现匹配公司";
-                if (c != null)
-                {
-                    en = c.FullName;
-                    @Html.Label(en) 
-                    @Html.HiddenFor(m => m.CompanyID, cid)
-                } 
-            }
-            else
-            {
-                @Html.Label(Model.Company.FullName);
-                @Html.HiddenFor(m => m.CompanyID)
-            }
-           
-        }
+    @{
+        var id = Model == null ? (int)ViewBag.CompanyID : Model.CompanyID;
+         @Html.Label(CH.GetDataById<Company>(id).FullName);
+         @Html.Hidden("CompanyID", id)
+     }
     </div>
 </fieldset>

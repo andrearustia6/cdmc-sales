@@ -15,7 +15,18 @@ namespace Entity
             if (data.Count > 0) return true;
             return false;
         }
-      
+    }
+
+
+    public static class FullNameEntityExtensions
+    {
+        public static bool IsAllNamesEmpty(this FullNameEntity item)
+        {
+            if (string.IsNullOrEmpty(item.Name_EN) && string.IsNullOrEmpty(item.Name_CH))
+                return true;
+            else
+                return false;
+        }
     }
 
     public enum RoleInProject
@@ -40,29 +51,33 @@ namespace Entity
              return item.IsAbleToAccessTheCompanyRelationship(cr);
          }
 
-         public static RoleInProject RoleInProject(this Member item, int? projectid)
-         {
-             var p = CH.GetDataById<Project>(projectid, "Members");
-             var name = HttpContext.Current.User.Identity.Name;
-
-             if (Employee.GetCurrentRoleLevel() == 1000)
-                 return Entity.RoleInProject.Director;
-             else if (p.Manager == name)
-                 return Entity.RoleInProject.Manager;
-             else if (p.Leader == name)
-                 return Entity.RoleInProject.Leader;
-             else if (p.Product == name)
-                 return Entity.RoleInProject.ProductInterface;
-             else if (p.Market == name)
-                 return Entity.RoleInProject.MarketInterface;
-             else if (p.Members.Any(m => m.Name == name))
-                 return Entity.RoleInProject.Member;
-             else
-                 return Entity.RoleInProject.NotIn;
-            
-
-         }
+        
      }
+
+    public static class ProjectExtensions
+    {
+        public static RoleInProject RoleInProject(this Project item)
+        {
+            var p = CH.GetDataById<Project>(item.ID, "Members");
+            var name = HttpContext.Current.User.Identity.Name;
+
+            if (Employee.GetCurrentRoleLevel() == 1000)
+                return Entity.RoleInProject.Director;
+            else if (p.Manager == name)
+                return Entity.RoleInProject.Manager;
+            else if (p.Leader == name)
+                return Entity.RoleInProject.Leader;
+            else if (p.Product == name)
+                return Entity.RoleInProject.ProductInterface;
+            else if (p.Market == name)
+                return Entity.RoleInProject.MarketInterface;
+            else if (p.Members.Any(m => m.Name == name))
+                return Entity.RoleInProject.Member;
+            else
+                return Entity.RoleInProject.NotIn;
+        }
+    }
+
      
     
     public static class CompanyRelationshipExtensions
