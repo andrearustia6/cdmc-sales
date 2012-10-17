@@ -17,6 +17,14 @@ namespace System.Web.Mvc
             }
         }
 
+        public static void AddErrorStateIfStartDateLaterThanEndDate(this Controller item, DateTime? startdate, DateTime? enddate) 
+        {
+            if (startdate!=null && enddate!=null && startdate.Value>=enddate.Value)
+            {
+                item.ModelState.AddModelError("", "开始时间不允许大于结束时间");
+            }
+        }
+
         public static void AddErrorIfOneOfNamesEmpty(this Controller item, FullNameEntity target)
         {
             if (target.IsAllNamesEmpty())
