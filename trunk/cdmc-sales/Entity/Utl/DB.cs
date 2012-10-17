@@ -145,7 +145,7 @@ namespace Utl
             var l4 = new Lead() { ID = 4, Name_CH = "汤玛斯", Name_EN = "Tomas", Fax = "563000", CompanyID = 3, Contact = "23674232", Mobile = "1256423233", Title = "CTO", Gender = "Mr", EMail = "Tomas@123.com" };
             context.Leads.Add(l4);
 
-            var p1 = new Project() { ID = 1, EndDate = DateTime.Now.AddYears(1), StartDate = DateTime.Now.AddYears(-1), Target = 50000000, IsActived = true, Leader = "stone", Manager = "mike", Name = "CTC 航空峰会", ProjectCode="ACYY" };
+            var p1 = new Project() { ID = 1, EndDate = DateTime.Now.AddYears(1), StartDate = DateTime.Now.AddYears(-1), Target = 50000000, IsActived = true, TeamLeader = "sean", Manager = "mike", Name = "CTC 航空峰会", ProjectCode="ACYY" };
             p1.CompanyRelationships = new List<CompanyRelationship>();
             var cr1 = new CompanyRelationship() {ID=1, ProjectID = 1, CompanyID = 1,Importancy=6 };
             var cr2 = new CompanyRelationship() {ID=2, ProjectID = 1, CompanyID = 2 ,Importancy=3};

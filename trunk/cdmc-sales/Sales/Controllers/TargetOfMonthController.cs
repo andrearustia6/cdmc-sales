@@ -33,6 +33,7 @@ namespace Sales.Controllers
         [HttpPost]
         public ActionResult Create(TargetOfMonth item)
         {
+            this.AddErrorStateIfStartDateLaterThanEndDate(item.StartDate, item.EndDate);
             if (ModelState.IsValid)
             {
                 CH.Create<TargetOfMonth>(item);
@@ -49,6 +50,7 @@ namespace Sales.Controllers
         [HttpPost]
         public ActionResult Edit(TargetOfMonth item)
         {
+            this.AddErrorStateIfStartDateLaterThanEndDate(item.StartDate, item.EndDate);
             if (ModelState.IsValid)
             {
                 CH.Edit<TargetOfMonth>(item);
