@@ -14,15 +14,14 @@
                 .Columns(c =>
                 {
                     c.Bound(item => item.Company.FullName).Width(150);
-                    c.Bound(item => item).Title("拨打人").Template(@<text>@item.WhoCallTheCompanyMemberName()</text>).Width(70);
                     c.Bound(item => item.Importancy).Width(80);
-                    c.Bound(item => item).Title("分类").Template(@<text>@item.CategoryString()</text>).Width(250);
+                    c.Bound(item => item).Title("分类").Template(@<text>@item.CategoryString()</text>).Width(300);
                     c.Bound(item => item.Company.From).Width(100);
-                    c.Bound(item => item.ID).Title("操作").Width(150).Template(@<span>  
-                      <a target="_blank" href=@Url.Content("~/Sales/DisplayCompany/" + item.ID) >公司查看</a> 
-                    | <a  href=@Url.Content("~/Sales/EditCompany/" + item.ID) >公司编辑</a> 
-                    | <a target="_blank" href=@Url.Content("~/Sales/EditCompany/" + item.ID) >添加Lead</a>
-                    | <a target="_blank" href=@Url.Content("~/Sales/CompanyRelationshipLeadCallsIndex/?companyrelationshipid=" + item.ID) >致电记录</a> </span>);
+                    c.Bound(item => item.ID).Title("操作").Template(@<span>  
+                      <a target="_blank" href=@Url.Content("~/Sales/DisplayCompany/?crid=" + item.ID) >公司查看</a> 
+                    | <a  href=@Url.Content("~/Sales/EditCompany/?crid=" + item.ID) >公司编辑</a> 
+                    | <a  href=@Url.Content("~/Sales/AddLead/?crid=" + item.ID) >添加Lead</a>
+                    | <a target="_blank" href=@Url.Content("~/Sales/CompanyRelationshipLeadCallsIndex/?crid=" + item.ID) >致电记录</a> </span>);
 
                 })
                         .DetailView(e => e.Template(
@@ -44,9 +43,9 @@
                                 c.Bound(o => o.Title);
                                 c.Bound(o => o).Title("状态").Template(@<text>@CRM_Logical.GetLeadStatus(cr.ProjectID, item)</text>);
                                 c.Bound(o => o).Title("操作").Template(@<span>
-                                <a  target="_blank" href=@Url.Content("~/sales/displaylead/?leadid=" + item.ID + "&companyrelationshipid=" + cr.ID) >Lead查看</a> 
-                                | <a  href=@Url.Content("~/Sales/EditLead/?companyrelationshipid=" + cr.ID + "&leadid=" + item.ID) >Lead编辑</a>
-                                | <a  target="_blank" href=@Url.Content("~/Sales/LeadCallsIndex/?companyrelationshipid=" + cr.ID + "&leadid=" + item.ID) >致电记录</a>
+                                <a  target="_blank" href=@Url.Content("~/sales/displaylead/?leadid=" + item.ID + "&crid=" + cr.ID) >Lead查看</a> 
+                                | <a  href=@Url.Content("~/Sales/EditLead/?crid=" + cr.ID + "&leadid=" + item.ID) >Lead编辑</a>
+                                | <a  target="_blank" href=@Url.Content("~/Sales/LeadCallsIndex/?crid=" + cr.ID + "&leadid=" + item.ID) >致电记录</a>
                                   </span>);
                             })
                                          .Resizable(resizing => resizing.Columns(true))
