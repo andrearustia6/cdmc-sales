@@ -50,9 +50,6 @@ namespace Entity
         [Display(Name = "板块负责人")]
         public string Manager { get; set; }
 
-        [Display(Name = "Leader")]
-        public string Leader { get; set; }
-
         [Display(Name = "项目编号"), Required]
         public string ProjectCode { get; set; }
 
