@@ -12,7 +12,7 @@ function initialTargetbreakdown() {
             slide: function (event, ui) {
                 var $this = $(this);
                 var mid = $this.attr('mid');
-                $this.closest('tr').find('p').text("$" + ui.value);
+                $this.closest('tr').find('p').text("￥" + ui.value);
                 var mname = $this.closest('tr').find('input').attr('mname');
                 $this.closest('tr').find('input').val(mname+'|'+ui.value);
             }

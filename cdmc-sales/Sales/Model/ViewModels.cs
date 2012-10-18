@@ -25,7 +25,7 @@ namespace Model
         public int Duration{get;set;} 
     }
 
-    public class ViewProcessProgressAmount
+    public class ViewProjectProgressAmount
     {
         public Project Project { get; set; }
         public decimal TotalDealIn { get; set; }
@@ -37,7 +37,7 @@ namespace Model
         public decimal CheckInTarget { get; set; }
         public int DealInPercentage { get; set; }
         public int CheckInPercentage { get; set; }
-        public int NextDealInTarget { get; set; }
-        public int NextCheckInTarget { get; set; }
+        public decimal NextDealInTarget { get; set; }
+        public decimal NextCheckInTarget { get; set; }
     }
 }

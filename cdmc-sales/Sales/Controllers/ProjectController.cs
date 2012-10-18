@@ -278,7 +278,7 @@ namespace Sales.Controllers
         }
 
         [HttpPost]
-        public ActionResult Breakdown(List<string> mtw, int projectid, int TargetOfMonthid, DateTime startdate, DateTime enddate, string OldDate)
+        public ActionResult Breakdown(List<string> checkin, List<string> dealin, int projectid, int TargetOfMonthid, DateTime startdate, DateTime enddate, string OldDate)
         {
             if (startdate.DayOfWeek != DayOfWeek.Monday || enddate.DayOfWeek != DayOfWeek.Friday)
             {
@@ -292,22 +292,25 @@ namespace Sales.Controllers
                 ModelState.AddModelError("", "开始时间不是周一或者结束时间不是周五");
                 return View(CH.GetAllData<Member>(m => m.ProjectID == projectid));
             }
-            if (mtw != null)
+            if (checkin != null)
             {
-                foreach (var v in mtw)
+                for (int i=0; i < checkin.Count; i++)
                 {
-                    var s = v.Split('|');
-                    var name = s[0];
-                    var value = s[1];
+                    var ck = checkin[i].Split('|');
+                    var name = ck[0];
+                    var ckvalue = ck[1];
+                    var dl = dealin[i].Split('|');
+                    var dlvalue = dl[1];
                     var ts = CH.GetAllData<TargetOfWeek>(t => t.Member == name && t.ProjectID == projectid && t.TargetOfMonthID == TargetOfMonthid && startdate == t.StartDate);
                     if (ts.Count == 0)
                     {
-                        CH.Create<TargetOfWeek>(new TargetOfWeek() { Deal = Decimal.Parse(value), EndDate = enddate, Member = name, StartDate = startdate, ProjectID = projectid, TargetOfMonthID = TargetOfMonthid });
+                        CH.Create<TargetOfWeek>(new TargetOfWeek() { CheckIn = Decimal.Parse(ckvalue),Deal = Decimal.Parse(dlvalue), EndDate = enddate, Member = name, StartDate = startdate, ProjectID = projectid, TargetOfMonthID = TargetOfMonthid });
                     }
                     else
                     {
                         var item = ts.FirstOrDefault();
-                        item.Deal = Decimal.Parse(value);
+                        item.Deal = Decimal.Parse(dlvalue);
+                        item.CheckIn = Decimal.Parse(ckvalue);
                         CH.Edit<TargetOfWeek>(item);
                     }
                 }

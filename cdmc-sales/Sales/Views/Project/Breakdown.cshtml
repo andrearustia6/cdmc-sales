@@ -11,10 +11,22 @@
 @Html.Hidden("TargetOfMonthid", (int)ViewBag.TargetOfMonthID)
 @Html.Hidden("OldStartDate", (string)ViewBag.StartDate)
 <div>
-<label>开始时间：</label>
-@Html.Telerik().DatePicker().Name("startdate").Value(DateTime.Now.StartOfWeek())
-<label>结束时间：</label>
-@Html.Telerik().DatePicker().Name("enddate").Value(DateTime.Now.EndOfWeek())
+
+<div style="margin: 10px; margin-left: 0px;">
+        <b><span>
+            <label> 开始时间：</label>
+            @Html.Telerik().DatePicker().Name("StartDate").Value(ViewBag.StartDate as string)
+            <span>~ </span>
+            <label>
+                结束时间：</label>
+            @Html.Telerik().DatePicker().Name("EndDate").Value(ViewBag.EndDate as string)
+            <span>  </span>
+            <input type="submit" value="提交" />
+        </span></b>
+    </div>
+<br />
+<br />
+<p><b>Deal In Target:</b></p>
 <table class="tb_breakdown">
 @if (Model != null)
 {
@@ -38,13 +50,45 @@
             
       <tr><td>@m.Name</td><td>
       <div class="targetbreakdown" TargetOfWeek=@v ></div>
-      </td><td><p>$@v</p><input type="hidden" mname=@m.Name value=@m.Name|@v  name="mtw" /></td></tr>
+      </td><td><p>$@v</p><input type="hidden" mname=@m.Name value=@m.Name|@v  name="dealin" /></td></tr>
+    
+    }
+}
+</table>
+
+<br />
+<br />
+<p><b>Check In Target:</b></p>
+<table class="tb_breakdown">
+@if (Model != null)
+{
+    List<TargetOfWeek> vs = null;
+    if (ViewBag.Targets != null)
+    {
+        vs = (List<TargetOfWeek>)ViewBag.Targets;
+    }
+    foreach (var m in Model)
+    {
+        decimal v=0;
+        if (vs!=null)
+        {
+            var item = vs.FirstOrDefault(child => child.Member == @m.Name);
+            if (item != null)
+            {
+                v = item.CheckIn;
+            }
+        }
+            
+            
+      <tr><td>@m.Name</td><td>
+      <div class="targetbreakdown" TargetOfWeek=@v ></div>
+      </td><td><p>$@v</p><input type="hidden" mname=@m.Name value=@m.Name|@v  name="checkin" /></td></tr>
     
     }
 }
 </table>
 </div>
- <p> <button type="submit" class="t-button t-state-default">@SR.Save</button></p>
+ <p> <button type="submit">@SR.Save</button></p>
 @{ Html.EndForm(); }
 
 @{ Html.Telerik().ScriptRegistrar().OnDocumentReady(@<text> 
