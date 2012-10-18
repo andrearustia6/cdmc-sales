@@ -268,6 +268,7 @@ namespace MvcGlobalAuthorize.Controllers
         public ActionResult SetRoleLevel(string name)
         {
             var um = new UserInfoModel();
+            um.UserName = name;
 
             ProfileBase objProfile = ProfileBase.Create(name);
             object data = null;
@@ -275,7 +276,13 @@ namespace MvcGlobalAuthorize.Controllers
             data = objProfile.GetPropertyValue("RoleLevelID");
             Int32.TryParse(data.ToString(), out roleid);
             um.RoleID = roleid;
-            um.UserName = name;
+            
+            object StartDate;
+            DateTime startdate;
+            StartDate = objProfile.GetPropertyValue("StartDate");
+            DateTime.TryParse(StartDate.ToString(), out startdate);
+            um.StartDate = startdate;
+       
 
             object activate = null;
             bool isactivated;
@@ -303,6 +310,7 @@ namespace MvcGlobalAuthorize.Controllers
                     ProfileBase objProfile = ProfileBase.Create(model.UserName);
                     objProfile.SetPropertyValue("RoleLevelID", model.RoleID);
                     objProfile.SetPropertyValue("IsActivated", model.IsActivated);
+                    objProfile.SetPropertyValue("StartDate", model.StartDate.Value.ToShortDateString());
                     objProfile.Save();
                     return RedirectToAction("Index");
                 }
