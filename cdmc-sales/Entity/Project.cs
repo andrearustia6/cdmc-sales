@@ -254,6 +254,7 @@ namespace Entity
         [Display(Name = "销售目标"), Required]
         public decimal Deal { get; set; }
 
+
         [Display(Name = "入账目标"), Required]
         public decimal CheckIn { get; set; }
 
@@ -294,9 +295,9 @@ namespace Entity
     /// </summary>
     public class Deal : CompanyRelationshipChildItem
     {
-        //public virtual CompanyRelationship CompanyRelationship { get; set; }
-        //[Display(Name = "客户公司"), Required]
-        //public int? CompanyRelationshipID { get; set; }
+        public virtual CompanyRelationship CompanyRelationship { get; set; }
+        [Display(Name = "客户公司"), Required]
+        public int? CompanyRelationshipID { get; set; }
 
         public virtual Package Package { get; set; }
         [Display(Name = "销售Package"), Required]
@@ -313,6 +314,9 @@ namespace Entity
 
         [Display(Name = "实际付款日期")]
         public DateTime? ActualPaymentDate { get; set; }
+
+        [Display(Name = "签约日期")]
+        public DateTime? SignDate { get; set; }
 
         [Display(Name = "是否付款")]
         public bool IsClosed { get; set; }

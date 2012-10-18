@@ -95,6 +95,53 @@ namespace Entity
 
     public static class ProjectExtensions
     {
+        public static List<ViewProcessProgressAmount> GetProjectWeeklyReport(this Project item,DateTime? startdate, DateTime? enddate)
+        {
+            startdate= startdate==null? new DateTime(1,1,1):startdate;
+            enddate= enddate==null? new DateTime(9999,1,1):enddate.Value.AddDays(+1);
+            var result = new ViewProcessProgressAmount();
+            decimal totaldeal = 0;
+            decimal totalcheckin = 0;
+            decimal deal = 0;
+            decimal checkin = 0;
+            decimal dealtarget = 0;
+            decimal checkintarget = 0;
+            decimal nextdealtarget = 0;
+            decimal nextcheckintarget = 0;
+
+            item.CompanyRelationships.ForEach(c => { 
+                 totalcheckin += c.Deals.Sum(d => d.Income);
+                 totaldeal += c.Deals.Sum(d => d.Payment);
+            });
+
+            item.CompanyRelationships.ForEach(c =>
+            {
+                 deal += c.Deals.FindAll(ds=>ds.SignDate<enddate && ds.SignDate>startdate).Sum(d => d.Income);
+                 checkin+= c.Deals.FindAll(ds=>ds.ActualPaymentDate<enddate && ds.ActualPaymentDate>startdate).Sum(d => d.Payment);
+            });
+
+             item.Members.ForEach(m=>{
+                 var ts = m.TargetOfWeeks.FindAll(t => (t.StartDate > startdate && t.StartDate < enddate) | (t.EndDate > startdate && t.EndDate < enddate));
+                 dealtarget+=ts.Sum(t => t.Deal);
+                 checkintarget+=ts.Sum(t => t.CheckIn);
+             });
+
+            var  nextweekend = enddate.Value.AddDays(7);
+             item.Members.ForEach(m =>
+             {
+                 var ts = m.TargetOfWeeks.FindAll(t => (t.StartDate > enddate && t.EndDate < nextweekend));
+                 nextdealtarget += ts.Sum(t => t.Deal);
+                 nextcheckintarget += ts.Sum(t => t.CheckIn);
+             });
+
+        }
+
+        public static Member Project(this Project item, string username = null)
+        {
+            if (username == null) username = HttpContext.Current.User.Identity.Name;
+            return item.Members.FirstOrDefault(m => m.Name == username);
+        }
+
         public static List<ViewLeadCallAmount> GetProjectMemberLeadCalls(this Project item, DateTime? startdate, DateTime? enddate)
         {
             var list = new List<ViewLeadCallAmount>();

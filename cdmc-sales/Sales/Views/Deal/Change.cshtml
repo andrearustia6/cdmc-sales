@@ -1,17 +1,16 @@
 ﻿@model Entity.Deal
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "出单编辑";
 }
 @using Entity
 @using Utl
 <fieldset>
-    <legend>Deal</legend>
+    <legend>@SR.Form</legend>
     <div class="editor-label">
-        @Html.LabelFor(model => model.LeadID, "Lead信息")
+        @Html.Label("公司名称")
     </div>
     <div class="editor-field">
-        @Html.DropDownListFor(m=>m.LeadID, new SelectList(CH.GetAllData<Lead>(l => l.Company.ID == Model.Lead.Company.ID), "ID", "FullName"), "-请选择-")
-        @Html.ValidationMessageFor(model => model.LeadID)
+        @Html.LabelFor(model => model.CompanyRelationship.Company.FullName)
     </div>
     <div class="editor-label">
         @Html.LabelFor(model => model.PackageID, "Package")
@@ -34,6 +33,13 @@
     <div class="editor-field">
         @Html.Telerik().DatePickerFor(model => model.ActualPaymentDate)
         @Html.ValidationMessageFor(model => model.ActualPaymentDate)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.SigntDate)
+    </div>
+    <div class="editor-field">
+        @Html.Telerik().DatePickerFor(model => model.SigntDate)
+        @Html.ValidationMessageFor(model => model.SigntDate)
     </div>
     <div class="editor-label">
         @Html.LabelFor(model => model.IsClosed)
