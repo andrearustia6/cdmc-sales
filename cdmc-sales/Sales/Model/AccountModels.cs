@@ -54,6 +54,9 @@ namespace Entity {
         [Display(Name = "是否激活")]
         public bool IsActivated { get; set; }
 
+        [Display(Name = "是否激活")]
+        public DateTime? StartDate { get; set; }
+
         [Required]
         [StringLength(100, ErrorMessage = "密码长度最少为{0}.", MinimumLength = 6)]
         [DataType(DataType.Password)]

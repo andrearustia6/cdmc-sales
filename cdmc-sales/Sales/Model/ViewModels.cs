@@ -19,12 +19,25 @@ namespace Model
         public int Waiting_For_Approval { get; set; }
         public int Qualified_Decision { get; set; }
         public int Closed { get; set; }
-
-
         public int Cold_Calls{get;set;}
         public int DMS{get;set;}
         public int New_DMS{get;set;}  
-        public int Duration{get;set;}             
-                
+        public int Duration{get;set;} 
+    }
+
+    public class ViewProcessProgressAmount
+    {
+        public Project Project { get; set; }
+        public decimal TotalDealIn { get; set; }
+        public decimal TotalCheckIn { get; set; }
+        public int LeftDay { get; set; }
+        public decimal DealIn { get; set; }
+        public decimal DealInTarget { get; set; }
+        public decimal CheckIn { get; set; }
+        public decimal CheckInTarget { get; set; }
+        public int DealInPercentage { get; set; }
+        public int CheckInPercentage { get; set; }
+        public int NextDealInTarget { get; set; }
+        public int NextCheckInTarget { get; set; }
     }
 }

@@ -28,6 +28,13 @@
             @Html.CheckBoxFor(m => m.IsActivated)
             @Html.ValidationMessageFor(m => m.IsActivated)
         </div>
+        <div class="editor-label">
+            @Html.Label("入职日期")
+        </div>
+        <div class="editor-field">
+            @Html.Telerik().DatePickerFor(m => m.StartDate)
+            @Html.ValidationMessageFor(m => m.StartDate)
+        </div>
     </fieldset>
     
     <div>

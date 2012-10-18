@@ -22,6 +22,9 @@
                     c.Bound(item => item.UserName).Template(@<span>
                         @Employee.GetProfile("IsActivated", item.UserName)
                     </span>).Width(100).Title("是否激活");
+                    c.Bound(item => item.UserName).Template(@<span>
+                        @Employee.GetProfile("StartDate", item.UserName)
+                    </span>).Width(100).Title("入职时间");
                     c.Bound(item => item.UserName).Title("职级").Width(100).Template(@<span>
                      @Employee.GetRoleName(item.UserName)
                     </span>);
