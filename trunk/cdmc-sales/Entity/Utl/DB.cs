@@ -172,10 +172,10 @@ namespace Utl
             var tw4 = new TargetOfWeek() { ID = 4, Member = "tina", TargetOfMonthID = 1, ProjectID = 1, CheckIn = 6000, Deal = 6000, EndDate = DateTime.Now.EndOfWeek(), StartDate = DateTime.Now.StartOfWeek() };
             context.TargetOfWeeks.Add(tw4);
 
-            var d1 = new Deal() { ExpectedPaymentDate = DateTime.Now.AddDays(-2), ActualPaymentDate = DateTime.Now, ID = 1, Income = 12000, Payment = 12000, PackageID = 1, CompanyRelationshipID = 1, Sales = "sean", IsClosed = true };
-            var d2 = new Deal() { ExpectedPaymentDate = DateTime.Now.AddDays(-1), ActualPaymentDate = DateTime.Now, ID = 2, Income = 5000, Payment = 5000, PackageID = 1, CompanyRelationshipID = 1, Sales = "tina", IsClosed = true };
-            var d4 = new Deal() { ExpectedPaymentDate = DateTime.Now.AddDays(-3), ActualPaymentDate = DateTime.Now, ID = 4, Income = 7500, Payment = 7500, PackageID = 1, CompanyRelationshipID = 2, Sales = "sean", IsClosed = true };
-            var d3 = new Deal() { ExpectedPaymentDate = DateTime.Now.AddDays(7), ID = 3, Income = 0, Payment = 60000, PackageID = 1, CompanyRelationshipID  = 1, Sales = "sean", IsClosed = false };
+            var d1 = new Deal() { ExpectedPaymentDate = DateTime.Now.AddDays(-2), SignDate = DateTime.Now.AddDays(-5), ActualPaymentDate = DateTime.Now, ID = 1, Income = 12000, Payment = 12000, PackageID = 1, CompanyRelationshipID = 1, Sales = "sean", IsClosed = true };
+            var d2 = new Deal() { ExpectedPaymentDate = DateTime.Now.AddDays(-1), SignDate = DateTime.Now.AddDays(-3), ActualPaymentDate = DateTime.Now, ID = 2, Income = 5000, Payment = 5000, PackageID = 1, CompanyRelationshipID = 1, Sales = "tina", IsClosed = true };
+            var d4 = new Deal() { ExpectedPaymentDate = DateTime.Now.AddDays(-3), SignDate = DateTime.Now.AddDays(-6), ActualPaymentDate = DateTime.Now, ID = 4, Income = 7500, Payment = 7500, PackageID = 1, CompanyRelationshipID = 2, Sales = "sean", IsClosed = true };
+            var d3 = new Deal() { ExpectedPaymentDate = DateTime.Now.AddDays(7), SignDate = DateTime.Now.AddDays(-2), ID = 3, Income = 0, Payment = 60000, PackageID = 1, CompanyRelationshipID = 1, Sales = "sean", IsClosed = false };
 
             context.Deals.Add(d1);
             context.Deals.Add(d2);

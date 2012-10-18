@@ -18,7 +18,7 @@ namespace System.Web.Mvc
 
             if (role.Level == Role.LVL_Director)
             {
-                list = CH.GetAllData<Project>("Members");
+                list = CH.GetAllData<Project>("Members","CompanyRelationships");
             }
             else
             {

@@ -1,0 +1,30 @@
+﻿@{
+    ViewBag.Title = "进度表";
+}
+@using Entity;
+@using Utl
+@using Sales.Model
+@model List<Model.ViewProjectProgressAmount>
+<br />
+@Html.Partial("durationselector")
+
+
+        @(Html.Telerik().Grid(Model).Name("ViewProjectProgressAmount").DataKeys(keys =>
+                {
+                   keys.Add(s => s.Project.ID);
+                }).Columns(c=>{
+                    c.Bound(item => item.Project.Name).FooterTemplate(@<text>总数：</text>);
+                    c.Bound(item => item.TotalDealIn).Aggregate(item => item.Sum()).FooterTemplate(@<text>@item.Sum</text>);
+                    c.Bound(item => item.TotalCheckIn).Aggregate(item => item.Sum()).FooterTemplate(@<text>@item.Sum</text>);
+                    c.Bound(item => item.DealInTarget).Aggregate(item => item.Sum()).FooterTemplate(@<text>@item.Sum</text>);
+                    c.Bound(item => item.DealIn).Aggregate(item => item.Sum()).FooterTemplate(@<text>@item.Sum</text>);
+                    c.Bound(item => item.DealInPercentage);
+                    c.Bound(item => item.CheckInTarget).Aggregate(item => item.Sum()).FooterTemplate(@<text>@item.Sum</text>);
+                    c.Bound(item => item.CheckIn).Aggregate(item => item.Sum()).FooterTemplate(@<text>@item.Sum</text>);
+                    c.Bound(item => item.CheckInPercentage);
+                    c.Bound(item => item.NextCheckInTarget).Aggregate(item => item.Sum()).FooterTemplate(@<text>@item.Sum</text>);
+                    c.Bound(item => item.NextDealInTarget).Aggregate(item => item.Sum()).FooterTemplate(@<text>@item.Sum</text>);
+                }).Resizable(resizing => resizing.Columns(true))
+                  .Sortable().Groupable()
+                  .Scrollable(scrolling => scrolling.Height(150)))
+

@@ -214,10 +214,11 @@
     @(Html.Telerik().Grid(tm).Name("TargetOfWeek" + key)
                             .Columns(c =>
                             {
-                                c.Bound(tw => tw.Deal);
+                                c.Bound(tw => tw.Deal).Format("{0:c}").Aggregate(item => item.Sum()).FooterTemplate(@<text>@item.Sum.Format("{0:c}")</text>);
+                                c.Bound(tw => tw.CheckIn).Format("{0:c}").Aggregate(item => item.Sum()).FooterTemplate(@<text>@item.Sum.Format("{0:c}")</text>);
                                 c.Bound(tw => tw.Member);
                             })
-                            .Resizable(resizing => resizing.Columns(true))
-                            .Pageable(p => p.PageSize(20)).Sortable())
+                                                                                                    .Resizable(resizing => resizing.Columns(true))
+                                                                                                    .Pageable(p => p.PageSize(20)).Sortable())
    
 }

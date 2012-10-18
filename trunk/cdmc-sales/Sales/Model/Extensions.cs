@@ -95,11 +95,11 @@ namespace Entity
 
     public static class ProjectExtensions
     {
-        public static List<ViewProcessProgressAmount> GetProjectWeeklyReport(this Project item,DateTime? startdate, DateTime? enddate)
+        public static ViewProjectProgressAmount GetProjectProgress(this Project item,DateTime? startdate, DateTime? enddate)
         {
             startdate= startdate==null? new DateTime(1,1,1):startdate;
             enddate= enddate==null? new DateTime(9999,1,1):enddate.Value.AddDays(+1);
-            var result = new ViewProcessProgressAmount();
+          
             decimal totaldeal = 0;
             decimal totalcheckin = 0;
             decimal deal = 0;
@@ -108,7 +108,7 @@ namespace Entity
             decimal checkintarget = 0;
             decimal nextdealtarget = 0;
             decimal nextcheckintarget = 0;
-
+            var crs = CH.GetAllData<CompanyRelationship>(c=>c.ProjectID == item.ID,"Deals");
             item.CompanyRelationships.ForEach(c => { 
                  totalcheckin += c.Deals.Sum(d => d.Income);
                  totaldeal += c.Deals.Sum(d => d.Payment);
@@ -121,7 +121,7 @@ namespace Entity
             });
 
              item.Members.ForEach(m=>{
-                 var ts = m.TargetOfWeeks.FindAll(t => (t.StartDate > startdate && t.StartDate < enddate) | (t.EndDate > startdate && t.EndDate < enddate));
+                 var ts = CH.GetAllData<TargetOfWeek>(t=>t.Member== m.Name).FindAll(t => (t.StartDate > startdate && t.StartDate < enddate) | (t.EndDate > startdate && t.EndDate < enddate));
                  dealtarget+=ts.Sum(t => t.Deal);
                  checkintarget+=ts.Sum(t => t.CheckIn);
              });
@@ -129,10 +129,25 @@ namespace Entity
             var  nextweekend = enddate.Value.AddDays(7);
              item.Members.ForEach(m =>
              {
-                 var ts = m.TargetOfWeeks.FindAll(t => (t.StartDate > enddate && t.EndDate < nextweekend));
+                 var ts = CH.GetAllData<TargetOfWeek>(t => t.Member == m.Name).FindAll(t => (t.StartDate > enddate && t.EndDate < nextweekend));
                  nextdealtarget += ts.Sum(t => t.Deal);
                  nextcheckintarget += ts.Sum(t => t.CheckIn);
              });
+             var result = new ViewProjectProgressAmount() { 
+                 TotalCheckIn= totalcheckin,
+                 TotalDealIn = totaldeal,
+                 CheckIn = checkin,
+                 DealIn = deal,
+                 LeftDay =(item.EndDate-DateTime.Now).Days,
+                 CheckInTarget = checkintarget,
+                 Project = item,
+                 DealInTarget = dealtarget,
+                 NextCheckInTarget = nextcheckintarget,
+                 NextDealInTarget = nextdealtarget,
+                 CheckInPercentage = checkintarget==0? 100:(int)(checkin*100/checkintarget),
+                 DealInPercentage = dealtarget == 0 ? 100 : (int)(deal * 100 / dealtarget)
+             };
+             return result;
 
         }
 
