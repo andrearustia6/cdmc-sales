@@ -60,6 +60,14 @@ namespace Entity
             var lcs = CH.GetAllData<LeadCall>(l => l.MemberID == item.ID);
             lcs.FindAll(lc => lc.CallDate > startdate && lc.CallDate < enddate).ForEach(l =>
             {
+                result.Cold_Calls++;
+
+                if (l.LeadCallType.Code > 3)
+                    result.DMS++;
+                if (l.IsFirstPitch)
+                    result.New_DMS++;
+                
+
                 if (l.LeadCallTypeID == 1)
                     result.Others++;
                 else if (l.LeadCallTypeID == 2)
