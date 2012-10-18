@@ -11,17 +11,12 @@
 
     <div class="display-label">Lead</div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.Lead.Gender)
+        @Html.DisplayFor(model => model.CompanyRelationship.Company.FullName)
     </div>
 
-    <div class="display-label">ParticipantType</div>
+    <div class="display-label">Package</div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.ParticipantType.Name_CH)
-    </div>
-
-    <div class="display-label">PackageTypeeID</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.PackageTypeeID)
+        @Html.DisplayFor(model => model.Package.FullName)
     </div>
 
     <div class="display-label">ExpectedPaymentDate</div>
@@ -54,32 +49,9 @@
         @Html.DisplayFor(model => model.PaymentDetail)
     </div>
 
-    <div class="display-label">Project</div>
+    <div class="display-label">签约日期</div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.Project.Manager)
-    </div>
-
-    <div class="display-label">Description</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Description)
-    </div>
-
-    <div class="display-label">Sequence</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Sequence)
-    </div>
-
-    <div class="display-label">User</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.User)
-    </div>
-
-    <div class="display-label">ModifiedTime</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.ModifiedTime)
+        @Html.DisplayFor(model => model.SigntDate)
     </div>
 </fieldset>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id=Model.ID }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+
