@@ -19,5 +19,12 @@ namespace Model
         public int Waiting_For_Approval { get; set; }
         public int Qualified_Decision { get; set; }
         public int Closed { get; set; }
+
+
+        public int Cold_Calls{get;set;}
+        public int DMS{get;set;}
+        public int New_DMS{get;set;}  
+        public int Duration{get;set;}             
+                
     }
 }

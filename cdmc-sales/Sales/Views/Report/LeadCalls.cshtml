@@ -18,14 +18,13 @@
                    keys.Add(s => s.Member.ID);
                 }).Columns(c=>{
                     c.Bound(item => item.Member.Name).Width(60).FooterTemplate(@<text>总数：</text>);
-                    c.Bound(item => item.Others).Width(60).Aggregate(item => item.Sum()).FooterTemplate(@<text>@item.Sum</text>);
-                    c.Bound(item => item.Blowed).Width(65).Aggregate(item => item.Sum()).FooterTemplate(@<text>@item.Sum</text>);
-                    c.Bound(item => item.Not_Pitched).Width(100).Aggregate(item => item.Sum()).FooterTemplate(@<text>@item.Sum</text>);
+                    c.Bound(item => item.Cold_Calls).Width(90).Aggregate(item => item.Sum()).FooterTemplate(@<text>@item.Sum</text>);
+                    c.Bound(item => item.DMS).Width(65).Aggregate(item => item.Sum()).FooterTemplate(@<text>@item.Sum</text>);
+                    c.Bound(item => item.New_DMS).Width(95).Aggregate(item => item.Sum()).FooterTemplate(@<text>@item.Sum</text>);
                     c.Bound(item => item.Pitched).Width(70).Aggregate(item => item.Sum()).FooterTemplate(@<text>@item.Sum</text>);
-                    c.Bound(item => item.Full_Pitched).Width(100).Aggregate(item => item.Sum()).FooterTemplate(@<text>@item.Sum</text>);
-                    c.Bound(item => item.Call_Backed).Aggregate(item => item.Sum()).FooterTemplate(@<text>@item.Sum</text>);
+                    c.Bound(item => item.Full_Pitched).Aggregate(item => item.Sum()).FooterTemplate(@<text>@item.Sum</text>);
                     c.Bound(item => item.Waiting_For_Approval).Width(155).Aggregate(item => item.Sum()).FooterTemplate(@<text>@item.Sum</text>);
-                    c.Bound(item => item.Qualified_Decision).Width(135).Aggregate(item => item.Sum()).FooterTemplate(@<text>@item.Sum</text>);
+                    c.Bound(item => item.Qualified_Decision).Width(160).Aggregate(item => item.Sum()).FooterTemplate(@<text>@item.Sum</text>);
                     c.Bound(item => item.Closed).Width(70).Aggregate(item => item.Sum());
                 }).Resizable(resizing => resizing.Columns(true))
                   .Filterable().Sortable().Groupable()
