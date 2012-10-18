@@ -28,7 +28,7 @@ namespace BLL
                 }
                 else if (Employee.EqualToLeader())
                 {
-                    projects = CH.GetAllData<Project>(p => Employee.IsEqualToCurrentUserName(p.Leader));
+                    projects = CH.GetAllData<Project>(p => Employee.IsEqualToCurrentUserName(p.TeamLeader));
                 }
                 else
                 {
@@ -122,6 +122,9 @@ namespace BLL
         #endregion 
 
         #region Call Management
+
+        
+
         public static bool IsFullPitched(LeadCall call)
         {
             return call.LeadCallType.Name=="Full Pitched"?true:false;

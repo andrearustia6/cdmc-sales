@@ -25,6 +25,13 @@ namespace Entity
     /// </summary>
     public class Role : EntityBase
     {
+        public const int LVL_Director = 1000;
+        public const int LVL_Manager = 500;
+        public const int LVL_TeamLeader = 100;
+        public const int LVL_Sales = 10;
+        public const int LVL_ProductInterface = 5;
+        public const int LVL_MarketInterface = 1;
+
         [Display(Name = "职级名称"), Required]
         public String Name { get; set; }
 
@@ -270,6 +277,8 @@ namespace Entity
         public string Characters { get; set; }
 
         public List<TargetOfWeek> TargetOfWeeks { get; set; }
+
+        public List<LeadCall> LeadCalls { get; set; }
 
         [Display(Name = "所在项目"), Required]
         public int? ProjectID { get; set; }

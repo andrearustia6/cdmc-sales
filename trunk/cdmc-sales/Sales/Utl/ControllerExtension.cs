@@ -7,6 +7,28 @@ using Utl;
 
 namespace System.Web.Mvc
 {
+    public static class ReportController
+    {
+        public static List<Project> GetProjectByAccount(this Controller item) 
+        {
+            List<Project> list = new List<Project>();
+            Role role = Employee.GetCurrentRole();
+
+            var username = HttpContext.Current.User.Identity.Name;
+
+            if (role.Level == Role.LVL_Director)
+            {
+                list = CH.GetAllData<Project>("Members");
+            }
+            else
+            {
+                list = CH.GetAllData<Project>(p=>p.Manager== username,"Members");
+            }
+
+            return list;
+        }
+    }
+
     public static class ControllerExtension
     {
         public static void AddErrorStateIfFieldExist<T>(this Controller item,EntityBase target,string fieldname) where T:EntityBase
