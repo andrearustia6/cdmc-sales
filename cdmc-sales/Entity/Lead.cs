@@ -156,6 +156,10 @@ namespace Entity
         [Required,Display( Name="拨打人")]
         public int? MemberID { get; set; }
 
+       
+        [Required, Display(Name = "致电时间")]
+        public DateTime CallDate { get; set; }
+
         [Display(Name = "是否有效")]
         public bool FaxOut
         {

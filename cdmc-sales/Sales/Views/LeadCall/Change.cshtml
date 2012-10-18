@@ -62,6 +62,27 @@
             @Html.Telerik().DateTimePickerFor(m=>m.CallBackDate)
             @Html.ValidationMessageFor(model => model.CallBackDate)
         </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.MemberID)
+        </div>
+        <div class="editor-field">
+        @{
+            var cr = CH.GetDataById<CompanyRelationship>((int?)crid);
+            var members = CH.GetAllData<Member>(m => m.ProjectID == cr.ProjectID);
+           // @Html.DropDownList("MemberID", new SelectList(members, "ID", "Name",ViewBag.MemberID), "-请选择-")
+            @Html.DropDownListFor(model => model.MemberID, new SelectList(members, "ID", "Name",(int?)ViewBag.MemberID), "-请选择-")
+            @Html.ValidationMessageFor(model => model.MemberID)
+            }
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.CallDate)
+        </div>
+        <div class="editor-field">
+            @Html.Telerik().DateTimePickerFor(m => m.CallDate).Value(Model==null?DateTime.Now:Model.CallDate)
+            @Html.ValidationMessageFor(model => model.CallDate)
+        </div>
     </fieldset>
 
 

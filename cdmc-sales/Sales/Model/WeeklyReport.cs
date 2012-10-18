@@ -45,6 +45,7 @@ namespace Sales.Model
         }
         
     }
+
     public class WeeklyReport : WeeklyItem
     {
         public List<MemberItem> MemberItems { get; set; }

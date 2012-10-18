@@ -39,6 +39,10 @@ namespace Sales.Controllers
 
         public ActionResult AddLeadCall(int? crid,int? leadid)
         {
+            var m = CH.GetDataById<Project>(CH.GetDataById<CompanyRelationship>(crid).ProjectID, "Members").GetProjectMemberByName();
+            if (m != null)
+                ViewBag.MemberID = m.ID;
+
             ViewBag.CompanyRelationshipID = crid;
             return View();
         }
