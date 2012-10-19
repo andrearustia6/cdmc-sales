@@ -1,6 +1,6 @@
 ﻿@using Entity
 @model List<PackageType>
-@Html.Partial("contenttitle", "Package类型")
+@Html.Partial("contenttitle", "Package")
 @(Html.Telerik().Grid<PackageType>(Model).Name("PackageType").ToolBar(commands => commands.Custom().Text("Package类型创建").Action("Create", "PackageType"))
                 .DataKeys(keys =>
                 {
