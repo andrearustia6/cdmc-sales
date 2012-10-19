@@ -267,6 +267,7 @@ namespace Sales.Controllers
             ViewBag.ProjectID = projectid;
             ViewBag.TargetOfMonthID = targetofmonthid;
             ViewBag.OldStartDate = startdate;
+            ViewBag.EndDate = DateTime.Parse(startdate).AddDays(5).ToShortDateString();
             if (startdate != null)
             {
 

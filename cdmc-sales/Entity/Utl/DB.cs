@@ -212,6 +212,7 @@ namespace Utl
             context.Members.Add(new Member() { ID = 4, ProjectID = 2, Name = "stone" });
             context.Members.Add(new Member() { ID = 5, ProjectID = 2, Name = "john" });
             context.Members.Add(new Member() { ID = 6, ProjectID = 2, Name = "lucas" });
+            context.Members.Add(new Member() { ID = 7, ProjectID = 2, Name = "tina" });
         }
     }
 

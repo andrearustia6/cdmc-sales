@@ -17,7 +17,7 @@ namespace EntityUtl
         public static DateTime EndOfWeek(this DateTime dt)
         {
             int diff = DayOfWeek.Friday - dt.DayOfWeek;
-            if (diff < 0)
+            if (diff > 0)
             { diff += 7; }
             return dt.AddDays(1 * diff).Date;
         }
