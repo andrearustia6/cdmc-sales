@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using Utl;
 using Model;
+using System.Web.Profile;
 
 namespace Entity
 {
@@ -46,6 +47,23 @@ namespace Entity
                 return false;
         }
 
+        public static int?  EmployeeDuration(this Member item)
+        {
+            ProfileBase objProfile = ProfileBase.Create(item.Name);
+            object StartDate;
+            DateTime startdate;
+            StartDate = objProfile.GetPropertyValue("StartDate");
+            DateTime.TryParse(StartDate.ToString(), out startdate);
+            if (startdate != null)
+            {
+                var weeks = (DateTime.Now - startdate).Days / 7;
+                return weeks;
+            }
+
+            return null;
+
+        }
+
         public static bool IsAbleToAccessTheCompanyRelationship(this Member item, int? crid)
         {
             var cr = CH.GetDataById<CompanyRelationship>(crid);
@@ -66,7 +84,6 @@ namespace Entity
                     result.DMS++;
                 if (l.IsFirstPitch)
                     result.New_DMS++;
-                
 
                 if (l.LeadCallTypeID == 1)
                     result.Others++;
@@ -95,6 +112,7 @@ namespace Entity
 
     public static class ProjectExtensions
     {
+      
         public static ViewProjectProgressAmount GetProjectProgress(this Project item,DateTime? startdate, DateTime? enddate)
         {
             startdate= startdate==null? new DateTime(1,1,1):startdate;
@@ -109,6 +127,7 @@ namespace Entity
             decimal nextdealtarget = 0;
             decimal nextcheckintarget = 0;
             var crs = CH.GetAllData<CompanyRelationship>(c=>c.ProjectID == item.ID,"Deals");
+
             item.CompanyRelationships.ForEach(c => { 
                  totalcheckin += c.Deals.Sum(d => d.Income);
                  totaldeal += c.Deals.Sum(d => d.Payment);
@@ -116,6 +135,7 @@ namespace Entity
 
             item.CompanyRelationships.ForEach(c =>
             {
+
                  deal += c.Deals.FindAll(ds=>ds.SignDate<enddate && ds.SignDate>startdate).Sum(d => d.Income);
                  checkin+= c.Deals.FindAll(ds=>ds.ActualPaymentDate<enddate && ds.ActualPaymentDate>startdate).Sum(d => d.Payment);
             });

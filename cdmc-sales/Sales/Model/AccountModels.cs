@@ -54,7 +54,7 @@ namespace Entity {
         [Display(Name = "是否激活")]
         public bool IsActivated { get; set; }
 
-        [Display(Name = "是否激活")]
+        [Display(Name = "入职时间")]
         public DateTime? StartDate { get; set; }
 
         [Required]
