@@ -2,7 +2,7 @@
 @using Utl;
 @model List<Research>
 @Html.Partial("contenttitle", "我的调研")
-@(Html.Telerik().Grid<Research>(Model).Name("Research")
+@(Html.Telerik().Grid<Research>(Model).Name("Research").ToolBar(commands => commands.Custom().Text("调研上传").Action("Create", "Research"))
                 .DataKeys(keys =>
                 {
                     keys.Add(s => s.ID);
@@ -21,4 +21,3 @@
                 .Scrollable(scrolling => scrolling.Height(350))
 
 )
-@Html.ActionLink("调研上传", "Create")
