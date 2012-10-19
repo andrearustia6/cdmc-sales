@@ -17,7 +17,7 @@
                     c.Bound(item => item.CreatedDate).Title("致电时间");
                     c.Bound(item => item.LeadCallType.Name);
                     c.Bound(item => item.CallBackDate);
-                    c.Bound(item => item.ID).Title("操作").Template(@<span> <a href=@Url.Content("~/Sales/EditLeadCall/" + item.ID) ></span>);
+              
                 })
                 .Resizable(resizing => resizing.Columns(true))
                 .Filterable().Sortable().Groupable()

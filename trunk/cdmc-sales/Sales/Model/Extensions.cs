@@ -73,7 +73,7 @@ namespace Entity
             DateTime startdate;
             StartDate = objProfile.GetPropertyValue("StartDate");
             DateTime.TryParse(StartDate.ToString(), out startdate);
-            if (startdate != null)
+            if (startdate.Year!= 1)
             {
                 var weeks = (DateTime.Now - startdate).Days / 7;
                 return weeks;

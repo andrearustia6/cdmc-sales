@@ -84,14 +84,17 @@
     ViewBag.StartDate = ViewBag.DealStartDate;
     ViewBag.EndDate = ViewBag.DealEndDate;
     @*@Html.Partial("durationselector")*@
-    @(Html.Telerik().Grid<Deal>(CRM_Logical.GetProjectDeals(p, ViewBag.DealStartDate as DateTime?, ViewBag.DealEndDate as DateTime?)).ToolBar(commands=>commands.Template(@<text>@Html.Partial("durationselector")</text>)).Name("Deals")
+     var deals = CRM_Logical.GetProjectDeals(p, ViewBag.DealStartDate as DateTime?, ViewBag.DealEndDate as DateTime?);
+     if(deals.Count>0)
+     {
+    @(Html.Telerik().Grid<Deal>(deals).ToolBar(commands => commands.Template(@<text>@Html.Partial("durationselector")</text>)).Name("Deals")
                 .DataKeys(keys =>
                 {
                     keys.Add(s => s.ID);
                 })
                 .Columns(c =>
                 {
-                    c.Bound(item => item.Payment).Format("{0:c}").Aggregate(aggregates => aggregates.Sum()).FooterTemplate(@<text>应付款: @item.Sum.Format("{0:c}")</text>).GroupFooterTemplate(@<text>应付款: @item.Sum.Format("{0:c}")</text>).Width(100);
+                    c.Bound(item => item.Payment).Format("{0:c}").Aggregate(aggregates => aggregates.Sum()).FooterTemplate(@<text>应收款: @item.Sum.Format("{0:c}")</text>).GroupFooterTemplate(@<text>应收款: @item.Sum.Format("{0:c}")</text>).Width(100);
                     c.Bound(item => item.Income).Format("{0:c}").Aggregate(aggregates => aggregates.Sum()).FooterTemplate(@<text>实收: @item.Sum.Format("{0:c}")</text>).GroupFooterTemplate(@<text>实收: @item.Sum.Format("{0:c}")</text>).Width(100);
                     c.Bound(item => item.IsClosed).Width(60);
                     c.Bound(item => item.ExpectedPaymentDate).Format("{0:d}").Width(100);
@@ -107,7 +110,7 @@
                                           .Pageable(page => page.PageSize(20)).Scrollable(scrolling => scrolling.Height(350))
 
 )
-  
+        }
 }
 
 @helper CompanyRelationships(Project p)

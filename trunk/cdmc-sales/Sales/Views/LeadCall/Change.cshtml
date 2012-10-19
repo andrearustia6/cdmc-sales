@@ -18,7 +18,7 @@
         </div>
         <div class="editor-field">
         @{
-            var cid = CH.GetDataById<CompanyRelationship>((int)ViewBag.CompanyRelationshipID).CompanyID;
+            var cid = CH.GetDataById<CompanyRelationship>(Model==null?(int)ViewBag.CompanyRelationshipID:Model.CompanyRelationshipID).CompanyID;
             var leads = CH.GetAllData<Lead>(l=>l.CompanyID == cid);
             
            @Html.DropDownListFor(m => m.LeadID, new SelectList(leads, "ID", "FullName"), "-请选择-")
