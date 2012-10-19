@@ -47,6 +47,25 @@ namespace Entity
                 return false;
         }
 
+        public static List<Project> GetInvolveProjects(this Member item)
+        {
+            var ps = CH.GetAllData<Project>(p => p.Members.Any(m=>m.Name == item.Name), "Members");
+            return ps;
+        }
+
+        public static string GetInvolveProjectsName(this Member item)
+        {
+            var ps= item.GetInvolveProjects();
+            string name = string.Empty;
+            ps.ForEach(p => {
+                if (string.IsNullOrEmpty(name))
+                    name = p.Name;
+                else
+                    name += "|" + p.Name;
+            });
+            return name;
+        }
+
         public static int?  EmployeeDuration(this Member item)
         {
             ProfileBase objProfile = ProfileBase.Create(item.Name);

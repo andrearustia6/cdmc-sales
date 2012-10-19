@@ -67,6 +67,7 @@
                 {
                     c.Bound(item => item.Name).Width(200);
                     c.Bound(item => item.Characters);
+                    c.Bound(item => item).Template(@<text>@item.GetInvolveProjectsName()</text>).Title("参加过的项目");
                     c.Bound(item => item).Template(@<text>@item.EmployeeDuration()</text>).Title("在职时间(周)");
                     c.Bound(item => item.ID).Title("操作").Width(200).Template(@<span> <a href=@Url.Content("~/Member/Edit/" + item.ID) >
                         编辑</a> | <a href=@Url.Content("~/Member/Details/" + item.ID)>详细</a> | <a href=@Url.Content("~/Member/delete/" + item.ID) >
@@ -92,8 +93,10 @@
                 {
                     c.Bound(item => item.Payment).Format("{0:c}").Aggregate(aggregates => aggregates.Sum()).FooterTemplate(@<text>应付款: @item.Sum.Format("{0:c}")</text>).GroupFooterTemplate(@<text>应付款: @item.Sum.Format("{0:c}")</text>).Width(100);
                     c.Bound(item => item.Income).Format("{0:c}").Aggregate(aggregates => aggregates.Sum()).FooterTemplate(@<text>实收: @item.Sum.Format("{0:c}")</text>).GroupFooterTemplate(@<text>实收: @item.Sum.Format("{0:c}")</text>).Width(100);
-                    c.Bound(item => item.IsClosed).Width(100);
+                    c.Bound(item => item.IsClosed).Width(60);
                     c.Bound(item => item.ExpectedPaymentDate).Format("{0:d}").Width(100);
+                    c.Bound(item => item.SignDate).Format("{0:d}").Width(80);
+                    c.Bound(item => item.ActualPaymentDate).Format("{0:d}").Width(80);
                     c.Bound(item => item.CompanyRelationship.Company.FullName).Title("客户公司").Width(130);
                     c.Bound(item => item.Sales).Width(100);
                     c.Bound(item => item.ID).Title("操作").Width(200).Template(@<span> <a href=@Url.Content("~/Deal/Edit/" + item.ID) >
