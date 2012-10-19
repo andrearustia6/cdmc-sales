@@ -160,16 +160,16 @@ namespace Utl
             p1.TargetOfMonths = new List<TargetOfMonth>();
             p1.TargetOfMonths.Add(tm1);
 
-            var tw1 = new TargetOfWeek() { ID = 1, Member="sean", TargetOfMonthID=1, ProjectID=1, CheckIn = 10000, Deal = 10000, EndDate = DateTime.Now.EndOfWeek(), StartDate=DateTime.Now.StartOfWeek()};
+            var tw1 = new TargetOfWeek() { ID = 1, Member="sean", TargetOfMonthID=1, ProjectID=1, CheckIn = 10000, Deal = 12000, EndDate = DateTime.Now.EndOfWeek(), StartDate=DateTime.Now.StartOfWeek()};
             context.TargetOfWeeks.Add(tw1);
 
-            var tw2 = new TargetOfWeek() { ID = 2, Member = "sean", TargetOfMonthID = 1, ProjectID = 1, CheckIn = 10000, Deal = 10000, EndDate = DateTime.Now.EndOfWeek().AddDays(7), StartDate = DateTime.Now.StartOfWeek().AddDays(7) };
+            var tw2 = new TargetOfWeek() { ID = 2, Member = "sean", TargetOfMonthID = 1, ProjectID = 1, CheckIn = 10300, Deal = 15000, EndDate = DateTime.Now.EndOfWeek().AddDays(7), StartDate = DateTime.Now.StartOfWeek().AddDays(7) };
             context.TargetOfWeeks.Add(tw2);
 
-            var tw3 = new TargetOfWeek() { ID = 3, Member = "susie", TargetOfMonthID = 1, ProjectID = 1, CheckIn = 8000, Deal = 8000, EndDate = DateTime.Now.EndOfWeek(), StartDate = DateTime.Now.StartOfWeek() };
+            var tw3 = new TargetOfWeek() { ID = 3, Member = "susie", TargetOfMonthID = 1, ProjectID = 1, CheckIn = 8500, Deal = 11000, EndDate = DateTime.Now.EndOfWeek(), StartDate = DateTime.Now.StartOfWeek() };
             context.TargetOfWeeks.Add(tw3);
 
-            var tw4 = new TargetOfWeek() { ID = 4, Member = "tina", TargetOfMonthID = 1, ProjectID = 1, CheckIn = 6000, Deal = 6000, EndDate = DateTime.Now.EndOfWeek(), StartDate = DateTime.Now.StartOfWeek() };
+            var tw4 = new TargetOfWeek() { ID = 4, Member = "tina", TargetOfMonthID = 1, ProjectID = 1, CheckIn = 7000, Deal = 6000, EndDate = DateTime.Now.EndOfWeek(), StartDate = DateTime.Now.StartOfWeek() };
             context.TargetOfWeeks.Add(tw4);
 
             var d1 = new Deal() { ExpectedPaymentDate = DateTime.Now.AddDays(-2), SignDate = DateTime.Now.AddDays(-5), ActualPaymentDate = DateTime.Now, ID = 1, Income = 12000, Payment = 12000, PackageID = 1, CompanyRelationshipID = 1, Sales = "sean", IsClosed = true };

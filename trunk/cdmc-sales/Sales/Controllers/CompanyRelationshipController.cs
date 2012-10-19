@@ -40,7 +40,7 @@ namespace Sales.Controllers
             if (ModelState.IsValid)
             {
 
-                    var company = new Company() { Name_EN = enname, Name_CH = chname };
+                var company = new Company() { Name_EN = enname, Name_CH = chname, Creator = User.Identity.Name, From = Employee.GetCurrentProfile("Department").ToString() };
                     CH.Create<Company>(company);
            
      

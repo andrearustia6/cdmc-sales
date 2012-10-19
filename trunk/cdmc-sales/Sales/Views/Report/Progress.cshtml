@@ -13,17 +13,17 @@
                 {
                    keys.Add(s => s.Project.ID);
                 }).Columns(c=>{
-                    c.Bound(item => item.Project.Name).FooterTemplate(@<text>总数：</text>);
-                    c.Bound(item => item.TotalDealIn).Aggregate(item => item.Sum()).FooterTemplate(@<text>@item.Sum</text>);
-                    c.Bound(item => item.TotalCheckIn).Aggregate(item => item.Sum()).FooterTemplate(@<text>@item.Sum</text>);
-                    c.Bound(item => item.DealInTarget).Aggregate(item => item.Sum()).FooterTemplate(@<text>@item.Sum</text>);
-                    c.Bound(item => item.DealIn).Aggregate(item => item.Sum()).FooterTemplate(@<text>@item.Sum</text>);
-                    c.Bound(item => item.DealInPercentage);
-                    c.Bound(item => item.CheckInTarget).Aggregate(item => item.Sum()).FooterTemplate(@<text>@item.Sum</text>);
-                    c.Bound(item => item.CheckIn).Aggregate(item => item.Sum()).FooterTemplate(@<text>@item.Sum</text>);
-                    c.Bound(item => item.CheckInPercentage);
-                    c.Bound(item => item.NextCheckInTarget).Aggregate(item => item.Sum()).FooterTemplate(@<text>@item.Sum</text>);
-                    c.Bound(item => item.NextDealInTarget).Aggregate(item => item.Sum()).FooterTemplate(@<text>@item.Sum</text>);
+                    c.Bound(item => item.Project.Name).Format("{0:c}").FooterTemplate(@<text>总数：</text>);
+                    c.Bound(item => item.TotalDealIn).Format("{0:c}").Aggregate(item => item.Sum()).FooterTemplate(@<text>@item.Sum.Format("{0:c}")</text>);
+                    c.Bound(item => item.TotalCheckIn).Format("{0:c}").Aggregate(item => item.Sum()).FooterTemplate(@<text>@item.Sum.Format("{0:c}")</text>);
+                    c.Bound(item => item.DealInTarget).Format("{0:c}").Aggregate(item => item.Sum()).FooterTemplate(@<text>@item.Sum.Format("{0:c}")</text>);
+                    c.Bound(item => item.DealIn).Format("{0:c}").Aggregate(item => item.Sum()).FooterTemplate(@<text>@item.Sum.Format("{0:c}")</text>);
+                    c.Bound(item => item.DealInPercentage).Template(@<text>@item.DealInPercentage%</text>) ;
+                    c.Bound(item => item.CheckInTarget).Format("{0:c}").Aggregate(item => item.Sum()).FooterTemplate(@<text>@item.Sum.Format("{0:c}")</text>);
+                    c.Bound(item => item.CheckIn).Format("{0:c}").Aggregate(item => item.Sum()).FooterTemplate(@<text>@item.Sum.Format("{0:c}")</text>);
+                    c.Bound(item => item.CheckInPercentage).Template(@<text>@item.CheckInPercentage%</text>);
+                    c.Bound(item => item.NextCheckInTarget).Format("{0:c}").Aggregate(item => item.Sum()).FooterTemplate(@<text>@item.Sum.Format("{0:c}")</text>);
+                    c.Bound(item => item.NextDealInTarget).Format("{0:c}").Aggregate(item => item.Sum()).FooterTemplate(@<text>@item.Sum.Format("{0:c}")</text>);
                 }).Resizable(resizing => resizing.Columns(true))
                   .Sortable().Groupable()
                   .Scrollable(scrolling => scrolling.Height(150)))

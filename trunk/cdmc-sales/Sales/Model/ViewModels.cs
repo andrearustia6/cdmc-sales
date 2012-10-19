@@ -22,7 +22,9 @@ namespace Model
         public int Cold_Calls{get;set;}
         public int DMS{get;set;}
         public int New_DMS{get;set;}  
-        public int Duration{get;set;} 
+        public int Duration{get;set;}
+        public Member TopForeignSales { get; set; }
+        public Member TopDomesticSales { get; set; } 
     }
 
     public class ViewProjectProgressAmount
