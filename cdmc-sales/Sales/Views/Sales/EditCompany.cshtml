@@ -6,6 +6,7 @@
 
 @using (Html.BeginForm()) {
     @Html.ValidationSummary(true)
+    @Html.Hidden("CompanyRelationshipID", (int)ViewBag.CompanyRelationshipID)
     @Html.Hidden("ProjectID", (int)ViewBag.ProjectID)
     @Html.Partial(@"~\views\company\change.cshtml", Model);
     @Html.Partial(@"editcommon", Model);

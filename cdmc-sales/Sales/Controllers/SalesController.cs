@@ -144,7 +144,7 @@ namespace Sales.Controllers
         [HttpPost]
         public ActionResult AddLead(Lead lead, int? projectid)
         {
-            this.AddErrorIfOneOfNamesEmpty(lead);
+            this.AddErrorIfAllNamesEmpty(lead);
             if (ModelState.IsValid)
             {
                 CH.Create<Lead>(lead);
@@ -169,11 +169,28 @@ namespace Sales.Controllers
             if (ModelState.IsValid)
             {
                 var cr = CH.GetDataById<CompanyRelationship>(crid);
+                ViewBag.CompanyRelationshipID = cr.ID;
                 ViewBag.ProjectID = cr.ProjectID;
                 return View(cr.Company);
             }
             else
                 return View();
+        }
+
+        [HttpPost]
+        public ActionResult EditCompany(Company item, int? crid,int? projectid)
+        {
+            var cr = CH.GetDataById<CompanyRelationship>(crid);
+            this.AddErrorIfAllNamesEmpty(item);
+            if (ModelState.IsValid)
+            {
+
+                CH.Edit<Company>(item);
+                return RedirectToAction("CompanyRelationshipIndex","Sales", new {projectid=projectid});
+            }
+
+            ViewBag.CompanyRelationshipID = cr.ID;
+           return View();
         }
 
         /// <summary>
