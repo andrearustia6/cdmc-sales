@@ -47,7 +47,7 @@ namespace System.Web.Mvc
             }
         }
 
-        public static void AddErrorIfOneOfNamesEmpty(this Controller item, FullNameEntity target)
+        public static void AddErrorIfAllNamesEmpty(this Controller item, FullNameEntity target)
         {
             if (target.IsAllNamesEmpty())
             {

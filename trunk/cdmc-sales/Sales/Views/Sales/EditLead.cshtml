@@ -9,14 +9,15 @@
 
 @using (Html.BeginForm()) {
     @Html.ValidationSummary(true)
-    @Html.Hidden("ProjectID", (int)ViewBag.ProjectID)
+    @Html.Hidden("ProjectID", (int?)ViewBag.ProjectID)
     @Html.Partial(@"~\views\lead\change.cshtml", Model);
     @Html.Partial(@"editcommon", Model);
 <div>
-  
+  <center>
         <p>
             <input type="submit" value="Save" />
         </p>
+        </center>
 </div>
 }
 

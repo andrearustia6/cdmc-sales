@@ -5,6 +5,7 @@
 @Html.ValidationSummary(true)
 <fieldset>
     <legend>@SR.Form</legend>
+    @Html.Hidden("ID",Model!=null?Model.ID:0)
     <div class="editor-label">
         @Html.LabelFor(model => model.Name_EN)
     </div>

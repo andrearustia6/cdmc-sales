@@ -6,7 +6,7 @@
 @using BLL
 @model List<CompanyRelationship>
  @Html.Partial("contenttitle", "致电公司")
- @(Html.Telerik().Grid(Model).Name("Company").ToolBar(commands => commands.Template(@<text>@Html.Partial("projectselector")</text>))
+ @(Html.Telerik().Grid(Model).Name("Company").ToolBar(commands => commands.Template(@<text>@Html.Partial("projectselector")</text>)).ToolBar(commands => commands.Custom().Text("添加公司").Action("CreateCompany", "Sales"))
                 .DataKeys(keys =>
                 {
                     keys.Add(s => s.ID);
