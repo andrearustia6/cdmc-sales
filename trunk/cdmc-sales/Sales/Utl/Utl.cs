@@ -28,12 +28,29 @@ namespace Utl
 
     public class Employee
     {
+        
         public static List<MembershipUser> GetAllEmployees()
         {
             var list = Membership.GetAllUsers().Cast<MembershipUser>().ToList<MembershipUser>();
 
             return list;
         }
+
+        /// <summary>
+        /// 取得所有 sales manageers
+        /// </summary>
+        /// <returns></returns>
+        public static List<MembershipUser> GetEmplyeeByLVL(params int[] lvl)
+        {
+            var list = Membership.GetAllUsers().Cast<MembershipUser>().ToList<MembershipUser>();
+            var data = new List<MembershipUser>();
+            list.ForEach(l => {
+                if (lvl.Contains(GetRoleLevel(l.UserName)))
+                    data.Add(l);
+            });
+            return data;
+        }
+
         public static object GetCurrentProfile(string propertyName)
         {
             var user = HttpContext.Current.User.Identity.Name;
@@ -86,6 +103,16 @@ namespace Utl
         {
             return GetCurrentRoleLevel() >= ManagerRequired.LVL;
         }
+        public static bool EqualToProductInterface()
+        {
+            return GetCurrentRoleLevel() == ProductInterfaceRequired.LVL;
+        }
+
+        public static bool EqualToMarketInterface()
+        {
+            return GetCurrentRoleLevel() == MarketInterfaceRequired.LVL;
+        }
+        #region
 
         public static bool AsDirector()
         {
@@ -103,34 +130,28 @@ namespace Utl
         {
             return GetCurrentRoleLevel() >= ManagerRequired.LVL;
         }
-
-       
-
         public static bool AsProductInterface()
         {
             return GetCurrentRoleLevel() >= ProductInterfaceRequired.LVL;
         }
-
-        public static bool EqualToProductInterface()
-        {
-            return GetCurrentRoleLevel() == ProductInterfaceRequired.LVL;
-        }
-
         public static bool AsMarketInterface()
         {
             return GetCurrentRoleLevel() >= MarketInterfaceRequired.LVL;
         }
-
-        public static bool EqualToMarketInterface()
-        {
-            return GetCurrentRoleLevel() == MarketInterfaceRequired.LVL;
-        }
-
         public static bool AsSales()
         {
             return GetCurrentRoleLevel() >= SalesRequired.LVL;
         }
 
+        #endregion
+       
+
+      
+      
+
+      
+
+     
         
 
         public static int GetRoleLevel(string name)

@@ -30,7 +30,7 @@
                    {
                        menu.Add().Text("类型字典").ImageUrl("~/Content/Common/Icons/mvc.png").Items(item =>
                        {
-                           item.Add().Text("行业").Url("~/Category/index").ImageUrl("~/Content/Common/Icons/Scheduler.png");
+                           item.Add().Text("行业").Url("~/Area/index").ImageUrl("~/Content/Common/Icons/Scheduler.png");
                            item.Add().Text("货币").Url("~/CurrencyType/index").ImageUrl("~/Content/Common/Icons/GridView.gif");
                            item.Add().Text("公司").Url("~/CompanyType/index").ImageUrl("~/Content/Common/Icons/Grid.png");
                            item.Add().Text("Package").Url("~/PackageType/index").ImageUrl("~/Content/Common/Icons/Editor.png");
@@ -126,7 +126,7 @@
         </div>
     </div>
     <div class="bottom">
-        <div class="bottom_2">
+        <div class="bottom_2" style="min-height:600px;">
             <section id="main">@RenderBody()</section>
         </div>
     </div>

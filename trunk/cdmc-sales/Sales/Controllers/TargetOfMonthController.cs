@@ -33,7 +33,7 @@ namespace Sales.Controllers
         [HttpPost]
         public ActionResult Create(TargetOfMonth item)
         {
-            this.AddErrorStateIfStartDateLaterThanEndDate(item.StartDate, item.EndDate);
+            this.AddErrorStateIfTargetOfMonthNoValid(item);
             if (ModelState.IsValid)
             {
                 CH.Create<TargetOfMonth>(item);
@@ -50,11 +50,11 @@ namespace Sales.Controllers
         [HttpPost]
         public ActionResult Edit(TargetOfMonth item)
         {
-            this.AddErrorStateIfStartDateLaterThanEndDate(item.StartDate, item.EndDate);
+            this.AddErrorStateIfTargetOfMonthNoValid(item);
             if (ModelState.IsValid)
             {
                 CH.Edit<TargetOfMonth>(item);
-                return RedirectToAction("Management", "Project", new { id = item.ProjectID });
+                return RedirectToAction("Management", "Project", new { id = item.ProjectID, tabindex = 2 });
             }
             return View(item);
         }
@@ -71,7 +71,7 @@ namespace Sales.Controllers
             var pid = item.ProjectID;
             CH.Delete<TargetOfMonth>(id);
 
-            return RedirectToAction("Management", "Project", new { id = pid });
+            return RedirectToAction("Management", "Project", new { id = pid, tabindex = 2 });
         }
     }
 }

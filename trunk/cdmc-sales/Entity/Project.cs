@@ -75,16 +75,16 @@ namespace Entity
         [Display(Name = "项目名称"), Required]
         public String Name { get; set; }
 
-        [Display(Name = "开始时间"), Required]
+        [Display(Name = "开始时间"), Required, DisplayFormat(DataFormatString = "{0:d}")]
         public DateTime StartDate { get; set; }
 
-        [Display(Name = "结束时间"), Required]
+        [Display(Name = "结束时间"), Required, DisplayFormat(DataFormatString = "{0:d}")]
         public DateTime EndDate { get; set; }
 
         [Display(Name = "销售目标"), Required, DisplayFormat(DataFormatString = "{0:c}")]
-
         public decimal Target { get; set; }
 
+        [Display(Name = "团队负责人")]
         public string TeamLeader { get; set; }
 
         public List<Template> Templates { get; set; }
@@ -202,19 +202,19 @@ namespace Entity
         [Display(Name = "项目名称"), Required]
         public int ProjectID { get; set; }
 
-        [Display(Name = "开始日期"), Required]
+        [Display(Name = "开始日期"), Required, DisplayFormat(DataFormatString = "{0:d}")]
         public DateTime StartDate { get; set; }
 
-        [Display(Name = "结束日期"), Required]
+        [Display(Name = "结束日期"), Required, DisplayFormat(DataFormatString = "{0:d}")]
         public DateTime EndDate { get; set; }
 
-        [Display(Name = "销售目标"), Required]
+        [Display(Name = "销售目标"), Required, DisplayFormat(DataFormatString = "{0:c}")]
         public decimal Deal { get; set; }
 
-        [Display(Name = "保底目标"), Required]
+        [Display(Name = "保底目标"), Required, DisplayFormat(DataFormatString = "{0:c}")]
         public decimal BaseDeal { get; set; }
 
-        [Display(Name = "入账目标"), Required]
+        [Display(Name = "入账目标"), Required, DisplayFormat(DataFormatString = "{0:c}")]
         public decimal CheckIn { get; set; }
     }
 
@@ -245,17 +245,17 @@ namespace Entity
         [Display(Name = "项目名称"), Required]
         public int ProjectID { get; set; }
 
-        [Display(Name = "开始日期"), Required]
+        [Display(Name = "开始日期"), Required, DisplayFormat(DataFormatString = "{0:d}")]
         public DateTime StartDate { get; set; }
 
-        [Display(Name = "结束日期"), Required]
+        [Display(Name = "结束日期"), Required, DisplayFormat(DataFormatString = "{0:d}")]
         public DateTime EndDate { get; set; }
 
-        [Display(Name = "销售目标"), Required]
+        [Display(Name = "销售目标"), Required, DisplayFormat(DataFormatString = "{0:c}")]
         public decimal Deal { get; set; }
 
 
-        [Display(Name = "入账目标"), Required]
+        [Display(Name = "入账目标"), Required, DisplayFormat(DataFormatString = "{0:c}")]
         public decimal CheckIn { get; set; }
 
         public string Member { get; set; }

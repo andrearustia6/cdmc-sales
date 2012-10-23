@@ -131,7 +131,6 @@ namespace Entity
 
     public static class ProjectExtensions
     {
-      
         public static ViewProjectProgressAmount GetProjectProgress(this Project item,DateTime? startdate, DateTime? enddate)
         {
             startdate= startdate==null? new DateTime(1,1,1):startdate;
@@ -190,7 +189,7 @@ namespace Entity
 
         }
 
-        public static Member Project(this Project item, string username = null)
+        public static Member GetMemberInProjectByName(this Project item, string username = null)
         {
             if (username == null) username = HttpContext.Current.User.Identity.Name;
             return item.Members.FirstOrDefault(m => m.Name == username);

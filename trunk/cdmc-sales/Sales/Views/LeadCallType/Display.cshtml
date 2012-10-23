@@ -1,5 +1,5 @@
 ﻿@using Utl;
-@model Entity.OnPhoneBlockType
+@model Entity.LeadCallType
 <fieldset>
     <legend>@SR.Form</legend>
     <div class="display-label">
@@ -7,11 +7,9 @@
     <div class="display-field">
         @Html.DisplayFor(model => model.Name)
     </div>
-    <legend>@SR.Form</legend>
     <div class="display-label">
        类型代码 </div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.Name)
+        @Html.DisplayFor(model => model.Code)
     </div>
 </fieldset>
-@Html.Partial("displaycommon", Model)
