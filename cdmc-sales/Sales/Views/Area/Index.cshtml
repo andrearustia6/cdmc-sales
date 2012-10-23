@@ -1,16 +1,15 @@
 ﻿@using Entity
 @model List<Area>
 @Html.Partial("contenttitle", "行业类型")           
-@(Html.Telerik().Grid<Area>(Model).Name("Area").ToolBar(commands =>commands.Custom().Text("创建行业").Action("Create", "Area"))
+@(Html.Telerik().Grid<Area>(Model).Name("Area").ToolBar(commands => commands.Custom().Text("行业类型创建").Action("Create", "Area"))
                 .DataKeys(keys =>
                 {
                     keys.Add(s => s.ID);
                 })
                 .Columns(c =>
                 {
-                    c.Bound(item => item.Name_CH).Width(200);
-                    c.Bound(item => item.Name_EN).Width(200);
-                    c.Bound(item => item.Description).Width(300);
+                    c.Bound(item => item.FullName).Width(200);
+                    c.Bound(item => item.Description);
                     c.Bound(item => item.ID).Width(200).Title("操作").Template(@<span>
                     <a href=@Url.Content("~/Area/Edit/" + item.ID) >编辑</a> | <a href=@Url.Content("~/Area/Details/" + item.ID)>详细</a>  | <a href=@Url.Content("~/Area/delete/" + item.ID) >删除</a> 
                    </span>);

@@ -250,7 +250,7 @@ namespace Sales.Controllers
                 CH.Edit<Member>(tm);
             });
 
-            return RedirectToAction("Management", "Project", new { id = projectid });
+            return RedirectToAction("Management", "Project", new { id = projectid,tabindex=1 });
 
         }
         #endregion

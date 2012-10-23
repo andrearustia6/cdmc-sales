@@ -86,39 +86,6 @@ namespace BLL
             return false;
         }
 
-        public static bool IsSameMemberExistInProject(string name, int? projectid)
-        {
-            var p = CH.GetAllData<Project>(i => i.ID == projectid, "Members").FirstOrDefault();
-            if (p != null && p.Members.FirstOrDefault(c => c.Name == name)!=null)
-                return true;
-            else
-                return false;
-        }
-
-        public static bool IsMemberExist(string name)
-        {
-            var user = Membership.GetUser(name);
-            return user == null ? false : true;
-        }
-
-        //public static bool IsMemberSelectedForCompanyRelationship(Member m, int? companyrelationshipid)
-        //{
-        //    var c = CH.GetDataById<CompanyRelationship>(companyrelationshipid,"Members");
-        //    if (c.Members.Any(cm => cm.ID == m.ID))
-        //        return true;
-        //    else
-        //        return false;
-        //}
-
-        //public static bool IsMemberSelectedForCompanyRelationship(Member m, int? companyrelationshipid)
-        //{
-        //    var c = CH.GetDataById<CompanyRelationship>(companyrelationshipid, "Members");
-        //    if (c.Members.Any(cm => cm.ID == m.ID))
-        //        return true;
-        //    else
-        //        return false;
-        //}
-
         #endregion 
 
         #region Call Management

@@ -25,14 +25,6 @@
         @Html.EditorFor(model => model.ProjectCode)
         @Html.ValidationMessageFor(model => model.ProjectCode)
     </div>
-    <div class="editor-label">
-        @Html.LabelFor(model => model.Categorys)
-        <p>请用"|"分割不同的Category</p>
-    </div>
-    <div class="editor-field">
-        @Html.TextAreaFor(model => model.Categorys)
-        @Html.ValidationMessageFor(model => model.Categorys)
-    </div>
     
     <div class="editor-label">
         @Html.LabelFor(model => model.StartDate)
@@ -52,7 +44,7 @@
         @Html.LabelFor(model => model.Manager)
     </div>
     <div class="editor-field">
-         @Html.Telerik().ComboBoxFor(model => model.Manager).BindTo(new SelectList(Employee.GetAllEmployees(), "UserName", "UserName"))
+         @Html.Telerik().ComboBoxFor(model => model.Manager).BindTo(new SelectList(Employee.GetEmplyeeByLVL(ManagerRequired.LVL), "UserName", "UserName"))
         @Html.ValidationMessageFor(model => model.Manager)
     </div>
     <div class="editor-label">
@@ -60,7 +52,7 @@
     </div>
     <div class="editor-field">
          
-        @Html.Telerik().ComboBoxFor(model => model.TeamLeader).BindTo(new SelectList(Employee.GetAllEmployees(), "UserName", "UserName"))
+        @Html.Telerik().ComboBoxFor(model => model.TeamLeader).BindTo(new SelectList(Employee.GetEmplyeeByLVL(LeaderRequired.LVL), "UserName", "UserName"))
         @Html.ValidationMessageFor(model => model.TeamLeader)
     </div>
     <div class="editor-label">

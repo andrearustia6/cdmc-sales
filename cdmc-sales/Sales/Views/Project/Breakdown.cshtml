@@ -26,8 +26,11 @@
     </div>
 <br />
 <br />
-<p><b>Deal In Target:</b></p>
-<table class="tb_breakdown">
+<div style=" float:left;width:48%;">
+<p><b>Deal In 目标:</b></p>
+<br />
+<table class="tb_breakdown" id="dealin_bd" >
+<tr><th>员工姓名</th><th >调整目标</th><th>目标金额</th></tr>
 @if (Model != null)
 {
     List<TargetOfWeek> vs = null;
@@ -55,11 +58,13 @@
     }
 }
 </table>
+</div>
 
+<div style=" float:left; width:48%;">
+<p><b>Check In 目标:</b></p>
 <br />
-<br />
-<p><b>Check In Target:</b></p>
-<table class="tb_breakdown">
+<table class="tb_breakdown" id="checkin_bd">
+<tr><th>员工姓名</th><th  align="center">调整目标</th><th>目标金额</th></tr>
 @if (Model != null)
 {
     List<TargetOfWeek> vs = null;
@@ -87,14 +92,17 @@
     }
 }
 </table>
+<br />
+<br />
 </div>
- <p> <button type="submit">@SR.Save</button></p>
+ <center><p> <button type="submit">@SR.Save</button></p></center>
 @{ Html.EndForm(); }
 
 @{ Html.Telerik().ScriptRegistrar().OnDocumentReady(@<text> 
         initialTargetbreakdown();
     </text>);
 }
+</div>
 @Html.ValidationSummary(true)
 
 <style type="text/css" >
@@ -111,7 +119,7 @@ input[type=text]
 }
 .targetbreakdown
 {
-	width:300px;
+	width:200px;
 	margin:15px;
 }
  table

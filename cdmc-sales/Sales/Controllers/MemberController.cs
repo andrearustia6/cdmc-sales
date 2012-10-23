@@ -36,20 +36,13 @@ namespace Sales.Controllers
         [HttpPost]
         public ActionResult Create(Member item)
         {
-            if (!CRM_Logical.IsMemberExist(item.Name))
-            {
-                ModelState.AddModelError("", "该员工不存在");
-            }
-            if (CRM_Logical.IsSameMemberExistInProject(item.Name, item.ProjectID))
-            {
-                ModelState.AddModelError("", "该员工以加入此项目");
-            }
+            this.AddErrorStateIfMemberExist(item.ProjectID,item.Name);
+
 
             if (ModelState.IsValid)
             {
                 CH.Create<Member>(item);
-                return RedirectToAction("Management", "Project", new { id = item.ProjectID });
-                //return View(@"~\views\Project\Management.cshtml", CH.GetDataById<Project>(item.ProjectID));
+                return RedirectToAction("Management", "Project", new { id = item.ProjectID,tabindex=1 });
             }
             ViewBag.ProjectID = item.ProjectID;
             return View(item);
@@ -62,20 +55,7 @@ namespace Sales.Controllers
         [HttpPost]
         public ActionResult Edit(Member item)
         {
-            if (!CRM_Logical.IsMemberExist(item.Name))
-            {
-                ModelState.AddModelError("", "该员工不存在");
-            }
-            //var memberoldname = CH.DB.Members.AsNoTracking().FirstOrDefault(i => i.ID == item.ID);
-            //if (CRM_Logical.IsSameMemberExistInProject(item.Name, item.ProjectID) && memberoldname.Name != item.Name)
-            //{
-            //    ModelState.AddModelError("", "该员工以加入此项目");
-            //}
-            //else
-            //{
-            //    CH.DB.Entry(memberoldname).State = EntityState.Detached; 
-            //    CH.DB.Members.Attach(item);
-            //}
+            this.AddErrorStateIfMemberExist(item.ProjectID, item.Name);
             if (ModelState.IsValid)
             {
                 CH.Edit<Member>(item);
@@ -95,7 +75,7 @@ namespace Sales.Controllers
             var item = CH.GetDataById<Member>(id);
             var pid = item.ProjectID;
             CH.Delete<Member>(id);
-            return RedirectToAction("Management", "Project", new { id = pid });
+            return RedirectToAction("Management", "Project", new { id = pid, tabindex = 1 });
         }
     }
 }

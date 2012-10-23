@@ -5,12 +5,12 @@
     ViewBag.Title = "Create";
 }
 <fieldset>
-    <legend>Member</legend>
+    <legend>@SR.Form</legend>
     <div class="editor-label">
         @Html.LabelFor(model => model.Name)
     </div>
     <div class="editor-field">
-        @Html.Telerik().ComboBoxFor(model => model.Name).BindTo(new SelectList(Employee.GetAllEmployees(), "UserName", "UserName"))
+        @Html.Telerik().ComboBoxFor(model => model.Name).BindTo(new SelectList(Employee.GetEmplyeeByLVL(SalesRequired.LVL,LeaderRequired.LVL), "UserName", "UserName"))
         @Html.ValidationMessageFor(model => model.Name)
     </div>
     <div class="editor-label">

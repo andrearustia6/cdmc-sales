@@ -1,24 +1,24 @@
 ﻿@using Utl;
 @model Entity.Package
 <fieldset>
-<div class="display-label">Name</div>
+<legend>@SR.Form</legend>
+<div class="display-label">名称</div>
     <div class="display-field">
         @Html.DisplayFor(model => model.FullName)
     </div>
 
-   <div class="display-label">ParticipantType</div>
+   <div class="display-label">参会类型</div>
     <div class="display-field">
         @Html.DisplayFor(model => model.ParticipantType.FullName)
     </div>
 
-    <div class="display-label">PackageType</div>
+    <div class="display-label">Package类型</div>
     <div class="display-field">
         @Html.DisplayFor(model => model.PackageType.FullName)
     </div>
 
-    <div class="display-label">Package描述</div>
+    <div class="display-label">套餐描述</div>
     <div class="display-field">
         @Html.DisplayFor(model => model.SubName)
     </div>
 </fieldset>
-@Html.Partial("displaycommon", Model)
