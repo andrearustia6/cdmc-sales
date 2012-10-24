@@ -14,7 +14,13 @@ function initialTargetbreakdown() {
                 var mid = $this.attr('mid');
                 $this.closest('tr').find('p').text("￥" + ui.value);
                 var mname = $this.closest('tr').find('input').attr('mname');
-                $this.closest('tr').find('input').val(mname+'|'+ui.value);
+                $this.closest('tr').find('input').val(mname + '|' + ui.value);
+                $this.closest('tr').find('input').attr("v", ui.value);
+                var totalresult = 0;
+                $this.closest('table').find(".pertarget").each(function () {
+                    totalresult += parseInt($(this).attr("v"));
+                });
+                $this.closest('table').find('.result').text("￥" + totalresult);
             }
         });
     });

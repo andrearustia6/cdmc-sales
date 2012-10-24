@@ -231,6 +231,7 @@
     <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Controllers\SalesController.cs" />
     <Compile Include="Controllers\TargetOfMonthController.cs" />
+    <Compile Include="Controllers\TemplateController.cs" />
     <Compile Include="Controllers\Type\AreaController.cs" />
     <Compile Include="Controllers\Type\CategoryController.cs" />
     <Compile Include="Controllers\Type\CurrencyTypeController.cs" />
@@ -1063,7 +1064,7 @@
     <Content Include="Views\Company\CompanyMaintainIndex.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Project\Breakdown.cshtml" />
+    <Content Include="Views\TargetOfMonth\Breakdown.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Project\Deals.cshtml" />

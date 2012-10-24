@@ -24,6 +24,27 @@ namespace System.Web.Mvc
 
             if (t.CheckIn > t.Deal)
                 item.ModelState.AddModelError("", "Check In不能大于Deal");
+
+            if (t.StartDate.Month != t.EndDate.Month)
+                item.ModelState.AddModelError("", "开始时间和结束时间不在同一个月内");
+
+            if(CH.GetAllData<TargetOfMonth>(i=>i.StartDate.ToShortDateString()== t.StartDate.ToShortDateString()).Count()>0)
+                 item.ModelState.AddModelError("", "该月的目标已经添加，不能再次添加");
+        }
+
+        public static void AddErrorStateIfNotFromMondayToFriday(this Controller item, DateTime startdate, DateTime enddate)
+        {
+            if (startdate.DayOfWeek != DayOfWeek.Monday || enddate.DayOfWeek != DayOfWeek.Friday)
+            {
+                item.ModelState.AddModelError("", "开始时间不是周一，或者结束时间不是周五");
+            }
+        }
+
+        public static void AddErrorStateIfTargetExist(this Controller item, DateTime startdate, int targetofmonthid)
+        {
+            var ts = CH.GetAllData<TargetOfWeek>(t => t.StartDate.ToShortDateString() == startdate.ToShortDateString() && t.TargetOfMonthID == targetofmonthid);
+            if (ts.Count != 0)
+                item.ModelState.AddModelError("", "已存在该周目标，不能添加");
         }
     }
 

@@ -201,21 +201,6 @@ namespace BLL
         }
         #endregion
 
-        #region Add.....
-      
-
-        public static bool TryAddCompanyRelationship(CompanyRelationship c, int projectid)
-        {
-            var p = CH.GetDataById<Project>(projectid, "CompanyRelationships");
-            bool exist = p.CompanyRelationships.Any(ex => ex.CompanyID == c.CompanyID);
-            if (!exist)
-            {
-                CH.Create<CompanyRelationship>(c);
-                return true;
-            }
-            return false;
-        }
-        #endregion
 
         /// <summary>
         /// 取得sales正在参与的，已经激活，并且当前时间在项目周期内的项目

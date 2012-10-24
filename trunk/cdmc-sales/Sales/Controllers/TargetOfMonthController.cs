@@ -13,6 +13,111 @@ namespace Sales.Controllers
 {
     public class TargetOfMonthController : Controller
     {
+        #region 目标划分
+        public ActionResult BreakdownIndex(int? projectid)
+        {
+            ViewBag.ProjectID = projectid;
+
+            return View(CH.GetAllData<TargetOfMonth>(m => m.ProjectID == projectid));
+        }
+
+        public ActionResult AddBreakdown(int? projectid, int? targetofmonthid)
+        {
+            ViewBag.ProjectID = projectid;
+            ViewBag.TargetOfMonthID = targetofmonthid;
+            return View("Breakdown",CH.GetAllData<Member>(m => m.ProjectID == projectid));
+        }
+
+        [HttpPost]
+        public ActionResult AddBreakdown(List<string> checkin, List<string> dealin, int projectid, int TargetOfMonthid, DateTime startdate, DateTime enddate, string OldDate)
+        {
+            ViewBag.ProjectID = projectid;
+            ViewBag.TargetOfMonthID = TargetOfMonthid;
+            this.AddErrorStateIfNotFromMondayToFriday(startdate, enddate);
+            this.AddErrorStateIfTargetExist(startdate, TargetOfMonthid);
+            if (ModelState.IsValid)
+            {
+                if (checkin != null)
+                {
+                    for (int i = 0; i < checkin.Count; i++)
+                    {
+                        var ck = checkin[i].Split('|');
+                        var name = ck[0];
+                        var ckvalue = ck[1];
+                        var dl = dealin[i].Split('|');
+                        var dlvalue = dl[1];
+                       
+                        CH.Create<TargetOfWeek>(new TargetOfWeek() { CheckIn = Decimal.Parse(ckvalue), Deal = Decimal.Parse(dlvalue), EndDate = enddate, Member = name, StartDate = startdate, ProjectID = projectid, TargetOfMonthID = TargetOfMonthid });
+                       
+                    }
+                }
+
+                return RedirectToAction("management", "project", new { id = projectid, tabindex = 2 });
+            }
+
+            return View("Breakdown", CH.GetAllData<Member>(m => m.ProjectID == projectid));
+        }
+
+        public ActionResult EditBreakdown(int? projectid, int? targetofmonthid, string startdate)
+        {
+            ViewBag.ProjectID = projectid;
+            ViewBag.TargetOfMonthID = targetofmonthid;
+            ViewBag.OldStartDate = startdate;
+            ViewBag.EndDate = DateTime.Parse(startdate).AddDays(4).ToShortDateString();
+            if (startdate != null)
+            {
+
+                var targets = CH.GetAllData<TargetOfWeek>(i => i.StartDate.ToShortDateString() == startdate).OrderBy(i => i.StartDate).ToList();
+                ViewBag.Targets = targets;
+            }
+
+            return View("Breakdown", CH.GetAllData<Member>(m => m.ProjectID == projectid));
+        }
+
+        [HttpPost]
+        public ActionResult EditBreakdown(List<string> checkin, List<string> dealin, int projectid, int TargetOfMonthid, DateTime startdate, DateTime enddate, string OldDate)
+        {
+            ViewBag.ProjectID = projectid;
+            ViewBag.TargetOfMonthID = TargetOfMonthid;
+            this.AddErrorStateIfNotFromMondayToFriday(startdate, enddate);
+
+            if (ModelState.IsValid)
+            {
+                if (checkin != null)
+                {
+                    for (int i = 0; i < checkin.Count; i++)
+                    {
+                        var ck = checkin[i].Split('|');
+                        var name = ck[0];
+                        var ckvalue = ck[1];
+                        var dl = dealin[i].Split('|');
+                        var dlvalue = dl[1];
+                        var ts = CH.GetAllData<TargetOfWeek>(t => t.Member == name && t.ProjectID == projectid && t.TargetOfMonthID == TargetOfMonthid && startdate == t.StartDate);
+                      
+                        
+                        var item = ts.FirstOrDefault();
+                        if (item == null)
+                        {
+                            CH.Create<TargetOfWeek>(new TargetOfWeek() { CheckIn = Decimal.Parse(ckvalue), Deal = Decimal.Parse(dlvalue), EndDate = enddate, Member = name, StartDate = startdate, ProjectID = projectid, TargetOfMonthID = TargetOfMonthid });
+                        }
+                        else
+                        {
+                            item.Deal = Decimal.Parse(dlvalue);
+                            item.CheckIn = Decimal.Parse(ckvalue);
+                            CH.Edit<TargetOfWeek>(item);
+                        }
+                       
+                    }
+                }
+
+                return RedirectToAction("management", "project", new { id = projectid, tabindex = 2 });
+
+            }
+
+
+            return View("Breakdown", CH.GetAllData<Member>(m => m.ProjectID == projectid));
+        }
+        #endregion
 
         public ViewResult Index()
         {

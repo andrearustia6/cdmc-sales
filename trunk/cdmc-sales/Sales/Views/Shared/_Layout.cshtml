@@ -56,9 +56,8 @@
                            item.Add().Url("~/Project/index").Text("项目管理").ImageUrl("~/Content/Common/Icons/Docking.gif");
                            item.Add().Url("~/Report/progress").Text("进度察看").ImageUrl("~/Content/Common/Icons/Docking.gif");
                            item.Add().Url("~/Report/LeadCalls").Text("致电查看").ImageUrl("~/Content/Common/Icons/Docking.gif");
-                           item.Add().Url("~/Project/Deals").Text("出单查看").ImageUrl("~/Content/Common/Icons/Docking.gif");
+                           item.Add().Url("~/Deal/index").Text("出单查看").ImageUrl("~/Content/Common/Icons/Docking.gif");
                            item.Add().Url("~/Research/index").Text("调研查看").ImageUrl("~/Content/Common/Icons/Docking.gif");
-
                        });
 
                        menu.Add().Text("配置").ImageUrl("~/Content/Common/Icons/GridView.gif").Items(item =>
@@ -66,12 +65,11 @@
                            item.Add().Url("~/DistrictNumber/index").Text("区号管理").ImageUrl("~/Content/Common/Icons/Docking.gif");
                        });
 
-                       menu.Add().Text("客户管理").ImageUrl("~/Content/Common/Icons/GridView.gif").Items(item =>
-                       {
-                           item.Add().Url("~/Company/index").Text("公司").ImageUrl("~/Content/Common/Icons/Docking.gif");
-                           item.Add().Url("~/Lead/index").Text("客户").ImageUrl("~/Content/Common/Icons/Docking.gif");
-
-                       });
+                       //menu.Add().Text("客户管理").ImageUrl("~/Content/Common/Icons/GridView.gif").Items(item =>
+                       //{
+                       //    item.Add().Url("~/Company/index").Text("公司").ImageUrl("~/Content/Common/Icons/Docking.gif");
+                       //    item.Add().Url("~/Lead/index").Text("客户").ImageUrl("~/Content/Common/Icons/Docking.gif");
+                       //});
 
                        //menu.Add().Text("会议管理").ImageUrl("~/Content/Common/Icons/GridView.gif").Items(item =>
                        //{

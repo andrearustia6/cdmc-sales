@@ -1,7 +1,8 @@
 ﻿@using Entity
 @model List<Template>
-@Html.Partial("contenttitle", "模版列表")
-@(Html.Telerik().Grid<Template>(Model).Name("Template")
+@{ViewBag.Title = "模版列表";}     
+@Html.Partial("contenttitle", "一般模版")
+@(Html.Telerik().Grid<Template>(Model).Name("Template").ToolBar(commands => commands.Custom().Text("模版创建").Action("Create", "Template"))
                 .DataKeys(keys =>
                 {
                     keys.Add(s => s.ID);
@@ -19,8 +20,3 @@
                 .Scrollable(scrolling => scrolling.Height(350))
 
 )
-<div class="anniu">
-    <ul>
-        <li>@Html.ActionLink("模版创建", "Create")</li>
-    </ul>
-</div>

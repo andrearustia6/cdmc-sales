@@ -13,9 +13,10 @@ using BLL;
 namespace Sales.Controllers
 {
 
+    [ManagerRequired]
     public class ProjectController : Controller
     {
-        [DirectorRequired]
+      
         public ViewResult Index()
         {
             return View(CH.GetAllData<Project>("Categorys"));
@@ -26,7 +27,6 @@ namespace Sales.Controllers
             return View();
         }
 
-        [ManagerRequired]
         public ViewResult Reports(DateTime? setdate)
         {
             if (setdate == null)
@@ -35,6 +35,7 @@ namespace Sales.Controllers
             var weeklyreports = CRM_Logical.GenerateWeeklyReports(projects, setdate);
             return View(weeklyreports);
         }
+
         [ManagerRequired]
         public ViewResult Compare(DateTime? setdate, int? projectid)
         {
@@ -47,17 +48,25 @@ namespace Sales.Controllers
         }
 
         #region 添加公司
-        [ProjectInformationAccess]
         public ViewResult SelectCompanyByProjectCode(int projectid)
         {
             ViewBag.ProjectID = projectid;
-            return View(CH.GetAllData<Project>());
+            var p = CH.GetDataById<Project>(projectid);
+            var data = CH.GetAllData<Project>();
+            if (!string.IsNullOrEmpty(p.References))
+            {
+                var refers = p.References.Split('|');
+                data = data.FindAll(d=>refers.Contains(d.ProjectCode)==false && d.ProjectCode!=p.ProjectCode);
+            }
+
+            return View(data);
         }
 
-        [ProjectInformationAccess]
+      
         public ViewResult AddToCompanyRelationship(int projectid)
         {
             ViewBag.ProjectID = projectid;
+
             return View(CH.GetAllData<CompanyRelationship>(c => c.ProjectID == projectid));
         }
 
@@ -74,17 +83,17 @@ namespace Sales.Controllers
         //        company = new Company() { Name_EN = enname, Name_CH = chname, Creator = User.Identity.Name, From = Employee.GetCurrentProfile("Department").ToString() };
         //        CH.Create<Company>(company);
         //    }
-            
-            
+
+
         //    CompanyRelationship cr1 = new CompanyRelationship() { CompanyID = company.ID, ProjectID = projectid, Importancy = importancy,Description = description };
         //    cr1.Categorys = new List<Category>();
-        
+
         //    if (checkedCategorys != null)
         //    {
         //        var ck = CH.GetAllData<Category>(i => checkedCategorys.Contains(i.ID));
         //        cr1.Categorys.AddRange(ck);
         //    }
-            
+
         //    project.CompanyRelationships.Add(cr1);
         //    CH.Edit<Project>(project);
         //    //return RedirectToAction("Management", new { tabindex = 3, id = projectid });
@@ -92,36 +101,32 @@ namespace Sales.Controllers
         //    return View(CH.GetAllData<CompanyRelationship>(c => c.ProjectID == projectid));
         //}
 
-        [ProjectInformationAccess]
+  
         [HttpPost]
         public ActionResult SelectCompanyByProjectCode(int[] checkedRecords, int projectid)
         {
-            var ps = CH.GetAllData<Project>("CompanyRelationships");
-            var allselectedprojects = ps.FindAll(item => checkedRecords.Any(cr => cr == item.ID));
-            var p = ps.FirstOrDefault(i => i.ID == projectid);
+            var allselectedprojects = CH.GetAllData<Project>(item => checkedRecords.Any(cr => cr == item.ID),"CompanyRelationships");
+            var p = CH.GetDataById<Project>(projectid, "CompanyRelationships");
             if (p != null)
             {
-
-                //var alreadyrefers = p.References==null?new string[]{}:p.References.Split('|');
-                //var alreadyreferprojects = allselectedprojects.FindAll(item => alreadyrefers.Any(already => already == item.ProjectCode));
-                //var notreferprojects = allselectedprojects.FindAll(item => alreadyrefers.Any(already => already != item.ProjectCode));
-
                 allselectedprojects.ForEach(nr =>
                 {
                     nr.CompanyRelationships.ForEach(cr =>
                     {
-                        CRM_Logical.TryAddCompanyRelationship(new CompanyRelationship() { CompanyID = cr.CompanyID, ProjectID = p.ID }, p.ID);
+                        p.AddExistCompanyToNewCompanyRelationship(cr.CompanyID);
+                      
                     });
                 });
                 string refer = string.Empty;
-                allselectedprojects.ForEach(select => {
+                allselectedprojects.ForEach(select =>
+                {
                     if (string.IsNullOrEmpty(refer))
                     {
                         refer = select.ProjectCode;
                     }
                     else
                     {
-                        refer += "|"+ select.ProjectCode;
+                        refer += "|" + select.ProjectCode;
                     }
 
                 });
@@ -130,53 +135,24 @@ namespace Sales.Controllers
                 CH.Edit<Project>(p);
             }
 
-            return RedirectToAction("Management", "Project", new { id = projectid });
+            return RedirectToAction("Management", "Project", new { id = projectid,tabindex=3 });
         }
-
-
-        //public ViewResult SelectCompany(int? projectid)
-        //{
-        //    ViewBag.ProjectID = projectid;
-        //    return View(CH.GetAllData<Company>());
-        //}
-
-        //[HttpPost]
-        //public ActionResult SelectCompany(int[] checkedRecords, int projectid)
-        //{
-        //    var p = CH.GetAllData<Project>(i => i.ID == projectid, "Companys","Leads").FirstOrDefault();
-        //    p.Companys.Clear();
-        //    //p.Leads.Clear();
-        //    if (p != null)
-        //    {
-        //        foreach (int i in checkedRecords)
-        //        {
-        //            if (!p.Companys.Any(c => c.ID == i))
-        //            {
-        //                var company = CH.GetAllData<Company>(c => c.ID == i, "Leads").FirstOrDefault();
-        //                p.Companys.Add(company);
-        //                //p.Leads.AddRange(company.Leads);
-
-        //            }
-        //        }
-        //    }
-        //    CH.Edit<Project>(p);
-        //    return RedirectToAction("Management", "Project", new { id = projectid });
-        //}
+     
         #endregion
 
         #region 指定成员到公司
         public ViewResult AppointSales(int? projectid, int? companyrelationshipid)
         {
-            var p = CH.GetDataById<Project>(projectid, "Members");
+            var ms = CH.GetAllData<Member>(m => m.ProjectID == projectid, "CompanyRelationships");
             ViewBag.CompanyRelationshipID = companyrelationshipid;
-            return View(p.Members);
+            return View(ms);
         }
 
         [HttpPost]
         public ActionResult AppointSales(int[] checkedRecords, int companyrelationshipid)
         {
             var c = CH.GetAllData<CompanyRelationship>(i => i.ID == companyrelationshipid, "Members").FirstOrDefault();
-            
+
             if (c != null)
             {
                 c.Members.Clear();
@@ -194,10 +170,10 @@ namespace Sales.Controllers
                 }
                 CH.Edit<CompanyRelationship>(c);
             }
-           
-            return RedirectToAction("Management", "Project", new { id = c.ProjectID, tabindex=3 });
+
+            return RedirectToAction("Management", "Project", new { id = c.ProjectID, tabindex = 3 });
         }
-         #endregion
+        #endregion
 
         #region 分配字头
         public ActionResult Distribution(int? projectid)
@@ -250,74 +226,8 @@ namespace Sales.Controllers
                 CH.Edit<Member>(tm);
             });
 
-            return RedirectToAction("Management", "Project", new { id = projectid,tabindex=1 });
+            return RedirectToAction("Management", "Project", new { id = projectid, tabindex = 1 });
 
-        }
-        #endregion
-
-        #region 目标划分
-        public ActionResult BreakdownIndex(int? projectid)
-        {
-            ViewBag.ProjectID = projectid;
-
-            return View(CH.GetAllData<TargetOfMonth>(m => m.ProjectID == projectid));
-        }
-        public ActionResult Breakdown(int? projectid, int? targetofmonthid, string startdate)
-        {
-            ViewBag.ProjectID = projectid;
-            ViewBag.TargetOfMonthID = targetofmonthid;
-            ViewBag.OldStartDate = startdate;
-            ViewBag.EndDate = DateTime.Parse(startdate).AddDays(5).ToShortDateString();
-            if (startdate != null)
-            {
-
-                var targets = CH.GetAllData<TargetOfWeek>(i => i.StartDate.ToShortDateString() == startdate).OrderBy(i => i.StartDate).ToList();
-                ViewBag.Targets = targets;
-            }
-
-            return View(CH.GetAllData<Member>(m => m.ProjectID == projectid));
-        }
-
-        [HttpPost]
-        public ActionResult Breakdown(List<string> checkin, List<string> dealin, int projectid, int TargetOfMonthid, DateTime startdate, DateTime enddate, string OldDate)
-        {
-            if (startdate.DayOfWeek != DayOfWeek.Monday || enddate.DayOfWeek != DayOfWeek.Friday)
-            {
-                ViewBag.ProjectID = projectid;
-                ViewBag.TargetOfMonthID = TargetOfMonthid;
-                if (startdate != null)
-                {
-                    var targets = CH.GetAllData<TargetOfWeek>(i => i.StartDate.ToShortDateString() == OldDate).OrderBy(i => i.StartDate).ToList(); ;
-                    ViewBag.Targets = targets;
-                }
-                ModelState.AddModelError("", "开始时间不是周一或者结束时间不是周五");
-                return View(CH.GetAllData<Member>(m => m.ProjectID == projectid));
-            }
-            if (checkin != null)
-            {
-                for (int i=0; i < checkin.Count; i++)
-                {
-                    var ck = checkin[i].Split('|');
-                    var name = ck[0];
-                    var ckvalue = ck[1];
-                    var dl = dealin[i].Split('|');
-                    var dlvalue = dl[1];
-                    var ts = CH.GetAllData<TargetOfWeek>(t => t.Member == name && t.ProjectID == projectid && t.TargetOfMonthID == TargetOfMonthid && startdate == t.StartDate);
-                    if (ts.Count == 0)
-                    {
-                        CH.Create<TargetOfWeek>(new TargetOfWeek() { CheckIn = Decimal.Parse(ckvalue),Deal = Decimal.Parse(dlvalue), EndDate = enddate, Member = name, StartDate = startdate, ProjectID = projectid, TargetOfMonthID = TargetOfMonthid });
-                    }
-                    else
-                    {
-                        var item = ts.FirstOrDefault();
-                        item.Deal = Decimal.Parse(dlvalue);
-                        item.CheckIn = Decimal.Parse(ckvalue);
-                        CH.Edit<TargetOfWeek>(item);
-                    }
-                }
-            }
-
-            return RedirectToAction("management", "project", new { id = projectid,tabindex=2 });
         }
         #endregion
 
@@ -337,7 +247,7 @@ namespace Sales.Controllers
 
         public ViewResult Details(int id)
         {
-            return View(CH.GetDataById<Project>(id,"Categorys"));
+            return View(CH.GetDataById<Project>(id, "Categorys"));
         }
 
         public ActionResult Create()
@@ -351,7 +261,7 @@ namespace Sales.Controllers
             ViewBag.DealStartDate = dealstartdate;
             ViewBag.DealEndDate = dealenddate;
             ViewBag.TabIndex = tabindex;
-            var Data = CH.GetAllData<Project>(i => i.ID == id, "CompanyRelationships", "Members", "Templates", "Messages", "TargetOfMonths").FirstOrDefault();
+            var Data = CH.GetAllData<Project>(i => i.ID == id, "CompanyRelationships","Categorys", "Members", "Templates", "Messages", "TargetOfMonths").FirstOrDefault();
             return View(Data);
         }
 

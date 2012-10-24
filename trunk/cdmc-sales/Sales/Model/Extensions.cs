@@ -14,7 +14,7 @@ namespace Entity
         {
             var value = item.GetType().GetProperty(fieldname).GetValue(item, null);
             var data = CH.GetAllData<T>(child => child.GetType().GetProperty(fieldname).GetValue(child, null).ToString() == value.ToString());
-            if (data.Count > 0) return true;
+            if (data.Count > 0 && data.Any(d=>d.ID!=item.ID)) return true;
             return false;
         }
     }
@@ -131,6 +131,26 @@ namespace Entity
 
     public static class ProjectExtensions
     {
+        /// <summary>
+        /// 添加已存在的公司到项目
+        /// </summary>
+        /// <param name="item"></param>
+        public static void AddExistCompanyToNewCompanyRelationship(this Project item,int? companyid)
+        {
+            bool exist = item.CompanyRelationships.Any(ex => ex.CompanyID == companyid);
+            if (!exist)
+            {
+                CH.Create<CompanyRelationship>(new CompanyRelationship() { CompanyID = companyid, ProjectID = item.ID, Importancy = 6 });
+            }
+        }
+
+        /// <summary>
+        /// 生成周报后台数据
+        /// </summary>
+        /// <param name="item"></param>
+        /// <param name="startdate"></param>
+        /// <param name="enddate"></param>
+        /// <returns></returns>
         public static ViewProjectProgressAmount GetProjectProgress(this Project item,DateTime? startdate, DateTime? enddate)
         {
             startdate= startdate==null? new DateTime(1,1,1):startdate;
@@ -189,6 +209,12 @@ namespace Entity
 
         }
 
+        /// <summary>
+        /// 销售取得在项目中的项目成员实例
+        /// </summary>
+        /// <param name="item"></param>
+        /// <param name="username"></param>
+        /// <returns></returns>
         public static Member GetMemberInProjectByName(this Project item, string username = null)
         {
             if (username == null) username = HttpContext.Current.User.Identity.Name;
