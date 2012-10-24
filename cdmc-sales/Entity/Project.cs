@@ -147,7 +147,7 @@ namespace Entity
         [Display(Name = "类型")]
         public string Name { get; set; }
 
-        public List<CompanyRelationship> CompanyRelationships { get; set; }
+        public virtual List<CompanyRelationship> CompanyRelationships { get; set; }
     }
 
     public class CompanyRelationship : EntityBase
@@ -156,7 +156,7 @@ namespace Entity
         [Display(Name = "目标公司")]
         public int? CompanyID { get; set; }
 
-        public List<Category> Categorys { get; set; }
+        public virtual List<Category> Categorys { get; set; }
 
         public List<Deal> Deals { get; set; }
 

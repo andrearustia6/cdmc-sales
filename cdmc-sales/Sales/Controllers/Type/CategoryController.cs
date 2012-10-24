@@ -35,29 +35,30 @@ namespace Sales.Controllers
         public ActionResult Create(Category item)
         {
 
-            this.AddErrorStateIfFieldExist<Category>(item, "Name");
+            //this.AddErrorStateIfFieldExist<Category>(item, "Name");
 
             if (ModelState.IsValid)
             {
                 CH.Create<Category>(item);
-                return RedirectToAction("index", "Project");
+                return RedirectToAction("management", "Project",new {projectid=item.ProjectID});
             }
             ViewBag.ProjectID = item.ProjectID;
             return View(item);
         }
         public ActionResult Edit(int id)
         {
+         
             return View(CH.GetDataById<Category>(id));
         }
 
         [HttpPost]
         public ActionResult Edit(Category item)
         {
-            this.AddErrorStateIfFieldExist<Category>(item, "Name");
+            //this.AddErrorStateIfFieldExist<Category>(item, "Name");
             if (ModelState.IsValid)
             {
                 CH.Edit<Category>(item);
-                return RedirectToAction("index", "Project");
+                return RedirectToAction("management", "Project", new { id = item.ProjectID });
             }
             ViewBag.ProjectID = item.ProjectID;
             return View(item);

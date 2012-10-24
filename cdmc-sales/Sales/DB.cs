@@ -29,5 +29,9 @@ namespace Sales
         public DbSet<Company> Company { get; set; }
 
         public DbSet<Progress> Progress { get; set; }
+
+        public DbSet<Template> Template { get; set; }
+
+        public DbSet<TemplateType> TemplateType { get; set; }
     }
 }

@@ -17,34 +17,14 @@
                     c.Bound(item => item.Manager).Width(70);
                     c.Bound(item => item.Target).Width(120).Format("{0:C}");
                     c.Bound(item => item.ID).Width(220).Title("操作").Template(@<span> <a href=@Url.Content("~/Project/Edit/" + item.ID) >
-                        编辑</a> | <a href=@Url.Content("~/Project/Details/" + item.ID)>详细</a>| <a href=@Url.Content("~/Category/Create/?projectid=" + item.ID)>
-                            添加Category</a> | <a href=@Url.Content("~/Project/Management/" + item.ID)>
+                        编辑</a> | <a href=@Url.Content("~/Project/Details/" + item.ID)>详细</a>
+                        | <a href=@Url.Content("~/Project/Management/" + item.ID)>
                             项目管理</a>| <a href=@Url.Content("~/Project/delete/" + item.ID) >删除</a>
 </span>);
                 })
-                .DetailView(e => e.Template(
-                                                         @<text>
-                         @RenderCategory(item)
-                        </text>
-                   ))
+               
 .Resizable(resizing => resizing.Columns(true))
                                                                          .Filterable().Sortable().Groupable()
                                                                          .Pageable(p => p.PageSize(20))
                                                                          .Scrollable(scrolling => scrolling.Height(350))
 )
-
-@helper RenderCategory(Project p)
-    { 
-     @(Html.Telerik().Grid(p.Categorys).Name("Categorys" + p.ID)
-                            .Columns(c =>
-                            {
-                                c.Bound(o => o.Name);
-                                c.Bound(item => item.ID).Width(200).Title("操作").Template(@<span> <a href=@Url.Content("~/Project/Edit/" + item.ID) >
-                        编辑</a> | <a href=@Url.Content("~/Category/Details/" + item.ID)>详细</a> | <a href=@Url.Content("~/Category/delete/" + item.ID) >删除</a>
-</span>);
-
-                            })
-                                         .Resizable(resizing => resizing.Columns(true))
-                                                 .Pageable(page => page.PageSize(20))
-                                         )
-} 

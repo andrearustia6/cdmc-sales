@@ -53,9 +53,10 @@
             
       <tr><td>@m.Name</td><td>
       <div class="targetbreakdown" TargetOfWeek=@v ></div>
-      </td><td><p>$@v</p><input type="hidden" mname=@m.Name value=@m.Name|@v  name="dealin" /></td></tr>
+      </td><td><p>￥ @((int)v)</p><input class="pertarget" type="hidden" v=@v  mname=@m.Name value=@m.Name|@v  name="dealin" /></td></tr>
     
     }
+    <tr><td >总额：</td><td colspan="2"><p class="result">@Html.Label(ViewBag.TotalDealIn==null? string.Empty:ViewBag.TotalDealIn as string)</td></tr>
 }
 </table>
 </div>
@@ -87,9 +88,10 @@
             
       <tr><td>@m.Name</td><td>
       <div class="targetbreakdown" TargetOfWeek=@v ></div>
-      </td><td><p>$@v</p><input type="hidden" mname=@m.Name value=@m.Name|@v  name="checkin" /></td></tr>
+      </td><td><p>$@v</p><input class="pertarget" type="hidden" mname=@m.Name v=@v  value=@m.Name|@v  name="checkin" /></td></tr>
     
     }
+     <tr><td >总额：</td><td colspan="2"><p class="result">@Html.Label(ViewBag.TotalDealIn == null ? string.Empty : ViewBag.TotalDealIn as string)</td></tr>
 }
 </table>
 <br />

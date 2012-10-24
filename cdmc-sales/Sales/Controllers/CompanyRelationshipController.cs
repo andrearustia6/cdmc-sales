@@ -71,28 +71,28 @@ namespace Sales.Controllers
         [HttpPost]
         public ActionResult Edit(CompanyRelationship item, int[] checkedCategorys)
         {
-           
+            //如何保存多对多关系中 引用变化的例子
             if (ModelState.IsValid)
             {
+                CH.Edit<CompanyRelationship>(item);
+
                 if (checkedCategorys != null)
                 {
-                   // var old = CH.GetDataById<CompanyRelationship>(item.ID, "Categorys");
-
+                    item = CH.GetDataById<CompanyRelationship>(item.ID,"Categorys");
+                    item.Categorys.Clear();
                     var ck = CH.GetAllData<Category>(c => checkedCategorys.Any(cc=>cc == c.ID));
-                  
-                    CH.DB.Entry(item).Collection("Categorys").CurrentValue = ck;
+                    ck.ForEach(c => {
+                        item.Categorys.Add(c);
+                    });
                     CH.DB.SaveChanges();
-               
-                    CH.Edit<CompanyRelationship>(item);
-                 
-           
-                    
-                
-                
-       
                 }
                 else
-                CH.Edit<CompanyRelationship>(item);
+                {
+                    item = CH.GetDataById<CompanyRelationship>(item.ID, "Categorys");
+                    item.Categorys.Clear();
+                    CH.DB.SaveChanges();
+                }
+               
                
                 return RedirectToAction("management", "project", new { id = item.ProjectID, tabindex = 3 });
             }

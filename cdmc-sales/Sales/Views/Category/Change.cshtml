@@ -20,7 +20,7 @@
             @Html.LabelFor(model => model.ProjectID)
         </div>
         <div class="editor-field">
-            @Html.Hidden("ProjectID", (int)ViewBag.ProjectID)
+            @Html.Hidden("ProjectID", Model == null ? (int)ViewBag.ProjectID : Model.ProjectID)
             @Html.DisplayFor(model => model.Project.Name)
         </div>
 </fieldset>

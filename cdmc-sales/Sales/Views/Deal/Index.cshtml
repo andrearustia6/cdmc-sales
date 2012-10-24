@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "我的出单";
+    ViewBag.Title = "项目出单";
 }
 
 @using Entity
@@ -7,7 +7,7 @@
 
 @Html.Partial("contenttitle", "项目出单")
 
-@(Html.Telerik().Grid<Deal>(Model).Name("Deal").ToolBar(commands => commands.Custom().Text("出单创建").Action("Create", "Deal"))
+@(Html.Telerik().Grid<Deal>(Model).Name("Deal")
                 .DataKeys(keys =>
                 {
                     keys.Add(s => s.ID);
@@ -17,12 +17,13 @@
                     c.Bound(item => item.CompanyRelationship.Company.FullName).Title("客户名公司").Width(150);
                     c.Bound(item => item.CompanyRelationship.Project.Name).Width(150);
                     c.Bound(item => item.Package.FullName).Width(150);
-                    c.Bound(item => item.Payment).Width(150);
-                    c.Bound(item => item.Income).Width(150);
-                    c.Bound(item => item.IsClosed).Width(50);
-                    c.Bound(item => item.Abandoned).Width(50);
-                    c.Bound(item => item.ExpectedPaymentDate).Format("0:d").Width(150);
-                    c.Bound(item => item.ActualPaymentDate).Format("0:d").Width(150);
+                    c.Bound(item => item.Payment).Width(150).Format("{0:c}");
+                    c.Bound(item => item.Income).Width(150).Format("{0:c}");
+                    c.Bound(item => item.IsClosed).Width(70);
+                    c.Bound(item => item.Abandoned).Width(70);
+                    c.Bound(item => item.SignDate).Format("{0:d}").Width(100);
+                    c.Bound(item => item.ExpectedPaymentDate).Format("{0:d}").Width(100);
+                    c.Bound(item => item.ActualPaymentDate).Format("{0:d}").Width(100);
                     c.Bound(item => item.ID).Width(200).Title("操作").Template(@<span>
                     <a href=@Url.Content("~/Deal/Edit/" + item.ID) >编辑</a> | <a href=@Url.Content("~/Deal/Details/" + item.ID)>详细</a>  | <a href=@Url.Content("~/Deal/delete/" + item.ID) >删除</a> 
                    </span>);
@@ -33,4 +34,3 @@
                                                                 .Scrollable(scrolling => scrolling.Height(350))
 
                         )
-@Html.Partial("projectselector")

@@ -11,17 +11,19 @@ using BLL;
 
 namespace Sales.Controllers
 {
+    [ManagerRequired]
     public class DealController : Controller
     {
       
 
         public ViewResult Index(int? projectid)
         {
-            if (projectid == null)
-                return null;
+            return View(CH.GetAllData<Deal>());
+            //if (projectid == null)
+            //    return null;
             
-            var  p = CH.GetDataById<Project>(projectid,"CompanyRelationships");
-            return View(CRM_Logical.GetProjectDeals(p,null,null));
+            //var  p = CH.GetDataById<Project>(projectid,"CompanyRelationships");
+            //return View(CRM_Logical.GetProjectDeals(p,null,null));
         }
 
         public ViewResult MyDealIndex()

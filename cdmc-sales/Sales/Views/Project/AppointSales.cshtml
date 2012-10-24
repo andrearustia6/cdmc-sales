@@ -29,7 +29,7 @@
 @helper Checkbox(Member m)
 { 
      <input name="checkedRecords" type="checkbox" value="@m.ID"  
-                    @if (CRM_Logical.IsMemberSelectedForCompanyRelationship(m, (int?)ViewBag.CompanyRelationshipID))
+                    @if (m.CompanyRelationships.Any(c => c.ID == (int)ViewBag.CompanyRelationshipID))
                     {                            
                         <text>checked="checked"</text> 
                     }

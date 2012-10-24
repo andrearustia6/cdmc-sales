@@ -23,7 +23,7 @@
             @Html.Editor("enname")
         </div>
         <div class="editor-label">
-            @Html.Label("优先级别:")
+            @Html.Label("建议拨打人数:")
         </div>
         <div class="editor-field">
             @(Html.Telerik().Slider<int>().Name("importancy").Value(6).Max(10).Min(1).HtmlAttributes(new { style = "width:50%;" }))
@@ -34,15 +34,19 @@
         <div class="editor-field">
          @{
             Project p = CH.GetDataById<Project>(ViewBag.ProjectID,"Categorys");
-              if (p.Categorys != null)
-              { 
+            if (p.Categorys != null)
+            { 
                   <ul>
                   @foreach (var c in p.Categorys)
                   {
                       <li><input name="checkedCategorys" type="checkbox" value=@c.ID />  @c.Name</li> 
                   }
                   </ul>
-              }
+            }
+            else
+            {
+                <p>尚未定义任何Category</p> 
+            }
            }
          
         </div>
