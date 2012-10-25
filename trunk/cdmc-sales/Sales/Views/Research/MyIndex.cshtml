@@ -1,5 +1,6 @@
 ﻿@using Entity
 @using Utl;
+@{ViewBag.Title = "我的调研";}
 @model List<Research>
 @Html.Partial("contenttitle", "我的调研")
 @(Html.Telerik().Grid<Research>(Model).Name("Research").ToolBar(commands => commands.Custom().Text("调研上传").Action("Create", "Research"))

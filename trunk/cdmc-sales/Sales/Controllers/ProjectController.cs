@@ -63,43 +63,14 @@ namespace Sales.Controllers
         }
 
       
-        public ViewResult AddToCompanyRelationship(int projectid)
-        {
-            ViewBag.ProjectID = projectid;
-
-            return View(CH.GetAllData<CompanyRelationship>(c => c.ProjectID == projectid));
-        }
-
-        //[ProjectInformationAccess]
-        //[HttpPost]
-        //public ActionResult AddToCompanyRelationship(int projectid, string enname, string chname, string description, int importancy, int[] checkedCategorys)
+        //public ViewResult AddToCompanyRelationship(int projectid)
         //{
-
         //    ViewBag.ProjectID = projectid;
-        //    var project = CH.GetDataById<Project>(projectid, "CompanyRelationships");
-        //    Company company = CH.GetAllData<Company>(co => co.Name_EN == enname).FirstOrDefault();
-        //    if (company == null)
-        //    {
-        //        company = new Company() { Name_EN = enname, Name_CH = chname, Creator = User.Identity.Name, From = Employee.GetCurrentProfile("Department").ToString() };
-        //        CH.Create<Company>(company);
-        //    }
-
-
-        //    CompanyRelationship cr1 = new CompanyRelationship() { CompanyID = company.ID, ProjectID = projectid, Importancy = importancy,Description = description };
-        //    cr1.Categorys = new List<Category>();
-
-        //    if (checkedCategorys != null)
-        //    {
-        //        var ck = CH.GetAllData<Category>(i => checkedCategorys.Contains(i.ID));
-        //        cr1.Categorys.AddRange(ck);
-        //    }
-
-        //    project.CompanyRelationships.Add(cr1);
-        //    CH.Edit<Project>(project);
-        //    //return RedirectToAction("Management", new { tabindex = 3, id = projectid });
 
         //    return View(CH.GetAllData<CompanyRelationship>(c => c.ProjectID == projectid));
         //}
+
+      
 
   
         [HttpPost]
