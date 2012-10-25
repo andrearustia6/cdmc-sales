@@ -33,23 +33,17 @@ namespace Sales.Controllers
         [HttpPost]
         public ActionResult Create(string enname,string chname,CompanyRelationship item, int[] checkedCategorys)
         {
-
-            this.AddErrorStateIfFieldExist<Company>(enname,"Name_EN");
-            this.AddErrorStateIfFieldExist<Company>(enname, "Name_CH");
+            this.AddAddErrorStateIfOneOfNameExist<Company>(enname, chname);
 
             if (ModelState.IsValid)
             {
-
                 var company = new Company() { Name_EN = enname, Name_CH = chname, Creator = User.Identity.Name, From = Employee.GetCurrentProfile("Department").ToString() };
-                    CH.Create<Company>(company);
-           
+                CH.Create<Company>(company);
      
                 if (ModelState.IsValid)
                 {
                     if (checkedCategorys != null)
                     {
-
-                     
                         var ck = CH.GetAllData<Category>(i => checkedCategorys.Contains(i.ID));
                         item.Categorys = ck;
                     }

@@ -40,7 +40,7 @@ namespace System.Web.Mvc
             }
         }
 
-        public static void AddErrorStateIfTargetExist(this Controller item, DateTime startdate, int targetofmonthid)
+        public static void AddErrorStateIfTargetOfWeekExist(this Controller item, DateTime startdate, int targetofmonthid)
         {
             var ts = CH.GetAllData<TargetOfWeek>(t => t.StartDate.ToShortDateString() == startdate.ToShortDateString() && t.TargetOfMonthID == targetofmonthid);
             if (ts.Count != 0)
@@ -98,6 +98,16 @@ namespace System.Web.Mvc
             }
         }
 
+        /// <summary>
+        /// 记录中存在相同的中文名或者英文名
+        /// </summary>
+        public static void AddAddErrorStateIfOneOfNameExist<T>(this Controller item, string enname, string chname) where T:FullNameEntity
+        {
+            var exists = CH.GetAllData<T>(i => (i.Name_EN == enname &&  !string.IsNullOrEmpty(enname)) || (!string.IsNullOrEmpty(chname) && i.Name_CH == chname));
+            if(exists.Count>0)
+                item.ModelState.AddModelError("", "系统数据库中已经存在相同的公司英文名或中文名的数据");
+        }
+
         public static void AddErrorStateIfStartDateLaterThanEndDate(this Controller item, DateTime? startdate, DateTime? enddate) 
         {
             if (startdate!=null && enddate!=null && startdate.Value>=enddate.Value)
@@ -114,21 +124,21 @@ namespace System.Web.Mvc
             }
         }
 
-        public static void AddErrorStateIfFieldExist<T>(this Controller item, object targetvalue, string fieldname) where T : EntityBase
-        {
-            var value = targetvalue;
-            var data = CH.GetAllData<T>(child => child.GetType().GetProperty(fieldname).GetValue(child, null).ToString() == value.ToString());
-            if (data.Count > 0)
-            {
-                item.ModelState.AddModelError("", "已经存在相同的字段，字段名为：" + fieldname);
-            }
-        }
-
-        public static void AddErrorStateIfSalesNoAccessRight(this Controller item, int? crid) 
+        public static void AddErrorStateIfSalesNoAccessRightToTheCRM(this Controller item, int? crid) 
         {
             var cr = CH.GetDataById<CompanyRelationship>(crid);
             var role = cr.Project.RoleInProject();
-            if (role == RoleInProject.NotIn || role == RoleInProject.NotIn || role== RoleInProject.MarketInterface || role== RoleInProject.ProductInterface)
+            if (role == RoleInProject.NotIn)
+            {
+                item.ModelState.AddModelError("", "对不起，您在此项目中的权限是：" + role.ToString() + ", 无法访问此页面。");
+            }
+        }
+
+        public static void AddErrorStateIfSalesNoAccessRightToTheProject(this Controller item, int? projectid)
+        {
+            var p = CH.GetDataById<Project>(projectid);
+            var role = p.RoleInProject();
+            if (role == RoleInProject.NotIn)
             {
                 item.ModelState.AddModelError("", "对不起，您在此项目中的权限是：" + role.ToString() + ", 无法访问此页面。");
             }

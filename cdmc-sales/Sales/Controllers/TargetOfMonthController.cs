@@ -34,7 +34,7 @@ namespace Sales.Controllers
             ViewBag.ProjectID = projectid;
             ViewBag.TargetOfMonthID = TargetOfMonthid;
             this.AddErrorStateIfNotFromMondayToFriday(startdate, enddate);
-            this.AddErrorStateIfTargetExist(startdate, TargetOfMonthid);
+            this.AddErrorStateIfTargetOfWeekExist(startdate, TargetOfMonthid);
             if (ModelState.IsValid)
             {
                 if (checkin != null)

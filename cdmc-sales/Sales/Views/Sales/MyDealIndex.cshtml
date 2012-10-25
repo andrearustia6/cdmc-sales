@@ -7,7 +7,7 @@
 
 @Html.Partial("contenttitle", "我的出单")
 
-@(Html.Telerik().Grid<Deal>(Model).Name("Deal")
+@(Html.Telerik().Grid<Deal>(Model).Name("Deal").ToolBar(t=>t.Template(@<text>@Html.Partial("projectselector")</text>))
                 .DataKeys(keys =>
                 {
                     keys.Add(s => s.ID);
@@ -33,4 +33,4 @@
                                         .Scrollable(scrolling => scrolling.Height(350))
 
 )
-@Html.Partial("projectselector")
+

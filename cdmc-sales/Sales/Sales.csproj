@@ -1079,7 +1079,7 @@
     <Content Include="Views\Deal\Change.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Deal\MyDealIndex.cshtml" />
+    <Content Include="Views\Sales\MyDealIndex.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Project\Reports.cshtml" />
@@ -1179,6 +1179,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Report\Progress.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Sales\AddCompany.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

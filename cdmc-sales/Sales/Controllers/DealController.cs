@@ -26,11 +26,6 @@ namespace Sales.Controllers
             //return View(CRM_Logical.GetProjectDeals(p,null,null));
         }
 
-        public ViewResult MyDealIndex()
-        {
-            return View(CH.GetAllData<Deal>(d=>d.Sales == User.Identity.Name));
-        }
-
         public ViewResult Details(int id)
         {
             return View(CH.GetDataById<Deal>(id));
