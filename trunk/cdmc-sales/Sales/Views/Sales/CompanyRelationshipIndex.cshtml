@@ -23,7 +23,8 @@
                       <a target="_blank" href=@Url.Content("~/Sales/DisplayCompany/?crid=" + item.ID) >公司查看</a> 
                     | <a  href=@Url.Content("~/Sales/EditCompany/?crid=" + item.ID) >公司编辑</a> 
                     | <a  href=@Url.Content("~/Sales/AddLead/?crid=" + item.ID) >添加Lead</a>
-                    | <a target="_blank" href=@Url.Content("~/Sales/CompanyRelationshipLeadCallsIndex/?crid=" + item.ID) >致电记录</a> </span>);
+                    | <a target="_blank" href=@Url.Content("~/Sales/CompanyRelationshipLeadCallsIndex/?crid=" + item.ID) >销售进度</a> 
+                     </span>);
 
                 })
                         .DetailView(e => e.Template(
@@ -47,7 +48,7 @@
                                 c.Bound(o => o).Title("操作").Template(@<span>
                                 <a  target="_blank" href=@Url.Content("~/sales/displaylead/?leadid=" + item.ID + "&crid=" + cr.ID) >Lead查看</a> 
                                 | <a  href=@Url.Content("~/Sales/EditLead/?crid=" + cr.ID + "&leadid=" + item.ID) >Lead编辑</a>
-                                | <a  target="_blank" href=@Url.Content("~/Sales/LeadCallsIndex/?crid=" + cr.ID + "&leadid=" + item.ID) >致电记录</a>
+                                | <a  target="_blank" href=@Url.Content("~/Sales/LeadCallsIndex/?crid=" + cr.ID + "&leadid=" + item.ID) >销售进度</a>
                                   </span>);
                             })
                                          .Resizable(resizing => resizing.Columns(true))

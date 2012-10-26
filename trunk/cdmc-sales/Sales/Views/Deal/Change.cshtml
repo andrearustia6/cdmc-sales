@@ -7,12 +7,6 @@
 <fieldset>
     <legend>@SR.Form</legend>
     <div class="editor-label">
-        @Html.Label("公司名称")
-    </div>
-    <div class="editor-field">
-        @Html.LabelFor(model => model.CompanyRelationship.Company.FullName)
-    </div>
-    <div class="editor-label">
         @Html.LabelFor(model => model.PackageID, "Package")
     </div>
     <div class="editor-field">
@@ -27,33 +21,13 @@
         @Html.Telerik().DatePickerFor(model => model.ExpectedPaymentDate)
         @Html.ValidationMessageFor(model => model.ExpectedPaymentDate)
     </div>
+  
     <div class="editor-label">
-        @Html.LabelFor(model => model.ActualPaymentDate)
+        @Html.LabelFor(model => model.SignDate)
     </div>
-    <div class="editor-field">
-        @Html.Telerik().DatePickerFor(model => model.ActualPaymentDate)
-        @Html.ValidationMessageFor(model => model.ActualPaymentDate)
-    </div>
-    <div class="editor-label">
-        @Html.LabelFor(model => model.SigntDate)
-    </div>
-    <div class="editor-field">
-        @Html.Telerik().DatePickerFor(model => model.SigntDate)
-        @Html.ValidationMessageFor(model => model.SigntDate)
-    </div>
-    <div class="editor-label">
-        @Html.LabelFor(model => model.IsClosed)
-    </div>
-    <div class="editor-field">
-        @Html.EditorFor(model => model.IsClosed)
-        @Html.ValidationMessageFor(model => model.IsClosed)
-    </div>
-    <div class="editor-label">
-        @Html.LabelFor(model => model.Income)
-    </div>
-    <div class="editor-field">
-        @Html.Telerik().CurrencyTextBoxFor(model => model.Income)
-        @Html.ValidationMessageFor(model => model.Income)
+        <div class="editor-field">
+        @Html.Telerik().DatePicker().Name("SignDate").Value(Model == null ? DateTime.Now : Model.SignDate)
+        @Html.ValidationMessageFor(model => model.SignDate)
     </div>
     <div class="editor-label">
         @Html.LabelFor(model => model.Payment)
@@ -63,18 +37,55 @@
         @Html.ValidationMessageFor(model => model.Payment)
     </div>
     <div class="editor-label">
+        @Html.LabelFor(model => model.IsClosed)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.IsClosed)
+        @Html.ValidationMessageFor(model => model.IsClosed)
+    </div>
+     <div class="editor-label">
+        @Html.LabelFor(model => model.ActualPaymentDate)
+    </div>
+    <div class="editor-field">
+        @Html.Telerik().DatePickerFor(model => model.ActualPaymentDate)
+        @Html.ValidationMessageFor(model => model.ActualPaymentDate)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.Income)
+    </div>
+    <div class="editor-field">
+        @Html.Telerik().CurrencyTextBoxFor(model => model.Income)
+        @Html.ValidationMessageFor(model => model.Income)
+    </div>
+    
+    <div class="editor-label">
         @Html.LabelFor(model => model.PaymentDetail)
     </div>
     <div class="editor-field">
-        @Html.EditorFor(model => model.PaymentDetail)
+        @Html.TextAreaFor(model => model.PaymentDetail)
         @Html.ValidationMessageFor(model => model.PaymentDetail)
     </div>
     <div class="editor-label">
-        @Html.LabelFor(model => model.ProjectID, "Project")
+        @Html.LabelFor(model => model.Sales)
     </div>
     <div class="editor-field">
-        @Html.HiddenFor(model => model.ProjectID)
-        @Html.ValidationMessageFor(model => model.ProjectID)
+        @Html.EditorFor(model => model.Sales)
+        @Html.ValidationMessageFor(model => model.Sales)
     </div>
-    @Html.HiddenFor(model => model.ID)
+    <div class="editor-label">
+        @Html.Label("客户公司")
+    </div>
+    <div class="editor-field">
+         @Html.Label(Model==null? CH.GetDataById<CompanyRelationship>((int?)ViewBag.CompanyRelationshipID).CopamyName():Model.CopamyName())
+        @Html.HiddenFor(model => model.CompanyRelationshipID)
+       
+    </div>
+     <div class="editor-label">
+        @Html.Label( "项目")
+    </div>
+    <div class="editor-field">
+         @Html.Label(Model==null? CH.GetDataById<Project>((int)ViewBag.ProjectID).Name:Model.ProjectName())
+        @Html.Hidden("ProjectID", (int)ViewBag.ProjectID)
+       
+    </div>
 </fieldset>

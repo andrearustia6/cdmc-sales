@@ -47,7 +47,6 @@ namespace Entity
         public virtual CompanyRelationship CompanyRelationship { get; set; }
         [Display(Name = "客户公司"), Required]
         public int? CompanyRelationshipID { get; set; }
-
-        public int? ProjectID { get { return CompanyRelationship.ProjectID; } }
+     
     }
 }

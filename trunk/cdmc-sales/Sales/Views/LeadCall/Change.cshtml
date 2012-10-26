@@ -3,7 +3,7 @@
 @using Entity
 
     <fieldset>
-        <legend>致电结果</legend>
+        <legend>@SR.Form</legend>
 
         <div class="editor-label">
             @Html.LabelFor(model => model.IsFirstPitch)
@@ -40,7 +40,7 @@
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.LeadCallTypeID, "致电结果")
+            @Html.LabelFor(model => model.LeadCallTypeID, "销售进度")
         </div>
         <div class="editor-field">
             @Html.DropDownList("LeadCallTypeID", new SelectList(CH.GetAllData<LeadCallType>(),"ID","Name"),"-请选择-")

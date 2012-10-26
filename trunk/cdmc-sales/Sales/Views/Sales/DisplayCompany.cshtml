@@ -6,3 +6,9 @@
 @model Company
 @Html.Partial(@"~\views\company\display.cshtml", Model)
 @Html.Partial("displaycommon", Model)
+<center>
+<p>
+    @Html.ActionLink(SR.Edit, "EditCompany", new { id = Model.ID }) 
+   @* @Html.ActionLink(SR.GobackToList, "Index")*@
+</p>
+</center>

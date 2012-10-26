@@ -271,9 +271,54 @@ namespace Entity
                 return Entity.RoleInProject.NotIn;
         }
     }
+    public static class DealExtensions
+    {
+        public static string CopamyName(this Deal item)
+        {
+            if (item.CompanyRelationship != null)
+                return item.CompanyRelationship.CopamyName();
+            else
+                return CH.GetDataById<CompanyRelationship>(item.CompanyRelationshipID).CopamyName();
+        }
+
+        public static string ProjectName(this Deal item)
+        {
+            if (item.CompanyRelationship != null)
+                return item.CompanyRelationship.ProjectName();
+            else
+                return CH.GetDataById<CompanyRelationship>(item.CompanyRelationshipID).ProjectName();
+        }
+    }
+
+    public static class CompanyRelationshipChildItemExtensions
+    {
+        public static int? ProjectID(this CompanyRelationshipChildItem item)
+        {
+            if (item.CompanyRelationship != null)
+                return item.CompanyRelationship.ProjectID;
+            else
+                return CH.GetDataById<CompanyRelationshipChildItem>(item.CompanyRelationshipID).ProjectID();
+        }
+    }
 
     public static class CompanyRelationshipExtensions
     {
+        public static string CopamyName(this CompanyRelationship item)
+        {
+            if (item.Company != null)
+                return item.Company.FullName;
+            else
+                return CH.GetDataById<Company>(item.CompanyID).FullName;
+        }
+
+        public static string ProjectName(this CompanyRelationship item)
+        {
+            if (item.Project != null)
+                return item.Project.Name;
+            else
+                return CH.GetDataById<Project>(item.ProjectID).Name;
+        }
+
         /// <summary>
         /// 查看当前谁在给这家公司打电话 
         /// </summary>
