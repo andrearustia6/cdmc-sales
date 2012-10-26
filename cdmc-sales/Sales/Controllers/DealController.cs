@@ -31,26 +31,6 @@ namespace Sales.Controllers
             return View(CH.GetDataById<Deal>(id));
         }
 
-        public ActionResult MakeDeal(int projectid, int packageid, int companyrelationshipid)
-        {
-            ViewBag.ProjectID = projectid;
-            ViewBag.PackageID = packageid;
-            ViewBag.CompanyRelationshipID = companyrelationshipid;
-            return View();
-        }
-
-        [HttpPost]
-        public ActionResult MakeDeal(Deal item)
-        {
-            if (ModelState.IsValid)
-            {
-                item.Sales = User.Identity.Name;
-                CH.Create<Deal>(item);
-                return RedirectToAction("Management", "Lead", new { leadid=item.CompanyRelationshipID,projectid=item.ProjectID});
-            }
-            return View(item);
-        }
-
         public ActionResult Edit(int id)
         {
             return View(CH.GetDataById<Deal>(id));

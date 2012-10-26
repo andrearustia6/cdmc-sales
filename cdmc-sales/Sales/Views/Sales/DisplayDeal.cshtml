@@ -1,15 +1,15 @@
 ﻿@{
-    ViewBag.Title = "Lead信息";
+    ViewBag.Title = "出单信息";
 }
 @using Entity
 @using Utl
-@model Lead
+@model Deal
            
-@Html.Partial(@"~\views\lead\display.cshtml",Model)
+@Html.Partial(@"~\views\Deal\display.cshtml", Model)
 @Html.Partial("displaycommon", Model)
 <center>
 <p>
-    @Html.ActionLink(SR.Edit, "EditLead", new { id = Model.ID }) 
+    @Html.ActionLink(SR.Edit, "EditDeal", new { id = Model.ID }) 
    @* @Html.ActionLink(SR.GobackToList, "Index")*@
 </p>
 </center>

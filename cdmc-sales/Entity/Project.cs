@@ -324,7 +324,7 @@ namespace Entity
         [Display(Name = "实际入账")]
         public decimal Income { get; set; }
 
-        [Display(Name = "出单人")]
+        [Display(Name = "出单人"),Required]
         public string Sales { get; set; }
 
         [Display(Name = "应付款"), Required]

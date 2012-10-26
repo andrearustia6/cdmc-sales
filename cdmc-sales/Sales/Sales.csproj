@@ -1139,9 +1139,6 @@
     <Content Include="Views\Sales\DisplayLead.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Sales\LeadCall.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Views\Sales\SalesLeadCallsIndex.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -1182,6 +1179,15 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Sales\AddCompany.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Sales\AddDeal.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Sales\EditDeal.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Sales\DisplayDeal.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

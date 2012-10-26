@@ -13,6 +13,11 @@ namespace Sales.Controllers
     public class SalesController : Controller
     {
         #region Leadcall
+        /// <summary>
+        /// 查看客户公司的 销售记录
+        /// </summary>
+        /// <param name="crid"></param>
+        /// <returns></returns>
         public ViewResult CompanyRelationshipLeadCallsIndex(int? crid)
         {
             var data = new List<LeadCall>();
@@ -25,6 +30,12 @@ namespace Sales.Controllers
             return View("SalesLeadCallsIndex", data);
         }
 
+        /// <summary>
+        /// 查看个人的 销售记录
+        /// </summary>
+        /// <param name="crid"></param>
+        /// <param name="leadid"></param>
+        /// <returns></returns>
         public ViewResult LeadCallsIndex(int? crid, int? leadid)
         {
             var data = new List<LeadCall>();
@@ -50,11 +61,17 @@ namespace Sales.Controllers
         [HttpPost]
         public ActionResult AddLeadCall(LeadCall leadcall, int? crid)
         {
-
+            var cr = CH.GetDataById<CompanyRelationship>(leadcall.CompanyRelationshipID);
+            ViewBag.CompanyRelationshipID = crid;
+            ViewBag.ProjectID = cr.ProjectID;
             if (ModelState.IsValid)
             {
                 CH.Create<LeadCall>(leadcall);
-                return RedirectToAction("CompanyRelationshipLeadCallsIndex", new { crid = crid });
+
+                if (leadcall.LeadCallTypeID != 9)
+                    return RedirectToAction("CompanyRelationshipLeadCallsIndex", new { crid = crid });
+                else
+                    return RedirectToAction("AddDeal", new { projectid = cr.ProjectID, companyrelationshipid = cr.ID });
             }
             else
             {
@@ -64,8 +81,71 @@ namespace Sales.Controllers
         }
         #endregion
 
+        #region
+        [HttpPost]
+        public ActionResult AddDeal(Deal item, int? projectid)
+        {
+            ViewBag.ProjectID = projectid;
+            ViewBag.CompanyRelationshipID = item.CompanyRelationshipID;
+            if (ModelState.IsValid)
+            {
+                item.Sales = User.Identity.Name;
+                CH.Create<Deal>(item);
+                return RedirectToAction("MyDealIndex", "Sales", new { projectid = projectid });
+            }
+            return View(item);
+        }
+
+        public ActionResult AddDeal(int projectid, int companyrelationshipid)
+        {
+            ViewBag.ProjectID = projectid;
+            ViewBag.CompanyRelationshipID = companyrelationshipid;
+
+            return View();
+        }
+
+        public ActionResult EditDeal(int? id)
+        {
+            var item = CH.GetDataById<Deal>(id);
+            ViewBag.ProjectID = item.CompanyRelationship.ProjectID;
+            ViewBag.CompanyRelationshipID = item.CompanyRelationshipID;
+            return View(item);
+        }
+
+        [HttpPost]
+        public ActionResult EditDeal(Deal item,int? projectid)
+        {
+            ViewBag.ProjectID = projectid;
+            ViewBag.CompanyRelationshipID = item.CompanyRelationshipID;
+            if (ModelState.IsValid)
+            {
+                CH.Edit<Deal>(item);
+                return RedirectToAction("MyDealIndex", "Sales", new { projectid = projectid });
+            }
+            return View(item);
+        }
+
+        public ViewResult MyDealIndex(int? projectid)
+        {
+            var data = CH.GetAllData<Deal>();
+            return View(data.FindAll(d => d.Sales == User.Identity.Name && d.CompanyRelationship.ProjectID == projectid).OrderByDescending(m=>m.CreatedDate).ToList());
+        }
+
+        public ViewResult DisplayDeal(int? id)
+        {
+            var deal =  CH.GetDataById<Deal>(id);
+            this.AddErrorStateIfSalesNoAccessRightToTheCRM(deal.CompanyRelationshipID);
+
+            if (ModelState.IsValid)
+                return View(CH.GetDataById<Deal>(id));
+            else
+                return View();
+        }
+
+        #endregion
 
 
+        #region Lead
         /// <summary>
         /// id = leadid
         /// </summary>
@@ -143,6 +223,7 @@ namespace Sales.Controllers
             else
                 return RedirectToAction("CompanyRelationshipIndex", "Sales", new { projectid = cr.ProjectID });
         }
+        #endregion
 
         #region company
         public ActionResult AddCompany(int? projectid = null)
@@ -250,12 +331,7 @@ namespace Sales.Controllers
             ViewBag.ProjectID = projectid;
             return View();
         }
-        #endregion
-
-        public ViewResult MyDealIndex(int? porjectid)
-        {
-            return View(CH.GetAllData<Deal>(d => d.Sales == User.Identity.Name && d.CompanyRelationship.ProjectID == porjectid));
-        }
+        #endregion  
 
         /// <summary>
         /// 根据分配显示sales需要拨打的公司
