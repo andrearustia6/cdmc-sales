@@ -52,7 +52,7 @@ namespace Sales.Controllers
         {
             ViewBag.ProjectID = projectid;
             var p = CH.GetDataById<Project>(projectid);
-            var data = CH.GetAllData<Project>();
+            var data = CH.GetAllData<Project>(i=>i.ID!=projectid);
             if (!string.IsNullOrEmpty(p.References))
             {
                 var refers = p.References.Split('|');

@@ -33,6 +33,7 @@ namespace Sales.Controllers
         [HttpPost]
         public ActionResult Create(string enname,string chname,CompanyRelationship item, int[] checkedCategorys)
         {
+            this.AddErrorIfAllNamesEmpty(enname, chname);
             this.AddAddErrorStateIfOneOfNameExist<Company>(enname, chname);
 
             if (ModelState.IsValid)
@@ -53,7 +54,7 @@ namespace Sales.Controllers
                 }
             }
             ViewBag.ProjectID = item.ProjectID;
-            return View(item);
+            return View();
         }
         public ActionResult Edit(int id)
         {

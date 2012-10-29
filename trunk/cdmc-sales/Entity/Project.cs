@@ -165,7 +165,7 @@ namespace Entity
         [Display(Name = "所属项目")]
         public int? ProjectID { get; set; }
 
-        [Display(Name = "核心程度"), Range(0, 10)]
+        [Display(Name = "建议拨打人数"), Range(0, 20)]
         public int Importancy { get; set; }
 
         public virtual Progress Progress { get; set; }
@@ -271,7 +271,7 @@ namespace Entity
     /// </summary>
     public class Member : EntityBase
     {
-        [Display(Name = "成员")]
+        [Display(Name = "成员"),Required]
         public string Name { get; set; }
 
         [Display(Name = "字头")]

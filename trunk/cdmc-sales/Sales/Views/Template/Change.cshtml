@@ -4,48 +4,41 @@
 @{
     ViewBag.Title = "Create";
 }
-
-
-    <fieldset>
-        <legend>Template</legend>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Name)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Name)
-            @Html.ValidationMessageFor(model => model.Name)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.SubName)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.SubName)
-            @Html.ValidationMessageFor(model => model.SubName)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Content)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Content)
-            @Html.ValidationMessageFor(model => model.Content)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Language)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Language)
-            @Html.ValidationMessageFor(model => model.Language)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.TemplateTypeID, "TemplateType")
-        </div>
-        <div class="editor-field">
-            @Html.DropDownListFor(m=>m.TemplateTypeID,new SelectList( CH.GetAllData<Template>(),"ID","Name"),"-请选择-")
-            @Html.ValidationMessageFor(model => model.TemplateTypeID)
-        </div>
-    </fieldset>
+<fieldset>
+    <legend>@SR.Form</legend>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.Name)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.Name)
+        @Html.ValidationMessageFor(model => model.Name)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.SubName)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.SubName)
+        @Html.ValidationMessageFor(model => model.SubName)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.Content)
+    </div>
+    <div class="editor-field">
+        @Html.Telerik().EditorFor(model => model.Content)
+        @Html.ValidationMessageFor(model => model.Content)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.Language)
+    </div>
+    <div class="editor-field">
+         @Html.DropDownListFor(m => m.Language, new SelectList(new List<string>() { "英文", "中文" }), "-请选择-")
+        @Html.ValidationMessageFor(model => model.Language)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.TemplateTypeID, "模版类型")
+    </div>
+    <div class="editor-field">
+        @Html.DropDownListFor(m => m.TemplateTypeID, new SelectList(CH.GetAllData<TemplateType>(), "ID", "Name"), "-请选择-")
+        @Html.ValidationMessageFor(model => model.TemplateTypeID)
+    </div>
+</fieldset>
