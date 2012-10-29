@@ -45,7 +45,7 @@ namespace Entity
     /// <summary>
     /// 话术模板
     /// </summary>
-    public class OnPhoneTemplate : EntityBase
+    public class PhoneSaleSupport : EntityBase
     {
         [Display(Name = "话术名称")]
         public string Name { get; set; }
