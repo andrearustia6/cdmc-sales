@@ -11,10 +11,11 @@ using Telerik.Web.Mvc;
 
 namespace Sales.Controllers
 {
+    [ManagerRequired]
     public class CompanyController : Controller
     {
         
-        [ManagerRequired]
+        
         public ActionResult Index()
         {
            return View(CH.GetAllData<Company>("Leads"));
@@ -36,7 +37,6 @@ namespace Sales.Controllers
         //    return View(CH.GetAllData<Company>(c=>c.Projects.Any(p=>p.ID == projectid),"Leads"));
         //}
 
-        [SalesRequired]
         public ViewResult Details(int id)
         {
             return View(CH.GetDataById<Company>(id));
@@ -48,7 +48,6 @@ namespace Sales.Controllers
         }
 
         [HttpPost]
-        [SalesRequired]
         public ActionResult Create(Company item)
         {
             if (EntityUtl.Utl.CheckPropertyAllNull(item, "Name_EN", "Name_CH"))
@@ -67,7 +66,6 @@ namespace Sales.Controllers
             return View(item);
         }
 
-        [SalesRequired]
         public ActionResult Edit(int id)
         {
              var c = CH.GetDataById<Company>(id);
@@ -85,7 +83,6 @@ namespace Sales.Controllers
         }
 
         [HttpPost]
-        [SalesRequired]
         public ActionResult Edit(Company item)
         {
             if (EntityUtl.Utl.CheckPropertyAllNull(item, "Name_EN", "Name_CH"))
@@ -107,12 +104,12 @@ namespace Sales.Controllers
             }
             return View(item);
         }
-        [SalesRequired]
+
         public ActionResult Delete(int id)
         {
             return View(CH.GetDataById<Company>(id));
         }
-        [SalesRequired]
+
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {
