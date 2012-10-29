@@ -20,8 +20,8 @@ namespace Entity
 
         public List<Lead> Leads { get; set; }
 
-        [Display(Name = "业务范围")]
-        public string Areas { get; set; }
+        //[Display(Name = "业务范围")]
+        //public string Areas { get; set; }
 
         [Display(Name = "可打时间")]
         public string Available 
