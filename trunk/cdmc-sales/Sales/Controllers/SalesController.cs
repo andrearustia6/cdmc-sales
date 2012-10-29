@@ -144,6 +144,31 @@ namespace Sales.Controllers
 
         #endregion
 
+        public ViewResult PhoneSaleSupport()
+        {
+             var data = CH.GetAllData<PhoneSaleSupport>();
+             return View(data);
+        }
+
+        [HttpPost]
+        public ViewResult PhoneSaleSupport(int? onphonesupportid, int? projectid ,string condition=null)
+        {
+            var data = CH.GetAllData<PhoneSaleSupport>(s => s.ProjectID == projectid);
+            if (!string.IsNullOrEmpty(condition))
+            {
+                string c = (string)condition.Trim();
+                data = data.FindAll(d => d.Name.Contains(c) 
+                    || d.Answer.Contains(c) 
+                    || d.Answer.Contains(c)
+                    || d.Block.Contains(c)
+                    || d.Description.Contains(c)
+                    || d.OnPhoneBlockType.Name.Contains(c)
+                    || d.OnPhoneBlockType.Code.ToString() == c
+                    );
+            }
+
+            return View(data);
+        }
 
         #region Lead
         /// <summary>

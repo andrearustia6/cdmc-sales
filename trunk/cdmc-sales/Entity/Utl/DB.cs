@@ -22,7 +22,7 @@ namespace Utl
         public DbSet<Research> Researchs { get; set; }
         public DbSet<PackageType> PackageTypes { get; set; }
         public DbSet<ParticipantType> ParticipantTypes { get; set; }
-        public DbSet<OnPhoneTemplate> OnPhoneTemplates { get; set; }
+        public DbSet<PhoneSaleSupport> OnPhoneTemplates { get; set; }
         public DbSet<OnPhoneBlockType> OnPhoneBlockTypes { get; set; }
         public DbSet<LeadCallType> LeadCallTypes { get; set; }
         public DbSet<CurrencyType> CurrencyTypes { get; set; }

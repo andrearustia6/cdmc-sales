@@ -11,16 +11,16 @@ using Utl;
 
 namespace Sales.Controllers
 {
-    public class OnPhoneTemplateController : Controller
+    public class PhoneSaleSupportController : Controller
     {
         public ViewResult Index()
         {
-            return View(CH.GetAllData<OnPhoneTemplate>());
+            return View(CH.GetAllData<PhoneSaleSupport>());
         }
 
         public ViewResult Details(int id)
         {
-            return View(CH.GetDataById<OnPhoneTemplate>(id));
+            return View(CH.GetDataById<PhoneSaleSupport>(id));
         }
 
         public ActionResult Create()
@@ -29,26 +29,26 @@ namespace Sales.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create(OnPhoneTemplate item)
+        public ActionResult Create(PhoneSaleSupport item)
         {
             if (ModelState.IsValid)
             {
-                CH.Create<OnPhoneTemplate>(item);
+                CH.Create<PhoneSaleSupport>(item);
                 return RedirectToAction("Index");
             }
             return View(item);
         }
         public ActionResult Edit(int id)
         {
-            return View(CH.GetDataById<OnPhoneTemplate>(id));
+            return View(CH.GetDataById<PhoneSaleSupport>(id));
         }
 
         [HttpPost]
-        public ActionResult Edit(OnPhoneTemplate item)
+        public ActionResult Edit(PhoneSaleSupport item)
         {
             if (ModelState.IsValid)
             {
-                CH.Edit<OnPhoneTemplate>(item);
+                CH.Edit<PhoneSaleSupport>(item);
                 return RedirectToAction("Index");
             }
             return View(item);
@@ -56,13 +56,13 @@ namespace Sales.Controllers
 
         public ActionResult Delete(int id)
         {
-            return View(CH.GetDataById<OnPhoneTemplate>(id));
+            return View(CH.GetDataById<PhoneSaleSupport>(id));
         }
 
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {
-            CH.Delete<OnPhoneTemplate>(id);
+            CH.Delete<PhoneSaleSupport>(id);
             return RedirectToAction("Index");
         }
     }

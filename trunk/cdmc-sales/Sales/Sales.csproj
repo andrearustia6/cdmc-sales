@@ -224,7 +224,7 @@
     <Compile Include="Controllers\LeadCallController.cs" />
     <Compile Include="Controllers\MarketInterfaceController.cs" />
     <Compile Include="Controllers\MemberController.cs" />
-    <Compile Include="Controllers\OnPhoneTemplateController.cs" />
+    <Compile Include="Controllers\PhoneSaleSupportController.cs" />
     <Compile Include="Controllers\PackageController.cs" />
     <Compile Include="Controllers\PackageItemController.cs" />
     <Compile Include="Controllers\ProjectController.cs" />
@@ -962,13 +962,13 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\OnPhoneTemplate\Change.cshtml" />
+    <Content Include="Views\PhoneSaleSupport\Change.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\OnPhoneTemplate\Index.cshtml" />
+    <Content Include="Views\PhoneSaleSupport\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\OnPhoneTemplate\Display.cshtml" />
+    <Content Include="Views\PhoneSaleSupport\Display.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Package\Index.cshtml" />
@@ -1188,6 +1188,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Sales\DisplayDeal.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Sales\PhoneSaleSupport.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

@@ -1,0 +1,38 @@
+﻿@{
+    ViewBag.Title = "话术支持";
+}
+@using Utl
+@using Entity
+@model List<PhoneSaleSupport>
+<center>
+<h2>话术支持</h2>
+@using (Html.BeginForm())
+{
+<fieldset>
+<legend>查询设置</legend>
+<span><b>请输入查询条件：</b><input  type="text" style=" width:200px"/><input type="submit" value="提交" /></span>
+
+</fieldset>
+</center>
+}
+@(
+ Html.Telerik().PanelBar().Name("Supports").Items(children=>{
+     if (Model != null)
+     {
+         foreach (var m in Model)
+         {
+             var an = m.Answer;
+             var type = m.OnPhoneBlockType.Name;
+             children.Add().Text(m.Block).Content(@<text>
+             <fieldset>
+             <legend>@type</legend>
+               <div>
+                <label>@an</label>
+               </div>
+             </fieldset>
+      
+             </text>);
+         }
+     }
+    })
+ )

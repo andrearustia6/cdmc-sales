@@ -28,7 +28,7 @@
                {
                    if (Employee.AsDirector())
                    {
-                       menu.Add().Text("类型字典").ImageUrl("~/Content/Common/Icons/mvc.png").Items(item =>
+                       menu.Add().Text("配置").ImageUrl("~/Content/Common/Icons/mvc.png").Items(item =>
                        {
                            item.Add().Text("行业").Url("~/Area/index").ImageUrl("~/Content/Common/Icons/Scheduler.png");
                            item.Add().Text("货币").Url("~/CurrencyType/index").ImageUrl("~/Content/Common/Icons/GridView.gif");
@@ -39,6 +39,7 @@
                            item.Add().Text("模板").Url("~/TemplateType/index").ImageUrl("~/Content/Common/Icons/TabStrip.png");
                            item.Add().Text("Block").Url("~/OnPhoneBlockType/index").ImageUrl("~/Content/Common/Icons/TabStrip.png");
                            item.Add().Text("销售进度").Url("~/LeadCallType/index").ImageUrl("~/Content/Common/Icons/TabStrip.png");
+                           item.Add().Text("区号管理").Url("~/DistrictNumber/index").ImageUrl("~/Content/Common/Icons/Docking.gif");
                        });
 
                        menu.Add().Text("Package管理").ImageUrl("~/Content/Common/Icons/GridView.gif").Items(item =>
@@ -54,7 +55,7 @@
                        menu.Add().Text("项目管理").ImageUrl("~/Content/Common/Icons/GridView.gif").Items(item =>
                        {
                            item.Add().Url("~/Project/index").Text("项目管理").ImageUrl("~/Content/Common/Icons/Docking.gif");
-                           item.Add().Url("~/Report/progress").Text("进度察看").ImageUrl("~/Content/Common/Icons/Docking.gif");
+                           //item.Add().Url("~/Report/progress").Text("进度察看").ImageUrl("~/Content/Common/Icons/Docking.gif");
                            item.Add().Url("~/Report/LeadCalls").Text("销售进度查看").ImageUrl("~/Content/Common/Icons/Docking.gif");
                            item.Add().Url("~/Deal/index").Text("出单查看").ImageUrl("~/Content/Common/Icons/Docking.gif");
                            item.Add().Url("~/Research/index").Text("调研查看").ImageUrl("~/Content/Common/Icons/Docking.gif");
@@ -62,7 +63,7 @@
 
                        menu.Add().Text("配置").ImageUrl("~/Content/Common/Icons/GridView.gif").Items(item =>
                        {
-                           item.Add().Url("~/DistrictNumber/index").Text("区号管理").ImageUrl("~/Content/Common/Icons/Docking.gif");
+                          
                        });
 
                        menu.Add().Text("客户管理").ImageUrl("~/Content/Common/Icons/GridView.gif").Items(item =>
@@ -81,7 +82,7 @@
                        menu.Add().Text("模板管理").ImageUrl("~/Content/Common/Icons/GridView.gif").Items(item =>
                        {
                            item.Add().Url("~/Template/index").Text("通用模板").ImageUrl("~/Content/Common/Icons/Editor.png");
-                           item.Add().Url("~/OnPhoneTemplate/index").Text("话术模板").ImageUrl("~/Content/Common/Icons/Docking.gif");
+                           item.Add().Url("~/PhoneSaleSupport/index").Text("话术模板").ImageUrl("~/Content/Common/Icons/Docking.gif");
                        });
                    }
                    if (Employee.EqualToLeader() | Employee.EqualToSales())
@@ -91,6 +92,7 @@
                            item.Add().Url("~/Sales/MyIndex").Text("调研上传").ImageUrl("~/Content/Common/Icons/Docking.gif");
                            item.Add().Url("~/Sales/CompanyRelationshipIndex").Text("分配的公司").ImageUrl("~/Content/Common/Icons/Docking.gif");
                            item.Add().Url("~/Sales/MyDealIndex").Text("我的出单").ImageUrl("~/Content/Common/Icons/Docking.gif");
+                           item.Add().Url("~/Sales/PhoneSaleSupport").Text("电话支持").ImageUrl("~/Content/Common/Icons/Docking.gif");
                           // item.Add().Url("~/Sales/LeadCall").Text("电话统计").ImageUrl("~/Content/Common/Icons/Docking.gif");
                            //item.Add().Url("~/Sales/MyWeeklyReport").Text("我的周报").ImageUrl("~/Content/Common/Icons/Docking.gif");
                        });
