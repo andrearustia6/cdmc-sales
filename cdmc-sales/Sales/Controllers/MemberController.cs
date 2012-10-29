@@ -36,7 +36,7 @@ namespace Sales.Controllers
         [HttpPost]
         public ActionResult Create(Member item)
         {
-            this.AddErrorStateIfMemberExist(item.ProjectID,item.Name);
+            //this.AddErrorStateIfMemberExist(item.ProjectID,item.Name);
 
 
             if (ModelState.IsValid)
@@ -55,7 +55,7 @@ namespace Sales.Controllers
         [HttpPost]
         public ActionResult Edit(Member item)
         {
-            this.AddErrorStateIfMemberExist(item.ProjectID, item.Name);
+            //this.AddErrorStateIfMemberExist(item.ProjectID, item.Name);
             if (ModelState.IsValid)
             {
                 CH.Edit<Member>(item);

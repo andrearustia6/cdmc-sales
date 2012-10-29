@@ -37,7 +37,7 @@ namespace Utl
         }
 
         /// <summary>
-        /// 取得所有 sales manageers
+        /// 取得所有 基本的对象
         /// </summary>
         /// <returns></returns>
         public static List<MembershipUser> GetEmplyeeByLVL(params int[] lvl)
@@ -49,6 +49,27 @@ namespace Utl
                     data.Add(l);
             });
             return data;
+        }
+
+        /// <summary>
+        /// 添加成员
+        /// </summary>
+        /// <returns></returns>
+        public static List<MembershipUser> GetAvailbleSales(int? projectid,params string[] ms)
+        {
+            var list = GetEmplyeeByLVL(SalesRequired.LVL, LeaderRequired.LVL);
+            var p = CH.GetDataById<Project>(projectid,"Members");
+            list = list.FindAll(l => p.Members.Exists(m => m.Name == l.UserName) == false);
+
+            if (ms != null)
+            {
+                ms.ToList().ForEach(m => {
+                    if (!string.IsNullOrEmpty(m))
+                    list.Add(Membership.GetUser(m));
+                });
+            }
+           
+            return list;
         }
 
         public static object GetCurrentProfile(string propertyName)

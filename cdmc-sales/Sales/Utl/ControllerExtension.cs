@@ -28,7 +28,7 @@ namespace System.Web.Mvc
             if (t.StartDate.Month != t.EndDate.Month)
                 item.ModelState.AddModelError("", "开始时间和结束时间不在同一个月内");
 
-            if(CH.GetAllData<TargetOfMonth>(i=>i.StartDate.ToShortDateString()== t.StartDate.ToShortDateString()).Count()>0)
+            if(CH.GetAllData<TargetOfMonth>(i=>i.StartDate.ToShortDateString()== t.StartDate.ToShortDateString()&&t.ProjectID==i.ProjectID).Count()>0)
                  item.ModelState.AddModelError("", "该月的目标已经添加，不能再次添加");
         }
 
@@ -119,6 +119,14 @@ namespace System.Web.Mvc
         public static void AddErrorIfAllNamesEmpty(this Controller item, FullNameEntity target)
         {
             if (target.IsAllNamesEmpty())
+            {
+                item.ModelState.AddModelError("", "中文名和英文名不允许同时为空");
+            }
+        }
+
+        public static void AddErrorIfAllNamesEmpty(this Controller item, string enname, string chname)
+        {
+            if (string.IsNullOrEmpty(enname) && string.IsNullOrEmpty(chname))
             {
                 item.ModelState.AddModelError("", "中文名和英文名不允许同时为空");
             }

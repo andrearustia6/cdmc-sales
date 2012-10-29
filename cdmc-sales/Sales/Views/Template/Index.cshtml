@@ -12,8 +12,9 @@
                     c.Bound(item => item.Name).Width(200);
                     c.Bound(item => item.Content).Width(300);
                     c.Bound(item => item.TemplateType.Name).Width(100);
-                    c.Bound(item => item.ID).Width(200).Title("操作").ClientTemplate("<a href='/Template/edit/" + "<#= ID #>'>编辑</a> | <a href='/Template/details/" + "<#= ID #>'>详细</a> | <a href='/Template/delete/" + "<#= ID #>'>删除</a>");
-                })
+                    c.Bound(item => item.ID).Title("操作").Width(200).Template(@<span> <a href=@Url.Content("~/Template/Edit/" + item.ID) >
+                        编辑</a> | <a href=@Url.Content("~/Template/Details/" + item.ID)>详细</a> | <a href=@Url.Content("~/Template/delete/" + item.ID) >
+                            删除</a> </span>);    })
                 .Resizable(resizing => resizing.Columns(true))
                 .Filterable().Sortable().Groupable()
                 .Pageable(p => p.PageSize(20))

@@ -1,57 +1,35 @@
 ﻿@model Entity.Template
-
+@using Utl
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "模版详细";
 }
 
-<h2>Details</h2>
-
 <fieldset>
-    <legend>Template</legend>
+    <legend>@SR.Form</legend>
 
-    <div class="display-label">Name</div>
+    <div class="display-label">标题</div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Name)
     </div>
 
-    <div class="display-label">SubName</div>
+    <div class="display-label">副标题</div>
     <div class="display-field">
         @Html.DisplayFor(model => model.SubName)
     </div>
 
-    <div class="display-label">Content</div>
+    <div class="display-label">内容</div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Content)
     </div>
 
-    <div class="display-label">Language</div>
+    <div class="display-label">语言</div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Language)
     </div>
 
-    <div class="display-label">TemplateType</div>
+    <div class="display-label">模版类型</div>
     <div class="display-field">
         @Html.DisplayFor(model => model.TemplateType.Name)
-    </div>
-
-    <div class="display-label">Description</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Description)
-    </div>
-
-    <div class="display-label">Sequence</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Sequence)
-    </div>
-
-    <div class="display-label">User</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.User)
-    </div>
-
-    <div class="display-label">ModifiedTime</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.ModifiedTime)
     </div>
 </fieldset>
 

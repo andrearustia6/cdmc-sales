@@ -30,14 +30,15 @@ namespace Entity
         [Display(Name = "模板副名称")]
         public string SubName { get; set; }
 
-        [Display(Name = "模板副内容")]
+        [Display(Name = "模板内容")]
         public string Content { get; set; }
 
         [Display(Name = "模板语言")]
         public string Language { get; set; }
 
-        [Display(Name = "模板类型"),Required]
+        [Display(Name = "模板类型"), Required]
         public int? TemplateTypeID { get; set; }
+        
         public virtual TemplateType TemplateType { get; set; }
     }
 

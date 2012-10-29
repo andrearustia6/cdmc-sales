@@ -40,7 +40,7 @@ namespace Sales.Controllers
             if (ModelState.IsValid)
             {
                 CH.Create<Category>(item);
-                return RedirectToAction("management", "Project",new {projectid=item.ProjectID});
+                return RedirectToAction("management", "Project", new { id = item.ProjectID });
             }
             ViewBag.ProjectID = item.ProjectID;
             return View(item);
