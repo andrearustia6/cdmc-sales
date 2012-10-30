@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.Web.Mvc;
 using System.Web.Security;
+using System.Web.Profile;
 
 namespace Entity {
     public class LogOnModel
@@ -88,7 +89,5 @@ namespace Entity {
 
         [Display(Name = "部门")]
         public string Department { get; set; }
-
-
     }
 }

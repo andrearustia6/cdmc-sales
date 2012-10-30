@@ -28,7 +28,38 @@ namespace Utl
 
     public class Employee
     {
-        
+        public static UserInfoModel GetCurrentUser()
+        {
+            return GetUserByName(HttpContext.Current.User.Identity.Name);
+        }
+        public static UserInfoModel GetUserByName(string username)
+        {
+            ProfileBase objProfile = ProfileBase.Create(username);
+            var email = Membership.GetUser(username).Email;
+            var roleid = (int)objProfile.GetPropertyValue("RoleLevelID");
+            var gender = objProfile.GetPropertyValue("Gender") as string;
+            var displayName = objProfile.GetPropertyValue("DisplayName") as string;
+            var mobile = objProfile.GetPropertyValue("Mobile") as string;
+            var contact = objProfile.GetPropertyValue("Contact") as string;
+            var department = objProfile.GetPropertyValue("Department") as string;
+            var startDate = objProfile.GetPropertyValue("StartDate") as string;
+            DateTime date;
+            DateTime.TryParse(startDate,out date);
+            var userinfo = new UserInfoModel()
+            {
+                RoleID = roleid,
+                Email = email,
+                Contact = contact,
+                StartDate = date,
+                Mobile = mobile,
+                Gender = gender,
+                DisplayName = displayName,
+                Department = department,
+                UserName = username
+            };
+            return userinfo;
+        }
+
         public static List<MembershipUser> GetAllEmployees()
         {
             var list = Membership.GetAllUsers().Cast<MembershipUser>().ToList<MembershipUser>();
