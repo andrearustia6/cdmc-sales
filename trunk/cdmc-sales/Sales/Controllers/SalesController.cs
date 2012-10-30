@@ -146,14 +146,18 @@ namespace Sales.Controllers
 
         public ViewResult PhoneSaleSupport()
         {
-             var data = CH.GetAllData<PhoneSaleSupport>();
-             return View(data);
+            var ps = CRM_Logical.GetSalesInvolveProject();
+            var data = CH.GetAllData<PhoneSaleSupport>(s => ps.Any(p => p.ID == s.ProjectID) || s.ProjectID == null);
+            return View(data);
         }
 
         [HttpPost]
-        public ViewResult PhoneSaleSupport(int? onphonesupportid, int? projectid ,string condition=null)
+        public ViewResult PhoneSaleSupport(int? onphonesupportid,string condition=null)
         {
-            var data = CH.GetAllData<PhoneSaleSupport>(s => s.ProjectID == projectid);
+            var ps = CRM_Logical.GetSalesInvolveProject();
+
+            var data = CH.GetAllData<PhoneSaleSupport>(s => ps.Any(p=>p.ID == s.ProjectID)|| s.ProjectID==null);
+
             if (!string.IsNullOrEmpty(condition))
             {
                 string c = (string)condition.Trim();
@@ -161,12 +165,12 @@ namespace Sales.Controllers
                     || d.Answer.Contains(c) 
                     || d.Answer.Contains(c)
                     || d.Block.Contains(c)
-                    || d.Description.Contains(c)
                     || d.OnPhoneBlockType.Name.Contains(c)
                     || d.OnPhoneBlockType.Code.ToString() == c
                     );
+                ViewBag.Condition = condition;
             }
-
+            
             return View(data);
         }
 

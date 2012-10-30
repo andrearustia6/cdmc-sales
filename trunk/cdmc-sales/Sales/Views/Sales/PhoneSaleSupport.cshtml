@@ -9,12 +9,16 @@
 @using (Html.BeginForm())
 {
 <fieldset>
-<legend>查询设置</legend>
-<span><b>请输入查询条件：</b><input  type="text" style=" width:200px"/><input type="submit" value="提交" /></span>
 
-</fieldset>
-</center>
+<legend>查询设置</legend>
+@{
+    var v = @ViewBag.Condition == null ? "" : (string)ViewBag.Condition;
+<span><b>请输入查询条件：</b><input name="condition"   type="text" style=" width:200px" value="@v"     /><input type="submit" value="提交" /></span>
 }
+</fieldset>
+
+}
+</center>
 @(
  Html.Telerik().PanelBar().Name("Supports").Items(children=>{
      if (Model != null)
