@@ -156,6 +156,9 @@ namespace Entity
         [Display(Name = "目标公司")]
         public int? CompanyID { get; set; }
 
+        [Display(Name = "公司名称")]
+        public string CompanyName { get { return Company.FullName; } }
+
         public virtual List<Category> Categorys { get; set; }
 
         public List<Deal> Deals { get; set; }

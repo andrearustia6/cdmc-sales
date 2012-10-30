@@ -67,11 +67,8 @@ namespace Sales.Controllers
             if (ModelState.IsValid)
             {
                 CH.Create<LeadCall>(leadcall);
-
-                if (leadcall.LeadCallTypeID != 9)
-                    return RedirectToAction("CompanyRelationshipLeadCallsIndex", new { crid = crid });
-                else
-                    return RedirectToAction("AddDeal", new { projectid = cr.ProjectID, companyrelationshipid = cr.ID });
+                return RedirectToAction("CompanyRelationshipLeadCallsIndex", new { crid = crid });
+               
             }
             else
             {
@@ -87,6 +84,7 @@ namespace Sales.Controllers
         {
             ViewBag.ProjectID = projectid;
             ViewBag.CompanyRelationshipID = item.CompanyRelationshipID;
+
             if (ModelState.IsValid)
             {
                 item.Sales = User.Identity.Name;
@@ -96,20 +94,31 @@ namespace Sales.Controllers
             return View(item);
         }
 
-        public ActionResult AddDeal(int projectid, int companyrelationshipid)
+        public ActionResult AddDeal(int projectid)
         {
             ViewBag.ProjectID = projectid;
-            ViewBag.CompanyRelationshipID = companyrelationshipid;
 
-            return View();
+            this.AddErrorStateIfSalesNoAccessRightToTheProject(projectid);
+
+            //ViewBag.CRMs = CH.GetAllData<CompanyRelationship>(c => c.WhoCallTheCompanyMemberName(User.Identity.Name));
+            if(ModelState.IsValid)
+               return View();
+            else
+                return RedirectToAction("MyDealIndex");
         }
 
         public ActionResult EditDeal(int? id)
         {
+            
             var item = CH.GetDataById<Deal>(id);
+            this.AddErrorStateIfSalesNoAccessRightToTheCRM(item.CompanyRelationshipID);
             ViewBag.ProjectID = item.CompanyRelationship.ProjectID;
             ViewBag.CompanyRelationshipID = item.CompanyRelationshipID;
-            return View(item);
+
+            if (ModelState.IsValid)
+                return View(item);
+            else
+                return RedirectToAction("MyDealIndex");
         }
 
         [HttpPost]
