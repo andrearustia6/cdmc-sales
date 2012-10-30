@@ -7,6 +7,7 @@
 @Html.ValidationSummary(true)
 @using (Html.BeginForm())
 {
+    @Html.HiddenFor(m=>m.ID)
     @Html.Partial("change", Model)
      @Html.Partial("EditCommon", Model)
     <div>

@@ -5,6 +5,7 @@
     Details</h2>
 @model Entity.UserInfoModel
 @using Utl
+@using Entity
 <fieldset>
     <legend>账号信息</legend>
     <div class="editor-label">
@@ -17,13 +18,13 @@
         @Html.LabelFor(m => m.RoleID)
     </div>
     <div class="editor-field">
-    @if (Model.Role == null)
+    @if (Model.RoleID == 0)
     {
         <p>未配置</p> 
     }
     else
     {
-        @Html.Display(Model.Role.Name)
+        @Html.Display(CH.GetDataById<Role>(Model.RoleID).Name)
     }
     </div>
     <div class="editor-label">

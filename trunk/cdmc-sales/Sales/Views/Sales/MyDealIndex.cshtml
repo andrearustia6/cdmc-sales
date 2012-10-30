@@ -23,7 +23,7 @@
                     c.Bound(item => item.ExpectedPaymentDate).Format("{0:d}").Width(90);
                     c.Bound(item => item.ActualPaymentDate).Format("{0:d}").Width(100);
                     c.Bound(item => item.ID).Title("操作").Template(@<span>
-                    <a href=@Url.Content("~/sales/EditDeal/" + item.ID) >编辑</a> | <a href=@Url.Content("~/sales/DisplayDeal/" + item.ID)>详细</a>  
+                    <a href=@Url.Content("~/sales/EditDeal/?id=" + item.ID+"&projectid="+(int)ViewBag.ProjectID) >编辑</a> | <a href=@Url.Content("~/sales/DisplayDeal/?id=" + item.ID + "&projectid=" + (int)ViewBag.ProjectID)>详细</a>  
                    </span>);
                 })
                                         .Resizable(resizing => resizing.Columns(true))

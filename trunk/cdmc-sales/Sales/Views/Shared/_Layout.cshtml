@@ -89,7 +89,7 @@
                    {
                        menu.Add().Text("日常工作").ImageUrl("~/Content/Common/Icons/GridView.gif").Items(item =>
                        {
-                           item.Add().Url("~/Sales/MyIndex").Text("调研上传").ImageUrl("~/Content/Common/Icons/Docking.gif");
+                           item.Add().Url("~/Research/MyIndex").Text("调研上传").ImageUrl("~/Content/Common/Icons/Docking.gif");
                            item.Add().Url("~/Sales/CompanyRelationshipIndex").Text("分配的公司").ImageUrl("~/Content/Common/Icons/Docking.gif");
                            item.Add().Url("~/Sales/MyDealIndex").Text("我的出单").ImageUrl("~/Content/Common/Icons/Docking.gif");
                            item.Add().Url("~/Sales/PhoneSaleSupport").Text("电话支持").ImageUrl("~/Content/Common/Icons/Docking.gif");
@@ -125,7 +125,9 @@
     </div>
     <div class="bottom">
         <div class="bottom_2" style="min-height:600px;">
-            <section id="main">@RenderBody()</section>
+        <div>
+            <div id="main">@RenderBody()</div>
+         </div>
         </div>
     </div>
 </body>

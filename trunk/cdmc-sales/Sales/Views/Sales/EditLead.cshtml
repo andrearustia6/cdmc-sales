@@ -10,6 +10,7 @@
 @using (Html.BeginForm()) {
     @Html.ValidationSummary(true)
     @Html.Hidden("ProjectID", (int?)ViewBag.ProjectID)
+     @Html.HiddenFor(m => m.ID)
     @Html.Partial(@"~\views\lead\change.cshtml", Model);
     @Html.Partial(@"editcommon", Model);
 <div>

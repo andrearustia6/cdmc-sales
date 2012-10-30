@@ -57,7 +57,16 @@
         @Html.Telerik().CurrencyTextBoxFor(model => model.Income)
         @Html.ValidationMessageFor(model => model.Income)
     </div>
-    
+       <div class="editor-label">
+        @Html.LabelFor(model => model.Sales)
+    </div>
+    <div class="editor-field">
+    @{
+        var name = Model==null? HttpContext.Current.User.Identity.Name:Model.Sales;
+        <input  name ="Sales" value="@name" />
+      }
+        @Html.ValidationMessageFor(model => model.Sales)
+    </div>
     <div class="editor-label">
         @Html.LabelFor(model => model.PaymentDetail)
     </div>
@@ -65,13 +74,7 @@
         @Html.TextAreaFor(model => model.PaymentDetail)
         @Html.ValidationMessageFor(model => model.PaymentDetail)
     </div>
-    <div class="editor-label">
-        @Html.LabelFor(model => model.Sales)
-    </div>
-    <div class="editor-field">
-        @Html.EditorFor(model => model.Sales)
-        @Html.ValidationMessageFor(model => model.Sales)
-    </div>
+ 
     <div class="editor-label">
         @Html.Label("客户公司")
     </div>

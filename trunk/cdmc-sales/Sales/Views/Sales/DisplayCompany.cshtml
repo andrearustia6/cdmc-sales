@@ -8,7 +8,7 @@
 @Html.Partial("displaycommon", Model)
 <center>
 <p>
-    @Html.ActionLink(SR.Edit, "EditCompany", new { id = Model.ID }) 
+    @Html.ActionLink(SR.Edit, "EditCompany", new { crid = (int)ViewBag.CompanyRelationshipID }) 
    @* @Html.ActionLink(SR.GobackToList, "Index")*@
 </p>
 </center>
