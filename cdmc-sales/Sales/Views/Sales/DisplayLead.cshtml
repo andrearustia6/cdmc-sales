@@ -3,13 +3,12 @@
 }
 @using Entity
 @using Utl
-@model Lead
-           
+@model Lead    
 @Html.Partial(@"~\views\lead\display.cshtml",Model)
 @Html.Partial("displaycommon", Model)
 <center>
 <p>
-    @Html.ActionLink(SR.Edit, "EditLead", new { id = Model.ID }) 
+    @Html.ActionLink(SR.Edit, "EditLead", new { id = Model.ID, crid = (int)ViewBag.CompanyRelationshipID, projectid = (int)ViewBag.ProjectID }) 
    @* @Html.ActionLink(SR.GobackToList, "Index")*@
 </p>
 </center>

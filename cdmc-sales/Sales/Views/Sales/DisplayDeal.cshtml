@@ -4,12 +4,12 @@
 @using Entity
 @using Utl
 @model Deal
-           
+@Html.Hidden("crid", (int)ViewBag.CompanyRelationshipID)
 @Html.Partial(@"~\views\Deal\display.cshtml", Model)
 @Html.Partial("displaycommon", Model)
 <center>
 <p>
-    @Html.ActionLink(SR.Edit, "EditDeal", new { id = Model.ID }) 
+    @Html.ActionLink(SR.Edit, "EditDeal", new { id = Model.ID, crid = (int)ViewBag.CompanyRelationshipID , projectid = (int)ViewBag.ProjectID }) 
    @* @Html.ActionLink(SR.GobackToList, "Index")*@
 </p>
 </center>

@@ -5,12 +5,12 @@
     ViewBag.Title = "个人主页";
 }
 <style type="text/css">
-.userinfo
+.info
 {
      width:100%;
       border:0px;
 }
-.userinfo tr td
+.info tr td
 {
      width:33%;
      border:0px;
@@ -23,10 +23,10 @@
     var user = Employee.GetCurrentUser();
     var role = CH.GetDataById<Role>(user.RoleID);
 
-<table class="userinfo">
+<table class="info">
 <tr><td><span>员工姓名：@user.DisplayName</span></td><td><span>员工性别：@user.Gender</span></td><td><span>电子邮箱：@user.Email</span></td></tr>
 <tr><td><span>公司座机：@user.Contact</span></td><td><span>移动电话：@user.Mobile</span></td><td><span>入职日期：@user.StartDate.Value.ToShortDateString()</span></td></tr>
-<tr><td><span>系统职级：@role.Name></span></td><td><span>所属部门：@user.Department</span></td><td><span>员工账号：@user.UserName</span></td></tr>
+<tr><td><span>系统职级：@role.Name</span></td><td><span>所属部门：@user.Department</span></td><td><span>员工账号：@user.UserName</span></td></tr>
 </table>
 
 
@@ -35,4 +35,31 @@
 
 <fieldset>
 <legend>所在项目</legend>
+<div>
+@if(Model!=null)
+{
+@(Html.Telerik().TabStrip().Name("TabStrip").SelectedIndex(ViewBag.TabIndex == null ? 0 : (int)ViewBag.TabIndex).Items(items =>
+{
+    foreach(var child in Model)
+    {
+    items.Add().Text(child.Name).Content(@<text>@ProjectDetails(child)</text>);
+    }
+
+}))
+}
+</div>
 </fieldset>
+
+@helper ProjectDetails(Project project)
+{
+    <div>
+    <fieldset>
+    <legend>基本信息</legend>
+   <table class="userinfo">
+<tr><td><span>项目名称：@user.DisplayName</span></td><td><span>员工性别：@user.Gender</span></td><td><span>电子邮箱：@user.Email</span></td></tr>
+<tr><td><span>公司座机：@user.Contact</span></td><td><span>移动电话：@user.Mobile</span></td><td><span>入职日期：@user.StartDate.Value.ToShortDateString()</span></td></tr>
+<tr><td><span>系统职级：@role.Name</span></td><td><span>所属部门：@user.Department</span></td><td><span>员工账号：@user.UserName</span></td></tr>
+</table>
+    </fieldset>
+    </div>
+}
