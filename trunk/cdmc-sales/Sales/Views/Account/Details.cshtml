@@ -1,8 +1,7 @@
 ﻿@{
     ViewBag.Title = "Details";
 }
-<h2>
-    Details</h2>
+
 @model Entity.UserInfoModel
 @using Utl
 @using Entity
@@ -24,7 +23,7 @@
     }
     else
     {
-        @Html.Display(CH.GetDataById<Role>(Model.RoleID).Name)
+        @Html.Label(CH.GetDataById<Role>(Model.RoleID).Name)
     }
     </div>
     <div class="editor-label">
@@ -55,7 +54,7 @@
         @Html.LabelFor(m => m.BirthDay)
     </div>
     <div class="editor-field">
-        @Html.DisplayFor(m => m.BirthDay)
+        @Html.Label(Model.BirthDay.ToShortDateString())
     </div>
     <div class="editor-label">
         @Html.LabelFor(m => m.Gender)
