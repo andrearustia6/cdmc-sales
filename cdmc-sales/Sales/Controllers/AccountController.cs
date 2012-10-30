@@ -300,6 +300,8 @@ namespace MvcGlobalAuthorize.Controllers
             {
                 ModelState.Remove("Password");
                 ModelState.Remove("UserName");
+                if ((model.RoleID == 0 || model.StartDate==null) && model.IsActivated == true)
+                    ModelState.AddModelError("","激活的账号必须设置职级和入职日期才能生效");
                 if (ModelState.IsValid)
                 {
                     MembershipUser user = Membership.GetUser(model.UserName);

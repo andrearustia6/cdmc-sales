@@ -81,7 +81,7 @@ namespace Sales.Controllers
         }
         #endregion
 
-        #region
+        #region deal
         [HttpPost]
         public ActionResult AddDeal(Deal item, int? projectid)
         {
@@ -144,6 +144,7 @@ namespace Sales.Controllers
 
         #endregion
 
+        #region support
         public ViewResult PhoneSaleSupport()
         {
             var ps = CRM_Logical.GetSalesInvolveProject();
@@ -173,6 +174,7 @@ namespace Sales.Controllers
             
             return View(data);
         }
+        #endregion
 
         #region Lead
         /// <summary>
@@ -361,6 +363,8 @@ namespace Sales.Controllers
             return View();
         }
         #endregion  
+        
+
 
         /// <summary>
         /// 根据分配显示sales需要拨打的公司
@@ -392,6 +396,13 @@ namespace Sales.Controllers
                 }
             }
             return View();
+        }
+
+        public ViewResult MyPage()
+        {
+            var ps = CRM_Logical.GetSalesInvolveProject();
+
+            return View(ps);
         }
     }
 }

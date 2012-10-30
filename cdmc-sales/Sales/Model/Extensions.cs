@@ -53,18 +53,18 @@ namespace Entity
             return ps;
         }
 
-        public static string GetInvolveProjectsName(this Member item)
-        {
-            var ps= item.GetInvolveProjects();
-            string name = string.Empty;
-            ps.ForEach(p => {
-                if (string.IsNullOrEmpty(name))
-                    name = p.Name;
-                else
-                    name += "|" + p.Name;
-            });
-            return name;
-        }
+        //public static string GetInvolveProjectsName(this Member item)
+        //{
+        //    var ps= item.GetInvolveProjects();
+        //    string name = string.Empty;
+        //    ps.ForEach(p => {
+        //        if (string.IsNullOrEmpty(name))
+        //            name = p.Name;
+        //        else
+        //            name += "|" + p.Name;
+        //    });
+        //    return name;
+        //}
 
         public static int?  EmployeeDuration(this Member item)
         {
