@@ -12,7 +12,6 @@
 {
 
     @Html.Hidden("ProjectID", (int)ViewBag.ProjectID)
-    @Html.Hidden("CompanyRelationshipID", (int)ViewBag.CompanyRelationshipID)
     @Html.Partial(@"~\views\deal\change.cshtml", Model);
     @Html.Partial(@"editcommon", Model);
 <div>
