@@ -94,7 +94,7 @@ namespace Sales.Controllers
             return View(item);
         }
 
-        public ActionResult AddDeal(int projectid)
+        public ActionResult AddDeal(int? projectid)
         {
             ViewBag.ProjectID = projectid;
 

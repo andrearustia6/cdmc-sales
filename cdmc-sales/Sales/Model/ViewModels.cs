@@ -63,14 +63,17 @@ namespace Model
     {
         public LeadCall LeadCall { get; set; }
         public string LeadName { get { return LeadCall.Lead.FullName; } }
+        public string LeadTitle { get { return LeadCall.Lead.Title; } }
         public string Companyname { get { return LeadCall.CompanyRelationship.Company.FullName; } }
+
+        public string ProjectName { get { return LeadCall.CompanyRelationship.Project.Name; } }
         public DateTime CallDateTime
         {
             get
             {
                 var date = LeadCall.CallBackDate.Value;
                 var differs = LeadCall.CompanyRelationship.Company.DistrictNumber.TimeDifference;
-                date.AddHours(differs);
+                date = date.AddHours(differs);
                 return date;
             }
         }
