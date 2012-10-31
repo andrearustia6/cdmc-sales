@@ -37,7 +37,7 @@
             string en = "未发现匹配Package";
             if (c != null)
             {
-                en = c.FullName;
+                en = c.Name;
                 @Html.Label(en) 
                 @Html.Hidden("PackageID", cid)
             } 

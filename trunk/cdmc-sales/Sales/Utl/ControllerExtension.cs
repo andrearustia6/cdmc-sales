@@ -101,7 +101,7 @@ namespace System.Web.Mvc
         /// <summary>
         /// 记录中存在相同的中文名或者英文名
         /// </summary>
-        public static void AddAddErrorStateIfOneOfNameExist<T>(this Controller item, string enname, string chname) where T:FullNameEntity
+        public static void AddAddErrorStateIfOneOfNameExist<T>(this Controller item, string enname, string chname) where T:NameEntity
         {
             var exists = CH.GetAllData<T>(i => (i.Name_EN == enname &&  !string.IsNullOrEmpty(enname)) || (!string.IsNullOrEmpty(chname) && i.Name_CH == chname));
             if(exists.Count>0)
@@ -116,7 +116,7 @@ namespace System.Web.Mvc
             }
         }
 
-        public static void AddErrorIfAllNamesEmpty(this Controller item, FullNameEntity target)
+        public static void AddErrorIfAllNamesEmpty(this Controller item, NameEntity target)
         {
             if (target.IsAllNamesEmpty())
             {

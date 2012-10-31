@@ -10,7 +10,7 @@ namespace Entity
     /// <summary>
     /// 公司
     /// </summary>
-    public class Company : FullNameEntity
+    public class Company : NameEntity
     {
         [Display(Name = "联系方式"), MaxLength(100)]
         public string Contact { get; set; }
@@ -83,7 +83,7 @@ namespace Entity
     /// 
     /// </summary>
     [JsonIgnoreAttribute("ModifiedTime","Company","Image")]
-    public class Lead :FullNameEntity
+    public class Lead :NameEntity
     {
         public string Gender { get; set; }
 

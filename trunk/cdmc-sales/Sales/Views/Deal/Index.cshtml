@@ -14,9 +14,9 @@
                 })
                 .Columns(c =>
                 {
-                    c.Bound(item => item.CompanyRelationship.Company.FullName).Title("客户名公司").Width(150);
+                    c.Bound(item => item.CompanyRelationship.Company.Name).Title("客户名公司").Width(150);
                     c.Bound(item => item.CompanyRelationship.Project.Name).Width(150);
-                    c.Bound(item => item.Package.FullName).Width(150);
+                    c.Bound(item => item.Package.Name).Width(150);
                     c.Bound(item => item.Payment).Width(150).Format("{0:c}");
                     c.Bound(item => item.Income).Width(150).Format("{0:c}");
                     c.Bound(item => item.IsClosed).Width(70);

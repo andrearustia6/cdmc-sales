@@ -21,7 +21,7 @@
             var cid = CH.GetDataById<CompanyRelationship>(Model==null?(int)ViewBag.CompanyRelationshipID:Model.CompanyRelationshipID).CompanyID;
             var leads = CH.GetAllData<Lead>(l=>l.CompanyID == cid);
             
-           @Html.DropDownListFor(m => m.LeadID, new SelectList(leads, "ID", "FullName"), "-请选择-")
+           @Html.DropDownListFor(m => m.LeadID, new SelectList(leads, "ID", "Name"), "-请选择-")
            @Html.ValidationMessageFor(model => model.LeadID)
             }
         </div>
@@ -34,7 +34,7 @@
           
             var crid = Model==null?(int)ViewBag.CompanyrelationshipID:Model.CompanyRelationshipID;
        
-            @Html.Label(CH.GetDataById<CompanyRelationship>(crid).Company.FullName)
+            @Html.Label(CH.GetDataById<CompanyRelationship>(crid).Company.Name)
             @Html.Hidden("CompanyRelationshipID", crid)
          }
         </div>

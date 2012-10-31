@@ -41,7 +41,7 @@
                 var $searchlist = $pf.find('.pf-searchresult');
                 $searchlist.children().remove();
                 for (var i = 0; i < result.length; i++) {
-                    var $li = generateLi(result[i].ID, result[i].FullName).appendTo($searchlist);
+                    var $li = generateLi(result[i].ID, result[i].Name).appendTo($searchlist);
                     $li.data('employee', result[i]);
                     var $addedcbk = $li.find('.pf-checkbox');
                     $addedcbk.click(function () {
@@ -79,7 +79,7 @@
         var array = $target.data('pf');
         if (array) {
             for (var i = 0; i < array.length; i++) {
-                generateLi(array[i].id, array[i].fullname).appendTo($selectedDiv.find('ul'));
+                generateLi(array[i].id, array[i].Name).appendTo($selectedDiv.find('ul'));
                 $searchresultDiv.find('li[employeeID="' + array[i].id + '"]').find(':checkbox').attr('ischecked', 'checked').attr('checked', 'checked');
 
             }

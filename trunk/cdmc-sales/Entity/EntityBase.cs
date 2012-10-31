@@ -29,10 +29,11 @@ namespace Entity
         public DateTime? CreatedDate { get; set; }
     }
 
-    public class FullNameEntity : EntityBase
+    public class NameEntity : EntityBase
     {
         [Display(Name = "名称")]
-        public string FullName { get { return EntityUtl.Utl.GetFullName(this); } }
+        public string Name { get { return EntityUtl.Utl.GetName(this); } }
+
 
         [Display(Name = "中文名称"), MaxLength(100)]
         public string Name_CH { get; set; }

@@ -5,11 +5,25 @@
     <legend>@SR.Form</legend>
     
     <div class="editor-label">
-        @Html.LabelFor(model => model.Name)
+        @Html.LabelFor(model => model.Name_CH)
     </div>
     <div class="editor-field">
-        @Html.EditorFor(model => model.Name)
-        @Html.ValidationMessageFor(model => model.Name)
+        @Html.EditorFor(model => model.Name_CH)
+        @Html.ValidationMessageFor(model => model.Name_CH)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.Name_EN)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.Name_EN)
+        @Html.ValidationMessageFor(model => model.Name_EN)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.Location)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.Location )
+        @Html.ValidationMessageFor(model => model.Location)
     </div>
     <div class="editor-label">
         @Html.LabelFor(model => model.IsActived)
@@ -40,6 +54,22 @@
         @Html.Telerik().DatePickerFor(model => model.EndDate)
         @Html.ValidationMessageFor(model => model.EndDate)
     </div>
+
+     <div class="editor-label">
+        @Html.LabelFor(model => model.ConferenceStartDate )
+    </div>
+    <div class="editor-field">
+        @Html.Telerik().DatePickerFor(model => model.ConferenceStartDate)
+        @Html.ValidationMessageFor(model => model.ConferenceStartDate)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.ConferenceEndDate )
+    </div>
+    <div class="editor-field">
+        @Html.Telerik().DatePickerFor(model => model.ConferenceEndDate)
+        @Html.ValidationMessageFor(model => model.ConferenceEndDate)
+    </div>
+
     <div class="editor-label">
         @Html.LabelFor(model => model.Manager)
     </div>

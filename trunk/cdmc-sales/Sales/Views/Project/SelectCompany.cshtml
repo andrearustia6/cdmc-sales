@@ -17,8 +17,7 @@
                 .Columns(c =>
                 {
                     c.Bound(ic => ic.ID).Template(@<text>@Checkbox(item)</text>).Title("已选？").Width(36).HtmlAttributes(new { style = "text-align:center" });
-                    c.Bound(ic => ic.FullName).Width(150);
-                    c.Bound(ic => ic.Areas).Title("业务范围").Width(200);
+                    c.Bound(ic => ic.Name).Width(150);
                     c.Bound(ic => ic.Contact).Width(150);
                 })
                                                         .Resizable(resizing => resizing.Columns(true))

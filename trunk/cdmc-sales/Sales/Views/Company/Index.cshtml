@@ -9,8 +9,8 @@
                 })
                 .Columns(c =>
                 {
-                    c.Bound(item => item.FullName).Width(150);
-                    c.Bound(item => item.Area.FullName).Title("行业").Width(100);
+                    c.Bound(item => item.Name).Width(150);
+                    c.Bound(item => item.Area.Name).Title("行业").Width(100);
                     c.Bound(item => item.Available).Width(80);
                     c.Bound(item => item.Contact).Width(100);
                     c.Bound(item => item.CompanyType.Name).Width(100);
@@ -39,7 +39,7 @@
      @(Html.Telerik().Grid(Leads).Name("Leads" + companyuid)
                             .Columns(c =>
                             {
-                                c.Bound(o => o.FullName).Width(150);
+                                c.Bound(o => o.Name).Width(150);
                                 c.Bound(o => o.Title).Width(150);
                                 c.Bound(o => o.EMail).Title("电子邮箱").Width(150);
                                 c.Bound(o => o.Fax).Title("传真").Width(150);

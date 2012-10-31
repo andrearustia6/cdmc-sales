@@ -66,7 +66,7 @@
 @(Html.Telerik().Grid(Model).Name("CompanyRelationship").DataKeys(dk => dk.Add(s => s.ID))
 .Columns(c =>
 {
-    c.Bound(item => item.Company.FullName).Width(200);
+    c.Bound(item => item.Company.Name).Width(200);
     c.Bound(item => item.Importancy).Width(300);
 })
      .Resizable(resizing => resizing.Columns(true))

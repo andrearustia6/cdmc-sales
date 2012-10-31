@@ -9,10 +9,10 @@
                 })
                 .Columns(c =>
                 {
-                    c.Bound(item => item.Lead.FullName).Width(100);
+                    c.Bound(item => item.Lead.Name).Width(100);
                     c.Bound(item => item.Lead.Title).Width(100);
                     c.Bound(item => item.LeadCallType.Name).Width(100);
-                    c.Bound(item => item.CompanyRelationship.Company.FullName).Title("公司名称").Width(100);
+                    c.Bound(item => item.CompanyRelationship.Company.Name).Title("公司名称").Width(100);
                     c.Bound(item => item.CreatedDate).Title("创建时间").Width(200);
                     c.Bound(item => item.Creator).Title("创建人").Width(100);
                     c.Bound(item => item.ID).Width(200).Title("操作").Template(@<span>

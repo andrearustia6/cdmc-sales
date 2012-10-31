@@ -43,7 +43,7 @@
             @Html.LabelFor(model => model.PackageTypeID)
         </div>
         <div class="editor-field">
-            @Html.DropDownList("PackageTypeID", new SelectList(CH.GetAllData<PackageType>(), "ID", "FullName"), "-请选择-")
+            @Html.DropDownList("PackageTypeID", new SelectList(CH.GetAllData<PackageType>(), "ID", "Name"), "-请选择-")
             @Html.ValidationMessageFor(model => model.PackageTypeID)
         </div>
 
@@ -51,7 +51,7 @@
             @Html.LabelFor(model => model.ParticipantTypeID)
         </div>
         <div class="editor-field">
-            @Html.DropDownList("ParticipantTypeID", new SelectList(CH.GetAllData<ParticipantType>(), "ID", "FullName"), "-请选择-")
+            @Html.DropDownList("ParticipantTypeID", new SelectList(CH.GetAllData<ParticipantType>(), "ID", "Name"), "-请选择-")
             @Html.ValidationMessageFor(model => model.ParticipantTypeID)
         </div>
 </fieldset>

@@ -20,9 +20,9 @@ namespace Entity
     }
 
 
-    public static class FullNameEntityExtensions
+    public static class NameEntityExtensions
     {
-        public static bool IsAllNamesEmpty(this FullNameEntity item)
+        public static bool IsAllNamesEmpty(this NameEntity item)
         {
             if (string.IsNullOrEmpty(item.Name_EN) && string.IsNullOrEmpty(item.Name_CH))
                 return true;
@@ -407,9 +407,9 @@ namespace Entity
         public static string CopamyName(this CompanyRelationship item)
         {
             if (item.Company != null)
-                return item.Company.FullName;
+                return item.Company.Name;
             else
-                return CH.GetDataById<Company>(item.CompanyID).FullName;
+                return CH.GetDataById<Company>(item.CompanyID).Name;
         }
 
         public static string ProjectName(this CompanyRelationship item)

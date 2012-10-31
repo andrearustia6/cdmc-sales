@@ -10,7 +10,7 @@ namespace Entity
     /// <summary>
     /// 参会类型
     /// </summary>
-    public class ParticipantType : FullNameEntity
+    public class ParticipantType : NameEntity
     {
         //[Display(Name = "参会类型")]
         //public string Name { get; set; }
@@ -19,7 +19,7 @@ namespace Entity
      /// <summary>
     /// Package类型
     /// </summary>
-    public class PackageType : FullNameEntity
+    public class PackageType : NameEntity
     {
 
     }
@@ -29,7 +29,7 @@ namespace Entity
     /// <summary>
     /// 套餐子项
     /// </summary>
-    public class PackageItem : FullNameEntity
+    public class PackageItem : NameEntity
     {
         [Display(Name = "参考图片")]
         public Image Image { get; set; }
@@ -48,7 +48,7 @@ namespace Entity
     /// <summary>
     /// 参会套餐项目
     /// </summary>
-    public class Package : FullNameEntity
+    public class Package : NameEntity
     {
         public virtual ParticipantType ParticipantType { get; set; }
         [Display(Name = "参会类型"), Required]

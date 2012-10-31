@@ -15,7 +15,7 @@
                 })
                 .Columns(c =>
                 {
-                    c.Bound(item => item.Company.FullName).Width(150);
+                    c.Bound(item => item.Company.Name).Width(150);
                     c.Bound(item => item.Importancy).Width(80);
                     c.Bound(item => item).Title("分类").Template(@<text>@item.CategoryString()</text>);
                     c.Bound(item => item.Company.Available).Width(100);
@@ -43,7 +43,7 @@
      @(Html.Telerik().Grid(Leads).Name("Leads" + cr.CompanyID)
                             .Columns(c =>
                             {
-                                c.Bound(o => o.FullName);
+                                c.Bound(o => o.Name);
                                 c.Bound(o => o.Title);
                                 c.Bound(o => o).Title("状态").Template(@<text>@CRM_Logical.GetLeadStatus(cr.ProjectID, item)</text>);
                                 c.Bound(o => o).Title("操作").Template(@<span>

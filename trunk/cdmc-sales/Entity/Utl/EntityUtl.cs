@@ -35,7 +35,7 @@ namespace EntityUtl
 
     public class Utl
     {
-        public static string GetFullName(EntityBase e)
+        public static string GetName(EntityBase e)
         {
             var pe = e.GetType().GetProperty("Name_EN");
             var pc = e.GetType().GetProperty("Name_CH");
