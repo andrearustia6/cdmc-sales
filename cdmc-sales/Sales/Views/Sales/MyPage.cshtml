@@ -1,38 +1,13 @@
 ﻿@model List<Project>
 @using Entity
 @using Utl
+@using Model
 @{
-    ViewBag.Title = "个人主页";
+    ViewBag.Title = "我的主页";
 }
-<style type="text/css">
-.info
-{
-     width:100%;
-      border:0px;
-}
-.info tr td
-{
-     width:33%;
-     border:0px;
-}
-</style>
+
 <center><h2>我的主页</h2></center>
-<fieldset>
-<legend>个人信息</legend>
-@{
-    var user = Employee.GetCurrentUser();
-    var role = CH.GetDataById<Role>(user.RoleID);
-
-<table class="info">
-<tr><td><span>员工姓名：@user.DisplayName</span></td><td><span>员工性别：@user.Gender</span></td><td><span>电子邮箱：@user.Email</span></td></tr>
-<tr><td><span>公司座机：@user.Contact</span></td><td><span>移动电话：@user.Mobile</span></td><td><span>入职日期：@user.StartDate.Value.ToShortDateString()</span></td></tr>
-<tr><td><span>系统职级：@role.Name</span></td><td><span>所属部门：@user.Department</span></td><td><span>员工账号：@user.UserName</span></td></tr>
-</table>
-
-
-}
-</fieldset>
-
+@Html.Partial("personinfo",User.Identity.Name)
 <fieldset>
 <legend>所在项目</legend>
 <div>
@@ -42,24 +17,40 @@
 {
     foreach(var child in Model)
     {
-    items.Add().Text(child.Name).Content(@<text>@ProjectDetails(child)</text>);
+        items.Add().Text(child.Name).Content(@<text>@Html.Partial("projectinfo",child)</text>);
     }
-
 }))
 }
 </div>
 </fieldset>
 
-@helper ProjectDetails(Project project)
-{
-    <div>
-    <fieldset>
-    <legend>基本信息</legend>
-   <table class="userinfo">
-<tr><td><span>项目名称：@user.DisplayName</span></td><td><span>员工性别：@user.Gender</span></td><td><span>电子邮箱：@user.Email</span></td></tr>
-<tr><td><span>公司座机：@user.Contact</span></td><td><span>移动电话：@user.Mobile</span></td><td><span>入职日期：@user.StartDate.Value.ToShortDateString()</span></td></tr>
-<tr><td><span>系统职级：@role.Name</span></td><td><span>所属部门：@user.Department</span></td><td><span>员工账号：@user.UserName</span></td></tr>
-</table>
-    </fieldset>
-    </div>
-}
+<fieldset>
+<legend>待拨打电话</legend>
+@{
+     if(Model!=null)
+     {
+         //取得该员工的所有成员实例
+         var members = new List<Member>();
+         Model.ForEach(p =>
+         {
+             members.Add(p.Members.FirstOrDefault(m => m.Name == User.Identity.Name));
+         });
+
+         var calls = new List<ViewMemberLeadToCall>();
+         members.ForEach(m =>
+         {
+             var temp = m.GetMemberToCallList();
+             calls.AddRange(temp);
+         });
+         if(calls.Count>0)
+         {
+             <table >
+             <tr><th>客户名称</th><th>所属公司</th><th>拨打时间</th><th>拨打时间</th><th>所属项目</th></tr>
+            
+            </table>
+         }
+        
+     }
+        
+  }
+</fieldset>

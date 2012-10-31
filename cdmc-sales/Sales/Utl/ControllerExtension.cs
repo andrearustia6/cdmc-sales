@@ -138,17 +138,22 @@ namespace System.Web.Mvc
             var role = cr.Project.RoleInProject();
             if (role == RoleInProject.NotIn)
             {
-                item.ModelState.AddModelError("", "对不起，您在此项目中的权限是：" + role.ToString() + ", 无法访问此页面。");
+                item.ModelState.AddModelError("", "对不起，您在此项目中的权限是：" + role.ToString() + ", 无法访问此页面");
             }
         }
 
         public static void AddErrorStateIfSalesNoAccessRightToTheProject(this Controller item, int? projectid)
         {
+            if (projectid == null)
+            {
+                item.ModelState.AddModelError("", "对不起，请先选择需要添加出单的项目");
+                return;
+            }
             var p = CH.GetDataById<Project>(projectid);
             var role = p.RoleInProject();
             if (role == RoleInProject.NotIn)
             {
-                item.ModelState.AddModelError("", "对不起，您在此项目中的权限是：" + role.ToString() + ", 无法访问此页面。");
+                item.ModelState.AddModelError("", "对不起，您在此项目中的权限是：" + role.ToString() + ", 无法访问此页面");
             }
         }
     }

@@ -8,6 +8,7 @@ using System.Web.Security;
 using Entity;
 using System.Web.Profile;
 using Utl;
+using BLL;
 
 namespace MvcGlobalAuthorize.Controllers
 {
@@ -43,7 +44,10 @@ namespace MvcGlobalAuthorize.Controllers
                     }
                     else
                     {
-                        return RedirectToAction("Index", "account");
+                        if (Employee.EqualToLeader() || Employee.EqualToSales())
+                            return RedirectToAction("mypage", "sales");
+                        else
+                            return RedirectToAction("Index", "account");
                     }
                 }
                 else

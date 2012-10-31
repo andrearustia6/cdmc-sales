@@ -35,6 +35,6 @@
 
     <div class="display-label">销售简介</div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.SaleBrief)
+        @HtmlExtensions.GetHtmlString(Model.SaleBrief)
     </div>
 </fieldset>

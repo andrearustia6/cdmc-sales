@@ -218,7 +218,9 @@ namespace Sales.Controllers
 
         public ViewResult Details(int id)
         {
-            return View(CH.GetDataById<Project>(id, "Categorys"));
+            var data = CH.GetDataById<Project>(id, "Categorys");
+            data.SaleBrief = HttpUtility.HtmlDecode(data.SaleBrief);
+            return View(data);
         }
 
         public ActionResult Create()

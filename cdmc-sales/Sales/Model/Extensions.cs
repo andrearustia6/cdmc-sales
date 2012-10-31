@@ -14,7 +14,7 @@ namespace Entity
         {
             var value = item.GetType().GetProperty(fieldname).GetValue(item, null);
             var data = CH.GetAllData<T>(child => child.GetType().GetProperty(fieldname).GetValue(child, null).ToString() == value.ToString());
-            if (data.Count > 0 && data.Any(d=>d.ID!=item.ID)) return true;
+            if (data.Count > 0 && data.Any(d => d.ID != item.ID)) return true;
             return false;
         }
     }
@@ -38,6 +38,12 @@ namespace Entity
 
     public static class MemberExtensions
     {
+        /// <summary>
+        /// 是否有权限到crm
+        /// </summary>
+        /// <param name="item"></param>
+        /// <param name="cr"></param>
+        /// <returns></returns>
         public static bool IsAbleToAccessTheCompanyRelationship(this Member item, CompanyRelationship cr)
         {
             var d = cr.WhoCallTheCompanyMember();
@@ -47,39 +53,131 @@ namespace Entity
                 return false;
         }
 
+        /// <summary>
+        /// 查看以前参加过的项目
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
         public static List<Project> GetInvolveProjects(this Member item)
         {
-            var ps = CH.GetAllData<Project>(p => p.Members.Any(m=>m.Name == item.Name), "Members");
+            var ps = CH.GetAllData<Project>(p => p.Members.Any(m => m.Name == item.Name), "Members");
             return ps;
         }
 
-        //public static string GetInvolveProjectsName(this Member item)
-        //{
-        //    var ps= item.GetInvolveProjects();
-        //    string name = string.Empty;
-        //    ps.ForEach(p => {
-        //        if (string.IsNullOrEmpty(name))
-        //            name = p.Name;
-        //        else
-        //            name += "|" + p.Name;
-        //    });
-        //    return name;
-        //}
+        /// <summary>
+        /// 查看以前参加过的项目
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        public static string GetInvolveProjectsName(this Member item)
+        {
+            var ps = item.GetInvolveProjects();
+            string name = string.Empty;
+            ps.ForEach(p =>
+            {
+                if (string.IsNullOrEmpty(name))
+                    name = p.Name;
+                else
+                    name += "|" + p.Name;
+            });
+            return name;
+        }
 
-        public static int?  EmployeeDuration(this Member item)
+        public static int? EmployeeDuration(this Member item)
         {
             ProfileBase objProfile = ProfileBase.Create(item.Name);
             object StartDate;
             DateTime startdate;
             StartDate = objProfile.GetPropertyValue("StartDate");
             DateTime.TryParse(StartDate.ToString(), out startdate);
-            if (startdate.Year!= 1)
+            if (startdate.Year != 1)
             {
                 var weeks = (DateTime.Now - startdate).Days / 7;
                 return weeks;
             }
 
             return null;
+
+        }
+
+        /// <summary>
+        /// 取得带拨打电话列表
+        /// </summary>
+        /// <returns></returns>
+        public static List<ViewMemberLeadToCall> GetMemberToCallList(this Member item, DateTime? startdate = null, DateTime? enddate = null)
+        {
+            var lcs = CH.GetAllData<LeadCall>(lc=>lc.ProjectID()==item.ProjectID&& lc.CallBackDate!=null);
+
+            startdate = startdate == null ? new DateTime(1, 1, 1) : startdate;
+            enddate = enddate == null ? new DateTime(9999, 1, 1) : enddate.Value.AddDays(+1);
+
+            lcs = lcs.FindAll(l => l.CallBackDate >= startdate && l.CallBackDate <= enddate);
+
+            var list = new List<ViewMemberLeadToCall>();
+            lcs.ForEach(l => {
+                var nd = new ViewMemberLeadToCall() {   LeadCall = l};
+                list.Add(nd);
+            });
+            return list;
+        }
+        /// <summary>
+        /// 员工业绩统计
+        /// </summary>
+        /// <returns></returns>
+        public static ViewMemberProgressAmount GetMemberProgress(this Member item, DateTime? startdate = null, DateTime? enddate = null)
+        {
+            startdate = startdate == null ? new DateTime(1, 1, 1) : startdate;
+            enddate = enddate == null ? new DateTime(9999, 1, 1) : enddate.Value.AddDays(+1);
+
+            decimal totaldeal = 0;
+            decimal totalcheckin = 0;
+            decimal dealin = 0;
+            decimal checkin = 0;
+            decimal dealtarget = 0;
+            decimal checkintarget = 0;
+            decimal nextdealtarget = 0;
+            decimal nextcheckintarget = 0;
+            var deals = CH.GetAllData<Deal>(d => d.Sales == item.Name&&d.ProjectID() == item.ProjectID);
+
+            deals.ForEach(d =>
+            {
+                totalcheckin += d.Income;
+                totaldeal += d.Payment;
+                if (d.SignDate >= startdate && d.SignDate <= enddate)
+                {
+
+                    checkin += d.Income;
+                    dealin += d.Payment;
+                }
+            });
+
+            var ts = CH.GetAllData<TargetOfWeek>(t => t.Member == item.Name && t.ProjectID == item.ProjectID).FindAll(t => (t.StartDate > startdate && t.StartDate < enddate) | (t.EndDate > startdate && t.EndDate < enddate));
+            dealtarget += ts.Sum(t => t.Deal);
+            checkintarget += ts.Sum(t => t.CheckIn);
+
+
+            var nextweekend = enddate.Value.AddDays(7);
+
+
+            var nextts = CH.GetAllData<TargetOfWeek>(t => t.Member == item.Name && t.ProjectID == item.ProjectID).FindAll(t => (t.StartDate > enddate && t.EndDate < nextweekend));
+            nextdealtarget += ts.Sum(t => t.Deal);
+            nextcheckintarget += ts.Sum(t => t.CheckIn);
+
+            var result = new ViewMemberProgressAmount()
+            {
+                TotalCheckIn = totalcheckin,
+                TotalDealIn = totaldeal,
+                CheckIn = checkin,
+                DealIn = dealin,
+                CheckInTarget = checkintarget,
+                Member = item,
+                DealInTarget = dealtarget,
+                NextCheckInTarget = nextcheckintarget,
+                NextDealInTarget = nextdealtarget,
+                CheckInPercentage = checkintarget == 0 ? 100 : (int)(checkin * 100 / checkintarget),
+                DealInPercentage = dealtarget == 0 ? 100 : (int)(dealin * 100 / dealtarget)
+            };
+            return result;
 
         }
 
@@ -135,7 +233,7 @@ namespace Entity
         /// 添加已存在的公司到项目
         /// </summary>
         /// <param name="item"></param>
-        public static void AddExistCompanyToNewCompanyRelationship(this Project item,int? companyid)
+        public static void AddExistCompanyToNewCompanyRelationship(this Project item, int? companyid)
         {
             bool exist = item.CompanyRelationships.Any(ex => ex.CompanyID == companyid);
             if (!exist)
@@ -145,17 +243,17 @@ namespace Entity
         }
 
         /// <summary>
-        /// 生成周报后台数据
+        /// 项目进展统计
         /// </summary>
         /// <param name="item"></param>
         /// <param name="startdate"></param>
         /// <param name="enddate"></param>
         /// <returns></returns>
-        public static ViewProjectProgressAmount GetProjectProgress(this Project item,DateTime? startdate, DateTime? enddate)
+        public static ViewProjectProgressAmount GetProjectProgress(this Project item, DateTime? startdate = null, DateTime? enddate = null)
         {
-            startdate= startdate==null? new DateTime(1,1,1):startdate;
-            enddate= enddate==null? new DateTime(9999,1,1):enddate.Value.AddDays(+1);
-          
+            startdate = startdate == null ? new DateTime(1, 1, 1) : startdate;
+            enddate = enddate == null ? new DateTime(9999, 1, 1) : enddate.Value.AddDays(+1);
+
             decimal totaldeal = 0;
             decimal totalcheckin = 0;
             decimal deal = 0;
@@ -164,48 +262,51 @@ namespace Entity
             decimal checkintarget = 0;
             decimal nextdealtarget = 0;
             decimal nextcheckintarget = 0;
-            var crs = CH.GetAllData<CompanyRelationship>(c=>c.ProjectID == item.ID,"Deals");
+            var crs = CH.GetAllData<CompanyRelationship>(c => c.ProjectID == item.ID, "Deals");
 
-            item.CompanyRelationships.ForEach(c => { 
-                 totalcheckin += c.Deals.Sum(d => d.Income);
-                 totaldeal += c.Deals.Sum(d => d.Payment);
+            item.CompanyRelationships.ForEach(c =>
+            {
+                totalcheckin += c.Deals.Sum(d => d.Income);
+                totaldeal += c.Deals.Sum(d => d.Payment);
             });
 
             item.CompanyRelationships.ForEach(c =>
             {
 
-                 deal += c.Deals.FindAll(ds=>ds.SignDate<enddate && ds.SignDate>startdate).Sum(d => d.Income);
-                 checkin+= c.Deals.FindAll(ds=>ds.ActualPaymentDate<enddate && ds.ActualPaymentDate>startdate).Sum(d => d.Payment);
+                deal += c.Deals.FindAll(ds => ds.SignDate < enddate && ds.SignDate > startdate).Sum(d => d.Income);
+                checkin += c.Deals.FindAll(ds => ds.ActualPaymentDate < enddate && ds.ActualPaymentDate > startdate).Sum(d => d.Payment);
             });
 
-             item.Members.ForEach(m=>{
-                 var ts = CH.GetAllData<TargetOfWeek>(t=>t.Member== m.Name).FindAll(t => (t.StartDate > startdate && t.StartDate < enddate) | (t.EndDate > startdate && t.EndDate < enddate));
-                 dealtarget+=ts.Sum(t => t.Deal);
-                 checkintarget+=ts.Sum(t => t.CheckIn);
-             });
+            item.Members.ForEach(m =>
+            {
+                var ts = CH.GetAllData<TargetOfWeek>(t => t.Member == m.Name).FindAll(t => (t.StartDate > startdate && t.StartDate < enddate) | (t.EndDate > startdate && t.EndDate < enddate));
+                dealtarget += ts.Sum(t => t.Deal);
+                checkintarget += ts.Sum(t => t.CheckIn);
+            });
 
-            var  nextweekend = enddate.Value.AddDays(7);
-             item.Members.ForEach(m =>
-             {
-                 var ts = CH.GetAllData<TargetOfWeek>(t => t.Member == m.Name).FindAll(t => (t.StartDate > enddate && t.EndDate < nextweekend));
-                 nextdealtarget += ts.Sum(t => t.Deal);
-                 nextcheckintarget += ts.Sum(t => t.CheckIn);
-             });
-             var result = new ViewProjectProgressAmount() { 
-                 TotalCheckIn= totalcheckin,
-                 TotalDealIn = totaldeal,
-                 CheckIn = checkin,
-                 DealIn = deal,
-                 LeftDay =(item.EndDate-DateTime.Now).Days,
-                 CheckInTarget = checkintarget,
-                 Project = item,
-                 DealInTarget = dealtarget,
-                 NextCheckInTarget = nextcheckintarget,
-                 NextDealInTarget = nextdealtarget,
-                 CheckInPercentage = checkintarget==0? 100:(int)(checkin*100/checkintarget),
-                 DealInPercentage = dealtarget == 0 ? 100 : (int)(deal * 100 / dealtarget)
-             };
-             return result;
+            var nextweekend = enddate.Value.AddDays(7);
+            item.Members.ForEach(m =>
+            {
+                var ts = CH.GetAllData<TargetOfWeek>(t => t.Member == m.Name).FindAll(t => (t.StartDate > enddate && t.EndDate < nextweekend));
+                nextdealtarget += ts.Sum(t => t.Deal);
+                nextcheckintarget += ts.Sum(t => t.CheckIn);
+            });
+            var result = new ViewProjectProgressAmount()
+            {
+                TotalCheckIn = totalcheckin,
+                TotalDealIn = totaldeal,
+                CheckIn = checkin,
+                DealIn = deal,
+                LeftDay = (item.EndDate - DateTime.Now).Days,
+                CheckInTarget = checkintarget,
+                Project = item,
+                DealInTarget = dealtarget,
+                NextCheckInTarget = nextcheckintarget,
+                NextDealInTarget = nextdealtarget,
+                CheckInPercentage = checkintarget == 0 ? 100 : (int)(checkin * 100 / checkintarget),
+                DealInPercentage = dealtarget == 0 ? 100 : (int)(deal * 100 / dealtarget)
+            };
+            return result;
 
         }
 

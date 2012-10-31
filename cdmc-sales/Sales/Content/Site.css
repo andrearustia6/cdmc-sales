@@ -3,6 +3,17 @@ The base color for this template is #5c87b2. If you'd like
 to use a different color start by replacing all instances of
 #5c87b2 with your new color.
 ----------------------------------------------------------*/
+.info
+{
+     width:100%;
+      border:0px;
+}
+.info tr td
+{
+     width:33%;
+     border:0px;
+}
+
 body
 {
     background-color: #5c87b2;
@@ -193,6 +204,7 @@ table
 {
   border: solid 1px #e8eef4;
   border-collapse: collapse;
+
 }
 
 table td 

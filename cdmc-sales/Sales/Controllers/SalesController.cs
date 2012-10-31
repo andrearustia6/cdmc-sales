@@ -393,7 +393,14 @@ namespace Sales.Controllers
         }
         #endregion  
         
-
+        #region
+        public ViewResult OpenProjectSalesBrief(int? projectid)
+        {
+            var data = CH.GetDataById<Project>(projectid);
+            data.SaleBrief = HttpUtility.HtmlDecode(data.SaleBrief);
+            return View(data);
+        }
+        #endregion
 
         /// <summary>
         /// 根据分配显示sales需要拨打的公司

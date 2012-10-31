@@ -1,0 +1,61 @@
+﻿@using Entity
+@using Utl
+@model Project
+<div>
+    <fieldset>
+        <legend>基本信息</legend>
+        <table class="info">
+            <tr>
+                <td>
+                    <span>项目名称：@Model.Name</span>
+                </td>
+                <td>
+                    <span>开始日期：@Model.StartDate.ToShortDateString()</span>
+                </td>
+                <td>
+                    <span>结束日期：@Model.EndDate.ToShortDateString()</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span>项目目标：@Html.DisplayFor(m => m.Target)</span>
+                </td>
+                <td>
+                    <span>版块负责人：@Model.Manager</span>
+                </td>
+                <td>
+                    <span>团队负责人：@Model.TeamLeader</span>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    <span>@Html.ActionLink("项目简介", "OpenProjectSalesBrief", new { projectid=Model.ID}, new { target = "_blank" })</span>
+                </td>
+               
+            </tr>
+        </table>
+    </fieldset>
+    <fieldset>
+    <legend>项目组成员</legend>
+    @{
+        if(Model.Members!=null)
+        {
+          <table class="membertable" >
+                <tr><th>姓名</th><th>项目总DealIn</th><th>项目总CheckIn</th><th>一周内DealIn</th><th>一周内CheckIn</th></tr>
+            @foreach(var m in Model.Members)
+            {
+                var data = m.GetMemberProgress(DateTime.Now.AddDays(-7),DateTime.Now);
+                
+                <tr><td>@m.Name</td><td>@data.TotalDealIn</td><td>@data.TotalCheckIn </td><td>@data.DealIn </td><td>@data.CheckIn </td></tr>
+                
+             }
+        </table>
+        }
+     }
+    </fieldset>
+</div>
+<style type="text/css">
+ .membertable{width:100%;}   
+ .membertable th{width:20%;}   
+ .membertable td{width:20%; }   
+</style>
