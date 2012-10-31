@@ -106,7 +106,7 @@ namespace Entity
         /// <returns></returns>
         public static List<ViewMemberLeadToCall> GetMemberToCallList(this Member item, DateTime? startdate = null, DateTime? enddate = null)
         {
-            var lcs = CH.GetAllData<LeadCall>(lc=>lc.ProjectID()==item.ProjectID&& lc.CallBackDate!=null);
+            var lcs = CH.GetAllData<LeadCall>(lc=>lc.CompanyRelationship.ProjectID==item.ProjectID&& lc.CallBackDate!=null);
 
             startdate = startdate == null ? new DateTime(1, 1, 1) : startdate;
             enddate = enddate == null ? new DateTime(9999, 1, 1) : enddate.Value.AddDays(+1);
@@ -137,7 +137,7 @@ namespace Entity
             decimal checkintarget = 0;
             decimal nextdealtarget = 0;
             decimal nextcheckintarget = 0;
-            var deals = CH.GetAllData<Deal>(d => d.Sales == item.Name&&d.ProjectID() == item.ProjectID);
+            var deals = CH.GetAllData<Deal>(d => d.Sales == item.Name&&d.CompanyRelationship.ProjectID == item.ProjectID);
 
             deals.ForEach(d =>
             {

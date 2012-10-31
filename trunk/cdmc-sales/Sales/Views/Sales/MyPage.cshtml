@@ -8,6 +8,41 @@
 
 <center><h2>我的主页</h2></center>
 @Html.Partial("personinfo",User.Identity.Name)
+
+<fieldset>
+<legend>拨打电话安排列表</legend>
+@{
+     if(Model!=null)
+     {
+         //取得该员工的所有成员实例
+         var members = new List<Member>();
+         Model.ForEach(p =>
+         {
+             members.Add(p.Members.FirstOrDefault(m => m.Name == User.Identity.Name));
+         });
+
+         var calls = new List<ViewMemberLeadToCall>();
+         members.ForEach(m =>
+         {
+             var temp = m.GetMemberToCallList(DateTime.Now, DateTime.Now);
+             calls.AddRange(temp);
+         });
+         if(calls.Count>0)
+         {
+             <table class="calltable" >
+             <tr><th>客户名称</th><th>职位</th><th>所属公司</th><th>拨打时间</th><th>所属项目</th><th>销售进度</th></tr>
+              @foreach(var c in calls)
+              {
+                 <tr><td>@c.LeadName</td><td>@c.LeadTitle</td><td>@c.Companyname</td><td>@c.CallDateTime</td><td>@c.ProjectName</td><td><a  target="_blank" href=@Url.Content("~/Sales/LeadCallsIndex/?crid=" + c.LeadCall.CompanyRelationshipID + "&leadid=" + c.LeadCall.LeadID) >销售进度</a></td></tr>
+              }
+            </table>
+         }
+        
+     }
+        
+  }
+</fieldset>
+
 <fieldset>
 <legend>所在项目</legend>
 <div>
@@ -24,33 +59,8 @@
 </div>
 </fieldset>
 
-<fieldset>
-<legend>待拨打电话</legend>
-@{
-     if(Model!=null)
-     {
-         //取得该员工的所有成员实例
-         var members = new List<Member>();
-         Model.ForEach(p =>
-         {
-             members.Add(p.Members.FirstOrDefault(m => m.Name == User.Identity.Name));
-         });
 
-         var calls = new List<ViewMemberLeadToCall>();
-         members.ForEach(m =>
-         {
-             var temp = m.GetMemberToCallList();
-             calls.AddRange(temp);
-         });
-         if(calls.Count>0)
-         {
-             <table >
-             <tr><th>客户名称</th><th>所属公司</th><th>拨打时间</th><th>拨打时间</th><th>所属项目</th></tr>
-            
-            </table>
-         }
-        
-     }
-        
-  }
-</fieldset>
+
+<style type="text/css">
+ .calltable{ width:100%;}
+</style>

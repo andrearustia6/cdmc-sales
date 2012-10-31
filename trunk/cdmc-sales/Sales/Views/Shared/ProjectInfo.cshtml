@@ -28,8 +28,14 @@
                 </td>
             </tr>
             <tr>
-                <td colspan="3">
+                <td >
                     <span>@Html.ActionLink("项目简介", "OpenProjectSalesBrief", new { projectid=Model.ID}, new { target = "_blank" })</span>
+                </td>
+                 <td >
+                    <span>@Html.ActionLink("分配的公司", "CompanyRelationshipIndex", new { projectid = Model.ID }, new { target = "_blank" })</span>
+                </td>
+                 <td >
+                    <span>@Html.ActionLink("话术支持", "PhoneSaleSupport", new { projectid = Model.ID }, new { target = "_blank" })</span>
                 </td>
                
             </tr>
