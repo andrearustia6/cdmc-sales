@@ -53,7 +53,7 @@ namespace Entity
     /// </summary>
     public class Project : NameEntity
     {
-        public string OpeningDate { get { return EndDate.Year.ToString(); } }
+        //public string OpeningDate { get { return EndDate.Year.ToString(); } }
 
         [Display(Name = "板块负责人")]
         public string Manager { get; set; }
