@@ -145,7 +145,20 @@ namespace Utl
             var l4 = new Lead() { ID = 4, Name_CH = "汤玛斯", Name_EN = "Tomas", Fax = "563000", CompanyID = 3, Contact = "23674232", Mobile = "1256423233", Title = "CTO", Gender = "Mr", EMail = "Tomas@123.com" };
             context.Leads.Add(l4);
 
-            var p1 = new Project() { ID = 1, EndDate = DateTime.Now.AddYears(1), StartDate = DateTime.Now.AddYears(-1), Target = 50000000, IsActived = true, TeamLeader = "sean", Manager = "mike", Name_CH = "CTC 航空峰会", ProjectCode="ACYY" };
+            var p1 = new Project()
+            {
+                ID = 1,
+                EndDate = DateTime.Now.AddYears(1),
+                ConferenceStartDate = new DateTime(2012, 12, 6),
+                ConferenceEndDate = new DateTime(2012, 12, 7),
+                StartDate = DateTime.Now.AddYears(-1),
+                Target = 50000000,
+                IsActived = true,
+                TeamLeader = "sean",
+                Manager = "mike",
+                Name_CH = "CTC 航空峰会",
+                ProjectCode = "ACYY"
+            };
             p1.CompanyRelationships = new List<CompanyRelationship>();
             var cr1 = new CompanyRelationship() {ID=1, ProjectID = 1, CompanyID = 1,Importancy=6 };
             var cr2 = new CompanyRelationship() {ID=2, ProjectID = 1, CompanyID = 2 ,Importancy=3};
@@ -199,7 +212,20 @@ namespace Utl
             context.LeadCalls.Add(lc7);
 
             context.Projects.Add(p1);
-            var p2 = new Project() { ID = 2, EndDate = DateTime.Now, StartDate = DateTime.Now, Target = 30000000, IsActived = true, TeamLeader = "stone", Manager = "mike", Name_CH = "万国博览会", ProjectCode="BTEC" };
+            var p2 = new Project()
+            {
+                ID = 2,
+                EndDate = DateTime.Now,
+                StartDate = DateTime.Now,
+                ConferenceStartDate = new DateTime(2012, 12, 6),
+                ConferenceEndDate = new DateTime(2012, 12, 7),
+                Target = 30000000,
+                IsActived = true,
+                TeamLeader = "stone",
+                Manager = "mike",
+                Name_CH = "万国博览会",
+                ProjectCode = "BTEC"
+            };
             context.Projects.Add(p2);
 
             var p3 = new Project() { ID = 3, 
