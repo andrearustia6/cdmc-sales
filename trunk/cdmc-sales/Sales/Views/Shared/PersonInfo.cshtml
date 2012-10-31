@@ -1,0 +1,18 @@
+﻿@using Entity
+@using Utl
+@model string
+           
+
+<fieldset>
+<legend>个人信息</legend>
+@{
+    var user = Employee.GetUserByName(Model);
+    var role = CH.GetDataById<Role>(user.RoleID);
+
+<table class="info">
+<tr><td><span>员工姓名：@user.DisplayName</span></td><td><span>员工性别：@user.Gender</span></td><td><span>电子邮箱：@user.Email</span></td></tr>
+<tr><td><span>公司座机：@user.Contact</span></td><td><span>移动电话：@user.Mobile</span></td><td><span>入职日期：@user.StartDate.Value.ToShortDateString()</span></td></tr>
+<tr><td><span>系统职级：@role.Name</span></td><td><span>所属部门：@user.Department</span></td><td><span>员工账号：@user.UserName</span></td></tr>
+</table>
+}
+</fieldset>

@@ -1,0 +1,12 @@
+﻿@{
+    ViewBag.Title = "项目简介";
+}
+@using Utl
+@using Entity
+@model Project
+<h2>项目简介</h2>
+
+<fieldset>
+<legend>项目简介</legend>
+  @HtmlExtensions.GetHtmlString(Model.SaleBrief)
+</fieldset>

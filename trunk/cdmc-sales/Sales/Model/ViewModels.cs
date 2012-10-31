@@ -42,4 +42,38 @@ namespace Model
         public decimal NextDealInTarget { get; set; }
         public decimal NextCheckInTarget { get; set; }
     }
+
+    public class ViewMemberProgressAmount
+    {
+        public Member Member { get; set; }
+        public decimal TotalDealIn { get; set; }
+        public decimal TotalCheckIn { get; set; }
+        public int LeftDay { get; set; }
+        public decimal DealIn { get; set; }
+        public decimal DealInTarget { get; set; }
+        public decimal CheckIn { get; set; }
+        public decimal CheckInTarget { get; set; }
+        public int DealInPercentage { get; set; }
+        public int CheckInPercentage { get; set; }
+        public decimal NextDealInTarget { get; set; }
+        public decimal NextCheckInTarget { get; set; }
+    }
+
+    public class ViewMemberLeadToCall
+    {
+        public LeadCall LeadCall { get; set; }
+        public string LeadName { get { return LeadCall.Lead.FullName; } }
+        public string Companyname { get { return LeadCall.CompanyRelationship.Company.FullName; } }
+        public DateTime CallDateTime
+        {
+            get
+            {
+                var date = LeadCall.CallBackDate.Value;
+                var differs = LeadCall.CompanyRelationship.Company.DistrictNumber.TimeDifference;
+                date.AddHours(differs);
+                return date;
+            }
+        }
+       
+    }
 }

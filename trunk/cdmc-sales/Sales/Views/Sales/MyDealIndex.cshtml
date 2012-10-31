@@ -16,8 +16,12 @@
                 {
                     c.Bound(item => item.CompanyRelationship.Company.FullName).Title("客户名称").Width(150);
                     c.Bound(item => item.Package.FullName).Width(150);
-                    c.Bound(item => item.Payment).Width(100).Format("{0:c}");
-                    c.Bound(item => item.Income).Width(90).Format("{0:c}");
+                    c.Bound(item => item.Payment).Width(100).Format("{0:c}").Aggregate(aggregates => aggregates.Sum()).FooterTemplate(@<text>@if (item.Sum != null)
+                                                                                                                                             {<p>应收款: @item.Sum.Format("{0:c}")</p>}</text>).GroupFooterTemplate(@<text>@if (item.Sum != null)
+                                                                                                                                                                                                                                           {<p>应收款: @item.Sum.Format("{0:c}")</p>}</text>).Width(100);
+                    c.Bound(item => item.Income).Width(90).Format("{0:c}").Aggregate(aggregates => aggregates.Sum()).FooterTemplate(@<text>@if (item.Sum != null)
+                                                                                                                                           {<p>实收款: @item.Sum.Format("{0:c}")</p>}</text>).GroupFooterTemplate(@<text>@if (item.Sum != null)
+                                                                                                                                                                                                                                         {<p>实收款: @item.Sum.Format("{0:c}")</p>}</text>).Width(100); ;
                     c.Bound(item => item.IsClosed).Width(70);
                     c.Bound(item => item.Abandoned).Width(70);
                     c.Bound(item => item.ExpectedPaymentDate).Format("{0:d}").Width(90);
@@ -26,10 +30,10 @@
                     <a href=@Url.Content("~/sales/EditDeal/?id=" + item.ID + "&projectid=" + (int)ViewBag.ProjectID) >编辑</a> | <a href=@Url.Content("~/sales/DisplayDeal/?id=" + item.ID + "&projectid=" + (int)ViewBag.ProjectID)>详细</a>  
                    </span>);
                 })
-                                        .Resizable(resizing => resizing.Columns(true))
-                                        .Filterable().Sortable().Groupable()
-                                        .Pageable(p => p.PageSize(20))
-                                        .Scrollable(scrolling => scrolling.Height(350))
+                    .Resizable(resizing => resizing.Columns(true))
+                    .Filterable().Sortable().Groupable()
+                    .Pageable(p => p.PageSize(20))
+                    .Scrollable(scrolling => scrolling.Height(350))
 
 )
 
