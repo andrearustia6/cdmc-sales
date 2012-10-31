@@ -81,7 +81,7 @@
     <div class="editor-label">
     @{
         var id = Model == null ? (int)ViewBag.CompanyID : Model.CompanyID;
-         @Html.Label(CH.GetDataById<Company>(id).FullName);
+         @Html.Label(CH.GetDataById<Company>(id).Name);
          @Html.Hidden("CompanyID", id)
      }
     </div>

@@ -62,9 +62,9 @@ namespace Model
     public class ViewMemberLeadToCall
     {
         public LeadCall LeadCall { get; set; }
-        public string LeadName { get { return LeadCall.Lead.FullName; } }
+        public string LeadName { get { return LeadCall.Lead.Name; } }
         public string LeadTitle { get { return LeadCall.Lead.Title; } }
-        public string Companyname { get { return LeadCall.CompanyRelationship.Company.FullName; } }
+        public string Companyname { get { return LeadCall.CompanyRelationship.Company.Name; } }
 
         public string ProjectName { get { return LeadCall.CompanyRelationship.Project.Name; } }
         public DateTime CallDateTime

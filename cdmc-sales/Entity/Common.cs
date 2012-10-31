@@ -9,7 +9,7 @@ namespace Entity
     /// <summary>
     /// 行业类型
     /// </summary>
-    public class Area : FullNameEntity
+    public class Area : NameEntity
     {
     }
 
@@ -60,7 +60,7 @@ namespace Entity
     public class DistrictNumber : EntityBase
     {
          [Display(Name = "时差")]
-        public string FullName { get { return Country + ":" + Number.ToString() + "(" + TimeDifference.ToString() + ")"; } }
+        public string Name { get { return Country + ":" + Number.ToString() + "(" + TimeDifference.ToString() + ")"; } }
          
         [Display(Name = "区号"),  Required]
         public int Number { get; set; }

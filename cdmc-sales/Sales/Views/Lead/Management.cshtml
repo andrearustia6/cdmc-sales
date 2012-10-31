@@ -43,10 +43,10 @@
         <ul>
             <li>
                 <label>
-                    公司名称:</label>@company.FullName</li>
+                    公司名称:</label>@company.Name</li>
             <li>
                 <label>
-                    行业:</label>@company.Category.FullName</li>
+                    行业:</label>@company.Category.Name</li>
             <li>
                 <label>
                     业务范围:</label>@company.Areas</li>
@@ -77,7 +77,7 @@
         <ul>
             <li>
                 <label>
-                    Lead姓名:</label>@lead.FullName</li>
+                    Lead姓名:</label>@lead.Name</li>
             <li>
                 <label>
                     职位:</label>@lead.Title</li>
@@ -122,13 +122,13 @@
         <fieldset>
             <legend>Package</legend>
             <div>
-                Package名称：@p.FullName</div>
+                Package名称：@p.Name</div>
             <div>
                 价格（美元）：@p.Prize</div>
             <div>
-                参会类型：@p.ParticipantType.FullName</div>
+                参会类型：@p.ParticipantType.Name</div>
             <div>
-                Package类型：@p.FullName</div>
+                Package类型：@p.Name</div>
             <div>
                 详细：</div>
             <div>@p.SubName</div>
@@ -144,7 +144,7 @@
                         {
                             <li>
                                 <p>
-                                    名称：@pi.FullName</p>
+                                    名称：@pi.Name</p>
                                 <p>
                                     内容:</p>
                                 <div>@pi.Content</div>

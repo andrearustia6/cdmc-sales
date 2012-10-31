@@ -19,7 +19,7 @@
                 })
                 .Columns(c =>
                 {
-                    c.Bound(item => item.CompanyRelationship.Company.FullName).Title("客户公司").Width(150);
+                    c.Bound(item => item.CompanyRelationship.Company.Name).Title("客户公司").Width(150);
                     c.Bound(item => item.Sales).Width(150);
                     c.Bound(item => item.Payment).Format("{0:c}").Width(150);
                     c.Bound(item => item.Income).Format("{0:c}").Width(150);

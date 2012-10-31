@@ -16,14 +16,14 @@
         @Html.LabelFor(model => model.LeadID, "Lead名称")
     </div>
     <div class="editor-field">
-        @Html.Label(CH.GetDataById<Lead>((int)ViewBag.LeadID).FullName)
+        @Html.Label(CH.GetDataById<Lead>((int)ViewBag.LeadID).Name)
         @Html.Hidden("LeadID", (int)ViewBag.LeadID)
     </div>
     <div class="editor-label">
         @Html.LabelFor(model => model.PackageID, "Package名称")
     </div>
     <div class="editor-field">
-         @Html.Label(CH.GetDataById<Package>((int)ViewBag.PackageID).FullName)
+         @Html.Label(CH.GetDataById<Package>((int)ViewBag.PackageID).Name)
          @Html.Hidden("PackageID", (int)ViewBag.PackageID)
     </div>
 

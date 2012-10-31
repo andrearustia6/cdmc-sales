@@ -31,10 +31,10 @@
                         <text>checked="checked"</text> 
                      }/>               
                      </text>).Title("").Width(36).HtmlAttributes(new { style = "text-align:center" });
-                    c.Bound(item => item.FullName).Width(200);
+                    c.Bound(item => item.Name).Width(200);
                     c.Bound(item => item.Prize).Width(100);
-                    c.Bound(item => item.PackageType.FullName).Width(150);
-                    c.Bound(item => item.ParticipantType.FullName).Width(150);
+                    c.Bound(item => item.PackageType.Name).Width(150);
+                    c.Bound(item => item.ParticipantType.Name).Width(150);
                 })
                                        .Resizable(resizing => resizing.Columns(true))
                                    

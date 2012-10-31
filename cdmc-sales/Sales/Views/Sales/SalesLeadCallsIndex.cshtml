@@ -12,7 +12,7 @@
                 })
                 .Columns(c =>
                 {
-                    c.Bound(item => item.Lead.FullName).Width(150);
+                    c.Bound(item => item.Lead.Name).Width(150);
                     c.Bound(item => item.Creator).Title("创建人");
                     c.Bound(item => item.CreatedDate).Title("创建时间");
                     c.Bound(item => item.LeadCallType.Name);

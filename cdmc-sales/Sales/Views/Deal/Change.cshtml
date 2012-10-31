@@ -10,7 +10,7 @@
         @Html.LabelFor(model => model.PackageID, "Package")
     </div>
     <div class="editor-field">
-        @Html.DropDownListFor(m => m.PackageID, new SelectList(CH.GetAllData<Package>(), "ID", "FullName"),"-请选择-")
+        @Html.DropDownListFor(m => m.PackageID, new SelectList(CH.GetAllData<Package>(), "ID", "Name"),"-请选择-")
         @Html.ValidationMessageFor(model => model.PackageID)
     </div>
 

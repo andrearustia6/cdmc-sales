@@ -51,9 +51,10 @@ namespace Entity
     /// <summary>
     /// 项目
     /// </summary>
-    public class Project : EntityBase
+    public class Project : NameEntity
     {
         public string OpeningDate { get { return EndDate.Year.ToString(); } }
+
         [Display(Name = "板块负责人")]
         public string Manager { get; set; }
 
@@ -72,14 +73,17 @@ namespace Entity
         [Display(Name = "正在进行"), Required]
         public bool IsActived { get; set; }
 
-        [Display(Name = "项目名称"), Required]
-        public String Name { get; set; }
-
-        [Display(Name = "开始时间"), Required, DisplayFormat(DataFormatString = "{0:d}")]
+        [Display(Name = "项目开始时间"), Required, DisplayFormat(DataFormatString = "{0:d}")]
         public DateTime StartDate { get; set; }
 
-        [Display(Name = "结束时间"), Required, DisplayFormat(DataFormatString = "{0:d}")]
+        [Display(Name = "项目结束时间"), Required, DisplayFormat(DataFormatString = "{0:d}")]
         public DateTime EndDate { get; set; }
+
+        [Display(Name = "会议开始时间"), Required, DisplayFormat(DataFormatString = "{0:d}")]
+        public DateTime ConferenceStartDate { get; set; }
+
+        [Display(Name = "会议结束时间"), Required, DisplayFormat(DataFormatString = "{0:d}")]
+        public DateTime ConferenceEndDate { get; set; }
 
         [Display(Name = "销售目标"), Required, DisplayFormat(DataFormatString = "{0:c}")]
         public decimal Target { get; set; }
@@ -88,6 +92,8 @@ namespace Entity
         public string TeamLeader { get; set; }
 
         public List<Template> Templates { get; set; }
+
+        public string Location { get; set; }
 
         [Display(Name = "公司类型")]
         public List<Category> Categorys { get; set; }
@@ -157,7 +163,7 @@ namespace Entity
         public int? CompanyID { get; set; }
 
         [Display(Name = "公司名称")]
-        public string CompanyName { get { return Company.FullName; } }
+        public string CompanyName { get { return Company.Name; } }
 
         public virtual List<Category> Categorys { get; set; }
 

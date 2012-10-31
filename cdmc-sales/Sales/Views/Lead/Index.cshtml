@@ -11,7 +11,7 @@
                 {
                     c.Bound(o => o.Name_EN);
                     c.Bound(o => o.Name_CH);
-                    c.Bound(o => o.Company.FullName).Title("所在公司");
+                    c.Bound(o => o.Company.Name).Title("所在公司");
                     c.Bound(o => o.Title).Width(120);
                     c.Bound(o => o.Contact).Width(150);
                     c.Bound(o => o.Mobile).Width(150);

@@ -9,8 +9,8 @@
                 })
                 .Columns(c =>
                 {
-                    c.Bound(o => o.FullName);
-                    c.Bound(o => o.Company.FullName).Title("所在公司");
+                    c.Bound(o => o.Name);
+                    c.Bound(o => o.Company.Name).Title("所在公司");
                     c.Bound(o => o.Title).Width(120);
                     c.Bound(o => o.Contact).Width(120);
                     c.Bound(o => o.Mobile).Width(120);

@@ -241,6 +241,7 @@ namespace Sales.Controllers
         [HttpPost]
         public ActionResult Create(Project item)
         {
+            this.AddErrorIfAllNamesEmpty(item);
             this.AddErrorStateIfStartDateLaterThanEndDate(item.StartDate, item.EndDate);
             if (ModelState.IsValid)
             {
@@ -259,6 +260,7 @@ namespace Sales.Controllers
         [HttpPost]
         public ActionResult Edit(Project item)
         {
+            this.AddErrorIfAllNamesEmpty(item);
             this.AddErrorStateIfStartDateLaterThanEndDate(item.StartDate, item.EndDate);
             if (ModelState.IsValid)
             {

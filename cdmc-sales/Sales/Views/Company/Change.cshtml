@@ -24,14 +24,14 @@
         @Html.LabelFor(model => model.AreaID,"行业")
     </div>
     <div class="editor-field">
-        @Html.DropDownListFor(model => model.AreaID,new SelectList(CH.GetAllData<Area>(),"ID","FullName"),"-请选择-")
+        @Html.DropDownListFor(model => model.AreaID,new SelectList(CH.GetAllData<Area>(),"ID","Name"),"-请选择-")
         @Html.ValidationMessageFor(model => model.AreaID)
     </div>
     <div class="editor-label">
         @Html.LabelFor(model => model.DistrictNumberID)
     </div>
     <div class="editor-field">
-        @Html.DropDownListFor(model =>model.DistrictNumberID,new SelectList(CH.GetAllData<DistrictNumber>(),"ID","FullName"), "-请选择-")
+        @Html.DropDownListFor(model =>model.DistrictNumberID,new SelectList(CH.GetAllData<DistrictNumber>(),"ID","Name"), "-请选择-")
         @Html.ValidationMessageFor(model => model.DistrictNumberID)
     </div>
     <div class="editor-label">
