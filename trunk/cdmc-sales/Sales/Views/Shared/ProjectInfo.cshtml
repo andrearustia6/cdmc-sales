@@ -6,8 +6,13 @@
         <legend>基本信息</legend>
         <table class="info">
             <tr>
-                <td>
+                <td colspan="3">
                     <span>项目名称：@Model.Name</span>
+                </td>
+            </tr>
+             <tr>
+                <td >
+                    <span>项目代码：@Model.ProjectCode</span>
                 </td>
                 <td>
                     <span>开始日期：@Model.StartDate.ToShortDateString()</span>
@@ -25,6 +30,17 @@
                 </td>
                 <td>
                     <span>团队负责人：@Model.TeamLeader</span>
+                </td>
+            </tr>
+             <tr>
+                <td>
+                    <span>产品部接口人：@Model.Product</span>
+                </td>
+                <td>
+                    <span>市场部接口人：@Model.Market</span>
+                </td>
+                <td>
+                    <span>会议地点：@Model.Location</span>
                 </td>
             </tr>
             <tr>

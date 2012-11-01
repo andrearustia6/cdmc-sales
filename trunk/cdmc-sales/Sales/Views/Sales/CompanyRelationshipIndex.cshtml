@@ -16,15 +16,16 @@
                 .Columns(c =>
                 {
                     c.Bound(item => item.Company.Name).Width(150);
-                    c.Bound(item => item.Importancy).Width(80);
-                    c.Bound(item => item).Title("分类").Template(@<text>@item.CategoryString()</text>);
+                    c.Bound(item => item.Importancy).Width(100);
+                    c.Bound(item => item.Company.Contact);
+                    c.Bound(item => item.Company.Fax);
                     c.Bound(item => item.Company.Available).Width(100);
                     c.Bound(item => item.Company.From).Width(100);
-                    c.Bound(item => item.ID).Title("操作").Template(@<span>  
+                    c.Bound(item => item.ID).Title("操作").Width(240).Template(@<span>  
                       <a  href=@Url.Content("~/Sales/DisplayCompany/?crid=" + item.ID) >公司查看</a> 
                     | <a  href=@Url.Content("~/Sales/EditCompany/?crid=" + item.ID) >公司编辑</a> 
                     | <a  href=@Url.Content("~/Sales/AddLead/?crid=" + item.ID) >添加Lead</a>
-                    | <a target="_blank" href=@Url.Content("~/Sales/CompanyRelationshipLeadCallsIndex/?crid=" + item.ID) >销售进度</a> 
+                    | <a  href=@Url.Content("~/Sales/CompanyRelationshipLeadCallsIndex/?crid=" + item.ID) >销售进度</a> 
                      </span>);
 
                 })
@@ -43,13 +44,17 @@
      @(Html.Telerik().Grid(Leads).Name("Leads" + cr.CompanyID)
                             .Columns(c =>
                             {
-                                c.Bound(o => o.Name);
+                                c.Bound(o => o.Name).Width(100);
                                 c.Bound(o => o.Title);
+                                c.Bound(o => o.Contact);
+                                c.Bound(o => o.Fax);
+                                c.Bound(o => o.EMail);
+                                c.Bound(o => o.Mobile);
                                 c.Bound(o => o).Title("状态").Template(@<text>@CRM_Logical.GetLeadStatus(cr.ProjectID, item)</text>);
-                                c.Bound(o => o).Title("操作").Template(@<span>
+                                c.Bound(o => o).Title("操作").Width(190).Template(@<span>
                                 <a  href=@Url.Content("~/sales/displaylead/?leadid=" + item.ID + "&crid=" + cr.ID + "&projectid=" + cr.ProjectID) >Lead查看</a> 
                                 | <a  href=@Url.Content("~/Sales/EditLead/?crid=" + cr.ID + "&id=" + item.ID + "&projectid=" + cr.ProjectID) >Lead编辑</a>
-                                | <a  target="_blank" href=@Url.Content("~/Sales/LeadCallsIndex/?crid=" + cr.ID + "&leadid=" + item.ID) >销售进度</a>
+                                | <a  href=@Url.Content("~/Sales/LeadCallsIndex/?crid=" + cr.ID + "&leadid=" + item.ID) >销售进度</a>
                                   </span>);
                             })
                                          .Resizable(resizing => resizing.Columns(true))

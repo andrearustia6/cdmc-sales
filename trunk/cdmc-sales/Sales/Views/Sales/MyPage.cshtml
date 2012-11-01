@@ -2,57 +2,94 @@
 @using Entity
 @using Utl
 @using Model
+@using BLL
 @{
     ViewBag.Title = "我的主页";
 }
 
 <center><h2>我的主页</h2></center>
-@Html.Partial("personinfo",User.Identity.Name)
+@Html.Partial("personinfo", User.Identity.Name)
 
 <fieldset>
 <legend>拨打电话安排列表</legend>
 @{
-     if(Model!=null)
-     {
-         //取得该员工的所有成员实例
-         var members = new List<Member>();
-         Model.ForEach(p =>
-         {
-             members.Add(p.Members.FirstOrDefault(m => m.Name == User.Identity.Name));
-         });
+    if (Model != null)
+    {
+        //取得该员工的所有成员实例
+        var members = new List<Member>();
+        Model.ForEach(p =>
+        {
+            members.Add(p.Members.FirstOrDefault(m => m.Name == User.Identity.Name));
+        });
 
-         var calls = new List<ViewMemberLeadToCall>();
-         members.ForEach(m =>
-         {
-             var temp = m.GetMemberToCallList(DateTime.Now, DateTime.Now);
-             calls.AddRange(temp);
-         });
-         if(calls.Count>0)
-         {
+        var calls = new List<ViewMemberLeadToCall>();
+        members.ForEach(m =>
+        {
+            var temp = m.GetMemberToCallList(DateTime.Now.AddHours(-DateTime.Now.Hour), null);
+            calls.AddRange(temp);
+        });
+
+        if (calls.Count > 0)
+        {
+            calls = calls.OrderByDescending(o => o.LeadCall.CallBackDate).ToList();
              <table class="calltable" >
-             <tr><th>客户名称</th><th>职位</th><th>所属公司</th><th>拨打时间</th><th>所属项目</th><th>销售进度</th></tr>
-              @foreach(var c in calls)
+             <tr><th>客户名称</th><th>职位</th><th>所属公司</th><th>联系方式</th><th>手机</th><th>拨打时间</th><th>所属项目</th><th>销售进度</th></tr>
+              @foreach (var c in calls)
               {
-                 <tr><td>@c.LeadName</td><td>@c.LeadTitle</td><td>@c.Companyname</td><td>@c.CallDateTime</td><td>@c.ProjectName</td><td><a  target="_blank" href=@Url.Content("~/Sales/LeadCallsIndex/?crid=" + c.LeadCall.CompanyRelationshipID + "&leadid=" + c.LeadCall.LeadID) >销售进度</a></td></tr>
+                 <tr><td>@c.LeadName</td><td>@c.LeadTitle</td><td>@c.Companyname</td><td>@c.Contact</td><td>@c.Mobile</td><td>@c.CallDateTime</td><td>@c.ProjectCode</td><td><a  target="_blank" href=@Url.Content("~/Sales/LeadCallsIndex/?crid=" + c.LeadCall.CompanyRelationshipID + "&leadid=" + c.LeadCall.LeadID) >销售进度</a></td></tr>
               }
             </table>
-         }
-        
-     }
+        }
+
+    }
         
   }
 </fieldset>
 
 <fieldset>
+<legend>未付款出单列表</legend>
+@{
+    var user = User.Identity.Name;
+    var projects = CRM_Logical.GetSalesInvolveProject();
+    var deals = CH.GetAllData<Deal>(d => projects.Any(p => p.ID == d.CompanyRelationship.ProjectID));
+    deals = deals.FindAll(d => d.Sales == user && d.IsClosed == false && d.Abandoned == false);
+    
+    @(Html.Telerik().Grid<Deal>(deals).Name("Deal")
+                .DataKeys(keys =>
+                {
+                    keys.Add(s => s.ID);
+                })
+                .Columns(c =>
+                {
+                    c.Bound(item => item.CompanyRelationship.Company.Name).Title("客户名称").Width(150);
+                    c.Bound(item => item.Package.Name).Title("Package名称").Width(150);
+                    c.Bound(item => item.Payment).Width(100).Format("{0:c}").Aggregate(aggregates => aggregates.Sum()).FooterTemplate(@<text>@if (item.Sum != null){<p>应收款: @item.Sum.Format("{0:c}")</p>}</text>).GroupFooterTemplate(@<text>@if (item.Sum != null){<p>应收款: @item.Sum.Format("{0:c}")</p>}</text>).Width(100);
+                    c.Bound(item => item.Income).Width(90).Format("{0:c}").Aggregate(aggregates => aggregates.Sum()).FooterTemplate(@<text>@if (item.Sum != null) {<p>实收款: @item.Sum.Format("{0:c}")</p>}</text>).GroupFooterTemplate(@<text>@if (item.Sum != null){<p>实收款: @item.Sum.Format("{0:c}")</p>}</text>).Width(100); ;
+                    c.Bound(item => item.ExpectedPaymentDate).Format("{0:d}").Width(90);
+                    c.Bound(item => item.CompanyRelationship.Project.ProjectCode).Width(100);
+                    c.Bound(item => item.ID).Title("操作").Template(@<span>
+                    <a href=@Url.Content("~/sales/EditDeal/?id=" + item.ID + "&projectid=" + item.CompanyRelationship.ProjectID) >编辑</a> | <a href=@Url.Content("~/sales/DisplayDeal/?id=" + item.ID + "&projectid=" + item.CompanyRelationship.ProjectID)>详细</a>  
+                   </span>);
+                })
+                    .Resizable(resizing => resizing.Columns(true))
+                    .Filterable().Sortable().Groupable()
+                    .Pageable(p => p.PageSize(10))
+                    .Scrollable(scrolling => scrolling.Height(250))
+
+)
+}
+</fieldset>
+
+<fieldset>
 <legend>所在项目</legend>
 <div>
-@if(Model!=null)
+@if (Model != null)
 {
 @(Html.Telerik().TabStrip().Name("TabStrip").SelectedIndex(ViewBag.TabIndex == null ? 0 : (int)ViewBag.TabIndex).Items(items =>
 {
-    foreach(var child in Model)
+    foreach (var child in Model)
     {
-        items.Add().Text(child.Name).Content(@<text>@Html.Partial("projectinfo",child)</text>);
+        items.Add().Text(child.ProjectCode).Content(@<text>@Html.Partial("projectinfo", child)</text>);
     }
 }))
 }

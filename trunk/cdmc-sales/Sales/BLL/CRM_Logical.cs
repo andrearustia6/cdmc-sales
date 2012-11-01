@@ -127,7 +127,7 @@ namespace BLL
 
         public static bool IsNewDMS(LeadCall call)
         {
-            return call.IsFirstPitch;
+            return call.IsFirstPitch();
         }
 
         public static bool IsDMS(LeadCall call)

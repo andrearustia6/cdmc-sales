@@ -50,6 +50,7 @@ namespace Sales.Controllers
 
         public ActionResult AddLeadCall(int? crid, int? leadid)
         {
+            //传拨打人到页面
             var m = CH.GetDataById<Project>(CH.GetDataById<CompanyRelationship>(crid).ProjectID, "Members").GetProjectMemberByName();
             if (m != null)
                 ViewBag.MemberID = m.ID;
@@ -68,7 +69,6 @@ namespace Sales.Controllers
             {
                 CH.Create<LeadCall>(leadcall);
                 return RedirectToAction("CompanyRelationshipLeadCallsIndex", new { crid = crid });
-               
             }
             else
             {
@@ -76,6 +76,60 @@ namespace Sales.Controllers
                 return View(leadcall);
             }
         }
+
+        public ActionResult DisplayLeadCall(int? crid, int? leadcallid)
+        {
+            this.AddErrorStateIfSalesNoAccessRightToTheCRM(crid);
+
+            ViewBag.CompanyRelationshipID = crid;
+            var lc = CH.GetDataById<LeadCall>(leadcallid);
+            return View(lc);
+        }
+
+        public ActionResult DeleteLeadCall(int? crid, int? leadcallid)
+        {
+            var lc = CH.GetDataById<LeadCall>(leadcallid);
+            ViewBag.CompanyRelationshipID = crid;
+            this.AddErrorStateIfCallerIsNotTheLoginUser(lc);
+            if (ModelState.IsValid)
+                return View(lc);
+            else
+                return RedirectToAction("CompanyRelationshipLeadCallsIndex", new { crid = crid });
+        }
+
+        [HttpPost, ActionName("DeleteLeadCall")]
+        public ActionResult DeleteLeadCallConfirmed( int? leadcallid,int? crid)
+        {
+            CH.Delete<LeadCall>(leadcallid);
+            return RedirectToAction("CompanyRelationshipLeadCallsIndex", new { crid = crid });
+           
+        }
+
+        public ActionResult EditLeadCall(int? crid, int? leadcallid)
+        {
+            this.AddErrorStateIfSalesNoAccessRightToTheCRM(crid);
+
+            ViewBag.CompanyRelationshipID = crid;
+            var lc = CH.GetDataById<LeadCall>(leadcallid);
+            return View(lc);
+        }
+
+        [HttpPost]
+        public ActionResult EditLeadCall(LeadCall leadcall, int? crid)
+        {
+            if (ModelState.IsValid)
+            {
+                CH.Edit<LeadCall>(leadcall);
+                return RedirectToAction("CompanyRelationshipLeadCallsIndex", new { crid = crid });
+
+            }
+            else
+            {
+                ViewBag.CompanyRelationshipID = crid;
+                return View(leadcall);
+            }
+        }
+
         #endregion
 
         #region deal
@@ -410,28 +464,8 @@ namespace Sales.Controllers
         {
             ViewBag.ProjectID = projectid;
             var project = CH.GetDataById<Project>(projectid, "Members");
-            if (project != null)
-            {
-                var cs = CH.GetAllData<CompanyRelationship>(c => c.ProjectID == projectid);
-
-                var member = project.Members.FirstOrDefault(m => m.Name == User.Identity.Name);
-                if (member != null && member.CharactersSet != null)
-                {
-
-                    var data = new List<CompanyRelationship>();
-                    cs.ForEach(i =>
-                    {
-                        var members = i.WhoCallTheCompanyMember();
-                        if (members.Any(m => m.Name == User.Identity.Name))
-                        {
-                            data.Add(i);
-                        }
-                    });
-
-                    return View(data);
-                }
-            }
-            return View();
+            var data = project.GetCRM();
+            return View(data);
         }
 
         public ViewResult MyPage()

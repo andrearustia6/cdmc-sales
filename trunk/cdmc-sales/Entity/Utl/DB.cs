@@ -93,15 +93,15 @@ namespace Utl
             context.OnPhoneBlockTypes.Add(new OnPhoneBlockType() { Name = "无人接听", Code = 4 });
             context.OnPhoneBlockTypes.Add(new OnPhoneBlockType() { Name = "不是决策人", Code = 5 });
 
-            context.LeadCallTypes.Add(new LeadCallType() { Name = "Others", Code = 1, ID=1 });
-            context.LeadCallTypes.Add(new LeadCallType() { Name = "Blowed", Code = 2, ID = 2 });
-            context.LeadCallTypes.Add(new LeadCallType() { Name = "Not Pitched", Code = 3, ID = 3 });
-            context.LeadCallTypes.Add(new LeadCallType() { Name = "Pitched", Code = 4, ID = 4 });
-            context.LeadCallTypes.Add(new LeadCallType() { Name = "Full Pitched", Code = 5, ID = 5 });
-            context.LeadCallTypes.Add(new LeadCallType() { Name = "Call-Backed", Code = 6, ID = 6 });
-            context.LeadCallTypes.Add(new LeadCallType() { Name = "Waiting for Approval", Code = 7, ID = 7 });
-            context.LeadCallTypes.Add(new LeadCallType() { Name = "Qualified Decision", Code = 8, ID = 8 });
-            context.LeadCallTypes.Add(new LeadCallType() { Name = "Closed", Code = 9, ID = 9 });
+            context.LeadCallTypes.Add(new LeadCallType() { Name = "Others", Code = 10, ID=1 });
+            context.LeadCallTypes.Add(new LeadCallType() { Name = "Blowed", Code = 20, ID = 2 });
+            context.LeadCallTypes.Add(new LeadCallType() { Name = "Not Pitched", Code = 30, ID = 3 });
+            context.LeadCallTypes.Add(new LeadCallType() { Name = "Pitched", Code = 40, ID = 4 });
+            context.LeadCallTypes.Add(new LeadCallType() { Name = "Full Pitched", Code = 50, ID = 5 });
+            context.LeadCallTypes.Add(new LeadCallType() { Name = "Call-Backed", Code = 60, ID = 6 });
+            context.LeadCallTypes.Add(new LeadCallType() { Name = "Waiting for Approval", Code = 70, ID = 7 });
+            context.LeadCallTypes.Add(new LeadCallType() { Name = "Qualified Decision", Code = 80, ID = 8 });
+            context.LeadCallTypes.Add(new LeadCallType() { Name = "Closed", Code = 90, ID = 9 });
             
             context.DistrictNumbers.Add(new DistrictNumber() { Country = "kuwait", Number = 965, TimeDifference = -5 ,ID=1});
             context.DistrictNumbers.Add(new DistrictNumber() { Country = "Australia", Number = 61, TimeDifference = 2  ,ID=2});
@@ -254,6 +254,7 @@ namespace Utl
             context.Members.Add(new Member() { ID = 5, ProjectID = 2, Name = "john" });
             context.Members.Add(new Member() { ID = 6, ProjectID = 2, Name = "lucas" });
             context.Members.Add(new Member() { ID = 7, ProjectID = 2, Name = "tina" });
+            context.Members.Add(new Member() { ID = 8, ProjectID = 3, Name = "rachel" });
         }
     }
 

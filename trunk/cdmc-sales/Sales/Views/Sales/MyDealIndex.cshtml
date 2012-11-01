@@ -15,7 +15,7 @@
                 .Columns(c =>
                 {
                     c.Bound(item => item.CompanyRelationship.Company.Name).Title("客户名称").Width(150);
-                    c.Bound(item => item.Package.Name).Width(150);
+                    c.Bound(item => item.Package.Name).Title("Package名称").Width(150);
                     c.Bound(item => item.Payment).Width(100).Format("{0:c}").Aggregate(aggregates => aggregates.Sum()).FooterTemplate(@<text>@if (item.Sum != null)
                                                                                                                                              {<p>应收款: @item.Sum.Format("{0:c}")</p>}</text>).GroupFooterTemplate(@<text>@if (item.Sum != null)
                                                                                                                                                                                                                                            {<p>应收款: @item.Sum.Format("{0:c}")</p>}</text>).Width(100);

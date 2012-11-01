@@ -15,4 +15,9 @@
     @Html.TextAreaFor(model => model.Description)
     @Html.ValidationMessageFor(model => model.Description)
 </div>
+@if (Model != null)
+{ 
+    @Html.HiddenFor(m=>m.Creator)
+    @Html.HiddenFor(m=>m.CreatedDate)
+}
 </fieldset>

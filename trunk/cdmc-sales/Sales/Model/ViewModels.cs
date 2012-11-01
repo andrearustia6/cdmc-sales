@@ -64,8 +64,10 @@ namespace Model
         public LeadCall LeadCall { get; set; }
         public string LeadName { get { return LeadCall.Lead.Name; } }
         public string LeadTitle { get { return LeadCall.Lead.Title; } }
+        public string Contact { get { return LeadCall.Lead.Contact; } }
+        public string Mobile { get { return LeadCall.Lead.Mobile; } }
         public string Companyname { get { return LeadCall.CompanyRelationship.Company.Name; } }
-
+        public string ProjectCode { get { return LeadCall.CompanyRelationship.Project.ProjectCode; } }
         public string ProjectName { get { return LeadCall.CompanyRelationship.Project.Name; } }
         public DateTime CallDateTime
         {

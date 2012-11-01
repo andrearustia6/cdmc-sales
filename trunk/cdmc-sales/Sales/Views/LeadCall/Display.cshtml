@@ -1,29 +1,26 @@
 ﻿@model Entity.LeadCall
-
-@{
-    ViewBag.Title = "删除";
-}
+@using Entity
 @using Utl
 
 <fieldset>
     <legend>@SR.Form</legend>
 
-    <div class="display-label">IsFirstPitch</div>
+    <div class="display-label">是否第一次Pitch</div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.IsFirstPitch)
+        @Model.IsFirstPitch()
     </div>
 
     <div class="display-label">Lead</div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.Lead.Gender)
+        @Html.DisplayFor(model => model.Lead.Name)
     </div>
 
-    <div class="display-label">CompanyRelationship</div>
+    <div class="display-label">所属公司</div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.CompanyRelationship.Description)
+        @Html.DisplayFor(model => model.CompanyRelationship.Company.Name)
     </div>
 
-    <div class="display-label">LeadCallType</div>
+    <div class="display-label">致电结果类型</div>
     <div class="display-field">
         @Html.DisplayFor(model => model.LeadCallType.Name)
     </div>
@@ -33,22 +30,22 @@
         @Html.DisplayFor(model => model.FaxOut)
     </div>
 
-    <div class="display-label">Result</div>
+    <div class="display-label">结果描述</div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Result)
     </div>
 
-    <div class="display-label">CallBackDate</div>
+    <div class="display-label">下次回打时间</div>
     <div class="display-field">
         @Html.DisplayFor(model => model.CallBackDate)
     </div>
 
-    <div class="display-label">CallDate</div>
+    <div class="display-label">致电时间</div>
     <div class="display-field">
         @Html.DisplayFor(model => model.CallDate)
     </div>
 
-    <div class="display-label">Caller</div>
+    <div class="display-label">致电人</div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Member.Name)
     </div>

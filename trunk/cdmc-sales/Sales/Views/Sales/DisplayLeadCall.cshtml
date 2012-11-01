@@ -1,0 +1,15 @@
+﻿@{
+    ViewBag.Title = "销售进度详细";
+}
+
+@using Entity
+@using Utl
+@model LeadCall    
+@Html.Partial(@"~\views\leadcall\display.cshtml",Model)
+@Html.Partial("displaycommon", Model)
+<center>
+<p>
+    @Html.ActionLink(SR.Edit, "EditLeadCall", new { leadcallid = Model.ID, crid = (int)ViewBag.CompanyRelationshipID }) 
+   @* @Html.ActionLink(SR.GobackToList, "Index")*@
+</p>
+</center>

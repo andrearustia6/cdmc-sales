@@ -1,0 +1,18 @@
+﻿@{
+    ViewBag.Title = "进度删除";
+}
+
+@using Entity
+@using Utl
+@model LeadCall    
+@Html.Partial(@"~\views\leadcall\display.cshtml",Model)
+@Html.Partial("displaycommon", Model)
+@using (Html.BeginForm())
+{
+    <center>
+    <p>
+        <input type="submit" value=@SR.Delete /> @* |
+        @Html.ActionLink(SR.GobackToList, "Index")*@
+    </p>
+    </center>
+}
