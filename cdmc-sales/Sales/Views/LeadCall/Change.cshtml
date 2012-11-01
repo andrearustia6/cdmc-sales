@@ -6,14 +6,6 @@
         <legend>@SR.Form</legend>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.IsFirstPitch)
-        </div>
-        <div class="editor-field">
-            @Html.DropDownListFor(model => model.IsFirstPitch, new SelectList(new List<bool>() { true,false}), "-请选择-")
-            @Html.ValidationMessageFor(model => model.IsFirstPitch)
-        </div>
-
-        <div class="editor-label">
             @Html.Label("Lead姓名")
         </div>
         <div class="editor-field">

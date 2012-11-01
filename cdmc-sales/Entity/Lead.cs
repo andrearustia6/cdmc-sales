@@ -125,7 +125,7 @@ namespace Entity
         [Display(Name = "电话结果"), Required]
         public string Name { get; set; }
 
-        [Display(Name = "预备字段")]
+        [Display(Name = "结果代码")]
         public int Code { get; set; }
 
         [Display(Name = "致电结果描述")]
@@ -133,13 +133,14 @@ namespace Entity
     }
 
 
+
     /// <summary>
     /// 电话结果管理
     /// </summary>
     public class LeadCall : CompanyRelationshipChildItem
     {
-        [Display(Name = "First Pitch"), Required]
-        public bool IsFirstPitch { get; set; }
+        //[Display(Name = "First Pitch"), Required]
+        //public bool IsFirstPitch { get; set; }
 
         public virtual Lead Lead { get; set; }
         [Display(Name = "致电客户"), Required]

@@ -18,8 +18,11 @@
         @Html.LabelFor(model => model.CompanyRelationshipID, "公司")
     </div>
     <div class="editor-field">
-        @Html.DropDownListFor(m => m.CompanyRelationshipID, new SelectList(CH.GetAllData<CompanyRelationship>(), "ID", "CompanyName"), "-请选择-")
+    @{
+        var data = ViewBag.AvaibleCRM==null? CH.GetAllData<CompanyRelationship>():ViewBag.AvaibleCRM as List<CompanyRelationship>;
+        @Html.DropDownListFor(m => m.CompanyRelationshipID, new SelectList(data, "ID", "CompanyName"), "-请选择-")
         @Html.ValidationMessageFor(model => model.CompanyRelationshipID)
+        }
     </div>
 
     <div class="editor-label">

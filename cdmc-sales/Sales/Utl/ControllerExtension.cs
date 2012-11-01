@@ -90,6 +90,18 @@ namespace System.Web.Mvc
 
     public static class ControllerExtension
     {
+        public static void AddErrorStateIfCreatorIsNotTheLoginUser(this Controller item, EntityBase target)
+        {
+            if(!target.CreatorIsTheLoginUser())
+                item.ModelState.AddModelError("", "登陆用户不是此数据的创建人， 不允许进行操作");
+        }
+
+        public static void AddErrorStateIfCallerIsNotTheLoginUser(this Controller item, LeadCall target)
+        {
+            if (!target.CallerIsTheLoginUser())
+                item.ModelState.AddModelError("", "登陆用户不是致电人， 不允许进行操作");
+        }
+
         public static void AddErrorStateIfFieldExist<T>(this Controller item,EntityBase target,string fieldname) where T:EntityBase
         {
             if (target.SameFieldValueExist<T>("Name"))

@@ -1,22 +1,23 @@
-﻿@model Entity.Lead
+﻿@using Entity
+@model LeadCall
 
 @{
-    ViewBag.Title = "添加Lead";
+    ViewBag.Title = "编辑销售进度";
 }
-@using Utl
+
 <script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
 <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
 
 @using (Html.BeginForm()) {
     @Html.ValidationSummary(true)
-    @Html.Hidden("ProjectID",(int)ViewBag.ProjectID)
-    @Html.Partial(@"~\views\lead\change.cshtml",Model);
+    @Html.HiddenFor(m => m.ID)
+    @Html.Partial(@"~\views\leadCall\change.cshtml", Model);
     @Html.Partial(@"editcommon", Model);
 <div>
   <center>
         <p>
-            <input type="submit" value=@SR.Save />
+            <input type="submit" value="Save" />
         </p>
-  </center>
+        </center>
 </div>
 }

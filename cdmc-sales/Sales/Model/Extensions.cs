@@ -17,6 +17,14 @@ namespace Entity
             if (data.Count > 0 && data.Any(d => d.ID != item.ID)) return true;
             return false;
         }
+
+        public static bool CreatorIsTheLoginUser(this EntityBase item)
+        {
+            if (item.Creator != HttpContext.Current.User.Identity.Name)
+                return false;
+            else
+                return true;
+        }
     }
 
 
@@ -25,6 +33,26 @@ namespace Entity
         public static bool IsAllNamesEmpty(this NameEntity item)
         {
             if (string.IsNullOrEmpty(item.Name_EN) && string.IsNullOrEmpty(item.Name_CH))
+                return true;
+            else
+                return false;
+        }
+    }
+
+    public static class LeadCallExtensions
+    {
+        public static bool CallerIsTheLoginUser(this LeadCall item)
+        {
+            if (item.Member.Name == HttpContext.Current.User.Identity.Name)
+                return true;
+            else
+                return false;
+        }
+
+        public static bool IsFirstPitch(this LeadCall item)
+        {
+            var ls = item.CompanyRelationship.LeadCalls.FindAll(lc => lc.LeadCallType.Code >= 40);
+            if (ls.Count > 0)
                 return true;
             else
                 return false;
@@ -106,7 +134,7 @@ namespace Entity
         /// <returns></returns>
         public static List<ViewMemberLeadToCall> GetMemberToCallList(this Member item, DateTime? startdate = null, DateTime? enddate = null)
         {
-            var lcs = CH.GetAllData<LeadCall>(lc=>lc.CompanyRelationship.ProjectID==item.ProjectID&& lc.CallBackDate!=null);
+            var lcs = CH.GetAllData<LeadCall>(lc => lc.CompanyRelationship.ProjectID == item.ProjectID && lc.CallBackDate != null);
 
             startdate = startdate == null ? new DateTime(1, 1, 1) : startdate;
             enddate = enddate == null ? new DateTime(9999, 1, 1) : enddate.Value.AddDays(+1);
@@ -114,8 +142,9 @@ namespace Entity
             lcs = lcs.FindAll(l => l.CallBackDate >= startdate && l.CallBackDate <= enddate);
 
             var list = new List<ViewMemberLeadToCall>();
-            lcs.ForEach(l => {
-                var nd = new ViewMemberLeadToCall() {   LeadCall = l};
+            lcs.ForEach(l =>
+            {
+                var nd = new ViewMemberLeadToCall() { LeadCall = l };
                 list.Add(nd);
             });
             return list;
@@ -137,7 +166,7 @@ namespace Entity
             decimal checkintarget = 0;
             decimal nextdealtarget = 0;
             decimal nextcheckintarget = 0;
-            var deals = CH.GetAllData<Deal>(d => d.Sales == item.Name&&d.CompanyRelationship.ProjectID == item.ProjectID);
+            var deals = CH.GetAllData<Deal>(d => d.Sales == item.Name && d.CompanyRelationship.ProjectID == item.ProjectID);
 
             deals.ForEach(d =>
             {
@@ -199,7 +228,7 @@ namespace Entity
 
                 if (l.LeadCallType.Code > 3)
                     result.DMS++;
-                if (l.IsFirstPitch)
+                if (l.IsFirstPitch())
                     result.New_DMS++;
 
                 if (l.LeadCallTypeID == 1)
@@ -229,6 +258,35 @@ namespace Entity
 
     public static class ProjectExtensions
     {
+        public static List<CompanyRelationship> GetCRM(this Project item)
+        {
+            return item.GetCRMbyUserName(HttpContext.Current.User.Identity.Name);
+        }
+
+        public static List<CompanyRelationship> GetCRMbyUserName(this Project item, string user)
+        {
+            var data = new List<CompanyRelationship>();
+
+            var cs = CH.GetAllData<CompanyRelationship>(c => c.ProjectID == item.ID);
+
+            var member = item.Members.FirstOrDefault(m => m.Name == user);
+            if (member != null && member.CharactersSet != null)
+            {
+
+
+                cs.ForEach(i =>
+                {
+                    var members = i.WhoCallTheCompanyMember();
+                    if (members.Any(m => m.Name == user))
+                    {
+                        data.Add(i);
+                    }
+                });
+            }
+
+            return data;
+
+        }
         /// <summary>
         /// 添加已存在的公司到项目
         /// </summary>
@@ -374,6 +432,14 @@ namespace Entity
     }
     public static class DealExtensions
     {
+        public static bool SalesIsTheLoginUser(this Deal item)
+        {
+            if (item.Sales == HttpContext.Current.User.Identity.Name)
+                return true;
+            else
+                return false;
+        }
+
         public static string CopamyName(this Deal item)
         {
             if (item.CompanyRelationship != null)
