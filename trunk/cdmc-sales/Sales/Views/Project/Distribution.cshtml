@@ -19,7 +19,9 @@
                 <li>@c</li> 
                 }
             }
+           
         </ul>
+         <input type="submit" style=" margin:62px;"  value="提交"   />
     </div>
 }
 @helper Members()
@@ -56,19 +58,17 @@
     </div>
     <div class="xiangmu_3">
      @{ Html.BeginForm(); }
-        @CompanysTree()
-        @Members()
+     <div> @CompanysTree()
+        
+        
        
+        @Members()
+         </div>
+          
         @Html.Hidden("ProjectID", (int)ViewBag.ProjectID)
        
-      @*  <div class="anniu_2">
-            <ul>
-                <li>
-               
-                  </li>
-            </ul>
-        </div>*@
-         <input type="submit"  value="提交" style="margin-top:450px; margin-left:-600px;"  />
+    
+       
         @{ Html.EndForm(); }
     </div>
      
@@ -93,7 +93,7 @@
     }
     .charatacter
     {
-         max-width:200px; min-height:350px;
+         max-width:200px; 
     }
     .charatacter li, .pane li
     {
@@ -111,6 +111,8 @@
         color: #d96a10;
         font-size: 14px;
     }
+    
+   
 </style>
 @{ Html.Telerik().ScriptRegistrar().OnDocumentReady(@<text> initialCharDistribution()
     </text>);

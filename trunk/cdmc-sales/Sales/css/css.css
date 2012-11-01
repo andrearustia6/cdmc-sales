@@ -15,7 +15,8 @@ img{vertical-align:top; border:0; margin:0px; padding:0px;}
 .bottom{ background:#f4a05c; clear:both;}
 .bottom_2{ width:930px; margin:0 auto; padding-bottom:100px;}
 .xiangmu{ height:56px; background:#f6ac71;}
-.xiangmu li{ height:56px; width:110px;background:url(../images/anniu.gif) no-repeat 10px 15px; float:left; font-family:"微软雅黑"; font-size:14px; color:#fff; padding:0px 0 0 28px; line-height:56px;}
+.xiangmu LI {
+	PADDING-BOTTOM: 0px; LINE-HEIGHT: 56px; PADDING-LEFT: 10px; WIDTH: 110px; PADDING-RIGHT: 0px; font-family:'微软雅黑';FLOAT: left; HEIGHT: 56px; COLOR: #a34900; FONT-SIZE: 14px; PADDING-TOP: 0px}
 
 .yuanjiao{ height:4px; background:url(../images/yuanjiao.gif) no-repeat;font-size:1px;}
 .yuanjiao_2{ height:4px; background:url(../images/yuanjiao_2.gif) no-repeat; clear:both;font-size:1px;}
@@ -45,6 +46,8 @@ img{vertical-align:top; border:0; margin:0px; padding:0px;}
 #nav .mainlevel ul {display:none; position:absolute;}
 #nav .mainlevel li {border-top:1px solid #fff; background:#ef6b00; padding:0 0px;/*IE6 only*/}
 #nav .mainlevel li a{ color:#fff;}
+
+ input[type=submit]{ background:url(/images/tijiaoanniu.jpg) no-repeat; width:62px; height:26px; border:none; color:#fff;} 
 
 /*字母分配*/
 .zimu_left{ float:left; width:200px;}
