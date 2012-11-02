@@ -40,6 +40,14 @@ namespace System.Web.Mvc
             }
         }
 
+        public static void AddErrorStateIfStartDateAndEndDateEmpty(this Controller item, DateTime? startdate, DateTime? enddate)
+        {
+            if (startdate == null || enddate==null)
+            {
+                item.ModelState.AddModelError("", "开始时间或者结束时间为空");
+            }
+        }
+
         public static void AddErrorStateIfTargetOfWeekExist(this Controller item, DateTime startdate, int targetofmonthid)
         {
             var ts = CH.GetAllData<TargetOfWeek>(t => t.StartDate.ToShortDateString() == startdate.ToShortDateString() && t.TargetOfMonthID == targetofmonthid);

@@ -29,12 +29,16 @@ namespace Sales.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddBreakdown(List<string> checkin, List<string> dealin, int projectid, int TargetOfMonthid, DateTime startdate, DateTime enddate, string OldDate)
+        public ActionResult AddBreakdown(List<string> checkin, List<string> dealin, int projectid, int TargetOfMonthid, DateTime? startdate, DateTime? enddate, string OldDate)
         {
             ViewBag.ProjectID = projectid;
             ViewBag.TargetOfMonthID = TargetOfMonthid;
-            this.AddErrorStateIfNotFromMondayToFriday(startdate, enddate);
-            this.AddErrorStateIfTargetOfWeekExist(startdate, TargetOfMonthid);
+            this.AddErrorStateIfStartDateAndEndDateEmpty(startdate, enddate);
+            if (ModelState.IsValid)
+            {
+                this.AddErrorStateIfNotFromMondayToFriday(startdate.Value, enddate.Value);
+                this.AddErrorStateIfTargetOfWeekExist(startdate.Value, TargetOfMonthid);
+            }
             if (ModelState.IsValid)
             {
                 if (checkin != null)
@@ -46,8 +50,8 @@ namespace Sales.Controllers
                         var ckvalue = ck[1];
                         var dl = dealin[i].Split('|');
                         var dlvalue = dl[1];
-                       
-                        CH.Create<TargetOfWeek>(new TargetOfWeek() { CheckIn = Decimal.Parse(ckvalue), Deal = Decimal.Parse(dlvalue), EndDate = enddate, Member = name, StartDate = startdate, ProjectID = projectid, TargetOfMonthID = TargetOfMonthid });
+
+                        CH.Create<TargetOfWeek>(new TargetOfWeek() { CheckIn = Decimal.Parse(ckvalue), Deal = Decimal.Parse(dlvalue), EndDate = enddate.Value, Member = name, StartDate = startdate.Value, ProjectID = projectid, TargetOfMonthID = TargetOfMonthid });
                        
                     }
                 }
@@ -64,6 +68,7 @@ namespace Sales.Controllers
             ViewBag.TargetOfMonthID = targetofmonthid;
             ViewBag.OldStartDate = startdate;
             ViewBag.EndDate = DateTime.Parse(startdate).AddDays(4).ToShortDateString();
+
             if (startdate != null)
             {
 
@@ -79,8 +84,11 @@ namespace Sales.Controllers
         {
             ViewBag.ProjectID = projectid;
             ViewBag.TargetOfMonthID = TargetOfMonthid;
-            this.AddErrorStateIfNotFromMondayToFriday(startdate, enddate);
 
+            this.AddErrorStateIfStartDateAndEndDateEmpty(startdate, enddate);
+            if (ModelState.IsValid)
+            this.AddErrorStateIfNotFromMondayToFriday(startdate, enddate);
+            
             if (ModelState.IsValid)
             {
                 if (checkin != null)
