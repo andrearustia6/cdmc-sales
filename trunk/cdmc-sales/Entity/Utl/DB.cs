@@ -86,6 +86,7 @@ namespace Utl
             context.Areas.Add(new Area() { Name_EN = "", Name_CH = "石油", ID = 2 });
             context.Areas.Add(new Area() { Name_EN = "", Name_CH = "化工", ID = 3 });
             context.Areas.Add(new Area() { Name_EN = "", Name_CH = "医疗", ID = 4 });
+            context.Areas.Add(new Area() { Name_EN = "Publishing", Name_CH = "出版行业", ID = 5 });
 
             context.OnPhoneBlockTypes.Add(new OnPhoneBlockType() { Name = "没有预算",Code=1 });
             context.OnPhoneBlockTypes.Add(new OnPhoneBlockType() { Name = "无战略规划", Code = 2 });
@@ -105,6 +106,9 @@ namespace Utl
             
             context.DistrictNumbers.Add(new DistrictNumber() { Country = "kuwait", Number = 965, TimeDifference = -5 ,ID=1});
             context.DistrictNumbers.Add(new DistrictNumber() { Country = "Australia", Number = 61, TimeDifference = 2  ,ID=2});
+            context.DistrictNumbers.Add(new DistrictNumber() { Country = "India", Number = 91, TimeDifference = -2.3, ID = 3 });
+            		
+
 
             context.CurrencyTypes.Add(new CurrencyType() { Name="RMB"});
             context.CurrencyTypes.Add(new CurrencyType() { Name = "$" });

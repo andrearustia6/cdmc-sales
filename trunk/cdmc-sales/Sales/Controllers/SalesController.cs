@@ -464,8 +464,15 @@ namespace Sales.Controllers
         {
             ViewBag.ProjectID = projectid;
             var project = CH.GetDataById<Project>(projectid, "Members");
-            var data = project.GetCRM();
-            return View(data);
+            if (project != null)
+            {
+                var data = project.GetCRM();
+                return View(data);
+            }
+            else
+            {
+                return View();
+            }
         }
 
         public ViewResult MyPage()

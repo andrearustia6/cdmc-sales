@@ -45,7 +45,7 @@ namespace Sales.Controllers
                // item.Contents = HttpUtility.HtmlEncode(item.Contents);
                 item.Creator = User.Identity.Name;
                 CH.Create<Research>(item);
-                return RedirectToAction("Index");
+                return RedirectToAction("MyIndex");
             }
             return View(item);
         }
@@ -65,7 +65,7 @@ namespace Sales.Controllers
                 //item.Contents = HttpUtility.HtmlDecode(item.Contents);
               
                 CH.Edit<Research>(item);
-                return RedirectToAction("Index");
+                return RedirectToAction("MyIndex");
             }
             return View(item);
         }
@@ -81,7 +81,7 @@ namespace Sales.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             CH.Delete<Research>(id);
-            return RedirectToAction("Index");
+            return RedirectToAction("MyIndex");
         }
     }
 }
