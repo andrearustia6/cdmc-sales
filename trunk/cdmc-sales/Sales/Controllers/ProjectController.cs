@@ -19,7 +19,8 @@ namespace Sales.Controllers
       
         public ViewResult Index()
         {
-            return View(CH.GetAllData<Project>("Categorys"));
+            var data = this.GetProjectByRole();
+            return View(data);
         }
 
         public ViewResult GotoReports()

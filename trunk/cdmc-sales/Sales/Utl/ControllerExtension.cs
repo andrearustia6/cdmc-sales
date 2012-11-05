@@ -177,4 +177,18 @@ namespace System.Web.Mvc
             }
         }
     }
+
+    public static class ProjectExtension 
+    {
+        public static List<Project> GetProjectByRole(this Controller item)
+        {
+            var role = Employee.GetCurrentRole();
+            if (role.Level >= 500 && role.Level < 1000)
+                return CH.GetAllData<Project>(p => p.RoleInProject() == RoleInProject.Manager);
+            else if (role.Level >= 1000)
+                return CH.GetAllData<Project>(p => p.RoleInProject() == RoleInProject.Director);
+            else
+                return new List<Project>();
+        }
+    }
 }

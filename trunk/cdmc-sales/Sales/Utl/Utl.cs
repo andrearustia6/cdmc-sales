@@ -208,7 +208,11 @@ namespace Utl
 
         public static int GetRoleLevel(string name)
         {
-            return GetRole(name).Level;
+            var role = GetRole(name);
+            if (role != null)
+                return GetRole(name).Level;
+            else
+                return -1;
         }
 
         public static Role GetRole(string name)
