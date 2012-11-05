@@ -74,8 +74,11 @@ namespace Model
             get
             {
                 var date = LeadCall.CallBackDate.Value;
-                var differs = LeadCall.CompanyRelationship.Company.DistrictNumber.TimeDifference;
-                date = date.AddHours(differs);
+                if (LeadCall.CompanyRelationship.Company.DistrictNumber != null)
+                {
+                    var differs = LeadCall.CompanyRelationship.Company.DistrictNumber.TimeDifference;
+                    date = date.AddHours(differs);
+                }
                 return date;
             }
         }

@@ -89,7 +89,8 @@
 {
     foreach (var child in Model)
     {
-        items.Add().Text(child.ProjectCode).Content(@<text>@Html.Partial("projectinfo", child)</text>);
+        var temp = child;
+        items.Add().Text(child.ProjectCode).Content(@<text>@Html.Partial("projectinfo", temp)</text>);
     }
 }))
 }
