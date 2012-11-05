@@ -471,6 +471,9 @@ namespace Sales.Controllers
             }
             else
             {
+                var ps = CRM_Logical.GetSalesInvolveProject();
+                if(ps!=null)
+                    return View(ps.FirstOrDefault().GetCRM());
                 return View();
             }
         }
