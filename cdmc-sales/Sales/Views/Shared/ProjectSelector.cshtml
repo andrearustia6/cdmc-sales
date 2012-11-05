@@ -5,7 +5,11 @@
 {
 <div  style="margin:10px; margin-left:0px;">
         <span ><b>目标项目：</b>
-        @Html.DropDownList("ProjectID", new SelectList(CRM_Logical.GetSalesInvolveProject(), "ID", "ProjectCode"), "-请选择-", new { onchange = "this.form.submit();" })
-        </span>
+        @{
+            var ps = CRM_Logical.GetSalesInvolveProject();
+            var selected = ps== null ? 0:ps.FirstOrDefault().ID;
+        @Html.DropDownList("ProjectID", new SelectList(ps, "ID", "ProjectCode", selected), "-请选择-", new { onchange = "this.form.submit();" })
+}
+            </span>
        </div>
 }
