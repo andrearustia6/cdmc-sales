@@ -7,6 +7,7 @@ using Utl;
 using System.IO;
 using System.Text;
 using Entity;
+using BLL;
 
 namespace Sales.Controllers
 {
@@ -14,26 +15,56 @@ namespace Sales.Controllers
     public class MarketInterfaceController : Controller
     {
       
-        public ViewResult MarketIndex()
+        public ViewResult MarketIndex(int? projectid)
         {
-            return View(CH.GetAllData<Lead>());
+
+            var pj =  CH.GetDataById<Project>(projectid,"CompanyRElationships");
+            if (pj == null)
+            {
+                pj = CH.GetAllData<Project>().FirstOrDefault();
+                if(pj==null)
+                    return View();
+            }
+            this.AddErrorStateIfCreatorIsTheLoginUserIsNotTheMarketInterface(pj);
+            ViewBag.ProjectID = pj.ID;
+            if (ModelState.IsValid)
+            {
+                var ls = pj.ProjectLeads();
+                return View(ls);
+            }
+            else
+                return View();
+            
         }
 
-
- 
-        public ActionResult EmailExportCsv(int page, string orderBy, string filter)
+        public ActionResult EmailExportCsv(int? projectid)
         {
-            var leads = CH.GetAllData<Lead>();
-            MemoryStream output = new MemoryStream();
-            StreamWriter writer = new StreamWriter(output, Encoding.UTF8);
-            foreach (var lead in leads)
+            var pj = CH.GetDataById<Project>(projectid, "CompanyRelationships");
+            if (pj == null)
             {
-                writer.Write(lead.EMail);
-                writer.WriteLine();
+                return RedirectToAction("MarketIndex", new { projectid = projectid });
             }
-            writer.Flush();
-            output.Position = 0;
-            return File(output, "text/comma-separated-values", "Emails.csv");
+            var ls = pj.ProjectLeads();
+
+            this.AddErrorStateIfCreatorIsTheLoginUserIsNotTheMarketInterface(pj);
+            if (ModelState.IsValid)
+            {
+                MemoryStream output = new MemoryStream();
+                StreamWriter writer = new StreamWriter(output, Encoding.UTF8);
+                foreach (var lead in ls)
+                {
+                    writer.Write(lead.EMail);
+                    writer.WriteLine();
+                }
+                writer.Flush();
+                output.Position = 0;
+                return File(output, "text/comma-separated-values", "Emails.csv");
+            }
+            else
+                return RedirectToAction("MarketIndex", new { projectid = projectid });
+
+          
+           
         }
 
     }

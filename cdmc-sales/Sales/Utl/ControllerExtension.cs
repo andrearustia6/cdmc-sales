@@ -191,4 +191,13 @@ namespace System.Web.Mvc
                 return new List<Project>();
         }
     }
+
+    public static class MarketInterfaceExtension
+    {
+        public static void AddErrorStateIfCreatorIsTheLoginUserIsNotTheMarketInterface(this Controller item, Project target)
+        {
+            if (target.Market != HttpContext.Current.User.Identity.Name)
+                item.ModelState.AddModelError("", "登陆用户不是项目的市场部接口人， 不允许进行操作");
+        }
+    }
 }

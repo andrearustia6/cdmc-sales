@@ -1,0 +1,66 @@
+﻿@{
+    ViewBag.Title = "项目公司";
+}
+@using Entity
+@using Utl
+@using BLL
+@model Project
+@Html.Partial("contenttitle", "项目公司")
+@using (Html.BeginForm())
+{
+<div  style="margin:10px; margin-left:0px;">
+        <span ><b>目标项目：</b>
+        @{
+          var ps = CH.GetAllData<Project>(p => p.Product == User.Identity.Name);
+            var selected = ps.Count== 0 ? 0:ps.FirstOrDefault().ID;
+        @Html.DropDownList("ProjectID", new SelectList(ps, "ID", "ProjectCode", selected), new { onchange = "this.form.submit();" })
+}
+            </span>
+       </div>
+}
+
+ @(Html.Telerik().Grid(Model.CompanyRelationships).Name("Company").ToolBar(commands => commands.Custom().Text("直接添加").Action("Create", "CompanyRelationship", new { projectid = Model.ID }))
+                .DataKeys(keys =>
+                {
+                    keys.Add(s => s.ID);
+                })
+                .Columns(c =>
+                {
+                    c.Bound(item => item.Company.Name).Width(150);
+                    c.Bound(item => item).Template(@<text>@item.WhoCallTheCompanyMemberName()</text>).Title("拨打人").Width(70);
+                    c.Bound(item => item.Importancy).Width(80);
+                    c.Bound(item => item).Template(@<text>@item.CategoryString()</text>).Title("分类").Width(150);
+                    c.Bound(item => item.Company.CompanyType.Name).Width(100);
+                    c.Bound(item => item.Company.Cerator).Width(50);
+                    c.Bound(item => item.Company.From).Width(100);
+                    c.Bound(item => item.ID).Title("操作").Width(200).Template(@<span><a  href=@Url.Content("~/CompanyRelationship/Edit/" + item.ID) >编辑</a> 
+                   </span>);
+
+                })
+                                                                .DetailView(e => e.Template(
+                                                 @<text>
+                         @RenderLead(CH.GetAllData<Lead>(l => l.CompanyID == item.CompanyID), item)
+                        </text>
+                                                                                                        ))
+                                                        .Resizable(resizing => resizing.Columns(true))
+                                                        .Pageable(page => page.PageSize(10))
+                                                        .Filterable()
+                                                        .Scrollable(scrolling => scrolling.Height(350))
+                                              )
+}
+
+@helper RenderLead(List<Lead> Leads, CompanyRelationship cr)
+    { 
+     @(Html.Telerik().Grid(Leads).Name("Leads" + cr.CompanyID)
+                            .Columns(c =>
+                            {
+                                c.Bound(o => o.Name);
+                                c.Bound(o => o.Title);
+                                c.Bound(o => o.Mobile);
+                                c.Bound(o => o).Title("状态").Template(@<text>@CRM_Logical.GetLeadStatus(Model.ID, item)</text>);
+                                c.Bound(o => o).Title("致电列表").Template(@<span>  <a  target="_blank" href=@Url.Content("~/LeadCall/LeadIndex/?projectid=" + cr.ProjectID + "&leadid=" + item.ID + "&companyrelationshipid=" + item.CompanyID) >致电查看</a> </span>);
+                            })
+                                         .Resizable(resizing => resizing.Columns(true))
+                                         .Pageable(p => p.PageSize(20))
+                                         )
+} 

@@ -143,7 +143,7 @@
                     c.Bound(item => item.Company.CompanyType.Name).Width(100);
                     c.Bound(item => item.Company.Cerator).Width(50);
                     c.Bound(item => item.Company.From).Width(100);
-                    c.Bound(item => item.ID).Title("操作").Width(200).Template(@<span><a  href=@Url.Content("~/CompanyRelationship/Edit/" + item.ID) >编辑</a> | 
+                    c.Bound(item => item.ID).Title("操作").Width(200).Template(@<span><a  href=@Url.Content("~/CompanyRelationship/Edit/" + item.ID) >建议拨打人数</a> | 
                     <a  href=@Url.Content("~/Project/AppointSales/?projectid=" + p.ID + "&companyrelationshipid=" + item.ID) >指定销售</a>
                      | <a target="_blank" href=@Url.Content("~/LeadCall/CompanyRelationshipIndex/?projectid=" + p.ID + "&companyrelationshipid=" + item.ID) >致电查看</a> </span>);
 
