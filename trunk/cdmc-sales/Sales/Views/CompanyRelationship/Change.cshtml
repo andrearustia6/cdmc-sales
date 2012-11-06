@@ -13,33 +13,29 @@
         @Html.HiddenFor(m => m.ProjectID)
         @Html.DisplayFor(model => model.Project.Name)
     </div>
-      @if (Model != null)
-      {
-    <div class="editor-label">
-        @Html.LabelFor(model => model.CompanyID, "公司名称：")
-    </div>
-    <div class="editor-field">
     
-        @Html.HiddenFor(m => m.CompanyID)
-        @Html.DisplayFor(model => model.Company.Name)
-     
-    </div>
-      }
-      else
-      {
+    @Html.HiddenFor(m => m.CompanyID)
+    
         <div class="editor-label">
             @Html.Label("英文名称：")
         </div>
         <div class="editor-field">
-            @Html.Editor("enname")
+        @{
+         var enname = Model == null ? null : Model.Company.Name_EN;
+        <input type="text" name="enname" value=@enname />
+         }
         </div>
          <div class="editor-label">
             @Html.Label("中文名称：")
         </div>
         <div class="editor-field">
-             @Html.Editor("chname")
+        @{
+            var chname = Model == null ? null : Model.Company.Name_CH;
+        <input type="text" name="chname" value=@chname />
+        }
+             @*@Html.Editor("chname", Model == null ? null : Model.Company.Name_CH)*@
         </div>
-      }
+     
     
     <div class="editor-label">
         @Html.LabelFor(model => model.Importancy):

@@ -12,6 +12,7 @@ using System.Data.Objects;
 
 namespace Sales.Controllers
 {
+    [ProjectInformationAccess]
     public class CompanyRelationshipController : Controller
     {
         public ViewResult Index()
@@ -50,12 +51,16 @@ namespace Sales.Controllers
                     }
                     item.CompanyID = company.ID;
                     CH.Create<CompanyRelationship>(item);
-                    return RedirectToAction("management", "project", new { id = item.ProjectID, tabindex = 3 });
+                    if(Employee.EqualToProductInterface())
+                       return RedirectToAction("companyrelationshipindex", "productinterface", new { id = item.ProjectID });
+                    else
+                       return RedirectToAction("management", "project", new { id = item.ProjectID, tabindex = 3 });
                 }
             }
             ViewBag.ProjectID = item.ProjectID;
             return View();
         }
+
         public ActionResult Edit(int id)
         {
             var data = CH.GetDataById<CompanyRelationship>(id);
@@ -64,11 +69,19 @@ namespace Sales.Controllers
         }
 
         [HttpPost]
-        public ActionResult Edit(CompanyRelationship item, int[] checkedCategorys)
+        public ActionResult Edit(CompanyRelationship item, int[] checkedCategorys, string enname, string chname)
         {
             //如何保存多对多关系中 引用变化的例子
             if (ModelState.IsValid)
             {
+                var com = CH.GetDataById<Company>(item.CompanyID);
+                if (com.Name_CH != chname || com.Name_EN != enname)
+                {
+                    com.Name_CH = chname;
+                    com.Name_EN = enname;
+                    CH.Edit<Company>(com);
+                }
+
                 CH.Edit<CompanyRelationship>(item);
 
                 if (checkedCategorys != null)
@@ -87,9 +100,11 @@ namespace Sales.Controllers
                     item.Categorys.Clear();
                     CH.DB.SaveChanges();
                 }
-               
-               
-                return RedirectToAction("management", "project", new { id = item.ProjectID, tabindex = 3 });
+
+                if (Employee.EqualToProductInterface())
+                    return RedirectToAction("companyrelationshipindex", "productinterface", new { id = item.ProjectID });
+                else
+                    return RedirectToAction("management", "project", new { id = item.ProjectID, tabindex = 3 });
             }
             ViewBag.ProjectID = item.ProjectID;
             return View(item);

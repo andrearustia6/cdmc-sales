@@ -27,10 +27,32 @@
     <div class="display-field">
         @Html.DisplayFor(model => model.EndDate)
     </div>
-
-    <div class="display-label">销售目标</div>
+     <div class="display-label">会议开始时间</div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.Target)
+        @Html.DisplayFor(model => model.ConferenceStartDate)
+    </div>
+
+    <div class="display-label">会议结束时间</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.ConferenceEndDate)
+    </div>
+
+    <div class="display-label">板块负责人</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Manager)
+    </div>
+    <div class="display-label">团队负责人</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.TeamLeader)
+    </div>
+    <div class="display-label">市场部接口人</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Market)
+    </div>
+
+    <div class="display-label">产品部接口人</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Product)
     </div>
 
     <div class="display-label">销售简介</div>

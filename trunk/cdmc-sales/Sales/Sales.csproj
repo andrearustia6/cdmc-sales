@@ -225,8 +225,9 @@
     <Compile Include="Controllers\MarketInterfaceController.cs" />
     <Compile Include="Controllers\MemberController.cs" />
     <Compile Include="Controllers\PhoneSaleSupportController.cs" />
-    <Compile Include="Controllers\PackageController.cs" />
-    <Compile Include="Controllers\PackageItemController.cs" />
+    <Compile Include="Controllers\Type\PackageController.cs" />
+    <Compile Include="Controllers\Type\PackageItemController.cs" />
+    <Compile Include="Controllers\ProductInterfaceController.cs" />
     <Compile Include="Controllers\ProjectController.cs" />
     <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Controllers\SalesController.cs" />
@@ -945,7 +946,7 @@
     <Content Include="Views\Template\Change.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Lead\MarketIndex.cshtml" />
+    <Content Include="Views\MarketInterface\MarketIndex.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Company\ProductIndex.cshtml" />
@@ -1213,6 +1214,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Sales\DeleteLeadCall.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\ProductInterface\CompanyRelationshipIndex.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
