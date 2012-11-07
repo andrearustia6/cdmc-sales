@@ -66,6 +66,9 @@ namespace Entity
         [Display(Name = "传真")]
         public string Fax { get; set; }
 
+        [Display(Name = "已离职")]
+        public bool LeaveCompany { get; set; }
+
     
     }
 

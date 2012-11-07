@@ -19,6 +19,13 @@
     <div class="editor-field">
         @Html.DisplayTextFor(model => model.Characters)
     </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.SalesTypeID)
+    </div>
+    <div class="editor-field">
+        @Html.DropDownListFor(model => model.SalesTypeID,new SelectList(CH.GetAllData<SalesType>(),"ID","Name"),"-请选择-")
+         @Html.ValidationMessageFor(model => model.SalesTypeID)
+    </div>
 
     <div class="editor-label">
         @Html.LabelFor(model => model.ProjectID)
