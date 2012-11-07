@@ -120,8 +120,8 @@ namespace Entity
             DateTime.TryParse(StartDate.ToString(), out startdate);
             if (startdate.Year != 1)
             {
-                var weeks = (DateTime.Now - startdate).Days / 7;
-                return weeks;
+                var months = (DateTime.Now - startdate).Days / 30;
+                return months;
             }
 
             return null;

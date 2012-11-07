@@ -12,6 +12,7 @@ namespace Utl
 {
     public class DB : DbContext
     {
+        public DbSet<SalesType> SalesTypes { get; set; }
         public DbSet<Company> Companys { get; set; }
         public DbSet<CompanyType> CompanyTypes { get; set; }
         public DbSet<Lead> Leads { get; set; }
@@ -110,8 +111,11 @@ namespace Utl
             		
 
 
-            context.CurrencyTypes.Add(new CurrencyType() { Name="RMB"});
-            context.CurrencyTypes.Add(new CurrencyType() { Name = "$" });
+            context.CurrencyTypes.Add(new CurrencyType() { Name="RMB",ID=1});
+            context.CurrencyTypes.Add(new CurrencyType() { Name = "$",ID=2});
+
+            context.SalesTypes.Add(new SalesType() { Name = "基础销售",ID=1 });
+            context.SalesTypes.Add(new SalesType() { Name = "客户经理",ID=2 });
 
             context.PaymentTypes.Add(new PaymentType() { Name = "现金" });
             context.PaymentTypes.Add(new PaymentType() { Name = "刷卡" });
@@ -250,15 +254,15 @@ namespace Utl
             context.Projects.Add(p3);
            
 
-            context.Members.Add(new Member() { ID = 1, ProjectID = 1, Name = "sean", Characters = "R|S" });
-            context.Members.Add(new Member() { ID = 2, ProjectID = 1, Name = "susie" });
-            context.Members.Add(new Member() { ID = 3, ProjectID = 1, Name = "tina" });
+            context.Members.Add(new Member() { ID = 1, ProjectID = 1, Name = "sean", Characters = "R|S", SalesTypeID=2 });
+            context.Members.Add(new Member() { ID = 2, ProjectID = 1, Name = "susie", SalesTypeID=1});
+            context.Members.Add(new Member() { ID = 3, ProjectID = 1, Name = "tina", SalesTypeID = 1 });
 
-            context.Members.Add(new Member() { ID = 4, ProjectID = 2, Name = "stone" });
-            context.Members.Add(new Member() { ID = 5, ProjectID = 2, Name = "john" });
-            context.Members.Add(new Member() { ID = 6, ProjectID = 2, Name = "lucas" });
-            context.Members.Add(new Member() { ID = 7, ProjectID = 2, Name = "tina" });
-            context.Members.Add(new Member() { ID = 8, ProjectID = 3, Name = "rachel" });
+            context.Members.Add(new Member() { ID = 4, ProjectID = 2, Name = "stone", SalesTypeID=2 });
+            context.Members.Add(new Member() { ID = 5, ProjectID = 2, Name = "john", SalesTypeID = 1 });
+            context.Members.Add(new Member() { ID = 6, ProjectID = 2, Name = "lucas", SalesTypeID = 1 });
+            context.Members.Add(new Member() { ID = 7, ProjectID = 2, Name = "tina", SalesTypeID = 1 });
+            context.Members.Add(new Member() { ID = 8, ProjectID = 3, Name = "rachel", SalesTypeID = 1 });
         }
     }
 

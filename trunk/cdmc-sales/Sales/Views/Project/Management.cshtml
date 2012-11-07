@@ -82,24 +82,25 @@
                     c.Bound(item => item.Name).Width(200);
                     c.Bound(item => item.Characters);
                     c.Bound(item => item).Template(@<text>@item.GetInvolveProjectsName()</text>).Title("参加过的项目");
-                    c.Bound(item => item).Template(@<text>@item.EmployeeDuration()</text>).Title("在职时间(周)");
-                    c.Bound(item => item.ID).Title("操作").Width(200).Template(@<span> <a href=@Url.Content("~/Member/Edit/" + item.ID) >
+                    c.Bound(item => item).Template(@<text>@item.EmployeeDuration()</text>).Title("在职时间(月)");
+                    c.Bound(item => item.SalesType.Name);
+                    c.Bound(item => item.ID).Title("操作").Width(120).Template(@<span> <a href=@Url.Content("~/Member/Edit/" + item.ID) >
                         编辑</a> | <a href=@Url.Content("~/Member/Details/" + item.ID)>详细</a> | <a href=@Url.Content("~/Member/delete/" + item.ID) >
                             删除</a> </span>);
-                }) .Resizable(resizing => resizing.Columns(true)).Scrollable(scrolling => scrolling.Height(350))
-                )
+                }).Resizable(resizing => resizing.Columns(true)).Scrollable(scrolling => scrolling.Height(350))
+                                            )
 }
         
 @helper Deals(Project p)
     {  
-    ViewBag.Action = "Deals";
-    ViewBag.Controller = "Project";
-    ViewBag.RouteValue = new{projectid=p.ID};
-    ViewBag.StartDate = ViewBag.DealStartDate;
-    ViewBag.EndDate = ViewBag.DealEndDate;
-     var deals = CRM_Logical.GetProjectDeals(p, ViewBag.DealStartDate as DateTime?, ViewBag.DealEndDate as DateTime?);
-     if(deals.Count>0)
-     {
+        ViewBag.Action = "Deals";
+        ViewBag.Controller = "Project";
+        ViewBag.RouteValue = new { projectid = p.ID };
+        ViewBag.StartDate = ViewBag.DealStartDate;
+        ViewBag.EndDate = ViewBag.DealEndDate;
+        var deals = CRM_Logical.GetProjectDeals(p, ViewBag.DealStartDate as DateTime?, ViewBag.DealEndDate as DateTime?);
+        if (deals.Count > 0)
+        {
     @(Html.Telerik().Grid<Deal>(deals).ToolBar(commands => commands.Template(@<text>@Html.Partial("durationselector")</text>)).Name("Deals")
                 .DataKeys(keys =>
                 {
@@ -118,7 +119,7 @@
                     c.Bound(item => item.ID).Title("操作").Width(200).Template(@<span> <a href=@Url.Content("~/Deal/Edit/" + item.ID) >
                         编辑</a> | <a href=@Url.Content("~/Deal/Details/" + item.ID)>详细</a> | <a href=@Url.Content("~/Deal/delete/" + item.ID) >
                             删除</a> </span>);
-                }) .Resizable(resizing => resizing.Columns(true))
+                }).Resizable(resizing => resizing.Columns(true))
                                         .Filterable().Groupable()
                                           .Pageable(page => page.PageSize(1)).Scrollable(scrolling => scrolling.Height(350))
 
@@ -212,7 +213,7 @@
     { 
         var tmid = tm.ID;
         var projectid = tm.ProjectID;
-        var tw = CH.GetAllData<TargetOfWeek>(t => t.ProjectID == projectid && t.TargetOfMonthID==tm.ID);
+        var tw = CH.GetAllData<TargetOfWeek>(t => t.ProjectID == projectid && t.TargetOfMonthID == tm.ID);
         var datas = tw.OrderBy(i => i.StartDate).GroupBy(sd => sd.StartDate);
     @(Html.Telerik().TabStrip().Name("TabStrip" + tmid).SelectedIndex(0).Items(items =>
 {

@@ -49,6 +49,15 @@ namespace Entity
     }
 
     /// <summary>
+    /// 部门管理
+    /// </summary>
+    public class SalesType : EntityBase
+    {
+        [Display(Name = "销售名称"), Required]
+        public String Name { get; set; }
+    }
+
+    /// <summary>
     /// 项目
     /// </summary>
     public class Project : NameEntity
@@ -289,6 +298,10 @@ namespace Entity
         public List<TargetOfWeek> TargetOfWeeks { get; set; }
 
         public List<LeadCall> LeadCalls { get; set; }
+
+        [Display(Name = "销售类型"), Required]
+        public int? SalesTypeID  { get; set; }
+        public virtual SalesType SalesType { get; set; }
 
         [Display(Name = "所在项目"), Required]
         public int? ProjectID { get; set; }

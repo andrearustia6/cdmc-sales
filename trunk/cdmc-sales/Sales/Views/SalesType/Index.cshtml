@@ -1,0 +1,21 @@
+﻿@using Entity
+@model List<SalesType>
+@Html.Partial("contenttitle", "销售类型")           
+@(Html.Telerik().Grid<SalesType>(Model).Name("SalesType").ToolBar(commands => commands.Custom().Text("创建销售类型").Action("Create", "SalesType"))
+                .DataKeys(keys =>
+                {
+                    keys.Add(s => s.ID);
+                })
+                .Columns(c =>
+                {
+                    c.Bound(item => item.Name);
+                    c.Bound(item => item.ID).Width(200).Title("操作").Template(@<span>
+                    <a href=@Url.Content("~/SalesType/Edit/" + item.ID) >编辑</a> | <a href=@Url.Content("~/SalesType/Details/" + item.ID)>详细</a>  | <a href=@Url.Content("~/SalesType/delete/" + item.ID) >删除</a> 
+                   </span>);
+                })
+                .Resizable(resizing => resizing.Columns(true))
+                .Filterable().Sortable().Groupable()
+                .Pageable(p => p.PageSize(20))
+                .Scrollable(scrolling => scrolling.Height(350))
+
+)
