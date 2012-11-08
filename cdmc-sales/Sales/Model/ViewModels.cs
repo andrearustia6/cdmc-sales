@@ -19,12 +19,194 @@ namespace Model
         public int Waiting_For_Approval { get; set; }
         public int Qualified_Decision { get; set; }
         public int Closed { get; set; }
-        public int Cold_Calls{get;set;}
-        public int DMS{get;set;}
-        public int New_DMS{get;set;}  
-        public int Duration{get;set;}
-        public Member TopForeignSales { get; set; }
-        public Member TopDomesticSales { get; set; } 
+        public int Cold_Calls { get; set; }
+        public int DMS { get; set; }
+        public int New_DMS { get; set; }
+        public double Duration { get; set; }
+        public DateTime? startdate { get; set; }
+        public DateTime? enddate { get; set; }
+        public decimal DealInAmount { get; set; }
+        public decimal CheckInAmount { get; set; }
+        //public Member TopForeignSales { get; set; }
+        //public Member TopDomesticSales { get; set; } 
+    }
+
+    public class ViewLeadCallAmountInProject
+    {
+        public Project project { get; set; }
+        public List<ViewLeadCallAmount> LeadCallAmounts { get; set; }
+        public List<Member> _topSales;
+        public decimal TopSalesAmount { get; set; }
+        public List<Member> TopSales
+        {
+            get
+            {
+                if (_topSales == null)
+                {
+                    _topSales = new List<Member>();
+                    var amounts = LeadCallAmounts.FindAll(m => m.DealInAmount == LeadCallAmounts.Max(d => d.DealInAmount));
+                    TopSalesAmount = amounts.FirstOrDefault().DealInAmount;
+                    amounts.ForEach(m =>
+                    {
+                        _topSales.Add(m.Member);
+                    });
+
+                }
+                return _topSales;
+
+            }
+        }
+        public double TopCallerAmount { get; set; }
+        public List<Member> _topCallers;
+        public List<Member> TopCallers
+        {
+            get
+            {
+                if (_topCallers == null)
+                {
+                    _topCallers = new List<Member>();
+                    var amounts = LeadCallAmounts.FindAll(m => m.Duration == LeadCallAmounts.Max(d => d.Duration));
+                    TopCallerAmount = amounts.FirstOrDefault().Duration;
+                    amounts.ForEach(m =>
+                    {
+                        _topCallers.Add(m.Member);
+                    });
+
+                }
+                return _topCallers;
+            }
+        }
+        public double WorstCallerAmount { get; set; }
+        public List<Member> _worstCallers;
+        public List<Member> WorstCallers
+        {
+            get
+            {
+                if (_worstCallers == null)
+                {
+                    _worstCallers = new List<Member>();
+                    //时间最短，入职超过2星期并且没有出单
+                    var amounts = LeadCallAmounts.FindAll(m => m.Duration == LeadCallAmounts.Min(d => d.Duration) && m.DealInAmount == 0 && m.Member.EmployeeDuration() > 0.5);
+                    WorstCallerAmount = amounts.FirstOrDefault().Duration;
+                    amounts.ForEach(m =>
+                    {
+                        _worstCallers.Add(m.Member);
+                    });
+
+                }
+                return _worstCallers;
+            }
+        }
+
+    }
+
+    public class TotalLeadCallAmount
+    {
+        public decimal TopSalesAmount { get; set; }
+        public double WorstCallerAmount { get; set; }
+        public double TopCallerAmount { get; set; }
+        public List<ViewLeadCallAmountInProject> ViewLeadCallAmountInProjects { get; set; }
+        List<Member> _topSales = new List<Member>();
+        public List<Member> TopSales
+        {
+            get
+            {
+
+                if (_topSales.Count == 0)
+                {
+                    ViewLeadCallAmountInProjects.ForEach(vp =>
+                    {
+                        if (_topSales.Count == 0)
+                        {
+                            _topSales.AddRange(vp.TopSales);
+                            TopSalesAmount = vp.TopSalesAmount;
+                        }
+                        else
+                        {
+                            if (vp.TopSalesAmount == TopSalesAmount)
+                            {
+                                _topSales.AddRange(vp.TopSales);
+                            }
+                            else if (vp.TopSalesAmount > TopSalesAmount)
+                            {
+                                _topSales.Clear();
+                                _topSales.AddRange(vp.TopSales);
+                            }
+                        }
+                    });
+                }
+                return _topSales;
+            }
+        }
+        List<Member> _topCallers = new List<Member>();
+        public List<Member> TopCallers
+        {
+            get
+            {
+                if (_topCallers.Count == 0)
+                {
+                    ViewLeadCallAmountInProjects.ForEach(vp =>
+                    {
+                        if (_topCallers.Count == 0)
+                        {
+                            _topCallers.AddRange(vp.TopCallers);
+                            TopCallerAmount = vp.TopCallerAmount;
+                        }
+                        else
+                        {
+                            if (vp.TopCallerAmount == TopCallerAmount)
+                            {
+                                _topCallers.AddRange(vp.TopCallers);
+                            }
+                            else if (vp.TopCallerAmount > TopCallerAmount)
+                            {
+                                _topCallers.Clear();
+                                _topCallers.AddRange(vp.TopCallers);
+                            }
+                        }
+                    });
+                }
+
+                return _topSales;
+            }
+        }
+        List<Member> _worstCallers = new List<Member>();
+        public List<Member> WorstCallers
+        {
+            get
+            {
+                if (_worstCallers.Count == 0)
+                {
+                    ViewLeadCallAmountInProjects.ForEach(vp =>
+                    {
+                        if (_worstCallers.Count == 0)
+                        {
+                            _worstCallers.AddRange(vp.TopCallers);
+                            WorstCallerAmount = vp.WorstCallerAmount;
+                        }
+                        else
+                        {
+                            if (vp.WorstCallerAmount == WorstCallerAmount)
+                            {
+                                _worstCallers.AddRange(vp.WorstCallers);
+                            }
+                            else if (vp.WorstCallerAmount < TopCallerAmount)
+                            {
+                                _worstCallers.Clear();
+                                _worstCallers.AddRange(vp.WorstCallers);
+                            }
+                        }
+
+                    });
+                }
+                return _worstCallers;
+            }
+
+
+
+        }
+
+     
     }
 
     public class ViewProjectProgressAmount
@@ -82,6 +264,6 @@ namespace Model
                 return date;
             }
         }
-       
+
     }
 }

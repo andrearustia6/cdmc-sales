@@ -111,7 +111,7 @@ namespace Entity
             return name;
         }
 
-        public static int? EmployeeDuration(this Member item)
+        public static double? EmployeeDuration(this Member item)
         {
             ProfileBase objProfile = ProfileBase.Create(item.Name);
             object StartDate;
@@ -222,6 +222,23 @@ namespace Entity
             enddate = enddate == null ? new DateTime(9999, 1, 1) : enddate;
             var result = new ViewLeadCallAmount() { Member = item };
             var lcs = CH.GetAllData<LeadCall>(l => l.MemberID == item.ID);
+
+            var dealins = CH.GetAllData<Deal>(d => d.Sales == item.Name && d.SignDate >= startdate && d.SignDate <= enddate);
+            var checkins = CH.GetAllData<Deal>(d => d.Sales == item.Name && d.ActualPaymentDate >= startdate && d.ActualPaymentDate <= enddate);
+            decimal checkinamount=0;
+            decimal dealinamount=0;
+
+            dealins.ForEach(da => {
+                dealinamount += da.Payment;
+            });
+            checkins.ForEach(da =>
+            {
+                checkinamount += da.Income;
+            });
+
+            result.DealInAmount = dealinamount;
+            result.CheckInAmount = checkinamount;
+
             lcs.FindAll(lc => lc.CallDate > startdate && lc.CallDate < enddate).ForEach(l =>
             {
                 result.Cold_Calls++;
@@ -266,7 +283,7 @@ namespace Entity
         public static List<CompanyRelationship> GetCRMbyUserName(this Project item, string user)
         {
             var data = new List<CompanyRelationship>();
-
+            if (item == null) return data;
             var cs = CH.GetAllData<CompanyRelationship>(c => c.ProjectID == item.ID);
 
             var member = item.Members.FirstOrDefault(m => m.Name == user);
