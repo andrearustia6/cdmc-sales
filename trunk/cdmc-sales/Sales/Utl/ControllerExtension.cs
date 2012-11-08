@@ -58,7 +58,7 @@ namespace System.Web.Mvc
 
     public static class ReportControllerExtension
     {
-        public static List<Project> GetProjectByAccount(this Controller item) 
+        public static List<Project> GetProjectByAccount(this Controller item,bool activate=true) 
         {
             List<Project> list = new List<Project>();
             Role role = Employee.GetCurrentRole();
@@ -67,7 +67,7 @@ namespace System.Web.Mvc
 
             if (role.Level == Role.LVL_Director)
             {
-                list = CH.GetAllData<Project>("Members","CompanyRelationships");
+                list = CH.GetAllData<Project>(p => p.IsActived == activate, "Members", "CompanyRelationships");
             }
             else
             {

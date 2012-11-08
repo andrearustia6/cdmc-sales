@@ -18,8 +18,18 @@ namespace Sales.Controllers
         {
             ViewBag.StartDate = startdate;
             ViewBag.EndDate = enddate;
+
+            var result = new TotalLeadCallAmount();
             var ps = this.GetProjectByAccount();
-            return View(ps);
+            var vl = new List<ViewLeadCallAmountInProject>();
+
+            ps.ForEach(p => {
+                vl.Add(new ViewLeadCallAmountInProject(){ LeadCallAmounts = p.GetProjectMemberLeadCalls(startdate, enddate), project=p});
+                
+            });
+            result.ViewLeadCallAmountInProjects = vl;
+            
+            return View(result);
         }
 
         public ActionResult Progress(DateTime? startdate, DateTime? enddate)

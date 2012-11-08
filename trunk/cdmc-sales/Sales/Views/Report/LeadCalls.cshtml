@@ -1,23 +1,26 @@
 ﻿@{
     ViewBag.Title = "致电表";
 }
+@using Model
 @using Entity;
 @using Utl
-@model List<Project>
+@model TotalLeadCallAmount
 <br />
 @Html.Partial("durationselector")
-
+@{
+   <span>TopSales:@Model.TopSales.FirstOrDefault().Name 总额:@Model.TopSalesAmount</span>
    <ul >
    <li >
-    @foreach(var p in Model)
+    @foreach(var p in Model.ViewLeadCallAmountInProjects)
     {
        <br />
-       <b><span>项目名称：@p.Name</span></b>
-        @(Html.Telerik().Grid(p.GetProjectMemberLeadCalls((DateTime?)ViewBag.StartDate,(DateTime?)ViewBag.EndDate) ).Name("project"+p.ID).DataKeys(keys =>
+       <b><span>项目名称：@p.project.Name</span></b>
+        @(Html.Telerik().Grid(p.LeadCallAmounts).Name("project"+p.project.ID).DataKeys(keys =>
                 {
                    keys.Add(s => s.Member.ID);
                 }).Columns(c=>{
                     c.Bound(item => item.Member.Name).Width(60).FooterTemplate(@<text>总数：</text>);
+                    c.Bound(item => item.Member.SalesType.Name).Width(80);
                     c.Bound(item => item.Cold_Calls).Width(90).Aggregate(item => item.Sum()).FooterTemplate(@<text>@item.Sum</text>);
                     c.Bound(item => item.DMS).Width(65).Aggregate(item => item.Sum()).FooterTemplate(@<text>@item.Sum</text>);
                     c.Bound(item => item.New_DMS).Width(95).Aggregate(item => item.Sum()).FooterTemplate(@<text>@item.Sum</text>);
@@ -26,9 +29,12 @@
                     c.Bound(item => item.Waiting_For_Approval).Width(155).Aggregate(item => item.Sum()).FooterTemplate(@<text>@item.Sum</text>);
                     c.Bound(item => item.Qualified_Decision).Width(160).Aggregate(item => item.Sum()).FooterTemplate(@<text>@item.Sum</text>);
                     c.Bound(item => item.Closed).Width(70).Aggregate(item => item.Sum());
+                    c.Bound(item => item.DealInAmount).Width(100).Aggregate(item => item.Sum()).FooterTemplate(@<text>@item.Sum</text>);
+                    c.Bound(item => item.CheckInAmount).Width(100).Aggregate(item => item.Sum()).FooterTemplate(@<text>@item.Sum</text>); ;
                 }).Resizable(resizing => resizing.Columns(true))
-                  .Filterable().Sortable().Groupable()
-                  .Scrollable(scrolling => scrolling.Height(150)))
+                                                                              .Filterable().Sortable()
+                                                                              .Scrollable(scrolling => scrolling.Height(150)))
     }
     </li>
     </ul>
+ }

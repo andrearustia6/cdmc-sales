@@ -25,6 +25,6 @@
                     c.Bound(item => item.NextCheckInTarget).Format("{0:c}").Aggregate(item => item.Sum()).FooterTemplate(@<text>@item.Sum.Format("{0:c}")</text>);
                     c.Bound(item => item.NextDealInTarget).Format("{0:c}").Aggregate(item => item.Sum()).FooterTemplate(@<text>@item.Sum.Format("{0:c}")</text>);
                 }).Resizable(resizing => resizing.Columns(true))
-                  .Sortable().Groupable()
+                  .Sortable()
                   .Scrollable(scrolling => scrolling.Height(150)))
 

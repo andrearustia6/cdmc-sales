@@ -9,7 +9,7 @@ using BLL;
 
 namespace Sales.Controllers
 {
-    [SalesRequired(AccessType = AccessType.Equal)]
+    [SalesRequired]
     public class SalesController : Controller
     {
         #region Leadcall
