@@ -84,7 +84,13 @@ namespace Entity
         public String FlowNumber { get; set; }
 
         [Display(Name = "求助人"),  Required]
-        public String Applier { get; set; }
+        public virtual  Member Member { get; set; }
+        public int? MemberID { get; set; }
+        
+        public virtual Project Project { get; set; }
+
+        [Display(Name = "所属项目"), Required]
+        public int? ProjectID { get; set; }
 
         [Display(Name = "解决人"),  Required]
         public String Solver { get; set; }
@@ -93,10 +99,16 @@ namespace Entity
         public String Question { get; set; }
 
         [Display(Name = "提问时间"),  Required]
-        public DateTime StartDay { get; set; }
+        public DateTime? StartDate { get; set; }
+
+        [Display(Name = "解答时间"), Required]
+        public DateTime? EndDate { get; set; }
 
         [Display(Name = "提问内容"), Required]
         public String Content { get; set; }
+
+        [Display(Name = "解决方案"), Required]
+        public String Answer { get; set; }
 
     }
     /// <summary>
