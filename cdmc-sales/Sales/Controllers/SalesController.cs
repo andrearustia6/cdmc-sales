@@ -445,16 +445,6 @@ namespace Sales.Controllers
             ViewBag.ProjectID = projectid;
             return View();
         }
-        #endregion  
-        
-        #region
-        public ViewResult OpenProjectSalesBrief(int? projectid)
-        {
-            var data = CH.GetDataById<Project>(projectid);
-            data.SaleBrief = HttpUtility.HtmlDecode(data.SaleBrief);
-            return View(data);
-        }
-        #endregion
 
         /// <summary>
         /// 根据分配显示sales需要拨打的公司
@@ -472,11 +462,77 @@ namespace Sales.Controllers
             else
             {
                 var ps = CRM_Logical.GetSalesInvolveProject();
-                if(ps!=null)
+                if (ps != null)
                     return View(ps.FirstOrDefault().GetCRM());
                 return View();
             }
         }
+        #endregion  
+        
+        #region
+        public ViewResult OpenProjectSalesBrief(int? projectid)
+        {
+            var data = CH.GetDataById<Project>(projectid);
+            data.SaleBrief = HttpUtility.HtmlDecode(data.SaleBrief);
+            return View(data);
+        }
+        #endregion
+
+        #region message
+        public ViewResult MessageAdd(int? projectid)
+        {
+            return View();
+        }
+
+        public ViewResult MessageIndex(int? projectid)
+        {
+            ViewBag.ProjectID = projectid;
+            var project = CH.GetAllData<Message>(m=>m.ProjectID==projectid);
+            if (project != null)
+            {
+                var data = project.GetCRM();
+                return View(data);
+            }
+            else
+            {
+                var ps = CRM_Logical.GetSalesInvolveProject();
+                if (ps != null)
+                    return View(ps.FirstOrDefault().GetCRM());
+                return View();
+            }
+
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult MessageAdd(Message item)
+        {
+            if (ModelState.IsValid)
+            {
+                CH.Create<Message>(item);
+                return RedirectToAction("MessageIndex");
+            }
+            return View(item);
+        }
+
+        public ViewResult MessageEdit(int? id)
+        {
+            return View(CH.GetDataById<Message>(id));
+        }
+
+        [HttpPost]
+        public ActionResult MessageEdit(Message item)
+        {
+            if (ModelState.IsValid)
+            {
+                CH.Edit<Message>(item);
+                return RedirectToAction("MessageIndex");
+            }
+            return View(item);
+        }
+        #endregion
+
+       
 
         public ViewResult MyPage()
         {
