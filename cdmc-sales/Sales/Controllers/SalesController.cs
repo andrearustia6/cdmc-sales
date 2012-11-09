@@ -452,18 +452,17 @@ namespace Sales.Controllers
         /// <returns></return
         public ViewResult CompanyRelationshipIndex(int? projectid)
         {
+            projectid = this.TrySetProjectID(projectid);
             ViewBag.ProjectID = projectid;
-            var project = CH.GetDataById<Project>(projectid, "Members");
-            if (project != null)
+            
+            if (projectid != null)
             {
+                var project = CH.GetDataById<Project>(projectid, "Members");
                 var data = project.GetCRM();
                 return View(data);
             }
             else
             {
-                var ps = CRM_Logical.GetSalesInvolveProject();
-                if (ps != null)
-                    return View(ps.FirstOrDefault().GetCRM());
                 return View();
             }
         }
@@ -479,33 +478,34 @@ namespace Sales.Controllers
         #endregion
 
         #region message
-        public ViewResult MessageAdd(int? projectid)
-        {
-            return View();
-        }
+       
 
-        public ViewResult MessageIndex(int? projectid)
+        public ViewResult MyMessageIndex(int? projectid)
         {
+
+            projectid = this.TrySetProjectID(projectid);
             ViewBag.ProjectID = projectid;
-            var project = CH.GetAllData<Message>(m=>m.ProjectID==projectid);
-            if (project != null)
+            if (projectid != null)
             {
-                var data = project.GetCRM();
-                return View(data);
+                var ms = CH.GetAllData<Message>(m => m.ProjectID == projectid);
+                return View(ms);
             }
             else
             {
-                var ps = CRM_Logical.GetSalesInvolveProject();
-                if (ps != null)
-                    return View(ps.FirstOrDefault().GetCRM());
                 return View();
             }
 
+           
+        }
+
+        public ViewResult AddMessage(int? projectid)
+        {
             return View();
         }
 
+
         [HttpPost]
-        public ActionResult MessageAdd(Message item)
+        public ActionResult AddMessage(Message item)
         {
             if (ModelState.IsValid)
             {
@@ -515,13 +515,13 @@ namespace Sales.Controllers
             return View(item);
         }
 
-        public ViewResult MessageEdit(int? id)
+        public ViewResult EditMessage(int? id)
         {
             return View(CH.GetDataById<Message>(id));
         }
 
         [HttpPost]
-        public ActionResult MessageEdit(Message item)
+        public ActionResult EditMessage(Message item)
         {
             if (ModelState.IsValid)
             {
@@ -530,6 +530,12 @@ namespace Sales.Controllers
             }
             return View(item);
         }
+
+        public ViewResult DisplayMessage(int? id,int?projectid)
+        {
+            return View(CH.GetDataById<Message>(id));
+        }
+
         #endregion
 
        

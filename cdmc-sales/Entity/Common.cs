@@ -84,11 +84,9 @@ namespace Entity
         public String FlowNumber { get; set; }
 
         [Display(Name = "求助人"),  Required]
-        public virtual  Member Member { get; set; }
-        public int? MemberID { get; set; }
+        public  string Member { get; set; }
         
         public virtual Project Project { get; set; }
-
         [Display(Name = "所属项目"), Required]
         public int? ProjectID { get; set; }
 

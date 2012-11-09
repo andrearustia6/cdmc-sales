@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using Entity;
 using Utl;
+using BLL;
 
 namespace System.Web.Mvc
 {
@@ -98,6 +99,26 @@ namespace System.Web.Mvc
 
     public static class ControllerExtension
     {
+        /// <summary>
+        /// 当所属项目未选定时，自动导入存在的项目id
+        /// </summary>
+        /// <param name="item"></param>
+        /// <param name="projectid"></param>
+        /// <returns></returns>
+        public static int? TrySetProjectID(this Controller item, int? projectid)
+        {
+            if (projectid == null)
+            {
+                var data = CRM_Logical.GetSalesInvolveProject().FirstOrDefault();
+
+                if (data != null)
+                {
+                    projectid = data.ID;
+                }
+            }
+            return projectid;
+        }
+
         public static void AddErrorStateIfCreatorIsNotTheLoginUser(this Controller item, EntityBase target)
         {
             if(!target.CreatorIsTheLoginUser())

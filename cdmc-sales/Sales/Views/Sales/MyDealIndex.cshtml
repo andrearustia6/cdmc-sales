@@ -6,7 +6,7 @@
 @model List<Deal>
 
 @Html.Partial("contenttitle", "我的出单")
- @Html.Partial("projectselector")
+@Html.Partial("projectselector")
 @(Html.Telerik().Grid<Deal>(Model).Name("Deal").ToolBar(commands => commands.Custom().Text("添加出单").Action("AddDeal", "Sales", new { projectid = ViewBag.ProjectID as int? }))
                 .DataKeys(keys =>
                 {

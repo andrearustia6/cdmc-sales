@@ -1,0 +1,23 @@
+﻿@using Entity
+@model List<Message>
+@Html.Partial("contenttitle", "成员管理")
+@(Html.Telerik().Grid<Message>(Model).Name("Message")
+                .DataKeys(keys =>
+                {
+                    keys.Add(s => s.ID);
+                })
+                .Columns(c =>
+                {
+                    c.Bound(item => item.Name).Width(200);
+                    c.Bound(item => item.Description);
+                    c.Bound(item => item.ID).Title("操作").Width(120).Template(@<span> <a href=@Url.Content("~/Message/Edit/" + item.ID) >
+                        编辑</a> | <a href=@Url.Content("~/Message/Details/" + item.ID)>详细</a> | <a href=@Url.Content("~/Message/delete/" + item.ID) >
+                            删除</a> </span>);
+                })
+                                            .Resizable(resizing => resizing.Columns(true))
+                                            .Filterable().Sortable().Groupable()
+                                            .Pageable(p => p.PageSize(20))
+                                            .Scrollable(scrolling => scrolling.Height(350))
+
+)
+
