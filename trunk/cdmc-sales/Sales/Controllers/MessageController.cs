@@ -34,6 +34,7 @@ namespace Sales.Controllers
         {
             if (ModelState.IsValid)
             {
+                item.Member = User.Identity.Name;
                 CH.Create<Message>(item);
                 return RedirectToAction("Index");
             }
