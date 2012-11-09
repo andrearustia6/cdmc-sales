@@ -3,27 +3,13 @@
 @model Message
 @using BLL
 <fieldset>
-    <legend>Message</legend>
-    <div class="editor-label">
-        @Html.LabelFor(model => model.Name)
+    <legend>@SR.Form</legend>
+     <div class="editor-label">
+        @Html.LabelFor(model => model.Question)
     </div>
     <div class="editor-field">
-        @Html.EditorFor(model => model.Name)
-        @Html.ValidationMessageFor(model => model.Name)
-    </div>
-    <div class="editor-label">
-        @Html.LabelFor(model => model.FlowNumber)
-    </div>
-    <div class="editor-field">
-        @Html.EditorFor(model => model.FlowNumber)
-        @Html.ValidationMessageFor(model => model.FlowNumber)
-    </div>
-    <div class="editor-label">
-        @Html.LabelFor(model => model.Member)
-    </div>
-    <div class="editor-field">
-        @Html.EditorFor(model => model.Member)
-        @Html.ValidationMessageFor(model => model.Member)
+        @Html.EditorFor(model => model.Question)
+        @Html.ValidationMessageFor(model => model.Question)
     </div>
     <div class="editor-label">
         @Html.LabelFor(model => model.ProjectID, "所属项目")
@@ -33,7 +19,7 @@
         var ps = CRM_Logical.GetSalesInvolveProject();
         if(ps!=null)
         {
-            @Html.DropDownList("ProjectID", new SelectList(ps,"ID","Name"),"请选择")
+            @Html.DropDownList("ProjectID", new SelectList(ps,"ID","ProjectCode"),"请选择")
             @Html.ValidationMessageFor(model => model.ProjectID)
         }
         else
@@ -42,46 +28,26 @@
         }
     }
     </div>
-    <div class="editor-label">
-        @Html.LabelFor(model => model.Solver)
-    </div>
-    <div class="editor-field">
-        @Html.EditorFor(model => model.Solver)
-        @Html.ValidationMessageFor(model => model.Solver)
-    </div>
-    <div class="editor-label">
-        @Html.LabelFor(model => model.Question)
-    </div>
-    <div class="editor-field">
-        @Html.EditorFor(model => model.Question)
-        @Html.ValidationMessageFor(model => model.Question)
-    </div>
-    <div class="editor-label">
-        @Html.LabelFor(model => model.StartDate)
-    </div>
-    <div class="editor-field">
-        @Html.EditorFor(model => model.StartDate)
-        @Html.ValidationMessageFor(model => model.StartDate)
-    </div>
-    <div class="editor-label">
-        @Html.LabelFor(model => model.EndDate)
-    </div>
-    <div class="editor-field">
-        @Html.EditorFor(model => model.EndDate)
-        @Html.ValidationMessageFor(model => model.EndDate)
-    </div>
+ 
+  
     <div class="editor-label">
         @Html.LabelFor(model => model.Content)
     </div>
     <div class="editor-field">
-        @Html.EditorFor(model => model.Content)
+        @Html.TextAreaFor(model => model.Content)
         @Html.ValidationMessageFor(model => model.Content)
     </div>
-    <div class="editor-label">
-        @Html.LabelFor(model => model.Answer)
-    </div>
-    <div class="editor-field">
-        @Html.EditorFor(model => model.Answer)
-        @Html.ValidationMessageFor(model => model.Answer)
-    </div>
+    @{
+        var lvl = Employee.GetCurrentRoleLevel();
+        if (lvl == 5 || (lvl != 5 && lvl>100))
+        {
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Answer)
+        </div>
+        <div class="editor-field">
+            @Html.TextAreaFor(model => model.Answer)
+            @Html.ValidationMessageFor(model => model.Answer)
+        </div>
+        }
+    }
 </fieldset>

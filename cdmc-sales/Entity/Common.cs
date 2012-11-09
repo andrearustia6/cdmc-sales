@@ -77,35 +77,28 @@ namespace Entity
     /// </summary>
     public class Message : EntityBase
     {
-        [Display(Name = "问题标题"), MaxLength(200), Required]
-        public String Name { get; set; }
 
         [Display(Name = "问题单号"), Required]
         public String FlowNumber { get; set; }
 
-        [Display(Name = "求助人"),  Required]
+        [Display(Name = "求助人")]
         public  string Member { get; set; }
         
         public virtual Project Project { get; set; }
         [Display(Name = "所属项目"), Required]
         public int? ProjectID { get; set; }
 
-        [Display(Name = "解决人"),  Required]
+        [Display(Name = "解决人")]
         public String Solver { get; set; }
 
         [Display(Name = "问题标题"), MaxLength(200), Required]
         public String Question { get; set; }
 
-        [Display(Name = "提问时间"),  Required]
-        public DateTime? StartDate { get; set; }
-
-        [Display(Name = "解答时间"), Required]
-        public DateTime? EndDate { get; set; }
 
         [Display(Name = "提问内容"), Required]
         public String Content { get; set; }
 
-        [Display(Name = "解决方案"), Required]
+        [Display(Name = "解决方案")]
         public String Answer { get; set; }
 
     }
