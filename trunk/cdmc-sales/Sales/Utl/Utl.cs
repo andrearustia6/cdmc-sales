@@ -445,7 +445,7 @@ namespace Utl
 
         public static string ShortText(string str, int length)
         {
-            if (str.Length > length)
+            if (str!=null && str.Length > length)
                 return str.Remove(length, str.Length - length) + "...";
             else
                 return str;

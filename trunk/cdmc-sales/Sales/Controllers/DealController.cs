@@ -33,7 +33,10 @@ namespace Sales.Controllers
 
         public ActionResult Edit(int id)
         {
-            return View(CH.GetDataById<Deal>(id));
+            var item = CH.GetDataById<Deal>(id);
+            ViewBag.ProjectID = item.CompanyRelationship.ProjectID;
+            ViewBag.CompanyRelationshipID = item.CompanyRelationshipID;
+            return View(item);
         }
 
         [HttpPost]
@@ -42,7 +45,8 @@ namespace Sales.Controllers
             if (ModelState.IsValid)
             {
                 CH.Edit<Deal>(item);
-                return RedirectToAction("Index");
+                var projectid = CH.GetDataById<CompanyRelationship>(item.CompanyRelationshipID).ProjectID;
+                return RedirectToAction("Management", "Project", new { id = projectid, tabindex = 4 });
             }
             return View(item);
         }
@@ -55,8 +59,11 @@ namespace Sales.Controllers
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {
+            var item = CH.GetDataById<Deal>(id);
+            var projectid = CH.GetDataById<CompanyRelationship>(item.CompanyRelationshipID).ProjectID; 
             CH.Delete<Deal>(id);
-            return RedirectToAction("Index");
+
+            return RedirectToAction("Management", "Project", new { id = projectid, tabindex = 4 });
         }
     }
 }

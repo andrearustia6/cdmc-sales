@@ -1,5 +1,5 @@
 ﻿@using Entity
-@model LeadCall
+@model Message
 @using Utl
 @{
     ViewBag.Title = "编辑留言求助";
@@ -11,7 +11,7 @@
 @using (Html.BeginForm()) {
     @Html.ValidationSummary(true)
     @Html.HiddenFor(m => m.ID)
-    @Html.Partial(@"~\views\leadCall\change.cshtml", Model);
+    @Html.Partial(@"~\views\Message\change.cshtml", Model);
     @Html.Partial(@"editcommon", Model);
 <div>
   <center>

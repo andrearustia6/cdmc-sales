@@ -15,8 +15,8 @@
                 .Columns(c =>
                 {
                     c.Bound(item => item.Question).Width(150);
-                    c.Bound(item => item.Answer).Width(150);
-                
+                    c.Bound(item => item.FlowNumber).Width(70);
+                    c.Bound(item => item.Answer);
                     c.Bound(item => item).Width(100).Template(@<text>@if(item.ModifiedDate==null){
                                                                          <p>@item.CreatedDate</p>
                                                                      }
@@ -25,16 +25,9 @@
                                                                           <p>@item.ModifiedDate</p>
                                                                      }
                                                                      </text>).Format("{0:d}").Width(100).Title("更新时间");                                                        
-                    c.Bound(item => item).Template(@<text>@if(item.ModifiedUser!=null){
-                                                                         <p>@item.ModifiedUser</p>
-                                                                     }
-                                                                     else
-                                                                     {
-                                                                          <p>@item.Creator</p>
-                                                                     }
-                                                                     </text>).Format("{0:d}").Width(100).Title("更新人");       
-                    c.Bound(item => item.FlowNumber).Width(70);
-                    c.Bound(item => item.ID).Title("操作").Template(@<span>
+                    c.Bound(item => item.Solver).Width(70).Title("更新人");
+                    c.Bound(item => item.Creator).Width(70).Title("创建人");  
+                    c.Bound(item => item.ID).Title("操作").Width(120).Template(@<span>
                     <a href=@Url.Content("~/sales/EditMessage/?id=" + item.ID + "&projectid=" + (int)ViewBag.ProjectID) >编辑</a> | <a href=@Url.Content("~/sales/DisplayMessage/?id=" + item.ID + "&projectid=" + (int)ViewBag.ProjectID)>详细</a>  
                    </span>);
                 })

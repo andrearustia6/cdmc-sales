@@ -1,0 +1,15 @@
+﻿@{
+    ViewBag.Title = "留言信息";
+}
+@using Entity
+@using Utl
+@model Message
+
+@Html.Partial(@"~\views\Message\display.cshtml", Model)
+@Html.Partial("displaycommon", Model)
+<center>
+<p>
+    @Html.ActionLink(SR.Edit, "EditMessage", new { id = Model.ID}) 
+   @* @Html.ActionLink(SR.GobackToList, "Index")*@
+</p>
+</center>

@@ -100,12 +100,12 @@ namespace Entity
         [Display(Name = "团队负责人")]
         public string TeamLeader { get; set; }
 
-        public List<Template> Templates { get; set; }
+        public virtual List<Template> Templates { get; set; }
 
         public string Location { get; set; }
 
         [Display(Name = "公司类型")]
-        public List<Category> Categorys { get; set; }
+        public virtual List<Category> Categorys { get; set; }
 
         [Display(Name = "公司类型")]
         public string CategorysSet
@@ -134,9 +134,9 @@ namespace Entity
         [Display(Name = "其它")]
         public string Others { get; set; }
 
-        public List<News> News { get; set; }
+        public virtual List<News> News { get; set; }
 
-        public List<Message> Messages { get; set; }
+        public virtual List<Message> Messages { get; set; }
 
 
         /// <summary>
@@ -144,14 +144,14 @@ namespace Entity
         /// </summary>
         public string References { get; set; }
 
-        public List<TargetOfMonth> TargetOfMonths { get; set; }
+        public virtual List<TargetOfMonth> TargetOfMonths { get; set; }
 
-        public List<TargetOfWeek> TargetOfWeeks { get; set; }
+        public virtual List<TargetOfWeek> TargetOfWeeks { get; set; }
 
         /// <summary>
         /// 所有项目公司
         /// </summary>
-        public List<CompanyRelationship> CompanyRelationships { get; set; }
+        public virtual List<CompanyRelationship> CompanyRelationships { get; set; }
     }
 
     public class Category : EntityBase
@@ -176,7 +176,7 @@ namespace Entity
 
         public virtual List<Category> Categorys { get; set; }
 
-        public List<Deal> Deals { get; set; }
+        public virtual List<Deal> Deals { get; set; }
 
         public virtual Project Project { get; set; }
 
@@ -188,9 +188,9 @@ namespace Entity
 
         public virtual Progress Progress { get; set; }
         public int? ProgressID { get; set; }
-        public List<LeadCall> LeadCalls { get; set; }
+        public virtual List<LeadCall> LeadCalls { get; set; }
 
-        public List<Member> Members { get; set; }
+        public virtual List<Member> Members { get; set; }
 
         public string SalesOnTheCompany
         {
@@ -295,9 +295,9 @@ namespace Entity
         [Display(Name = "字头")]
         public string Characters { get; set; }
 
-        public List<TargetOfWeek> TargetOfWeeks { get; set; }
+        public  virtual List<TargetOfWeek> TargetOfWeeks { get; set; }
 
-        public List<LeadCall> LeadCalls { get; set; }
+        public virtual List<LeadCall> LeadCalls { get; set; }
 
         [Display(Name = "销售类型"), Required]
         public int? SalesTypeID  { get; set; }
@@ -309,7 +309,7 @@ namespace Entity
 
         public string[] CharactersSet { get { return string.IsNullOrEmpty(Characters) ? new string[] { } : Characters.Split('|'); } }
 
-        public List<CompanyRelationship> CompanyRelationships { get; set; }
+        public virtual List<CompanyRelationship> CompanyRelationships { get; set; }
     }
 
     /// <summary>
@@ -317,9 +317,9 @@ namespace Entity
     /// </summary>
     public class Deal : CompanyRelationshipChildItem
     {
-        public virtual CompanyRelationship CompanyRelationship { get; set; }
-        [Display(Name = "客户公司"), Required]
-        public int? CompanyRelationshipID { get; set; }
+        //public virtual CompanyRelationship CompanyRelationship { get; set; }
+        //[Display(Name = "客户公司"), Required]
+        //public int? CompanyRelationshipID { get; set; }
 
         public virtual Package Package { get; set; }
         [Display(Name = "销售Package"), Required]
