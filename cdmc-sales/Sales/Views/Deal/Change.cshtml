@@ -4,6 +4,7 @@
 }
 @using Entity
 @using Utl
+@using BLL
 <fieldset>
     <legend>@SR.Form</legend>
     <div class="editor-label">
@@ -19,7 +20,19 @@
     </div>
     <div class="editor-field">
     @{
-        var data = ViewBag.AvaibleCRM==null? CH.GetAllData<CompanyRelationship>():ViewBag.AvaibleCRM as List<CompanyRelationship>;
+        //var data = ViewBag.AvaibleCRM==null? CH.GetAllData<CompanyRelationship>():ViewBag.AvaibleCRM as List<CompanyRelationship>;
+        List<CompanyRelationship> data;
+        var lvl = Employee.GetCurrentRoleLevel();
+        int? projectid = ViewBag.ProjectID as int?;
+        var project = CH.GetDataById<Project>(projectid, "CompanyRelationships");
+        if (lvl<=100 && lvl>=10)
+        {
+            data = project.CompanyRelationships.FindAll(c=>c.WhoCallTheCompanyMemberName().Split('|').Any(s=>s==User.Identity.Name));
+        }
+        else
+        {
+            data = project.CompanyRelationships;
+        }
         @Html.DropDownListFor(m => m.CompanyRelationshipID, new SelectList(data, "ID", "CompanyName"), "-请选择-")
         @Html.ValidationMessageFor(model => model.CompanyRelationshipID)
         }
@@ -86,14 +99,7 @@
         @Html.ValidationMessageFor(model => model.PaymentDetail)
     </div>
  
-  @*  <div class="editor-label">
-        @Html.Label("客户公司")
-    </div>
-    <div class="editor-field">
-         @Html.Label(Model==null? CH.GetDataById<CompanyRelationship>((int?)ViewBag.CompanyRelationshipID).CopamyName():Model.CopamyName())
-        @Html.HiddenFor(model => model.CompanyRelationshipID)
-       
-    </div>*@
+
      <div class="editor-label">
         @Html.Label( "项目")
     </div>
