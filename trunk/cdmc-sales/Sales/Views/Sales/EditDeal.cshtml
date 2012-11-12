@@ -14,7 +14,7 @@
     var project = CH.GetDataById<Project>((int)ViewBag.ProjectID, "Members");
     ViewBag.AvaibleCRM = project.GetCRM();
     @Html.Hidden("ProjectID", (int)ViewBag.ProjectID)
-    @Html.Hidden("CompanyRelationshipID", (int)ViewBag.CompanyRelationshipID)
+   @* @Html.Hidden("CompanyRelationshipID", (int)ViewBag.CompanyRelationshipID)*@
     @Html.HiddenFor(m => m.ID)
     @Html.Partial(@"~\views\deal\change.cshtml", Model);
     @Html.Partial(@"editcommon", Model);

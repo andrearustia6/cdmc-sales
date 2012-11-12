@@ -150,7 +150,9 @@ namespace Sales.Controllers
 
         public ActionResult AddDeal(int? projectid)
         {
+            projectid = this.TrySetProjectID(projectid);
             ViewBag.ProjectID = projectid;
+
 
             this.AddErrorStateIfSalesNoAccessRightToTheProject(projectid);
 
@@ -167,8 +169,6 @@ namespace Sales.Controllers
             var item = CH.GetDataById<Deal>(id);
             this.AddErrorStateIfSalesNoAccessRightToTheCRM(item.CompanyRelationshipID);
             ViewBag.ProjectID = item.CompanyRelationship.ProjectID;
-            ViewBag.CompanyRelationshipID = item.CompanyRelationshipID;
-
             if (ModelState.IsValid)
                 return View(item);
             else
@@ -190,6 +190,8 @@ namespace Sales.Controllers
 
         public ViewResult MyDealIndex(int? projectid)
         {
+            projectid = this.TrySetProjectID(projectid);
+            ViewBag.ProjectID = projectid;
             var data = CH.GetAllData<Deal>();
             ViewBag.ProjectID = projectid;
             return View(data.FindAll(d => d.Sales == User.Identity.Name && d.CompanyRelationship.ProjectID == projectid).OrderByDescending(m=>m.CreatedDate).ToList());
@@ -357,8 +359,7 @@ namespace Sales.Controllers
         [HttpPost]
         public ActionResult AddCompany(Company item,int? projectid, int[] checkedCategorys)
         {
-            if (projectid == null) return RedirectToAction("CompanyRelationshipIndex", "Sales");
-
+            projectid = this.TrySetProjectID(projectid);
             ViewBag.ProjectID = projectid;
 
             this.AddErrorStateIfSalesNoAccessRightToTheProject(projectid);
