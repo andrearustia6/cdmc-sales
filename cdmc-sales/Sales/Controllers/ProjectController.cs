@@ -235,7 +235,7 @@ namespace Sales.Controllers
             ViewBag.DealStartDate = dealstartdate;
             ViewBag.DealEndDate = dealenddate;
             ViewBag.TabIndex = tabindex;
-            var Data = CH.GetAllData<Project>(i => i.ID == id, "CompanyRelationships","Categorys", "Members", "Templates", "Messages", "TargetOfMonths").FirstOrDefault();
+            var Data = CH.GetAllData<Project>(i => i.ID == id, "CompanyRelationships","Categorys", "Messages","Members", "Templates", "Messages", "TargetOfMonths").FirstOrDefault();
             return View(Data);
         }
 

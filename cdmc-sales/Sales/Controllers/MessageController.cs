@@ -35,8 +35,11 @@ namespace Sales.Controllers
             if (ModelState.IsValid)
             {
                 item.Member = User.Identity.Name;
+                var p = CH.GetDataById<Project>(item.ProjectID,"Members");
+                var m = p.GetMemberInProjectByName(item.Member);
+                item.SalesTypeID = m.SalesTypeID;
                 CH.Create<Message>(item);
-                return RedirectToAction("Index");
+                return RedirectToAction("Management", "Project", new { id = item.ProjectID, tabindex = 5 });
             }
             return View(item);
         }
@@ -50,8 +53,13 @@ namespace Sales.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (string.IsNullOrEmpty(item.Answer))
+                    item.IsAnswered = false;
+                else
+                    item.IsAnswered = true;
+
                 CH.Edit<Message>(item);
-                return RedirectToAction("Index");
+                return RedirectToAction("Management", "Project", new { id = item.ProjectID, tabindex = 5 });
             }
             return View(item);
         }
@@ -64,8 +72,10 @@ namespace Sales.Controllers
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {
+            var item = CH.GetDataById<Message>(id);
+            var projectid = item.ProjectID;
             CH.Delete<Message>(id);
-            return RedirectToAction("Index");
+            return RedirectToAction("Management", "Project", new { id = projectid, tabindex = 5 });
         }
     }
 }

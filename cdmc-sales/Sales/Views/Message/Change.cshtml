@@ -17,14 +17,16 @@
     <div class="editor-field">
     @{
         var ps = CRM_Logical.GetSalesInvolveProject();
-        if(ps!=null)
+        var lvl1 = Employee.GetCurrentRoleLevel();
+        if (lvl1 != 5 && lvl1 <=100)
         {
             @Html.DropDownList("ProjectID", new SelectList(ps,"ID","ProjectCode"),"请选择")
             @Html.ValidationMessageFor(model => model.ProjectID)
         }
         else
         {
-        @Html.Display(Model.Project.Name)
+        @Html.DisplayFor(m=>m.Project.Name)
+        @Html.HiddenFor(m=>m.ProjectID)
         }
     }
     </div>
@@ -38,8 +40,16 @@
         @Html.ValidationMessageFor(model => model.Content)
     </div>
     @{
+        @Html.HiddenFor(m=>m.SalesTypeID)
+         <div class="editor-label">
+            @Html.LabelFor(model => model.FlowNumber)
+        </div>
+        <div class="editor-field">
+            @Html.DisplayFor(model => model.FlowNumber)
+        </div>
+        
         var lvl = Employee.GetCurrentRoleLevel();
-        if (lvl == 5 || (lvl != 5 && lvl>100))
+        if (lvl == 5 || (lvl != 5 && lvl > 100))
         {
         <div class="editor-label">
             @Html.LabelFor(model => model.Answer)

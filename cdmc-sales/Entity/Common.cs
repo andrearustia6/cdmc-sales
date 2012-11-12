@@ -78,7 +78,7 @@ namespace Entity
     public class Message : EntityBase
     {
 
-        [Display(Name = "问题单号"), Required]
+        [Display(Name = "问题单号")]
         public String FlowNumber { get; set; }
 
         [Display(Name = "求助人")]
@@ -101,7 +101,17 @@ namespace Entity
         [Display(Name = "解决方案")]
         public String Answer { get; set; }
 
+        [Display(Name = "已解答")]
+        public bool IsAnswered { get; set; }
+
+        
+        public virtual SalesType SalesType { get; set; }
+        [Display(Name = "提问角色")]
+        public int? SalesTypeID { get; set; }
+
     }
+
+
     /// <summary>
     /// 关键字
     /// </summary>

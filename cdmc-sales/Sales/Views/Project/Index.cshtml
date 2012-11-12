@@ -16,11 +16,10 @@
                     c.Bound(item => item.IsActived).Width(70);
                     c.Bound(item => item.Manager).Width(70);
                     c.Bound(item => item.Target).Width(120).Format("{0:C}");
-                    c.Bound(item => item.ID).Width(220).Title("操作").Template(@<span> <a href=@Url.Content("~/Project/Edit/" + item.ID) >
+                    c.Bound(item => item.ID).Width(150).Title("操作").Template(@<span> <a href=@Url.Content("~/Project/Edit/" + item.ID) >
                         编辑</a> | <a href=@Url.Content("~/Project/Details/" + item.ID)>详细</a>
                         | <a href=@Url.Content("~/Project/Management/" + item.ID)>
-                            项目管理</a>| <a href=@Url.Content("~/Project/delete/" + item.ID) >删除</a>
-</span>);
+                            项目管理</a></span>);
                 })
                
 .Resizable(resizing => resizing.Columns(true))
