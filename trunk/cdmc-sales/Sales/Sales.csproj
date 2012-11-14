@@ -221,6 +221,7 @@
     <Compile Include="Controllers\CompanyRelationshipController.cs" />
     <Compile Include="Controllers\DealController.cs" />
     <Compile Include="Controllers\DistrictNumberController.cs" />
+    <Compile Include="Controllers\ImageBrowserController.cs" />
     <Compile Include="Controllers\LeadCallController.cs" />
     <Compile Include="Controllers\MarketInterfaceController.cs" />
     <Compile Include="Controllers\MemberController.cs" />
@@ -264,6 +265,7 @@
     <Compile Include="Utl\Attributes.cs" />
     <Compile Include="Utl\CH.cs" />
     <Compile Include="Utl\ControllerExtension.cs" />
+    <Compile Include="Utl\FilesRepository.cs" />
     <Compile Include="Utl\HtmlExtensions.cs" />
     <Compile Include="Utl\ImageController.cs" />
     <Compile Include="Utl\Utl.cs" />

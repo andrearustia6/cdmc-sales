@@ -36,7 +36,7 @@
                                                                             ))
                             .Resizable(resizing => resizing.Columns(true))
                             .Pageable(page => page.PageSize(10))
-                            .Filterable()
+                            .Filterable().Groupable()
                             .Scrollable(scrolling => scrolling.Height(350))
 )
 @helper RenderLead(List<Lead> Leads, CompanyRelationship cr)

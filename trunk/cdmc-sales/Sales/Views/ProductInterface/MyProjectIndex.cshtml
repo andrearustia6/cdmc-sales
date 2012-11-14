@@ -16,7 +16,7 @@
                 {
                     c.Bound(item => item.ProjectCode).Width(90);
                     c.Bound(item => item.Name).Width(200);
-                    c.Bound(item => item.SaleBrief);
+                    c.Bound(item => item.ModifiedDate);
                     c.Bound(item => item.ID).Title("操作").Width(120).Template(@<span>
                     <a href=@Url.Content("~/ProductInterface/UpdateSalesBrief/?id=" + item.ID)>编辑产品介绍</a>
                    </span>);
