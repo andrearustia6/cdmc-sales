@@ -1,0 +1,40 @@
+﻿@{
+    ViewBag.Title = "我的留言";
+}
+
+@using Entity
+@model List<Message>
+
+@Html.Partial("contenttitle", "我的留言")
+@Html.Partial("projectselector")
+@(Html.Telerik().Grid<Message>(Model).Name("Message").ToolBar(commands => commands.Custom().Text("添加留言").Action("AddMessage", "ProductInterface", new { projectid = ViewBag.ProjectID as int? }))
+                .DataKeys(keys =>
+                {
+                    keys.Add(s => s.ID);
+                })
+                .Columns(c =>
+                {
+                    c.Bound(item => item.Question).Width(150);
+                    c.Bound(item => item.FlowNumber).Width(70);
+                    c.Bound(item => item.Answer);
+                    c.Bound(item => item).Width(100).Template(@<text>@if(item.ModifiedDate==null){
+                                                                         <p>@item.CreatedDate</p>
+                                                                     }
+                                                                     else
+                                                                     {
+                                                                          <p>@item.ModifiedDate</p>
+                                                                     }
+                                                                     </text>).Format("{0:d}").Width(100).Title("更新时间");                                                        
+                    c.Bound(item => item.Solver).Width(70).Title("更新人");
+                    c.Bound(item => item.Creator).Width(70).Title("创建人");  
+                    c.Bound(item => item.ID).Title("操作").Width(120).Template(@<span>
+                    <a href=@Url.Content("~/ProductInterface/EditMessage/?id=" + item.ID + "&projectid=" + (int)ViewBag.ProjectID) >编辑</a> | <a href=@Url.Content("~/ProductInterface/DisplayMessage/?id=" + item.ID + "&projectid=" + (int)ViewBag.ProjectID)>详细</a>  
+                   </span>);
+                })
+                    .Resizable(resizing => resizing.Columns(true))
+                    .Filterable().Sortable().Groupable()
+                    .Pageable(p => p.PageSize(20))
+                    .Scrollable(scrolling => scrolling.Height(350))
+
+)
+

@@ -1,0 +1,15 @@
+﻿@{
+    ViewBag.Title = "更新产品介绍";
+}
+@model string
+@using Utl
+ @using (Html.BeginForm())
+ {
+<fieldset>
+<legend>更新产品介绍</legend>
+@Html.Telerik().Editor().Name("salesbrief").Value(Model)
+</fieldset>
+     <center>
+<input  type="submit" value=@SR.Save />
+</center>
+}

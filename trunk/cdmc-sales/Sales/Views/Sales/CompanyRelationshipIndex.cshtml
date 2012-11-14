@@ -5,7 +5,7 @@
 @using Utl
 @using BLL
 @model List<CompanyRelationship>
- @Html.Partial("contenttitle", "致电公司")
+ @Html.Partial("contenttitle", "客户公司")
  @Html.Partial("projectselector")
  @(Html.Telerik().Grid(Model).Name("Company").ToolBar(commands => commands.Custom().Text("添加公司").Action("AddCompany", "Sales", new { projectid = ViewBag.ProjectID as int? }))
 

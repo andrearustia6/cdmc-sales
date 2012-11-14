@@ -165,7 +165,9 @@ namespace Utl
                 TeamLeader = "sean",
                 Manager = "mike",
                 Name_CH = "CTC 航空峰会",
-                ProjectCode = "ACYY"
+                ProjectCode = "ACYY",
+                 Market="amy",
+                 Product="flora"
             };
             p1.CompanyRelationships = new List<CompanyRelationship>();
             var cr1 = new CompanyRelationship() {ID=1, ProjectID = 1, CompanyID = 1,Importancy=6 };
