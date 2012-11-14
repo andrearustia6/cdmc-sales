@@ -16,7 +16,11 @@
     </div>
     <div class="editor-field">
     @{
-        var ps = CRM_Logical.GetSalesInvolveProject();
+        var projectid = Model == null ? ViewBag.ProjectID as int? : Model.ProjectID;
+        var p = CH.GetDataById<Project>(projectid);
+        <p>@p.Name</p>
+        @Html.Hidden("ProjectID", projectid)
+       @* var ps = CRM_Logical.GetSalesInvolveProject();
         var lvl1 = Employee.GetCurrentRoleLevel();
         if (lvl1 != 5 && lvl1 <=100)
         {
@@ -27,7 +31,7 @@
         {
         @Html.DisplayFor(m=>m.Project.Name)
         @Html.HiddenFor(m=>m.ProjectID)
-        }
+        }*@
     }
     </div>
  
@@ -40,7 +44,7 @@
         @Html.ValidationMessageFor(model => model.Content)
     </div>
     @{
-        @Html.HiddenFor(m=>m.SalesTypeID)
+        @Html.HiddenFor(m => m.SalesTypeID)
          <div class="editor-label">
             @Html.LabelFor(model => model.FlowNumber)
         </div>

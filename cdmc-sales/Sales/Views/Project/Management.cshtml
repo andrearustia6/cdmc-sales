@@ -22,7 +22,7 @@
 )
 @helper Messages(Project project)
     {
-      @(Html.Telerik().Grid<Message>(project.Messages.FindAll(m=>m.SalesTypeID==2)).Name("Message")
+      @(Html.Telerik().Grid<Message>(project.Messages.FindAll(m => m.SalesTypeID == 2)).Name("Message")
                 .DataKeys(keys =>
                 {
                     keys.Add(s => s.ID);
@@ -32,7 +32,7 @@
                     c.Bound(item => item.Question).Width(200);
                     c.Bound(item => item.FlowNumber).Width(100);
                     c.Bound(item => item.IsAnswered).Width(70);
-                    c.Bound(item => item.Answer).Template(@<text>@Utl.ShortText(item.Answer,500) </text>);
+                    c.Bound(item => item.Answer).Template(@<text>@Utl.ShortText(item.Answer, 500) </text>);
                     c.Bound(item => item.ID).Title("操作").Width(120).Template(@<span> <a href=@Url.Content("~/Message/Edit/" + item.ID) >
                         编辑</a> | <a href=@Url.Content("~/Message/Details/" + item.ID)>详细</a> | <a href=@Url.Content("~/Message/delete/" + item.ID) >
                             删除</a> </span>);
@@ -41,7 +41,62 @@
 }
 @helper BaseInfo(Project project)
     { 
-    <div style="width: 500; padding:15px; min-height:350px;">
+         <table class="info">
+            <tr>
+                <td colspan="3">
+                    <span>项目名称：@Model.Name</span>
+                </td>
+            </tr>
+             <tr>
+                <td >
+                    <span>项目代码：@Model.ProjectCode</span>
+                </td>
+                <td>
+                    <span>开始日期：@Model.StartDate.ToShortDateString()</span>
+                </td>
+                <td>
+                    <span>结束日期：@Model.EndDate.ToShortDateString()</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span>项目目标：@Html.DisplayFor(m => m.Target)</span>
+                </td>
+                <td>
+                    <span>版块负责人：@Model.Manager</span>
+                </td>
+                <td>
+                    <span>团队负责人：@Model.TeamLeader</span>
+                </td>
+            </tr>
+             <tr>
+                <td>
+                    <span>产品部接口人：@Model.Product</span>
+                </td>
+                <td>
+                    <span>市场部接口人：@Model.Market</span>
+                </td>
+                <td>
+                    <span>会议地点：@Model.Location</span>
+                </td>
+            </tr>
+            <tr><td colspan=3> @Html.ActionLink("基本信息编辑", "Edit", "Project", new { id = Model.ID }, new { style = "margin-bottom:15px;" })
+    </td></tr>
+                </table>
+           @(Html.Telerik().Grid(project.Categorys).Name("Categorys" + project.ID).ToolBar(commands =>
+                            commands.Custom().Text("添加Category").Action("Create", "Category", new { projectid = Model.ID }))
+                            .Columns(c =>
+                            {
+                                c.Bound(o => o.Name);
+                                c.Bound(item => item.ID).Width(200).Title("操作").Template(@<span> <a href=@Url.Content("~/Category/Edit/" + item.ID) >
+                        编辑</a> | <a href=@Url.Content("~/Category/Details/" + item.ID)>详细</a> | <a href=@Url.Content("~/Category/delete/" + item.ID) >删除</a>
+</span>);
+
+                            })
+                                         .Resizable(resizing => resizing.Columns(true))
+                                                 .Pageable(page => page.PageSize(15))
+                                         )
+   @* <div style="width: 500; padding:15px; min-height:350px;">
      @Html.ActionLink("基本信息编辑", "Edit", "Project", new { id = Model.ID }, new { style = "margin-bottom:15px;" })
         <ul>
             <li>
@@ -71,20 +126,8 @@
                     团队负责人:</label>@project.TeamLeader</li>
         </ul>
 
-         @(Html.Telerik().Grid(project.Categorys).Name("Categorys" + project.ID).ToolBar(commands =>
-                            commands.Custom().Text("添加Category").Action("Create", "Category", new { projectid = Model.ID }))
-                            .Columns(c =>
-                            {
-                                c.Bound(o => o.Name);
-                                c.Bound(item => item.ID).Width(200).Title("操作").Template(@<span> <a href=@Url.Content("~/Category/Edit/" + item.ID) >
-                        编辑</a> | <a href=@Url.Content("~/Category/Details/" + item.ID)>详细</a> | <a href=@Url.Content("~/Category/delete/" + item.ID) >删除</a>
-</span>);
-
-                            })
-                                         .Resizable(resizing => resizing.Columns(true))
-                                                 .Pageable(page => page.PageSize(15))
-                                         )
-    </div>
+      
+    </div>*@
      
 }
 @helper Members(Project p)

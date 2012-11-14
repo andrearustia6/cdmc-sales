@@ -8,18 +8,12 @@
 @Html.Partial("contenttitle", "项目公司")
 @using (Html.BeginForm())
 {
-<div  style="margin:10px; margin-left:0px;">
-        <span ><b>目标项目：</b>
-        @{
-          var ps = CH.GetAllData<Project>(p => p.Product == User.Identity.Name);
-            var selected = ps.Count== 0 ? 0:ps.FirstOrDefault().ID;
-        @Html.DropDownList("ProjectID", new SelectList(ps, "ID", "ProjectCode", selected), new { onchange = "this.form.submit();" })
+@Html.Partial("projectselector")
 }
-            </span>
-       </div>
-}
-
- @(Html.Telerik().Grid(Model.CompanyRelationships).Name("Company").ToolBar(commands => commands.Custom().Text("直接添加").Action("Create", "CompanyRelationship", new { projectid = Model.ID }))
+@{
+    var da = Model == null ? null : Model.CompanyRelationships;
+    var projectid = Model == null ? null : Model.ID as int?;
+ @(Html.Telerik().Grid(da).Name("Company").ToolBar(commands => commands.Custom().Text("直接添加").Action("Create", "CompanyRelationship", new { projectid = projectid }))
                 .DataKeys(keys =>
                 {
                     keys.Add(s => s.ID);
@@ -48,7 +42,7 @@
                                                         .Scrollable(scrolling => scrolling.Height(350))
                                               )
 }
-
+}
 @helper RenderLead(List<Lead> Leads, CompanyRelationship cr)
     { 
      @(Html.Telerik().Grid(Leads).Name("Leads" + cr.CompanyID)

@@ -105,11 +105,39 @@ namespace System.Web.Mvc
         /// <param name="item"></param>
         /// <param name="projectid"></param>
         /// <returns></returns>
-        public static int? TrySetProjectID(this Controller item, int? projectid)
+        public static int? TrySetProjectIDForSales(this Controller item, int? projectid)
         {
             if (projectid == null)
             {
                 var data = CRM_Logical.GetSalesInvolveProject().FirstOrDefault();
+
+                if (data != null)
+                {
+                    projectid = data.ID;
+                }
+            }
+            return projectid;
+        }
+
+        public static int? TrySetProjectIDForProduct(this Controller item, int? projectid)
+        {
+            if (projectid == null)
+            {
+                var data = CRM_Logical.GetProductInvolveProject().FirstOrDefault();
+
+                if (data != null)
+                {
+                    projectid = data.ID;
+                }
+            }
+            return projectid;
+        }
+
+        public static int? TrySetProjectIDForMarket(this Controller item, int? projectid)
+        {
+            if (projectid == null)
+            {
+                var data = CRM_Logical.GetProductInvolveProject().FirstOrDefault();
 
                 if (data != null)
                 {

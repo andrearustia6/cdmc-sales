@@ -201,7 +201,26 @@ namespace BLL
         }
         #endregion
 
+        public static List<Project> GetUserInvolveProject()
+        {
+            var lvl = Employee.GetCurrentRoleLevel();
+            if (lvl == 5)
+            {
+                return GetProductInvolveProject();
+            }
 
+            if (lvl == 1)
+            {
+                return GetProductInvolveProject();
+            }
+
+            if (lvl >= 10 && lvl <= 100)
+            {
+                return GetSalesInvolveProject();
+            }
+
+            return new List<Project>();
+        }
         /// <summary>
         /// 取得sales正在参与的，已经激活，并且当前时间在项目周期内的项目
         /// </summary>
@@ -213,6 +232,26 @@ namespace BLL
             var projects = CH.GetAllData<Project>("Members");
 
             var data = projects.FindAll(p=>p.Members.Any(m=>m.Name == name)&& p.IsActived==true && now>p.StartDate && now<p.EndDate);
+            return data;
+        }
+
+        public static List<Project> GetProductInvolveProject()
+        {
+            var name = HttpContext.Current.User.Identity.Name;
+            var now = DateTime.Now;
+            var projects = CH.GetAllData<Project>("Members");
+
+            var data = projects.FindAll(p => p.Product == name && p.IsActived == true && now > p.StartDate && now < p.EndDate);
+            return data;
+        }
+
+        public static List<Project> GetMarketInvolveProject()
+        {
+            var name = HttpContext.Current.User.Identity.Name;
+            var now = DateTime.Now;
+            var projects = CH.GetAllData<Project>("Members");
+
+            var data = projects.FindAll(p => p.Market == name && p.IsActived == true && now > p.StartDate && now < p.EndDate);
             return data;
         }
     }
