@@ -5,12 +5,23 @@ using System.Web;
 using System.Web.Mvc;
 using Model;
 using Entity;
+using Utl;
 
 namespace Sales.Controllers
 {
     [ManagerRequired]
     public class ReportController : Controller
     {
+        public ActionResult MemberProgress(DateTime? startdate, DateTime? enddate)
+        {
+            ViewBag.StartDate = startdate;
+            ViewBag.EndDate = enddate;
+
+           
+            var projects = CH.GetAllData<Project>("Members");
+           
+            return View(projects);
+        }
         //
         // GET: /Report/
 
