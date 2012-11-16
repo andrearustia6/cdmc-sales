@@ -501,6 +501,7 @@ namespace Sales.Controllers
 
         public ViewResult AddMessage(int? projectid)
         {
+            ViewBag.ProjectID = projectid;
             return View();
         }
 
