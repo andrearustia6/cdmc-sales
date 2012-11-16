@@ -63,5 +63,14 @@
             @Html.ValidationMessageFor(model => model.Answer)
         </div>
         }
+        else
+        {
+            <div class="editor-label">
+            @Html.LabelFor(model => model.Answer)
+        </div>
+        <div class="editor-field">
+            @Html.DisplayFor(model => model.Answer)
+        </div>
+        }
     }
 </fieldset>

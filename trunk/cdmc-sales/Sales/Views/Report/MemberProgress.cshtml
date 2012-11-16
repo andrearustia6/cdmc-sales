@@ -19,8 +19,8 @@
                     var vm = m.GetMemberProgress(startdate, enddate);
                     lists.Add(vm);
                 });
-         <span>项目名称：@p.Name</span>
-      @(Html.Telerik().Chart(lists).Name("chart" + p.ID).Title("目标 vs. 出单").Legend(legend => legend.Position(ChartLegendPosition.Top)).Series(series =>
+        
+      @(Html.Telerik().Chart(lists).Name("chart" + p.ID).Title(p.Name).Legend(legend => legend.Position(ChartLegendPosition.Top)).Series(series =>
       {
           series.Bar(s => s.DealInTarget).Name("目标").Labels(true);
           series.Bar(s => s.DealIn).Name("出单").Labels(labels => labels.Position(ChartBarLabelsPosition.OutsideEnd)
