@@ -57,7 +57,11 @@ namespace Sales.Controllers
             if (!string.IsNullOrEmpty(p.References))
             {
                 var refers = p.References.Split('|');
-                data = data.FindAll(d=>refers.Contains(d.ProjectCode)==false && d.ProjectCode!=p.ProjectCode);
+                data = data.FindAll(d => refers.Contains(d.ProjectCode) == false && d.ProjectCode != p.ProjectCode);
+            }
+            else
+            {
+                data = data.FindAll(d =>  d.ProjectCode != p.ProjectCode);
             }
 
             return View(data);
