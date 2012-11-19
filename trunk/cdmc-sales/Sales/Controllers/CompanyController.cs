@@ -87,18 +87,16 @@ namespace Sales.Controllers
         {
             if (EntityUtl.Utl.CheckPropertyAllNull(item, "Name_EN", "Name_CH"))
                 ModelState.AddModelError("", "名字不完整,中文名和英文名不能同时为空");
-
+          
             if (ModelState.IsValid)
             {
                 Image image = ImageController.UploadImg(Request, item.Image);
                 if (image != null)
                     item.ImageID = image.ID;
-
-                if (Employee.AsManager()||Employee.IsEqualToCurrentUserName(item.Cerator))
-                {
-                    ImageController.UploadImg(Request, item.Image);
-                    CH.Edit<Company>(item);
-                }
+             
+                ImageController.UploadImg(Request, item.Image);
+                CH.Edit<Company>(item);
+              
 
                 return RedirectToAction("Index");
             }

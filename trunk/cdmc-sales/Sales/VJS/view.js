@@ -7,8 +7,8 @@ function initialTargetbreakdown() {
         $this.slider({
             value: getSliderValue($this),
             min: 0,
-            max: 20000,
-            step: 1000,
+            max: 200000,
+            step: 10000,
             slide: function (event, ui) {
                 var $this = $(this);
                 var mid = $this.attr('mid');

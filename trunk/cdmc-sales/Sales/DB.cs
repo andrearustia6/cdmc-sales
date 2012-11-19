@@ -37,5 +37,7 @@ namespace Sales
         public DbSet<SalesType> SalesType { get; set; }
 
         public DbSet<Message> Message { get; set; }
+
+        public DbSet<Image> Image { get; set; }
     }
 }

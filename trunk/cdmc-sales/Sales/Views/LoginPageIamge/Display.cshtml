@@ -1,0 +1,17 @@
+﻿@model Entity.Image
+@using Utl
+
+<fieldset>
+    <legend>@SR.Form</legend>
+
+    <div class="display-label">ContentType</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.ContentType)
+    </div>
+
+    <div class="display-label">Name</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Name)
+    </div>
+</fieldset>
+
