@@ -223,6 +223,7 @@
     <Compile Include="Controllers\DistrictNumberController.cs" />
     <Compile Include="Controllers\ImageBrowserController.cs" />
     <Compile Include="Controllers\LeadCallController.cs" />
+    <Compile Include="Controllers\LoginPageImageController.cs" />
     <Compile Include="Controllers\MarketInterfaceController.cs" />
     <Compile Include="Controllers\MemberController.cs" />
     <Compile Include="Controllers\MessageController.cs" />
@@ -1272,6 +1273,15 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Report\MemberProgress.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\LoginPageIamge\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\LoginPageIamge\Change.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\LoginPageIamge\Display.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

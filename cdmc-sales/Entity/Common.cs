@@ -156,5 +156,10 @@ namespace Entity
 
         [Display(Name = "图片名称")]
         public string Name { get; set; }
+
+        [Display(Name = "应用类型")]
+        public string ImageArea { get; set; }
     }
+
+    public enum ImageArea { LoginPage}
 }

@@ -30,22 +30,23 @@
                    {
                        menu.Add().Text("配置").ImageUrl("~/Content/Common/Icons/mvc.png").Items(item =>
                        {
-                           item.Add().Text("行业").Url("~/Area/index").ImageUrl("~/Content/Common/Icons/Scheduler.png");
-                           item.Add().Text("货币").Url("~/CurrencyType/index").ImageUrl("~/Content/Common/Icons/GridView.gif");
-                           item.Add().Text("公司").Url("~/CompanyType/index").ImageUrl("~/Content/Common/Icons/Grid.png");
-                           item.Add().Text("Package").Url("~/PackageType/index").ImageUrl("~/Content/Common/Icons/Editor.png");
-                           item.Add().Text("付款").Url("~/Paymenttype/index").ImageUrl("~/Content/Common/Icons/TabStrip.png");
-                           item.Add().Text("参会").Url("~/ParticipantType/index").ImageUrl("~/Content/Common/Icons/Chart.gif");
-                           item.Add().Text("模板").Url("~/TemplateType/index").ImageUrl("~/Content/Common/Icons/TabStrip.png");
-                           item.Add().Text("Block").Url("~/OnPhoneBlockType/index").ImageUrl("~/Content/Common/Icons/TabStrip.png");
-                           item.Add().Text("销售类型").Url("~/Salestype/index").ImageUrl("~/Content/Common/Icons/TabStrip.png");
-                           item.Add().Text("销售进度").Url("~/LeadCallType/index").ImageUrl("~/Content/Common/Icons/TabStrip.png");
-                           item.Add().Text("区号管理").Url("~/DistrictNumber/index").ImageUrl("~/Content/Common/Icons/Docking.gif");
+                           item.Add().Text("行业").Url("~/Area/index");
+                           item.Add().Text("货币").Url("~/CurrencyType/index");
+                           item.Add().Text("公司").Url("~/CompanyType/index");
+                           item.Add().Text("Package").Url("~/PackageType/index");
+                           item.Add().Text("付款").Url("~/Paymenttype/index");
+                           item.Add().Text("参会").Url("~/ParticipantType/index");
+                           item.Add().Text("模板").Url("~/TemplateType/index");
+                           item.Add().Text("Block").Url("~/OnPhoneBlockType/index");
+                           item.Add().Text("销售类型").Url("~/Salestype/index");
+                           item.Add().Text("销售进度").Url("~/LeadCallType/index");
+                           item.Add().Text("区号管理").Url("~/DistrictNumber/index");
+                           item.Add().Text("登陆图片").Url("~/loginpageimage/index");
                        });
 
                        menu.Add().Text("Package管理").ImageUrl("~/Content/Common/Icons/GridView.gif").Items(item =>
                        {
-                           item.Add().Url("~/Package/index").Text("Package").ImageUrl("~/Content/Common/Icons/Docking.gif");
+                           item.Add().Url("~/Package/index").Text("Package");
                            //item.Add().Url("~/PackageItem/index").Text("Package项目").ImageUrl("~/Content/Common/Icons/Docking.gif");
 
                        });
@@ -55,16 +56,16 @@
                    {
                        menu.Add().Text("项目管理").ImageUrl("~/Content/Common/Icons/GridView.gif").Items(item =>
                        {
-                           item.Add().Url("~/Project/index").Text("项目管理").ImageUrl("~/Content/Common/Icons/Docking.gif");
-                           item.Add().Url("~/Report/LeadCalls").Text("销售进度").ImageUrl("~/Content/Common/Icons/Docking.gif");
-                           item.Add().Url("~/Deal/index").Text("出单查看").ImageUrl("~/Content/Common/Icons/Docking.gif");
-                           item.Add().Url("~/Research/index").Text("调研查看").ImageUrl("~/Content/Common/Icons/Docking.gif");
-                           item.Add().Url("~/Report/MemberProgress").Text("业绩比较").ImageUrl("~/Content/Common/Icons/Docking.gif");
+                           item.Add().Url("~/Project/index").Text("项目管理");
+                           item.Add().Url("~/Report/LeadCalls").Text("销售进度");
+                           item.Add().Url("~/Deal/index").Text("出单查看");
+                           item.Add().Url("~/Research/index").Text("调研查看");
+                           item.Add().Url("~/Report/MemberProgress").Text("业绩比较");
                        });
 
                        menu.Add().Text("客户管理").ImageUrl("~/Content/Common/Icons/GridView.gif").Items(item =>
                        {
-                           item.Add().Url("~/Company/index").Text("公司").ImageUrl("~/Content/Common/Icons/Docking.gif");
+                           item.Add().Url("~/Company/index").Text("公司");
                           // item.Add().Url("~/Lead/index").Text("客户").ImageUrl("~/Content/Common/Icons/Docking.gif");
                        });
 
@@ -77,20 +78,20 @@
 
                        menu.Add().Text("模板管理").ImageUrl("~/Content/Common/Icons/GridView.gif").Items(item =>
                        {
-                           item.Add().Url("~/Template/index").Text("通用模板").ImageUrl("~/Content/Common/Icons/Editor.png");
-                           item.Add().Url("~/PhoneSaleSupport/index").Text("话术模板").ImageUrl("~/Content/Common/Icons/Docking.gif");
+                           item.Add().Url("~/Template/index").Text("通用模板");
+                           item.Add().Url("~/PhoneSaleSupport/index").Text("话术模板");
                        });
                    }
                    if (Employee.EqualToLeader() | Employee.EqualToSales())
                    {
                        menu.Add().Text("日常工作").ImageUrl("~/Content/Common/Icons/GridView.gif").Items(item =>
                        {
-                           item.Add().Url("~/Sales/mypage").Text("我的主页").ImageUrl("~/Content/Common/Icons/Docking.gif");
-                           item.Add().Url("~/Research/MyIndex").Text("调研上传").ImageUrl("~/Content/Common/Icons/Docking.gif");
-                           item.Add().Url("~/Sales/CompanyRelationshipIndex").Text("分配公司").ImageUrl("~/Content/Common/Icons/Docking.gif");
-                           item.Add().Url("~/Sales/MyDealIndex").Text("我的出单").ImageUrl("~/Content/Common/Icons/Docking.gif");
-                           item.Add().Url("~/Sales/PhoneSaleSupport").Text("话术支持").ImageUrl("~/Content/Common/Icons/Docking.gif");
-                           item.Add().Url("~/Sales/MyMessageIndex").Text("留言求助").ImageUrl("~/Content/Common/Icons/Docking.gif");
+                           item.Add().Url("~/Sales/mypage").Text("我的主页");
+                           item.Add().Url("~/Research/MyIndex").Text("调研上传");
+                           item.Add().Url("~/Sales/CompanyRelationshipIndex").Text("分配公司");
+                           item.Add().Url("~/Sales/MyDealIndex").Text("我的出单");
+                           item.Add().Url("~/Sales/PhoneSaleSupport").Text("话术支持");
+                           item.Add().Url("~/Sales/MyMessageIndex").Text("留言求助");
                            //item.Add().Url("~/Sales/MyWeeklyReport").Text("我的周报").ImageUrl("~/Content/Common/Icons/Docking.gif");
                        });
                    }
