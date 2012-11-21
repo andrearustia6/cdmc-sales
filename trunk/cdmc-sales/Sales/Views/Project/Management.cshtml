@@ -96,38 +96,7 @@
                                          .Resizable(resizing => resizing.Columns(true))
                                                  .Pageable(page => page.PageSize(15))
                                          )
-   @* <div style="width: 500; padding:15px; min-height:350px;">
-     @Html.ActionLink("基本信息编辑", "Edit", "Project", new { id = Model.ID }, new { style = "margin-bottom:15px;" })
-        <ul>
-            <li>
-                <label>
-                    项目名称:</label>@project.Name</li>
-            <li>
-                <label>
-                    项目编号:</label>@project.ProjectCode</li>
-             <li>
-                <label>
-                    开始时间:</label>@project.StartDate.ToShortDateString()</li>
-            <li>
-                <label>
-                    结束时间:</label>@project.EndDate.ToShortDateString()</li>
-            <li>
-                <label>
-                    是否激活:</label>@project.IsActived</li>
-            <li>
-                <label>
-                    销售目标:</label>@Html.DisplayFor(model => model.Target)</li>
-            
-             <li>
-            <label>
-                    板块负责人:</label>@project.Manager</li>
-            <li>
-                <label>
-                    团队负责人:</label>@project.TeamLeader</li>
-        </ul>
-
-      
-    </div>*@
+ 
      
 }
 @helper Members(Project p)
@@ -203,11 +172,9 @@
                     c.Bound(item => item.Company.Name).Width(150);
                     c.Bound(item => item).Template(@<text>@item.WhoCallTheCompanyMemberName()</text>).Title("拨打人").Width(70);
                     c.Bound(item => item.Importancy).Width(80);
-                    c.Bound(item => item).Template(@<text>@item.CategoryString()</text>).Title("分类").Width(150);
+                    c.Bound(item => item).Template(@<text>@item.CategoryString()</text>).Title("分类");
                     c.Bound(item => item.Company.CompanyType.Name).Width(100);
-                    c.Bound(item => item.Company.Cerator).Width(50);
-                    c.Bound(item => item.Company.From).Width(100);
-                    c.Bound(item => item.ID).Title("操作").Width(200).Template(@<span><a  href=@Url.Content("~/CompanyRelationship/Edit/" + item.ID) >建议拨打人数</a> | 
+                    c.Bound(item => item.ID).Title("操作").Width(230).Template(@<span><a  href=@Url.Content("~/CompanyRelationship/Edit/" + item.ID) >建议拨打人数</a> | 
                     <a  href=@Url.Content("~/Project/AppointSales/?projectid=" + p.ID + "&companyrelationshipid=" + item.ID) >指定销售</a>
                      | <a target="_blank" href=@Url.Content("~/LeadCall/CompanyRelationshipIndex/?projectid=" + p.ID + "&companyrelationshipid=" + item.ID) >致电查看</a> </span>);
 

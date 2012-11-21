@@ -12,10 +12,10 @@
     @Html.Hidden("CompanyRelationshipID", (int)ViewBag.CompanyRelationshipID)
     @Html.Hidden("ProjectID", (int)ViewBag.ProjectID)
     @Html.Partial(@"~\views\company\change.cshtml", Model);
-  <div class="editor-label">
-        @Html.Label("Catagory:")
-    </div>
-    <div class="editor-field">
+                                                          
+<fieldset>
+<legend>Catagory</legend>
+ <div class="editor-field">
         @{
         Project p = CH.GetDataById<Project>((int)ViewBag.ProjectID, "Categorys");
         if (p.Categorys != null)
@@ -24,7 +24,7 @@
             <ul>
                 @foreach (var c in p.Categorys)
                 {
-                    <li>
+                    <li style="float:left; margin:5px;">
                         <input  name="checkedCategorys" type="checkbox" value=@c.ID 
                         @if (Model != null && cr.Categorys != null && cr.Categorys.Any(mc => mc.ID == c.ID))
                         {
@@ -37,6 +37,10 @@
            }
         }
     </div>
+</fieldset>
+
+   
+    <br />
     @Html.Partial(@"editcommon", Model);
 <div>
   <center>

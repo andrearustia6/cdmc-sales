@@ -167,6 +167,11 @@ namespace Entity
 
     public class CompanyRelationship : EntityBase
     {
+        string _categoryString;
+        public string CategoryString { 
+            set { _categoryString = value; }
+            get { return _categoryString; }
+        }
         public virtual Company Company { get; set; }
         [Display(Name = "目标公司")]
         public int? CompanyID { get; set; }

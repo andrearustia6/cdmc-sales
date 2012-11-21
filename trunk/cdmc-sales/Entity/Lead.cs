@@ -88,6 +88,11 @@ namespace Entity
     [JsonIgnoreAttribute("ModifiedTime","Company","Image")]
     public class Lead :NameEntity
     {
+        [Display(Name = "个人邮箱")]
+        [DataType(DataType.EmailAddress)]
+        public string PersonalEmailAddress { get; set; }
+
+        [Display(Name = "性别")]
         public string Gender { get; set; }
 
         [Display(Name = "职位")]
@@ -98,7 +103,7 @@ namespace Entity
         public string Contact { get; set; }
 
         [DataType(DataType.EmailAddress)]
-        [Display(Name = "电子邮箱")]
+        [Display(Name = "工作邮箱")]
         public string EMail { get; set; }
 
         [Display(Name = "传真")]

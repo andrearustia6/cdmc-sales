@@ -23,6 +23,24 @@
         @Html.DisplayFor(model => model.Project.Name)
     </div>
 
+    <div class="display-label">参与过的项目</div>
+    <div class="display-field">
+    @{
+        var ps = Model.GetInvolveProjects();
+        if(ps.Count>0)
+        {
+            <table style="80%">
+            <tr><th>项目名称</th><th>总CheckIn</th><th>总DealIn</th></tr>
+            @foreach (var p in ps)
+            {
+               @* <tr><td>@p.Name</td><td>@p.ge</td><td></td></tr>*@
+            }
+            </table>
+        }
+     }
+        @Html.DisplayFor(model => model.Project.Name)
+    </div>
+
 
    
 </fieldset>
