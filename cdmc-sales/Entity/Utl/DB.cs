@@ -38,11 +38,16 @@ namespace Utl
         public DbSet<Deal> Deals { get; set; }
         public DbSet<Project> Projects { get; set; }
         public DbSet<Department> Departments { get; set; }
+        public DbSet<Message> Messages { get; set; }
+        public DbSet<Image> Images { get; set; }
         public DbSet<CompanyRelationship> CompanyRelationships { get; set; }
 
         public DB()
         {
-            Database.SetInitializer<DB>(new DBInitializer());
+           //Database.SetInitializer<DB>(new DBInitializer());
+          Database.SetInitializer<DB>(null);
+           
+
 
             this.Configuration.ValidateOnSaveEnabled = false;
         }
@@ -52,7 +57,7 @@ namespace Utl
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
         }
 
-        public DbSet<Image> Images { get; set; }
+
     }
 
     public class DBInitializer : DropCreateDatabaseIfModelChanges<DB>

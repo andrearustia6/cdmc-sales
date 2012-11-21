@@ -58,6 +58,13 @@
         @Html.EditorFor(model => model.EMail)
         @Html.ValidationMessageFor(model => model.EMail)
     </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.PersonalEmailAddress)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.PersonalEmailAddress)
+        @Html.ValidationMessageFor(model => model.PersonalEmailAddress)
+    </div>
 
      <div class="editor-label">
         @Html.LabelFor(model => model.Fax)

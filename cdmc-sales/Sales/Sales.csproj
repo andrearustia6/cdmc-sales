@@ -228,6 +228,7 @@
     <Compile Include="Controllers\MemberController.cs" />
     <Compile Include="Controllers\MessageController.cs" />
     <Compile Include="Controllers\PhoneSaleSupportController.cs" />
+    <Compile Include="Controllers\TeamLeaderController.cs" />
     <Compile Include="Controllers\Type\PackageController.cs" />
     <Compile Include="Controllers\Type\PackageItemController.cs" />
     <Compile Include="Controllers\ProductInterfaceController.cs" />
@@ -254,7 +255,6 @@
     <Compile Include="Controllers\Type\SalesTypeController.cs" />
     <Compile Include="Controllers\Type\TemplateTypeController.cs" />
     <Compile Include="Controllers\Type\TitleController.cs" />
-    <Compile Include="DB.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -1282,6 +1282,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\LoginPageIamge\Display.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\TeamLeader\BreakdownIndex.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

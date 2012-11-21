@@ -572,7 +572,7 @@ namespace Entity
                 else
                     result += "|" + c.Name;
             });
-
+            item.CategoryString = result;
             return result;
         }
     }

@@ -18,9 +18,8 @@
                     c.Bound(item => item.Company.Name).Width(150);
                     c.Bound(item => item.Importancy).Width(100);
                     c.Bound(item => item.Company.Contact);
-                    c.Bound(item => item.Company.Fax);
+                    c.Bound(item => item.CategoryString).Template(@<text>@item.CategoryString()</text>).Title("Category");
                     c.Bound(item => item.Company.Available).Width(100);
-                    c.Bound(item => item.Company.From).Width(100);
                     c.Bound(item => item.ID).Title("操作").Width(240).Template(@<span>  
                       <a  href=@Url.Content("~/Sales/DisplayCompany/?crid=" + item.ID) >公司查看</a> 
                     | <a  href=@Url.Content("~/Sales/EditCompany/?crid=" + item.ID) >公司编辑</a> 
