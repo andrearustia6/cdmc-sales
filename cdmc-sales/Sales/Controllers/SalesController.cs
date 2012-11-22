@@ -150,7 +150,7 @@ namespace Sales.Controllers
 
         public ActionResult AddDeal(int? projectid)
         {
-            projectid = this.TrySetProjectIDForSales(projectid);
+            projectid = this.TrySetProjectIDForUser(projectid);
             ViewBag.ProjectID = projectid;
 
 
@@ -190,7 +190,7 @@ namespace Sales.Controllers
 
         public ViewResult MyDealIndex(int? projectid)
         {
-            projectid = this.TrySetProjectIDForSales(projectid);
+            projectid = this.TrySetProjectIDForUser(projectid);
             ViewBag.ProjectID = projectid;
             var data = CH.GetAllData<Deal>();
             ViewBag.ProjectID = projectid;
@@ -359,7 +359,7 @@ namespace Sales.Controllers
         [HttpPost]
         public ActionResult AddCompany(Company item,int? projectid, int[] checkedCategorys)
         {
-            projectid = this.TrySetProjectIDForSales(projectid);
+            projectid = this.TrySetProjectIDForUser(projectid);
             ViewBag.ProjectID = projectid;
 
             this.AddErrorStateIfSalesNoAccessRightToTheProject(projectid);
@@ -453,7 +453,7 @@ namespace Sales.Controllers
         /// <returns></return
         public ViewResult CompanyRelationshipIndex(int? projectid)
         {
-            projectid = this.TrySetProjectIDForSales(projectid);
+            projectid = this.TrySetProjectIDForUser(projectid);
             ViewBag.ProjectID = projectid;
             
             if (projectid != null)
@@ -484,7 +484,7 @@ namespace Sales.Controllers
         public ViewResult MyMessageIndex(int? projectid)
         {
 
-            projectid = this.TrySetProjectIDForSales(projectid);
+            projectid = this.TrySetProjectIDForUser(projectid);
             ViewBag.ProjectID = projectid;
             if (projectid != null)
             {

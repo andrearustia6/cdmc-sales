@@ -19,7 +19,7 @@ namespace Sales.Controllers
         public ViewResult CompanyRelationshipIndex(int? projectid)
         {
 
-            projectid = this.TrySetProjectIDForProduct(projectid);
+            projectid = this.TrySetProjectIDForUser(projectid);
             var project = CH.GetDataById<Project>(projectid, "CompanyRelationships");
             if (project != null)
             {
@@ -38,7 +38,7 @@ namespace Sales.Controllers
         public ViewResult MyMessageIndex(int? projectid)
         {
 
-            projectid = this.TrySetProjectIDForProduct(projectid);
+            projectid = this.TrySetProjectIDForUser(projectid);
             ViewBag.ProjectID = projectid;
             if (projectid != null)
             {

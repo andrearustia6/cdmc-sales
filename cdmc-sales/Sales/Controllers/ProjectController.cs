@@ -81,37 +81,57 @@ namespace Sales.Controllers
         [HttpPost]
         public ActionResult SelectCompanyByProjectCode(int[] checkedRecords, int projectid)
         {
-            var allselectedprojects = CH.GetAllData<Project>(item => checkedRecords.Any(cr => cr == item.ID),"CompanyRelationships");
-            var p = CH.GetDataById<Project>(projectid, "CompanyRelationships");
-            if (p != null)
+            if (checkedRecords != null)
             {
-                allselectedprojects.ForEach(nr =>
+                var allselectedprojects = CH.GetAllData<Project>(item => checkedRecords.Any(cr => cr == item.ID), "CompanyRelationships");
+                var p = CH.GetDataById<Project>(projectid, "CompanyRelationships");
+                if (p != null)
                 {
-                    nr.CompanyRelationships.ForEach(cr =>
+                    allselectedprojects.ForEach(nr =>
                     {
-                        p.AddExistCompanyToNewCompanyRelationship(cr.CompanyID);
-                      
+                        nr.CompanyRelationships.ForEach(cr =>
+                        {
+                            p.AddExistCompanyToNewCompanyRelationship(cr.CompanyID);
+
+                        });
                     });
-                });
-                string refer = string.Empty;
-                allselectedprojects.ForEach(select =>
-                {
-                    if (string.IsNullOrEmpty(refer))
+                    string refer = string.Empty;
+                    allselectedprojects.ForEach(select =>
                     {
-                        refer = select.ProjectCode;
-                    }
-                    else
-                    {
-                        refer += "|" + select.ProjectCode;
-                    }
+                        if (string.IsNullOrEmpty(refer))
+                        {
+                            refer = select.ProjectCode;
+                        }
+                        else
+                        {
+                            refer += "|" + select.ProjectCode;
+                        }
 
-                });
-                p.References = refer;
-                // 没有删除逻辑
-                CH.Edit<Project>(p);
+                    });
+                    p.References = refer;
+                    // 没有删除逻辑
+                    CH.Edit<Project>(p);
+                }
+                return RedirectToAction("Management", "Project", new { id = projectid, tabindex = 3 });
             }
+            else
+            {
+                ViewBag.ProjectID = projectid;
+                var p = CH.GetDataById<Project>(projectid);
+                var data = CH.GetAllData<Project>(i => i.ID != projectid);
+                if (!string.IsNullOrEmpty(p.References))
+                {
+                    var refers = p.References.Split('|');
+                    data = data.FindAll(d => refers.Contains(d.ProjectCode) == false && d.ProjectCode != p.ProjectCode);
+                }
+                else
+                {
+                    data = data.FindAll(d => d.ProjectCode != p.ProjectCode);
+                }
 
-            return RedirectToAction("Management", "Project", new { id = projectid,tabindex=3 });
+                return View(data);
+            }
+           
         }
      
         #endregion

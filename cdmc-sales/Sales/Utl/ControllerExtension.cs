@@ -105,11 +105,11 @@ namespace System.Web.Mvc
         /// <param name="item"></param>
         /// <param name="projectid"></param>
         /// <returns></returns>
-        public static int? TrySetProjectIDForSales(this Controller item, int? projectid)
+        public static int? TrySetProjectIDForUser(this Controller item, int? projectid)
         {
             if (projectid == null)
             {
-                var data = CRM_Logical.GetSalesInvolveProject().FirstOrDefault();
+                var data = CRM_Logical.GetUserInvolveProject().FirstOrDefault();
 
                 if (data != null)
                 {
@@ -119,33 +119,47 @@ namespace System.Web.Mvc
             return projectid;
         }
 
-        public static int? TrySetProjectIDForProduct(this Controller item, int? projectid)
-        {
-            if (projectid == null)
-            {
-                var data = CRM_Logical.GetProductInvolveProject().FirstOrDefault();
+        //public static int? TrySetProjectIDForProduct(this Controller item, int? projectid)
+        //{
+        //    if (projectid == null)
+        //    {
+        //        var data = CRM_Logical.GetProductInvolveProject().FirstOrDefault();
 
-                if (data != null)
-                {
-                    projectid = data.ID;
-                }
-            }
-            return projectid;
-        }
+        //        if (data != null)
+        //        {
+        //            projectid = data.ID;
+        //        }
+        //    }
+        //    return projectid;
+        //}
 
-        public static int? TrySetProjectIDForMarket(this Controller item, int? projectid)
-        {
-            if (projectid == null)
-            {
-                var data = CRM_Logical.GetProductInvolveProject().FirstOrDefault();
+        //public static int? TrySetProjectIDForProduct(this Controller item, int? projectid)
+        //{
+        //    if (projectid == null)
+        //    {
+        //        var data = CRM_Logical.GetProductInvolveProject().FirstOrDefault();
 
-                if (data != null)
-                {
-                    projectid = data.ID;
-                }
-            }
-            return projectid;
-        }
+        //        if (data != null)
+        //        {
+        //            projectid = data.ID;
+        //        }
+        //    }
+        //    return projectid;
+        //}
+
+        //public static int? TrySetProjectIDForMarket(this Controller item, int? projectid)
+        //{
+        //    if (projectid == null)
+        //    {
+        //        var data = CRM_Logical.GetProductInvolveProject().FirstOrDefault();
+
+        //        if (data != null)
+        //        {
+        //            projectid = data.ID;
+        //        }
+        //    }
+        //    return projectid;
+        //}
 
         public static void AddErrorStateIfCreatorIsNotTheLoginUser(this Controller item, EntityBase target)
         {
