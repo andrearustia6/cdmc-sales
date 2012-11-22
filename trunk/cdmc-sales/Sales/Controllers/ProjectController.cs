@@ -9,6 +9,7 @@ using Entity;
 using Sales;
 using Utl;
 using BLL;
+using System.IO;
 
 namespace Sales.Controllers
 {
@@ -264,12 +265,29 @@ namespace Sales.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create(Project item)
+        public ActionResult Create(Project item, IEnumerable<HttpPostedFileBase> attachments)
         {
             this.AddErrorIfAllNamesEmpty(item);
             this.AddErrorStateIfStartDateLaterThanEndDate(item.StartDate, item.EndDate);
             if (ModelState.IsValid)
             {
+                if (attachments != null)
+                {
+                    foreach (var file in attachments)
+                    {
+                        var fileName = Path.GetFileName(file.FileName).Replace(" ", ""); ;
+                        string serverpath = "/Uploads/Projects/"+item.ProjectCode;
+                        string path = Server.MapPath(serverpath);
+                        if (!Directory.Exists(path))
+                        {
+                            Directory.CreateDirectory(path);
+                        }
+                        var physicalPath = Path.Combine(path, fileName);
+                        file.SaveAs(physicalPath);
+                        item.SalesBriefUrl = serverpath + "/" + fileName;
+                    }
+                }
+
                 CH.Create<Project>(item);
                 return RedirectToAction("Index");
             }
@@ -283,12 +301,29 @@ namespace Sales.Controllers
         }
 
         [HttpPost]
-        public ActionResult Edit(Project item)
+        public ActionResult Edit(Project item, IEnumerable<HttpPostedFileBase> attachments)
         {
             this.AddErrorIfAllNamesEmpty(item);
             this.AddErrorStateIfStartDateLaterThanEndDate(item.StartDate, item.EndDate);
             if (ModelState.IsValid)
             {
+                if (attachments != null)
+                {
+                    foreach (var file in attachments)
+                    {
+                        var fileName = Path.GetFileName(file.FileName).Replace(" ", ""); ;
+                        string serverpath = "/Uploads/Projects/" + item.ProjectCode;
+                        string path = Server.MapPath(serverpath);
+                        if (!Directory.Exists(path))
+                        {
+                            Directory.CreateDirectory(path);
+                        }
+                        var physicalPath = Path.Combine(path, fileName);
+                        file.SaveAs(physicalPath);
+                        item.SalesBriefUrl = serverpath + "/" + fileName;
+                    }
+                }
+
                 CH.Edit<Project>(item);
                 return RedirectToAction("Index");
             }
@@ -307,6 +342,11 @@ namespace Sales.Controllers
         {
             CH.Delete<Project>(id);
             return RedirectToAction("Index");
+        }
+
+        public ActionResult Service_File_Donwload(string fileurl,string filename)
+        {
+            return new DownloadResult { VirtualPath = fileurl, FileDownloadName = filename };
         }
     }
 }

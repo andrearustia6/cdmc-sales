@@ -385,8 +385,6 @@ namespace Utl
                     context.HttpContext.Response.ContentType = "image/jpeg";
            
             }
-
-        
             context.HttpContext.Response.TransmitFile(filePath);
         }
     }
