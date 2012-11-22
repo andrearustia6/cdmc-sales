@@ -80,8 +80,8 @@
                     <span>会议地点：@Model.Location</span>
                 </td>
             </tr>
-            <tr><td colspan=3> @Html.ActionLink("基本信息编辑", "Edit", "Project", new { id = Model.ID }, new { style = "margin-bottom:15px;" })
-    </td></tr>
+            <tr><td > @Html.ActionLink("基本信息编辑", "Edit", "Project", new { id = Model.ID }, new { style = "margin-bottom:15px;" })
+    </td><td colspan=2> <a href=@Url.Action("Service_File_Donwload", "project", new { fileurl = Model.SalesBriefUrl, filename = Model.SalesBriefName })>点击下载</a></td></tr>
                 </table>
            @(Html.Telerik().Grid(project.Categorys).Name("Categorys" + project.ID).ToolBar(commands =>
                             commands.Custom().Text("添加Category").Action("Create", "Category", new { projectid = Model.ID }))

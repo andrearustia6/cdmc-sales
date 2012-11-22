@@ -62,6 +62,14 @@ namespace Entity
     /// </summary>
     public class Project : NameEntity
     {
+        [Display(Name = "销售简介文件下载显示名称"), Required]
+        public string SalesBriefName { get; set; }
+
+        [Display(Name = "文件路径")]
+        public string SalesBriefUrl { get; set; }
+
+
+
         //public string OpeningDate { get { return EndDate.Year.ToString(); } }
 
         [Display(Name = "板块负责人")]

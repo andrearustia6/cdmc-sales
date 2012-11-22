@@ -141,7 +141,6 @@ namespace Entity
         [Display(Name = "付款类型")]
         public string Name { get; set; }
     }
-    
 
     /// <summary>
     /// 图片

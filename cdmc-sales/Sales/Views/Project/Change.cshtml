@@ -114,6 +114,25 @@
         @Html.Telerik().EditorFor(model => model.SaleBrief)
         @Html.ValidationMessageFor(model => model.SaleBrief)
     </div>
+     <div class="editor-label">
+        @Html.LabelFor(model => model.SalesBriefName)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.SalesBriefName)
+        @Html.ValidationMessageFor(model => model.SalesBriefName)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.SalesBriefUrl)
+    </div>
+    <div class="editor-field">
+     @{if (Model != null)
+          {
+            @Html.HiddenFor(m => m.SalesBriefUrl)
+            @Html.DisplayFor(model => model.SalesBriefUrl)
+          }
+        }
+        @Html.Telerik().Upload().Async(a => a.AutoUpload(true)).Name("attachments").Multiple(false)
+    </div>
     <div class="editor-label">
         @Html.LabelFor(model => model.Others)
     </div>

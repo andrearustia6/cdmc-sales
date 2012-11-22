@@ -59,4 +59,11 @@
     <div class="display-field">
         @HtmlExtensions.GetHtmlString(Model.SaleBrief)
     </div>
+    <div class="display-label">项目简介附件：@Model.SalesBriefName</div>
+    <div class="display-field">
+       <a href=@Url.Action("Service_File_Donwload", "project", new { fileurl = Model.SalesBriefUrl, filename = Model.SalesBriefUrl })>点击下载</a>
+    </div>
+
+
+   
 </fieldset>

@@ -21,8 +21,16 @@
         </div>
         <div class="editor-field">
         @{
-         var enname = Model == null ? null : Model.Company.Name_EN;
-        <input type="text" name="enname" value=@enname />
+            if(Model==null)
+            {
+                 <input type="text" name="enname"  />
+            }
+            else
+            {
+                 <input type="text" name="enname" value=@Model.Company.Name_EN />
+            }
+         
+       
          }
         </div>
          <div class="editor-label">
@@ -30,10 +38,15 @@
         </div>
         <div class="editor-field">
         @{
-            var chname = Model == null ? null : Model.Company.Name_CH;
-        <input type="text" name="chname" value=@chname />
-        }
-             @*@Html.Editor("chname", Model == null ? null : Model.Company.Name_CH)*@
+            if(Model==null)
+            {
+                 <input type="text" name="chname"  />
+            }
+            else
+            {
+                 <input type="text" name="chname" value=@Model.Company.Name_CH />
+            }
+            }
         </div>
      
     
@@ -42,12 +55,24 @@
     </div>
     <div class="editor-field">
          
-        @(Html.Telerik().Slider<int>().Name("Importancy").Value(Model==null?6:Model.Importancy).Max(10).Min(1).HtmlAttributes(new { style = "width:50%;" }))
+        @(Html.Telerik().Slider<int>().Name("Importancy").Value(Model == null ? 6 : Model.Importancy).Max(10).Min(1).HtmlAttributes(new { style = "width:50%;" }))
         @Html.ValidationMessageFor(model => model.Importancy)
     </div>
-    <div class="editor-label">
-        @Html.Label("Catagory:")
-    </div>
+
+    
+    @*<div class="editor-label">
+            @Html.LabelFor(model => model.ProgressID, "Progress")
+        </div>
+        <div class="editor-field">
+            @Html.HiddenFor(m=>m.ProjectID)
+            @Html.ValidationMessageFor(model => model.ProgressID)
+        </div>*@
+</fieldset>
+
+    <fieldset>
+    <legend>Catagory</legend>
+    </fieldset>
+   
     <div class="editor-field">
         @{
             Project p = CH.GetDataById<Project>((int)ViewBag.ProjectID, "Categorys");
@@ -56,9 +81,9 @@
             <ul>
                 @foreach (var c in p.Categorys)
                 {
-                    <li>
+                    <li  style="float:left; margin:3px;">
                         <input  name="checkedCategorys" type="checkbox" value=@c.ID 
-                        @if (Model != null && Model.Categorys!=null && Model.Categorys.Any(mc => mc.ID == c.ID))
+                        @if (Model != null && Model.Categorys != null && Model.Categorys.Any(mc => mc.ID == c.ID))
                         {
                             <text> checked="checked"</text>
                             
@@ -69,12 +94,3 @@
             }
         }
     </div>
-    
-    @*<div class="editor-label">
-            @Html.LabelFor(model => model.ProgressID, "Progress")
-        </div>
-        <div class="editor-field">
-            @Html.HiddenFor(m=>m.ProjectID)
-            @Html.ValidationMessageFor(model => model.ProgressID)
-        </div>*@
-</fieldset>

@@ -56,9 +56,11 @@
                
             </tr>
             <tr>
-                <td  colspan=3>
+                <td  >
                     <span>@Html.ActionLink("问题留言", "AddMessage", new { projectid = Model.ID }, new { target = "_blank" })</span>
                 </td>
+
+                <td colspan=2> <a href=@Url.Action("Service_File_Donwload", "project", new { fileurl = Model.SalesBriefUrl, filename = Model.SalesBriefName })>@Model.SalesBriefName</a></td>
             </tr>
         </table>
     </fieldset>
