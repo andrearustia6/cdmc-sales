@@ -573,5 +573,10 @@ namespace Sales.Controllers
 
             return View(ps);
         }
+
+        public ActionResult Service_File_Donwload(string fileurl, string filename)
+        {
+            return new DownloadResult { VirtualPath = fileurl, FileDownloadName = filename };
+        }
     }
 }

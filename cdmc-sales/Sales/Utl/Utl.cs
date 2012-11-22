@@ -371,21 +371,25 @@ namespace Utl
         public override void ExecuteResult(ControllerContext context)
         {
             string filePath = context.HttpContext.Server.MapPath(this.VirtualPath);
-            string extession = filePath.Remove(0, filePath.LastIndexOf("."));
-            if (!String.IsNullOrEmpty(FileDownloadName))
+            var position = filePath.LastIndexOf(".");
+            if (position >= 0)
             {
-                context.HttpContext.Response.AddHeader("content-disposition", "attachment; filename=" + HttpUtility.UrlEncode(this.FileDownloadName));
-                if (extession == ".doc")
-                    context.HttpContext.Response.ContentType = "application/msword";
-                if (extession == ".xls")
-                    context.HttpContext.Response.ContentType = "application/vnd.xls";
-                if (extession == ".pdf")
-                    context.HttpContext.Response.ContentType = "application/pdf";
-                if (extession == ".jpg")
-                    context.HttpContext.Response.ContentType = "image/jpeg";
-           
+                string extession = filePath.Remove(0, position);
+                if (!String.IsNullOrEmpty(FileDownloadName))
+                {
+                    context.HttpContext.Response.AddHeader("content-disposition", "attachment; filename=" + HttpUtility.UrlEncode(this.FileDownloadName));
+                    if (extession == ".doc")
+                        context.HttpContext.Response.ContentType = "application/msword";
+                    if (extession == ".xls")
+                        context.HttpContext.Response.ContentType = "application/vnd.xls";
+                    if (extession == ".pdf")
+                        context.HttpContext.Response.ContentType = "application/pdf";
+                    if (extession == ".jpg")
+                        context.HttpContext.Response.ContentType = "image/jpeg";
+
+                }
+                context.HttpContext.Response.TransmitFile(filePath);
             }
-            context.HttpContext.Response.TransmitFile(filePath);
         }
     }
 
