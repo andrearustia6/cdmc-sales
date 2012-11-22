@@ -1,0 +1,60 @@
+﻿@model Entity.Deal
+
+@{
+    ViewBag.Title = "出单详细";
+}
+@using Utl
+<fieldset>
+    <legend>@SR.Form</legend>
+
+    <div class="display-label">Lead</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.CompanyRelationship.Company.Name)
+    </div>
+
+    <div class="display-label">Package</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Package.Name)
+    </div>
+
+    <div class="display-label">ExpectedPaymentDate</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.ExpectedPaymentDate)
+    </div>
+
+    <div class="display-label">ActualPaymentDate</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.ActualPaymentDate)
+    </div>
+    <div class="display-label">签约日期</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.SignDate)
+    </div>
+    <div class="display-label">IsClosed</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.IsClosed)
+    </div>
+
+    <div class="display-label">Income</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Income)
+    </div>
+
+    <div class="display-label">Payment</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Payment)
+    </div>
+    <div class="display-label">Sales</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Sales)
+    </div>
+
+
+    <div class="display-label">PaymentDetail</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.PaymentDetail)
+    </div>
+
+    
+</fieldset>
+

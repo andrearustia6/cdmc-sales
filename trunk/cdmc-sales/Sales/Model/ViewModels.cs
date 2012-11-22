@@ -36,7 +36,13 @@ namespace Model
         public Project project { get; set; }
         public List<ViewLeadCallAmount> LeadCallAmounts { get; set; }
         public List<Member> _topSales;
-        public decimal TopSalesAmount { get; set; }
+        decimal? topSalesAmount;
+        public decimal TopSalesAmount { get {
+            if (topSalesAmount==null)
+                    topSalesAmount = LeadCallAmounts.Count > 0 ? LeadCallAmounts.Max(d => d.DealInAmount) : 0;
+            return (decimal)topSalesAmount;
+        }
+        }
         public List<Member> TopSales
         {
             get
@@ -44,8 +50,7 @@ namespace Model
                 if (_topSales == null)
                 {
                     _topSales = new List<Member>();
-                    var amounts = LeadCallAmounts.FindAll(m => m.DealInAmount == LeadCallAmounts.Max(d => d.DealInAmount));
-                    TopSalesAmount = amounts.FirstOrDefault().DealInAmount;
+                    var amounts = LeadCallAmounts.FindAll(m => m.DealInAmount == TopSalesAmount);
                     amounts.ForEach(m =>
                     {
                         _topSales.Add(m.Member);
@@ -131,6 +136,7 @@ namespace Model
                             {
                                 _topSales.Clear();
                                 _topSales.AddRange(vp.TopSales);
+                                TopSalesAmount = vp.TopSalesAmount;
                             }
                         }
                     });

@@ -218,6 +218,14 @@ namespace BLL
             {
                 return GetSalesInvolveProject();
             }
+            if (lvl >= 1000)
+            {
+                return GetDirectorInvolveProject();
+            }
+            if (lvl >= 500 && lvl <= 500)
+            {
+                return GetManagerInvolveProject();
+            }
 
             return new List<Project>();
         }
@@ -232,6 +240,26 @@ namespace BLL
             var projects = CH.GetAllData<Project>("Members");
 
             var data = projects.FindAll(p=>p.Members.Any(m=>m.Name == name)&& p.IsActived==true && now>p.StartDate && now<p.EndDate);
+            return data;
+        }
+
+        public static List<Project> GetManagerInvolveProject()
+        {
+            var name = HttpContext.Current.User.Identity.Name;
+            var now = DateTime.Now;
+            var projects = CH.GetAllData<Project>(p => p.Manager == name);
+
+            var data = projects.FindAll(p => p.IsActived == true && now > p.StartDate && now < p.EndDate);
+            return data;
+        }
+
+        public static List<Project> GetDirectorInvolveProject()
+        {
+            var name = HttpContext.Current.User.Identity.Name;
+            var now = DateTime.Now;
+            var projects = CH.GetAllData<Project>();
+
+            var data = projects.FindAll(p =>  p.IsActived == true && now > p.StartDate && now < p.EndDate);
             return data;
         }
 

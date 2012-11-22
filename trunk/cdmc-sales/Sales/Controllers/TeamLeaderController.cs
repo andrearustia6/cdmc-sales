@@ -23,7 +23,7 @@ namespace Sales.Controllers
         #region 目标划分
         public ActionResult BreakdownIndex(int? projectid)
         {
-            projectid = this.TrySetProjectIDForSales(projectid);
+            projectid = this.TrySetProjectIDForUser(projectid);
             ViewBag.ProjectID = projectid;
 
             return View(CH.GetAllData<TargetOfMonth>(m => m.ProjectID == projectid));
