@@ -276,7 +276,7 @@ namespace Sales.Controllers
                     foreach (var file in attachments)
                     {
                         var fileName = Path.GetFileName(file.FileName).Replace(" ", ""); ;
-                        string serverpath = "/Uploads/Projects/"+item.ProjectCode;
+                        string serverpath = "/Uploads/Projects/" + item.ProjectCode + "/Salesbrief";
                         string path = Server.MapPath(serverpath);
                         if (!Directory.Exists(path))
                         {
@@ -312,7 +312,7 @@ namespace Sales.Controllers
                     foreach (var file in attachments)
                     {
                         var fileName = Path.GetFileName(file.FileName).Replace(" ", ""); ;
-                        string serverpath = "/Uploads/Projects/" + item.ProjectCode;
+                        string serverpath = "/Uploads/Projects/" + item.ProjectCode + "/Salesbrief";
                         string path = Server.MapPath(serverpath);
                         if (!Directory.Exists(path))
                         {

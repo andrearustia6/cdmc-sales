@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using Utl;
 using Entity;
 using BLL;
+using System.IO;
 
 namespace Sales.Controllers
 {
@@ -130,17 +131,42 @@ namespace Sales.Controllers
         public ViewResult UpdateSalesBrief(int? id)
         {
             ViewBag.ProjectID = id;
-            var data = CH.GetDataById<Project>(id).SaleBrief;
-            return View("UpdateSalesBrief","",HttpUtility.HtmlDecode(data));
+            var data = CH.GetDataById<Project>(id);
+            ViewBag.SalesBriefName = data.SalesBriefName;
+            ViewBag.SalesBriefUrl = data.SalesBriefUrl;
+            return View("UpdateSalesBrief","",HttpUtility.HtmlDecode(data.SaleBrief));
         }
         [HttpPost]
-        public ActionResult UpdateSalesBrief(int? id,string salesbrief)
+        public ActionResult UpdateSalesBrief(int? id, string salesbrief, string salesBriefName, IEnumerable<HttpPostedFileBase> attachments)
         {
             var data = CH.GetDataById<Project>(id);
             data.SaleBrief = salesbrief;
+            data.SalesBriefName = salesBriefName;
+            if (attachments != null)
+            {
+                foreach (var file in attachments)
+                {
+                    var fileName = Path.GetFileName(file.FileName).Replace(" ", ""); ;
+                    string serverpath = "/Uploads/Projects/" + data.ProjectCode + "/Salesbrief";
+                    string path = Server.MapPath(serverpath);
+                    if (!Directory.Exists(path))
+                    {
+                        Directory.CreateDirectory(path);
+                    }
+                    var physicalPath = Path.Combine(path, fileName);
+                    file.SaveAs(physicalPath);
+                    data.SalesBriefUrl = serverpath + "/" + fileName;
+                }
+            }
+
             CH.Edit<Project>(data);
             return RedirectToAction("MyProjectIndex"); 
         }
         #endregion
+
+        public ActionResult Service_File_Donwload(string fileurl, string filename)
+        {
+            return new DownloadResult { VirtualPath = fileurl, FileDownloadName = filename };
+        }
     }
 }

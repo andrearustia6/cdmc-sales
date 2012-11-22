@@ -8,6 +8,27 @@
 <fieldset>
 <legend>更新产品介绍</legend>
 @Html.Telerik().Editor().Name("salesbrief").Value(Model)
+
+ <div class="editor-label">
+        @Html.Label("产品简介文件名")
+    </div>
+    <div class="editor-field">
+    @{
+       var v = ViewBag.SalesBriefName as string;
+        <input type="text" name="SalesBriefName" value="@v"  />
+ }
+    </div>
+    <div class="editor-label">
+        @Html.Label("地址")
+    </div>
+    <div class="editor-field">
+    
+            @Html.Hidden("SalesBriefUrl", ViewBag.SalesBriefUrl as string)
+            <p>@ViewBag.SalesBriefUrl</p>
+       
+      
+        @Html.Telerik().Upload().Async(a => a.AutoUpload(true)).Name("attachments").Multiple(false)
+    </div>
 </fieldset>
      <center>
 <input  type="submit" value=@SR.Save />

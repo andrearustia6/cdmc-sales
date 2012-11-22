@@ -16,6 +16,12 @@
                 {
                     c.Bound(item => item.ProjectCode).Width(90);
                     c.Bound(item => item.Name).Width(200);
+                    c.Bound(item => item.SalesBriefName).Title("附件下载").Template(@<text> 
+                    @if (!string.IsNullOrEmpty(item.SalesBriefUrl))
+                    {
+                    <a href=@Url.Action("Service_File_Donwload", "productinterface", new { fileurl = item.SalesBriefUrl, filename = item.SalesBriefUrl })>点击下载</a>
+                        }
+                    </text>).Width(150);
                     c.Bound(item => item.ModifiedDate);
                     c.Bound(item => item.ID).Title("操作").Width(120).Template(@<span>
                     <a href=@Url.Content("~/ProductInterface/UpdateSalesBrief/?id=" + item.ID)>编辑产品介绍</a>
