@@ -248,8 +248,10 @@ namespace System.Web.Mvc
             var role = Employee.GetCurrentRole();
             if (role.Level >= 500 && role.Level < 1000)
                 return CH.GetAllData<Project>(p => p.RoleInProject() == RoleInProject.Manager);
-            else if (role.Level >= 1000)
+            else if (role.Level == 1000)
                 return CH.GetAllData<Project>(p => p.RoleInProject() == RoleInProject.Director);
+            else if(role.Level ==99999)
+                return CH.GetAllData<Project>();
             else
                 return new List<Project>();
         }

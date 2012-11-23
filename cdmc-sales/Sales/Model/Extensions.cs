@@ -61,7 +61,7 @@ namespace Entity
 
     public enum RoleInProject
     {
-        Director, Manager, Leader, Member, MarketInterface, ProductInterface, NotIn
+        Administrator,Director, Manager, Leader, Member, MarketInterface, ProductInterface, NotIn
     }
 
     public static class MemberExtensions
@@ -431,6 +431,8 @@ namespace Entity
             var p = CH.GetDataById<Project>(item.ID, "Members");
             var name = HttpContext.Current.User.Identity.Name;
 
+            if (Employee.GetCurrentRoleLevel() == 99999)
+                return Entity.RoleInProject.Administrator;
             if (Employee.GetCurrentRoleLevel() == 1000)
                 return Entity.RoleInProject.Director;
             else if (p.Manager == name)
