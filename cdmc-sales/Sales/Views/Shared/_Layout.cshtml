@@ -64,11 +64,7 @@
                            item.Add().Url("~/Report/MemberProgress").Text("业绩比较");
                        });
 
-                       menu.Add().Text("客户管理").ImageUrl("~/Content/Common/Icons/GridView.gif").Items(item =>
-                       {
-                           item.Add().Url("~/Company/index").Text("公司");
-                          // item.Add().Url("~/Lead/index").Text("客户").ImageUrl("~/Content/Common/Icons/Docking.gif");
-                       });
+                     
 
                        //menu.Add().Text("会议管理").ImageUrl("~/Content/Common/Icons/GridView.gif").Items(item =>
                        //{
@@ -83,6 +79,16 @@
                            item.Add().Url("~/PhoneSaleSupport/index").Text("话术模板");
                        });
                    }
+
+                   if (Employee.EqualToAdministrator())
+                   {
+                         menu.Add().Text("客户管理").ImageUrl("~/Content/Common/Icons/GridView.gif").Items(item =>
+                           {
+                               item.Add().Url("~/Company/index").Text("公司");
+                               // item.Add().Url("~/Lead/index").Text("客户").ImageUrl("~/Content/Common/Icons/Docking.gif");
+                           });
+                   }
+                   
                    if (Employee.EqualToLeader() | Employee.EqualToSales())
                    {
                        menu.Add().Text("日常工作").ImageUrl("~/Content/Common/Icons/editor.png").Items(item =>
@@ -102,7 +108,7 @@
                    {
                        menu.Add().Text("客户信息").ImageUrl("~/Content/Common/Icons/GridView.gif").Items(item =>
                        {
-                           item.Add().Url("~/MarketInterface/MarketIndex").Text("客户邮箱").ImageUrl("~/Content/Common/Icons/Docking.gif");
+                           item.Add().Url("~/MarketInterface/MarketIndex").Text("客户邮箱");
                        });
                    }
 
@@ -110,15 +116,15 @@
                    {
                        menu.Add().Text("公司信息").ImageUrl("~/Content/Common/Icons/GridView.gif").Items(item =>
                        {
-                           item.Add().Url("~/ProductInterface/CompanyRelationshipIndex").Text("项目公司").ImageUrl("~/Content/Common/Icons/Docking.gif");
-                           item.Add().Url("~/ProductInterface/MyMessageIndex").Text("留言答疑").ImageUrl("~/Content/Common/Icons/Docking.gif");
-                           item.Add().Url("~/ProductInterface/MyProjectIndex").Text("产品介绍").ImageUrl("~/Content/Common/Icons/Docking.gif");
+                           item.Add().Url("~/ProductInterface/CompanyRelationshipIndex").Text("项目公司");
+                           item.Add().Url("~/ProductInterface/MyMessageIndex").Text("留言答疑");
+                           item.Add().Url("~/ProductInterface/MyProjectIndex").Text("项目信息");
                        });
                    }
 
                    menu.Add().Text("员工信息").ImageUrl("~/Content/Common/Icons/docking.gif").Items(item =>
                    {
-                       item.Add().Url("~/Account/index").Text("账号管理").ImageUrl("~/Content/Common/Icons/Docking.gif");
+                       item.Add().Url("~/Account/index").Text("账号管理");
                    });
 
                }).Render();}
@@ -134,8 +140,8 @@
     </div>
 </body>
 <footer>
-		</footer>
-</div>
+</footer>
+
 @(Html.Telerik().ScriptRegistrar().Globalization(true).DefaultGroup(group => group
                .Add(@"jquery-ui-1.8.23.custom.min.js")
                 .Add(@"json2.js")

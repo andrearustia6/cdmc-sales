@@ -118,9 +118,19 @@ namespace Sales.Controllers
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {
-            var item = CH.GetDataById<CompanyRelationship>(id);
+            var item = CH.GetDataById<CompanyRelationship>(id,"Deals","LeadCalls");
+            var pid = item.ProjectID;
+            item.Deals.ForEach(t =>
+            {
+                CH.Delete<Deal>(t.ID);
+            });
+            item.LeadCalls.ForEach(t =>
+            {
+                CH.Delete<LeadCall>(t.ID);
+            });
+        
             CH.Delete<CompanyRelationship>(id);
-            return RedirectToAction("management", "project", new { id = item.ProjectID, tabindex = 3 });
+            return RedirectToAction("management", "project", new { id = pid, tabindex = 3 });
         }
     }
 }

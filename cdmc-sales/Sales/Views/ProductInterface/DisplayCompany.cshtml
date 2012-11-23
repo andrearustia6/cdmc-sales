@@ -1,0 +1,14 @@
+﻿@{
+    ViewBag.Title = "公司信息";
+}
+@using Entity
+@using Utl
+@model Company
+@Html.Partial(@"~\views\company\display.cshtml", Model)
+@Html.Partial("displaycommon", Model)
+<center>
+<p>
+    @Html.ActionLink(SR.Edit, "EditCompany", new { crid = (int)ViewBag.CompanyRelationshipID }) 
+   @* @Html.ActionLink(SR.GobackToList, "Index")*@
+</p>
+</center>
