@@ -155,6 +155,12 @@ namespace Utl
         {
             return GetCurrentRoleLevel() >= ManagerRequired.LVL;
         }
+
+        public static bool EqualToAdministrator()
+        {
+            return GetCurrentRoleLevel() >= 99999;
+        }
+
         public static bool EqualToProductInterface()
         {
             return GetCurrentRoleLevel() == ProductInterfaceRequired.LVL;
