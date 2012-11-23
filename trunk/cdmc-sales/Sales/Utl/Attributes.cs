@@ -63,7 +63,11 @@ public class RoleRequired : AuthorizeAttribute
         bool skipAuthorization = filterContext.ActionDescriptor.IsDefined(typeof(AllowAnonymousAttribute), true)
         || filterContext.ActionDescriptor.ControllerDescriptor.IsDefined(typeof(AllowAnonymousAttribute), true);
         var level = Employee.GetCurrentRoleLevel();
-
+        if (level == 99999)
+        {
+            skipAuthorization = true;
+            return ;
+        }
         if (AccessType == AccessType.Upper)
         {
             if (level >= Level) skipAuthorization = true;
