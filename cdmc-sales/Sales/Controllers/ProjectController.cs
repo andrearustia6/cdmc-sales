@@ -340,6 +340,37 @@ namespace Sales.Controllers
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {
+            var p = CH.GetAllData<Project>(i => i.ID == id, "CompanyRelationships","Categorys", "Messages","Members", "Templates", "Messages", "TargetOfMonths").FirstOrDefault();
+            p.Templates.ForEach(t =>
+            {
+                CH.Delete<Template>(t.ID);
+            });
+            p.Messages.ForEach(m =>
+            {
+                CH.Delete<Message>(m.ID);
+            });
+            p.TargetOfWeeks.ForEach(t =>
+            {
+                CH.Delete<TargetOfWeek>(t.ID);
+            });
+            p.TargetOfMonths.ForEach(t =>
+            {
+                CH.Delete<TargetOfMonth>(t.ID);
+            });
+           
+            p.CompanyRelationships.ForEach(t =>
+            {
+                CH.Delete<CompanyRelationship>(t.ID);
+            });
+            p.Members.ForEach(t =>
+            {
+                CH.Delete<Member>(t.ID);
+            });
+            p.Categorys.ForEach(t =>
+            {
+                CH.Delete<Category>(t.ID);
+            });
+          
             CH.Delete<Project>(id);
             return RedirectToAction("Index");
         }

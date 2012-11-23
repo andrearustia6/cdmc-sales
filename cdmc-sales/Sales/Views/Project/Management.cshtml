@@ -162,7 +162,7 @@
 @helper CompanyRelationships(Project p)
     {  
      @(Html.Telerik().Grid(p.CompanyRelationships).Name("Company").ToolBar(commands => commands.Custom().Text("通过项目添加").Action("SelectCompanyByProjectCode", "Project", new { projectid = Model.ID }))
-                             .ToolBar(commands => commands.Custom().Text("直接添加").Action("Create", "CompanyRelationship", new { projectid = Model.ID }))
+                             //.ToolBar(commands => commands.Custom().Text("直接添加").Action("Create", "CompanyRelationship", new { projectid = Model.ID }))
                 .DataKeys(keys =>
                 {
                     keys.Add(s => s.ID);
