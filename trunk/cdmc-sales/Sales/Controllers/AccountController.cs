@@ -36,6 +36,7 @@ namespace MvcGlobalAuthorize.Controllers
             {
                 if (Membership.ValidateUser(model.UserName, model.Password))
                 {
+                  
                     FormsAuthentication.SetAuthCookie(model.UserName, model.RememberMe);
                     if (Url.IsLocalUrl(returnUrl) && returnUrl.Length > 1 && returnUrl.StartsWith("/")
                         && !returnUrl.StartsWith("//") && !returnUrl.StartsWith("/\\"))
@@ -68,6 +69,19 @@ namespace MvcGlobalAuthorize.Controllers
             FormsAuthentication.SignOut();
 
             return RedirectToAction("LogOn", "account");
+        }
+
+        [AdministratorRequired]
+        public ActionResult ResetPassword(string username)
+        {
+            if (username == null) return View();
+            var user = Membership.GetUser(username);
+            if (user != null)
+            {
+                return View("ResetPassword", "", user.ResetPassword());
+            }
+            else
+                return View("ResetPassword","" ,"找不到对应的用户");
         }
 
         [AllowAnonymous]

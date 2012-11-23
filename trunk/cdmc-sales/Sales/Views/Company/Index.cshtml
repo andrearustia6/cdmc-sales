@@ -1,6 +1,7 @@
 ﻿@using Entity
 @using Utl
 @model List<Company>
+@{ViewBag.Title = "公司列表";}
 @Html.Partial("contenttitle", "公司列表") 
 @(Html.Telerik().Grid(Model).Name("Company").ToolBar(commands => commands.Custom().Text("公司创建").Action("Create", "Company"))
                 .DataKeys(keys =>
@@ -27,7 +28,7 @@
                     ))
                 .Resizable(resizing => resizing.Columns(true))
                 .Groupable()
-                .Pageable(p => p.PageSize(20))
+                .Pageable(p => p.PageSize(10))
                 .Sortable()
                 .Filterable()
                 .Scrollable(scrolling => scrolling.Height(350))

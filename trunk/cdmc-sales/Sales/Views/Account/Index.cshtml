@@ -7,6 +7,7 @@
 @using Entity
 @Html.Partial("contenttitle","个人信息")
 @(Html.Telerik().Grid<MembershipUser>(Model).Name("MembershipUser").ToolBar(commands => commands.Custom().Text("添加用户").Action("register", "account"))
+
                 .DataKeys(keys =>
                 {
                     keys.Add(s => s.UserName);

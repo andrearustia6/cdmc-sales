@@ -122,7 +122,7 @@ namespace Sales.Controllers
         #endregion
 
 
-        #region 项目公司
+        #region 项目简介
         public ViewResult MyProjectIndex()
         {
             var ps = CRM_Logical.GetProductInvolveProject();
@@ -163,6 +163,116 @@ namespace Sales.Controllers
             return RedirectToAction("MyProjectIndex"); 
         }
         #endregion
+
+        #region company
+        public ActionResult AddCompany(int? projectid = null)
+        {
+            if (projectid == null) return RedirectToAction("CompanyRelationshipIndex", "productinterface");
+
+            this.AddErrorStateIfSalesNoAccessRightToTheProject(projectid);
+
+            if (ModelState.IsValid)
+            {
+                ViewBag.ProjectID = projectid;
+                return View();
+            }
+            else
+                return RedirectToAction("CompanyRelationshipIndex", "productinterface", new { projectid = projectid });
+        }
+
+        [HttpPost]
+        public ActionResult AddCompany(Company item, int? projectid, int[] checkedCategorys)
+        {
+            projectid = this.TrySetProjectIDForUser(projectid);
+            ViewBag.ProjectID = projectid;
+
+
+            this.AddAddErrorStateIfOneOfNameExist<Company>(item.Name_EN, item.Name_CH);
+            this.AddErrorIfAllNamesEmpty(item);
+            if (ModelState.IsValid)
+            {
+                List<Category> lc = new List<Category>();
+                if (checkedCategorys != null)
+                {
+                    lc = CH.GetAllData<Category>(i => checkedCategorys.Contains(i.ID));
+                }
+
+                var p = CH.GetDataById<Project>(projectid, "Members");
+                CH.Create<Company>(item);
+                var ms = new List<Member>();
+                ms.Add(p.GetMemberInProjectByName(User.Identity.Name));
+                var cr = new CompanyRelationship() { CompanyID = item.ID, ProjectID = projectid, Importancy = 1, Members = ms, Categorys = lc };
+                CH.Create<CompanyRelationship>(cr);
+                return RedirectToAction("CompanyRelationshipIndex", "productinterface", new { projectid = projectid });
+
+            }
+            else
+                return View();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public ViewResult EditCompany(int? crid)
+        {
+            this.AddErrorStateIfSalesNoAccessRightToTheCRM(crid);
+            if (ModelState.IsValid)
+            {
+                var cr = CH.GetDataById<CompanyRelationship>(crid);
+                ViewBag.CompanyRelationshipID = cr.ID;
+                ViewBag.ProjectID = cr.ProjectID;
+                return View(cr.Company);
+            }
+            else
+                return View();
+        }
+
+        /// <summary>
+        /// id = companyrelationshipid
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public ViewResult DisplayCompany(int? crid)
+        {
+            this.AddErrorStateIfSalesNoAccessRightToTheCRM(crid);
+            var cr = CH.GetDataById<CompanyRelationship>(crid);
+            ViewBag.COmpanyRelationshipID = cr.ID;
+            if (ModelState.IsValid)
+                return View(cr.Company);
+            else
+                return View();
+        }
+
+        [HttpPost]
+        public ActionResult EditCompany(Company item, int? crid, int? projectid, int[] checkedCategorys)
+        {
+            this.AddErrorIfAllNamesEmpty(item);
+
+
+            if (ModelState.IsValid)
+            {
+                var cr = CH.GetDataById<CompanyRelationship>(crid, "Categorys");
+                List<Category> lc = new List<Category>();
+                if (checkedCategorys != null)
+                {
+                    cr.Categorys.Clear();
+                    lc = CH.GetAllData<Category>(i => checkedCategorys.Contains(i.ID));
+                    cr.Categorys.AddRange(lc);
+                    CH.Edit<CompanyRelationship>(cr);
+                }
+
+                CH.Edit<Company>(item);
+                return RedirectToAction("CompanyRelationshipIndex", "productinterface", new { projectid = projectid });
+            }
+
+            ViewBag.ProjectID = projectid;
+            return View();
+        }
+
+       
+        #endregion  
 
         public ActionResult Service_File_Donwload(string fileurl, string filename)
         {

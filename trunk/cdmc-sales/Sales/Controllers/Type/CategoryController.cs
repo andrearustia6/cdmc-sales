@@ -40,7 +40,7 @@ namespace Sales.Controllers
             if (ModelState.IsValid)
             {
                 CH.Create<Category>(item);
-                return RedirectToAction("management", "Project", new { id = item.ProjectID });
+                return RedirectToAction("myprojectindex", "productinterface", new { id = item.ProjectID });
             }
             ViewBag.ProjectID = item.ProjectID;
             return View(item);
@@ -58,7 +58,7 @@ namespace Sales.Controllers
             if (ModelState.IsValid)
             {
                 CH.Edit<Category>(item);
-                return RedirectToAction("management", "Project", new { id = item.ProjectID });
+                return RedirectToAction("myprojectindex", "productinterface", new { id = item.ProjectID });
             }
             ViewBag.ProjectID = item.ProjectID;
             return View(item);
@@ -72,8 +72,10 @@ namespace Sales.Controllers
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {
+            var item = CH.GetDataById<Category>(id);
+            var pid = item.ProjectID;
             CH.Delete<Category>(id);
-            return RedirectToAction("index", "Project");
+            return RedirectToAction("myprojectindex", "productinterface", new { id = pid });
         }
     }
 }

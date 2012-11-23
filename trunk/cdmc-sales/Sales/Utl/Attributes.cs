@@ -204,6 +204,18 @@ public sealed class MarketInterfaceRequired : RoleRequired
 }
 
 /// <summary>
+/// 1
+/// </summary>
+public sealed class AdministratorRequired : RoleRequired
+{
+    public const int LVL = 99999;
+    public override int Level
+    {
+        get { return LVL; }
+    }
+}
+
+/// <summary>
 /// 5
 /// </summary>
 public sealed class ProductInterfaceRequired : RoleRequired
