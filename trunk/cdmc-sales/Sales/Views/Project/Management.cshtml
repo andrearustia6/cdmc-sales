@@ -81,21 +81,19 @@
                 </td>
             </tr>
             <tr><td > @Html.ActionLink("基本信息编辑", "Edit", "Project", new { id = Model.ID }, new { style = "margin-bottom:15px;" })
-    </td><td colspan=2> <a href=@Url.Action("Service_File_Donwload", "project", new { fileurl = Model.SalesBriefUrl, filename = Model.SalesBriefName })>点击下载</a></td></tr>
+    </td><td colspan=2> <a href=@Url.Action("Service_File_Donwload", "project", new { fileurl = Model.SalesBriefUrl, filename = Model.SalesBriefName })>@project.SalesBriefName</a></td></tr>
                 </table>
-      @*     @(Html.Telerik().Grid(project.Categorys).Name("Categorys" + project.ID).ToolBar(commands =>
+           @(Html.Telerik().Grid(project.Categorys).Name("Categorys" + project.ID).ToolBar(commands =>
                             commands.Custom().Text("添加Category").Action("Create", "Category", new { projectid = Model.ID }))
                             .Columns(c =>
                             {
                                 c.Bound(o => o.Name);
-                                c.Bound(item => item.ID).Width(200).Title("操作").Template(@<span> <a href=@Url.Content("~/Category/Edit/" + item.ID) >
-                        编辑</a> | <a href=@Url.Content("~/Category/Details/" + item.ID)>详细</a> | <a href=@Url.Content("~/Category/delete/" + item.ID) >删除</a>
-</span>);
+                              
 
                             })
                                          .Resizable(resizing => resizing.Columns(true))
                                                  .Pageable(page => page.PageSize(15))
-                                         )*@
+                                         )
  
      
 }
@@ -130,9 +128,8 @@
         ViewBag.RouteValue = new { projectid = p.ID };
         ViewBag.StartDate = ViewBag.DealStartDate;
         ViewBag.EndDate = ViewBag.DealEndDate;
-        var deals = CRM_Logical.GetProjectDeals(p, ViewBag.DealStartDate as DateTime?, ViewBag.DealEndDate as DateTime?);
-        if (deals.Count > 0)
-        {
+        var deals =p.GetProjectDeals(ViewBag.DealStartDate as DateTime?, ViewBag.DealEndDate as DateTime?);
+     
     @(Html.Telerik().Grid<Deal>(deals).ToolBar(commands => commands.Template(@<text>@Html.Partial("durationselector")</text>)).Name("Deals")
                 .DataKeys(keys =>
                 {
@@ -140,8 +137,12 @@
                 })
                 .Columns(c =>
                 {
-                    c.Bound(item => item.Payment).Format("{0:c}").Aggregate(aggregates => aggregates.Sum()).FooterTemplate(@<text>应收款: @item.Sum.Format("{0:c}")</text>).GroupFooterTemplate(@<text>应收款: @item.Sum.Format("{0:c}")</text>).Width(100);
-                    c.Bound(item => item.Income).Format("{0:c}").Aggregate(aggregates => aggregates.Sum()).FooterTemplate(@<text>实收: @item.Sum.Format("{0:c}")</text>).GroupFooterTemplate(@<text>实收: @item.Sum.Format("{0:c}")</text>).Width(100);
+                    c.Bound(item => item.Payment).Format("{0:c}").Aggregate(aggregates => aggregates.Sum()).FooterTemplate(@<text>@if (item.Sum != null)
+                                                                                                                                  {<p>应收款: @item.Sum.Format("{0:c}")</p>}</text>).GroupFooterTemplate(@<text>@if (item.Sum != null)
+                                                                                                                                                                                                                        {<p>应收款: @item.Sum.Format("{0:c}")</p>}</text>).Width(100);
+                    c.Bound(item => item.Income).Format("{0:c}").Aggregate(aggregates => aggregates.Sum()).FooterTemplate(@<text>@if (item.Sum != null)
+                                                                                                                                 {<p>实收款: @item.Sum.Format("{0:c}")</p>}</text>).GroupFooterTemplate(@<text>@if (item.Sum != null)
+                                                                                                                                                                                                                        {<p>实收款: @item.Sum.Format("{0:c}")</p>}</text>).Width(100);
                     c.Bound(item => item.IsClosed).Width(60);
                     c.Bound(item => item.ExpectedPaymentDate).Format("{0:d}").Width(100);
                     c.Bound(item => item.SignDate).Format("{0:d}").Width(80);
@@ -152,17 +153,17 @@
                         编辑</a> | <a href=@Url.Content("~/Deal/Details/" + item.ID)>详细</a> | <a href=@Url.Content("~/Deal/delete/" + item.ID) >
                             删除</a> </span>);
                 }).Resizable(resizing => resizing.Columns(true))
-                                        .Filterable().Groupable()
-                                          .Pageable(page => page.PageSize(1)).Scrollable(scrolling => scrolling.Height(350))
+                                                                                                .Filterable().Groupable()
+                                                                                                  .Pageable(page => page.PageSize(1)).Scrollable(scrolling => scrolling.Height(350))
 
-)
-        }
+                                                        )
+       
 }
 
 @helper CompanyRelationships(Project p)
     {  
      @(Html.Telerik().Grid(p.CompanyRelationships).Name("Company").ToolBar(commands => commands.Custom().Text("通过项目添加").Action("SelectCompanyByProjectCode", "Project", new { projectid = Model.ID }))
-                             //.ToolBar(commands => commands.Custom().Text("直接添加").Action("Create", "CompanyRelationship", new { projectid = Model.ID }))
+             //.ToolBar(commands => commands.Custom().Text("直接添加").Action("Create", "CompanyRelationship", new { projectid = Model.ID }))
                 .DataKeys(keys =>
                 {
                     keys.Add(s => s.ID);

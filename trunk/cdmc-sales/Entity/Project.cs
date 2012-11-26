@@ -331,6 +331,10 @@ namespace Entity
     /// </summary>
     public class Deal : CompanyRelationshipChildItem
     {
+        public virtual Project Project { get; set; }
+        [Display(Name = "项目名称"), Required]
+        public int ProjectID { get; set; }
+
         //public virtual CompanyRelationship CompanyRelationship { get; set; }
         //[Display(Name = "客户公司"), Required]
         //public int? CompanyRelationshipID { get; set; }

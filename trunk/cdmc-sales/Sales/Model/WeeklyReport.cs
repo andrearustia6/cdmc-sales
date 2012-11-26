@@ -165,7 +165,7 @@ namespace Sales.Model
         {
             get
             {
-                var data =CRM_Logical.GetProjectDeals(Project).FindAll(d => InNextWeek(d.ExpectedPaymentDate) && d.Sales == Member.Name && d.Abandoned == false);
+                var data = Project.GetProjectDeals().FindAll(d => InNextWeek(d.ExpectedPaymentDate) && d.Sales == Member.Name && d.Abandoned == false);
                 return data;
             }
         }
@@ -185,7 +185,7 @@ namespace Sales.Model
         {
             get
             {
-                var data = CRM_Logical.GetProjectDeals(Project).FindAll(d => d.Sales == Member.Name && d.Abandoned == false);
+                var data = Project.GetProjectDeals().FindAll(d => d.Sales == Member.Name && d.Abandoned == false);
                 return data;
             }
         }
