@@ -275,6 +275,16 @@ namespace Entity
 
     public static class ProjectExtensions
     {
+        public static List<Deal> GetProjectDeals(this Project item, DateTime? startdate=null, DateTime? enddate=null)
+        {
+            if (startdate == null) startdate = new DateTime(1000, 1, 1);
+            if (enddate == null) enddate = new DateTime(9000, 1, 1);
+
+            var deals = CH.GetAllData<Deal>(d => d.ProjectID == item.ID);
+            deals = deals.FindAll(d => d.ExpectedPaymentDate >= startdate.Value && d.ExpectedPaymentDate <= enddate.Value.AddDays(1));
+            return deals;
+        }
+
         public static List<CompanyRelationship> GetCRM(this Project item)
         {
             return item.GetCRMbyUserName(HttpContext.Current.User.Identity.Name);
