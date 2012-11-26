@@ -110,6 +110,7 @@ namespace Entity
 
         public virtual List<Template> Templates { get; set; }
 
+        [Display(Name = "会议地址")]
         public string Location { get; set; }
 
         [Display(Name = "公司类型")]
