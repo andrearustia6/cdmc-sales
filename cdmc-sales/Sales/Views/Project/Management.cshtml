@@ -84,11 +84,13 @@
     </td><td colspan=2> <a href=@Url.Action("Service_File_Donwload", "project", new { fileurl = Model.SalesBriefUrl, filename = Model.SalesBriefName })>@project.SalesBriefName</a></td></tr>
                 </table>
            @(Html.Telerik().Grid(project.Categorys).Name("Categorys" + project.ID).ToolBar(commands =>
-                            commands.Custom().Text("添加Category").Action("Create", "Category", new { projectid = Model.ID }))
+                                    commands.Custom().Text("添加Category").Action("Create", "ProjectCategory", new { projectid = Model.ID }))
                             .Columns(c =>
                             {
                                 c.Bound(o => o.Name);
-                              
+                                c.Bound(item => item.ID).Width(200).Title("操作").Template(@<span> <a href=@Url.Content("~/ProjectCategory/Edit/" + item.ID) >
+                        编辑</a> | <a href=@Url.Content("~/ProjectCategory/Details/" + item.ID)>详细</a> | <a href=@Url.Content("~/ProjectCategory/delete/" + item.ID) >删除</a>
+</span>);
 
                             })
                                          .Resizable(resizing => resizing.Columns(true))

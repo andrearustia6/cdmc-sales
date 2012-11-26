@@ -1,0 +1,20 @@
+﻿@model Entity.Category
+
+@{
+    ViewBag.Title = "查看";
+}
+@using Utl
+
+<fieldset>
+    <legend>@SR.Form</legend>
+    <div class="display-label">Category名称</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Name)
+    </div>
+    <div class="display-label">项目</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Project.Name)
+    </div>
+</fieldset>  
+
+  

@@ -1,0 +1,26 @@
+﻿@model Category
+@using Utl
+@{
+    ViewBag.Title = "添加Category";
+}
+@using Entity
+
+<fieldset>
+    <legend>@SR.Form</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Name)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Name)
+            @Html.ValidationMessageFor(model => model.Name)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ProjectID)
+        </div>
+        <div class="editor-field">
+            @Html.Hidden("ProjectID", Model == null ? (int)ViewBag.ProjectID : Model.ProjectID)
+            @Html.DisplayFor(model => model.Project.Name)
+        </div>
+</fieldset>
