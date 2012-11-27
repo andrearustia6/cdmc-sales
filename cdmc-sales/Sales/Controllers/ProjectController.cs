@@ -340,7 +340,7 @@ namespace Sales.Controllers
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {
-            var p = CH.GetAllData<Project>(i => i.ID == id, "CompanyRelationships","Categorys", "Messages","Members", "Templates", "Messages", "TargetOfMonths").FirstOrDefault();
+            var p = CH.GetAllData<Project>(i => i.ID == id, "CompanyRelationships", "Categorys", "Messages", "Members", "Templates", "Messages", "TargetOfMonths", "PhoneSaleSupports").FirstOrDefault();
             p.Templates.ForEach(t =>
             {
                 CH.Delete<Template>(t.ID);
