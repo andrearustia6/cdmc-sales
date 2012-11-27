@@ -12,7 +12,6 @@
                     c.Bound(item => item.Name).Title("Package名称").Width(200);
                     c.Bound(item => item.PackageType.Name).Title("Package类型").Width(120);
                     c.Bound(item => item.ParticipantType.Name).Title("参会类型").Width(120);
-                    c.Bound(item => item.SubName);
                     c.Bound(item => item.Prize).Format("{0:c}").Width(100);
                     c.Bound(item => item.ID).Title("操作").Width(170).Template(@<span> <a href=@Url.Content("~/Package/Edit/" + item.ID) >
                         编辑</a> | <a href=@Url.Content("~/Package/Details/" + item.ID)>详细</a> | <a href=@Url.Content("~/PackageItem/Create/?from=Package&PackageId=" + item.ID)>添加子项</a> | <a href=@Url.Content("~/Package/delete/" + item.ID) >

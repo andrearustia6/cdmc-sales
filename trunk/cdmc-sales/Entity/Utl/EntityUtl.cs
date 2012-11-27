@@ -48,7 +48,7 @@ namespace EntityUtl
 
             if (!string.IsNullOrEmpty(en) && !string.IsNullOrEmpty(ch))
             {
-                return en + "|" + ch;
+                return en + " | " + ch;
             }
             else if (!string.IsNullOrEmpty(en) && string.IsNullOrEmpty(ch))
             {

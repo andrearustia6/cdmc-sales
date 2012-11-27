@@ -512,26 +512,7 @@ namespace Sales.Controllers
             var project = CH.GetDataById<Project>(item.ProjectID);
             if (ModelState.IsValid)
             {
-                var last = CH.GetAllData<Message>(m =>!string.IsNullOrEmpty(m.FlowNumber)&& m.FlowNumber.Contains(project.ProjectCode)).OrderByDescending(o=>o.CreatedDate).FirstOrDefault();
-                string procode;
-
-              
-
-                if (last == null)
-                {
-
-                    procode = item.FlowNumber = project.ProjectCode + "1";
-                  
-                }
-                else
-                {
-                    string number = item.FlowNumber.Replace(item.Project.ProjectCode,"");
-                    int n = 0;
-                    Int32.TryParse(number, out n);
-                    n = n + 1;
-                    item.FlowNumber = item.Project.ProjectCode + n.ToString();
-                }
-
+                item = item.SetFlowNumber(project);
                 item.Member = User.Identity.Name;
                 var p = CH.GetDataById<Project>(item.ProjectID, "Members");
                 var member = p.GetMemberInProjectByName(item.Member);

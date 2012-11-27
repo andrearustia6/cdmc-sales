@@ -113,7 +113,6 @@
                 {
                     c.Bound(item => item.Name).Width(200);
                     c.Bound(item => item.Characters);
-                    c.Bound(item => item).Template(@<text>@item.GetInvolveProjectsName()</text>).Title("参加过的项目");
                     c.Bound(item => item).Template(@<text>@item.EmployeeDuration()</text>).Title("在职时间(月)");
                     c.Bound(item => item.SalesType.Name);
                     c.Bound(item => item.ID).Title("操作").Width(120).Template(@<span> <a href=@Url.Content("~/Member/Edit/" + item.ID) >
@@ -132,7 +131,8 @@
         ViewBag.EndDate = ViewBag.DealEndDate;
         var deals =p.GetProjectDeals(ViewBag.DealStartDate as DateTime?, ViewBag.DealEndDate as DateTime?);
      
-    @(Html.Telerik().Grid<Deal>(deals).ToolBar(commands => commands.Template(@<text>@Html.Partial("durationselector")</text>)).Name("Deals")
+    @(Html.Telerik().Grid<Deal>(deals).Name("Deals")
+  @*  .ToolBar(commands => commands.Template(@<text>@Html.Partial("durationselector")</text>))*@
                 .DataKeys(keys =>
                 {
                     keys.Add(s => s.ID);
@@ -177,9 +177,9 @@
                     c.Bound(item => item.Importancy).Width(80);
                     c.Bound(item => item).Template(@<text>@item.CategoryString()</text>).Title("分类");
                     c.Bound(item => item.Company.CompanyType.Name).Width(100);
-                    c.Bound(item => item.ID).Title("操作").Width(230).Template(@<span><a  href=@Url.Content("~/CompanyRelationship/Edit/" + item.ID) >建议拨打人数</a> | 
+                    c.Bound(item => item.ID).Title("操作").Width(260).Template(@<span><a  href=@Url.Content("~/CompanyRelationship/Edit/" + item.ID) >建议拨打人数</a> | 
                     <a  href=@Url.Content("~/Project/AppointSales/?projectid=" + p.ID + "&companyrelationshipid=" + item.ID) >指定销售</a>
-                     | <a target="_blank" href=@Url.Content("~/LeadCall/CompanyRelationshipIndex/?projectid=" + p.ID + "&companyrelationshipid=" + item.ID) >致电查看</a> 
+                     | <a target="_blank" href=@Url.Content("~/LeadCall/CompanyRelationshipIndex/?projectid=" + p.ID + "&companyrelationshipid=" + item.ID) >销售进度</a> 
                      | <a href=@Url.Content("~/companyrelationship/delete/" + item.ID) >
                             删除</a>  </span>);
 
@@ -201,7 +201,7 @@
 @helper Targets(Project p)
     { 
       @(Html.Telerik().Grid<TargetOfMonth>(p.TargetOfMonths).Name("TargetOfMonths").ToolBar(commands =>
-                                    commands.Custom().Text("创建新月目标").Action("Create", "TargetOfMonth", new { projectid = Model.ID }))
+                                    commands.Custom().Text("创建月目标").Action("Create", "TargetOfMonth", new { projectid = Model.ID }))
                 .DataKeys(keys =>
                 {
                     keys.Add(s => s.ID);
