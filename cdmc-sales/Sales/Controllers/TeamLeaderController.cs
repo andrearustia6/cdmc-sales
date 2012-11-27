@@ -131,6 +131,24 @@ namespace Sales.Controllers
 
             return View(@"~\views\targetofmonth\Breakdown.cshtml", CH.GetAllData<Member>(m => m.ProjectID == projectid));
         }
+
+        public ActionResult Delete(string startdate,int? projectid)
+        {
+            ViewBag.StartDate = startdate;
+            ViewBag.ProjectID = projectid;
+            return View();
+        }
+
+        [HttpPost, ActionName("Delete")]
+        public ActionResult DeleteConfirmed(string startdate,int? projectid)
+        {
+           var tws = CH.GetAllData<TargetOfWeek>(t => t.StartDate.ToShortDateString() == startdate && t.ProjectID == projectid);
+           tws.ForEach(ti => {
+               CH.Delete<TargetOfWeek>(ti.ID);
+           });
+
+           return RedirectToAction("BreakdownIndex", "teamleader", new { id = projectid });
+        }
         #endregion
 
     }

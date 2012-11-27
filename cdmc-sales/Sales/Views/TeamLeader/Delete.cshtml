@@ -1,0 +1,15 @@
+﻿@{
+    ViewBag.Title = "Delete";
+}
+@using Utl
+@using (Html.BeginForm())
+{
+    @Html.Hidden("projectid",ViewBag.Projectid as int?)
+    @Html.Hidden("startdate", ViewBag.StartDate as string)
+    <center>
+    <p>
+        <input type="submit" value=@SR.Delete /> @* |
+        @Html.ActionLink(SR.GobackToList, "Index")*@
+    </p>
+    </center>
+}
