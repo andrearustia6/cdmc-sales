@@ -241,6 +241,32 @@ namespace System.Web.Mvc
         }
     }
 
+    public static class MessageExtension
+    {
+        public static Message SetFlowNumber(this Message item, Project project)
+        {
+            var last = CH.GetAllData<Message>(m => !string.IsNullOrEmpty(m.FlowNumber) && m.FlowNumber.Contains(project.ProjectCode)).OrderByDescending(o => o.CreatedDate).FirstOrDefault();
+            string procode;
+
+            if (last == null)
+            {
+
+                procode = item.FlowNumber = project.ProjectCode + "_" + "1";
+
+            }
+            else
+            {
+                string number = item.FlowNumber.Replace(item.Project.ProjectCode + "_", "");
+                int n = 0;
+                Int32.TryParse(number, out n);
+                n = n + 1;
+                item.FlowNumber = item.Project.ProjectCode + n.ToString();
+            }
+
+            return item;
+        }
+    }
+
     public static class ProjectExtension 
     {
         public static List<Project> GetProjectByRole(this Controller item)

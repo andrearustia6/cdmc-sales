@@ -72,7 +72,7 @@ namespace Entity
 
         //public string OpeningDate { get { return EndDate.Year.ToString(); } }
 
-        [Display(Name = "板块负责人")]
+        [Display(Name = "版块负责人")]
         public string Manager { get; set; }
 
         [Display(Name = "项目编号"), Required]
@@ -146,6 +146,9 @@ namespace Entity
         public virtual List<News> News { get; set; }
 
         public virtual List<Message> Messages { get; set; }
+
+        public virtual List<PhoneSaleSupport> PhoneSaleSupports { get; set; }
+        
 
 
         /// <summary>

@@ -34,8 +34,10 @@ namespace Sales.Controllers
         {
             if (ModelState.IsValid)
             {
+               
                 item.Member = User.Identity.Name;
                 var p = CH.GetDataById<Project>(item.ProjectID,"Members");
+                item = item.SetFlowNumber(p);
                 var m = p.GetMemberInProjectByName(item.Member);
                 item.SalesTypeID = m.SalesTypeID;
                 CH.Create<Message>(item);

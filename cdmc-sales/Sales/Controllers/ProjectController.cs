@@ -370,6 +370,10 @@ namespace Sales.Controllers
             {
                 CH.Delete<Category>(t.ID);
             });
+            p.PhoneSaleSupports.ForEach(t =>
+            {
+                CH.Delete<PhoneSaleSupport>(t.ID);
+            });
           
             CH.Delete<Project>(id);
             return RedirectToAction("Index");
