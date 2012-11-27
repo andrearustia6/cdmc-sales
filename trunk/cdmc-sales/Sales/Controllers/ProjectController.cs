@@ -273,6 +273,8 @@ namespace Sales.Controllers
             {
                 if (attachments != null)
                 {
+                    if (string.IsNullOrEmpty(item.SalesBriefName))
+                        item.SalesBriefName = "销售简介";
                     foreach (var file in attachments)
                     {
                         var fileName = Path.GetFileName(file.FileName).Replace(" ", ""); ;
@@ -309,6 +311,9 @@ namespace Sales.Controllers
             {
                 if (attachments != null)
                 {
+                    if (string.IsNullOrEmpty(item.SalesBriefName))
+                        item.SalesBriefName = "销售简介";
+
                     foreach (var file in attachments)
                     {
                         var fileName = Path.GetFileName(file.FileName).Replace(" ", ""); ;

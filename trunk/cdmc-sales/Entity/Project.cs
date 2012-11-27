@@ -62,7 +62,7 @@ namespace Entity
     /// </summary>
     public class Project : NameEntity
     {
-        [Display(Name = "销售简介文件下载显示名称"), Required]
+        [Display(Name = "销售简介文件下载显示名称")]
         public string SalesBriefName { get; set; }
 
         [Display(Name = "文件路径")]
@@ -278,7 +278,7 @@ namespace Entity
     {
         public virtual Project Project { get; set; }
         [Display(Name = "项目名称"), Required]
-        public int ProjectID { get; set; }
+        public int? ProjectID { get; set; }
 
         [Display(Name = "开始日期"), Required, DisplayFormat(DataFormatString = "{0:d}")]
         public DateTime StartDate { get; set; }
