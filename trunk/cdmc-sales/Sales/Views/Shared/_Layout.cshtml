@@ -99,7 +99,10 @@
                            item.Add().Url("~/Sales/MyDealIndex").Text("我的出单");
                            item.Add().Url("~/Sales/PhoneSaleSupport").Text("话术支持");
                            item.Add().Url("~/Sales/MyMessageIndex").Text("留言求助");
-                           item.Add().Url("~/teamleader/breakdownindex").Text("一周目标");
+                             if (Employee.EqualToLeader())
+                             {
+                              item.Add().Url("~/teamleader/breakdownindex").Text("一周目标");
+                             }
                            //item.Add().Url("~/Sales/MyWeeklyReport").Text("我的周报").ImageUrl("~/Content/Common/Icons/Docking.gif");
                        });
                    }
