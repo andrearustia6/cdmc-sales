@@ -1,9 +1,17 @@
 ﻿@{ViewBag.Title = "Package列表";}
 @using Entity
+@using Utl
 @model List<Package>
 @Html.Partial("contenttitle", "Package")
-@(Html.Telerik().Grid<Package>(Model).Name("Package").ToolBar(commands => commands.Custom().Text("Package创建").Action("Create", "Package"))
-                .DataKeys(keys =>
+@(Html.Telerik().Grid<Package>(Model).Name("Package").ToolBar(commands => 
+    {
+        if (Employee.AsDirector())
+        {
+            commands.Custom().Text("Package创建").Action("Create", "Package");
+        }
+    }
+   
+                ).DataKeys(keys =>
                 {
                     keys.Add(s => s.ID);
                 })
@@ -13,9 +21,12 @@
                     c.Bound(item => item.PackageType.Name).Title("Package类型").Width(120);
                     c.Bound(item => item.ParticipantType.Name).Title("参会类型").Width(120);
                     c.Bound(item => item.Prize).Format("{0:c}").Width(100);
-                    c.Bound(item => item.ID).Title("操作").Width(170).Template(@<span> <a href=@Url.Content("~/Package/Edit/" + item.ID) >
-                        编辑</a> | <a href=@Url.Content("~/Package/Details/" + item.ID)>详细</a> | <a href=@Url.Content("~/PackageItem/Create/?from=Package&PackageId=" + item.ID)>添加子项</a> | <a href=@Url.Content("~/Package/delete/" + item.ID) >
-                            删除</a> </span>);
+                    c.Bound(item => item.ID).Title("操作").Width(170).Template(@<span>
+                     @if(Employee.AsDirector())
+                      {
+                     <text><a href=@Url.Content("~/Package/Edit/" + item.ID) > 编辑</a> | <a href=@Url.Content("~/PackageItem/Create/?from=Package&PackageId=" + item.ID)>添加子项</a> | <a href=@Url.Content("~/Package/delete/" + item.ID) > 删除</a> | </text>
+                      }
+                      <a href=@Url.Content("~/Package/Details/" + item.ID)>详细</a> </span>);
                 })
                 .DetailView(e => e.Template(@<text> @RenderGrid(item.PackageItems, item.ID) </text>))
                 .Resizable(resizing => resizing.Columns(true))
@@ -33,7 +44,11 @@
                                 c.Bound(o => o.Name).Width(300);
                                 c.Bound(o => o.Content).Title("内容");
                                 c.Bound(item => item.ID).Width(200).Title("操作").Template(@<span>
-                    <a href=@Url.Content("~/PackageItem/Edit/?from=Package&id=" + item.ID) >编辑</a> | <a href=@Url.Content("~/PackageItem/Details/" + item.ID)>详细</a> | <a href=@Url.Content("~/PackageItem/delete/" + item.ID) >删除</a> 
+                                @if (Employee.AsDirector())
+                                {
+                                    <text><a href=@Url.Content("~/PackageItem/Edit/?from=Package&id=" + item.ID) >编辑</a> | <a href=@Url.Content("~/PackageItem/delete/" + item.ID) >删除</a> | </text>
+                                }
+                    <a href=@Url.Content("~/PackageItem/Details/" + item.ID)>详细</a>  
                    </span>);
                             })
                                                .Resizable(resizing => resizing.Columns(true))

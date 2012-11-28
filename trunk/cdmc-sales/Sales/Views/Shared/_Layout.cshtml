@@ -45,14 +45,16 @@
                            item.Add().Text("登陆图片").Url("~/loginpageimage/index");
                        });
 
-                       menu.Add().Text("Package管理").ImageUrl("~/Content/Common/Icons/test.png").Items(item =>
-                       {
-                           item.Add().Url("~/Package/index").Text("Package");
-                           //item.Add().Url("~/PackageItem/index").Text("Package项目").ImageUrl("~/Content/Common/Icons/Docking.gif");
-
-                       });
+                     
                    }
+                   
+                   menu.Add().Text("Package").ImageUrl("~/Content/Common/Icons/test.png").Items(item =>
+                   {
+                       item.Add().Url("~/Package/index").Text("Package");
+                       //item.Add().Url("~/PackageItem/index").Text("Package项目").ImageUrl("~/Content/Common/Icons/Docking.gif");
 
+                   });
+                   
                    if (Employee.AsManager())
                    {
                        menu.Add().Text("项目管理").ImageUrl("~/Content/Common/Icons/Chart.gif").Items(item =>

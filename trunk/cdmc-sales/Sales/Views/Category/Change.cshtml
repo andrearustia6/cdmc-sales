@@ -21,6 +21,14 @@
         </div>
         <div class="editor-field">
             @Html.Hidden("ProjectID", Model == null ? (int)ViewBag.ProjectID : Model.ProjectID)
+            @if (Model == null)
+            {
+                var p = CH.GetDataById<Project>((int)ViewBag.ProjectID);
+                <p>@p.Name</p>
+            }
+            else
+            {
             @Html.DisplayFor(model => model.Project.Name)
+            }
         </div>
 </fieldset>

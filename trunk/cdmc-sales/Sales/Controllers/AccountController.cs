@@ -403,9 +403,9 @@ namespace MvcGlobalAuthorize.Controllers
             var level = (int)Employee.GetCurrentProfile("RoleLevelID");
             var role = CH.GetDataById<Role>(level);
             var list = Membership.GetAllUsers().Cast<MembershipUser>().ToList<MembershipUser>();
-            if (role.Level >= 0 && role.Level <= 500)
+            if (role.Level >= 0 && role.Level < 500)
                 list = list.FindAll(i => Employee.IsEqualToCurrentUserName(i.UserName));
-            else if (role.Level>500)
+            else if (role.Level>=500)
                 list = list.FindAll(i => Employee.GetRoleLevel(i.UserName) <= role.Level);
           
             return View(list);

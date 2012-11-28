@@ -25,6 +25,7 @@ namespace Sales.Controllers
             return View(CH.GetDataById<Category>(id));
         }
 
+       
         public ActionResult Create(int? projectid)
         {
             ViewBag.ProjectID = projectid;

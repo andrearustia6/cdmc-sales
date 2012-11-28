@@ -1,6 +1,7 @@
 ﻿@using Entity
 @using Utl
 @model List<TargetOfMonth>
+           @{ViewBag.Title="月目标列表";}
 @Html.Partial("contenttitle", "月目标列表")
 @(Html.Telerik().Grid(Model).Name("TargetOfMonth").ToolBar(t=>t.Template(@<text>@Html.Partial("projectselector")</text>))
                 .DataKeys(keys =>
@@ -50,7 +51,9 @@
 }
 @helper RenderMembersTargetOfWeek(string key, List<TargetOfWeek> tm, int projectid, int targetofmonthid)
     {
-         @Html.ActionLink("编辑", "editBreakdown", "teamleader", new { projectid = projectid, targetofmonthid = targetofmonthid, startdate = key }, null)   
+         @Html.ActionLink("编辑", "editBreakdown", "teamleader", new { projectid = projectid, targetofmonthid = targetofmonthid, startdate = key }, null)  
+        <span> | </span>
+         @Html.ActionLink("删除", "deleteBreakdown", "teamleader", new { projectid = projectid, targetofmonthid = targetofmonthid, startdate = key }, null)   
     @(Html.Telerik().Grid(tm).Name("TargetOfWeek" + key)
                             .Columns(c =>
                             {

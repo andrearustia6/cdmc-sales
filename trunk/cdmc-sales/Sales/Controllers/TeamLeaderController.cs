@@ -132,14 +132,14 @@ namespace Sales.Controllers
             return View(@"~\views\targetofmonth\Breakdown.cshtml", CH.GetAllData<Member>(m => m.ProjectID == projectid));
         }
 
-        public ActionResult Delete(string startdate,int? projectid)
+        public ActionResult DeleteBreakdown(string startdate, int? projectid)
         {
             ViewBag.StartDate = startdate;
             ViewBag.ProjectID = projectid;
             return View();
         }
 
-        [HttpPost, ActionName("Delete")]
+        [HttpPost, ActionName("DeleteBreakdown")]
         public ActionResult DeleteConfirmed(string startdate,int? projectid)
         {
            var tws = CH.GetAllData<TargetOfWeek>(t => t.StartDate.ToShortDateString() == startdate && t.ProjectID == projectid);
