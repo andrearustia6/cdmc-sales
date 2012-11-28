@@ -44,11 +44,23 @@ namespace Sales.Controllers
      
                 if (ModelState.IsValid)
                 {
+                    string categorystring = string.Empty;
+                   
                     if (checkedCategorys != null)
                     {
                         var ck = CH.GetAllData<Category>(i => checkedCategorys.Contains(i.ID));
                         item.Categorys = ck;
+
+                        ck.ForEach(l =>
+                        {
+                            if (string.IsNullOrEmpty(categorystring))
+                                categorystring = l.Name;
+                            else
+                                categorystring += "|" + l.Name;
+                        });
+                        item.CategoryString = categorystring;
                     }
+
                     item.CompanyID = company.ID;
                     CH.Create<CompanyRelationship>(item);
                     if(Employee.EqualToProductInterface())
@@ -81,9 +93,9 @@ namespace Sales.Controllers
                     com.Name_EN = enname;
                     CH.Edit<Company>(com);
                 }
-
-                CH.Edit<CompanyRelationship>(item);
-
+        
+                  CH.Edit<CompanyRelationship>(item);
+             
                 if (checkedCategorys != null)
                 {
                     item = CH.GetDataById<CompanyRelationship>(item.ID,"Categorys");
@@ -92,6 +104,17 @@ namespace Sales.Controllers
                     ck.ForEach(c => {
                         item.Categorys.Add(c);
                     });
+
+                    string categorystring = string.Empty;
+                    ck.ForEach(l =>
+                    {
+                        if (string.IsNullOrEmpty(categorystring))
+                            categorystring = l.Name;
+                        else
+                            categorystring += "|" + l.Name;
+                    });
+                    item.CategoryString = categorystring;
+                    CH.Edit<CompanyRelationship>(item);
                     CH.DB.SaveChanges();
                 }
                 else

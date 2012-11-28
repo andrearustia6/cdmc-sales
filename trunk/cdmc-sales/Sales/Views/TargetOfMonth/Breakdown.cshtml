@@ -91,13 +91,13 @@
       </td><td><p>$@v</p><input class="pertarget" type="hidden" mname=@m.Name v=@v  value=@m.Name|@v  name="checkin" /></td></tr>
     
     }
-     <tr><td >总额：</td><td colspan="2"><p class="result">@Html.Label(ViewBag.TotalDealIn == null ? string.Empty : ViewBag.TotalDealIn as string)</td></tr>
+     <tr><td >总额：</td><td colspan="2"><p class="result">@Html.Label(ViewBag.TotalDealIn == null ? string.Empty : ViewBag.TotalDealIn as string)</p></td></tr>
 }
 </table>
 <br />
 <br />
 </div>
- <center><p> <button type="submit">@SR.Save</button></p></center>
+ <center><p> <input type="submit" value=@SR.Save /></p></center>
 @{ Html.EndForm(); }
 
 @{ Html.Telerik().ScriptRegistrar().OnDocumentReady(@<text> 

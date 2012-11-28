@@ -368,16 +368,25 @@ namespace Sales.Controllers
             if (ModelState.IsValid)
             {
                 List<Category> lc = new List<Category>();
+                string categorystring=string.Empty;
                 if (checkedCategorys != null)
                 {
+                   
                     lc = CH.GetAllData<Category>(i => checkedCategorys.Contains(i.ID));
+                      lc.ForEach(l=>{
+                          if(string.IsNullOrEmpty(categorystring))
+                              categorystring=l.Name;
+                          else
+                              categorystring+= "|"+l.Name;
+                      });
                 }
 
                 var p = CH.GetDataById<Project>(projectid,"Members");
                 CH.Create<Company>(item);
                 var ms = new List<Member>();
                 ms.Add(p.GetMemberInProjectByName(User.Identity.Name));
-                var cr = new CompanyRelationship() { CompanyID = item.ID, ProjectID = projectid, Importancy = 1, Members = ms, Categorys = lc };
+
+                var cr = new CompanyRelationship() { CompanyID = item.ID, ProjectID = projectid, Importancy = 1, Members = ms, Categorys = lc, CategoryString = categorystring };
                 CH.Create<CompanyRelationship>(cr);
                 return RedirectToAction("CompanyRelationshipIndex", "Sales", new { projectid = projectid });
                 
@@ -436,6 +445,16 @@ namespace Sales.Controllers
                     cr.Categorys.Clear();
                     lc = CH.GetAllData<Category>(i => checkedCategorys.Contains(i.ID));
                     cr.Categorys.AddRange(lc);
+
+                    string categorystring = string.Empty;
+                    lc.ForEach(l =>
+                    {
+                        if (string.IsNullOrEmpty(categorystring))
+                            categorystring = l.Name;
+                        else
+                            categorystring += "|" + l.Name;
+                    });
+                    cr.CategoryString = categorystring;
                     CH.Edit<CompanyRelationship>(cr);
                 }
 
