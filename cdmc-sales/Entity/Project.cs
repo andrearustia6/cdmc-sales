@@ -18,6 +18,7 @@ namespace Entity
 
         [Display(Name = "内容")]
         public String Contents { get; set; }
+
     }
 
     /// <summary>

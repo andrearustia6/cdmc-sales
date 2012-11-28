@@ -11,19 +11,19 @@ using Utl;
 
 namespace Sales.Controllers
 {
-    [DirectorRequired]
+ 
     public class PackageItemController : Controller
     {
         public ViewResult Index()
         {
             return View(CH.GetAllData<PackageItem>());
         }
-
+          
         public ViewResult Details(int id)
         {
             return View(CH.GetDataById<PackageItem>(id));
         }
-
+           [DirectorRequired]
         public ActionResult Create(int? packageid,string from)
         {
             ViewBag.PackageID = packageid;
@@ -33,7 +33,7 @@ namespace Sales.Controllers
             }
             return View();
         }
-
+           [DirectorRequired]
         [HttpPost]
         public ActionResult Create(PackageItem item)
         {
@@ -45,14 +45,15 @@ namespace Sales.Controllers
             ViewBag.PackageID = item.PackageID;
             return View(item);
         }
+           [DirectorRequired]
         public ActionResult Edit(int id)
         {
-            
             var data = CH.GetDataById<PackageItem>(id);
             return View(data);
         }
 
         [HttpPost]
+        [DirectorRequired]
         public ActionResult Edit(PackageItem item)
         {
             if (ModelState.IsValid)

@@ -22,7 +22,19 @@ namespace Sales.Controllers
 
         public ViewResult Index()
         {
-            return View(CH.GetAllData<Research>());
+            if(Employee.AsDirector())
+              return View(CH.GetAllData<Research>());
+            else if (Employee.EqualToManager())
+            {
+                var ps = CH.GetAllData<Project>(p=> p.Manager==User.Identity.Name,"Members");
+                var list = new List<Member>();
+                ps.ForEach(p => {
+                   list.AddRange(p.Members);
+                });
+                var rs = CH.GetAllData<Research>(r => list.Any(m=>m.Name==r.Creator));
+                return View(rs);
+            }
+              return View();
         }
 
         public ViewResult Details(int id)
