@@ -375,6 +375,10 @@ namespace Sales.Controllers
             {
                 CH.Delete<Category>(t.ID);
             });
+            var deals = CH.GetAllData<Deal>(d=>d.ProjectID==p.ID);
+            deals.ForEach(d => {
+                CH.Delete<Deal>(d.ID);
+            });
             p.PhoneSaleSupports.ForEach(t =>
             {
                 CH.Delete<PhoneSaleSupport>(t.ID);

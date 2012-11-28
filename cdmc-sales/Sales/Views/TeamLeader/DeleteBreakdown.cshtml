@@ -1,12 +1,18 @@
 ﻿@{
-    ViewBag.Title = "Delete";
+    ViewBag.Title = "删除周目标";
 }
 @using Utl
 @using (Html.BeginForm())
 {
     @Html.Hidden("projectid",ViewBag.Projectid as int?)
     @Html.Hidden("startdate", ViewBag.StartDate as string)
-    <center>
+    <center  style=" margin:10px">
+    <div>
+    @{
+       var startdate =  ViewBag.StartDate as string;
+        <p>请确认是否要删除这个周目标设置？周目标开始时间为：@startdate</p>
+     }
+    </div>
     <p>
         <input type="submit" value=@SR.Delete /> @* |
         @Html.ActionLink(SR.GobackToList, "Index")*@

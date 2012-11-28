@@ -6,7 +6,14 @@
 @using Utl
 @using Entity
 @Html.Partial("contenttitle","个人信息")
-@(Html.Telerik().Grid<MembershipUser>(Model).Name("MembershipUser").ToolBar(commands => commands.Custom().Text("添加用户").Action("register", "account"))
+@(Html.Telerik().Grid<MembershipUser>(Model).Name("MembershipUser").ToolBar(commands =>
+    {
+        if (Employee.AsManager())
+        {
+            commands.Custom().Text("添加用户").Action("register", "account");
+        }
+    }
+    )
 
                 .DataKeys(keys =>
                 {
@@ -16,9 +23,9 @@
                 {
                     c.Bound(item => item.UserName).Title("用户名称").Width(200);
                     c.Bound(item => item.Email).Title("电子邮箱").Width(200);
-                    
+
                     c.Bound(item => item.UserName).Template(@<span>
-                        @Employee.GetProfile("Department",item.UserName)
+                        @Employee.GetProfile("Department", item.UserName)
                     </span>).Width(100).Title("部门");
                     c.Bound(item => item.UserName).Template(@<span>
                         @Employee.GetProfile("IsActivated", item.UserName)
@@ -46,11 +53,6 @@
 
                                                   )
 
-@*<div class="anniu">
-    <ul>
-        <li>@Html.ActionLink("添加用户", "register")</li>
-    </ul>
-</div>*@
 
 
 

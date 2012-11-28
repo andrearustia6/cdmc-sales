@@ -11,24 +11,24 @@ using Utl;
 
 namespace Sales.Controllers
 {
-    [DirectorRequired]
+   
     public class PackageController : Controller
     {
         public ViewResult Index()
         {
             return View(CH.GetAllData<Package>("PackageItems"));
         }
-
+        
         public ViewResult Details(int id)
         {
             return View(CH.GetDataById<Package>(id));
         }
-
+         [DirectorRequired]
         public ActionResult Create()
         {
             return View();
         }
-
+         [DirectorRequired]
         [HttpPost]
         public ActionResult Create(Package item)
         {
@@ -39,11 +39,12 @@ namespace Sales.Controllers
             }
             return View(item);
         }
+         [DirectorRequired]
         public ActionResult Edit(int id)
         {
             return View(CH.GetDataById<Package>(id));
         }
-
+         [DirectorRequired]
         [HttpPost]
         public ActionResult Edit(Package item)
         {
@@ -54,12 +55,13 @@ namespace Sales.Controllers
             }
             return View(item);
         }
-
+         [DirectorRequired]
         public ActionResult Delete(int id)
         {
             return View(CH.GetDataById<Package>(id));
         }
 
+         [DirectorRequired]
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {
