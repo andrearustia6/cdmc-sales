@@ -1,4 +1,5 @@
 ﻿@using Entity
+@using Utl
 @model List<Template>
 @{ViewBag.Title = "模版列表";}     
 @Html.Partial("contenttitle", "一般模版")
@@ -10,7 +11,7 @@
                 .Columns(c =>
                 {
                     c.Bound(item => item.Name).Width(200);
-                    c.Bound(item => item.Content).Width(300);
+                    c.Bound(item => item.Content).Template(@<span>@Utl.ShortText(item.Content, 100)</span>);
                     c.Bound(item => item.TemplateType.Name).Width(100);
                     c.Bound(item => item.ID).Title("操作").Width(200).Template(@<span> <a href=@Url.Content("~/Template/Edit/" + item.ID) >
                         编辑</a> | <a href=@Url.Content("~/Template/Details/" + item.ID)>详细</a> | <a href=@Url.Content("~/Template/delete/" + item.ID) >

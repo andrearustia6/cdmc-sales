@@ -15,7 +15,7 @@ namespace Sales.Controllers
     {
         public ViewResult Index()
         {
-            return View(CH.GetAllData<PackageType>());
+            return View(CH.GetAllData<PackageType>().OrderByDescending(o=>o.Sequence).ToList());
         }
 
         public ViewResult Details(int id)

@@ -22,7 +22,7 @@
 )
 @helper Messages(Project project)
     {
-      @(Html.Telerik().Grid<Message>(project.Messages.FindAll(m => m.SalesTypeID == 2)).Name("Message")
+      @(Html.Telerik().Grid<Message>(project.Messages).Name("Message")
                 .DataKeys(keys =>
                 {
                     keys.Add(s => s.ID);
