@@ -16,14 +16,14 @@ namespace Sales.Controllers
     {
         public ViewResult MyIndex()
         {
-            return View(CH.GetAllData<Research>(r=>r.Creator==User.Identity.Name));
+            return View(CH.GetAllData<Research>(r=>r.Creator==User.Identity.Name).OrderByDescending(o=>o.CreatedDate).ToList());
         }
 
 
         public ViewResult Index()
         {
             if(Employee.AsDirector())
-              return View(CH.GetAllData<Research>());
+                return View(CH.GetAllData<Research>().OrderByDescending(o => o.CreatedDate).ToList());
             else if (Employee.EqualToManager())
             {
                 var ps = CH.GetAllData<Project>(p=> p.Manager==User.Identity.Name,"Members");
@@ -32,7 +32,7 @@ namespace Sales.Controllers
                    list.AddRange(p.Members);
                 });
                 var rs = CH.GetAllData<Research>(r => list.Any(m=>m.Name==r.Creator));
-                return View(rs);
+                return View(rs.OrderByDescending(o => o.CreatedDate).ToList());
             }
               return View();
         }

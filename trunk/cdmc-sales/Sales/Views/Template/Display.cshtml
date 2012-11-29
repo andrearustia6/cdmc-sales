@@ -17,11 +17,6 @@
         @Html.DisplayFor(model => model.SubName)
     </div>
 
-    <div class="display-label">内容</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Content)
-    </div>
-
     <div class="display-label">语言</div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Language)
@@ -29,7 +24,7 @@
 
     <div class="display-label">模版类型</div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.TemplateType.Name)
+       @HtmlExtensions.GetHtmlString(Model.Content)
     </div>
 </fieldset>
 

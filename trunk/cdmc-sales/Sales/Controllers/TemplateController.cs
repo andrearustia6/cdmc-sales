@@ -34,6 +34,7 @@ namespace Sales.Controllers
         {
             if (ModelState.IsValid)
             {
+                item.Content = HttpUtility.HtmlDecode(item.Content);
                 CH.Create<Template>(item);
                 return RedirectToAction("Index");
             }
@@ -49,6 +50,7 @@ namespace Sales.Controllers
         {
             if (ModelState.IsValid)
             {
+                item.Content = HttpUtility.HtmlDecode(item.Content);
                 CH.Edit<Template>(item);
                 return RedirectToAction("Index");
             }

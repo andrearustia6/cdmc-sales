@@ -11,7 +11,6 @@
                     c.Bound(item => item.Name).Width(200);
                     c.Bound(item => item.OnPhoneBlockType.Name).Width(200);
                     c.Bound(item => item.Block).Width(200);
-                    c.Bound(item => item.Answer);
                     c.Bound(item => item.ID).Title("操作").Width(200).Template(@<span> <a href=@Url.Content("~/PhoneSaleSupport/Edit/" + item.ID) >
                         编辑</a> | <a href=@Url.Content("~/PhoneSaleSupport/Details/" + item.ID)>详细</a> | <a href=@Url.Content("~/PhoneSaleSupport/delete/" + item.ID) >
                             删除</a> </span>);
