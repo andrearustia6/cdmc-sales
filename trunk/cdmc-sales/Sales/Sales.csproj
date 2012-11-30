@@ -283,7 +283,9 @@
     <Content Include="images\bj_4.gif" />
     <Content Include="images\logo_2.gif" />
     <Content Include="images\tijiaoanniu.jpg" />
+    <Content Include="images\tu.jpg" />
     <Content Include="images\tubiao.gif" />
+    <Content Include="images\tu_2.jpg" />
     <Content Include="images\yuanjiao.gif" />
     <Content Include="images\yuanjiao_2.gif" />
     <Content Include="images\yuanjiao_3.gif" />
@@ -1277,13 +1279,13 @@
     <Content Include="Views\Report\MemberProgress.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\LoginPageIamge\Index.cshtml" />
+    <Content Include="Views\LoginPageImage\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\LoginPageIamge\Change.cshtml" />
+    <Content Include="Views\LoginPageImage\Change.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\LoginPageIamge\Display.cshtml" />
+    <Content Include="Views\LoginPageImage\Display.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\TeamLeader\BreakdownIndex.cshtml" />
