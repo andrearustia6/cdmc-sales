@@ -13,21 +13,44 @@
 <script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
 <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
 @model  Entity.LogOnModel
-
+@using Utl
+@using Entity
 @using (Html.BeginForm())
 {
     <body>
 <div class="logo"><img src="/images/logo.jpg" width="929" height="191" alt="logo" /></div>
 <div class="login">
   <div class="login_2">
+  <div class="dl_rigrh">
+
+  <div class="tu_left">
+  @{
+    var it = CH.GetAllData<Image>(i => i.ImageArea == "LoginPage").OrderByDescending(o => o.Sequence).FirstOrDefault();
+    if (it == null)
+  {
+      <img src="/images/tu_2.jpg"  width="543" height="349" alt="tu" />
+  }
+  else
+  {
+     <img   width="543" height="349" alt="tu" src=@Url.Action("DisplayImage", "Image", new { id = it.ID }) />
+  }
+  
+  }
+   
+ @* <img src="/images/tu_2.jpg"  width="543" height="349" alt="tu" />*@
+  </div>
+
 	<h2><img src="/images/文字.gif" width="227" height="57" alt="文字" />
     <p>CDMC Events Sales System</p></h2>
+     <div class="input_2">
+
     <dl>
     <dt>用户名 Account：</dt>
         <dd> @Html.TextBoxFor(m => m.UserName)
                 @Html.ValidationMessageFor(m => m.UserName)</dd>
     </dl>
-     
+     </div>
+      <div class="input_2">
     <dl>
     
    	  <dt>密码 Password：</dt>
@@ -37,11 +60,19 @@
  <a href="#">忘记密码 Forget Password
 </a></dd>
     </dl>
+    </div>
+     <div class="input_2">
     <dl>
    	  <dt>&nbsp;</dt>
       <dd class="login_3"><input type="image" src="/images/denglu.gif"/></dd>
     </dl>
+    </div>
   </div>
+</div>
+<div class="wenzi">勤奋、效率、合作、发展
+      <p>Diligence, Efficiency, Collaboration, Development</p>
+    </div>
+
 </div>
 <center style=" margin-top:50px;">
 <h3>

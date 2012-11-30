@@ -12,10 +12,10 @@ namespace Utl
         public static Image UploadImg(HttpRequestBase request, Image img = null)
         {
             var file = request.Files["attachments"];
-            if (file == null) return null;
+           
  
             if (img == null) img = new Image();
-            if (!string.IsNullOrWhiteSpace(file.FileName))
+            if (file!=null && !string.IsNullOrWhiteSpace(file.FileName))
             {
                 byte[] buf = new byte[file.ContentLength];
 
@@ -26,19 +26,20 @@ namespace Utl
 
             if (img.ID > 0)
             {
-                if (img.ImageData == null)
+                if (file == null)
                 {
-                    var o = CH.GetDataById<Image>(img.ID);
-                    img.ImageData = o.ImageData;
-                    img.ContentType = o.ContentType;
+                    var old = CH.DB.Images.AsNoTracking().FirstOrDefault(i => i.ID == img.ID);
+                    img.ImageData = old.ImageData;
+                    img.ContentType = old.ContentType;
                 }
+             
                 CH.Edit<Image>(img);
             }
             else
                 CH.Create<Image>(img);
             return img;
         }
-
+        [AllowAnonymous]
         public ActionResult DisplayImage(int id)
         {
             var image = CH.GetDataById<Image>(id);

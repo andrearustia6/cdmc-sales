@@ -1,0 +1,23 @@
+﻿@model Entity.Image
+@using Utl
+<fieldset>
+    <legend>@SR.Form</legend>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.Name)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.Name)
+        @Html.ValidationMessageFor(model => model.Name)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.Name)
+    </div>
+       <div class="editor-field">
+      @{  if (Model != null)
+          {
+            <img  alt="上传文件"  width="300" height="200"  src=@Url.Action("DisplayImage", "Image", new { id = Model.ID }) />
+          }
+        }
+        @Html.Telerik().Upload().Async(a=>a.AutoUpload(true)).Name("attachments").Multiple(false)
+        </div>
+</fieldset>

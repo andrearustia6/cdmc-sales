@@ -5,13 +5,27 @@ img{vertical-align:top; border:0; margin:0px; padding:0px;}
 .clear{ clear:both; height:0; overflow:hidden}
 
 .logo{ width:930px; margin:0 auto;}
-.login{ width:930px; height:349px; background:url(../images/bj_2.jpg) no-repeat; margin:0 auto; }
-.login_2{ padding:40px 0 0 0px;}
-.login_2 h2{ font-size:24px; font-family:"微软雅黑"; color:#da5000; padding-left:570px; padding-bottom:20px;}
-.login_2 h2 img{ padding-left:40px;}
-.login_2 dl{ color:#8e3f0f; clear:both; width:350px; padding:10px 0 0 575px;}
+.login{ width:930px; height:349px; background:url(../images/bj_2.jpg) no-repeat; margin:0 auto; position:relative; overflow:hidden; margin:0 auto}
+
+.login_2 h2{ font-size:24px; font-family:"微软雅黑"; color:#da5000; padding-bottom:20px;}
+.login_2 h2 p{ text-align:center;}
+.login_2 h2 img{ padding-left:70px; padding-top:50px;}
+.login_2 dl{ color:#8e3f0f; clear:both; width:350px;}
+.input_2 { float:left; margin-left:20px;}
 .login_2 dt{ float:left; line-height:37px; width:95px; }
 .login_2 dd{ float:left; width:200px; padding-bottom:5px;}
 .login_2 dd a{ color:#8e3f0f; text-decoration:none;_margin-top:-80px; padding-top:10px;}
 .login_2 dd input{ width:170px; height:22px; border:1px solid #db7119; line-height:24px; padding-left:5px; font-size:12px; color:#fe943c;}
 .login_2 .login_3 input{ width:75px; height:25px; border:none; padding:0;}
+
+.tu_left{ float:left; width:544px;}
+.wenzi{
+	font-size:33px;
+	font-family:"微软雅黑";
+	color:#FFF;
+	position:absolute;
+	left: 34px;
+	top: 33px;
+}
+.wenzi p{ font-family:Arial, Helvetica, sans-serif; font-size:16px;}
+.dl_right{ float:right; width:380px;}

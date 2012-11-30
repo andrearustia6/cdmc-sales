@@ -1,7 +1,7 @@
 ﻿@using Entity
 @model List<Image>
 @Html.Partial("contenttitle", "登陆页面图片")           
-@(Html.Telerik().Grid<Image>(Model).Name("Image").ToolBar(commands => commands.Custom().Text("登陆页面图片").Action("Create", "Image"))
+@(Html.Telerik().Grid<Image>(Model).Name("Image").ToolBar(commands => commands.Custom().Text("登陆页面图片").Action("Create", "LoginPageImage"))
                 .DataKeys(keys =>
                 {
                     keys.Add(s => s.ID);
@@ -11,7 +11,7 @@
                     c.Bound(item => item.Name).Width(200);
                     c.Bound(item => item.Description);
                     c.Bound(item => item.ID).Width(200).Title("操作").Template(@<span>
-                    <a href=@Url.Content("~/Image/Edit/" + item.ID) >编辑</a> | <a href=@Url.Content("~/Image/Details/" + item.ID)>详细</a>  | <a href=@Url.Content("~/Image/delete/" + item.ID) >删除</a> 
+                    <a href=@Url.Content("~/LoginPageImage/Edit/" + item.ID) >编辑</a> | <a href=@Url.Content("~/LoginPageImage/Details/" + item.ID)>详细</a>  | <a href=@Url.Content("~/LoginPageImage/delete/" + item.ID) >删除</a> 
                    </span>);
                 })
                 .Resizable(resizing => resizing.Columns(true))
