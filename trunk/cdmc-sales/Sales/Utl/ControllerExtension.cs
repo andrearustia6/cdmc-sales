@@ -256,11 +256,11 @@ namespace System.Web.Mvc
             }
             else
             {
-                string number = item.FlowNumber.Replace(item.Project.ProjectCode + "_", "");
+                string number = last.FlowNumber.Replace(last.Project.ProjectCode + "_", "");
                 int n = 0;
                 Int32.TryParse(number, out n);
                 n = n + 1;
-                item.FlowNumber = item.Project.ProjectCode + n.ToString();
+                item.FlowNumber = last.Project.ProjectCode +"_"+ n.ToString();
             }
 
             return item;
