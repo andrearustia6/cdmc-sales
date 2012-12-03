@@ -15,7 +15,7 @@ namespace Sales.Controllers
     {
         public ViewResult Index()
         {
-            return View(CH.GetAllData<Message>());
+            return View(CH.GetAllData<Message>().OrderByDescending(o=>o.CreatedDate).ToList());
         }
 
 

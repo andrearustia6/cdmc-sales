@@ -246,9 +246,8 @@ namespace BLL
         {
             var name = HttpContext.Current.User.Identity.Name;
             var now = DateTime.Now;
-            var projects = CH.GetAllData<Project>("Members");
-
-            var data = projects.FindAll(p => p.Product == name && p.IsActived == true && now > p.StartDate && now < p.EndDate);
+            var projects = CH.GetAllData<Project>(p => p.Product == name);
+            var data = projects.FindAll(p => p.IsActived == true && now > p.StartDate && now < p.EndDate);
             return data;
         }
 
