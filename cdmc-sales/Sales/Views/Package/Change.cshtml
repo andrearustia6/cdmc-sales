@@ -35,7 +35,7 @@
             @Html.LabelFor(model => model.Prize)
         </div>
         <div class="editor-field">
-            @Html.Telerik().CurrencyTextBoxFor(model => model.Prize)
+            @Html.Telerik().CurrencyTextBoxFor(model => model.Prize).CurrencySymbol("$");
             @Html.ValidationMessageFor(model => model.Prize)
         </div>
 
