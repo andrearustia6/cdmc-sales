@@ -152,9 +152,7 @@
                     c.Bound(item => item.ActualPaymentDate).Format("{0:d}").Width(80);
                     c.Bound(item => item.CompanyRelationship.Company.Name).Title("客户公司").Width(130);
                     c.Bound(item => item.Sales).Width(100);
-                    c.Bound(item => item.ID).Title("操作").Width(200).Template(@<span> <a href=@Url.Content("~/Deal/Edit/" + item.ID) >
-                        编辑</a> | <a href=@Url.Content("~/Deal/Details/" + item.ID)>详细</a> | <a href=@Url.Content("~/Deal/delete/" + item.ID) >
-                            删除</a> </span>);
+                    c.Bound(item => item.ID).Title("操作").Width(200).Template(@<span><a href=@Url.Content("~/Deal/Details/" + item.ID)>详细</a> </span>);
                 }).Resizable(resizing => resizing.Columns(true))
                                                                                                 .Filterable().Groupable()
                                                                                                   .Pageable(page => page.PageSize(1)).Scrollable(scrolling => scrolling.Height(350))
