@@ -1,29 +1,41 @@
 ﻿
 
 function initialTargetbreakdown() {
-
-    $(".targetbreakdown").each(function () {
+//     $(this).closest('table').find('.result').text("￥" + totalresult);
+    $(".t-input").each(function () {
         var $this = $(this);
-        $this.slider({
-            value: getSliderValue($this),
-            min: 0,
-            max: 200000,
-            step: 10000,
-            slide: function (event, ui) {
-                var $this = $(this);
-                var mid = $this.attr('mid');
-                $this.closest('tr').find('p').text("￥" + ui.value);
-                var mname = $this.closest('tr').find('input').attr('mname');
-                $this.closest('tr').find('input').val(mname + '|' + ui.value);
-                $this.closest('tr').find('input').attr("v", ui.value);
-                var totalresult = 0;
-                $this.closest('table').find(".pertarget").each(function () {
-                    totalresult += parseInt($(this).attr("v"));
-                });
-                $this.closest('table').find('.result').text("￥" + totalresult);
-            }
-        });
-    });
+         
+         $this.change(function () {
+             var $t = $(this);
+             var hidden = $this.closest('tr').find('input[type=hidden]');
+             var mname = hidden.attr('mname');
+             hidden.val(mname + '|' + $t.val());
+//             $t.closest('table').find(".pertarget").each(function () {
+//                 var totalresult += parseInt($(this).attr("v"));
+//                  $t.closest('table').find('.result').text("￥" + totalresult);
+//             });
+         });
+     });
+         //        $this.slider({
+         //            value: getSliderValue($this),
+         //            min: 0,
+         //            max: 200000,
+         //            step: 10000,
+         //            slide: function (event, ui) {
+         //                var $this = $(this);
+         //                var mid = $this.attr('mid');
+         //                $this.closest('tr').find('p').text("￥" + ui.value);
+         //                var mname = $this.closest('tr').find('input').attr('mname');
+         //                $this.closest('tr').find('input').val(mname + '|' + ui.value);
+         //                $this.closest('tr').find('input').attr("v", ui.value);
+         //                var totalresult = 0;
+         //                $this.closest('table').find(".pertarget").each(function () {
+         //                    totalresult += parseInt($(this).attr("v"));
+         //                });
+         //                $this.closest('table').find('.result').text("￥" + totalresult);
+         //            }
+         // });
+   
 
 }
 function getSliderValue(s) {

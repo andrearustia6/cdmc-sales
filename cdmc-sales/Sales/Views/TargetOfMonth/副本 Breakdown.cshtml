@@ -21,7 +21,7 @@
                 结束时间：</label>
             @Html.Telerik().DatePicker().Name("EndDate").Value(ViewBag.EndDate as string)
             <span>  </span>
-           
+            <input type="submit" value="提交" />
         </span></b>
     </div>
 <br />
@@ -30,7 +30,7 @@
 <p><b>Deal In 目标:</b></p>
 <br />
 <table class="tb_breakdown" id="dealin_bd" >
-<tr><th>员工姓名</th><th>目标金额</th></tr>
+<tr><th>员工姓名</th><th >调整目标</th><th>目标金额</th></tr>
 @if (Model != null)
 {
     List<TargetOfWeek> vs = null;
@@ -48,13 +48,15 @@
             {
                 v = item.Deal;
             }
-        } 
-      <tr><td>@m.Name</td>
-      <td>@(Html.Telerik().CurrencyTextBox().Name(m.Name + "deal").Value(v))
-     <input class="pertarget" type="hidden" v=@v  mname=@m.Name value=@m.Name|@v  name="dealin" /></td></tr>
+        }
+            
+            
+      <tr><td>@m.Name</td><td>
+      <div class="targetbreakdown" TargetOfWeek=@v ></div>
+      </td><td><p>￥ @((int)v)</p><input class="pertarget" type="hidden" v=@v  mname=@m.Name value=@m.Name|@v  name="dealin" /></td></tr>
     
     }
-   @* <tr><td >总额：</td><td colspan="2"><p class="result">@Html.Label(ViewBag.TotalDealIn==null? string.Empty:ViewBag.TotalDealIn as string)</td></tr>*@
+    <tr><td >总额：</td><td colspan="2"><p class="result">@Html.Label(ViewBag.TotalDealIn==null? string.Empty:ViewBag.TotalDealIn as string)</td></tr>
 }
 </table>
 </div>
@@ -63,7 +65,7 @@
 <p><b>Check In 目标:</b></p>
 <br />
 <table class="tb_breakdown" id="checkin_bd">
-<tr><th>员工姓名</th><th>目标金额</th></tr>
+<tr><th>员工姓名</th><th  align="center">调整目标</th><th>目标金额</th></tr>
 @if (Model != null)
 {
     List<TargetOfWeek> vs = null;
@@ -84,12 +86,12 @@
         }
             
             
-      <tr><td>@m.Name</td>
-      <td>@(Html.Telerik().CurrencyTextBox().Name(m.Name + "checkin").Value(v))
-      <input class="pertarget" type="hidden" mname=@m.Name v=@v  value=@m.Name|@v  name="checkin" /></td></tr>
+      <tr><td>@m.Name</td><td>
+      <div class="targetbreakdown" TargetOfWeek=@v ></div>
+      </td><td><p>$@v</p><input class="pertarget" type="hidden" mname=@m.Name v=@v  value=@m.Name|@v  name="checkin" /></td></tr>
     
     }
-    @* <tr><td >总额：</td><td colspan="2"><p class="result">@Html.Label(ViewBag.TotalDealIn == null ? string.Empty : ViewBag.TotalDealIn as string)</p></td></tr>*@
+     <tr><td >总额：</td><td colspan="2"><p class="result">@Html.Label(ViewBag.TotalDealIn == null ? string.Empty : ViewBag.TotalDealIn as string)</p></td></tr>
 }
 </table>
 <br />
@@ -109,7 +111,10 @@
 .tb_breakdown
 {
 }
-
+input[type=text]
+{
+	border:0; color:#f6931f; font-weight:bold;
+}
 .tb_breakdown tr td p
 {
 	max-width:170px;
@@ -117,7 +122,7 @@
 .targetbreakdown
 {
 	width:200px;
-
+	margin:15px;
 }
 
 </style>
