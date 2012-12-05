@@ -79,7 +79,20 @@
 )
 }
 </fieldset>
+<fieldset>
+<legend>24小时内电话记录</legend>
+@{
+   @(Html.Telerik().TabStrip().Name("TabStripcall").SelectedIndex(ViewBag.TabIndex == null ? 0 : (int)ViewBag.TabIndex).Items(items =>
+{
+    foreach (var child in Model)
+    {
+        var temp = child;
+        items.Add().Text(child.ProjectCode).Content(@<text>@MemberCall(child)</text>);
+    }
+}))
 
+    }
+</fieldset>
 <fieldset>
 <legend>所在项目</legend>
 <div>
@@ -97,7 +110,19 @@
 </div>
 </fieldset>
 
-
+@helper MemberCall(Project p)
+{
+    var m = p.GetMemberInProjectByName(Employee.GetCurrentUserName());
+    var pv = p.GetProjectMemberLeadCalls(DateTime.Now.AddHours(-12),DateTime.Now).FirstOrDefault(i=>i.Member.Name==Employee.GetCurrentUserName());
+  
+    if(pv!=null)
+    {
+    <table width="100%">
+<tr><th>Cold Calls</th><th>DMS</th><th>New_DMS</th><th>Pitched</th><th>Full_Pitched</th><th>Waiting_For_Approval</th><th>Qualified_Decision</th><th>Closed</th></tr>
+<tr><td>@pv.Cold_Calls</td><td>@pv.DMS</td><td>@pv.New_DMS</td><td>@pv.Pitched</td><td>@pv.Full_Pitched</td><td>@pv.Waiting_For_Approval</td><td>@pv.Qualified_Decision</td><td>@pv.Closed</td></tr>
+</table>
+    }
+}
 
 <style type="text/css">
  .calltable{ width:100%;}

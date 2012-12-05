@@ -8,6 +8,18 @@ using System.Web.Profile;
 
 namespace Entity
 {
+    public static class LeadExtensions
+    {
+        public static string GetLeadStatus(this Lead item, int? porjectid)
+        {
+            var call = CH.GetAllData<LeadCall>(lc => lc.CompanyRelationship.ProjectID == porjectid && lc.LeadID == item.ID).OrderByDescending(o => o.CreatedDate).FirstOrDefault();
+            if (call == null)
+                return "未打";
+            else
+                return call.LeadCallType.Name;
+
+        }
+    }
     public static class EntityBaseExtensions
     {
         public static bool SameFieldValueExist<T>(this EntityBase item, string fieldname) where T : EntityBase
@@ -43,7 +55,7 @@ namespace Entity
     {
         public static bool CallerIsTheLoginUser(this LeadCall item)
         {
-            if (item.Member.Name == HttpContext.Current.User.Identity.Name)
+            if (item.Member.Name ==Employee.GetCurrentUserName())
                 return true;
             else
                 return false;
@@ -53,10 +65,56 @@ namespace Entity
         {
             var ls = item.CompanyRelationship.LeadCalls.FindAll(lc => lc.LeadCallType.Code >= 40);
             if (ls.Count > 0)
+                return false;
+            else
+                return true;
+        }
+
+        #region Call Management
+
+
+
+        public static bool IsFullPitched(this LeadCall item,LeadCall call)
+        {
+            return call.LeadCallType.Name == "Full Pitched" ? true : false;
+        }
+        public static bool IsPitched(this LeadCall item)
+        {
+            return item.LeadCallType.Name == "Pitched" ? true : false;
+        }
+
+        public static bool IsDMS(this LeadCall item,string leadCallType)
+        {
+            if (leadCallType == "Others" || leadCallType == "Blowed" || leadCallType == "Not Pitched")
+                return false;
+            else
+                return true;
+        }
+
+        public static bool IsNewDMS(this LeadCall item)
+        {
+            return item.IsFirstPitch();
+        }
+
+        public static bool IsDMS(this LeadCall item)
+        {
+            var type = item.LeadCallType.Code;
+            if (type > 3)
                 return true;
             else
                 return false;
         }
+
+        public static bool IsDealClosed(this LeadCall item)
+        {
+            return item.LeadCallType.Name == "Closed" ? true : false;
+        }
+
+        public static bool IsQualifiedDecision(this LeadCall item)
+        {
+            return item.LeadCallType.Name == "Qualified Decision" ? true : false;
+        }
+        #endregion
     }
 
     public enum RoleInProject
@@ -241,9 +299,10 @@ namespace Entity
 
             lcs.FindAll(lc => lc.CallDate > startdate && lc.CallDate < enddate).ForEach(l =>
             {
-                result.Cold_Calls++;
+                if (l.LeadCallType.Name == "Others" || l.LeadCallType.Name == "Blowed" || l.LeadCallType.Name == "Not Pitched")
+                     result.Cold_Calls++;
 
-                if (l.LeadCallType.Code > 3)
+                if (l.LeadCallType.Code > 30)
                     result.DMS++;
                 if (l.IsFirstPitch())
                     result.New_DMS++;
@@ -407,7 +466,7 @@ namespace Entity
             return item.Members.FirstOrDefault(m => m.Name == username);
         }
 
-        public static List<ViewLeadCallAmount> GetProjectMemberLeadCalls(this Project item, DateTime? startdate, DateTime? enddate)
+        public static List<ViewLeadCallAmount> GetProjectMemberLeadCalls(this Project item, DateTime? startdate=null, DateTime? enddate=null)
         {
             var list = new List<ViewLeadCallAmount>();
             if (item.Members != null)

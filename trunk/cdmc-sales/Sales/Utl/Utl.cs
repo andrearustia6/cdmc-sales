@@ -32,6 +32,12 @@ namespace Utl
         {
             return GetUserByName(HttpContext.Current.User.Identity.Name);
         }
+
+        public static string GetCurrentUserName()
+        {
+            return HttpContext.Current.User.Identity.Name;
+        }
+
         public static UserInfoModel GetUserByName(string username)
         {
             ProfileBase objProfile = ProfileBase.Create(username);
