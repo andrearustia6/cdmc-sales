@@ -70,7 +70,7 @@ namespace Sales.Controllers
         }
     }
 
-    [ManagerRequired]
+    [LeaderRequired]
     public class AllDealController : Controller
     {
 

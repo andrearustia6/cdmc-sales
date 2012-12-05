@@ -29,25 +29,25 @@ namespace Sales.Controllers
             return View();
         }
 
-        public ViewResult Reports(DateTime? setdate)
-        {
-            if (setdate == null)
-                return View();
-            var projects = CH.GetAllData<Project>("Members", "TargetOfWeeks", "Leads", "Deals", "Companys", "Leads");
-            var weeklyreports = CRM_Logical.GenerateWeeklyReports(projects, setdate);
-            return View(weeklyreports);
-        }
+        //public ViewResult Reports(DateTime? setdate)
+        //{
+        //    if (setdate == null)
+        //        return View();
+        //    var projects = CH.GetAllData<Project>("Members", "TargetOfWeeks", "Leads", "Deals", "Companys", "Leads");
+        //    var weeklyreports = CRM_Logical.GenerateWeeklyReports(projects, setdate);
+        //    return View(weeklyreports);
+        //}
 
-        [ManagerRequired]
-        public ViewResult Compare(DateTime? setdate, int? projectid)
-        {
-            if (setdate == null)
-                return View();
-            var projects = CH.GetAllData<Project>("Members", "TargetOfWeeks", "Leads", "Deals", "Companys", "Leads");
-            var weeklyreports = CRM_Logical.GenerateWeeklyReports(projects, setdate);
-            var rp = weeklyreports.FirstOrDefault(w => w.Project.ID == projectid);
-            return View(rp.MemberItems);
-        }
+        //[ManagerRequired]
+        //public ViewResult Compare(DateTime? setdate, int? projectid)
+        //{
+        //    if (setdate == null)
+        //        return View();
+        //    var projects = CH.GetAllData<Project>("Members", "TargetOfWeeks", "Leads", "Deals", "Companys", "Leads");
+        //    var weeklyreports = CRM_Logical.GenerateWeeklyReports(projects, setdate);
+        //    var rp = weeklyreports.FirstOrDefault(w => w.Project.ID == projectid);
+        //    return View(rp.MemberItems);
+        //}
 
         #region 添加公司
         public ViewResult SelectCompanyByProjectCode(int projectid)

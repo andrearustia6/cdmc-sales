@@ -8,7 +8,8 @@
 <br />
 @Html.Partial("durationselector")
 @{
-   <span>TopSales:@Model.TopSales.FirstOrDefault().Name 总额:@Model.TopSalesAmount</span>
+    var t = Model.TopSales.Count == 0 ? "" : Model.TopSales.FirstOrDefault().Name;
+   <span>TopSales:@t 总额:@Model.TopSalesAmount</span>
    <ul >
    <li >
     @foreach(var p in Model.ViewLeadCallAmountInProjects)

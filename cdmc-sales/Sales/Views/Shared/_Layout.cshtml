@@ -82,6 +82,16 @@
                        });
                    }
 
+                   if (Employee.EqualToLeader())
+                   {
+                       menu.Add().Text("项目管理").ImageUrl("~/Content/Common/Icons/Chart.gif").Items(item =>
+                       {
+                           item.Add().Url("~/Report/LeadCalls").Text("销售进度");
+                           item.Add().Url("~/AllDeal/index").Text("出单查看");
+                           item.Add().Url("~/Report/MemberProgress").Text("业绩比较");
+                       });
+                   }
+
                    if (Employee.EqualToAdministrator())
                    {
                          menu.Add().Text("客户管理").ImageUrl("~/Content/Common/Icons/GridView.gif").Items(item =>

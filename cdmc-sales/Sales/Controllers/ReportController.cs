@@ -9,7 +9,7 @@ using Utl;
 
 namespace Sales.Controllers
 {
-    [ManagerRequired]
+    [LeaderRequired]
     public class ReportController : Controller
     {
         public ActionResult MemberProgress(DateTime? startdate, DateTime? enddate)

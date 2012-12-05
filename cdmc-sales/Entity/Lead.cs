@@ -12,7 +12,7 @@ namespace Entity
     /// </summary>
     public class Company : NameEntity
     {
-        [Display(Name = "联系方式"), MaxLength(100)]
+        [Display(Name = "公司座机"), MaxLength(100)]
         public string Contact { get; set; }
 
         [Display(Name = "公司地址"), MaxLength(100)]
@@ -99,7 +99,7 @@ namespace Entity
         public string Title { get; set; }
 
         [DataType(DataType.PhoneNumber)]
-        [Display(Name = "联系方式")]
+        [Display(Name = "公司座机")]
         public string Contact { get; set; }
 
         [DataType(DataType.EmailAddress)]
