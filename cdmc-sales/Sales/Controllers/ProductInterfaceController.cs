@@ -69,7 +69,7 @@ namespace Sales.Controllers
             {
                 item = item.SetFlowNumber(project);
 
-                item.Member = User.Identity.Name;
+                item.Member = Employee.GetCurrentUserName();
                 var p = CH.GetDataById<Project>(item.ProjectID, "Members");
                 var member = p.GetMemberInProjectByName(item.Member);
 
@@ -182,7 +182,7 @@ namespace Sales.Controllers
                 var p = CH.GetDataById<Project>(projectid, "Members");
                 CH.Create<Company>(item);
                 var ms = new List<Member>();
-                ms.Add(p.GetMemberInProjectByName(User.Identity.Name));
+                ms.Add(p.GetMemberInProjectByName(Employee.GetCurrentUserName()));
                 var cr = new CompanyRelationship() { CompanyID = item.ID, ProjectID = projectid, Importancy = 1, Members = ms, Categorys = lc };
                 CH.Create<CompanyRelationship>(cr);
                 return RedirectToAction("CompanyRelationshipIndex", "productinterface", new { projectid = projectid });

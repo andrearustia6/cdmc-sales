@@ -174,7 +174,7 @@
                     c.Bound(item => item.Company.Name).Width(150);
                     c.Bound(item => item).Template(@<text>@item.WhoCallTheCompanyMemberName()</text>).Title("拨打人").Width(70);
                     c.Bound(item => item.Importancy).Width(80);
-                    c.Bound(item => item).Template(@<text>@item.CategoryString()</text>).Title("分类");
+                    c.Bound(item => item.CategoryString).Title("分类");
                     c.Bound(item => item.Company.CompanyType.Name).Width(100);
                     c.Bound(item => item.ID).Title("操作").Width(260).Template(@<span><a  href=@Url.Content("~/CompanyRelationship/Edit/" + item.ID) >建议拨打人数</a> | 
                     <a  href=@Url.Content("~/Project/AppointSales/?projectid=" + p.ID + "&companyrelationshipid=" + item.ID) >指定销售</a>
@@ -234,9 +234,8 @@
                             {
                                 c.Bound(o => o.Name);
                                 c.Bound(o => o.Title);
-                                c.Bound(o => o.Mobile);
                                 c.Bound(o => o).Title("状态").Template(@<text>@item.GetLeadStatus(Model.ID)</text>);
-                                c.Bound(o => o).Title("致电列表").Template(@<span>  <a  target="_blank" href=@Url.Content("~/LeadCall/LeadIndex/?projectid=" + cr.ProjectID + "&leadid=" + item.ID + "&companyrelationshipid=" + item.CompanyID) >致电查看</a> </span>);
+                                c.Bound(o => o).Title("销售进度").Template(@<span>  <a  target="_blank" href=@Url.Content("~/LeadCall/LeadIndex/?projectid=" + cr.ProjectID + "&leadid=" + item.ID + "&companyrelationshipid=" + item.CompanyID) >销售进度</a> </span>);
                             })
                                          .Resizable(resizing => resizing.Columns(true))
                                          .Pageable(p => p.PageSize(20))

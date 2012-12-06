@@ -1,0 +1,50 @@
+﻿@{
+    ViewBag.Title = "致电列表";
+}
+@using Model
+@using Entity;
+@using Utl
+@model List<Project>
+<br />
+
+@{
+    //var startdate = ViewBag.StartDate as DateTime?;
+    //var enddate = ViewBag.EndDate as DateTime?;
+    //if(startdate==null)
+    //{
+    //    startdate = new DateTime(1,1,1);
+    //}
+    //if (enddate == null)
+    //{
+    //    enddate = new DateTime(9999,1,1);
+    //}
+    if (Model != null)
+    {
+        foreach (var p in Model)
+        {
+            <span><p>项目名称：@p.Name</p></span>
+            var ls = CH.GetAllData<LeadCall>(l => l.CompanyRelationship.ProjectID == p.ID).OrderByDescending(o => o.CallDate).ToList();
+            @(Html.Telerik().Grid<LeadCall>(ls).Name("ls" + p.ID)
+                .DataKeys(keys =>
+                {
+                    keys.Add(s => s.ID);
+                })
+                .Columns(c =>
+                {
+                    c.Bound(item => item.Lead.Name).Width(100);
+                    c.Bound(item => item.Lead.Title).Width(100);
+                    c.Bound(item => item.CompanyRelationship.CompanyName).Width(100);
+                    c.Bound(item => item.LeadCallType.Name);
+                    c.Bound(item => item.Result).Width(300);
+                    c.Bound(item => item.Member.Name).Title("致电人");
+                    c.Bound(item => item.CallDate);
+                })
+                .Resizable(resizing => resizing.Columns(true))
+                .Filterable().Sortable().Groupable()
+                    .Pageable(page => page.PageSize(20))
+                .Scrollable(scrolling => scrolling.Height(350))
+
+)
+        }
+    }
+}

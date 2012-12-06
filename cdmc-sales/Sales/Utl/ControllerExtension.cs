@@ -64,7 +64,7 @@ namespace System.Web.Mvc
             List<Project> list = new List<Project>();
             Role role = Employee.GetCurrentRole();
 
-            var username = HttpContext.Current.User.Identity.Name;
+            var username = Employee.GetCurrentUserName();
 
             if (role.Level == Role.LVL_Director)
             {
@@ -85,7 +85,7 @@ namespace System.Web.Mvc
         {
             if (string.IsNullOrEmpty(name))
             {
-                name = HttpContext.Current.User.Identity.Name;
+                name = Employee.GetCurrentUserName();
             }
 
             var p = CH.GetDataById<Project>(projectid, "Members");
@@ -287,7 +287,7 @@ namespace System.Web.Mvc
     {
         public static void AddErrorStateIfCreatorIsTheLoginUserIsNotTheMarketInterface(this Controller item, Project target)
         {
-            if (target.Market != HttpContext.Current.User.Identity.Name)
+            if (target.Market != Employee.GetCurrentUserName())
                 item.ModelState.AddModelError("", "登陆用户不是项目的市场部接口人， 不允许进行操作");
         }
     }

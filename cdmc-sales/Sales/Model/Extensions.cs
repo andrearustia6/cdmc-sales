@@ -32,7 +32,7 @@ namespace Entity
 
         public static bool CreatorIsTheLoginUser(this EntityBase item)
         {
-            if (item.Creator != HttpContext.Current.User.Identity.Name)
+            if (item.Creator != Employee.GetCurrentUserName())
                 return false;
             else
                 return true;
@@ -63,11 +63,11 @@ namespace Entity
 
         public static bool IsFirstPitch(this LeadCall item)
         {
-            var ls = item.CompanyRelationship.LeadCalls.FindAll(lc => lc.LeadCallType.Code >= 40);
-            if (ls.Count > 0)
-                return false;
-            else
+            var ls = item.CompanyRelationship.LeadCalls.FindAll(lc => lc.LeadCallType.Code >= 40 && lc.Lead.Name == item.Lead.Name).OrderBy(o => o.CallDate).ToList().FirstOrDefault();
+            if (ls!=null &&ls.CallDate == item.CallDate)
                 return true;
+            else
+                return false;
         }
 
         #region Call Management
@@ -133,7 +133,7 @@ namespace Entity
         public static bool IsAbleToAccessTheCompanyRelationship(this Member item, CompanyRelationship cr)
         {
             var d = cr.WhoCallTheCompanyMember();
-            if (d.Any(i => i.Name == HttpContext.Current.User.Identity.Name))
+            if (d.Any(i => i.Name == Employee.GetCurrentUserName()))
                 return true;
             else
                 return false;
@@ -192,7 +192,7 @@ namespace Entity
         /// <returns></returns>
         public static List<ViewMemberLeadToCall> GetMemberToCallList(this Member item, DateTime? startdate = null, DateTime? enddate = null)
         {
-            var lcs = CH.GetAllData<LeadCall>(lc => lc.CompanyRelationship.ProjectID == item.ProjectID && lc.CallBackDate != null);
+            var lcs = CH.GetAllData<LeadCall>(lc =>lc.Member.Name==item.Name && lc.CompanyRelationship.ProjectID == item.ProjectID && lc.CallBackDate != null);
 
             startdate = startdate == null ? new DateTime(1, 1, 1) : startdate;
             enddate = enddate == null ? new DateTime(9999, 1, 1) : enddate.Value.AddDays(+1);
@@ -334,6 +334,48 @@ namespace Entity
 
     public static class ProjectExtensions
     {
+        public static ViewProjectProgressAmount GetProjectMemberProgress(this Project item, string member, DateTime? startdate = null, DateTime? enddate = null)
+        {
+            startdate = startdate == null ? new DateTime(1, 1, 1) : startdate;
+            enddate = enddate == null ? new DateTime(9999, 1, 1) : enddate.Value.AddDays(+1);
+
+            decimal totaldeal = 0;
+            decimal totalcheckin = 0;
+            decimal deal = 0;
+            decimal checkin = 0;
+            decimal dealtarget = 0;
+            decimal checkintarget = 0;
+            decimal nextdealtarget = 0;
+            decimal nextcheckintarget = 0;
+            var crs = CH.GetAllData<CompanyRelationship>(c => c.ProjectID == item.ID, "Deals");
+
+            item.CompanyRelationships.ForEach(c =>
+            {
+
+                totalcheckin += c.Deals.FindAll(d => d.Sales == member).Sum(d => d.Income);
+                totaldeal += c.Deals.FindAll(d => d.Sales == member).Sum(d => d.Payment);
+            });
+
+            item.CompanyRelationships.ForEach(c =>
+            {
+
+                deal += c.Deals.FindAll(d => d.Sales == member).FindAll(ds => ds.SignDate < enddate && ds.SignDate > startdate).Sum(d => d.Income);
+                checkin += c.Deals.FindAll(d => d.Sales == member).FindAll(ds => ds.ActualPaymentDate < enddate && ds.ActualPaymentDate > startdate).Sum(d => d.Payment);
+            });
+
+           
+            var result = new ViewProjectProgressAmount()
+            {
+                TotalCheckIn = totalcheckin,
+                TotalDealIn = totaldeal,
+                CheckIn = checkin,
+                DealIn = deal,
+                Project = item
+            };
+            return result;
+
+        }
+
         public static List<Deal> GetProjectDeals(this Project item, DateTime? startdate=null, DateTime? enddate=null)
         {
             if (startdate == null) startdate = new DateTime(1000, 1, 1);
@@ -346,7 +388,7 @@ namespace Entity
 
         public static List<CompanyRelationship> GetCRM(this Project item)
         {
-            return item.GetCRMbyUserName(HttpContext.Current.User.Identity.Name);
+            return item.GetCRMbyUserName(Employee.GetCurrentUserName());
         }
 
         public static List<CompanyRelationship> GetCRMbyUserName(this Project item, string user)
@@ -462,7 +504,7 @@ namespace Entity
         /// <returns></returns>
         public static Member GetMemberInProjectByName(this Project item, string username = null)
         {
-            if (username == null) username = HttpContext.Current.User.Identity.Name;
+            if (username == null) username = Employee.GetCurrentUserName();
             return item.Members.FirstOrDefault(m => m.Name == username);
         }
 
@@ -481,7 +523,7 @@ namespace Entity
 
         public static Member GetProjectMemberByName(this Project item, string username = null)
         {
-            if (username == null) username = HttpContext.Current.User.Identity.Name;
+            if (username == null) username = Employee.GetCurrentUserName();
             return item.Members.FirstOrDefault(m => m.Name == username);
         }
 
@@ -498,7 +540,7 @@ namespace Entity
         public static RoleInProject RoleInProject(this Project item)
         {
             var p = CH.GetDataById<Project>(item.ID, "Members");
-            var name = HttpContext.Current.User.Identity.Name;
+            var name = Employee.GetCurrentUserName();
 
             if (Employee.GetCurrentRoleLevel() == 99999)
                 return Entity.RoleInProject.Administrator;
@@ -522,7 +564,7 @@ namespace Entity
     {
         public static bool SalesIsTheLoginUser(this Deal item)
         {
-            if (item.Sales == HttpContext.Current.User.Identity.Name)
+            if (item.Sales == Employee.GetCurrentUserName())
                 return true;
             else
                 return false;
@@ -552,7 +594,7 @@ namespace Entity
             if (item.CompanyRelationship != null)
                 return item.CompanyRelationship.ProjectID;
             else
-                return CH.GetDataById<CompanyRelationshipChildItem>(item.CompanyRelationshipID).ProjectID();
+                return CH.GetDataById<CompanyRelationshipChildItem>(item.CompanyRelationshipID).CompanyRelationship.ProjectID;
         }
     }
 

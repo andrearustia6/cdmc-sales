@@ -21,22 +21,6 @@ namespace Sales.Controllers
            return View(CH.GetAllData<Company>("Leads"));
         }
 
-        ///// <summary>
-        ///// 个人页面/维护自己上传的公司信息
-        ///// </summary>
-        ///// <returns></returns>
-        //public ViewResult CompanyMaintainIndex()
-        //{
-        //    return View(CH.GetAllData<Company>(c => c.Cerator == User.Identity.Name,"Leads"));
-        //}
-
-
-        //[ProductInterfaceRequired]
-        //public ViewResult ProductIndex(int projectid)
-        //{
-        //    return View(CH.GetAllData<Company>(c=>c.Projects.Any(p=>p.ID == projectid),"Leads"));
-        //}
-
         public ViewResult Details(int id)
         {
             return View(CH.GetDataById<Company>(id));
@@ -58,7 +42,7 @@ namespace Sales.Controllers
                 Image image = ImageController.UploadImg(Request, item.Image);
                 if (image != null)
                     item.ImageID = image.ID;
-                item.Cerator = User.Identity.Name;
+                
                 item.From = Employee.GetCurrentProfile("Department").ToString();
                 CH.Create<Company>(item);
                 return RedirectToAction("Index");

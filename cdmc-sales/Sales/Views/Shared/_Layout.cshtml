@@ -16,7 +16,7 @@
     @*                  *@
     <div class="top">
         <div class="top_1">
-           @Html.ActionLink("[" + User.Identity.Name + "]", "Index", "Account")
+           @Html.ActionLink("[" + Employee.GetCurrentUserName() + "]", "Index", "Account")
            @Html.ActionLink("[关于]", "Index", "About" ) 
            @Html.ActionLink("[退出]", "LogOff", "Account")
         </div>
@@ -60,7 +60,8 @@
                        menu.Add().Text("项目管理").ImageUrl("~/Content/Common/Icons/Chart.gif").Items(item =>
                        {
                            item.Add().Url("~/Project/index").Text("项目管理");
-                           item.Add().Url("~/Report/LeadCalls").Text("销售进度");
+                           item.Add().Url("~/Report/MemberLeadCalls").Text("销售进度");
+                           item.Add().Url("~/Report/LeadCalls").Text("进度统计");
                            item.Add().Url("~/AllDeal/index").Text("出单查看");
                            item.Add().Url("~/Research/index").Text("调研查看");
                            item.Add().Url("~/Report/MemberProgress").Text("业绩比较");

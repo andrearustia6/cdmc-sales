@@ -45,9 +45,9 @@ namespace MvcGlobalAuthorize.Controllers
                     }
                     else
                     {
-                        if (Employee.EqualToLeader() || Employee.EqualToSales())
-                            return RedirectToAction("mypage", "sales");
-                        else
+                        //if (Employee.EqualToLeader() || Employee.EqualToSales())
+                        //    return RedirectToAction("mypage", "sales");
+                        //else
                             return RedirectToAction("Index", "account");
                     }
                 }

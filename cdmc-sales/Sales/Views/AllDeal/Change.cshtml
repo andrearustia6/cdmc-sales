@@ -27,7 +27,7 @@
         var project = CH.GetDataById<Project>(projectid, "CompanyRelationships");
         if (lvl<=100 && lvl>=10)
         {
-            data = project.CompanyRelationships.FindAll(c=>c.WhoCallTheCompanyMemberName().Split('|').Any(s=>s==User.Identity.Name));
+            data = project.CompanyRelationships.FindAll(c => c.WhoCallTheCompanyMemberName().Split('|').Any(s => s == Employee.GetCurrentUserName()));
         }
         else
         {
@@ -86,7 +86,7 @@
     </div>
     <div class="editor-field">
     @{
-        var name = Model==null? HttpContext.Current.User.Identity.Name:Model.Sales;
+        var name = Model == null ? Employee.GetCurrentUserName() : Model.Sales;
         <input  name ="Sales" value="@name" />
       }
         @Html.ValidationMessageFor(model => model.Sales)

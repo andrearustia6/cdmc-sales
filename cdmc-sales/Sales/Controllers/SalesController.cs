@@ -141,7 +141,7 @@ namespace Sales.Controllers
 
             if (ModelState.IsValid)
             {
-                item.Sales = User.Identity.Name;
+                item.Sales = Employee.GetCurrentUserName();
                 CH.Create<Deal>(item);
                 return RedirectToAction("MyDealIndex", "Sales", new { projectid = projectid });
             }
@@ -156,7 +156,7 @@ namespace Sales.Controllers
 
             this.AddErrorStateIfSalesNoAccessRightToTheProject(projectid);
 
-            //ViewBag.CRMs = CH.GetAllData<CompanyRelationship>(c => c.WhoCallTheCompanyMemberName(User.Identity.Name));
+           
             if(ModelState.IsValid)
                return View();
             else
@@ -194,7 +194,7 @@ namespace Sales.Controllers
             ViewBag.ProjectID = projectid;
             var data = CH.GetAllData<Deal>();
             ViewBag.ProjectID = projectid;
-            return View(data.FindAll(d => d.Sales == User.Identity.Name && d.CompanyRelationship.ProjectID == projectid).OrderByDescending(m=>m.CreatedDate).ToList());
+            return View(data.FindAll(d => d.Sales == Employee.GetCurrentUserName() && d.CompanyRelationship.ProjectID == projectid).OrderByDescending(m => m.CreatedDate).ToList());
         }
 
         public ViewResult DisplayDeal(int? id, int? projectid)
@@ -384,7 +384,7 @@ namespace Sales.Controllers
                 var p = CH.GetDataById<Project>(projectid,"Members");
                 CH.Create<Company>(item);
                 var ms = new List<Member>();
-                ms.Add(p.GetMemberInProjectByName(User.Identity.Name));
+                ms.Add(p.GetMemberInProjectByName(Employee.GetCurrentUserName()));
 
                 var cr = new CompanyRelationship() { CompanyID = item.ID, ProjectID = projectid, Importancy = 1, Members = ms, Categorys = lc, CategoryString = categorystring };
                 CH.Create<CompanyRelationship>(cr);
@@ -532,7 +532,7 @@ namespace Sales.Controllers
             if (ModelState.IsValid)
             {
                 item = item.SetFlowNumber(project);
-                item.Member = User.Identity.Name;
+                item.Member = Employee.GetCurrentUserName();
                 var p = CH.GetDataById<Project>(item.ProjectID, "Members");
                 var member = p.GetMemberInProjectByName(item.Member);
                 item.SalesTypeID = member.SalesTypeID;
