@@ -28,6 +28,8 @@
                 {
                     keys.Add(s => s.ID);
                 })
+                .
+                .ClientEvents(events => events.("onManagementTabLoad"))
                 .Columns(c =>
                 {
                     c.Bound(item => item.Question).Width(200);
@@ -275,4 +277,8 @@
                                                                                                     .Resizable(resizing => resizing.Columns(true))
                                                                                                     .Pageable(p => p.PageSize(20)).Sortable())
    
+}
+@{ Html.Telerik().ScriptRegistrar().OnDocumentReady(@<text> 
+        onManagementTabLoad();
+    </text>);
 }

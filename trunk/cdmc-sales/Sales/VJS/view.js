@@ -1,5 +1,7 @@
 ﻿
-
+function onManagementTabLoad() {
+    alert("");
+}
 function initialTargetbreakdown() {
 //     $(this).closest('table').find('.result').text("￥" + totalresult);
     $(".t-input").each(function () {
