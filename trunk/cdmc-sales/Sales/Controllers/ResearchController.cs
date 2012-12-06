@@ -16,7 +16,7 @@ namespace Sales.Controllers
     {
         public ViewResult MyIndex()
         {
-            return View(CH.GetAllData<Research>(r=>r.Creator==User.Identity.Name).OrderByDescending(o=>o.CreatedDate).ToList());
+            return View(CH.GetAllData<Research>(r => r.Creator == Employee.GetCurrentUserName()).OrderByDescending(o => o.CreatedDate).ToList());
         }
 
 
@@ -26,7 +26,7 @@ namespace Sales.Controllers
                 return View(CH.GetAllData<Research>().OrderByDescending(o => o.CreatedDate).ToList());
             else if (Employee.EqualToManager())
             {
-                var ps = CH.GetAllData<Project>(p=> p.Manager==User.Identity.Name,"Members");
+                var ps = CH.GetAllData<Project>(p => p.Manager == Employee.GetCurrentUserName(), "Members");
                 var list = new List<Member>();
                 ps.ForEach(p => {
                    list.AddRange(p.Members);
@@ -55,7 +55,6 @@ namespace Sales.Controllers
             if (ModelState.IsValid)
             {
                // item.Contents = HttpUtility.HtmlEncode(item.Contents);
-                item.Creator = User.Identity.Name;
                 CH.Create<Research>(item);
                 return RedirectToAction("MyIndex");
             }

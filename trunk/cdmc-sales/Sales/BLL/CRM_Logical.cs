@@ -14,7 +14,7 @@ namespace BLL
         #region Project Management
         public List<Project> GetProjectByCurrentRole()
         {
-            var currentuser = HttpContext.Current.User.Identity.Name;
+            var currentuser = Employee.GetCurrentUserName();
             List<Project> projects = null;
             if (Employee.AsDirector())
             {
@@ -122,7 +122,7 @@ namespace BLL
         /// <returns></returns>
         public static List<Project> GetSalesInvolveProject()
         {
-            var name = HttpContext.Current.User.Identity.Name;
+            var name = Employee.GetCurrentUserName();
             var now = DateTime.Now;
             var projects = CH.GetAllData<Project>("Members");
 
@@ -132,7 +132,7 @@ namespace BLL
 
         public static List<Project> GetManagerInvolveProject()
         {
-            var name = HttpContext.Current.User.Identity.Name;
+            var name = Employee.GetCurrentUserName();
             var now = DateTime.Now;
             var projects = CH.GetAllData<Project>(p => p.Manager == name);
 
@@ -142,7 +142,7 @@ namespace BLL
 
         public static List<Project> GetDirectorInvolveProject()
         {
-            var name = HttpContext.Current.User.Identity.Name;
+            var name = Employee.GetCurrentUserName();
             var now = DateTime.Now;
             var projects = CH.GetAllData<Project>();
 
@@ -152,7 +152,7 @@ namespace BLL
 
         public static List<Project> GetProductInvolveProject()
         {
-            var name = HttpContext.Current.User.Identity.Name;
+            var name = Employee.GetCurrentUserName();
             var now = DateTime.Now;
             var projects = CH.GetAllData<Project>(p => p.Product == name);
             var data = projects.FindAll(p => p.IsActived == true && now > p.StartDate && now < p.EndDate);
@@ -161,7 +161,7 @@ namespace BLL
 
         public static List<Project> GetMarketInvolveProject()
         {
-            var name = HttpContext.Current.User.Identity.Name;
+            var name = Employee.GetCurrentUserName();
             var now = DateTime.Now;
             var projects = CH.GetAllData<Project>("Members");
 

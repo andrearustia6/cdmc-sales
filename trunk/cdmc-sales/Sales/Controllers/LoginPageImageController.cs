@@ -16,7 +16,11 @@ namespace Sales.Controllers
 
         public ViewResult Index()
         {
-            return View(CH.GetAllData<Image>(i => i.ImageArea == ImageArea.LoginPage.ToString()).OrderByDescending(o=>o.Sequence));
+            var data = CH.GetAllData<Image>(i => i.ImageArea == ImageArea.LoginPage.ToString());
+            if (data.Count > 0)
+                return View(data.OrderByDescending(o => o.Sequence).ToList());
+            else
+                return View();
         }
 
         public ViewResult Details(int id)

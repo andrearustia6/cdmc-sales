@@ -16,9 +16,7 @@ namespace Sales.Controllers
         {
             ViewBag.StartDate = startdate;
             ViewBag.EndDate = enddate;
-
-           
-            var projects = CH.GetAllData<Project>("Members");
+            var projects = this.GetProjectByAccount();
            
             return View(projects);
         }
@@ -41,6 +39,14 @@ namespace Sales.Controllers
             result.ViewLeadCallAmountInProjects = vl;
             
             return View(result);
+        }
+
+        public ActionResult MemberLeadCalls(DateTime? startdate, DateTime? enddate)
+        {
+            ViewBag.StartDate = startdate;
+            ViewBag.EndDate = enddate;
+            var ps = this.GetProjectByAccount();
+            return View(ps);
         }
 
         public ActionResult Progress(DateTime? startdate, DateTime? enddate)

@@ -8,7 +8,7 @@
 }
 
 <center><h2>我的主页</h2></center>
-@Html.Partial("personinfo", User.Identity.Name)
+@Html.Partial("personinfo", Employee.GetCurrentUserName())
 
 <fieldset>
 <legend>拨打电话安排列表</legend>
@@ -19,7 +19,7 @@
         var members = new List<Member>();
         Model.ForEach(p =>
         {
-            members.Add(p.Members.FirstOrDefault(m => m.Name == User.Identity.Name));
+            members.Add(p.Members.FirstOrDefault(m => m.Name == Employee.GetCurrentUserName()));
         });
 
         var calls = new List<ViewMemberLeadToCall>();
@@ -49,7 +49,7 @@
 <fieldset>
 <legend>未付款出单列表</legend>
 @{
-    var user = User.Identity.Name;
+    var user = Employee.GetCurrentUserName();
     var projects = CRM_Logical.GetSalesInvolveProject();
     var deals = CH.GetAllData<Deal>(d => projects.Any(p => p.ID == d.CompanyRelationship.ProjectID));
     deals = deals.FindAll(d => d.Sales == user && d.IsClosed == false && d.Abandoned == false);

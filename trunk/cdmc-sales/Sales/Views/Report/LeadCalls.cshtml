@@ -26,15 +26,16 @@
                     c.Bound(item => item.DMS).Width(65).Aggregate(item => item.Sum()).FooterTemplate(@<text>@item.Sum</text>);
                     c.Bound(item => item.New_DMS).Width(95).Aggregate(item => item.Sum()).FooterTemplate(@<text>@item.Sum</text>);
                     c.Bound(item => item.Pitched).Width(70).Aggregate(item => item.Sum()).FooterTemplate(@<text>@item.Sum</text>);
-                    c.Bound(item => item.Full_Pitched).Aggregate(item => item.Sum()).FooterTemplate(@<text>@item.Sum</text>);
+                    c.Bound(item => item.Full_Pitched).Width(100).Aggregate(item => item.Sum()).FooterTemplate(@<text>@item.Sum</text>);
+                    c.Bound(item => item.Call_Backed).Width(100).Aggregate(item => item.Sum()).FooterTemplate(@<text>@item.Sum</text>);
                     c.Bound(item => item.Waiting_For_Approval).Width(155).Aggregate(item => item.Sum()).FooterTemplate(@<text>@item.Sum</text>);
                     c.Bound(item => item.Qualified_Decision).Width(160).Aggregate(item => item.Sum()).FooterTemplate(@<text>@item.Sum</text>);
                     c.Bound(item => item.Closed).Width(70).Aggregate(item => item.Sum());
                     c.Bound(item => item.DealInAmount).Width(100).Aggregate(item => item.Sum()).FooterTemplate(@<text>@item.Sum</text>);
                     c.Bound(item => item.CheckInAmount).Width(100).Aggregate(item => item.Sum()).FooterTemplate(@<text>@item.Sum</text>); ;
                 }).Resizable(resizing => resizing.Columns(true))
-                                                                              .Filterable().Sortable()
-                                                                              .Scrollable(scrolling => scrolling.Height(150)))
+                                                                                                                      .Filterable().Sortable()
+                                                                                                                      .Scrollable(scrolling => scrolling.Height(200)))
     }
     </li>
     </ul>
