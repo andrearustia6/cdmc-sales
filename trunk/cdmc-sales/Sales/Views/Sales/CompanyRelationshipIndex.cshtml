@@ -15,7 +15,7 @@
                 })
                 .Columns(c =>
                 {
-                    c.Bound(item => item.Company.Name).Width(150);
+                    c.Bound(item => item.Company.Name).Title("公司名").Width(150);
                     c.Bound(item => item.Importancy).Width(100);
                     c.Bound(item => item.Company.Contact);
                     c.Bound(item => item.CategoryString).Title("Category");
@@ -43,7 +43,7 @@
      @(Html.Telerik().Grid(Leads).Name("Leads" + cr.CompanyID)
                             .Columns(c =>
                             {
-                                c.Bound(o => o.Name).Width(100);
+                                c.Bound(o => o.Name).Title("人名").Width(100);
                                 c.Bound(o => o.Title);
                                 c.Bound(o => o.Contact);
                                 c.Bound(o => o.Fax);

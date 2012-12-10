@@ -28,8 +28,6 @@
                 {
                     keys.Add(s => s.ID);
                 })
-                .
-                .ClientEvents(events => events.("onManagementTabLoad"))
                 .Columns(c =>
                 {
                     c.Bound(item => item.Question).Width(200);
@@ -173,8 +171,8 @@
                 })
                 .Columns(c =>
                 {
-                    c.Bound(item => item.Company.Name).Width(150);
-                    c.Bound(item => item).Template(@<text>@item.WhoCallTheCompanyMemberName()</text>).Title("拨打人").Width(70);
+                    c.Bound(item => item.Company.Name).Title("公司名").Width(150);
+                    c.Bound(item => item).Template(@<text>@item.WhoCallTheCompanyMemberName()</text>).Title("销售").Width(70);
                     c.Bound(item => item.Importancy).Width(80);
                     c.Bound(item => item.CategoryString).Title("分类");
                     c.Bound(item => item.Company.CompanyType.Name).Width(100);
@@ -234,7 +232,7 @@
      @(Html.Telerik().Grid(Leads).Name("Leads" + cr.CompanyID)
                             .Columns(c =>
                             {
-                                c.Bound(o => o.Name);
+                                c.Bound(o => o.Name).Title("人名");
                                 c.Bound(o => o.Title);
                                 c.Bound(o => o).Title("状态").Template(@<text>@item.GetLeadStatus(Model.ID)</text>);
                                 c.Bound(o => o).Title("销售进度").Template(@<span>  <a  target="_blank" href=@Url.Content("~/LeadCall/LeadIndex/?projectid=" + cr.ProjectID + "&leadid=" + item.ID + "&companyrelationshipid=" + item.CompanyID) >销售进度</a> </span>);
