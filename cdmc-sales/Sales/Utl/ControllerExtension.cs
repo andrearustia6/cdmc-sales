@@ -70,9 +70,21 @@ namespace System.Web.Mvc
             {
                 list = CH.GetAllData<Project>(p => p.IsActived == activate, "Members", "CompanyRelationships");
             }
-            else
+            else if (role.Level == Role.LVL_TeamLeader)
             {
-                list = CH.GetAllData<Project>(p=>p.Manager== username,"Members");
+                list = CH.GetAllData<Project>(p => p.TeamLeader == username, "Members");
+            }
+            else if (role.Level == Role.LVL_Manager)
+            {
+                list = CH.GetAllData<Project>(p => p.Manager == username, "Members");
+            }
+            else if (role.Level == Role.LVL_MarketInterface)
+            {
+                list = CH.GetAllData<Project>(p => p.Market == username, "Members");
+            }
+            else if (role.Level == Role.LVL_ProductInterface)
+            {
+                list = CH.GetAllData<Project>(p => p.Product == username, "Members");
             }
 
             return list;
