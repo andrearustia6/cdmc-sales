@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using Utl;
 using Entity;
 using BLL;
+using Model;
 
 namespace Sales.Controllers
 {
@@ -565,8 +566,34 @@ namespace Sales.Controllers
 
         #endregion
 
-       
+        #region contancted leads
+        public ViewResult ContectedLeads(int? projectid)
+        {
+            projectid = this.TrySetProjectIDForUser(projectid);
+            ViewBag.ProjectID = projectid;
 
+            var calls = CH.GetAllData<LeadCall>(l => l.CompanyRelationship.ProjectID == projectid && Employee.GetCurrentUserName() == l.Member.Name);
+            var ls = new List<ViewContactedLead>();
+            var crs = CH.GetAllData<CompanyRelationship>(c => c.ProjectID == projectid && c.Members.Any(m=>m.Name == Employee.GetCurrentUserName()));
+             foreach (var c in crs)
+            {
+                var leads = CH.GetAllData<Lead>(l => l.CompanyID == c.CompanyID);
+                var contectleads = leads.FindAll(l=>calls.Any(call=>call.Lead.Name==l.Name));
+                 foreach(var cl in contectleads)
+                 {
+                     ViewContactedLead v = new ViewContactedLead();
+                     v.Lead = cl;
+                     v.ID = cl.ID;
+                     v.CompanyRelationshipID = c.ID;
+                     v.LeadCalls = CH.GetAllData<LeadCall>(l=>l.Lead.Name == cl.Name&&l.Lead.CompanyID == cl.CompanyID);
+                     v.LastCall = v.LeadCalls.OrderByDescending(o => o.CallDate).ToList().FirstOrDefault();
+                     ls.Add(v);
+                 }
+            }
+             return View(ls.OrderByDescending(o=>o.LastCall.CallDate).ToList());
+        }
+
+        #endregion
         public ViewResult MyPage()
         {
             var ps = CRM_Logical.GetSalesInvolveProject();
