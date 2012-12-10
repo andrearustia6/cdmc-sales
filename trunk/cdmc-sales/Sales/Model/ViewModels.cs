@@ -6,6 +6,14 @@ using Entity;
 
 namespace Model
 {
+    public class ViewContactedLead
+    {
+        public int CompanyRelationshipID { get; set; }
+        public Lead Lead { get; set; }
+        public List<LeadCall> LeadCalls{get ;set;}
+        public LeadCall LastCall { get; set; }
+        public int ID { get; set; }
+    }
 
     public class ViewLeadCallAmount
     {

@@ -1,0 +1,29 @@
+﻿@{
+    ViewBag.Title = "已打客户列表";
+}
+
+@using Entity
+@using Utl
+@using Model
+@model List<ViewContactedLead>
+
+@Html.Partial("contenttitle", "我的出单")
+@Html.Partial("projectselector")
+@(Html.Telerik().Grid<ViewContactedLead>(Model).Name("Deal")
+                .Columns(c =>
+                {
+                    c.Bound(item => item.Lead.Name).Title("人名").Width(150);
+                    c.Bound(item => item.Lead.Company.Name).Title("公司名").Width(150);
+                    c.Bound(item => item.LastCall.CallDate).Width(150);                                                                                                                                                           
+                    c.Bound(item => item.LastCall.LeadCallType.Name).Width(90);
+                    c.Bound(item => item.LastCall.Result).Width(250);
+                    c.Bound(item => item.ID).Title("操作").Width(70).Template(@<span> <a  href=@Url.Content("~/Sales/LeadCallsIndex/?crid=" + item.CompanyRelationshipID + "&leadid=" + item.ID) >销售进度</a> 
+                     </span>);
+                })
+                    .Resizable(resizing => resizing.Columns(true))
+                    .Filterable().Sortable().Groupable()
+                    .Pageable(p => p.PageSize(20))
+                    .Scrollable(scrolling => scrolling.Height(350))
+
+)
+

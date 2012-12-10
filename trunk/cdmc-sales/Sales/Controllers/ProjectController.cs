@@ -392,5 +392,18 @@ namespace Sales.Controllers
         {
             return new DownloadResult { VirtualPath = fileurl, FileDownloadName = filename };
         }
+
+        public ActionResult LeadDelete(int id, int projectid)
+        {
+            ViewBag.ProjectID = projectid;
+            return View(CH.GetDataById<Lead>(id));
+        }
+
+        [HttpPost, ActionName("LeadDelete")]
+        public ActionResult DeleteConfirmed(int id, int projectid)
+        {
+            CH.Delete<Lead>(id);
+            return RedirectToAction("Management", "Project", new { id = projectid, tabindex = 3 });
+        }
     }
 }

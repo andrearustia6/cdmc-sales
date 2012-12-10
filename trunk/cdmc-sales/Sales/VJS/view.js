@@ -1,6 +1,6 @@
 ﻿
 function onManagementTabLoad() {
-    alert("");
+   
 }
 function initialTargetbreakdown() {
 //     $(this).closest('table').find('.result').text("￥" + totalresult);

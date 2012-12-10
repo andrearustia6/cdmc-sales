@@ -1,0 +1,26 @@
+﻿@model Entity.Lead
+
+@{
+    ViewBag.Title = "添加Lead";
+}
+@using Utl
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+
+
+    
+
+@using (Html.BeginForm())
+{
+    
+ @Html.ValidationSummary(true)
+ @Html.Hidden("ProjectID", (int)ViewBag.ProjectID)
+@Html.Partial(@"~\views\lead\display.cshtml", Model);
+@Html.Partial("displaycommon", Model)
+    <center>
+    <p>
+        <input type="submit" value=@SR.Delete /> @* |
+        @Html.ActionLink(SR.GobackToList, "Index")*@
+    </p>
+    </center>
+}
