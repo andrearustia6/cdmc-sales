@@ -99,7 +99,7 @@ namespace Entity
         public string Title { get; set; }
 
         [DataType(DataType.PhoneNumber)]
-        [Display(Name = "公司座机")]
+        [Display(Name = "直线")]
         public string Contact { get; set; }
 
         [DataType(DataType.EmailAddress)]
@@ -130,7 +130,7 @@ namespace Entity
     /// </summary>
     public class LeadCallType : EntityBase
     {
-        [Display(Name = "电话结果"), Required]
+        [Display(Name = "状态"), Required]
         public string Name { get; set; }
 
         [Display(Name = "结果代码")]
