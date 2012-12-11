@@ -68,6 +68,7 @@ namespace Sales.Controllers
             ViewBag.ProjectID = cr.ProjectID;
             if (ModelState.IsValid)
             {
+                leadcall.ProjectID = cr.ProjectID;
                 CH.Create<LeadCall>(leadcall);
                 return RedirectToAction("CompanyRelationshipLeadCallsIndex", new { crid = crid });
             }
@@ -473,6 +474,7 @@ namespace Sales.Controllers
         /// <returns></return
         public ViewResult CompanyRelationshipIndex(int? projectid)
         {
+          
             projectid = this.TrySetProjectIDForUser(projectid);
             ViewBag.ProjectID = projectid;
             
@@ -499,8 +501,6 @@ namespace Sales.Controllers
         #endregion
 
         #region message
-       
-
         public ViewResult MyMessageIndex(int? projectid)
         {
 
@@ -572,28 +572,25 @@ namespace Sales.Controllers
             projectid = this.TrySetProjectIDForUser(projectid);
             ViewBag.ProjectID = projectid;
 
-            var calls = CH.GetAllData<LeadCall>(l => l.CompanyRelationship.ProjectID == projectid && Employee.GetCurrentUserName() == l.Member.Name);
+            var account = Employee.GetCurrentUserName();
+            var calls = CH.GetAllData<LeadCall>(l => l.ProjectID == projectid && Employee.GetCurrentUserName() ==l.Member.Name,"CompanyRelationship","Lead");
+            var contectleads = calls.Distinct(new LeadCallDistinct());
             var ls = new List<ViewContactedLead>();
-            var crs = CH.GetAllData<CompanyRelationship>(c => c.ProjectID == projectid && c.Members.Any(m=>m.Name == Employee.GetCurrentUserName()));
-             foreach (var c in crs)
+            foreach (var cl in contectleads)
             {
-                var leads = CH.GetAllData<Lead>(l => l.CompanyID == c.CompanyID);
-                var contectleads = leads.FindAll(l=>calls.Any(call=>call.Lead.Name==l.Name));
-                 foreach(var cl in contectleads)
-                 {
-                     ViewContactedLead v = new ViewContactedLead();
-                     v.Lead = cl;
-                     v.ID = cl.ID;
-                     v.CompanyRelationshipID = c.ID;
-                     v.LeadCalls = CH.GetAllData<LeadCall>(l=>l.Lead.Name == cl.Name&&l.Lead.CompanyID == cl.CompanyID);
-                     v.LastCall = v.LeadCalls.OrderByDescending(o => o.CallDate).ToList().FirstOrDefault();
-                     ls.Add(v);
-                 }
+                ViewContactedLead v = new ViewContactedLead();
+                v.Lead = cl.Lead;
+                v.ID = cl.Lead.ID;
+                v.CompanyRelationshipID = cl.CompanyRelationshipID;
+
+                v.LastCall = calls.FindAll(c=>c.Lead.ID == cl.Lead.ID).OrderByDescending(o => o.CallDate).ToList().FirstOrDefault();
+                ls.Add(v);
             }
-             return View(ls.OrderByDescending(o=>o.LastCall.CallDate).ToList());
+            return View(ls.OrderByDescending(o=>o.LastCall.CallDate).ToList());
         }
 
         #endregion
+
         public ViewResult MyPage()
         {
             var ps = CRM_Logical.GetSalesInvolveProject();
@@ -606,4 +603,19 @@ namespace Sales.Controllers
             return new DownloadResult { VirtualPath = fileurl, FileDownloadName = filename };
         }
     }
+
+
+    public class LeadCallDistinct : IEqualityComparer<LeadCall>
+{
+    public bool Equals(LeadCall x, LeadCall y)
+    {
+        if (x.CallDate > y.CallDate)
+        { return true; }
+        else
+        { return false; }
+    }
+
+    public int GetHashCode(LeadCall obj) { return 0; }
+}
+
 }

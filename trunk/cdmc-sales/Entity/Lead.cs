@@ -147,8 +147,7 @@ namespace Entity
     /// </summary>
     public class LeadCall : CompanyRelationshipChildItem
     {
-        //[Display(Name = "First Pitch"), Required]
-        //public bool IsFirstPitch { get; set; }
+        public int? ProjectID { get; set; }
 
         public virtual Lead Lead { get; set; }
         [Display(Name = "致电客户"), Required]
