@@ -66,10 +66,13 @@ namespace Sales.Controllers
             var cr = CH.GetDataById<CompanyRelationship>(leadcall.CompanyRelationshipID);
             ViewBag.CompanyRelationshipID = crid;
             ViewBag.ProjectID = cr.ProjectID;
+
+           
             if (ModelState.IsValid)
             {
                 leadcall.ProjectID = cr.ProjectID;
                 CH.Create<LeadCall>(leadcall);
+
                 return RedirectToAction("CompanyRelationshipLeadCallsIndex", new { crid = crid });
             }
             else
@@ -305,18 +308,47 @@ namespace Sales.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult AddLead(Lead lead, int? projectid)
+        public ActionResult AddLead(Lead lead, int? projectid, int? LeadCallTypeID, string Result, DateTime? CallBackDate, DateTime? CallDate,int? crid)
         {
             this.AddErrorIfAllNamesEmpty(lead);
+
+            if (LeadCallTypeID != null)
+            {
+                if (CallDate == null)
+                {
+                    ModelState.AddModelError("", "已选择Call 类型，但是拨打时间为空");
+                }
+            }
             if (ModelState.IsValid)
             {
+               
                 CH.Create<Lead>(lead);
+
+                if (LeadCallTypeID != null)
+                {
+                    var mem = CH.GetAllData<Member>(m => m.ProjectID == projectid && m.Name == Employee.GetCurrentUserName()).FirstOrDefault();
+
+                    var leadcall = new LeadCall()
+                    {
+                        LeadID = lead.ID,
+                        LeadCallTypeID = LeadCallTypeID,
+                        MemberID = mem.ID,
+                        Result = Result,
+                        CallBackDate = CallBackDate,
+                        CompanyRelationshipID = crid,
+                        CallDate = CallDate.Value,
+                        ProjectID = projectid
+                    };
+                    CH.Create<LeadCall>(leadcall);
+
+                }
                 return RedirectToAction("CompanyRelationshipIndex", new { projectid = projectid });
             }
             else
             {
                 ViewBag.CompanyID = lead.CompanyID;
                 ViewBag.ProjectID = projectid;
+                ViewBag.CRID = crid;
                 return View(lead);
             }
         }
@@ -333,6 +365,7 @@ namespace Sales.Controllers
             if (cr != null)
             {
                 ViewBag.CompanyID = cr.CompanyID;
+                ViewBag.CRID = crid;
                 ViewBag.ProjectID = cr.ProjectID;
             }
             if (ModelState.IsValid)

@@ -13,10 +13,13 @@
                 .Columns(c =>
                 {
                     c.Bound(item => item.Lead.Name).Width(100);
-                    c.Bound(item => item.Result );
-                    c.Bound(item => item.CallDate).Width(120);
-                    c.Bound(item => item.CompanyRelationship.CompanyName).Width(120);
+                    
+                    c.Bound(item => item.Lead.Company.Contact).Width(110);
+                    c.Bound(item => item.Lead.Contact).Width(110);
+                    c.Bound(item => item.Lead.Mobile).Width(110);
                     c.Bound(item => item.LeadCallType.Name).Width(90);
+                    c.Bound(item => item.Result);
+                    c.Bound(item => item.CallDate).Width(120);
                     c.Bound(item => item.CallBackDate).Width(120);
 
                     c.Bound(item => item.ID).Title("操作").Width(150).Template(@<span>

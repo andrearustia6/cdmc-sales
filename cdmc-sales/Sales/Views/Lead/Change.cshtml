@@ -4,6 +4,7 @@
 
 <fieldset>
     <legend>@SR.Form</legend>
+    @Html.Hidden("CRID",ViewBag.CRID as int?)
     <div class="editor-label">
         @Html.LabelFor(model => model.Name_EN)
     </div>
@@ -93,3 +94,39 @@
      }
     </div>
 </fieldset>
+
+@if (Model == null||Model.ID==0)
+{
+   <fieldset>
+   <legend>在此新建的Lead下继续添加Call，如果选了Call类型，表示继续生产Call 结果，如果不选，表示只是录入Lead信息</legend>
+
+        <div class="editor-label">
+            @Html.Label("LeadCallTypeID", "Call 类型")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("LeadCallTypeID", new SelectList(CH.GetAllData<LeadCallType>(),"ID","Name"),"-请选择-")
+        </div>
+
+        <div class="editor-label">
+            @Html.Label("Result", "结果")
+        </div>
+        <div class="editor-field">
+            @Html.TextArea("Result")
+        </div>
+
+        <div class="editor-label">
+            @Html.Label("CallBackDate","回打时间")
+        </div>
+        <div class="editor-field">
+            @Html.Telerik().DateTimePicker().Name("CallBackDate")
+        </div>
+
+        <div class="editor-label">
+            @Html.Label("CallDate","拨打时间")
+        </div>
+        <div class="editor-field">
+            @Html.Telerik().DateTimePicker().Name("CallDate").Value(DateTime.Now)
+        </div>
+ 
+   </fieldset> 
+}

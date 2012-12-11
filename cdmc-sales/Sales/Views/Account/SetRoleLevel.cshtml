@@ -56,6 +56,14 @@
             @Html.Telerik().DatePickerFor(m => m.StartDate)
             @Html.ValidationMessageFor(m => m.StartDate)
         </div>
+
+        <div class="editor-label">
+            @Html.Label("是否激活")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownListFor(m => m.IsActivated)
+            @Html.ValidationMessageFor(m => m.IsActivated)
+        </div>
     </fieldset>
     
     <div>
