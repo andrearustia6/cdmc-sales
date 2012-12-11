@@ -172,7 +172,7 @@
                 .Columns(c =>
                 {
                     c.Bound(item => item.Company.Name).Title("公司名").Width(150);
-                    c.Bound(item => item).Template(@<text>@item.WhoCallTheCompanyMemberName()</text>).Title("销售").Width(70);
+                    c.Bound(item => item.SalesOnTheCompany).Title("销售").Width(70);
                     c.Bound(item => item.Importancy).Width(80);
                     c.Bound(item => item.CategoryString).Title("分类");
                     c.Bound(item => item.Company.CompanyType.Name).Width(100);
