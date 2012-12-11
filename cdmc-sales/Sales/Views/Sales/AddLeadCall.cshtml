@@ -9,7 +9,8 @@
 
 @using (Html.BeginForm()) {
     @Html.ValidationSummary(true)
-    @Html.Partial(@"~\views\leadcall\change.cshtml",Model);
+    @Html.HiddenFor(m => m.ProjectID)
+    @Html.Partial(@"~\views\leadcall\change.cshtml", Model);
     @Html.Partial(@"editcommon", Model);
 <div>
   <center>

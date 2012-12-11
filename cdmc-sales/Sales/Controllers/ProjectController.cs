@@ -350,6 +350,13 @@ namespace Sales.Controllers
             {
                 CH.Delete<Template>(t.ID);
             });
+
+            var lcs = CH.GetAllData<LeadCall>(l => l.ProjectID == id);
+            lcs.ForEach(l =>
+            {
+                CH.Delete<LeadCall>(l.ID);
+            });
+            
             p.Messages.ForEach(m =>
             {
                 CH.Delete<Message>(m.ID);

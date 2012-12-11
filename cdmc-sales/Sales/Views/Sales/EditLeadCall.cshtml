@@ -11,6 +11,7 @@
 @using (Html.BeginForm()) {
     @Html.ValidationSummary(true)
     @Html.HiddenFor(m => m.ID)
+    @Html.HiddenFor(m => m.ProjectID)
     @Html.Partial(@"~\views\leadCall\change.cshtml", Model);
     @Html.Partial(@"editcommon", Model);
 <div>

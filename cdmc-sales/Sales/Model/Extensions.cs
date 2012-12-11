@@ -395,24 +395,24 @@ namespace Entity
         {
             var data = new List<CompanyRelationship>();
             if (item == null) return data;
-            var cs = CH.GetAllData<CompanyRelationship>(c => c.ProjectID == item.ID);
+            var cs = CH.GetAllData<CompanyRelationship>(c => c.ProjectID == item.ID&& c.SalesOnTheCompany.Split('|').Any(s=>s==user),"Company");
 
-            var member = item.Members.FirstOrDefault(m => m.Name == user);
-            if (member != null && member.CharactersSet != null)
-            {
+            //var member = item.Members.FirstOrDefault(m => m.Name == user);
+            //if (member != null && member.CharactersSet != null)
+            //{
 
 
-                cs.ForEach(i =>
-                {
-                    var members = i.WhoCallTheCompanyMember();
-                    if (members.Any(m => m.Name == user))
-                    {
-                        data.Add(i);
-                    }
-                });
-            }
+            //    cs.ForEach(i =>
+            //    {
+            //        var members = i.WhoCallTheCompanyMember();
+            //        if (members.Any(m => m.Name == user))
+            //        {
+            //            data.Add(i);
+            //        }
+            //    });
+            //}
 
-            return data;
+            return cs;
 
         }
         /// <summary>
