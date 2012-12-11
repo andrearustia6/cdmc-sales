@@ -33,10 +33,10 @@
         {
             calls = calls.OrderByDescending(o => o.LeadCall.CallBackDate).ToList();
              <table class="calltable" >
-             <tr><th>客户名称</th><th>职位</th><th>所属公司</th><th>联系方式</th><th>手机</th><th>拨打时间</th><th>所属项目</th><th>销售进度</th></tr>
+             <tr><th>客户名称</th><th>职位</th><th>所属公司</th><th>联系方式</th><th>手机</th><th>拨打时间</th><th>所属项目</th><th>Call List</th></tr>
               @foreach (var c in calls)
               {
-                 <tr><td>@c.LeadName</td><td>@c.LeadTitle</td><td>@c.Companyname</td><td>@c.Contact</td><td>@c.Mobile</td><td>@c.CallDateTime</td><td>@c.ProjectCode</td><td><a  target="_blank" href=@Url.Content("~/Sales/LeadCallsIndex/?crid=" + c.LeadCall.CompanyRelationshipID + "&leadid=" + c.LeadCall.LeadID) >销售进度</a></td></tr>
+                 <tr><td>@c.LeadName</td><td>@c.LeadTitle</td><td>@c.Companyname</td><td>@c.Contact</td><td>@c.Mobile</td><td>@c.CallDateTime</td><td>@c.ProjectCode</td><td><a  target="_blank" href=@Url.Content("~/Sales/LeadCallsIndex/?crid=" + c.LeadCall.CompanyRelationshipID + "&leadid=" + c.LeadCall.LeadID) >Call List</a></td></tr>
               }
             </table>
         }
