@@ -130,14 +130,15 @@ namespace Entity
         /// <param name="item"></param>
         /// <param name="cr"></param>
         /// <returns></returns>
-        public static bool IsAbleToAccessTheCompanyRelationship(this Member item, CompanyRelationship cr)
-        {
-            var d = cr.WhoCallTheCompanyMember();
-            if (d.Any(i => i.Name == Employee.GetCurrentUserName()))
-                return true;
-            else
-                return false;
-        }
+        //public static bool IsAbleToAccessTheCompanyRelationship(this Member item, CompanyRelationship cr)
+        //{
+          
+        //    var d = cr.WhoCallTheCompanyMember();
+        //    if (d.Any(i => i.Name == Employee.GetCurrentUserName()))
+        //        return true;
+        //    else
+        //        return false;
+        //}
 
         /// <summary>
         /// 查看以前参加过的项目
@@ -268,11 +269,11 @@ namespace Entity
 
         }
 
-        public static bool IsAbleToAccessTheCompanyRelationship(this Member item, int? crid)
-        {
-            var cr = CH.GetDataById<CompanyRelationship>(crid);
-            return item.IsAbleToAccessTheCompanyRelationship(cr);
-        }
+        //public static bool IsAbleToAccessTheCompanyRelationship(this Member item, int? crid)
+        //{
+        //    var cr = CH.GetDataById<CompanyRelationship>(crid);
+        //    return item.IsAbleToAccessTheCompanyRelationship(cr);
+        //}
 
         public static ViewLeadCallAmount CallAmount(this Member item, DateTime? startdate, DateTime? enddate)
         {
@@ -395,22 +396,7 @@ namespace Entity
         {
             var data = new List<CompanyRelationship>();
             if (item == null) return data;
-            var cs = CH.GetAllData<CompanyRelationship>(c => c.ProjectID == item.ID&& c.SalesOnTheCompany.Split('|').Any(s=>s==user),"Company");
-
-            //var member = item.Members.FirstOrDefault(m => m.Name == user);
-            //if (member != null && member.CharactersSet != null)
-            //{
-
-
-            //    cs.ForEach(i =>
-            //    {
-            //        var members = i.WhoCallTheCompanyMember();
-            //        if (members.Any(m => m.Name == user))
-            //        {
-            //            data.Add(i);
-            //        }
-            //    });
-            //}
+            var cs = CH.GetAllData<CompanyRelationship>(c => c.ProjectID == item.ID&& c.Members.Any(s=>s.Name==user),"Company","Members");
 
             return cs;
 
@@ -622,9 +608,9 @@ namespace Entity
         /// <param name="companyid"></param>
         /// <param name="projectid"></param>
         /// <returns></returns>
-        public static List<Member> WhoCallTheCompanyMember(this CompanyRelationship item)
+        public static List<Member> WhoCallTheCompanyMember(this CompanyRelationship item, List<Member> members)
         {
-            var ms = CH.GetAllData<Member>(m => m.CompanyRelationships.Any(c => c.ID == item.ID), "CompanyRelationships");
+            var ms = members.FindAll(m => m.CompanyRelationships.Any(c => c.ID == item.ID));
             List<Member> result = new List<Member>();
             result.AddRange(ms);
 
@@ -656,9 +642,9 @@ namespace Entity
             return result;
         }
 
-        public static string WhoCallTheCompanyMemberName(this CompanyRelationship item)
+        public static string WhoCallTheCompanyMemberName(this CompanyRelationship item,List<Member> members)
         {
-            var ml = item.WhoCallTheCompanyMember();
+            var ml = item.WhoCallTheCompanyMember(members);
 
             string ms = string.Empty;
 
