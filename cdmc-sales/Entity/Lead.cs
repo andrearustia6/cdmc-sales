@@ -12,7 +12,7 @@ namespace Entity
     /// </summary>
     public class Company : NameEntity
     {
-        [Display(Name = "公司座机"), MaxLength(100)]
+        [Display(Name = "公司总机"), MaxLength(100)]
         public string Contact { get; set; }
 
         [Display(Name = "公司地址"), MaxLength(100)]

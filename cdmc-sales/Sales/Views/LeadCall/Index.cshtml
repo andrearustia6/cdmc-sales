@@ -1,7 +1,7 @@
-﻿@{ViewBag.Title="销售进度记录列表";}
+﻿@{ViewBag.Title="Call List记录列表";}
 @using Entity
 @model List<LeadCall>
-@Html.Partial("contenttitle", "销售进度")           
+@Html.Partial("contenttitle", "Call List")           
 @(Html.Telerik().Grid<LeadCall>(Model).Name("LeadCall")
                 .DataKeys(keys =>
                 {

@@ -1,11 +1,11 @@
 ﻿@{
-    ViewBag.Title = "客户公司销售进度列表";
+    ViewBag.Title = "客户公司Call List列表";
 }
 
 @using Entity
 @model List<LeadCall>
-@Html.Partial("contenttitle", "销售进度")           
-@(Html.Telerik().Grid<LeadCall>(Model.OrderByDescending(o => o.CreatedDate).ToList()).Name("LeadCall").ToolBar(commands => commands.Custom().Text("创建销售进度").Action("AddLeadCall", "Sales"))
+@Html.Partial("contenttitle", "Call List")           
+@(Html.Telerik().Grid<LeadCall>(Model.OrderByDescending(o => o.CreatedDate).ToList()).Name("LeadCall").ToolBar(commands => commands.Custom().Text("创建Call List").Action("AddLeadCall", "Sales"))
                 .DataKeys(keys =>
                 {
                     keys.Add(s => s.ID);

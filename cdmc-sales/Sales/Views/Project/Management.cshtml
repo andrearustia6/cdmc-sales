@@ -178,7 +178,7 @@
                     c.Bound(item => item.Company.CompanyType.Name).Width(100);
                     c.Bound(item => item.ID).Title("操作").Width(260).Template(@<span><a  href=@Url.Content("~/CompanyRelationship/Edit/" + item.ID) >建议拨打人数</a> | 
                     <a  href=@Url.Content("~/Project/AppointSales/?projectid=" + p.ID + "&companyrelationshipid=" + item.ID) >指定销售</a>
-                     | <a target="_blank" href=@Url.Content("~/LeadCall/CompanyRelationshipIndex/?projectid=" + p.ID + "&companyrelationshipid=" + item.ID) >销售进度</a> 
+                     | <a target="_blank" href=@Url.Content("~/LeadCall/CompanyRelationshipIndex/?projectid=" + p.ID + "&companyrelationshipid=" + item.ID) >Call List</a> 
                      | <a href=@Url.Content("~/companyrelationship/delete/" + item.ID) >
                             删除</a>  </span>);
 
@@ -236,8 +236,8 @@
                                 c.Bound(o => o.Name).Title("人名");
                                 c.Bound(o => o.Title);
                                 c.Bound(o => o).Title("状态").Template(@<text>@item.GetLeadStatus(Model.ID)</text>);
-                                c.Bound(o => o).Title("销售进度").Template(@<span> <a href=@Url.Content("~/project/leaddelete/?id=" + item.ID + "&projectid=" + cr.ProjectID) >
-                            删除</a> | <a  target="_blank" href=@Url.Content("~/LeadCall/LeadIndex/?projectid=" + cr.ProjectID + "&leadid=" + item.ID + "&companyrelationshipid=" + cr.ID) >销售进度</a> </span>);
+                                c.Bound(o => o).Title("Call List").Template(@<span> <a href=@Url.Content("~/project/leaddelete/?id=" + item.ID + "&projectid=" + cr.ProjectID) >
+                            删除</a> | <a  target="_blank" href=@Url.Content("~/LeadCall/LeadIndex/?projectid=" + cr.ProjectID + "&leadid=" + item.ID + "&companyrelationshipid=" + cr.ID) >Call List</a> </span>);
                             })
                                          .Resizable(resizing => resizing.Columns(true))
                                          .Pageable(p => p.PageSize(20))

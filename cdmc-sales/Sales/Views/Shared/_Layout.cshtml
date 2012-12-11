@@ -39,7 +39,7 @@
                            item.Add().Text("模板").Url("~/TemplateType/index");
                            item.Add().Text("Block").Url("~/OnPhoneBlockType/index");
                            item.Add().Text("销售类型").Url("~/Salestype/index");
-                           item.Add().Text("销售进度").Url("~/LeadCallType/index");
+                           item.Add().Text("Call List").Url("~/LeadCallType/index");
                            item.Add().Text("区号管理").Url("~/DistrictNumber/index");
                            //item.Add().Text("角色管理").Url("~/Role/index");
                            item.Add().Text("登陆图片").Url("~/loginpageimage/index");
@@ -60,8 +60,8 @@
                        menu.Add().Text("项目管理").ImageUrl("~/Content/Common/Icons/Chart.gif").Items(item =>
                        {
                            item.Add().Url("~/Project/index").Text("项目管理");
-                           item.Add().Url("~/Report/MemberLeadCalls").Text("销售进度");
-                           item.Add().Url("~/Report/LeadCalls").Text("进度统计");
+                           item.Add().Url("~/Report/MemberLeadCalls").Text("Call List");
+                           item.Add().Url("~/Report/LeadCalls").Text("Call List统计");
                            item.Add().Url("~/AllDeal/index").Text("出单查看");
                            item.Add().Url("~/Research/index").Text("调研查看");
                            item.Add().Url("~/Report/MemberProgress").Text("业绩比较");
@@ -87,8 +87,8 @@
                    {
                        menu.Add().Text("项目管理").ImageUrl("~/Content/Common/Icons/Chart.gif").Items(item =>
                        {
-                           item.Add().Url("~/Report/MemberLeadCalls").Text("销售进度");
-                           item.Add().Url("~/Report/LeadCalls").Text("进度统计");
+                           item.Add().Url("~/Report/MemberLeadCalls").Text("Call List");
+                           item.Add().Url("~/Report/LeadCalls").Text("Call List统计");
                            item.Add().Url("~/AllDeal/index").Text("出单查看");
                            item.Add().Url("~/Report/MemberProgress").Text("业绩比较");
                        });
@@ -109,8 +109,8 @@
                        {
                            item.Add().Url("~/Sales/mypage").Text("我的主页");
                            item.Add().Url("~/Research/MyIndex").Text("调研管理");
-                           item.Add().Url("~/Sales/CompanyRelationshipIndex").Text("分配公司");
-                           item.Add().Url("~/Sales/ContectedLeads").Text("已打客户");
+                           item.Add().Url("~/Sales/CompanyRelationshipIndex").Text("可打公司");
+                           item.Add().Url("~/Sales/ContectedLeads").Text("Call List");
                            
                            item.Add().Url("~/Sales/MyDealIndex").Text("我的出单");
                            item.Add().Url("~/Sales/PhoneSaleSupport").Text("话术支持");
