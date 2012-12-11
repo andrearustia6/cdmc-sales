@@ -6,8 +6,6 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Entity
 {
-
-
     /// <summary>
     /// 调研
     /// </summary>
@@ -18,6 +16,10 @@ namespace Entity
 
         [Display(Name = "内容")]
         public String Contents { get; set; }
+
+        //[Display(Name = "公司架构")]
+        //public virtual Image Image { get; set; }
+        //public int? ImageID { get; set; }
 
     }
 

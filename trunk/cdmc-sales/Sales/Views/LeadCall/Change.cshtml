@@ -32,7 +32,7 @@
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.LeadCallTypeID, "Call List")
+            @Html.LabelFor(model => model.LeadCallTypeID, "Call 类型")
         </div>
         <div class="editor-field">
             @Html.DropDownList("LeadCallTypeID", new SelectList(CH.GetAllData<LeadCallType>(),"ID","Name"),"-请选择-")

@@ -55,6 +55,9 @@ namespace Entity {
         [Display(Name = "是否激活")]
         public bool IsActivated { get; set; }
 
+        [Display(Name = "销售职级")]
+        public string SalesLevel { get; set; }
+
         [Display(Name = "入职时间")]
         public DateTime? StartDate { get; set; }
 
