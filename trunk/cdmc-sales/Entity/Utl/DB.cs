@@ -41,6 +41,7 @@ namespace Utl
         public DbSet<Message> Messages { get; set; }
         public DbSet<Image> Images { get; set; }
         public DbSet<CompanyRelationship> CompanyRelationships { get; set; }
+        public DbSet<Role> Role { get; set; }
 
         public DB()
         {
