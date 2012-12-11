@@ -6,7 +6,7 @@
 @using BLL
 
 @model Project
-
+@Html.Hidden("tabindex")
 @Html.Partial("contenttitle", "项目管理")
 @*@Html.Partial("MemberEditor", new LeadCall() { LeadID = Model.ID })
 @Html.Partial("LeadPackageEditor", CRM_Logical.GetTargetOfPackage(Model, (object)ViewBag.ProjectID))*@
@@ -19,7 +19,7 @@
     items.Add().Text("出单情况").Content(@<text>@Deals(Model)</text>);
     items.Add().Text("留言答疑").Content(@<text>@Messages(Model)</text>);
 
-})
+}).ClientEvents(e=>e.OnSelect("onManagementTabLoad"))
 )
 @helper Messages(Project project)
     {
@@ -192,6 +192,7 @@
                                                         .Pageable(page => page.PageSize(10))
                                                         .Filterable()
                                                         .Scrollable(scrolling => scrolling.Height(350))
+                                                       
                                               )
 }
 
@@ -278,6 +279,6 @@
    
 }
 @{ Html.Telerik().ScriptRegistrar().OnDocumentReady(@<text> 
-        onManagementTabLoad();
+      @*  onManagementTabLoad();*@
     </text>);
 }
