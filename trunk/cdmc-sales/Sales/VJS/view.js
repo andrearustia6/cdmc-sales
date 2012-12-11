@@ -1,7 +1,24 @@
 ﻿
-function onManagementTabLoad() {
-   
-}
+<<<<<<< .mine
+function onManagementTabLoad(e) {
+    if (e) {
+        var $t = $(e.contentElement);
+        var id = $t.attr("id");
+        var arrstr = id.split("-");
+        var index = parseInt(arrstr[1]) - 1;
+        $('#tabindex').val(index);
+
+        $t.find('.t-numeric a').each(function () {
+            var $this = $(this);
+            var href = $this.attr('href');
+            var sprit = href.split("&tabindex=");
+            if (sprit.length == 1) {
+                href += '&tabindex=' + index;
+                $this.attr('href', href);
+            }
+        });
+    }
+
 function initialTargetbreakdown() {
 //     $(this).closest('table').find('.result').text("￥" + totalresult);
     $(".t-input").each(function () {
