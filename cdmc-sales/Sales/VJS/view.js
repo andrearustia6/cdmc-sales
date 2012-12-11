@@ -1,5 +1,5 @@
 ﻿
-<<<<<<< .mine
+
 function onManagementTabLoad(e) {
     if (e) {
         var $t = $(e.contentElement);
@@ -18,7 +18,7 @@ function onManagementTabLoad(e) {
             }
         });
     }
-
+}
 function initialTargetbreakdown() {
 //     $(this).closest('table').find('.result').text("￥" + totalresult);
     $(".t-input").each(function () {
