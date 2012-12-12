@@ -5,6 +5,11 @@ using System.Web;
 using Utl;
 using Model;
 using System.Web.Profile;
+using System.Data.SqlClient;
+using System.Configuration;
+using System.Data;
+using System.Data.OleDb;
+using System.Web.Security;
 
 namespace Entity
 {
@@ -300,7 +305,7 @@ namespace Entity
 
             lcs.FindAll(lc => lc.CallDate > startdate && lc.CallDate < enddate).ForEach(l =>
             {
-                if (l.LeadCallType.Name == "Others" || l.LeadCallType.Name == "Blowed" || l.LeadCallType.Name == "Not Pitched")
+                //if (l.LeadCallType.Name == "Others" || l.LeadCallType.Name == "Blowed" || l.LeadCallType.Name == "Not Pitched")
                      result.Cold_Calls++;
 
                 if (l.LeadCallType.Code > 30)

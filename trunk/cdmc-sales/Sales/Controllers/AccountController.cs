@@ -175,7 +175,9 @@ namespace MvcGlobalAuthorize.Controllers
             data = objProfile.GetPropertyValue("BirthDay");
             DateTime.TryParse(data.ToString(), out b);
             um.BirthDay = b;
-            um.Contact = objProfile.GetPropertyValue("Contact") as string;
+            int contact = 0;
+            Int32.TryParse(objProfile.GetPropertyValue("Contact").ToString(),out contact);
+            um.Contact = contact;
             um.Mobile = objProfile.GetPropertyValue("Mobile") as string;
             um.Gender = objProfile.GetPropertyValue("Gender") as string;
             um.DisplayName = objProfile.GetPropertyValue("DisplayName") as string;
@@ -235,7 +237,9 @@ namespace MvcGlobalAuthorize.Controllers
                 data = objProfile.GetPropertyValue("BirthDay");
                 DateTime.TryParse(data.ToString(), out b);
                 um.BirthDay = b;
-                um.Contact = objProfile.GetPropertyValue("Contact") as string;
+                int con = 0;
+                Int32.TryParse(objProfile.GetPropertyValue("Contact").ToString(),out con);
+                um.Contact = con;
                 um.Mobile = objProfile.GetPropertyValue("Mobile") as string;
                 um.Gender = objProfile.GetPropertyValue("Gender") as string;
                 um.DisplayName = objProfile.GetPropertyValue("DisplayName") as string;

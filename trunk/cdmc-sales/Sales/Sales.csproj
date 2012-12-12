@@ -220,6 +220,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CompanyRelationshipController.cs" />
     <Compile Include="Controllers\DealController.cs" />
+    <Compile Include="Controllers\Type\DepartmentController.cs" />
     <Compile Include="Controllers\DistrictNumberController.cs" />
     <Compile Include="Controllers\ImageBrowserController.cs" />
     <Compile Include="Controllers\LeadCallController.cs" />
@@ -229,6 +230,7 @@
     <Compile Include="Controllers\MessageController.cs" />
     <Compile Include="Controllers\PhoneSaleSupportController.cs" />
     <Compile Include="Controllers\TeamLeaderController.cs" />
+    <Compile Include="Controllers\Type\ExpLevelController.cs" />
     <Compile Include="Controllers\Type\PackageController.cs" />
     <Compile Include="Controllers\Type\PackageItemController.cs" />
     <Compile Include="Controllers\ProductInterfaceController.cs" />
@@ -1341,6 +1343,24 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Project\LeadDelete.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Department\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Department\Display.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Department\Change.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\ExpLevel\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\ExpLevel\Display.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\ExpLevel\Change.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

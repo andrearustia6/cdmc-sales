@@ -28,7 +28,7 @@ namespace Sales.Controllers
             {
                 data = CH.GetDataById<CompanyRelationship>(crid, "LeadCalls").LeadCalls;
             }
-            return View("SalesLeadCallsIndex", data);
+            return View("SalesLeadCallsIndex", data.OrderByDescending(o=>o.CallDate).ToList());
         }
 
         /// <summary>
@@ -280,6 +280,9 @@ namespace Sales.Controllers
             ViewBag.CompanyRelationshipID = crid;
             if (ModelState.IsValid)
             {
+                //Image image = ImageController.UploadImg(Request, lead.Image);
+                //if (image != null)
+                //    item.ImageID = image.ID;
                 var lead = CH.GetDataById<Lead>(id);
                 return View(lead);
             }
@@ -319,9 +322,17 @@ namespace Sales.Controllers
                     ModelState.AddModelError("", "已选择Call 类型，但是拨打时间为空");
                 }
             }
+            var exist = CH.GetAllData<Lead>(l => l.CompanyID == lead.CompanyID && lead.Name_CH == l.Name_CH && l.Name_EN == lead.Name_EN).FirstOrDefault();
+            if (exist != null)
+            {
+                ModelState.AddModelError("", "此公司下已经存在相同名字的Lead，无法添加");
+            }
+            
             if (ModelState.IsValid)
             {
-               
+                //Image image = ImageController.UploadImg(Request, lead.Image);
+                //if (image != null)
+                //    item.ImageID = image.ID;
                 CH.Create<Lead>(lead);
 
                 if (LeadCallTypeID != null)
@@ -381,6 +392,7 @@ namespace Sales.Controllers
             if (projectid == null) return RedirectToAction("CompanyRelationshipIndex", "Sales");
 
             this.AddErrorStateIfSalesNoAccessRightToTheProject(projectid);
+            
 
             if (ModelState.IsValid)
             {
@@ -515,7 +527,7 @@ namespace Sales.Controllers
             {
                 var project = CH.GetDataById<Project>(projectid, "Members");
                 var data = project.GetCRM();
-                return View(data);
+                return View(data.OrderByDescending(o=>o.CreatedDate).ToList());
             }
             else
             {
