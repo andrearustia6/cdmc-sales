@@ -26,6 +26,14 @@
             <div>
                 @{ Html.Telerik().Menu().Name("Menu1").Items(menu =>
                {
+                   if (Employee.EqualToAdministrator())
+                   {
+                       menu.Add().Text("配置").ImageUrl("~/Content/Common/Icons/wpf.png").Items(item =>
+                      {
+                          item.Add().Text("部门").Url("~/department/index");
+                          item.Add().Text("职级").Url("~/explevel/index");
+                      });
+                   }
                    if (Employee.AsDirector())
                    {
                        menu.Add().Text("配置").ImageUrl("~/Content/Common/Icons/mvc.png").Items(item =>

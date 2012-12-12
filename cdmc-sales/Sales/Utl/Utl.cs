@@ -54,7 +54,9 @@ namespace Utl
             var gender = objProfile.GetPropertyValue("Gender") as string;
             var displayName = objProfile.GetPropertyValue("DisplayName") as string;
             var mobile = objProfile.GetPropertyValue("Mobile") as string;
-            var contact = objProfile.GetPropertyValue("Contact") as string;
+            int con = 0;
+            Int32.TryParse(objProfile.GetPropertyValue("Contact").ToString(),out con);
+            var contact = con;
             var department = objProfile.GetPropertyValue("Department") as string;
             var startDate = objProfile.GetPropertyValue("StartDate") as string;
             DateTime date;

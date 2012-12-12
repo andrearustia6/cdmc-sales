@@ -7,11 +7,13 @@ using EntityUtl;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Data.Entity.Infrastructure;
+using System.ComponentModel.DataAnnotations;
 
 namespace Utl
 {
     public class DB : DbContext
     {
+        public DbSet<ExpLevel> ExpLevels { get; set; }
         public DbSet<SalesType> SalesTypes { get; set; }
         public DbSet<Company> Companys { get; set; }
         public DbSet<CompanyType> CompanyTypes { get; set; }
@@ -271,6 +273,40 @@ namespace Utl
             context.Members.Add(new Member() { ID = 7, ProjectID = 2, Name = "tina", SalesTypeID = 1 });
             context.Members.Add(new Member() { ID = 8, ProjectID = 3, Name = "rachel", SalesTypeID = 1 });
         }
+    }
+
+    public class Bill
+    {
+   
+        public string Phone { get; set; }
+        public string Duration { get; set; }
+        public string Type { get; set; }
+        public string DialNumber { get; set; }
+    }
+
+    public class BillDB : DbContext
+    {
+      
+
+        public DbSet<Bill> Bills { get; set; }
+       
+
+        public BillDB()
+        {
+            //Database.SetInitializer<DB>(new DBInitializer());
+            Database.SetInitializer<BillDB>(null);
+
+
+
+            this.Configuration.ValidateOnSaveEnabled = false;
+        }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
+        }
+
+
     }
 
 

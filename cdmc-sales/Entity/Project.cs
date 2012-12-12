@@ -6,6 +6,18 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Entity
 {
+    public class ExpLevel : EntityBase
+    {
+        [Display(Name = "级别"), Required]
+        public String Name { get; set; }
+
+        [Display(Name = "部门")]
+        public virtual Department Department { get; set; }
+
+        [Display(Name = "部门")]
+        public int? DepartmentID  { get; set; }
+    }
+
     /// <summary>
     /// 调研
     /// </summary>
@@ -17,10 +29,9 @@ namespace Entity
         [Display(Name = "内容")]
         public String Contents { get; set; }
 
-        //[Display(Name = "公司架构")]
-        //public virtual Image Image { get; set; }
-        //public int? ImageID { get; set; }
-
+        [Display(Name = "公司架构")]
+        public virtual Image Image { get; set; }
+        public int? ImageID { get; set; }
     }
 
     /// <summary>

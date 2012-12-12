@@ -55,6 +55,10 @@ namespace Sales.Controllers
             if (ModelState.IsValid)
             {
                // item.Contents = HttpUtility.HtmlEncode(item.Contents);
+
+                Image image = ImageController.UploadImg(Request, item.Image);
+                if (image != null)
+                    item.ImageID = image.ID;
                 CH.Create<Research>(item);
                 return RedirectToAction("MyIndex");
             }
@@ -74,7 +78,9 @@ namespace Sales.Controllers
             if (ModelState.IsValid)
             {
                 //item.Contents = HttpUtility.HtmlDecode(item.Contents);
-              
+                Image image = ImageController.UploadImg(Request, item.Image);
+                if (image != null)
+                    item.ImageID = image.ID;
                 CH.Edit<Research>(item);
                 return RedirectToAction("MyIndex");
             }

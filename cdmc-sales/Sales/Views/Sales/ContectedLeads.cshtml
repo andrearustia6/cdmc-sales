@@ -7,9 +7,9 @@
 @using Model
 @model List<ViewContactedLead>
 
-@Html.Partial("contenttitle", "我的出单")
+@Html.Partial("contenttitle", "Call List")
 @Html.Partial("projectselector")
-@(Html.Telerik().Grid<ViewContactedLead>(Model).Name("Deal")
+@(Html.Telerik().Grid<ViewContactedLead>(Model).Name("CallList")
                 .Columns(c =>
                 {
                     c.Bound(item => item.Lead.Name).Title("人名").Width(120);

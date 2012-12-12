@@ -74,7 +74,7 @@ namespace Entity {
 
         [Display(Name = "联系电话")]
         [DataType(DataType.PhoneNumber)]
-        public string Contact { get; set; }
+        public int Contact { get; set; }
 
         [DataType(DataType.PhoneNumber)]
         [Display(Name = "移动电话")]
