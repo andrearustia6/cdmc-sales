@@ -6,6 +6,15 @@ using Entity;
 
 namespace Model
 {
+    public class ViewPhoneInfo
+    {
+        public TimeSpan Duration { get; set; }
+        public string Phone { get; set; }
+        public int CallSum { get; set; }
+        
+
+    }
+
     public class ViewContactedLead
     {
         public int? CompanyRelationshipID { get; set; }
