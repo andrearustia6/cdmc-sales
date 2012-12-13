@@ -13,6 +13,11 @@ namespace Sales.Controllers.Type
 {
     public class RoleController : Controller
     {
+        protected override void Dispose(bool disposing)
+        {
+            CH.DB.Dispose();
+            base.Dispose(disposing);
+        }
 
         public ViewResult Index()
         {

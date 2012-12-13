@@ -14,7 +14,11 @@ namespace Sales.Controllers
     [MarketInterfaceRequired( AccessType=AccessType.Equal)]
     public class MarketInterfaceController : Controller
     {
-      
+        protected override void Dispose(bool disposing)
+        {
+            CH.DB.Dispose();
+            base.Dispose(disposing);
+        }
         public ViewResult MarketIndex(int? projectid)
         {
 

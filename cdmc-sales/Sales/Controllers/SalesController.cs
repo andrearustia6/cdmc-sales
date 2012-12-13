@@ -13,6 +13,12 @@ namespace Sales.Controllers
     [SalesRequired]
     public class SalesController : Controller
     {
+        protected override void Dispose(bool disposing)
+        {
+            CH.DB.Dispose();
+            base.Dispose(disposing);
+        }
+
         #region Leadcall
         /// <summary>
         /// 查看客户公司的 销售记录

@@ -14,7 +14,11 @@ namespace Sales.Controllers.Type
     [AdministratorRequired]
     public class ExpLevelController : Controller
     {
-
+        protected override void Dispose(bool disposing)
+        {
+            CH.DB.Dispose();
+            base.Dispose(disposing);
+        }
         public ViewResult Index()
         {
             return View(CH.GetAllData<ExpLevel>());

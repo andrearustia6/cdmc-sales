@@ -11,6 +11,12 @@ namespace Sales.Controllers
     [LeaderRequired(AccessType= AccessType.Equal)]
     public class TeamLeaderController : Controller
     {
+        protected override void Dispose(bool disposing)
+        {
+            CH.DB.Dispose();
+            base.Dispose(disposing);
+        }
+
         //
         // GET: /TeamLeader/
 

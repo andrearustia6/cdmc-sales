@@ -14,7 +14,11 @@ namespace Sales.Controllers
     [ManagerRequired]
     public class CompanyController : Controller
     {
-        
+        protected override void Dispose(bool disposing)
+        {
+            CH.DB.Dispose();
+            base.Dispose(disposing);
+        }
         
         public ActionResult Index()
         {

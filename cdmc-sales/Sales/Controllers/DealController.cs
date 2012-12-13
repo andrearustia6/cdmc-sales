@@ -73,7 +73,11 @@ namespace Sales.Controllers
     [LeaderRequired]
     public class AllDealController : Controller
     {
-
+        protected override void Dispose(bool disposing)
+        {
+            CH.DB.Dispose();
+            base.Dispose(disposing);
+        }
 
         public ViewResult Index(int? projectid)
         {

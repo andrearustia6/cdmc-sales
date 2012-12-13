@@ -14,6 +14,12 @@ namespace Sales.Controllers
    
     public class PackageController : Controller
     {
+        protected override void Dispose(bool disposing)
+        {
+            CH.DB.Dispose();
+            base.Dispose(disposing);
+        }
+
         public ViewResult Index()
         {
             return View(CH.GetAllData<Package>("PackageItems").OrderByDescending(o=>o.Sequence).ToList());

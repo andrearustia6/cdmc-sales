@@ -13,6 +13,11 @@ namespace Sales.Controllers
 {
     public class PackageTypeController : Controller
     {
+        protected override void Dispose(bool disposing)
+        {
+            CH.DB.Dispose();
+            base.Dispose(disposing);
+        }
         public ViewResult Index()
         {
             return View(CH.GetAllData<PackageType>().OrderByDescending(o=>o.Sequence).ToList());

@@ -250,14 +250,13 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ResearchController.cs" />
     <Compile Include="Controllers\Type\OnPhoneBlockTypeController.cs" />
-    <Compile Include="Controllers\Type\PackageServiceTypeController.cs" />
     <Compile Include="Controllers\Type\PackageTypeController.cs" />
     <Compile Include="Controllers\Type\ParticipantTypeController.cs" />
     <Compile Include="Controllers\Type\PaymentTypeController.cs" />
     <Compile Include="Controllers\Type\RoleController.cs" />
     <Compile Include="Controllers\Type\SalesTypeController.cs" />
     <Compile Include="Controllers\Type\TemplateTypeController.cs" />
-    <Compile Include="Controllers\Type\TitleController.cs" />
+    <Compile Include="DB.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

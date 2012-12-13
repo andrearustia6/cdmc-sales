@@ -15,6 +15,12 @@ namespace Sales.Controllers
     [ProjectInformationAccess]
     public class CompanyRelationshipController : Controller
     {
+        protected override void Dispose(bool disposing)
+        {
+            CH.DB.Dispose();
+            base.Dispose(disposing);
+        }
+
         public ViewResult Index()
         {
             return View(CH.GetAllData<CompanyRelationship>());

@@ -13,6 +13,12 @@ namespace Sales.Controllers
 {
     public class TargetOfMonthController : Controller
     {
+        protected override void Dispose(bool disposing)
+        {
+            CH.DB.Dispose();
+            base.Dispose(disposing);
+        }
+
         #region 目标划分
         public ActionResult BreakdownIndex(int? projectid)
         {

@@ -13,6 +13,12 @@ namespace Sales.Controllers
 {
     public class LeadCallController : Controller
     {
+        protected override void Dispose(bool disposing)
+        {
+            CH.DB.Dispose();
+            base.Dispose(disposing);
+        }
+
         [ManagerRequired]
         public ViewResult Index()
         {

@@ -17,7 +17,11 @@ namespace Sales.Controllers
     [ManagerRequired]
     public class ProjectController : Controller
     {
-      
+        protected override void Dispose(bool disposing)
+        {
+            CH.DB.Dispose();
+            base.Dispose(disposing);
+        }
         public ViewResult Index()
         {
             var data = this.GetProjectByRole();
