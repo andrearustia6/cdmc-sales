@@ -13,6 +13,12 @@ namespace Sales.Controllers
     [ProductInterfaceRequired(AccessType = AccessType.Equal)]
     public class ProductInterfaceController : Controller
     {
+        protected override void Dispose(bool disposing)
+        {
+            CH.DB.Dispose();
+            base.Dispose(disposing);
+        }
+
         /// <summary>
         /// 
         /// </summary>

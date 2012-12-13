@@ -14,6 +14,12 @@ namespace MvcGlobalAuthorize.Controllers
 {
     public class AccountController : Controller
     {
+        protected override void Dispose(bool disposing)
+        {
+            CH.DB.Dispose();
+            base.Dispose(disposing);
+        }
+
         // GET: /Account/LogOn
         [AllowAnonymous]
         public ActionResult LogOn()

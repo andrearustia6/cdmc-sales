@@ -16,6 +16,12 @@ namespace Sales.Controllers
     [LeaderRequired]
     public class ReportController : Controller
     {
+        protected override void Dispose(bool disposing)
+        {
+            CH.DB.Dispose();
+            base.Dispose(disposing);
+        }
+
         public ActionResult MemberProgress(DateTime? startdate, DateTime? enddate)
         {
             ViewBag.StartDate = startdate;

@@ -13,7 +13,11 @@ namespace Sales.Controllers
 { 
     public class LoginPageImageController : Controller
     {
-
+        protected override void Dispose(bool disposing)
+        {
+            CH.DB.Dispose();
+            base.Dispose(disposing);
+        }
         public ViewResult Index()
         {
             var data = CH.GetAllData<Image>(i => i.ImageArea == ImageArea.LoginPage.ToString());

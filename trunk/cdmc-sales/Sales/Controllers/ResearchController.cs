@@ -14,6 +14,12 @@ namespace Sales.Controllers
 {
     public class ResearchController : Controller
     {
+        protected override void Dispose(bool disposing)
+        {
+            CH.DB.Dispose();
+            base.Dispose(disposing);
+        }
+
         public ViewResult MyIndex()
         {
             return View(CH.GetAllData<Research>(r => r.Creator == Employee.GetCurrentUserName()).OrderByDescending(o => o.CreatedDate).ToList());

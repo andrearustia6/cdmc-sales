@@ -14,6 +14,11 @@ namespace Sales.Controllers
 {
     public class MemberController : Controller
     {
+        protected override void Dispose(bool disposing)
+        {
+            CH.DB.Dispose();
+            base.Dispose(disposing);
+        }
 
         public ViewResult Index()
         {
