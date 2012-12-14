@@ -284,7 +284,8 @@ namespace Entity
         {
             startdate = startdate == null ? new DateTime(1, 1, 1) : startdate;
             enddate = enddate == null ? new DateTime(9999, 1, 1) : enddate;
-            string phone =  Employee.GetProfile("Contact",item.Name).ToString();
+            var property = Employee.GetProfile("Contact",item.Name);
+            string phone = property == null ? string.Empty : property.ToString();
             
             var result = new ViewLeadCallAmount() { Member = item,Phone = phone};
             var phonerecord = cs.FirstOrDefault(c => c.Phone == phone);

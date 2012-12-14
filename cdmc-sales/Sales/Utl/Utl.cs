@@ -13,7 +13,9 @@ using Attributes;
 using System.Web.Security;
 using System.Web.Profile;
 using System.Xml;
-
+using System.Data.OleDb;
+using System.Data;
+using Model;
 namespace Utl
 {
     
@@ -429,6 +431,92 @@ namespace Utl
 
     public class Utl
     {
+        public static List<ViewPhoneInfo> GetCallsInfo(List<Project> ps, DateTime? startdate, DateTime? enddate)
+        {
+            if (startdate == null)
+            {
+                startdate = new DateTime(1, 1, 1);
+            }
+            if (enddate == null)
+            {
+                enddate = new DateTime(9999, 1, 1);
+            }
+
+            var phonelist = new List<ViewPhoneInfo>();
+            if (ps.Count > 0)
+            {
+                //string contacts = "where convert(varchar(100) ,cast([startdate] as datetime),23) between '" + startdate.ToShortDateString() + "' and '" + enddate.ToShortDateString() + "' ";
+                string contacts = "where [phone] like '$$$' ";
+                ps.ForEach(p =>
+                {
+                    p.Members.ForEach(item =>
+                    {
+                        ProfileBase userp = ProfileBase.Create(item.Name);
+                        if (userp != null)
+                        {
+                            var uc = userp.GetPropertyValue("Contact");
+                            if (uc != null && !string.IsNullOrEmpty(uc.ToString()))
+                            {
+                                int contect = 0;
+                                Int32.TryParse(uc.ToString(), out contect);
+                                if (contect > 0)
+                                {
+                                    contacts += " or [phone] like '" + contect.ToString() + "'";
+                                }
+                            }
+                        }
+                    });
+                });
+
+                string cstr = ConfigurationManager.ConnectionStrings["BillDB"].ToString();
+                using (var con = new OleDbConnection(cstr))
+                {
+                    string sql = "SELECT * FROM bill " + contacts;
+
+                    //string sql = "SELECT * FROM bill";
+                    OleDbDataAdapter da = new OleDbDataAdapter(sql, con);
+                    OleDbCommand c = new OleDbCommand(sql, con);
+                    da.SelectCommand = c;
+                    DataSet ds = new DataSet();//创建数据集
+                    da.Fill(ds, "bill");//填充数据集
+                    DataTable tb = ds.Tables["bill"];//创建表
+                    var rows = ds.Tables["bill"].Select();
+
+                    rows.ToList().ForEach(r =>
+                    {
+                        var sd = r["startdate"].ToString();
+                        DateTime result;
+                        DateTime.TryParse(sd, out result);
+                        var durationstring = r["duration"].ToString();
+                        if (result >= startdate.Value && result <= enddate.Value && durationstring != "00:00:00")
+                        {
+                            var phone = r["phone"].ToString();
+                            var calldate = result;
+                            TimeSpan duration;
+                            TimeSpan.TryParse(durationstring, out duration);
+
+                            var t = phonelist.FirstOrDefault(p => p.Phone == phone);
+                            if (t == null)
+                            {
+                                t = new ViewPhoneInfo() { Phone = phone, Duration = duration };
+
+                            }
+                            else
+                            {
+                                phonelist.Remove(t);
+                                t.CallSum = t.CallSum + 1;
+                                t.Duration += duration;
+                            }
+                            phonelist.Add(t);
+                        }
+
+
+                    });
+                    con.Close();
+                }
+            }
+            return phonelist;
+        }
         public static string FilterStr(string source)
         {
             source = source.Replace("& ", "& ");
