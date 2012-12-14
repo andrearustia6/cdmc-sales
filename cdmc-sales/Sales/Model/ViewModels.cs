@@ -39,11 +39,12 @@ namespace Model
         public int Cold_Calls { get; set; }
         public int DMS { get; set; }
         public int New_DMS { get; set; }
-        public double Duration { get; set; }
+        public TimeSpan Duration { get; set; }
         public DateTime? startdate { get; set; }
         public DateTime? enddate { get; set; }
         public decimal DealInAmount { get; set; }
         public decimal CheckInAmount { get; set; }
+        public string Phone { get; set; }
         //public Member TopForeignSales { get; set; }
         //public Member TopDomesticSales { get; set; } 
     }
@@ -78,7 +79,7 @@ namespace Model
 
             }
         }
-        public double TopCallerAmount { get; set; }
+        public TimeSpan TopCallerAmount { get; set; }
         public List<Member> _topCallers;
         public List<Member> TopCallers
         {
@@ -98,7 +99,7 @@ namespace Model
                 return _topCallers;
             }
         }
-        public double WorstCallerAmount { get; set; }
+        public TimeSpan WorstCallerAmount { get; set; }
         public List<Member> _worstCallers;
         public List<Member> WorstCallers
         {
@@ -125,8 +126,8 @@ namespace Model
     public class TotalLeadCallAmount
     {
         public decimal TopSalesAmount { get; set; }
-        public double WorstCallerAmount { get; set; }
-        public double TopCallerAmount { get; set; }
+        public TimeSpan WorstCallerAmount { get; set; }
+        public TimeSpan TopCallerAmount { get; set; }
         public List<ViewLeadCallAmountInProject> ViewLeadCallAmountInProjects { get; set; }
         List<Member> _topSales = new List<Member>();
         public List<Member> TopSales

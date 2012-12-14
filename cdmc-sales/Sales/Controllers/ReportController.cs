@@ -33,7 +33,7 @@ namespace Sales.Controllers
         //
         // GET: /Report/
 
-        public List<ViewPhoneInfo> GetCallsInfo(DateTime? startdate, DateTime? enddate, List<Project> ps)
+        public List<ViewPhoneInfo> GetCallsInfo(List<Project> ps,DateTime? startdate, DateTime? enddate)
         {
             if (startdate == null)
             {
@@ -119,6 +119,12 @@ namespace Sales.Controllers
             return phonelist;
         }
 
+        /// <summary>
+        /// call list 统计
+        /// </summary>
+        /// <param name="startdate"></param>
+        /// <param name="enddate"></param>
+        /// <returns></returns>
         public ActionResult LeadCalls(DateTime? startdate, DateTime? enddate)
         {
            
@@ -130,10 +136,10 @@ namespace Sales.Controllers
             var ps = this.GetProjectByAccount();
             var vl = new List<ViewLeadCallAmountInProject>();
 
-            GetCallsInfo(startdate.Value,enddate.Value,ps);
+            var cs = GetCallsInfo(ps,startdate,enddate);
             ps.ForEach(p =>
             {
-                vl.Add(new ViewLeadCallAmountInProject() { LeadCallAmounts = p.GetProjectMemberLeadCalls(startdate, enddate), project = p });
+                vl.Add(new ViewLeadCallAmountInProject() { LeadCallAmounts = p.GetProjectMemberLeadCalls(cs,startdate, enddate), project = p });
 
             });
           
@@ -143,6 +149,12 @@ namespace Sales.Controllers
             return View(result);
         }
 
+        /// <summary>
+        /// call list
+        /// </summary>
+        /// <param name="startdate"></param>
+        /// <param name="enddate"></param>
+        /// <returns></returns>
         public ActionResult MemberLeadCalls(DateTime? startdate, DateTime? enddate)
         {
             ViewBag.StartDate = startdate;
