@@ -280,11 +280,21 @@ namespace Entity
         //    return item.IsAbleToAccessTheCompanyRelationship(cr);
         //}
 
-        public static ViewLeadCallAmount CallAmount(this Member item, DateTime? startdate, DateTime? enddate)
+        public static ViewLeadCallAmount CallAmount(this Member item, List<ViewPhoneInfo> cs, DateTime? startdate, DateTime? enddate)
         {
             startdate = startdate == null ? new DateTime(1, 1, 1) : startdate;
             enddate = enddate == null ? new DateTime(9999, 1, 1) : enddate;
-            var result = new ViewLeadCallAmount() { Member = item };
+            string phone =  Employee.GetProfile("Contact",item.Name).ToString();
+            
+            var result = new ViewLeadCallAmount() { Member = item,Phone = phone};
+            var phonerecord = cs.FirstOrDefault(c => c.Phone == phone);
+
+            if (phonerecord!=null)
+            {
+                result.Duration = phonerecord.Duration;
+                result.Cold_Calls = phonerecord.CallSum;
+            }
+            
             var lcs = CH.GetAllData<LeadCall>(l => l.MemberID == item.ID);
 
             var dealins = CH.GetAllData<Deal>(d => d.Sales == item.Name && d.SignDate >= startdate && d.SignDate <= enddate);
@@ -306,7 +316,7 @@ namespace Entity
             lcs.FindAll(lc => lc.CallDate > startdate && lc.CallDate < enddate).ForEach(l =>
             {
                 //if (l.LeadCallType.Name == "Others" || l.LeadCallType.Name == "Blowed" || l.LeadCallType.Name == "Not Pitched")
-                     result.Cold_Calls++;
+                    // result.Cold_Calls++;
 
                 if (l.LeadCallType.Code > 30)
                     result.DMS++;
@@ -499,14 +509,14 @@ namespace Entity
             return item.Members.FirstOrDefault(m => m.Name == username);
         }
 
-        public static List<ViewLeadCallAmount> GetProjectMemberLeadCalls(this Project item, DateTime? startdate=null, DateTime? enddate=null)
+        public static List<ViewLeadCallAmount> GetProjectMemberLeadCalls(this Project item,  List<ViewPhoneInfo> cs, DateTime? startdate=null, DateTime? enddate=null)
         {
             var list = new List<ViewLeadCallAmount>();
             if (item.Members != null)
             {
                 item.Members.ForEach(m =>
                 {
-                    list.Add(m.CallAmount(startdate, enddate));
+                    list.Add(m.CallAmount(cs,startdate, enddate));
                 });
             }
             return list;
