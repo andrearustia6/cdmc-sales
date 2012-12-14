@@ -63,8 +63,12 @@
                 {
                     c.Bound(item => item.CompanyRelationship.Company.Name).Title("客户名称").Width(150);
                     c.Bound(item => item.Package.Name).Title("Package名称").Width(150);
-                    c.Bound(item => item.Payment).Width(100).Format("{0:c}").Aggregate(aggregates => aggregates.Sum()).FooterTemplate(@<text>@if (item.Sum != null){<p>应收款: @item.Sum.Format("{0:c}")</p>}</text>).GroupFooterTemplate(@<text>@if (item.Sum != null){<p>应收款: @item.Sum.Format("{0:c}")</p>}</text>).Width(100);
-                    c.Bound(item => item.Income).Width(90).Format("{0:c}").Aggregate(aggregates => aggregates.Sum()).FooterTemplate(@<text>@if (item.Sum != null) {<p>实收款: @item.Sum.Format("{0:c}")</p>}</text>).GroupFooterTemplate(@<text>@if (item.Sum != null){<p>实收款: @item.Sum.Format("{0:c}")</p>}</text>).Width(100); ;
+                    c.Bound(item => item.Payment).Width(100).Format("{0:c}").Aggregate(aggregates => aggregates.Sum()).FooterTemplate(@<text>@if (item.Sum != null)
+                                                                                                                                             {<p>应收款: @item.Sum.Format("{0:c}")</p>}</text>).GroupFooterTemplate(@<text>@if (item.Sum != null)
+                                                                                                                                                                                                                                              {<p>应收款: @item.Sum.Format("{0:c}")</p>}</text>).Width(100);
+                    c.Bound(item => item.Income).Width(90).Format("{0:c}").Aggregate(aggregates => aggregates.Sum()).FooterTemplate(@<text>@if (item.Sum != null)
+                                                                                                                                           {<p>实收款: @item.Sum.Format("{0:c}")</p>}</text>).GroupFooterTemplate(@<text>@if (item.Sum != null)
+                                                                                                                                                                                                                                             {<p>实收款: @item.Sum.Format("{0:c}")</p>}</text>).Width(100); ;
                     c.Bound(item => item.ExpectedPaymentDate).Format("{0:d}").Width(90);
                     c.Bound(item => item.CompanyRelationship.Project.ProjectCode).Width(100);
                     c.Bound(item => item.ID).Title("操作").Template(@<span>
@@ -80,7 +84,8 @@
 }
 </fieldset>
 <fieldset>
-<legend>24小时内Call List</legend>
+<legend>24小时内Call List统计</legend>
+<div>
 @{
    @(Html.Telerik().TabStrip().Name("TabStripcall").SelectedIndex(ViewBag.TabIndex == null ? 0 : (int)ViewBag.TabIndex).Items(items =>
 {
@@ -92,6 +97,7 @@
 }))
 
     }
+    </div>
 </fieldset>
 <fieldset>
 <legend>所在项目</legend>
@@ -112,16 +118,36 @@
 
 @helper MemberCall(Project p)
 {
+      
+    var ps = new List<Project>();
+    ps.Add(p);
+    var pcs = Utl.GetCallsInfo(ps, DateTime.Now.AddHours(-12), DateTime.Now);
     var m = p.GetMemberInProjectByName(Employee.GetCurrentUserName());
-    var pv = p.GetProjectMemberLeadCalls(DateTime.Now.AddHours(-12),DateTime.Now).FirstOrDefault(i=>i.Member.Name==Employee.GetCurrentUserName());
+    var pv = p.GetProjectMemberLeadCalls(pcs, DateTime.Now.AddHours(-12), DateTime.Now);
+
+
   
-    if(pv!=null)
-    {
-    <table width="100%">
-<tr><th>Cold Calls</th><th>DMS</th><th>New_DMS</th><th>Pitched</th><th>Full_Pitched</th><th>Waiting_For_Approval</th><th>Qualified_Decision</th><th>Closed</th></tr>
-<tr><td>@pv.Cold_Calls</td><td>@pv.DMS</td><td>@pv.New_DMS</td><td>@pv.Pitched</td><td>@pv.Full_Pitched</td><td>@pv.Waiting_For_Approval</td><td>@pv.Qualified_Decision</td><td>@pv.Closed</td></tr>
-</table>
-    }
+     @(Html.Telerik().Grid(pv).Name("projectv" + p.ID).DataKeys(keys =>
+     {
+         keys.Add(s => s.Member.ID);
+     }).Columns(c =>
+     {
+         c.Bound(item => item.Member.Name).Width(60);
+     @*    c.Bound(item => item.Member.SalesType.Name).Width(80);
+         c.Bound(item => item.Duration).Title("通话时间").Width(80);
+         c.Bound(item => item.Cold_Calls).Width(90).Aggregate(item => item.Sum()).FooterTemplate(@<text>@item.Sum</text>);*@
+         c.Bound(item => item.DMS).Width(50);
+         c.Bound(item => item.New_DMS).Width(70);
+         c.Bound(item => item.Pitched).Width(55);
+         c.Bound(item => item.Full_Pitched).Width(90);
+         c.Bound(item => item.Call_Backed).Width(90);
+         c.Bound(item => item.Waiting_For_Approval);
+         c.Bound(item => item.Qualified_Decision);
+         c.Bound(item => item.Closed).Width(70);
+     }) .Resizable(resizing => resizing.Columns(true))
+         .Scrollable(scrolling => scrolling.Height(250))
+        )
+      
 }
 
 <style type="text/css">
