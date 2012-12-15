@@ -43,10 +43,10 @@
             @Html.ValidationMessageFor(m => m.DisplayName)
         </div>
         <div class="editor-label">
-            @Html.LabelFor(m => m.Contact,"电话座机的extension号")
+            @Html.LabelFor(m => m.Contact,"电话座机的extension号,例如：9999")
         </div>
         <div class="editor-field">
-            @Html.Telerik().NumericTextBoxFor(m => m.Contact).MinValue(0).MaxValue(9999)
+            @Html.TextBoxFor(m => m.Contact)
             @Html.ValidationMessageFor(m => m.Contact)
         </div>
         <div class="editor-label">
