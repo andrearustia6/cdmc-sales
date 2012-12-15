@@ -35,25 +35,7 @@ function initialTargetbreakdown() {
 //             });
          });
      });
-         //        $this.slider({
-         //            value: getSliderValue($this),
-         //            min: 0,
-         //            max: 200000,
-         //            step: 10000,
-         //            slide: function (event, ui) {
-         //                var $this = $(this);
-         //                var mid = $this.attr('mid');
-         //                $this.closest('tr').find('p').text("￥" + ui.value);
-         //                var mname = $this.closest('tr').find('input').attr('mname');
-         //                $this.closest('tr').find('input').val(mname + '|' + ui.value);
-         //                $this.closest('tr').find('input').attr("v", ui.value);
-         //                var totalresult = 0;
-         //                $this.closest('table').find(".pertarget").each(function () {
-         //                    totalresult += parseInt($(this).attr("v"));
-         //                });
-         //                $this.closest('table').find('.result').text("￥" + totalresult);
-         //            }
-         // });
+
    
 
 }
