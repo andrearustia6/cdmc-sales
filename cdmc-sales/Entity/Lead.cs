@@ -31,7 +31,7 @@ namespace Entity
                 if (DistrictNumber == null) return string.Empty;
                 var dt1 = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DBSR.WorkTimeStart,0,0);
                 var dt2 = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DBSR.WorkTimeEnd, 0, 0);
-                return dt1.AddHours(DistrictNumber.TimeDifference).ToShortTimeString()+"~"+dt2.AddHours(DistrictNumber.TimeDifference).ToShortTimeString();
+                return dt1.AddHours(-DistrictNumber.TimeDifference).ToShortTimeString()+"~"+dt2.AddHours(-DistrictNumber.TimeDifference).ToShortTimeString();
             } 
         }
 
