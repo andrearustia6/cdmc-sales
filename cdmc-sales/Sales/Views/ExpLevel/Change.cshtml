@@ -1,25 +1,20 @@
 ﻿@model Entity.ExpLevel
 @using Entity
 @using Utl
-    <fieldset>
-        <legend>@SR.Form</legend>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Name)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Name)
-            @Html.ValidationMessageFor(model => model.Name)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.DepartmentID, "Department")
-        </div>
-        <div class="editor-field">
-            @Html.DropDownListFor(m=>m.DepartmentID, CH.GetAllData<Department>)
-            @Html.ValidationMessageFor(model => model.DepartmentID)
-        </div>
-    </fieldset>
-}
-
-
+<fieldset>
+    <legend>@SR.Form</legend>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.Name)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.Name)
+        @Html.ValidationMessageFor(model => model.Name)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.DepartmentID, "部门")
+    </div>
+    <div class="editor-field">
+        @Html.DropDownListFor(m => m.DepartmentID, new SelectList(CH.GetAllData<Department>(), "ID", "Name"), "-请选择-")
+        @Html.ValidationMessageFor(model => model.DepartmentID)
+    </div>
+</fieldset>
