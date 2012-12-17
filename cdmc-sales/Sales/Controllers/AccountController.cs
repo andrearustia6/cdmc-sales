@@ -246,7 +246,7 @@ namespace MvcGlobalAuthorize.Controllers
                 int con = 0;
                 Int32.TryParse(objProfile.GetPropertyValue("Contact").ToString(),out con);
                 int expid = 0;
-                Int32.TryParse(objProfile.GetPropertyValue("ExpLevel").ToString(), out expid);
+                Int32.TryParse(objProfile.GetPropertyValue("ExpLevelID").ToString(), out expid);
                 um.ExpLevelID = expid;
                 um.Contact = con;
                 um.Mobile = objProfile.GetPropertyValue("Mobile") as string;
