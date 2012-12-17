@@ -5,11 +5,11 @@
     <div style="margin: 10px; margin-left: 0px;">
         <b><span>
             <label> 开始时间：</label>
-            @Html.Telerik().DatePicker().Name("StartDate").Value(ViewBag.StartDate as string)
+            @Html.Telerik().DateTimePicker().Name("StartDate").Value(ViewBag.StartDate as string)
             <span>~ </span>
             <label>
                 结束时间：</label>
-            @Html.Telerik().DatePicker().Name("EndDate").Value(ViewBag.EndDate as string)
+            @Html.Telerik().DateTimePicker().Name("EndDate").Value(ViewBag.EndDate as string)
             <span>  </span>
             <input type="submit" value="提交" />
         </span></b>
