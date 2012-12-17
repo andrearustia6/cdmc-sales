@@ -283,7 +283,7 @@ namespace Model
                 if (LeadCall.CompanyRelationship.Company.DistrictNumber != null)
                 {
                     var differs = LeadCall.CompanyRelationship.Company.DistrictNumber.TimeDifference;
-                    date = date.AddHours(differs);
+                    date = date.AddHours(-differs);
                 }
                 return date;
             }
