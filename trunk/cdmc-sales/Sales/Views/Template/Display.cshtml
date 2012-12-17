@@ -24,6 +24,12 @@
 
     <div class="display-label">模版类型</div>
     <div class="display-field">
+       @Html.DisplayFor(model=>Model.TemplateType.Name)
+    </div>
+
+
+    <div class="display-label">模版内容</div>
+    <div class="display-field">
        @HtmlExtensions.GetHtmlString(Model.Content)
     </div>
 </fieldset>
