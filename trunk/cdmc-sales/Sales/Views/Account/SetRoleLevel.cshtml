@@ -22,7 +22,7 @@
             @Html.HiddenFor(m => m.UserName)
         </div>
         <div class="editor-label">
-            @Html.Label("职级")
+            @Html.Label("员工岗位")
         </div>
         <div class="editor-field">
         @{
@@ -58,11 +58,11 @@
         </div>
 
         <div class="editor-label">
-            @Html.Label("是否激活")
+            @Html.Label("设置职级")
         </div>
         <div class="editor-field">
-            @Html.DropDownListFor(m => m.IsActivated)
-            @Html.ValidationMessageFor(m => m.IsActivated)
+            @Html.DropDownListFor(m => m.ExpLevelID, new SelectList(CH.GetAllData<ExpLevel>(),"ID","Name"),"-请选择-")
+            @Html.ValidationMessageFor(m => m.ExpLevelID)
         </div>
     </fieldset>
     

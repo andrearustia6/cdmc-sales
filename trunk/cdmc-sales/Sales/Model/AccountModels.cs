@@ -83,7 +83,7 @@ namespace Entity {
         [Display(Name = "生日")]
         public DateTime BirthDay { get; set; }
 
-        [Display(Name = "工作职级"),Required]
+        [Display(Name = "工作岗位"),Required]
         public int RoleID { get; set; }
         public virtual Role Role { get; set; }
 
@@ -92,5 +92,11 @@ namespace Entity {
 
         [Display(Name = "部门")]
         public string Department { get; set; }
+
+        [Display(Name = "工作职级")]
+        public int ExpLevelID { get; set; }
+        public virtual ExpLevel ExpLevel { get; set; }
+
+
     }
 }

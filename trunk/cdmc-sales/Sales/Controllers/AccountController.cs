@@ -245,6 +245,9 @@ namespace MvcGlobalAuthorize.Controllers
                 um.BirthDay = b;
                 int con = 0;
                 Int32.TryParse(objProfile.GetPropertyValue("Contact").ToString(),out con);
+                int expid = 0;
+                Int32.TryParse(objProfile.GetPropertyValue("ExpLevel").ToString(), out expid);
+                um.ExpLevelID = expid;
                 um.Contact = con;
                 um.Mobile = objProfile.GetPropertyValue("Mobile") as string;
                 um.Gender = objProfile.GetPropertyValue("Gender") as string;
@@ -317,6 +320,13 @@ namespace MvcGlobalAuthorize.Controllers
             activate = objProfile.GetPropertyValue("IsActivated");
             Boolean.TryParse(activate.ToString(), out isactivated);
             um.IsActivated = isactivated;
+
+            object explevel = null;
+            int explevelid;
+            explevel = objProfile.GetPropertyValue("ExpLevelID");
+            Int32.TryParse(explevel.ToString(), out explevelid);
+            um.ExpLevelID = explevelid;
+
             return View(um);
         }
 
@@ -339,6 +349,7 @@ namespace MvcGlobalAuthorize.Controllers
 
                     ProfileBase objProfile = ProfileBase.Create(model.UserName);
                     objProfile.SetPropertyValue("RoleLevelID", model.RoleID);
+                    objProfile.SetPropertyValue("ExpLevelID", model.ExpLevelID);
                     objProfile.SetPropertyValue("IsActivated", model.IsActivated);
                     objProfile.SetPropertyValue("StartDate", model.StartDate.Value.ToShortDateString());
                     objProfile.Save();
