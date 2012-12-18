@@ -7,6 +7,10 @@ using Utl;
 using Entity;
 using BLL;
 using Model;
+using System.Collections;
+using System.IO;
+using Telerik.Web.Mvc.Extensions;
+using System.Text;
 
 namespace Sales.Controllers
 {
@@ -622,9 +626,28 @@ namespace Sales.Controllers
         {
             projectid = this.TrySetProjectIDForUser(projectid);
             ViewBag.ProjectID = projectid;
+            return View(GetContedtedLeadData(projectid));
+            //var account = Employee.GetCurrentUserName();
+            //var calls = CH.GetAllData<LeadCall>(l => l.ProjectID == projectid && Employee.GetCurrentUserName() ==l.Member.Name,"CompanyRelationship","Lead");
+            //var contectleads = calls.Distinct(new LeadCallDistinct());
+            //var ls = new List<ViewContactedLead>();
+            //foreach (var cl in contectleads)
+            //{
+            //    ViewContactedLead v = new ViewContactedLead();
+            //    v.Lead = cl.Lead;
+            //    v.ID = cl.Lead.ID;
+            //    v.CompanyRelationshipID = cl.CompanyRelationshipID;
 
+            //    v.LastCall = calls.FindAll(c=>c.Lead.ID == cl.Lead.ID).OrderByDescending(o => o.CallDate).ToList().FirstOrDefault();
+            //    ls.Add(v);
+            //}
+            //return View(ls.OrderByDescending(o=>o.LastCall.CallDate).ToList());
+        }
+
+        public List<ViewContactedLead> GetContedtedLeadData(int? projectid)
+        {
             var account = Employee.GetCurrentUserName();
-            var calls = CH.GetAllData<LeadCall>(l => l.ProjectID == projectid && Employee.GetCurrentUserName() ==l.Member.Name,"CompanyRelationship","Lead");
+            var calls = CH.GetAllData<LeadCall>(l => l.ProjectID == projectid && Employee.GetCurrentUserName() == l.Member.Name, "CompanyRelationship", "Lead");
             var contectleads = calls.Distinct(new LeadCallDistinct());
             var ls = new List<ViewContactedLead>();
             foreach (var cl in contectleads)
@@ -634,11 +657,35 @@ namespace Sales.Controllers
                 v.ID = cl.Lead.ID;
                 v.CompanyRelationshipID = cl.CompanyRelationshipID;
 
-                v.LastCall = calls.FindAll(c=>c.Lead.ID == cl.Lead.ID).OrderByDescending(o => o.CallDate).ToList().FirstOrDefault();
+                v.LastCall = calls.FindAll(c => c.Lead.ID == cl.Lead.ID).OrderByDescending(o => o.CallDate).ToList().FirstOrDefault();
                 ls.Add(v);
             }
-            return View(ls.OrderByDescending(o=>o.LastCall.CallDate).ToList());
+            return ls.OrderByDescending(o => o.LastCall.CallDate).ToList();
         }
+
+        public ActionResult ExportCsv(int? projectid, string orderBy,string filter) 
+        {
+            IEnumerable leads = GetContedtedLeadData(projectid).AsQueryable().ToGridModel(1,Int32.MaxValue, orderBy, string.Empty, filter).Data; 
+            MemoryStream output = new MemoryStream();
+            StreamWriter writer = new StreamWriter(output, Encoding.UTF8);
+            writer.Write("姓名,"); writer.Write("职位,");
+            writer.Write("邮件,"); writer.Write("性别");
+            writer.WriteLine();
+            foreach (ViewContactedLead vl in leads)
+            {
+
+                writer.Write(vl.Lead.Name);
+                writer.Write(","); writer.Write("\"");
+                writer.Write(vl.Lead.Title); 
+                writer.Write("\"");
+                writer.Write(",");
+                writer.Write("\"");
+                writer.Write(vl.Lead.EMail);
+                writer.Write("\"");
+                writer.Write(",");
+                writer.Write(vl.Lead.Gender);
+                writer.WriteLine();
+            } writer.Flush(); output.Position = 0; return File(output, "text/comma-separated-values", "contected.csv"); }
 
         #endregion
 

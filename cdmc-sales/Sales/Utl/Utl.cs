@@ -527,33 +527,7 @@ namespace Utl
             return source;
         }
 
-        public static TimeSpan GetAvailableTimeSpan(int district)
-        {
-            XmlDocument doc = new XmlDocument();
-            doc.Load("~/TimeSpan.xml");
-
-
-            return new TimeSpan();
-        }
-
-
-        //public static string GetImageUrls(List<Image> imgs)
-        //{
-        //    ArrayList al = new ArrayList();
-        //    imgs.ForEach(i =>
-        //    {
-        //        al.Add(new string[] { i.ImageUrl, "", "", i.Description });
-        //    });
-        //    JavaScriptSerializer serializer = new JavaScriptSerializer();
-        //    string result = serializer.Serialize(al);
-        //    return result;
-        //}
-
-        public static string ShortTime(DateTime time)
-        {
-            return time.ToShortDateString();
-        }
-
+        
 
         public static string ShortText(string str, int length)
         {

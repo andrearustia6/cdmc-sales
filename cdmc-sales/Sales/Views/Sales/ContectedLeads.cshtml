@@ -9,7 +9,9 @@
 
 @Html.Partial("contenttitle", "Call List")
 @Html.Partial("projectselector")
-@(Html.Telerik().Grid<ViewContactedLead>(Model).Name("CallList")
+@(Html.Telerik().Grid<ViewContactedLead>(Model).Name("Grid").ToolBar(commands => commands.Custom()
+    .HtmlAttributes(new { id = "export" }).Text("导出已打客户地址").Action("ExportCsv", "sales", new { projectid=ViewBag.projectid==null?null:ViewBag.ProjectID as int?, orderBy = "~", filter = "~" }))
+                .ClientEvents(events => events.OnDataBound("onCallListDataBound"))
                 .Columns(c =>
                 {
                     c.Bound(item => item.Lead.Name).Title("人名").Width(120);
@@ -17,7 +19,9 @@
                     c.Bound(item => item.Lead.Company.Contact).Width(110);
                     c.Bound(item => item.Lead.Contact).Width(110);
                     c.Bound(item => item.Lead.Mobile).Width(110);
-                    c.Bound(item => item.LastCall.CallDate).Width(85);                                                                                                                                                           
+                    c.Bound(item => item.Lead.EMail).Width(85); 
+                    c.Bound(item => item.LastCall.CallDate).Width(85);
+                                                                                                                                                                         
                     c.Bound(item => item.LastCall.LeadCallType.Name).Width(90);
                     c.Bound(item => item.LastCall.Result).Width(200);
                     c.Bound(item => item.ID).Title("操作").Width(70).Template(@<span> <a  href=@Url.Content("~/Sales/LeadCallsIndex/?crid=" + item.CompanyRelationshipID + "&leadid=" + item.ID) >Call List</a> 
@@ -30,3 +34,7 @@
 
 )
 
+@{ Html.Telerik().ScriptRegistrar().OnDocumentReady(@<text> 
+     onCallListDataBound();
+    </text>);
+}
