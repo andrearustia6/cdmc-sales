@@ -22,7 +22,7 @@
                 }).Columns(c=>{
                     c.Bound(item => item.Member.Name).Width(60).FooterTemplate(@<text>总数：</text>);
                     c.Bound(item => item.Member.SalesType.Name).Width(80);
-                    c.Bound(item => item.Duration).Title("通话时间").Width(80);
+                    c.Bound(item => item.Duration).Template(@<text>@Math.Round(item.Duration.TotalHours, 1)</text>).Title("通话时间").Width(80);
                     c.Bound(item => item.Cold_Calls).Width(90).Aggregate(item => item.Sum()).FooterTemplate(@<text>@item.Sum</text>);
                     c.Bound(item => item.DMS).Width(65).Aggregate(item => item.Sum()).FooterTemplate(@<text>@item.Sum</text>);
                     c.Bound(item => item.New_DMS).Width(95).Aggregate(item => item.Sum()).FooterTemplate(@<text>@item.Sum</text>);

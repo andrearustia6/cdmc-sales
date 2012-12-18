@@ -1,4 +1,16 @@
-﻿
+﻿function onCallListDataBound(e) {
+    var grid = $("#Grid").data('tGrid');    
+    var $exportLink = $('#export');  
+    var href = $exportLink.attr('href');
+    // Update the 'page' parameter with the grid's current page      
+    //href = href.replace(/page=([^&]*)/, 'page=' + grid.currentPage);
+    // Update the 'orderBy' parameter with the grids' current sort state  
+   // href = href.replace(/orderBy=([^&]*)/, 'orderBy=' + (grid.orderBy || '~'));
+    // Update the 'filter' parameter with the grids' current filtering state      
+    href = href.replace(/filter=(.*)/, 'filter=' + (grid.filterBy || '~'));
+       // Update the 'href' attribute    
+     $exportLink.attr('href', href);
+}
 
 function onManagementTabLoad(e) {
     if (e) {
