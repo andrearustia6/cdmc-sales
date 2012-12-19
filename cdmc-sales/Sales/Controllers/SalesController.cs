@@ -635,6 +635,18 @@ namespace Sales.Controllers
             
         }
 
+        public PartialViewResult CompanyInfo(int? companyid)
+        {
+            string user = Employee.GetCurrentUserName();
+
+            var c = from company in CH.DB.Companys.Include("Leads")
+                    where company.ID == companyid
+                    select company;
+
+            var data = c.ToList().FirstOrDefault();
+            return PartialView(data);
+        }
+
         public JsonResult JsonGetCompanys()
         {
             string user = Employee.GetCurrentUserName();
@@ -650,26 +662,19 @@ namespace Sales.Controllers
         public JsonResult GetCompanyDetails(int? companyid)
         {
             string user = Employee.GetCurrentUserName();
-            var cr = from crm in CH.DB.CompanyRelationships.Include("LeadCalls")
-                      where crm.CompanyID == companyid
-                      select crm;
 
-            var company = cr.FirstOrDefault().Company;
+            var c = from company in CH.DB.Companys.Include("Leads")
+                          where company.ID == companyid
+                     select company;
 
-            var ls = from leads in CH.DB.Leads
-                     where leads.ID == company.ID
-                     select leads;
-
-            var data = cr.ToList().FirstOrDefault();
-           var cl = ls.ToList();
+            var data = c.ToList().FirstOrDefault();
+ 
            var jc =  new JosonCompany();
             if(data!=null)
             {
                  jc.username =user;
-                 jc.Company = data.Company;
-                 jc.CompanyRelationship = data;
-                 jc.LeadCalls = data.LeadCalls;
-                 jc.Leads = cl;
+                 jc.Company = data;
+                 jc.Leads = data.Leads;
             }
 
             return new DataJsonResult<JosonCompany>() { Data = jc };

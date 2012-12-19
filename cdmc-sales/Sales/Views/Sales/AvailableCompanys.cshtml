@@ -24,10 +24,22 @@
     @(Html.Telerik().PanelBar().Name("sp2").HtmlAttributes(new { style = "min-height: 700px;" })
     .Items(panes =>
     {
-        panes.Add().Text("公司信息").Content(@<text>@Html.Partial("CompanyInfo")</text>);
-        panes.Add().Text("Lead信息").Content(@<text>@Html.Partial("LeadInfo")</text>);
+        panes.Add().Text("公司信息").Content(@<text>
+        <center><input class="companysubmit"  type="button" value="提交公司信息" /></center>
+        @Html.Partial("CompanyInfo")
+         <center><input class="companysubmit"  type="button" value="提交公司信息" /></center>
+        </text>);
+       
+            
+        panes.Add().Text("Lead信息").Content(@<text>@GetLeadsDetails()</text>);
        
     }))
+}
+
+@helper GetLeadsDetails()
+{
+    <div id="leadsdata" style="width:100%">
+    </div>
 }
 
 

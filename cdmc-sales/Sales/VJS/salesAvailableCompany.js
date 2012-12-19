@@ -69,48 +69,78 @@ function initialCompanysaveBtn() {
 function onCompanysTreeviewNodeSelected(e) {
 
     var id = $(e.item).find(".t-input").val();
+
     $.ajax({
-        url: "/sales/GetCompanyDetails",
+        url: '/sales/CompanyInfo/',
+        contentType: 'application/html; charset=utf-8',
         type: 'GET',
-        dataType: 'json',
-        contentType: 'application/json; charset=utf-8',
+        dataType: 'html',
         data: { companyid: id },
-        error: function (jqXHR, textStatus, errorThrown) {
-            alert('error');
-        },
         success: function (result) {
-            if (result) {
-                setComany(result);
-            }
+            // Display the section contents.
+            $('#companydata').html(result);
+        },
+        error: function (xhr, status) {
+            alert(xhr.responseText);
         }
     });
-}
+       
 
-function setComany(result) {
-    var c = result.Company;
-    var $cf = $('#companydata');
-    $cf.find("#Name_CH").val(c.Name_CH);
-    $cf.find("#Name_EN").val(c.Name_EN);
-    $cf.find("#Contact").val(c.Contact);
-    $cf.find("#Fax").val(c.Fax);
-    $cf.find("#Address").val(c.Address);
-    $cf.find("#DistrictNumberID").val(c.DistrictNumberID);
-    $cf.find("#CompanyTypeID").val(c.CompanyTypeID);
-    $cf.find("#ID").val(c.ID);
-    $cf.find("#AreaID").val(c.AreaID);
-    $cf.find("#ForeignAssetPercentage").val(c.ForeignAssetPercentage);
-    
-    setCommonfield($cf,c);
-}
 
-function setCommonfield($source,c) {
-    $source.find("#Creator").val(c.Creator);
-    $source.find("#CreatedDate").val(c.CreatedDate);
-    $source.find("#ModifiedUser").val(c.ModifiedUser);
-    $source.find("#ModifiedDate").val(c.ModifiedDate);
-    $source.find("#Description").val(c.Description);
-    $source.find("#Sequence").val(c.Sequence);
+
+//    $.ajax({
+//        url: "/sales/GetCompanyDetails",
+//        type: 'GET',
+//        dataType: 'json',
+//        contentType: 'application/json; charset=utf-8',
+//        data: { companyid: id },
+//        error: function (jqXHR, textStatus, errorThrown) {
+//            alert('error');
+//        },
+//        success: function (result) {
+//            if (result) {
+//                setComany(result);
+//                setLeads(result);
+//            }
+//        }
+//    });
 }
+//function setLeads(result) {
+//    var $lf = $('#leadsdata');
+//    var leadsdata = result.Leads;
+//    for (var i = 0; i < leadsdata.length; i++) {
+//        $lf.load("/views/shared/LeadInfo.cshtml", function (response, status, xhr) {
+//            if (status == "error") {
+//                var msg = "Sorry but there was an error: "; 
+//        $("#error").html(msg + xhr.status + " " + xhr.statusText); } });
+//    }
+
+//}
+//function setComany(result) {
+//    var c = result.Company;
+//    var $cf = $('#companydata');
+//    $cf.find("#Name_CH").val(c.Name_CH);
+//    $cf.find("#Name_EN").val(c.Name_EN);
+//    $cf.find("#Contact").val(c.Contact);
+//    $cf.find("#Fax").val(c.Fax);
+//    $cf.find("#Address").val(c.Address);
+//    $cf.find("#DistrictNumberID").val(c.DistrictNumberID);
+//    $cf.find("#CompanyTypeID").val(c.CompanyTypeID);
+//    $cf.find("#ID").val(c.ID);
+//    $cf.find("#AreaID").val(c.AreaID);
+//    $cf.find("#ForeignAssetPercentage").val(c.ForeignAssetPercentage);
+//    
+//    setCommonfield($cf,c);
+//}
+
+//function setCommonfield($source,c) {
+//    $source.find("#Creator").val(c.Creator);
+//    $source.find("#CreatedDate").val(c.CreatedDate);
+//    $source.find("#ModifiedUser").val(c.ModifiedUser);
+//    $source.find("#ModifiedDate").val(c.ModifiedDate);
+//    $source.find("#Description").val(c.Description);
+//    $source.find("#Sequence").val(c.Sequence);
+//}
 
 function getCommonData($source, c) {
     var sequence = $source.find("#Sequence").val();
