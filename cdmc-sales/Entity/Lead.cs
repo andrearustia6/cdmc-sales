@@ -35,16 +35,18 @@ namespace Entity
             } 
         }
 
-        [Display(Name = "公司类型")]
+        
         public virtual CompanyType CompanyType { get; set; }
+        [Display(Name = "公司类型")]
         public int? CompanyTypeID { get; set; }
  
         public virtual DistrictNumber DistrictNumber { get; set; }
         [Display(Name = "区号/时差")]
         public int? DistrictNumberID { get; set; }
 
-        [Display(Name = "行业类型")]
+        
         public virtual Area Area { get; set; }
+        [Display(Name = "行业类型")]
         public int? AreaID { get; set; }
 
         [Display(Name = "公司架构")]
@@ -63,7 +65,7 @@ namespace Entity
         [Display(Name = "来源部门")]
         public string From { get; set; }
 
-        [Display(Name = "传真")]
+        [Display(Name = "公司传真")]
         public string Fax { get; set; }
 
         [Display(Name = "已离职")]
@@ -77,7 +79,7 @@ namespace Entity
     /// </summary>
     public class CompanyType : EntityBase
     {
-        [Display(Name = "公司类型名称"), Required, MaxLength(100)]
+        [Display(Name = "公司类型"), Required, MaxLength(100)]
         public string Name { get; set; }
 
     }
@@ -92,21 +94,21 @@ namespace Entity
         [DataType(DataType.EmailAddress)]
         public string PersonalEmailAddress { get; set; }
 
-        [Display(Name = "性别")]
+        [Display(Name = "客户性别")]
         public string Gender { get; set; }
 
-        [Display(Name = "职位")]
+        [Display(Name = "客户职位")]
         public string Title { get; set; }
 
         [DataType(DataType.PhoneNumber)]
-        [Display(Name = "直线")]
+        [Display(Name = "客户直线")]
         public string Contact { get; set; }
 
         [DataType(DataType.EmailAddress)]
         [Display(Name = "工作邮箱")]
         public string EMail { get; set; }
 
-        [Display(Name = "传真")]
+        [Display(Name = "工作传真")]
         public string Fax { get; set; }
 
         [DataType( DataType.PhoneNumber)]
@@ -145,6 +147,7 @@ namespace Entity
     /// <summary>
     /// 电话结果管理
     /// </summary>
+      [JsonIgnoreAttribute("CompanyRelationship")]
     public class LeadCall : CompanyRelationshipChildItem
     {
         public int? ProjectID { get; set; }

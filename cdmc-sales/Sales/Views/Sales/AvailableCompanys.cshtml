@@ -1,0 +1,38 @@
+﻿@{
+    ViewBag.Title = "JsonGetCompanys";
+}
+
+
+ @{Html.Telerik().Splitter().Name("sp1").HtmlAttributes(new { style = "min-height: 700px;" })
+              .Orientation(SplitterOrientation.Horizontal).Panes(panes =>
+              {
+                  panes.Add().Size("20%").Content(@<text>@GetCompanys()</text>);
+                  panes.Add().Content(@<text>@GetCompanyDetails()</text>);
+              }).Render();}
+
+@helper GetCompanys()
+{
+    @(Html.Telerik().TreeView().Name("companystreeview").
+    ClientEvents(events => 
+        events.OnDataBinding("onCompanysTreeviewDataBinding")
+                .OnSelect("onCompanysTreeviewNodeSelected")
+    ))
+}
+
+@helper GetCompanyDetails()
+{
+    @(Html.Telerik().PanelBar().Name("sp2").HtmlAttributes(new { style = "min-height: 700px;" })
+    .Items(panes =>
+    {
+        panes.Add().Text("公司信息").Content(@<text>@Html.Partial("CompanyInfo")</text>);
+        panes.Add().Text("Lead信息").Content(@<text>@Html.Partial("LeadInfo")</text>);
+       
+    }))
+}
+
+
+
+@{ Html.Telerik().ScriptRegistrar().OnDocumentReady(@<text> 
+        onCompanysTreeviewDataBinding();
+    </text>);
+}

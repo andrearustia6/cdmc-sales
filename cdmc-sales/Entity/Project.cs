@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.ComponentModel.DataAnnotations;
+using Attributes;
 
 namespace Entity
 {
@@ -179,7 +180,7 @@ namespace Entity
         /// </summary>
         public virtual List<CompanyRelationship> CompanyRelationships { get; set; }
     }
-
+     [JsonIgnoreAttribute("CompanyRelationships")]
     public class Category : EntityBase
     {
         public virtual Project Project { get; set; }
@@ -191,6 +192,7 @@ namespace Entity
         public virtual List<CompanyRelationship> CompanyRelationships { get; set; }
     }
 
+     [JsonIgnoreAttribute("Deals", "Project", "Categorys", "LeadCalls", "Members")]
     public class CompanyRelationship : EntityBase
     {
         string _categoryString;
@@ -318,6 +320,7 @@ namespace Entity
     /// <summary>
     /// 团队成员
     /// </summary>
+   [JsonIgnoreAttribute("CompanyRelationships", "LeadCalls", "Project", "TargetOfWeeks", "SalesType")]
     public class Member : EntityBase
     {
         [Display(Name = "成员"),Required]
@@ -346,6 +349,7 @@ namespace Entity
     /// <summary>
     /// 出单
     /// </summary>
+      [JsonIgnoreAttribute("CompanyRelationship")]
     public class Deal : CompanyRelationshipChildItem
     {
         public virtual Project Project { get; set; }
