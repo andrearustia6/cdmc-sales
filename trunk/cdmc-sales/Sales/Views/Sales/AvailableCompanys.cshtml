@@ -1,7 +1,8 @@
 ﻿@{
     ViewBag.Title = "JsonGetCompanys";
 }
-
+@using Entity
+@model Company
 
  @{Html.Telerik().Splitter().Name("sp1").HtmlAttributes(new { style = "min-height: 700px;" })
               .Orientation(SplitterOrientation.Horizontal).Panes(panes =>
@@ -21,17 +22,23 @@
 
 @helper GetCompanyDetails()
 {
+    string cname = string.Empty;
+    if(Model!=null)
+    {
+        cname = Model.Name;
+    }
     @(Html.Telerik().PanelBar().Name("sp2").HtmlAttributes(new { style = "min-height: 700px;" })
     .Items(panes =>
     {
         panes.Add().Text("公司信息").Content(@<text>
         <center><input class="companysubmit"  type="button" value="提交公司信息" /></center>
-        @Html.Partial("CompanyInfo")
-         <center><input class="companysubmit"  type="button" value="提交公司信息" /></center>
-        </text>);
+      
+        @Html.Partial("CompanyInfo",Model)
+      
+        </text>).Expanded(true);
        
             
-        panes.Add().Text("Lead信息").Content(@<text>@GetLeadsDetails()</text>);
+     
        
     }))
 }

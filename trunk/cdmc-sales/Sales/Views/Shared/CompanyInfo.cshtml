@@ -32,7 +32,7 @@ table tr td{ border-width:0px; }
     <td> @Html.LabelFor(model => model.DistrictNumberID)： @Html.DropDownListFor(model => model.DistrictNumberID, new SelectList(CH.GetAllData<DistrictNumber>(), "ID", "Name"), "-请选择-")</td>
     </tr>
     </table>
-    @Html.Hidden("ID",Model!=null?Model.ID:0)
+    @Html.Hidden("ID", Model != null ? Model.ID : 0)
 
      @*  <div class="editor-label">
         @Html.Label("公司架构")
@@ -71,4 +71,31 @@ table tr td{ border-width:0px; }
     }
   </table>
 </fieldset>
+
+@if (Model != null && Model.Leads != null && Model.Leads.Count > 0)
+{
+    Html.Telerik().PanelBar().Name("spcompamykl" + Model.ID)
+   .Items(panes =>
+   {
+       foreach (var lead in Model.Leads)
+       {
+           var l = lead;
+           panes.Add().Text(l.Name+"   "+lead.Title).Content(@<text>
+            <center><input class="leadsubmit"  type="button" value="提交Lead信息" /></center>
+            @getLead(l)
+           
+            </text>);
+            }
+        }).Render();
+    
+        
+    }     
+ 
 </div>
+
+
+@helper getLead(Lead lead)
+    {
+      
+    @Html.Partial("leadInfo", lead)
+}
