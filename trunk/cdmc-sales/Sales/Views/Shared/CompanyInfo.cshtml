@@ -6,7 +6,7 @@ table{ border-width:0px;}
 table tr td{ border-width:0px; }
 .readonly{ border-width:0px !important; }
 </style>
-<center><input class="companysubmit"  type="button" value="提交公司信息" /></center>
+
 <div id="companydata" style="width:100%">
 
 <fieldset   >
@@ -58,16 +58,17 @@ table tr td{ border-width:0px; }
    <tr>
     <td colspan=2>公司说明： @Html.TextAreaFor(model => model.Description)</td>
     </tr>
+    @if (Model != null)
+    {
     <tr>
-    <td>创建员工： <input class="readonly" id="Creator" readonly="readonly" type="text" /></td>
-    <td>创建时间： <input class="readonly" id="CreatedDate" readonly="readonly" type="text" /></td>
+    <td>创建员工： <input class="readonly" id="Creator" readonly="readonly" type="text" value=@Model.Creator /></td>
+    <td>创建时间： <input class="readonly" id="CreatedDate" readonly="readonly" type="text" value=@Model.CreatedDate /></td>
     </tr>
     <tr>
-    <td>更改员工： <input class="readonly" id="ModifiedUser" readonly="readonly" type="text" /></td>
-    <td>更改时间： <input class="readonly" id="ModifiedDate" readonly="readonly" type="text" /></td>
+    <td>更改员工： <input class="readonly" id="ModifiedUser" readonly="readonly" type="text" value=@Model.ModifiedUser  /></td>
+    <td>更改时间： <input class="readonly" id="ModifiedDate" readonly="readonly" type="text" value=@Model.ModifiedDate /></td>
     </tr>
-     
+    }
   </table>
 </fieldset>
 </div>
-<center><input class="companysubmit"  type="button" value="提交公司信息" /></center>
