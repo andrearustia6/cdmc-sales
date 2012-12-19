@@ -1,0 +1,46 @@
+﻿@using Entity
+@model Lead
+@using Utl
+<style>
+table{ border-width:0px;}
+table tr td{ border-width:0px; }
+</style>
+
+
+    <table class="11" border="0" style="width:90%;">
+    <tr>
+    <td>中文名称： @Html.EditorFor(model => model.Name_CH)</td>
+    <td>英文名称： @Html.EditorFor(model => model.Name_EN)</td>
+    </tr>
+     <tr>
+    <td>  @Html.LabelFor(model => model.Title )： @Html.EditorFor(model => model.Title)</td>
+     <td>  @Html.LabelFor(model => model.PersonalEmailAddress )： @Html.EditorFor(model => model.PersonalEmailAddress)</td>
+     </tr>
+    <tr>
+    <td> @Html.LabelFor(model => model.Contact)： @Html.EditorFor(model => model.Contact)</td>
+     <td>  @Html.LabelFor(model => model.EMail)： @Html.EditorFor(model => model.EMail)</td>
+    </tr>
+    <tr>
+    <td>  @Html.LabelFor(model => model.Mobile )： @Html.EditorFor(model => model.Mobile)</td>
+    <td>  @Html.LabelFor(model => model.Fax)： @Html.EditorFor(model => model.Fax)</td>
+    </tr>
+    <tr>
+    <td>  @Html.LabelFor(model => model.Gender )：  @Html.DropDownListFor(model => model.Gender, new SelectList(new List<string>() { "Mr", "Ms" }), "-请选择-")</td>
+    </tr>
+    </table>
+    @Html.Hidden("ID",Model!=null?Model.ID:0)
+
+     @*  <div class="editor-label">
+        @Html.Label("公司架构")
+    </div>
+    <div class="editor-field">
+        @{if (Model != null)
+          {
+            <img  alt="上传文件" width="300" height="200" src=@Url.Action("ShowImage", "Image", new { id = Model.ImageID }) />
+          }
+        }
+        @Html.Telerik().Upload().Async(a=>a.AutoUpload(true)).Name("attachments").Multiple(false)
+  
+
+    </div>*@
+

@@ -621,6 +621,61 @@ namespace Sales.Controllers
 
         #endregion
 
+
+        public ViewResult AvailableCompanys()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult JsonSaveCompany(Company c)
+        {
+            CH.Edit<Company>(c);
+            return JsonGetCompanys();
+            
+        }
+
+        public JsonResult JsonGetCompanys()
+        {
+            string user = Employee.GetCurrentUserName();
+            var companys = from cr in CH.DB.CompanyRelationships.Include("Members") where cr.Members.Any(m => m.Name == user)
+                           from company in CH.DB.Companys where cr.CompanyID == company.ID 
+                           select company;
+
+            var list = companys.ToList();
+
+            return new DataJsonResult<Company>() { Data = list };
+        }
+
+        public JsonResult GetCompanyDetails(int? companyid)
+        {
+            string user = Employee.GetCurrentUserName();
+            var cr = from crm in CH.DB.CompanyRelationships.Include("LeadCalls")
+                      where crm.CompanyID == companyid
+                      select crm;
+
+            var company = cr.FirstOrDefault().Company;
+
+            var ls = from leads in CH.DB.Leads
+                     where leads.ID == company.ID
+                     select leads;
+
+            var data = cr.ToList().FirstOrDefault();
+           var cl = ls.ToList();
+           var jc =  new JosonCompany();
+            if(data!=null)
+            {
+                 jc.username =user;
+                 jc.Company = data.Company;
+                 jc.CompanyRelationship = data;
+                 jc.LeadCalls = data.LeadCalls;
+                 jc.Leads = cl;
+            }
+
+            return new DataJsonResult<JosonCompany>() { Data = jc };
+        }
+            
+
         #region contancted leads
         public ViewResult ContectedLeads(int? projectid)
         {

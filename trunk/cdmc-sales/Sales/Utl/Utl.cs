@@ -360,7 +360,10 @@ namespace Utl
                     new DataToJson<Research>(),
                     new DataToJson<LeadCall>(),
                     new DataToJson<Project>(),
-                    new DataToJson<LeadCallType>()
+                    new DataToJson<LeadCallType>(),
+                    new DataToJson<JosonCompany>(),
+                    new DataToJson<CompanyRelationship>(),
+                    new DataToJson<Member>()
                 });
                 string sJSON = serializer.Serialize(Data);
                 response.Write(sJSON);

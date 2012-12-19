@@ -6,6 +6,14 @@ using Entity;
 
 namespace Model
 {
+    public class  JosonCompany
+    {
+        public string username { get; set; }
+        public Company Company { get; set; }
+        public List<Lead> Leads { get; set; }
+        public CompanyRelationship CompanyRelationship { get; set; }
+        public List<LeadCall> LeadCalls { get; set; }
+    }
     public class ViewPhoneInfo
     {
         public TimeSpan Duration { get; set; }
