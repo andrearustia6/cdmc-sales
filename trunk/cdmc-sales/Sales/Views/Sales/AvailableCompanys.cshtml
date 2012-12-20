@@ -3,7 +3,7 @@
 }
 @using Entity
 @model Company
-
+@Html.Partial("Projectselector")
  @{Html.Telerik().Splitter().Name("sp1").HtmlAttributes(new { style = "min-height: 700px;" })
               .Orientation(SplitterOrientation.Horizontal).Panes(panes =>
               {

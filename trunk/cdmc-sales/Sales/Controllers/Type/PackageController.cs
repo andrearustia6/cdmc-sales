@@ -22,7 +22,7 @@ namespace Sales.Controllers
 
         public ViewResult Index()
         {
-            return View(CH.GetAllData<Package>("PackageItems").OrderByDescending(o=>o.Sequence).ToList());
+            return View(CH.GetAllData<Package>("PackageItems").AsParallel().OrderByDescending(o => o.Sequence).ToList());
         }
         
         public ViewResult Details(int id)

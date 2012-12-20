@@ -6,7 +6,8 @@ table{ border-width:0px;}
 table tr td{ border-width:0px; }
 </style>
 
-
+<fieldset>
+<legend>Lead信息</legend>
     <table class="11" border="0" style="width:90%;">
     <tr>
     <td>中文名称： @Html.EditorFor(model => model.Name_CH)</td>
@@ -29,18 +30,8 @@ table tr td{ border-width:0px; }
     </tr>
     </table>
     @Html.Hidden("ID",Model!=null?Model.ID:0)
-
-     @*  <div class="editor-label">
-        @Html.Label("公司架构")
-    </div>
-    <div class="editor-field">
-        @{if (Model != null)
-          {
-            <img  alt="上传文件" width="300" height="200" src=@Url.Action("ShowImage", "Image", new { id = Model.ImageID }) />
-          }
-        }
-        @Html.Telerik().Upload().Async(a=>a.AutoUpload(true)).Name("attachments").Multiple(false)
-  
-
-    </div>*@
+</fieldset>
+<div id="leadCallscontainer">
+@Html.Partial("LeadCalls",new List<LeadCall>())
+</div>
 

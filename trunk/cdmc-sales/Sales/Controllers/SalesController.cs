@@ -627,12 +627,22 @@ namespace Sales.Controllers
             return View();
         }
 
-        [HttpPost]
-        public ActionResult JsonSaveCompany(Company c)
-        {
-            CH.Edit<Company>(c);
-            return JsonGetCompanys();
+        //[HttpPost]
+        //public ActionResult JsonSaveCompany(Company c)
+        //{
+        //    CH.Edit<Company>(c);
+        //    return JsonGetCompanys();
             
+        //}
+
+        public PartialViewResult LeadCalls(int? leadid,int? projectid)
+        { 
+            string user = Employee.GetCurrentUserName();
+            var leadcalls = from lcs in CH.DB.LeadCalls
+                            where lcs.LeadID == leadid && lcs.ProjectID == projectid
+                            select lcs;
+            var data = leadcalls.ToList();
+            return PartialView(data);
         }
 
         public PartialViewResult CompanyInfo(int? companyid)
@@ -647,10 +657,10 @@ namespace Sales.Controllers
             return PartialView(data);
         }
 
-        public JsonResult JsonGetCompanys()
+        public JsonResult JsonGetCompanys(int? projectid)
         {
             string user = Employee.GetCurrentUserName();
-            var companys = from cr in CH.DB.CompanyRelationships.Include("Members") where cr.Members.Any(m => m.Name == user)
+            var companys = from cr in CH.DB.CompanyRelationships.Include("Members") where cr.Members.Any(m => m.Name == user) && cr.ProjectID == projectid
                            from company in CH.DB.Companys where cr.CompanyID == company.ID 
                            select company;
 
