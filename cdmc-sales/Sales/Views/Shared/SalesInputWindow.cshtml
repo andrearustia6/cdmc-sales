@@ -1,9 +1,56 @@
-﻿<fieldset>
-<legend>公司信息</legend>
+﻿@using Entity
+@using Utl
+
+<fieldset>
+    <legend>公司信息</legend>
+      <table border="0" style="width: 100%;">
+            <tr>
+                <td>
+                    中文名称： <input type="text" id="Name_CH" />
+                </td>
+                <td>
+                    英文名称： <input type="text" id="Name_EN" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    行业类型： @Html.DropDownList("AreaID", new SelectList(CH.GetAllData<Area>(), "ID", "Name"), "-请选择-")
+                </td>
+                <td>
+                   公司类型： @Html.DropDownList("CompanyTypeID", new SelectList(CH.GetAllData<Entity.CompanyType>(), "ID", "Name"), "-请选择-")
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    公司总机： <input type="text" id="Contact" />
+                </td>
+                <td>
+                    公司传真： <input type="text" id="Fax" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    公司地址： <input type="text" id="Address" />
+                </td>
+                <td>
+                    外资比例：<input type="text" id="ForeignAssetPercentage" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    区号/时差： @Html.DropDownList("DistrictNumberID", new SelectList(CH.GetAllData<DistrictNumber>(), "ID", "Name"), "-请选择-")
+                </td>
+            </tr>
+             <tr>
+                <td colspan=2>
+                    描述： @Html.TextArea("Discription")
+                </td>
+            </tr>
+        </table>
 </fieldset>
 <fieldset>
-<legend>Lead信息</legend>
+    <legend>Lead信息</legend>
 </fieldset>
 <fieldset>
-<legend>Call信息</legend>
+    <legend>Call信息</legend>
 </fieldset>
