@@ -76,6 +76,7 @@ function initialBtns() {
     });
 }
 
+
 function IntialLeadSavebtn($btn) {
     var $cf = $btn.closest('.leaddatacontainer');
     $btn.click(function () {
@@ -125,6 +126,52 @@ function IntialLeadSavebtn($btn) {
     });
 }
 
+function IntialLeadCallsSavebtn($btn) {
+    var $cf = $btn.closest('.singleleadcallcontainer');
+    $btn.click(function () {
+        var id = $cf.find("#ID").val();
+        var leadID = $cf.find("#LeadID").val();
+        var memberID = $cf.find("#MemberID").val();
+         var leadCallTypeID = $cf.find("#LeadCallTypeID").val(); 
+        var companyRelationshipID = $cf.find("#CompanyRelationshipID").val();
+        var projectID = $cf.find("#ProjectID").val();
+        var callBackDate = $cf.find("#CallBackDate").val();
+        var callDate = $cf.find("#CallDate").val();
+        var result = $cf.find("#Result").val();
+
+        var c = { LeadID: leadID,
+            MemberID: memberID,
+            CompanyRelationshipID: companyRelationshipID,
+            ProjectID: projectID,
+            CallBackDate: callBackDate,
+            CallDate: callDate,
+            ID: id,
+            Result: result,
+            LeadID: leadID,
+            LeadCallTypeID: leadCallTypeID
+        };
+
+        c = getCommonData($cf, c);
+
+        c = JSON.stringify(c);
+        $.ajax({
+            url: "/sales/JsonSaveLeadCall",
+            type: 'POST',
+            dataType: 'html',
+            contentType: 'application/json; charset=utf-8',
+            data: c,
+            success: function (result) {
+                alert('保存成功');
+                $cf.html(result);
+                var lsave = $cf.find('.leadcallssubmit');
+                IntialLeadCallsSavebtn(lsave);
+            },
+            error: function (xhr, status) {
+                alert(xhr.responseText);
+            }
+        });
+    });
+}
 
 
 function onCompanysTreeviewNodeSelected(e) {
@@ -164,6 +211,10 @@ function onLeadExpended(e) {
         success: function (result) {
             // Display the section contents.
             $(e.item).find('#leadCallscontainer').html(result);
+
+            $(e.item).find('#leadCallscontainer').find('.leadcallssubmit').each(function () {
+                IntialLeadCallsSavebtn($(this));
+            });
         },
         error: function (xhr, status) {
             alert(xhr.responseText);
