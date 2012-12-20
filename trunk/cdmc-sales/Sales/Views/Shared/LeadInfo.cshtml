@@ -5,7 +5,8 @@
 table{ border-width:0px;}
 table tr td{ border-width:0px; }
 </style>
-
+   <center>
+<input class="leadsubmit" type="button" value="提交Lead信息" /></center>
 <fieldset>
 <legend>Lead信息</legend>
     <table class="11" border="0" style="width:90%;">
@@ -28,9 +29,49 @@ table tr td{ border-width:0px; }
     <tr>
     <td>  @Html.LabelFor(model => model.Gender )：  @Html.DropDownListFor(model => model.Gender, new SelectList(new List<string>() { "Mr", "Ms" }), "-请选择-")</td>
     </tr>
+
     </table>
     @Html.Hidden("ID",Model!=null?Model.ID:0)
+    @Html.Hidden("CompanyID",Model!=null?Model.CompanyID:0)
 </fieldset>
+  <fieldset>
+        <legend>其他信息</legend>
+        <table border="0" style="width: 100%;">
+            <tr>
+                <td colspan="2">
+                    公司排序： @Html.EditorFor(model => model.Sequence)
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    公司说明： @Html.TextAreaFor(model => model.Description)
+                </td>
+            </tr>
+            @if (Model != null)
+            {
+                <tr  style=" display:none">
+                    <td>
+                        创建员工：
+                        <input class="readonly" id="Creator" readonly="readonly" type="text" value=@Model.Creator />
+                    </td>
+                    <td>
+                        创建时间：
+                        <input class="readonly" id="CreatedDate" readonly="readonly" type="text" value=@Model.CreatedDate />
+                    </td>
+                </tr>
+                <tr style=" display:none">
+                    <td>
+                        更改员工：
+                        <input class="readonly" id="ModifiedUser" readonly="readonly" type="text" value=@Model.ModifiedUser  />
+                    </td>
+                    <td>
+                        更改时间：
+                        <input class="readonly" id="ModifiedDate" readonly="readonly" type="text" value=@Model.ModifiedDate />
+                    </td>
+                </tr>
+            }
+        </table>
+    </fieldset>
 <div id="leadCallscontainer">
 @Html.Partial("LeadCalls",new List<LeadCall>())
 </div>
