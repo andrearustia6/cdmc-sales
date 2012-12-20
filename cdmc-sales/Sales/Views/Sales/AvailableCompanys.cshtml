@@ -22,34 +22,15 @@
 
 @helper GetCompanyDetails()
 {
-    string cname = string.Empty;
-    if(Model!=null)
-    {
-        cname = Model.Name;
-    }
-    @(Html.Telerik().PanelBar().Name("sp2").HtmlAttributes(new { style = "min-height: 700px;" })
-    .Items(panes =>
-    {
-        panes.Add().Text("公司信息").Content(@<text>
-        <center><input class="companysubmit"  type="button" value="提交公司信息" /></center>
-      
-        @Html.Partial("CompanyInfo",Model)
-      
-        </text>).Expanded(true);
-       
-            
-     
-       
-    }))
+   
+    @Html.Partial("CompanyInfo",Model)
 }
 
-@helper GetLeadsDetails()
+@*@helper GetLeadsDetails()
 {
     <div id="leadsdata" style="width:100%">
     </div>
-}
-
-
+}*@
 
 @{ Html.Telerik().ScriptRegistrar().OnDocumentReady(@<text> 
         onCompanysTreeviewDataBinding();

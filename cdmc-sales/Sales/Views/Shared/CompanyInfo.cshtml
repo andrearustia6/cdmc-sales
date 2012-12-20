@@ -2,105 +2,140 @@
 @model Company
 @using Utl
 <style>
-table{ border-width:0px;}
-table tr td{ border-width:0px; }
-.readonly{ border-width:0px !important; }
+    table
+    {
+        border-width: 0px;
+    }
+    table tr td
+    {
+        border-width: 0px;
+    }
+    .readonly
+    {
+        border-width: 0px !important;
+    }
 </style>
 
-<div id="companydata" style="width:100%">
-
-<fieldset   >
-    <legend>公司信息</legend>
-    <table  border="0" style="width:100%;">
-    <tr>
-    <td>中文名称： @Html.EditorFor(model => model.Name_CH)</td>
-    <td>英文名称： @Html.EditorFor(model => model.Name_EN)</td>
-    </tr>
-    <tr>
-    <td> @Html.LabelFor(model => model.AreaID)： @Html.DropDownListFor(model => model.AreaID, new SelectList(CH.GetAllData<Area>(), "ID", "Name"), "-请选择-")</td>
-     <td>  @Html.LabelFor(model => model.CompanyTypeID)： @Html.DropDownListFor(model => model.CompanyTypeID, new SelectList(CH.GetAllData<Entity.CompanyType>(), "ID", "Name"), "-请选择-")</td>
-    </tr>
-    <tr>
-    <td>  @Html.LabelFor(model => model.Contact)： @Html.EditorFor(model => model.Contact)</td>
-    <td>  @Html.LabelFor(model => model.Fax)： @Html.EditorFor(model => model.Fax)</td>
-    </tr>
-    <tr>
-    <td>  @Html.LabelFor(model => model.Address)： @Html.EditorFor(model => model.Address)</td>
-    <td>  @Html.LabelFor(model => model.ForeignAssetPercentage)： @Html.EditorFor(model => model.ForeignAssetPercentage)</td>
-    </tr>
-    <tr>
-    <td> @Html.LabelFor(model => model.DistrictNumberID)： @Html.DropDownListFor(model => model.DistrictNumberID, new SelectList(CH.GetAllData<DistrictNumber>(), "ID", "Name"), "-请选择-")</td>
-    </tr>
-    </table>
-    @Html.Hidden("ID", Model != null ? Model.ID : 0)
-
-     @*  <div class="editor-label">
-        @Html.Label("公司架构")
-    </div>
-    <div class="editor-field">
-        @{if (Model != null)
-          {
-            <img  alt="上传文件" width="300" height="200" src=@Url.Action("ShowImage", "Image", new { id = Model.ImageID }) />
-          }
-        }
-        @Html.Telerik().Upload().Async(a=>a.AutoUpload(true)).Name("attachments").Multiple(false)
-  
-
-    </div>*@
-</fieldset>
-<fieldset>
-  <legend>其他信息</legend>
-  <table  border="0" style="width:100%;">
-  <tr>
-    <td colspan=2>公司排序： @Html.EditorFor(model => model.Sequence)</td>
-    </tr>
-
-   <tr>
-    <td colspan=2>公司说明： @Html.TextAreaFor(model => model.Description)</td>
-    </tr>
-    @if (Model != null)
-    {
-    <tr>
-    <td>创建员工： <input class="readonly" id="Creator" readonly="readonly" type="text" value=@Model.Creator /></td>
-    <td>创建时间： <input class="readonly" id="CreatedDate" readonly="readonly" type="text" value=@Model.CreatedDate /></td>
-    </tr>
-    <tr>
-    <td>更改员工： <input class="readonly" id="ModifiedUser" readonly="readonly" type="text" value=@Model.ModifiedUser  /></td>
-    <td>更改时间： <input class="readonly" id="ModifiedDate" readonly="readonly" type="text" value=@Model.ModifiedDate /></td>
-    </tr>
-    }
-  </table>
-</fieldset>
-
-@if (Model != null && Model.Leads != null && Model.Leads.Count > 0)
-{
+<div id="companydata" style="width: 100%">
+   @if (Model != null)
+   {
     <fieldset>
-    <legend>Leads</legend>
-    @{Html.Telerik().PanelBar().Name("spcompamykl" + Model.ID).ClientEvents(e => e.OnExpand("onLeadExpended"))
+    <legend>公司</legend>
+    @(Html.Telerik().PanelBar().Name("company")
+    .Items(panes =>
+    {
+        panes.Add().Text(Model.Name).Content(@<text>
+    <center>
+        <input id="companysubmit" type="button" value="提交公司信息" /></center>
+    <fieldset>
+        <legend>公司信息</legend>
+        <table border="0" style="width: 100%;">
+            <tr>
+                <td>
+                    中文名称： @Html.EditorFor(model => model.Name_CH)
+                </td>
+                <td>
+                    英文名称： @Html.EditorFor(model => model.Name_EN)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.AreaID)： @Html.DropDownListFor(model => model.AreaID, new SelectList(CH.GetAllData<Area>(), "ID", "Name"), "-请选择-")
+                </td>
+                <td>
+                    @Html.LabelFor(model => model.CompanyTypeID)： @Html.DropDownListFor(model => model.CompanyTypeID, new SelectList(CH.GetAllData<Entity.CompanyType>(), "ID", "Name"), "-请选择-")
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.Contact)： @Html.EditorFor(model => model.Contact)
+                </td>
+                <td>
+                    @Html.LabelFor(model => model.Fax)： @Html.EditorFor(model => model.Fax)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.Address)： @Html.EditorFor(model => model.Address)
+                </td>
+                <td>
+                    @Html.LabelFor(model => model.ForeignAssetPercentage)： @Html.EditorFor(model => model.ForeignAssetPercentage)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.DistrictNumberID)： @Html.DropDownListFor(model => model.DistrictNumberID, new SelectList(CH.GetAllData<DistrictNumber>(), "ID", "Name"), "-请选择-")
+                </td>
+            </tr>
+        </table>
+        @Html.Hidden("ID", Model != null ? Model.ID : 0)
+    </fieldset>
+    <fieldset>
+        <legend>其他信息</legend>
+        <table border="0" style="width: 100%;">
+            <tr>
+                <td colspan="2">
+                    公司排序： @Html.EditorFor(model => model.Sequence)
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    公司说明： @Html.TextAreaFor(model => model.Description)
+                </td>
+            </tr>
+            @if (Model != null)
+            {
+                <tr  style=" display:none">
+                    <td>
+                        创建员工：
+                        <input class="readonly" id="Creator" readonly="readonly" type="text" value=@Model.Creator />
+                    </td>
+                    <td>
+                        创建时间：
+                        <input class="readonly" id="CreatedDate" readonly="readonly" type="text" value=@Model.CreatedDate />
+                    </td>
+                </tr>
+                <tr style=" display:none">
+                    <td>
+                        更改员工：
+                        <input class="readonly" id="ModifiedUser" readonly="readonly" type="text" value=@Model.ModifiedUser  />
+                    </td>
+                    <td>
+                        更改时间：
+                        <input class="readonly" id="ModifiedDate" readonly="readonly" type="text" value=@Model.ModifiedDate />
+                    </td>
+                </tr>
+            }
+        </table>
+    </fieldset>
+    </text>).Expanded(false);
+    }))
+</fieldset>
+
+    if ( Model.Leads != null && Model.Leads.Count > 0)
+    {
+        <fieldset>
+            <legend>Leads</legend>
+            @{Html.Telerik().PanelBar().Name("LeadCompany" + Model.ID).ClientEvents(e => e.OnExpand("onLeadExpended"))
    .Items(panes =>
    {
        foreach (var lead in Model.Leads)
        {
            var l = lead;
            panes.Add().Text(l.Name + "   " + lead.Title).Content(@<text>
-            <center><input class="leadsubmit"  type="button" value="提交Lead信息" /></center>
-            @getLead(l)
-           
-            </text>);
+              
+                @getLead(l)
+                </text>);
        }
    }).Render();
-}
-    
-</fieldset> 
-}     
- 
+            }
+        </fieldset> 
+    }
+   }
 </div>
-
-
 @helper getLead(Lead lead)
     {
-      
-    @Html.Partial("leadInfo", lead)
-
-       
+     <div class="leaddatacontainer">
+       @Html.Partial("leadInfo", lead)
+    </div>
 }

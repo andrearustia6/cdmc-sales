@@ -622,18 +622,27 @@ namespace Sales.Controllers
         #endregion
 
 
-        public ViewResult AvailableCompanys()
+        public ViewResult AvailableCompanys(int? projectid)
         {
             return View();
         }
 
-        //[HttpPost]
-        //public ActionResult JsonSaveCompany(Company c)
-        //{
-        //    CH.Edit<Company>(c);
-        //    return JsonGetCompanys();
-            
-        //}
+        [HttpPost]
+        public PartialViewResult JsonSaveCompany(Company c)
+        {
+            CH.Edit<Company>(c);
+            return PartialView("CompanyInfo", c);
+
+        }
+         [HttpPost]
+        public PartialViewResult JsonSaveLead(Lead l)
+        {
+            CH.Edit<Lead>(l);
+            return PartialView(@"~\views\shared\Leadinfo.cshtml", l);
+
+        }
+
+        
 
         public PartialViewResult LeadCalls(int? leadid,int? projectid)
         { 

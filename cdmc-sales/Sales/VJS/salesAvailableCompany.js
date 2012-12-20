@@ -15,8 +15,8 @@
                     array.push({ Text: result[i].Name, Value: result[i].ID })
                 }
                 if (e) {
-                        treeview.dataBind(e.item, array);
-                        initialCompanysaveBtn();
+                    treeview.dataBind(e.item, array);
+                    initialBtns();
                 }
             }
         }
@@ -24,8 +24,8 @@
 }
 
 
-function initialCompanysaveBtn() {
-    $('.companysubmit').click(function () {
+function initialBtns() {
+    $('#companysubmit').click(function () {
 
         var $cf = $('#companydata');
         var name_EN = $cf.find("#Name_EN").val();
@@ -37,7 +37,6 @@ function initialCompanysaveBtn() {
         var companyTypeID = $cf.find("#CompanyTypeID").val();
         var areaID = $cf.find("#AreaID").val();
         var foreignAssetPercentage = $cf.find("#ForeignAssetPercentage").val();
-        
         var id = $cf.find("#ID").val();
 
         var c = { Name_EN: name_EN,
@@ -48,25 +47,85 @@ function initialCompanysaveBtn() {
             CompanyTypeID: companyTypeID,
             ID: id,
             Contact: contact,
-            ForeignAssetPercentage:foreignAssetPercentage,
+            ForeignAssetPercentage: foreignAssetPercentage,
             AreaID: areaID
         };
 
-        c = getCommonData($cf,c);
+        c = getCommonData($cf, c);
 
         c = JSON.stringify(c);
         $.ajax({
             url: "/sales/JsonSaveCompany",
             type: 'POST',
-            dataType: 'json',
+            dataType: 'html',
             contentType: 'application/json; charset=utf-8',
             data: c,
             success: function (result) {
+                alert('保存成功');
+                $('#companydata').html(result);
+                initialBtns();
+            },
+            error: function (xhr, status) {
+                alert(xhr.responseText);
             }
         });
+    });
 
+    $('.leadsubmit').each(function () {
+        IntialLeadSavebtn($(this));
     });
 }
+
+function IntialLeadSavebtn($btn) {
+    var $cf = $btn.closest('.leaddatacontainer');
+    $btn.click(function () {
+        var name_EN = $cf.find("#Name_EN").val();
+        var name_CH = $cf.find("#Name_CH").val();
+        var contact = $cf.find("#Contact").val();
+        var fax = $cf.find("#Fax").val();
+        var title = $cf.find("#Title").val();
+        var personalEmailAddress = $cf.find("#PersonalEmailAddress").val();
+        var mobile = $cf.find("#Mobile").val();
+        var gender = $cf.find("#Gender").val();
+        var eMail = $cf.find("#EMail").val();
+        var id = $cf.find("#ID").val();
+        var companyid = $cf.find("#CompanyID").val();
+        var c = { Name_EN: name_EN,
+            Name_CH: name_CH,
+            Fax: fax,
+            Title: title,
+            PersonalEmailAddress: personalEmailAddress,
+            Mobile: mobile,
+            ID: id,
+            Contact: contact,
+            Gender: gender,
+            EMail: eMail,
+            CompanyID: companyid
+        };
+
+        c = getCommonData($cf, c);
+
+        c = JSON.stringify(c);
+        $.ajax({
+            url: "/sales/JsonSaveLead",
+            type: 'POST',
+            dataType: 'html',
+            contentType: 'application/json; charset=utf-8',
+            data: c,
+            success: function (result) {
+                alert('保存成功');
+                $cf.html(result);
+                var lsave = $cf.find('.leadsubmit');
+                IntialLeadSavebtn(lsave);
+            },
+            error: function (xhr, status) {
+                alert(xhr.responseText);
+            }
+        });
+    });
+}
+
+
 
 function onCompanysTreeviewNodeSelected(e) {
 
@@ -80,22 +139,24 @@ function onCompanysTreeviewNodeSelected(e) {
         data: { companyid: id },
         success: function (result) {
             // Display the section contents.
+
             $('#companydata').html(result);
+            initialBtns();
         },
         error: function (xhr, status) {
             alert(xhr.responseText);
         }
     });
-       
+
 }
 
 
-function onLeadExpended(e){
+function onLeadExpended(e) {
     var $container = $(e.item).find("#leadCallscontainer");
     var id = $(e.item).find("input[type=hidden]").val();
     var projectid = $('#ProjectID').val();
     $.ajax({
-        url: '/sales/LeadCalls/?projectid=' + projectid + '&leadid='+id,
+        url: '/sales/LeadCalls/?projectid=' + projectid + '&leadid=' + id,
         contentType: 'application/html; charset=utf-8',
         type: 'GET',
         dataType: 'html',

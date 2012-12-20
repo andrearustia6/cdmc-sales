@@ -1,26 +1,29 @@
 ﻿@using Entity
 @model List<LeadCall>
-<fieldset>
-<legend>Call List</legend>
-    @{Html.Telerik().PanelBar().Name("spcompamykl")
+@if (Model != null && Model.Count > 0)
+{
+    <fieldset>
+        <legend>Call List</legend>
+        @{Html.Telerik().PanelBar().Name("lcs"+Model.FirstOrDefault().CompanyRelationshipID)
    .Items(panes =>
    {
        foreach (var leadcall in Model)
        {
            var l = leadcall;
            panes.Add().Text("call").Content(@<text>
-        <center>
-            <input class="leadsubmit" type="button" value="提交Lead信息" /></center>
-        @GetCall(l);
-        </text>);
+            <center>
+                <input class="leadsubmit" type="button" value="提交Lead信息" /></center>
+            @GetCall(l)
+            </text>);
        }
    }).Render();
-    }
-    @helper GetCall(LeadCall call)
-        {
-        <div id="singleleadcallcontainer">
-            @Html.Partial("SingleLeadCall", call)
-        </div>
+        }
+        @helper GetCall(LeadCall call)
+            {
+            <div id="singleleadcallcontainer">
+                @Html.Partial("SingleLeadCall", call)
+            </div>
    
-    }
-</fieldset>
+        }
+    </fieldset>
+}
