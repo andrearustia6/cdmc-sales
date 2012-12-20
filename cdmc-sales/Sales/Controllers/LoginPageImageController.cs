@@ -22,7 +22,7 @@ namespace Sales.Controllers
         {
             var data = CH.GetAllData<Image>(i => i.ImageArea == ImageArea.LoginPage.ToString());
             if (data.Count > 0)
-                return View(data.OrderByDescending(o => o.Sequence).ToList());
+                return View(data.AsParallel().OrderByDescending(o => o.Sequence).ToList());
             else
                 return View();
         }

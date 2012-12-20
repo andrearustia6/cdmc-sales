@@ -74,22 +74,25 @@ table tr td{ border-width:0px; }
 
 @if (Model != null && Model.Leads != null && Model.Leads.Count > 0)
 {
-    Html.Telerik().PanelBar().Name("spcompamykl" + Model.ID)
+    <fieldset>
+    <legend>Leads</legend>
+    @{Html.Telerik().PanelBar().Name("spcompamykl" + Model.ID).ClientEvents(e => e.OnExpand("onLeadExpended"))
    .Items(panes =>
    {
        foreach (var lead in Model.Leads)
        {
            var l = lead;
-           panes.Add().Text(l.Name+"   "+lead.Title).Content(@<text>
+           panes.Add().Text(l.Name + "   " + lead.Title).Content(@<text>
             <center><input class="leadsubmit"  type="button" value="提交Lead信息" /></center>
             @getLead(l)
            
             </text>);
-            }
-        }).Render();
+       }
+   }).Render();
+}
     
-        
-    }     
+</fieldset> 
+}     
  
 </div>
 
@@ -98,4 +101,6 @@ table tr td{ border-width:0px; }
     {
       
     @Html.Partial("leadInfo", lead)
+
+       
 }
