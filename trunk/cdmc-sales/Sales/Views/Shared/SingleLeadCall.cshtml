@@ -1,12 +1,17 @@
 ﻿@using Entity
 @model LeadCall
 @using Utl
+<center>
+                <input class="leadcallssubmit" type="button" value="提交Call信息" /></center>
 <fieldset>
     <legend>Call 信息</legend>
     <table border="0" style="width: 100%;">
         <tr>
             <td>
-                Lead姓名： @Html.DisplayFor(m => m.Lead.Name)
+                Lead姓名： @{
+                          var name = CH.GetDataById<Lead>(Model.LeadID).Name;
+                          <p>@name</p>
+                    }
             </td>
             <td>
                 回打时间： @Html.Telerik().DateTimePickerFor(m => m.CallBackDate)
@@ -36,3 +41,8 @@
         </tr>
     </table>
 </fieldset>
+@Html.HiddenFor(m=>m.LeadID)
+@Html.HiddenFor(m=>m.ID)
+@Html.HiddenFor(m=>m.CompanyRelationshipID)
+@Html.HiddenFor(m=>m.ProjectID)
+

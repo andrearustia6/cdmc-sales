@@ -642,7 +642,12 @@ namespace Sales.Controllers
 
         }
 
-        
+         public PartialViewResult JsonSaveLeadCall(LeadCall l)
+         {
+             CH.Edit<LeadCall>(l);
+             return PartialView(@"~\views\shared\singleLeadcall.cshtml", l));
+
+         }
 
         public PartialViewResult LeadCalls(int? leadid,int? projectid)
         { 
