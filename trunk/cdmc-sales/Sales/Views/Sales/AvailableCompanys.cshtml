@@ -4,6 +4,7 @@
 @using Entity
 @model Company
 @Html.Partial("Projectselector")
+<input type="button" id="addData" value="添加" />
  @{Html.Telerik().Splitter().Name("sp1").HtmlAttributes(new { style = "min-height: 700px;" })
               .Orientation(SplitterOrientation.Horizontal).Panes(panes =>
               {
@@ -36,3 +37,11 @@
         onCompanysTreeviewDataBinding();
     </text>);
 }
+
+@{Html.Telerik().Window().Name("salesdatawindow").Width(600)
+.Draggable(true).Modal(true).Resizable().Scrollable(true).Visible(false).Buttons(b=>b.Clear().Close().Maximize())
+.Title("添加销售数据")
+.Effects(fx => fx.Zoom().Opacity().OpenDuration(200).CloseDuration(300)).Content(@<text>@Html.Partial("salesinputwindow")</text>).Render();
+    }
+
+

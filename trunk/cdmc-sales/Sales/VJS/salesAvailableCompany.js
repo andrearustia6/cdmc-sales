@@ -17,13 +17,22 @@
                 if (e) {
                     treeview.dataBind(e.item, array);
                     initialBtns();
+                    addDatabinding();
                 }
             }
         }
     });
 }
 
+function addDatabinding() {
+    var tWindow = $('#salesdatawindow');
+    var btn = $('#addData');
 
+    btn.bind('click', function (e) { tWindow.data('tWindow').center().open();  }).toggle(!tWindow.is(':visible'));
+
+     tWindow.bind('close', function () { btn.show(); });
+
+}
 function initialBtns() {
     $('#companysubmit').click(function () {
 
