@@ -8,6 +8,7 @@ namespace Model
 {
     public class JosonSalesInputData
     {
+        public string SubmitType { get; set; }
         public int? CRID { get; set; }
         public int? ProjectID { get; set; }
         public Company Company { get; set; }

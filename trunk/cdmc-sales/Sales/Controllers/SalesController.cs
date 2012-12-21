@@ -38,7 +38,7 @@ namespace Sales.Controllers
             {
                 data = CH.GetDataById<CompanyRelationship>(crid, "LeadCalls").LeadCalls;
             }
-            return View("SalesLeadCallsIndex", data.OrderByDescending(o=>o.CallDate).ToList());
+            return View("SalesLeadCallsIndex", data.OrderByDescending(o => o.CallDate).ToList());
         }
 
         /// <summary>
@@ -77,7 +77,7 @@ namespace Sales.Controllers
             ViewBag.CompanyRelationshipID = crid;
             ViewBag.ProjectID = cr.ProjectID;
 
-           
+
             if (ModelState.IsValid)
             {
                 leadcall.ProjectID = cr.ProjectID;
@@ -113,11 +113,11 @@ namespace Sales.Controllers
         }
 
         [HttpPost, ActionName("DeleteLeadCall")]
-        public ActionResult DeleteLeadCallConfirmed( int? leadcallid,int? crid)
+        public ActionResult DeleteLeadCallConfirmed(int? leadcallid, int? crid)
         {
             CH.Delete<LeadCall>(leadcallid);
             return RedirectToAction("CompanyRelationshipLeadCallsIndex", new { crid = crid });
-           
+
         }
 
         public ActionResult EditLeadCall(int? crid, int? leadcallid)
@@ -171,16 +171,16 @@ namespace Sales.Controllers
 
             this.AddErrorStateIfSalesNoAccessRightToTheProject(projectid);
 
-           
-            if(ModelState.IsValid)
-               return View();
+
+            if (ModelState.IsValid)
+                return View();
             else
                 return RedirectToAction("MyDealIndex");
         }
 
         public ActionResult EditDeal(int? id)
         {
-            
+
             var item = CH.GetDataById<Deal>(id);
             this.AddErrorStateIfSalesNoAccessRightToTheCRM(item.CompanyRelationshipID);
             ViewBag.ProjectID = item.CompanyRelationship.ProjectID;
@@ -191,7 +191,7 @@ namespace Sales.Controllers
         }
 
         [HttpPost]
-        public ActionResult EditDeal(Deal item,int? projectid)
+        public ActionResult EditDeal(Deal item, int? projectid)
         {
             ViewBag.ProjectID = projectid;
             ViewBag.CompanyRelationshipID = item.CompanyRelationshipID;
@@ -214,7 +214,7 @@ namespace Sales.Controllers
 
         public ViewResult DisplayDeal(int? id, int? projectid)
         {
-            var deal =  CH.GetDataById<Deal>(id);
+            var deal = CH.GetDataById<Deal>(id);
             this.AddErrorStateIfSalesNoAccessRightToTheCRM(deal.CompanyRelationshipID);
             ViewBag.CompanyRelationshipID = deal.CompanyRelationshipID;
             ViewBag.ProjectID = projectid;
@@ -235,17 +235,17 @@ namespace Sales.Controllers
         }
 
         [HttpPost]
-        public ViewResult PhoneSaleSupport(int? onphonesupportid,string condition=null)
+        public ViewResult PhoneSaleSupport(int? onphonesupportid, string condition = null)
         {
             var ps = CRM_Logical.GetSalesInvolveProject();
 
-            var data = CH.GetAllData<PhoneSaleSupport>(s => ps.Any(p=>p.ID == s.ProjectID)|| s.ProjectID==null);
+            var data = CH.GetAllData<PhoneSaleSupport>(s => ps.Any(p => p.ID == s.ProjectID) || s.ProjectID == null);
 
             if (!string.IsNullOrEmpty(condition))
             {
                 string c = (string)condition.Trim();
-                data = data.FindAll(d => d.Name.Contains(c) 
-                    || d.Answer.Contains(c) 
+                data = data.FindAll(d => d.Name.Contains(c)
+                    || d.Answer.Contains(c)
                     || d.Answer.Contains(c)
                     || d.Block.Contains(c)
                     || d.OnPhoneBlockType.Name.Contains(c)
@@ -253,7 +253,7 @@ namespace Sales.Controllers
                     );
                 ViewBag.Condition = condition;
             }
-            
+
             return View(data);
         }
         #endregion
@@ -264,7 +264,7 @@ namespace Sales.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public ViewResult DisplayLead(int? leadid, int? crid,int? projectid)
+        public ViewResult DisplayLead(int? leadid, int? crid, int? projectid)
         {
             this.AddErrorStateIfSalesNoAccessRightToTheCRM(crid);
             ViewBag.CompanyRelationshipID = crid;
@@ -283,7 +283,7 @@ namespace Sales.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public ViewResult EditLead(int? id, int? crid,int? projectid)
+        public ViewResult EditLead(int? id, int? crid, int? projectid)
         {
             this.AddErrorStateIfSalesNoAccessRightToTheCRM(crid);
             ViewBag.ProjectID = projectid;
@@ -303,7 +303,7 @@ namespace Sales.Controllers
         [HttpPost]
         public ActionResult EditLead(Lead lead, int? projectid)
         {
-       
+
             if (ModelState.IsValid)
             {
                 CH.Edit<Lead>(lead);
@@ -321,7 +321,7 @@ namespace Sales.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult AddLead(Lead lead, int? projectid, int? LeadCallTypeID, string Result, DateTime? CallBackDate, DateTime? CallDate,int? crid)
+        public ActionResult AddLead(Lead lead, int? projectid, int? LeadCallTypeID, string Result, DateTime? CallBackDate, DateTime? CallDate, int? crid)
         {
             this.AddErrorIfAllNamesEmpty(lead);
 
@@ -337,7 +337,7 @@ namespace Sales.Controllers
             {
                 ModelState.AddModelError("", "此公司下已经存在相同名字的Lead，无法添加");
             }
-            
+
             if (ModelState.IsValid)
             {
                 //Image image = ImageController.UploadImg(Request, lead.Image);
@@ -402,7 +402,7 @@ namespace Sales.Controllers
             if (projectid == null) return RedirectToAction("CompanyRelationshipIndex", "Sales");
 
             this.AddErrorStateIfSalesNoAccessRightToTheProject(projectid);
-            
+
 
             if (ModelState.IsValid)
             {
@@ -414,31 +414,32 @@ namespace Sales.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddCompany(Company item,int? projectid, int[] checkedCategorys)
+        public ActionResult AddCompany(Company item, int? projectid, int[] checkedCategorys)
         {
             projectid = this.TrySetProjectIDForUser(projectid);
             ViewBag.ProjectID = projectid;
 
             this.AddErrorStateIfSalesNoAccessRightToTheProject(projectid);
-            this.AddAddErrorStateIfOneOfNameExist<Company>(item.Name_EN,item.Name_CH);
+            this.AddAddErrorStateIfOneOfNameExist<Company>(item.Name_EN, item.Name_CH);
             this.AddErrorIfAllNamesEmpty(item);
             if (ModelState.IsValid)
             {
                 List<Category> lc = new List<Category>();
-                string categorystring=string.Empty;
+                string categorystring = string.Empty;
                 if (checkedCategorys != null)
                 {
-                   
+
                     lc = CH.GetAllData<Category>(i => checkedCategorys.Contains(i.ID));
-                      lc.ForEach(l=>{
-                          if(string.IsNullOrEmpty(categorystring))
-                              categorystring=l.Name;
-                          else
-                              categorystring+= "|"+l.Name;
-                      });
+                    lc.ForEach(l =>
+                    {
+                        if (string.IsNullOrEmpty(categorystring))
+                            categorystring = l.Name;
+                        else
+                            categorystring += "|" + l.Name;
+                    });
                 }
 
-                var p = CH.GetDataById<Project>(projectid,"Members");
+                var p = CH.GetDataById<Project>(projectid, "Members");
                 CH.Create<Company>(item);
                 var ms = new List<Member>();
                 ms.Add(p.GetMemberInProjectByName(Employee.GetCurrentUserName()));
@@ -446,7 +447,7 @@ namespace Sales.Controllers
                 var cr = new CompanyRelationship() { CompanyID = item.ID, ProjectID = projectid, Importancy = 1, Members = ms, Categorys = lc, CategoryString = categorystring };
                 CH.Create<CompanyRelationship>(cr);
                 return RedirectToAction("CompanyRelationshipIndex", "Sales", new { projectid = projectid });
-                
+
             }
             else
                 return View();
@@ -491,8 +492,8 @@ namespace Sales.Controllers
         public ActionResult EditCompany(Company item, int? crid, int? projectid, int[] checkedCategorys)
         {
             this.AddErrorIfAllNamesEmpty(item);
-           
-            
+
+
             if (ModelState.IsValid)
             {
                 var cr = CH.GetDataById<CompanyRelationship>(crid, "Categorys");
@@ -529,23 +530,23 @@ namespace Sales.Controllers
         /// <returns></return
         public ViewResult CompanyRelationshipIndex(int? projectid)
         {
-          
+
             projectid = this.TrySetProjectIDForUser(projectid);
             ViewBag.ProjectID = projectid;
-            
+
             if (projectid != null)
             {
                 var project = CH.GetDataById<Project>(projectid, "Members");
                 var data = project.GetCRM();
-                return View(data.OrderByDescending(o=>o.CreatedDate).ToList());
+                return View(data.OrderByDescending(o => o.CreatedDate).ToList());
             }
             else
             {
                 return View();
             }
         }
-        #endregion  
-        
+        #endregion
+
         #region
         public ViewResult OpenProjectSalesBrief(int? projectid)
         {
@@ -571,7 +572,7 @@ namespace Sales.Controllers
                 return View();
             }
 
-           
+
         }
 
         public ViewResult AddMessage(int? projectid)
@@ -614,7 +615,7 @@ namespace Sales.Controllers
             return View(item);
         }
 
-        public ViewResult DisplayMessage(int? id,int?projectid)
+        public ViewResult DisplayMessage(int? id, int? projectid)
         {
             return View(CH.GetDataById<Message>(id));
         }
@@ -630,27 +631,6 @@ namespace Sales.Controllers
 
         #region Json
 
-        //public JsonResult GetCompanyDetails(int? companyid)
-        //{
-        //    string user = Employee.GetCurrentUserName();
-
-        //    var c = from company in CH.DB.Companys.Include("Leads")
-        //                  where company.ID == companyid
-        //             select company;
-
-        //    var data = c.ToList().FirstOrDefault();
-
-        //   var jc =  new JosonCompany();
-        //    if(data!=null)
-        //    {
-        //         jc.username =user;
-        //         jc.Company = data;
-        //         jc.Leads = data.Leads;
-        //    }
-
-        //    return new DataJsonResult<JosonCompany>() { Data = jc };
-        //}
-
         [HttpPost]
         public PartialViewResult JsonSaveCompany(Company c)
         {
@@ -658,7 +638,7 @@ namespace Sales.Controllers
             return PartialView(@"~\views\shared\CompanyInfo.cshtml", c);
 
         }
-         [HttpPost]
+        [HttpPost]
         public PartialViewResult JsonSaveLead(Lead l)
         {
             CH.Edit<Lead>(l);
@@ -666,20 +646,20 @@ namespace Sales.Controllers
 
         }
 
-         public PartialViewResult JsonSaveLeadCall(LeadCall l)
-         {
-             CH.Edit<LeadCall>(l);
-             return PartialView(@"~\views\shared\singleLeadcall.cshtml", l);
+        public PartialViewResult JsonSaveLeadCall(LeadCall l)
+        {
+            CH.Edit<LeadCall>(l);
+            return PartialView(@"~\views\shared\singleLeadcall.cshtml", l);
 
-         }
-         public PartialViewResult JsonCancelInput()
-         {
-             return PartialView(@"~\views\shared\SalesInputWindow.cshtml");
-         }
+        }
+        public PartialViewResult JsonCancelInput()
+        {
+            return PartialView(@"~\views\shared\SalesInputWindow.cshtml");
+        }
 
         [HttpPost]
-         public PartialViewResult JsonLeadCalls(int? leadid, int? projectid)
-        { 
+        public PartialViewResult JsonLeadCalls(int? leadid, int? projectid)
+        {
             string user = Employee.GetCurrentUserName();
             var leadcalls = from lcs in CH.DB.LeadCalls
                             where lcs.LeadID == leadid && lcs.ProjectID == projectid
@@ -688,7 +668,7 @@ namespace Sales.Controllers
             return PartialView(@"~\views\shared\LeadCalls.cshtml", data);
         }
 
-         public PartialViewResult JsonCompanyInfo(int? companyid)
+        public PartialViewResult JsonCompanyInfo(int? companyid)
         {
             string user = Employee.GetCurrentUserName();
 
@@ -697,14 +677,16 @@ namespace Sales.Controllers
                     select company;
 
             var data = c.ToList().FirstOrDefault();
-            return PartialView(@"~\views\shared\CompanyInfo.cshtml",data);
+            return PartialView(@"~\views\shared\CompanyInfo.cshtml", data);
         }
 
         public JsonResult JsonGetCompanys(int? projectid)
         {
             string user = Employee.GetCurrentUserName();
-            var companys = from cr in CH.DB.CompanyRelationships.Include("Members") where cr.Members.Any(m => m.Name == user) && cr.ProjectID == projectid
-                           from company in CH.DB.Companys where cr.CompanyID == company.ID 
+            var companys = from cr in CH.DB.CompanyRelationships.Include("Members")
+                           where cr.Members.Any(m => m.Name == user) && cr.ProjectID == projectid
+                           from company in CH.DB.Companys
+                           where cr.CompanyID == company.ID
                            select company;
 
             var list = companys.ToList();
@@ -717,35 +699,19 @@ namespace Sales.Controllers
         [HttpPost]
         public PartialViewResult JsonSaveSalesInputData(JosonSalesInputData data)
         {
-            data.Satisfied = true;
             string username = Employee.GetCurrentUserName();
-             if (string.IsNullOrEmpty(data.Company.Name_CH) && string.IsNullOrEmpty(data.Company.Name_EN))
-            {
-                data.Satisfied = false;
-                data.Message = "公司中文名和英文名不可以同时为空, 请填写数据";
-                return PartialView(@"~\views\shared\SalesInputWindow.cshtml", data);
-            }
-
-            //检查是否是可打公司
-            var dbcrm = from crm in CH.DB.CompanyRelationships.Include("Members") where crm.ProjectID== data.ProjectID && crm.CompanyID == data.Company.ID 
-                      && crm.Members.Any(m=>m.Name == username) 
-                      select crm;
-
-            if (dbcrm.Count() > 0)
-            {
-                data.Satisfied = false;
-                data.Message = "此公司已经被添加到项目中, 但是并不是您的可打公司，请联系项目管理人员把该公司加到您的可打公司";
-                return PartialView(@"~\views\shared\SalesInputWindow.cshtml", data);
-            }
+            JsonValidateInput(data);
 
             //保存公司
             if (data.Company != null && data.Company.ID > 0)
             {
+
+                //如果数据库里面有同名公司，返回已存在数据，否则创建新的数据
                 var company = from c in CH.DB.Companys
                               where (c.Name_CH == data.Company.Name_CH && !string.IsNullOrEmpty(c.Name_CH)) ||
                               (c.Name_EN == data.Company.Name_EN && !string.IsNullOrEmpty(c.Name_EN))
                               select c;
-                //如果数据库里面有同名公司，返回已存在数据，否则创建新的数据
+
                 if (company.Count() > 0)
                 {
                     CH.Edit<Company>(data.Company);
@@ -764,9 +730,9 @@ namespace Sales.Controllers
             }
             else
             {
-               // var crm = CH.GetDataById<CompanyRelationship>(data.CRID);
+                // var crm = CH.GetDataById<CompanyRelationship>(data.CRID);
             }
-           
+
             //保存lead
             if (string.IsNullOrEmpty(data.Lead.Name_CH) && string.IsNullOrEmpty(data.Lead.Name_EN))
             {
@@ -784,20 +750,77 @@ namespace Sales.Controllers
                     CH.Create<Lead>(data.Lead);
                 }
 
-                data.LeadCall.LeadID = data.Lead.ID ;
-                
+                data.LeadCall.LeadID = data.Lead.ID;
+
 
                 //设置call销售
-                 var ms =　from m in CH.DB.Members where m.Name == username && m.ProjectID== data.ProjectID
-                          select m.ID;
+                var ms = from m in CH.DB.Members
+                         where m.Name == username && m.ProjectID == data.ProjectID
+                         select m.ID;
 
-                if(ms.Count()>0)
-                data.LeadCall.MemberID = ms.FirstOrDefault();
-                if (data.LeadCall.LeadCallTypeID==null)
-                data.LeadCall.LeadCallTypeID = 1;
+                if (ms.Count() > 0)
+                {
+                    data.LeadCall.MemberID = ms.FirstOrDefault();
+                }
+
                 CH.Create<LeadCall>(data.LeadCall);
             }
             return PartialView(@"~\views\shared\SalesInputWindow.cshtml", data);
+        }
+
+        private void JsonValidateInput(JosonSalesInputData data)
+        {
+            data.Satisfied = true;
+
+
+            var types = data.SubmitType.Split('&');
+
+            if (types.Any(t => t == "company"))
+            {
+                //检查公司名
+                string username = Employee.GetCurrentUserName();
+                if (string.IsNullOrEmpty(data.Company.Name_CH) && string.IsNullOrEmpty(data.Company.Name_EN))
+                {
+                    data.Satisfied = false;
+                    data.Message = "公司中文名和英文名不可以同时为空, 请填写数据";
+                    return;
+                }
+
+
+
+                //检查是否是可打公司
+                var dbcrm = from crm in CH.DB.CompanyRelationships.Include("Members")
+                            where crm.ProjectID == data.ProjectID && crm.CompanyID == data.Company.ID
+                                && crm.Members.Any(m => m.Name == username)
+                            select crm;
+
+                if (dbcrm.Count() > 0)
+                {
+                    data.Satisfied = false;
+                    data.Message = "此公司已经被添加到项目中, 但是并不是您的可打公司，请联系项目管理人员把该公司加到您的可打公司";
+                    return;
+                }
+
+            }
+            if (types.Any(t => t == "lead"))
+            {
+                if (string.IsNullOrEmpty(data.Lead.Name_CH) && string.IsNullOrEmpty(data.Lead.Name_EN))
+                {
+                    data.Satisfied = false;
+                    data.Message = "Lead中文名和英文名不可以同时为空, 请填写数据";
+                    return;
+                }
+            }
+
+            if (types.Any(t => t == "leadcall"))
+            {
+                if (data.LeadCall.LeadCallTypeID == null)
+                {
+                    data.Satisfied = false;
+                    data.Message = "致电类型不能为空, 请填写数据";
+                    return;
+                }
+            }
         }
         #endregion
 
@@ -843,9 +866,9 @@ namespace Sales.Controllers
             return ls.OrderByDescending(o => o.LastCall.CallDate).ToList();
         }
 
-        public ActionResult ExportCsv(int? projectid, string orderBy,string filter) 
+        public ActionResult ExportCsv(int? projectid, string orderBy, string filter)
         {
-            IEnumerable leads = GetContedtedLeadData(projectid).AsQueryable().ToGridModel(1,Int32.MaxValue, orderBy, string.Empty, filter).Data; 
+            IEnumerable leads = GetContedtedLeadData(projectid).AsQueryable().ToGridModel(1, Int32.MaxValue, orderBy, string.Empty, filter).Data;
             MemoryStream output = new MemoryStream();
             StreamWriter writer = new StreamWriter(output, Encoding.UTF8);
             writer.Write("姓名,"); writer.Write("职位,");
@@ -856,7 +879,7 @@ namespace Sales.Controllers
 
                 writer.Write(vl.Lead.Name);
                 writer.Write(","); writer.Write("\"");
-                writer.Write(vl.Lead.Title); 
+                writer.Write(vl.Lead.Title);
                 writer.Write("\"");
                 writer.Write(",");
                 writer.Write("\"");
@@ -865,7 +888,8 @@ namespace Sales.Controllers
                 writer.Write(",");
                 writer.Write(vl.Lead.Gender);
                 writer.WriteLine();
-            } writer.Flush(); output.Position = 0; return File(output, "text/comma-separated-values", "contected.csv"); }
+            } writer.Flush(); output.Position = 0; return File(output, "text/comma-separated-values", "contected.csv");
+        }
 
         #endregion
 
@@ -883,16 +907,16 @@ namespace Sales.Controllers
 
 
     public class LeadCallDistinct : IEqualityComparer<LeadCall>
-{
-    public bool Equals(LeadCall x, LeadCall y)
     {
-        if (x.CallDate > y.CallDate)
-        { return true; }
-        else
-        { return false; }
-    }
+        public bool Equals(LeadCall x, LeadCall y)
+        {
+            if (x.CallDate > y.CallDate)
+            { return true; }
+            else
+            { return false; }
+        }
 
-    public int GetHashCode(LeadCall obj) { return 0; }
-}
+        public int GetHashCode(LeadCall obj) { return 0; }
+    }
 
 }

@@ -4,7 +4,9 @@
 @using Entity
 @model Company
 @Html.Partial("Projectselector")
-<input type="button" id="addData" value="添加" />
+<span><input type="button" id="addData" class="insertdata" value="Add CallList" />  <input type="button" class="insertdata" id="addcompanyleadData" value="Add Company&Lead Only" />  <input class="insertdata" type="button" id="addcompanyData" value="Add Comany Only" /></span>
+
+
  @{Html.Telerik().Splitter().Name("sp1").HtmlAttributes(new { style = "min-height: 700px;" })
               .Orientation(SplitterOrientation.Horizontal).Panes(panes =>
               {
