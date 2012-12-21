@@ -2,10 +2,10 @@
 @model LeadCall
 @using Utl
 <center>
-                <input class="leadcallssubmit" type="button" value="提交Call信息" /></center>
+<input class="leadcallssubmit" type="button" value="提交Call信息" /></center>
 <fieldset>
     <legend>Call 信息</legend>
-    <table border="0" style="width: 100%;">
+    <table  border="0" style="width: 100%;">
         <tr>
             <td>
                 Lead姓名： @{
@@ -24,14 +24,6 @@
             </td>
             <td>
                 致电时间： @Html.Telerik().DateTimePickerFor(m => m.CallDate).Value(Model.CallDate)
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2">
-                @{
-                    var ms = CH.GetAllData<Member>(m => m.ProjectID == Model.ProjectID);
-                    <text>致电销售： @Html.DropDownListFor(model => model.MemberID, new SelectList(ms, "ID", "Name", Model.MemberID), "-请选择-")</text>
-                }
             </td>
         </tr>
         <tr>

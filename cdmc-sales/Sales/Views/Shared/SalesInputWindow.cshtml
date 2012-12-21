@@ -1,56 +1,125 @@
 ﻿@using Entity
 @using Utl
-
 <fieldset>
     <legend>公司信息</legend>
-      <table border="0" style="width: 100%;">
-            <tr>
-                <td>
-                    中文名称： <input type="text" id="Name_CH" />
-                </td>
-                <td>
-                    英文名称： <input type="text" id="Name_EN" />
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    行业类型： @Html.DropDownList("AreaID", new SelectList(CH.GetAllData<Area>(), "ID", "Name"), "-请选择-")
-                </td>
-                <td>
-                   公司类型： @Html.DropDownList("CompanyTypeID", new SelectList(CH.GetAllData<Entity.CompanyType>(), "ID", "Name"), "-请选择-")
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    公司总机： <input type="text" id="Contact" />
-                </td>
-                <td>
-                    公司传真： <input type="text" id="Fax" />
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    公司地址： <input type="text" id="Address" />
-                </td>
-                <td>
-                    外资比例：<input type="text" id="ForeignAssetPercentage" />
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    区号/时差： @Html.DropDownList("DistrictNumberID", new SelectList(CH.GetAllData<DistrictNumber>(), "ID", "Name"), "-请选择-")
-                </td>
-            </tr>
-             <tr>
-                <td colspan=2>
-                    描述： @Html.TextArea("Discription")
-                </td>
-            </tr>
-        </table>
+    <table id="formcompany" border="0" style="width: 100%;">
+        <tr>
+            <td>
+                中文名称：
+                <input type="text" id="Name_CH" />
+            </td>
+            <td>
+                英文名称：
+                <input type="text" id="Name_EN" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                行业类型： @Html.DropDownList("AreaID", new SelectList(CH.GetAllData<Area>(), "ID", "Name"),
+                "-请选择-")
+            </td>
+            <td>
+                公司类型： @Html.DropDownList("CompanyTypeID", new SelectList(CH.GetAllData<CompanyType>(),
+                "ID", "Name"), "-请选择-")
+            </td>
+        </tr>
+        <tr>
+            <td>
+                公司总机：
+                <input type="text" id="Contact" />
+            </td>
+            <td>
+                公司传真：
+                <input type="text" id="Fax" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                公司地址：
+                <input type="text" id="Address" />
+            </td>
+            <td>
+                外资比例：<input type="text" id="ForeignAssetPercentage" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                区号/时差： @Html.DropDownList("DistrictNumberID", new SelectList(CH.GetAllData<DistrictNumber>(),
+                "ID", "Name"), "-请选择-")
+            </td>
+        </tr>
+    </table>
 </fieldset>
 <fieldset>
     <legend>Lead信息</legend>
+    <table id="formlead" border="0" style="width: 100%;">
+        <tr>
+            <td>
+                中文名称：
+                <input type="text" id="Name_CH" />
+            </td>
+            <td>
+                英文名称：
+                <input type="text" id="Name_EN" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                客户直线：
+                <input type="text" id="Contact" />
+            </td>
+            <td>
+                移动电话：
+                <input type="text" id="Mobile" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                工作邮箱：
+                <input type="text" id="EMail" />
+            </td>
+            <td>
+                个人邮箱：
+                <input type="text" id="PersonalEmailAddress" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                客户性别：
+                @Html.DropDownList("Gender", new SelectList(new List<string>() { "Mr", "Ms" }), "-请选择-")
+            </td>
+            <td>
+                客户职位：<input type="text" id="Title" />
+            </td>
+        </tr>
+    </table>
+    @Html.Hidden("CompanyID")
 </fieldset>
 <fieldset>
     <legend>Call信息</legend>
+    <table id="formcall" border="0" style="width: 100%;">
+        <tr>
+            <td>
+                致电时间： @Html.Telerik().DateTimePicker().Name("CallDate").Value(DateTime.Now)
+            </td>
+            <td>
+                回打时间： @Html.Telerik().DateTimePicker().Name("CallBackDate")
+            </td>
+        </tr>
+        <tr>
+            <td>
+            Call类型： @Html.DropDownList("LeadCallTypeID", new SelectList(CH.GetAllData<LeadCallType>(), "ID", "Name"), "-请选择-")
+                
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                致电结果： @Html.TextArea("Result")
+            </td>
+        </tr>
+    </table>
+    @Html.Hidden("LeadID")
 </fieldset>
+<center>
+<input id="formsubmit"  type="button" value="提交"/><input id="formcancel"  type="button" value="取消"/>
+</center>

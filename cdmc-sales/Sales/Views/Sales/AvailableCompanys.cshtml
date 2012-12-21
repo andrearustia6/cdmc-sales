@@ -23,7 +23,7 @@
 
 @helper GetCompanyDetails()
 {
-   
+    @Html.Hidden("CRID")
     @Html.Partial("CompanyInfo",Model)
 }
 
@@ -35,13 +35,18 @@
 
 @{ Html.Telerik().ScriptRegistrar().OnDocumentReady(@<text> 
         onCompanysTreeviewDataBinding();
+        onSalesInputInitial();
     </text>);
 }
 
-@{Html.Telerik().Window().Name("salesdatawindow").Width(600)
-.Draggable(true).Modal(true).Resizable().Scrollable(true).Visible(false).Buttons(b=>b.Clear().Close().Maximize())
+@{Html.Telerik().Window().Name("salesdatawindow").Width(660)
+.Draggable(true).Modal(true).Resizable().Scrollable(true).Visible(false).Buttons(b => b.Clear().Close().Maximize())
 .Title("添加销售数据")
-.Effects(fx => fx.Zoom().Opacity().OpenDuration(200).CloseDuration(300)).Content(@<text>@Html.Partial("salesinputwindow")</text>).Render();
-    }
+.Effects(fx => fx.Zoom().Opacity().OpenDuration(200).CloseDuration(300)).Content(@<text>
+<div id="salesinputwindowcontainer">@Html.Partial("salesinputwindow")</div>
+</text>).Render();
+}
+
+
 
 
