@@ -627,11 +627,35 @@ namespace Sales.Controllers
             return View();
         }
 
+
+        #region Json
+
+        //public JsonResult GetCompanyDetails(int? companyid)
+        //{
+        //    string user = Employee.GetCurrentUserName();
+
+        //    var c = from company in CH.DB.Companys.Include("Leads")
+        //                  where company.ID == companyid
+        //             select company;
+
+        //    var data = c.ToList().FirstOrDefault();
+
+        //   var jc =  new JosonCompany();
+        //    if(data!=null)
+        //    {
+        //         jc.username =user;
+        //         jc.Company = data;
+        //         jc.Leads = data.Leads;
+        //    }
+
+        //    return new DataJsonResult<JosonCompany>() { Data = jc };
+        //}
+
         [HttpPost]
         public PartialViewResult JsonSaveCompany(Company c)
         {
             CH.Edit<Company>(c);
-            return PartialView("CompanyInfo", c);
+            return PartialView(@"~\views\shared\CompanyInfo.cshtml", c);
 
         }
          [HttpPost]
@@ -648,18 +672,23 @@ namespace Sales.Controllers
              return PartialView(@"~\views\shared\singleLeadcall.cshtml", l);
 
          }
+         public PartialViewResult JsonCancelInput()
+         {
+             return PartialView(@"~\views\shared\SalesInputWindow.cshtml");
+         }
 
-        public PartialViewResult LeadCalls(int? leadid,int? projectid)
+        [HttpPost]
+         public PartialViewResult JsonLeadCalls(int? leadid, int? projectid)
         { 
             string user = Employee.GetCurrentUserName();
             var leadcalls = from lcs in CH.DB.LeadCalls
                             where lcs.LeadID == leadid && lcs.ProjectID == projectid
                             select lcs;
             var data = leadcalls.ToList();
-            return PartialView(data);
+            return PartialView(@"~\views\shared\LeadCalls.cshtml", data);
         }
 
-        public PartialViewResult CompanyInfo(int? companyid)
+         public PartialViewResult JsonCompanyInfo(int? companyid)
         {
             string user = Employee.GetCurrentUserName();
 
@@ -668,7 +697,7 @@ namespace Sales.Controllers
                     select company;
 
             var data = c.ToList().FirstOrDefault();
-            return PartialView(data);
+            return PartialView(@"~\views\shared\CompanyInfo.cshtml",data);
         }
 
         public JsonResult JsonGetCompanys(int? projectid)
@@ -683,27 +712,94 @@ namespace Sales.Controllers
             return new DataJsonResult<Company>() { Data = list };
         }
 
-        public JsonResult GetCompanyDetails(int? companyid)
+
+
+        [HttpPost]
+        public PartialViewResult JsonSaveSalesInputData(JosonSalesInputData data)
         {
-            string user = Employee.GetCurrentUserName();
-
-            var c = from company in CH.DB.Companys.Include("Leads")
-                          where company.ID == companyid
-                     select company;
-
-            var data = c.ToList().FirstOrDefault();
- 
-           var jc =  new JosonCompany();
-            if(data!=null)
+            data.Satisfied = true;
+            string username = Employee.GetCurrentUserName();
+             if (string.IsNullOrEmpty(data.Company.Name_CH) && string.IsNullOrEmpty(data.Company.Name_EN))
             {
-                 jc.username =user;
-                 jc.Company = data;
-                 jc.Leads = data.Leads;
+                data.Satisfied = false;
+                data.Message = "公司中文名和英文名不可以同时为空, 请填写数据";
+                return PartialView(@"~\views\shared\SalesInputWindow.cshtml", data);
             }
 
-            return new DataJsonResult<JosonCompany>() { Data = jc };
+            //检查是否是可打公司
+            var dbcrm = from crm in CH.DB.CompanyRelationships.Include("Members") where crm.ProjectID== data.ProjectID && crm.CompanyID == data.Company.ID 
+                      && crm.Members.Any(m=>m.Name == username) 
+                      select crm;
+
+            if (dbcrm.Count() > 0)
+            {
+                data.Satisfied = false;
+                data.Message = "此公司已经被添加到项目中, 但是并不是您的可打公司，请联系项目管理人员把该公司加到您的可打公司";
+                return PartialView(@"~\views\shared\SalesInputWindow.cshtml", data);
+            }
+
+            //保存公司
+            if (data.Company != null && data.Company.ID > 0)
+            {
+                var company = from c in CH.DB.Companys
+                              where (c.Name_CH == data.Company.Name_CH && !string.IsNullOrEmpty(c.Name_CH)) ||
+                              (c.Name_EN == data.Company.Name_EN && !string.IsNullOrEmpty(c.Name_EN))
+                              select c;
+                //如果数据库里面有同名公司，返回已存在数据，否则创建新的数据
+                if (company.Count() > 0)
+                {
+                    CH.Edit<Company>(data.Company);
+                }
+                else
+                {
+                    CH.Create<Company>(data.Company);
+                }
+            }
+
+            //如果数据库里面有同id crm，返回已存在数据，否则创建新的数据
+            if (data.CRID == null)
+            {
+                var crm = new CompanyRelationship() { CompanyID = data.Company.ID, Importancy = 1, ProjectID = data.ProjectID };
+                CH.Create<CompanyRelationship>(crm);
+            }
+            else
+            {
+               // var crm = CH.GetDataById<CompanyRelationship>(data.CRID);
+            }
+           
+            //保存lead
+            if (string.IsNullOrEmpty(data.Lead.Name_CH) && string.IsNullOrEmpty(data.Lead.Name_EN))
+            {
+                var lead = from l in CH.DB.Leads
+                           where (l.Name_CH == data.Lead.Name_CH && !string.IsNullOrEmpty(l.Name_CH)) ||
+                           (l.Name_EN == data.Lead.Name_EN && !string.IsNullOrEmpty(l.Name_EN))
+                           select l;
+                //如果数据库里面有同名lead，返回已存在数据，否则创建新的数据
+                if (lead.Count() > 0)
+                {
+                    CH.Edit<Lead>(data.Lead);
+                }
+                else
+                {
+                    CH.Create<Lead>(data.Lead);
+                }
+
+                data.LeadCall.LeadID = data.Lead.ID ;
+                
+
+                //设置call销售
+                 var ms =　from m in CH.DB.Members where m.Name == username && m.ProjectID== data.ProjectID
+                          select m.ID;
+
+                if(ms.Count()>0)
+                data.LeadCall.MemberID = ms.FirstOrDefault();
+                if (data.LeadCall.LeadCallTypeID==null)
+                data.LeadCall.LeadCallTypeID = 1;
+                CH.Create<LeadCall>(data.LeadCall);
+            }
+            return PartialView(@"~\views\shared\SalesInputWindow.cshtml", data);
         }
-            
+        #endregion
 
         #region contancted leads
         public ViewResult ContectedLeads(int? projectid)
@@ -776,7 +872,6 @@ namespace Sales.Controllers
         public ViewResult MyPage()
         {
             var ps = CRM_Logical.GetSalesInvolveProject();
-
             return View(ps);
         }
 

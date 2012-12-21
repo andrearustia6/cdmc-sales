@@ -6,6 +6,17 @@ using Entity;
 
 namespace Model
 {
+    public class JosonSalesInputData
+    {
+        public int? CRID { get; set; }
+        public int? ProjectID { get; set; }
+        public Company Company { get; set; }
+        public Lead Lead { get; set; }
+        public LeadCall LeadCall { get; set; }
+        public string Message { get; set; }
+        public bool Satisfied { get; set; }
+    }
+
     public class  JosonCompany
     {
         public string username { get; set; }
