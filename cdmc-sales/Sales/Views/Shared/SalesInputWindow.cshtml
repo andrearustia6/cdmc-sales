@@ -1,6 +1,7 @@
 ﻿@using Entity
 @using Utl
-<fieldset>
+@Html.Hidden("submittype")
+<fieldset id="fieldsetcompany">
     <legend>公司信息</legend>
     <table id="formcompany" border="0" style="width: 100%;">
         <tr>
@@ -50,7 +51,7 @@
         </tr>
     </table>
 </fieldset>
-<fieldset>
+<fieldset id="fieldsetlead">
     <legend>Lead信息</legend>
     <table id="formlead" border="0" style="width: 100%;">
         <tr>
@@ -95,7 +96,7 @@
     </table>
     @Html.Hidden("CompanyID")
 </fieldset>
-<fieldset>
+<fieldset id="fieldsetleadcall">
     <legend>Call信息</legend>
     <table id="formcall" border="0" style="width: 100%;">
         <tr>
@@ -123,3 +124,4 @@
 <center>
 <input id="formsubmit"  type="button" value="提交"/><input id="formcancel"  type="button" value="取消"/>
 </center>
+

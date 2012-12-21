@@ -17,21 +17,49 @@
                 if (e) {
                     treeview.dataBind(e.item, array);
                     initialBtns();
-                    addDatabinding();
+                    addDatabindings();
                 }
             }
         }
     });
 }
 
-function addDatabinding() {
+function addDatabindings() {
     var tWindow = $('#salesdatawindow');
-    var btn = $('#addData');
+    var btns = $('.insertdata');
 
-    btn.bind('click', function (e) {
-        tWindow.data('tWindow').center().open();
-        tWindow.find('table').addClass("needsubmit");
-    }).toggle(!tWindow.is(':visible'));
+    btns.each(function () {
+        var $this = $(this);
+        $this.bind('click', function (e) {
+
+            if ($this.attr('id') == 'addData') {
+                tWindow.find('#submittype').val('company&lead&leadcall');
+                tWindow.find('fieldset').show();
+            }
+            if ($this.attr('id') == 'addcompanyleadData') {
+                tWindow.find('#submittype').val('company&lead');
+
+                tWindow.find('fieldset').show();
+                tWindow.find('#fieldsetleadcall').hide();
+            }
+            if ($this.attr('id') == 'addcompanyData') {
+                tWindow.find('#submittype').val('company');
+                tWindow.find('fieldset').hide();
+                tWindow.find('#fieldsetcompany').show();
+            }
+
+            var $win = tWindow.data('tWindow');
+            tWindow.find(".t-window-content").css('height', '');
+            $win.center();
+            $win.open();
+            tWindow.find('table').addClass("needsubmit");
+
+
+        }).toggle(!tWindow.is(':visible'));
+
+
+    });
+   
 }
 
 function initialBtns() {
@@ -219,9 +247,7 @@ function onCompanysTreeviewNodeSelected(e) {
             alert(xhr.responseText);
         }
     });
-
 }
-
 
 function onLeadExpended(e) {
     var $container = $(e.item).find("#leadCallscontainer");
@@ -246,8 +272,6 @@ function onLeadExpended(e) {
         }
     });
 }
-
-
 
 function getCommonData($source, c) {
     var sequence = $source.find("#Sequence").val();
@@ -287,12 +311,13 @@ function onSalesInputInitial() {
                 data.LeadCall = call;
             }
         });
-        data =  JSON.stringify(data);
+        data.SubmitType = tWindow.find('#submittype').val();
+        data = JSON.stringify(data);
         $.ajax({
             url: '/sales/jsonsavesalesinputdata/',
             contentType: 'application/json; charset=utf-8',
             type: 'POST',
-            data:data,
+            data: data,
             dataType: 'html',
             success: function (result) {
                 $('#salesinputwindowcontainer').html(result);
