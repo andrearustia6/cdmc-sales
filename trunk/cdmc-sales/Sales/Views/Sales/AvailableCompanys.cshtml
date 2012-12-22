@@ -10,17 +10,16 @@
  @{Html.Telerik().Splitter().Name("sp1").HtmlAttributes(new { style = "min-height: 700px;" })
               .Orientation(SplitterOrientation.Horizontal).Panes(panes =>
               {
-                  panes.Add().Size("20%").Content(@<text>@GetCompanys()</text>);
+                  panes.Add().Size("20%").Content(@<text>@GetCRMS()</text>);
                   panes.Add().Content(@<text>@GetCompanyDetails()</text>);
               }).Render();}
 
-@helper GetCompanys()
+@helper GetCRMS()
 {
-    @(Html.Telerik().TreeView().Name("companystreeview").
-    ClientEvents(events => 
-        events.OnDataBinding("onCompanysTreeviewDataBinding")
-                .OnSelect("onCompanysTreeviewNodeSelected")
-    ))
+    <div id="crmcontainer">
+    @Html.Partial("CRMList")
+    </div>
+ 
 }
 
 @helper GetCompanyDetails()
@@ -36,7 +35,7 @@
 }*@
 
 @{ Html.Telerik().ScriptRegistrar().OnDocumentReady(@<text> 
-        onCompanysTreeviewDataBinding();
+        onPageLoad();
         onSalesInputInitial();
     </text>);
 }

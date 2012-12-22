@@ -1,25 +1,19 @@
-﻿function onCompanysTreeviewDataBinding(e) {
-    var projectid = $('#ProjectID').val();
-    var url = "/sales/JsonGetCompanys/?projectid=" + projectid;
+﻿function onPageLoad(e) {
+    addDatabindings();
+    onCRMsUpdate();
+}
+function onCRMsUpdate() { 
+  var projectid = $('#ProjectID').val();
+    var url = "/sales/JsonGetCompanys";
     $.ajax({
         url: url,
         type: 'GET',
-        dataType: 'json',
+        dataType: 'html',
         contentType: 'application/json; charset=utf-8',
-        data: { name: null },
+        data: { ProjectID: projectid },
         success: function (result) {
-            if (result) {
-                var treeview = $('#companystreeview').data('tTreeView');
-                var array = new Array();
-                for (var i = 0; i < result.length; i++) {
-                    array.push({ Text: result[i].Name, Value: result[i].ID })
-                }
-                if (e) {
-                    treeview.dataBind(e.item, array);
-                    initialBtns();
-                    addDatabindings();
-                }
-            }
+            $('#crmcontainer').html(result);
+            initialBtns();
         }
     });
 }
@@ -226,7 +220,6 @@ function IntialLeadCallsSavebtn($btn) {
     });
 }
 
-
 function onCompanysTreeviewNodeSelected(e) {
 
     var id = $(e.item).find(".t-input").val();
@@ -254,11 +247,11 @@ function onLeadExpended(e) {
     var id = $(e.item).find("input[type=hidden]").val();
     var projectid = $('#ProjectID').val();
     $.ajax({
-        url: '/sales/JsonLeadCalls/?projectid=' + projectid + '&leadid=' + id,
+        url: '/sales/JsonLeadCalls/',
         contentType: 'application/html; charset=utf-8',
         type: 'GET',
         dataType: 'html',
-        data: { leadid: id },
+        data: { LeadID: id, ProjectID: projectid },
         success: function (result) {
             // Display the section contents.
             $(e.item).find('#leadCallscontainer').html(result);
@@ -295,6 +288,8 @@ function onSalesInputInitial() {
     var tWindow = $('#salesdatawindow');
     $submit.click(function () {
 
+        $submit.attr('disabled', "true");
+
         var data = {};
         tWindow.find('.needsubmit').each(function () {
             var $this = $(this);
@@ -312,23 +307,35 @@ function onSalesInputInitial() {
             }
         });
         data.SubmitType = tWindow.find('#submittype').val();
+        data.ProjectID = $('#ProjectID').val();
         data = JSON.stringify(data);
         $.ajax({
-            url: '/sales/jsonsavesalesinputdata/',
+            url: '/sales/jsonaddsalesinputdata/',
             contentType: 'application/json; charset=utf-8',
             type: 'POST',
             data: data,
             dataType: 'html',
             success: function (result) {
-                $('#salesinputwindowcontainer').html(result);
-                onSalesInputInitial();
+                if (result.indexOf("has_msg") < 0) {
+                    $('#salesinputwindowcontainer').html(result);
+                    onSalesInputInitial();
+                    onCRMsUpdate();
+                    $submit.removeAttr("disabled");
+                    tWindow.data('tWindow').close();
+                }
+                else {
+                    $submit.removeAttr("disabled");
+                    $('#salesinputwindowcontainer').find('#inputmessage').html(result);
+                }
+
             },
             error: function (xhr, status) {
                 alert(xhr.responseText);
+                tWindow.data('tWindow').close();
             }
         });
 
-        tWindow.data('tWindow').close();
+
 
 
     });

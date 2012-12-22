@@ -1,17 +1,20 @@
 ﻿@using Entity
 @using Utl
 @Html.Hidden("submittype")
+<div id="inputmessage">
+@Html.Partial("PageMessage",string.Empty)
+</div>
 <fieldset id="fieldsetcompany">
     <legend>公司信息</legend>
     <table id="formcompany" border="0" style="width: 100%;">
         <tr>
             <td>
                 中文名称：
-                <input type="text" id="Name_CH" />
+                <input type="text" id="Name_CH" /> <font color="red">*</font>
             </td>
             <td>
                 英文名称：
-                <input type="text" id="Name_EN" />
+                <input type="text" id="Name_EN" /> <font color="red">*</font>
             </td>
         </tr>
         <tr>
@@ -57,11 +60,11 @@
         <tr>
             <td>
                 中文名称：
-                <input type="text" id="Name_CH" />
+                <input type="text" id="Name_CH" /> <font color="red">*</font>
             </td>
             <td>
                 英文名称：
-                <input type="text" id="Name_EN" />
+                <input type="text" id="Name_EN" /> <font color="red">*</font>
             </td>
         </tr>
         <tr>
@@ -109,7 +112,7 @@
         </tr>
         <tr>
             <td>
-            Call类型： @Html.DropDownList("LeadCallTypeID", new SelectList(CH.GetAllData<LeadCallType>(), "ID", "Name"), "-请选择-")
+            Call类型： @Html.DropDownList("LeadCallTypeID", new SelectList(CH.GetAllData<LeadCallType>(), "ID", "Name"), "-请选择-") <font color="red">*</font>
                 
             </td>
         </tr>
