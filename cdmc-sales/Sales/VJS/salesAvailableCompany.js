@@ -25,7 +25,8 @@ function addDatabindings() {
     btns.each(function () {
         var $this = $(this);
         $this.bind('click', function (e) {
-
+            $('#FreshArea').val('companys');  
+            $('#crmid').val();//设crmid为空
             if ($this.attr('id') == 'addData') {
                 tWindow.find('#submittype').val('company&lead&leadcall');
                 tWindow.find('fieldset').show();
@@ -55,7 +56,7 @@ function addDatabindings() {
     });
    
 }
-
+//初始化公司级别以下的保存按钮
 function initialBtns() {
     $('#companysubmit').click(function () {
 
@@ -222,8 +223,10 @@ function IntialLeadCallsSavebtn($btn) {
 
 function onCompanysTreeviewNodeSelected(e) {
 
-    var id = $(e.item).find(".t-input").val();
-
+    var ids = $(e.item).find(".t-input").val().split('||');
+    var id = ids[1];
+    var compamyrelationshipid = ids[0];
+    $('#crmid').val(compamyrelationshipid);
     $.ajax({
         url: '/sales/JsonCompanyInfo/',
         contentType: 'application/html; charset=utf-8',
@@ -235,13 +238,76 @@ function onCompanysTreeviewNodeSelected(e) {
 
             $('#companydata').html(result);
             initialBtns();
+            intialAddLeadAndCallToExistBtn();
+            intialAddLeadOnlyToExistBtn();
         },
         error: function (xhr, status) {
             alert(xhr.responseText);
         }
     });
 }
+//初始化+Lead & Call Button
+function intialAddLeadAndCallToExistBtn() {
+    var tWindow = $('#salesdatawindow');
 
+
+    $('#companydata').find('.addleadandcalltoexist').bind('click', function (e) {
+        var companyid = $(this).attr('companyid')
+        $('#FreshArea').val('company&' + companyid);
+        tWindow.find('#CompanyID').val(companyid);
+        tWindow.find('#submittype').val('lead&call');
+        tWindow.find('fieldset').hide();
+        tWindow.find('#fieldsetleadcall').show();
+        tWindow.find('#fieldsetlead').show();
+
+        var $win = tWindow.data('tWindow');
+        tWindow.find(".t-window-content").css('height', '');
+        $win.center();
+        $win.open();
+        tWindow.find('table').addClass("needsubmit");
+    }).toggle(!tWindow.is(':visible'));
+}
+
+//初始化+Lead only Button
+function intialAddLeadOnlyToExistBtn() {
+    var tWindow = $('#salesdatawindow');
+    var companyid = $(this).attr('companyid')
+    $('#FreshArea').val('leads&' + companyid);
+    $('#companydata').find('.addleadonlytoexist').bind('click', function (e) {
+        tWindow.find('#CompanyID').val(companyid);
+        tWindow.find('#submittype').val('lead');
+        tWindow.find('fieldset').hide();
+        tWindow.find('#fieldsetlead').show();
+
+        var $win = tWindow.data('tWindow');
+        tWindow.find(".t-window-content").css('height', '');
+        $win.center();
+        $win.open();
+        tWindow.find('table').addClass("needsubmit");
+    }).toggle(!tWindow.is(':visible'));
+}
+
+//初始化+call only Button
+function intialAddCallOnlyToExistBtn() {
+    var tWindow = $('#salesdatawindow');
+    $('#FreshArea').val('calls');
+    $('#companydata').find('.addcallonlytoexist').bind('click', function (e) {
+        var leadid = $(this).attr('leadid')
+        $('#FreshArea').val('calls&' + leadid);
+        tWindow.find('#LeadID').val(leadid);
+        tWindow.find('#submittype').val('lead');
+        tWindow.find('fieldset').hide();
+        tWindow.find('#fieldsetleadcall').show();
+
+        var $win = tWindow.data('tWindow');
+        tWindow.find(".t-window-content").css('height', '');
+        $win.center();
+        $win.open();
+        tWindow.find('table').addClass("needsubmit");
+    }).toggle(!tWindow.is(':visible'));
+}
+
+//lead展开
 function onLeadExpended(e) {
     var $container = $(e.item).find("#leadCallscontainer");
     var id = $(e.item).find("input[type=hidden]").val();
@@ -255,7 +321,7 @@ function onLeadExpended(e) {
         success: function (result) {
             // Display the section contents.
             $(e.item).find('#leadCallscontainer').html(result);
-
+            intialAddCallOnlyToExistBtn();
             $(e.item).find('#leadCallscontainer').find('.leadcallssubmit').each(function () {
                 IntialLeadCallsSavebtn($(this));
             });
@@ -265,6 +331,8 @@ function onLeadExpended(e) {
         }
     });
 }
+
+
 
 function getCommonData($source, c) {
     var sequence = $source.find("#Sequence").val();
@@ -317,9 +385,21 @@ function onSalesInputInitial() {
             dataType: 'html',
             success: function (result) {
                 if (result.indexOf("has_msg") < 0) {
+                    var area = $('#fresharea').val().split('&');
                     $('#salesinputwindowcontainer').html(result);
+                    if (area[0] == 'companys') {
+                        onCRMsUpdate();
+                    }
+                    if (area[0] == 'leads') {
+                        onLeadsFresh(area[1]);
+
+                    }
+                    if (area[0] == 'calls') {
+                        onCallsFresh(area[1],$('#projectid').val());
+
+                    }
                     onSalesInputInitial();
-                    onCRMsUpdate();
+
                     $submit.removeAttr("disabled");
                     tWindow.data('tWindow').close();
                 }
@@ -334,10 +414,6 @@ function onSalesInputInitial() {
                 tWindow.data('tWindow').close();
             }
         });
-
-
-
-
     });
     $cancel.click(function () {
         tWindow.data('tWindow').close();
@@ -355,5 +431,44 @@ function onSalesInputInitial() {
                 alert(xhr.responseText);
             }
         });
+    });
+}
+
+function onLeadsFresh(companyid) {
+    $.ajax({
+        url: '/sales/jsoncancelinput/',
+        contentType: 'application/html; charset=utf-8',
+        type: 'GET',
+        data: { CompanyID: companyid },
+        dataType: 'html',
+        success: function (result) {
+            $('#leadscontainer').html(result);
+            onSalesInputInitial();
+
+        },
+        error: function (xhr, status) {
+            alert(xhr.responseText);
+        }
+    });
+}
+
+function onCallsFresh(leadid,projectid) {
+    $.ajax({
+        url: '/sales/jsoncancelinput/',
+        contentType: 'application/html; charset=utf-8',
+        type: 'GET',
+        data: { LeadID: leadid, ProjectID: projectid },
+        dataType: 'html',
+        success: function (result) {
+            $('#leadCallscontainer').html(result);
+            $('#leadCallscontainer').find('.leadcallssubmit').find('.leadcallssubmit').each(function () {
+                IntialLeadCallsSavebtn($(this));
+            });
+            onSalesInputInitial();
+
+        },
+        error: function (xhr, status) {
+            alert(xhr.responseText);
+        }
     });
 }

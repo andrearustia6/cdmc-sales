@@ -71,6 +71,7 @@ table tr td{ border-width:0px; }
                 </tr>
             }
         </table>
+        <input type="button" leadid=@Model.ID  class='addcallonlytoexist' value="+ Call"  style="margin-top:5px;"/>
     </fieldset>
 <div id="leadCallscontainer">
 @Html.Partial("LeadCalls",new List<LeadCall>())

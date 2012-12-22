@@ -12,7 +12,8 @@
 {
     mappings.For<CompanyRelationship>(binding => binding.ItemDataBound((item, crm) => 
     { item.Text = crm.Company.Name;
-      item.Value = crm.CompanyID.ToString();
+    item.Value = crm.ID+"||"+crm.CompanyID.ToString();
+    
     }));
 }).ClientEvents(events => events.OnSelect("onCompanysTreeviewNodeSelected")))
 }

@@ -24,7 +24,7 @@
 
 @helper GetCompanyDetails()
 {
-    @Html.Hidden("CRID")
+    @Html.Hidden("CRMID")
     @Html.Partial("CompanyInfo",Model)
 }
 
@@ -47,7 +47,7 @@
 <div id="salesinputwindowcontainer">@Html.Partial("salesinputwindow")</div>
 </text>).Render();
 }
-
+@Html.Hidden("FreshArea")
 
 
 
