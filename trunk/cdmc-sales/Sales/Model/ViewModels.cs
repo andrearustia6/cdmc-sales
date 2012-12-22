@@ -9,6 +9,7 @@ namespace Model
     public class JosonSalesInputData
     {
         public string SubmitType { get; set; }
+        //CRID 为空,为添加新的公司的数据,crid不为空，为存在的公司添加销售数据
         public int? CRID { get; set; }
         public int? ProjectID { get; set; }
         public Company Company { get; set; }

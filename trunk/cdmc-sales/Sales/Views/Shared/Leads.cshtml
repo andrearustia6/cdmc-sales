@@ -1,0 +1,27 @@
+﻿  @using Entity
+  @model List<Lead>
+  @if ( Model != null && Model.Count > 0)
+    {
+        <fieldset>
+            <legend>Leads</legend>
+            @{Html.Telerik().PanelBar().Name("LeadCompany" + Model.FirstOrDefault().CompanyID).ClientEvents(e => e.OnExpand("onLeadExpended"))
+   .Items(panes =>
+   {
+       foreach (var lead in Model)
+       {
+           var l = lead;
+           panes.Add().Text(l.Name + "   " + lead.Title).Content(@<text>
+              
+                @getLead(l)
+                </text>);
+       }
+   }).Render();
+            }
+        </fieldset> 
+    }
+@helper getLead(Lead lead)
+{
+     <div class="leaddatacontainer">
+       @Html.Partial("leadInfo", lead)
+    </div>
+}

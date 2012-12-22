@@ -96,8 +96,9 @@
                 客户职位：<input type="text" id="Title" />
             </td>
         </tr>
+        @Html.Hidden("CompanyID")
     </table>
-    @Html.Hidden("CompanyID")
+    
 </fieldset>
 <fieldset id="fieldsetleadcall">
     <legend>Call信息</legend>
@@ -121,8 +122,9 @@
                 致电结果： @Html.TextArea("Result")
             </td>
         </tr>
+            @Html.Hidden("LeadID")
     </table>
-    @Html.Hidden("LeadID")
+
 </fieldset>
 <center>
 <input id="formsubmit"  type="button" value="提交"/><input id="formcancel"  type="button" value="取消"/>

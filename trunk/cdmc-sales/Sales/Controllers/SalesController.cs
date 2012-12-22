@@ -657,6 +657,18 @@ namespace Sales.Controllers
             return PartialView(@"~\views\shared\SalesInputWindow.cshtml");
         }
 
+        public PartialViewResult JsonRefreshLeads(int? companyid)
+        {
+            var leads = from l in CH.DB.Leads where l.CompanyID == companyid select l;
+            return PartialView(@"~\views\shared\leads.cshtml", leads.ToList());
+        }
+
+        public PartialViewResult JsonRefreshLeadcalls(int? leadid, int? crmid)
+        {
+             var calls = from l in CH.DB.LeadCalls where l.LeadID == leadid && l.CompanyRelationshipID == crmid select l;
+             return PartialView(@"~\views\shared\leadcalls.cshtml", calls);
+        }
+
   
         public PartialViewResult JsonLeadCalls(int? leadid, int? projectid)
         {

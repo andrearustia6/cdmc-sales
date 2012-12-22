@@ -68,7 +68,7 @@
                 </td>
             </tr>
         </table>
-        @Html.Hidden("ID", Model != null ? Model.ID : 0)
+        @Html.Hidden("ID", Model.ID)
     </fieldset>
     <fieldset>
         <legend>其他信息</legend>
@@ -107,31 +107,20 @@
                 </tr>
             }
         </table>
+       
     </fieldset>
     </text>).Expanded(false);
     }))
+    <span> <input type="button" class="addleadandcalltoexist" companyid=@Model.ID value="+ Lead&Call"  style="margin-top:5px;"/>  <input type="button" companyid=@Model.ID class="addleadonlytoexist" value="+ Lead only"  style="margin-top:5px;"/> </span>
 </fieldset>
 
-    if ( Model.Leads != null && Model.Leads.Count > 0)
-    {
-        <fieldset>
-            <legend>Leads</legend>
-            @{Html.Telerik().PanelBar().Name("LeadCompany" + Model.ID).ClientEvents(e => e.OnExpand("onLeadExpended"))
-   .Items(panes =>
-   {
-       foreach (var lead in Model.Leads)
-       {
-           var l = lead;
-           panes.Add().Text(l.Name + "   " + lead.Title).Content(@<text>
               
-                @getLead(l)
-                </text>);
-       }
-   }).Render();
-            }
-        </fieldset> 
-    }
-   }
+<div id="leadscontainer">
+@Html.Partial("Leads", Model.Leads)
+</div>
+
+     
+}
 </div>
 @helper getLead(Lead lead)
     {
