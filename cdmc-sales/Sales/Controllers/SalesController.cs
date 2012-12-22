@@ -657,7 +657,7 @@ namespace Sales.Controllers
             return PartialView(@"~\views\shared\SalesInputWindow.cshtml");
         }
 
-        [HttpPost]
+  
         public PartialViewResult JsonLeadCalls(int? leadid, int? projectid)
         {
             string user = Employee.GetCurrentUserName();
@@ -680,92 +680,82 @@ namespace Sales.Controllers
             return PartialView(@"~\views\shared\CompanyInfo.cshtml", data);
         }
 
-        public JsonResult JsonGetCompanys(int? projectid)
+        public PartialViewResult JsonGetCompanys(int? projectid)
         {
             string user = Employee.GetCurrentUserName();
-            var companys = from cr in CH.DB.CompanyRelationships.Include("Members")
-                           where cr.Members.Any(m => m.Name == user) && cr.ProjectID == projectid
-                           from company in CH.DB.Companys
-                           where cr.CompanyID == company.ID
-                           select company;
+            var crms = from cr in CH.DB.CompanyRelationships.OrderByDescending(o=>o.CreatedDate)
+                       where cr.Members.Any(m => m.Name == user) && cr.ProjectID == projectid
+                       select cr;
 
-            var list = companys.ToList();
 
-            return new DataJsonResult<Company>() { Data = list };
+            var list = crms;
+
+            return PartialView(@"~\views\shared\CRMList.cshtml", list);
         }
 
 
 
         [HttpPost]
-        public PartialViewResult JsonSaveSalesInputData(JosonSalesInputData data)
+        public PartialViewResult JsonAddSalesInputData(JosonSalesInputData data)
         {
             string username = Employee.GetCurrentUserName();
             JsonValidateInput(data);
 
-            //保存公司
-            if (data.Company != null && data.Company.ID > 0)
+            if (data.Satisfied == true)
             {
-
-                //如果数据库里面有同名公司，返回已存在数据，否则创建新的数据
-                var company = from c in CH.DB.Companys
-                              where (c.Name_CH == data.Company.Name_CH && !string.IsNullOrEmpty(c.Name_CH)) ||
-                              (c.Name_EN == data.Company.Name_EN && !string.IsNullOrEmpty(c.Name_EN))
-                              select c;
-
-                if (company.Count() > 0)
+                var types = data.SubmitType.Split('&');
+                //保存公司
+                if (data.Company != null && types.Any(t => t == "company"))
                 {
-                    CH.Edit<Company>(data.Company);
-                }
-                else
-                {
+                    
                     CH.Create<Company>(data.Company);
-                }
-            }
+                    data.Lead.CompanyID = data.Company.ID;//如果不是添加情况，不需要设companyid
+                    //add crm
+                    var sales = new List<Member>();
+                    var member = from m in CH.DB.Members
+                                 where m.Name == username && data.ProjectID == m.ProjectID
+                                 select m;
+                    sales.AddRange(member);
 
-            //如果数据库里面有同id crm，返回已存在数据，否则创建新的数据
-            if (data.CRID == null)
-            {
-                var crm = new CompanyRelationship() { CompanyID = data.Company.ID, Importancy = 1, ProjectID = data.ProjectID };
-                CH.Create<CompanyRelationship>(crm);
-            }
-            else
-            {
-                // var crm = CH.GetDataById<CompanyRelationship>(data.CRID);
-            }
-
-            //保存lead
-            if (string.IsNullOrEmpty(data.Lead.Name_CH) && string.IsNullOrEmpty(data.Lead.Name_EN))
-            {
-                var lead = from l in CH.DB.Leads
-                           where (l.Name_CH == data.Lead.Name_CH && !string.IsNullOrEmpty(l.Name_CH)) ||
-                           (l.Name_EN == data.Lead.Name_EN && !string.IsNullOrEmpty(l.Name_EN))
-                           select l;
-                //如果数据库里面有同名lead，返回已存在数据，否则创建新的数据
-                if (lead.Count() > 0)
-                {
-                    CH.Edit<Lead>(data.Lead);
+                    var crm = new CompanyRelationship() { CompanyID = data.Company.ID, Importancy = 1, ProjectID = data.ProjectID, Members = sales };
+             
+                    CH.Create<CompanyRelationship>(crm);
+                    if (data.LeadCall != null)
+                    {
+                        data.LeadCall.CompanyRelationshipID = crm.ID;
+                    }
                 }
-                else
+
+
+                //保存lead
+                if (data.Lead != null && types.Any(t => t == "lead"))
                 {
                     CH.Create<Lead>(data.Lead);
+
+                    data.LeadCall.LeadID = data.Lead.ID;
                 }
 
-                data.LeadCall.LeadID = data.Lead.ID;
-
-
-                //设置call销售
-                var ms = from m in CH.DB.Members
-                         where m.Name == username && m.ProjectID == data.ProjectID
-                         select m.ID;
-
-                if (ms.Count() > 0)
+                if (data.LeadCall != null && types.Any(t => t == "leadcall"))
                 {
-                    data.LeadCall.MemberID = ms.FirstOrDefault();
-                }
+                    //设置call销售
+                    var ms = from m in CH.DB.Members
+                             where m.Name == username && m.ProjectID == data.ProjectID
+                             select m.ID;
 
-                CH.Create<LeadCall>(data.LeadCall);
+                    if (ms.Count() > 0)
+                    {
+                        data.LeadCall.MemberID = ms.FirstOrDefault();
+                    }
+                    //创建新的数据
+                    CH.Create<LeadCall>(data.LeadCall);
+                }
+               
+              
+                return PartialView(@"~\views\shared\SalesInputWindow.cshtml", data);
             }
-            return PartialView(@"~\views\shared\SalesInputWindow.cshtml", data);
+            else
+                return PartialView(@"~\views\shared\PageMessage.cshtml", data.Message);
+
         }
 
         private void JsonValidateInput(JosonSalesInputData data)
@@ -778,7 +768,7 @@ namespace Sales.Controllers
             if (types.Any(t => t == "company"))
             {
                 //检查公司名
-                string username = Employee.GetCurrentUserName();
+               
                 if (string.IsNullOrEmpty(data.Company.Name_CH) && string.IsNullOrEmpty(data.Company.Name_EN))
                 {
                     data.Satisfied = false;
@@ -786,22 +776,25 @@ namespace Sales.Controllers
                     return;
                 }
 
-
+                string username = Employee.GetCurrentUserName();
 
                 //检查是否是可打公司
                 var dbcrm = from crm in CH.DB.CompanyRelationships.Include("Members")
-                            where crm.ProjectID == data.ProjectID && crm.CompanyID == data.Company.ID
-                                && crm.Members.Any(m => m.Name == username)
+                            where crm.ProjectID == data.ProjectID && (crm.Company.Name_CH == data.Company.Name_CH || crm.Company.Name_EN == data.Company.Name_EN )
                             select crm;
 
                 if (dbcrm.Count() > 0)
                 {
                     data.Satisfied = false;
-                    data.Message = "此公司已经被添加到项目中, 但是并不是您的可打公司，请联系项目管理人员把该公司加到您的可打公司";
+                    if (!dbcrm.Any(c=>c.Members.Any(m=>m.Name==username)))
+                        data.Message = "此公司在公司数据库中存在同名公司, 但并不是您的可打公司，请联系项目管理人员把该公司加到您的可打公司";
+                    else
+                        data.Message = "此公司已经在你的可打列表中，不可以重复添加此公司";
                     return;
                 }
 
             }
+
             if (types.Any(t => t == "lead"))
             {
                 if (string.IsNullOrEmpty(data.Lead.Name_CH) && string.IsNullOrEmpty(data.Lead.Name_EN))
@@ -809,6 +802,16 @@ namespace Sales.Controllers
                     data.Satisfied = false;
                     data.Message = "Lead中文名和英文名不可以同时为空, 请填写数据";
                     return;
+                }
+
+                //检查lead是否已经存在
+                var lead = from l in CH.DB.Leads
+                           where l.CompanyID == data.Lead.CompanyID && (l.Name_EN == data.Lead.Name_EN && !string.IsNullOrEmpty(l.Name_EN))
+                           select l;
+                if (lead.Count() > 0)
+                {
+                    data.Satisfied = false;
+                    data.Message = "在此公司下,Lead已经存在,不能重复添加";
                 }
             }
 

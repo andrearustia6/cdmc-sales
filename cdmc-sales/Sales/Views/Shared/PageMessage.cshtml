@@ -1,0 +1,12 @@
+﻿@model String
+           
+           @if (!string.IsNullOrEmpty(Model))
+           {
+            <center><p id="has_msg"><font color="red">@Model</font></p></center>
+           }
+           else
+           { 
+             <center><span>
+              <font color="red">*</font> 为必填字段
+              </span></center>
+           }

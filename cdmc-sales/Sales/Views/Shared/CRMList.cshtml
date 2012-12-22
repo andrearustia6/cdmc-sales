@@ -1,0 +1,18 @@
+﻿@*   @(Html.Telerik().TreeView().Name("companystreeview").
+    ClientEvents(events => 
+        events.OnDataBinding("onCompanysTreeviewDataBinding")
+                .OnSelect("onCompanysTreeviewNodeSelected")
+    ))*@
+@using Entity
+@model IQueryable<CompanyRelationship>
+
+@if (Model != null)
+{
+  @(Html.Telerik().TreeView().Name("companystreeview").BindTo(Model, mappings =>
+{
+    mappings.For<CompanyRelationship>(binding => binding.ItemDataBound((item, crm) => 
+    { item.Text = crm.Company.Name;
+      item.Value = crm.CompanyID.ToString();
+    }));
+}).ClientEvents(events => events.OnSelect("onCompanysTreeviewNodeSelected")))
+}
