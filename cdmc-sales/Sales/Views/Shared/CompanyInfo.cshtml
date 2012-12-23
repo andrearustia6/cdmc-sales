@@ -69,6 +69,7 @@
             </tr>
         </table>
         @Html.Hidden("ID", Model.ID)
+        @Html.Hidden("CompanyID", Model.ID) @*添加按钮使用*@
     </fieldset>
     <fieldset>
         <legend>其他信息</legend>
@@ -107,12 +108,22 @@
                 </tr>
             }
         </table>
-       
+        @{
+            var crid = ViewBag.CRMID as int?;
+            var cs = ViewBag.Categorys as  List<int>;
+           <div id="categorycontainer">
+            @Html.Partial("Categorys", cs == null ? new List<int>() : cs)
+</div>
+            }
     </fieldset>
     </text>).Expanded(false);
     }))
+
+
+
     <span> <input type="button" class="addleadandcalltoexist" companyid=@Model.ID value="+ Lead&Call"  style="margin-top:5px;"/>  <input type="button" companyid=@Model.ID class="addleadonlytoexist" value="+ Lead only"  style="margin-top:5px;"/> </span>
 </fieldset>
+
 
               
 <div id="leadscontainer">

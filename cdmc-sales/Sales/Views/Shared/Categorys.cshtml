@@ -1,0 +1,29 @@
+﻿@using Entity
+@using Utl
+@model List<int>
+
+@{
+    var projectid = ViewBag.ProjectID as int?;
+    var categorys = CH.GetAllData<Category>(c => c.ProjectID == projectid);
+    if(categorys.Count>0)
+    {
+        Html.Telerik().PanelBar().Name("category")
+     .Items(panes =>
+     {
+         panes.Add().Text("Categorys").Content(@<text>
+        <fieldset>
+        <ul>
+         @foreach (var i in categorys)
+         {
+             <li class="categoryli">
+
+              <p style=" font-size:10px; vertical-align:top"> @Html.CheckBox(i.ID.ToString(),Model.Contains(i.ID)==true?true:false) @i.Name: @i.Details </p>
+             </li>
+         }
+         </ul>
+        </fieldset>
+        </text>);
+     }).Render();
+      
+    }
+}
