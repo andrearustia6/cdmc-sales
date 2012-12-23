@@ -63,14 +63,26 @@ function initialBtns() {
         var $cf = $('#companydata');
         var c = getCompanyForm($cf);
         c = getCommonData($cf, c);
+        data = JSON.stringify(c);
+        var crmid = $('#CRMID').val();
+        var pid = $('#ProjectID').val();
+        var categoryarray = new Array();
 
-        c = JSON.stringify(c);
+        $('#categorycontainer').find("input[type='checkbox']").each(function () {
+            if ($(this).is(":checked")) {
+                var cid = $(this).attr('name');
+                categoryarray.push(cid);
+            }
+        });
+
+        var data = { Company: c, CRMID: crmid, Categorys: categoryarray,ProjectID:pid };
+        data = JSON.stringify(data);
         $.ajax({
             url: "/sales/JsonSaveCompany",
             type: 'POST',
             dataType: 'html',
             contentType: 'application/json; charset=utf-8',
-            data: c,
+            data: data,
             success: function (result) {
                 alert('保存成功');
                 $('#companydata').html(result);
@@ -225,14 +237,21 @@ function onCompanysTreeviewNodeSelected(e) {
 
     var ids = $(e.item).find(".t-input").val().split('||');
     var id = ids[1];
+    var pid  = $('#ProjectID').val()
+
     var compamyrelationshipid = ids[0];
-    $('#crmid').val(compamyrelationshipid);
+    $('#CRMID').val(compamyrelationshipid);
+
+    freshCompany(pid, compamyrelationshipid, id);
+}
+
+function freshCompany(projectid, crmid, companyid) {
     $.ajax({
         url: '/sales/JsonCompanyInfo/',
         contentType: 'application/html; charset=utf-8',
         type: 'GET',
         dataType: 'html',
-        data: { companyid: id },
+        data: { companyid: companyid, crmid: crmid, projectid: projectid },
         success: function (result) {
             // Display the section contents.
 
@@ -246,6 +265,7 @@ function onCompanysTreeviewNodeSelected(e) {
         }
     });
 }
+
 //初始化+Lead & Call Button
 function intialAddLeadAndCallToExistBtn() {
     var tWindow = $('#salesdatawindow');
@@ -271,7 +291,7 @@ function intialAddLeadAndCallToExistBtn() {
 //初始化+Lead only Button
 function intialAddLeadOnlyToExistBtn() {
     var tWindow = $('#salesdatawindow');
-    var companyid = $(this).attr('companyid')
+    var companyid = $('#CompanyID').val();
     $('#FreshArea').val('leads&' + companyid);
     $('#companydata').find('.addleadonlytoexist').bind('click', function (e) {
         tWindow.find('#CompanyID').val(companyid);
@@ -295,7 +315,8 @@ function intialAddCallOnlyToExistBtn() {
         var leadid = $(this).attr('leadid')
         $('#FreshArea').val('calls&' + leadid);
         tWindow.find('#LeadID').val(leadid);
-        tWindow.find('#submittype').val('lead');
+        tWindow.find('#CRMID').val();
+        tWindow.find('#submittype').val('leadcall');
         tWindow.find('fieldset').hide();
         tWindow.find('#fieldsetleadcall').show();
 
@@ -354,6 +375,11 @@ function onSalesInputInitial() {
     var $submit = $('#formsubmit');
     var $cancel = $('#formcancel');
     var tWindow = $('#salesdatawindow');
+
+    var pid = $('#ProjectID').val();
+    var crmid = $('#CRMID').val();
+    var compnayid = $('#CompanyID').val();
+
     $submit.click(function () {
 
         $submit.attr('disabled', "true");
@@ -367,15 +393,21 @@ function onSalesInputInitial() {
             }
             if ($this.attr('id') == 'formlead') {
                 var lead = getLeadForm($this);
+                
                 data.Lead = lead;
             }
             if ($this.attr('id') == 'formcall') {
                 var call = getCallForm($this);
+                call.CompanyRelationshipID = crmid; //为添加情况时。把全局的crmid设到到lead
+                call.ProjectID = pid; //为添加情况时。把全局的crmid设到到lead
                 data.LeadCall = call;
             }
         });
+       
+
+
         data.SubmitType = tWindow.find('#submittype').val();
-        data.ProjectID = $('#ProjectID').val();
+        data.ProjectID = pid;
         data = JSON.stringify(data);
         $.ajax({
             url: '/sales/jsonaddsalesinputdata/',
@@ -385,19 +417,12 @@ function onSalesInputInitial() {
             dataType: 'html',
             success: function (result) {
                 if (result.indexOf("has_msg") < 0) {
-                    var area = $('#fresharea').val().split('&');
+                    var area = $('#FreshArea').val().split('&');
                     $('#salesinputwindowcontainer').html(result);
                     if (area[0] == 'companys') {
                         onCRMsUpdate();
                     }
-                    if (area[0] == 'leads') {
-                        onLeadsFresh(area[1]);
-
-                    }
-                    if (area[0] == 'calls') {
-                        onCallsFresh(area[1],$('#projectid').val());
-
-                    }
+                    freshCompany(pid, crmid, compnayid);
                     onSalesInputInitial();
 
                     $submit.removeAttr("disabled");
@@ -436,7 +461,25 @@ function onSalesInputInitial() {
 
 function onLeadsFresh(companyid) {
     $.ajax({
-        url: '/sales/jsoncancelinput/',
+        url: '/sales/JsonRefreshLeads/',
+        contentType: 'application/html; charset=utf-8',
+        type: 'GET',
+        data: { CompanyID: companyid },
+        dataType: 'html',
+        success: function (result) {
+            $('#leadscontainer').html(result);
+            onSalesInputInitial();
+
+        },
+        error: function (xhr, status) {
+            alert(xhr.responseText);
+        }
+    });
+}
+
+function onCompanyFresh() {
+    $.ajax({
+        url: '/sales/JsonRefreshLeads/',
         contentType: 'application/html; charset=utf-8',
         type: 'GET',
         data: { CompanyID: companyid },
@@ -454,7 +497,7 @@ function onLeadsFresh(companyid) {
 
 function onCallsFresh(leadid,projectid) {
     $.ajax({
-        url: '/sales/jsoncancelinput/',
+        url: '/sales/JsonRefreshLeadcalls/',
         contentType: 'application/html; charset=utf-8',
         type: 'GET',
         data: { LeadID: leadid, ProjectID: projectid },

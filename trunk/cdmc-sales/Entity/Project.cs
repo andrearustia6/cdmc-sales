@@ -189,6 +189,9 @@ namespace Entity
         [Display(Name = "类型")]
         public string Name { get; set; }
 
+        [Display(Name = "Category详细")]
+        public string Details { get; set; }
+
         public virtual List<CompanyRelationship> CompanyRelationships { get; set; }
     }
 

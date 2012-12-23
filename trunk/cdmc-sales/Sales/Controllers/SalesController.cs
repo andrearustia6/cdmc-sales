@@ -625,6 +625,7 @@ namespace Sales.Controllers
 
         public ViewResult AvailableCompanys(int? projectid)
         {
+            ViewBag.ProjectID = projectid;
             return View();
         }
 
@@ -632,12 +633,51 @@ namespace Sales.Controllers
         #region Json
 
         [HttpPost]
-        public PartialViewResult JsonSaveCompany(Company c)
+        public PartialViewResult JsonSaveCompany(Company company, int? crmid, List<int> categorys, int? projectid)
         {
-            CH.Edit<Company>(c);
-            return PartialView(@"~\views\shared\CompanyInfo.cshtml", c);
+
+            CH.Edit<Company>(company);
+            ViewBag.CRMID = crmid;
+            ViewBag.ProjectID = projectid;
+            ViewBag.Categorys = categorys;
+            var leads = from l in CH.DB.Leads where l.CompanyID == company.ID select l;
+            company.Leads = leads.ToList();
+
+            var cr = CH.GetDataById<CompanyRelationship>(crmid, "Categorys");
+                List<Category> lc = new List<Category>();
+                if (categorys != null)
+                {
+                    cr.Categorys.Clear();
+                    lc = CH.GetAllData<Category>(i => categorys.Contains(i.ID));
+                    cr.Categorys.AddRange(lc);
+
+                    string categorystring = string.Empty;
+                    lc.ForEach(l =>
+                    {
+                        if (string.IsNullOrEmpty(categorystring))
+                            categorystring = l.Name;
+                        else
+                            categorystring += "|" + l.Name;
+                    });
+                    cr.CategoryString = categorystring;
+                    CH.Edit<CompanyRelationship>(cr);
+                }
+            return PartialView(@"~\views\shared\CompanyInfo.cshtml", company);
 
         }
+
+        //[HttpPost]
+        //public PartialViewResult JsonSaveCompany(Company company)
+        //{
+
+        //    CH.Edit<Company>(company);
+          
+        //    var leads = from l in CH.DB.Leads where l.CompanyID == company.ID select l;
+        //    company.Leads = leads.ToList();
+        //    return PartialView(@"~\views\shared\CompanyInfo.cshtml", company);
+
+        //}
+
         [HttpPost]
         public PartialViewResult JsonSaveLead(Lead l)
         {
@@ -663,6 +703,14 @@ namespace Sales.Controllers
             return PartialView(@"~\views\shared\leads.cshtml", leads.ToList());
         }
 
+        public PartialViewResult JsonGetCategorys(int? projectid,int? crmid)
+        {
+            ViewBag.ProjectID = projectid;
+            var categorys = from c in CH.DB.Categorys where c.CompanyRelationships.Any(r => r.ID == crmid) select c.ID;
+            return PartialView(@"~\views\shared\Categorys.cshtml", categorys.ToList());
+        }
+
+
         public PartialViewResult JsonRefreshLeadcalls(int? leadid, int? crmid)
         {
              var calls = from l in CH.DB.LeadCalls where l.LeadID == leadid && l.CompanyRelationshipID == crmid select l;
@@ -680,10 +728,12 @@ namespace Sales.Controllers
             return PartialView(@"~\views\shared\LeadCalls.cshtml", data);
         }
 
-        public PartialViewResult JsonCompanyInfo(int? companyid)
+        public PartialViewResult JsonCompanyInfo(int? companyid,int?crmid,int?projectid)
         {
             string user = Employee.GetCurrentUserName();
-
+            ViewBag.ProjectID = projectid;
+            ViewBag.CRMID = crmid;
+         
             var c = from company in CH.DB.Companys.Include("Leads")
                     where company.ID == companyid
                     select company;
