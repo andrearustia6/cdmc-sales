@@ -34,8 +34,11 @@ namespace Entity
         [Display(Name = "参考图片")]
         public Image Image { get; set; }
 
-        [Display(Name = "子项内容"), Required]
+        [Display(Name = "英文内容"), Required]
         public string Content { get; set; }
+
+        [Display(Name = "中文内容"), Required]
+        public string ContentCH { get; set; }
 
         [Display(Name = "Package"), Required]
         public int? PackageID { get; set; }
@@ -59,12 +62,15 @@ namespace Entity
         [Display(Name = "Package类型"), Required]
         public int? PackageTypeID { get; set; }
 
-        [Display(Name = "套餐描述"), Required]
+        [Display(Name = "英文描述"), Required]
         public string SubName { get; set; }
+
+        [Display(Name = "中文描述"), Required]
+        public string SubNameCH { get; set; }
 
         public List<PackageItem> PackageItems { get; set; }
 
-        [Display(Name = "费用"), Required]
+        [Display(Name = "美元费用"), Required]
         public decimal Prize { get; set; }
     }
 

@@ -3,14 +3,16 @@
 @using Utl
 @model List<Package>
 @Html.Partial("contenttitle", "Package")
-@(Html.Telerik().Grid<Package>(Model).Name("Package").ToolBar(commands => 
+@{
+    var rate = ViewBag.Rate as double?;
+    Html.Telerik().Grid<Package>(Model).Name("Package").ToolBar(commands =>
     {
         if (Employee.AsDirector())
         {
             commands.Custom().Text("Package创建").Action("Create", "Package");
         }
     }
-   
+
                 ).DataKeys(keys =>
                 {
                     keys.Add(s => s.ID);
@@ -21,19 +23,20 @@
                     c.Bound(item => item.PackageType.Name).Title("Package类型").Width(120);
                     c.Bound(item => item.ParticipantType.Name).Title("参会类型").Width(120);
                     c.Bound(item => item.Prize).Format("{0:N}").Width(100);
+                    c.Bound(item => item.Prize).Title("人民币").Template(@<text> @string.Format("{0:C}",@item.GetYuan(rate).ToString()) </text>).Width(100);
                     c.Bound(item => item.ID).Title("操作").Width(170).Template(@<span>
-                     @if(Employee.AsDirector())
-                      {
+                     @if (Employee.AsDirector())
+                     {
                      <text><a href=@Url.Content("~/Package/Edit/" + item.ID) > 编辑</a> | <a href=@Url.Content("~/PackageItem/Create/?from=Package&PackageId=" + item.ID)>添加子项</a> | <a href=@Url.Content("~/Package/delete/" + item.ID) > 删除</a> | </text>
-                      }
+                     }
                       <a href=@Url.Content("~/Package/Details/" + item.ID)>详细</a> </span>);
                 })
                 .DetailView(e => e.Template(@<text> @RenderGrid(item.PackageItems, item.ID) </text>))
                 .Resizable(resizing => resizing.Columns(true))
                 .Filterable().Sortable().Groupable()
                 .Pageable(p => p.PageSize(20))
-                .Scrollable(scrolling => scrolling.Height(350))
-                )
+                .Scrollable(scrolling => scrolling.Height(350)).Render();
+                }
 
 
 @helper RenderGrid(List<PackageItem> PackageItems, int packageid)

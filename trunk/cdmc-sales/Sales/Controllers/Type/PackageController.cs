@@ -22,6 +22,11 @@ namespace Sales.Controllers
 
         public ViewResult Index()
         {
+            var rate = CH.GetAllData<CurrencyType>(c=>c.Name=="RMB").FirstOrDefault();
+            if (rate != null)
+                ViewBag.Rate = rate.Rate;
+            else
+                ViewBag.Rate = 1;
             var ps = from p in CH.DB.Packages.Include("PackageItems").AsParallel().OrderByDescending(o => o.Sequence)
                      select p;
             return View(ps.ToList());
