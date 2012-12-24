@@ -19,7 +19,7 @@
         </tr>
         <tr>
             <td>
-            Call类型： @Html.DropDownList("LeadCallTypeID", new SelectList(CH.GetAllData<LeadCallType>(), "ID", "Name"), "-请选择-")
+            Call类型： @Html.DropDownListFor(m=>m.LeadCallTypeID, new SelectList(CH.GetAllData<LeadCallType>(), "ID", "Name"), "-请选择-")
                 
             </td>
             <td>
@@ -34,6 +34,7 @@
     </table>
 </fieldset>
 @Html.HiddenFor(m=>m.LeadID)
+@Html.HiddenFor(m=>m.MemberID)
 @Html.HiddenFor(m=>m.ID)
 @Html.HiddenFor(m=>m.CompanyRelationshipID)
 @Html.HiddenFor(m=>m.ProjectID)

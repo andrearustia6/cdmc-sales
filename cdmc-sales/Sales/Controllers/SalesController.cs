@@ -738,6 +738,15 @@ namespace Sales.Controllers
                     where company.ID == companyid
                     select company;
 
+            var cr = from crm in CH.DB.CompanyRelationships.Include("Categorys")
+                     where crm.ID == crmid
+                     select crm;
+            var tc = cr.FirstOrDefault();
+            if(tc!=null)
+            {
+                ViewBag.Categorys = tc.Categorys.Select(x=>x.ID).ToList();
+            }
+
             var data = c.ToList().FirstOrDefault();
             return PartialView(@"~\views\shared\CompanyInfo.cshtml", data);
         }

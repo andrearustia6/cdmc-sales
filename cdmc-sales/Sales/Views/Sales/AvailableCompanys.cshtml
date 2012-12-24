@@ -4,7 +4,7 @@
 @using Entity
 @model Company
 @Html.Partial("Projectselector")
-<span><input type="button" id="addData" class="insertdata" value="Add CallList" />  <input type="button" class="insertdata" id="addcompanyleadData" value="Add Company&Lead Only" />  <input class="insertdata" type="button" id="addcompanyData" value="Add Comany Only" /></span>
+<span><input type="button" id="addData" class="insertdata" value="Add CallList" />  <input type="button" class="insertdata" id="addcompanyleadData" value="Add Company&Lead" />  <input class="insertdata" type="button" id="addcompanyData" value="Add Comany Only" /></span>
 
 
  @{Html.Telerik().Splitter().Name("sp1").HtmlAttributes(new { style = "min-height: 700px;" })
@@ -25,7 +25,8 @@
 @helper GetCompanyDetails()
 {
     @Html.Hidden("CRMID")
-    @Html.Partial("CompanyInfo",Model)
+    @Html.Hidden("CompanyID")
+    @Html.Partial("CompanyInfo", Model)
 }
 
 @*@helper GetLeadsDetails()

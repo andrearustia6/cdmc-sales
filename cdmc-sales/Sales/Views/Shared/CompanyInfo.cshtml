@@ -59,14 +59,15 @@
                     @Html.LabelFor(model => model.Address)： @Html.EditorFor(model => model.Address)
                 </td>
                 <td>
-                    @Html.LabelFor(model => model.ForeignAssetPercentage)： @Html.EditorFor(model => model.ForeignAssetPercentage)
+                 @Html.LabelFor(model => model.DistrictNumberID)： @Html.DropDownListFor(model => model.DistrictNumberID, new SelectList(CH.GetAllData<DistrictNumber>(), "ID", "Name"), "-请选择-")
+                    
                 </td>
             </tr>
-            <tr>
+            @*<tr>
                 <td>
-                    @Html.LabelFor(model => model.DistrictNumberID)： @Html.DropDownListFor(model => model.DistrictNumberID, new SelectList(CH.GetAllData<DistrictNumber>(), "ID", "Name"), "-请选择-")
+                   @Html.LabelFor(model => model.ForeignAssetPercentage)： @Html.EditorFor(model => model.ForeignAssetPercentage)
                 </td>
-            </tr>
+            </tr>*@
         </table>
         @Html.Hidden("ID", Model.ID)
         @Html.Hidden("CompanyID", Model.ID) @*添加按钮使用*@
@@ -110,7 +111,9 @@
         </table>
         @{
             var crid = ViewBag.CRMID as int?;
-            var cs = ViewBag.Categorys as  List<int>;
+            var projectid = ViewBag.CRMID as int?;
+            var cs = ViewBag.Categorys as List<int>;
+           
            <div id="categorycontainer">
             @Html.Partial("Categorys", cs == null ? new List<int>() : cs)
 </div>

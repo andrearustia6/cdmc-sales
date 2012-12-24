@@ -57,6 +57,7 @@ function addDatabindings() {
    
 }
 //初始化公司级别以下的保存按钮
+//edit company save
 function initialBtns() {
     $('#companysubmit').click(function () {
 
@@ -66,6 +67,7 @@ function initialBtns() {
         data = JSON.stringify(c);
         var crmid = $('#CRMID').val();
         var pid = $('#ProjectID').val();
+        var cid = c.ID;
         var categoryarray = new Array();
 
         $('#categorycontainer').find("input[type='checkbox']").each(function () {
@@ -75,7 +77,7 @@ function initialBtns() {
             }
         });
 
-        var data = { Company: c, CRMID: crmid, Categorys: categoryarray,ProjectID:pid };
+        var data = { Company: c, CRMID: crmid, Categorys: categoryarray, ProjectID: pid };
         data = JSON.stringify(data);
         $.ajax({
             url: "/sales/JsonSaveCompany",
@@ -85,8 +87,7 @@ function initialBtns() {
             data: data,
             success: function (result) {
                 alert('保存成功');
-                $('#companydata').html(result);
-                initialBtns();
+                freshCompany();
             },
             error: function (xhr, status) {
                 alert(xhr.responseText);
@@ -108,7 +109,7 @@ function getCompanyForm($cf) {
     var districtNumberID = $cf.find("#DistrictNumberID").val();
     var companyTypeID = $cf.find("#CompanyTypeID").val();
     var areaID = $cf.find("#AreaID").val();
-    var foreignAssetPercentage = $cf.find("#ForeignAssetPercentage").val();
+//    var foreignAssetPercentage = $cf.find("#ForeignAssetPercentage").val();
     var id = $cf.find("#ID").val();
 
     var c = { Name_EN: name_EN,
@@ -119,7 +120,7 @@ function getCompanyForm($cf) {
         CompanyTypeID: companyTypeID,
         ID: id,
         Contact: contact,
-        ForeignAssetPercentage: foreignAssetPercentage,
+//        ForeignAssetPercentage: foreignAssetPercentage,
         AreaID: areaID
     }
         return c;
@@ -178,6 +179,7 @@ function getCallForm($cf) {
     return c;
 }
 
+//save edit lead
 function IntialLeadSavebtn($btn) {
     var $cf = $btn.closest('.leaddatacontainer');
     $btn.click(function () {
@@ -185,6 +187,9 @@ function IntialLeadSavebtn($btn) {
         var c = getLeadForm($cf);
 
         c = getCommonData($cf, c);
+        var cid = c.CompanyID;
+        var crmid = $('#CRMID').val();
+        var pid = $('#ProjectID').val();
 
         c = JSON.stringify(c);
         $.ajax({
@@ -195,9 +200,9 @@ function IntialLeadSavebtn($btn) {
             data: c,
             success: function (result) {
                 alert('保存成功');
-                $cf.html(result);
-                var lsave = $cf.find('.leadsubmit');
-                IntialLeadSavebtn(lsave);
+                freshCompany(pid, crmid, cid);
+                //var lsave = $cf.find('.leadsubmit');
+                //IntialLeadSavebtn(lsave);
             },
             error: function (xhr, status) {
                 alert(xhr.responseText);
@@ -209,6 +214,8 @@ function IntialLeadSavebtn($btn) {
 function IntialLeadCallsSavebtn($btn) {
     var $cf = $btn.closest('.singleleadcallcontainer');
     $btn.click(function () {
+
+
 
         var c = getCallForm($cf);
         c = getCommonData($cf, c);
@@ -222,9 +229,10 @@ function IntialLeadCallsSavebtn($btn) {
             data: c,
             success: function (result) {
                 alert('保存成功');
-                $cf.html(result);
-                var lsave = $cf.find('.leadcallssubmit');
-                IntialLeadCallsSavebtn(lsave);
+                freshCompany();
+                //$cf.html(result);
+                //                var lsave = $cf.find('.leadcallssubmit');
+                //                IntialLeadCallsSavebtn(lsave);
             },
             error: function (xhr, status) {
                 alert(xhr.responseText);
@@ -238,14 +246,18 @@ function onCompanysTreeviewNodeSelected(e) {
     var ids = $(e.item).find(".t-input").val().split('||');
     var id = ids[1];
     var pid  = $('#ProjectID').val()
-
+    $('#CompanyID').val(id);
     var compamyrelationshipid = ids[0];
     $('#CRMID').val(compamyrelationshipid);
-
-    freshCompany(pid, compamyrelationshipid, id);
+    $('#CompanyRelationshipID').val(compamyrelationshipid);
+    freshCompany();
 }
 
-function freshCompany(projectid, crmid, companyid) {
+function freshCompany() {
+        var crmid = $('#CRMID').val();
+        var projectid = $('#ProjectID').val();
+        var companyid = $('#CompanyID').val();
+
     $.ajax({
         url: '/sales/JsonCompanyInfo/',
         contentType: 'application/html; charset=utf-8',
@@ -275,7 +287,7 @@ function intialAddLeadAndCallToExistBtn() {
         var companyid = $(this).attr('companyid')
         $('#FreshArea').val('company&' + companyid);
         tWindow.find('#CompanyID').val(companyid);
-        tWindow.find('#submittype').val('lead&call');
+        tWindow.find('#submittype').val('lead&leadcall');
         tWindow.find('fieldset').hide();
         tWindow.find('#fieldsetleadcall').show();
         tWindow.find('#fieldsetlead').show();
@@ -315,7 +327,7 @@ function intialAddCallOnlyToExistBtn() {
         var leadid = $(this).attr('leadid')
         $('#FreshArea').val('calls&' + leadid);
         tWindow.find('#LeadID').val(leadid);
-        tWindow.find('#CRMID').val();
+        //tWindow.find('#CRMID').val();
         tWindow.find('#submittype').val('leadcall');
         tWindow.find('fieldset').hide();
         tWindow.find('#fieldsetleadcall').show();
@@ -383,6 +395,7 @@ function onSalesInputInitial() {
     $submit.click(function () {
 
         $submit.attr('disabled', "true");
+        $cancel.attr('disabled', "true");
 
         var data = {};
         tWindow.find('.needsubmit').each(function () {
@@ -399,7 +412,7 @@ function onSalesInputInitial() {
             if ($this.attr('id') == 'formcall') {
                 var call = getCallForm($this);
                 call.CompanyRelationshipID = crmid; //为添加情况时。把全局的crmid设到到lead
-                call.ProjectID = pid; //为添加情况时。把全局的crmid设到到lead
+                call.ProjectID = pid; //为添加情况时。把全局的projectid设到到lead
                 data.LeadCall = call;
             }
         });
@@ -430,6 +443,7 @@ function onSalesInputInitial() {
                 }
                 else {
                     $submit.removeAttr("disabled");
+                    $cancel.removeAttr("disabled");
                     $('#salesinputwindowcontainer').find('#inputmessage').html(result);
                 }
 
