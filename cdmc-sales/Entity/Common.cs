@@ -131,6 +131,8 @@ namespace Entity
     {
         [Display(Name = "货币类型")]
         public string Name { get; set; }
+
+        public Double Rate { get; set; }
     }
 
       /// <summary>

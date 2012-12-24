@@ -406,6 +406,10 @@ namespace Sales.Controllers
 
         public ActionResult LeadDelete(int id, int projectid)
         {
+            var calls = CH.GetAllData<LeadCall>(l => l.LeadID == id && l.ProjectID == projectid);
+            calls.ForEach(c => {
+                CH.Delete<LeadCall>(c.ID);
+            });
             ViewBag.ProjectID = projectid;
             return View(CH.GetDataById<Lead>(id));
         }

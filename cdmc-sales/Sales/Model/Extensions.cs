@@ -13,6 +13,16 @@ using System.Web.Security;
 
 namespace Entity
 {
+
+    public static class PackageExtensions
+    {
+        public static decimal GetYuan(this Package item,double? rate)
+        {
+            var yuan = item.Prize * (decimal)rate;
+            return yuan;
+        }
+    }
+
     public static class LeadExtensions
     {
         public static string GetLeadStatus(this Lead item, int? porjectid)
