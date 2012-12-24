@@ -4,6 +4,7 @@
 @using Entity
 @model Company
 @Html.Partial("Projectselector")
+ @Html.Hidden("CPID")
 <span><input type="button" id="addData" class="insertdata" value="Add CallList" />  <input type="button" class="insertdata" id="addcompanyleadData" value="Add Company&Lead" />  <input class="insertdata" type="button" id="addcompanyData" value="Add Comany Only" /></span>
 
 
@@ -24,7 +25,7 @@
 
 @helper GetCompanyDetails()
 {
-    @Html.Hidden("CRMID")
+   
     @Html.Hidden("CompanyID")
     @Html.Partial("CompanyInfo", Model)
 }
