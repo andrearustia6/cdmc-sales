@@ -10,7 +10,7 @@
        foreach (var lead in Model)
        {
            var l = lead;
-           panes.Add().Text(l.Name + "   " + lead.Title).Content(@<text>
+           panes.Add().Text(l.Name + "   " + lead.Title + "   " + lead.Contact).Content(@<text>
               
                 @getLead(l)
                 </text>);

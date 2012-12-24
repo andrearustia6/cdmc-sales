@@ -1,5 +1,6 @@
 ﻿@using Entity
 @model List<LeadCall>
+@using Utl
 @if (Model != null && Model.Count > 0)
 {
     <fieldset>
@@ -10,7 +11,7 @@
        foreach (var leadcall in Model)
        {
            var l = leadcall;
-           panes.Add().Text("call").Content(@<text>
+           panes.Add().Text(leadcall.LeadCallType.Name + " " + Utl.ShortText(leadcall.Result,100)).Content(@<text>
             @GetCall(l)
             </text>);
        }
