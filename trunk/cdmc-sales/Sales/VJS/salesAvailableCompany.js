@@ -251,6 +251,7 @@ function onCompanysTreeviewNodeSelected(e) {
     $('#CRMID').val(compamyrelationshipid);
     $('#CompanyRelationshipID').val(compamyrelationshipid);
     freshCompany();
+    onSalesInputInitial();
 }
 
 function freshCompany() {
@@ -389,7 +390,7 @@ function onSalesInputInitial() {
     var tWindow = $('#salesdatawindow');
 
     var pid = $('#ProjectID').val();
-    var crmid = $('#CRMID').val();
+    var crid = $('#CRMID').val();
     var compnayid = $('#CompanyID').val();
 
     $submit.click(function () {
@@ -435,7 +436,7 @@ function onSalesInputInitial() {
                     if (area[0] == 'companys') {
                         onCRMsUpdate();
                     }
-                    freshCompany(pid, crmid, compnayid);
+                    freshCompany();
                     onSalesInputInitial();
 
                     $submit.removeAttr("disabled");
