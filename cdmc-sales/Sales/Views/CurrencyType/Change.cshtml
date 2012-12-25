@@ -11,5 +11,13 @@
             @Html.EditorFor(model => model.Name)
             @Html.ValidationMessageFor(model => model.Name)
         </div>
+
+         <div class="editor-label">
+            @Html.LabelFor(model => model.Rate )
+        </div>
+        <div class="editor-field">
+            @Html.Telerik().NumericTextBoxFor(model => model.Rate)
+            @Html.ValidationMessageFor(model => model.Rate)
+        </div>
 </fieldset>
 
