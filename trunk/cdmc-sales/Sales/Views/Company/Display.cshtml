@@ -33,6 +33,22 @@
     <div class="display-field">
         @Html.DisplayFor(model => model.Area.Name)
     </div>
+
+    <div class="display-label">主营业务</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Business)
+    </div>
+
+    <div class="display-label">公司网站</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.WebSite)
+    </div>
+
+    <div class="display-label">公司邮编</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.ZIP)
+    </div>
+
     <div class="display-label">公司架构</div>
     <div class="display-field">
     @if (Model != null)

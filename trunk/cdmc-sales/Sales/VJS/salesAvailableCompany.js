@@ -1,6 +1,33 @@
 ﻿function onPageLoad(e) {
     addDatabindings();
     onCRMsUpdate();
+    onInitialSearch();
+    onSalesInputInitial();
+}
+function onInitialSearch() {
+
+
+
+    $('#goSearch').unbind('click').bind('click', function (e) {
+        var projectid = $('#ProjectID').val();
+        var condition = $('#searchCondition').val();
+        var url = "/sales/JsonGetCompanys";
+        $.ajax({
+            url: url,
+            type: 'GET',
+            dataType: 'html',
+            contentType: 'application/json; charset=utf-8',
+            data: { ProjectID: projectid, Condition: condition },
+            success: function (result) {
+                $('#crmcontainer').html(result);
+                initialBtns();
+            },
+            error: function (xhr, status) {
+                alert(xhr.responseText);
+            }
+        });
+    });
+    
 }
 function onCRMsUpdate() { 
   var projectid = $('#ProjectID').val();
@@ -13,8 +40,11 @@ function onCRMsUpdate() {
         data: { ProjectID: projectid },
         success: function (result) {
             $('#crmcontainer').html(result);
-            initialBtns();
-        }
+         
+        },
+         error: function (xhr, status) {
+                alert(xhr.responseText);
+            }
     });
 }
 
@@ -24,7 +54,7 @@ function addDatabindings() {
 
     btns.each(function () {
         var $this = $(this);
-        $this.bind('click', function (e) {
+        $this.unbind('click').bind('click', function (e) {
             $('#FreshArea').val('companys');  
             $('#crmid').val();//设crmid为空
             if ($this.attr('id') == 'addData') {
@@ -59,7 +89,9 @@ function addDatabindings() {
 //初始化公司级别以下的保存按钮
 //edit company save
 function initialBtns() {
-    $('#companysubmit').click(function () {
+
+
+    $('#companysubmit').unbind('click').bind('click', function (e) {
 
         var $cf = $('#companydata');
         var c = getCompanyForm($cf);
@@ -182,7 +214,7 @@ function getCallForm($cf) {
 //save edit lead
 function IntialLeadSavebtn($btn) {
     var $cf = $btn.closest('.leaddatacontainer');
-    $btn.click(function () {
+    $btn.unbind('click').bind('click', function (e) {
 
         var c = getLeadForm($cf);
 
@@ -213,9 +245,7 @@ function IntialLeadSavebtn($btn) {
 
 function IntialLeadCallsSavebtn($btn) {
     var $cf = $btn.closest('.singleleadcallcontainer');
-    $btn.click(function () {
-
-
+    $btn.unbind('click').bind('click', function (e) {
 
         var c = getCallForm($cf);
         c = getCommonData($cf, c);
@@ -251,7 +281,7 @@ function onCompanysTreeviewNodeSelected(e) {
     $('#CRMID').val(compamyrelationshipid);
     $('#CompanyRelationshipID').val(compamyrelationshipid);
     freshCompany();
-    onSalesInputInitial();
+    
 }
 
 function freshCompany() {
@@ -284,7 +314,7 @@ function intialAddLeadAndCallToExistBtn() {
     var tWindow = $('#salesdatawindow');
 
 
-    $('#companydata').find('.addleadandcalltoexist').bind('click', function (e) {
+    $('#companydata').find('.addleadandcalltoexist').unbind('click').bind('click', function (e) {
         var companyid = $(this).attr('companyid')
         $('#FreshArea').val('company&' + companyid);
         tWindow.find('#CompanyID').val(companyid);
@@ -306,7 +336,7 @@ function intialAddLeadOnlyToExistBtn() {
     var tWindow = $('#salesdatawindow');
     var companyid = $('#CompanyID').val();
     $('#FreshArea').val('leads&' + companyid);
-    $('#companydata').find('.addleadonlytoexist').bind('click', function (e) {
+    $('#companydata').find('.addleadonlytoexist').unbind('click').bind('click', function (e) {
         tWindow.find('#CompanyID').val(companyid);
         tWindow.find('#submittype').val('lead');
         tWindow.find('fieldset').hide();
@@ -324,7 +354,7 @@ function intialAddLeadOnlyToExistBtn() {
 function intialAddCallOnlyToExistBtn() {
     var tWindow = $('#salesdatawindow');
     $('#FreshArea').val('calls');
-    $('#companydata').find('.addcallonlytoexist').bind('click', function (e) {
+    $('#companydata').find('.addcallonlytoexist').unbind('click').bind('click', function (e) {
         var leadid = $(this).attr('leadid')
         $('#FreshArea').val('calls&' + leadid);
         tWindow.find('#LeadID').val(leadid);
@@ -394,7 +424,7 @@ function onSalesInputInitial() {
     var compnayid = $('#CompanyID').val();
     var $crm = tWindow.find('#CompanyRelationshipID');
     $crm.val(crid);
-    $submit.click(function () {
+    $submit.unbind('click').bind('click', function (e) {
 
         $submit.attr('disabled', "true");
         $cancel.attr('disabled', "true");
@@ -456,7 +486,7 @@ function onSalesInputInitial() {
             }
         });
     });
-    $cancel.click(function () {
+    $cancel.unbind('click').bind('click', function (e) {
         tWindow.data('tWindow').close();
         $.ajax({
             url: '/sales/jsoncancelinput/',

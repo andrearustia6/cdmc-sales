@@ -12,6 +12,15 @@ namespace Entity
     /// </summary>
     public class Company : NameEntity
     {
+        [Display(Name = "主营业务")]
+        public string Business { get; set; }
+
+        [Display(Name = "公司网站")]
+        public string WebSite { get; set; }
+
+        [Display(Name = "公司邮编")]
+        public string ZIP { get; set; }
+
         [Display(Name = "公司总机"), MaxLength(100)]
         public string Contact { get; set; }
 
@@ -97,8 +106,11 @@ namespace Entity
         [Display(Name = "客户性别")]
         public string Gender { get; set; }
 
-        [Display(Name = "客户职位")]
+        [Display(Name = "客户职务")]
         public string Title { get; set; }
+
+        [Display(Name = "所在部门")]
+        public string Department { get; set; }
 
         [DataType(DataType.PhoneNumber)]
         [Display(Name = "客户直线")]
@@ -110,6 +122,15 @@ namespace Entity
 
         [Display(Name = "工作传真")]
         public string Fax { get; set; }
+
+        [Display(Name = "Lead生日")]
+        public DateTime? Birthday { get; set; }
+
+        [Display(Name = "联系地址")]
+        public DateTime? Address { get; set; }
+
+        [Display(Name = "联系邮编")]
+        public DateTime? ZIP { get; set; }
 
         [DataType( DataType.PhoneNumber)]
         [Display(Name = "移动电话")]

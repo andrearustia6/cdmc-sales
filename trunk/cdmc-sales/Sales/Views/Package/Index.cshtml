@@ -23,7 +23,7 @@
                     c.Bound(item => item.PackageType.Name).Title("Package类型").Width(120);
                     c.Bound(item => item.ParticipantType.Name).Title("参会类型").Width(120);
                     c.Bound(item => item.Prize).Format("{0:N}").Width(100);
-                    c.Bound(item => item.Prize).Title("人民币").Template(@<text> @string.Format("{0:C}",@item.GetYuan(rate).ToString()) </text>).Width(100);
+                    c.Bound(item => item.Prize).Title("人民币费用").Template(@<text> @string.Format("{0:F2}", Math.Round(item.GetYuan(rate),2).ToString()) </text>).Width(100);
                     c.Bound(item => item.ID).Title("操作").Width(170).Template(@<span>
                      @if (Employee.AsDirector())
                      {

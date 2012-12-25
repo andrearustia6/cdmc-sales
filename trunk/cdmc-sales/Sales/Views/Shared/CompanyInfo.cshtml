@@ -56,6 +56,14 @@
             </tr>
             <tr>
                 <td>
+                    @Html.LabelFor(model => model.ZIP)： @Html.EditorFor(model => model.ZIP)
+                </td>
+                <td>
+                    @Html.LabelFor(model => model.WebSite )： @Html.EditorFor(model => model.WebSite)
+                </td>
+            </tr>
+            <tr>
+                <td>
                     @Html.LabelFor(model => model.Address)： @Html.EditorFor(model => model.Address)
                 </td>
                 <td>
@@ -63,11 +71,16 @@
                     
                 </td>
             </tr>
-            @*<tr>
-                <td>
-                   @Html.LabelFor(model => model.ForeignAssetPercentage)： @Html.EditorFor(model => model.ForeignAssetPercentage)
+            <tr>
+                <td colspan="2">
+                   @Html.LabelFor(model => model.Business)： @Html.EditorFor(model => model.ForeignAssetPercentage)
                 </td>
-            </tr>*@
+            </tr>
+            <tr>
+                <td>
+                   @Html.LabelFor(model => model.ForeignAssetPercentage)： @Html.HiddenFor(model => model.ForeignAssetPercentage)
+                </td>
+            </tr>
         </table>
         @Html.Hidden("ID", Model.ID)
         @Html.Hidden("CompanyID", Model.ID) @*添加按钮使用*@

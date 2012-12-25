@@ -34,6 +34,15 @@
         @Html.DropDownListFor(model =>model.DistrictNumberID,new SelectList(CH.GetAllData<DistrictNumber>(),"ID","Name"), "-请选择-")
         @Html.ValidationMessageFor(model => model.DistrictNumberID)
     </div>
+
+     <div class="editor-label">
+        @Html.LabelFor(model => model.Business )
+    </div>
+    <div class="editor-field">
+        @Html.TextAreaFor(model => model.Business)
+        @Html.ValidationMessageFor(model => model.Business)
+    </div>
+
     <div class="editor-label">
         @Html.LabelFor(model => model.Contact)
     </div>
@@ -47,6 +56,20 @@
     <div class="editor-field">
         @Html.EditorFor(model => model.Fax)
         @Html.ValidationMessageFor(model => model.Fax)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.WebSite )
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.WebSite)
+        @Html.ValidationMessageFor(model => model.WebSite)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.ZIP )
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.ZIP)
+        @Html.ValidationMessageFor(model => model.ZIP)
     </div>
     
     <div class="editor-field">

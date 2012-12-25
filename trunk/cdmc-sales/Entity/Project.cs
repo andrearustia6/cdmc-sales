@@ -68,7 +68,7 @@ namespace Entity
     /// </summary>
     public class SalesType : EntityBase
     {
-        [Display(Name = "销售名称"), Required]
+        [Display(Name = "销售类别"), Required]
         public String Name { get; set; }
     }
 
@@ -163,7 +163,6 @@ namespace Entity
         public virtual List<Message> Messages { get; set; }
 
         public virtual List<PhoneSaleSupport> PhoneSaleSupports { get; set; }
-        
 
 
         /// <summary>
@@ -401,16 +400,9 @@ namespace Entity
 
     public class Progress : EntityBase
     {
-        public Company Company { get; set; }
-        [Display(Name = "对应公司"), Required]
-        public int CompanyID { get; set; }
+        [Display(Name = "进度类型")]
+        public String Name { get; set; }
 
-        [Display(Name = "完成度")]
-        public int Complement { get; set; }
-
-        public virtual Member Member { get; set; }
-        [Display(Name = "销售员工")]
-        public int? MemberID { get; set; }
     }
 
 

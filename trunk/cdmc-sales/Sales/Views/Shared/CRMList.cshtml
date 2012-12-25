@@ -8,11 +8,12 @@
 
 @if (Model != null)
 {
-  @(Html.Telerik().TreeView().Name("companystreeview").BindTo(Model, mappings =>
+    var data = Model.ToList();
+  @(Html.Telerik().TreeView().Name("companystreeview").BindTo(data, mappings =>
 {
     mappings.For<CompanyRelationship>(binding => binding.ItemDataBound((item, crm) => 
     { item.Text = crm.Company.Name;
-    item.Value = crm.ID+"||"+crm.CompanyID.ToString();
+    item.Value = crm.ID+"||"+crm.CompanyID;
     
     }));
 }).ClientEvents(events => events.OnSelect("onCompanysTreeviewNodeSelected")))

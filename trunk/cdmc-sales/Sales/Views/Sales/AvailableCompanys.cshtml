@@ -1,9 +1,11 @@
 ﻿@{
-    ViewBag.Title = "JsonGetCompanys";
+    ViewBag.Title = "可打公司 V2.0 快捷录入";
 }
 @using Entity
 @model Company
-@Html.Partial("Projectselector")
+@Html.Partial("Projectselector")         
+<center> <input type="text" id="searchCondition" /> <input type="button" id="goSearch" value="搜索" /></center>
+
  @Html.Hidden("CRMID")
 <span><input type="button" id="addData" class="insertdata" value="Add CallList" />  <input type="button" class="insertdata" id="addcompanyleadData" value="Add Company&Lead" />  <input class="insertdata" type="button" id="addcompanyData" value="Add Comany Only" /></span>
 
@@ -39,6 +41,7 @@
 @{ Html.Telerik().ScriptRegistrar().OnDocumentReady(@<text> 
         onPageLoad();
         onSalesInputInitial();
+       
     </text>);
 }
 
