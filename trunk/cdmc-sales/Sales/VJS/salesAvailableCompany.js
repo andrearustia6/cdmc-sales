@@ -392,7 +392,8 @@ function onSalesInputInitial() {
     var pid = $('#ProjectID').val();
     var crid = $('#CRMID').val();
     var compnayid = $('#CompanyID').val();
-
+    var $crm = tWindow.find('#CompanyRelationshipID');
+    $crm.val(crid);
     $submit.click(function () {
 
         $submit.attr('disabled', "true");
@@ -412,7 +413,7 @@ function onSalesInputInitial() {
             }
             if ($this.attr('id') == 'formcall') {
                 var call = getCallForm($this);
-                call.CompanyRelationshipID = crmid; //为添加情况时。把全局的crmid设到到lead
+                //call.CompanyRelationshipID = crmid; //为添加情况时。把全局的crmid设到到lead
                 call.ProjectID = pid; //为添加情况时。把全局的projectid设到到lead
                 data.LeadCall = call;
             }

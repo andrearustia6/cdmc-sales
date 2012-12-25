@@ -49,14 +49,6 @@
             @Html.ValidationMessageFor(model => model.Prize)
         </div>
 
-         <div class="editor-label">
-            @Html.LabelFor(model => model.PrizeCH)
-        </div>
-        <div class="editor-field">
-            @Html.DropDownList("PackageTypeID", new SelectList(CH.GetAllData<PackageType>(), "ID", "Name"), "-请选择-")
-            @Html.ValidationMessageFor(model => model.PackageTypeID)
-        </div>
-
         <div class="editor-label">
             @Html.LabelFor(model => model.PackageTypeID)
         </div>
