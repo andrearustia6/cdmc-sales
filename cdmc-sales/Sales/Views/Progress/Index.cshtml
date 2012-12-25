@@ -1,0 +1,22 @@
+﻿@using Entity
+@model List<Progress>
+@Html.Partial("contenttitle", "行业类型")           
+@(Html.Telerik().Grid<Progress>(Model).Name("Progress").ToolBar(commands => commands.Custom().Text("行业类型创建").Action("Create", "Progress"))
+                .DataKeys(keys =>
+                {
+                    keys.Add(s => s.ID);
+                })
+                .Columns(c =>
+                {
+                    c.Bound(item => item.Name).Width(200);
+                    c.Bound(item => item.Description);
+                    c.Bound(item => item.ID).Width(200).Title("操作").Template(@<span>
+                    <a href=@Url.Content("~/Progress/Edit/" + item.ID) >编辑</a> | <a href=@Url.Content("~/Progress/Details/" + item.ID)>详细</a>  | <a href=@Url.Content("~/Progress/delete/" + item.ID) >删除</a> 
+                   </span>);
+                })
+                .Resizable(resizing => resizing.Columns(true))
+                .Filterable().Sortable().Groupable()
+                .Pageable(p => p.PageSize(20))
+                .Scrollable(scrolling => scrolling.Height(350))
+
+)

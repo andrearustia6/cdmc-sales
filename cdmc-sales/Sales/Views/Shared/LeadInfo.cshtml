@@ -16,7 +16,7 @@ table tr td{ border-width:0px; }
     </tr>
      <tr>
     <td>  @Html.LabelFor(model => model.Title )： @Html.EditorFor(model => model.Title)</td>
-     <td>  @Html.LabelFor(model => model.PersonalEmailAddress )： @Html.EditorFor(model => model.PersonalEmailAddress)</td>
+     <td>  @Html.LabelFor(model => model.Department )： @Html.EditorFor(model => model.Department)</td>
      </tr>
     <tr>
     <td> @Html.LabelFor(model => model.Contact)： @Html.EditorFor(model => model.Contact)</td>
@@ -25,6 +25,14 @@ table tr td{ border-width:0px; }
     <tr>
     <td>  @Html.LabelFor(model => model.Mobile )： @Html.EditorFor(model => model.Mobile)</td>
     <td>  @Html.LabelFor(model => model.Fax)： @Html.EditorFor(model => model.Fax)</td>
+    </tr>
+     <tr>
+    <td>  @Html.LabelFor(model => model.Birthday )： @Html.EditorFor(model => model.Birthday)</td>
+    <td>  @Html.LabelFor(model => model.PersonalEmailAddress )： @Html.EditorFor(model => model.PersonalEmailAddress)</td>
+    </tr>
+     <tr>
+    <td>  @Html.LabelFor(model => model.Address )： @Html.EditorFor(model => model.Address)</td>
+    <td>  @Html.LabelFor(model => model.ZIP)： @Html.EditorFor(model => model.ZIP)</td>
     </tr>
     <tr>
     <td>  @Html.LabelFor(model => model.Gender )：  @Html.DropDownListFor(model => model.Gender, new SelectList(new List<string>() { "Mr", "Ms" }), "-请选择-")</td>

@@ -98,7 +98,7 @@ namespace Entity
             return item.LeadCallType.Name == "Pitched" ? true : false;
         }
 
-        public static bool IsDMS(this LeadCall item,string leadCallType)
+        public static bool IsDMs(this LeadCall item,string leadCallType)
         {
             if (leadCallType == "Others" || leadCallType == "Blowed" || leadCallType == "Not Pitched")
                 return false;
@@ -106,12 +106,12 @@ namespace Entity
                 return true;
         }
 
-        public static bool IsNewDMS(this LeadCall item)
+        public static bool IsNewDMs(this LeadCall item)
         {
             return item.IsFirstPitch();
         }
 
-        public static bool IsDMS(this LeadCall item)
+        public static bool IsDMs(this LeadCall item)
         {
             var type = item.LeadCallType.Code;
             if (type > 3)
@@ -330,9 +330,9 @@ namespace Entity
                     // result.Cold_Calls++;
 
                 if (l.LeadCallType.Code > 30)
-                    result.DMS++;
+                    result.DMs++;
                 if (l.IsFirstPitch())
-                    result.New_DMS++;
+                    result.New_DMs++;
 
                 if (l.LeadCallTypeID == 1)
                     result.Others++;
@@ -636,6 +636,10 @@ namespace Entity
         /// <returns></returns>
         public static List<Member> WhoCallTheCompanyMember(this CompanyRelationship item, List<Member> members)
         {
+            if (members == null)
+            {
+                members = CH.GetAllData<Member>(m => m.ProjectID == item.ProjectID);
+            }
             var ms = members.FindAll(m => m.CompanyRelationships.Any(c => c.ID == item.ID));
             List<Member> result = new List<Member>();
             result.AddRange(ms);
@@ -668,7 +672,7 @@ namespace Entity
             return result;
         }
 
-        public static string WhoCallTheCompanyMemberName(this CompanyRelationship item,List<Member> members)
+        public static string WhoCallTheCompanyMemberName(this CompanyRelationship item,List<Member> members=null)
         {
             var ml = item.WhoCallTheCompanyMember(members);
 

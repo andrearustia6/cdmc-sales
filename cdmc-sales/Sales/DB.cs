@@ -15,5 +15,7 @@ namespace Sales
         // System.Data.Entity.Database.SetInitializer(new System.Data.Entity.DropCreateDatabaseIfModelChanges<Sales.DB>());
 
         public DbSet<Area> Area { get; set; }
+
+        public DbSet<Progress> Progress { get; set; }
     }
 }

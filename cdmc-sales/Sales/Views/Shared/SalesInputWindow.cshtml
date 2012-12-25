@@ -37,6 +37,16 @@
                 <input type="text" id="Fax" />
             </td>
         </tr>
+         <tr>
+            <td>
+                 公司网站： <input type="text" id="WebSite" />
+              
+            </td>
+            <td>
+                公司邮编：
+                <input type="text" id="ZIP" />
+            </td>
+        </tr>
         <tr>
             <td>
                 公司地址：
@@ -47,11 +57,19 @@
             </td>
         </tr>
         <tr>
-            <td>
+            <td colspan="2">
                 区号/时差： @Html.DropDownList("DistrictNumberID", new SelectList(CH.GetAllData<DistrictNumber>(),
                 "ID", "Name"), "-请选择-")
             </td>
+             
         </tr>
+        <tr>
+         <td colspan="2">
+                主营业务：
+                 @Html.TextArea("Business")
+              
+            </td>
+            </tr>
     </table>
 </fieldset>
 <fieldset id="fieldsetlead">
@@ -78,6 +96,15 @@
             </td>
         </tr>
         <tr>
+            
+            <td>
+                客户职位：<input type="text" id="Title" />
+            </td>
+            <td>
+                所属部门：<input type="text" id="Department" />
+            </td>
+        </tr>
+        <tr>
             <td>
                 工作邮箱：
                 <input type="text" id="EMail" />
@@ -89,13 +116,27 @@
         </tr>
         <tr>
             <td>
-                客户性别：
-                @Html.DropDownList("Gender", new SelectList(new List<string>() { "Mr", "Ms" }), "-请选择-")
+                联系地址：
+                <input type="text" id="Address" />
             </td>
             <td>
-                客户职位：<input type="text" id="Title" />
+                联系邮编：
+                <input type="text" id="Zip" />
             </td>
         </tr>
+        <tr>
+            <td>
+                Lead生日：
+                <input type="text" id="Birthday" />
+            </td>
+           
+             <td>
+                客户性别：
+                @Html.DropDownList("Gender", new SelectList(new List<string>() { "Mr", "Ms" }), "-请选择-")
+          
+            </td>
+        </tr>
+        
         @Html.Hidden("CompanyID")
     </table>
     

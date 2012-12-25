@@ -136,8 +136,8 @@
      @*    c.Bound(item => item.Member.SalesType.Name).Width(80);
          c.Bound(item => item.Duration).Title("通话时间").Width(80);
          c.Bound(item => item.Cold_Calls).Width(90).Aggregate(item => item.Sum()).FooterTemplate(@<text>@item.Sum</text>);*@
-         c.Bound(item => item.DMS).Width(50);
-         c.Bound(item => item.New_DMS).Width(70);
+         c.Bound(item => item.DMs).Width(50);
+         c.Bound(item => item.New_DMs).Width(70);
          c.Bound(item => item.Pitched).Width(55);
          c.Bound(item => item.Full_Pitched).Width(90);
          c.Bound(item => item.Call_Backed).Width(90);
