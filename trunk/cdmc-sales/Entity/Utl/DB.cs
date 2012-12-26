@@ -46,7 +46,7 @@ namespace Utl
 
         public DB()
         {
-           //Database.SetInitializer<DB>(new DBInitializer());
+          //Database.SetInitializer<DB>(new DBInitializer());
           Database.SetInitializer<DB>(null);
            
 

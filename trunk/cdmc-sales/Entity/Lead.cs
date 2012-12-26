@@ -127,10 +127,10 @@ namespace Entity
         public DateTime? Birthday { get; set; }
 
         [Display(Name = "联系地址")]
-        public DateTime? Address { get; set; }
+        public string Address { get; set; }
 
         [Display(Name = "联系邮编")]
-        public DateTime? ZIP { get; set; }
+        public string ZIP { get; set; }
 
         [DataType( DataType.PhoneNumber)]
         [Display(Name = "移动电话")]

@@ -220,6 +220,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CompanyRelationshipController.cs" />
     <Compile Include="Controllers\DealController.cs" />
+    <Compile Include="Controllers\NewsController.cs" />
     <Compile Include="Controllers\Type\ProgressController.cs" />
     <Compile Include="Controllers\Type\DepartmentController.cs" />
     <Compile Include="Controllers\DistrictNumberController.cs" />
@@ -1398,6 +1399,15 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Progress\Display.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\News\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\News\Change.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\News\Display.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

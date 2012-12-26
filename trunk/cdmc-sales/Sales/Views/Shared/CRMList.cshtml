@@ -8,8 +8,8 @@
 
 @if (Model != null)
 {
-    var data = Model.ToList();
-  @(Html.Telerik().TreeView().Name("companystreeview").BindTo(data, mappings =>
+ 
+  @(Html.Telerik().TreeView().Name("companystreeview").BindTo(Model, mappings =>
 {
     mappings.For<CompanyRelationship>(binding => binding.ItemDataBound((item, crm) => 
     { item.Text = crm.Company.Name;

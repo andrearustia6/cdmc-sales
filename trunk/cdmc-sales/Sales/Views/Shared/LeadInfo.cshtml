@@ -27,7 +27,7 @@ table tr td{ border-width:0px; }
     <td>  @Html.LabelFor(model => model.Fax)： @Html.EditorFor(model => model.Fax)</td>
     </tr>
      <tr>
-    <td>  @Html.LabelFor(model => model.Birthday )： @Html.EditorFor(model => model.Birthday)</td>
+    <td>  @Html.LabelFor(model => model.Birthday )： @Html.Telerik().DatePickerFor(model => model.Birthday)</td>
     <td>  @Html.LabelFor(model => model.PersonalEmailAddress )： @Html.EditorFor(model => model.PersonalEmailAddress)</td>
     </tr>
      <tr>

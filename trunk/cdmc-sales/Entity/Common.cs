@@ -21,7 +21,7 @@ namespace Entity
         [Display(Name = "新闻标题"), Required]
         public string Name { get; set; }
 
-        [Display(Name = "新闻类型"), Required]
+        [Display(Name = "新闻类型")]
         public int Code { get; set; }
 
         [Display(Name = "新闻副标题")]
@@ -30,8 +30,12 @@ namespace Entity
         [Display(Name = "新闻内容"), Required]
         public string Content { get; set; }
 
-        [Display(Name = "新闻链接"), Required]
+        [Display(Name = "新闻链接")]
         public string Link { get; set; }
+
+        public virtual Project Project { get; set; }
+        public int? ProjectID { get; set; }
+
     }
 
     /// <summary>

@@ -1,0 +1,50 @@
+﻿@model Entity.News
+@using Utl
+    <fieldset>
+        <legend>@SR.Form</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Name)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Name)
+            @Html.ValidationMessageFor(model => model.Name)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Code)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Code)
+            @Html.ValidationMessageFor(model => model.Code)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.SubName)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.SubName)
+            @Html.ValidationMessageFor(model => model.SubName)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Content)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Content)
+            @Html.ValidationMessageFor(model => model.Content)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Link)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Link)
+            @Html.ValidationMessageFor(model => model.Link)
+        </div>
+
+        <div class="editor-field">
+            @Html.HiddenFor("ProjectID",Model==null? ViewBag.ProjectID as int?: Model.ProjectID)
+        </div>
+    </fieldset>
+

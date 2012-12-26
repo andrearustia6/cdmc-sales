@@ -40,6 +40,7 @@ function onCRMsUpdate() {
         data: { ProjectID: projectid },
         success: function (result) {
             $('#crmcontainer').html(result);
+            $('#companydata').html('<p></p>');
          
         },
          error: function (xhr, status) {
@@ -92,7 +93,7 @@ function initialBtns() {
 
 
     $('#companysubmit').unbind('click').bind('click', function (e) {
-
+        $(this).attr('disabled', "true");
         var $cf = $('#companydata');
         var c = getCompanyForm($cf);
         c = getCommonData($cf, c);
@@ -109,7 +110,9 @@ function initialBtns() {
             }
         });
 
-        var data = { Company: c, CRMID: crmid, Categorys: categoryarray, ProjectID: pid };
+        var progressid = $('#ProgressID').val();
+
+        var data = { Company: c, CRMID: crmid, Categorys: categoryarray, ProjectID: pid, ProgressID: progressid };
         data = JSON.stringify(data);
         $.ajax({
             url: "/sales/JsonSaveCompany",
@@ -120,9 +123,11 @@ function initialBtns() {
             success: function (result) {
                 alert('保存成功');
                 freshCompany();
+                $('#companysubmit').removeAttr('disabled');
             },
             error: function (xhr, status) {
                 alert(xhr.responseText);
+                $('#companysubmit').removeAttr('disabled');
             }
         });
     });
@@ -141,6 +146,12 @@ function getCompanyForm($cf) {
     var districtNumberID = $cf.find("#DistrictNumberID").val();
     var companyTypeID = $cf.find("#CompanyTypeID").val();
     var areaID = $cf.find("#AreaID").val();
+
+    var districtNumberID = $cf.find("#DistrictNumberID").val();
+    var business = $cf.find("#Business").val();
+    var website = $cf.find("#Website").val();
+    var zip = $cf.find("#ZIP").val();
+
 //    var foreignAssetPercentage = $cf.find("#ForeignAssetPercentage").val();
     var id = $cf.find("#ID").val();
 
@@ -152,6 +163,9 @@ function getCompanyForm($cf) {
         CompanyTypeID: companyTypeID,
         ID: id,
         Contact: contact,
+        ZIP: zip,
+        WebSite: website,
+        Business:business,
 //        ForeignAssetPercentage: foreignAssetPercentage,
         AreaID: areaID
     }
@@ -168,6 +182,10 @@ function getLeadForm($cf) {
     var mobile = $cf.find("#Mobile").val();
     var gender = $cf.find("#Gender").val();
     var eMail = $cf.find("#EMail").val();
+    var birthday = $cf.find("#Birthday").val();
+    var address = $cf.find("#Address").val();
+    var zip = $cf.find("#ZIP").val();
+    var department = $cf.find("#Department").val();
     var id = $cf.find("#ID").val();
     var companyid = $cf.find("#CompanyID").val();
     var c = { Name_EN: name_EN,
@@ -180,7 +198,11 @@ function getLeadForm($cf) {
         Contact: contact,
         Gender: gender,
         EMail: eMail,
-        CompanyID: companyid
+        CompanyID: companyid,
+        ZIP:zip,
+        Birthday: birthday,
+        Department: department,
+        Address: address
     };
 
     return c;
@@ -232,7 +254,7 @@ function IntialLeadSavebtn($btn) {
             data: c,
             success: function (result) {
                 alert('保存成功');
-                freshCompany(pid, crmid, cid);
+                freshCompany();
                 //var lsave = $cf.find('.leadsubmit');
                 //IntialLeadSavebtn(lsave);
             },
@@ -467,6 +489,7 @@ function onSalesInputInitial() {
                     if (area[0] == 'companys') {
                         onCRMsUpdate();
                     }
+                    
                     freshCompany();
                     onSalesInputInitial();
 

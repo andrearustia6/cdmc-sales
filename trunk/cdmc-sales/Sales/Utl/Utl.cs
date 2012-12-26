@@ -37,6 +37,7 @@ namespace Utl
 
         public static string GetCurrentUserName()
         {
+       
             var mode = ConfigurationManager.AppSettings["DebugModel"].ToString(); 
             var user = HttpContext.Current.User.Identity.Name;
             if (mode == "true" && Employee.GetRole(user).Name == "系统管理员")
@@ -147,6 +148,7 @@ namespace Utl
 
         public static int GetCurrentRoleLevel()
         {
+            //return 10;
             var name = Employee.GetCurrentUserName();
             if (!string.IsNullOrEmpty(name))
                 return GetRole(Employee.GetCurrentUserName()).Level;
