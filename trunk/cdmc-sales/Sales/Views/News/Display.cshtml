@@ -21,7 +21,7 @@
 
     <div class="display-label">Content</div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.Content)
+        @HtmlExtensions.GetHtmlString(Model.Content)
     </div>
 
     <div class="display-label">Link</div>

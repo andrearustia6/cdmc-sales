@@ -3,6 +3,7 @@
 @{ViewBag.Title = "新闻列表";}
 @model List<News>
 @Html.Partial("contenttitle", "新闻列表")
+@Html.Partial("projectselector")
 @{
     var projectid = ViewBag.ProjectID as int?;
 @(Html.Telerik().Grid<News>(Model).Name("Research").ToolBar(commands => commands.Custom().Text("新闻添加").Action("Create", "News",new {projectid = projectid}))
@@ -13,11 +14,10 @@
                 .Columns(c =>
                 {
                     c.Bound(item => item.Name).Width(200);
-                    c.Bound(item => item.Content).Template(@<span>@Utl.ShortText(item.Content, 100)</span>);
-                    c.Bound(item => item.Code);
-                    c.Bound(item => item.SubName);
+                    c.Bound(item => item.Code).Width(200);
+                    c.Bound(item => item.SubName).Width(200);
                     c.Bound(item => item.ID).Width(200).Title("操作").Template(@<span> <a href=@Url.Content("~/News/Edit/" + item.ID) >
-                        编辑</a> | <a href=@Url.Content("~/News/Details/" + item.ID)>详细</a> </span>);
+                        编辑</a> | <a href=@Url.Content("~/News/Details/" + item.ID)>详细</a> | <a href=@Url.Content("~/News/delete/" + item.ID)>删除</a></span>);
                 })
                 .Resizable(resizing => resizing.Columns(true))
                 .Filterable().Sortable().Groupable()

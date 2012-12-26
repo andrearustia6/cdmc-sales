@@ -12,6 +12,7 @@ using Telerik.Web.Mvc;
 
 namespace Sales.Controllers
 {
+    [ProductInterfaceRequired( AccessType=AccessType.Equal)]
     public class NewsController : Controller
     {
         protected override void Dispose(bool disposing)
@@ -22,13 +23,23 @@ namespace Sales.Controllers
 
         public ViewResult Index(int? projectid)
         {
+            projectid = this.TrySetProjectIDForUser(projectid);
             ViewBag.ProjectID = projectid;
-           return View(CH.GetAllData<News>().OrderByDescending(o => o.CreatedDate).ToList());
+            if (projectid != null)
+            {
+                return View(CH.GetAllData<News>().OrderByDescending(o => o.CreatedDate).ToList());
+            }
+            else
+            {
+                return View();
+            }
+          
         }
 
         public ViewResult Details(int id)
         {
             var data = CH.GetDataById<News>(id);
+            data.Content = HttpUtility.HtmlDecode(data.Content);
             return View(data);
         }
 
@@ -44,13 +55,14 @@ namespace Sales.Controllers
             if (ModelState.IsValid)
             {
                 CH.Create<News>(item);
-                return RedirectToAction("MyIndex");
+                return RedirectToAction("Index");
             }
             return View(item);
         }
         public ActionResult Edit(int id)
         {
             var data = CH.GetDataById<News>(id);
+            data.Content = HttpUtility.HtmlDecode(data.Content);
             return View(data);
         }
 
@@ -61,7 +73,7 @@ namespace Sales.Controllers
             if (ModelState.IsValid)
             {
                 CH.Edit<News>(item);
-                return RedirectToAction("MyIndex");
+                return RedirectToAction("Index");
             }
             return View(item);
         }
@@ -69,6 +81,7 @@ namespace Sales.Controllers
         public ActionResult Delete(int id)
         {
             var data = CH.GetDataById<News>(id);
+            data.Content = HttpUtility.HtmlDecode(data.Content);
             return View(data);
         }
 
@@ -76,7 +89,8 @@ namespace Sales.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             CH.Delete<News>(id);
-            return RedirectToAction("MyIndex");
+            
+            return RedirectToAction("Index");
         }
     }
 }
