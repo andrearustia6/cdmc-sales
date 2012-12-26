@@ -1,0 +1,39 @@
+﻿@model Entity.News
+
+@using Utl
+<fieldset>
+    <legend>@SR.Form</legend>
+
+    <div class="display-label">Name</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Name)
+    </div>
+
+    <div class="display-label">Code</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Code)
+    </div>
+
+    <div class="display-label">SubName</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.SubName)
+    </div>
+
+    <div class="display-label">Content</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Content)
+    </div>
+
+    <div class="display-label">Link</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Link)
+    </div>
+
+    <div class="display-label">Project</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Project.Name)
+    </div>
+
+
+</fieldset>
+

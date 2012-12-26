@@ -633,7 +633,7 @@ namespace Sales.Controllers
         #region Json
 
         [HttpPost]
-        public PartialViewResult JsonSaveCompany(Company company, int? crmid, List<int> categorys, int? projectid)
+        public PartialViewResult JsonSaveCompany(Company company, int? crmid, List<int> categorys, int? projectid, int? progressid)
         {
 
             CH.Edit<Company>(company);
@@ -660,8 +660,10 @@ namespace Sales.Controllers
                             categorystring += "|" + l.Name;
                     });
                     cr.CategoryString = categorystring;
-                    CH.Edit<CompanyRelationship>(cr);
+                  
                 }
+                cr.ProgressID = progressid;
+                CH.Edit<CompanyRelationship>(cr);
             return PartialView(@"~\views\shared\CompanyInfo.cshtml", company);
 
         }
@@ -745,6 +747,7 @@ namespace Sales.Controllers
             if(tc!=null)
             {
                 ViewBag.Categorys = tc.Categorys.Select(x=>x.ID).ToList();
+                ViewBag.ProgressID = tc.ProgressID;
             }
 
             var data = c.ToList().FirstOrDefault();

@@ -59,7 +59,7 @@
                     @Html.LabelFor(model => model.ZIP)： @Html.EditorFor(model => model.ZIP)
                 </td>
                 <td>
-                    @Html.LabelFor(model => model.WebSite )： @Html.EditorFor(model => model.WebSite)
+                    @Html.LabelFor(model => model.WebSite)： @Html.EditorFor(model => model.WebSite)
                 </td>
             </tr>
             <tr>
@@ -73,12 +73,20 @@
             </tr>
             <tr>
                 <td colspan="2">
-                   @Html.LabelFor(model => model.Business)： @Html.EditorFor(model => model.ForeignAssetPercentage)
+                @{
+                    var progressid = ViewBag.ProgressID as int?; 
+                   <text>成熟度： @Html.DropDownList("ProgressID", new SelectList(CH.GetAllData<Progress>(), "ID", "Name", progressid), "-请选择-")</text>
+                   }
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                   @Html.LabelFor(model => model.Business)： @Html.TextAreaFor(model => model.Business)
                 </td>
             </tr>
             <tr>
                 <td>
-                   @Html.LabelFor(model => model.ForeignAssetPercentage)： @Html.HiddenFor(model => model.ForeignAssetPercentage)
+                    @Html.HiddenFor(model => model.ForeignAssetPercentage)
                 </td>
             </tr>
         </table>
@@ -147,7 +155,7 @@
 </div>
 
      
-}
+   }
 </div>
 @helper getLead(Lead lead)
     {

@@ -17,5 +17,9 @@ namespace Sales
         public DbSet<Area> Area { get; set; }
 
         public DbSet<Progress> Progress { get; set; }
+
+        public DbSet<News> News { get; set; }
+
+        public DbSet<Project> Project { get; set; }
     }
 }
