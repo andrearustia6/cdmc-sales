@@ -22,6 +22,8 @@
     {
         foreach (var p in Model)
         {
+            <br />
+            <br />
             <span style=" margin-top:10px"><p>项目名称：@p.Name</p></span>
             var ls = CH.GetAllData<LeadCall>(l => l.CompanyRelationship.ProjectID == p.ID).OrderByDescending(o => o.CallDate).ToList();
             @(Html.Telerik().Grid<LeadCall>(ls).Name("ls" + p.ID)
