@@ -7,7 +7,8 @@
 <center> <input type="text" id="searchCondition" /> <input type="button" id="goSearch" value="搜索" /></center>
 
  @Html.Hidden("CRMID")
-<span><input type="button" id="addData" class="insertdata" value="Add CallList" />  <input type="button" class="insertdata" id="addcompanyleadData" value="Add Company&Lead" />  <input class="insertdata" type="button" id="addcompanyData" value="Add Comany Only" /></span>
+<span><input type="button" id="addData" class="insertdata" value="Add CallList" /> @* <input type="button" class="insertdata" id="addcompanyleadData" value="Add Company&Lead" />  <input class="insertdata" type="button" id="addcompanyData" value="Add Comany Only" />*@
+</span>
 
 
  @{Html.Telerik().Splitter().Name("sp1").HtmlAttributes(new { style = "min-height: 700px;" })

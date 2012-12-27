@@ -10,11 +10,12 @@
 @Html.Partial("contenttitle", "Call List")
 @Html.Partial("projectselector")
 @(Html.Telerik().Grid<ViewContactedLead>(Model).Name("Grid").ToolBar(commands => commands.Custom()
-    .HtmlAttributes(new { id = "export" }).Text("导出已打客户地址").Action("ExportCsv", "sales", new { projectid=ViewBag.projectid==null?null:ViewBag.ProjectID as int?, orderBy = "~", filter = "~" }))
+    .HtmlAttributes(new { id = "export" }).Text("导出客户电子邮件").Action("ExportCsv", "sales", new { projectid=ViewBag.projectid==null?null:ViewBag.ProjectID as int?, orderBy = "~", filter = "~" }))
                 .ClientEvents(events => events.OnDataBound("onCallListDataBound"))
                 .Columns(c =>
                 {
                     c.Bound(item => item.Lead.Name).Title("人名").Width(120);
+                    c.Bound(item => item.Lead.Title).Width(100);
                     c.Bound(item => item.Lead.Company.Name).Title("公司名").Width(120);
                     c.Bound(item => item.Lead.Company.Contact).Width(110);
                     c.Bound(item => item.Lead.Contact).Width(110);
