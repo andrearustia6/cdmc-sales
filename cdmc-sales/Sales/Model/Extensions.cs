@@ -68,6 +68,19 @@ namespace Entity
 
     public static class LeadCallExtensions
     {
+        public static DateTime? GetAvailabeTime(this LeadCall item)
+        {
+            if (item.CallBackDate==null) return null;
+            var date = item.CallBackDate.Value;
+            if (item.CompanyRelationship.Company.DistrictNumber != null)
+            {
+                var differs = item.CompanyRelationship.Company.DistrictNumber.TimeDifference;
+                date = date.AddHours(-differs);
+            }
+            return date;
+        }
+          
+
         public static bool CallerIsTheLoginUser(this LeadCall item)
         {
             if (item.Member.Name ==Employee.GetCurrentUserName())
@@ -207,7 +220,8 @@ namespace Entity
             enddate = enddate == null ? new DateTime(9999, 1, 1) : enddate;
 
             var leadcalls = from l in CH.DB.LeadCalls
-                            where l.CallBackDate != null && l.MemberID == item.ID && l.CallBackDate > startdate && l.CallBackDate < enddate
+                            where l.CallBackDate != null && l.MemberID == item.ID && l.CallBackDate > startdate && l.CallBackDate < enddate 
+                            && CH.DB.LeadCalls.FirstOrDefault(f=>f.CallDate>l.CallBackDate && f.LeadID==l.LeadID&&f.MemberID == item.ID)==null
                             select l;
             return leadcalls.OrderByDescending(o=>o.CallBackDate);
         }

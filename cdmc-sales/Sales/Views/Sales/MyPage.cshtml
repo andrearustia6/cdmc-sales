@@ -23,7 +23,7 @@
         });
 
         var calls = new List<LeadCall>();
-        
+
         members.ForEach(m =>
         {
             var cs = m.GetMemberToCallList(DateTime.Now);
@@ -35,9 +35,9 @@
         if (calls.Count > 0)
         {
             @(Html.Telerik().Grid(calls).Name("ToCall").DataKeys(keys =>
-                {
-                    keys.Add(s => s.ID);
-                })
+        {
+            keys.Add(s => s.ID);
+        })
                 .Columns(c =>
                 {
                     c.Bound(item => item.Lead.Name).Title("客户姓名").Width(100);
@@ -46,8 +46,10 @@
                     c.Bound(item => item.Lead.Contact).Width(100);
                     c.Bound(item => item.Lead.Mobile).Width(100);
                     c.Bound(item => item.Lead.Title).Width(100);
-                    c.Bound(item => item.Lead.Company.DistrictNumber.TimeDifference).Width(50);
-                    c.Bound(item => item.CallBackDate).Width(100);
+                    c.Bound(item => item.Lead.Company.DistrictNumber.TimeDifference);
+                    c.Bound(item => item.CallBackDate).Template(@<text>@item.GetAvailabeTime()</text>).Width(100);
+                    c.Bound(item => item.ID).Title("操作").Width(90).Template(@<span> <a  href=@Url.Content("~/Sales/AddLeadCall/?crid=" + item.CompanyRelationshipID + "&leadid=" + item.LeadID) >添加新通话</a> 
+                     </span>);
                 })
                 .Resizable(resizing => resizing.Columns(true))
                 .Filterable().Sortable().Groupable()
@@ -87,10 +89,10 @@
                     c.Bound(item => item.Package.Name).Title("Package名称").Width(150);
                     c.Bound(item => item.Payment).Width(100).Format("{0:c}").Aggregate(aggregates => aggregates.Sum()).FooterTemplate(@<text>@if (item.Sum != null)
                                                                                                                                              {<p>应收款: @item.Sum.Format("{0:c}")</p>}</text>).GroupFooterTemplate(@<text>@if (item.Sum != null)
-                                                                                                                                                                                                                                              {<p>应收款: @item.Sum.Format("{0:c}")</p>}</text>).Width(100);
+                                                                                                                                                                                                                        {<p>应收款: @item.Sum.Format("{0:c}")</p>}</text>).Width(100);
                     c.Bound(item => item.Income).Width(90).Format("{0:c}").Aggregate(aggregates => aggregates.Sum()).FooterTemplate(@<text>@if (item.Sum != null)
                                                                                                                                            {<p>实收款: @item.Sum.Format("{0:c}")</p>}</text>).GroupFooterTemplate(@<text>@if (item.Sum != null)
-                                                                                                                                                                                                                                             {<p>实收款: @item.Sum.Format("{0:c}")</p>}</text>).Width(100); ;
+                                                                                                                                                                                                                      {<p>实收款: @item.Sum.Format("{0:c}")</p>}</text>).Width(100); ;
                     c.Bound(item => item.ExpectedPaymentDate).Format("{0:d}").Width(90);
                     c.Bound(item => item.CompanyRelationship.Project.ProjectCode).Width(100);
                     c.Bound(item => item.ID).Title("操作").Template(@<span>
@@ -141,11 +143,11 @@
 @helper MemberCall(Project p)
     {
       
-    var ps = new List<Project>();
-    ps.Add(p);
-    var pcs = Utl.GetCallsInfo(ps, DateTime.Now.AddHours(-12), DateTime.Now);
-    var m = p.GetMemberInProjectByName(Employee.GetCurrentUserName());
-    var pv = p.GetProjectMemberLeadCalls(pcs, DateTime.Now.AddHours(-12), DateTime.Now);
+        var ps = new List<Project>();
+        ps.Add(p);
+        var pcs = Utl.GetCallsInfo(ps, DateTime.Now.AddHours(-12), DateTime.Now);
+        var m = p.GetMemberInProjectByName(Employee.GetCurrentUserName());
+        var pv = p.GetProjectMemberLeadCalls(pcs, DateTime.Now.AddHours(-12), DateTime.Now);
 
 
   

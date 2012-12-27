@@ -18,6 +18,7 @@
                     c.Bound(item => item.Lead.Title).Width(100);
                     c.Bound(item => item.Lead.Company.Name).Title("公司名").Width(120);
                     c.Bound(item => item.Lead.Company.Contact).Width(110);
+                    c.Bound(item => item.Lead.Company.DistrictNumber.TimeDifference).Width(60);
                     c.Bound(item => item.Lead.Contact).Width(110);
                     c.Bound(item => item.Lead.Mobile).Width(110);
                     c.Bound(item => item.Lead.EMail).Width(85); 

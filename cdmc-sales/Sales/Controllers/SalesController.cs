@@ -760,9 +760,13 @@ namespace Sales.Controllers
             var lc = condition.ToLower();
 
             string user = Employee.GetCurrentUserName();
-            var crms = from c in CH.DB.Companys 
-                       from cr in CH.DB.CompanyRelationships
-                       where (c.Name_CH.ToLower().Contains(lc) || c.Name_EN.ToLower().Contains(lc)) && cr.Members.Any(m => m.Name == user) && cr.ProjectID == projectid && c.ID == cr.CompanyID
+            //var crms = from c in CH.DB.Companys 
+            //           from cr in CH.DB.CompanyRelationships
+            //           where (c.Name_CH.ToLower().Contains(lc) || c.Name_EN.ToLower().Contains(lc)) && cr.Members.Any(m => m.Name == user) && cr.ProjectID == projectid && c.ID == cr.CompanyID
+            //           select cr;
+
+            var crms = from cr in CH.DB.CompanyRelationships
+                       where cr.Members.Any(m => m.Name == user) && cr.ProjectID == projectid 
                        select cr;
          
             var list = crms.OrderByDescending(o=>o.CreatedDate).AsQueryable();
