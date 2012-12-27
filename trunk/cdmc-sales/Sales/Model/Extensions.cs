@@ -201,28 +201,37 @@ namespace Entity
             return null;
 
         }
+        public static IQueryable<LeadCall> GetMemberToCallList(this Member item, DateTime? startdate = null, DateTime? enddate = null)
+        {
+            startdate = startdate == null ? new DateTime(1, 1, 1) : startdate;
+            enddate = enddate == null ? new DateTime(9999, 1, 1) : enddate;
 
+            var leadcalls = from l in CH.DB.LeadCalls
+                            where l.CallBackDate != null && l.MemberID == item.ID && l.CallBackDate > startdate && l.CallBackDate < enddate
+                            select l;
+            return leadcalls.OrderByDescending(o=>o.CallBackDate);
+        }
         /// <summary>
         /// 取得带拨打电话列表
         /// </summary>
         /// <returns></returns>
-        public static List<ViewMemberLeadToCall> GetMemberToCallList(this Member item, DateTime? startdate = null, DateTime? enddate = null)
-        {
-            var lcs = CH.GetAllData<LeadCall>(lc =>lc.Member.Name==item.Name && lc.CompanyRelationship.ProjectID == item.ProjectID && lc.CallBackDate != null);
+        //public static List<ViewMemberLeadToCall> GetMemberToCallList(this Member item, DateTime? startdate = null, DateTime? enddate = null)
+        //{
+        //    var lcs = CH.GetAllData<LeadCall>(lc =>lc.Member.Name==item.Name && lc.CompanyRelationship.ProjectID == item.ProjectID && lc.CallBackDate != null);
 
-            startdate = startdate == null ? new DateTime(1, 1, 1) : startdate;
-            enddate = enddate == null ? new DateTime(9999, 1, 1) : enddate.Value.AddDays(+1);
+        //    startdate = startdate == null ? new DateTime(1, 1, 1) : startdate;
+        //    enddate = enddate == null ? new DateTime(9999, 1, 1) : enddate.Value.AddDays(+1);
 
-            lcs = lcs.FindAll(l => l.CallBackDate >= startdate && l.CallBackDate <= enddate);
+        //    lcs = lcs.FindAll(l => l.CallBackDate >= startdate && l.CallBackDate <= enddate);
 
-            var list = new List<ViewMemberLeadToCall>();
-            lcs.ForEach(l =>
-            {
-                var nd = new ViewMemberLeadToCall() { LeadCall = l };
-                list.Add(nd);
-            });
-            return list;
-        }
+        //    var list = new List<ViewMemberLeadToCall>();
+        //    lcs.ForEach(l =>
+        //    {
+        //        var nd = new ViewMemberLeadToCall() { LeadCall = l };
+        //        list.Add(nd);
+        //    });
+        //    return list;
+        //}
         /// <summary>
         /// 员工业绩统计
         /// </summary>

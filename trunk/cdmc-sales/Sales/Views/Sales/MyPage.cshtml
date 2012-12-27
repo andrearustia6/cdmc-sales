@@ -11,7 +11,7 @@
 @Html.Partial("personinfo", Employee.GetCurrentUserName())
 
 <fieldset>
-<legend>拨打电话安排列表</legend>
+<legend>待打电话安排列表</legend>
 @{
     if (Model != null)
     {
@@ -22,23 +22,45 @@
             members.Add(p.Members.FirstOrDefault(m => m.Name == Employee.GetCurrentUserName()));
         });
 
-        var calls = new List<ViewMemberLeadToCall>();
+        var calls = new List<LeadCall>();
+        
         members.ForEach(m =>
         {
-            var temp = m.GetMemberToCallList(DateTime.Now.AddHours(-DateTime.Now.Hour), null);
-            calls.AddRange(temp);
+            var cs = m.GetMemberToCallList(DateTime.Now);
+            //var temp = m.GetMemberToCallList(DateTime.Now.AddHours(-DateTime.Now.Hour), null);
+
+            calls.AddRange(cs);
         });
 
         if (calls.Count > 0)
         {
-            calls = calls.OrderByDescending(o => o.LeadCall.CallBackDate).ToList();
-             <table class="calltable" >
+            @(Html.Telerik().Grid(calls).Name("ToCall").DataKeys(keys =>
+                {
+                    keys.Add(s => s.ID);
+                })
+                .Columns(c =>
+                {
+                    c.Bound(item => item.Lead.Name).Title("客户姓名").Width(100);
+                    c.Bound(item => item.Lead.Title).Width(100);
+                    c.Bound(item => item.Lead.Company.Name).Title("公司姓名");
+                    c.Bound(item => item.Lead.Contact).Width(100);
+                    c.Bound(item => item.Lead.Mobile).Width(100);
+                    c.Bound(item => item.Lead.Title).Width(100);
+                    c.Bound(item => item.Lead.Company.DistrictNumber.TimeDifference).Width(50);
+                    c.Bound(item => item.CallBackDate).Width(100);
+                })
+                .Resizable(resizing => resizing.Columns(true))
+                .Filterable().Sortable().Groupable()
+                .Pageable(p => p.PageSize(20))
+                .Scrollable(scrolling => scrolling.Height(300)))
+         
+            @* <table class="calltable" >
              <tr><th>客户名称</th><th>职位</th><th>所属公司</th><th>联系方式</th><th>手机</th><th>拨打时间</th><th>所属项目</th><th>Call List</th></tr>
               @foreach (var c in calls)
               {
                  <tr><td>@c.LeadName</td><td>@c.LeadTitle</td><td>@c.Companyname</td><td>@c.Contact</td><td>@c.Mobile</td><td>@c.CallDateTime</td><td>@c.ProjectCode</td><td><a  target="_blank" href=@Url.Content("~/Sales/LeadCallsIndex/?crid=" + c.LeadCall.CompanyRelationshipID + "&leadid=" + c.LeadCall.LeadID) >Call List</a></td></tr>
               }
-            </table>
+            </table>*@
         }
 
     }
@@ -117,7 +139,7 @@
 </fieldset>
 
 @helper MemberCall(Project p)
-{
+    {
       
     var ps = new List<Project>();
     ps.Add(p);
@@ -128,23 +150,23 @@
 
   
      @(Html.Telerik().Grid(pv).Name("projectv" + p.ID).DataKeys(keys =>
-     {
-         keys.Add(s => s.Member.ID);
-     }).Columns(c =>
-     {
-         c.Bound(item => item.Member.Name).Width(60);
+ {
+     keys.Add(s => s.Member.ID);
+ }).Columns(c =>
+ {
+     c.Bound(item => item.Member.Name).Width(60);
      @*    c.Bound(item => item.Member.SalesType.Name).Width(80);
          c.Bound(item => item.Duration).Title("通话时间").Width(80);
          c.Bound(item => item.Cold_Calls).Width(90).Aggregate(item => item.Sum()).FooterTemplate(@<text>@item.Sum</text>);*@
-         c.Bound(item => item.DMs).Width(50);
-         c.Bound(item => item.New_DMs).Width(70);
-         c.Bound(item => item.Pitched).Width(55);
-         c.Bound(item => item.Full_Pitched).Width(90);
-         c.Bound(item => item.Call_Backed).Width(90);
-         c.Bound(item => item.Waiting_For_Approval);
-         c.Bound(item => item.Qualified_Decision);
-         c.Bound(item => item.Closed).Width(70);
-     }) .Resizable(resizing => resizing.Columns(true))
+     c.Bound(item => item.DMs).Width(50);
+     c.Bound(item => item.New_DMs).Width(70);
+     c.Bound(item => item.Pitched).Width(55);
+     c.Bound(item => item.Full_Pitched).Width(90);
+     c.Bound(item => item.Call_Backed).Width(90);
+     c.Bound(item => item.Waiting_For_Approval);
+     c.Bound(item => item.Qualified_Decision);
+     c.Bound(item => item.Closed).Width(70);
+ }).Resizable(resizing => resizing.Columns(true))
          .Scrollable(scrolling => scrolling.Height(250))
         )
       
