@@ -754,7 +754,7 @@ namespace Sales.Controllers
             return PartialView(@"~\views\shared\CompanyInfo.cshtml", data);
         }
 
-        public PartialViewResult JsonGetCompanys(int? projectid, string condition)
+        public PartialViewResult JsonGetCompanys(int? projectid, string condition,string sort )
         {
             if (condition == null) condition = string.Empty;
             var lc = condition.ToLower();
@@ -768,10 +768,14 @@ namespace Sales.Controllers
             var crms = from cr in CH.DB.CompanyRelationships
                        where cr.Members.Any(m => m.Name == user) && cr.ProjectID == projectid 
                        select cr;
-         
-            var list = crms.OrderByDescending(o=>o.CreatedDate).AsQueryable();
 
-            return PartialView(@"~\views\shared\CRMList.cshtml", list);
+            if (sort == "名称")
+            {
+                return PartialView(@"~\views\shared\CRMList.cshtml", crms.OrderBy(o => o.Company.Name_EN).AsQueryable());
+            }
+            return PartialView(@"~\views\shared\CRMList.cshtml", crms.OrderByDescending(o => o.CreatedDate).AsQueryable());
+        
+            
         }
 
 

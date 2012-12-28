@@ -1,7 +1,7 @@
 ﻿@{ViewBag.Title = "Package列表";}
 @using Entity
 @using Utl
-@model List<Package>
+@model IQueryable<Package>
 @Html.Partial("contenttitle", "Package")
 @{
     var rate = ViewBag.Rate as double?;
@@ -25,10 +25,9 @@
                     c.Bound(item => item.Prize).Format("{0:N}").Width(100);
                     c.Bound(item => item.Prize).Title("人民币费用").Template(@<text> @string.Format("{0:F2}", Math.Round(item.GetYuan(rate),2).ToString()) </text>).Width(100);
                     c.Bound(item => item.ID).Title("操作").Width(170).Template(@<span>
-                     @if (Employee.AsDirector())
-                     {
+                    
                      <text><a href=@Url.Content("~/Package/Edit/" + item.ID) > 编辑</a> | <a href=@Url.Content("~/PackageItem/Create/?from=Package&PackageId=" + item.ID)>添加子项</a> | <a href=@Url.Content("~/Package/delete/" + item.ID) > 删除</a> | </text>
-                     }
+                   
                       <a href=@Url.Content("~/Package/Details/" + item.ID)>详细</a> </span>);
                 })
                 .DetailView(e => e.Template(@<text> @RenderGrid(item.PackageItems, item.ID) </text>))
@@ -47,10 +46,9 @@
                                 c.Bound(o => o.Name).Width(300);
                                 c.Bound(o => o.Content).Title("内容");
                                 c.Bound(item => item.ID).Width(200).Title("操作").Template(@<span>
-                                @if (Employee.AsDirector())
-                                {
-                                    <text><a href=@Url.Content("~/PackageItem/Edit/?from=Package&id=" + item.ID) >编辑</a> | <a href=@Url.Content("~/PackageItem/delete/" + item.ID) >删除</a> | </text>
-                                }
+                               
+                                 <text><a href=@Url.Content("~/PackageItem/Edit/?from=Package&id=" + item.ID) >编辑</a> | <a href=@Url.Content("~/PackageItem/delete/" + item.ID) >删除</a> | </text>
+                               
                     <a href=@Url.Content("~/PackageItem/Details/" + item.ID)>详细</a>  
                    </span>);
                             })

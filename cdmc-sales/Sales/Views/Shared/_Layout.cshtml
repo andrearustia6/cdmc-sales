@@ -14,7 +14,7 @@
      <script type="text/javascript" src=@Url.Content(@"~/vjs/salesAvailableCompany.js")></script>
 </head>
 <body>
-    @*                  *@
+ 
     <div class="top">
         <div class="top_1">
            @Html.ActionLink("[" + Employee.GetCurrentUserName() + "]", "Index", "Account")
@@ -25,9 +25,14 @@
             <img src="/images/logo_2.gif" width="509" height="59" alt="logo" /></div>
         <div class="page">
             <div>
-                @{ Html.Telerik().Menu().Name("Menu1").Items(menu =>
+                @{ 
+                    var role = Employee.GetCurrentRole();
+                    if (role!=null)
+                    {
+                        var score = role.Level;
+                    Html.Telerik().Menu().Name("Menu1").Items(menu =>
                {
-                   if (Employee.EqualToAdministrator())
+                   if (score == AdministratorRequired.LVL)
                    {
                        menu.Add().Text("管理员配置").ImageUrl("~/Content/Common/Icons/wpf.png").Items(item =>
                       {
@@ -35,7 +40,7 @@
                           item.Add().Text("职级").Url("~/explevel/index");
                       });
                    }
-                   if (Employee.AsDirector())
+                   if (score >= DirectorRequired.LVL)
                    {
                        menu.Add().Text("配置").ImageUrl("~/Content/Common/Icons/mvc.png").Items(item =>
                        {
@@ -65,9 +70,9 @@
 
                    });
                    
-                   if (Employee.AsManager())
+                   if ( score >= ManagerRequired.LVL)
                    {
-                       menu.Add().Text("项目管理").ImageUrl("~/Content/Common/Icons/Chart.gif").Items(item =>
+                       menu.Add().Text("管理菜单").ImageUrl("~/Content/Common/Icons/Chart.gif").Items(item =>
                        {
                            item.Add().Url("~/Project/index").Text("项目管理");
                            item.Add().Url("~/Report/MemberLeadCalls").Text("Team Call List");
@@ -93,7 +98,7 @@
                        });
                    }
 
-                   if (Employee.EqualToLeader())
+                   if (score == LeaderRequired.LVL)
                    {
                        menu.Add().Text("项目管理").ImageUrl("~/Content/Common/Icons/Chart.gif").Items(item =>
                        {
@@ -104,7 +109,7 @@
                        });
                    }
 
-                   if (Employee.EqualToAdministrator())
+                   if ( score == AdministratorRequired.LVL)
                    {
                          menu.Add().Text("客户管理").ImageUrl("~/Content/Common/Icons/GridView.gif").Items(item =>
                            {
@@ -113,7 +118,7 @@
                            });
                    }
                    
-                   if (Employee.EqualToLeader() | Employee.EqualToSales())
+                   if ( score == LeaderRequired.LVL | score== SalesRequired.LVL )
                    {
                        menu.Add().Text("日常工作").ImageUrl("~/Content/Common/Icons/editor.png").Items(item =>
                        {
@@ -134,7 +139,7 @@
                        });
                    }
 
-                   if (Employee.EqualToMarketInterface())
+                   if (score == MarketInterfaceRequired.LVL)
                    {
                        menu.Add().Text("客户信息").ImageUrl("~/Content/Common/Icons/GridView.gif").Items(item =>
                        {
@@ -142,7 +147,7 @@
                        });
                    }
 
-                   if (Employee.EqualToProductInterface())
+                   if (score == ProductInterfaceRequired.LVL)
                    {
                        menu.Add().Text("公司信息").ImageUrl("~/Content/Common/Icons/GridView.gif").Items(item =>
                        {
@@ -158,7 +163,9 @@
                        item.Add().Url("~/Account/index").Text("账号管理");
                    });
 
-               }).Render();}
+               }).Render();
+                    }
+                    }
             </div>
         </div>
     </div>
