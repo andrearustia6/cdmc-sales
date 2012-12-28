@@ -5,7 +5,7 @@
 {
     <fieldset>
         <legend>Call List</legend>
-        @{Html.Telerik().PanelBar().Name("lcs"+Model.FirstOrDefault().CompanyRelationshipID)
+        @{Html.Telerik().PanelBar().Name("lcs"+Model.FirstOrDefault().LeadID)
    .Items(panes =>
    {
        foreach (var leadcall in Model)

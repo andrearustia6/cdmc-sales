@@ -11,13 +11,15 @@ function onInitialSearch() {
     $('#goSearch').unbind('click').bind('click', function (e) {
         var projectid = $('#ProjectID').val();
         var condition = $('#searchCondition').val();
+        var sort = $('#Sort').val();
         var url = "/sales/JsonGetCompanys";
+        
         $.ajax({
             url: url,
             type: 'GET',
             dataType: 'html',
             contentType: 'application/json; charset=utf-8',
-            data: { ProjectID: projectid, Condition: condition },
+            data: { ProjectID: projectid, Condition: condition,Sort:sort },
             success: function (result) {
                 $('#crmcontainer').html(result);
                 initialBtns();

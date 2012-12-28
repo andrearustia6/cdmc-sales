@@ -27,9 +27,17 @@ namespace Sales.Controllers
                 ViewBag.Rate = rate.Rate;
             else
                 ViewBag.Rate = 1;
-            var ps = from p in CH.DB.Packages.Include("PackageItems").AsParallel().OrderByDescending(o => o.Sequence)
+
+            var ps = from p in CH.DB.Packages.Include("PackageItems").OrderByDescending(o => o.Sequence)
                      select p;
-            return View(ps.ToList());
+            //foreach (var p in ps)
+            //{
+            //    CH.DB.Entry(p).Collection(x => x.PackageItems).Load();
+            //}
+            return View(ps.AsQueryable());
+
+
+
             //return View(CH.GetAllData<Package>("PackageItems").AsParallel().OrderByDescending(o => o.Sequence).ToList());
         }
         
