@@ -61,7 +61,7 @@
                 </td>
 
                 <td > <a href=@Url.Action("Service_File_Donwload", new { fileurl = Model.SalesBriefUrl, filename = Model.SalesBriefName })>@Model.SalesBriefName</a></td>
-                <td > <a href=@Url.Action("ProjectNews", new { projectid = Model.SalesBriefUrl })>项目新闻</a></td>
+                <td > <a href=@Url.Action("ProjectNewsIndex", new { projectid = Model.ID })>项目新闻</a></td>
             </tr>
         </table>
     </fieldset>

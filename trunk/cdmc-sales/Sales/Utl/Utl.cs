@@ -432,6 +432,9 @@ namespace Utl
         public static string Create { get { return "创建"; } }
         public static string Required { get { return "此栏位不能为空"; } }
         public static string Form { get { return "表单"; } }
+        public static string CannotDelete { get { return "此项已经被引用，无法直接删除，需要取消引用后再进行删除"; } }
+
+       
     }
 
     public class Utl

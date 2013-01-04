@@ -61,6 +61,12 @@ namespace Sales.Controllers
 
         public ActionResult Delete(int id)
         {
+            var count = from c in CH.DB.Members
+                        where c.SalesTypeID == id
+                        select c;
+
+            if (count.Count() > 0)
+                return View(@"~\views\shared\Error.cshtml", null, SR.CannotDelete);
             return View(CH.GetDataById<SalesType>(id));
         }
 
