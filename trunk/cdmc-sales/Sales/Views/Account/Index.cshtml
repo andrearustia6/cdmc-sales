@@ -6,7 +6,9 @@
 @using Utl
 @using Entity
 @Html.Partial("contenttitle","个人信息")
-@(Html.Telerik().Grid<MembershipUser>(Model).Name("MembershipUser").ToolBar(commands =>
+@{
+    var dps = CH.GetAllData<Department>();
+    Html.Telerik().Grid<MembershipUser>(Model).Name("MembershipUser").ToolBar(commands =>
     {
         if (Employee.AsManager())
         {
@@ -25,7 +27,17 @@
                     c.Bound(item => item.Email).Title("电子邮箱").Width(200);
 
                     c.Bound(item => item.UserName).Template(@<span>
-                        @Employee.GetProfile("Department", item.UserName)
+                     @{
+                         var departmentid = @Employee.GetProfile("DepartmentID", item.UserName) as int?;
+                         if (departmentid != null)
+                         {
+                             var dp = dps.FirstOrDefault(d => d.ID == departmentid);
+                             if (dp != null)
+                             {
+                                 <p>@dp.Name</p>
+                             }
+                         }
+                        }
                     </span>).Width(100).Title("部门");
                     c.Bound(item => item.UserName).Template(@<span>
                         @Employee.GetProfile("IsActivated", item.UserName)
@@ -37,7 +49,7 @@
                      @Employee.GetRoleName(item.UserName)
                     </span>);
                     c.Bound(item => item.UserName).Title("Extension").Width(100).Template(@<span>
-                     @Employee.GetProfile("Contact",item.UserName)
+                     @Employee.GetProfile("Contact", item.UserName)
                     </span>);
                     // c.Bound(item => ).Width(100);
                     c.Bound(item => item.UserName).Title("操作").Width(150).Template(@<span> 
@@ -52,9 +64,9 @@
                                                                   .Resizable(resizing => resizing.Columns(true))
                                                                   .Filterable().Sortable().Groupable()
                                                                   .Pageable(p => p.PageSize(20))
-                                                                  .Scrollable(scrolling => scrolling.Height(350))
+                                                                  .Scrollable(scrolling => scrolling.Height(350)).Render();
 
-                                                  )
+                                                                  }
 
 
 

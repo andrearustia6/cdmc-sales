@@ -3,6 +3,7 @@
 }
 @model Entity.UserInfoModel
 @using Utl
+@using Entity
 @using (Html.BeginForm())
 {
     <fieldset>
@@ -72,10 +73,10 @@
             @Html.ValidationMessageFor(m => m.Gender)
         </div>
         <div class="editor-label">
-            @Html.LabelFor(m => m.Department)
+            @Html.LabelFor(m => m.DepartmentID)
         </div>
         <div class="editor-field">
-            @Html.DropDownListFor(m => m.Department, new SelectList(new List<string>() { "销售部", "会务部","市场部","产品部" }), "-请选择-")
+            @Html.DropDownListFor(m => m.DepartmentID, new SelectList(CH.GetAllData<Department>(),"ID","Name"), "-请选择-")
             @Html.ValidationMessageFor(m => m.Department)
         </div>
         <div class="editor-label">

@@ -91,10 +91,11 @@ namespace Entity {
         public string Gender { get; set; }
 
         [Display(Name = "部门")]
-        public string Department { get; set; }
+        public int? DepartmentID { get; set; }
+        public virtual Department Department { get; set; }
 
         [Display(Name = "工作职级")]
-        public int ExpLevelID { get; set; }
+        public int? ExpLevelID { get; set; }
         public virtual ExpLevel ExpLevel { get; set; }
 
 

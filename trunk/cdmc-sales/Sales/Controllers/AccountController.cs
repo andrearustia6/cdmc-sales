@@ -252,7 +252,7 @@ namespace MvcGlobalAuthorize.Controllers
                 um.Mobile = objProfile.GetPropertyValue("Mobile") as string;
                 um.Gender = objProfile.GetPropertyValue("Gender") as string;
                 um.DisplayName = objProfile.GetPropertyValue("DisplayName") as string;
-                um.Department = objProfile.GetPropertyValue("Department") as string;
+                um.DepartmentID = objProfile.GetPropertyValue("DepartmentID") as int?;
                 int roleid;
                 data = objProfile.GetPropertyValue("RoleLevelID");
                 Int32.TryParse(data.ToString(), out roleid);
@@ -285,7 +285,7 @@ namespace MvcGlobalAuthorize.Controllers
                     objProfile.SetPropertyValue("Gender", model.Gender);
                     objProfile.SetPropertyValue("BirthDay", model.BirthDay);
                     objProfile.SetPropertyValue("DisplayName", model.DisplayName);
-                    objProfile.SetPropertyValue("Department", model.Department);
+                    objProfile.SetPropertyValue("DepartmentID", model.DepartmentID);
                     objProfile.Save();
                     return RedirectToAction("Index");
                 }
