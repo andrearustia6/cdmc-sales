@@ -82,7 +82,11 @@
                 </td>
             </tr>
             <tr><td > @Html.ActionLink("基本信息编辑", "Edit", "Project", new { id = Model.ID }, new { style = "margin-bottom:15px;" })
-    </td><td colspan=2> <a href=@Url.Action("Service_File_Donwload", "project", new { fileurl = Model.SalesBriefUrl, filename = Model.SalesBriefName })>@project.SalesBriefName</a></td></tr>
+    </td><td > <a href=@Url.Action("Service_File_Donwload", "project", new { fileurl = Model.SalesBriefUrl, filename = Model.SalesBriefName })>@project.SalesBriefName</a></td>
+    <td>@Html.ActionLink("项目新闻", "Index", "News", new { projectid = Model.ID }, new { style = "margin-bottom:15px;" })</td>
+    </tr>
+                
+                
                 </table>
            @(Html.Telerik().Grid(project.Categorys).Name("Categorys" + project.ID).ToolBar(commands =>
                                     commands.Custom().Text("添加Category").Action("Create", "ProjectCategory", new { projectid = Model.ID }))

@@ -629,7 +629,19 @@ namespace Sales.Controllers
             return View();
         }
 
+        #region
+        public ViewResult ProjectNewsIndex(int? projectid)
+        {
+            var data = CH.GetAllData<News>(n => n.ProjectID == projectid);
+            return View(data);
+        }
 
+        public ViewResult DisplayNews(int? id, int? projectid)
+        {
+            return View(CH.GetDataById<News>(id));
+        }
+
+        #endregion
         #region Json
 
         [HttpPost]
@@ -760,13 +772,9 @@ namespace Sales.Controllers
             var lc = condition.ToLower();
 
             string user = Employee.GetCurrentUserName();
-            //var crms = from c in CH.DB.Companys 
-            //           from cr in CH.DB.CompanyRelationships
-            //           where (c.Name_CH.ToLower().Contains(lc) || c.Name_EN.ToLower().Contains(lc)) && cr.Members.Any(m => m.Name == user) && cr.ProjectID == projectid && c.ID == cr.CompanyID
-            //           select cr;
-
-            var crms = from cr in CH.DB.CompanyRelationships
-                       where cr.Members.Any(m => m.Name == user) && cr.ProjectID == projectid 
+            var crms = from c in CH.DB.Companys
+                       from cr in CH.DB.CompanyRelationships
+                       where (c.Name_CH.ToLower().Contains(lc) || c.Name_EN.ToLower().Contains(lc)) && cr.Members.Any(m => m.Name == user) && cr.ProjectID == projectid && c.ID == cr.CompanyID
                        select cr;
 
             if (sort == "名称")

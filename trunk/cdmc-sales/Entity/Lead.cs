@@ -182,6 +182,7 @@ namespace Entity
         public virtual CompanyRelationship CompanyRelationship { get; set; }
 
         public virtual LeadCallType LeadCallType { get; set; }
+        [Display(Name = "致电类型"), Required]
         public int? LeadCallTypeID { get; set; }
 
         public virtual Member Member { get; set; }

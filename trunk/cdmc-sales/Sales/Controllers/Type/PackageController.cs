@@ -12,6 +12,7 @@ using Utl;
 namespace Sales.Controllers
 {
    
+    
     public class PackageController : Controller
     {
         protected override void Dispose(bool disposing)
@@ -22,6 +23,7 @@ namespace Sales.Controllers
 
         public ViewResult Index()
         {
+             
             var rate = CH.GetAllData<CurrencyType>(c=>c.Name=="RMB").FirstOrDefault();
             if (rate != null)
                 ViewBag.Rate = rate.Rate;
@@ -34,7 +36,11 @@ namespace Sales.Controllers
             //{
             //    CH.DB.Entry(p).Collection(x => x.PackageItems).Load();
             //}
+
+            if(Employee.AsManager())
             return View(ps.AsQueryable());
+            else
+                return View(@"~\views\package\indexview.cshtml",ps.AsQueryable());
 
 
 

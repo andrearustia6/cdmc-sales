@@ -1,0 +1,9 @@
+﻿@{
+    ViewBag.Title = "留言信息";
+}
+@using Entity
+@using Utl
+@model Message
+
+@Html.Partial(@"~\views\news\display.cshtml", Model)
+@Html.Partial("displaycommon", Model)

@@ -1,11 +1,11 @@
 ﻿@{
-    ViewBag.Title = "我的留言";
+    ViewBag.Title = "项目留言";
 }
 
 @using Entity
 @model List<Message>
 
-@Html.Partial("contenttitle", "我的留言")
+@Html.Partial("contenttitle", "项目留言")
 @Html.Partial("projectselector")
 @(Html.Telerik().Grid<Message>(Model).Name("Message").ToolBar(commands => commands.Custom().Text("添加留言").Action("AddMessage", "Sales", new { projectid = ViewBag.ProjectID as int? }))
                 .DataKeys(keys =>

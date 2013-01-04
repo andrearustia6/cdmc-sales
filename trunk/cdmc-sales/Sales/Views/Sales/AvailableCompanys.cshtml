@@ -4,7 +4,7 @@
 @using Entity
 @model Company
 @Html.Partial("Projectselector")         
-<center> <span>按 @Html.DropDownList("Sort", new SelectList(new List<string> { "名称", "时间" })) 排序   <input type="text" id="searchCondition" /> <input type="button" id="goSearch" value="Go" /></span></center>
+<center> <span>按 @Html.DropDownList("Sort", new SelectList(new List<string> { "名称", "时间" })) 排序   <input type="text" id="searchCondition" /> <input type="button" id="goSearch" value="开始搜索" /></span></center>
 
  @Html.Hidden("CRMID")
 <span><input type="button" id="addData" class="insertdata" value="Add CallList" /> @* <input type="button" class="insertdata" id="addcompanyleadData" value="Add Company&Lead" />  <input class="insertdata" type="button" id="addcompanyData" value="Add Comany Only" />*@

@@ -12,7 +12,7 @@ using Telerik.Web.Mvc;
 
 namespace Sales.Controllers
 {
-    [ProductInterfaceRequired( AccessType=AccessType.Equal)]
+    [ProjectInformationAccess]
     public class NewsController : Controller
     {
         protected override void Dispose(bool disposing)
@@ -27,7 +27,7 @@ namespace Sales.Controllers
             ViewBag.ProjectID = projectid;
             if (projectid != null)
             {
-                return View(CH.GetAllData<News>().OrderByDescending(o => o.CreatedDate).ToList());
+                return View(CH.GetAllData<News>(n => n.ProjectID == projectid).OrderByDescending(o => o.CreatedDate).ToList());
             }
             else
             {
