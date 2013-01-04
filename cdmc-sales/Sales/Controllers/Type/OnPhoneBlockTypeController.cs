@@ -62,7 +62,14 @@ namespace Sales.Controllers
 
         public ActionResult Delete(int id)
         {
-            return View(CH.GetDataById<OnPhoneBlockType>(id));
+            var count = from c in CH.DB.OnPhoneTemplates
+                        where c.OnPhoneBlockTypeID == id
+                        select c;
+
+            if (count.Count() > 0)
+                return View(@"~\views\shared\Error.cshtml", null, SR.CannotDelete);
+            else
+                return View(CH.GetDataById<OnPhoneBlockType>(id));
         }
 
         [HttpPost, ActionName("Delete")]

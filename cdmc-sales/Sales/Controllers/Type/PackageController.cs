@@ -93,6 +93,7 @@ namespace Sales.Controllers
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {
+            
             CH.Delete<Package>(id);
             return RedirectToAction("Index");
         }

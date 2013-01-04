@@ -629,11 +629,22 @@ namespace Sales.Controllers
             return View();
         }
 
-        #region
+        #region News
         public ViewResult ProjectNewsIndex(int? projectid)
         {
-            var data = CH.GetAllData<News>(n => n.ProjectID == projectid);
-            return View(data);
+            projectid = this.TrySetProjectIDForUser(projectid);
+            ViewBag.ProjectID = projectid;
+            if (projectid != null)
+            {
+                var data = CH.GetAllData<News>(n => n.ProjectID == projectid);
+                return View(data);
+            }
+            else
+            {
+                return View();
+            }
+
+           
         }
 
         public ViewResult DisplayNews(int? id, int? projectid)

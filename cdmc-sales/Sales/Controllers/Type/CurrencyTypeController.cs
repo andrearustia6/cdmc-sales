@@ -61,7 +61,15 @@ namespace Sales.Controllers
 
         public ActionResult Delete(int id)
         {
-            return View(CH.GetDataById<CurrencyType>(id));
+            //var count = from c in CH.DB.Packages
+            //            where c.pc == id
+            //            select c;
+
+            //if (count.Count() > 0)
+            //    return View(@"~\views\shared\Error.cshtml", null, SR.CannotDelete);
+            //else
+                return View(CH.GetDataById<CurrencyType>(id));
+    
         }
 
         [HttpPost, ActionName("Delete")]

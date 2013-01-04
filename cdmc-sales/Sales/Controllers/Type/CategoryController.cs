@@ -12,6 +12,7 @@ using Sales.Model;
 
 namespace Sales.Controllers
 {
+    [ProjectInformationAccess]
     public class ProjectCategoryController : Controller
     {
         protected override void Dispose(bool disposing)
@@ -72,7 +73,14 @@ namespace Sales.Controllers
 
         public ActionResult Delete(int id)
         {
-            return View(CH.GetDataById<Category>(id));
+            var count = from c in CH.DB.CompanyRelationships.Include("Categorys")
+                        where c.Categorys.Any(ca => ca.ID == id)
+                        select c;
+
+            if (count.Count() > 0)
+             return View(@"~\views\shared\Error.cshtml",null,SR.CannotDelete);
+            else
+             return View(CH.GetDataById<Category>(id));
         }
 
         [HttpPost, ActionName("Delete")]
@@ -84,7 +92,7 @@ namespace Sales.Controllers
             return RedirectToAction("management", "project", new { id = item.ProjectID, tabindex = 0 });
         }
     }
-
+    [ProjectInformationAccess]
     public class CategoryController : Controller
     {
 
@@ -120,7 +128,7 @@ namespace Sales.Controllers
         }
         public ActionResult Edit(int id)
         {
-         
+
             return View(CH.GetDataById<Category>(id));
         }
 
@@ -139,7 +147,14 @@ namespace Sales.Controllers
 
         public ActionResult Delete(int id)
         {
-            return View(CH.GetDataById<Category>(id));
+            var count = from c in CH.DB.CompanyRelationships.Include("Categorys")
+                        where c.Categorys.Any(ca => ca.ID == id)
+                        select c;
+
+            if (count.Count() > 0)
+                return View(@"~\views\shared\Error.cshtml",null, SR.CannotDelete);
+            else
+                return View(CH.GetDataById<Category>(id));
         }
 
         [HttpPost, ActionName("Delete")]
