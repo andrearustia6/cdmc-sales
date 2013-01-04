@@ -60,7 +60,7 @@ namespace Utl
             int con = 0;
             Int32.TryParse(objProfile.GetPropertyValue("Contact").ToString(),out con);
             var contact = con;
-            var department = objProfile.GetPropertyValue("Department") as string;
+            var departmentid = objProfile.GetPropertyValue("DepartmentID") as int?;
             var startDate = objProfile.GetPropertyValue("StartDate") as string;
             DateTime date;
             DateTime.TryParse(startDate,out date);
@@ -73,7 +73,7 @@ namespace Utl
                 Mobile = mobile,
                 Gender = gender,
                 DisplayName = displayName,
-                Department = department,
+                DepartmentID = departmentid,
                 UserName = username
             };
             return userinfo;
