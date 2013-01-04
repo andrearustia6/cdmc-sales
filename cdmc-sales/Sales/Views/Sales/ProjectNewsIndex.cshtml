@@ -1,0 +1,32 @@
+﻿@{
+    ViewBag.Title = "项目新闻";
+}
+
+
+@using Entity
+@model List<News>
+
+@Html.Partial("contenttitle", "项目新闻")
+@Html.Partial("projectselector")
+@(Html.Telerik().Grid<News>(Model).Name("News")
+                .DataKeys(keys =>
+                {
+                    keys.Add(s => s.ID);
+                })
+                .Columns(c =>
+                {
+                    c.Bound(item => item.Name).Width(200);
+                    c.Bound(item => item.SubName).Width(200);
+                    c.Bound(item => item.Link);
+                    c.Bound(item => item.ID).Title("操作").Width(120).Template(@<span>
+                     <a href=@Url.Content("~/sales/DisplayNews/?id=" + item.ID + "&projectid=" + (int)ViewBag.ProjectID)>详细</a>  
+                   </span>);
+                })
+                    .Resizable(resizing => resizing.Columns(true))
+                    .Filterable().Sortable().Groupable()
+                    .Pageable(p => p.PageSize(20))
+                    .Scrollable(scrolling => scrolling.Height(350))
+
+)
+
+
