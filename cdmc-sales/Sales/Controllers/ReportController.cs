@@ -80,6 +80,66 @@ namespace Sales.Controllers
             return View(ps);
         }
 
+
+        public ActionResult MemberLeadCallsChart(DateTime? startdate, DateTime? enddate, int?projectid)
+        {
+
+            ViewBag.StartDate = startdate;
+            ViewBag.EndDate = enddate;
+
+            projectid = this.TrySetProjectIDForUser(projectid);
+            ViewBag.ProjectID = projectid;
+            if (projectid != null)
+            {
+                var data = GetContedtedLeadChartData(projectid, startdate,enddate);
+                return View(data);
+            }
+            else
+            {
+                return View();
+            }
+        }
+
+        private List<ViewCallListChart> GetContedtedLeadChartData(int? projectid,DateTime? startdate, DateTime? enddate)
+        {
+            startdate = startdate == null ? new DateTime(1, 1, 1) : startdate;
+            enddate = enddate == null ? new DateTime(9999, 1, 1) : enddate;
+
+            var account = Employee.GetCurrentUserName();
+ 
+            var members = from m in CH.DB.Members where m.ProjectID == projectid select m;
+
+            var memberlist = members.ToList();
+          
+            var viewCallListCharts = new List<ViewCallListChart>();
+            foreach (var m in memberlist)
+            {
+
+                var leadcalls = from l in CH.DB.LeadCalls where l.ProjectID == projectid && l.MemberID == m.ID && startdate<=l.CallDate && l.CallDate<=enddate select l;
+                var leads = from l in CH.DB.Leads where leadcalls.Any(lc => lc.LeadID == l.ID) select l;
+                var groupedleads = leads.GroupBy(l => l.CompanyID);
+                var companysum = new List<ViewCompanyCallSum>();
+                foreach (var gl in groupedleads)
+                {
+                    var leadcount = gl.Count();
+                    var cs = companysum.FirstOrDefault(c => c.LeadCalledCountNumber == leadcount);
+                    if (cs == null)
+                    {
+                        cs = new ViewCompanyCallSum() { LeadCalledCountNumber = leadcount, CompanyCount = 1 };
+                        companysum.Add(cs);
+                    }
+                    else
+                        cs.CompanyCount++;
+                   
+                }
+                viewCallListCharts.Add(new ViewCallListChart() { Member = m, ViewCompanyCallSums = companysum });
+               
+            }
+          
+
+            return viewCallListCharts;
+        }
+
         public ActionResult Progress(DateTime? startdate, DateTime? enddate)
         {
             ViewBag.StartDate = startdate;
