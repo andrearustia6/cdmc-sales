@@ -1,0 +1,44 @@
+﻿@{
+    ViewBag.Title = "员工进度统计图表";
+}
+@using Model
+@model List<ViewCallListChart>
+@Html.Partial("contenttitle", "进度图表")
+@Html.Partial("projectselector")
+@Html.Partial("durationselector")
+@{
+    
+    var startdate = ViewBag.StartDate as DateTime?;
+    var enddate = ViewBag.EndDate as DateTime?;
+    if(Model!=null)
+    {
+        <table>
+         @foreach(var i in Model)
+         {
+   
+  <tr><td>销售：@i.Member.Name</td>
+  <td>
+     @(Html.Telerik().Chart(i.ViewCompanyCallSums).Name("pieChart"+i.Member.ID)
+         .Legend(legend => legend.Position(ChartLegendPosition.Right))
+                     .Series(series =>
+                     {
+                         series.Pie("CompanyCount", "CompanyCountName")
+         .Labels(labels => labels.Visible(true).Template(" <#= category #> ")
+         .Align(ChartPieLabelsAlign.Circle)
+         .Position(ChartPieLabelsPosition.OutsideEnd))
+         .StartAngle(60).Padding(60);})
+         .Tooltip(tooltip => tooltip.Visible(true))
+         .HtmlAttributes(new { style = "width: 700px; height: 400px;" }))
+  
+          </td>
+         </tr>    
+         }
+         
+         </table>
+    }
+       
+    
+         
+       
+}
+     

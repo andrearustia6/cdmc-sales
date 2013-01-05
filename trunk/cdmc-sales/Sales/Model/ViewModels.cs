@@ -6,6 +6,28 @@ using Entity;
 
 namespace Model
 {
+    public class ViewCallListChart
+    {
+      
+        DateTime? StartDate { get; set; }
+        DateTime? EndDate { get; set; }
+        public Member Member { get; set; }
+        public List<ViewCompanyCallSum> ViewCompanyCallSums { get; set; }
+      
+    }
+
+    public class ViewCompanyCallSum
+    {
+        //打了几个lead
+        public int LeadCalledCountNumber { get; set; }
+
+        //公司的个数 
+        public int CompanyCount { get; set; }
+
+        public string CompanyCountName { get { return "已打" + LeadCalledCountNumber + "个Lead" + "(" + CompanyCount + "家 )"; } }
+    }
+
+
     public class JosonSalesInputData
     {
         public string SubmitType { get; set; }

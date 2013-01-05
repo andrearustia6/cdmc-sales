@@ -957,7 +957,7 @@ namespace Sales.Controllers
         public List<ViewContactedLead> GetContedtedLeadData(int? projectid)
         {
             var account = Employee.GetCurrentUserName();
-            var calls = CH.GetAllData<LeadCall>(l => l.ProjectID == projectid && Employee.GetCurrentUserName() == l.Member.Name, "CompanyRelationship", "Lead");
+            var calls = CH.GetAllData<LeadCall>(l => l.ProjectID == projectid && account == l.Member.Name);
             var contectleads = calls.Distinct(new LeadCallDistinct());
             var ls = new List<ViewContactedLead>();
             foreach (var cl in contectleads)
