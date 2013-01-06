@@ -190,6 +190,7 @@ function getLeadForm($cf) {
     var department = $cf.find("#Department").val();
     var id = $cf.find("#ID").val();
     var companyid = $cf.find("#CompanyID").val();
+    var subcompanyid = $cf.find("#SubCompanyID").val();
     var c = { Name_EN: name_EN,
         Name_CH: name_CH,
         Fax: fax,
@@ -204,7 +205,8 @@ function getLeadForm($cf) {
         ZIP:zip,
         Birthday: birthday,
         Department: department,
-        Address: address
+        Address: address,
+        SubCompanyID: subcompanyid
     };
 
     return c;

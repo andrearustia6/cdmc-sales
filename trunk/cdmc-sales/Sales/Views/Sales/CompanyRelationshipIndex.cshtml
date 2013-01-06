@@ -94,25 +94,3 @@
                                                .Sortable())
 }
 
-@*@helper RenderLead(List<Lead> Leads, CompanyRelationship cr)
-    { 
-     @(Html.Telerik().Grid(Leads).Name("Leads" + cr.CompanyID)
-                            .Columns(c =>
-                            {
-                                c.Bound(o => o.Name).Title("人名").Width(100);
-                                c.Bound(o => o.Title);
-                                c.Bound(o => o.Contact);
-                                c.Bound(o => o.Fax);
-                                c.Bound(o => o.EMail);
-                                c.Bound(o => o.Mobile);
-                          
-                                c.Bound(o => o).Title("操作").Width(190).Template(@<span>
-                                <a  href=@Url.Content("~/sales/displaylead/?leadid=" + item.ID + "&crid=" + cr.ID + "&projectid=" + cr.ProjectID) >Lead查看</a> 
-                                | <a  href=@Url.Content("~/Sales/EditLead/?crid=" + cr.ID + "&id=" + item.ID + "&projectid=" + cr.ProjectID) >Lead编辑</a>
-                                | <a  href=@Url.Content("~/Sales/LeadCallsIndex/?crid=" + cr.ID + "&leadid=" + item.ID) >Call List</a>
-                                  </span>);
-                            })
-                                         .Resizable(resizing => resizing.Columns(true))
-                                         .Pageable(p => p.PageSize(20))
-)
-} *@
