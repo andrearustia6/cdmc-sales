@@ -1,24 +1,62 @@
 ﻿@{
-    ViewBag.Title = "员工进度统计图表";
+    ViewBag.Title = "销售已打Lead数按公司统计";
 }
 @using Model
 @model List<ViewCallListChart>
-@Html.Partial("contenttitle", "进度图表")
-@Html.Partial("projectselector")
-@Html.Partial("durationselector")
+@Html.Partial("contenttitle", "已打Lead数/公司")
+@using BLL
+
+@using (Html.BeginForm((string)ViewBag.Action, (string)ViewBag.Controller, (object)ViewBag.RouteValue))
+{
+   <div  style="margin:10px; margin-left:0px;">
+        <span >  <b>目标项目：</b>
+        @{
+
+  
+    var ps = CRM_Logical.GetUserInvolveProject();
+    var selected = ps.Count == 0 ? 0 : ps.FirstOrDefault().ID;
+        @Html.DropDownList("ProjectID", new SelectList(ps, "ID", "ProjectCode", selected), "-请选择-")
+}
+            </span>
+       </div>
+    <div style="margin: 10px; margin-left: 0px;">
+        <b><span>  <label> 开始时间：</label>
+            @Html.Telerik().DateTimePicker().Name("StartDate").Value(ViewBag.StartDate as string)
+            <span>~ </span>
+            <label>
+                结束时间：</label>
+            @Html.Telerik().DateTimePicker().Name("EndDate").Value(ViewBag.EndDate as string)
+            <span>  </span>
+            <input type="submit" value="提交" />
+        </span></b>
+    </div>
+}
+<style type="text/css">
+    span label 
+    {
+        line-height: 25px;
+    }
+    
+    input[type=submit]
+    {
+    	 min-width:75px;   margin-left:15px;
+   }
+</style>
+
+@*@Html.Partial("durationselector")*@
 @{
     
     var startdate = ViewBag.StartDate as DateTime?;
     var enddate = ViewBag.EndDate as DateTime?;
-    if(Model!=null)
+    if (Model != null)
     {
-        <table>
-         @foreach(var i in Model)
+        <table style="width:100%">
+         @foreach (var i in Model)
          {
    
-  <tr><td>销售：@i.Member.Name</td>
+  <tr><td><b style="font-size:x-large">销售：@i.Member.Name</b></td>
   <td>
-     @(Html.Telerik().Chart(i.ViewCompanyCallSums).Name("pieChart"+i.Member.ID)
+     @(Html.Telerik().Chart(i.ViewCompanyCallSums).Name("pieChart" + i.Member.ID)
          .Legend(legend => legend.Position(ChartLegendPosition.Right))
                      .Series(series =>
                      {
@@ -26,7 +64,8 @@
          .Labels(labels => labels.Visible(true).Template(" <#= category #> ")
          .Align(ChartPieLabelsAlign.Circle)
          .Position(ChartPieLabelsPosition.OutsideEnd))
-         .StartAngle(60).Padding(60);})
+         .StartAngle(60).Padding(60);
+                     })
          .Tooltip(tooltip => tooltip.Visible(true))
          .HtmlAttributes(new { style = "width: 700px; height: 400px;" }))
   

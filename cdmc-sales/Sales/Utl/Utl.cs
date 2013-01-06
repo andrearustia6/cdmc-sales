@@ -433,8 +433,9 @@ namespace Utl
         public static string Required { get { return "此栏位不能为空"; } }
         public static string Form { get { return "表单"; } }
         public static string CannotDelete { get { return "此项已经被引用，无法直接删除，需要取消引用后再进行删除"; } }
-
-       
+        public static string CannotDownload { get { return "此文件不存在，不能继续下载"; } }
+        public static string ErrorView { get { return @"~\views\shared\Error.cshtml"; } }
+      
     }
 
     public class Utl
