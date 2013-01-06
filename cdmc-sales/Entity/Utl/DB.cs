@@ -44,7 +44,7 @@ namespace Utl
         public DbSet<Image> Images { get; set; }
         public DbSet<CompanyRelationship> CompanyRelationships { get; set; }
         public DbSet<Template> Templates { get; set; }
-        
+        public DbSet<SubCompany> SubCompanys { get; set; }
 
         public DB()
         {

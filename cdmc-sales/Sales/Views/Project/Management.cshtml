@@ -19,7 +19,7 @@
     items.Add().Text("出单情况").Content(@<text>@Deals(Model)</text>);
     items.Add().Text("留言答疑").Content(@<text>@Messages(Model)</text>);
 
-}).ClientEvents(e=>e.OnSelect("onManagementTabLoad"))
+}).ClientEvents(e => e.OnSelect("onManagementTabLoad"))
 )
 @helper Messages(Project project)
     {
@@ -189,7 +189,7 @@
                 })
                                                                 .DetailView(e => e.Template(
                                                  @<text>
-                         @RenderLead(CH.GetAllData<Lead>(l => l.CompanyID == item.CompanyID), item)
+                         @RenderGrid(item.Company, item)
                         </text>
                                                                                                         ))
                                                         .Resizable(resizing => resizing.Columns(true))
@@ -231,22 +231,70 @@
                   .Resizable(resizing => resizing.Columns(true)).Scrollable(scrolling => scrolling.Height(350))
                                                                                                                     )
         }
+@helper RenderGrid(Company company, CompanyRelationship cr)
+    { 
+        
+           @( Html.Telerik().TabStrip().Name("comtab" + company.ID).SelectedIndex(0).Items(child =>
+                {
 
-@helper RenderLead(List<Lead> Leads, CompanyRelationship cr)
+                    child.Add().Text("Lead").Content(@<text>
+         @RenderLeads(CH.GetAllData<Lead>(l => l.CompanyID == cr.CompanyID), cr)
+        </text>);
+
+                    child.Add().Text("子公司").Content(@<text>@RenderSubCompanys(company, cr)
+         </text>);
+
+                }))
+    
+    
+} 
+@helper RenderLeads(List<Lead> leads, CompanyRelationship cr)
+    {
+    @(Html.Telerik().Grid(leads).Name("Leads" + cr.ID)
+                            .Columns(c =>
+                            {
+                                c.Bound(o => o.Name).Width(150);
+                                c.Bound(o => o.Title).Width(150);
+                                c.Bound(o => o.Gender).Width(150);
+                                c.Bound(o => o.SubCompany.Name).Width(150);
+                                c.Bound(o => o).Title("Call List").Template(@<span> 
+                                <a href=@Url.Content("~/project/leaddelete/?id=" + item.ID + "&projectid=" + cr.ProjectID) >删除</a> 
+                                | <a  target="_blank" href=@Url.Content("~/LeadCall/LeadIndex/?projectid=" + cr.ProjectID + "&leadid=" + item.ID + "&companyrelationshipid=" + cr.ID) >Call List</a> </span>);
+                            })
+                                                                               .Resizable(resizing => resizing.Columns(true))
+                                                                               .Pageable(p => p.PageSize(20))
+                                                                               .Sortable())
+}
+
+@helper RenderSubCompanys(Company company, CompanyRelationship cr)
+    {
+    @(Html.Telerik().Grid(CH.GetAllData<SubCompany>(s => s.CompanyID == company.ID)).Name("Leads" + company.ID)
+                            .Columns(c =>
+                            {
+                                c.Bound(o => o.Name);
+                                c.Bound(o => o.ID).Title("操作").Width(150).Template(@<span>
+                    <a href=@Url.Content("~/subcompany/delete/?id=" + item.ID + "&projectid=" + cr.ProjectID) >删除</a> 
+                   </span>);
+                            })
+                                               .Resizable(resizing => resizing.Columns(true))
+                                               .Pageable(p => p.PageSize(20))
+                                               .Sortable())
+}
+@*@helper RenderLead(List<Lead> Leads, CompanyRelationship cr)
     { 
      @(Html.Telerik().Grid(Leads).Name("Leads" + cr.CompanyID)
                             .Columns(c =>
                             {
                                 c.Bound(o => o.Name).Title("人名");
                                 c.Bound(o => o.Title);
-                                c.Bound(o => o).Title("状态").Template(@<text>@item.GetLeadStatus(Model.ID)</text>);
+                           
                                 c.Bound(o => o).Title("Call List").Template(@<span> <a href=@Url.Content("~/project/leaddelete/?id=" + item.ID + "&projectid=" + cr.ProjectID) >
                             删除</a> | <a  target="_blank" href=@Url.Content("~/LeadCall/LeadIndex/?projectid=" + cr.ProjectID + "&leadid=" + item.ID + "&companyrelationshipid=" + cr.ID) >Call List</a> </span>);
                             })
                                          .Resizable(resizing => resizing.Columns(true))
                                          .Pageable(p => p.PageSize(20))
                                          )
-} 
+} *@
 
 @helper RenderTargetOfWeek(TargetOfMonth tm)
     { 

@@ -35,9 +35,11 @@
                         )
 
 
-@helper RenderGrid(List<Lead> Leads, int companyuid)
+@helper RenderGrid(Company company)
     { 
-     @(Html.Telerik().Grid(Leads).Name("Leads" + companyuid)
+        @(Html.Telerik().TabStrip().Name("comtab" + company.ID).Items(item =>{
+        item.Add().Text("Lead").Content(@<text>
+         @(Html.Telerik().Grid(company.Leads).Name("Leads" + company.ID)
                             .Columns(c =>
                             {
                                 c.Bound(o => o.Name).Width(150);
@@ -45,12 +47,30 @@
                                 c.Bound(o => o.EMail).Title("电子邮箱").Width(150);
                                 c.Bound(o => o.Fax).Title("传真").Width(150);
                                 c.Bound(o => o.Contact).Width(150);
-
-                                c.Bound(item => item.ID).Title("操作").Width(150).Template(@<span>
+                                c.Bound(o => o.ID).Title("操作").Width(150).Template(@<span>
                     <a href=@Url.Content("~/lead/Edit/?from=company&id=" + item.ID) >编辑</a> | <a href=@Url.Content("~/lead/Details/" + item.ID)>详细</a> | <a href=@Url.Content("~/Company/delete/" + item.ID) >删除</a> 
                    </span>);
                             })
                                                .Resizable(resizing => resizing.Columns(true))
                                                .Pageable(p => p.PageSize(20))
+                                               .Sortable())</text>);
+
+        item.Add().Text("子公司").Content(@<text>
+         @(Html.Telerik().Grid(company.SubCompanys).Name("Leads" + company.ID)
+                            .Columns(c =>
+                            {
+                                c.Bound(o => o.Name).Width(150);
+                                c.Bound(o => o.Contact).Title("电子邮箱").Width(150);
+                                c.Bound(o => o.Fax).Title("传真").Width(150);
+                                c.Bound(o => o.ID).Title("操作").Width(150).Template(@<span>
+                    <a href=@Url.Content("~/subCompany/Edit/?from=company&id=" + item.ID) >编辑</a> | <a href=@Url.Content("~/subCompany/Details/" + item.ID)>详细</a> | <a href=@Url.Content("~/subCompany/delete/" + item.ID) >删除</a> 
+                   </span>);
+                            })
+                                               .Resizable(resizing => resizing.Columns(true))
+                                               .Pageable(p => p.PageSize(20))
                                                .Sortable())
+        </text>);   
+        })
+        )
+    
 } 

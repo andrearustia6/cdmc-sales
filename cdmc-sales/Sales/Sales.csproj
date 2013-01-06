@@ -221,6 +221,7 @@
     <Compile Include="Controllers\CompanyRelationshipController.cs" />
     <Compile Include="Controllers\DealController.cs" />
     <Compile Include="Controllers\NewsController.cs" />
+    <Compile Include="Controllers\SubCompanyController.cs" />
     <Compile Include="Controllers\Type\ProgressController.cs" />
     <Compile Include="Controllers\Type\DepartmentController.cs" />
     <Compile Include="Controllers\DistrictNumberController.cs" />
@@ -258,6 +259,7 @@
     <Compile Include="Controllers\Type\RoleController.cs" />
     <Compile Include="Controllers\Type\SalesTypeController.cs" />
     <Compile Include="Controllers\Type\TemplateTypeController.cs" />
+    <Compile Include="DB.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -1422,6 +1424,24 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Report\MemberLeadCallsChart.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\SubCompany\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\SubCompany\Change.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\SubCompany\Display.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Sales\AddSubCompany.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Sales\DeleteSubCompany.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Sales\EditSubCompany.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

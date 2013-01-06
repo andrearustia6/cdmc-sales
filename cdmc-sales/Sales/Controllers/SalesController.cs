@@ -622,6 +622,90 @@ namespace Sales.Controllers
 
         #endregion
 
+        #region SubCompany
+        public ViewResult AddSubCompany( int? companyid, int? projectid)
+        {
+            ViewBag.companyID = companyid;
+            ViewBag.ProjectID = projectid;
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult AddSubCompany(SubCompany item,int? projectid)
+        {
+            this.AddErrorStateIfSalesNoAccessRightToTheProject(projectid);
+            this.AddAddErrorStateIfOneOfNameExist<Company>(item.Name_EN, item.Name_CH);
+            this.AddErrorIfAllNamesEmpty(item);
+            if (ModelState.IsValid)
+            {
+                CH.Create<SubCompany>(item);
+                return RedirectToAction("CompanyRelationshipIndex", "Sales", new { projectid = projectid });
+            }
+            else
+                return View(item);
+        }
+
+        public ViewResult EditSubCompany(int? id, int? projectid)
+        {
+            ViewBag.ProjectID = projectid;
+            var item = CH.GetDataById<SubCompany>(id);
+            return View(item);
+        }
+
+        [HttpPost]
+        public ActionResult EditSubCompany(SubCompany item, int? projectid)
+        {
+            this.AddErrorStateIfSalesNoAccessRightToTheProject(projectid);
+            this.AddAddErrorStateIfOneOfNameExist<Company>(item.Name_EN, item.Name_CH);
+            this.AddErrorIfAllNamesEmpty(item);
+
+            if (ModelState.IsValid)
+            {
+                CH.Create<SubCompany>(item);
+                return RedirectToAction("CompanyRelationshipIndex", "Sales", new { projectid = projectid });
+            }
+            else
+                return View(item);
+        }
+
+        public ViewResult DisplayCompany(int? id,int? projectid)
+        {
+            this.AddErrorStateIfSalesNoAccessRightToTheProject(projectid);
+            var sc = CH.GetDataById<SubCompany>(id);
+            if (ModelState.IsValid)
+                return View(sc);
+            else
+                return View();
+        }
+
+        public ActionResult DeleteSubCompany(int? projectid, int? id)
+        {
+            var lc = CH.GetDataById<SubCompany>(id);
+            this.AddErrorStateIfSalesNoAccessRightToTheProject(projectid);
+
+            var count = from c in CH.DB.Leads
+                        where c.SubCompanyID == id
+                        select c;
+
+            if (count.Count() > 0)
+                return View(@"~\views\shared\Error.cshtml", null, SR.CannotDelete);
+
+            if (ModelState.IsValid)
+                return View(lc);
+            else
+                return View();
+        }
+
+        [HttpPost, ActionName("DeleteSubCompany")]
+        public ActionResult DeleteSubCompanyConfirmed(int? id, int? projectid)
+        {
+            CH.Delete<SubCompany>(id);
+            return RedirectToAction("CompanyRelationshipIndex", "Sales", new { projectid = projectid });
+
+        }
+
+
+        #endregion
 
         public ViewResult AvailableCompanys(int? projectid)
         {
@@ -653,6 +737,7 @@ namespace Sales.Controllers
         }
 
         #endregion
+
         #region Json
 
         [HttpPost]
@@ -937,21 +1022,6 @@ namespace Sales.Controllers
             projectid = this.TrySetProjectIDForUser(projectid);
             ViewBag.ProjectID = projectid;
             return View(GetContedtedLeadData(projectid));
-            //var account = Employee.GetCurrentUserName();
-            //var calls = CH.GetAllData<LeadCall>(l => l.ProjectID == projectid && Employee.GetCurrentUserName() ==l.Member.Name,"CompanyRelationship","Lead");
-            //var contectleads = calls.Distinct(new LeadCallDistinct());
-            //var ls = new List<ViewContactedLead>();
-            //foreach (var cl in contectleads)
-            //{
-            //    ViewContactedLead v = new ViewContactedLead();
-            //    v.Lead = cl.Lead;
-            //    v.ID = cl.Lead.ID;
-            //    v.CompanyRelationshipID = cl.CompanyRelationshipID;
-
-            //    v.LastCall = calls.FindAll(c=>c.Lead.ID == cl.Lead.ID).OrderByDescending(o => o.CallDate).ToList().FirstOrDefault();
-            //    ls.Add(v);
-            //}
-            //return View(ls.OrderByDescending(o=>o.LastCall.CallDate).ToList());
         }
 
         public List<ViewContactedLead> GetContedtedLeadData(int? projectid)

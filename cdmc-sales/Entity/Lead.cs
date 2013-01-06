@@ -7,11 +7,52 @@ using Attributes;
 
 namespace Entity
 {
+
+    public class SubCompany : NameEntity
+    {
+        public virtual DistrictNumber DistrictNumber { get; set; }
+        [Display(Name = "区号/时差")]
+        public int? DistrictNumberID { get; set; }
+
+        [Display(Name = "可打时间")]
+        public string Available
+        {
+            get
+            {
+                if (DistrictNumber == null) return string.Empty;
+                var dt1 = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DBSR.WorkTimeStart, 0, 0);
+                var dt2 = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DBSR.WorkTimeEnd, 0, 0);
+                return dt1.AddHours(-DistrictNumber.TimeDifference).ToShortTimeString() + "~" + dt2.AddHours(-DistrictNumber.TimeDifference).ToShortTimeString();
+            }
+        }
+        [Display(Name = "分公司传真")]
+        public string Fax { get; set; }
+
+        [Display(Name = "分公司网站")]
+        public string WebSite { get; set; }
+
+        [Display(Name = "分公司邮编")]
+        public string ZIP { get; set; }
+
+        [Display(Name = "分公司总机"), MaxLength(100)]
+        public string Contact { get; set; }
+
+        [Display(Name = "分公司地址"), MaxLength(100)]
+        public string Address { get; set; }
+
+        public virtual Company Company { get; set; }
+        public int? CompanyID { get; set; }
+
+    }
+
+
     /// <summary>
     /// 公司
     /// </summary>
     public class Company : NameEntity
     {
+        public List<SubCompany> SubCompanys { get; set; }
+
         [Display(Name = "主营业务")]
         public string Business { get; set; }
 
@@ -28,9 +69,6 @@ namespace Entity
         public string Address { get; set; }
 
         public List<Lead> Leads { get; set; }
-
-        //[Display(Name = "业务范围")]
-        //public string Areas { get; set; }
 
         [Display(Name = "可打时间")]
         public string Available 
@@ -77,10 +115,6 @@ namespace Entity
         [Display(Name = "公司传真")]
         public string Fax { get; set; }
 
-        [Display(Name = "已离职")]
-        public bool LeaveCompany { get; set; }
-
-    
     }
 
     /// <summary>
@@ -99,6 +133,10 @@ namespace Entity
     [JsonIgnoreAttribute("ModifiedTime","Company","Image")]
     public class Lead :NameEntity
     {
+        public virtual SubCompany SubCompany { get; set; }
+        [Display(Name="所在分公司")]
+        public int? SubCompanyID { get; set; }
+
         [Display(Name = "个人邮箱")]
         [DataType(DataType.EmailAddress)]
         public string PersonalEmailAddress { get; set; }

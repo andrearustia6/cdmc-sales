@@ -126,7 +126,7 @@ namespace BLL
             var now = DateTime.Now;
             var projects = CH.GetAllData<Project>("Members");
 
-            var data = projects.FindAll(p=>p.Members.Any(m=>m.Name == name)&& p.IsActived==true && now>p.StartDate && now<p.EndDate);
+            var data = projects.FindAll(p=>p.Members.Any(m=>m.Name == name)&& p.IsActived==true );
             return data;
         }
 
@@ -136,7 +136,7 @@ namespace BLL
             var now = DateTime.Now;
             var projects = CH.GetAllData<Project>(p => p.Manager == name);
 
-            var data = projects.FindAll(p => p.IsActived == true && now > p.StartDate && now < p.EndDate);
+            var data = projects.FindAll(p => p.IsActived == true );
             return data;
         }
 
@@ -146,7 +146,7 @@ namespace BLL
             var now = DateTime.Now;
             var projects = CH.GetAllData<Project>();
 
-            var data = projects.FindAll(p =>  p.IsActived == true && now > p.StartDate && now < p.EndDate);
+            var data = projects.FindAll(p =>  p.IsActived == true );
             return data;
         }
 
@@ -155,7 +155,7 @@ namespace BLL
             var name = Employee.GetCurrentUserName();
             var now = DateTime.Now;
             var projects = CH.GetAllData<Project>(p => p.Product == name);
-            var data = projects.FindAll(p => p.IsActived == true && now > p.StartDate && now < p.EndDate);
+            var data = projects.FindAll(p => p.IsActived == true );
             return data;
         }
 
@@ -165,7 +165,7 @@ namespace BLL
             var now = DateTime.Now;
             var projects = CH.GetAllData<Project>("Members");
 
-            var data = projects.FindAll(p => p.Market == name && p.IsActived == true && now > p.StartDate && now < p.EndDate);
+            var data = projects.FindAll(p => p.Market == name && p.IsActived == true );
             return data;
         }
     }
