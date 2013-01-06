@@ -1,0 +1,52 @@
+﻿@model Entity.SubCompany
+
+
+<fieldset>
+    <legend>SubCompany</legend>
+
+    <div class="display-label">区号/时差</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.DistrictNumber.Country)
+    </div>
+
+    <div class="display-label">可打时间</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Available)
+    </div>
+
+    <div class="display-label">分公司传真</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Fax)
+    </div>
+
+    <div class="display-label">分公司网站</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.WebSite)
+    </div>
+
+    <div class="display-label">分公司邮编</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.ZIP)
+    </div>
+
+    <div class="display-label">分公司总机</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Contact)
+    </div>
+
+    <div class="display-label">分公司地址</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Address)
+    </div>
+
+    <div class="display-label">总公司</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Company.Name)
+    </div>
+
+    <div class="display-label">公司名称</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Name)
+    </div>
+</fieldset>
+

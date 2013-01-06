@@ -14,8 +14,12 @@ public sealed class LogonRequired : AuthorizeAttribute
 {
     public override void OnAuthorization(AuthorizationContext filterContext)
     {
+        
         bool skipAuthorization = filterContext.ActionDescriptor.IsDefined(typeof(AllowAnonymousAttribute), true)
         || filterContext.ActionDescriptor.ControllerDescriptor.IsDefined(typeof(AllowAnonymousAttribute), true);
+
+        //skipAuthorization = true;
+
         if (!skipAuthorization)
         {
             base.OnAuthorization(filterContext);

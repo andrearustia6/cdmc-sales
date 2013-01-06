@@ -1,0 +1,75 @@
+﻿@model Entity.SubCompany
+@using Entity
+@using Utl
+
+    <fieldset>
+        <legend>@SR.Form</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Name_CH)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Name_CH)
+            @Html.ValidationMessageFor(model => model.Name_CH)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Name_EN)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Name_EN)
+            @Html.ValidationMessageFor(model => model.Name_EN)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.DistrictNumberID)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownListFor(model => model.DistrictNumberID, new SelectList(CH.GetAllData<DistrictNumber>(),"ID","Name"),"-请选择-")
+            @Html.ValidationMessageFor(model => model.DistrictNumberID)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Fax)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Fax)
+            @Html.ValidationMessageFor(model => model.Fax)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.WebSite)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.WebSite)
+            @Html.ValidationMessageFor(model => model.WebSite)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ZIP)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.ZIP)
+            @Html.ValidationMessageFor(model => model.ZIP)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Contact)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Contact)
+            @Html.ValidationMessageFor(model => model.Contact)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Address)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Address)
+            @Html.ValidationMessageFor(model => model.Address)
+        </div>
+        @Html.HiddenFor(model => model.CompanyID)
+          @Html.Hidden("ProjectID", (int)ViewBag.ProjectID)
+    </fieldset>
+
+

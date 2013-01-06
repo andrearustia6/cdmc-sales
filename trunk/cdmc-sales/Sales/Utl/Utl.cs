@@ -40,6 +40,7 @@ namespace Utl
        
             var mode = ConfigurationManager.AppSettings["DebugModel"].ToString(); 
             var user = HttpContext.Current.User.Identity.Name;
+            
             if (mode == "true" && Employee.GetRole(user).Name == "系统管理员")
             {
                 var name = ConfigurationManager.AppSettings["DebugAccount"].ToString();
