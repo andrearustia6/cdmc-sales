@@ -9,7 +9,7 @@ table tr td{ border-width:0px; }
 <input class="leadsubmit" type="button" value="提交Lead信息" /></center>
 <fieldset>
 <legend>Lead信息</legend>
-    <table class="11" border="0" style="width:90%;">
+    <table class="11" border="0" style="width:100%;">
     <tr>
     <td>中文名称： @Html.EditorFor(model => model.Name_CH)</td>
     <td>英文名称： @Html.EditorFor(model => model.Name_EN)</td>
@@ -35,6 +35,7 @@ table tr td{ border-width:0px; }
     <td>  @Html.LabelFor(model => model.ZIP)： @Html.EditorFor(model => model.ZIP)</td>
     </tr>
     <tr>
+    <td>  @Html.LabelFor(model => model.SubCompanyID )：  @Html.DropDownListFor(model => model.SubCompanyID, new SelectList(CH.GetAllData<SubCompany>(s=>s.CompanyID==Model.CompanyID),"ID","Name"), "-请选择-")</td>
     <td>  @Html.LabelFor(model => model.Gender )：  @Html.DropDownListFor(model => model.Gender, new SelectList(new List<string>() { "Mr", "Ms" }), "-请选择-")</td>
     </tr>
 
