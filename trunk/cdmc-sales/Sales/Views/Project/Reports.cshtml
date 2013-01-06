@@ -37,7 +37,7 @@
         if (report.MemberItems != null)
         {
         <table>
-        <tr><td>出单员工</td><td>本周工作量</td><td>个人工作量小计</td><td>本周电话时间</td></tr>
+        <tr><td>出单销售</td><td>本周工作量</td><td>个人工作量小计</td><td>本周电话时间</td></tr>
         @foreach (var mi in report.MemberItems)
         {
             var all = mi.LeadCalls;
@@ -53,7 +53,7 @@
 @helper DealAndTarget(WeeklyReport report)
     {
     <table>
-        <tr><td>出单员工</td><td>本周出单</td><td>本周目标</td><td>完成率</td><td>下周完成目标</td><td>销售总额</td></tr>
+        <tr><td>出单销售</td><td>本周出单</td><td>本周目标</td><td>完成率</td><td>下周完成目标</td><td>销售总额</td></tr>
         @foreach (var mi in report.MemberItems)
         {
            
@@ -68,7 +68,7 @@
  @helper PaymentAndTarget(WeeklyReport report)
      {
           <table>
-        <tr><td>出单员工</td><td>到账总额</td><td>本周到账</td><td>下周到账</td><td>到账率</td></tr>
+        <tr><td>出单销售</td><td>到账总额</td><td>本周到账</td><td>下周到账</td><td>到账率</td></tr>
         @foreach (var mi in report.MemberItems)
         {
             <tr><td>@mi.Member.Name</td><td>@mi.TotalIncomesAmount</td><td>@mi.IncomesAmount</td><td>@mi.NextWeekExpectedDealsAmount</td><td>@mi.CollectRate%</td></tr>

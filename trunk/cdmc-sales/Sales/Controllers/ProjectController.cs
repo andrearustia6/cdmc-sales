@@ -405,7 +405,13 @@ namespace Sales.Controllers
 
         public ActionResult Service_File_Donwload(string fileurl,string filename)
         {
-            return new DownloadResult { VirtualPath = fileurl, FileDownloadName = filename };
+            string filePath = Request.MapPath(fileurl);
+            if (System.IO.File.Exists(filePath))
+            {
+                return new DownloadResult { VirtualPath = fileurl, FileDownloadName = filename };
+            }
+
+            return View(SR.ErrorView, null, SR.CannotDownload);
         }
 
         public ActionResult LeadDelete(int id, int projectid)

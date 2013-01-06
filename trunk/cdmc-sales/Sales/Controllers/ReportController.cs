@@ -132,7 +132,7 @@ namespace Sales.Controllers
                         cs.CompanyCount++;
                    
                 }
-                viewCallListCharts.Add(new ViewCallListChart() { Member = m, ViewCompanyCallSums = companysum });
+                viewCallListCharts.Add(new ViewCallListChart() { Member = m, ViewCompanyCallSums = companysum.OrderByDescending(c=>c.LeadCalledCountNumber).ToList() });
                
             }
           

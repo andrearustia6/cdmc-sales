@@ -104,7 +104,7 @@ namespace System.Web.Mvc
 
             if (p.Members.Any(m=>m.Name==name))
             {
-                item.ModelState.AddModelError("", "项目已经包含该员工，员工名为：" + name);
+                item.ModelState.AddModelError("", "项目已经包含该销售，销售名为：" + name);
             }
         }
     }
@@ -285,9 +285,9 @@ namespace System.Web.Mvc
         {
             var role = Employee.GetCurrentRole();
             if (role.Level >= 500 && role.Level < 1000)
-                return CH.GetAllData<Project>(p => p.RoleInProject() == RoleInProject.Manager);
+                return CH.GetAllData<Project>(p => p.RoleInProject() == RoleInProject.Manager && p.IsActived==true );
             else if (role.Level == 1000)
-                return CH.GetAllData<Project>(p => p.RoleInProject() == RoleInProject.Director);
+                return CH.GetAllData<Project>(p => p.RoleInProject() == RoleInProject.Director && p.IsActived == true);
             else if(role.Level ==99999)
                 return CH.GetAllData<Project>();
             else
