@@ -36,11 +36,11 @@ namespace Sales.Controllers
             //{
             //    CH.DB.Entry(p).Collection(x => x.PackageItems).Load();
             //}
-
+            var list = ps.ToList();
             if(Employee.AsManager())
-            return View(ps.AsQueryable());
+                return View(list);
             else
-                return View(@"~\views\package\indexview.cshtml",ps.AsQueryable());
+                return View(@"~\views\package\indexview.cshtml", list);
 
 
 

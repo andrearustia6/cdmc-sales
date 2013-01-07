@@ -50,6 +50,14 @@
         </div>
 
         <div class="editor-label">
+            @Html.LabelFor(model => model.PrizeCH )
+        </div>
+        <div class="editor-field">
+            @Html.Telerik().CurrencyTextBoxFor(model => model.PrizeCH).CurrencySymbol("￥");
+            @Html.ValidationMessageFor(model => model.PrizeCH)
+        </div>
+
+        <div class="editor-label">
             @Html.LabelFor(model => model.PackageTypeID)
         </div>
         <div class="editor-field">

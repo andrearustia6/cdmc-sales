@@ -45,8 +45,18 @@
                     c.Bound(item => item.Lead.Company.Name).Title("公司姓名");
                     c.Bound(item => item.Lead.Contact).Width(100);
                     c.Bound(item => item.Lead.Mobile).Width(100);
-                    c.Bound(item => item.Lead.Title).Width(100);
-                    c.Bound(item => item.Lead.Company.DistrictNumber.TimeDifference);
+                    c.Bound(item => item.Lead.Company.DistrictNumber.TimeDifference).Template(@<text>
+                    @{
+                        if (item.Lead.SubCompanyID == null)
+                        {
+                            <p>@item.Lead.Company.DistrictNumber.TimeDifference</p>
+                        }
+                        else
+                        {
+                            <p>@item.Lead.SubCompany.DistrictNumber.TimeDifference</p>
+                        }
+                        }
+                    </text>);
                     c.Bound(item => item.CallBackDate).Template(@<text>@item.GetAvailabeTime()</text>).Width(100);
                     c.Bound(item => item.ID).Title("操作").Width(90).Template(@<span> <a  href=@Url.Content("~/Sales/AddLeadCall/?crid=" + item.CompanyRelationshipID + "&leadid=" + item.LeadID) >添加新通话</a> 
                      </span>);

@@ -72,7 +72,8 @@ namespace Entity
         {
             if (item.CallBackDate==null) return null;
             var date = item.CallBackDate.Value;
-            if (item.CompanyRelationship.Company.DistrictNumber != null)
+            var districtNumber = item.Lead.SubCompanyID == null ? item.Lead.Company.DistrictNumber : item.Lead.SubCompany.DistrictNumber;
+            if (districtNumber != null)
             {
                 var differs = item.CompanyRelationship.Company.DistrictNumber.TimeDifference;
                 date = date.AddHours(-differs);

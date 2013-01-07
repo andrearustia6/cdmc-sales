@@ -13,7 +13,19 @@ namespace Model
         DateTime? EndDate { get; set; }
         public Member Member { get; set; }
         public List<ViewCompanyCallSum> ViewCompanyCallSums { get; set; }
+        public List<ViewCategoryCallSum> ViewCategoryCallSum { get; set; }
       
+    }
+    public class ViewCategoryCallSum
+    {
+
+        //打了几个lead
+        public int LeadCalledCountNumber { get; set; }
+
+        //Category的名称 
+        public string CategoryName { get; set; }
+
+        public string CategoryCountName { get { return  CategoryName +": 已打"+ LeadCalledCountNumber+"个Lead"; } }
     }
 
     public class ViewCompanyCallSum
@@ -21,7 +33,7 @@ namespace Model
         //打了几个lead
         public int LeadCalledCountNumber { get; set; }
 
-        //公司的个数 
+        //大了X个lead的公司的个数 
         public int CompanyCount { get; set; }
 
         public string CompanyCountName { get { return "已打" + LeadCalledCountNumber + "个Lead" + "(" + CompanyCount + "家 )"; } }

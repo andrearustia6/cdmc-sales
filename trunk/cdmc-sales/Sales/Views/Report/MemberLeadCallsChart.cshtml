@@ -17,7 +17,7 @@
     var selected = ps.Count == 0 ? 0 : ps.FirstOrDefault().ID;
         @Html.DropDownList("ProjectID", new SelectList(ps, "ID", "ProjectCode", selected), "-请选择-")
 }
-            </span>
+         @Html.DropDownList("ChartType", new SelectList(new List<string>(){ "Company", "Category" }))   </span>
        </div>
     <div style="margin: 10px; margin-left: 0px;">
         <b><span>  <label> 开始时间：</label>
@@ -43,20 +43,24 @@
    }
 </style>
 
-@*@Html.Partial("durationselector")*@
+
 @{
     
     var startdate = ViewBag.StartDate as DateTime?;
     var enddate = ViewBag.EndDate as DateTime?;
+    var type = ViewBag.ChartType as string;
     if (Model != null)
     {
+         if (type=="Company")
+         {
         <table style="width:100%">
          @foreach (var i in Model)
          {
-   
+
+            
   <tr><td><b style="font-size:x-large">销售：@i.Member.Name</b></td>
   <td>
-     @(Html.Telerik().Chart(i.ViewCompanyCallSums).Name("pieChart" + i.Member.ID)
+     @(Html.Telerik().Chart(i.ViewCompanyCallSums).Name("pieChartCompany" + i.Member.ID)
          .Legend(legend => legend.Position(ChartLegendPosition.Right))
                      .Series(series =>
                      {
@@ -74,10 +78,39 @@
          }
          
          </table>
-    }
-       
-    
+         }
+         else if(type=="Category")
+         {
+               <table style="width:100%">
+         @foreach (var i in Model)
+         {
+
+            
+          <tr><td><b style="font-size:x-large">销售：@i.Member.Name</b></td>
+          <td>
+             @(Html.Telerik().Chart(i.ViewCategoryCallSum).Name("pieChartCategory" + i.Member.ID)
+                 .Legend(legend => legend.Position(ChartLegendPosition.Bottom))
+                             .Series(series =>
+                             {
+                                 series.Pie("LeadCalledCountNumber", "CategoryCountName")
+                 .Labels(labels => labels.Visible(true).Template(" <#= category #> ")
+                 .Align(ChartPieLabelsAlign.Circle)
+                 .Position(ChartPieLabelsPosition.OutsideEnd))
+                 .StartAngle(60).Padding(60);
+                             })
+                 .Tooltip(tooltip => tooltip.Visible(true))
+                 .HtmlAttributes(new { style = "width: 700px; height: 400px;" }))
+  
+                  </td>
+         </tr>    
+         }
          
-       
-}
+         </table>
+         }
+    }
+
+
+
+
+    }
      

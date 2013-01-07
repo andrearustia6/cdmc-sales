@@ -161,7 +161,7 @@ namespace Entity
         [Display(Name = "工作传真")]
         public string Fax { get; set; }
 
-        [Display(Name = "Lead生日")]
+        [Display(Name = "客户生日")]
         public DateTime? Birthday { get; set; }
 
         [Display(Name = "联系地址")]

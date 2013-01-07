@@ -72,6 +72,10 @@ namespace Entity
 
         [Display(Name = "美元费用"), Required]
         public decimal Prize { get; set; }
+
+
+        [Display(Name = "人民币费用"), Required]
+        public decimal PrizeCH { get; set; }
     }
 
     /// <summary>
