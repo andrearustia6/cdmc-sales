@@ -100,12 +100,8 @@
     </div>
  
 
-     <div class="editor-label">
-        @Html.Label( "项目")
-    </div>
-    <div class="editor-field">
-         @Html.Label(Model==null? CH.GetDataById<Project>((int)ViewBag.ProjectID).Name:Model.ProjectName())
+
         @Html.Hidden("ProjectID", (int)ViewBag.ProjectID)
        
-    </div>
+
 </fieldset>
