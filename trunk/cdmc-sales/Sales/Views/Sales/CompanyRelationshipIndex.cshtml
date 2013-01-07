@@ -18,6 +18,7 @@
                     c.Bound(item => item.Company.Name).Title("公司名").Width(150);
                     c.Bound(item => item.Importancy).Width(100);
                     c.Bound(item => item.Company.Contact);
+                    c.Bound(item => item.Progress.Name);
                     c.Bound(item => item.CategoryString).Title("Category");
                     c.Bound(item => item.Company.Available).Width(100);
                     c.Bound(item => item.ID).Title("操作").Width(180).Template(@<span>  

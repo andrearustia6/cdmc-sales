@@ -414,11 +414,11 @@ namespace Sales.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddCompany(Company item, int? projectid, int[] checkedCategorys)
+        public ActionResult AddCompany(Company item, int? projectid, int[] checkedCategorys, int? progressid)
         {
             projectid = this.TrySetProjectIDForUser(projectid);
             ViewBag.ProjectID = projectid;
-
+            ViewBag.ProgressID = progressid;
             this.AddErrorStateIfSalesNoAccessRightToTheProject(projectid);
             this.AddAddErrorStateIfOneOfNameExist<Company>(item.Name_EN, item.Name_CH);
             this.AddErrorIfAllNamesEmpty(item);
@@ -444,7 +444,7 @@ namespace Sales.Controllers
                 var ms = new List<Member>();
                 ms.Add(p.GetMemberInProjectByName(Employee.GetCurrentUserName()));
 
-                var cr = new CompanyRelationship() { CompanyID = item.ID, ProjectID = projectid, Importancy = 1, Members = ms, Categorys = lc, CategoryString = categorystring };
+                var cr = new CompanyRelationship() { CompanyID = item.ID, ProjectID = projectid, Importancy = 1, Members = ms, Categorys = lc, CategoryString = categorystring, ProgressID = progressid };
                 CH.Create<CompanyRelationship>(cr);
                 return RedirectToAction("CompanyRelationshipIndex", "Sales", new { projectid = projectid });
 
@@ -489,7 +489,7 @@ namespace Sales.Controllers
         }
 
         [HttpPost]
-        public ActionResult EditCompany(Company item, int? crid, int? projectid, int[] checkedCategorys)
+        public ActionResult EditCompany(Company item, int? crid, int? projectid, int[] checkedCategorys, int? progressid)
         {
             this.AddErrorIfAllNamesEmpty(item);
 
@@ -513,13 +513,15 @@ namespace Sales.Controllers
                             categorystring += "|" + l.Name;
                     });
                     cr.CategoryString = categorystring;
-                    CH.Edit<CompanyRelationship>(cr);
+                  
                 }
+                cr.ProgressID = progressid;
+                CH.Edit<CompanyRelationship>(cr);
 
                 CH.Edit<Company>(item);
                 return RedirectToAction("CompanyRelationshipIndex", "Sales", new { projectid = projectid });
             }
-
+            ViewBag.ProgressID = progressid;
             ViewBag.ProjectID = projectid;
             return View();
         }

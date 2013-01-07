@@ -222,6 +222,8 @@ namespace Entity
         public int Importancy { get; set; }
 
         public virtual Progress Progress { get; set; }
+
+      
         public int? ProgressID { get; set; }
         public virtual List<LeadCall> LeadCalls { get; set; }
 
@@ -400,7 +402,7 @@ namespace Entity
 
     public class Progress : EntityBase
     {
-        [Display(Name = "进度类型")]
+        [Display(Name = "成熟度")]
         public String Name { get; set; }
 
     }
