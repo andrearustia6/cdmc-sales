@@ -31,7 +31,10 @@
         }
     </div>
 </fieldset>
-
+<fieldset>
+<legend>成熟度</legend>
+@Html.DropDownList("ProgressID", new SelectList(CH.GetAllData<Progress>(), "ID", "Name"), "请选择")
+</fieldset>
     
     @Html.Partial(@"editcommon", Model);
 <div>

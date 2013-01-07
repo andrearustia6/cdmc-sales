@@ -30,16 +30,22 @@
                         }
                         }
                     </text>).Width(110);
-                    c.Bound(item => item.Lead.Company.DistrictNumber.TimeDifference).Template(@<text>
+                    c.Bound(item => item.Lead.Company.DistrictNumber.TimeDifference ).Template(@<text>
                      @{
                         var lead = item.Lead;
-                        if (lead.SubCompanyID == null)
+                        if (lead.SubCompanyID == null )
                         {
+                            if (lead.Company.DistrictNumber!=null)
+                            {
                             <p>@lead.Company.DistrictNumber.TimeDifference</p>
+                            }
                         }
                         else
                         {
+                             if (lead.SubCompany.DistrictNumber!=null)
+                            {
                             <p>@lead.SubCompany.DistrictNumber.TimeDifference</p>
+                            }
                         }
                         }
                     </text>).Width(60);

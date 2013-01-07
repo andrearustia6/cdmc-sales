@@ -45,10 +45,38 @@
     <div class="display-field">
         @Html.DisplayFor(model => model.Mobile)
     </div>
-
+    
     <div class="display-label">所属公司</div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Company.Name)
     </div>
+
+    @{
+        if(Model.SubCompanyID!=null)
+        {
+     <div class="display-label">所属子公司</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.SubCompany.Name )
+    </div>
+        
+     <div class="display-label">子公司总机</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.SubCompany.Contact)
+    </div>
+        
+    <div class="display-label">子公司传真</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.SubCompany.Fax)
+    </div>
+     <div class="display-label">子公司地址</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.SubCompany.Address )
+    </div>
+      <div class="display-label">子公司可打时间</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.SubCompany.Available )
+    </div>
+        }
+    }
 </fieldset>
 

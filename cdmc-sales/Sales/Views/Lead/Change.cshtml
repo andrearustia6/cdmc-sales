@@ -49,8 +49,11 @@
         @Html.LabelFor(model => model.SubCompanyID)
     </div>
     <div class="editor-field">
-        @Html.DropDownListFor(model => model.SubCompanyID, new SelectList(CH.GetAllData<SubCompany>(),"ID","Name"),"-请选择-")
+    @{
+        var cid = Model == null ? (int)ViewBag.CompanyID : Model.CompanyID;
+        @Html.DropDownListFor(model => model.SubCompanyID, new SelectList(CH.GetAllData<SubCompany>(s => s.CompanyID == cid), "ID", "Name"), "-请选择-")
         @Html.ValidationMessageFor(model => model.SubCompanyID)
+        }
     </div>
 
     <div class="editor-label">
