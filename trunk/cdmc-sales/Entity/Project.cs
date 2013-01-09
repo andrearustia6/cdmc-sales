@@ -100,7 +100,7 @@ namespace Entity
         [Display(Name = "产品部接口人")]
         public string Product { get; set; }
 
-        public List<Member> Members { get; set; }
+        public virtual List<Member> Members { get; set; }
 
         [Display(Name = "正在进行"), Required]
         public bool IsActived { get; set; }

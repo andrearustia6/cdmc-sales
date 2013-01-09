@@ -50,9 +50,9 @@ namespace Utl
         {
           //Database.SetInitializer<DB>(new DBInitializer());
           Database.SetInitializer<DB>(null);
-           
 
 
+          this.Configuration.LazyLoadingEnabled = true;
             this.Configuration.ValidateOnSaveEnabled = false;
         }
 

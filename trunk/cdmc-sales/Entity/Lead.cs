@@ -51,7 +51,7 @@ namespace Entity
     /// </summary>
     public class Company : NameEntity
     {
-        public List<SubCompany> SubCompanys { get; set; }
+        public virtual List<SubCompany> SubCompanys { get; set; }
 
         [Display(Name = "主营业务")]
         public string Business { get; set; }
@@ -68,7 +68,7 @@ namespace Entity
         [Display(Name = "公司地址"), MaxLength(100)]
         public string Address { get; set; }
 
-        public List<Lead> Leads { get; set; }
+        public virtual List<Lead> Leads { get; set; }
 
         [Display(Name = "可打时间")]
         public string Available 
@@ -178,9 +178,9 @@ namespace Entity
         [Display(Name = "所属公司"),Required]
         public int? CompanyID { get; set; }
 
-        public List<TargetOfPackage> TargetOfPackages { get; set; }
+        public virtual List<TargetOfPackage> TargetOfPackages { get; set; }
 
-        public List<Project> Projects { get; set; }
+        public virtual List<Project> Projects { get; set; }
 
         public virtual Image Image { get; set; }
         public int?  ImageID { get; set; }

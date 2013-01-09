@@ -68,7 +68,7 @@ namespace Entity
         [Display(Name = "中文描述"), Required]
         public string SubNameCH { get; set; }
 
-        public List<PackageItem> PackageItems { get; set; }
+        public virtual List<PackageItem> PackageItems { get; set; }
 
         [Display(Name = "美元费用"), Required]
         public decimal Prize { get; set; }
@@ -106,7 +106,7 @@ namespace Entity
         [Display(Name = "会议内容"), Required]
         public string Content { get; set; }
 
-        public List<Package> Packages { get; set; }
+        public virtual  List<Package> Packages { get; set; }
 
         public ParticipantType ParticipantType { get; set; }
         [Display(Name = "参会类型"), Required]
