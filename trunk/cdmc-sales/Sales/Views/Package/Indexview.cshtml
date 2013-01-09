@@ -1,7 +1,7 @@
 ﻿@{ViewBag.Title = "Package列表";}
 @using Entity
 @using Utl
-@model IQueryable<Package>
+@model List<Package>
 @Html.Partial("contenttitle", "Package")
 @{
     var rate = ViewBag.Rate as double?;

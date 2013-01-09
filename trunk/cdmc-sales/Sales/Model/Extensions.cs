@@ -47,7 +47,7 @@ namespace Entity
 
         public static bool CreatorIsTheLoginUser(this EntityBase item)
         {
-            if (item.Creator != Employee.GetCurrentUserName())
+            if (item.Creator != Employee.CurrentUserName)
                 return false;
             else
                 return true;
@@ -84,7 +84,7 @@ namespace Entity
 
         public static bool CallerIsTheLoginUser(this LeadCall item)
         {
-            if (item.Member.Name ==Employee.GetCurrentUserName())
+            if (item.Member.Name ==Employee.CurrentUserName)
                 return true;
             else
                 return false;
@@ -163,7 +163,7 @@ namespace Entity
         //{
           
         //    var d = cr.WhoCallTheCompanyMember();
-        //    if (d.Any(i => i.Name == Employee.GetCurrentUserName()))
+        //    if (d.Any(i => i.Name == Employee.CurrentUser))
         //        return true;
         //    else
         //        return false;
@@ -439,7 +439,7 @@ namespace Entity
 
         public static List<CompanyRelationship> GetCRM(this Project item)
         {
-            return item.GetCRMbyUserName(Employee.GetCurrentUserName());
+            return item.GetCRMbyUserName(Employee.CurrentUserName);
         }
 
         public static List<CompanyRelationship> GetCRMbyUserName(this Project item, string user)
@@ -540,7 +540,7 @@ namespace Entity
         /// <returns></returns>
         public static Member GetMemberInProjectByName(this Project item, string username = null)
         {
-            if (username == null) username = Employee.GetCurrentUserName();
+            if (username == null) username = Employee.CurrentUserName;
             return item.Members.FirstOrDefault(m => m.Name == username);
         }
 
@@ -559,7 +559,7 @@ namespace Entity
 
         public static Member GetProjectMemberByName(this Project item, string username = null)
         {
-            if (username == null) username = Employee.GetCurrentUserName();
+            if (username == null) username = Employee.CurrentUserName;
             return item.Members.FirstOrDefault(m => m.Name == username);
         }
 
@@ -576,11 +576,11 @@ namespace Entity
         public static RoleInProject RoleInProject(this Project item)
         {
             var p = CH.GetDataById<Project>(item.ID, "Members");
-            var name = Employee.GetCurrentUserName();
+            var name = Employee.CurrentUserName;
 
-            if (Employee.GetCurrentRoleLevel() == 99999)
+            if (Employee.CurrentRole.Level == 99999)
                 return Entity.RoleInProject.Administrator;
-            if (Employee.GetCurrentRoleLevel() == 1000)
+            if (Employee.CurrentRole.Level == 1000)
                 return Entity.RoleInProject.Director;
             else if (p.Manager == name)
                 return Entity.RoleInProject.Manager;
@@ -600,7 +600,7 @@ namespace Entity
     {
         public static bool SalesIsTheLoginUser(this Deal item)
         {
-            if (item.Sales == Employee.GetCurrentUserName())
+            if (item.Sales == Employee.CurrentUserName)
                 return true;
             else
                 return false;

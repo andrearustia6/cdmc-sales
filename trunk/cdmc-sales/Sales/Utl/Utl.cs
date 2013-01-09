@@ -30,12 +30,64 @@ namespace Utl
 
     public class Employee
     {
-        public static UserInfoModel GetCurrentUser()
+        public static UserInfoModel CurrentUser
         {
-            return GetUserByName(Employee.GetCurrentUserName());
+            get
+            {
+                if (HttpContext.Current != null && HttpContext.Current.Items["CurrentUser"] == null)
+                {
+                    HttpContext.Current.Items["CurrentUser"] = GetCurrentUser();
+                }
+                return HttpContext.Current.Items["CurrentUser"] as UserInfoModel;
+            }
+            set
+            {
+                if (HttpContext.Current != null)
+                    HttpContext.Current.Items["CurrentUser"] = value;
+            }
         }
 
-        public static string GetCurrentUserName()
+        public static Role CurrentRole
+        {
+            get
+            {
+                if (HttpContext.Current != null && HttpContext.Current.Items["CurrentRole"] == null)
+                {
+                    HttpContext.Current.Items["CurrentRole"] = GetCurrentRole();
+                }
+                return HttpContext.Current.Items["CurrentRole"] as Role;
+            }
+            set
+            {
+                if (HttpContext.Current != null)
+                    HttpContext.Current.Items["CurrentRole"] = value;
+            }
+        }
+
+        public static string CurrentUserName
+        {
+            get
+            {
+                if (HttpContext.Current != null && HttpContext.Current.Items["CurrentUserName"] == null)
+                {
+                    HttpContext.Current.Items["CurrentUserName"] = GetCurrentUserName();
+                }
+                return HttpContext.Current.Items["CurrentUserName"] as string;
+            }
+            set
+            {
+                if (HttpContext.Current != null)
+                    HttpContext.Current.Items["CurrentUserName"] = value;
+            }
+        }
+
+
+         static UserInfoModel GetCurrentUser()
+        {
+            return GetUserByName(Employee.CurrentUserName);
+        }
+
+         static string GetCurrentUserName()
         {
        
             var mode = ConfigurationManager.AppSettings["DebugModel"].ToString(); 
@@ -52,6 +104,7 @@ namespace Utl
 
         public static UserInfoModel GetUserByName(string username)
         {
+
             ProfileBase objProfile = ProfileBase.Create(username);
             var email = Membership.GetUser(username).Email;
             var roleid = (int)objProfile.GetPropertyValue("RoleLevelID");
@@ -125,7 +178,7 @@ namespace Utl
 
         public static object GetCurrentProfile(string propertyName)
         {
-            var user = Employee.GetCurrentUserName();
+            var user = Employee.CurrentUserName;
             ProfileBase objProfile = ProfileBase.Create(user);
 
             return objProfile.GetPropertyValue(propertyName);
@@ -147,12 +200,11 @@ namespace Utl
                 return "未配置";
         }
 
-        public static int GetCurrentRoleLevel()
+         static int GetCurrentRoleLevel()
         {
-            //return 10;
-            var name = Employee.GetCurrentUserName();
-            if (!string.IsNullOrEmpty(name))
-                return GetRole(Employee.GetCurrentUserName()).Level;
+
+            if (!string.IsNullOrEmpty(Employee.CurrentUserName))
+                return Employee.CurrentRole.Level;
             else
                 return -100;
         }
@@ -251,16 +303,17 @@ namespace Utl
             return role;
         }
 
-        public static Role GetCurrentRole()
+        static Role GetCurrentRole()
         {
-            return GetRole(Employee.GetCurrentUserName());
+
+            return GetRole(Employee.CurrentUserName);
         }
 
 
 
         public static bool IsEqualToCurrentUserName(string name)
         {
-            var user = Employee.GetCurrentUserName();
+            var user = Employee.CurrentUserName;
             return user.ToLower() == name.ToLower() ? true : false;
         }
         //public static User GetUser(string nameoremail)

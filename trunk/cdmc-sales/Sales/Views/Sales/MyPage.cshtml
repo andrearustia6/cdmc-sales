@@ -8,7 +8,7 @@
 }
 
 <center><h2>我的主页</h2></center>
-@Html.Partial("personinfo", Employee.GetCurrentUserName())
+@Html.Partial("personinfo", Employee.CurrentUserName)
 
 <fieldset>
 <legend>待打电话安排列表</legend>
@@ -19,7 +19,7 @@
         var members = new List<Member>();
         Model.ForEach(p =>
         {
-            members.Add(p.Members.FirstOrDefault(m => m.Name == Employee.GetCurrentUserName()));
+            members.Add(p.Members.FirstOrDefault(m => m.Name == Employee.CurrentUserName));
         });
 
         var calls = new List<LeadCall>();
@@ -49,11 +49,16 @@
                     @{
                         if (item.Lead.SubCompanyID == null)
                         {
+                            if (item.Lead.Company.DistrictNumber!=null)
+                            {
                             <p>@item.Lead.Company.DistrictNumber.TimeDifference</p>
+                             }
+                        
                         }
                         else
                         {
                             <p>@item.Lead.SubCompany.DistrictNumber.TimeDifference</p>
+                            
                         }
                         }
                     </text>);
@@ -83,7 +88,7 @@
 <fieldset>
 <legend>未付款出单列表</legend>
 @{
-    var user = Employee.GetCurrentUserName();
+    var user = Employee.CurrentUserName;
     var projects = CRM_Logical.GetSalesInvolveProject();
     var deals = CH.GetAllData<Deal>(d => projects.Any(p => p.ID == d.CompanyRelationship.ProjectID));
     deals = deals.FindAll(d => d.Sales == user && d.IsClosed == false && d.Abandoned == false);
@@ -156,7 +161,7 @@
         var ps = new List<Project>();
         ps.Add(p);
         var pcs = Utl.GetCallsInfo(ps, DateTime.Now.AddHours(-12), DateTime.Now);
-        var m = p.GetMemberInProjectByName(Employee.GetCurrentUserName());
+        var m = p.GetMemberInProjectByName(Employee.CurrentUserName);
         var pv = p.GetProjectMemberLeadCalls(pcs, DateTime.Now.AddHours(-12), DateTime.Now);
 
 

@@ -30,7 +30,7 @@ namespace Sales.Controllers
             else
                 ViewBag.Rate = 1;
 
-            var ps = from p in CH.DB.Packages.Include("PackageItems").OrderByDescending(o => o.Sequence)
+            var ps = from p in CH.DB.Packages.OrderByDescending(o => o.Sequence)
                      select p;
             //foreach (var p in ps)
             //{
