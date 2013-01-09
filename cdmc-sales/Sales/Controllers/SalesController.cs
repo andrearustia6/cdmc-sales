@@ -156,7 +156,7 @@ namespace Sales.Controllers
 
             if (ModelState.IsValid)
             {
-                item.Sales = Employee.GetCurrentUserName();
+                item.Sales = Employee.CurrentUserName;
                 CH.Create<Deal>(item);
                 return RedirectToAction("MyDealIndex", "Sales", new { projectid = projectid });
             }
@@ -209,7 +209,7 @@ namespace Sales.Controllers
             ViewBag.ProjectID = projectid;
             var data = CH.GetAllData<Deal>();
             ViewBag.ProjectID = projectid;
-            return View(data.FindAll(d => d.Sales == Employee.GetCurrentUserName() && d.CompanyRelationship.ProjectID == projectid).OrderByDescending(m => m.CreatedDate).ToList());
+            return View(data.FindAll(d => d.Sales == Employee.CurrentUserName && d.CompanyRelationship.ProjectID == projectid).OrderByDescending(m => m.CreatedDate).ToList());
         }
 
         public ViewResult DisplayDeal(int? id, int? projectid)
@@ -347,7 +347,7 @@ namespace Sales.Controllers
 
                 if (LeadCallTypeID != null)
                 {
-                    var mem = CH.GetAllData<Member>(m => m.ProjectID == projectid && m.Name == Employee.GetCurrentUserName()).FirstOrDefault();
+                    var mem = CH.GetAllData<Member>(m => m.ProjectID == projectid && m.Name == Employee.CurrentUserName).FirstOrDefault();
 
                     var leadcall = new LeadCall()
                     {
@@ -442,7 +442,7 @@ namespace Sales.Controllers
                 var p = CH.GetDataById<Project>(projectid, "Members");
                 CH.Create<Company>(item);
                 var ms = new List<Member>();
-                ms.Add(p.GetMemberInProjectByName(Employee.GetCurrentUserName()));
+                ms.Add(p.GetMemberInProjectByName(Employee.CurrentUserName));
 
                 var cr = new CompanyRelationship() { CompanyID = item.ID, ProjectID = projectid, Importancy = 1, Members = ms, Categorys = lc, CategoryString = categorystring, ProgressID = progressid };
                 CH.Create<CompanyRelationship>(cr);
@@ -591,7 +591,7 @@ namespace Sales.Controllers
             if (ModelState.IsValid)
             {
                 item = item.SetFlowNumber(project);
-                item.Member = Employee.GetCurrentUserName();
+                item.Member = Employee.CurrentUserName;
                 var p = CH.GetDataById<Project>(item.ProjectID, "Members");
                 var member = p.GetMemberInProjectByName(item.Member);
                 item.SalesTypeID = member.SalesTypeID;
@@ -832,7 +832,7 @@ namespace Sales.Controllers
   
         public PartialViewResult JsonLeadCalls(int? leadid, int? projectid)
         {
-            string user = Employee.GetCurrentUserName();
+            string user = Employee.CurrentUserName;
             var leadcalls = from lcs in CH.DB.LeadCalls
                             where lcs.LeadID == leadid && lcs.ProjectID == projectid
                             select lcs;
@@ -842,15 +842,15 @@ namespace Sales.Controllers
 
         public PartialViewResult JsonCompanyInfo(int? companyid,int?crmid,int?projectid)
         {
-            string user = Employee.GetCurrentUserName();
+            string user = Employee.CurrentUserName;
             ViewBag.ProjectID = projectid;
             ViewBag.CRMID = crmid;
          
-            var c = from company in CH.DB.Companys.Include("Leads")
+            var c = from company in CH.DB.Companys
                     where company.ID == companyid
                     select company;
 
-            var cr = from crm in CH.DB.CompanyRelationships.Include("Categorys")
+            var cr = from crm in CH.DB.CompanyRelationships
                      where crm.ID == crmid
                      select crm;
             var tc = cr.FirstOrDefault();
@@ -869,7 +869,7 @@ namespace Sales.Controllers
             if (condition == null) condition = string.Empty;
             var lc = condition.ToLower();
 
-            string user = Employee.GetCurrentUserName();
+            string user = Employee.CurrentUserName;
             var crms = from c in CH.DB.Companys
                        from cr in CH.DB.CompanyRelationships
                        where (c.Name_CH.ToLower().Contains(lc) || c.Name_EN.ToLower().Contains(lc)) && cr.Members.Any(m => m.Name == user) && cr.ProjectID == projectid && c.ID == cr.CompanyID
@@ -889,7 +889,7 @@ namespace Sales.Controllers
         [HttpPost]
         public PartialViewResult JsonAddSalesInputData(JosonSalesInputData data)
         {
-            string username = Employee.GetCurrentUserName();
+            string username = Employee.CurrentUserName;
             JsonValidateInput(data);
 
             if (data.Satisfied == true)
@@ -967,10 +967,10 @@ namespace Sales.Controllers
                     return;
                 }
 
-                string username = Employee.GetCurrentUserName();
+                string username = Employee.CurrentUserName;
 
                 //检查是否是可打公司
-                var dbcrm = from crm in CH.DB.CompanyRelationships.Include("Members")
+                var dbcrm = from crm in CH.DB.CompanyRelationships
                             where crm.ProjectID == data.ProjectID && (crm.Company.Name_CH == data.Company.Name_CH || crm.Company.Name_EN == data.Company.Name_EN )
                             select crm;
 
@@ -1028,7 +1028,7 @@ namespace Sales.Controllers
 
         public List<ViewContactedLead> GetContedtedLeadData(int? projectid)
         {
-            var account = Employee.GetCurrentUserName();
+            var account = Employee.CurrentUserName;
             var calls = CH.GetAllData<LeadCall>(l => l.ProjectID == projectid && account == l.Member.Name);
             var contectleads = calls.Distinct(new LeadCallDistinct());
             var ls = new List<ViewContactedLead>();

@@ -17,7 +17,7 @@
  
     <div class="top">
         <div class="top_1">
-           @Html.ActionLink("[" + Employee.GetCurrentUserName() + "]", "Index", "Account")
+           @Html.ActionLink("[" + Employee.CurrentUserName + "]", "Index", "Account")
            @Html.ActionLink("[¹ØÓÚ]", "Index", "About" ) 
            @Html.ActionLink("[ÍË³ö]", "LogOff", "Account")
         </div>
@@ -26,7 +26,7 @@
         <div class="page">
             <div>
                 @{ 
-                    var role = Employee.GetCurrentRole();
+                    var role = Employee.CurrentRole;
                     if (role!=null)
                     {
                         var score = role.Level;

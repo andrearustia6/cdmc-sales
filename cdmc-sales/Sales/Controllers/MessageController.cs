@@ -40,7 +40,7 @@ namespace Sales.Controllers
             if (ModelState.IsValid)
             {
 
-                item.Member = Employee.GetCurrentUserName();
+                item.Member = Employee.CurrentUserName;
                 var p = CH.GetDataById<Project>(item.ProjectID,"Members");
                 item = item.SetFlowNumber(p);
                 var m = p.GetMemberInProjectByName(item.Member);

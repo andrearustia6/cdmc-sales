@@ -66,7 +66,7 @@ public class RoleRequired : AuthorizeAttribute
     {
         bool skipAuthorization = filterContext.ActionDescriptor.IsDefined(typeof(AllowAnonymousAttribute), true)
         || filterContext.ActionDescriptor.ControllerDescriptor.IsDefined(typeof(AllowAnonymousAttribute), true);
-        var level = Employee.GetCurrentRoleLevel();
+        var level = Employee.CurrentRole.Level;
         if (level == 99999)
         {
             skipAuthorization = true;
@@ -111,7 +111,7 @@ public sealed class ProjectInformationAccess : AuthorizeAttribute
     public override void OnAuthorization(AuthorizationContext filterContext)
     {
         bool skipAuthorization = false;
-        var level = Employee.GetCurrentRoleLevel();
+        var level = Employee.CurrentRole.Level;
         if (Levels.Any(l=>l == level))
         {
             skipAuthorization = true;

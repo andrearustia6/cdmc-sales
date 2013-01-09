@@ -22,7 +22,7 @@ namespace Sales.Controllers
 
         public ViewResult MyIndex()
         {
-            return View(CH.GetAllData<Research>(r => r.Creator == Employee.GetCurrentUserName()).OrderByDescending(o => o.CreatedDate).ToList());
+            return View(CH.GetAllData<Research>(r => r.Creator == Employee.CurrentUserName).OrderByDescending(o => o.CreatedDate).ToList());
         }
 
 
@@ -32,7 +32,7 @@ namespace Sales.Controllers
                 return View(CH.GetAllData<Research>().OrderByDescending(o => o.CreatedDate).ToList());
             else if (Employee.EqualToManager())
             {
-                var ps = CH.GetAllData<Project>(p => p.Manager == Employee.GetCurrentUserName(), "Members");
+                var ps = CH.GetAllData<Project>(p => p.Manager == Employee.CurrentUserName, "Members");
                 var list = new List<Member>();
                 ps.ForEach(p => {
                    list.AddRange(p.Members);

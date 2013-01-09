@@ -62,9 +62,9 @@ namespace System.Web.Mvc
         public static List<Project> GetProjectByAccount(this Controller item,bool activate=true) 
         {
             List<Project> list = new List<Project>();
-            Role role = Employee.GetCurrentRole();
+            Role role = Employee.CurrentRole;
 
-            var username = Employee.GetCurrentUserName();
+            var username = Employee.CurrentUserName;
 
             if (role.Level == Role.LVL_Director)
             {
@@ -97,7 +97,7 @@ namespace System.Web.Mvc
         {
             if (string.IsNullOrEmpty(name))
             {
-                name = Employee.GetCurrentUserName();
+                name = Employee.CurrentUserName;
             }
 
             var p = CH.GetDataById<Project>(projectid, "Members");
@@ -283,7 +283,7 @@ namespace System.Web.Mvc
     {
         public static List<Project> GetProjectByRole(this Controller item)
         {
-            var role = Employee.GetCurrentRole();
+            var role = Employee.CurrentRole;
             if (role.Level >= 500 && role.Level < 1000)
                 return CH.GetAllData<Project>(p => p.RoleInProject() == RoleInProject.Manager && p.IsActived==true );
             else if (role.Level == 1000)
@@ -299,7 +299,7 @@ namespace System.Web.Mvc
     {
         public static void AddErrorStateIfCreatorIsTheLoginUserIsNotTheMarketInterface(this Controller item, Project target)
         {
-            if (target.Market != Employee.GetCurrentUserName())
+            if (target.Market != Employee.CurrentUserName)
                 item.ModelState.AddModelError("", "登陆用户不是项目的市场部接口人， 不允许进行操作");
         }
     }

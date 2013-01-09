@@ -111,7 +111,7 @@ namespace Sales.Controllers
             startdate = startdate == null ? new DateTime(1, 1, 1) : startdate;
             enddate = enddate == null ? new DateTime(9999, 1, 1) : enddate;
 
-            var account = Employee.GetCurrentUserName();
+            var account = Employee.CurrentUser;
  
             var members = from m in CH.DB.Members where m.ProjectID == projectid select m;
 
@@ -151,7 +151,7 @@ namespace Sales.Controllers
             startdate = startdate == null ? new DateTime(1, 1, 1) : startdate;
             enddate = enddate == null ? new DateTime(9999, 1, 1) : enddate;
 
-            var account = Employee.GetCurrentUserName();
+            var account = Employee.CurrentUser;
 
             var members = from m in CH.DB.Members where m.ProjectID == projectid select m;
 
@@ -160,7 +160,7 @@ namespace Sales.Controllers
             var viewCallListCharts = new List<ViewCallListChart>();
            
             //包含category的crm
-            var crms = from crm in CH.DB.CompanyRelationships.Include("Categoryes").Include("Members")  where crm.Categorys.Count>0 && crm.ProjectID == projectid  select crm;
+            var crms = from crm in CH.DB.CompanyRelationships  where crm.Categorys.Count>0 && crm.ProjectID == projectid  select crm;
             
             var categorys = from c in CH.DB.Categorys where c.ProjectID == projectid select c;
 

@@ -73,7 +73,7 @@ namespace Sales.Controllers
 
         public ActionResult Delete(int id)
         {
-            var count = from c in CH.DB.CompanyRelationships.Include("Categorys")
+            var count = from c in CH.DB.CompanyRelationships
                         where c.Categorys.Any(ca => ca.ID == id)
                         select c;
 
@@ -147,7 +147,7 @@ namespace Sales.Controllers
 
         public ActionResult Delete(int id)
         {
-            var count = from c in CH.DB.CompanyRelationships.Include("Categorys")
+            var count = from c in CH.DB.CompanyRelationships
                         where c.Categorys.Any(ca => ca.ID == id)
                         select c;
 

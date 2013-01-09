@@ -22,12 +22,12 @@
     @{
         //var data = ViewBag.AvaibleCRM==null? CH.GetAllData<CompanyRelationship>():ViewBag.AvaibleCRM as List<CompanyRelationship>;
         List<CompanyRelationship> data;
-        var lvl = Employee.GetCurrentRoleLevel();
+        var lvl = Employee.CurrentRole.Level;
         int? projectid = ViewBag.ProjectID as int?;
         var project = CH.GetDataById<Project>(projectid, "CompanyRelationships");
         if (lvl<=100 && lvl>=10)
         {
-            data = project.CompanyRelationships.FindAll(c => c.WhoCallTheCompanyMemberName().Split('|').Any(s => s == Employee.GetCurrentUserName()));
+            data = project.CompanyRelationships.FindAll(c => c.WhoCallTheCompanyMemberName().Split('|').Any(s => s == Employee.CurrentUserName));
         }
         else
         {
@@ -86,7 +86,7 @@
     </div>
     <div class="editor-field">
     @{
-        var name = Model == null ? Employee.GetCurrentUserName() : Model.Sales;
+        var name = Model == null ? Employee.CurrentUserName : Model.Sales;
         <input  name ="Sales" value="@name" />
       }
         @Html.ValidationMessageFor(model => model.Sales)

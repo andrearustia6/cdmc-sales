@@ -14,7 +14,7 @@ namespace BLL
         #region Project Management
         public List<Project> GetProjectByCurrentRole()
         {
-            var currentuser = Employee.GetCurrentUserName();
+            var currentuser = Employee.CurrentUserName;
             List<Project> projects = null;
             if (Employee.AsDirector())
             {
@@ -90,7 +90,7 @@ namespace BLL
 
         public static List<Project> GetUserInvolveProject()
         {
-            var lvl = Employee.GetCurrentRoleLevel();
+            var lvl = Employee.CurrentRole.Level;
             if (lvl == 5)
             {
                 return GetProductInvolveProject();
@@ -122,7 +122,7 @@ namespace BLL
         /// <returns></returns>
         public static List<Project> GetSalesInvolveProject()
         {
-            var name = Employee.GetCurrentUserName();
+            var name = Employee.CurrentUserName;
             var now = DateTime.Now;
             var projects = CH.GetAllData<Project>("Members");
 
@@ -132,7 +132,7 @@ namespace BLL
 
         public static List<Project> GetManagerInvolveProject()
         {
-            var name = Employee.GetCurrentUserName();
+            var name = Employee.CurrentUserName;
             var now = DateTime.Now;
             var projects = CH.GetAllData<Project>(p => p.Manager == name);
 
@@ -142,7 +142,7 @@ namespace BLL
 
         public static List<Project> GetDirectorInvolveProject()
         {
-            var name = Employee.GetCurrentUserName();
+            var name = Employee.CurrentUserName;
             var now = DateTime.Now;
             var projects = CH.GetAllData<Project>();
 
@@ -152,7 +152,7 @@ namespace BLL
 
         public static List<Project> GetProductInvolveProject()
         {
-            var name = Employee.GetCurrentUserName();
+            var name = Employee.CurrentUserName;
             var now = DateTime.Now;
             var projects = CH.GetAllData<Project>(p => p.Product == name);
             var data = projects.FindAll(p => p.IsActived == true );
@@ -161,7 +161,7 @@ namespace BLL
 
         public static List<Project> GetMarketInvolveProject()
         {
-            var name = Employee.GetCurrentUserName();
+            var name = Employee.CurrentUserName;
             var now = DateTime.Now;
             var projects = CH.GetAllData<Project>("Members");
 
