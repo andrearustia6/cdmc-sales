@@ -32,7 +32,7 @@ namespace BLL
                 }
                 else
                 {
-                    projects = CH.GetAllData<Project>("Members");
+                    projects = CH.GetAllData<Project>();
                     projects = projects.FindAll(p=>p.Members.Any(m=>Employee.IsEqualToCurrentUserName(m.Name)));
                 }
             }
@@ -61,7 +61,7 @@ namespace BLL
        
         public static bool IsCompanySelectedForProject(Company c, int projectid)
         {
-            var p = CH.GetAllData<Project>(i=>i.ID == projectid,"Companys").FirstOrDefault();
+            var p = CH.GetAllData<Project>(i=>i.ID == projectid).FirstOrDefault();
 
             if (p != null && p.CompanyRelationships.FirstOrDefault(child => child.CompanyID == c.ID) != null)
             {
@@ -124,7 +124,7 @@ namespace BLL
         {
             var name = Employee.CurrentUserName;
             var now = DateTime.Now;
-            var projects = CH.GetAllData<Project>("Members");
+            var projects = CH.GetAllData<Project>();
 
             var data = projects.FindAll(p=>p.Members.Any(m=>m.Name == name)&& p.IsActived==true );
             return data;
@@ -163,7 +163,7 @@ namespace BLL
         {
             var name = Employee.CurrentUserName;
             var now = DateTime.Now;
-            var projects = CH.GetAllData<Project>("Members");
+            var projects = CH.GetAllData<Project>();
 
             var data = projects.FindAll(p => p.Market == name && p.IsActived == true );
             return data;

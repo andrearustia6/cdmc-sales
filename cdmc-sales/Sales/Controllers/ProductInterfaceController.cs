@@ -27,7 +27,7 @@ namespace Sales.Controllers
         {
 
             projectid = this.TrySetProjectIDForUser(projectid);
-            var project = CH.GetDataById<Project>(projectid, "CompanyRelationships");
+            var project = CH.GetDataById<Project>(projectid);
             if (project != null)
             {
                 return View(project);
@@ -76,7 +76,7 @@ namespace Sales.Controllers
                 item = item.SetFlowNumber(project);
 
                 item.Member = Employee.CurrentUserName;
-                var p = CH.GetDataById<Project>(item.ProjectID, "Members");
+                var p = CH.GetDataById<Project>(item.ProjectID);
                 var member = p.GetMemberInProjectByName(item.Member);
 
                 item.SalesTypeID = member==null? 1:member.SalesTypeID;
@@ -185,7 +185,7 @@ namespace Sales.Controllers
                     lc = CH.GetAllData<Category>(i => checkedCategorys.Contains(i.ID));
                 }
 
-                var p = CH.GetDataById<Project>(projectid, "Members");
+                var p = CH.GetDataById<Project>(projectid);
                 CH.Create<Company>(item);
                 var ms = new List<Member>();
                 ms.Add(p.GetMemberInProjectByName(Employee.CurrentUserName));
@@ -241,7 +241,7 @@ namespace Sales.Controllers
 
             if (ModelState.IsValid)
             {
-                var cr = CH.GetDataById<CompanyRelationship>(crid, "Categorys");
+                var cr = CH.GetDataById<CompanyRelationship>(crid);
                 List<Category> lc = new List<Category>();
                 if (checkedCategorys != null)
                 {

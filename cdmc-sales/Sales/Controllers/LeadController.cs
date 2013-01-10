@@ -109,12 +109,12 @@ namespace Sales.Controllers
             {
                 ViewBag.ProjectID = ProjectID;
              
-                var leads = CH.GetAllData<Lead>(i => i.ID == leadid, "TargetOfPackages","Projects");
+                var leads = CH.GetAllData<Lead>(i => i.ID == leadid);
                 var data = leads.FirstOrDefault(l=>l.Projects.Any(p=>p.ID==ProjectID));
                 return View(data);
             }
             else
-               return View(CH.GetAllData<Lead>(i => i.ID == leadid, "TargetOfPackages").FirstOrDefault());
+               return View(CH.GetAllData<Lead>(i => i.ID == leadid).FirstOrDefault());
         }
 
         public ActionResult LeadCallIndex(int leadid)
@@ -138,7 +138,7 @@ namespace Sales.Controllers
 
             CH.Create<LeadCall>(callresult);
 
-            callresult = CH.GetAllData<LeadCall>(lc => lc.LeadID == callresult.LeadID, "LeadCallType").FirstOrDefault();
+            callresult = CH.GetAllData<LeadCall>(lc => lc.LeadID == callresult.LeadID).FirstOrDefault();
 
             //return new DataJsonResult<Lead>() { Data = data };
             return new DataJsonResult<LeadCall>() { Data = callresult };

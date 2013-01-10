@@ -16,7 +16,7 @@ namespace Entity
         public virtual Department Department { get; set; }
 
         [Display(Name = "部门")]
-        public int? DepartmentID  { get; set; }
+        public int? DepartmentID { get; set; }
     }
 
     /// <summary>
@@ -179,7 +179,7 @@ namespace Entity
         /// </summary>
         public virtual List<CompanyRelationship> CompanyRelationships { get; set; }
     }
-     [JsonIgnoreAttribute("CompanyRelationships")]
+    [JsonIgnoreAttribute("CompanyRelationships")]
     public class Category : EntityBase
     {
         public virtual Project Project { get; set; }
@@ -194,11 +194,12 @@ namespace Entity
         public virtual List<CompanyRelationship> CompanyRelationships { get; set; }
     }
 
-     [JsonIgnoreAttribute("Deals", "Project", "Categorys", "LeadCalls", "Members")]
+    [JsonIgnoreAttribute("Deals", "Project", "Categorys", "LeadCalls", "Members")]
     public class CompanyRelationship : EntityBase
     {
         string _categoryString;
-        public string CategoryString { 
+        public string CategoryString
+        {
             set { _categoryString = value; }
             get { return _categoryString; }
         }
@@ -223,7 +224,7 @@ namespace Entity
 
         public virtual Progress Progress { get; set; }
 
-      
+
         public int? ProgressID { get; set; }
         public virtual List<LeadCall> LeadCalls { get; set; }
 
@@ -324,21 +325,21 @@ namespace Entity
     /// <summary>
     /// 团队成员
     /// </summary>
-   [JsonIgnoreAttribute("CompanyRelationships", "LeadCalls", "Project", "TargetOfWeeks", "SalesType")]
+    [JsonIgnoreAttribute("CompanyRelationships", "LeadCalls", "Project", "TargetOfWeeks", "SalesType")]
     public class Member : EntityBase
     {
-        [Display(Name = "成员"),Required]
+        [Display(Name = "成员"), Required]
         public string Name { get; set; }
 
         [Display(Name = "字头")]
         public string Characters { get; set; }
 
-        public  virtual List<TargetOfWeek> TargetOfWeeks { get; set; }
+        public virtual List<TargetOfWeek> TargetOfWeeks { get; set; }
 
         public virtual List<LeadCall> LeadCalls { get; set; }
 
         [Display(Name = "销售类型"), Required]
-        public int? SalesTypeID  { get; set; }
+        public int? SalesTypeID { get; set; }
         public virtual SalesType SalesType { get; set; }
 
         [Display(Name = "所在项目"), Required]
@@ -353,16 +354,30 @@ namespace Entity
     /// <summary>
     /// 出单
     /// </summary>
-      [JsonIgnoreAttribute("CompanyRelationship")]
+    [JsonIgnoreAttribute("CompanyRelationship")]
     public class Deal : CompanyRelationshipChildItem
     {
         public virtual Project Project { get; set; }
         [Display(Name = "项目名称"), Required]
         public int? ProjectID { get; set; }
 
-        //public virtual CompanyRelationship CompanyRelationship { get; set; }
-        //[Display(Name = "客户公司"), Required]
-        //public int? CompanyRelationshipID { get; set; }
+
+        public virtual CompanyRelationship CompanyRelationship { get; set; }
+        [Display(Name = "客户公司"), Required]
+        public int? CompanyRelationshipID { get; set; }
+
+
+        [Display(Name = "客户签单人"), Required]
+        public string Committer { get; set; }
+
+        [Display(Name = "签单人联系方式")]
+        public string CommitterContect { get; set; }
+
+        [Display(Name = "预计参会人员")]
+        public string Applyers { get; set; }
+
+        [Display(Name = "参会商权益描述")]
+        public string TicketDiscription { get; set; }
 
         public virtual Package Package { get; set; }
         [Display(Name = "销售Package"), Required]
@@ -389,7 +404,7 @@ namespace Entity
         [Display(Name = "实际入账")]
         public decimal Income { get; set; }
 
-        [Display(Name = "出单人"),Required]
+        [Display(Name = "出单人"), Required]
         public string Sales { get; set; }
 
         [Display(Name = "应付款"), Required]
