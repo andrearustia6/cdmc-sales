@@ -7,7 +7,7 @@
 <fieldset>
     <legend>@SR.Form</legend>
 
-    <div class="display-label">Lead</div>
+    <div class="display-label">公司</div>
     <div class="display-field">
         @Html.DisplayFor(model => model.CompanyRelationship.Company.Name)
     </div>
@@ -17,12 +17,22 @@
         @Html.DisplayFor(model => model.Package.Name)
     </div>
 
-    <div class="display-label">ExpectedPaymentDate</div>
+    <div class="display-label">合约付款日期</div>
     <div class="display-field">
         @Html.DisplayFor(model => model.ExpectedPaymentDate)
     </div>
 
-    <div class="display-label">ActualPaymentDate</div>
+     <div class="display-label">签单人</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Committer)
+    </div>
+
+     <div class="display-label">签单人联系方式</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.CommitterContect)
+    </div>
+
+    <div class="display-label">实际付款日期</div>
     <div class="display-field">
         @Html.DisplayFor(model => model.ActualPaymentDate)
     </div>
@@ -30,17 +40,17 @@
     <div class="display-field">
         @Html.DisplayFor(model => model.SignDate)
     </div>
-    <div class="display-label">IsClosed</div>
+    <div class="display-label">是否已付款</div>
     <div class="display-field">
         @Html.DisplayFor(model => model.IsClosed)
     </div>
 
-    <div class="display-label">Income</div>
+    <div class="display-label">实际入账</div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Income)
     </div>
 
-    <div class="display-label">Payment</div>
+    <div class="display-label">出单价格</div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Payment)
     </div>
@@ -50,9 +60,14 @@
     </div>
 
 
-    <div class="display-label">PaymentDetail</div>
+    <div class="display-label">出单描述</div>
     <div class="display-field">
         @Html.DisplayFor(model => model.PaymentDetail)
+    </div>
+
+    <div class="display-label">参会权益描述</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.TicketDescription)
     </div>
 
     

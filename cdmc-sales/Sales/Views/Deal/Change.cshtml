@@ -67,6 +67,23 @@
         @Html.EditorFor(model => model.IsClosed)
         @Html.ValidationMessageFor(model => model.IsClosed)
     </div>
+
+    <div class="editor-label">
+        @Html.LabelFor(model => model.Committer)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.Committer)
+        @Html.ValidationMessageFor(model => model.Committer)
+    </div>
+
+    <div class="editor-label">
+        @Html.LabelFor(model => model.CommitterContect)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.CommitterContect)
+        @Html.ValidationMessageFor(model => model.CommitterContect)
+    </div>
+
      <div class="editor-label">
         @Html.LabelFor(model => model.ActualPaymentDate)
     </div>
@@ -91,12 +108,22 @@
       }
         @Html.ValidationMessageFor(model => model.Sales)
     </div>
+
+
     <div class="editor-label">
         @Html.LabelFor(model => model.PaymentDetail)
     </div>
     <div class="editor-field">
         @Html.TextAreaFor(model => model.PaymentDetail)
         @Html.ValidationMessageFor(model => model.PaymentDetail)
+    </div>
+
+    <div class="editor-label">
+        @Html.LabelFor(model => model.TicketDescription)
+    </div>
+    <div class="editor-field">
+        @Html.TextAreaFor(model => model.TicketDescription)
+        @Html.ValidationMessageFor(model => model.TicketDescription)
     </div>
  
 
@@ -105,3 +132,10 @@
        
 
 </fieldset>
+
+@{
+    if(Model!=null)
+    {
+        Html.Partial("Participants", Model.Participants);
+    }
+}

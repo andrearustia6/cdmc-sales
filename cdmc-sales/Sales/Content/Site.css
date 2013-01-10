@@ -99,7 +99,7 @@ page width. Or, you can specify an exact pixel width. */
     margin-left: auto;
     margin-right: auto;
     padding-top: 130px;
-    width: 930px;
+     width:100%;
 }
 header, #header
 {

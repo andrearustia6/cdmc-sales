@@ -361,23 +361,17 @@ namespace Entity
         [Display(Name = "项目名称"), Required]
         public int? ProjectID { get; set; }
 
-
-        public virtual CompanyRelationship CompanyRelationship { get; set; }
-        [Display(Name = "客户公司"), Required]
-        public int? CompanyRelationshipID { get; set; }
-
-
         [Display(Name = "客户签单人"), Required]
         public string Committer { get; set; }
+
+        [Display(Name = "参会客户")]
+        public virtual List<Participant> Participants { get; set; }
 
         [Display(Name = "签单人联系方式")]
         public string CommitterContect { get; set; }
 
-        [Display(Name = "预计参会人员")]
-        public string Applyers { get; set; }
-
-        [Display(Name = "参会商权益描述")]
-        public string TicketDiscription { get; set; }
+        [Display(Name = "权益描述"), MaxLength(2000)]
+        public string TicketDescription { get; set; }
 
         public virtual Package Package { get; set; }
         [Display(Name = "销售Package"), Required]

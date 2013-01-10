@@ -45,6 +45,7 @@ namespace Utl
         public DbSet<CompanyRelationship> CompanyRelationships { get; set; }
         public DbSet<Template> Templates { get; set; }
         public DbSet<SubCompany> SubCompanys { get; set; }
+        public DbSet<Participant> Participants { get; set; }
 
         public DB()
         {
