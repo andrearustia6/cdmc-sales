@@ -32,7 +32,7 @@ namespace Sales.Controllers
                 return View(CH.GetAllData<Research>().OrderByDescending(o => o.CreatedDate).ToList());
             else if (Employee.EqualToManager())
             {
-                var ps = CH.GetAllData<Project>(p => p.Manager == Employee.CurrentUserName, "Members");
+                var ps = CH.GetAllData<Project>(p => p.Manager == Employee.CurrentUserName);
                 var list = new List<Member>();
                 ps.ForEach(p => {
                    list.AddRange(p.Members);

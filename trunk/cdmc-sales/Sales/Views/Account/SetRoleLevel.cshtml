@@ -28,7 +28,7 @@
         @{
           
             List<Role> data;
-            var lvl = Employee.GetCurrentRoleLevel();
+            var lvl = Employee.CurrentRole.Level;
             if (lvl == 99999)
             {
                 data = CH.GetAllData<Entity.Role>(); 

@@ -104,7 +104,7 @@ namespace Sales.Controllers
              
                 if (checkedCategorys != null)
                 {
-                    item = CH.GetDataById<CompanyRelationship>(item.ID,"Categorys");
+                    item = CH.GetDataById<CompanyRelationship>(item.ID);
                     item.Categorys.Clear();
                     var ck = CH.GetAllData<Category>(c => checkedCategorys.Any(cc=>cc == c.ID));
                     ck.ForEach(c => {
@@ -125,7 +125,7 @@ namespace Sales.Controllers
                 }
                 else
                 {
-                    item = CH.GetDataById<CompanyRelationship>(item.ID, "Categorys");
+                    item = CH.GetDataById<CompanyRelationship>(item.ID);
                     item.Categorys.Clear();
                     CH.DB.SaveChanges();
                 }
@@ -147,7 +147,7 @@ namespace Sales.Controllers
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {
-            var item = CH.GetDataById<CompanyRelationship>(id,"Deals","LeadCalls");
+            var item = CH.GetDataById<CompanyRelationship>(id);
             var pid = item.ProjectID;
             item.Deals.ForEach(t =>
             {

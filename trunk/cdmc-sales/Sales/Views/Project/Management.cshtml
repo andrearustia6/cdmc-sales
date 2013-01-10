@@ -159,7 +159,7 @@
                     c.Bound(item => item.ID).Title("操作").Width(200).Template(@<span><a href=@Url.Content("~/Deal/Details/" + item.ID)>详细</a> </span>);
                 }).Resizable(resizing => resizing.Columns(true))
                                                                                                 .Filterable().Groupable()
-                                                                                                  .Pageable(page => page.PageSize(1)).Scrollable(scrolling => scrolling.Height(350))
+                                                                                                  .Pageable(page => page.PageSize(15)).Scrollable(scrolling => scrolling.Height(350))
 
                                                         )
        

@@ -89,7 +89,7 @@ namespace Sales.Controllers
             if (checkedRecords != null)
             {
                 var allselectedprojects = CH.GetAllData<Project>(item => checkedRecords.Any(cr => cr == item.ID), "CompanyRelationships");
-                var p = CH.GetDataById<Project>(projectid, "CompanyRelationships");
+                var p = CH.GetDataById<Project>(projectid);
                 if (p != null)
                 {
                     allselectedprojects.ForEach(nr =>
@@ -248,7 +248,7 @@ namespace Sales.Controllers
 
         public ViewResult Details(int id)
         {
-            var data = CH.GetDataById<Project>(id, "Categorys");
+            var data = CH.GetDataById<Project>(id);
             data.SaleBrief = HttpUtility.HtmlDecode(data.SaleBrief);
             return View(data);
         }
@@ -349,7 +349,7 @@ namespace Sales.Controllers
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {
-            var p = CH.GetAllData<Project>(i => i.ID == id, "CompanyRelationships", "Categorys", "Messages", "Members", "Templates", "Messages", "News", "TargetOfMonths", "PhoneSaleSupports").FirstOrDefault();
+            var p = CH.GetAllData<Project>(i => i.ID == id).FirstOrDefault();
             p.Templates.ForEach(t =>
             {
                 CH.Delete<Template>(t.ID);

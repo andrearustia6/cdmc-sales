@@ -36,7 +36,7 @@ namespace Sales.Controllers
 
             if (ModelState.IsValid)
             {
-                data = CH.GetDataById<CompanyRelationship>(crid, "LeadCalls").LeadCalls;
+                data = CH.GetDataById<CompanyRelationship>(crid).LeadCalls;
             }
             return View("SalesLeadCallsIndex", data.OrderByDescending(o => o.CallDate).ToList());
         }
@@ -54,7 +54,7 @@ namespace Sales.Controllers
 
             if (ModelState.IsValid)
             {
-                data = CH.GetDataById<CompanyRelationship>(crid, "LeadCalls").LeadCalls.FindAll(l => l.LeadID == leadid);
+                data = CH.GetDataById<CompanyRelationship>(crid).LeadCalls.FindAll(l => l.LeadID == leadid);
             }
             return View("SalesLeadCallsIndex", data);
         }
@@ -62,7 +62,7 @@ namespace Sales.Controllers
         public ActionResult AddLeadCall(int? crid, int? leadid)
         {
             //传拨打人到页面
-            var m = CH.GetDataById<Project>(CH.GetDataById<CompanyRelationship>(crid).ProjectID, "Members").GetProjectMemberByName();
+            var m = CH.GetDataById<Project>(CH.GetDataById<CompanyRelationship>(crid).ProjectID).GetProjectMemberByName();
             if (m != null)
                 ViewBag.MemberID = m.ID;
 
@@ -439,7 +439,7 @@ namespace Sales.Controllers
                     });
                 }
 
-                var p = CH.GetDataById<Project>(projectid, "Members");
+                var p = CH.GetDataById<Project>(projectid);
                 CH.Create<Company>(item);
                 var ms = new List<Member>();
                 ms.Add(p.GetMemberInProjectByName(Employee.CurrentUserName));
@@ -496,7 +496,7 @@ namespace Sales.Controllers
 
             if (ModelState.IsValid)
             {
-                var cr = CH.GetDataById<CompanyRelationship>(crid, "Categorys");
+                var cr = CH.GetDataById<CompanyRelationship>(crid);
                 List<Category> lc = new List<Category>();
                 if (checkedCategorys != null)
                 {
@@ -538,7 +538,7 @@ namespace Sales.Controllers
 
             if (projectid != null)
             {
-                var project = CH.GetDataById<Project>(projectid, "Members");
+                var project = CH.GetDataById<Project>(projectid);
                 var data = project.GetCRM();
                 return View(data.OrderByDescending(o => o.CreatedDate).ToList());
             }
@@ -592,7 +592,7 @@ namespace Sales.Controllers
             {
                 item = item.SetFlowNumber(project);
                 item.Member = Employee.CurrentUserName;
-                var p = CH.GetDataById<Project>(item.ProjectID, "Members");
+                var p = CH.GetDataById<Project>(item.ProjectID);
                 var member = p.GetMemberInProjectByName(item.Member);
                 item.SalesTypeID = member.SalesTypeID;
                 CH.Create<Message>(item);
@@ -753,7 +753,7 @@ namespace Sales.Controllers
             var leads = from l in CH.DB.Leads where l.CompanyID == company.ID select l;
             company.Leads = leads.ToList();
 
-            var cr = CH.GetDataById<CompanyRelationship>(crmid, "Categorys");
+            var cr = CH.GetDataById<CompanyRelationship>(crmid);
                 List<Category> lc = new List<Category>();
                 if (categorys != null)
                 {

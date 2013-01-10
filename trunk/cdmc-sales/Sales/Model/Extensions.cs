@@ -575,7 +575,7 @@ namespace Entity
 
         public static RoleInProject RoleInProject(this Project item)
         {
-            var p = CH.GetDataById<Project>(item.ID, "Members");
+            var p = CH.GetDataById<Project>(item.ID);
             var name = Employee.CurrentUserName;
 
             if (Employee.CurrentRole.Level == 99999)
@@ -716,7 +716,7 @@ namespace Entity
         public static string CategoryString(this CompanyRelationship item)
         {
             //重读，确保读到refernced的category
-            var cs = CH.GetDataById<CompanyRelationship>(item.ID, "Categorys");
+            var cs = CH.GetDataById<CompanyRelationship>(item.ID);
             string result = string.Empty;
             cs.Categorys.ForEach(c =>
             {
