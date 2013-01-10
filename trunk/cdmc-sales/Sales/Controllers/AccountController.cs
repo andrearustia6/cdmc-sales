@@ -81,7 +81,7 @@ namespace MvcGlobalAuthorize.Controllers
         public ActionResult ResetPassword(string username)
         {
             if (username == null) return View();
-            var user = Membership.GetUser(username);
+            var user = Membership.GetUser(username.Trim());
             if(user.IsLockedOut)
                 user.UnlockUser();
             if (user != null)

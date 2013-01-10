@@ -1,0 +1,8 @@
+﻿@using Entity
+@using Utl
+@model List<Participant>
+
+@foreach(var p in  Model)
+{
+    @Html.Partial("ParticipantInfo", p)
+}

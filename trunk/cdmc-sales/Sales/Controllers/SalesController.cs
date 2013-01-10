@@ -145,6 +145,26 @@ namespace Sales.Controllers
             }
         }
 
+        #endregion participant
+        public ActionResult ModifyParticipant(int? dealid, int? projectid)
+        {
+            ViewBag.ProjectID = projectid;
+            ViewBag.DealID = dealid;
+            return View(CH.GetDataById<Deal>(dealid));
+        }
+
+        [HttpPost]
+        public PartialViewResult JsonModifyParticipant(Participant p)
+        {
+            if (p.ID == 0)
+                CH.Create<Participant>(p);
+            else
+                CH.Edit<Participant>(p);
+            return PartialView(@"~\views\shared\Participants.cshtml", CH.GetAllData<Participant>(pt=>pt.DealID==p.DealID));
+
+        }
+
+        #region
         #endregion
 
         #region deal
@@ -867,7 +887,7 @@ namespace Sales.Controllers
         public PartialViewResult JsonGetCompanys(int? projectid, string condition,string sort )
         {
             if (condition == null) condition = string.Empty;
-            var lc = condition.ToLower();
+            var lc = condition.Trim().ToLower();
 
             string user = Employee.CurrentUserName;
             var crms = from c in CH.DB.Companys
@@ -1095,7 +1115,7 @@ namespace Sales.Controllers
     {
         public bool Equals(LeadCall x, LeadCall y)
         {
-            if (x.CallDate > y.CallDate)
+            if (x.CallDate > y.CallDate && (x.LeadID == y.LeadID))
             { return true; }
             else
             { return false; }

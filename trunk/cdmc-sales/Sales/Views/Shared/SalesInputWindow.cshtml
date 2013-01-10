@@ -172,3 +172,9 @@
 <input id="formsubmit"  type="button" value="提交"/><input id="formcancel"  type="button" value="取消"/>
 </center>
 
+@{ Html.Telerik().ScriptRegistrar().OnDocumentReady(@<text> 
+        onPageLoad();
+        onSalesInputInitial();
+       
+    </text>);
+}

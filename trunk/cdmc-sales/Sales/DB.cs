@@ -19,5 +19,13 @@ namespace Sales
         public DbSet<DistrictNumber> DistrictNumber { get; set; }
 
         public DbSet<Company> Company { get; set; }
+
+        public DbSet<Participant> Participant { get; set; }
+
+        public DbSet<Deal> Deal { get; set; }
+
+        public DbSet<ParticipantType> ParticipantType { get; set; }
+
+        public DbSet<Project> Project { get; set; }
     }
 }

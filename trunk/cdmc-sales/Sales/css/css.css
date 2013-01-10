@@ -4,7 +4,7 @@ ul{ list-style-type: none;}
 img{vertical-align:top; border:0; margin:0px; padding:0px;}
 .clear{ clear:both; height:0; overflow:hidden}
 
-.top{ width:930px; margin:0 auto; height:170px;}
+.top{ width:95%; margin:0 auto; height:170px;}
 .top_1{ float:right; padding:15px 0;}
 .top_1 a{ font-size:12px; color:#f18024; padding-left:10px; text-decoration:none;}
 .top_1 a:hover{color:#f18024;}
@@ -13,7 +13,7 @@ img{vertical-align:top; border:0; margin:0px; padding:0px;}
 
 
 .bottom{ background:#f4a05c; clear:both;}
-.bottom_2{ width:930px; margin:0 auto; padding-bottom:100px;}
+.bottom_2{ width:95%; margin:0 auto; padding-bottom:100px;}
 .xiangmu{ height:56px; background:#f6ac71;}
 .xiangmu LI {
 	PADDING-BOTTOM: 0px; LINE-HEIGHT: 56px; PADDING-LEFT: 10px; WIDTH: 110px; PADDING-RIGHT: 0px; font-family:'微软雅黑';FLOAT: left; HEIGHT: 56px; COLOR: #a34900; FONT-SIZE: 14px; PADDING-TOP: 0px}

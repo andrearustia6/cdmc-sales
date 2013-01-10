@@ -1,4 +1,4 @@
-﻿function onPageLoad(e) {
+﻿function onAvailiableCompanyPageLoad(e) {
     addDatabindings();
     onCRMsUpdate();
     onInitialSearch();

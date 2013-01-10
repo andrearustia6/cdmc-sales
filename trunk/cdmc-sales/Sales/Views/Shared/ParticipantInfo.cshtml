@@ -1,0 +1,42 @@
+﻿@using Entity
+@using Utl
+@model Participant
+<fieldset>
+    <legend>参会客户信息</legend>
+    <div>
+        <input type="button" value="更改" />
+        <table width="95%">
+            <tr>
+                <td>
+                    客户名称：@Html.EditorFor(m => m.Name)
+                </td>
+                <td>
+                    客户职位：@Html.EditorFor(m => m.Title)
+                </td>
+                <td>
+                   客户性别：@Html.EditorFor(m => m.Gender )
+                </td>
+           </tr>
+            <tr>
+                <td>
+                   移动电话：@Html.EditorFor(m => m.Mobile)
+                </td>
+                <td>
+                   电子邮箱：@Html.EditorFor(m => m.Email )
+                </td>
+                <td>
+                   客户直线：@Html.EditorFor(m => m.Contact)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    参会类型：@Html.DropDownListFor(m => m.ParticipantTypeID, new SelectList(CH.GetAllData<ParticipantType>(),"ID","Name"),"-请选择-")
+                </td>
+            </tr>
+        </table>
+        @Html.HiddenFor(m=>m.ProjectID)
+        @Html.HiddenFor(m=>m.DealID)
+        @Html.HiddenFor(m=>m.ID)
+    </div>
+
+</fieldset>
