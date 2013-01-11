@@ -156,11 +156,21 @@ namespace Sales.Controllers
         [HttpPost]
         public PartialViewResult JsonModifyParticipant(Participant p)
         {
+            if (string.IsNullOrEmpty(p.Name))
+            {
+                return PartialView(@"~\views\shared\PageMessage.cshtml", "名字不能为空");
+            }
+
+            if ( p.ParticipantTypeID == null)
+            {
+                return PartialView(@"~\views\shared\PageMessage.cshtml", "参会类型不能为空");
+            }
+
             if (p.ID == 0)
                 CH.Create<Participant>(p);
             else
                 CH.Edit<Participant>(p);
-            return PartialView(@"~\views\shared\Participants.cshtml", CH.GetAllData<Participant>(pt=>pt.DealID==p.DealID));
+            return PartialView(@"~\views\shared\ParticipantContainer.cshtml", CH.GetDataById<Deal>(p.DealID));
 
         }
 

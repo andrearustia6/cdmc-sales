@@ -31,7 +31,7 @@
         @Html.LabelFor(model => model.DistrictNumberID)
     </div>
     <div class="editor-field">
-        @Html.DropDownListFor(model =>model.DistrictNumberID,new SelectList(CH.GetAllData<DistrictNumber>(),"ID","Name"), "-请选择-")
+        @Html.DropDownListFor(model =>model.DistrictNumberID,new SelectList(CH.GetAllData<DistrictNumber>().OrderBy(o=>o.Country).ToList(),"ID","Name"), "-请选择-")
         @Html.ValidationMessageFor(model => model.DistrictNumberID)
     </div>
 

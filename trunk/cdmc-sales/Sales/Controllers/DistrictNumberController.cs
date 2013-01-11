@@ -21,7 +21,7 @@ namespace Sales.Controllers
 
         public ViewResult Index()
         {
-            return View(CH.GetAllData<DistrictNumber>());
+            return View(CH.GetAllData<DistrictNumber>().OrderBy(o=>o.Country).ToList());
         }
 
         public ViewResult Details(int id)

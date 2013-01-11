@@ -490,9 +490,9 @@ function onSalesInputInitial() {
                 if (result.indexOf("has_msg") < 0) {
                     var area = $('#FreshArea').val().split('&');
                     $('#salesinputwindowcontainer').html(result);
-                    if (area[0] == 'companys') {
+                    //if (area[0] == 'companys') {
                         onCRMsUpdate();
-                    }
+                    //}
                     
                     freshCompany();
                     onSalesInputInitial();

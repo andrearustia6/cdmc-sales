@@ -67,7 +67,7 @@
                     @Html.LabelFor(model => model.Address)： @Html.EditorFor(model => model.Address)
                 </td>
                 <td>
-                 @Html.LabelFor(model => model.DistrictNumberID)： @Html.DropDownListFor(model => model.DistrictNumberID, new SelectList(CH.GetAllData<DistrictNumber>(), "ID", "Name"), "-请选择-")
+                 @Html.LabelFor(model => model.DistrictNumberID)： @Html.DropDownListFor(model => model.DistrictNumberID, new SelectList(CH.GetAllData<DistrictNumber>().OrderBy(o=>o.Country).ToList(), "ID", "Name"), "-请选择-")
                     
                 </td>
             </tr>
