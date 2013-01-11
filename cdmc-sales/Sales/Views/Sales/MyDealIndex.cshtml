@@ -23,6 +23,8 @@
                                                                                                                                            {<p>实收款: @item.Sum.Format("{0:c}")</p>}</text>).GroupFooterTemplate(@<text>@if (item.Sum != null)
                                                                                                                                                                                                                                          {<p>实收款: @item.Sum.Format("{0:c}")</p>}</text>).Width(100); ;
                     c.Bound(item => item.IsClosed).Width(70);
+                    c.Bound(item => item.Committer).Width(100);
+                    c.Bound(item => item.CommitterContect).Width(100);
                     c.Bound(item => item.Abandoned).Width(70);
                     c.Bound(item => item.ExpectedPaymentDate).Format("{0:d}").Width(90);
                     c.Bound(item => item.ActualPaymentDate).Format("{0:d}").Width(100);

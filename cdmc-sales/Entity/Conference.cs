@@ -119,7 +119,7 @@ namespace Entity
         [Display(Name = "关联出单")]
         public int?  DealID { get; set; }
 
-        [Display(Name = "参会人名称")]
+        [Display(Name = "参会人名称"), Required]
         public string Name { get; set; }
 
         [Display(Name = "职位")]

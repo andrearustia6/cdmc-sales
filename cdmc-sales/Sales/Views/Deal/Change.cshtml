@@ -85,6 +85,14 @@
     </div>
 
      <div class="editor-label">
+        @Html.LabelFor(model => model.CommitterEmail )
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.CommitterEmail)
+        @Html.ValidationMessageFor(model => model.CommitterEmail)
+    </div>
+
+     <div class="editor-label">
         @Html.LabelFor(model => model.ActualPaymentDate)
     </div>
     <div class="editor-field">

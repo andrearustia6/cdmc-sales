@@ -1,65 +1,26 @@
-﻿@{
-    ViewBag.Title = "更改参会客户";
-}
+﻿
 @using Entity
 @using Utl
 @model Deal
 <fieldset>
 <legend>参会公司</legend>
-@Html.DisplayFor(m=>m.CompanyRelationship.Company.Name)
-</fieldset>
-
-@if (Model.Participants.Count > 0)
-{
-    @Html.Partial("Participants", Model.Participants)
-}
-
-<fieldset>
-    <legend>添加新的客户</legend>
-    <center>
-    <div style="width:900px; margin:20px;" class="addParticipant">
-        
-        <table >
-            <tr>
-                <td>
-                    客户名称：@Html.Editor("Name")
-                </td>
-                <td>
-                    客户职位：@Html.Editor("Title")
-                </td>
-                
-                <td>
-                    客户性别：@Html.Editor("Gender" )
-                </td>
-            </tr>
-            <tr>
-                 <td>
-                    移动电话：@Html.Editor("Mobile")
-                </td>
-                <td>
-                    客户直线：@Html.Editor("Contact")
-                </td>
-                <td>
-                    电子邮箱：@Html.Editor("Email" )
-                </td>
-                
-          </tr>
-          <tr>
-                <td>
-                    参会类型：@Html.DropDownList("ParticipantTypeID", new SelectList(CH.GetAllData<ParticipantType>(), "ID", "Name"), "-请选择-")
-                </td>
-            </tr>
-        </table>
-        <center>
-        <input type="button" id="addparticipant" style=" margin:20px;" value=" 添加 " />
-        </center>
-        @Html.Hidden("ProjectID",Model.ProjectID)
-        @Html.Hidden("DealID", Model.ID)
-    </div>
-    </center>
+<table width="100%">
+<tr>
+<td>公司名称：@Html.DisplayFor(m=>m.CompanyRelationship.Company.Name)</td>
+<td>公司总机：@Html.DisplayFor(m=>m.CompanyRelationship.Company.Contact)</td>
+<td>公司传真：@Html.DisplayFor(m=>m.CompanyRelationship.Company.Fax)</td>
+</tr>
+<tr>
+<td>签单客户：@Html.DisplayFor(m=>m.Committer)</td>
+<td>联系方式：@Html.DisplayFor(m=>m.CommitterContect)</td>
+<td>联系邮箱：@Html.DisplayFor(m=>m.CommitterEmail)</td>
+</tr>
+</table>
 
 </fieldset>
-
+<div class="participantContainer">
+@Html.Partial("ParticipantContainer", Model)
+</div>
 @{ Html.Telerik().ScriptRegistrar().OnDocumentReady(@<text> 
         onModifyParticipantPageLoad();
     </text>);

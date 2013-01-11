@@ -1,8 +1,29 @@
 ﻿@using Entity
 @using Utl
 @model List<Participant>
-
-@foreach(var p in  Model)
+<center>
+<div >
+@if (Model != null && Model.Count > 0)
+{ 
+ @(Html.Telerik().PanelBar().Name("p").Items(childs =>
 {
-    @Html.Partial("ParticipantInfo", p)
+    foreach (var p in Model)
+    {
+        Participant t = p;
+        childs.Add().Text(p.Name + "  " + p.Title + "   " + p.Contact).Content(@<text>@RenderChild(t)</text>);
+    }
+})
+)
+}  
+</div>
+</center>
+
+@helper RenderChild(Participant i)
+{
+    <div>
+    @{
+    var c = i;
+    @Html.Partial("ParticipantInfo", i);
+        }
+    </div>
 }

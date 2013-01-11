@@ -58,7 +58,7 @@
         </tr>
         <tr>
             <td colspan="2">
-                区号/时差： @Html.DropDownList("DistrictNumberID", new SelectList(CH.GetAllData<DistrictNumber>(),
+                区号/时差： @Html.DropDownList("DistrictNumberID", new SelectList(CH.GetAllData<DistrictNumber>().OrderBy(o=>o.Country).ToList(),
                 "ID", "Name"), "-请选择-")
             </td>
              

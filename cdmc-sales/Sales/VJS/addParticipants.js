@@ -1,10 +1,50 @@
 ﻿function onModifyParticipantPageLoad() {
-    var $addpdiv = $('.addParticipant');
-    
-    initialAddParticipantBtn($addpdiv);
+    initialButtons();
 }
 
-function initialAddParticipantBtn($addpdiv) {
+function initialButtons() { 
+    initialAddParticipantBtn();
+    initialEditParticipantBtn();
+}
+
+function initialEditParticipantBtn() {
+
+    var $editdiv = $('.editparticipant');
+    $editdiv.each(function () {
+        var $this = $(this);
+        $this.find('#savebtn').unbind("click").bind("click", function () {
+            var p = getParticipant($this);
+
+            $.ajax({
+                url: "/sales/JsonModifyParticipant",
+                type: 'POST',
+                dataType: 'html',
+                contentType: 'application/json; charset=utf-8',
+                data: p,
+                success: function (result) {
+
+                    if (result.indexOf("has_msg") < 0) {
+                        alert('保存成功');
+                        $('.participantContainer').html(result);
+                        initialButtons();
+                    }
+                    else {
+                        $this.find('.messageparticipant').html(result);
+                    }
+                },
+                error: function (xhr, status) {
+                    alert(xhr.responseText);
+                }
+            });
+
+
+        });
+    });
+
+}
+
+function initialAddParticipantBtn() {
+    var $addpdiv = $('.addParticipant');
     $addpdiv.find('#addparticipant').unbind("click").bind("click", function () {
         var p = getParticipant($addpdiv);
         $.ajax({
@@ -14,8 +54,16 @@ function initialAddParticipantBtn($addpdiv) {
             contentType: 'application/json; charset=utf-8',
             data: p,
             success: function (result) {
-                alert('保存成功');
-                initialAddParticipantBtn(addpdiv);
+
+                if (result.indexOf("has_msg") < 0) {
+                    alert('保存成功');
+                    initialButtons();
+                    $('.participantContainer').html(result);
+                    initialButtons();
+                }
+                else {
+                    $('.participantContainer').find('.inputmessageaddparticipant').html(result);
+                }
             },
             error: function (xhr, status) {
                 alert(xhr.responseText);

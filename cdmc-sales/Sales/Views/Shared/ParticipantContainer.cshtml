@@ -1,0 +1,65 @@
+﻿@using Utl
+@using Entity
+@model Deal
+<div>      
+@if (Model.Participants.Count > 0)
+{
+    <fieldset style="width:80%;">
+    <legend>参会客户列表</legend>
+    <div class="participantLists" >
+    @Html.Partial("Participants", Model.Participants)
+    </div>
+    </fieldset>
+}
+
+
+
+<fieldset style="width:80%;">
+    <legend>添加新的客户</legend>
+    <center>
+            <div class="inputmessageaddparticipant">
+@Html.Partial("PageMessage",string.Empty)
+</div>
+    <div  class="addParticipant">
+
+        <table  >
+            <tr>
+                <td>
+                    客户名称：@Html.Editor("Name")<font style=" color:Red" >*</font>
+                </td>
+                <td>
+                    客户职位：@Html.Editor("Title")
+                </td>
+                
+                <td>
+                    客户性别：@Html.DropDownList("Gender", new SelectList(new List<string>() { "Mr","Mrs"},"-请选择-"))
+                </td>
+            </tr>
+            <tr>
+                 <td>
+                    移动电话：@Html.Editor("Mobile")
+                </td>
+                <td>
+                    客户直线：@Html.Editor("Contact")
+                </td>
+                <td>
+                    电子邮箱：@Html.Editor("Email" )
+                </td>
+                
+          </tr>
+          <tr>
+                <td>
+                    参会类型：@Html.DropDownList("ParticipantTypeID", new SelectList(CH.GetAllData<ParticipantType>(), "ID", "Name"), "-请选择-")<font style=" color:Red" >*</font>
+                </td>
+            </tr>
+        </table>
+        <center>
+        <input type="button" id="addparticipant" style=" margin:20px;" value=" 添加新客户 " />
+        </center>
+        @Html.Hidden("ProjectID",Model.ProjectID)
+        @Html.Hidden("DealID", Model.ID)
+    </div>
+    </center>
+
+</fieldset>
+</div> 
