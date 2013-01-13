@@ -19,13 +19,13 @@ namespace Model
     public class ViewCategoryCallSum
     {
 
-        //打了几个lead
-        public int LeadCalledCountNumber { get; set; }
+        //打了几个Company
+        public int CompanyCalledCountNumber { get; set; }
 
         //Category的名称 
         public string CategoryName { get; set; }
 
-        public string CategoryCountName { get { return  CategoryName +": 已打"+ LeadCalledCountNumber+"个Lead"; } }
+        public string CategoryCountName { get { return CategoryName + ": 已打" + CompanyCalledCountNumber + "个公司"; } }
     }
 
     public class ViewCompanyCallSum

@@ -159,8 +159,8 @@ namespace Sales.Controllers
 
             var viewCallListCharts = new List<ViewCallListChart>();
            
-            //包含category的crm
-            var crms = from crm in CH.DB.CompanyRelationships  where crm.Categorys.Count>0 && crm.ProjectID == projectid  select crm;
+            //包含category的已打crm
+            var crms = from crm in CH.DB.CompanyRelationships  where crm.Categorys.Count>0 && crm.LeadCalls.Count>0  && crm.ProjectID == projectid  select crm;
             
             var categorys = from c in CH.DB.Categorys where c.ProjectID == projectid select c;
 
@@ -177,16 +177,14 @@ namespace Sales.Controllers
 
                 foreach (var c in categorys)
                 {
-                    var mcallleads =  from l in leads
-                                      from lc in mleadcalls
-                                      from crm in crms
-                                      where lc.CompanyRelationshipID == crm.ID && l.ID == lc.LeadID && crm.Categorys.Any(cate=>cate.ID == c.ID)
-                                               select l;
+                    var cs = from crm in crms
+                             where crm.Categorys.Any(cate => cate.ID == c.ID)
+                             select crm;
 
-                    if (mcallleads.Count() > 0)
+                    if (cs.Count() > 0)
                     {
 
-                        categorysum.Add(new ViewCategoryCallSum() { CategoryName = c.Name, LeadCalledCountNumber = mcallleads.Distinct().Count() });
+                        categorysum.Add(new ViewCategoryCallSum() { CategoryName = c.Name, CompanyCalledCountNumber = cs.Count() });
                     }
                 }
                 viewCallListCharts.Add(new ViewCallListChart() { Member = m, ViewCategoryCallSum = categorysum });
