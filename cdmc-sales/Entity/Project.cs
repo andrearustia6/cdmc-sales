@@ -417,6 +417,9 @@ namespace Entity
         [Display(Name = "成熟度")]
         public String Name { get; set; }
 
+        [Display(Name = "编码")]
+        public int? Code { get; set; }
+
     }
 
 
