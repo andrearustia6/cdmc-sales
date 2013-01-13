@@ -1,0 +1,33 @@
+﻿@{
+    ViewBag.Title = "已签约公司";
+}
+@using Entity
+@model List<CompanyRelationship>
+@Html.Partial("Projectselector")
+@if (Model != null)
+{
+@(Html.Telerik().Grid(Model).Name("pc").DataKeys(keys =>
+                {
+                    keys.Add(s => s.ID);
+                })
+                .Columns(c =>
+                {
+                    c.Bound(item => item.Company.Name).Title("公司名");
+                    c.Bound(item => item.Deals.Count).Title("已出单数");
+                    c.Bound(item => item.Deals).Template(@<text>@{var deal = item.Deals.FirstOrDefault();
+                                                                  if (deal != null)
+                                                                  {
+                                                                      <p> @deal.Sales</p>;
+                                                                  }
+                                                                  }</text>).Title("首单出单人");
+                    c.Bound(item => item.SalesOnTheCompany );
+                    c.Bound(item => item.Progress.Name);
+                    c.Bound(item => item.CategoryString).Title("Category");
+
+                })
+                            .Resizable(resizing => resizing.Columns(true))
+                            .Pageable(page => page.PageSize(10))
+                            .Filterable().Groupable()
+                            .Scrollable(scrolling => scrolling.Height(350))
+)
+}

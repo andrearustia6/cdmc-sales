@@ -162,6 +162,12 @@
                            item.Add().Url("~/news/Index").Text("项目新闻");
                        });
                    }
+                   
+                      menu.Add().Text("黄区公司").ImageUrl("~/Content/Common/Icons/GridView.gif").Items(item =>
+                       {
+                           item.Add().Url("~/ProtectedCompanys/CompanyIndex").Text("被保护的公司");
+                       });
+                   
 
                    menu.Add().Text("销售信息").ImageUrl("~/Content/Common/Icons/docking.gif").Items(item =>
                    {
