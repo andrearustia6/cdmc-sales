@@ -31,8 +31,24 @@
                     <a href=@Url.Content("~/Deal/Edit/" + item.ID) >编辑</a> | <a href=@Url.Content("~/Deal/Details/" + item.ID)>详细</a>  | <a href=@Url.Content("~/Deal/delete/" + item.ID) >删除</a> 
                    </span>);
                 }).DetailView(d=>d.Template(@<text>
-
-                </text>))
+                @(Html.Telerik().Grid<Participant>(item.Participants).Name("mastersheet"+ item.ID).DataKeys(keys =>
+                {
+                    keys.Add(s => s.ID);
+                })
+                .Columns(c =>
+                {
+                    c.Bound(o => o.Name);
+                    c.Bound(o => o.Title);
+                    c.Bound(o => o.Contact);
+                    c.Bound(o => o.Mobile );
+                    c.Bound(o => o.Email).Width(50);
+                    c.Bound(o => o.ParticipantType.Name);
+                   
+                }) .Resizable(resizing => resizing.Columns(true))
+                                        .Filterable().Sortable().Groupable()
+                                        .Pageable(p => p.PageSize(20))
+                                        .Scrollable(scrolling => scrolling.Height(350))
+                )</text>))
                                         .Resizable(resizing => resizing.Columns(true))
                                         .Filterable().Sortable().Groupable()
                                         .Pageable(p => p.PageSize(20))
