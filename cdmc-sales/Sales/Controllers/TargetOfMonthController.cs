@@ -169,7 +169,7 @@ namespace Sales.Controllers
         [HttpPost]
         public ActionResult Edit(TargetOfMonth item)
         {
-            //this.AddErrorStateIfTargetOfMonthNoValid(item);
+            this.AddErrorStateIfTargetOfMonthNoValid(item);
             if (ModelState.IsValid)
             {
                 CH.Edit<TargetOfMonth>(item);

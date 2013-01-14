@@ -8,6 +8,33 @@ using BLL;
 
 namespace System.Web.Mvc
 {
+
+    public static class TargetOfMonthForMemberControllerExtension
+    {
+        public static void AddErrorStateIfTargetOfMonthNoValid(this Controller item, TargetOfMonthForMember t)
+        {
+            item.AddErrorStateIfStartDateLaterThanEndDate(t.StartDate, t.EndDate);
+
+            if (t.StartDate.StartOfMonth() != t.StartDate)
+                item.ModelState.AddModelError("", "开始时间必须是每个月的一号");
+
+            if (t.EndDate.EndOfMonth() != t.EndDate)
+                item.ModelState.AddModelError("", "结束时间必须是每个月的最后一天");
+
+            if (t.BaseDeal > t.Deal)
+                item.ModelState.AddModelError("", "保底目标不能大于Deal");
+
+            if (t.CheckIn > t.Deal)
+                item.ModelState.AddModelError("", "Check In不能大于Deal");
+
+            if (t.StartDate.Month != t.EndDate.Month)
+                item.ModelState.AddModelError("", "开始时间和结束时间不在同一个月内");
+
+            if (CH.GetAllData<TargetOfMonthForMember>(i => i.ID!= t.ID && i.StartDate.ToShortDateString() == t.StartDate.ToShortDateString() && t.ProjectID == i.ProjectID).Count()  > 0) 
+                item.ModelState.AddModelError("", "该月的目标已经添加，不能再次添加");
+        }
+
+    }
     public static class TargetOfMonthControllerExtension
     {
         public static void AddErrorStateIfTargetOfMonthNoValid(this Controller item, TargetOfMonth t) 

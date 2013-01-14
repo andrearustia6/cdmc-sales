@@ -1,0 +1,51 @@
+﻿@model Entity.TargetOfMonthForMember
+@using Utl
+@using Entity
+<fieldset>
+    <legend>@SR.Form</legend>
+        @Html.Hidden("ProjectID")
+     <div class="editor-field">
+        @Html.Telerik().DatePickerFor(model => model.StartDate).Value(Model == null?DateTime.Now.StartOfMonth():Model.StartDate)
+        @Html.ValidationMessageFor(model => model.StartDate)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.EndDate)
+    </div>
+    <div class="editor-field">
+        @Html.Telerik().DatePickerFor(model => model.EndDate).Value(Model == null ? DateTime.Now.EndOfMonth() : Model.EndDate)
+        @Html.ValidationMessageFor(model => model.EndDate)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.Deal)
+    </div>
+    <div class="editor-field">
+        @Html.Telerik().CurrencyTextBoxFor(model => model.Deal)
+        @Html.ValidationMessageFor(model => model.Deal)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.BaseDeal)
+    </div>
+    <div class="editor-field">
+        @Html.Telerik().CurrencyTextBoxFor(model => model.BaseDeal)
+        @Html.ValidationMessageFor(model => model.BaseDeal)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.CheckIn)
+    </div>
+    <div class="editor-field">
+        @Html.Telerik().CurrencyTextBoxFor(model => model.CheckIn)
+        @Html.ValidationMessageFor(model => model.CheckIn)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.MemberID, "目标制定人")
+    </div>
+    <div class="editor-field">
+    @{
+          var name = Employee.CurrentUserName;
+          var pid = Model==null?ViewBag.ProjectID as int?:Model.ProjectID;
+          var data = CH.GetAllData<Member>(mem => mem.ProjectID == pid);
+          @Html.DropDownListFor(m => m.MemberID, new SelectList(data,"ID","Name"), "-请选择-")
+      }
+         @Html.ValidationMessageFor(model => model.MemberID)
+    </div>
+</fieldset>

@@ -1,0 +1,24 @@
+﻿@using Entity
+@model List<TargetOfMonthForMember>
+@Html.Partial("contenttitle", "个人月目标")    
+@Html.Partial("projectselector")       
+@(Html.Telerik().Grid<TargetOfMonthForMember>(Model).Name("TargetOfMonthForMember").ToolBar(commands => commands.Custom().Text("个人月目标创建").Action("Create", "TargetOfMonthForMember",new {projectid=ViewBag.ProjectID as int?}))
+                .DataKeys(keys =>
+                {
+                    keys.Add(s => s.ID);
+                })
+                .Columns(c =>
+                {
+                    c.Bound(item => item.BaseDeal);
+                    c.Bound(item => item.Deal);
+                    c.Bound(item => item.CheckIn);
+                    c.Bound(item => item.StartDate );
+                    c.Bound(item => item.EndDate);
+                    c.Bound(item => item.Member.Name);
+                })
+                .Resizable(resizing => resizing.Columns(true))
+                .Filterable().Sortable().Groupable()
+                .Pageable(p => p.PageSize(20))
+                .Scrollable(scrolling => scrolling.Height(350))
+
+)
