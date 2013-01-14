@@ -18,10 +18,10 @@
                     c.Bound(item => item.Package.Name).Title("Package名称");
                     c.Bound(item => item.Payment).Width(100).Format("{0:c}").Aggregate(aggregates => aggregates.Sum()).FooterTemplate(@<text>@if (item.Sum != null)
                                                                                                                                              {<p>应收款: @item.Sum.Format("{0:c}")</p>}</text>).GroupFooterTemplate(@<text>@if (item.Sum != null)
-                                                                                                                                                                                                                                           {<p>应收款: @item.Sum.Format("{0:c}")</p>}</text>).Width(100);
+                                                                                                                                                                                                                        {<p>应收款: @item.Sum.Format("{0:c}")</p>}</text>).Width(100);
                     c.Bound(item => item.Income).Width(90).Format("{0:c}").Aggregate(aggregates => aggregates.Sum()).FooterTemplate(@<text>@if (item.Sum != null)
                                                                                                                                            {<p>实收款: @item.Sum.Format("{0:c}")</p>}</text>).GroupFooterTemplate(@<text>@if (item.Sum != null)
-                                                                                                                                                                                                                                         {<p>实收款: @item.Sum.Format("{0:c}")</p>}</text>).Width(100); ;
+                                                                                                                                                                                                                      {<p>实收款: @item.Sum.Format("{0:c}")</p>}</text>).Width(100); ;
                     c.Bound(item => item.IsClosed).Width(70);
                     c.Bound(item => item.Committer).Width(100);
                     c.Bound(item => item.CommitterContect).Width(100);
@@ -33,7 +33,11 @@
                     | <a href=@Url.Content("~/sales/DisplayDeal/?id=" + item.ID + "&projectid=" + item.ProjectID)>详细</a>  
                     | <a href=@Url.Content("~/sales/ModifyParticipant/?dealid=" + item.ID + "&projectid=" + item.ProjectID + "&crmid=" + item.CompanyRelationshipID) >参会客户编辑</a>
                    </span>);
-                })
+                }).DetailView(e => e.Template(
+                          @<text>
+                         @RenderGrid(item)
+                        </text>
+                   ))
                     .Resizable(resizing => resizing.Columns(true))
                     .Filterable().Sortable().Groupable()
                     .Pageable(p => p.PageSize(20))
@@ -41,3 +45,19 @@
 
 )
 
+@helper RenderGrid(Deal deal)
+    {
+     @(Html.Telerik().Grid(deal.Participants).Name("Participants" + deal.ID)
+                            .Columns(c =>
+                            {
+                                c.Bound(o => o.Name);
+                                c.Bound(o => o.Email);
+                                c.Bound(o => o.Contact);
+                                c.Bound(o => o.Mobile);
+                                c.Bound(o => o.Title);
+                               
+                            })
+                                               .Resizable(resizing => resizing.Columns(true))
+                                               .Pageable(p => p.PageSize(20))
+                                               .Sortable())
+}

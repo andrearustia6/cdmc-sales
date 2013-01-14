@@ -350,7 +350,7 @@ namespace Entity
 
         public virtual List<CompanyRelationship> CompanyRelationships { get; set; }
 
-
+        [Display(Name = "是否激活")]
         public bool IsActivated { get; set; }
     }
 

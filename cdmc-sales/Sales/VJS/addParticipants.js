@@ -11,30 +11,31 @@ function initialDeleteParticipantBtn() {
     var $editdiv = $('.editparticipant');
     $editdiv.each(function () {
         var $this = $(this);
-        $this.find('#savebtn').unbind("click").bind("click", function () {
-            var p = getParticipant($this);
+        $this.find('#deletebtn').unbind("click").bind("click", function () {
 
-            $.ajax({
-                url: "/sales/JsonModifyParticipant",
-                type: 'POST',
-                dataType: 'html',
-                contentType: 'application/json; charset=utf-8',
-                data: p,
-                success: function (result) {
+            var pid = $this.find('#ID').val();
+            var did = $this.find('#DealID').val();
+            id = JSON.stringify({ ParticipantID: pid, DealID: did });
+            if (confirm("确认删除？")) {
 
-                    if (result.indexOf("has_msg") < 0) {
-                        alert('保存成功');
+                $.ajax({
+                    url: "/sales/JsonDeleteParticipant",
+                    type: 'POST',
+                    dataType: 'html',
+                    contentType: 'application/json; charset=utf-8',
+                    data: id,
+                    success: function (result) {
+                        $('.participantContainer').html('');
                         location.reload();
+                        
                         initialButtons();
+                    },
+                    error: function (xhr, status) {
+                        alert(xhr.responseText);
                     }
-                    else {
-                        $this.find('.messageparticipant').html(result);
-                    }
-                },
-                error: function (xhr, status) {
-                    alert(xhr.responseText);
-                }
-            });
+                });
+
+            }
         });
     });
 }
@@ -57,6 +58,7 @@ function initialEditParticipantBtn() {
 
                     if (result.indexOf("has_msg") < 0) {
                         alert('保存成功');
+                        $('.participantContainer').html('');
                         location.reload();
                         initialButtons();
                     }
@@ -87,7 +89,7 @@ function initialAddParticipantBtn() {
 
                 if (result.indexOf("has_msg") < 0) {
                     alert('保存成功');
-
+                    $('.participantContainer').html('');
                     location.reload();
                    initialButtons();
                 }
