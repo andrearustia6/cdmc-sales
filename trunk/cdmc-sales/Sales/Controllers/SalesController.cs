@@ -700,15 +700,15 @@ namespace Sales.Controllers
                 return View(item);
         }
 
-        public ViewResult DisplayCompany(int? id,int? projectid)
-        {
-            this.AddErrorStateIfSalesNoAccessRightToTheProject(projectid);
-            var sc = CH.GetDataById<SubCompany>(id);
-            if (ModelState.IsValid)
-                return View(sc);
-            else
-                return View();
-        }
+        //public ViewResult DisplayCompany(int? id,int? projectid)
+        //{
+        //    this.AddErrorStateIfSalesNoAccessRightToTheProject(projectid);
+        //    var sc = CH.GetDataById<SubCompany>(id);
+        //    if (ModelState.IsValid)
+        //        return View(sc);
+        //    else
+        //        return View();
+        //}
 
         public ActionResult DeleteSubCompany(int? projectid, int? id)
         {

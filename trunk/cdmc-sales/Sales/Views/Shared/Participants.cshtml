@@ -9,8 +9,8 @@
 {
     foreach (var p in Model)
     {
-        Participant t = p;
-        childs.Add().Text(p.Name + "  " + p.Title + "   " + p.Contact).Content(@<text>@RenderChild(t)</text>);
+        var t = p as object;
+        childs.Add().Text(p.Name + "  " + p.Title + "   " + p.Contact).Content(@<text>@RenderChild(t as Participant)</text>);
     }
 })
 )

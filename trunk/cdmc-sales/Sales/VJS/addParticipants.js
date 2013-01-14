@@ -5,6 +5,38 @@
 function initialButtons() { 
     initialAddParticipantBtn();
     initialEditParticipantBtn();
+    initialDeleteParticipantBtn();
+}
+function initialDeleteParticipantBtn() {
+    var $editdiv = $('.editparticipant');
+    $editdiv.each(function () {
+        var $this = $(this);
+        $this.find('#savebtn').unbind("click").bind("click", function () {
+            var p = getParticipant($this);
+
+            $.ajax({
+                url: "/sales/JsonModifyParticipant",
+                type: 'POST',
+                dataType: 'html',
+                contentType: 'application/json; charset=utf-8',
+                data: p,
+                success: function (result) {
+
+                    if (result.indexOf("has_msg") < 0) {
+                        alert('保存成功');
+                        location.reload();
+                        initialButtons();
+                    }
+                    else {
+                        $this.find('.messageparticipant').html(result);
+                    }
+                },
+                error: function (xhr, status) {
+                    alert(xhr.responseText);
+                }
+            });
+        });
+    });
 }
 
 function initialEditParticipantBtn() {
@@ -25,7 +57,7 @@ function initialEditParticipantBtn() {
 
                     if (result.indexOf("has_msg") < 0) {
                         alert('保存成功');
-                        $('.participantContainer').html(result);
+                        location.reload();
                         initialButtons();
                     }
                     else {
@@ -36,8 +68,6 @@ function initialEditParticipantBtn() {
                     alert(xhr.responseText);
                 }
             });
-
-
         });
     });
 
@@ -57,8 +87,8 @@ function initialAddParticipantBtn() {
 
                 if (result.indexOf("has_msg") < 0) {
                     alert('保存成功');
-             
-                    $('.participantContainer').html(result);
+
+                    location.reload();
                    initialButtons();
                 }
                 else {
