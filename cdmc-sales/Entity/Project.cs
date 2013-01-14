@@ -274,6 +274,37 @@ namespace Entity
         public decimal CheckIn { get; set; }
     }
 
+    /// <summary>
+    /// 月目标管理
+    /// </summary>
+    public class TargetOfMonthForMember : EntityBase
+    {
+        public virtual Project Project { get; set; }
+        [Display(Name = "项目名称"), Required]
+        public int ProjectID { get; set; }
+
+        [Display(Name = "开始日期"), Required, DisplayFormat(DataFormatString = "{0:d}")]
+        public DateTime StartDate { get; set; }
+
+        [Display(Name = "结束日期"), Required, DisplayFormat(DataFormatString = "{0:d}")]
+        public DateTime EndDate { get; set; }
+
+        [Display(Name = "销售目标"), Required, DisplayFormat(DataFormatString = "{0:c}")]
+        public decimal Deal { get; set; }
+
+        [Display(Name = "保底目标"), Required, DisplayFormat(DataFormatString = "{0:c}")]
+        public decimal BaseDeal { get; set; }
+
+        [Display(Name = "入账目标"), Required, DisplayFormat(DataFormatString = "{0:c}")]
+        public decimal CheckIn { get; set; }
+
+        public Member Member { get; set; }
+        [Display(Name = "对应销售")]
+        public int? MemberID { get; set; }
+
+    }
+
+
     public class TargetOfPackage : EntityBase
     {
         public virtual CompanyRelationship CompanyRelationship { get; set; }
