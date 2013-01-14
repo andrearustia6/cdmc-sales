@@ -174,6 +174,19 @@ namespace Sales.Controllers
 
         }
 
+        [HttpPost]
+        public PartialViewResult JsonDeleteParticipant(int? participantid,int? dealid)
+        {
+            if (participantid != null)
+            {
+                var deal = CH.GetDataById<Deal>(dealid);
+                CH.Delete<Participant>(participantid);
+                return PartialView(@"~\views\shared\ParticipantContainer.cshtml", deal);
+            }
+            return PartialView(@"~\views\shared\PageMessage.cshtml", "删除不成功");
+        }
+        
+
         #region
         #endregion
 

@@ -2,7 +2,8 @@
 @using Entity
 @using Utl
 @model Deal
-<fieldset>
+<center>
+<fieldset  style="width:80%">
 <legend>参会公司</legend>
 <table width="100%">
 <tr>
@@ -19,7 +20,9 @@
 
 </fieldset>
 <div class="participantContainer">
+
 @Html.Partial("ParticipantContainer", Model)
+</center>
 </div>
 @{ Html.Telerik().ScriptRegistrar().OnDocumentReady(@<text> 
         onModifyParticipantPageLoad();

@@ -118,6 +118,7 @@
                 {
                     c.Bound(item => item.Name).Width(200);
                     c.Bound(item => item.Characters);
+                    c.Bound(item => item.IsActivated );
                     c.Bound(item => item).Template(@<text>@item.EmployeeDuration()</text>).Title("在职时间(月)");
                     c.Bound(item => item.SalesType.Name);
                     c.Bound(item => item.ID).Title("操作").Width(120).Template(@<span> <a href=@Url.Content("~/Member/Edit/" + item.ID) >
