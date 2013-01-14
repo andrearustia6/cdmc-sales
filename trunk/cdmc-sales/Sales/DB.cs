@@ -27,5 +27,9 @@ namespace Sales
         public DbSet<ParticipantType> ParticipantType { get; set; }
 
         public DbSet<Project> Project { get; set; }
+
+        public DbSet<TargetOfMonthForMember> TargetOfMonthForMember { get; set; }
+
+        public DbSet<Member> Member { get; set; }
     }
 }

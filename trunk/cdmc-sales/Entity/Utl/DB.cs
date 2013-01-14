@@ -46,6 +46,7 @@ namespace Utl
         public DbSet<Template> Templates { get; set; }
         public DbSet<SubCompany> SubCompanys { get; set; }
         public DbSet<Participant> Participants { get; set; }
+        public DbSet<TargetOfMonthForMember> TargetOfMonthForMembers { get; set; }
 
         public DB()
         {

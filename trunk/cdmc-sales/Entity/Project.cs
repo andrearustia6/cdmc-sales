@@ -298,8 +298,8 @@ namespace Entity
         [Display(Name = "入账目标"), Required, DisplayFormat(DataFormatString = "{0:c}")]
         public decimal CheckIn { get; set; }
 
-        public Member Member { get; set; }
-        [Display(Name = "对应销售")]
+        public virtual Member Member { get; set; }
+        [Display(Name = "对应销售"),Required]
         public int? MemberID { get; set; }
 
     }

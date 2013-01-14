@@ -1,0 +1,44 @@
+﻿@model Entity.TargetOfMonthForMember
+
+@using Entity
+@using Utl
+
+<fieldset>
+    <legend>@SR.Form</legend>
+
+    <div class="display-label">项目名称</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Project.SalesBriefName)
+    </div>
+
+    <div class="display-label">开始时间</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.StartDate)
+    </div>
+
+    <div class="display-label">结束时间</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.EndDate)
+    </div>
+
+    <div class="display-label">出单目标</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Deal)
+    </div>
+
+    <div class="display-label">保底目标</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.BaseDeal)
+    </div>
+
+    <div class="display-label">入账目标</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.CheckIn)
+    </div>
+
+    <div class="display-label">目标制定人</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Member.Name)
+    </div>
+</fieldset>
+
