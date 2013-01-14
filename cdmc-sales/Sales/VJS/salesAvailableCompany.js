@@ -577,7 +577,7 @@ function onCallsFresh(leadid,projectid) {
         dataType: 'html',
         success: function (result) {
             $('#leadCallscontainer').html(result);
-            $('#leadCallscontainer').find('.leadcallssubmit').find('.leadcallssubmit').each(function () {
+            $('#leadCallscontainer').find('.leadcallssubmit').each(function () {
                 IntialLeadCallsSavebtn($(this));
             });
             onSalesInputInitial();

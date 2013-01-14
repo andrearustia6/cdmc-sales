@@ -57,9 +57,9 @@ function initialAddParticipantBtn() {
 
                 if (result.indexOf("has_msg") < 0) {
                     alert('保存成功');
-                    initialButtons();
+             
                     $('.participantContainer').html(result);
-                    initialButtons();
+                   initialButtons();
                 }
                 else {
                     $('.participantContainer').find('.inputmessageaddparticipant').html(result);

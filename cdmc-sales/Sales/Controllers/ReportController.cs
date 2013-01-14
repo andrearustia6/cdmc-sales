@@ -14,13 +14,13 @@ using System.Data;
 namespace Sales.Controllers
 {
     [LeaderRequired]
-    public class ReportController : Controller
+    public class ReportController : SalesReportController
     {
-        protected override void Dispose(bool disposing)
-        {
-            CH.DB.Dispose();
-            base.Dispose(disposing);
-        }
+        //protected override void Dispose(bool disposing)
+        //{
+        //    CH.DB.Dispose();
+        //    base.Dispose(disposing);
+        //}
 
         public ActionResult MemberProgress(DateTime? startdate, DateTime? enddate)
         {
@@ -32,8 +32,6 @@ namespace Sales.Controllers
         }
         //
         // GET: /Report/
-
-        
 
         /// <summary>
         /// call list 统计
@@ -80,8 +78,32 @@ namespace Sales.Controllers
             return View(ps);
         }
 
+        public ActionResult Progress(DateTime? startdate, DateTime? enddate)
+        {
+            ViewBag.StartDate = startdate;
+            ViewBag.EndDate = enddate;
+            var ps = this.GetProjectByAccount();
+            var data = new List<ViewProjectProgressAmount>();
+            ps.ForEach(p =>
+            {
+                var d = p.GetProjectProgress(startdate,enddate);
+                data.Add(d);
+            });
+            return View(data);
+        }
 
-        public ActionResult MemberLeadCallsChart(DateTime? startdate, DateTime? enddate, int?projectid, string charttype)
+    }
+
+    [SalesRequired]
+    public class SalesReportController : Controller
+    {
+        protected override void Dispose(bool disposing)
+        {
+            CH.DB.Dispose();
+            base.Dispose(disposing);
+        }
+
+        public ActionResult MemberLeadCallsChart(DateTime? startdate, DateTime? enddate, int? projectid, string charttype)
         {
 
             ViewBag.StartDate = startdate;
@@ -91,18 +113,18 @@ namespace Sales.Controllers
             ViewBag.ProjectID = projectid;
             if (projectid != null)
             {
-                List<ViewCallListChart>  data;
+                List<ViewCallListChart> data;
                 if (charttype == "Company")
                     data = GetContedtedLeadCompanyChartData(projectid, startdate, enddate);
                 else if (charttype == "Category")
                     data = GetContedtedLeadCategoryChartData(projectid, startdate, enddate);
                 else
                     data = new List<ViewCallListChart>();
-                return View(data);
+                return View(@"~\views\report\MemberLeadCallsChart.cshtml", data);
             }
             else
             {
-                return View();
+                return View(@"~\views\report\MemberLeadCallsChart.cshtml");
             }
         }
 
@@ -112,16 +134,16 @@ namespace Sales.Controllers
             enddate = enddate == null ? new DateTime(9999, 1, 1) : enddate;
 
             var account = Employee.CurrentUser;
- 
+
             var members = from m in CH.DB.Members where m.ProjectID == projectid select m;
 
             var memberlist = members.ToList();
-          
+
             var viewCallListCharts = new List<ViewCallListChart>();
             foreach (var m in memberlist)
             {
 
-                var leadcalls = from l in CH.DB.LeadCalls where l.ProjectID == projectid && l.MemberID == m.ID && startdate<=l.CallDate && l.CallDate<=enddate select l;
+                var leadcalls = from l in CH.DB.LeadCalls where l.ProjectID == projectid && l.MemberID == m.ID && startdate <= l.CallDate && l.CallDate <= enddate select l;
                 var leads = from l in CH.DB.Leads where leadcalls.Any(lc => lc.LeadID == l.ID) select l;
                 var groupedleads = leads.Distinct().GroupBy(l => l.CompanyID);
                 var companysum = new List<ViewCompanyCallSum>();
@@ -136,12 +158,12 @@ namespace Sales.Controllers
                     }
                     else
                         cs.CompanyCount++;
-                   
+
                 }
-                viewCallListCharts.Add(new ViewCallListChart() { Member = m, ViewCompanyCallSums = companysum.OrderByDescending(c=>c.LeadCalledCountNumber).ToList() });
-               
+                viewCallListCharts.Add(new ViewCallListChart() { Member = m, ViewCompanyCallSums = companysum.OrderByDescending(c => c.LeadCalledCountNumber).ToList() });
+
             }
-          
+
 
             return viewCallListCharts;
         }
@@ -158,27 +180,27 @@ namespace Sales.Controllers
             var memberlist = members.ToList();
 
             var viewCallListCharts = new List<ViewCallListChart>();
-           
+
             //包含category的已打crm
-            var crms = from crm in CH.DB.CompanyRelationships  where crm.Categorys.Count>0 && crm.LeadCalls.Count>0  && crm.ProjectID == projectid  select crm;
-            
+            var crms = from crm in CH.DB.CompanyRelationships where crm.Categorys.Count > 0 && crm.LeadCalls.Count > 0 && crm.ProjectID == projectid select crm;
+
             var categorys = from c in CH.DB.Categorys where c.ProjectID == projectid select c;
 
             //打给有category公司的call
-            var allcategoryleadcalls = from l in CH.DB.LeadCalls from crm in crms where l.ProjectID == projectid && l.CompanyRelationshipID == crm.ID  && startdate <= l.CallDate && l.CallDate <= enddate select l;
-            
+            var allcategoryleadcalls = from l in CH.DB.LeadCalls from crm in crms where l.ProjectID == projectid && l.CompanyRelationshipID == crm.ID && startdate <= l.CallDate && l.CallDate <= enddate select l;
+
             //有category公司的lead
             var leads = from l in CH.DB.Leads where allcategoryleadcalls.Any(lc => lc.LeadID == l.ID) select l;
             foreach (var m in memberlist)
             {
-                var mleadcalls = from l in allcategoryleadcalls where  l.MemberID == m.ID select l;
+                var mleadcalls = from l in allcategoryleadcalls where l.MemberID == m.ID select l;
 
                 var categorysum = new List<ViewCategoryCallSum>();
 
                 foreach (var c in categorys)
                 {
                     var cs = from crm in crms
-                             where crm.Categorys.Any(cate => cate.ID == c.ID)
+                             where crm.Categorys.Any(cate => cate.ID == c.ID) && crm.Members.Any(cm=>cm.ID==m.ID)
                              select crm;
 
                     if (cs.Count() > 0)
@@ -190,24 +212,7 @@ namespace Sales.Controllers
                 viewCallListCharts.Add(new ViewCallListChart() { Member = m, ViewCategoryCallSum = categorysum });
 
             }
-
-
             return viewCallListCharts;
         }
-
-        public ActionResult Progress(DateTime? startdate, DateTime? enddate)
-        {
-            ViewBag.StartDate = startdate;
-            ViewBag.EndDate = enddate;
-            var ps = this.GetProjectByAccount();
-            var data = new List<ViewProjectProgressAmount>();
-            ps.ForEach(p =>
-            {
-                var d = p.GetProjectProgress(startdate,enddate);
-                data.Add(d);
-            });
-            return View(data);
-        }
-
     }
 }

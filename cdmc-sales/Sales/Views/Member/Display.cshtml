@@ -4,14 +4,19 @@
 <fieldset>
     <legend>@SR.Form</legend>
 
-    <div class="display-label">Name</div>
+    <div class="display-label">成员名称</div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Name)
     </div>
 
-    <div class="display-label">Characters</div>
+    <div class="display-label">分配字头</div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Characters)
+    </div>
+
+    <div class="display-label">是否激活</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.IsActivated)
     </div>
 
      <div class="editor-field">
