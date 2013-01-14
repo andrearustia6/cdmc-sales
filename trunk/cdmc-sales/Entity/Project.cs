@@ -349,6 +349,9 @@ namespace Entity
         public string[] CharactersSet { get { return string.IsNullOrEmpty(Characters) ? new string[] { } : Characters.Split('|'); } }
 
         public virtual List<CompanyRelationship> CompanyRelationships { get; set; }
+
+
+        public bool IsActivated { get; set; }
     }
 
     /// <summary>

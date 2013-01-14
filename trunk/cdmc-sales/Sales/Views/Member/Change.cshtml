@@ -19,6 +19,14 @@
     <div class="editor-field">
         @Html.DisplayTextFor(model => model.Characters)
     </div>
+
+    <div class="editor-label">
+        @Html.LabelFor(model => model.IsActivated)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.IsActivated)
+    </div>
+
     <div class="editor-label">
         @Html.LabelFor(model => model.SalesTypeID)
     </div>
