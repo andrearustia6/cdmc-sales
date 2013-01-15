@@ -29,6 +29,7 @@
                                                                                                       {<p>实收款: @item.Sum.Format("{0:c}")</p>}</text>).Width(100);
                     c.Bound(item => item.IsClosed).Width(70);
                     c.Bound(item => item.Abandoned).Width(70);
+                    c.Bound(item => item.TicketDescription);
                     c.Bound(item => item.SignDate).Format("{0:d}").Width(100);
                     c.Bound(item => item.ExpectedPaymentDate).Format("{0:d}").Width(100);
                     c.Bound(item => item.ActualPaymentDate).Format("{0:d}").Width(100);
@@ -45,7 +46,7 @@
                     c.Bound(o => o.Name);
                     c.Bound(o => o.Title);
                     c.Bound(o => o.Gender);
-                    c.Bound(o => o.ParticipantType.Name);
+                    c.Bound(o => o.ParticipantType.Name).Title("参会类型");
 
                 }).Resizable(resizing => resizing.Columns(true))
                                         .Filterable().Sortable().Groupable()

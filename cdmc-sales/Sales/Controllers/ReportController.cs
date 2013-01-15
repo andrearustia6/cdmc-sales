@@ -144,7 +144,10 @@ namespace Sales.Controllers
                     if (projecttargets.Count() > 0)
                     {
                         v.CheckInTarget = projecttargets.Sum(t => t.CheckIn);
+
+                        v.CheckInPercentage = (int)((v.CheckIn / v.CheckInTarget)*100);
                         v.DealInTarget = projecttargets.Sum(t => t.Deal);
+                        v.DealInPercentage = (int)((v.DealIn / v.DealInTarget) * 100);
                     }
                     if (projecttotaldeals.Count() > 0)
                     {
@@ -152,6 +155,8 @@ namespace Sales.Controllers
                         v.TotalDealIn = projecttotaldeals.Sum(d => d.Payment);
                        
                     }
+
+                   
                     v.LeftDay = (p.EndDate - DateTime.Now).Days;
                     list.Add(v);
                 }

@@ -300,17 +300,17 @@ namespace Model
 
     public class ViewProgressAmount 
     {
-        public decimal? TotalDealIn { get; set; }
-        public decimal? TotalCheckIn { get; set; }
+        public decimal TotalDealIn { get; set; }
+        public decimal TotalCheckIn { get; set; }
         
-        public decimal? DealIn { get; set; }
-        public decimal? DealInTarget { get; set; }
-        public decimal? CheckIn { get; set; }
-        public decimal? CheckInTarget { get; set; }
+        public decimal DealIn { get; set; }
+        public decimal DealInTarget { get; set; }
+        public decimal CheckIn { get; set; }
+        public decimal CheckInTarget { get; set; }
         public int DealInPercentage { get; set; }
         public int CheckInPercentage { get; set; }
-        public decimal? NextDealInTarget { get; set; }
-        public decimal? NextCheckInTarget { get; set; }
+        public decimal NextDealInTarget { get; set; }
+        public decimal NextCheckInTarget { get; set; }
     }
 
     public class ViewMemberProgressAmount : ViewProgressAmount

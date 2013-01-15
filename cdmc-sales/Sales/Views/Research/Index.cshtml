@@ -3,6 +3,7 @@
 @{ViewBag.Title = "调研列表";}
 @model List<Research>
 @Html.Partial("contenttitle", "调研列表")
+@Html.Partial("multipleprojectselector")
 @(Html.Telerik().Grid<Research>(Model).Name("Research")
                 .DataKeys(keys =>
                 {
@@ -11,12 +12,17 @@
                 .Columns(c =>
                 {
                     c.Bound(item => item.Name).Width(200);
-                    c.Bound(item => item.Contents).Template(@<span>@Utl.ShortText(item.Contents, 100)</span>);
                     c.Bound(item => item.Creator);
                     c.Bound(item => item.CreatedDate).Format("{0:d}");
-                    c.Bound(item => item.ID).Width(200).Title("操作").Template(@<span> <a href=@Url.Content("~/Research/Edit/" + item.ID) >
-                        编辑</a> | <a href=@Url.Content("~/Research/Details/" + item.ID)>详细</a> </span>);
-                })
+                    c.Bound(item => item.Project.Name ).Title("项目名称");
+                    c.Bound(item => item.Project.ProjectCode).Width(200);
+                    c.Bound(item => item.ID).Width(200).Title("操作")
+                        .Template(@<span> <a href=@Url.Content("~/Research/Details/" + item.ID)>详细</a> </span>);
+                }).DetailView(d=>d.Template(@<text>
+                <fieldset>
+                    @HtmlExtensions.GetHtmlString(item.Contents)
+                </fieldset>
+                </text>))
                 .Resizable(resizing => resizing.Columns(true))
                 .Filterable().Sortable().Groupable()
                 .Pageable(p => p.PageSize(20))

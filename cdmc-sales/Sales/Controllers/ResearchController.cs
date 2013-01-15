@@ -26,22 +26,36 @@ namespace Sales.Controllers
         }
 
 
-        public ViewResult Index()
+        public ViewResult Index(List<int> selectedprojects, bool? isActivated, DateTime? startdate, DateTime? enddate)
         {
-            if(Employee.AsDirector())
-                return View(CH.GetAllData<Research>().OrderByDescending(o => o.CreatedDate).ToList());
-            else if (Employee.EqualToManager())
+            startdate = startdate == null ? new DateTime(1, 1, 1) : startdate;
+            enddate = enddate == null ? new DateTime(9999, 1, 1) : startdate;
+
+            if (selectedprojects != null)
             {
-                var ps = CH.GetAllData<Project>(p => p.Manager == Employee.CurrentUserName);
-                var list = new List<Member>();
-                ps.ForEach(p => {
-                   list.AddRange(p.Members);
-                });
-                var rs = CH.GetAllData<Research>(r => list.Any(m=>m.Name==r.Creator));
-                return View(rs.OrderByDescending(o => o.CreatedDate).ToList());
+               var rs = CH.GetAllData<Research>(r=>selectedprojects.Any(sp=>sp == r.ProjectID ) && r.CreatedDate>= startdate && r.CreatedDate<= enddate);
+               return View(rs);
             }
-              return View();
+
+            return View();
         }
+
+        //public ViewResult Index()
+        //{
+        //    if(Employee.AsDirector())
+        //        return View(CH.GetAllData<Research>().OrderByDescending(o => o.CreatedDate).ToList());
+        //    else if (Employee.EqualToManager())
+        //    {
+        //        var ps = CH.GetAllData<Project>(p => p.Manager == Employee.CurrentUserName);
+        //        var list = new List<Member>();
+        //        ps.ForEach(p => {
+        //           list.AddRange(p.Members);
+        //        });
+        //        var rs = CH.GetAllData<Research>(r => list.Any(m=>m.Name==r.Creator));
+        //        return View(rs.OrderByDescending(o => o.CreatedDate).ToList());
+        //    }
+        //      return View();
+        //}
 
         public ViewResult Details(int id)
         {
@@ -50,8 +64,12 @@ namespace Sales.Controllers
             return View(data);
         }
 
-        public ActionResult Create()
+        public ActionResult Create(int? projectid)
         {
+            if (projectid == null)
+                projectid = this.TrySetProjectIDForUser(projectid);
+
+            ViewBag.ProjectID = projectid;
             return View();
         }
 
@@ -60,8 +78,8 @@ namespace Sales.Controllers
         {
             if (ModelState.IsValid)
             {
-               // item.Contents = HttpUtility.HtmlEncode(item.Contents);
-
+                // item.Contents = HttpUtility.HtmlEncode(item.Contents);
+                item.AddPerson = Employee.CurrentUserName;
                 Image image = ImageController.UploadImg(Request, item.Image);
                 if (image != null)
                     item.ImageID = image.ID;
@@ -80,10 +98,11 @@ namespace Sales.Controllers
         [HttpPost]
         public ActionResult Edit(Research item)
         {
-            
+
             if (ModelState.IsValid)
             {
                 //item.Contents = HttpUtility.HtmlDecode(item.Contents);
+                item.AddPerson = Employee.CurrentUserName;
                 Image image = ImageController.UploadImg(Request, item.Image);
                 if (image != null)
                     item.ImageID = image.ID;
