@@ -10,9 +10,15 @@
                 })
                 .Columns(c =>
                 {
+                    c.Bound(item => item.Name);
                     c.Bound(item => item.ProjectCode).Width(120);
                     c.Bound(item => item.StartDate).Format("{0:d}").Width(100);
                     c.Bound(item => item.EndDate).Format("{0:d}").Width(100);
+                    c.Bound(item => item.EndDate).Template(@<text>
+                    @{
+                        var span = item.EndDate - DateTime.Now;
+                        @Html.Label(span.Days.ToString())
+                        }</text>).Format("{0:d}").Title("剩余时间").Width(100);
                     c.Bound(item => item.IsActived).Width(70);
                     c.Bound(item => item.Manager).Width(70);
                     c.Bound(item => item.Target).Width(120).Format("{0:C}");

@@ -7,7 +7,7 @@
 
 @Html.Partial("contenttitle", "项目出单")
 
-@(Html.Telerik().Grid<Deal>(Model).Name("Deal").ToolBar(tb=>tb.Template(@<text>@Html.Partial("projectselector")</text>))
+@(Html.Telerik().Grid<Deal>(Model).Name("Deal").ToolBar(tb => tb.Template(@<text>@Html.Partial("projectselector")</text>))
                 .DataKeys(keys =>
                 {
                     keys.Add(s => s.ID);
@@ -17,8 +17,16 @@
                     c.Bound(item => item.CompanyRelationship.Company.Name).Title("客户名公司").Width(150);
                     c.Bound(item => item.Sales).Width(70);
                     c.Bound(item => item.Package.Name).Title("Package").Width(150);
-                    c.Bound(item => item.Payment).Width(100).Format("{0:c}");
-                    c.Bound(item => item.Income).Width(100).Format("{0:c}");
+                    c.Bound(item => item.Payment).Format("{0:c}").Aggregate(aggregates => aggregates.Sum())
+                         .FooterTemplate(@<text>
+                        @if (item.Sum != null)
+                        {<p>应收款: @item.Sum.Format("{0:c}")</p>}</text>).GroupFooterTemplate(@<text>
+                           @if (item.Sum != null)
+                           {<p>应收款: @item.Sum.Format("{0:c}")</p>}</text>).Width(100);
+                    c.Bound(item => item.Income).Format("{0:c}").Aggregate(aggregates =>
+                        aggregates.Sum()).FooterTemplate(@<text>@if (item.Sum != null)
+                                                                {<p>实收款: @item.Sum.Format("{0:c}")</p>}</text>).GroupFooterTemplate(@<text>@if (item.Sum != null)
+                                                                                                      {<p>实收款: @item.Sum.Format("{0:c}")</p>}</text>).Width(100);
                     c.Bound(item => item.IsClosed).Width(70);
                     c.Bound(item => item.Abandoned).Width(70);
                     c.Bound(item => item.SignDate).Format("{0:d}").Width(100);
@@ -27,7 +35,23 @@
                     c.Bound(item => item.ID).Width(200).Title("操作").Template(@<span>
                     <a href=@Url.Content("~/AllDeal/Edit/" + item.ID) >编辑</a> | <a href=@Url.Content("~/AllDeal/Details/" + item.ID)>详细</a>  | <a href=@Url.Content("~/AllDeal/delete/" + item.ID) >删除</a> 
                    </span>);
-                })
+                }).DetailView(d => d.Template(@<text>
+                @(Html.Telerik().Grid<Participant>(item.Participants).Name("mastersheet" + item.ID).DataKeys(keys =>
+            {
+                keys.Add(s => s.ID);
+            })
+                .Columns(c =>
+                {
+                    c.Bound(o => o.Name);
+                    c.Bound(o => o.Title);
+                    c.Bound(o => o.Gender);
+                    c.Bound(o => o.ParticipantType.Name);
+
+                }).Resizable(resizing => resizing.Columns(true))
+                                        .Filterable().Sortable().Groupable()
+                                        .Pageable(p => p.PageSize(20))
+                                        .Scrollable(scrolling => scrolling.Height(150))
+                )</text>))
                                                                 .Resizable(resizing => resizing.Columns(true))
                                                                 .Filterable().Sortable().Groupable()
                                                                 .Pageable(p => p.PageSize(20))
