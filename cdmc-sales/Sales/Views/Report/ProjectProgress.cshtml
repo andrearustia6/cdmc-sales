@@ -1,0 +1,27 @@
+﻿@{
+    ViewBag.Title = "项目进展";
+}
+@Html.Partial("contenttitle", "项目进展")
+
+@using Model
+@model List<ViewProjectProgressAmount>
+@Html.Partial("multipleprojectselector")
+<fieldset>
+<legend>项目进展报表</legend>
+@if (Model != null)
+{
+    var height = 100 + Model.Count() * 100;
+      @(Html.Telerik().Chart(Model).Name("chart").Title("项目进展报表").Legend(legend => legend.Position(ChartLegendPosition.Top)).Series(series =>
+  {
+      series.Bar(s => s.DealInTarget).Name("销售目标").Labels(true);
+      series.Bar(s => s.DealIn).Name("实际出单").Labels(true);
+      series.Bar(s => s.CheckInTarget).Name("入账目标").Labels(true);
+      series.Bar(s => s.CheckIn).Name("实际入账").Labels(true);
+      series.Bar(s => s.Project.Target).Name("项目总目标").Labels(true);
+      series.Bar(s => s.TotalDealIn).Name("实际销售总额").Labels(true);
+
+  }).CategoryAxis(axis => axis.Categories(s => s.Project.Name)).ValueAxis(axis => axis.Numeric().Labels(labels => labels.Format("￥{0:#,##0}"))).HtmlAttributes(new { style = "height:" + height + "px" })
+      )
+  
+} 
+</fieldset>   

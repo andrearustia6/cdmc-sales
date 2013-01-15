@@ -81,7 +81,8 @@
                            item.Add().Url("~/Report/LeadCalls").Text("Team Call List统计");
                            item.Add().Url("~/AllDeal/index").Text("出单查看");
                            item.Add().Url("~/Research/index").Text("调研查看");
-                           item.Add().Url("~/Report/MemberProgress").Text("业绩比较");
+                           item.Add().Url("~/Report/MemberProgress").Text("个人业绩比较");
+                           item.Add().Url("~/Report/ProjectProgress").Text("项目业绩比较");
                            item.Add().Url("~/Report/MemberLeadCallsChart").Text("已打Lead比较");
                        });
                        
@@ -164,7 +165,7 @@
                        });
                    }
                    
-                      menu.Add().Text("黄区公司").ImageUrl("~/Content/Common/Icons/GridView.gif").Items(item =>
+                      menu.Add().Text("保护公司").ImageUrl("~/Content/Common/Icons/GridView.gif").Items(item =>
                        {
                            item.Add().Url("~/ProtectedCompanys/CompanyIndex").Text("被保护的公司");
                        });

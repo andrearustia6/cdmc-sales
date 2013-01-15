@@ -14,8 +14,9 @@
                 .ClientEvents(events => events.OnDataBound("onCallListDataBound"))
                 .Columns(c =>
                 {
-                    c.Bound(item => item.Lead.Name).Title("人名").Width(120);
-                    c.Bound(item => item.Lead.Title).Width(100);
+                    c.Bound(item => item.Lead.Name).Title("人名");
+                    c.Bound(item => item.Lead.Title);
+                    c.Bound(item => item.Lead.Gender);
                     c.Bound(item => item.Lead.Company.Name).Title("公司名").Width(120);
                     c.Bound(item => item.Lead).Title("公司总机").Template(@<text>
                     @{
@@ -63,7 +64,6 @@
                                             .Filterable().Sortable().Groupable()
                                             .Pageable(p => p.PageSize(20))
                                             .Scrollable(scrolling => scrolling.Height(350))
-
                         )
 
 @{ Html.Telerik().ScriptRegistrar().OnDocumentReady(@<text> 

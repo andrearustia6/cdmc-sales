@@ -16,7 +16,7 @@
     items.Add().Text("成员信息").Content(@<text>@Members(Model)</text>);
     items.Add().Text("每月目标").Content(@<text>@Targets(Model)</text>);
     items.Add().Text("项目公司").Content(@<text>@CompanyRelationships(Model)</text>);
-    items.Add().Text("出单情况").Content(@<text>@Deals(Model)</text>);
+    @*items.Add().Text("出单情况").Content(@<text>@Deals(Model)</text>);*@
     items.Add().Text("留言答疑").Content(@<text>@Messages(Model)</text>);
 
 }).ClientEvents(e => e.OnSelect("onManagementTabLoad"))
@@ -145,12 +145,16 @@
                 })
                 .Columns(c =>
                 {
-                    c.Bound(item => item.Payment).Format("{0:c}").Aggregate(aggregates => aggregates.Sum()).FooterTemplate(@<text>@if (item.Sum != null)
-                                                                                                                                  {<p>应收款: @item.Sum.Format("{0:c}")</p>}</text>).GroupFooterTemplate(@<text>@if (item.Sum != null)
-                                                                                                                                                                                                                        {<p>应收款: @item.Sum.Format("{0:c}")</p>}</text>).Width(100);
-                    c.Bound(item => item.Income).Format("{0:c}").Aggregate(aggregates => aggregates.Sum()).FooterTemplate(@<text>@if (item.Sum != null)
-                                                                                                                                 {<p>实收款: @item.Sum.Format("{0:c}")</p>}</text>).GroupFooterTemplate(@<text>@if (item.Sum != null)
-                                                                                                                                                                                                                        {<p>实收款: @item.Sum.Format("{0:c}")</p>}</text>).Width(100);
+                    c.Bound(item => item.Payment).Format("{0:c}").Aggregate(aggregates => aggregates.Sum())
+                        .FooterTemplate(@<text>
+                        @if (item.Sum != null)
+                           {<p>应收款: @item.Sum.Format("{0:c}")</p>}</text>).GroupFooterTemplate(@<text>
+                           @if (item.Sum != null)                                                                                                                                                                                 
+                             {<p>应收款: @item.Sum.Format("{0:c}")</p>}</text>).Width(100);
+                    c.Bound(item => item.Income).Format("{0:c}").Aggregate(aggregates =>
+                        aggregates.Sum()).FooterTemplate(@<text>@if (item.Sum != null)
+                           {<p>实收款: @item.Sum.Format("{0:c}")</p>}</text>).GroupFooterTemplate(@<text>@if (item.Sum != null)
+                          {<p>实收款: @item.Sum.Format("{0:c}")</p>}</text>).Width(100);
                     c.Bound(item => item.IsClosed).Width(60);
                     c.Bound(item => item.ExpectedPaymentDate).Format("{0:d}").Width(100);
                     c.Bound(item => item.SignDate).Format("{0:d}").Width(80);

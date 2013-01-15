@@ -1,0 +1,45 @@
+﻿@using Entity
+@using Utl
+@using BLL
+@{
+   
+    
+      var ps = CRM_Logical.GetUserInvolveProject();
+      if(ps != null)
+      {
+        using (Html.BeginForm())
+        {
+       <fieldset>
+       <legend>筛选条件</legend>
+       <div  >
+       
+      <ul style="list-style-type:none; float:inherit; width:100%; overflow:auto;">
+      @foreach (var p in ps)
+      {
+      <li style=" float:left; width:23%; margin:2px;">
+       <span style=" line-height:11px; height:11px;  vertical-align:middle"> <input type="checkbox"  name="selectedprojects"   value=@p.ID />    @p.Name</span>
+      </li>
+      }
+      </ul>
+       </div>
+  
+     
+       <div style="margin: 10px">
+        <b><span>
+            <label> 开始时间：</label>
+            @Html.Telerik().DateTimePicker().Name("StartDate")
+            <span>~ </span>
+            <label>
+                结束时间：</label>
+            @Html.Telerik().DateTimePicker().Name("EndDate")
+            <span>  </span>
+           
+        </span></b>
+    </div>
+    <center>
+     <input type="submit" value="提交" />
+     </center>
+     </fieldset>
+        }
+}
+}

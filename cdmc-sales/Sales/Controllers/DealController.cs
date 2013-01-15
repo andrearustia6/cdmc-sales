@@ -127,6 +127,10 @@ namespace Sales.Controllers
         {
             var item = CH.GetDataById<Deal>(id);
             var projectid = CH.GetDataById<CompanyRelationship>(item.CompanyRelationshipID).ProjectID;
+            foreach (var p in item.Participants)
+            {
+                CH.Delete<Participant>(p.ID);
+            }
             CH.Delete<Deal>(id);
 
             return RedirectToAction("index", new { id = projectid });

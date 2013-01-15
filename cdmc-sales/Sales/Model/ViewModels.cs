@@ -100,8 +100,6 @@ namespace Model
         public decimal DealInAmount { get; set; }
         public decimal CheckInAmount { get; set; }
         public string Phone { get; set; }
-        //public Member TopForeignSales { get; set; }
-        //public Member TopDomesticSales { get; set; } 
     }
 
     public class ViewLeadCallAmountInProject
@@ -288,36 +286,37 @@ namespace Model
      
     }
 
-    public class ViewProjectProgressAmount
+    public class ViewProjectProgressAmount : ViewProgressAmount
     {
         public Project Project { get; set; }
-        public decimal TotalDealIn { get; set; }
-        public decimal TotalCheckIn { get; set; }
         public int LeftDay { get; set; }
-        public decimal DealIn { get; set; }
-        public decimal DealInTarget { get; set; }
-        public decimal CheckIn { get; set; }
-        public decimal CheckInTarget { get; set; }
-        public int DealInPercentage { get; set; }
-        public int CheckInPercentage { get; set; }
-        public decimal NextDealInTarget { get; set; }
-        public decimal NextCheckInTarget { get; set; }
     }
 
-    public class ViewMemberProgressAmount
+    public class ViewProjectMemberProgressAmount
     {
-        public Member Member { get; set; }
-        public decimal TotalDealIn { get; set; }
-        public decimal TotalCheckIn { get; set; }
-        public int LeftDay { get; set; }
-        public decimal DealIn { get; set; }
-        public decimal DealInTarget { get; set; }
-        public decimal CheckIn { get; set; }
-        public decimal CheckInTarget { get; set; }
+        public Project Project { get; set; }
+        public List<ViewMemberProgressAmount> ViewMemberProgressAmounts { get; set; }
+    }
+
+    public class ViewProgressAmount 
+    {
+        public decimal? TotalDealIn { get; set; }
+        public decimal? TotalCheckIn { get; set; }
+        
+        public decimal? DealIn { get; set; }
+        public decimal? DealInTarget { get; set; }
+        public decimal? CheckIn { get; set; }
+        public decimal? CheckInTarget { get; set; }
         public int DealInPercentage { get; set; }
         public int CheckInPercentage { get; set; }
-        public decimal NextDealInTarget { get; set; }
-        public decimal NextCheckInTarget { get; set; }
+        public decimal? NextDealInTarget { get; set; }
+        public decimal? NextCheckInTarget { get; set; }
+    }
+
+    public class ViewMemberProgressAmount : ViewProgressAmount
+    {
+        public Member Member { get; set; }
+        public decimal? TotalDealinTarget{ get; set;}
     }
 
     public class ViewMemberLeadToCall
