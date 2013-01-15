@@ -26,6 +26,7 @@
                     c.Bound(item => item.Committer).Width(100);
                     c.Bound(item => item.CommitterContect).Width(100);
                     c.Bound(item => item.Abandoned).Width(70);
+                    c.Bound(item => item.TicketDescription);
                     c.Bound(item => item.ExpectedPaymentDate).Format("{0:d}").Width(90);
                     c.Bound(item => item.ActualPaymentDate).Format("{0:d}").Width(100);
                     c.Bound(item => item.ID).Title("操作").Width(160).Template(@<span>
@@ -55,6 +56,7 @@
                                 c.Bound(o => o.Contact);
                                 c.Bound(o => o.Mobile);
                                 c.Bound(o => o.Title);
+                                c.Bound(o => o.ParticipantType.Name).Title("参会类型");
                                
                             })
                                                .Resizable(resizing => resizing.Columns(true))

@@ -31,6 +31,14 @@
         }
         @Html.Telerik().Upload().Async(a=>a.AutoUpload(true)).Name("attachments").Multiple(false)
     </div>
+    @if (Model == null)
+    {
+         @Html.Hidden("ProjectID", ViewBag.ProjectID as int?)
+    }
+    else
+    {
+        @Html.HiddenFor(m => m.ProjectID)
+    }
 </fieldset>
 
 

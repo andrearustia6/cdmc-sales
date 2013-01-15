@@ -65,6 +65,7 @@
                                 c.Bound(o => o.Name).Width(150);
                                 c.Bound(o => o.EMail).Title("电子邮箱").Width(150);
                                 c.Bound(o => o.Fax).Title("传真").Width(150);
+                                c.Bound(o => o.Mobile).Title("传真").Width(150);
                                 c.Bound(o => o.Contact).Width(150);
                                 c.Bound(o => o).Title("操作").Width(190).Template(@<span>
                                 <a  href=@Url.Content("~/sales/displaylead/?leadid=" + item.ID + "&crid=" + cr.ID + "&projectid=" + cr.ProjectID) >Lead查看</a> 

@@ -33,6 +33,13 @@ namespace Entity
         [Display(Name = "公司架构")]
         public virtual Image Image { get; set; }
         public int? ImageID { get; set; }
+
+        public string AddPerson { get; set; }
+        
+        public virtual Project Project { get; set; }
+
+        [Display(Name = "项目"),Required]
+        public int? ProjectID { get; set; }
     }
 
     /// <summary>
@@ -185,7 +192,7 @@ namespace Entity
         public virtual Project Project { get; set; }
         [Display(Name = "项目名称")]
         public int? ProjectID { get; set; }
-        [Display(Name = "类型")]
+        [Display(Name = "细分行业")]
         public string Name { get; set; }
 
         [Display(Name = "Category详细")]
@@ -198,6 +205,7 @@ namespace Entity
     public class CompanyRelationship : EntityBase
     {
         string _categoryString;
+        [Display(Name = "细分行业")]
         public string CategoryString
         {
             set { _categoryString = value; }
@@ -224,12 +232,14 @@ namespace Entity
 
         public virtual Progress Progress { get; set; }
 
-
+        [Display(Name = "成熟度")]
         public int? ProgressID { get; set; }
+
         public virtual List<LeadCall> LeadCalls { get; set; }
 
         public virtual List<Member> Members { get; set; }
 
+         [Display(Name = "可打销售")]
         public string SalesOnTheCompany
         {
             get
