@@ -189,11 +189,12 @@ namespace Sales.Controllers
             List<Project> ps = null;
             if (selectedprojects != null)
             {
-                ps = this.GetProjectByAccount();
+                var list  = from p in CH.DB.Projects where selectedprojects.Any(sp => sp == p.ID) select p;
+                ps = list.ToList();
             }
-
-             var list  = from p in CH.DB.Projects where selectedprojects.Any(sp => sp == p.ID) select p;
-             ps = list.ToList();
+            else
+                ps = this.GetProjectByAccount();
+             
 
              var cs = Utl.Utl.GetCallsInfo(ps, startdate, enddate);
 
@@ -203,7 +204,40 @@ namespace Sales.Controllers
             });
 
             result.ViewLeadCallAmountInProjects = vl;
+
+             //get all record
+            var allsumrecords = new List<ViewLeadCallAmount>();
+            foreach(var p in result.ViewLeadCallAmountInProjects)
+            {
+                allsumrecords.AddRange(p.LeadCallAmounts);
+            }
+
+            //get top sales
+            var max = allsumrecords.Max(m=>m.DealInAmount);
+            var topsales = from r in  allsumrecords where r.DealInAmount == max select r;
+            result.TopSales = topsales.ToList();
+
+            //find the worst record
+            var worsts = allsumrecords.Min(r => r.Duration);
+
+            //周on phone王前三名需要符合销售经理call list 35个，销售专员call list50个为前提。并需要系统自动排除电话时间倒数三名，前提是call list也没打到35/50的要求（考虑工作日，如4天，为28/40)
+            //var allQulifyRecordsForTopOnPhone = allsumrecords.FindAll(r => (r.Member.SalesTypeID == 2 && r.CallListAmount >= 35) || (r.Member.SalesTypeID == 1 && r.CallListAmount >= 50));
+
+
+            var best = allsumrecords.OrderByDescending(r => r.Duration).ToList();
+            if (best.Count() > 10)
+                best = best.Take(10).ToList();
+
+            result.TopCallers = best;
+
+            var worst = allsumrecords.FindAll(w=>w.Duration.Hours>0).OrderBy(r => r.Duration).ToList();
+
+            if (worst.Count() > 10)
+                worst = worst.Take(10).ToList();
+            result.WorstCallers = worst;
             return View(result);
+
+          
         }
 
         /// <summary>
