@@ -176,28 +176,33 @@ namespace Sales.Controllers
         /// <param name="startdate"></param>
         /// <param name="enddate"></param>
         /// <returns></returns>
-        public ActionResult LeadCalls(DateTime? startdate, DateTime? enddate)
+        public ActionResult LeadCalls(List<int> selectedprojects, bool? isActivated, DateTime? startdate, DateTime? enddate)
         {
-           
             ViewBag.StartDate = startdate;
             ViewBag.EndDate = enddate;
 
 
             var result = new TotalLeadCallAmount();
-            var ps = this.GetProjectByAccount();
+
             var vl = new List<ViewLeadCallAmountInProject>();
 
-            var cs = Utl.Utl.GetCallsInfo(ps,startdate,enddate);
-
-            ps.ForEach(p =>
+            List<Project> ps = null;
+            if (selectedprojects != null)
             {
-                vl.Add(new ViewLeadCallAmountInProject() { LeadCallAmounts = p.GetProjectMemberLeadCalls(cs,startdate, enddate), project = p });
+                ps = this.GetProjectByAccount();
+            }
 
+             var list  = from p in CH.DB.Projects where selectedprojects.Any(sp => sp == p.ID) select p;
+             ps = list.ToList();
+
+             var cs = Utl.Utl.GetCallsInfo(ps, startdate, enddate);
+
+             ps.ForEach(p =>
+            {
+                vl.Add(new ViewLeadCallAmountInProject() { LeadCallAmounts = p.GetProjectMemberLeadCalls(cs, startdate, enddate), project = p });
             });
-          
+
             result.ViewLeadCallAmountInProjects = vl;
-
-
             return View(result);
         }
 

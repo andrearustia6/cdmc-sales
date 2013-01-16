@@ -70,7 +70,7 @@ namespace Utl
             {
                 if (HttpContext.Current != null && HttpContext.Current.Items["CurrentUserName"] == null)
                 {
-                    HttpContext.Current.Items["CurrentUserName"] = GetCurrentUserName();
+                    HttpContext.Current.Items["CurrentUserName"] = GetCurrentUserName().ToLower();
                 }
                 return HttpContext.Current.Items["CurrentUserName"] as string;
             }
