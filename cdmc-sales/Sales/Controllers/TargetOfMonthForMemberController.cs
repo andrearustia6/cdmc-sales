@@ -11,21 +11,34 @@ using Utl;
 
 namespace Sales.Controllers
 {
+    [SalesRequired]
     public class TargetOfMonthForMemberController : Controller
     {
-
+      
         
         protected override void Dispose(bool disposing)
         {
             CH.DB.Dispose();
             base.Dispose(disposing);
         }
-
-        public ViewResult Index(int? projectid)
+        [LeaderRequired]
+        public ViewResult Index(List<int> selectedprojects, bool? isActivated, DateTime? startdate, DateTime? enddate)
         {
-            ViewBag.ProjectID = projectid;
-            return View(CH.GetAllData<TargetOfMonthForMember>(t => t.ProjectID == projectid));
+           startdate = startdate==null?new DateTime(1,1,1):startdate;
+           enddate = enddate == null?new DateTime(9999,1,1):startdate;
+
+           if (selectedprojects != null)
+           {
+               var ts = from t in CH.DB.TargetOfMonthForMembers
+                        where selectedprojects.Any(sp => sp == t.ProjectID)
+                        select t;
+               return View(ts.OrderByDescending(t=>t.CreatedDate).ToList());
+           }
+
+           return View();
         }
+
+
 
         public ViewResult MyTargetIndex(int? projectid)
         {

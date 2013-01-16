@@ -22,10 +22,10 @@ namespace Sales.Controllers
 
         public ViewResult MyIndex()
         {
-            return View(CH.GetAllData<Research>(r => r.Creator == Employee.CurrentUserName).OrderByDescending(o => o.CreatedDate).ToList());
+            return View(CH.GetAllData<Research>(r => r.Creator == Employee.CurrentUserName || r.AddPerson == Employee.CurrentUserName).OrderByDescending(o => o.CreatedDate).ToList());
         }
 
-
+        [LeaderRequired]
         public ViewResult Index(List<int> selectedprojects, bool? isActivated, DateTime? startdate, DateTime? enddate)
         {
             startdate = startdate == null ? new DateTime(1, 1, 1) : startdate;

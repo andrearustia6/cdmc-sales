@@ -99,19 +99,19 @@ namespace System.Web.Mvc
             }
             else if (role.Level == Role.LVL_TeamLeader)
             {
-                list = CH.GetAllData<Project>(p => p.TeamLeader == username, "Members");
+                list = CH.GetAllData<Project>(p => p.TeamLeader == username && p.IsActived == activate, "Members");
             }
             else if (role.Level == Role.LVL_Manager)
             {
-                list = CH.GetAllData<Project>(p => p.Manager == username, "Members");
+                list = CH.GetAllData<Project>(p => p.Manager == username && p.IsActived == activate, "Members");
             }
             else if (role.Level == Role.LVL_MarketInterface)
             {
-                list = CH.GetAllData<Project>(p => p.Market == username, "Members");
+                list = CH.GetAllData<Project>(p => p.Market == username && p.IsActived == activate, "Members");
             }
             else if (role.Level == Role.LVL_ProductInterface)
             {
-                list = CH.GetAllData<Project>(p => p.Product == username, "Members");
+                list = CH.GetAllData<Project>(p => p.Product == username && p.IsActived == activate, "Members");
             }
 
             return list;
