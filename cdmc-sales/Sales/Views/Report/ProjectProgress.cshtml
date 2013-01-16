@@ -20,7 +20,7 @@
       series.Bar(s => s.Project.Target).Name("项目总目标").Labels(true);
       series.Bar(s => s.TotalDealIn).Name("实际销售总额").Labels(true);
 
-  }).CategoryAxis(axis => axis.Categories(s => s.Project.Name)).ValueAxis(axis => axis.Numeric().Labels(labels => labels.Format("￥{0:#,##0}"))).HtmlAttributes(new { style = "height:" + height + "px" })
+  }).CategoryAxis(axis => axis.Categories(s => s.NameWithCompletePercentage)).ValueAxis(axis => axis.Numeric().Labels(labels => labels.Format("￥{0:#,##0}"))).HtmlAttributes(new { style = "height:" + height + "px" })
       )
   
 } 

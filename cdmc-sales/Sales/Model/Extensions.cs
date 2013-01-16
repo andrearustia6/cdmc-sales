@@ -350,8 +350,7 @@ namespace Entity
 
             lcs.FindAll(lc => lc.CallDate > startdate && lc.CallDate < enddate).ForEach(l =>
             {
-                //if (l.LeadCallType.Name == "Others" || l.LeadCallType.Name == "Blowed" || l.LeadCallType.Name == "Not Pitched")
-                    // result.Cold_Calls++;
+                result.CallListAmount++;
 
                 if (l.LeadCallType.Code > 30)
                     result.DMs++;
