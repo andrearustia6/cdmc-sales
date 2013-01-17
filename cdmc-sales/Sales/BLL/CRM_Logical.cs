@@ -126,7 +126,7 @@ namespace BLL
             var now = DateTime.Now;
             var projects = CH.GetAllData<Project>();
 
-            var data = projects.FindAll(p=>p.Members.Any(m=>m.Name == name)&& p.IsActived==true );
+            var data = projects.FindAll(p=>(p.Members.Any(m=>m.Name == name) || p.TeamLeader == "name") &&  p.IsActived==true );
             return data;
         }
 

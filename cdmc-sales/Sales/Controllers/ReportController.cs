@@ -26,6 +26,11 @@ namespace Sales.Controllers
             startdate = startdate == null ? new DateTime(1, 1, 1) : startdate;
             enddate = enddate == null ? new DateTime(9999, 1, 1) : startdate;
 
+            if (selectedprojects == null)
+            {
+                selectedprojects = BLL.CRM_Logical.GetUserInvolveProject().Select(p => p.ID).ToList();
+            }
+
             if (selectedprojects != null)
             {
                 var totaldeals = from d in CH.DB.Deals
@@ -102,7 +107,11 @@ namespace Sales.Controllers
         { 
            startdate = startdate==null?new DateTime(1,1,1):startdate;
            enddate = enddate == null?new DateTime(9999,1,1):startdate;
-         
+
+           if (selectedprojects == null)
+           {
+               selectedprojects = BLL.CRM_Logical.GetUserInvolveProject().Select(p => p.ID).ToList();
+           }
             if(selectedprojects != null)
             {
                 var totaldeals = from d in CH.DB.Deals
@@ -211,26 +220,39 @@ namespace Sales.Controllers
             {
                 allsumrecords.AddRange(p.LeadCallAmounts);
             }
+            var groupsum = allsumrecords.GroupBy(g => g.Member.Name);
 
             //get top sales
-            var max = allsumrecords.Max(m=>m.DealInAmount);
-            var topsales = from r in  allsumrecords where r.DealInAmount == max select r;
-            result.TopSales = topsales.ToList();
-
-            //find the worst record
-            var worsts = allsumrecords.Min(r => r.Duration);
+            var sumlist = new List<ViewLeadCallSumAmount>();
+            var groupsumlist = groupsum.ToList();
+            groupsumlist.ForEach(v =>
+            {
+                var sum = new  ViewLeadCallSumAmount();
+                sum.Name = v.Key;
+                sum.SalesType = v.FirstOrDefault().Member.SalesType.Name;
+                sum.DealSum = v.Sum(s=>s.DealInAmount);
+                sum.DurationSum = v.Sum(s=>s.Duration.TotalHours);
+                sum.CallSum = v.Sum(s => s.CallListAmount);
+                sumlist.Add(sum);
+            });
+            var topsales = sumlist.OrderByDescending(o => o.DealSum).ToList();
+            if(topsales.Count>10)
+            {
+                topsales = topsales.Take(10).ToList();
+            }
+            result.TopSales = topsales;
 
             //周on phone王前三名需要符合销售经理call list 35个，销售专员call list50个为前提。并需要系统自动排除电话时间倒数三名，前提是call list也没打到35/50的要求（考虑工作日，如4天，为28/40)
             //var allQulifyRecordsForTopOnPhone = allsumrecords.FindAll(r => (r.Member.SalesTypeID == 2 && r.CallListAmount >= 35) || (r.Member.SalesTypeID == 1 && r.CallListAmount >= 50));
 
 
-            var best = allsumrecords.OrderByDescending(r => r.Duration).ToList();
+            var best = sumlist.OrderByDescending(r => r.DurationSum).ToList();
             if (best.Count() > 10)
                 best = best.Take(10).ToList();
 
             result.TopCallers = best;
 
-            var worst = allsumrecords.FindAll(w=>w.Duration.Hours>0).OrderBy(r => r.Duration).ToList();
+            var worst = sumlist.FindAll(w => w.DurationSum > 0).OrderBy(r => r.DurationSum).ToList();
 
             if (worst.Count() > 10)
                 worst = worst.Take(10).ToList();
@@ -246,11 +268,20 @@ namespace Sales.Controllers
         /// <param name="startdate"></param>
         /// <param name="enddate"></param>
         /// <returns></returns>
-        public ActionResult MemberLeadCalls(DateTime? startdate, DateTime? enddate)
+        public ActionResult MemberLeadCalls(List<int> selectedprojects, bool? isActivated, DateTime? startdate, DateTime? enddate)
         {
             ViewBag.StartDate = startdate;
             ViewBag.EndDate = enddate;
-            var ps = this.GetProjectByAccount();
+            List<Project> ps;
+            if (selectedprojects == null)
+            {
+                ps = this.GetProjectByAccount();
+            }
+            else
+            {
+                var lsit = from p in CH.DB.Projects where selectedprojects.Any(sp =>sp== p.ID) select p;
+                ps = lsit.ToList();
+            }
             return View(ps);
         }
 

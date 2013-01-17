@@ -32,20 +32,31 @@ namespace Sales.Controllers
                var ts = from t in CH.DB.TargetOfMonthForMembers
                         where selectedprojects.Any(sp => sp == t.ProjectID)
                         select t;
-               return View(ts.OrderByDescending(t=>t.CreatedDate).ToList());
+               return View(ts.OrderByDescending(t => t.CreatedDate).ToList());
+           }
+           else
+           {
+               var ps = BLL.CRM_Logical.GetUserInvolveProject();
+               var rs = CH.GetAllData<TargetOfMonthForMember>(r => ps.Any(sp => sp.ID == r.ProjectID) && r.CreatedDate >= startdate && r.CreatedDate <= enddate);
+               return View(rs);
            }
 
-           return View();
         }
 
 
 
         public ViewResult MyTargetIndex(int? projectid)
         {
+            projectid = this.TrySetProjectIDForUser(projectid);
             ViewBag.ProjectID = projectid;
-            var data = from t in CH.DB.TargetOfMonthForMembers 
-                       where t.ProjectID == projectid && t.Member.Name == Employee.CurrentUserName select t;
-            return View(data.OrderByDescending(o=>o.EndDate).ToList());
+            if (projectid != null)
+            {
+                var data = from t in CH.DB.TargetOfMonthForMembers
+                           where t.ProjectID == projectid && t.Member.Name == Employee.CurrentUserName
+                           select t;
+                return View(data.OrderByDescending(o => o.EndDate).ToList());
+            }
+            return View();
 
         }
 

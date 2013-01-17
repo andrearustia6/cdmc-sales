@@ -33,11 +33,16 @@ namespace Sales.Controllers
 
             if (selectedprojects != null)
             {
-               var rs = CH.GetAllData<Research>(r=>selectedprojects.Any(sp=>sp == r.ProjectID ) && r.CreatedDate>= startdate && r.CreatedDate<= enddate);
-               return View(rs);
+                var rs = CH.GetAllData<Research>(r => selectedprojects.Any(sp => sp == r.ProjectID) && r.CreatedDate >= startdate && r.CreatedDate <= enddate);
+                return View(rs);
+            }
+            else 
+            {
+                var ps = BLL.CRM_Logical.GetUserInvolveProject();
+                var rs = CH.GetAllData<Research>(r => ps.Any(sp => sp.ID == r.ProjectID) && r.CreatedDate >= startdate && r.CreatedDate <= enddate);
+                return View(rs);
             }
 
-            return View();
         }
 
         //public ViewResult Index()

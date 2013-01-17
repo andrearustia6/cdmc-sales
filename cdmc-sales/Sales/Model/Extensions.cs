@@ -332,8 +332,8 @@ namespace Entity
             
             var lcs = CH.GetAllData<LeadCall>(l => l.MemberID == item.ID);
 
-            var dealins = CH.GetAllData<Deal>(d => d.Sales == item.Name && d.SignDate >= startdate && d.SignDate <= enddate);
-            var checkins = CH.GetAllData<Deal>(d => d.Sales == item.Name && d.ActualPaymentDate >= startdate && d.ActualPaymentDate <= enddate);
+            var dealins = CH.GetAllData<Deal>(d => d.Abandoned==false && d.Sales == item.Name && d.SignDate >= startdate && d.SignDate <= enddate && d.ProjectID == item.ProjectID);
+            var checkins = CH.GetAllData<Deal>(d => d.Abandoned == false &&  d.Sales == item.Name && d.ActualPaymentDate >= startdate && d.ActualPaymentDate <= enddate && d.ProjectID == item.ProjectID);
             decimal checkinamount=0;
             decimal dealinamount=0;
 

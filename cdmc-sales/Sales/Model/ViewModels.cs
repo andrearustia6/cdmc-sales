@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using Entity;
+using System.ComponentModel.DataAnnotations;
 
 namespace Model
 {
@@ -78,7 +79,19 @@ namespace Model
         public LeadCall LastCall { get; set; }
         public int ID { get; set; }
     }
-
+    public class ViewLeadCallSumAmount
+    {
+        [Display(Name="销售姓名")]
+        public string Name { get; set; }
+        [Display(Name = "销售职级")]
+        public string SalesType { get; set; }
+        [Display(Name = "出单总额")]
+        public decimal DealSum { get; set; }
+        [Display(Name = "通话时间总长")]
+        public double DurationSum { get; set; }
+        [Display(Name = "Call List 总数")]
+        public int CallSum { get; set; }
+    }
     public class ViewLeadCallAmount
     {
         public Member Member { get; set; }
@@ -107,188 +120,16 @@ namespace Model
     {
         public Project project { get; set; }
         public List<ViewLeadCallAmount> LeadCallAmounts { get; set; }
-        //public List<Member> _topSales;
-        //decimal? topSalesAmount;
-        //public decimal TopSalesAmount { get {
-        //    if (topSalesAmount==null)
-        //            topSalesAmount = LeadCallAmounts.Count > 0 ? LeadCallAmounts.Max(d => d.DealInAmount) : 0;
-        //    return (decimal)topSalesAmount;
-        //}
-        //}
-        //public List<Member> TopSales
-        //{
-        //    get
-        //    {
-        //        if (_topSales == null)
-        //        {
-        //            _topSales = new List<Member>();
-        //            var amounts = LeadCallAmounts.FindAll(m => m.DealInAmount == TopSalesAmount);
-        //            amounts.ForEach(m =>
-        //            {
-        //                _topSales.Add(m.Member);
-        //            });
-
-        //        }
-        //        return _topSales;
-
-        //    }
-        //}
-        //public TimeSpan TopCallerAmount { get; set; }
-        //public List<Member> _topCallers;
-        //public List<Member> TopCallers
-        //{
-        //    get
-        //    {
-        //        if (_topCallers == null)
-        //        {
-        //            _topCallers = new List<Member>();
-        //            var amounts = LeadCallAmounts.FindAll(m => m.Duration == LeadCallAmounts.Max(d => d.Duration));
-        //            TopCallerAmount = amounts.FirstOrDefault().Duration;
-        //            amounts.ForEach(m =>
-        //            {
-        //                _topCallers.Add(m.Member);
-        //            });
-
-        //        }
-        //        return _topCallers;
-        //    }
-        //}
-        //public TimeSpan WorstCallerAmount { get; set; }
-        //public List<Member> _worstCallers;
-        //public List<Member> WorstCallers
-        //{
-        //    get
-        //    {
-        //        if (_worstCallers == null)
-        //        {
-        //            _worstCallers = new List<Member>();
-        //            //时间最短，入职超过2星期并且没有出单
-        //            var amounts = LeadCallAmounts.FindAll(m => m.Duration == LeadCallAmounts.Min(d => d.Duration) && m.DealInAmount == 0 && m.Member.EmployeeDuration() > 0.5);
-        //            var wa = amounts.FirstOrDefault();
-        //            if (wa == null)
-        //                WorstCallerAmount = new TimeSpan();
-        //            else
-        //                WorstCallerAmount = wa.Duration;
-
-        //            amounts.ForEach(m =>
-        //            {
-        //                _worstCallers.Add(m.Member);
-        //            });
-
-        //        }
-        //        return _worstCallers;
-        //    }
-        //}
-
     }
 
     public class TotalLeadCallAmount
     {
-        public List<ViewLeadCallAmount> TopSales { get; set; }
+        public List<ViewLeadCallSumAmount> TopSales { get; set; }
         public decimal TopSalesAmount { get; set; }
-        public List<ViewLeadCallAmount> WorstCallers { get; set; }
-        public List<ViewLeadCallAmount> TopCallers { get; set; }
+        public List<ViewLeadCallSumAmount> WorstCallers { get; set; }
+        public List<ViewLeadCallSumAmount> TopCallers { get; set; }
         public List<ViewLeadCallAmountInProject> ViewLeadCallAmountInProjects { get; set; }
-        //List<Member> _topSales = new List<Member>();
-        //public List<Member> TopSales
-        //{
-        //    get
-        //    {
-
-        //        if (_topSales.Count == 0)
-        //        {
-        //            ViewLeadCallAmountInProjects.ForEach(vp =>
-        //            {
-        //                if (_topSales.Count == 0)
-        //                {
-        //                    _topSales.AddRange(vp.TopSales);
-        //                    TopSalesAmount = vp.TopSalesAmount;
-        //                }
-        //                else
-        //                {
-        //                    if (vp.TopSalesAmount == TopSalesAmount)
-        //                    {
-        //                        _topSales.AddRange(vp.TopSales);
-        //                    }
-        //                    else if (vp.TopSalesAmount > TopSalesAmount)
-        //                    {
-        //                        _topSales.Clear();
-        //                        _topSales.AddRange(vp.TopSales);
-        //                        TopSalesAmount = vp.TopSalesAmount;
-        //                    }
-        //                }
-        //            });
-        //        }
-        //        return _topSales;
-        //    }
-        //}
-        //List<Member> _topCallers = new List<Member>();
-        //public List<Member> TopCallers
-        //{
-        //    get
-        //    {
-        //        if (_topCallers.Count == 0)
-        //        {
-        //            ViewLeadCallAmountInProjects.ForEach(vp =>
-        //            {
-        //                if (_topCallers.Count == 0)
-        //                {
-        //                    _topCallers.AddRange(vp.TopCallers);
-        //                    TopCallerAmount = vp.TopCallerAmount;
-        //                }
-        //                else
-        //                {
-        //                    if (vp.TopCallerAmount == TopCallerAmount)
-        //                    {
-        //                        _topCallers.AddRange(vp.TopCallers);
-        //                    }
-        //                    else if (vp.TopCallerAmount > TopCallerAmount)
-        //                    {
-        //                        _topCallers.Clear();
-        //                        _topCallers.AddRange(vp.TopCallers);
-        //                    }
-        //                }
-        //            });
-        //        }
-
-        //        return _topSales;
-        //    }
-        //}
-        //List<Member> _worstCallers = new List<Member>();
-        //public List<Member> WorstCallers
-        //{
-        //    get
-        //    {
-        //        if (_worstCallers.Count == 0)
-        //        {
-        //            ViewLeadCallAmountInProjects.ForEach(vp =>
-        //            {
-        //                if (_worstCallers.Count == 0)
-        //                {
-        //                    _worstCallers.AddRange(vp.TopCallers);
-        //                    WorstCallerAmount = vp.WorstCallerAmount;
-        //                }
-        //                else
-        //                {
-        //                    if (vp.WorstCallerAmount == WorstCallerAmount)
-        //                    {
-        //                        _worstCallers.AddRange(vp.WorstCallers);
-        //                    }
-        //                    else if (vp.WorstCallerAmount < TopCallerAmount)
-        //                    {
-        //                        _worstCallers.Clear();
-        //                        _worstCallers.AddRange(vp.WorstCallers);
-        //                    }
-        //                }
-
-        //            });
-        //        }
-        //        return _worstCallers;
-        //    }
-
-
-
-        //}
+       
 
      
     }
@@ -298,7 +139,7 @@ namespace Model
         public Project Project { get; set; }
         public int LeftDay { get; set; }
         public string NameWithCompletePercentage { get { 
-            var v =   Project.Name+ "出单目标完成: " + DealInPercentage.ToString()+"%" +"  入账目标完成: " + CheckInPercentage.ToString()+"%";
+            var v =   "["+Project.Name_CH+ "] 出单目标完成: " + DealInPercentage.ToString()+"%" +"  入账目标完成: " + CheckInPercentage.ToString()+"%";
             return v;
         } 
         }

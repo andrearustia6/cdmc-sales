@@ -48,9 +48,12 @@
                     c.Bound(item => item.UserName).Title("职级").Width(100).Template(@<span>
                      @Employee.GetRoleName(item.UserName)
                     </span>);
+    if(Employee.AsDirector())
+    {
                     c.Bound(item => item.UserName).Title("Extension").Width(100).Template(@<span>
                      @Employee.GetProfile("Contact", item.UserName)
                     </span>);
+    }
                     // c.Bound(item => ).Width(100);
                     c.Bound(item => item.UserName).Title("操作").Width(150).Template(@<span> 
                     <a href=@Url.Content("~/Account/Details/?name=" + item.UserName) >个人信息</a> 
