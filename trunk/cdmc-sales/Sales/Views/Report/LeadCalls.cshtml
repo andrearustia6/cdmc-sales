@@ -26,22 +26,24 @@
             
                @(Html.Telerik().Grid(Model.TopSales).Name("TopSales").Columns(c =>
 {
-    c.Bound(item => item.Member.Name);
-    c.Bound(item => item.DealInAmount);
+    c.Bound(item => item.Name);
+    c.Bound(item => item.DealSum);
 }).HtmlAttributes(new { style="margin-top:0px"}))
             </td>
-            <td>@(Html.Telerik().Grid(Model.TopCallers).Name("TopCallers").Columns(c =>
+            <td style="vertical-align:top">@(Html.Telerik().Grid(Model.TopCallers).Name("TopCallers").Columns(c =>
  {
-     c.Bound(item => item.Member.Name);
-     c.Bound(item => item.Duration.TotalHours).Template(@<text>@Math.Round(item.Duration.TotalHours,2)</text>);
-     c.Bound(item => item.Member.SalesType.Name);
-     c.Bound(item => item.CallListAmount);
+     c.Bound(item => item.Name);
+     c.Bound(item => item.DurationSum).Template(@<text>@Math.Round(item.DurationSum, 2)</text>);
+     c.Bound(item => item.SalesType);
+     c.Bound(item => item.CallSum);
  }))
             </td>
-            <td>@(Html.Telerik().Grid(Model.WorstCallers).Name("WorstCallers").Columns(c =>
+            <td style="vertical-align:top">@(Html.Telerik().Grid(Model.WorstCallers).Name("WorstCallers").Columns(c =>
 {
-    c.Bound(item => item.Member.Name);
-    c.Bound(item => item.Duration.TotalHours).Template(@<text>@Math.Round(item.Duration.TotalHours, 2)</text>);
+      c.Bound(item => item.Name);
+      c.Bound(item => item.DurationSum).Template(@<text>@Math.Round(item.DurationSum, 2)</text>);
+      c.Bound(item => item.SalesType);
+      c.Bound(item => item.CallSum);
 }))
             </td>
         </tr>

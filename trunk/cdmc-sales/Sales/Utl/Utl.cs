@@ -460,7 +460,7 @@ namespace Utl
                 string extession = filePath.Remove(0, position);
                 if (!String.IsNullOrEmpty(FileDownloadName))
                 {
-                    context.HttpContext.Response.AddHeader("content-disposition", "attachment; filename=" + HttpUtility.UrlEncode(this.FileDownloadName));
+                    context.HttpContext.Response.AddHeader("content-disposition", "attachment; filename=" + HttpUtility.UrlEncode(this.FileDownloadName, System.Text.Encoding.UTF8));
                     if (extession == ".doc")
                         context.HttpContext.Response.ContentType = "application/msword";
                     if (extession == ".xls")

@@ -33,7 +33,7 @@
         {
             data = project.CompanyRelationships;
         }
-        @Html.DropDownListFor(m => m.CompanyRelationshipID, new SelectList(data, "ID", "CompanyName"), "-请选择-")
+        @Html.DropDownListFor(m => m.CompanyRelationshipID, new SelectList(data.OrderBy(o=>o.Company.Name).ToList(), "ID", "CompanyName"), "-请选择-")
         @Html.ValidationMessageFor(model => model.CompanyRelationshipID)
         }
     </div>
@@ -134,16 +134,12 @@
         @Html.ValidationMessageFor(model => model.TicketDescription)
     </div>
  
-
-
         @Html.Hidden("ProjectID", (int)ViewBag.ProjectID)
-       
-
 </fieldset>
 
 @{
     if(Model!=null)
     {
-        Html.Partial("Participants", Model.Participants);
+        Html.Partial("Participants", Model.Participants == null ? new List<Participant>() : Model.Participants);
     }
 }

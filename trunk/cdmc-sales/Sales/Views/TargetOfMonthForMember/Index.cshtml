@@ -1,7 +1,7 @@
 ﻿@using Entity
 @model List<TargetOfMonthForMember>
 @Html.Partial("contenttitle", "个人月目标")    
-@Html.Partial("projectselector")       
+@Html.Partial("multipleprojectselector")       
 @(Html.Telerik().Grid<TargetOfMonthForMember>(Model).Name("TargetOfMonthForMember")
                 .DataKeys(keys =>
                 {

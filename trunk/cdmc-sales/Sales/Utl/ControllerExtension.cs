@@ -30,7 +30,7 @@ namespace System.Web.Mvc
             if (t.StartDate.Month != t.EndDate.Month)
                 item.ModelState.AddModelError("", "开始时间和结束时间不在同一个月内");
 
-            if (CH.GetAllData<TargetOfMonthForMember>(i => i.ID!= t.ID && i.StartDate.ToShortDateString() == t.StartDate.ToShortDateString() && t.ProjectID == i.ProjectID).Count()  > 0) 
+            if (CH.GetAllData<TargetOfMonthForMember>(i => i.ID != t.ID && i.MemberID == t.MemberID  && i.StartDate.ToShortDateString() == t.StartDate.ToShortDateString() && t.ProjectID == i.ProjectID).Count() > 0) 
                 item.ModelState.AddModelError("", "该月的目标已经添加，不能再次添加");
         }
 

@@ -26,7 +26,7 @@
 
         members.ForEach(m =>
         {
-            var cs = m.GetMemberToCallList(DateTime.Now);
+            var cs = m.GetMemberToCallList(DateTime.Now.AddDays(-7));
             //var temp = m.GetMemberToCallList(DateTime.Now.AddHours(-DateTime.Now.Hour), null);
 
             calls.AddRange(cs);
@@ -111,6 +111,9 @@
                                                                                                                                            {<p>实收款: @item.Sum.Format("{0:c}")</p>}</text>).GroupFooterTemplate(@<text>@if (item.Sum != null)
                                                                                                                                                                                                                       {<p>实收款: @item.Sum.Format("{0:c}")</p>}</text>).Width(100); ;
                     c.Bound(item => item.ExpectedPaymentDate).Format("{0:d}").Width(90);
+                    c.Bound(item => item.Committer);
+                    c.Bound(item => item.CommitterContect);
+                    c.Bound(item => item.CommitterEmail);
                     c.Bound(item => item.CompanyRelationship.Project.ProjectCode).Width(100);
                     c.Bound(item => item.ID).Title("操作").Template(@<span>
                     <a href=@Url.Content("~/sales/EditDeal/?id=" + item.ID + "&projectid=" + item.CompanyRelationship.ProjectID) >编辑</a> | <a href=@Url.Content("~/sales/DisplayDeal/?id=" + item.ID + "&projectid=" + item.CompanyRelationship.ProjectID)>详细</a>  

@@ -5,7 +5,7 @@
 <center>
 <fieldset  style="width:80%">
 <legend>参会公司</legend>
-<table width="100%">
+<table >
 <tr>
 <td>公司名称：@Html.DisplayFor(m=>m.CompanyRelationship.Company.Name)</td>
 <td>公司总机：@Html.DisplayFor(m=>m.CompanyRelationship.Company.Contact)</td>
@@ -22,8 +22,9 @@
 <div class="participantContainer">
 
 @Html.Partial("ParticipantContainer", Model)
-</center>
+
 </div>
+</center>
 @{ Html.Telerik().ScriptRegistrar().OnDocumentReady(@<text> 
         onModifyParticipantPageLoad();
     </text>);
