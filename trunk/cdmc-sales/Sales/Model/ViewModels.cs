@@ -40,7 +40,6 @@ namespace Model
         public string CompanyCountName { get { return "已打" + LeadCalledCountNumber + "个Lead" + "(" + CompanyCount + "家 )"; } }
     }
 
-
     public class JosonSalesInputData
     {
         public string SubmitType { get; set; }
@@ -62,6 +61,7 @@ namespace Model
         public CompanyRelationship CompanyRelationship { get; set; }
         public List<LeadCall> LeadCalls { get; set; }
     }
+
     public class ViewPhoneInfo
     {
         public TimeSpan Duration { get; set; }
@@ -79,6 +79,7 @@ namespace Model
         public LeadCall LastCall { get; set; }
         public int ID { get; set; }
     }
+
     public class ViewLeadCallSumAmount
     {
         [Display(Name="销售姓名")]
@@ -92,6 +93,12 @@ namespace Model
         [Display(Name = "Call List 总数")]
         public int CallSum { get; set; }
     }
+
+    public class ViewMemberPerformance {
+        public ViewLeadCallAmount ViewLeadCallAmount { get; set; }
+        public ViewMemberProgressAmount ViewMemberProgressAmount { get; set; }
+    }
+
     public class ViewLeadCallAmount
     {
         public Member Member { get; set; }
