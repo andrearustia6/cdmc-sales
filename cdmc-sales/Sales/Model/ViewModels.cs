@@ -94,9 +94,37 @@ namespace Model
         public int CallSum { get; set; }
     }
 
-    public class ViewMemberPerformance {
-        public ViewLeadCallAmount ViewLeadCallAmount { get; set; }
-        public ViewMemberProgressAmount ViewMemberProgressAmount { get; set; }
+    public class ViewPerformanceData
+    {
+        public List<ViewPhoneInfo> ViewPhoneInfos { get; set; }
+        public int Month { get; set; }
+        public List<Deal> Deals { get; set; }
+        public List<TargetOfMonthForMember> TargetOfMonthForMembers{ get; set; }
+        public List<Research> Researchs { get; set; }
+        public List<LeadCall> LeadCalls { get; set; }
+    }
+
+    public class ViewMemberPerformance
+    {
+        [Display(Name="月份")]
+        public int Month { get; set; }
+        public List<Deal> Deals { get; set; }
+
+        [Display(Name = "出单总额")]
+        public decimal DealsAmount { get { return Deals.Sum(s=>s.Payment); } }
+        public List<TargetOfMonthForMember> TargetOfMonthForMembers { get; set; }
+
+        [Display(Name = "月目标总额")]
+        public decimal TargetOfMonthForMembersAmount { get { return TargetOfMonthForMembers.Sum(s => s.Deal); } }
+
+        public List<Research> Researchs { get; set; }
+        [Display(Name = "调研数量")]
+        public int ResearchsCount { get { return Researchs.Count; } }
+        public List<LeadCall> LeadCalls { get; set; }
+        [Display(Name = "Fax Out")]
+        public int LeadCallsCount { get { return LeadCalls.Count; } }
+        [Display(Name = "员工姓名")]
+        public string Name { get; set; }
     }
 
     public class ViewLeadCallAmount

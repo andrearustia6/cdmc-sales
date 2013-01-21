@@ -1,0 +1,22 @@
+﻿@{
+    ViewBag.Title = "员工表现";
+}
+@using Model
+@using Entity
+@using Utl
+@model List<ViewMemberPerformance>
+
+ @using (Html.BeginForm())
+ { 
+     @(Html.Telerik().Grid(Model).Name("performance").Columns(items=>
+     {
+         items.Bound(i=>i.Name);
+         items.Bound(i=>i.ResearchsCount);
+         items.Bound(i=>i.TargetOfMonthForMembersAmount);
+         items.Bound(i=>i.DealsAmount);
+     }).Resizable(resizing => resizing.Columns(true))
+    .Filterable().Sortable().Groupable()
+    .Pageable(p => p.PageSize(20))
+    .Scrollable(scrolling => scrolling.Height(350)))
+ }
+

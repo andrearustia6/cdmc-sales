@@ -170,7 +170,7 @@ namespace BLL
 
         }
 
-        public void GetMemberPerformanceIndex(List<int> selectedproject,  int? month )
+        public static ViewPerformanceData GetMemberPerformanceIndex(List<int> selectedproject, int? month,List<string> members)
         {
             if (month == null) month = DateTime.Now.Month;
 
@@ -185,18 +185,50 @@ namespace BLL
                     enddate = tempdate;
             }
 
-            while (startdate.DayOfWeek== DayOfWeek.Monday)
+            while (startdate.DayOfWeek != DayOfWeek.Monday)
             {
                 startdate = startdate.AddDays(-1);
             }
-            while (startdate.DayOfWeek == DayOfWeek.Friday)
+            while (enddate.DayOfWeek != DayOfWeek.Friday)
             {
-                startdate = startdate.AddDays(-1);
+                enddate = enddate.AddDays(-1);
             }
 
-            Utl.Utl.GetCallsInfo(ps, startdate, enddate);
+            //enddate按照凌晨0点算， 所以结束时间多加1小时
+            enddate.AddDays(1);
 
+            var deals = from d in CH.DB.Deals where d.Abandoned == true && d.SignDate >= startdate && d.SignDate <= enddate && members.Any(m=>m==d.Sales) select d;
+            var targets = from t in CH.DB.TargetOfMonthForMembers where t.StartDate >= startdate && t.EndDate <= enddate && members.Any(m => m == t.Member.Name)  select t;
+            var researchs = from r in CH.DB.Researchs where r.CreatedDate >= startdate && r.CreatedDate <= enddate && members.Any(m => m == r.AddPerson) select r;
+            var phoneinfos = Utl.Utl.GetCallsInfo(ps, startdate,enddate);
+
+            var calllists = from c in CH.DB.LeadCalls where c.CallDate >= startdate && c.CallDate <= enddate && c.LeadCallType.Code >= 30 && members.Any(m => m == c.Member.Name) select c;
+           
+
+            ViewPerformanceData data = new ViewPerformanceData();
+            data.Deals = deals.ToList();
+            data.Month = month.Value;
+            data.Researchs = researchs.ToList();
+            data.TargetOfMonthForMembers = targets.ToList();
+            data.LeadCalls = calllists.ToList();
+            data.ViewPhoneInfos = phoneinfos;
+
+            return data;
         }
-      
+
+        public static ViewMemberPerformance GetSingleMemberPerformance(ViewPerformanceData records,string member)
+        {
+
+            var data = new ViewMemberPerformance() { 
+                Name = member,
+                Deals = records.Deals.FindAll(d => d.Sales == member),
+                LeadCalls = records.LeadCalls.FindAll(l => l.Member.Name == member),
+                Month = records.Month,
+                Researchs = records.Researchs.FindAll(r=>r.AddPerson == member),
+                TargetOfMonthForMembers =  records.TargetOfMonthForMembers.FindAll(t=>t.Member.Name == member)
+            };
+
+            return data;
+        }
     }
 }
