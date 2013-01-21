@@ -65,6 +65,13 @@
                      
                    }
                    
+                   if (score >= DirectorRequired.LVL)
+                   {
+                       menu.Add().Text("Òµ¼¨ÆÀ¹À").ImageUrl("~/Content/Common/Icons/mvc.png").Items(item =>
+                       {
+                       }
+                   }
+                   
                    menu.Add().Text("Package").ImageUrl("~/Content/Common/Icons/test.png").Items(item =>
                    {
                        item.Add().Url("~/Package/index").Text("Package");
