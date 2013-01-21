@@ -16,9 +16,9 @@
                 {
                     //公司名，人名，性别，职务，公司总机，时差，客户直线，移动电话，电子邮箱，传真，致电时间，状态，结果描述
                     c.Bound(item => item.Lead.Company.Name).Title("公司名").Width(120);
-                    c.Bound(item => item.Lead.Name).Title("人名");
-                    c.Bound(item => item.Lead.Gender);
-                    c.Bound(item => item.Lead.Title);
+                    c.Bound(item => item.Lead.Name).Title("人名").Width(120);
+                    c.Bound(item => item.Lead.Gender).Width(70);
+                    c.Bound(item => item.Lead.Title).Width(120);
                     c.Bound(item => item.Lead).Title("公司总机").Template(@<text>
                     @{
                         var lead = item.Lead;

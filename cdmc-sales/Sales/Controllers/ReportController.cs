@@ -10,6 +10,7 @@ using System.Web.Profile;
 using System.Configuration;
 using System.Data.OleDb;
 using System.Data;
+using BLL;
 
 namespace Sales.Controllers
 {
@@ -23,161 +24,23 @@ namespace Sales.Controllers
         //}
         public ActionResult MemberProgress(List<int> selectedprojects, bool? isActivated, DateTime? startdate, DateTime? enddate)
         {
-            startdate = startdate == null ? new DateTime(1, 1, 1) : startdate;
-            enddate = enddate == null ? new DateTime(9999, 1, 1) : startdate;
-
-            if (selectedprojects == null)
-            {
-                selectedprojects = BLL.CRM_Logical.GetUserInvolveProject().Select(p => p.ID).ToList();
-            }
-
-            if (selectedprojects != null)
-            {
-                var totaldeals = from d in CH.DB.Deals
-                                 where selectedprojects.Any(sp => sp == d.ProjectID)
-                                 select d;
-
-                var deals = from d in totaldeals where d.SignDate >= startdate && d.SignDate <= enddate select d;
-
-                var totaltargetofmonths = from t in CH.DB.TargetOfMonthForMembers
-                                          where selectedprojects.Any(sp => sp == t.ProjectID)
-                                          select t;
-
-                var targetofmonths = from t in totaltargetofmonths
-                                     where (t.StartDate >= startdate && t.StartDate <= enddate) || (t.StartDate >= startdate && t.StartDate <= enddate)
-                                     select t;
-
-                var projects = from p in CH.DB.Projects
-                               where selectedprojects.Any(sp => sp == p.ID) && p.EndDate >= startdate && p.EndDate <= enddate
-                               select p;
-
-                var list = new List<ViewProjectMemberProgressAmount>();
-
-                foreach (var p in projects.ToList())
-                {
-                    ViewProjectMemberProgressAmount pm = new ViewProjectMemberProgressAmount();
-                    pm.Project = p;
-                    var tms = from m in p.Members where p.IsActived==true select m;
-                    var memlist = new List<ViewMemberProgressAmount>();
-                    foreach (var m in tms)
-                    {
-                        ViewMemberProgressAmount v = new ViewMemberProgressAmount();
-                        v.Member = m;
-                        var projectdeals = from d in deals where d.Sales==m.Name && d.ProjectID == p.ID select d;
-                        var projecttargets = from t in targetofmonths where t.MemberID == m.ID && t.ProjectID == p.ID select t;
-
-                        var projecttotaldeals = from d in totaldeals where d.Sales == m.Name &&  d.ProjectID == p.ID select d;
-                        var projecttotaltargets = from t in totaltargetofmonths where t.MemberID == m.ID &&  t.ProjectID == p.ID select t;
-
-                        if (projectdeals.Count() > 0)
-                        {
-                            v.CheckIn = projectdeals.Sum(d => d.Income);
-                            v.DealIn = projectdeals.Sum(d => d.Payment);
-                        }
-
-                        if (projecttargets.Count() > 0)
-                        {
-                            v.CheckInTarget = projecttargets.Sum(t => t.CheckIn);
-                            v.DealInTarget = projecttargets.Sum(t => t.Deal);
-                        }
-
-                        if (projecttotaldeals.Count() > 0)
-                        {
-                            v.TotalCheckIn = projecttotaldeals.Sum(d => d.Income);
-                            v.TotalDealIn = projecttotaldeals.Sum(d => d.Payment);
-
-                        }
-                        if (projecttotaltargets.Count() > 0)
-                        {
-                            v.TotalDealinTarget = projecttotaltargets.Sum(t=>t.Deal);
-                        }
-                        memlist.Add(v);
-                    }
-                    pm.ViewMemberProgressAmounts = memlist;
-                    list.Add(pm);
-                }
-
-                return View(list);
-            }
-            return View();
+            var list = Report.GetMemberProgressList(selectedprojects, isActivated, startdate, enddate);
+            return View(list);
         }
 
-
+       /// <summary>
+       /// 项目进度表
+       /// </summary>
+       /// <param name="selectedprojects"></param>
+       /// <param name="isActivated"></param>
+       /// <param name="startdate"></param>
+       /// <param name="enddate"></param>
+       /// <returns></returns>
         public ActionResult ProjectProgress(List<int> selectedprojects, bool? isActivated, DateTime? startdate, DateTime? enddate)
         { 
-           startdate = startdate==null?new DateTime(1,1,1):startdate;
-           enddate = enddate == null?new DateTime(9999,1,1):startdate;
-
-           if (selectedprojects == null)
-           {
-               selectedprojects = BLL.CRM_Logical.GetUserInvolveProject().Select(p => p.ID).ToList();
-           }
-            if(selectedprojects != null)
-            {
-                var totaldeals = from d in CH.DB.Deals
-                            where selectedprojects.Any(sp => sp == d.ProjectID) 
-                            select d;
-
-                var deals =  from d  in totaldeals where d.SignDate >= startdate && d.SignDate <= enddate select d;
- 
-                var totaltargetofmonths = from t in CH.DB.TargetOfMonths
-                                     where selectedprojects.Any(sp => sp == t.ProjectID) select t;
-
-                var targetofmonths =  from t in totaltargetofmonths where (t.StartDate >= startdate && t.StartDate <= enddate)||(t.StartDate >= startdate && t.StartDate <= enddate)
-                                      select t;
-
-                 var projects =  from p in CH.DB.Projects
-                            where selectedprojects.Any(sp => sp == p.ID) && p.EndDate >= startdate && p.EndDate <= enddate
-                            select p;
-
-                 var list = new List<ViewProjectProgressAmount>();
-
-                foreach(var p in projects.ToList())
-                {
-                    ViewProjectProgressAmount v = new ViewProjectProgressAmount();
-
-                    var projectdeals = from d in deals where d.ProjectID == p.ID select d;
-                    var projecttargets = from t in targetofmonths where t.ProjectID == p.ID select t;
-
-                    var projecttotaldeals = from d in totaldeals where d.ProjectID == p.ID select d;
-                    var projecttotaltargets = from t in totaltargetofmonths where t.ProjectID == p.ID select t;
-                   
-                 
-                    v.Project = p;
-                    if (projectdeals.Count() > 0)
-                    {
-                        v.CheckIn = projectdeals.Sum(d => d.Income);
-                        v.DealIn = projectdeals.Sum(d => d.Payment);
-                    }
-
-                    if (projecttargets.Count() > 0)
-                    {
-                        v.CheckInTarget = projecttargets.Sum(t => t.CheckIn);
-
-                        v.CheckInPercentage = (int)((v.CheckIn / v.CheckInTarget)*100);
-                        v.DealInTarget = projecttargets.Sum(t => t.Deal);
-                        v.DealInPercentage = (int)((v.DealIn / v.DealInTarget) * 100);
-                    }
-                    if (projecttotaldeals.Count() > 0)
-                    {
-                        v.TotalCheckIn = projecttotaldeals.Sum(d => d.Income);
-                        v.TotalDealIn = projecttotaldeals.Sum(d => d.Payment);
-                       
-                    }
-
-                   
-                    v.LeftDay = (p.EndDate - DateTime.Now).Days;
-                    list.Add(v);
-                }
-
-                return View(list);
-            }
-            return View();
+           var list = Report.GetProjectProgressList(selectedprojects,isActivated,startdate,enddate);
+           return View(list);
         }
-
-     
-        //
-        // GET: /Report/
 
         /// <summary>
         /// call list 统计
@@ -189,7 +52,6 @@ namespace Sales.Controllers
         {
             ViewBag.StartDate = startdate;
             ViewBag.EndDate = enddate;
-
 
             var result = new TotalLeadCallAmount();
 
@@ -258,12 +120,10 @@ namespace Sales.Controllers
                 worst = worst.Take(10).ToList();
             result.WorstCallers = worst;
             return View(result);
-
-          
         }
 
         /// <summary>
-        /// call list
+        /// call list列表
         /// </summary>
         /// <param name="startdate"></param>
         /// <param name="enddate"></param>
@@ -298,11 +158,7 @@ namespace Sales.Controllers
             });
             return View(data);
         }
-
     }
-
-    
-
 
     [SalesRequired]
     public class SalesReportController : Controller
@@ -315,7 +171,6 @@ namespace Sales.Controllers
 
         public ActionResult MemberLeadCallsChart(DateTime? startdate, DateTime? enddate, int? projectid, string charttype)
         {
-
             ViewBag.StartDate = startdate;
             ViewBag.EndDate = enddate;
             ViewBag.ChartType = charttype;
