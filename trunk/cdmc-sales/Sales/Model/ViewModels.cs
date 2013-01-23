@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using Entity;
 using System.ComponentModel.DataAnnotations;
+using System.Data;
 
 namespace Model
 {
@@ -96,16 +97,20 @@ namespace Model
 
     public class ViewPerformanceData
     {
-        public List<ViewPhoneInfo> ViewPhoneInfos { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
+        public List<DataRow> ViewPhoneInfos { get; set; }
         public int Month { get; set; }
         public List<Deal> Deals { get; set; }
         public List<TargetOfMonthForMember> TargetOfMonthForMembers{ get; set; }
         public List<Research> Researchs { get; set; }
         public List<LeadCall> LeadCalls { get; set; }
+        public List<ViewMemberDayWorkload> ViewMemberDayWorkloads { get; set; }
     }
 
     public class ViewMemberPerformance
     {
+        static int FaxoutCount = 10;
         [Display(Name="月份")]
         public int Month { get; set; }
         public List<Deal> Deals { get; set; }
@@ -124,6 +129,19 @@ namespace Model
         [Display(Name = "Fax Out")]
         public int LeadCallsCount { get { return LeadCalls.Count; } }
         [Display(Name = "员工姓名")]
+        public string Name { get; set; }
+
+        public List<ViewMemberDayWorkload> ViewMemberDayWorkloads { get; set; }
+
+        public int LowerFaxoutDay { get { return ViewMemberDayWorkloads.Where(s => s.FaxoutCount < FaxoutCount).Count(); } }
+        public int LowerOnPhoneDay { get; set; }
+    }
+
+    public class ViewMemberDayWorkload
+    {
+        public String Day { get; set; }
+        public int FaxoutCount { get; set; }
+        public TimeSpan OnPhoneDuration { get; set; }
         public string Name { get; set; }
     }
 

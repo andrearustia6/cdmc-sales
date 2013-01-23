@@ -65,11 +65,12 @@
                      
                    }
                    
-                   if (score >= DirectorRequired.LVL)
+                   if (score >=   ManagerRequired.LVL)
                    {
                        menu.Add().Text("Òµ¼¨ÆÀ¹À").ImageUrl("~/Content/Common/Icons/mvc.png").Items(item =>
                        {
-                       }
+                           item.Add().Text("ÏúÊÛ¿¼ºË").Url("~/ManagerReport/GetMemberPerformance");
+                       });
                    }
                    
                    menu.Add().Text("Package").ImageUrl("~/Content/Common/Icons/test.png").Items(item =>

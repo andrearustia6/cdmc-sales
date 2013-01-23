@@ -7,6 +7,8 @@
 @using BLL
 <fieldset>
     <legend>@SR.Form</legend>
+    
+
     <div class="editor-label">
         @Html.LabelFor(model => model.PackageID, "Package")
     </div>
@@ -132,6 +134,20 @@
     <div class="editor-field">
         @Html.TextAreaFor(model => model.TicketDescription)
         @Html.ValidationMessageFor(model => model.TicketDescription)
+    </div>
+     <div class="editor-label">
+        @Html.LabelFor(model => model.Abandoned, "是否坏账")
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(m=>m.Abandoned)
+        @Html.ValidationMessageFor(model => model.Abandoned)
+    </div>
+     <div class="editor-label">
+        @Html.LabelFor(model => model.AbandonReason, "坏账原因")
+    </div>
+    <div class="editor-field">
+        @Html.TextAreaFor(m=>m.AbandonReason)
+        @Html.ValidationMessageFor(model => model.AbandonReason)
     </div>
  
         @Html.Hidden("ProjectID", (int)ViewBag.ProjectID)

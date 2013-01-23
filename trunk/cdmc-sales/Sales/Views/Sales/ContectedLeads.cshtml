@@ -10,7 +10,7 @@
 @Html.Partial("contenttitle", "Call List")
 @Html.Partial("projectselector")
 @(Html.Telerik().Grid<ViewContactedLead>(Model).Name("Grid").ToolBar(commands => commands.Custom()
-    .HtmlAttributes(new { id = "export" }).Text("导出客户电子邮件").Action("ExportCsv", "sales", new { projectid=ViewBag.projectid==null?null:ViewBag.ProjectID as int?, orderBy = "~", filter = "~" }))
+    .HtmlAttributes(new { id = "export" }).Text("导出客户电子邮件").Action("ExportCsv", "sales", new { projectid = ViewBag.projectid == null ? null : ViewBag.ProjectID as int?, orderBy = "~", filter = "~" }))
                 .ClientEvents(events => events.OnDataBound("onCallListDataBound"))
                 .Columns(c =>
                 {
@@ -32,23 +32,23 @@
                         }
                         }
                     </text>).Width(110);
-                    c.Bound(item => item.Lead.Company.DistrictNumber.TimeDifference ).Template(@<text>
+                    c.Bound(item => item.Lead.Company.DistrictNumber.TimeDifference).Template(@<text>
                      @{
-                        var lead = item.Lead;
-                        if (lead.SubCompanyID == null )
-                        {
-                            if (lead.Company.DistrictNumber!=null)
-                            {
+                         var lead = item.Lead;
+                         if (lead.SubCompanyID == null)
+                         {
+                             if (lead.Company.DistrictNumber != null)
+                             {
                             <p>@lead.Company.DistrictNumber.TimeDifference</p>
-                            }
-                        }
-                        else
-                        {
-                             if (lead.SubCompany.DistrictNumber!=null)
-                            {
+                             }
+                         }
+                         else
+                         {
+                             if (lead.SubCompany.DistrictNumber != null)
+                             {
                             <p>@lead.SubCompany.DistrictNumber.TimeDifference</p>
-                            }
-                        }
+                             }
+                         }
                         }
                     </text>).Width(60);
                     c.Bound(item => item.Lead.Contact).Width(110);

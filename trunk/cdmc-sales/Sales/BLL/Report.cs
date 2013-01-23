@@ -10,6 +10,7 @@ namespace BLL
 {
     public class Report
     {
+        public static int FaxOut=10;
         private List<int>  SetProjectSelectedList(List<int> selectedprojects)
         {
             if(selectedprojects == null)
@@ -174,11 +175,11 @@ namespace BLL
         {
             if (month == null) month = DateTime.Now.Month;
 
-            var ps = CH.GetAllData<Project>(p => selectedproject.Any(sp=>sp==p.ID));
+            var ps = CH.GetAllData<Project>(p => selectedproject.Contains(p.ID));
 
             DateTime startdate = new DateTime(DateTime.Now.Year, month.Value, 1);
-            DateTime enddate = startdate;
-            while(enddate.Month==startdate.Month)
+            DateTime enddate = startdate.EndOfMonth();
+            while(enddate.Month!=startdate.Month)
             {
                 var tempdate = enddate.AddDays(7);
                 if (tempdate.Month == startdate.Month)
@@ -194,38 +195,79 @@ namespace BLL
                 enddate = enddate.AddDays(-1);
             }
 
-            //enddate按照凌晨0点算， 所以结束时间多加1小时
+            //enddate按照凌晨0点算， 所以结束时间多加1天
             enddate.AddDays(1);
 
-            var deals = from d in CH.DB.Deals where d.Abandoned == true && d.SignDate >= startdate && d.SignDate <= enddate && members.Any(m=>m==d.Sales) select d;
-            var targets = from t in CH.DB.TargetOfMonthForMembers where t.StartDate >= startdate && t.EndDate <= enddate && members.Any(m => m == t.Member.Name)  select t;
-            var researchs = from r in CH.DB.Researchs where r.CreatedDate >= startdate && r.CreatedDate <= enddate && members.Any(m => m == r.AddPerson) select r;
-            var phoneinfos = Utl.Utl.GetCallsInfo(ps, startdate,enddate);
+            var deals = from d in CH.DB.Deals where d.Abandoned == false && d.SignDate >= startdate && d.SignDate <= enddate && members.Contains(d.Sales) select d;
+            var targets = from t in CH.DB.TargetOfMonthForMembers where t.Month == month && members.Contains(t.Member.Name) select t;
+            var researchs = from r in CH.DB.Researchs where r.CreatedDate >= startdate && r.CreatedDate <= enddate && members.Contains(r.AddPerson) select r;
+            var phoneinfos = Utl.Utl.GetCallsInfoForPerformanceDataRows(startdate,enddate,members);
 
-            var calllists = from c in CH.DB.LeadCalls where c.CallDate >= startdate && c.CallDate <= enddate && c.LeadCallType.Code >= 30 && members.Any(m => m == c.Member.Name) select c;
+            var calllists = from c in CH.DB.LeadCalls where c.CallDate >= startdate && c.CallDate <= enddate && c.LeadCallType.Code >= 30 && members.Contains(c.Member.Name) select c;
+
+            
+
+            var day = startdate;
+       
            
-
             ViewPerformanceData data = new ViewPerformanceData();
             data.Deals = deals.ToList();
             data.Month = month.Value;
             data.Researchs = researchs.ToList();
             data.TargetOfMonthForMembers = targets.ToList();
             data.LeadCalls = calllists.ToList();
-            data.ViewPhoneInfos = phoneinfos;
+            data.StartDate = startdate;
+            data.EndDate = enddate;
+            data.ViewPhoneInfos = phoneinfos.ToList();
 
             return data;
         }
 
-        public static ViewMemberPerformance GetSingleMemberPerformance(ViewPerformanceData records,string member)
+        public static ViewMemberPerformance GetSingleMemberPerformance(ViewPerformanceData records,string m)
         {
+            var contact = Employee.GetProfile("Contact", m).ToString();
+            var callistbymember = records.LeadCalls.FindAll(c => c.Member.Name == m).GroupBy(o => o.CallDate.ToShortDateString());
+            var extension = Employee.GetProfile("Contact",m).ToString();
+            var phonecallmember = records.ViewPhoneInfos.FindAll(p => p["phone"].ToString() == extension).GroupBy(o => o["startdate"].ToString());
+            DateTime temp = records.StartDate;
+                var list = new List<ViewMemberDayWorkload>();
+                while (temp <= records.EndDate)
+                {
+                    if (temp.IsWorkingday())
+                    {
+                        var datestring = temp.ToShortDateString();
+                        var workload = new ViewMemberDayWorkload();
+
+                        //计算fax out
+                        var tempcalllist = callistbymember.Where(c => c.Key == datestring);
+                        //解开grouping
+                        foreach (var tc in tempcalllist)
+                        {
+                            workload.FaxoutCount = tc.Count();
+                        }
+                        //计算
+                        var tempdurantion = phonecallmember.Where(p => DateTime.Parse(p.Key).ToShortDateString() == datestring);
+                        //解开grouping
+                        foreach (var tc in tempdurantion)
+                        {
+                            var munites = tc.Sum(s => TimeSpan.Parse(s["duration"].ToString()).TotalMinutes);
+                            workload.OnPhoneDuration = TimeSpan.FromMinutes(munites);
+                        }
+                        workload.Name = m;
+                        workload.Day = datestring;
+                        list.Add(workload);
+                    }
+                    temp = temp.AddDays(1);
+                }
 
             var data = new ViewMemberPerformance() { 
-                Name = member,
-                Deals = records.Deals.FindAll(d => d.Sales == member),
-                LeadCalls = records.LeadCalls.FindAll(l => l.Member.Name == member),
+                Name = m,
+                Deals = records.Deals.FindAll(d => d.Sales == m),
+                LeadCalls = records.LeadCalls.FindAll(l => l.Member.Name == m),
                 Month = records.Month,
-                Researchs = records.Researchs.FindAll(r=>r.AddPerson == member),
-                TargetOfMonthForMembers =  records.TargetOfMonthForMembers.FindAll(t=>t.Member.Name == member)
+                Researchs = records.Researchs.FindAll(r => r.AddPerson == m),
+                TargetOfMonthForMembers = records.TargetOfMonthForMembers.FindAll(t => t.Member.Name == m),
+                ViewMemberDayWorkloads = list
             };
 
             return data;

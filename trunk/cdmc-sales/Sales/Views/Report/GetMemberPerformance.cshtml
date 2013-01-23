@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "员工表现";
+    ViewBag.Title = "员工考核";
 }
 @using Model
 @using Entity
@@ -8,15 +8,32 @@
 
  @using (Html.BeginForm())
  { 
-     @(Html.Telerik().Grid(Model).Name("performance").Columns(items=>
+     @(Html.Telerik().Grid(Model).Name("performance").Columns(items =>
      {
-         items.Bound(i=>i.Name);
-         items.Bound(i=>i.ResearchsCount);
-         items.Bound(i=>i.TargetOfMonthForMembersAmount);
-         items.Bound(i=>i.DealsAmount);
-     }).Resizable(resizing => resizing.Columns(true))
+         items.Bound(i => i.Name);
+         items.Bound(i => i.ResearchsCount);
+         items.Bound(i => i.TargetOfMonthForMembersAmount);
+         items.Bound(i => i.DealsAmount);
+         items.Bound(i => i.LeadCallsCount);
+         items.Bound(i => i.LowerFaxoutDay);
+
+     }).Resizable(resizing => resizing.Columns(true)).DetailView(e =>e.Template(@<text>
+     @RenderGrid(item)
+     </text>))
     .Filterable().Sortable().Groupable()
     .Pageable(p => p.PageSize(20))
-    .Scrollable(scrolling => scrolling.Height(350)))
+    .Scrollable(scrolling => scrolling.Height(400)))
  }
 
+@helper RenderGrid(ViewMemberPerformance m)
+{
+      @(Html.Telerik().Grid(m.ViewMemberDayWorkloads).Name("performance"+ m.Name).Columns(items =>{
+      items.Bound(i => i.Day);
+      items.Bound(i => i.FaxoutCount);
+      items.Bound(i => i.OnPhoneDuration);
+      
+      }).Filterable().Sortable().Groupable()
+                      .Pageable(p => p.PageSize(m.ViewMemberDayWorkloads.Count))
+            .Scrollable(scrolling => scrolling.Height(300)))
+      
+}

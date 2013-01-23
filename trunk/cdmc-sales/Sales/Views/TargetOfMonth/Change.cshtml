@@ -2,6 +2,14 @@
 @using Utl
 <fieldset>
     <legend>@SR.Form</legend>
+     <div class="editor-label">
+        @Html.LabelFor(model => model.Month)
+    </div>
+    <div class="editor-field">
+        @Html.DropDownListFor(m => m.Month, new SelectList(new List<int>() {1,2,3,4,5,6,7,8,9,10,11,12 }),"-请选择-")
+        @Html.ValidationMessageFor(model => model.Month)
+    </div>
+
     <div class="editor-label">
         @Html.LabelFor(model => model.StartDate)
     </div>

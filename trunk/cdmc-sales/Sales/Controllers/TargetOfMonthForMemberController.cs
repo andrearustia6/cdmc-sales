@@ -95,22 +95,25 @@ namespace Sales.Controllers
                 CH.Create<TargetOfMonthForMember>(item);
                 return RedirectToAction("MyTargetIndex", new { projectid = item.ProjectID});
             }
+            ViewBag.ProjectID = item.ProjectID;
             return View(item);
         }
         public ActionResult Edit(int id)
         {
-            return View(CH.GetDataById<TargetOfMonthForMember>(id));
+            var data = CH.GetDataById<TargetOfMonthForMember>(id);
+            return View(data);
         }
 
         [HttpPost]
         public ActionResult Edit(TargetOfMonthForMember item)
         {
-            this.AddErrorStateIfTargetOfMonthNoValid(item);
+            //this.AddErrorStateIfTargetOfMonthNoValid(item);
             if (ModelState.IsValid)
             {
                 CH.Edit<TargetOfMonthForMember>(item);
                 return RedirectToAction("MyTargetIndex",new {projectid = item.ProjectID});
             }
+            ViewBag.ProjectID = item.ProjectID;
             return View(item);
         }
 

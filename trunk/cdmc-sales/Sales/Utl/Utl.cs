@@ -494,6 +494,62 @@ namespace Utl
 
     public class Utl
     {
+        public static IEnumerable<DataRow> GetCallsInfoForPerformanceDataRows( DateTime startdate, DateTime enddate, List<string> members)
+        {
+
+            IEnumerable<DataRow> phones;
+                string contacts = "where [phone] like '$$$' ";
+               
+                members.ForEach(item =>
+                {
+                    ProfileBase userp = ProfileBase.Create(item);
+                    if (userp != null)
+                    {
+                        var uc = userp.GetPropertyValue("Contact");
+                        if (uc != null && !string.IsNullOrEmpty(uc.ToString()))
+                        {
+                            int contect = 0;
+                            Int32.TryParse(uc.ToString(), out contect);
+                            if (contect > 0)
+                            {
+                                contacts += " or [phone] like '" + contect.ToString() + "'";
+                            }
+                        }
+                    }
+                   
+                });
+
+                string cstr = ConfigurationManager.ConnectionStrings["BillDB"].ToString();
+                using (var con = new OleDbConnection(cstr))
+                {
+                    string sql = "SELECT * FROM bill ";
+
+                    //string sql = "SELECT * FROM bill";
+                    OleDbDataAdapter da = new OleDbDataAdapter(sql, con);
+                    OleDbCommand c = new OleDbCommand(sql, con);
+                    da.SelectCommand = c;
+                    DataSet ds = new DataSet();//创建数据集
+                    da.Fill(ds, "bill");//填充数据集
+                    DataTable tb = ds.Tables["bill"];//创建表
+                    var rows = ds.Tables["bill"].Select();
+                    phones = rows.Where(p => p["duration"].ToString() != "00:00:00");
+                    //foreach (var p in phones)
+                    //{
+                    //    var daycalls = p.GroupBy(g => g["startdate"]);
+                    //    foreach (var perdaycall in daycalls)
+                    //    {
+                    //        var totalmunites =  perdaycall.Sum(s=>((TimeSpan)s["duration"]).TotalMinutes);
+                    //    }
+                    //    //var allmimutes = p.Sum(s => ((TimeSpan)s["duration"]).TotalMinutes);
+                    //    //var t = new ViewPhoneInfo() { Phone = p.Key.ToString(), Duration = TimeSpan.FromMinutes(allmimutes)};
+                    //    phonelist.Add(t);
+                    //}
+                    
+                    con.Close();
+                }
+                return phones;
+        }
+
         public static List<ViewPhoneInfo> GetCallsInfo(List<Project> ps, DateTime? startdate, DateTime? enddate)
         {
             if (startdate == null)
@@ -544,37 +600,42 @@ namespace Utl
                     da.Fill(ds, "bill");//填充数据集
                     DataTable tb = ds.Tables["bill"];//创建表
                     var rows = ds.Tables["bill"].Select();
-
-                    rows.ToList().ForEach(r =>
+                    var phones = rows.Where(p=>p["duration"].ToString()!= "00:00:00").GroupBy(r => r["phone"]);
+                    foreach (var p in phones)
                     {
-                        var sd = r["startdate"].ToString();
-                        DateTime result;
-                        DateTime.TryParse(sd, out result);
-                        var durationstring = r["duration"].ToString();
-                        if (result >= startdate.Value && result <= enddate.Value && durationstring != "00:00:00")
-                        {
-                            var phone = r["phone"].ToString();
-                            var calldate = result;
-                            TimeSpan duration;
-                            TimeSpan.TryParse(durationstring, out duration);
+                        var allmimutes = p.Sum(s => ((TimeSpan)s["duration"]).TotalMinutes);
+                        
+                        var t = new ViewPhoneInfo() { Phone = p.Key.ToString(), Duration = TimeSpan.FromMinutes(allmimutes) };
+                        phonelist.Add(t);
+                    }
+                    //rows.ToList().ForEach(r =>
+                    //{
+                    //    var sd = r["startdate"].ToString();
+                    //    DateTime result;
+                    //    DateTime.TryParse(sd, out result);
+                    //    var durationstring = r["duration"].ToString();
+                    //    if (result >= startdate.Value && result <= enddate.Value && durationstring != "00:00:00")
+                    //    {
+                    //        var phone = r["phone"].ToString();
+                    //        var calldate = result;
+                    //        TimeSpan duration;
+                    //        TimeSpan.TryParse(durationstring, out duration);
 
-                            var t = phonelist.FirstOrDefault(p => p.Phone == phone);
-                            if (t == null)
-                            {
-                                t = new ViewPhoneInfo() { Phone = phone, Duration = duration };
-
-                            }
-                            else
-                            {
-                                phonelist.Remove(t);
-                                t.CallSum = t.CallSum + 1;
-                                t.Duration += duration;
-                            }
-                            phonelist.Add(t);
-                        }
-
-
-                    });
+                    //        var t = phonelist.FirstOrDefault(p => p.Phone == phone);
+                    //        if (t == null)
+                    //        {
+                    //            t = new ViewPhoneInfo() { Phone = phone, Duration = duration };
+                    //        }
+                    //        else
+                    //        {
+                    //            phonelist.Remove(t);
+                    //            t.CallSum = t.CallSum + 1;
+                    //            t.Duration += duration;
+                    //        }
+                    //        phonelist.Add(t);
+                    //    }
+                    //}
+                    //);
                     con.Close();
                 }
             }
@@ -633,6 +694,14 @@ namespace Utl
         public static DateTime StartOfMonth(this DateTime dt)
         {
             return new DateTime(dt.Year, dt.Month, 1);
+        }
+
+        public static bool IsWorkingday(this DateTime dt)
+        {
+            if (dt.DayOfWeek != DayOfWeek.Sunday && dt.DayOfWeek != DayOfWeek.Saturday)
+                return true;
+            else
+                return false;
         }
 
         public static DateTime EndOfMonth(this DateTime dt)

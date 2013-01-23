@@ -14,6 +14,7 @@
                 {
                     c.Bound(item => item.Company.Name).Title("公司名");
                     c.Bound(item => item.Deals.Count).Title("已出单数");
+                    c.Bound(item => item.Progress.Name).Title("成熟度");
                     c.Bound(item => item.Deals).Template(@<text>@{var deal = item.Deals.FirstOrDefault();
                                                                   if (deal != null)
                                                                   {
@@ -22,7 +23,7 @@
                                                                   }</text>).Title("首单出单人");
                     c.Bound(item => item.SalesOnTheCompany );
                     c.Bound(item => item.Progress.Name);
-                    c.Bound(item => item.CategoryString).Title("Category");
+                    c.Bound(item => item.CategoryString).Title("细分行业");
 
                 })
                             .Resizable(resizing => resizing.Columns(true))
