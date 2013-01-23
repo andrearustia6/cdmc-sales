@@ -36,7 +36,7 @@
 @helper Categorys(Project project)
 {
     @(Html.Telerik().Grid(project.Categorys).Name("Categorys" + project.ID).ToolBar(commands =>
-                                    commands.Custom().Text("添加Category").Action("Create", "Category", new { projectid = project.ID }))
+                                            commands.Custom().Text("添加细分行业").Action("Create", "Category", new { projectid = project.ID }))
                             .Columns(c =>
                             {
                                 c.Bound(o => o.Name);

@@ -1138,7 +1138,7 @@ namespace Sales.Controllers
     {
         public bool Equals(LeadCall x, LeadCall y)
         {
-            if (x.CallDate > y.CallDate && (x.LeadID == y.LeadID))
+            if ((x.LeadID == y.LeadID))
             { return true; }
             else
             { return false; }

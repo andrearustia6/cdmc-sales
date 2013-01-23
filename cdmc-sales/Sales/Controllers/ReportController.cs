@@ -15,6 +15,32 @@ using System.Web.Security;
 
 namespace Sales.Controllers
 {
+     public class ManagerReportController :ReportController
+     {
+         public ActionResult GetMemberPerformance(List<int> selectedproject, int? month, List<string> selectedmembers)
+         {
+             if (selectedproject == null)
+             {
+                 selectedproject = this.GetProjectByAccount().Select(i => i.ID).ToList();
+             }
+             if (selectedmembers == null)
+             {
+                 selectedmembers = Membership.GetAllUsers().Cast<MembershipUser>().Select(m => m.UserName).ToList();
+             }
+
+             var data = Report.GetMemberPerformanceIndex(selectedproject, month, selectedmembers);
+
+             var list = new List<ViewMemberPerformance>();
+             foreach (var m in selectedmembers)
+             {
+                 var mp = Report.GetSingleMemberPerformance(data, m);
+                 list.Add(mp);
+             }
+             return View(@"~\views\report\GetMemberPerformance.cshtml", list);
+
+         }
+     }
+
     [LeaderRequired]
     public class ReportController : SalesReportController
     {
@@ -24,28 +50,7 @@ namespace Sales.Controllers
         //    base.Dispose(disposing);
         //}
 
-        public ActionResult GetMemberPerformance(List<int> selectedproject, int? month, List<string> selectedmembers)
-        { 
-            if(selectedproject==null)
-            {
-                selectedproject = this.GetProjectByAccount().Select(i=>i.ID).ToList();
-            }
-            if (selectedmembers == null)
-            { 
-                selectedmembers = Membership.GetAllUsers().Cast<MembershipUser>().Select(m=>m.UserName).ToList();
-            }
-
-            var data = Report.GetMemberPerformanceIndex(selectedproject, month, selectedmembers);
-
-            var list = new List<ViewMemberPerformance>();
-            foreach(var m in  selectedmembers)
-            {
-                var mp = Report.GetSingleMemberPerformance(data,m);
-                list.Add(mp);
-            }
-            return View(list);
-
-        }
+        
         public ActionResult MemberProgress(List<int> selectedprojects, bool? isActivated, DateTime? startdate, DateTime? enddate)
         {
             var list = Report.GetMemberProgressList(selectedprojects, isActivated, startdate, enddate);
