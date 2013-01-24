@@ -13,13 +13,13 @@
     var height = 100 + Model.Count() * 150;
       @(Html.Telerik().Chart(Model).Name("chart").Title("项目进展报表").Legend(legend => legend.Position(ChartLegendPosition.Top)).Series(series =>
   {
-      series.Bar(s => s.DealInTarget).Name("销售目标").Labels(true);
-      series.Bar(s => s.DealIn).Name("实际出单").Labels(true);
-      series.Bar(s => s.CheckInTarget).Name("入账目标").Labels(true);
-      series.Bar(s => s.CheckIn).Name("实际入账").Labels(true);
-      series.Bar(s => s.Project.Target).Name("项目总目标").Labels(true);
-      series.Bar(s => s.TotalDealIn).Name("实际销售总额").Labels(true).Color("pink");
-      series.Bar(s => s.TotalCheckIn).Name("实际入账总额").Labels(true).Color("green");
+      series.Bar(s => s.DealInTarget).Name("销售目标").Labels(labels => labels.Template(" 销售目标: <#= value #>").Visible(true));
+      series.Bar(s => s.DealIn).Name("实际出单").Labels(labels => labels.Template(" 实际出单: <#= value #>").Visible(true));
+      series.Bar(s => s.CheckInTarget).Name("入账目标").Labels(labels => labels.Template(" 入账目标: <#= value #>").Visible(true));
+      series.Bar(s => s.CheckIn).Name("实际入账").Labels(labels => labels.Template(" 实际入账: <#= value #>").Visible(true));
+      series.Bar(s => s.Project.Target).Name("总目标").Labels(labels => labels.Template(" 总目标: <#= value #>").Visible(true));
+      series.Bar(s => s.TotalDealIn).Name("实际销售总额").Labels(labels => labels.Template(" 实际销售总额: <#= value #>").Visible(true)).Color("red");
+      series.Bar(s => s.TotalCheckIn).Name("实际入账总额").Labels(labels => labels.Template(" 实际入账总额: <#= value #>").Visible(true)).Color("yellow");
 
   }).CategoryAxis(axis => axis.Categories(s => s.NameWithCompletePercentage)).ValueAxis(axis => axis.Numeric().Labels(labels => labels.Format("￥{0:#,##0}"))).HtmlAttributes(new { style = "height:" + height + "px" })
       )

@@ -67,13 +67,13 @@
                    
                    if (score >=   ManagerRequired.LVL)
                    {
-                       menu.Add().Text("业绩评估").ImageUrl("~/Content/Common/Icons/mvc.png").Items(item =>
+                       menu.Add().Text("业绩评估").ImageUrl("~/Content/Common/Icons/test.png").Items(item =>
                        {
-                           item.Add().Text("销售考核").Url("~/ManagerReport/GetMemberPerformance");
+                           item.Add().Text("销售考核").Url("~/ManagerReport/MemberPerformanceIndex");
                        });
                    }
-                   
-                   menu.Add().Text("Package").ImageUrl("~/Content/Common/Icons/test.png").Items(item =>
+
+                   menu.Add().Text("Package").ImageUrl("~/Content/Common/Icons/sitefinity.png").Items(item =>
                    {
                        item.Add().Url("~/Package/index").Text("Package");
                        //item.Add().Url("~/PackageItem/index").Text("Package项目").ImageUrl("~/Content/Common/Icons/Docking.gif");

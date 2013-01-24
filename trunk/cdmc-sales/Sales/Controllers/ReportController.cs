@@ -17,15 +17,23 @@ namespace Sales.Controllers
 {
      public class ManagerReportController :ReportController
      {
-         public ActionResult GetMemberPerformance(List<int> selectedproject, int? month, List<string> selectedmembers)
+         public ActionResult MemberPerformanceIndex(List<int> selectedproject, int? month, List<string> selectedmembers)
          {
+             List<Project> ps = new List<Project>();
              if (selectedproject == null)
              {
-                 selectedproject = this.GetProjectByAccount().Select(i => i.ID).ToList();
+                  ps = this.GetProjectByAccount();
+                 
+                 selectedproject = ps.Select(i => i.ID).ToList();
              }
              if (selectedmembers == null)
              {
-                 selectedmembers = Membership.GetAllUsers().Cast<MembershipUser>().Select(m => m.UserName).ToList();
+                 List<Member> members = new List<Member>();
+                 foreach(var p in ps)
+                 {
+                     members.AddRange(p.Members);
+                 }
+                 selectedmembers = members.Select(m => m.Name).Distinct().ToList();
              }
 
              var data = Report.GetMemberPerformanceIndex(selectedproject, month, selectedmembers);
@@ -36,7 +44,7 @@ namespace Sales.Controllers
                  var mp = Report.GetSingleMemberPerformance(data, m);
                  list.Add(mp);
              }
-             return View(@"~\views\report\GetMemberPerformance.cshtml", list);
+             return View(@"~\views\report\MemberPerformanceIndex.cshtml", list);
 
          }
      }
