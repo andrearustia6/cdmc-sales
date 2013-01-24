@@ -282,9 +282,6 @@ namespace Entity
 
         [Display(Name = "入账目标"), Required, DisplayFormat(DataFormatString = "{0:c}")]
         public decimal CheckIn { get; set; }
-
-        [Display(Name = "月份"), Required]
-        public int? Month { get; set; }
     }
 
     /// <summary>
@@ -292,9 +289,6 @@ namespace Entity
     /// </summary>
     public class TargetOfMonthForMember : EntityBase
     {
-        [Display(Name = "月份"),Required]
-        public int? Month { get; set; }
-
         public virtual Project Project { get; set; }
         [Display(Name = "项目名称"), Required]
         public int ProjectID { get; set; }

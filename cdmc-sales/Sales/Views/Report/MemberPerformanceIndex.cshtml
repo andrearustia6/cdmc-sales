@@ -11,11 +11,18 @@
      @(Html.Telerik().Grid(Model).Name("performance").Columns(items =>
      {
          items.Bound(i => i.Name);
-         items.Bound(i => i.ResearchsCount);
-         items.Bound(i => i.TargetOfMonthForMembersAmount);
-         items.Bound(i => i.DealsAmount);
-         items.Bound(i => i.LeadCallsCount);
-         items.Bound(i => i.LowerFaxoutDay);
+         items.Bound(i => i.TargetCompletePercentage);
+         items.Bound(i => i.CrmAddCompletePercentage);
+         items.Bound(i => i.DailyOnPhoneCompletePercentage);
+         items.Bound(i => i.DailyFaxOutCompletePercentage);
+         items.Bound(i => i.Rate);
+         items.Bound(i => i.Total);
+         //items.Bound(i => i.TargetOfMonthForMembersAmount);
+         //items.Bound(i => i.CheckinsAmount);
+         //items.Bound(i => i.LeadCallsCount);
+         //items.Bound(i => i.BadWorkloadDaysCount);
+         //items.Bound(i => i.BadWorkloadWeeksCount);
+         
 
      }).Resizable(resizing => resizing.Columns(true)).DetailView(e =>e.Template(@<text>
      @RenderGrid(item)

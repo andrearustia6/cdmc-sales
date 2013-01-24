@@ -5,6 +5,7 @@ using System.Web;
 using Entity;
 using System.ComponentModel.DataAnnotations;
 using System.Data;
+using Utl;
 
 namespace Model
 {
@@ -103,28 +104,113 @@ namespace Model
         public int Month { get; set; }
         public List<Deal> Deals { get; set; }
         public List<TargetOfMonthForMember> TargetOfMonthForMembers{ get; set; }
-        public List<Research> Researchs { get; set; }
+        public List<CompanyRelationship> CompanyRelationships { get; set; }
         public List<LeadCall> LeadCalls { get; set; }
         public List<ViewMemberDayWorkload> ViewMemberDayWorkloads { get; set; }
     }
 
     public class ViewMemberPerformance
     {
-        static int FaxoutCount = 10;
+        //A
+        [Display(Name = "月到账目标完成情况")]
+        public double TargetCompletePercentage
+        {
+            get
+            {
+                if (TargetOfMonthForMembersAmount == 0) return 0;
+                return Math.Round((double)(CheckinsAmount / TargetOfMonthForMembersAmount) * 100, 2);
+            }
+        }
+        //B
+        [Display(Name = "可打公司周目标标完成情况")]
+        public double CrmAddCompletePercentage
+        {
+            get
+            {
+                var count = ViewMemberWeekWorkloads.FindAll(f => f.IsCrmAddQualified == false).Count;
+                if (count == 0)
+                    return 10;
+                else if(count ==1)
+                    return 5;
+                else
+                    return 0;
+
+
+            }
+        }
+        //D
+        [Display(Name = "每天Email/Fax标完成情况")]
+        public double DailyFaxOutCompletePercentage
+        {
+            get
+            {
+                var count = ViewMemberDayWorkloads.FindAll(f => f.IsFaxOutQualified == false).Count;
+                if (count <=3)
+                    return 30;
+                else if (count <= 6 && count>=4)
+                    return 15;
+                else
+                    return 0;
+
+            }
+        }
+        //C
+        [Display(Name = "每天电话时间")]
+        public double DailyOnPhoneCompletePercentage
+        {
+            get
+            {
+                var count = ViewMemberDayWorkloads.FindAll(f => f.IsPhoneQualified == false).Count;
+                if (count <= 3)
+                    return 10;
+                else if (count <= 6 && count >= 4)
+                    return 5;
+                else
+                    return 0;
+
+            }
+        }
+        //E
+        public double? _rate;
+        public double Rate
+        {
+            get
+            {
+                if (_rate == null)
+                {
+                    var count = ViewMemberWeekWorkloads.FindAll(f => f.IsWorkloadQualified == false).Count;
+                    if (count == 0)
+                        _rate = 1.2;
+                    else if (count == 1)
+                        _rate = 1;
+                    else if (count == 2)
+                        _rate = 0.8;
+                    else
+                        _rate = 0.5;
+                }
+
+                return _rate.Value;
+            }
+        }
+        //总分
+        public double Total {
+            get { return (TargetCompletePercentage + CrmAddCompletePercentage + DailyOnPhoneCompletePercentage + DailyFaxOutCompletePercentage) * Rate; }
+        }
         [Display(Name="月份")]
         public int Month { get; set; }
         public List<Deal> Deals { get; set; }
 
-        [Display(Name = "出单总额")]
-        public decimal DealsAmount { get { return Deals.Sum(s=>s.Payment); } }
+        [Display(Name = "到账总额")]
+        public decimal CheckinsAmount { get { return Deals.Sum(s=>s.Payment); } }
         public List<TargetOfMonthForMember> TargetOfMonthForMembers { get; set; }
 
-        [Display(Name = "月目标总额")]
-        public decimal TargetOfMonthForMembersAmount { get { return TargetOfMonthForMembers.Sum(s => s.Deal); } }
+        [Display(Name = "月到账目标总额")]
+        public decimal TargetOfMonthForMembersAmount { get { return TargetOfMonthForMembers.Sum(s => s.CheckIn); } }
 
-        public List<Research> Researchs { get; set; }
-        [Display(Name = "调研数量")]
-        public int ResearchsCount { get { return Researchs.Count; } }
+        
+
+        public List<CompanyRelationship> CompanyRelationships { get; set; }
+     
         public List<LeadCall> LeadCalls { get; set; }
         [Display(Name = "Fax Out")]
         public int LeadCallsCount { get { return LeadCalls.Count; } }
@@ -133,15 +219,100 @@ namespace Model
 
         public List<ViewMemberDayWorkload> ViewMemberDayWorkloads { get; set; }
 
-        public int LowerFaxoutDay { get { return ViewMemberDayWorkloads.Where(s => s.FaxoutCount < FaxoutCount).Count(); } }
-        public int LowerOnPhoneDay { get; set; }
+        public List<ViewMemberWeekWorkload> ViewMemberWeekWorkloads { get; set; }
+
+        [Display(Name = "不达标天数")]
+        public int BadWorkloadDaysCount { get { return ViewMemberDayWorkloads.Where(s => s.IsQualified==false).Count(); } }
+
+        [Display(Name = "可打公司不达标周数")]
+        public int BadWorkloadWeeksCount { get { return ViewMemberWeekWorkloads.Where(s => s.IsCrmAddQualified == false).Count(); } }
+    }
+
+    public class ViewMemberWeekWorkload
+    {
+        static int ResearchCount = 105;
+        public string Name { get; set; }
+        public DateTime StartDay{get;set;}
+        public DateTime Endday { get; set; }
+        public List<CompanyRelationship> CompanyRelationships { get; set; }
+
+        [Display(Name = "FaxOut数量")]
+        public int FaxoutCount { get; set; }
+        [Display(Name = "电话时间")]
+        public TimeSpan OnPhoneDuration { get; set; }
+
+        [Display(Name = "考核系数是否达标")]
+        public bool IsWorkloadQualified
+        {
+            get
+            {
+                if (OnPhoneDuration.TotalHours >= 10 || FaxoutCount >= 50)
+                    return true;
+                else
+                    return false;
+            }
+        }
+
+        [Display(Name = "可打公司添加是否达标")]
+        public bool IsCrmAddQualified
+        {
+            get
+            {
+                if (CompanyRelationships.Count > ResearchCount)
+                    return true;
+                else
+                    return false;
+            }
+        }
     }
 
     public class ViewMemberDayWorkload
     {
+        static int Faxout = 10;
+        static int Hours = 2;
+        [Display(Name = "日期")]
         public String Day { get; set; }
+        [Display(Name = "FaxOut数量")]
         public int FaxoutCount { get; set; }
+        [Display(Name = "电话时间")]
         public TimeSpan OnPhoneDuration { get; set; }
+        [Display(Name = "是否达标")]
+        public bool IsQualified
+        {
+            get
+            {
+                if (OnPhoneDuration.TotalHours >= Hours || FaxoutCount >= Faxout)
+                    return true;
+                else
+                    return false;
+            }
+        }
+
+        [Display(Name = "是否FaxOut达标")]
+        public bool IsFaxOutQualified
+        {
+            get
+            {
+                if ( FaxoutCount >= Faxout)
+                    return true;
+                else
+                    return false;
+            }
+        }
+
+        [Display(Name = "是否通话时间达标")]
+        public bool IsPhoneQualified
+        {
+            get
+            {
+                if (OnPhoneDuration.TotalHours >= Hours )
+                    return true;
+                else
+                    return false;
+            }
+        }
+
+        [Display(Name = "销售")]
         public string Name { get; set; }
     }
 
@@ -182,9 +353,6 @@ namespace Model
         public List<ViewLeadCallSumAmount> WorstCallers { get; set; }
         public List<ViewLeadCallSumAmount> TopCallers { get; set; }
         public List<ViewLeadCallAmountInProject> ViewLeadCallAmountInProjects { get; set; }
-       
-
-     
     }
 
     public class ViewProjectProgressAmount : ViewProgressAmount

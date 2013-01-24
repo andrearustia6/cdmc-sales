@@ -9,16 +9,16 @@
 
 @Html.Partial("Multipleprojectselector")
 @{
-    //var startdate = ViewBag.StartDate as DateTime?;
-    //var enddate = ViewBag.EndDate as DateTime?;
-    //if(startdate==null)
-    //{
-    //    startdate = new DateTime(1,1,1);
-    //}
-    //if (enddate == null)
-    //{
-    //    enddate = new DateTime(9999,1,1);
-    //}
+    var startdate = ViewBag.StartDate as DateTime?;
+    var enddate = ViewBag.EndDate as DateTime?;
+    if (startdate == null)
+    {
+        startdate = new DateTime(1, 1, 1);
+    }
+    if (enddate == null)
+    {
+        enddate = new DateTime(9999, 1, 1);
+    }
     if (Model != null)
     {
         foreach (var p in Model)
@@ -26,7 +26,7 @@
             <br />
             <br />
             <span style=" margin-top:10px"><p>项目名称：@p.Name</p></span>
-            var ls = CH.GetAllData<LeadCall>(l => l.CompanyRelationship.ProjectID == p.ID).OrderByDescending(o => o.CallDate).ToList();
+            var ls = CH.GetAllData<LeadCall>(l => l.CompanyRelationship.ProjectID == p.ID && l.CallDate >= startdate && l.CallDate <= enddate).OrderByDescending(o => o.CallDate).ToList();
             @(Html.Telerik().Grid<LeadCall>(ls).Name("ls" + p.ID)
                 .DataKeys(keys =>
                 {

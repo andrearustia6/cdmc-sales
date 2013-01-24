@@ -75,7 +75,7 @@ namespace Entity
             var districtNumber = item.Lead.SubCompanyID == null ? item.Lead.Company.DistrictNumber : item.Lead.SubCompany.DistrictNumber;
             if (districtNumber != null)
             {
-                var differs = item.CompanyRelationship.Company.DistrictNumber.TimeDifference;
+                var differs = districtNumber.TimeDifference;
                 date = date.AddHours(-differs);
             }
             return date;
