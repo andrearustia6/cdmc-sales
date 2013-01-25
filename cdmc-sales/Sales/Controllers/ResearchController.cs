@@ -20,8 +20,9 @@ namespace Sales.Controllers
             base.Dispose(disposing);
         }
 
-        public ViewResult MyIndex()
+        public ViewResult MyIndex(int? projectid )
         {
+            projectid = this.TrySetProjectIDForUser(projectid);
             return View(CH.GetAllData<Research>(r => r.Creator == Employee.CurrentUserName || r.AddPerson == Employee.CurrentUserName).OrderByDescending(o => o.CreatedDate).ToList());
         }
 

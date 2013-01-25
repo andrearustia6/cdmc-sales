@@ -5,47 +5,58 @@
 @using Entity
 @using Utl
 @model List<ViewMemberPerformance>
+@using (Html.BeginForm())
+{ 
+ <fieldset>
+ <span>月份选择：
+ @Html.DropDownList("Month", new SelectList(new List<int>() { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 }), "-请选择-", new { onchange = "this.form.submit();" })
+ </span>
+ </fieldset>
 
- @using (Html.BeginForm())
- { 
-     @(Html.Telerik().Grid(Model).Name("performance").Columns(items =>
-     {
-         items.Bound(i => i.Name);
-         items.Bound(i => i.TargetCompletePercentage);
-         items.Bound(i => i.CrmAddCompletePercentage);
-         items.Bound(i => i.DailyOnPhoneCompletePercentage);
-         items.Bound(i => i.DailyFaxOutCompletePercentage);
-         items.Bound(i => i.Rate);
-         items.Bound(i => i.Total);
-         //items.Bound(i => i.TargetOfMonthForMembersAmount);
-         //items.Bound(i => i.CheckinsAmount);
-         //items.Bound(i => i.LeadCallsCount);
-         //items.Bound(i => i.BadWorkloadDaysCount);
-         //items.Bound(i => i.BadWorkloadWeeksCount);
-         
+   
+}
 
-     }).Resizable(resizing => resizing.Columns(true)).DetailView(e =>e.Template(@<text>
+ <fieldset>
+
+   @(Html.Telerik().Grid(Model).Name("performance").Columns(items =>
+{
+    items.Bound(i => i.Name);
+    items.Bound(i => i.TargetCompletePercentage).Template(@<text>@item.TargetCompletePercentage.ToString()%</text>);
+    items.Bound(i => i.CrmAddCompletePercentage).Template(@<text>@item.CrmAddCompletePercentage.ToString()%</text>);
+    items.Bound(i => i.DailyOnPhoneCompletePercentage).Template(@<text>@item.DailyOnPhoneCompletePercentage.ToString()%</text>);
+    items.Bound(i => i.DailyFaxOutCompletePercentage).Template(@<text>@item.DailyFaxOutCompletePercentage.ToString()%</text>);
+    items.Bound(i => i.Rate);
+    //items.Bound(i => i.BadWorkloadDaysCount);
+    //items.Bound(i => i.BadWorkloadWeeksCount);
+    items.Bound(i => i.Total).Template(@<text>@item.Total.ToString()%</text>);
+    //items.Bound(i => i.TargetOfMonthForMembersAmount);
+    //items.Bound(i => i.CheckinsAmount);
+    //items.Bound(i => i.LeadCallsCount);
+    //items.Bound(i => i.BadWorkloadDaysCount);
+    //items.Bound(i => i.BadWorkloadWeeksCount);
+
+
+}).Resizable(resizing => resizing.Columns(true)).DetailView(e => e.Template(@<text>
      @RenderGrid(item)
      </text>))
     .Filterable().Sortable().Groupable()
     .Pageable(p => p.PageSize(20))
     .Scrollable(scrolling => scrolling.Height(400)))
- }
-
+</fieldset>
 @helper RenderGrid(ViewMemberPerformance m)
-{
-    @(Html.Telerik().TabStrip().Name("tab" + m.Name).Items(i =>
     {
-        i.Add().Text("每日工作量").Content(@<text>@RenderDayWorkload(m)</text>);
-        i.Add().Text("每周工作量").Content(@<text>@RenderCrmWorkload(m)</text>);
-    }).SelectedIndex(0)
+    @(Html.Telerik().TabStrip().Name("tab" + m.Name).Items(i =>
+{
+    i.Add().Text("每日工作量").Content(@<text>@RenderDayWorkload(m)</text>);
+    i.Add().Text("每周工作量").Content(@<text>@RenderCrmWorkload(m)</text>);
+}).SelectedIndex(0)
     )
     
       
 }
 
 @helper RenderDayWorkload(ViewMemberPerformance m)
-{
+    {
   @(Html.Telerik().Grid(m.ViewMemberDayWorkloads).Name("performance" + m.Name).Columns(items =>
 {
     items.Bound(i => i.Day);
@@ -59,16 +70,18 @@
 }
 
 @helper RenderCrmWorkload(ViewMemberPerformance m)
-{
+    {
      @(Html.Telerik().Grid(m.ViewMemberWeekWorkloads).Name("performance" + m.Name).Columns(items =>
  {
      items.Bound(i => i.StartDay).Template(@<text>@item.StartDay.ToShortDateString()</text>);
      items.Bound(i => i.EndDay).Template(@<text>@item.EndDay.ToShortDateString()</text>);
-     items.Bound(i => i.FaxoutCount);
-     items.Bound(i => i.OnPhoneDuration);
-     items.Bound(i => i.CompanyRelationships.Count).Title("添加的可打公司数");
+     items.Bound(i => i.FaxoutCount).Aggregate(a => a.Sum()).FooterTemplate(@<text>@item.Sum</text>);
+     items.Bound(i => i.OnPhoneDuration.TotalHours).Title("通话时长(小时)").Template(@<text>@Math.Round(item.OnPhoneDuration.TotalHours, 3)</text>).Aggregate(a => a.Sum()).FooterTemplate(@<text>
+     @Math.Round((double)item.Sum.Value, 3)
+     </text>);
+     items.Bound(i => i.CompanyRelationships.Count).Title("添加的可打公司数").Aggregate(a => a.Sum()).FooterTemplate(@<text>@item.Sum</text>);
      items.Bound(i => i.IsCrmAddQualified);
      items.Bound(i => i.IsWorkloadQualified);
 
- }).Filterable().Sortable().Pageable(p => p.PageSize(m.ViewMemberDayWorkloads.Count)).Scrollable(scrolling => scrolling.Height(300)))
+ }).Filterable().Sortable().Pageable(p => p.PageSize(m.ViewMemberDayWorkloads.Count)).Scrollable(scrolling => scrolling.Height(200)))
 }

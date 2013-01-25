@@ -112,17 +112,24 @@ namespace Model
     public class ViewMemberPerformance
     {
         //A
-        [Display(Name = "月到账目标完成情况")]
+        [Display(Name = "月到账目标完成情况(A)")]
         public double TargetCompletePercentage
         {
             get
             {
                 if (TargetOfMonthForMembersAmount == 0) return 0;
-                return Math.Round((double)(CheckinsAmount / TargetOfMonthForMembersAmount) * 100, 2);
+                var per =  Math.Round((double)(CheckinsAmount / TargetOfMonthForMembersAmount) * 100, 2);
+
+                if (per >= 140) return 70;
+                else if (per >= 120) return 60;
+                else if (per >= 100) return 50;
+                else if (per >= 80) return 40;
+                else if (per >= 60) return 30;
+                else return 0;
             }
         }
         //B
-        [Display(Name = "可打公司周目标标完成情况")]
+        [Display(Name = "可打公司周目标完成情况(B)")]
         public double CrmAddCompletePercentage
         {
             get
@@ -139,7 +146,7 @@ namespace Model
             }
         }
         //D
-        [Display(Name = "每天Email/Fax标完成情况")]
+        [Display(Name = "每天Email/Fax标完成情况(D)")]
         public double DailyFaxOutCompletePercentage
         {
             get
@@ -155,7 +162,7 @@ namespace Model
             }
         }
         //C
-        [Display(Name = "每天电话时间")]
+        [Display(Name = "每天电话时间(C)")]
         public double DailyOnPhoneCompletePercentage
         {
             get
@@ -172,6 +179,7 @@ namespace Model
         }
         //E
         public double? _rate;
+        [Display(Name = "考核系数(E)")]
         public double Rate
         {
             get
@@ -193,6 +201,7 @@ namespace Model
             }
         }
         //总分
+        [Display(Name = "奖金发放比例")]
         public double Total {
             get { return (TargetCompletePercentage + CrmAddCompletePercentage + DailyOnPhoneCompletePercentage + DailyFaxOutCompletePercentage) * Rate; }
         }
@@ -225,7 +234,10 @@ namespace Model
         public int BadWorkloadDaysCount { get { return ViewMemberDayWorkloads.Where(s => s.IsQualified==false).Count(); } }
 
         [Display(Name = "可打公司不达标周数")]
-        public int BadWorkloadWeeksCount { get { return ViewMemberWeekWorkloads.Where(s => s.IsCrmAddQualified == false).Count(); } }
+        public int BadCrmAddedWeeksCount { get { return ViewMemberWeekWorkloads.Where(s => s.IsCrmAddQualified == false).Count(); } }
+
+        [Display(Name = "工作量不达标周数")]
+        public int BadWorkloadWeeksCount { get { return ViewMemberWeekWorkloads.Where(s => s.IsWorkloadQualified == false).Count(); } }
     }
 
     public class ViewMemberWeekWorkload
