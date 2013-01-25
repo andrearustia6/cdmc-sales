@@ -550,7 +550,8 @@ namespace Entity
             {
                 item.Members.ForEach(m =>
                 {
-                    list.Add(m.CallAmount(cs,startdate, enddate));
+                    if (m.IsActivated==true)
+                      list.Add(m.CallAmount(cs,startdate, enddate));
                 });
             }
             return list;

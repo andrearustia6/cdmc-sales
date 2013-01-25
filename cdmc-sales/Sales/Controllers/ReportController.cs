@@ -31,7 +31,10 @@ namespace Sales.Controllers
                  List<Member> members = new List<Member>();
                  foreach(var p in ps)
                  {
-                     members.AddRange(p.Members);
+                     if (p.IsActived == true)
+                     {
+                         members.AddRange(p.Members.FindAll(f => f.IsActivated == true));
+                     }
                  }
                  selectedmembers = members.Select(m => m.Name).Distinct().ToList();
              }

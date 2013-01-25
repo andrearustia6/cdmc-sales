@@ -34,13 +34,41 @@
 
 @helper RenderGrid(ViewMemberPerformance m)
 {
-      @(Html.Telerik().Grid(m.ViewMemberDayWorkloads).Name("performance"+ m.Name).Columns(items =>{
-      items.Bound(i => i.Day);
-      items.Bound(i => i.FaxoutCount);
-      items.Bound(i => i.OnPhoneDuration);
+    @(Html.Telerik().TabStrip().Name("tab" + m.Name).Items(i =>
+    {
+        i.Add().Text("每日工作量").Content(@<text>@RenderDayWorkload(m)</text>);
+        i.Add().Text("每周工作量").Content(@<text>@RenderCrmWorkload(m)</text>);
+    }).SelectedIndex(0)
+    )
+    
       
-      }).Filterable().Sortable().Groupable()
-                      .Pageable(p => p.PageSize(m.ViewMemberDayWorkloads.Count))
-            .Scrollable(scrolling => scrolling.Height(300)))
-      
+}
+
+@helper RenderDayWorkload(ViewMemberPerformance m)
+{
+  @(Html.Telerik().Grid(m.ViewMemberDayWorkloads).Name("performance" + m.Name).Columns(items =>
+{
+    items.Bound(i => i.Day);
+    items.Bound(i => i.FaxoutCount);
+    items.Bound(i => i.OnPhoneDuration);
+    items.Bound(i => i.IsFaxOutQualified);
+    items.Bound(i => i.IsPhoneQualified);
+    items.Bound(i => i.IsQualified);
+
+}).Filterable().Sortable().Pageable(p => p.PageSize(m.ViewMemberDayWorkloads.Count)).Scrollable(scrolling => scrolling.Height(300)))
+}
+
+@helper RenderCrmWorkload(ViewMemberPerformance m)
+{
+     @(Html.Telerik().Grid(m.ViewMemberWeekWorkloads).Name("performance" + m.Name).Columns(items =>
+ {
+     items.Bound(i => i.StartDay).Template(@<text>@item.StartDay.ToShortDateString()</text>);
+     items.Bound(i => i.EndDay).Template(@<text>@item.EndDay.ToShortDateString()</text>);
+     items.Bound(i => i.FaxoutCount);
+     items.Bound(i => i.OnPhoneDuration);
+     items.Bound(i => i.CompanyRelationships.Count).Title("添加的可打公司数");
+     items.Bound(i => i.IsCrmAddQualified);
+     items.Bound(i => i.IsWorkloadQualified);
+
+ }).Filterable().Sortable().Pageable(p => p.PageSize(m.ViewMemberDayWorkloads.Count)).Scrollable(scrolling => scrolling.Height(300)))
 }
