@@ -498,26 +498,26 @@ namespace Utl
         {
 
             IEnumerable<DataRow> phones;
-                string contacts = "where [phone] like '$$$' ";
+               // string contacts = "where [phone] like '$$$' ";
                
-                members.ForEach(item =>
-                {
-                    ProfileBase userp = ProfileBase.Create(item);
-                    if (userp != null)
-                    {
-                        var uc = userp.GetPropertyValue("Contact");
-                        if (uc != null && !string.IsNullOrEmpty(uc.ToString()))
-                        {
-                            int contect = 0;
-                            Int32.TryParse(uc.ToString(), out contect);
-                            if (contect > 0)
-                            {
-                                contacts += " or [phone] like '" + contect.ToString() + "'";
-                            }
-                        }
-                    }
+                //members.ForEach(item =>
+                //{
+                //    ProfileBase userp = ProfileBase.Create(item);
+                //    if (userp != null)
+                //    {
+                //        var uc = userp.GetPropertyValue("Contact");
+                //        if (uc != null && !string.IsNullOrEmpty(uc.ToString()))
+                //        {
+                //            int contect = 0;
+                //            Int32.TryParse(uc.ToString(), out contect);
+                //            if (contect > 0)
+                //            {
+                //                contacts += " or [phone] like '" + contect.ToString() + "'";
+                //            }
+                //        }
+                //    }
                    
-                });
+                //});
 
                 string cstr = ConfigurationManager.ConnectionStrings["BillDB"].ToString();
                 using (var con = new OleDbConnection(cstr))
@@ -565,33 +565,33 @@ namespace Utl
             if (ps.Count > 0)
             {
                 //string contacts = "where convert(varchar(100) ,cast([startdate] as datetime),23) between '" + startdate.ToShortDateString() + "' and '" + enddate.ToShortDateString() + "' ";
-                string contacts = "where [phone] like '$$$' ";
-                ps.ForEach(p =>
-                {
-                    p.Members.ForEach(item =>
-                    {
-                        ProfileBase userp = ProfileBase.Create(item.Name);
-                        if (userp != null)
-                        {
-                            var uc = userp.GetPropertyValue("Contact");
-                            if (uc != null && !string.IsNullOrEmpty(uc.ToString()))
-                            {
-                                int contect = 0;
-                                Int32.TryParse(uc.ToString(), out contect);
-                                if (contect > 0)
-                                {
-                                    contacts += " or [phone] like '" + contect.ToString() + "'";
-                                }
-                            }
-                        }
-                    });
-                });
+                //string contacts = "where [phone] like '$$$' ";
+                //ps.ForEach(p =>
+                //{
+                //    p.Members.ForEach(item =>
+                //    {
+                //        ProfileBase userp = ProfileBase.Create(item.Name);
+                //        if (userp != null)
+                //        {
+                //            var uc = userp.GetPropertyValue("Contact");
+                //            if (uc != null && !string.IsNullOrEmpty(uc.ToString()))
+                //            {
+                //                int contect = 0;
+                //                Int32.TryParse(uc.ToString(), out contect);
+                //                if (contect > 0)
+                //                {
+                //                    contacts += " or [phone] like '" + contect.ToString() + "'";
+                //                }
+                //            }
+                //        }
+                //    });
+                //});
 
                 string cstr = ConfigurationManager.ConnectionStrings["BillDB"].ToString();
                 using (var con = new OleDbConnection(cstr))
                 {
-                    string sql = "SELECT * FROM bill " + contacts;
-
+                    //string sql = "SELECT * FROM bill " + contacts;
+                    string sql = "SELECT * FROM bill ";
                     //string sql = "SELECT * FROM bill";
                     OleDbDataAdapter da = new OleDbDataAdapter(sql, con);
                     OleDbCommand c = new OleDbCommand(sql, con);
@@ -603,9 +603,9 @@ namespace Utl
                     var phones = rows.Where(p=>p["duration"].ToString()!= "00:00:00").GroupBy(r => r["phone"]);
                     foreach (var p in phones)
                     {
-                        var allmimutes = p.Sum(s => ((TimeSpan)s["duration"]).TotalMinutes);
-                        
-                        var t = new ViewPhoneInfo() { Phone = p.Key.ToString(), Duration = TimeSpan.FromMinutes(allmimutes) };
+
+                         var total =  p.Sum(s => (TimeSpan.Parse(s["duration"].ToString())).TotalMinutes);
+                        var t = new ViewPhoneInfo() { Phone = p.Key.ToString(), Duration = TimeSpan.FromMinutes(total) };
                         phonelist.Add(t);
                     }
                     //rows.ToList().ForEach(r =>

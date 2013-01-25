@@ -198,9 +198,9 @@ namespace BLL
             //enddate按照凌晨0点算， 所以结束时间多加1天
             enddate.AddDays(1);
 
-            var deals = from d in CH.DB.Deals where d.Abandoned == false && d.SignDate >= startdate && d.SignDate <= enddate && members.Contains(d.Sales) select d;
+            var deals = from d in CH.DB.Deals where d.Abandoned == false && d.ActualPaymentDate >= startdate && d.ActualPaymentDate <= enddate && members.Contains(d.Sales) select d;
             var targets = from t in CH.DB.TargetOfMonthForMembers where t.StartDate.Month == month && members.Contains(t.Member.Name) select t;
-            var companyrelationships = from c in CH.DB.CompanyRelationships where c.CreatedDate <= startdate && c.CreatedDate <= enddate select c;
+            var companyrelationships = from c in CH.DB.CompanyRelationships where c.CreatedDate >= startdate && c.CreatedDate <= enddate select c;
             var phoneinfos = Utl.Utl.GetCallsInfoForPerformanceDataRows(startdate, enddate, members);
 
             var calllists = from c in CH.DB.LeadCalls where c.CallDate >= startdate && c.CallDate <= enddate && c.LeadCallType.Code >= 30 && members.Contains(c.Member.Name) select c;
@@ -274,9 +274,9 @@ namespace BLL
             {
                 var week = new ViewMemberWeekWorkload();
                 week.StartDay = tempstart;
-                week.Endday = tempend;
-                week.CompanyRelationships = crms.FindAll(c => c.CreatedDate >= tempstart && c.CreatedDate <= tempstart);
-                var list = daylist.FindAll(f => DateTime.Parse(f.Day) <= tempend && DateTime.Parse(f.Day) >= tempend);
+                week.EndDay = tempend;
+                week.CompanyRelationships = crms.FindAll(c => c.CreatedDate >= tempstart && c.CreatedDate <= tempend);
+                var list = daylist.FindAll(f => DateTime.Parse(f.Day) <= tempend && DateTime.Parse(f.Day) >= tempstart);
                 var totalmumite = list.Sum(s => s.OnPhoneDuration.TotalMinutes);
                 week.OnPhoneDuration = TimeSpan.FromMinutes(totalmumite);
                 week.FaxoutCount = list.Sum(s => s.FaxoutCount);

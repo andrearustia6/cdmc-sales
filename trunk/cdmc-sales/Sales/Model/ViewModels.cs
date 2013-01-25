@@ -232,9 +232,13 @@ namespace Model
     {
         static int ResearchCount = 105;
         public string Name { get; set; }
+        [Display(Name = "开始时间")]
         public DateTime StartDay{get;set;}
-        public DateTime Endday { get; set; }
+        [Display(Name = "结束时间")]
+        public DateTime EndDay { get; set; }
         public List<CompanyRelationship> CompanyRelationships { get; set; }
+
+
 
         [Display(Name = "FaxOut数量")]
         public int FaxoutCount { get; set; }
