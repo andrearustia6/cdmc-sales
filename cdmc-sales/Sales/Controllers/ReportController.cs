@@ -12,6 +12,7 @@ using System.Data.OleDb;
 using System.Data;
 using BLL;
 using System.Web.Security;
+using Telerik.Web.Mvc;
 
 namespace Sales.Controllers
 {
@@ -184,6 +185,16 @@ namespace Sales.Controllers
             }
             return View(ps);
         }
+
+        //[GridAction]
+        //public ActionResult _MemberLeadCalls(List<int> selectedprojects, bool? isActivated, DateTime? startdate, DateTime? enddate) 
+        //{ 
+        //    return View(new GridModel<Order> { Data = GetOrders() }); 
+        //}
+
+
+
+     
 
         public ActionResult Progress(DateTime? startdate, DateTime? enddate)
         {

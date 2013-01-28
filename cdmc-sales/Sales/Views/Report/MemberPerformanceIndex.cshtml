@@ -22,7 +22,7 @@
 {
     items.Bound(i => i.Name);
     items.Bound(i => i.TargetCompletePercentage).Template(@<text>@item.TargetCompletePercentage.ToString()%</text>);
-    items.Bound(i => i.CrmAddCompletePercentage).Template(@<text>@item.CrmAddCompletePercentage.ToString()%</text>);
+    items.Bound(i => i.LeadAddCompletePercentage).Template(@<text>@item.LeadAddCompletePercentage.ToString()%</text>);
     items.Bound(i => i.DailyOnPhoneCompletePercentage).Template(@<text>@item.DailyOnPhoneCompletePercentage.ToString()%</text>);
     items.Bound(i => i.DailyFaxOutCompletePercentage).Template(@<text>@item.DailyFaxOutCompletePercentage.ToString()%</text>);
     items.Bound(i => i.Rate);
@@ -79,8 +79,8 @@
      items.Bound(i => i.OnPhoneDuration.TotalHours).Title("通话时长(小时)").Template(@<text>@Math.Round(item.OnPhoneDuration.TotalHours, 3)</text>).Aggregate(a => a.Sum()).FooterTemplate(@<text>
      @Math.Round((double)item.Sum.Value, 3)
      </text>);
-     items.Bound(i => i.CompanyRelationships.Count).Title("添加的可打公司数").Aggregate(a => a.Sum()).FooterTemplate(@<text>@item.Sum</text>);
-     items.Bound(i => i.IsCrmAddQualified);
+     items.Bound(i => i.Leads.Count).Title("添加的可打公司数").Aggregate(a => a.Sum()).FooterTemplate(@<text>@item.Sum</text>);
+     items.Bound(i => i.IsLeadAddQualified);
      items.Bound(i => i.IsWorkloadQualified);
 
  }).Filterable().Sortable().Pageable(p => p.PageSize(m.ViewMemberDayWorkloads.Count)).Scrollable(scrolling => scrolling.Height(200)))

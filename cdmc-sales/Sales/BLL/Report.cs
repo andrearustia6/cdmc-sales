@@ -10,7 +10,6 @@ namespace BLL
 {
     public class Report
     {
-        public static int FaxOut = 10;
         private List<int> SetProjectSelectedList(List<int> selectedprojects)
         {
             if (selectedprojects == null)
@@ -199,21 +198,21 @@ namespace BLL
             enddate.AddDays(1);
 
             var deals = from d in CH.DB.Deals where d.Abandoned == false && d.ActualPaymentDate >= startdate && d.ActualPaymentDate <= enddate && members.Contains(d.Sales) select d;
+            var signdeals = from d in CH.DB.Deals where d.Abandoned == false && d.SignDate >= startdate && d.SignDate <= enddate && members.Contains(d.Sales) select d;
             var targets = from t in CH.DB.TargetOfMonthForMembers where t.StartDate.Month == month && members.Contains(t.Member.Name) select t;
-            var companyrelationships = from c in CH.DB.CompanyRelationships where c.CreatedDate >= startdate && c.CreatedDate <= enddate select c;
+            var leads = from c in CH.DB.Leads where c.CreatedDate >= startdate && c.CreatedDate <= enddate select c;
             var phoneinfos = Utl.Utl.GetCallsInfoForPerformanceDataRows(startdate, enddate, members);
 
-            var calllists = from c in CH.DB.LeadCalls where c.CallDate >= startdate && c.CallDate <= enddate && c.LeadCallType.Code >= 30 && members.Contains(c.Member.Name) select c;
-
-
+            var calllists = CH.GetAllData<LeadCall>(c => c.CallDate >= startdate && c.CallDate <= enddate && c.LeadCallType.Code >= 30 && members.Contains(c.Member.Name));
+          
 
             var day = startdate;
 
-
             ViewPerformanceData data = new ViewPerformanceData();
             data.Deals = deals.ToList();
+            data.SignedDeals = signdeals.ToList();
             data.Month = month.Value;
-            data.CompanyRelationships = companyrelationships.ToList();
+            data.Leads = leads.ToList();
             data.TargetOfMonthForMembers = targets.ToList();
             data.LeadCalls = calllists.ToList();
             data.StartDate = startdate;
@@ -225,10 +224,17 @@ namespace BLL
 
         public static ViewMemberPerformance GetSingleMemberPerformance(ViewPerformanceData records, string m)
         {
+            var dcls = records.LeadCalls.FindAll(c => c.Member.Name == m).Distinct(new LeadCallDistinct());
+            var calllists = new List<LeadCall>();
+            foreach (var c in dcls)
+            {
+                calllists.Add(c);
+            }
+
             var contact = Employee.GetProfile("Contact", m).ToString();
-            var callistbymember = records.LeadCalls.FindAll(c => c.Member.Name == m).GroupBy(o => o.CallDate.ToShortDateString());
+            var callistbymember = calllists.GroupBy(o => o.CallDate.ToShortDateString());
             var extension = Employee.GetProfile("Contact", m).ToString();
-            var crms = records.CompanyRelationships.FindAll(c=>c.Creator == m);
+            var leads = records.Leads.FindAll(c=>c.Creator == m);
             var phonecallmember = records.ViewPhoneInfos.FindAll(p => p["phone"].ToString() == extension).GroupBy(o => o["startdate"].ToString());
             DateTime temp = records.StartDate;
             var daylist = new List<ViewMemberDayWorkload>();
@@ -273,10 +279,8 @@ namespace BLL
             var listweek = new List<ViewMemberWeekWorkload>();
             while (tempstart <= records.EndDate)
             {
-                var week = new ViewMemberWeekWorkload();
-                week.StartDay = tempstart;
-                week.EndDay = tempend;
-                week.CompanyRelationships = crms.FindAll(c => c.CreatedDate >= tempstart && c.CreatedDate <= tempend);
+                var week = new ViewMemberWeekWorkload(records.SignedDeals,tempstart, tempend);
+                week.Leads = leads.FindAll(c => c.CreatedDate >= tempstart && c.CreatedDate <= tempend);
                 var list = daylist.FindAll(f => DateTime.Parse(f.Day) <= tempend && DateTime.Parse(f.Day) >= tempstart);
                 var totalmumite = list.Sum(s => s.OnPhoneDuration.TotalMinutes);
                 week.OnPhoneDuration = TimeSpan.FromMinutes(totalmumite);
@@ -294,11 +298,25 @@ namespace BLL
                 Month = records.Month,
                 TargetOfMonthForMembers = records.TargetOfMonthForMembers.FindAll(t => t.Member.Name == m),
                 ViewMemberDayWorkloads = daylist,
-                CompanyRelationships = records.CompanyRelationships.FindAll(c => c.Creator == m),
+                Leads = records.Leads.FindAll(c => c.Creator == m),
                 ViewMemberWeekWorkloads = listweek
             };
 
             return data;
         }
+    }
+
+
+    public class LeadCallDistinct : IEqualityComparer<LeadCall>
+    {
+        public bool Equals(LeadCall x, LeadCall y)
+        {
+            if ((x.LeadID == y.LeadID))
+            { return true; }
+            else
+            { return false; }
+        }
+
+        public int GetHashCode(LeadCall obj) { return 0; }
     }
 }
