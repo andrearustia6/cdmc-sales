@@ -26,10 +26,13 @@
 
         members.ForEach(m =>
         {
+            if(m!=null)
+            {
             var cs = m.GetMemberToCallList(DateTime.Now.AddDays(-7));
             //var temp = m.GetMemberToCallList(DateTime.Now.AddHours(-DateTime.Now.Hour), null);
 
             calls.AddRange(cs);
+            }
         });
 
         if (calls.Count > 0)

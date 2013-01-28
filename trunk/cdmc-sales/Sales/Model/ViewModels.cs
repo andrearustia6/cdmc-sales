@@ -103,8 +103,9 @@ namespace Model
         public List<DataRow> ViewPhoneInfos { get; set; }
         public int Month { get; set; }
         public List<Deal> Deals { get; set; }
+        public List<Deal> SignedDeals { get; set; }
         public List<TargetOfMonthForMember> TargetOfMonthForMembers{ get; set; }
-        public List<CompanyRelationship> CompanyRelationships { get; set; }
+        public List<Lead> Leads { get; set; }
         public List<LeadCall> LeadCalls { get; set; }
         public List<ViewMemberDayWorkload> ViewMemberDayWorkloads { get; set; }
     }
@@ -129,12 +130,12 @@ namespace Model
             }
         }
         //B
-        [Display(Name = "可打公司周目标完成情况(B)")]
-        public double CrmAddCompletePercentage
+        [Display(Name = "可打Leads周目标完成情况(B)")]
+        public double LeadAddCompletePercentage
         {
             get
             {
-                var count = ViewMemberWeekWorkloads.FindAll(f => f.IsCrmAddQualified == false).Count;
+                var count = ViewMemberWeekWorkloads.FindAll(f => f.IsLeadAddQualified == false).Count;
                 if (count == 0)
                     return 10;
                 else if(count ==1)
@@ -203,7 +204,7 @@ namespace Model
         //总分
         [Display(Name = "奖金发放比例")]
         public double Total {
-            get { return (TargetCompletePercentage + CrmAddCompletePercentage + DailyOnPhoneCompletePercentage + DailyFaxOutCompletePercentage) * Rate; }
+            get { return (TargetCompletePercentage + LeadAddCompletePercentage + DailyOnPhoneCompletePercentage + DailyFaxOutCompletePercentage) * Rate; }
         }
         [Display(Name="月份")]
         public int Month { get; set; }
@@ -216,9 +217,8 @@ namespace Model
         [Display(Name = "月到账目标总额")]
         public decimal TargetOfMonthForMembersAmount { get { return TargetOfMonthForMembers.Sum(s => s.CheckIn); } }
 
-        
-
-        public List<CompanyRelationship> CompanyRelationships { get; set; }
+        //添加的leads
+        public List<Lead> Leads { get; set; }
      
         public List<LeadCall> LeadCalls { get; set; }
         [Display(Name = "Fax Out")]
@@ -233,8 +233,8 @@ namespace Model
         [Display(Name = "不达标天数")]
         public int BadWorkloadDaysCount { get { return ViewMemberDayWorkloads.Where(s => s.IsQualified==false).Count(); } }
 
-        [Display(Name = "可打公司不达标周数")]
-        public int BadCrmAddedWeeksCount { get { return ViewMemberWeekWorkloads.Where(s => s.IsCrmAddQualified == false).Count(); } }
+        [Display(Name = "可打Leads不达标周数")]
+        public int BadLeadAddedWeeksCount { get { return ViewMemberWeekWorkloads.Where(s => s.IsLeadAddQualified == false).Count(); } }
 
         [Display(Name = "工作量不达标周数")]
         public int BadWorkloadWeeksCount { get { return ViewMemberWeekWorkloads.Where(s => s.IsWorkloadQualified == false).Count(); } }
@@ -242,18 +242,40 @@ namespace Model
 
     public class ViewMemberWeekWorkload
     {
+        public ViewMemberWeekWorkload(List<Deal> deals,DateTime startdate,DateTime enddate)
+        {
+            StartDay = startdate;
+            EndDay = enddate;
+            var ds = from d in deals where d.SignDate >=  startdate && d.SignDate<= EndDay select d;
+            Deals = ds.ToList();
+        }
+        public List<Deal> Deals { get; set; }
+        public int FaxOutWeekStandard
+        {
+            get
+            {
+
+                if (Deals.Count > 0)
+                    return 40;
+                else
+                    return 50;
+
+            }
+        }
         static int ResearchCount = 105;
+
         public string Name { get; set; }
         [Display(Name = "开始时间")]
         public DateTime StartDay{get;set;}
         [Display(Name = "结束时间")]
         public DateTime EndDay { get; set; }
-        public List<CompanyRelationship> CompanyRelationships { get; set; }
+        public List<Lead> Leads { get; set; }
 
 
 
         [Display(Name = "FaxOut数量")]
         public int FaxoutCount { get; set; }
+
         [Display(Name = "电话时间")]
         public TimeSpan OnPhoneDuration { get; set; }
 
@@ -262,19 +284,19 @@ namespace Model
         {
             get
             {
-                if (OnPhoneDuration.TotalHours >= 10 || FaxoutCount >= 50)
+                if (OnPhoneDuration.TotalHours >= 10 || FaxoutCount >= FaxOutWeekStandard)
                     return true;
                 else
                     return false;
             }
         }
 
-        [Display(Name = "可打公司添加是否达标")]
-        public bool IsCrmAddQualified
+        [Display(Name = "可打Leads添加是否达标")]
+        public bool IsLeadAddQualified
         {
             get
             {
-                if (CompanyRelationships.Count > ResearchCount)
+                if (Leads.Count > ResearchCount)
                     return true;
                 else
                     return false;
