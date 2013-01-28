@@ -284,6 +284,7 @@ namespace Model
 
     public class ViewMemberDayWorkload
     {
+        //不出单情况10，出单为7
         static int Faxout = 10;
         static int Hours = 2;
         [Display(Name = "日期")]

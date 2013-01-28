@@ -21,6 +21,14 @@
     </div>
 
      <div class="editor-label">
+        @Html.LabelFor(model =>  model.ProjectID)
+    </div>
+    <div class="editor-field">
+        @Html.DropDownListFor(model => model.ProjectID, new SelectList(CH.GetAllData<Project>(p => p.Members.Any(m => m.Name == Employee.CurrentUserName)), "ID", "Name"), "-请选择-")
+        @Html.ValidationMessageFor(model => model.ProjectID)
+    </div>
+
+     <div class="editor-label">
         @Html.Label("调研图片")
     </div>
      <div class="editor-field">
@@ -31,14 +39,15 @@
         }
         @Html.Telerik().Upload().Async(a=>a.AutoUpload(true)).Name("attachments").Multiple(false)
     </div>
-    @if (Model == null)
+    
+@*    @if (Model == null)
     {
          @Html.Hidden("ProjectID", ViewBag.ProjectID as int?)
     }
     else
     {
         @Html.HiddenFor(m => m.ProjectID)
-    }
+    }*@
 </fieldset>
 
 
