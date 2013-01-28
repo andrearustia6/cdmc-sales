@@ -248,6 +248,7 @@ namespace BLL
                     //解开grouping
                     foreach (var tc in tempcalllist)
                     {
+                        //只计算新lead的fax out
                         workload.FaxoutCount = tc.Count();
                     }
                     //计算

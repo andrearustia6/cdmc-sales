@@ -70,12 +70,12 @@ namespace Sales.Controllers
             return View(data);
         }
 
-        public ActionResult Create(int? projectid)
+        public ActionResult Create()
         {
-            if (projectid == null)
-                projectid = this.TrySetProjectIDForUser(projectid);
+            //if (projectid == null)
+            //    projectid = this.TrySetProjectIDForUser(projectid);
 
-            ViewBag.ProjectID = projectid;
+            //ViewBag.ProjectID = projectid;
             return View();
         }
 
