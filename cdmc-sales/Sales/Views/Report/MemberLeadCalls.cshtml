@@ -5,9 +5,10 @@
 @using Entity;
 @using Utl
 @model List<Project>
-<br />
+
 @Html.Partial("calllistselector")
 @{
+    
     var startdate = ViewBag.StartDate as DateTime?;
     var calltypelist = ViewBag.SelectedCallTypes as List<int>;
     string types = string.Empty;
@@ -35,22 +36,26 @@
         <legend>项目名称：@p.Name</legend>
         @(Html.Telerik().Grid<AjaxViewData>().Name("Grid" + p.ID).Columns(c =>
 {
+   
     c.Bound(item => item.LeadName).Title("人名").Width(100).Aggregate(aggregates => aggregates.Count()).ClientFooterTemplate("总数: <#= Count #>").ClientGroupFooterTemplate("总数: <#= Count #>");
     c.Bound(item => item.Title).Width(100);
-    c.Bound(item => item.CompanyName).Width(100);
+    c.Bound(item => item.CompanyName);
+    c.Bound(item => item.Categorys);
+    c.Bound(item => item.Progress);
     c.Bound(item => item.MobileDisplay);
     c.Bound(item => item.ContactDisplay);
-    c.Bound(item => item.LeadCallType);
+    c.Bound(item => item.LeadCallType).HtmlAttributes(new { @class = "calltype" });
     c.Bound(item => item.Result).Width(300);
     c.Bound(item => item.CallBackDate);
     c.Bound(item => item.Member);
     c.Bound(item => item.CallDate);
 }).DataBinding(dataBinding => dataBinding.Ajax().Select("_MemberLeadCalls", "Report", new { projectid = p.ID, startdate = startdate, enddate = enddate, types = types }))
              .Pageable(paging => paging.Style(GridPagerStyles.Status).PageOnScroll(true).PageSize(100)).Resizable(resizing => resizing.Columns(true))
-             .Filterable().Sortable().Groupable().Scrollable(s => s.Height(350))
+                     .Filterable().Sortable().Groupable().Scrollable(s => s.Height(350)).ClientEvents(e => e.OnDataBound("onColorSet"))
                  )
     </fieldset>
 
         }
     }
 }
+

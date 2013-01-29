@@ -1,4 +1,31 @@
-﻿function onCallListDataBound(e) {
+﻿function onColorSet() {
+
+    $('.calltype').each(function () {
+        var $this = $(this);
+        if ($this.html() == "Qualified Decision") {
+            $this.css('background-color', 'yellow');
+            return;
+        }
+
+        if ($this.html() == "Closed") {
+            $this.css('background-color', 'green');
+            return;
+        }
+
+        if ($this.html() == "Blowed") {
+            $this.css('background-color', 'grey');
+            return;
+        }
+
+        if ($this.html() == "Waiting for Approval") {
+            $this.css('background-color', '#D3A4FF');
+            return;
+        }
+    });
+}
+
+
+function onCallListDataBound(e) {
     var grid = $("#Grid").data('tGrid');    
     var $exportLink = $('#export');  
     var href = $exportLink.attr('href');

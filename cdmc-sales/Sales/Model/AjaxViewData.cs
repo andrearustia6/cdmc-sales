@@ -20,12 +20,18 @@ namespace Model
         [Display(Name = "客户职位")]
         public string Title { get; set; }
 
+        [Display(Name = "成熟度")]
+        public string Progress { get; set; }
+
         [Display(Name = "公司名")]
         public string CompanyName { get { return Utl.Utl.GetFullName(CompanyNameCH, CompanyNameEN); } }
         public string CompanyNameCH { get; set; }
         public string CompanyNameEN { get; set; }
    
         public string Mobile { get; set; }
+
+        [Display(Name = "核心业务")]
+        public string Categorys { get; set; }
 
         [Display(Name = "移动电话")]
         public string MobileDisplay
@@ -85,6 +91,7 @@ namespace Model
         [Display(Name = "致电类型")]
         public string LeadCallType { get; set; }
 
+        public int CallTypeCode { get; set; }
         [Display(Name = "致电销售")]
         public string Member  { get; set; }
 
