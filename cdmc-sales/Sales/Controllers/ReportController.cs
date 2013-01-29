@@ -16,42 +16,42 @@ using Telerik.Web.Mvc;
 
 namespace Sales.Controllers
 {
-     public class ManagerReportController :ReportController
-     {
-         public ActionResult MemberPerformanceIndex(List<int> selectedproject, int? month, List<string> selectedmembers)
-         {
-             List<Project> ps = new List<Project>();
-             if (selectedproject == null)
-             {
-                  ps = this.GetProjectByAccount();
-                 
-                 selectedproject = ps.Select(i => i.ID).ToList();
-             }
-             if (selectedmembers == null)
-             {
-                 List<Member> members = new List<Member>();
-                 foreach(var p in ps)
-                 {
-                     if (p.IsActived == true)
-                     {
-                         members.AddRange(p.Members.FindAll(f => f.IsActivated == true));
-                     }
-                 }
-                 selectedmembers = members.Select(m => m.Name).Distinct().ToList();
-             }
+    public class ManagerReportController : ReportController
+    {
+        public ActionResult MemberPerformanceIndex(List<int> selectedproject, int? month, List<string> selectedmembers)
+        {
+            List<Project> ps = new List<Project>();
+            if (selectedproject == null)
+            {
+                ps = this.GetProjectByAccount();
 
-             var data = Report.GetMemberPerformanceIndex(selectedproject, month, selectedmembers);
+                selectedproject = ps.Select(i => i.ID).ToList();
+            }
+            if (selectedmembers == null)
+            {
+                List<Member> members = new List<Member>();
+                foreach (var p in ps)
+                {
+                    if (p.IsActived == true)
+                    {
+                        members.AddRange(p.Members.FindAll(f => f.IsActivated == true));
+                    }
+                }
+                selectedmembers = members.Select(m => m.Name).Distinct().ToList();
+            }
 
-             var list = new List<ViewMemberPerformance>();
-             foreach (var m in selectedmembers)
-             {
-                 var mp = Report.GetSingleMemberPerformance(data, m);
-                 list.Add(mp);
-             }
-             return View(@"~\views\report\MemberPerformanceIndex.cshtml", list);
+            var data = Report.GetMemberPerformanceIndex(selectedproject, month, selectedmembers);
 
-         }
-     }
+            var list = new List<ViewMemberPerformance>();
+            foreach (var m in selectedmembers)
+            {
+                var mp = Report.GetSingleMemberPerformance(data, m);
+                list.Add(mp);
+            }
+            return View(@"~\views\report\MemberPerformanceIndex.cshtml", list);
+
+        }
+    }
 
     [LeaderRequired]
     public class ReportController : SalesReportController
@@ -62,25 +62,25 @@ namespace Sales.Controllers
         //    base.Dispose(disposing);
         //}
 
-        
+
         public ActionResult MemberProgress(List<int> selectedprojects, bool? isActivated, DateTime? startdate, DateTime? enddate)
         {
             var list = Report.GetMemberProgressList(selectedprojects, isActivated, startdate, enddate);
             return View(list);
         }
 
-       /// <summary>
-       /// 项目进度表
-       /// </summary>
-       /// <param name="selectedprojects"></param>
-       /// <param name="isActivated"></param>
-       /// <param name="startdate"></param>
-       /// <param name="enddate"></param>
-       /// <returns></returns>
+        /// <summary>
+        /// 项目进度表
+        /// </summary>
+        /// <param name="selectedprojects"></param>
+        /// <param name="isActivated"></param>
+        /// <param name="startdate"></param>
+        /// <param name="enddate"></param>
+        /// <returns></returns>
         public ActionResult ProjectProgress(List<int> selectedprojects, bool? isActivated, DateTime? startdate, DateTime? enddate)
-        { 
-           var list = Report.GetProjectProgressList(selectedprojects,isActivated,startdate,enddate);
-           return View(list);
+        {
+            var list = Report.GetProjectProgressList(selectedprojects, isActivated, startdate, enddate);
+            return View(list);
         }
 
         /// <summary>
@@ -101,25 +101,25 @@ namespace Sales.Controllers
             List<Project> ps = null;
             if (selectedprojects != null)
             {
-                var list  = from p in CH.DB.Projects where selectedprojects.Any(sp => sp == p.ID) select p;
+                var list = from p in CH.DB.Projects where selectedprojects.Any(sp => sp == p.ID) select p;
                 ps = list.ToList();
             }
             else
                 ps = this.GetProjectByAccount();
-             
 
-             var cs = Utl.Utl.GetCallsInfo(ps, startdate, enddate);
 
-             ps.ForEach(p =>
-            {
-                vl.Add(new ViewLeadCallAmountInProject() { LeadCallAmounts = p.GetProjectMemberLeadCalls(cs, startdate, enddate), project = p });
-            });
+            var cs = Utl.Utl.GetCallsInfo(ps, startdate, enddate);
+
+            ps.ForEach(p =>
+           {
+               vl.Add(new ViewLeadCallAmountInProject() { LeadCallAmounts = p.GetProjectMemberLeadCalls(cs, startdate, enddate), project = p });
+           });
 
             result.ViewLeadCallAmountInProjects = vl;
 
-             //get all record
+            //get all record
             var allsumrecords = new List<ViewLeadCallAmount>();
-            foreach(var p in result.ViewLeadCallAmountInProjects)
+            foreach (var p in result.ViewLeadCallAmountInProjects)
             {
                 allsumrecords.AddRange(p.LeadCallAmounts);
             }
@@ -130,16 +130,16 @@ namespace Sales.Controllers
             var groupsumlist = groupsum.ToList();
             groupsumlist.ForEach(v =>
             {
-                var sum = new  ViewLeadCallSumAmount();
+                var sum = new ViewLeadCallSumAmount();
                 sum.Name = v.Key;
                 sum.SalesType = v.FirstOrDefault().Member.SalesType.Name;
-                sum.DealSum = v.Sum(s=>s.DealInAmount);
-                sum.DurationSum = v.Sum(s=>s.Duration.TotalHours);
+                sum.DealSum = v.Sum(s => s.DealInAmount);
+                sum.DurationSum = v.Sum(s => s.Duration.TotalHours);
                 sum.CallSum = v.Sum(s => s.CallListAmount);
                 sumlist.Add(sum);
             });
             var topsales = sumlist.OrderByDescending(o => o.DealSum).ToList();
-            if(topsales.Count>10)
+            if (topsales.Count > 10)
             {
                 topsales = topsales.Take(10).ToList();
             }
@@ -169,8 +169,10 @@ namespace Sales.Controllers
         /// <param name="startdate"></param>
         /// <param name="enddate"></param>
         /// <returns></returns>
-        public ActionResult MemberLeadCalls(List<int> selectedprojects, bool? isActivated, DateTime? startdate, DateTime? enddate)
+        public ActionResult MemberLeadCalls(List<int> selectedprojects,List<int> selectedcallTypes, bool? isActivated, DateTime? startdate, DateTime? enddate)
         {
+            ViewBag.SelectedCallTypes = selectedcallTypes;
+            ViewBag.SelectedProjects = selectedprojects;
             ViewBag.StartDate = startdate;
             ViewBag.EndDate = enddate;
             List<Project> ps;
@@ -180,21 +182,60 @@ namespace Sales.Controllers
             }
             else
             {
-                var lsit = from p in CH.DB.Projects where selectedprojects.Any(sp =>sp== p.ID) select p;
+                var lsit = from p in CH.DB.Projects where selectedprojects.Any(sp => sp == p.ID) select p;
                 ps = lsit.ToList();
             }
             return View(ps);
         }
 
-        //[GridAction]
-        //public ActionResult _MemberLeadCalls(List<int> selectedprojects, bool? isActivated, DateTime? startdate, DateTime? enddate) 
-        //{ 
-        //    return View(new GridModel<Order> { Data = GetOrders() }); 
-        //}
+        [GridAction]
+        public ActionResult _MemberLeadCalls(int projectid,string types, DateTime? startdate, DateTime? enddate)
+        {
+            List<int> selectedcallTypes= new List<int>();
+            if (string.IsNullOrEmpty(types))
+            {
+                selectedcallTypes = CH.GetAllData<LeadCallType>().Select(s => s.ID).ToList();
+            }
+            else
+            {
+                 string[] ts = types.Split('|');
+                 foreach (var s in ts)
+                 {
+                     if(!string.IsNullOrEmpty(s))
+                     selectedcallTypes.Add(Int32.Parse(s));
+                 }
+            }
+
+             
+            //&& l.CallDate >= startdate && l.CallDate <= enddate
+            var lcs = from l in CH.DB.LeadCalls
+                      where l.ProjectID == projectid &&l.Member.IsActivated==true && l.CallDate>= startdate && l.CallDate<= enddate
+                      &&　selectedcallTypes.Any(a=>a==l.LeadCallTypeID)
+                      select new AjaxViewData
+                      {
+                          LeadNameCH = l.Lead.Name_CH,
+                          LeadNameEN = l.Lead.Name_EN,
+                          CallBackDate = l.CallBackDate,
+                          CallDate = l.CallDate,
+                          Contact = l.Lead.Contact,
+                          Mobile = l.Lead.Mobile,
+                          Title = l.Lead.Title,
+                          CompanyNameCH = l.Lead.Company.Name_CH ,
+                          CompanyNameEN = l.Lead.Company.Name_EN,
+                          //FaxOut = l.FaxOut,
+                          LeadCallType = l.LeadCallType.Name,
+                          Member = l.Member.Name,
+                          Result = l.Result
+                      };
+
+            var  data = lcs.OrderByDescending(o=>o.CallDate).ToList();
+
+            return View(new GridModel<AjaxViewData> { Data = data});
+        }
 
 
 
-     
+
 
         public ActionResult Progress(DateTime? startdate, DateTime? enddate)
         {
@@ -204,7 +245,7 @@ namespace Sales.Controllers
             var data = new List<ViewProjectProgressAmount>();
             ps.ForEach(p =>
             {
-                var d = p.GetProjectProgress(startdate,enddate);
+                var d = p.GetProjectProgress(startdate, enddate);
                 data.Add(d);
             });
             return View(data);
@@ -316,7 +357,7 @@ namespace Sales.Controllers
                 foreach (var c in categorys)
                 {
                     var cs = from crm in crms
-                             where crm.Categorys.Any(cate => cate.ID == c.ID) && crm.Members.Any(cm=>cm.ID==m.ID)
+                             where crm.Categorys.Any(cate => cate.ID == c.ID) && crm.Members.Any(cm => cm.ID == m.ID)
                              select crm;
 
                     if (cs.Count() > 0)

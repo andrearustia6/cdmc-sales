@@ -35,7 +35,7 @@
             @Html.LabelFor(model => model.LeadCallTypeID, "Call 类型")
         </div>
         <div class="editor-field">
-            @Html.DropDownList("LeadCallTypeID", new SelectList(CH.GetAllData<LeadCallType>(),"ID","Name"),"-请选择-")
+            @Html.DropDownList("LeadCallTypeID", new SelectList(CH.GetAllData<LeadCallType>(), "ID", "DisplayName"), "-请选择-")
             @Html.ValidationMessageFor(model => model.LeadCallTypeID)
         </div>
 

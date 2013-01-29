@@ -31,8 +31,19 @@ namespace Entity
 
     public class NameEntity : EntityBase
     {
+        public string _name;
         [Display(Name = "名称")]
-        public string Name { get { return EntityUtl.Utl.GetName(this); } }
+        public string Name
+        {
+            get
+            {
+
+                if (string.IsNullOrEmpty(_name))
+                    _name = EntityUtl.Utl.GetName(this);
+
+                return _name;
+            }
+        }
 
 
         [Display(Name = "中文名称"), MaxLength(100)]

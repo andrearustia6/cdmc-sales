@@ -195,6 +195,9 @@ namespace Entity
         [Display(Name = "细分行业")]
         public string Name { get; set; }
 
+        [Display(Name = "显示名")]
+        public string DisplayName { get { return Name + ": " + Details; } }
+
         [Display(Name = "Category详细")]
         public string Details { get; set; }
 

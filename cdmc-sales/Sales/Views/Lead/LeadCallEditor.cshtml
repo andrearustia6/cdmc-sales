@@ -30,7 +30,7 @@
                 Result:
             </td>
             <td>
-                @Html.DropDownListFor(m => m.LeadCallTypeID, new SelectList(new List<LeadCallType>(CH.GetAllData<LeadCallType>()), "ID", "Name"), "-请选择-")
+                @Html.DropDownListFor(m => m.LeadCallTypeID, new SelectList(new List<LeadCallType>(CH.GetAllData<LeadCallType>()), "ID", "DisplayName"), "-请选择-")
             </td>
         </tr>
         <tr>

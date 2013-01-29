@@ -498,26 +498,7 @@ namespace Utl
         {
 
             IEnumerable<DataRow> phones;
-               // string contacts = "where [phone] like '$$$' ";
-               
-                //members.ForEach(item =>
-                //{
-                //    ProfileBase userp = ProfileBase.Create(item);
-                //    if (userp != null)
-                //    {
-                //        var uc = userp.GetPropertyValue("Contact");
-                //        if (uc != null && !string.IsNullOrEmpty(uc.ToString()))
-                //        {
-                //            int contect = 0;
-                //            Int32.TryParse(uc.ToString(), out contect);
-                //            if (contect > 0)
-                //            {
-                //                contacts += " or [phone] like '" + contect.ToString() + "'";
-                //            }
-                //        }
-                //    }
-                   
-                //});
+             
 
                 string cstr = ConfigurationManager.ConnectionStrings["BillDB"].ToString();
                 using (var con = new OleDbConnection(cstr))
@@ -533,17 +514,6 @@ namespace Utl
                     DataTable tb = ds.Tables["bill"];//创建表
                     var rows = ds.Tables["bill"].Select();
                     phones = rows.Where(p => p["duration"].ToString() != "00:00:00");
-                    //foreach (var p in phones)
-                    //{
-                    //    var daycalls = p.GroupBy(g => g["startdate"]);
-                    //    foreach (var perdaycall in daycalls)
-                    //    {
-                    //        var totalmunites =  perdaycall.Sum(s=>((TimeSpan)s["duration"]).TotalMinutes);
-                    //    }
-                    //    //var allmimutes = p.Sum(s => ((TimeSpan)s["duration"]).TotalMinutes);
-                    //    //var t = new ViewPhoneInfo() { Phone = p.Key.ToString(), Duration = TimeSpan.FromMinutes(allmimutes)};
-                    //    phonelist.Add(t);
-                    //}
                     
                     con.Close();
                 }
@@ -564,28 +534,6 @@ namespace Utl
             var phonelist = new List<ViewPhoneInfo>();
             if (ps.Count > 0)
             {
-                //string contacts = "where convert(varchar(100) ,cast([startdate] as datetime),23) between '" + startdate.ToShortDateString() + "' and '" + enddate.ToShortDateString() + "' ";
-                //string contacts = "where [phone] like '$$$' ";
-                //ps.ForEach(p =>
-                //{
-                //    p.Members.ForEach(item =>
-                //    {
-                //        ProfileBase userp = ProfileBase.Create(item.Name);
-                //        if (userp != null)
-                //        {
-                //            var uc = userp.GetPropertyValue("Contact");
-                //            if (uc != null && !string.IsNullOrEmpty(uc.ToString()))
-                //            {
-                //                int contect = 0;
-                //                Int32.TryParse(uc.ToString(), out contect);
-                //                if (contect > 0)
-                //                {
-                //                    contacts += " or [phone] like '" + contect.ToString() + "'";
-                //                }
-                //            }
-                //        }
-                //    });
-                //});
 
                 string cstr = ConfigurationManager.ConnectionStrings["BillDB"].ToString();
                 using (var con = new OleDbConnection(cstr))
@@ -608,34 +556,6 @@ namespace Utl
                         var t = new ViewPhoneInfo() { Phone = p.Key.ToString(), Duration = TimeSpan.FromMinutes(total) };
                         phonelist.Add(t);
                     }
-                    //rows.ToList().ForEach(r =>
-                    //{
-                    //    var sd = r["startdate"].ToString();
-                    //    DateTime result;
-                    //    DateTime.TryParse(sd, out result);
-                    //    var durationstring = r["duration"].ToString();
-                    //    if (result >= startdate.Value && result <= enddate.Value && durationstring != "00:00:00")
-                    //    {
-                    //        var phone = r["phone"].ToString();
-                    //        var calldate = result;
-                    //        TimeSpan duration;
-                    //        TimeSpan.TryParse(durationstring, out duration);
-
-                    //        var t = phonelist.FirstOrDefault(p => p.Phone == phone);
-                    //        if (t == null)
-                    //        {
-                    //            t = new ViewPhoneInfo() { Phone = phone, Duration = duration };
-                    //        }
-                    //        else
-                    //        {
-                    //            phonelist.Remove(t);
-                    //            t.CallSum = t.CallSum + 1;
-                    //            t.Duration += duration;
-                    //        }
-                    //        phonelist.Add(t);
-                    //    }
-                    //}
-                    //);
                     con.Close();
                 }
             }
@@ -651,6 +571,25 @@ namespace Utl
             return source;
         }
 
+        public static string GetFullName(string ch, string en)
+        {
+            if (string.IsNullOrEmpty(ch) && !string.IsNullOrEmpty(en))
+            {
+                return en;
+            }
+
+            if (!string.IsNullOrEmpty(ch) && string.IsNullOrEmpty(en))
+            {
+                return ch;
+            }
+
+            if (!string.IsNullOrEmpty(ch) && !string.IsNullOrEmpty(en))
+            {
+                return en + " | " + ch;
+            }
+
+            return string.Empty;
+        }
         
 
         public static string ShortText(string str, int length)

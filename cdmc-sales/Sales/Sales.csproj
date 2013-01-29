@@ -266,6 +266,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Model\AccountModels.cs" />
+    <Compile Include="Model\AjaxViewData.cs" />
     <Compile Include="Model\Extensions.cs" />
     <Compile Include="Model\ViewModels.cs" />
     <Compile Include="Model\WeeklyReport.cs" />
@@ -1481,6 +1482,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Report\MemberPerformanceIndex.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\CallListSelector.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

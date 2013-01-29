@@ -92,6 +92,18 @@ namespace MvcGlobalAuthorize.Controllers
                 return View("ResetPassword","" ,"找不到对应的用户");
         }
 
+        [AdministratorRequired]
+        public ActionResult Delete(string username)
+        {
+            //username = "";
+            if (username == null) return View();
+
+            var user = Membership.GetUser(username);
+    
+            Membership.DeleteUser(username);
+            return  RedirectToAction("index", "account");
+        }
+
         [AllowAnonymous]
         public ActionResult Start()
         {

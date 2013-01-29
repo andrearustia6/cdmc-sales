@@ -144,7 +144,7 @@ namespace Entity
         [Display(Name = "客户性别")]
         public string Gender { get; set; }
 
-        [Display(Name = "客户职务")]
+        [Display(Name = "客户职位")]
         public string Title { get; set; }
 
         [Display(Name = "所在部门")]
@@ -196,6 +196,9 @@ namespace Entity
 
         [Display(Name = "结果代码")]
         public int Code { get; set; }
+
+        [Display(Name = "显示名")]
+        public string DisplayName { get { return Name + ": " + ResultDescription; } }
 
         [Display(Name = "致电结果描述")]
         public string ResultDescription { get; set; }
