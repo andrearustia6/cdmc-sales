@@ -169,10 +169,11 @@ namespace Sales.Controllers
         /// <param name="startdate"></param>
         /// <param name="enddate"></param>
         /// <returns></returns>
-        public ActionResult MemberLeadCalls(List<int> selectedprojects,List<int> selectedcallTypes, bool? isActivated, DateTime? startdate, DateTime? enddate)
+        public ActionResult MemberLeadCalls(List<int> selectedprojects, List<int> selectedcallTypes, bool? isActivated, DateTime? startdate, DateTime? enddate)
         {
             ViewBag.SelectedCallTypes = selectedcallTypes;
             ViewBag.SelectedProjects = selectedprojects;
+            //ViewBag.SelectedProgress = selectedprogress;
             ViewBag.StartDate = startdate;
             ViewBag.EndDate = enddate;
             List<Project> ps;
@@ -189,9 +190,12 @@ namespace Sales.Controllers
         }
 
         [GridAction]
-        public ActionResult _MemberLeadCalls(int projectid,string types, DateTime? startdate, DateTime? enddate)
+        public ActionResult _MemberLeadCalls(int projectid,string types,string progress, DateTime? startdate, DateTime? enddate)
         {
-            List<int> selectedcallTypes= new List<int>();
+            List<int> selectedcallTypes = new List<int>();
+
+            List<int> selectedprogress= new List<int>();
+
             if (string.IsNullOrEmpty(types))
             {
                 selectedcallTypes = CH.GetAllData<LeadCallType>().Select(s => s.ID).ToList();
@@ -206,11 +210,23 @@ namespace Sales.Controllers
                  }
             }
 
-             
-            //&& l.CallDate >= startdate && l.CallDate <= enddate
+            if (string.IsNullOrEmpty(progress))
+            {
+                selectedprogress = CH.GetAllData<Progress>().Select(s => s.ID).ToList();
+            }
+            else
+            {
+                string[] ts = progress.Split('|');
+                foreach (var s in ts)
+                {
+                    if (!string.IsNullOrEmpty(s))
+                        selectedprogress.Add(Int32.Parse(s));
+                }
+            }
+
             var lcs = from l in CH.DB.LeadCalls
                       where l.ProjectID == projectid &&l.Member.IsActivated==true && l.CallDate>= startdate && l.CallDate<= enddate
-                      &&　selectedcallTypes.Any(a=>a==l.LeadCallTypeID)
+                      && selectedcallTypes.Any(a=>a==l.LeadCallTypeID) && selectedprogress.Any(a=>a==l.CompanyRelationship.ProgressID)
                       select new AjaxViewData
                       {
                           LeadNameCH = l.Lead.Name_CH,
@@ -219,9 +235,12 @@ namespace Sales.Controllers
                           CallDate = l.CallDate,
                           Contact = l.Lead.Contact,
                           Mobile = l.Lead.Mobile,
+                          Progress = l.CompanyRelationship.Progress.Name,
                           Title = l.Lead.Title,
+                          Categorys = l.CompanyRelationship.CategoryString,
                           CompanyNameCH = l.Lead.Company.Name_CH ,
                           CompanyNameEN = l.Lead.Company.Name_EN,
+                           CallTypeCode=l.LeadCallType.Code,
                           //FaxOut = l.FaxOut,
                           LeadCallType = l.LeadCallType.Name,
                           Member = l.Member.Name,
