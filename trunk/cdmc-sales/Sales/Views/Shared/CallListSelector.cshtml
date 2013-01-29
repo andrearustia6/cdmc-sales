@@ -1,0 +1,76 @@
+﻿@using Entity
+@using Utl
+@using BLL
+@{
+   
+    var selectedlist = ViewBag.SelectedProjects as List<int>;
+    var selectedtypes = ViewBag.SelectedCallTypes as List<int>;
+    var startdate = ViewBag.StartDate as DateTime?;
+    var enddate = ViewBag.EndDate as DateTime?;
+    var types = CH.GetAllData<LeadCallType>();
+      var ps = CRM_Logical.GetUserInvolveProject();
+      if(ps != null)
+      {
+        using (Html.BeginForm())
+        {
+       <fieldset>
+      
+       <fieldset><legend>项目选择</legend>
+      <ul style="list-style-type:none; float:inherit; width:100%; overflow:auto;">
+      @foreach (var p in ps)
+      {
+      <li style=" float:left; width:23%; margin:2px;">
+       <span style=" line-height:11px; height:11px;  vertical-align:middle"> <input type="checkbox"  
+       @{
+          if (selectedlist != null && selectedlist.Any(sid=>sid==p.ID))
+          {
+              <text>checked="checked" </text>
+          }
+               
+           }
+        name="selectedprojects"   value=@p.ID />    @p.Name_CH</span>
+      </li>
+      }
+      </ul>
+      </fieldset>
+  
+   <fieldset><legend>通话类型选择</legend>
+          <ul style="list-style-type:none; float:inherit; width:100%; overflow:auto;">
+      @foreach (var p in types)
+      {
+      <li style=" float:left; width:23%; margin:2px;">
+       <span style=" line-height:11px; height:11px;  vertical-align:middle"> <input type="checkbox"  
+       @{
+          if (selectedtypes != null && selectedtypes.Any(sid => sid == p.ID))
+          {
+              <text>checked="checked" </text>
+          }
+               
+           }
+        name="selectedcallTypes"   value=@p.ID /> @p.DisplayName</span>
+      </li>
+      }
+      </ul>
+   
+      </fieldset>
+       <fieldset><legend>时间选择</legend>
+       <div style="margin: 10px">
+        <b><span>
+            <label> 开始时间：</label>
+            @Html.Telerik().DateTimePicker().Name("StartDate").Value(startdate)
+            <span>~ </span>
+            <label>
+                结束时间：</label>
+            @Html.Telerik().DateTimePicker().Name("EndDate").Value(enddate)
+            <span>  </span>
+           
+        </span></b>
+    </div>
+   </fieldset>
+    <center>
+     <input type="submit" value="提交" />
+     </center>
+     </fieldset>
+        }
+}
+}
