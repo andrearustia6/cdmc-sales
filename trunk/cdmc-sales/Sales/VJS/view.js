@@ -1,4 +1,24 @@
-﻿function onColorSet() {
+﻿function onMemberSelected() {
+    $('#memberselect').change(function () {
+        var $this = $(this);
+        var gridid = $this.attr('gridid')
+        var member = $this.val();
+        var grid = $('#' + gridid).data('tGrid');
+        if (member) {
+            grid.filterBy = "Member~eq~'" + member + "'";
+            //grid.rebind(); 
+            grid.ajaxRequest();
+        }
+        else {
+            grid.filterBy = "";
+            //grid.rebind(); 
+            grid.ajaxRequest();
+        }
+
+    });
+}
+
+function onColorSet() {
 
     $('.calltype').each(function () {
         var $this = $(this);

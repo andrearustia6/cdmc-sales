@@ -305,18 +305,4 @@ namespace BLL
             return data;
         }
     }
-
-
-    public class LeadCallDistinct : IEqualityComparer<LeadCall>
-    {
-        public bool Equals(LeadCall x, LeadCall y)
-        {
-            if ((x.LeadID == y.LeadID))
-            { return true; }
-            else
-            { return false; }
-        }
-
-        public int GetHashCode(LeadCall obj) { return 0; }
-    }
 }

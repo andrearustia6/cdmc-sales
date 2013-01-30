@@ -170,7 +170,8 @@
       
         var ps = new List<Project>();
         ps.Add(p);
-        var pcs = Utl.GetCallsInfo(ps, DateTime.Now.AddHours(-12), DateTime.Now);
+        //var pcs = Utl.GetCallsInfo(ps, DateTime.Now.AddHours(-12), DateTime.Now);
+        var pcs = new List<ViewPhoneInfo>();
         var m = p.GetMemberInProjectByName(Employee.CurrentUserName);
         var pv = p.GetProjectMemberLeadCalls(pcs, DateTime.Now.AddHours(-12), DateTime.Now);
 

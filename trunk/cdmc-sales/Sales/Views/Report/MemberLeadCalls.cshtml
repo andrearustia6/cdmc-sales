@@ -31,10 +31,15 @@
     {
         foreach (var p in Model)
         {
-    
+@*     @Html.DropDownList("member",new SelectList(CH.GetAllData<Member>(m=>m.ProjectID==p.ID),"ID","Name"),"-请选择-")*@
     <fieldset>
         <legend>项目名称：@p.Name</legend>
-        @(Html.Telerik().Grid<AjaxViewData>().Name("Grid" + p.ID).Columns(c =>
+        @(Html.Telerik().Grid<AjaxViewData>().Name("Grid" + p.ID)
+        .ToolBar(commands => commands.Template(
+         @<text>员工筛选： @Html.DropDownList("memberselect", new SelectList(CH.GetAllData<Member>(m => m.ProjectID == p.ID), "Name", "Name"), "所有销售", new { gridid = "Grid" + p.ID })</text>
+            //.ToHtmlString();
+       ))
+        .Columns(c =>
 {
    
     c.Bound(item => item.LeadName).Title("人名").Width(100).Aggregate(aggregates => aggregates.Count()).ClientFooterTemplate("总数: <#= Count #>").ClientGroupFooterTemplate("总数: <#= Count #>");
@@ -50,8 +55,9 @@
     c.Bound(item => item.Member);
     c.Bound(item => item.CallDate);
 }).DataBinding(dataBinding => dataBinding.Ajax().Select("_MemberLeadCalls", "Report", new { projectid = p.ID, startdate = startdate, enddate = enddate, types = types }))
-             .Pageable(paging => paging.Style(GridPagerStyles.Status).PageOnScroll(true).PageSize(100)).Resizable(resizing => resizing.Columns(true))
-                     .Filterable().Sortable().Groupable().Scrollable(s => s.Height(350)).ClientEvents(e => e.OnDataBound("onColorSet"))
+             .Pageable(paging => paging.Style(GridPagerStyles.Status).PageOnScroll(true).PageSize(10)).Resizable(resizing => resizing.Columns(true))
+                     .Filterable()
+                     .Sortable().Groupable().Scrollable(s => s.Height(350)).ClientEvents(e => e.OnDataBound("onColorSet"))
                  )
     </fieldset>
 
@@ -59,3 +65,7 @@
     }
 }
 
+@{ Html.Telerik().ScriptRegistrar().OnDocumentReady(@<text> 
+        onMemberSelected();
+    </text>);
+}
