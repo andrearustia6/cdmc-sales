@@ -24,14 +24,13 @@ namespace System.Web.Mvc
             if (t.BaseDeal > t.Deal)
                 item.ModelState.AddModelError("", "保底目标不能大于Deal");
 
-            if (t.CheckIn > t.Deal)
-                item.ModelState.AddModelError("", "Check In不能大于Deal");
+    
 
             if (t.StartDate.Month != t.EndDate.Month)
                 item.ModelState.AddModelError("", "开始时间和结束时间不在同一个月内");
 
             var ts = from et in CH.DB.TargetOfMonthForMembers
-                     where et.MemberID != t.MemberID && et.StartDate == t.StartDate && t.ProjectID == et.ProjectID
+                     where et.MemberID == t.MemberID && et.StartDate == t.StartDate && t.ProjectID == et.ProjectID
                      select et;
 
             if(ts.Count()>0)
@@ -54,8 +53,7 @@ namespace System.Web.Mvc
             if (t.BaseDeal > t.Deal)
                 item.ModelState.AddModelError("", "保底目标不能大于Deal");
 
-            if (t.CheckIn > t.Deal)
-                item.ModelState.AddModelError("", "Check In不能大于Deal");
+       
 
             if (t.StartDate.Month != t.EndDate.Month)
                 item.ModelState.AddModelError("", "开始时间和结束时间不在同一个月内");

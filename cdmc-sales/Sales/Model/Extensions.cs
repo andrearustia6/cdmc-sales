@@ -215,7 +215,7 @@ namespace Entity
             return null;
 
         }
-        public static IQueryable<LeadCall> GetMemberToCallList(this Member item, DateTime? startdate = null, DateTime? enddate = null)
+        public static List<LeadCall> GetMemberToCallList(this Member item, DateTime? startdate = null, DateTime? enddate = null)
         {
             startdate = startdate == null ? new DateTime(1, 1, 1) : startdate;
             enddate = enddate == null ? new DateTime(9999, 1, 1) : enddate;
@@ -224,7 +224,8 @@ namespace Entity
                             where l.CallBackDate != null && l.MemberID == item.ID && l.CallBackDate > startdate && l.CallBackDate < enddate 
                             && CH.DB.LeadCalls.FirstOrDefault(f=>f.CallDate>l.CallBackDate && f.LeadID==l.LeadID&&f.MemberID == item.ID)==null
                             select l;
-            return leadcalls.OrderByDescending(o=>o.CallBackDate);
+            
+            return leadcalls.OrderByDescending(o => o.CallBackDate).ToList().Distinct(new LeadCallDistinct()).ToList();
         }
         /// <summary>
         /// 取得带拨打电话列表

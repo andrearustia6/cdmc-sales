@@ -190,7 +190,7 @@ namespace Sales.Controllers
         }
 
         [GridAction]
-        public ActionResult _MemberLeadCalls(int projectid,string types,string progress, DateTime? startdate, DateTime? enddate)
+        public ActionResult _MemberLeadCalls(int projectid,string types, DateTime? startdate, DateTime? enddate)
         {
             List<int> selectedcallTypes = new List<int>();
 
@@ -210,23 +210,9 @@ namespace Sales.Controllers
                  }
             }
 
-            if (string.IsNullOrEmpty(progress))
-            {
-                selectedprogress = CH.GetAllData<Progress>().Select(s => s.ID).ToList();
-            }
-            else
-            {
-                string[] ts = progress.Split('|');
-                foreach (var s in ts)
-                {
-                    if (!string.IsNullOrEmpty(s))
-                        selectedprogress.Add(Int32.Parse(s));
-                }
-            }
-
             var lcs = from l in CH.DB.LeadCalls
                       where l.ProjectID == projectid &&l.Member.IsActivated==true && l.CallDate>= startdate && l.CallDate<= enddate
-                      && selectedcallTypes.Any(a=>a==l.LeadCallTypeID) && selectedprogress.Any(a=>a==l.CompanyRelationship.ProgressID)
+                      && selectedcallTypes.Any(a=>a==l.LeadCallTypeID)
                       select new AjaxViewData
                       {
                           LeadNameCH = l.Lead.Name_CH,
