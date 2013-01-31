@@ -7,16 +7,62 @@ using System.ComponentModel.DataAnnotations;
 namespace Model
 {
     //项目的
-    public class AjaxViewProjecPerformanceData
+    public class AjaxViewProjecMonthPerformanceData
     {
         public int? ProjectID { get; set; }
         [Display(Name = "项目名称")]
         public string ProjectName { get; set; }
-        [Display(Name = "项目名称")]
+
+        [Display(Name = "版块负责人")]
         public string Manager { get; set; }
-        public string Manager { get; set; }
+
+        [Display(Name = "CheckIn月目标")]
+        public decimal CheckInTarget { get; set; }
+
+        [Display(Name = "DealIn月目标")]
+        public decimal DealInTarget { get; set; }
+
+        [Display(Name = "实际月CheckIn")]
+        public decimal CheckIn { get; set; }
+
+        [Display(Name = "实际月DealIn")]
+        public decimal DealIn { get; set; }
+
+        [Display(Name = "项目总目标")]
+        public decimal TotalDealInTarget { get; set; }
+
+        public List<AjaxViewProjectWeekPerformance> AjaxViewProjectWeekPerformances { get; set; }
+
+
     }
 
+    public class AjaxViewProjectWeekPerformance
+    {
+        public int? ProjectID { get; set; }
+        [Display(Name = "项目名称")]
+        public string ProjectName { get; set; }
+
+        [Display(Name = "版块负责人")]
+        public string Manager { get; set; }
+
+        [Display(Name = "开始时间")]
+        public DateTime StartDate { get; set; }
+
+        [Display(Name = "结束时间")]
+        public DateTime EndDate { get; set; }
+
+        [Display(Name = "CheckIn周目标")]
+        public decimal CheckInTarget { get; set; }
+
+        [Display(Name = "DealIn周目标")]
+        public decimal DealInTarget { get; set; }
+
+        [Display(Name = "实际周CheckIn")]
+        public decimal CheckIn { get; set; }
+
+        [Display(Name = "实际周DealIn")]
+        public decimal DealIn { get; set; }
+    }
 
     public class AjaxViewCallListData
     {
