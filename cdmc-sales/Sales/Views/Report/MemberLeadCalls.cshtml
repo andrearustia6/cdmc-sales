@@ -34,7 +34,7 @@
 @*     @Html.DropDownList("member",new SelectList(CH.GetAllData<Member>(m=>m.ProjectID==p.ID),"ID","Name"),"-请选择-")*@
     <fieldset>
         <legend>项目名称：@p.Name</legend>
-        @(Html.Telerik().Grid<AjaxViewData>().Name("Grid" + p.ID)
+        @(Html.Telerik().Grid<AjaxViewCallListData>().Name("Grid" + p.ID)
         .ToolBar(commands => commands.Template(
          @<text>员工筛选： @Html.DropDownList("memberselect", new SelectList(CH.GetAllData<Member>(m => m.ProjectID == p.ID), "Name", "Name"), "所有销售", new { gridid = "Grid" + p.ID })</text>
             //.ToHtmlString();

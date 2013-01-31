@@ -213,7 +213,7 @@ namespace Sales.Controllers
             var lcs = from l in CH.DB.LeadCalls
                       where l.ProjectID == projectid &&l.Member.IsActivated==true && l.CallDate>= startdate && l.CallDate<= enddate
                       && selectedcallTypes.Any(a=>a==l.LeadCallTypeID)
-                      select new AjaxViewData
+                      select new AjaxViewCallListData
                       {
                           LeadNameCH = l.Lead.Name_CH,
                           LeadNameEN = l.Lead.Name_EN,
@@ -235,7 +235,7 @@ namespace Sales.Controllers
 
             var  data = lcs.OrderByDescending(o=>o.CallDate).ToList();
 
-            return View(new GridModel<AjaxViewData> { Data = data});
+            return View(new GridModel<AjaxViewCallListData> { Data = data});
         }
 
 
