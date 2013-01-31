@@ -25,7 +25,7 @@
         //var data = ViewBag.AvaibleCRM==null? CH.GetAllData<CompanyRelationship>():ViewBag.AvaibleCRM as List<CompanyRelationship>;
         List<CompanyRelationship> data;
         var lvl = Employee.CurrentRole.Level;
-        int? projectid = ViewBag.ProjectID as int?;
+        int? projectid = Model==null?ViewBag.ProjectID as int?:Model.ProjectID;
         var project = CH.GetDataById<Project>(projectid);
         if (lvl<=100 && lvl>=10)
         {

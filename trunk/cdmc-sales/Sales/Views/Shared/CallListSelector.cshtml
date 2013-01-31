@@ -38,16 +38,43 @@
           <ul style="list-style-type:none; float:inherit; width:100%; overflow:auto;">
       @foreach (var p in types)
       {
-      <li style=" float:left; width:23%; margin:2px;">
-       <span style=" line-height:11px; height:11px;  vertical-align:middle"> <input type="checkbox"  
+      <li style="float:left; width:23%;margin:2px;">
+
+       <span style=" line-height:11px; height:11px; 
+           
+            @{
+          if (p.Code==80)
+          {
+              <text> background-color:yellow; </text>
+          }
+          else if (p.Code == 90)
+          {
+              <text> background-color:green; </text>
+          }
+          else if (p.Code == 20)
+          {
+              <text> background-color:grey; </text>
+          }
+          else if (p.Code==70)
+          {
+              <text> background-color:#D3A4FF; </text>
+          }
+          }
+           
+            vertical-align:middle"> <input type="checkbox"  
        @{
           if (selectedtypes != null && selectedtypes.Any(sid => sid == p.ID))
           {
+             
               <text>checked="checked" </text>
           }
                
            }
-        name="selectedcallTypes"   value=@p.ID /> @p.DisplayName</span>
+        name="selectedcallTypes" 
+        
+       
+        
+          value=@p.ID /> @p.DisplayName</span>
       </li>
       }
       </ul>

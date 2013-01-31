@@ -6,10 +6,20 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Model
 {
-  
-    public class AjaxViewData
+    //项目的
+    public class AjaxViewProjecPerformanceData
     {
-       
+        public int? ProjectID { get; set; }
+        [Display(Name = "项目名称")]
+        public string ProjectName { get; set; }
+        [Display(Name = "项目名称")]
+        public string Manager { get; set; }
+        public string Manager { get; set; }
+    }
+
+
+    public class AjaxViewCallListData
+    {
         public int? ProjectID { get; set; }
         [Display(Name = "人名")]
         public string LeadName { get { return Utl.Utl.GetFullName(LeadNameCH, LeadNameEN); } }
