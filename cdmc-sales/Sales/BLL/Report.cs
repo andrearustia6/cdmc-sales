@@ -19,6 +19,22 @@ namespace BLL
             return selectedprojects;
         }
 
+        public List<AjaxViewProjectWeekPerformance> GetTotalMonthsPerformance(Project project)
+        {
+            var totaldeals = from d in CH.DB.Deals where d.ProjectID == project.ID && d.Abandoned==false select d;
+            var totaltarget = from t in CH.DB.TargetOfMonths where t.ProjectID == project.ID  select t;
+            var signdeals = totaldeals.Where(t=>t.SignDate!=null).GroupBy(g => g.SignDate.Value.Month);
+            var checkdeals = totaldeals.Where(t => t.ActualPaymentDate != null).GroupBy(g => g.SignDate.Value.Month);
+            var startmonth = project.StartDate.Month;
+            var endmonth = project.ConferenceEndDate.Month;
+
+            List<AjaxViewProjectMonthPerformance>
+            while (startmonth <= endmonth)
+            {
+                  
+            }
+
+        }
         static List<AjaxViewProjectWeekPerformance> GetWeeksByMonth(int month, int year,List<Deal> totaldeals,Project p,List<TargetOfWeek> totaltarget)
         {
             DateTime startdate = new DateTime(year, month, 1);
@@ -31,7 +47,6 @@ namespace BLL
             var enddate = startdate.AddDays(7);
             while (enddate.Month <= month)
              {
-                 
                  var week = new AjaxViewProjectWeekPerformance() { StartDate =  startdate, EndDate= enddate };
                  week.ProjectName = p.Name;
                  week.Manager = p.Manager;
@@ -50,7 +65,7 @@ namespace BLL
           
         }
 
-        public static List<AjaxViewProjecMonthPerformance> GetProjectProgressList(List<int> selectedprojects,int month,int year)
+        public static List<AjaxViewProjectMonthPerformance> GetProjectProgressList(List<int> selectedprojects,int month,int year)
         {
             List<Project> projects;
             if (selectedprojects == null)
@@ -70,10 +85,10 @@ namespace BLL
 
             var monthdealindeals = from d in totaldeals where d.SignDate != null && d.SignDate.Value.Month == month select d;
 
-            var list = new List<AjaxViewProjecMonthPerformance>();
+            var list = new List<AjaxViewProjectMonthPerformance>();
             foreach(var p in projects)
             {
-                var pv = new AjaxViewProjecMonthPerformance();
+                var pv = new AjaxViewProjectMonthPerformance();
                 pv.ProjectName = p.Name;
                var mchekcin = monthcheckindeals.Where(d=>d.ProjectID == p.ID).ToList();
                 pv.CheckIn = mchekcin.Sum(s => s.Income);

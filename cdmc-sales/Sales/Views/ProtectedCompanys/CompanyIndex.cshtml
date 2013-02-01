@@ -14,7 +14,6 @@
                 {
                     c.Bound(item => item.Company.Name).Title("公司名");
                     c.Bound(item => item.Deals.Count).Title("已出单数");
-                    c.Bound(item => item.Progress.Name).Title("成熟度");
                     c.Bound(item => item.Deals).Template(@<text>@{var deal = item.Deals.FirstOrDefault();
                                                                   if (deal != null)
                                                                   {
