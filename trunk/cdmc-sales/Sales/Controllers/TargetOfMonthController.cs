@@ -24,7 +24,7 @@ namespace Sales.Controllers
         {
             ViewBag.ProjectID = projectid;
 
-            return View(CH.GetAllData<TargetOfMonth>(m => m.ProjectID == projectid));
+            return View(CH.GetAllData<TargetOfMonth>(m => m.ProjectID == projectid).OrderByDescending(o=>o.StartDate).ToList());
         }
 
         public ActionResult AddBreakdown(int? projectid, int? targetofmonthid)
@@ -120,15 +120,11 @@ namespace Sales.Controllers
                             item.CheckIn = Decimal.Parse(ckvalue);
                             CH.Edit<TargetOfWeek>(item);
                         }
-                       
                     }
                 }
 
                 return RedirectToAction("management", "project", new { id = projectid, tabindex = 2 });
-
             }
-
-
             return View("Breakdown", CH.GetAllData<Member>(m => m.ProjectID == projectid));
         }
         #endregion

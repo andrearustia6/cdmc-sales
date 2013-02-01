@@ -19,7 +19,7 @@ namespace BLL
             return selectedprojects;
         }
 
-        static List<AjaxViewProjectWeekPerformance> GetWeeksByMonth(int month, int year,List<Deal> totaldeals,int projectid,List<TargetOfWeek> totaltarget)
+        static List<AjaxViewProjectWeekPerformance> GetWeeksByMonth(int month, int year,List<Deal> totaldeals,Project p,List<TargetOfWeek> totaltarget)
         {
             DateTime startdate = new DateTime(year, month, 1);
 
@@ -28,34 +28,70 @@ namespace BLL
                 startdate = startdate.AddDays(-1);
             }
             var weeks = new List<AjaxViewProjectWeekPerformance>();
-             while(startdate.Month<= month)
+            var enddate = startdate.AddDays(7);
+            while (enddate.Month <= month)
              {
-                 var enddate = startdate.AddDays(7);
+                 
                  var week = new AjaxViewProjectWeekPerformance() { StartDate =  startdate, EndDate= enddate };
-               
-                 week.CheckInTarget = totaltarget.Sum(s=>s.CheckIn);
-                 week.DealInTarget =totaltarget.Sum(s => s.Deal);
+                 week.ProjectName = p.Name;
+                 week.Manager = p.Manager;
+                var weektarget = totaltarget.FindAll(t=>t.StartDate.ToShortDateString() == startdate.ToShortDateString());
+                week.CheckInTarget = weektarget.Sum(s => s.CheckIn);
+                week.DealInTarget = weektarget.Sum(s => s.Deal);
                  week.DealIn = totaldeals.FindAll(d => d.SignDate >= startdate && d.SignDate <= enddate).Sum(s => s.Payment);
                  week.CheckIn = totaldeals.FindAll(d => d.ActualPaymentDate >= startdate && d.ActualPaymentDate <= enddate).Sum(s => s.Income);
                  weeks.Add(week);
+                 
+                 startdate = startdate.AddDays(7);
+                 enddate = enddate.AddDays(7);
              }
+
+             return weeks;
           
         }
 
-        public static List<AjaxViewProjecMonthPerformanceData> GetProjectProgressList(List<int> selectedprojects,int month,int year)
+        public static List<AjaxViewProjecMonthPerformance> GetProjectProgressList(List<int> selectedprojects,int month,int year)
         {
+            List<Project> projects;
             if (selectedprojects == null)
             {
-                selectedprojects = CRM_Logical.GetUserInvolveProject().Select(p => p.ID).ToList();
+                projects = CRM_Logical.GetUserInvolveProject();
+                selectedprojects = projects.Select(s => s.ID).ToList();
             }
+            else
+            {
+                projects = CH.GetAllData<Project>(p => selectedprojects.Any(sp => sp == p.ID));
+            }
+            var totalmonthtatget = from t in CH.DB.TargetOfMonths where selectedprojects.Any(sp => sp == t.ProjectID) select t;
+            var totaldeals = from d in CH.DB.Deals where selectedprojects.Any(sp => sp == d.ProjectID && d.Abandoned == false) select d;
+            var totalweektargets = CH.GetAllData<TargetOfWeek>(t => selectedprojects.Any(sp => sp == t.ProjectID));
 
-            var totaldeals = from d in CH.DB.Deals where selectedprojects.Any(sp => sp == d.ProjectID && d.Abandoned==false) select d;
-           // var weektargets = CH.GetAllData<TargetOfWeek>(t => t.ProjectID == projectid && t.StartDate.ToShortDateString() == startdate.ToShortDateString());
+            var monthcheckindeals = from d in totaldeals where d.ActualPaymentDate != null && d.ActualPaymentDate.Value.Month == month select d;
 
-            //var monthcheckindeals = from d in totaldeals where d.ActualPaymentDate != null && d.ActualPaymentDate.Value.Month == month select d;
+            var monthdealindeals = from d in totaldeals where d.SignDate != null && d.SignDate.Value.Month == month select d;
 
-            //var monthdealindeals = from d in totaldeals where d.ActualPaymentDate != null && d.ActualPaymentDate.Value.Month == month select d;
-             
+            var list = new List<AjaxViewProjecMonthPerformance>();
+            foreach(var p in projects)
+            {
+                var pv = new AjaxViewProjecMonthPerformance();
+                pv.ProjectName = p.Name;
+               var mchekcin = monthcheckindeals.Where(d=>d.ProjectID == p.ID).ToList();
+                pv.CheckIn = mchekcin.Sum(s => s.Income);
+                var mdealin = monthdealindeals.Where(d => d.ProjectID == p.ID).ToList();
+                pv.DealIn = mdealin.Sum(s => s.Payment);
+                var ctarget = from t in totalmonthtatget where t.ProjectID == p.ID select t;
+                if(ctarget.Count()>0)
+                {
+                    pv.CheckInTarget = ctarget.First().CheckIn;
+                    pv.DealInTarget = ctarget.First().Deal;
+                }
+               
+                var weeks = GetWeeksByMonth(month, year, totaldeals.ToList(), p, totalweektargets);
+                 
+                pv.AjaxViewProjectWeekPerformances = weeks;
+                list.Add(pv);
+            }
+            return list;
         }
 
         //public static List<ViewProjectProgressAmount> GetProjectProgressList(List<int> selectedprojects, bool? isActivated, DateTime? startdate, DateTime? enddate)

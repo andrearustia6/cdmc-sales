@@ -77,9 +77,13 @@ namespace Sales.Controllers
         /// <param name="startdate"></param>
         /// <param name="enddate"></param>
         /// <returns></returns>
-        public ActionResult ProjectProgress(List<int> selectedprojects, bool? isActivated, DateTime? startdate, DateTime? enddate)
+        public ActionResult ProjectProgress(List<int> selectedprojects, List<string> selectedangels, bool? isActivated, int? month, int? year)
         {
-            var list = Report.GetProjectProgressList(selectedprojects, isActivated, startdate, enddate);
+            ViewBag.Month = month;
+            ViewBag.Year = year;
+            ViewBag.SelectedProjects = selectedprojects;
+            ViewBag.SelectedAngels = selectedangels;
+            var list = Report.GetProjectProgressList(selectedprojects, month==null?DateTime.Now.Month:month.Value, year==null?DateTime.Now.Year:year.Value);
             return View(list);
         }
 
@@ -134,11 +138,12 @@ namespace Sales.Controllers
                 sum.Name = v.Key;
                 sum.SalesType = v.FirstOrDefault().Member.SalesType.Name;
                 sum.DealSum = v.Sum(s => s.DealInAmount);
+                sum.CheckInSum = v.Sum(s => s.CheckInAmount);
                 sum.DurationSum = v.Sum(s => s.Duration.TotalHours);
                 sum.CallSum = v.Sum(s => s.CallListAmount);
                 sumlist.Add(sum);
             });
-            var topsales = sumlist.OrderByDescending(o => o.DealSum).ToList();
+            var topsales = sumlist.OrderByDescending(o => o).ToList();
             if (topsales.Count > 10)
             {
                 topsales = topsales.Take(10).ToList();
