@@ -16,7 +16,7 @@
     foreach(var m in Model)
     {
         var height = 100 + m.ViewMemberProgressAmounts.Count() * 100;
-      @(Html.Telerik().Chart(m.ViewMemberProgressAmounts).Name("chart"+m.Project.ID).Title("销售进展报表").Legend(legend => legend.Position(ChartLegendPosition.Top)).Series(series =>
+      @(Html.Telerik().Chart(m.ViewMemberProgressAmounts).Name("chart" + m.Project.ID).Title(m.Project.Name).Legend(legend => legend.Position(ChartLegendPosition.Top)).Series(series =>
   {
       series.Bar(s => s.DealInTarget).Name("销售目标").Labels(true);
       series.Bar(s => s.DealIn).Name("实际出单").Labels(true);

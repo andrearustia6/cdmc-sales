@@ -31,7 +31,7 @@
     { 
         var tmid = tm.ID;
         var projectid = tm.ProjectID;
-        var tw = CH.GetAllData<TargetOfWeek>(t => t.ProjectID == projectid);
+        var tw = CH.GetAllData<TargetOfWeek>(t => t.ProjectID == projectid && t.TargetOfMonthID == tm.ID);
         var datas = tw.OrderBy(i => i.StartDate).GroupBy(sd => sd.StartDate);
     @(Html.Telerik().TabStrip().Name("TabStrip" + tmid).SelectedIndex(0).Items(items =>
 {

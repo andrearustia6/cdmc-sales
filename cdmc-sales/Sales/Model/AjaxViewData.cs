@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations;
 namespace Model
 {
     //项目的
-    public class AjaxViewProjecMonthPerformanceData
+    public class AjaxViewProjecMonthPerformance
     {
         public int? ProjectID { get; set; }
         [Display(Name = "项目名称")]
@@ -62,6 +62,29 @@ namespace Model
 
         [Display(Name = "实际周DealIn")]
         public decimal DealIn { get; set; }
+
+        public string DealComplate
+        {
+            get
+            {
+                var p = DealInTarget == 0 ? "0%" : (Math.Round((DealIn / DealInTarget),2) * 100) + "%";
+                return "DealIn完成" + p;
+            }
+        }
+
+        public string CheckComplate
+        {
+            get
+            {
+                var p = CheckInTarget == 0 ? "0%" : (Math.Round((CheckIn / CheckInTarget),2) * 100) + "%";
+                return "CheckIn完成" + p;
+            }
+        }
+
+        public string ComplatePercentage
+        {
+            get { return CheckComplate+ " "+ DealComplate; }
+        }
     }
 
     public class AjaxViewCallListData

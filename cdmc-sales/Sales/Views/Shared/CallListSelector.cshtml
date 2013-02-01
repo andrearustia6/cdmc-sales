@@ -15,24 +15,7 @@
         {
        <fieldset>
       
-       <fieldset><legend>项目选择</legend>
-      <ul style="list-style-type:none; float:inherit; width:100%; overflow:auto;">
-      @foreach (var p in ps)
-      {
-      <li style=" float:left; width:23%; margin:2px;">
-       <span style=" line-height:11px; height:11px;  vertical-align:middle"> <input type="checkbox"  
-       @{
-          if (selectedlist != null && selectedlist.Any(sid=>sid==p.ID))
-          {
-              <text>checked="checked" </text>
-          }
-               
-           }
-        name="selectedprojects"   value=@p.ID />    @p.Name_CH</span>
-      </li>
-      }
-      </ul>
-      </fieldset>
+       c
   
    <fieldset><legend>通话类型选择</legend>
           <ul style="list-style-type:none; float:inherit; width:100%; overflow:auto;">

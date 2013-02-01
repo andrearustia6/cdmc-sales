@@ -1,0 +1,96 @@
+﻿
+@using Entity
+@using Utl
+@using BLL
+@{
+   
+   var selectedangels = ViewBag.SelectedAngels as List<string>;
+   var selectedlist = ViewBag.SelectedProjects as List<int>;
+    var ps = CRM_Logical.GetUserInvolveProject();
+    if (ps != null)
+    {
+        using (Html.BeginForm())
+        {
+       <fieldset>
+       <legend>筛选项目</legend>
+       <div  >
+       
+      <ul  class="progress">
+      @foreach (var p in ps)
+      {
+      <li >
+       <span > <input type="checkbox"
+        @{
+          if (selectedlist != null && selectedlist.Any(sid => sid == p.ID))
+          {
+             
+              <text>checked="checked" </text>
+          }
+               
+           }
+         name="selectedprojects"   value=@p.ID />    @p.Name_CH</span>
+      </li>
+      }
+      </ul>
+       </div>
+     
+   
+     </fieldset>
+       
+
+      
+      <fieldset><legend>选择时间</legend>
+   <span>年: @Html.DropDownList("Year", new SelectList(new List<int> {  2013, 2014, 2015, 2016 }), "-请选择-")  
+   月： @Html.DropDownList("Month", new SelectList(new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 }), "-请选择-")  <font  color="blue">如果不选，则默认为当前时间所在月份</font>
+     </span>
+      </fieldset>
+    <fieldset><legend>选择维度</legend>
+      <ul class="progress" >
+      <li >
+       <span > <input type="checkbox"  
+
+          @if (selectedangels != null && selectedangels.Contains("week"))
+          {
+              <text>checked="checked" </text>
+          }
+        name="selectedangels"   value="week" /> 周数据</span>
+      </li>
+
+      <li >
+       <span > <input type="checkbox"  
+
+          @if (selectedangels != null && selectedangels.Contains("month"))
+          {
+              <text>checked="checked" </text>
+          }
+        name="selectedangels"   value="month" /> 月数据</span>
+      </li>
+
+      <li >
+       <span > <input type="checkbox"  
+
+          @if (selectedangels != null && selectedangels.Contains("total"))
+          {
+              <text>checked="checked" </text>
+          }
+        name="selectedangels"   value="total" /> 月比较数据</span>
+      </li>
+     
+      </ul>
+      </fieldset>
+    
+    <center>
+     <input type="submit" value="提交" />
+     </center>
+        }
+    }
+}
+
+
+
+    <style>
+        
+       ul.progress {list-style-type:none; float:inherit; width:100%; overflow:auto;}
+       	ul.progress li{float:left; width:23%; margin:2px;}
+       	ul.progress li span {line-height:11px; height:11px;  vertical-align:middle}
+    </style>

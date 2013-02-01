@@ -32,7 +32,7 @@ namespace Sales.Controllers
             projectid = this.TrySetProjectIDForUser(projectid);
             ViewBag.ProjectID = projectid;
 
-            return View(CH.GetAllData<TargetOfMonth>(m => m.ProjectID == projectid));
+            return View(CH.GetAllData<TargetOfMonth>(m => m.ProjectID == projectid).OrderByDescending(o=>o.StartDate).ToList());
         }
 
         public ActionResult AddBreakdown(int? projectid, int? targetofmonthid)

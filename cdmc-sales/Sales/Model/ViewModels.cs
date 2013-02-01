@@ -90,6 +90,8 @@ namespace Model
         public string SalesType { get; set; }
         [Display(Name = "出单总额")]
         public decimal DealSum { get; set; }
+        [Display(Name = "出单总额")]
+        public decimal CheckInSum { get; set; }
         [Display(Name = "通话时间总长")]
         public double DurationSum { get; set; }
         [Display(Name = "Call List 总数")]
