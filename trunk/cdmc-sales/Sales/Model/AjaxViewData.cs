@@ -6,8 +6,46 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Model
 {
+
+    public class AjaxViewPercentage
+    {
+        [Display(Name = "CheckIn目标")]
+        public decimal CheckInTarget { get; set; }
+
+        [Display(Name = "DealIn目标")]
+        public decimal DealInTarget { get; set; }
+
+        [Display(Name = "实际CheckIn")]
+        public decimal CheckIn { get; set; }
+
+        [Display(Name = "实际DealIn")]
+        public decimal DealIn { get; set; }
+
+        public string DealComplate
+        {
+            get
+            {
+                var p = DealInTarget == 0 ? "0%" : (Math.Round((DealIn / DealInTarget), 2) * 100) + "%";
+                return "DealIn完成" + p;
+            }
+        }
+
+        public string CheckComplate
+        {
+            get
+            {
+                var p = CheckInTarget == 0 ? "0%" : (Math.Round((CheckIn / CheckInTarget), 2) * 100) + "%";
+                return "CheckIn完成" + p;
+            }
+        }
+
+        public string ComplatePercentage
+        {
+            get { return CheckComplate + " " + DealComplate; }
+        }
+    }
     //项目的
-    public class AjaxViewProjecMonthPerformance
+    public class AjaxViewProjectMonthPerformance : AjaxViewPercentage
     {
         public int? ProjectID { get; set; }
         [Display(Name = "项目名称")]
@@ -16,27 +54,14 @@ namespace Model
         [Display(Name = "版块负责人")]
         public string Manager { get; set; }
 
-        [Display(Name = "CheckIn月目标")]
-        public decimal CheckInTarget { get; set; }
-
-        [Display(Name = "DealIn月目标")]
-        public decimal DealInTarget { get; set; }
-
-        [Display(Name = "实际月CheckIn")]
-        public decimal CheckIn { get; set; }
-
-        [Display(Name = "实际月DealIn")]
-        public decimal DealIn { get; set; }
-
         [Display(Name = "项目总目标")]
         public decimal TotalDealInTarget { get; set; }
 
         public List<AjaxViewProjectWeekPerformance> AjaxViewProjectWeekPerformances { get; set; }
 
-
     }
 
-    public class AjaxViewProjectWeekPerformance
+    public class AjaxViewProjectWeekPerformance : AjaxViewPercentage
     {
         public int? ProjectID { get; set; }
         [Display(Name = "项目名称")]
@@ -50,41 +75,6 @@ namespace Model
 
         [Display(Name = "结束时间")]
         public DateTime EndDate { get; set; }
-
-        [Display(Name = "CheckIn周目标")]
-        public decimal CheckInTarget { get; set; }
-
-        [Display(Name = "DealIn周目标")]
-        public decimal DealInTarget { get; set; }
-
-        [Display(Name = "实际周CheckIn")]
-        public decimal CheckIn { get; set; }
-
-        [Display(Name = "实际周DealIn")]
-        public decimal DealIn { get; set; }
-
-        public string DealComplate
-        {
-            get
-            {
-                var p = DealInTarget == 0 ? "0%" : (Math.Round((DealIn / DealInTarget),2) * 100) + "%";
-                return "DealIn完成" + p;
-            }
-        }
-
-        public string CheckComplate
-        {
-            get
-            {
-                var p = CheckInTarget == 0 ? "0%" : (Math.Round((CheckIn / CheckInTarget),2) * 100) + "%";
-                return "CheckIn完成" + p;
-            }
-        }
-
-        public string ComplatePercentage
-        {
-            get { return CheckComplate+ " "+ DealComplate; }
-        }
     }
 
     public class AjaxViewCallListData
