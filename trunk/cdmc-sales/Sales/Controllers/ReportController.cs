@@ -143,7 +143,7 @@ namespace Sales.Controllers
                 sum.CallSum = v.Sum(s => s.CallListAmount);
                 sumlist.Add(sum);
             });
-            var topsales = sumlist.OrderByDescending(o => o).ToList();
+            var topsales = sumlist.OrderByDescending(o => o.CheckInSum).ToList();
             if (topsales.Count > 10)
             {
                 topsales = topsales.Take(10).ToList();
