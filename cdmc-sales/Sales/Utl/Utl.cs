@@ -507,6 +507,37 @@ namespace Utl
 
     public class Utl
     {
+
+        public static string ConvertSelectProjectIDtoString(List<int> selectedprojects)
+        {
+            var s = string.Empty;
+            if (selectedprojects != null)
+            {
+                foreach (var p in selectedprojects) 
+                {
+                    s = s + p.ToString() + "|";
+                }
+            }
+            return s;
+        }
+        public static List<int> ConvertStringToSelectProjectID(string s)
+        {
+            List<int> pids = new List<int>();
+            if (s != null)
+            {
+                var ps = s.Split('|');
+                foreach (var p in ps)
+                {
+                    if (!string.IsNullOrEmpty(p))
+                    {
+                        pids.Add(Int32.Parse(p));
+                    }
+                }
+            }
+            return pids;
+        }
+
+        string plsstring = string.Empty;
         public static IEnumerable<DataRow> GetCallsInfoForPerformanceDataRows( DateTime startdate, DateTime enddate, List<string> members)
         {
 

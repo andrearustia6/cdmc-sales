@@ -28,12 +28,12 @@ function onColorSet() {
         }
 
         if ($this.html() == "Closed") {
-            $this.css('background-color', 'green');
+            $this.css('background-color', '#CEFFCE');
             return;
         }
 
         if ($this.html() == "Blowed") {
-            $this.css('background-color', 'grey');
+            $this.css('background-color', '#E0E0E0');
             return;
         }
 
