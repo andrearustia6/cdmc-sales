@@ -22,7 +22,7 @@ namespace Entity
         public string Name { get; set; }
 
         [Display(Name = "新闻类型")]
-        public int Code { get; set; }
+        public int? Code { get; set; }
 
         [Display(Name = "新闻副标题")]
         public string SubName { get; set; }
