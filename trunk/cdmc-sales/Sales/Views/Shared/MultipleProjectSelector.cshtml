@@ -2,8 +2,10 @@
 @using Utl
 @using BLL
 @{
-   
-    
+    var selectedlist = ViewBag.SelectedProjects as List<int>;
+    var startdate = ViewBag.StartDate as DateTime?;
+    var enddate = ViewBag.EndDate as DateTime?;
+    var showduration = ViewBag.ShowDuration as string;
       var ps = CRM_Logical.GetUserInvolveProject();
       if(ps != null)
       {
@@ -17,13 +19,23 @@
       @foreach (var p in ps)
       {
       <li style=" float:left; width:23%; margin:2px;">
-       <span style=" line-height:11px; height:11px;  vertical-align:middle"> <input type="checkbox"  name="selectedprojects"   value=@p.ID />    @p.Name_CH</span>
+       <span style=" line-height:11px; height:11px;  vertical-align:middle"> <input type="checkbox"  name="selectedprojects" 
+         @{
+          if (selectedlist != null && selectedlist.Any(sid => sid == p.ID))
+          {
+             
+              <text>checked="checked" </text>
+          }
+               
+           }
+         value=@p.ID />    @p.Name_CH</span>
       </li>
       }
       </ul>
        </div>
   
-     
+     @if (showduration!="false")
+     {
        <div style="margin: 10px">
         <b><span>
             <label> 开始时间：</label>
@@ -36,6 +48,7 @@
            
         </span></b>
     </div>
+         }
     <center>
      <input type="submit" value="提交" />
      </center>

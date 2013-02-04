@@ -3,13 +3,13 @@
 }
 @Html.Partial("contenttitle", "项目进展")
 @using Model
-@model List<AjaxViewProjecMonthPerformance>
+@model List<AjaxViewProjectMonthPerformance>
 @Html.Partial("progressselector")
 @{
     var selectedangels = ViewBag.SelectedAngels as List<string>;
     foreach (var pv in Model)
     {
-        var listm = new List<AjaxViewProjecMonthPerformance>();
+        var listm = new List<AjaxViewProjectMonthPerformance>();
         listm.Add(pv);
     <fieldset>
         <legend>@pv.ProjectName </legend>
@@ -21,12 +21,12 @@
                 m.Add(wv);
             <fieldset style="width: 22.1%; float: left;">
                 <legend>@wv.StartDate.ToShortDateString() ~ @wv.EndDate.ToShortDateString()</legend>
-                @(Html.Telerik().Chart<AjaxViewProjectWeekPerformance>(m).Name("chart" + wv.StartDate.ToShortDateString()).Title(wv.ProjectName).Legend(legend => legend.Position(ChartLegendPosition.Bottom)).Series(series =>
+                @(Html.Telerik().Chart<AjaxViewProjectWeekPerformance>(m).Name("chart" + wv.ProjectID + wv.StartDate.ToShortDateString()).Title(wv.ProjectName).Legend(legend => legend.Position(ChartLegendPosition.Bottom)).Series(series =>
   {
-      series.Column(s => s.DealInTarget).Name("销售目标").Labels(true);
-      series.Column(s => s.DealIn).Name("实际出单").Labels(true);
-      series.Column(s => s.CheckInTarget).Name("入账目标").Labels(true);
-      series.Column(s => s.CheckIn).Name("实际入账").Labels(true);
+      series.Column(s => s.DealInTarget).Name("销售目标").Labels(labels => labels.Format("￥{0:#,##0}").Visible(true));
+      series.Column(s => s.DealIn).Name("实际出单").Labels(labels => labels.Format("￥{0:#,##0}").Visible(true));
+      series.Column(s => s.CheckInTarget).Name("入账目标").Labels(labels => labels.Format("￥{0:#,##0}").Visible(true));
+      series.Column(s => s.CheckIn).Name("实际入账").Labels(labels => labels.Format("￥{0:#,##0}").Visible(true));
 
       //series.Bar(s => s.DealInTarget).Name("销售目标").Labels(labels => labels.Template(" 销售目标: <#= value #>").Visible(true));
       //series.Bar(s => s.DealIn).Name("实际出单").Labels(labels => labels.Template(" 实际出单: <#= value #>").Visible(true));
@@ -35,25 +35,25 @@
 
   })
   .CategoryAxis(axis => axis.Categories(s => s.ComplatePercentage))
-  .ValueAxis(axis => axis.Numeric().Labels(labels => labels.Format("￥{0:#,##0}")))
+      .ValueAxis(axis => axis.Numeric().Labels(labels => labels.Format("￥{0:,###0}")))
       )
             </fieldset> 
             }
         }
 
-                @(Html.Telerik().Chart<AjaxViewProjecMonthPerformance>(listm).Name("chart" + pv.ProjectID).Title("月目标完成情况")
+                @(Html.Telerik().Chart<AjaxViewProjectMonthPerformance>(listm).Name("chart" + pv.ProjectID).Title("月目标完成情况")
         .Legend(legend => legend.Position(ChartLegendPosition.Bottom)).Series(series =>
 {
-    series.Bar(s => s.DealInTarget).Name("销售目标").Labels(true);
-    series.Bar(s => s.DealIn).Name("实际出单").Labels(true);
-    series.Bar(s => s.CheckInTarget).Name("入账目标").Labels(true);
-    series.Bar(s => s.CheckIn).Name("实际入账").Labels(true);
+    series.Bar(s => s.DealInTarget).Name("销售目标").Labels(labels => labels.Format("销售目标: ￥{0:#,##0}").Visible(true));
+    series.Bar(s => s.DealIn).Name("实际出单").Labels(labels => labels.Format("实际出单: ￥{0:#,##0}").Visible(true));
+    series.Bar(s => s.CheckInTarget).Name("入账目标").Labels(labels => labels.Format("入账目标: ￥{0:#,##0}").Visible(true));
+    series.Bar(s => s.CheckIn).Name("实际入账").Labels(labels => labels.Format("实际入账: ￥{0:#,##0}").Visible(true));
     //series.Bar(s => s.DealInTarget).Name("销售目标").Labels(labels => labels.Template(" 销售目标: <#= value #>").Visible(true));
 }).CategoryAxis(axis => axis.Categories(s => s.ComplatePercentage))
-      .ValueAxis(axis => axis.Numeric().Labels(labels => labels.Format("￥{0:#,##0}"))).HtmlAttributes(new { style="float:left; width:98%;height:250px;"}))
+  .ValueAxis(axis => axis.Numeric().Labels(labels => labels.Format("￥{0:#,##0}"))).HtmlAttributes(new { style = "float:left; width:98%;height:250px;" }))
 
 
- @(Html.Telerik().Chart<AjaxViewProjecMonthPerformance>(Model).Name("totalchart" + pv.ProjectID).Title("月目标完成情况比较")
+@* @(Html.Telerik().Chart<AjaxViewProjectMonthPerformance>(Model).Name("totalchart" + pv.ProjectID).Title("月目标完成情况比较")
         .Legend(legend => legend.Position(ChartLegendPosition.Bottom)).Series(series => 
 {
     series.Column(s => s.DealInTarget).Name("销售目标").Labels(true);
@@ -62,7 +62,7 @@
     series.Column(s => s.CheckIn).Name("实际入账").Labels(true);
     //series.Bar(s => s.DealInTarget).Name("销售目标").Labels(labels => labels.Template(" 销售目标: <#= value #>").Visible(true));
 }).CategoryAxis(axis => axis.Categories(s => s.ComplatePercentage))
-      .ValueAxis(axis => axis.Numeric().Labels(labels => labels.Format("￥{0:#,##0}"))).HtmlAttributes(new { style="float:left; height:250px;"}))
+      .ValueAxis(axis => axis.Numeric().Labels(labels => labels.Format("￥{0:#,##0}"))).HtmlAttributes(new { style="float:left; height:250px;"}))*@
 
 
 </fieldset>

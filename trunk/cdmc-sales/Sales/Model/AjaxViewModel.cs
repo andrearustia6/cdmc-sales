@@ -6,7 +6,101 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Model
 {
+    public class AjaxViewParticipant
+    {
+        public int ID { get; set; }
+        public int? DealID { get; set; }
 
+        [Display(Name = "参会人名称")]
+        public string Name { get; set; }
+
+        [Display(Name = "职位")]
+        public string Title { get; set; }
+
+        [Display(Name = "性别")]
+        public string Gender { get; set; }
+
+        [Display(Name = "直线电话")]
+        public string Contact { get; set; }
+
+        [Display(Name = "移动电话")]
+        public string Mobile { get; set; }
+
+        [Display(Name = "工作邮箱")]
+        public string Email { get; set; }
+
+        [Display(Name = "参会类型")]
+        public string  ParticipantTypeName { get { return Utl.Utl.GetFullName(ParticipantTypeNameCH, ParticipantTypeNameEN); } }
+        public string ParticipantTypeNameCH { get; set; }
+        public string ParticipantTypeNameEN { get; set; }
+
+        public string  ProjectCode { get; set; }
+        public int? ProjectID { get; set; }
+    }
+
+    public class AjaxViewDeal 
+    {
+        public int ID { get; set; }
+
+        [Display(Name = "客户公司")]
+        public string CompanyName { get { return Utl.Utl.GetFullName(CompanyNameCH, CompanyNameEN); } }
+
+         public string CompanyNameEN{get;set;}
+
+         public string CompanyNameCH { get; set; }
+        [Display(Name = "项目编号")]
+        public string ProjectCode { get; set; }
+        
+        public int? ProjectID { get; set; }
+
+        [Display(Name = "客户签单人")]
+        public string Committer { get; set; }
+
+        [Display(Name = "签单人联系方式")]
+        public string CommitterContect { get; set; }
+
+        [Display(Name = "签单人邮箱")]
+        public string CommitterEmail { get; set; }
+
+        [Display(Name = "权益描述")]
+        public string TicketDescription { get; set; }
+
+        [Display(Name = "Package名称")]
+        public string PackageName { get { return Utl.Utl.GetFullName(PackageNameCH, PackageNameEN); } }
+
+        public string PackageNameCH { get; set; }
+        public string PackageNameEN { get; set; }
+
+        [Display(Name = "坏账")]
+        public bool Abandoned { get; set; }
+
+        [Display(Name = "坏账原因")]
+        public string AbandonReason { get; set; }
+
+        [Display(Name = "合约付款日期")]
+        public DateTime ExpectedPaymentDate { get; set; }
+
+        [Display(Name = "实际付款日期")]
+        public DateTime? ActualPaymentDate { get; set; }
+
+        [Display(Name = "签约日期")]
+        public DateTime? SignDate { get; set; }
+
+        [Display(Name = "是否付款")]
+        public bool IsClosed { get; set; }
+
+        [Display(Name = "实际入账")]
+        public decimal Income { get; set; }
+
+        [Display(Name = "出单人")]
+        public string Sales { get; set; }
+
+        [Display(Name = "应付款")]
+        public decimal Payment { get; set; }
+
+        [Display(Name = "出单描述")]
+        public string PaymentDetail { get; set; }
+    }
     public class AjaxViewPercentage
     {
         [Display(Name = "CheckIn目标")]

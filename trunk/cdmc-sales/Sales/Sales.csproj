@@ -266,7 +266,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Model\AccountModels.cs" />
-    <Compile Include="Model\AjaxViewData.cs" />
+    <Compile Include="Model\AjaxViewModel.cs" />
     <Compile Include="Model\Extensions.cs" />
     <Compile Include="Model\ViewModels.cs" />
     <Compile Include="Model\WeeklyReport.cs" />
