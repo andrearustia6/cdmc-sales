@@ -51,11 +51,12 @@ namespace BLL
                  week.ProjectName = p.Name;
                  week.ProjectID = p.ID;
                  week.Manager = p.Manager;
-                var weektarget = totaltarget.FindAll(t=>t.StartDate.ToShortDateString() == startdate.ToShortDateString());
+                 totaldeals = totaldeals.FindAll(d => d.ProjectID == p.ID);
+                var weektarget = totaltarget.FindAll(t=>t.StartDate.ToShortDateString() == startdate.ToShortDateString() && t.ProjectID==p.ID);
                 week.CheckInTarget = weektarget.Sum(s => s.CheckIn);
                 week.DealInTarget = weektarget.Sum(s => s.Deal);
-                 week.DealIn = totaldeals.FindAll(d => d.SignDate >= startdate && d.SignDate <= enddate).Sum(s => s.Payment);
-                 week.CheckIn = totaldeals.FindAll(d => d.ActualPaymentDate >= startdate && d.ActualPaymentDate <= enddate).Sum(s => s.Income);
+                 week.DealIn = totaldeals.FindAll(d => d.SignDate >= startdate && d.SignDate < enddate).Sum(s => s.Payment);
+                 week.CheckIn = totaldeals.FindAll(d => d.ActualPaymentDate >= startdate && d.ActualPaymentDate < enddate).Sum(s => s.Income);
                  weeks.Add(week);
                  
                  startdate = startdate.AddDays(7);

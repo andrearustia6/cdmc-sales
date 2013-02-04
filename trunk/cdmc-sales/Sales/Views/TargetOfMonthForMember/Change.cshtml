@@ -48,6 +48,14 @@
         @Html.ValidationMessageFor(model => model.CheckIn)
     </div>
     <div class="editor-label">
+        @Html.LabelFor(model => model.MemberID, "项目名称")
+    </div>
+
+       <div class="editor-field">
+          @Html.DropDownListFor(m => m.ProjectID, new SelectList(BLL.CRM_Logical.GetUserInvolveProject(), "ID", "Name"), "-请选择-")
+           @Html.ValidationMessageFor(model => model.MemberID)
+    </div>
+    <div class="editor-label">
         @Html.LabelFor(model => model.MemberID, "目标制定人")
     </div>
     <div class="editor-field">

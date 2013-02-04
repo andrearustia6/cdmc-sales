@@ -40,8 +40,9 @@
             </fieldset> 
             }
         }
-
-                @(Html.Telerik().Chart<AjaxViewProjectMonthPerformance>(listm).Name("chart" + pv.ProjectID).Title("月目标完成情况")
+ @if (selectedangels == null || selectedangels.Contains("month"))
+ {
+       @(Html.Telerik().Chart<AjaxViewProjectMonthPerformance>(listm).Name("chart" + pv.ProjectID).Title("月目标完成情况")
         .Legend(legend => legend.Position(ChartLegendPosition.Bottom)).Series(series =>
 {
     series.Bar(s => s.DealInTarget).Name("销售目标").Labels(labels => labels.Format("销售目标: ￥{0:#,##0}").Visible(true));
@@ -51,7 +52,7 @@
     //series.Bar(s => s.DealInTarget).Name("销售目标").Labels(labels => labels.Template(" 销售目标: <#= value #>").Visible(true));
 }).CategoryAxis(axis => axis.Categories(s => s.ComplatePercentage))
   .ValueAxis(axis => axis.Numeric().Labels(labels => labels.Format("￥{0:#,##0}"))).HtmlAttributes(new { style = "float:left; width:98%;height:250px;" }))
-
+ }
 
 @* @(Html.Telerik().Chart<AjaxViewProjectMonthPerformance>(Model).Name("totalchart" + pv.ProjectID).Title("月目标完成情况比较")
         .Legend(legend => legend.Position(ChartLegendPosition.Bottom)).Series(series => 
