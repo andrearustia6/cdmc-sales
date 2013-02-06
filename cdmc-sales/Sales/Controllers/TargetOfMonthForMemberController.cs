@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using Entity;
 using Sales;
 using Utl;
+using System.Data.Entity.Infrastructure;
 
 namespace Sales.Controllers
 {
@@ -47,14 +48,28 @@ namespace Sales.Controllers
 
         public ViewResult MyTargetIndex(int? projectid)
         {
+            var list = CH.DB.ChangeTracker.Entries<TargetOfMonthForMember>().ToList();
             projectid = this.TrySetProjectIDForUser(projectid);
             ViewBag.ProjectID = projectid;
+            string name = Employee.CurrentUserName;
             if (projectid != null)
             {
-                var data = from t in CH.DB.TargetOfMonthForMembers
-                           where t.ProjectID == projectid && t.Member.Name == Employee.CurrentUserName
+                list = CH.DB.ChangeTracker.Entries<TargetOfMonthForMember>().ToList();
+                //var data = CH.GetAllData<TargetOfMonthForMember>(t => t.ProjectID == projectid && t.Member.Name == Employee.CurrentUserName);
+              
+                //return View(data);
+                var data = from t in CH.DB.TargetOfMonthForMembers.AsNoTracking()
+                           where t.ProjectID == projectid && t.Member.Name == name
                            select t;
-                return View(data.OrderByDescending(o => o.EndDate).ToList());
+
+                var td = data.OrderByDescending(o => o.EndDate).ToList();
+
+                list = CH.DB.ChangeTracker.Entries<TargetOfMonthForMember>().ToList();
+                if (list.Count > 0)
+                {
+                    var id = list.First().Entity.ID;
+                }
+                return View(td);
             }
             return View();
 
@@ -65,8 +80,10 @@ namespace Sales.Controllers
             return View(CH.GetDataById<TargetOfMonthForMember>(id));
         }
 
-        public ActionResult Create()
+        public ActionResult Create(int? projectid)
         {
+            projectid = this.TrySetProjectIDForUser(projectid);
+            ViewBag.ProjectID = projectid;
             var name = Employee.CurrentUserName;
             if (Employee.EqualToLeader() || Employee.EqualToSales())
             {
@@ -93,15 +110,32 @@ namespace Sales.Controllers
         public ActionResult Edit(int id)
         {
             var data = CH.GetDataById<TargetOfMonthForMember>(id);
+            var list = CH.DB.ChangeTracker.Entries<TargetOfMonthForMember>().ToList();
+            
+            //var data = CH.DB.TargetOfMonthForMembers.AsNoTracking().Single(x => x.ID == id);
+             list = CH.DB.ChangeTracker.Entries<TargetOfMonthForMember>().ToList();
             return View(data);
         }
 
         [HttpPost]
         public ActionResult Edit(TargetOfMonthForMember item)
         {
+
             //this.AddErrorStateIfTargetOfMonthNoValid(item);
+            CH.DB.SaveChanges();
+           
+            CH.DB.ChangeTracker.DetectChanges();
+            var list = CH.DB.ChangeTracker.Entries<TargetOfMonthForMember>().ToList();
+            if (list.Count > 0)
+            {
+                var attacth = list.First().Entity;
+                CH.DB.Detach(attacth);
+            }
+          
+            list = CH.DB.ChangeTracker.Entries<TargetOfMonthForMember>().ToList();
             if (ModelState.IsValid)
             {
+              
                 CH.Edit<TargetOfMonthForMember>(item);
                 return RedirectToAction("MyTargetIndex", new { projectid = item.ProjectID });
             }
