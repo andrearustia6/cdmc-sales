@@ -269,7 +269,7 @@ namespace Entity
     {
         public virtual Project Project { get; set; }
         [Display(Name = "项目名称"), Required]
-        public int ProjectID { get; set; }
+        public int? ProjectID { get; set; }
 
         [Display(Name = "开始日期"),DisplayFormat(DataFormatString = "{0:d}")]
         public DateTime StartDate { get; set; }
@@ -294,7 +294,7 @@ namespace Entity
     {
         public virtual Project Project { get; set; }
         [Display(Name = "项目名称"), Required]
-        public int ProjectID { get; set; }
+        public int? ProjectID { get; set; }
 
         [Display(Name = "开始日期"),  DisplayFormat(DataFormatString = "{0:d}")]
         public DateTime StartDate { get; set; }
@@ -312,7 +312,7 @@ namespace Entity
         public decimal CheckIn { get; set; }
 
         public virtual Member Member { get; set; }
-        [Display(Name = "对应销售"),Required]
+        [Display(Name = "对应销售"), Required]
         public int? MemberID { get; set; }
 
     }

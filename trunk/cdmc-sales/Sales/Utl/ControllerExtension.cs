@@ -59,7 +59,7 @@ namespace System.Web.Mvc
                 item.ModelState.AddModelError("", "开始时间和结束时间不在同一个月内");
 
             var ts = from et in CH.DB.TargetOfMonths
-                     where  et.StartDate == t.StartDate && t.ProjectID == et.ProjectID
+                     where  et.StartDate == t.StartDate && t.ProjectID == et.ProjectID && et.ID!= t.ID
                      select et;
 
             if (ts.Count() > 0)

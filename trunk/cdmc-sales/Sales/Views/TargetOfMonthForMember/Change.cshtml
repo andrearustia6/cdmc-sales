@@ -60,11 +60,22 @@
     </div>
     <div class="editor-field">
     @{
+        var pid = Model == null ? ViewBag.ProjectID as int? : Model.ProjectID;
+        var data = CH.GetAllData<Member>(mem => mem.ProjectID == pid);
+        
+        
           var name = Employee.CurrentUserName;
-          var pid = Model==null?ViewBag.ProjectID as int?:Model.ProjectID;
-          var data = CH.GetAllData<Member>(mem => mem.ProjectID == pid);
-          @Html.DropDownListFor(m => m.MemberID, new SelectList(data,"ID","Name"), "-请选择-")
-      }
+          var mid = data.FirstOrDefault(f=>f.Name==Employee.CurrentUserName);
+          if (mid!=null && Model==null)
+          {
+          @Html.DropDownListFor(m => m.MemberID, new SelectList(data, "ID", "Name",mid.ID), "-请选择-")
+          }
+          else
+          {
+               @Html.DropDownListFor(m => m.MemberID, new SelectList(data, "ID", "Name"), "-请选择-")
+          }
+       
+       }
          @Html.ValidationMessageFor(model => model.MemberID)
     </div>
 </fieldset>

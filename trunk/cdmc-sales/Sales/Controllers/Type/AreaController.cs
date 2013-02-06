@@ -47,12 +47,15 @@ namespace Sales.Controllers
         }
         public ActionResult Edit(int id)
         {
-            return View(CH.GetDataById<Area>(id));
+            var data = CH.GetDataById<Area>(id);
+            var list = CH.DB.ChangeTracker.Entries<Area>().ToList();
+            return View(data);
         }
 
         [HttpPost]
         public ActionResult Edit(Area item)
         {
+            var list = CH.DB.ChangeTracker.Entries<Area>().ToList();
             if (ModelState.IsValid)
             {
                 CH.Edit<Area>(item);

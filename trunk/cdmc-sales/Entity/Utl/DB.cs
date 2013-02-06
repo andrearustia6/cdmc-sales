@@ -8,6 +8,8 @@ using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Data.Entity.Infrastructure;
 using System.ComponentModel.DataAnnotations;
+using System.Data.Objects;
+
 
 namespace Utl
 {
@@ -62,6 +64,12 @@ namespace Utl
         {
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
         }
+
+        public void Detach(object entity)
+        {
+            ((IObjectContextAdapter)this).ObjectContext.Detach(entity);
+        }
+
 
 
     }
