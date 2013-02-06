@@ -1,0 +1,33 @@
+﻿@model Entity.AccessRight
+@using Utl
+<fieldset>
+    <legend>@SR.Form</legend>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.Name)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.Name)
+        @Html.ValidationMessageFor(model => model.Name)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.Code)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.Code)
+        @Html.ValidationMessageFor(model => model.Code)
+    </div>
+      <div class="editor-label">
+        @Html.LabelFor(model => model.RightType )
+    </div>
+    <div class="editor-field">
+        @Html.DropDownListFor(model => model.RightType, new SelectList(new List<string>() { "查看","编辑"}),"-请选择-")
+        @Html.ValidationMessageFor(model => model.RightType)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.AccessRightDetails)
+    </div>
+    <div class="editor-field">
+        @Html.TextAreaFor(model => model.AccessRightDetails)
+        @Html.ValidationMessageFor(model => model.AccessRightDetails)
+    </div>
+</fieldset>

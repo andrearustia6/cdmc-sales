@@ -13,6 +13,34 @@ namespace Entity
     {
     }
 
+    public class AccessRight : EntityBase
+    {
+        [Display(Name = "权限名称"), Required]
+        public string Name { get; set; }
+
+        [Display(Name = "权限编码")]
+        public int? Code { get; set; }
+
+        [Display(Name = "权限类型"), Required]
+        public string RightType { get; set; }
+
+        [Display(Name = "访问链接")]
+        public string AccessRightDetails { get; set; }
+
+
+        public virtual List<ProjectRight> ProjectRights { get; set; } 
+    }
+
+    public class ProjectRight : EntityBase
+    {
+        public virtual Project Project { get; set; }
+        [Display(Name = "所属项目")]
+        public int? ProjectID { get; set; }
+
+        public string Name { get; set; }
+        public virtual List<AccessRight> AccessRights { get; set; }
+    }
+
     /// <summary>
     /// 新闻
     /// </summary>

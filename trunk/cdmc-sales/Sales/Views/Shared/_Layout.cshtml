@@ -40,8 +40,10 @@
                       {
                           item.Add().Text("部门").Url("~/department/index");
                           item.Add().Text("职级").Url("~/explevel/index");
+                          item.Add().Text("权限配置").Url("~/accessright/index");
                       });
                    }
+                   
                    if (score >= DirectorRequired.LVL)
                    {
                        menu.Add().Text("配置").ImageUrl("~/Content/Common/Icons/mvc.png").Items(item =>
@@ -64,7 +66,17 @@
 
                      
                    }
-                   
+
+                   menu.Add().Text("项目查看").ImageUrl("~/Content/Common/Icons/mvc.png").Items(item =>
+                      {
+                          item.Add().Url("~/Report/MemberLeadCalls").Text("Team Call List");
+                      });
+
+                   menu.Add().Text("项目编辑").ImageUrl("~/Content/Common/Icons/mvc.png").Items(item =>
+                   {
+
+                   });
+                        
                    if (score >=   ManagerRequired.LVL)
                    {
                        menu.Add().Text("业绩评估").ImageUrl("~/Content/Common/Icons/test.png").Items(item =>

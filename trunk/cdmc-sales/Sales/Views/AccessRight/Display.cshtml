@@ -1,0 +1,28 @@
+﻿@model Entity.AccessRight
+
+@using Utl
+
+<fieldset>
+    <legend>@SR.Form</legend>
+
+    <div class="display-label">权限名</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Name)
+    </div>
+
+    <div class="display-label">权限编码</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Code)
+    </div>
+
+    <div class="display-label">权限类型</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.RightType)
+    </div>
+
+    <div class="display-label">权限描述</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.AccessRightDetails)
+    </div>
+</fieldset>
+

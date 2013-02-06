@@ -225,6 +225,7 @@
     <Compile Include="Controllers\ProtectedCompanysController.cs" />
     <Compile Include="Controllers\SubCompanyController.cs" />
     <Compile Include="Controllers\TargetOfMonthForMemberController.cs" />
+    <Compile Include="Controllers\Type\AccessRightController.cs" />
     <Compile Include="Controllers\Type\ProgressController.cs" />
     <Compile Include="Controllers\Type\DepartmentController.cs" />
     <Compile Include="Controllers\DistrictNumberController.cs" />
@@ -262,6 +263,7 @@
     <Compile Include="Controllers\Type\RoleController.cs" />
     <Compile Include="Controllers\Type\SalesTypeController.cs" />
     <Compile Include="Controllers\Type\TemplateTypeController.cs" />
+    <Compile Include="DB.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -1488,6 +1490,15 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\ProgressSelector.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\AccessRight\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\AccessRight\Display.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\AccessRight\Change.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
