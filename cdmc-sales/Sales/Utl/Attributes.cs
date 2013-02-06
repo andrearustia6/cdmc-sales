@@ -9,14 +9,29 @@ using System.Reflection;
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
 public sealed class AllowAnonymousAttribute : Attribute { }
 
+//public sealed class ProjectAccessRightRequired : AuthorizeAttribute
+//{
+//    public override void OnAuthorization(AuthorizationContext filterContext)
+//    {
+
+//        bool skipAuthorization = filterContext.ActionDescriptor.ControllerDescriptor.IsDefined(typeof(AllowAnonymousAttribute), true);
+
+//        var right = from r in  CH.DB.ProjectRights where r.
+//        //skipAuthorization = true;
+
+//        if (!skipAuthorization)
+//        {
+//            base.OnAuthorization(filterContext);
+//        }
+//    }
+//}
 
 public sealed class LogonRequired : AuthorizeAttribute
 {
     public override void OnAuthorization(AuthorizationContext filterContext)
     {
         
-        bool skipAuthorization = filterContext.ActionDescriptor.IsDefined(typeof(AllowAnonymousAttribute), true)
-        || filterContext.ActionDescriptor.ControllerDescriptor.IsDefined(typeof(AllowAnonymousAttribute), true);
+        bool skipAuthorization = filterContext.ActionDescriptor.IsDefined(typeof(AllowAnonymousAttribute), true);
 
         //skipAuthorization = true;
 

@@ -27,7 +27,7 @@
                @(Html.Telerik().Grid(Model.TopSales).Name("TopSales").Columns(c =>
 {
     c.Bound(item => item.Name);
-    c.Bound(item => item.DealSum);
+    c.Bound(item => item.CheckInSum);
 }).HtmlAttributes(new { style="margin-top:0px"}))
             </td>
             <td style="vertical-align:top">@(Html.Telerik().Grid(Model.TopCallers).Name("TopCallers").Columns(c =>

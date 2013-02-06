@@ -88,8 +88,42 @@ namespace BLL
 
         #endregion 
 
+        public static List<Project> GetUserProjectByAccessRight(string funtionname)
+        {
+            string name = Employee.CurrentUserName;
+       
+            var ps 
+            var lvl = Employee.CurrentRole.Level;
+            if (lvl == 5)
+            {
+                return GetProductInvolveProject();
+            }
+
+            if (lvl == 1)
+            {
+                return GetProductInvolveProject();
+            }
+
+            if (lvl >= 10 && lvl <= 100)
+            {
+                return GetSalesInvolveProject();
+            }
+            if (lvl >= 1000)
+            {
+                return GetDirectorInvolveProject();
+            }
+            if (lvl >= 500 && lvl <= 500)
+            {
+                return GetManagerInvolveProject();
+            }
+
+            return new List<Project>();
+        }
+
+
         public static List<Project> GetUserInvolveProject()
         {
+
             var lvl = Employee.CurrentRole.Level;
             if (lvl == 5)
             {

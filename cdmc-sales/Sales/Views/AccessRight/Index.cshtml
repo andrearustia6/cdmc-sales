@@ -1,0 +1,24 @@
+﻿@using Entity
+@model List<AccessRight>
+@Html.Partial("contenttitle", "权限类型")           
+@(Html.Telerik().Grid<AccessRight>(Model).Name("Area").ToolBar(commands => commands.Custom().Text("权限类型创建").Action("Create", "AccessRight"))
+                .DataKeys(keys =>
+                {
+                    keys.Add(s => s.ID);
+                })
+                .Columns(c =>
+                {
+                    c.Bound(item => item.Name).Width(200);
+                    c.Bound(item => item.Code).Width(100);
+                    c.Bound(item => item.RightType).Width(100);
+                    c.Bound(item => item.Description);
+                    c.Bound(item => item.ID).Width(200).Title("操作").Template(@<span>
+                    <a href=@Url.Content("~/AccessRight/Edit/" + item.ID) >编辑</a> | <a href=@Url.Content("~/AccessRight/Details/" + item.ID)>详细</a>  | <a href=@Url.Content("~/AccessRight/delete/" + item.ID) >删除</a> 
+                   </span>);
+                })
+                .Resizable(resizing => resizing.Columns(true))
+                .Filterable().Sortable().Groupable()
+                .Pageable(p => p.PageSize(20))
+                .Scrollable(scrolling => scrolling.Height(350))
+
+)
