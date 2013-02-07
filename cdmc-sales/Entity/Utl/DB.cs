@@ -56,7 +56,7 @@ namespace Utl
         public DB()
         {
           Database.SetInitializer<DB>(new DBInitializer());
-          Database.SetInitializer<DB>(null);
+          //Database.SetInitializer<DB>(null);
 
 
           this.Configuration.LazyLoadingEnabled = true;
@@ -81,8 +81,8 @@ namespace Utl
     {
         protected override void Seed(DB context)
         {
-            FakeData(context);
-            context.SaveChanges();
+            //FakeData(context);
+            //context.SaveChanges();
         }
 
         private void FakeData(DB context)
