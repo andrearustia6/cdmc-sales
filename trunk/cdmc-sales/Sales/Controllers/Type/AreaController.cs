@@ -55,7 +55,7 @@ namespace Sales.Controllers
         [HttpPost]
         public ActionResult Edit(Area item)
         {
-            var list = CH.DB.ChangeTracker.Entries<Area>().ToList();
+      
             if (ModelState.IsValid)
             {
                 CH.Edit<Area>(item);

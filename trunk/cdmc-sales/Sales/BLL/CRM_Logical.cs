@@ -88,36 +88,30 @@ namespace BLL
 
         #endregion 
 
-        public static List<Project> GetUserProjectByAccessRight(string funtionname)
+        public static List<ProjectRight> GetUserProjectRight(string funtionname)
+        {
+            var ps = from p in CH.DB.ProjectRights where p.Project.IsActived == true && p.AccessRights.Select(s => s.Name).Contains(funtionname) select p;
+
+            var list = ps.ToList();
+
+
+             list = list.FindAll(f => IsContainLoginUser(f.Name));
+
+             return list;
+        }
+
+        static bool IsContainLoginUser(string namelist)
         {
             string name = Employee.CurrentUserName;
-       
-            var ps 
-            var lvl = Employee.CurrentRole.Level;
-            if (lvl == 5)
+            var names = namelist.Split('|');
+            foreach (var n in names)
             {
-                return GetProductInvolveProject();
+                if (n.Trim().ToLower() == name.Trim().ToLower())
+                {
+                    return true;
+                }
             }
-
-            if (lvl == 1)
-            {
-                return GetProductInvolveProject();
-            }
-
-            if (lvl >= 10 && lvl <= 100)
-            {
-                return GetSalesInvolveProject();
-            }
-            if (lvl >= 1000)
-            {
-                return GetDirectorInvolveProject();
-            }
-            if (lvl >= 500 && lvl <= 500)
-            {
-                return GetManagerInvolveProject();
-            }
-
-            return new List<Project>();
+            return false;
         }
 
 

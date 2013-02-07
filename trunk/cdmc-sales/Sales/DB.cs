@@ -15,5 +15,9 @@ namespace Sales
         // System.Data.Entity.Database.SetInitializer(new System.Data.Entity.DropCreateDatabaseIfModelChanges<Sales.DB>());
 
         public DbSet<AccessRight> AccessRight { get; set; }
+
+        public DbSet<ProjectRight> ProjectRight { get; set; }
+
+        public DbSet<Project> Project { get; set; }
     }
 }

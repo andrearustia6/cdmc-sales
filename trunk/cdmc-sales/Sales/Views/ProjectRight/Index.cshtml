@@ -1,0 +1,22 @@
+﻿@using Entity
+@model List<ProjectRight>
+@Html.Partial("contenttitle", "项目权限")           
+@(Html.Telerik().Grid<ProjectRight>(Model).Name("Area").ToolBar(commands => commands.Custom().Text("项目权限创建").Action("Create", "ProjectRight"))
+                .DataKeys(keys =>
+                {
+                    keys.Add(s => s.ID);
+                })
+                .Columns(c =>
+                {
+                    c.Bound(item => item.Name);
+                    c.Bound(item => item.Project.Name);
+                    c.Bound(item => item.ID).Title("操作").Template(@<span>
+                    <a href=@Url.Content("~/ProjectRight/Edit/" + item.ID) >编辑</a> | <a href=@Url.Content("~/ProjectRight/Details/" + item.ID)>详细</a>  | <a href=@Url.Content("~/ProjectRight/delete/" + item.ID) >删除</a> 
+                   </span>);
+                })
+                .Resizable(resizing => resizing.Columns(true))
+                .Filterable().Sortable().Groupable()
+                .Pageable(p => p.PageSize(20))
+                .Scrollable(scrolling => scrolling.Height(350))
+
+)

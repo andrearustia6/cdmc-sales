@@ -11,7 +11,7 @@ using Utl;
 
 namespace Sales.Controllers.Type
 {
-    public class AccessRightController : Controller
+    public class ProjectRightController : Controller
     {
         protected override void Dispose(bool disposing)
         {
@@ -21,12 +21,12 @@ namespace Sales.Controllers.Type
 
         public ViewResult Index()
         {
-            return View(CH.GetAllData<AccessRight>());
+            return View(CH.GetAllData<ProjectRight>());
         }
 
         public ViewResult Details(int id)
         {
-            return View(CH.GetDataById<AccessRight>(id));
+            return View(CH.GetDataById<ProjectRight>(id));
         }
 
         public ActionResult Create()
@@ -35,28 +35,41 @@ namespace Sales.Controllers.Type
         }
 
         [HttpPost]
-        public ActionResult Create(AccessRight item)
+        public ActionResult Create(ProjectRight item, List<int> rights)
         {
             if (ModelState.IsValid)
             {
-                CH.Create<AccessRight>(item);
+                var ars = CH.GetAllData<AccessRight>(a => rights.Contains(a.ID));
+                item.AccessRights = ars;
+                CH.Create<ProjectRight>(item);
                 return RedirectToAction("Index");
             }
             return View(item);
         }
         public ActionResult Edit(int id)
         {
-            var data = CH.GetDataById<AccessRight>(id);
-            var list = CH.DB.ChangeTracker.Entries<AccessRight>().ToList();
+            var data = CH.GetDataById<ProjectRight>(id);
+            var list = CH.DB.ChangeTracker.Entries<ProjectRight>().ToList();
             return View(data);
         }
 
         [HttpPost]
-        public ActionResult Edit(AccessRight item)
+        public ActionResult Edit(ProjectRight item, List<int> rights)
         {
             if (ModelState.IsValid)
             {
-                CH.Edit<AccessRight>(item);
+                var ars = CH.GetAllData<AccessRight>(a => rights.Contains(a.ID));
+                item.AccessRights = new List<AccessRight>();
+                CH.Edit<ProjectRight>(item);
+                var i = CH.GetDataById<ProjectRight>(item.ID);
+                if (i.AccessRights == null)
+                    i.AccessRights = new List<AccessRight>();
+                else
+                    i.AccessRights.Clear();
+
+                CH.Edit<ProjectRight>(i);
+                i.AccessRights.AddRange(ars);
+                CH.Edit<ProjectRight>(i);
                 return RedirectToAction("Index");
             }
             return View(item);
@@ -64,22 +77,14 @@ namespace Sales.Controllers.Type
 
         public ActionResult Delete(int id)
         {
-            var count = from c in CH.DB.ProjectRights
-                        where c.AccessRights.Any(a=>a.ID == id)
-                        select c;
 
-            if (count.Count() > 0)
-                return View(@"~\views\shared\Error.cshtml", null, SR.CannotDelete);
-            else
-                return View(CH.GetDataById<AccessRight>(id));
-
-
+            return View(CH.GetDataById<ProjectRight>(id));
         }
 
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {
-            CH.Delete<AccessRight>(id);
+            CH.Delete<ProjectRight>(id);
             return RedirectToAction("Index");
         }
     }
