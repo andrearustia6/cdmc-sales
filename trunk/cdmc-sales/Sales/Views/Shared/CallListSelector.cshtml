@@ -8,7 +8,7 @@
     var startdate = ViewBag.StartDate as DateTime?;
     var enddate = ViewBag.EndDate as DateTime?;
     var types = CH.GetAllData<LeadCallType>();
-      var ps = CRM_Logical.GetUserInvolveProject();
+      var ps = CRM_Logical.GetUserProjectRight("CallsReview").Select(s=>s.Project);
       if(ps != null)
       {
         using (Html.BeginForm())

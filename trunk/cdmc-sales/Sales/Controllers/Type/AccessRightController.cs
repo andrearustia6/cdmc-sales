@@ -47,7 +47,6 @@ namespace Sales.Controllers.Type
         public ActionResult Edit(int id)
         {
             var data = CH.GetDataById<AccessRight>(id);
-            var list = CH.DB.ChangeTracker.Entries<AccessRight>().ToList();
             return View(data);
         }
 

@@ -6,7 +6,19 @@
     var startdate = ViewBag.StartDate as DateTime?;
     var enddate = ViewBag.EndDate as DateTime?;
     var showduration = ViewBag.ShowDuration as string;
-      var ps = CRM_Logical.GetUserInvolveProject();
+
+    List<Project> ps;
+    var accessright = ViewBag.Right as string;
+    if (!string.IsNullOrEmpty(accessright))
+    {
+        ps = CRM_Logical.GetUserProjectRight(accessright).Select(s=>s.Project).ToList();
+    }
+    else
+    {
+        ps = CRM_Logical.GetUserInvolveProject();
+    }
+    
+    
       if(ps != null)
       {
         using (Html.BeginForm())
