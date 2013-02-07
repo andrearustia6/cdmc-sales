@@ -48,7 +48,6 @@ namespace Sales.Controllers
         public ActionResult Edit(int id)
         {
             var data = CH.GetDataById<Area>(id);
-            var list = CH.DB.ChangeTracker.Entries<Area>().ToList();
             return View(data);
         }
 

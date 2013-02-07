@@ -9,6 +9,7 @@
                 .Columns(c =>
                 {
                     c.Bound(item => item.Name).Width(200);
+                    c.Bound(item => item.Level ).Width(200);
                     c.Bound(item => item.Description);
                     c.Bound(item => item.ID).Title("操作").Width(200).Template(@<span> <a href=@Url.Content("~/Role/Edit/" + item.ID) >
                         编辑</a> | <a href=@Url.Content("~/Role/Details/" + item.ID)>详细</a> | <a href=@Url.Content("~/Role/delete/" + item.ID) >

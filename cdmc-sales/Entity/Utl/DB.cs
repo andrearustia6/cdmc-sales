@@ -55,8 +55,8 @@ namespace Utl
 
         public DB()
         {
-          Database.SetInitializer<DB>(new DBInitializer());
-          //Database.SetInitializer<DB>(null);
+          //Database.SetInitializer<DB>(new DBInitializer());
+         Database.SetInitializer<DB>(null);
 
 
           this.Configuration.LazyLoadingEnabled = true;

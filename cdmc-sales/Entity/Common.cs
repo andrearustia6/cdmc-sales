@@ -36,8 +36,22 @@ namespace Entity
         public virtual Project Project { get; set; }
         [Display(Name = "所属项目")]
         public int? ProjectID { get; set; }
-
         public string Name { get; set; }
+        public string AccessRightString 
+        { get
+        { 
+            string result = string.Empty;
+            if (AccessRights == null) return result;
+
+            AccessRights.ForEach(f => {
+                if (result == string.Empty)
+                    result += f.Name;
+                else
+                    result +=  " | " + f.Name;
+            });
+            return result;
+            
+        } }
         public virtual List<AccessRight> AccessRights { get; set; }
     }
 

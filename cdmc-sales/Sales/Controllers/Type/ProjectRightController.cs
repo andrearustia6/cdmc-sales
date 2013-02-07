@@ -49,7 +49,6 @@ namespace Sales.Controllers.Type
         public ActionResult Edit(int id)
         {
             var data = CH.GetDataById<ProjectRight>(id);
-            var list = CH.DB.ChangeTracker.Entries<ProjectRight>().ToList();
             return View(data);
         }
 
@@ -58,18 +57,32 @@ namespace Sales.Controllers.Type
         {
             if (ModelState.IsValid)
             {
-                var ars = CH.GetAllData<AccessRight>(a => rights.Contains(a.ID));
-                item.AccessRights = new List<AccessRight>();
-                CH.Edit<ProjectRight>(item);
-                var i = CH.GetDataById<ProjectRight>(item.ID);
-                if (i.AccessRights == null)
-                    i.AccessRights = new List<AccessRight>();
-                else
-                    i.AccessRights.Clear();
+              
+                if (rights == null) rights = new List<int>();
 
-                CH.Edit<ProjectRight>(i);
-                i.AccessRights.AddRange(ars);
-                CH.Edit<ProjectRight>(i);
+                //清空
+                var i = CH.GetDataById<ProjectRight>(item.ID);
+                if (i.AccessRights != null)
+                {
+                    i.AccessRights.Clear();
+                    CH.Edit<ProjectRight>(i);
+                    CH.DB.Detach(i);
+                }
+
+
+                item.AccessRights = new List<AccessRight>();
+
+                var ars = CH.GetAllData<AccessRight>(a => rights.Contains(a.ID));
+                CH.Edit<ProjectRight>(item);
+                item.AccessRights.AddRange(ars);
+                CH.Edit<ProjectRight>(item);
+
+                 //item.AccessRights = new List<AccessRight>();
+                 //var ars = CH.GetAllData<AccessRight>(a => rights.Contains(a.ID));
+                 //item.AccessRights.AddRange(ars);
+
+                 //CH.DB.ProjectRights.Attach(item);
+                 //CH.Edit<ProjectRight>(item);
                 return RedirectToAction("Index");
             }
             return View(item);
