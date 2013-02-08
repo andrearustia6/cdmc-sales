@@ -3,28 +3,28 @@
 }
 @using Entity;
 @using Utl
-@using Sales.Model
-@model List<Model.ViewProjectProgressAmount>
+@using Model
 <br />
-@Html.Partial("durationselector")
-
-
-        @(Html.Telerik().Grid(Model).Name("ViewProjectProgressAmount").DataKeys(keys =>
+@(Html.Telerik().Grid<AjaxViewProject>().Name("ViewProjectProgressAmount").DataKeys(keys =>
                 {
-                   keys.Add(s => s.Project.ID);
-                }).Columns(c=>{
-                    c.Bound(item => item.Project.Name).Format("{0:c}").FooterTemplate(@<text>总数：</text>);
-                    c.Bound(item => item.TotalDealIn).Format("{0:c}").Aggregate(item => item.Sum()).FooterTemplate(@<text>@item.Sum.Format("{0:c}")</text>);
-                    c.Bound(item => item.TotalCheckIn).Format("{0:c}").Aggregate(item => item.Sum()).FooterTemplate(@<text>@item.Sum.Format("{0:c}")</text>);
-                    c.Bound(item => item.DealInTarget).Format("{0:c}").Aggregate(item => item.Sum()).FooterTemplate(@<text>@item.Sum.Format("{0:c}")</text>);
-                    c.Bound(item => item.DealIn).Format("{0:c}").Aggregate(item => item.Sum()).FooterTemplate(@<text>@item.Sum.Format("{0:c}")</text>);
-                    c.Bound(item => item.DealInPercentage).Template(@<text>@item.DealInPercentage%</text>) ;
-                    c.Bound(item => item.CheckInTarget).Format("{0:c}").Aggregate(item => item.Sum()).FooterTemplate(@<text>@item.Sum.Format("{0:c}")</text>);
-                    c.Bound(item => item.CheckIn).Format("{0:c}").Aggregate(item => item.Sum()).FooterTemplate(@<text>@item.Sum.Format("{0:c}")</text>);
-                    c.Bound(item => item.CheckInPercentage).Template(@<text>@item.CheckInPercentage%</text>);
-                    c.Bound(item => item.NextCheckInTarget).Format("{0:c}").Aggregate(item => item.Sum()).FooterTemplate(@<text>@item.Sum.Format("{0:c}")</text>);
-                    c.Bound(item => item.NextDealInTarget).Format("{0:c}").Aggregate(item => item.Sum()).FooterTemplate(@<text>@item.Sum.Format("{0:c}")</text>);
-                }).Resizable(resizing => resizing.Columns(true))
-                  .Sortable()
-                  .Scrollable(scrolling => scrolling.Height(150)))
-
+                    keys.Add(s => s.ProjectID);
+                }).Columns(c =>
+                {
+                    c.Bound(item => item.ProjectName).FooterTemplate(@<text>总数：</text>);
+                    c.Bound(item => item.StartDayString);
+                    c.Bound(item => item.EndDayString);
+                    c.Bound(item => item.Manager);
+                    c.Bound(item => item.Lead);
+                    c.Bound(item => item.ProjectTarget);
+                    c.Bound(item => item.TotalCheckIn).Format("{0:c}").Aggregate(item => item.Sum()).ClientFooterTemplate("<p>CheckIn总额: <#= Sum #></p>");
+                    c.Bound(item => item.TotalDealIn).Format("{0:c}").Aggregate(item => item.Sum()).ClientFooterTemplate("<p>DealIn总额: <#= Sum #></p>");
+                    c.Bound(item => item.ComplatePercetage).ClientTemplate("<p><#= ComplatePercetage #>%</p>");
+                    c.Bound(item => item.TotalCalls).Aggregate(item => item.Sum()).ClientFooterTemplate("<p>Call总数: <#= Sum #></p>");
+                    c.Bound(item => item.TotalCompanysCount).Aggregate(item => item.Sum()).ClientFooterTemplate("<p>可打公司总数: <#= Sum #></p>");
+                    //c.Bound(item => item.TotalLeadsCount).Aggregate(item => item.Sum()).ClientFooterTemplate("<p>可打Lead总数: <#= Sum #></p>");
+                })
+                .DataBinding(d=>d.Ajax().Select("_Progress", "report"))
+                .Resizable(resizing => resizing.Columns(true))
+                .Pageable(p=>p.PageOnScroll(true).PageSize(30))
+                  .Scrollable(scrolling => scrolling.Height(250)))
+)

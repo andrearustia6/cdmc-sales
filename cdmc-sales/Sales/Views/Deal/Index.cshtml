@@ -1,21 +1,21 @@
 ﻿@{
     ViewBag.Title = "项目出单";
     ViewBag.ShowDuration = "false";
-    ViewBag.Right = "DealsReview";
+    
 }
 
 @using Entity
 @using Model
 @model List<AjaxViewDeal>
-
+@using Utl;
 @Html.Partial("contenttitle", "项目出单")
 
 @Html.Partial("multipleprojectselector")
 @{
     var pls = ViewBag.SelectedProjects as List<int>;
-    var sid = Utl.Utl.ConvertSelectProjectIDtoString(pls);
+    var sid = Utl.ConvertSelectProjectIDtoString(pls);
     string plsstring = string.Empty;
-    
+    var right = ViewBag.Right as EditRight?;
 @(Html.Telerik().Grid<AjaxViewDeal>().Name("Deal")
                 .DataKeys(keys =>
                 {
@@ -35,7 +35,10 @@
                     c.Bound(item => item.ExpectedPaymentDate).Format("{0:d}").Width(100);
                     c.Bound(item => item.ActualPaymentDate).Format("{0:d}").Width(100);
                     c.Bound(item => item.ProjectCode);
-                    c.Bound(item => item.ID).Title("操作").ClientTemplate("<span><a href="+Url.Content("~/Deal/Edit/")+"<#= ID #> >编辑</a> | <a href="+Url.Content("~/Deal/Details/"+"<#= ID #>>详细</a>  | <a href="+Url.Content("~/Deal/delete/")+"<#= ID #> >删除</a></span>"));
+                    if (right != null && right.Value == EditRight.DealsEdit)
+                    {
+                        c.Bound(item => item.ID).Title("操作").ClientTemplate("<span><a href=" + Url.Content("~/Deal/Edit/") + "<#= ID #> >编辑</a> | <a href=" + Url.Content("~/Deal/Details/" + "<#= ID #>>详细</a>  | <a href=" + Url.Content("~/Deal/delete/") + "<#= ID #> >删除</a></span>"));
+                    }
                 }
                 ).DataBinding(b => b.Ajax().Select("_Index", "Deal", new { sp =sid}))
                 .DetailView(d => d.ClientTemplate(

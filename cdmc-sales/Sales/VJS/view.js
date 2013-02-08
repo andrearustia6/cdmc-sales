@@ -1,4 +1,28 @@
-﻿function onMemberSelected() {
+﻿
+function onSelectOrDiselect() {
+   
+    var $selectall = $('#selectall');
+    var $disselectall = $('#disselectall');
+    $('#selectall,#disselectall').bind('click', function () {
+        var $this = $(this);
+        if ($this.attr('id') == 'selectall') {
+            $('.selectedprojects').attr('checked', 'checked');
+            $disselectall.removeAttr("checked");
+            $('#selecttype').val('selectall');
+        }
+        else {
+            $('.selectedprojects').removeAttr("checked");
+            $selectall.removeAttr("checked");
+            $('#selecttype').val('disselectall');
+        }
+
+    });
+
+   
+}
+
+//callist member 下拉筛选
+function onMemberSelected() {
     $('#memberselect').change(function () {
         var $this = $(this);
         var gridid = $this.attr('gridid')

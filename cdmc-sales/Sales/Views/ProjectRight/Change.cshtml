@@ -7,7 +7,7 @@
         @Html.LabelFor(model => model.ProjectID)
     </div>
     <div class="editor-field">
-        @Html.DropDownListFor(model => model.ProjectID, new SelectList(CH.GetAllData<Project>(p=>p.IsActived==true),"ID","Name"),"-请选择-")
+        @Html.DropDownListFor(model => model.ProjectID, new SelectList(CH.GetAllData<Project>(p => p.IsActived == true), "ID", "Name"), "-请选择-")
         @Html.ValidationMessageFor(model => model.ProjectID)
     </div>
     <div class="editor-label">
@@ -18,22 +18,26 @@
         @Html.ValidationMessageFor(model => model.Name)
     </div>
 </fieldset>
-<fieldset>
-<legend>项目权限</legend>
+
+
 <div>
-<ul>
+
 @{
     var rights = CH.GetAllData<AccessRight>();
-    List<int> checkedright = new List<int>(); 
-    if(Model!=null)
+    List<int> checkedright = new List<int>();
+
+    if (Model != null)
     {
         checkedright = Model.AccessRights.Select(s => s.ID).ToList();
     }
-    foreach(var r in rights )
+    <fieldset>
+   <legend>项目查看权限</legend>
+    <ul>
+    @foreach (var r in rights.FindAll(r=>r.Name.Contains("Review")))
     {
         <li  style="width:30%; float:left;"><span><input type="checkbox"
         
-        @if (checkedright.Contains(r.ID))
+        @if (checkedright.Contains(r.ID) || Model == null)
         {
             <text> checked="checked" </text>
         }
@@ -41,5 +45,24 @@
     }
 }
 </ul>
+    </fieldset>
+    
+    <fieldset>
+       <legend>项目编辑权限</legend>
+    <ul>
+    @foreach (var r in rights.FindAll(r=>r.Name.Contains("Edit")))
+    {
+        <li  style="width:30%; float:left;"><span><input type="checkbox"
+        
+        @if (checkedright.Contains(r.ID) )
+        {
+            <text> checked="checked" </text>
+        }
+         name="rights" value=@r.ID />  @r.Name</span></li>
+    }
+}
+</ul>
+    </fieldset>
+}
 </div>
-</fieldset>
+

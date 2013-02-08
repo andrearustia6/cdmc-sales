@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.ComponentModel.DataAnnotations;
+using Entity;
 
 namespace Model
 {
@@ -38,6 +39,76 @@ namespace Model
         public int? ProjectID { get; set; }
     }
 
+    public class AjaxViewLeadInProject
+    {
+        public Lead Lead { get; set; }
+        public int ProjectID { get; set; }
+    }
+
+    public class AjaxViewProject
+    {
+        public int ProjectID { get; set; }
+        [Display(Name = "项目名称")]
+        public string ProjectName { get; set; }
+        [Display(Name = "项目编号")]
+        public string ProjectCode { get; set; }
+        [Display(Name = "开始时间")]
+        public string StartDayString { get { return StartDay.ToShortDateString(); } }
+        [Display(Name = "结束时间")]
+        public string EndDayString { get { return EndDay.ToShortDateString(); } }
+
+
+        public DateTime StartDay { get; set; }
+        public DateTime EndDay { get; set; }
+
+
+        [Display(Name="剩余工作日")]
+        public TimeSpan LeftWorkingDays { get; set; }
+        [Display(Name = "版块负责人")]
+        public string Manager { get; set; }
+
+        [Display(Name = "团队负责人")]
+        public string Lead { get; set; }
+
+        [Display(Name = "项目销售目标")]
+        public decimal ProjectTarget { get; set; }
+
+        [Display(Name = "项目总DealIn")]
+        public decimal? TotalDealIn { get; set; }
+
+        [Display(Name = "项目总CheckIn")]
+        public decimal? TotalCheckIn { get; set; }
+
+        [Display(Name = "项目总公司数")]
+        public int TotalCompanysCount { get; set; }
+
+
+
+        [Display(Name = "项目总Lead数")]
+        public int TotalLeadsCount { get; set; }
+
+        [Display(Name = "项目总Call数")]
+        public int TotalCalls { get; set; }
+
+        [Display(Name = "项目总出单数")]
+        public int TotalDealCounts { get; set; }
+
+        [Display(Name = "项目完成度")]
+        public double ComplatePercetage {
+            get {
+                if (ProjectTarget == 0 || TotalCheckIn==null)
+                    return 0;
+                else
+                {
+                    var p = (double)(TotalCheckIn*100/ProjectTarget);
+                     var v = Math.Round(p,2);
+                     return v;
+                }
+                   
+            } 
+        }
+
+    }
     public class AjaxViewDeal 
     {
         public int ID { get; set; }

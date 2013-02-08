@@ -2,69 +2,13 @@
 @using Utl
 @using BLL
 @{
-    var selectedlist = ViewBag.SelectedProjects as List<int>;
-    var startdate = ViewBag.StartDate as DateTime?;
-    var enddate = ViewBag.EndDate as DateTime?;
-    var showduration = ViewBag.ShowDuration as string;
-
-    List<Project> ps;
-    var accessright = ViewBag.Right as string;
-    if (!string.IsNullOrEmpty(accessright))
-    {
-        ps = CRM_Logical.GetUserProjectRight(accessright).Select(s=>s.Project).ToList();
-    }
-    else
-    {
-        ps = CRM_Logical.GetUserInvolveProject();
-    }
-    
-    
-      if(ps != null)
-      {
         using (Html.BeginForm())
         {
-       <fieldset>
-       <legend>筛选条件</legend>
-       <div  >
-       
-      <ul style="list-style-type:none; float:inherit; width:100%; overflow:auto;">
-      @foreach (var p in ps)
-      {
-      <li style=" float:left; width:23%; margin:2px;">
-       <span style=" line-height:11px; height:11px;  vertical-align:middle"> <input type="checkbox"  name="selectedprojects" 
-         @{
-          if (selectedlist != null && selectedlist.Any(sid => sid == p.ID))
-          {
-             
-              <text>checked="checked" </text>
-          }
-               
-           }
-         value=@p.ID />    @p.Name_CH</span>
-      </li>
-      }
-      </ul>
-       </div>
-  
-     @if (showduration!="false")
-     {
-       <div style="margin: 10px">
-        <b><span>
-            <label> 开始时间：</label>
-            @Html.Telerik().DateTimePicker().Name("StartDate")
-            <span>~ </span>
-            <label>
-                结束时间：</label>
-            @Html.Telerik().DateTimePicker().Name("EndDate")
-            <span>  </span>
-           
-        </span></b>
-    </div>
-         }
-    <center>
+          @Html.Partial("multipleprojectselectnode")
+
+     <center>
      <input type="submit" value="提交" />
      </center>
-     </fieldset>
         }
 }
-}
+
