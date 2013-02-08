@@ -8,7 +8,13 @@
     var startdate = ViewBag.StartDate as DateTime?;
     var enddate = ViewBag.EndDate as DateTime?;
     var types = CH.GetAllData<LeadCallType>();
-      var ps = CRM_Logical.GetUserProjectRight("CallsReview").Select(s=>s.Project);
+    var selecttype = ViewBag.SelectType as string;
+    bool selectall = true;
+    if (selecttype == "disselectall")
+    {
+        selectall = false;
+    }
+      var ps = CRM_Logical.GetUserProjectRight(ReviewRight.CallsReview.ToString());
       if(ps != null)
       {
         using (Html.BeginForm())
@@ -18,13 +24,17 @@
   <fieldset>
       
        <fieldset><legend>项目选择</legend>
+       <div>
+        @Html.RadioButton("selectall", "", selectall) 全部选择 @Html.RadioButton("disselectall", "", !selectall)全部取消
+        @Html.Hidden("selecttype")
+       </div>
       <ul style="list-style-type:none; float:inherit; width:100%; overflow:auto;">
       @foreach (var p in ps)
       {
       <li style=" float:left; width:23%; margin:2px;">
        <span style=" line-height:11px; height:11px;  vertical-align:middle"> <input type="checkbox"  
        @{
-          if (selectedlist != null && selectedlist.Any(sid=>sid==p.ID))
+          if (selectall == true || (selectedlist != null && selectedlist.Any(sid => sid == p.ID)))
           {
               <text>checked="checked" </text>
           }
@@ -103,4 +113,7 @@
      </fieldset>
         }
 }
+}
+
+@{ Html.Telerik().ScriptRegistrar().OnDocumentReady(@<text> onSelectOrDiselect(); </text>);
 }

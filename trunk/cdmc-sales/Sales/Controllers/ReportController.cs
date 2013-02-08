@@ -56,11 +56,7 @@ namespace Sales.Controllers
     [LeaderRequired]
     public class ReportController : SalesReportController
     {
-        //protected override void Dispose(bool disposing)
-        //{
-        //    CH.DB.Dispose();
-        //    base.Dispose(disposing);
-        //}
+        
 
 
         public ActionResult MemberProgress(List<int> selectedprojects, bool? isActivated, DateTime? startdate, DateTime? enddate)
@@ -77,12 +73,14 @@ namespace Sales.Controllers
         /// <param name="startdate"></param>
         /// <param name="enddate"></param>
         /// <returns></returns>
-        public ActionResult ProjectProgress(List<int> selectedprojects, List<string> selectedangels, bool? isActivated, int? month, int? year)
+        public ActionResult ProjectProgress(List<int> selectedprojects, List<string> selectedangels, int? month, int? year,string selecttype)
         {
             ViewBag.Month = month;
             ViewBag.Year = year;
             ViewBag.SelectedProjects = selectedprojects;
             ViewBag.SelectedAngels = selectedangels;
+            ViewBag.SelectType = selecttype;
+            
             var list = Report.GetProjectProgressList(selectedprojects, month==null?DateTime.Now.Month:month.Value, year==null?DateTime.Now.Year:year.Value);
             return View(list);
         }
@@ -174,10 +172,11 @@ namespace Sales.Controllers
         /// <param name="startdate"></param>
         /// <param name="enddate"></param>
         /// <returns></returns>
-        public ActionResult MemberLeadCalls(List<int> selectedprojects, List<int> selectedcallTypes, bool? isActivated, DateTime? startdate, DateTime? enddate)
+        public ActionResult MemberLeadCalls(List<int> selectedprojects, List<int> selectedcallTypes, bool? isActivated, DateTime? startdate, DateTime? enddate,string selecttype)
         {
             ViewBag.SelectedCallTypes = selectedcallTypes;
             ViewBag.SelectedProjects = selectedprojects;
+            ViewBag.SelectType = selecttype;
             //ViewBag.SelectedProgress = selectedprogress;
             ViewBag.StartDate = startdate;
             ViewBag.EndDate = enddate;
@@ -247,18 +246,44 @@ namespace Sales.Controllers
 
 
 
-        public ActionResult Progress(DateTime? startdate, DateTime? enddate)
+        public ActionResult Progress()
         {
-            ViewBag.StartDate = startdate;
-            ViewBag.EndDate = enddate;
-            var ps = this.GetProjectByAccount();
-            var data = new List<ViewProjectProgressAmount>();
-            ps.ForEach(p =>
-            {
-                var d = p.GetProjectProgress(startdate, enddate);
-                data.Add(d);
-            });
-            return View(data);
+          return View();
+        }
+
+        [GridAction]
+        public ActionResult _Progress()
+        {
+            var deals = from d in CH.DB.Deals where d.Project.IsActived == true && d.Abandoned==false select d;
+            var targets = from t in CH.DB.TargetOfMonths where t.Project.IsActived == true select t;
+            var calls = from c in CH.DB.LeadCalls where c.CompanyRelationship.Project.IsActived == true select c;
+            var companys = from c in CH.DB.CompanyRelationships where c.Project.IsActived == true select c;
+            var leads = from l in CH.DB.Leads
+                        from c in companys
+                        where c.Company.Leads != null && c.Company.Leads.Select(s=>s.ID).Contains(l.ID)
+                        select new AjaxViewLeadInProject { Lead = l, ProjectID = c.ProjectID.Value };
+            var leadlist = leads.ToList();
+
+            var ps = from p in CH.DB.Projects
+                     where p.IsActived == true
+                     select new AjaxViewProject
+                     {
+                         ProjectCode = p.ProjectCode,
+                         StartDay = p.StartDate,
+                         EndDay = p.EndDate,
+                         ProjectName = p.Name_CH,
+                         Manager = p.Manager,
+                         Lead = p.TeamLeader,
+                         ProjectTarget = p.Target,
+                         TotalCalls = calls.Where(c => c.ProjectID == p.ID).Count(),
+                         TotalCheckIn = deals.Where(d => d.ProjectID == p.ID ).Sum(s => s.Income),
+                         TotalDealIn = deals.Where(d => d.ProjectID == p.ID ).Sum(s => s.Payment),
+                         TotalDealCounts = deals.Where(d => d.ProjectID == p.ID).Count(),
+                         TotalCompanysCount = companys.Where(c => c.ProjectID == p.ID).Count(),
+                         TotalLeadsCount = leads.Where(l=>l.ProjectID == p.ID).Count(),
+                         ProjectID = p.ID
+                     };
+            return View(new GridModel<AjaxViewProject> { Data = ps.ToList() });
         }
     }
 

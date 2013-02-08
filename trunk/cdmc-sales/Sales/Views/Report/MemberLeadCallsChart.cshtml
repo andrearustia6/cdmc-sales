@@ -2,6 +2,7 @@
     ViewBag.Title = "销售已打Lead数按公司统计";
 }
 @using Model
+@using Utl
 @model List<ViewCallListChart>
 @Html.Partial("contenttitle", "已打Lead数/公司")
 @using BLL
@@ -13,7 +14,8 @@
         @{
 
   
-    var ps = CRM_Logical.GetUserInvolveProject();
+    var ps = CRM_Logical.GetUserProjectRight(ReviewRight.CallAnalysisReview.ToString());
+    
     var selected = ps.Count == 0 ? 0 : ps.FirstOrDefault().ID;
         @Html.DropDownList("ProjectID", new SelectList(ps, "ID", "ProjectCode", selected), "-请选择-")
 }

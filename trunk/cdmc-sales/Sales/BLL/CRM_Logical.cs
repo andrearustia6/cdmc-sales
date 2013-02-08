@@ -88,16 +88,19 @@ namespace BLL
 
         #endregion 
 
-        public static List<ProjectRight> GetUserProjectRight(string funtionname)
+        public static List<Project> GetUserProjectRight(string funtionname)
         {
             var ps = from p in CH.DB.ProjectRights where p.Project.IsActived == true && p.AccessRights.Select(s => s.Name).Contains(funtionname) select p;
 
             var list = ps.ToList();
 
 
-             list = list.FindAll(f => IsContainLoginUser(f.Name));
+             var plist = list.FindAll(f => IsContainLoginUser(f.Name)).Select(s=>s.Project).ToList();
 
-             return list;
+             if (plist.Count == 0)
+                 plist = GetUserInvolveProject();
+
+             return plist;
         }
 
         static bool IsContainLoginUser(string namelist)

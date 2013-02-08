@@ -36,6 +36,7 @@ namespace Entity
         public virtual Project Project { get; set; }
         [Display(Name = "所属项目")]
         public int? ProjectID { get; set; }
+        [Display(Name = "用户姓名")]
         public string Name { get; set; }
         public string AccessRightString 
         { get

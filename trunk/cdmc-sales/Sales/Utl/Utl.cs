@@ -18,7 +18,13 @@ using System.Data;
 using Model;
 namespace Utl
 {
+    /// <summary>
+    /// 权限标记
+    /// </summary>
+    public enum ReviewRight { ProjectInfoReview, CallsReview, DealsReview, CallAnalysisReview, ProgressReview, EvaluationsReview, TargetsView, AvailableCompaniesReview }
 
+    public enum EditRight { ProjectInfoEdit, MembersEdit, DealsEdit,  EvaluationsEdit, TargetsEdit, AvailableCompaniesEdit }
+   
     public class LeadCallDistinct : IEqualityComparer<LeadCall>
     {
         public bool Equals(LeadCall x, LeadCall y)

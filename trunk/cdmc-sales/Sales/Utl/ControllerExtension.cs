@@ -159,9 +159,9 @@ namespace System.Web.Mvc
 
         public static List<int> TryGetSelectedProjectIDs(this Controller item, List<int> selectedprejcts)
         {
-            if (selectedprejcts == null || selectedprejcts.Count==0)
+            if (selectedprejcts == null)
             {
-                return BLL.CRM_Logical.GetUserInvolveProject().Select(p => p.ID).ToList();
+                return new List<int>();
             }
             else
             {
