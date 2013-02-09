@@ -25,7 +25,7 @@ namespace Utl
 
     public enum EditRight { ProjectInfoEdit, MembersEdit, DealsEdit,  EvaluationsEdit, TargetsEdit, AvailableCompaniesEdit }
    
-    public class LeadCallDistinct : IEqualityComparer<LeadCall>
+    public class LeadCallLeadDistinct : IEqualityComparer<LeadCall>
     {
         public bool Equals(LeadCall x, LeadCall y)
         {
@@ -36,6 +36,32 @@ namespace Utl
         }
 
         public int GetHashCode(LeadCall obj) { return 0; }
+    }
+
+    public class LeadCallCompanyDistinct : IEqualityComparer<LeadCall>
+    {
+        public bool Equals(LeadCall x, LeadCall y)
+        {
+            if ((x.CompanyRelationshipID == y.CompanyRelationshipID))
+            { return true; }
+            else
+            { return false; }
+        }
+
+        public int GetHashCode(LeadCall obj) { return 0; }
+    }
+
+    public class MemberDistinct : IEqualityComparer<Member>
+    {
+        public bool Equals(Member x, Member y)
+        {
+            if ((x.Name == y.Name))
+            { return true; }
+            else
+            { return false; }
+        }
+
+        public int GetHashCode(Member obj) { return 0; }
     }
 
     public static class AppConfig
