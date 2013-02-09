@@ -244,7 +244,7 @@ namespace BLL
 
         public static ViewMemberPerformance GetSingleMemberPerformance(ViewPerformanceData records, string m)
         {
-            var dcls = records.LeadCalls.FindAll(c => c.Member.Name == m).Distinct(new LeadCallDistinct());
+            var dcls = records.LeadCalls.FindAll(c => c.Member.Name == m).Distinct(new LeadCallLeadDistinct());
             var calllists = new List<LeadCall>();
             foreach (var c in dcls)
             {

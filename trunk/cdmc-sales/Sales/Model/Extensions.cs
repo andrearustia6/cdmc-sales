@@ -225,7 +225,7 @@ namespace Entity
                             && CH.DB.LeadCalls.FirstOrDefault(f=>f.CallDate>l.CallBackDate && f.LeadID==l.LeadID&&f.MemberID == item.ID)==null
                             select l;
             
-            return leadcalls.OrderByDescending(o => o.CallBackDate).ToList().Distinct(new LeadCallDistinct()).ToList();
+            return leadcalls.OrderByDescending(o => o.CallBackDate).ToList().Distinct(new LeadCallLeadDistinct()).ToList();
         }
         /// <summary>
         /// 取得带拨打电话列表

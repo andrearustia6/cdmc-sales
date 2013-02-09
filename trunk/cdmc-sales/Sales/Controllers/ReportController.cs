@@ -73,17 +73,17 @@ namespace Sales.Controllers
         /// <param name="startdate"></param>
         /// <param name="enddate"></param>
         /// <returns></returns>
-        public ActionResult ProjectProgress(List<int> selectedprojects, List<string> selectedangels, int? month, int? year,string selecttype)
-        {
-            ViewBag.Month = month;
-            ViewBag.Year = year;
-            ViewBag.SelectedProjects = selectedprojects;
-            ViewBag.SelectedAngels = selectedangels;
-            ViewBag.SelectType = selecttype;
+        //public ActionResult ProjectProgress(List<int> selectedprojects, List<string> selectedangels, int? month, int? year,string selecttype)
+        //{
+        //    ViewBag.Month = month;
+        //    ViewBag.Year = year;
+        //    ViewBag.SelectedProjects = selectedprojects;
+        //    ViewBag.SelectedAngels = selectedangels;
+        //    ViewBag.SelectType = selecttype;
             
-            var list = Report.GetProjectProgressList(selectedprojects, month==null?DateTime.Now.Month:month.Value, year==null?DateTime.Now.Year:year.Value);
-            return View(list);
-        }
+        //    var list = Report.GetProjectProgressList(selectedprojects, month==null?DateTime.Now.Month:month.Value, year==null?DateTime.Now.Year:year.Value);
+        //    return View(list);
+        //}
 
         /// <summary>
         /// call list 统计
@@ -243,8 +243,147 @@ namespace Sales.Controllers
         }
 
 
+        public ActionResult ProjectProgress( int? month, int? year, string selecttype)
+        {
+            ViewBag.Month = month;
+            ViewBag.Year = year;
+
+            return View();
+        }
+
+        [GridAction]
+        public ActionResult _MonthProgress()
+        {
+            var  year = DateTime.Now.Year;
+
+            var deals = from d in CH.DB.Deals where d.Project.IsActived == true && d.Abandoned == false select d;
+            var targets = from t in CH.DB.TargetOfMonths where t.Project.IsActived == true select t;
+            var calls = from c in CH.DB.LeadCalls where c.CompanyRelationship.Project.IsActived == true select c;
+            //var companys = from c in CH.DB.CompanyRelationships where c.Project.IsActived == true select c;
+            var months = new List<int>() { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
+              var ps = from p in CH.DB.Projects where p.IsActived==true select p;
+            var list = from i in months
+                       select new AjaxMonthTotalProgressStatistics()
+                       {
+                           Month = i,
+                           Year = year,
+                           LeadCalls = calls,
+                           Deals = deals,
+                           Projects = ps,
+                           TotalDealinTargets = targets.Where(t=>t.StartDate.Month==i).Sum(s=>(decimal?)s.Deal),
+                           TotalCheckinTargets = targets.Where(t => t.StartDate.Month == i).Sum(s => (decimal?)s.CheckIn)
+                       };
+
+            return View(new GridModel<AjaxMonthTotalProgressStatistics> { Data = list.ToList() });
+        }
+
+        [GridAction]
+        public ActionResult _ProjectWeekProgress(string startdate)
+        {
+            if(string.IsNullOrEmpty(startdate))
+                return View(new GridModel<AjaxWeekProjectProgressStatistics> { Data = new List<AjaxWeekProjectProgressStatistics>() });
+
+            DateTime startDate = DateTime.Parse(startdate);
+            DateTime endDate = startDate.AddDays(7);
+
+            var year = DateTime.Now.Year;
+            var deals = from d in CH.DB.Deals where d.Project.IsActived == true && d.Abandoned == false select d;
+            var targets = from t in CH.DB.TargetOfWeeks where t.Project.IsActived == true select t;
+            var calls = from c in CH.DB.LeadCalls where c.CompanyRelationship.Project.IsActived == true select c;
+
+            var ps = from p in CH.DB.Projects where p.IsActived == true select p;
+            var pslist = ps.ToList();
+            var list = from p in pslist
+                       select new AjaxWeekProjectProgressStatistics()
+                       {
+                           Project = p,
+                           StartDate = startDate,
+                           EndDate = endDate,
+                           Year = year,
+                           LeadCalls = calls,
+                           Deals = deals,
+                           TotalDealinTargets = targets.Where(t => t.StartDate == startDate && t.ProjectID == p.ID).Sum(s => (decimal?)s.Deal),
+                           TotalCheckinTargets = targets.Where(t => t.StartDate == startDate && t.ProjectID == p.ID).Sum(s => (decimal?)s.CheckIn)
+                       };
+            var data = list.ToList();
+
+            return View(new GridModel<AjaxWeekProjectProgressStatistics> { Data = data });
+
+        }
+
+        [GridAction]
+        public ActionResult _ProjectMonthProgress(string month)
+        {
+            var year = DateTime.Now.Year;
+
+            int monthid = DateTime.Now.Month;
+            if (month != null)
+                Int32.TryParse(month, out monthid);
+
+            var deals = from d in CH.DB.Deals where d.Project.IsActived == true && d.Abandoned == false  select d;
+            var targets = from t in CH.DB.TargetOfMonths where t.Project.IsActived == true  && t.StartDate.Month == monthid select t;
+            var calls = from c in CH.DB.LeadCalls where c.CompanyRelationship.Project.IsActived == true select c;
+            //var companys = from c in CH.DB.CompanyRelationships where c.Project.IsActived == true select c;
+        
+            var ps = from p in CH.DB.Projects where p.IsActived == true select p;
+            var pslist = ps.ToList();
+            var list = from p in pslist
+                       select new AjaxMonthProjectProgressStatistics()
+                       {
+                           Project = p,
+                           Month = monthid,
+                           Year = year,
+                           LeadCalls = calls,
+                           Deals = deals,
+                           TotalDealinTargets = targets.Where(t => t.StartDate.Month == monthid && t.ProjectID == p.ID).Sum(s => (decimal?)s.Deal),
+                           TotalCheckinTargets = targets.Where(t => t.StartDate.Month == monthid && t.ProjectID == p.ID).Sum(s => (decimal?)s.CheckIn)
+                       };
+            var data = list.ToList();
+            return View(new GridModel<AjaxMonthProjectProgressStatistics> { Data = data });
+
+        }
+
+        [GridAction]
+        public ActionResult _WeekProgress(string month)
+        {
+            int monthid = DateTime.Now.Month;
+            if (month != null)
+                Int32.TryParse(month, out monthid);
+
+            DateTime startdate = new DateTime(DateTime.Now.Year, monthid, 1);
+
+            while (startdate.DayOfWeek != DayOfWeek.Monday)
+            {
+                startdate = startdate.AddDays(-1);
+            }
+
+            var weeks = new List<AjaxWeekTotalProgressStatistics>();
+            var enddate = startdate.AddDays(7);
+
+            var year = DateTime.Now.Year;
+            var deals = from d in CH.DB.Deals where d.Project.IsActived == true && d.Abandoned == false select d;
+            var targets = from t in CH.DB.TargetOfWeeks where t.Project.IsActived == true select t;
+            var calls = from c in CH.DB.LeadCalls where c.CompanyRelationship.Project.IsActived == true select c;
+
+            while (enddate.Month <= monthid)
+            {
+                var week = new AjaxWeekTotalProgressStatistics() { StartDate = startdate, EndDate = enddate };
 
 
+                week.TotalCheckinTargets = targets.Where(t => t.StartDate == startdate).Sum(s => (decimal?)s.CheckIn);
+                week.TotalDealinTargets = targets.Where(t => t.StartDate == startdate).Sum(s => (decimal?)s.Deal);
+                week.Deals = deals;
+                week.LeadCalls = calls;
+
+                weeks.Add(week);
+
+                startdate = startdate.AddDays(7);
+                enddate = enddate.AddDays(7);
+            }
+
+            return View(new GridModel<AjaxWeekTotalProgressStatistics> { Data = weeks.ToList() });
+
+        }
 
         public ActionResult Progress()
         {
@@ -258,16 +397,12 @@ namespace Sales.Controllers
             var targets = from t in CH.DB.TargetOfMonths where t.Project.IsActived == true select t;
             var calls = from c in CH.DB.LeadCalls where c.CompanyRelationship.Project.IsActived == true select c;
             var companys = from c in CH.DB.CompanyRelationships where c.Project.IsActived == true select c;
-            var leads = from l in CH.DB.Leads
-                        from c in companys
-                        where c.Company.Leads != null && c.Company.Leads.Select(s=>s.ID).Contains(l.ID)
-                        select new AjaxViewLeadInProject { Lead = l, ProjectID = c.ProjectID.Value };
-            var leadlist = leads.ToList();
 
             var ps = from p in CH.DB.Projects
                      where p.IsActived == true
-                     select new AjaxViewProject
+                     select new AjaxViewProject()
                      {
+                         deals = deals,
                          ProjectCode = p.ProjectCode,
                          StartDay = p.StartDate,
                          EndDay = p.EndDate,
@@ -280,7 +415,6 @@ namespace Sales.Controllers
                          TotalDealIn = deals.Where(d => d.ProjectID == p.ID ).Sum(s => s.Payment),
                          TotalDealCounts = deals.Where(d => d.ProjectID == p.ID).Count(),
                          TotalCompanysCount = companys.Where(c => c.ProjectID == p.ID).Count(),
-                         TotalLeadsCount = leads.Where(l=>l.ProjectID == p.ID).Count(),
                          ProjectID = p.ID
                      };
             return View(new GridModel<AjaxViewProject> { Data = ps.ToList() });

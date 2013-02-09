@@ -269,6 +269,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Model\AccountModels.cs" />
+    <Compile Include="Model\AjaxProgress.cs" />
     <Compile Include="Model\AjaxViewModel.cs" />
     <Compile Include="Model\Extensions.cs" />
     <Compile Include="Model\ViewModels.cs" />

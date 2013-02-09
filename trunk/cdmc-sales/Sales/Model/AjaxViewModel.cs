@@ -41,12 +41,21 @@ namespace Model
 
     public class AjaxViewLeadInProject
     {
+      
         public Lead Lead { get; set; }
         public int ProjectID { get; set; }
     }
 
     public class AjaxViewProject
     {
+       
+
+        // public AjaxViewProject(IQueryable<Deal> deals)
+        //{
+        //    // TODO: Complete member initialization
+        //    this.deals = deals;
+        //}
+        public IQueryable<Deal> deals;
         public int ProjectID { get; set; }
         [Display(Name = "项目名称")]
         public string ProjectName { get; set; }
@@ -109,6 +118,7 @@ namespace Model
         }
 
     }
+
     public class AjaxViewDeal 
     {
         public int ID { get; set; }
@@ -172,6 +182,7 @@ namespace Model
         [Display(Name = "出单描述")]
         public string PaymentDetail { get; set; }
     }
+
     public class AjaxViewPercentage
     {
         [Display(Name = "CheckIn目标")]

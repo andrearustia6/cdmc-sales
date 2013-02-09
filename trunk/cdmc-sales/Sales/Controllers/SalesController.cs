@@ -1073,7 +1073,7 @@ namespace Sales.Controllers
         {
             var account = Employee.CurrentUserName;
             var calls = CH.GetAllData<LeadCall>(l => l.ProjectID == projectid && account == l.Member.Name);
-            var contectleads = calls.Distinct(new LeadCallDistinct());
+            var contectleads = calls.Distinct(new LeadCallLeadDistinct());
             var ls = new List<ViewContactedLead>();
             foreach (var cl in contectleads)
             {
