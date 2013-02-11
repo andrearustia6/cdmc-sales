@@ -19,5 +19,7 @@ namespace Sales
         public DbSet<ProjectRight> ProjectRight { get; set; }
 
         public DbSet<Project> Project { get; set; }
+
+        public DbSet<AssignPerformanceScore> AssignPerformanceScores { get; set; }
     }
 }

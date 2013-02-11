@@ -260,8 +260,14 @@ namespace Sales.Controllers
             var targets = from t in CH.DB.TargetOfMonths where t.Project.IsActived == true select t;
             var calls = from c in CH.DB.LeadCalls where c.CompanyRelationship.Project.IsActived == true select c;
             //var companys = from c in CH.DB.CompanyRelationships where c.Project.IsActived == true select c;
-            var months = new List<int>() { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
-              var ps = from p in CH.DB.Projects where p.IsActived==true select p;
+            var months = new List<int>();
+
+            while (months.Count < DateTime.Now.Month)
+            {
+                months.Add(months.Count()+1);
+            }
+
+            var ps = from p in CH.DB.Projects where p.IsActived==true select p;
             var list = from i in months
                        select new AjaxMonthTotalProgressStatistics()
                        {

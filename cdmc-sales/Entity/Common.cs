@@ -6,6 +6,13 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Entity
 {
+    public class AssignPerformanceScore:EntityBase{
+        public int Score { get; set; }
+        public string TargetName { get; set; }
+        public string Assigner { get; set; }
+        public  int Month{get;set;}
+    }
+
     /// <summary>
     /// 行业类型
     /// </summary>
