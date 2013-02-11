@@ -1,0 +1,23 @@
+﻿@using Entity
+@model List<AssignPerformanceScore>
+@Html.Partial("contenttitle", "打分")           
+@(Html.Telerik().Grid<AssignPerformanceScore>(Model).Name("AssignPerformanceScore").ToolBar(commands => commands.Custom().Text("打分").Action("Create", "AssignPerformanceScore"))
+                .DataKeys(keys =>
+                {
+                    keys.Add(s => s.ID);
+                })
+                .Columns(c =>
+                {
+                    c.Bound(item => item.TargetName).Width(100);
+                    c.Bound(item => item.Score).Width(100);
+                    c.Bound(item => item.Month).Width(100);
+                    c.Bound(item => item.Assigner).Width(100);
+                    c.Bound(item => item.Description );
+                })
+                .ClientRowTemplate(grid => "<div class='employee-details'>"  + grid.EditButton(null) + grid.DeleteButton(null) + "</div>")
+                .Resizable(resizing => resizing.Columns(true))
+                .Filterable().Sortable().Groupable()
+                .Pageable(p => p.PageSize(20))
+                .Scrollable(scrolling => scrolling.Height(350))
+
+)

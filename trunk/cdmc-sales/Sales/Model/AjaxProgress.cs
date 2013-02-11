@@ -9,25 +9,14 @@ using Utl;
 
 namespace Model
 {
-    //时间段的ajax view
-    public class AjaxProgressStatistics
+    public class AjaxProgress : AjaxStatistics
     {
-        public virtual IQueryable<LeadCall> LeadCalls { set { _leadCalls = value; } }
-         IQueryable<LeadCall> _leadCalls { get; set; }
-        [Display(Name = "填写LeadCall数量")]
-        public int LeadCallsCount
-        {
-            get
-            {
-                if (_leadCalls == null) return 0;
-                return _leadCalls.Where(l => l.CallDate < EndDate && l.CallDate >= StartDate).Count();
-                }
-        }
         [Display(Name = "打过Lead数量")]
         public int CallingLeadCount
         {
             get
             {
+             
                 if (_leadCalls == null) return 0;
                 var c = _leadCalls.Where(l => l.CallDate < EndDate && l.CallDate >= StartDate).ToList().Distinct(new LeadCallLeadDistinct()).Count();
                 return c;
@@ -44,91 +33,9 @@ namespace Model
                 return c;
             }
         }
-         IQueryable<Deal> _deals { get; set; }
-         public virtual IQueryable<Deal> Deals { set { _deals = value; } }
-        public IQueryable<CompanyRelationship> CompanyRelationships { get; set; }
-
-        public decimal? TotalDealinTargets { get; set; }
-
-        public decimal? TotalCheckinTargets { get; set; }
-        public decimal? TotalCheckIn
-        {
-            get
-            {
-                if (_deals == null) return 0;
-                return _deals.Where(d => d.Abandoned == false && d.Project.IsActived == true && d.ActualPaymentDate < EndDate && d.ActualPaymentDate >= StartDate).Sum(s => (decimal?)s.Income);
-            }
-        }
-        public decimal? TotalDealIn
-        {
-            get
-            {
-                if (_deals == null) return 0;
-                return _deals.Where(d => d.Abandoned == false && d.Project.IsActived == true && d.SignDate < EndDate && d.SignDate >= StartDate).Sum(s => (decimal?)s.Payment);
-            }
-        }
-
-        public int TotalDealsCount
-        {
-            get
-            {
-                if (_deals == null) return 0;
-                return _deals.Where(d => d.Abandoned == false && d.Project.IsActived == true && d.SignDate < EndDate && d.SignDate >= StartDate).Count();
-            }
-        }
-        public decimal? TotalCompanysCount
-        {
-            get
-            {
-            if (CompanyRelationships == null) return 0;
-            return CompanyRelationships.Count();
-        } }
-
-        [Display(Name = "DealIn完成度")]
-        public double DealInComplatePercetage
-        {
-            get
-            {
-                if (TotalDealinTargets == 0 || TotalDealIn == null)
-                    return 0;
-                else
-                {
-                    var p = (double)(TotalDealIn * 100 / TotalDealinTargets);
-                    var v = Math.Round(p, 2);
-                    return v;
-                }
-
-            }
-        }
-
-        [Display(Name = "CheckIn完成度")]
-        public double CheckInComplatePercetage
-        {
-            get
-            {
-                if (TotalCheckinTargets == 0 || TotalCheckIn == null)
-                    return 0;
-                else
-                {
-                    var p = (double)(TotalCheckIn * 100 / TotalCheckinTargets);
-                    var v = Math.Round(p, 2);
-                    return v;
-                }
-
-            }
-        }
-
-  
-        [Display(Name = "开始时间")]
-        public string StartDayString { get { return StartDate.ToShortDateString(); } }
-        [Display(Name = "结束时间")]
-        public string EndDayString { get { return EndDate.ToShortDateString(); } }
-        public virtual DateTime StartDate { get; set; }
-        public virtual DateTime EndDate { get; set; }
-
     }
 
-    public class AjaxMonthTotalProgressStatistics : AjaxProgressStatistics
+    public class AjaxMonthTotalProgressStatistics : AjaxProgress
     {
         [Display(Name = "月份")]
         public int Month { get; set; }
@@ -176,7 +83,7 @@ namespace Model
         }
 
 
-         [Display(Name = "月个人平均DealIn")]
+         [Display(Name = "人平均DealIn")]
         public decimal PerMemberDealIn
         {
             get
@@ -185,7 +92,7 @@ namespace Model
                 return   Math.Round(TotalDealIn.Value/MemberCounts,1);
             }
         }
-        [Display(Name = "月个人平均Call数量")]
+        [Display(Name = "人平均Call数量")]
         public double PerMemberCall
         {
             get
@@ -194,7 +101,7 @@ namespace Model
                 return  Math.Round((double)(LeadCallsCount/MemberCounts),1);
             }
         }
-        [Display(Name = "月个人平均Checkin")]
+        [Display(Name = "人平均Checkin")]
         public decimal PerMemberCheckIn
         {
             get
@@ -206,7 +113,7 @@ namespace Model
 
     }
 
-    public class AjaxMonthProjectProgressStatistics : AjaxProgressStatistics
+    public class AjaxMonthProjectProgressStatistics : AjaxProgress
     {
         [Display(Name = "月份")]
         public int Month { get; set; }
@@ -266,7 +173,7 @@ namespace Model
         }
 
 
-        [Display(Name = "月个人平均DealIn")]
+        [Display(Name = "人平均DealIn")]
         public decimal PerMemberDealIn
         {
             get
@@ -275,7 +182,7 @@ namespace Model
                 return Math.Round(TotalDealIn.Value / MemberCounts, 1);
             }
         }
-        [Display(Name = "月个人平均Call数量")]
+        [Display(Name = "人平均Call数量")]
         public double PerMemberCall
         {
             get
@@ -284,7 +191,7 @@ namespace Model
                 return Math.Round((double)(LeadCallsCount / MemberCounts), 1);
             }
         }
-        [Display(Name = "月个人平均Checkin")]
+        [Display(Name = "人平均Checkin")]
         public decimal PerMemberCheckIn
         {
             get
@@ -296,7 +203,7 @@ namespace Model
 
     }
 
-     public class  AjaxWeekProjectProgressStatistics : AjaxProgressStatistics
+    public class AjaxWeekProjectProgressStatistics : AjaxProgress
      {
          [Display(Name = "月份")]
          public int Month { get; set; }
@@ -346,7 +253,7 @@ namespace Model
          }
 
 
-         [Display(Name = "周个人平均DealIn")]
+         [Display(Name = "人平均DealIn")]
          public decimal PerMemberDealIn
          {
              get
@@ -355,7 +262,7 @@ namespace Model
                  return Math.Round(TotalDealIn.Value / MemberCounts, 1);
              }
          }
-         [Display(Name = "周个人平均Call数量")]
+         [Display(Name = "人平均Call数量")]
          public double PerMemberCall
          {
              get
@@ -364,7 +271,7 @@ namespace Model
                  return Math.Round((double)(LeadCallsCount / MemberCounts), 1);
              }
          }
-         [Display(Name = "周个人平均Checkin")]
+         [Display(Name = "人平均Checkin")]
          public decimal PerMemberCheckIn
          {
              get
@@ -374,7 +281,8 @@ namespace Model
              }
          }
      }
-    public class AjaxWeekTotalProgressStatistics : AjaxProgressStatistics
+
+    public class AjaxWeekTotalProgressStatistics : AjaxProgress
     {
         [Display(Name = "月份")]
         public int Month { get; set; }
@@ -412,8 +320,7 @@ namespace Model
             }
         }
 
-
-        [Display(Name = "周个人平均DealIn")]
+        [Display(Name = "人平均DealIn")]
         public decimal PerMemberDealIn
         {
             get
@@ -422,7 +329,8 @@ namespace Model
                 return Math.Round(TotalDealIn.Value / MemberCounts, 1);
             }
         }
-        [Display(Name = "周个人平均Call数量")]
+
+        [Display(Name = "人平均Call数量")]
         public double PerMemberCall
         {
             get
@@ -431,7 +339,8 @@ namespace Model
                 return Math.Round((double)(LeadCallsCount / MemberCounts), 1);
             }
         }
-        [Display(Name = "周个人平均Checkin")]
+
+        [Display(Name = "人平均Checkin")]
         public decimal PerMemberCheckIn
         {
             get
