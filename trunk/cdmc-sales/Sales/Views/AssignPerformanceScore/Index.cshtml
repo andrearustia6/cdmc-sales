@@ -1,23 +1,20 @@
 ﻿@using Entity
-@model List<AssignPerformanceScore>
-@Html.Partial("contenttitle", "打分")           
-@(Html.Telerik().Grid<AssignPerformanceScore>(Model).Name("AssignPerformanceScore").ToolBar(commands => commands.Custom().Text("打分").Action("Create", "AssignPerformanceScore"))
-                .DataKeys(keys =>
-                {
-                    keys.Add(s => s.ID);
-                })
-                .Columns(c =>
-                {
-                    c.Bound(item => item.TargetName).Width(100);
-                    c.Bound(item => item.Score).Width(100);
-                    c.Bound(item => item.Month).Width(100);
-                    c.Bound(item => item.Assigner).Width(100);
-                    c.Bound(item => item.Description );
-                })
-                .ClientRowTemplate(grid => "<div class='employee-details'>"  + grid.EditButton(null) + grid.DeleteButton(null) + "</div>")
-                .Resizable(resizing => resizing.Columns(true))
-                .Filterable().Sortable().Groupable()
-                .Pageable(p => p.PageSize(20))
-                .Scrollable(scrolling => scrolling.Height(350))
 
+@Html.Partial("contenttitle", "打分")           
+@(Html.Telerik().Grid<AssignPerformanceScore>().Name("Grid")
+.DataKeys(keys => { keys.Add(p => p.ID); })
+.ToolBar(commands => commands.Insert().ImageHtmlAttributes(new { style = "margin-left:0" }))
+.DataBinding(dataBinding => { dataBinding.Ajax()
+    .Select("_SelectIndex", "AssignPerformanceScore")
+    .Insert("_InsertAjaxEditing", "AssignPerformanceScore")
+    .Update("_SaveAjaxEditing", "AssignPerformanceScore")
+    .Delete("_DeleteAjaxEditing", "AssignPerformanceScore");
+})
+.Columns(columns => { columns.Bound(p => p.TargetName);
+columns.Bound(p => p.Score); columns.Bound(p => p.Month);
+     columns.Bound(p => p.Assigner); 
+   columns.Command(commands => { commands.Edit(); commands.Delete(); }).Width(180).Title("操作"); })
+   .Editable(editing => editing.Mode( GridEditMode.PopUp))
+   .Pageable(p=>p.Style(GridPagerStyles.Status)
+       .PageOnScroll(true)).Scrollable().Sortable()
 )
