@@ -1,0 +1,52 @@
+@model AssignPerformanceScore
+@using Entity
+@using Utl
+    <fieldset>
+        <legend>@SR.Form</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Score)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownListFor(model => model.Score, new SelectList(new List<int>() { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }), "-ÇëÑ¡Ôñ-")
+            @Html.ValidationMessageFor(model => model.Score)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.TargetName)
+        </div>
+        <div class="editor-field">
+        @{
+            IEnumerable<string> list = new List<string>();
+            if (Employee.CurrentRole.Level > 500)
+            {
+               list= CH.GetAllData<Project>().Select(s => s.Manager).Distinct();
+            }
+            if(Employee.CurrentRole.Level == 500)
+            {
+                list = CH.GetAllData<Project>(p => p.Manager == Employee.CurrentUserName).Select(s => s.TeamLeader).Distinct();
+            }
+            if (Employee.CurrentRole.Level == 500)
+            {
+                list = CH.GetAllData<Project>(p => p.Manager == Employee.CurrentUserName).SelectMany(s => s.Members).Select(s=>s.Name).Distinct();
+            }
+            
+            @Html.DropDownListFor(model => model.TargetName, new SelectList(list), "-ÇëÑ¡Ôñ-")
+            @Html.ValidationMessageFor(model => model.TargetName)
+            }
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Assigner)
+        </div>
+        <div class="editor-field">
+        @{
+            var ass = @Model.Assigner==null? Employee.CurrentUserName:Model.Assigner;
+           <input name="Assigner" value=@ass  />
+            @Html.ValidationMessageFor(model => model.Assigner)
+            }
+        </div>
+
+    </fieldset>
+    @Html.Partial("editcommon", Model)
+

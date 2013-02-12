@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using Entity;
 using Sales;
 using Utl;
+using Telerik.Web.Mvc;
 
 namespace Sales.Controllers
 {
@@ -19,58 +20,50 @@ namespace Sales.Controllers
             base.Dispose(disposing);
         }
 
-        public ViewResult Index()
-        {
-            return View(CH.GetAllData<AssignPerformanceScore>());
-        }
 
-        public ViewResult Details(int id)
-        {
-            return View(CH.GetDataById<AssignPerformanceScore>(id));
-        }
-
-        public ActionResult Create()
+        public ActionResult index()
         {
             return View();
-        }
 
-        [HttpPost]
-        public ActionResult Create(AssignPerformanceScore item)
-        {
-            if (ModelState.IsValid)
-            {
-                CH.Create<AssignPerformanceScore>(item);
-                return RedirectToAction("Index");
-            }
-            return View(item);
         }
-        public ActionResult Edit(int id)
+        [GridAction]
+        public ActionResult _SelectIndex()
         {
-            var data = CH.GetDataById<AssignPerformanceScore>(id);
-            return View(data);
+            return View(new GridModel(CH.GetAllData<AssignPerformanceScore>()));
         }
-
-        [HttpPost]
-        public ActionResult Edit(AssignPerformanceScore item)
+        [AcceptVerbs(HttpVerbs.Post)]
+        [GridAction]
+        public ActionResult _SaveAjaxEditing(int id)
         {
-            if (ModelState.IsValid)
+            var item = CH.GetDataById<AssignPerformanceScore>(id);
+            if (TryUpdateModel(item))
             {
                 CH.Edit<AssignPerformanceScore>(item);
-                return RedirectToAction("Index");
             }
-            return View(item);
+            return View(new GridModel(CH.GetAllData<AssignPerformanceScore>()));
         }
+        [AcceptVerbs(HttpVerbs.Post)]
 
-        public ActionResult Delete(int id)
+        [GridAction]
+        public ActionResult _InsertAjaxEditing()
         {
-           return View(CH.GetDataById<AssignPerformanceScore>(id));
+            var item = new AssignPerformanceScore();
+
+            if (TryUpdateModel(item))
+            {
+                CH.Create<AssignPerformanceScore>(item);
+            }
+            //Rebind the grid       
+            return View(new GridModel(CH.GetAllData<AssignPerformanceScore>()));
         }
 
-        [HttpPost, ActionName("Delete")]
-        public ActionResult DeleteConfirmed(int id)
+        [AcceptVerbs(HttpVerbs.Post)]
+        [GridAction]
+        public ActionResult _DeleteAjaxEditing(int id)
         {
             CH.Delete<AssignPerformanceScore>(id);
-            return RedirectToAction("Index");
+            return View(new GridModel(CH.GetAllData<AssignPerformanceScore>()));
         }
+
     }
 }
