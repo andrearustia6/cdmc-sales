@@ -1,0 +1,22 @@
+﻿@{
+    ViewBag.Title = "员工考核";
+}
+@using Model
+
+  @(Html.Telerik().Grid<AjaxManagerMonthPerformance>().Name("AjaxManagerMonthPerformance").DataKeys(keys =>
+                {
+                    keys.Add(s => s.Name );
+                    keys.Add(s => s.Month );
+                }).Columns(c =>
+                {
+                    c.Bound(item => item.Month);
+                    c.Bound(item => item.ProjectName);
+                    c.Bound(item => item.Score).Aggregate(item => item.Sum());
+                })
+                .DataBinding(d => d.Ajax().Select("_MonthManagerPerformance", "report"))
+                .Selectable().ClientEvents(events => events.OnRowSelect("onManagerRowSelected"))
+                .Resizable(resizing => resizing.Columns(true))
+                    .Pageable(p => p.Style(GridPagerStyles.Status).PageOnScroll(true).PageSize(12)).Sortable()
+                         .Scrollable(s => s.Height(300))
+
+                    )
