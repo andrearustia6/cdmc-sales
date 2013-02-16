@@ -65,31 +65,9 @@ namespace Sales.Controllers
         public ActionResult _ManagerMonthPerformanceIndex(int? month)
         {
             if(month ==null) month = DateTime.Now.Month;
-            var ps = CH.GetAllData<Project>(p=>p.IsActived == true);
-            var membersgroup = ps.SelectMany(s=>s.Members).Distinct();
-            var managers = ps.Select(s => s.Manager);
-            var calls = from l in CH.DB.LeadCalls where l.CallDate.Month == month select l;
 
-            var list = new List<AjaxManagerMonthPerformance>();
-
-            foreach(var m in managers)
-            {
-                var cs =  from c in calls where m == c.Member.Project.Manager select c;
-                var p = new AjaxManagerMonthPerformance() { LeadCalls = cs, Manager = m };
-                
-            }
-
-
-            return View(new GridModel<AjaxManagerMonthPerformance> { Data = list });
-        }
-
-         [GridAction]
-        public ActionResult _ManagerMonthPerformanceIndex(string month)
-        {
-            int monthid = DateTime.Now.Month;
-            if (month != null)
-                Int32.TryParse(month, out monthid);
-            DateTime startdate = new DateTime(DateTime.Now.Year, monthid, 1);
+            
+            DateTime startdate = new DateTime(DateTime.Now.Year, month.Value, 1);
 
             while (startdate.DayOfWeek != DayOfWeek.Monday)
             {
@@ -97,8 +75,58 @@ namespace Sales.Controllers
             }
 
             var weeks = new List<AjaxManagerWeekPerformance>();
-            var enddate = startdate.AddDays(7);
+            var enddate = startdate.AddDays(28);
+
+            var ps = CH.GetAllData<Project>(p=>p.IsActived == true);
+            var members = ps.SelectMany(s=>s.Members).Select(s=>s.Name).Distinct();
+            var managers = ps.Select(s => s.Manager);
+            var calls = from l in CH.DB.LeadCalls where l.CallDate< enddate && l.CallDate>= startdate  select l;
+
+
+
+            var list = new List<AjaxManagerMonthPerformance>();
+
+            foreach(var m in managers)
+            {
+                var cs =  from c in calls where m == c.Member.Project.Manager select c;
+
+                var p = new AjaxManagerMonthPerformance() { LeadCalls = cs, Manager = m, AjaxWeekPerformances = GetManagerWeeksByMonth(startdate, enddate, calls, members) };
+                
+            }
+
+
+            return View(new GridModel<AjaxManagerMonthPerformance> { Data = list });
         }
+
+        public List<AjaxWeekPerformance> GetManagerWeeksByMonth(DateTime startdate,DateTime enddate, IQueryable<LeadCall> leadcalls, IEnumerable<string> members)
+        {
+            List<AjaxWeekPerformance> r = new List<AjaxWeekPerformance>();
+            while (startdate < enddate)
+            {
+                var weekend = startdate.AddDays(7);
+                r.Add(new AjaxManagerWeekPerformance() { LeadCalls = leadcalls, members = members });
+ 
+            }
+
+            return r;
+        }
+
+        // [GridAction]
+        //public ActionResult _ManagerMonthPerformanceIndex(string month)
+        //{
+        //    int monthid = DateTime.Now.Month;
+        //    if (month != null)
+        //        Int32.TryParse(month, out monthid);
+        //    DateTime startdate = new DateTime(DateTime.Now.Year, monthid, 1);
+
+        //    while (startdate.DayOfWeek != DayOfWeek.Monday)
+        //    {
+        //        startdate = startdate.AddDays(-1);
+        //    }
+
+        //    var weeks = new List<AjaxManagerWeekPerformance>();
+        //    var enddate = startdate.AddDays(7);
+        //}
          
 
 

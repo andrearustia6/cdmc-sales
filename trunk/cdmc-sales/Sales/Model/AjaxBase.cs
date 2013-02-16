@@ -11,15 +11,38 @@ namespace Model
     //时间段的ajax view
     public class AjaxStatistics
     {
+        public int CallHours { get; set; }
+            
+        public virtual IQueryable<Lead> Leads { set { _leads = value; } }
+        protected IQueryable<Lead> _leads { get; set; }
+        [Display(Name = "添加Lead数量")]
+        public int LeadsCount
+        {
+            get
+            {
+                if (_leads == null) return 0;
+                return _leads.Count();
+            }   
+        }
         public virtual IQueryable<LeadCall> LeadCalls { set { _leadCalls = value; } }
         protected IQueryable<LeadCall> _leadCalls { get; set; }
         [Display(Name = "填写LeadCall数量")]
         public int LeadCallsCount
         {
             get
-            {
+            {   
                 if (_leadCalls == null) return 0;
                 return _leadCalls.Where(l => l.CallDate < EndDate && l.CallDate >= StartDate).Count();
+            }
+        }
+
+        [Display(Name = "FaxOut数量")]
+        public int LeadCallsCount
+        {
+            get
+            {
+                if (_leadCalls == null) return 0;
+                return _leadCalls.Where(l => l.CallDate < EndDate && l.CallDate >= StartDate && l.LeadCallType.Code>=30).Count();
             }
         }
         

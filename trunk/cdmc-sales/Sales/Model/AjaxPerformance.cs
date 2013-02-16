@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.ComponentModel.DataAnnotations;
+using Entity;
 
 namespace Model
 {
@@ -18,11 +19,12 @@ namespace Model
         public string ProjectName { get; set; }
         public string TL { get; set; }
         public string Manager { get; set; }
+        
+
     }
 
     public class AjaxMonthPerformance : AjaxPerformance
     {
-
         [Display(Name = "月份")]
         public int Month { get; set; }
 
@@ -48,31 +50,42 @@ namespace Model
 
     public class AjaxWeekPerformance : AjaxPerformance
     {
-        [Display(Name = "开始时间")]
-        public DateTime StartDate { get; set; }
-        [Display(Name = "结束时间")]
-        public DateTime EndDate { get; set; }
-        public virtual int FaxStandard { get; set; }
-        public virtual int LeadStandard { get; set; }
-        public virtual double Hours { get; set; }
-        public virtual bool IsQualified { get; set; }
+        public virtual int FaxOutStandard { get; set; }
+        public virtual int LeadsStandard { get; set; }
+        public virtual int CallHoursStandard { get; set; }
 
+       
+        public int FaxoutCount { get; set; }
+
+        public virtual bool IsQualified { get; set; }
+        public bool IsFaxOutQualified
+        {
+            get
+            {
+                return FaxoutCount > FaxOutStandard;
+
+            }
+        }
+        public bool IsDealInQualified { get { return DealInComplatePercetage > 100; } }
+        public bool IsCheckInInQualified { get { return CheckInComplatePercetage > 100; } }
+        public bool IsLeadAddedQualified { get { return LeadsCount > LeadsStandard; } }
+        public  bool IsCallHoursQualified { get { return CallHours > CallHoursStandard; } }
     }
 
 
-    public class AjaxLeadPerformance : AjaxWeekPerformance
+    public class AjaxLeadWeekPerformance : AjaxWeekPerformance
     {
-        public override int LeadStandard { get  {  return 70;  } }
-        public override int FaxStandard { get { return 35; } }
-        public override double Hours { get { return 7.5; } }
+        public override int LeadsStandard { get  {  return 70;  } }
+        public override int FaxOutStandard { get { return 35; } }
+        public override double CallHours { get { return 7.5; } }
     }
 
 
     public class AjaxSalesPerformance : AjaxWeekPerformance
     {
-        public override int LeadStandard { get { return 105; } }
-        public override int FaxStandard { get { return 50; } }
-        public override double Hours { get { return 10; } }
+        public override int LeadsStandard { get { return 105; } }
+        public override int FaxOutStandard { get { return 50; } }
+        public override double CallHours { get { return 10; } }
     }
 
     public class AjaxManagerMonthPerformance : AjaxMonthPerformance
@@ -81,8 +94,33 @@ namespace Model
 
     public class AjaxManagerWeekPerformance : AjaxWeekPerformance
     {
-        public double AverageHours { get; set; }
-        public int AverageFax { get; set; }
+        public IEnumerable <string> members { get; set; }
+        public int MemberCount
+        {
+            get
+            {
+                if (members == null) return 0;
+                return members.Count();
+            }
+        }
+
+        public double AverageHours { get { return CallHours / members.Count(); } }
+        public int AverageFax
+        {
+            get
+            {
+                if (MemberCount == 0) return 0;
+                return _leadCalls.Where(l => l.LeadCallType.Code >= 30).Count() / MemberCount;
+            }
+        }
         public int AverageLead { get; set; }
+
+        public override bool IsQualified
+        {
+            get
+            {
+                return base.IsQualified;
+            }
+        }
     }
 }
