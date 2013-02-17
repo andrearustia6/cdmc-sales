@@ -539,6 +539,19 @@ namespace Utl
 
     public class Utl
     {
+        public static void GetMonthActualStartdateAndEnddate(int? month, out DateTime startdate, out DateTime enddate)
+        {
+            if (month == null) month = DateTime.Now.Month;
+
+
+            startdate = new DateTime(DateTime.Now.Year, month.Value, 1);
+
+            while (startdate.DayOfWeek != DayOfWeek.Monday)
+            {
+                startdate = startdate.AddDays(-1);
+            }
+            enddate = startdate.AddDays(28);
+        }
 
         public static string ConvertSelectProjectIDtoString(List<int> selectedprojects)
         {

@@ -11,10 +11,10 @@ namespace Model
     //时间段的ajax view
     public class AjaxStatistics
     {
-        public int CallHours { get; set; }
+        public virtual double CallHours { get; set; }
             
-        public virtual IQueryable<Lead> Leads { set { _leads = value; } }
-        protected IQueryable<Lead> _leads { get; set; }
+        public virtual List<Lead> Leads { set { _leads = value; } }
+        protected List<Lead> _leads { get; set; }
         [Display(Name = "添加Lead数量")]
         public int LeadsCount
         {
@@ -24,8 +24,8 @@ namespace Model
                 return _leads.Count();
             }   
         }
-        public virtual IQueryable<LeadCall> LeadCalls { set { _leadCalls = value; } }
-        protected IQueryable<LeadCall> _leadCalls { get; set; }
+        public virtual List<LeadCall> LeadCalls { set { _leadCalls = value; } }
+        protected List<LeadCall> _leadCalls { get; set; }
         [Display(Name = "填写LeadCall数量")]
         public int LeadCallsCount
         {
@@ -37,7 +37,7 @@ namespace Model
         }
 
         [Display(Name = "FaxOut数量")]
-        public int LeadCallsCount
+        public int FaxOutCount
         {
             get
             {
@@ -92,7 +92,7 @@ namespace Model
         {
             get
             {
-                if (TotalDealinTargets == 0 || TotalDealIn == null)
+                if (TotalDealinTargets == 0 || TotalDealinTargets == null|| TotalDealIn == null)
                     return 0;
                 else
                 {
@@ -109,7 +109,7 @@ namespace Model
         {
             get
             {
-                if (TotalCheckinTargets == 0 || TotalCheckIn == null)
+                if (TotalCheckinTargets == 0 || TotalCheckinTargets == null || TotalCheckIn == null)
                     return 0;
                 else
                 {

@@ -3,20 +3,132 @@
 }
 @using Model
 
-  @(Html.Telerik().Grid<AjaxManagerMonthPerformance>().Name("AjaxManagerMonthPerformance").DataKeys(keys =>
+<fieldset>
+<legend>月份</legend>
+@{
+  using (Html.BeginForm())
+        {
+            var m = ViewBag.SelectedMonth as int?;
+            m = m == null ? DateTime.Now.Month : m;
+   @Html.DropDownList("selectedmonth", new SelectList(new List<int>() { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 }, m), new { onchange = "this.form.submit();" })
+        }
+    }
+</fieldset>
+<fieldset>
+<legend>版块负责人</legend>
+  @(Html.Telerik().Grid<AjaxManagerMonthPerformance>().Name("mangers").DataKeys(keys =>
+{
+    keys.Add(s => s.Name);
+    keys.Add(s => s.Month);
+}).Columns(c =>
+{
+    c.Bound(item => item.Name);
+    c.Bound(item => item.Month).Hidden();
+    c.Bound(item => item.ProjectName);
+    c.Bound(item => item.AverageFax);
+    c.Bound(item => item.AverageHours);
+    c.Bound(item => item.AverageLead);
+})
+                            .DataBinding(d => d.Ajax().Select("_ManagerMonthPerformanceIndex", "report", new { month = ViewBag.SelectedMonth as int? }))
+                .Selectable().ClientEvents(events => events.OnRowSelect("onManagerRowSelected"))
+                      .Resizable(resizing => resizing.Columns(true)).Filterable()
+                    .Pageable(p => p.Style(GridPagerStyles.Status).PageOnScroll(true).PageSize(12)).Sortable()
+                         .Scrollable(s => s.Height(250))
+                    )
+
+</fieldset>
+
+<fieldset id="leaderfield" style=" display:none">
+<legend>团队负责人</legend>
+  @(Html.Telerik().Grid<AjaxLeadMonthPerformance>().Name("leads").DataKeys(keys =>
+{
+    keys.Add(s => s.Name);
+    keys.Add(s => s.Month);
+}).Columns(c =>
+{
+    c.Bound(item => item.Name);
+    c.Bound(item => item.Month).Hidden();
+    c.Bound(item => item.CheckInComplatePercetage).ClientTemplate("<p><#= CheckInComplatePercetage #>%</p>");
+    c.Bound(item => item.LeadNotQualifiedWeeksCount);
+    c.Bound(item => item.HoursOrFaxNotQualifiedWeeksCount);
+    c.Bound(item => item.AssignedScore);
+    c.Bound(item => item.Score);
+    c.Bound(item => item.WeekFaxOut).Title("各周FaxOut");
+    c.Bound(item => item.WeekLeadsAdd).Title("各周Lead添加");
+})
+                .DataBinding(d => d.Ajax().Select("_LeadMonthPerformanceIndex", "report"))
+                      .ClientEvents(clientEvents => clientEvents.OnDataBinding("onTeamleadsBinding"))
+                .Selectable().ClientEvents(events => events.OnRowSelect("onLeadRowSelected"))
+                      .Resizable(resizing => resizing.Columns(true)).Filterable()
+                    .Pageable(p => p.Style(GridPagerStyles.Status).PageOnScroll(true).PageSize(12)).Sortable()
+                         .Scrollable(s => s.Height(150))
+
+                    )
+</fieldset>
+<fieldset id="salesfield" style=" display:none">
+<legend>销售</legend>
+  @(Html.Telerik().Grid<AjaxSalesMonthPerformance>().Name("sales").DataKeys(keys =>
                 {
-                    keys.Add(s => s.Name );
-                    keys.Add(s => s.Month );
+                    keys.Add(s => s.Name);
+                    keys.Add(s => s.Month);
                 }).Columns(c =>
                 {
-                    c.Bound(item => item.Month);
-                    c.Bound(item => item.ProjectName);
-                    c.Bound(item => item.Score).Aggregate(item => item.Sum());
+                    c.Bound(item => item.Name);
+                    c.Bound(item => item.CheckInComplatePercetage).ClientTemplate("<p><#= CheckInComplatePercetage #>%</p>");
+                    c.Bound(item => item.LeadNotQualifiedWeeksCount);
+                    c.Bound(item => item.HoursOrFaxNotQualifiedWeeksCount);
+                    c.Bound(item => item.AssignedScore);
+                    c.Bound(item => item.Score);
+                    c.Bound(item => item.WeekFaxOut).Title("各周FaxOut");
+                    c.Bound(item => item.WeekLeadsAdd).Title("各周Lead添加"); 
                 })
-                .DataBinding(d => d.Ajax().Select("_MonthManagerPerformance", "report"))
-                .Selectable().ClientEvents(events => events.OnRowSelect("onManagerRowSelected"))
-                .Resizable(resizing => resizing.Columns(true))
+                      .DataBinding(d => d.Ajax().Select("_SalesMonthPerformanceIndex", "report"))
+                      .ClientEvents(clientEvents => clientEvents.OnDataBinding("onSalesBinding"))
+                .Resizable(resizing => resizing.Columns(true)).Filterable()
                     .Pageable(p => p.Style(GridPagerStyles.Status).PageOnScroll(true).PageSize(12)).Sortable()
                          .Scrollable(s => s.Height(300))
 
                     )
+</fieldset>
+<script type="text/javascript">
+
+    var month;
+    var manager;
+    var leader;
+
+    function onManagerRowSelected(e) {
+        manager = e.row.cells[0].innerHTML;
+        month = e.row.cells[1].innerHTML;
+        var weeks = $('#leads').data('tGrid');
+        weeks.rebind();
+        $('#leaderfield').show();
+        $('#salesfield').hide();
+    }
+
+    function onTeamleadsBinding(e) {
+        if (month && manager) {
+            e.data = $.extend(e.data, {
+                month: month,
+                manager: manager
+            });
+        }
+    }
+
+    function onLeadRowSelected(e) {
+        leader = e.row.cells[0].innerHTML;
+        month = e.row.cells[1].innerHTML;
+        var sales = $('#sales').data('tGrid');
+        sales.rebind();
+
+        $('#salesfield').show();
+    }
+
+
+
+    function onSalesBinding(e) {
+        e.data = $.extend(e.data, {
+            month: month,
+            leader:leader
+         });
+    }
+    </script>
