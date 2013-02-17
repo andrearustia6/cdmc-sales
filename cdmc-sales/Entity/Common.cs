@@ -7,10 +7,15 @@ using System.ComponentModel.DataAnnotations;
 namespace Entity
 {
     public class AssignPerformanceScore:EntityBase{
+        [Display(Name = "主观打分"), Required]
         public int Score { get; set; }
+        [Display(Name = "被考核人"), Required]
         public string TargetName { get; set; }
+        [Display(Name = "主管"), Required]
         public string Assigner { get; set; }
+        [Display(Name = "月"), Required]
         public  int Month{get;set;}
+        [Display(Name = "年"), Required]
         public int Year { get; set; }
     }
 

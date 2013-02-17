@@ -3,6 +3,22 @@
 @using Utl
     <fieldset>
         <legend>@SR.Form</legend>
+          <div class="editor-label">
+            @Html.LabelFor(model => model.Year)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownListFor(model => model.Year, new SelectList(new List<int>() { 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2010}), "-«Î—°‘Ò-")
+            @Html.ValidationMessageFor(model => model.Year)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Month)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownListFor(model => model.Month, new SelectList(new List<int>() { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 }), "-«Î—°‘Ò-")
+            @Html.ValidationMessageFor(model => model.Month)
+        </div>
+
 
         <div class="editor-label">
             @Html.LabelFor(model => model.Score)
@@ -26,9 +42,9 @@
             {
                 list = CH.GetAllData<Project>(p => p.Manager == Employee.CurrentUserName).Select(s => s.TeamLeader).Distinct();
             }
-            if (Employee.CurrentRole.Level == 500)
+            if (Employee.CurrentRole.Level == 100)
             {
-                list = CH.GetAllData<Project>(p => p.Manager == Employee.CurrentUserName).SelectMany(s => s.Members).Select(s=>s.Name).Distinct();
+                list = CH.GetAllData<Project>(p => p.TeamLeader == Employee.CurrentUserName).SelectMany(s => s.Members).Where(w=>w.Name != Employee.CurrentUserName && w.IsActivated==true).Select(s => s.Name);
             }
             
             @Html.DropDownListFor(model => model.TargetName, new SelectList(list), "-«Î—°‘Ò-")

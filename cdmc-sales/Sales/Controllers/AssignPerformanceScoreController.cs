@@ -29,7 +29,12 @@ namespace Sales.Controllers
         [GridAction]
         public ActionResult _SelectIndex()
         {
-            return View(new GridModel(CH.GetAllData<AssignPerformanceScore>()));
+            List<AssignPerformanceScore> list;
+            if (Employee.CurrentRole.Level < 1000)
+                list = CH.GetAllData<AssignPerformanceScore>(a => a.Assigner == Employee.CurrentUserName);
+            else
+                list = CH.GetAllData<AssignPerformanceScore>();
+            return View(new GridModel(list));
         }
         [AcceptVerbs(HttpVerbs.Post)]
         [GridAction]

@@ -10,11 +10,14 @@
     .Update("_SaveAjaxEditing", "AssignPerformanceScore")
     .Delete("_DeleteAjaxEditing", "AssignPerformanceScore");
 })
-.Columns(columns => { columns.Bound(p => p.TargetName);
-columns.Bound(p => p.Score); columns.Bound(p => p.Month);
+.Columns(columns => {
+    columns.Bound(p => p.TargetName);
+columns.Bound(p => p.Score);
+    columns.Bound(p => p.Month);
+    columns.Bound(p => p.Year);
      columns.Bound(p => p.Assigner); 
-   columns.Command(commands => { commands.Edit(); commands.Delete(); }).Width(180).Title("操作"); })
+   columns.Command(commands => { commands.Edit(); commands.Delete(); }).Width(220).Title("操作"); })
    .Editable(editing => editing.Mode( GridEditMode.PopUp))
    .Pageable(p=>p.Style(GridPagerStyles.Status)
-       .PageOnScroll(true)).Scrollable().Sortable()
+       .PageOnScroll(true)).Scrollable().Sortable().Filterable().Groupable()
 )
