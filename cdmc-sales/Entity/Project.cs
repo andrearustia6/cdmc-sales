@@ -267,7 +267,7 @@ namespace Entity
     /// </summary>
     public class TargetOfMonth : EntityBase
     {
-        public int Month { get { return StartDate.Month; } }
+        public int Month { get { return EndDate.Month; } }
         public virtual Project Project { get; set; }
         [Display(Name = "项目名称"), Required]
         public int? ProjectID { get; set; }

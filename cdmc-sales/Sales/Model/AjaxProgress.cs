@@ -127,11 +127,11 @@ namespace Model
             }
         }
 
-        public override IQueryable<LeadCall> LeadCalls
+        public override List<LeadCall> LeadCalls
         {
             set
             {
-                base.LeadCalls = value.Where(d => d.ProjectID == _project.ID);
+                base.LeadCalls = value.Where(d => d.ProjectID == _project.ID).ToList();
             }
         }
 
@@ -217,11 +217,11 @@ namespace Model
              }
          }
 
-         public override IQueryable<LeadCall> LeadCalls
+         public override List<LeadCall> LeadCalls
          {
              set
              {
-                 base.LeadCalls = value.Where(d => d.ProjectID == _project.ID);
+                 base.LeadCalls = value.Where(d => d.ProjectID == _project.ID).ToList();
              }
          }
 

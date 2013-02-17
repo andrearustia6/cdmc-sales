@@ -41,7 +41,7 @@
 
 <fieldset>
     <legend id="MonthWeek">@DateTime.Now.Month 月每周进度总表</legend>
-    @(Html.Telerik().Grid<AjaxWeekTotalProgressStatistics>().Name("weeks")
+    @(Html.Telerik().Grid<AjaxWeekTotalProgressStatistics>().Name("weeks").HtmlAttributes(new { style = "display:none;" })
         .DataKeys(keys =>
         {
             keys.Add(s => s.StartDayString);
@@ -73,7 +73,7 @@
 <fieldset id="fieldsetprojectweek" style="display:none">
     <legend id="ProjectWeektext"></legend>
     @(Html.Telerik().Grid<AjaxWeekProjectProgressStatistics>().Name("projectweek")
-     
+
     .Columns(c =>
     {
         c.Bound(item => item.ProjectName);
@@ -145,6 +145,9 @@
         var projectmonth = $('#projectmonth').data('tGrid');
         weeks.rebind();
         projectmonth.rebind();
+        $('#weeks').show();
+        $('#sales').hide();
+
     }
 
     function onWeeksBinding(e) {

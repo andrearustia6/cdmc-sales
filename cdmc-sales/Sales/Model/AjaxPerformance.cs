@@ -9,7 +9,6 @@ namespace Model
 {
     public class AjaxPerformance:AjaxStatistics
     {
-       
         [Display(Name="被考核人")]
         public string Name { get; set; }
         [Display(Name = "职位")]
@@ -25,28 +24,80 @@ namespace Model
 
     public class AjaxMonthPerformance : AjaxPerformance
     {
+        public virtual string WeekLeadsAdd { get; set; }
+        public virtual string WeekCallHours { get; set; }
+        public virtual string WeekFaxOut { get; set; }
+
+        public List<string> Members { get; set; }
+        public int MemberCount
+        {
+            get
+            {
+                if (Members == null) return 0;
+                return Members.Count();
+            }
+        }
+
         [Display(Name = "月份")]
-        public int Month { get; set; }
+        public int? Month { get; set; }
 
         [Display(Name = "主观评分")]
-        public int AssignedScore { get; set; }
+        public int? AssignedScore { get; set; }
 
-        public List<AjaxWeekPerformance> AjaxWeekPerformances { get; set; }
+        [Display(Name = "添加Lead不达标周数")]
+        public int LeadNotQualifiedWeeksCount
+        {
+            get
+            {
+                if (Weeks == null) return 4;
+                return Weeks.FindAll(f => f.IsLeadAddedQualified == false).Count;
+            }
+        }
 
-        public int Score { get { 
-            var qc = AjaxWeekPerformances.FindAll(f=>f.IsQualified==false).Count;
-            if (qc == 0)
-                return 20;
-            else if (qc == 1)
-                return 15;
-            else if (qc == 2)
-                return 10;
-            else if (qc == 3)
-                return 5;
-            else
-                return 0;
-        } }
+   
+
+        [Display(Name = "通话时间或者FaxOut不达标周数")]
+        public int HoursOrFaxNotQualifiedWeeksCount
+        {
+            get
+            {
+                if (Weeks == null) return 4;
+                return Weeks.FindAll(f => f.IsFaxOutOrCallHoursQualified == false).Count;
+            }
+        }
+
+        public virtual int Score { get; set; }
+
+        public override DateTime StartDate
+        {
+            get
+            {
+                DateTime startdate, enddate;
+                Utl.Utl.GetMonthActualStartdateAndEnddate(Month, out startdate, out enddate);
+
+                return startdate;
+            }
+           
+        }
+
+        public override DateTime EndDate
+        {
+            get
+            {
+                DateTime startdate, enddate;
+                Utl.Utl.GetMonthActualStartdateAndEnddate(Month, out startdate, out enddate);
+
+                return enddate;
+            }
+        }
+
+        protected List<AjaxWeekPerformance> _weeks;
+        public virtual List<AjaxWeekPerformance> Weeks{get;set;}
+
+
+
     }
+
 
     public class AjaxWeekPerformance : AjaxPerformance
     {
@@ -54,34 +105,251 @@ namespace Model
         public virtual int LeadsStandard { get; set; }
         public virtual int CallHoursStandard { get; set; }
 
-       
-        public int FaxoutCount { get; set; }
-
-        public virtual bool IsQualified { get; set; }
-        public bool IsFaxOutQualified
+        public bool IsFaxOutOrCallHoursQualified
         {
             get
             {
-                return FaxoutCount > FaxOutStandard;
+                return FaxOutCount > FaxOutStandard;
 
             }
         }
-        public bool IsDealInQualified { get { return DealInComplatePercetage > 100; } }
-        public bool IsCheckInInQualified { get { return CheckInComplatePercetage > 100; } }
+
         public bool IsLeadAddedQualified { get { return LeadsCount > LeadsStandard; } }
-        public  bool IsCallHoursQualified { get { return CallHours > CallHoursStandard; } }
     }
+
 
 
     public class AjaxLeadWeekPerformance : AjaxWeekPerformance
     {
-        public override int LeadsStandard { get  {  return 70;  } }
+        public override int LeadsStandard { get  { return 70;  } }
         public override int FaxOutStandard { get { return 35; } }
         public override double CallHours { get { return 7.5; } }
     }
+   
+    public class AjaxLeadMonthPerformance : AjaxMonthPerformance
+    {
+        public override string WeekCallHours
+        {
+            get
+            {
+                var t = string.Empty;
+                Weeks.ForEach(f=>{
+                    if(string.IsNullOrEmpty(t))
+                        t = f.CallHours.ToString();
+                    else
+                        t = t + " | " + f.CallHours.ToString();
+                });
+
+                    return t;
+            }
+            
+        }
+
+        public override string WeekFaxOut
+        {
+            get
+            {
+               var t = string.Empty;
+                Weeks.ForEach(f=>{
+                    if(string.IsNullOrEmpty(t))
+                        t = f.FaxOutCount.ToString();
+                    else
+                         t = t+" | "+ f.FaxOutCount.ToString();
+                });
+
+                    return t;
+            }
+           
+        }
+
+        public override string WeekLeadsAdd
+        {
+            get
+            {
+                var t = string.Empty;
+                Weeks.ForEach(f =>
+                {
+                    if (string.IsNullOrEmpty(t))
+                        t = f.LeadsCount.ToString();
+                    else
+                        t = t + " | " + f.LeadsCount.ToString();
+                });
+
+                return t;
+            }
+           
+        }
+
+      
+        public  override List<AjaxWeekPerformance> Weeks { get {
+            if(_weeks==null)
+            {
+                _weeks = new List<AjaxWeekPerformance>();
+                DateTime startdate, enddate;
+                Utl.Utl.GetMonthActualStartdateAndEnddate(Month,out startdate,out enddate);
+                StartDate = startdate; EndDate = enddate;
+                while (startdate < EndDate)
+                {
+                    enddate = startdate.AddDays(7);
+                    var ap = new AjaxLeadWeekPerformance() {
+                        StartDate = startdate, EndDate = enddate,
+                        LeadCalls = _leadCalls.FindAll(f => f.CallDate >= startdate && f.CallDate < enddate).ToList(),
+                        Leads = _leads.Where(f => f.CreatedDate >= startdate && f.CreatedDate < enddate).ToList()
+                    };
+                    _weeks.Add(ap);
+                    startdate = enddate;
+                }
+
+                
+            }
+                return _weeks;
+        } }
+
+        [Display(Name="考核分数")]
+        public override int Score
+        {
+            get
+            {
+                int checkinscore=0;
+                int addleadscore = 0;
+                int faxcallscore=0;
+                if (CheckInComplatePercetage >= 140) checkinscore = 70;
+                else if (CheckInComplatePercetage >= 120) checkinscore = 60;
+                else if (CheckInComplatePercetage >= 100) checkinscore = 50;
+                else if (CheckInComplatePercetage >= 80) checkinscore = 40;
+                else if  (CheckInComplatePercetage >= 60) checkinscore = 30;
 
 
-    public class AjaxSalesPerformance : AjaxWeekPerformance
+                if (LeadNotQualifiedWeeksCount == 0) addleadscore = 20;
+                else if(LeadNotQualifiedWeeksCount == 1) addleadscore = 15;
+                else if (LeadNotQualifiedWeeksCount == 2) addleadscore = 10;
+                else if (LeadNotQualifiedWeeksCount == 3) addleadscore = 5;
+
+                if ( HoursOrFaxNotQualifiedWeeksCount  == 0) faxcallscore = 20;
+                else if (HoursOrFaxNotQualifiedWeeksCount == 1) faxcallscore = 15;
+                else if (HoursOrFaxNotQualifiedWeeksCount == 2) faxcallscore = 10;
+                else if (HoursOrFaxNotQualifiedWeeksCount == 3) faxcallscore = 5;
+                if (AssignedScore == null) AssignedScore = 0;
+                return checkinscore + addleadscore + faxcallscore+ AssignedScore.Value;
+            }
+        }
+    }
+
+
+    public class AjaxSalesMonthPerformance : AjaxMonthPerformance
+    {
+        public override string WeekCallHours
+        {
+            get
+            {
+                var t = string.Empty;
+                Weeks.ForEach(f =>
+                {
+                    if (string.IsNullOrEmpty(t))
+                        t = f.CallHours.ToString();
+                    else
+                        t = t + " | " + f.CallHours.ToString();
+                });
+
+                return t;
+            }
+
+        }
+
+        public override string WeekFaxOut
+        {
+            get
+            {
+                var t = string.Empty;
+                Weeks.ForEach(f =>
+                {
+                    if (string.IsNullOrEmpty(t))
+                        t = f.FaxOutCount.ToString();
+                    else
+                        t = t + " | " + f.FaxOutCount.ToString();
+                });
+
+                return t;
+            }
+
+        }
+
+        public override string WeekLeadsAdd
+        {
+            get
+            {
+                var t = string.Empty;
+                Weeks.ForEach(f =>
+                {
+                    if (string.IsNullOrEmpty(t))
+                        t = f.LeadsCount.ToString();
+                    else
+                        t = t + " | " + f.LeadsCount.ToString();
+                });
+
+                return t;
+            }
+
+        }
+
+
+        public override List<AjaxWeekPerformance> Weeks
+        {
+            get
+            {
+                if (_weeks == null)
+                {
+                    _weeks = new List<AjaxWeekPerformance>();
+                    DateTime startdate, enddate;
+                    Utl.Utl.GetMonthActualStartdateAndEnddate(Month, out startdate, out enddate);
+                    StartDate = startdate; EndDate = enddate;
+                    while (startdate < EndDate)
+                    {
+                        enddate = startdate.AddDays(7);
+                        var ap = new AjaxSalesWeekPerformance() {
+                            StartDate = startdate,
+                            EndDate = enddate,
+                            LeadCalls = _leadCalls.FindAll(f => f.CallDate >= startdate && f.CallDate < enddate),
+                            Leads = _leads.Where(f => f.CreatedDate >= startdate && f.CreatedDate < enddate).ToList()
+                        };
+                        _weeks.Add(ap);
+                        startdate = enddate;
+                    }
+                }
+                return _weeks;
+            }
+        }
+
+        public override int Score
+        {
+            get
+            {
+                int checkinscore = 0;
+                int addleadscore = 0;
+                int faxcallscore = 0;
+                if (CheckInComplatePercetage >= 140) checkinscore = 70;
+                else if (CheckInComplatePercetage >= 120) checkinscore = 60;
+                else if (CheckInComplatePercetage >= 100) checkinscore = 50;
+                else if (CheckInComplatePercetage >= 80) checkinscore = 40;
+                else if (CheckInComplatePercetage >= 60) checkinscore = 30;
+
+
+                if (LeadNotQualifiedWeeksCount == 0) addleadscore = 20;
+                else if (LeadNotQualifiedWeeksCount == 1) addleadscore = 15;
+                else if (LeadNotQualifiedWeeksCount == 2) addleadscore = 10;
+                else if (LeadNotQualifiedWeeksCount == 3) addleadscore = 5;
+
+                if (HoursOrFaxNotQualifiedWeeksCount == 0) faxcallscore = 20;
+                else if (HoursOrFaxNotQualifiedWeeksCount == 1) faxcallscore = 15;
+                else if (HoursOrFaxNotQualifiedWeeksCount == 2) faxcallscore = 10;
+                else if (HoursOrFaxNotQualifiedWeeksCount == 3) faxcallscore = 5;
+                if (AssignedScore == null) AssignedScore = 0;
+                return checkinscore + addleadscore + faxcallscore + AssignedScore.Value;
+            }
+        }
+    }
+
+    public class AjaxSalesWeekPerformance : AjaxWeekPerformance
     {
         public override int LeadsStandard { get { return 105; } }
         public override int FaxOutStandard { get { return 50; } }
@@ -90,37 +358,56 @@ namespace Model
 
     public class AjaxManagerMonthPerformance : AjaxMonthPerformance
     {
-    }
-
-    public class AjaxManagerWeekPerformance : AjaxWeekPerformance
-    {
-        public IEnumerable <string> members { get; set; }
-        public int MemberCount
-        {
-            get
-            {
-                if (members == null) return 0;
-                return members.Count();
-            }
-        }
-
-        public double AverageHours { get { return CallHours / members.Count(); } }
+        [Display(Name = "平均通话时间")]
+        public double AverageHours { get {
+            if (MemberCount == 0) return 0;
+            return CallHours / Members.Count(); } }
+        [Display(Name = "平均FaxOut数")]
         public int AverageFax
         {
             get
             {
                 if (MemberCount == 0) return 0;
-                return _leadCalls.Where(l => l.LeadCallType.Code >= 30).Count() / MemberCount;
+                return FaxOutCount / MemberCount;
             }
         }
-        public int AverageLead { get; set; }
 
-        public override bool IsQualified
+        [Display(Name = "平均添加Lead数")]
+        public int AverageLead
         {
             get
             {
-                return base.IsQualified;
+                if (MemberCount == 0) return 0;
+                return LeadsCount / MemberCount;
             }
         }
+        //public override List<AjaxWeekPerformance> Weeks
+        //{
+        //    get
+        //    {
+        //        if (_weeks == null)
+        //        {
+        //           DateTime startdate,enddate;
+        //            Utl.Utl.GetMonthActualStartdateAndEnddate(Month,out startdate,out enddate);
+
+        //            StartDate = startdate; EndDate = enddate;
+        //            while(startdate<EndDate)
+        //            {
+        //                enddate = startdate.AddDays(7);
+        //                var ap = new AjaxManagerWeekPerformance() { StartDate = startdate, EndDate = enddate, LeadCalls = _leadCalls };
+        //                _weeks.Add(ap);
+        //                startdate = enddate;
+        //            }
+        //        }
+        //        return _weeks;
+        //    }
+        //}
+       
+       
+      
+
+       
     }
+
+ 
 }

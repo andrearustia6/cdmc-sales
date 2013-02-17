@@ -11,6 +11,7 @@ namespace Entity
         public string TargetName { get; set; }
         public string Assigner { get; set; }
         public  int Month{get;set;}
+        public int Year { get; set; }
     }
 
     /// <summary>
