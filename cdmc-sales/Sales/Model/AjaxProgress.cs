@@ -153,7 +153,7 @@ namespace Model
         Project _project;
         public Project Project { set { _project = value; } }
 
-        [Display(Name = "月份")]
+        [Display(Name = "项目名")]
         public string ProjectName { get { return _project.Name_CH; } }
         public string ProjectCode { get { return _project.ProjectCode; } }
 
@@ -237,6 +237,9 @@ namespace Model
          [Display(Name = "项目代码")]
          public string ProjectCode { get { return _project.ProjectCode; } }
 
+
+         public int? ProjectID { get { return _project.ID; } }
+
          IEnumerable<Member> _members;
          [Display(Name = "项目中销售数量")]
          public int MemberCounts
@@ -281,6 +284,18 @@ namespace Model
              }
          }
      }
+
+    public class AjaxWeekMemberProgressStatistics : AjaxProgress
+    {
+        public override DateTime StartDate { get; set; }
+
+        public override DateTime EndDate { get; set; }
+
+        [Display(Name = "销售姓名")]
+        public string Name { get; set; }
+
+    
+    }
 
     public class AjaxWeekTotalProgressStatistics : AjaxProgress
     {

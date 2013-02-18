@@ -71,7 +71,7 @@
                           item.Add().Url("~/Deal/IndexReview").Text("项目出单统计");
                           item.Add().Url("~/Report/LeadCalls").Text("项目CallList统计");
                           item.Add().Url("~/TargetOfMonth/index").Text("项目月目标查看");
-                          item.Add().Url("~/Report/ProjectProgress").Text("项目进展表");
+                          item.Add().Url("~/ProgressReport/ProjectProgress").Text("项目进展表");
                           item.Add().Url("~/Report/PerformanceIndex").Text("考核表");
                     });
 
@@ -119,6 +119,10 @@
                            //item.Add().Url("~/Report/ProjectProgress").Text("项目进展表");
                            item.Add().Url("~/Report/MemberLeadCallsChart").Text("已打Lead比较");
                            item.Add().Url("~/AssignPerformanceScore/index").Text("打分");
+                           if(score>=DirectorRequired.LVL)
+                           {
+                              item.Add().Url("~/AssignPerformanceRate/index").Text("设定考核系数");
+                           }
                            
                        });
                        

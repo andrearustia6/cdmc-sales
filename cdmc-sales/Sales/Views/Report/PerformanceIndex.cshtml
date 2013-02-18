@@ -2,21 +2,20 @@
     ViewBag.Title = "员工考核";
 }
 @using Model
-
 <fieldset>
-<legend>月份</legend>
-@{
-  using (Html.BeginForm())
+    <legend>月份</legend>
+    @{
+        using (Html.BeginForm())
         {
             var m = ViewBag.SelectedMonth as int?;
             m = m == null ? DateTime.Now.Month : m;
-   @Html.DropDownList("selectedmonth", new SelectList(new List<int>() { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 }, m), new { onchange = "this.form.submit();" })
+        @Html.DropDownList("selectedmonth", new SelectList(new List<int>() { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 }, m), new { onchange = "this.form.submit();" })
         }
     }
 </fieldset>
 <fieldset>
-<legend>版块负责人</legend>
-  @(Html.Telerik().Grid<AjaxManagerMonthPerformance>().Name("mangers").DataKeys(keys =>
+    <legend>版块负责人</legend>
+    @(Html.Telerik().Grid<AjaxManagerMonthPerformance>().Name("mangers").DataKeys(keys =>
 {
     keys.Add(s => s.Name);
     keys.Add(s => s.Month);
@@ -35,12 +34,10 @@
                     .Pageable(p => p.Style(GridPagerStyles.Status).PageOnScroll(true).PageSize(12)).Sortable()
                          .Scrollable(s => s.Height(250))
                     )
-
 </fieldset>
-
-<fieldset id="leaderfield" style=" display:none">
-<legend>团队负责人</legend>
-  @(Html.Telerik().Grid<AjaxLeadMonthPerformance>().Name("leads").DataKeys(keys =>
+<fieldset id="leaderfield" style="display: none">
+    <legend>团队负责人</legend>
+    @(Html.Telerik().Grid<AjaxLeadMonthPerformance>().Name("leads").DataKeys(keys =>
 {
     keys.Add(s => s.Name);
     keys.Add(s => s.Month);
@@ -49,9 +46,13 @@
     c.Bound(item => item.Name);
     c.Bound(item => item.Month).Hidden();
     c.Bound(item => item.CheckInComplatePercetage).ClientTemplate("<p><#= CheckInComplatePercetage #>%</p>");
+    c.Bound(item => item.CheckinScore);
     c.Bound(item => item.LeadNotQualifiedWeeksCount);
+    c.Bound(item => item.AddLeadScore);
     c.Bound(item => item.HoursOrFaxNotQualifiedWeeksCount);
+    c.Bound(item => item.FaxCallScore);
     c.Bound(item => item.AssignedScore);
+    c.Bound(item => item.Rate);
     c.Bound(item => item.Score);
     c.Bound(item => item.WeekFaxOut).Title("各周FaxOut");
     c.Bound(item => item.WeekLeadsAdd).Title("各周Lead添加");
@@ -65,22 +66,24 @@
 
                     )
 </fieldset>
-<fieldset id="salesfield" style=" display:none">
-<legend>销售</legend>
-  @(Html.Telerik().Grid<AjaxSalesMonthPerformance>().Name("sales").DataKeys(keys =>
+<fieldset id="salesfield" style="display: none">
+    <legend>销售</legend>
+    @(Html.Telerik().Grid<AjaxSalesMonthPerformance>().Name("sales").DataKeys(keys =>
                 {
                     keys.Add(s => s.Name);
                     keys.Add(s => s.Month);
                 }).Columns(c =>
                 {
                     c.Bound(item => item.Name);
-                    c.Bound(item => item.CheckInComplatePercetage).ClientTemplate("<p><#= CheckInComplatePercetage #>%</p>");
                     c.Bound(item => item.LeadNotQualifiedWeeksCount);
+                    c.Bound(item => item.AddLeadScore);
                     c.Bound(item => item.HoursOrFaxNotQualifiedWeeksCount);
+                    c.Bound(item => item.FaxCallScore);
                     c.Bound(item => item.AssignedScore);
+                    c.Bound(item => item.Rate);
                     c.Bound(item => item.Score);
                     c.Bound(item => item.WeekFaxOut).Title("各周FaxOut");
-                    c.Bound(item => item.WeekLeadsAdd).Title("各周Lead添加"); 
+                    c.Bound(item => item.WeekLeadsAdd).Title("各周Lead添加");
                 })
                       .DataBinding(d => d.Ajax().Select("_SalesMonthPerformanceIndex", "report"))
                       .ClientEvents(clientEvents => clientEvents.OnDataBinding("onSalesBinding"))
@@ -128,7 +131,96 @@
     function onSalesBinding(e) {
         e.data = $.extend(e.data, {
             month: month,
-            leader:leader
-         });
+            leader: leader
+        });
     }
-    </script>
+</script>
+<fieldset>
+    <legend>考核标准</legend>
+    <table width="100%">
+        <tr>
+            <td>
+                CheeckIn每月目标完成
+            </td>
+            <td>
+                R≥140%, 70%
+            </td>
+            <td>
+                R≥120%,60%
+            </td>
+            <td>
+                R≥100%,50%
+            </td>
+            <td>
+                R≥80%,40%
+            </td>
+            <td>
+                R≥60%,30%
+            </td>
+            <td>
+                R<60%,0%
+            </td>
+        </tr>
+        <tr>
+            <td>
+                调研每周达标
+            </td>
+            <td>
+                每周达标, 20%
+            </td>
+            <td>
+                一周不达标, 15%
+            </td>
+            <td>
+                两周不达标, 10%
+            </td>
+            <td>
+                三周不达标, 5%
+            </td>
+            <td colspan="2">
+                四周及以上不达标,0%
+            </td>
+          
+        </tr>
+        <tr>
+            <td>
+                FaxOut|Call每周达标
+            </td>
+            <td>
+                每周达标, 20%
+            </td>
+            <td>
+                一周不达标, 15%<
+            </td>
+            <td>
+                两周不达标, 10%
+            </td>
+            <td>
+                三周不达标, 5%
+            </td>
+            <td colspan="2">
+                四周及以上不达标,0%
+            </td>
+        </tr>
+        <tr>
+            <td>
+                完成布置的任务
+            </td>
+            <td colspan="2">
+                始终做到,10%
+            </td>
+            <td colspan="2">
+                一次做不到,5%
+            </td>
+            <td colspan="2">
+                两次及以上做不到,0%
+            </td>
+        </tr>
+        <tr>
+        <td>
+                考核系数
+            </td>
+        <td colspan="6"> 销售系统使用情况 本人或组员未按公司要求使用系统,0 本人及组员系统使用情况良好,1.2 （Karen打分, 系统默认考核系数为1）</td></tr>
+    </table>
+    
+</fieldset>
