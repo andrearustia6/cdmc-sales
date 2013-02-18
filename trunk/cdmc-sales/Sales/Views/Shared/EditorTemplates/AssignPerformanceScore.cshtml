@@ -24,7 +24,7 @@
             @Html.LabelFor(model => model.Score)
         </div>
         <div class="editor-field">
-            @Html.DropDownListFor(model => model.Score, new SelectList(new List<int>() { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }), "-ÇëÑ¡Ôñ-")
+            @Html.DropDownListFor(model => model.Score, new SelectList(new List<int>() { 0,5,10 }), "-ÇëÑ¡Ôñ-")
             @Html.ValidationMessageFor(model => model.Score)
         </div>
 

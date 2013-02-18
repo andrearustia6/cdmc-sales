@@ -1,0 +1,44 @@
+@model AssignPerformanceRate
+@using Entity
+@using Utl
+    <fieldset>
+        <legend>@SR.Form</legend>
+          <div class="editor-label">
+            @Html.LabelFor(model => model.Year)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownListFor(model => model.Year, new SelectList(new List<int>() { 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2010}), "-ÇëÑ¡Ôñ-")
+            @Html.ValidationMessageFor(model => model.Year)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Month)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownListFor(model => model.Month, new SelectList(new List<int>() { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 }), "-ÇëÑ¡Ôñ-")
+            @Html.ValidationMessageFor(model => model.Month)
+        </div>
+
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Rate)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownListFor(model => model.Rate, new SelectList(new List<double>() { 0, 1, 1.2 }), "-ÇëÑ¡Ôñ-")
+            @Html.ValidationMessageFor(model => model.Rate)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.TargetName)
+        </div>
+        <div class="editor-field">
+        @{
+           
+            @Html.EditorFor(m=>m.TargetName)
+            @Html.ValidationMessageFor(model => model.TargetName)
+            }
+        </div>
+
+    </fieldset>
+    @Html.Partial("editcommon", Model)
+

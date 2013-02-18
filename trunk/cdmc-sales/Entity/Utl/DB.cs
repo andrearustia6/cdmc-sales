@@ -18,6 +18,7 @@ namespace Utl
         
         public DbSet<AccessRight> AccessRights { get; set; }
         public DbSet<ProjectRight> ProjectRights { get; set; }
+        public DbSet<AssignPerformanceRate> AssignPerformanceRates { get; set; }
         public DbSet<AssignPerformanceScore> AssignPerformanceScores { get; set; }
         public DbSet<ExpLevel> ExpLevels { get; set; }
         public DbSet<SalesType> SalesTypes { get; set; }

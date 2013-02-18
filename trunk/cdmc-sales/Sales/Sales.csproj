@@ -219,10 +219,12 @@
     <Compile Include="BLL\CRM_Logical.cs" />
     <Compile Include="BLL\Report.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AssignPerformanceRateController.cs" />
     <Compile Include="Controllers\AssignPerformanceScoreController.cs" />
     <Compile Include="Controllers\CompanyRelationshipController.cs" />
     <Compile Include="Controllers\DealController.cs" />
     <Compile Include="Controllers\NewsController.cs" />
+    <Compile Include="Controllers\ProgressController.cs" />
     <Compile Include="Controllers\ProtectedCompanysController.cs" />
     <Compile Include="Controllers\SubCompanyController.cs" />
     <Compile Include="Controllers\TargetOfMonthForMemberController.cs" />
@@ -1482,7 +1484,7 @@
     <Content Include="Views\TargetOfMonthForMember\MyTargetIndex.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Report\ProjectProgress.cshtml" />
+    <Content Include="Views\ProgressReport\ProjectProgress.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\MultipleProjectSelector.cshtml" />
@@ -1531,6 +1533,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Report\PerformanceIndex.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\AssignPerformanceRate\index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\EditorTemplates\AssignPerformanceRate.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

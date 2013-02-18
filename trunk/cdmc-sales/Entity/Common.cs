@@ -19,6 +19,18 @@ namespace Entity
         public int Year { get; set; }
     }
 
+    public class AssignPerformanceRate : EntityBase
+    {
+        [Display(Name = "考核系数"), Required]
+        public double Rate { get; set; }
+        [Display(Name = "被考核人"), Required]
+        public string TargetName { get; set; }
+        [Display(Name = "月"), Required]
+        public int Month { get; set; }
+        [Display(Name = "年"), Required]
+        public int Year { get; set; }
+    }
+
     /// <summary>
     /// 行业类型
     /// </summary>

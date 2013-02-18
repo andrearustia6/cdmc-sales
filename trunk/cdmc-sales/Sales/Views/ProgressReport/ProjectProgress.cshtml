@@ -13,8 +13,7 @@
                     keys.Add(s => s.Month);
                 }).Columns(c =>
                 {
-                    c.Bound(item => item.Month);
-
+                    c.Bound(item => item.Month).Width(70);
                     c.Bound(item => item.TotalCheckinTargets).Title("月CheckIn总目标").Format("{0:c}").Aggregate(item => item.Sum()).ClientFooterTemplate("<p>CheckIn目标总额: <#= $.telerik.formatString('{0:c}', Sum) #></p>");
                     c.Bound(item => item.TotalCheckIn).Title("月项目总CheckIn").Format("{0:c}").Aggregate(item => item.Sum()).ClientFooterTemplate("<p>CheckIn总额: <#= $.telerik.formatString('{0:c}', Sum) #></p>");
                     c.Bound(item => item.CheckInComplatePercetage).ClientTemplate("<p><#= CheckInComplatePercetage #>%</p>");
@@ -29,7 +28,7 @@
                     c.Bound(item => item.PerMemberDealIn).Aggregate(item => item.Average()).Format("{0:c}").ClientFooterTemplate("<p>个人月平均DealIn: <#= $.telerik.formatString('{0:c}', Average) #></p>");
                     c.Bound(item => item.PerMemberCall).Aggregate(item => item.Average()).ClientFooterTemplate("<p>个人月平均Call数量: <#= Average #></p>");
                 })
-                .DataBinding(d => d.Ajax().Select("_MonthProgress", "report"))
+                        .DataBinding(d => d.Ajax().Select("_MonthProgress", "ProgressReport"))
                 .Selectable().ClientEvents(events => events.OnRowSelect("onMonthRowSelected"))
                 .Resizable(resizing => resizing.Columns(true))
                     .Pageable(p => p.Style(GridPagerStyles.Status).PageOnScroll(true).PageSize(12)).Sortable()
@@ -39,8 +38,8 @@
 </fieldset>
     }
 
-<fieldset>
-    <legend id="MonthWeek">@DateTime.Now.Month 月每周进度总表</legend>
+<fieldset id="fieldsetweek" style="display:none">
+    <legend id="MonthWeek" >@DateTime.Now.Month 月每周进度总表</legend>
     @(Html.Telerik().Grid<AjaxWeekTotalProgressStatistics>().Name("weeks").HtmlAttributes(new { style = "display:none;" })
         .DataKeys(keys =>
         {
@@ -57,44 +56,66 @@
         c.Bound(item => item.TotalDealinTargets).Title("周项目DeaIn总目标").Format("{0:c}").Aggregate(item => item.Sum()).ClientFooterTemplate("<p>DealIn目标总额: <#= $.telerik.formatString('{0:c}', Sum) #></p>");
         c.Bound(item => item.TotalDealIn).Title("周项目总DealIn").Format("{0:c}").Aggregate(item => item.Sum()).ClientFooterTemplate("<p>DealIn总额: <#= $.telerik.formatString('{0:c}', Sum) #></p>");
         c.Bound(item => item.DealInComplatePercetage).ClientTemplate("<p><#= DealInComplatePercetage #>%</p>");
-        c.Bound(item => item.MemberCounts);
-        c.Bound(item => item.LeadCallsCount).Aggregate(item => item.Sum()).ClientFooterTemplate("<p>Call总数: <#= Sum #></p>");
-        c.Bound(item => item.CallingCompanyCount).Aggregate(item => item.Sum()).ClientFooterTemplate("<p>已打公司总数: <#= Sum #></p>");
-        c.Bound(item => item.CallingLeadCount).Aggregate(item => item.Sum()).ClientFooterTemplate("<p>已打Lead总数: <#= Sum #></p>");
+        //c.Bound(item => item.MemberCounts);
+        //c.Bound(item => item.LeadCallsCount).Aggregate(item => item.Sum()).ClientFooterTemplate("<p>Call总数: <#= Sum #></p>");
+        //c.Bound(item => item.CallingCompanyCount).Aggregate(item => item.Sum()).ClientFooterTemplate("<p>已打公司总数: <#= Sum #></p>");
+        //c.Bound(item => item.CallingLeadCount).Aggregate(item => item.Sum()).ClientFooterTemplate("<p>已打Lead总数: <#= Sum #></p>");
         c.Bound(item => item.PerMemberCheckIn).Aggregate(item => item.Average()).ClientFooterTemplate("<p>个人平均CheckIn: <#= $.telerik.formatString('{0:c}', Average) #></p>").Format("{0:c}");
         c.Bound(item => item.PerMemberDealIn).Aggregate(item => item.Average()).ClientFooterTemplate("<p>个人平均DealIn: <#= $.telerik.formatString('{0:c}', Average) #></p>").Format("{0:c}");
         c.Bound(item => item.PerMemberCall).Aggregate(item => item.Average()).ClientFooterTemplate("<p>个人平均Call数量: <#= $.telerik.formatString('{0:c}', Average) #></p>");
-    }).DataBinding(dataBinding => dataBinding.Ajax().Select("_WeekProgress", "report"))
+    }).DataBinding(dataBinding => dataBinding.Ajax().Select("_WeekProgress", "ProgressReport"))
              .Selectable().ClientEvents(events => events.OnRowSelect("onWeekRowSelected"))
                              .ClientEvents(clientEvents => clientEvents.OnDataBinding("onWeeksBinding")).Pageable(p => p.Style(GridPagerStyles.Status).PageOnScroll(true).PageSize(4)).Resizable(resizing => resizing.Columns(true)).Sortable().Scrollable(s => s.Height(110))
     )
 </fieldset>
 
-<fieldset id="fieldsetprojectweek" style="display:none">
+<fieldset id="weeks" style="display:none">
     <legend id="ProjectWeektext"></legend>
     @(Html.Telerik().Grid<AjaxWeekProjectProgressStatistics>().Name("projectweek")
 
     .Columns(c =>
     {
-        c.Bound(item => item.ProjectName);
+        c.Bound(item => item.StartDate);
+        c.Bound(item => item.ProjectID).Hidden();
         c.Bound(item => item.TotalCheckinTargets).Title("周项目CheckIn总目标").Format("{0:c}").Aggregate(item => item.Sum()).ClientFooterTemplate("<p>CheckIn目标总额: <#= $.telerik.formatString('{0:c}', Sum) #></p>");
         c.Bound(item => item.TotalCheckIn).Title("总项目总CheckIn").Format("{0:c}").Aggregate(item => item.Sum()).ClientFooterTemplate("<p>CheckIn总额: <#= $.telerik.formatString('{0:c}', Sum) #></p>");
         c.Bound(item => item.CheckInComplatePercetage).ClientTemplate("<p><#= CheckInComplatePercetage #>%</p>");
         c.Bound(item => item.TotalDealinTargets).Title("总项目DeaIn总目标").Format("{0:c}").Aggregate(item => item.Sum()).ClientFooterTemplate("<p>DealIn目标总额: <#= $.telerik.formatString('{0:c}', Sum) #></p>");
         c.Bound(item => item.TotalDealIn).Title("总项目总DealIn").Format("{0:c}").Aggregate(item => item.Sum()).ClientFooterTemplate("<p>DealIn总额: <#= $.telerik.formatString('{0:c}', Sum) #></p>");
         c.Bound(item => item.DealInComplatePercetage).ClientTemplate("<p><#= DealInComplatePercetage #>%</p>");
-        c.Bound(item => item.MemberCounts);
-        c.Bound(item => item.LeadCallsCount).Aggregate(item => item.Sum()).ClientFooterTemplate("<p>Call总数: <#= Sum #></p>");
-        c.Bound(item => item.CallingCompanyCount).Aggregate(item => item.Sum()).ClientFooterTemplate("<p>已打公司总数: <#= Sum #></p>");
-        c.Bound(item => item.CallingLeadCount).Aggregate(item => item.Sum()).ClientFooterTemplate("<p>已打Lead总数: <#= Sum #></p>");
+        //c.Bound(item => item.MemberCounts);
+        //c.Bound(item => item.LeadCallsCount).Aggregate(item => item.Sum()).ClientFooterTemplate("<p>Call总数: <#= Sum #></p>");
+        //c.Bound(item => item.CallingCompanyCount).Aggregate(item => item.Sum()).ClientFooterTemplate("<p>已打公司总数: <#= Sum #></p>");
+        //c.Bound(item => item.CallingLeadCount).Aggregate(item => item.Sum()).ClientFooterTemplate("<p>已打Lead总数: <#= Sum #></p>");
         c.Bound(item => item.PerMemberCheckIn).Aggregate(item => item.Average()).ClientFooterTemplate("<p>个人平均CheckIn: <#= $.telerik.formatString('{0:c}', Average) #></p>").Format("{0:c}");
         c.Bound(item => item.PerMemberDealIn).Aggregate(item => item.Average()).ClientFooterTemplate("<p>个人平均DealIn: <#= $.telerik.formatString('{0:c}', Average) #></p>").Format("{0:c}");
         c.Bound(item => item.PerMemberCall).Aggregate(item => item.Average()).ClientFooterTemplate("<p>个人平均Call数量: <#= Average #></p>");
-    }).DataBinding(dataBinding => dataBinding.Ajax().Select("_ProjectWeekProgress", "report"))
-     .Selectable().ClientEvents(events => events.OnRowSelect("onWeekRowSelected"))
+    }).DataBinding(dataBinding => dataBinding.Ajax().Select("_ProjectWeekProgress", "ProgressReport"))
+     .Selectable().ClientEvents(events => events.OnRowSelect("onMemberWeekRowSelected"))
              .ClientEvents(clientEvents => clientEvents.OnDataBinding("onProjectWeekBinding")).Pageable(p => p.Style(GridPagerStyles.Status).PageOnScroll(true).PageSize(4)).Sortable().Scrollable(s => s.Height(100)).Resizable(resizing => resizing.Columns(true))
     )
 </fieldset>
+
+<fieldset id="fieldsetmemberweek" style="display:none">>
+    <legend id="memberWeek"></legend>
+    @(Html.Telerik().Grid<AjaxWeekMemberProgressStatistics>().Name("memberweek")
+    .Columns(c =>
+    {
+        c.Bound(item => item.StartDayString);
+        c.Bound(item => item.EndDayString);
+        c.Bound(item => item.Name );
+        c.Bound(item => item.TotalCheckinTargets).Title("周项目CheckIn总目标").Format("{0:c}").Aggregate(item => item.Sum()).ClientFooterTemplate("<p>CheckIn目标总额: <#= $.telerik.formatString('{0:c}', Sum) #></p>");
+        c.Bound(item => item.TotalCheckIn).Title("周项目总CheckIn").Format("{0:c}").Aggregate(item => item.Sum()).ClientFooterTemplate("<p>CheckIn总额: <#= $.telerik.formatString('{0:c}', Sum) #></p>");
+        c.Bound(item => item.CheckInComplatePercetage).ClientTemplate("<p><#= CheckInComplatePercetage #>%</p>");
+        c.Bound(item => item.TotalDealinTargets).Title("周项目DeaIn总目标").Format("{0:c}").Aggregate(item => item.Sum()).ClientFooterTemplate("<p>DealIn目标总额: <#= $.telerik.formatString('{0:c}', Sum) #></p>");
+        c.Bound(item => item.TotalDealIn).Title("周项目总DealIn").Format("{0:c}").Aggregate(item => item.Sum()).ClientFooterTemplate("<p>DealIn总额: <#= $.telerik.formatString('{0:c}', Sum) #></p>");
+        c.Bound(item => item.DealInComplatePercetage).ClientTemplate("<p><#= DealInComplatePercetage #>%</p>");
+    }).DataBinding(dataBinding => dataBinding.Ajax().Select("_MemberWeekProgress", "ProgressReport"))
+                             .ClientEvents(clientEvents => clientEvents.OnDataBinding("onMemberWeeksBinding")).Pageable(p => p.Style(GridPagerStyles.Status).PageOnScroll(true).PageSize(4)).Resizable(resizing => resizing.Columns(true)).Sortable().Scrollable(s => s.Height(110))
+    )
+</fieldset>
+
+
 
 <fieldset id="fieldsetprojectmonth" style=" display:none">
     <legend id="MonthProject">@DateTime.Now.Month 月项目进度表</legend>
@@ -114,14 +135,14 @@
         c.Bound(item => item.TotalDealinTargets).Title("项目总DeaIn目标").Format("{0:c}").Aggregate(item => item.Sum()).ClientFooterTemplate("<p>DealIn目标总额: <#= $.telerik.formatString('{0:c}', Sum) #></p>");
         c.Bound(item => item.TotalDealIn).Title("项目总DealIn").Format("{0:c}").Aggregate(item => item.Sum()).ClientFooterTemplate("<p>DealIn总额: <#= $.telerik.formatString('{0:c}', Sum) #></p>");
         c.Bound(item => item.DealInComplatePercetage).ClientTemplate("<p><#= DealInComplatePercetage #>%</p>");
-        c.Bound(item => item.MemberCounts);
-        c.Bound(item => item.LeadCallsCount).Aggregate(item => item.Sum()).ClientFooterTemplate("<p>Call总数: <#= Sum #></p>");
-        c.Bound(item => item.CallingCompanyCount).Aggregate(item => item.Sum()).ClientFooterTemplate("<p>已打公司总数: <#= Sum #></p>");
-        c.Bound(item => item.CallingLeadCount).Aggregate(item => item.Sum()).ClientFooterTemplate("<p>已打Lead总数: <#= Sum #></p>");
+        //c.Bound(item => item.MemberCounts);
+        //c.Bound(item => item.LeadCallsCount).Aggregate(item => item.Sum()).ClientFooterTemplate("<p>Call总数: <#= Sum #></p>");
+        //c.Bound(item => item.CallingCompanyCount).Aggregate(item => item.Sum()).ClientFooterTemplate("<p>已打公司总数: <#= Sum #></p>");
+        //c.Bound(item => item.CallingLeadCount).Aggregate(item => item.Sum()).ClientFooterTemplate("<p>已打Lead总数: <#= Sum #></p>");
         c.Bound(item => item.PerMemberCheckIn).Aggregate(item => item.Average()).ClientFooterTemplate("<p>个人平均CheckIn: <#= $.telerik.formatString('{0:c}', Average) #></p>").Format("{0:c}");
         c.Bound(item => item.PerMemberDealIn).Aggregate(item => item.Average()).ClientFooterTemplate("<p>个人平均DealIn: <#= $.telerik.formatString('{0:c}', Average) #></p>").Format("{0:c}");
         c.Bound(item => item.PerMemberCall).Aggregate(item => item.Average()).ClientFooterTemplate("<p>个人平均Call数量: <#= Average #></p>");
-    }).DataBinding(dataBinding => dataBinding.Ajax().Select("_ProjectMonthProgress", "report"))
+    }).DataBinding(dataBinding => dataBinding.Ajax().Select("_ProjectMonthProgress", "ProgressReport"))
      //.Selectable().ClientEvents(events => events.OnRowSelect("onWeekRowSelected"))
             .ClientEvents(clientEvents => clientEvents.OnDataBinding("onMonthProjectBinding")).Pageable(p => p.Style(GridPagerStyles.Status).PageOnScroll(true).PageSize(4)).Sortable().Scrollable(s => s.Height(110)).Resizable(resizing => resizing.Columns(true))
     )
@@ -159,7 +180,8 @@
     }
 
     var startdate;
-
+    var projectid
+    //周总进度
     function onWeekRowSelected(e) {
         var projectweek = $('#projectweek').data('tGrid');
         startdate = e.row.cells[0].innerHTML;
@@ -168,11 +190,26 @@
         $('#fieldsetprojectweek').show();
         projectweek.rebind();
     }
-
-  
     function onProjectWeekBinding(e) {
         e.data = $.extend(e.data, { startdate: startdate });
     }
+
+    //周项目中各个销售进度
+    function onMemberWeekRowSelected(e) {
+        var memberweek = $('#memberweek').data('tGrid');
+        startdate = e.row.cells[0].innerHTML;
+        projectid = e.row.cells[1].innerHTML;
+        $('#memberweek').text(startdate + " ~ " + enddate + "销售进度");
+        $('#fieldsetmemberweek').show();
+        memberweek.rebind();
+    }
+
+    function onMemberWeeksBinding(e) {
+        e.data = $.extend(e.data, { startdate: startdate });
+    }
+
+
+  
     
 </script>
 @*@using Model

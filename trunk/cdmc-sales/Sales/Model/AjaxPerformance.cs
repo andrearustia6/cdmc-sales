@@ -24,6 +24,15 @@ namespace Model
 
     public class AjaxMonthPerformance : AjaxPerformance
     {
+        double _rate = 1;
+        [Display(Name="考核系数")]
+        public double? Rate 
+        { set
+        {
+            if(value!=null)
+            _rate = value.Value;
+        }
+            get{return _rate;}}
         public virtual string WeekLeadsAdd { get; set; }
         public virtual string WeekCallHours { get; set; }
         public virtual string WeekFaxOut { get; set; }
@@ -41,10 +50,53 @@ namespace Model
         [Display(Name = "月份")]
         public int? Month { get; set; }
 
+           [Display(Name = "CheckIn分数")]
+        public int CheckinScore
+        {
+            get
+            {
+                if (CheckInComplatePercetage >= 140) return  70;
+                else if (CheckInComplatePercetage >= 120) return  60;
+                else if (CheckInComplatePercetage >= 100) return  50;
+                else if (CheckInComplatePercetage >= 80) return  40;
+                else if (CheckInComplatePercetage >= 60) return  30;
+                return 0;
+            }
+        }
+        [Display(Name = "调研Lead分数")]
+        public int AddLeadScore
+        {
+            get
+            {
+                if (LeadNotQualifiedWeeksCount == 0) return 20;
+                else if (LeadNotQualifiedWeeksCount == 1) return 15;
+                else if (LeadNotQualifiedWeeksCount == 2) return 10;
+                else if (LeadNotQualifiedWeeksCount == 3) return 5;
+                return 0;
+            }
+        }
+        [Display(Name = "通话时间/FaxOut分数")]
+        public int FaxCallScore { get {
+            if (HoursOrFaxNotQualifiedWeeksCount == 0) return 20;
+            else if (HoursOrFaxNotQualifiedWeeksCount == 1) return 15;
+            else if (HoursOrFaxNotQualifiedWeeksCount == 2) return 10;
+            else if (HoursOrFaxNotQualifiedWeeksCount == 3) return 5;
+            return 0;
+        } }
+        [Display(Name="考核总分数")]
+        public  int Score
+        {
+            get
+            {
+                if (AssignedScore == null) AssignedScore = 0;
+                return (int)(Rate* (CheckinScore + AddLeadScore + FaxCallScore + AssignedScore.Value));
+            }
+        }
+
         [Display(Name = "主观评分")]
         public int? AssignedScore { get; set; }
 
-        [Display(Name = "添加Lead不达标周数")]
+        [Display(Name = "调研不达标周数")]
         public int LeadNotQualifiedWeeksCount
         {
             get
@@ -56,7 +108,7 @@ namespace Model
 
    
 
-        [Display(Name = "通话时间或者FaxOut不达标周数")]
+        [Display(Name = "通话|FaxOut不达标周数")]
         public int HoursOrFaxNotQualifiedWeeksCount
         {
             get
@@ -66,7 +118,7 @@ namespace Model
             }
         }
 
-        public virtual int Score { get; set; }
+  
 
         public override DateTime StartDate
         {
@@ -121,13 +173,43 @@ namespace Model
 
     public class AjaxLeadWeekPerformance : AjaxWeekPerformance
     {
-        public override int LeadsStandard { get  { return 70;  } }
-        public override int FaxOutStandard { get { return 35; } }
-        public override double CallHours { get { return 7.5; } }
+
+
+        public override int LeadsStandard
+        {
+            get
+            {
+                if (_deals!=null &&_deals.Count() > 0)
+                    return 60;
+                else
+                    return 70;
+            }
+        }
+        public override int FaxOutStandard
+        {
+            get
+            {
+                if (_deals!=null&& _deals.Count() > 0)
+                    return 28;
+                else
+                    return 35;
+            }
+        }
+        public override double CallHours
+        {
+            get
+            {
+                if (_deals!=null && _deals.Count() > 0)
+                    return 6;
+                else
+                    return 7.5;
+            }
+        }
     }
    
     public class AjaxLeadMonthPerformance : AjaxMonthPerformance
     {
+        
         public override string WeekCallHours
         {
             get
@@ -204,35 +286,7 @@ namespace Model
             }
                 return _weeks;
         } }
-
-        [Display(Name="考核分数")]
-        public override int Score
-        {
-            get
-            {
-                int checkinscore=0;
-                int addleadscore = 0;
-                int faxcallscore=0;
-                if (CheckInComplatePercetage >= 140) checkinscore = 70;
-                else if (CheckInComplatePercetage >= 120) checkinscore = 60;
-                else if (CheckInComplatePercetage >= 100) checkinscore = 50;
-                else if (CheckInComplatePercetage >= 80) checkinscore = 40;
-                else if  (CheckInComplatePercetage >= 60) checkinscore = 30;
-
-
-                if (LeadNotQualifiedWeeksCount == 0) addleadscore = 20;
-                else if(LeadNotQualifiedWeeksCount == 1) addleadscore = 15;
-                else if (LeadNotQualifiedWeeksCount == 2) addleadscore = 10;
-                else if (LeadNotQualifiedWeeksCount == 3) addleadscore = 5;
-
-                if ( HoursOrFaxNotQualifiedWeeksCount  == 0) faxcallscore = 20;
-                else if (HoursOrFaxNotQualifiedWeeksCount == 1) faxcallscore = 15;
-                else if (HoursOrFaxNotQualifiedWeeksCount == 2) faxcallscore = 10;
-                else if (HoursOrFaxNotQualifiedWeeksCount == 3) faxcallscore = 5;
-                if (AssignedScore == null) AssignedScore = 0;
-                return checkinscore + addleadscore + faxcallscore+ AssignedScore.Value;
-            }
-        }
+     
     }
 
 
@@ -306,7 +360,8 @@ namespace Model
                     while (startdate < EndDate)
                     {
                         enddate = startdate.AddDays(7);
-                        var ap = new AjaxSalesWeekPerformance() {
+                        var ap = new AjaxSalesWeekPerformance()
+                        {
                             StartDate = startdate,
                             EndDate = enddate,
                             LeadCalls = _leadCalls.FindAll(f => f.CallDate >= startdate && f.CallDate < enddate),
@@ -320,40 +375,34 @@ namespace Model
             }
         }
 
-        public override int Score
-        {
-            get
-            {
-                int checkinscore = 0;
-                int addleadscore = 0;
-                int faxcallscore = 0;
-                if (CheckInComplatePercetage >= 140) checkinscore = 70;
-                else if (CheckInComplatePercetage >= 120) checkinscore = 60;
-                else if (CheckInComplatePercetage >= 100) checkinscore = 50;
-                else if (CheckInComplatePercetage >= 80) checkinscore = 40;
-                else if (CheckInComplatePercetage >= 60) checkinscore = 30;
-
-
-                if (LeadNotQualifiedWeeksCount == 0) addleadscore = 20;
-                else if (LeadNotQualifiedWeeksCount == 1) addleadscore = 15;
-                else if (LeadNotQualifiedWeeksCount == 2) addleadscore = 10;
-                else if (LeadNotQualifiedWeeksCount == 3) addleadscore = 5;
-
-                if (HoursOrFaxNotQualifiedWeeksCount == 0) faxcallscore = 20;
-                else if (HoursOrFaxNotQualifiedWeeksCount == 1) faxcallscore = 15;
-                else if (HoursOrFaxNotQualifiedWeeksCount == 2) faxcallscore = 10;
-                else if (HoursOrFaxNotQualifiedWeeksCount == 3) faxcallscore = 5;
-                if (AssignedScore == null) AssignedScore = 0;
-                return checkinscore + addleadscore + faxcallscore + AssignedScore.Value;
-            }
-        }
     }
 
     public class AjaxSalesWeekPerformance : AjaxWeekPerformance
     {
-        public override int LeadsStandard { get { return 105; } }
-        public override int FaxOutStandard { get { return 50; } }
-        public override double CallHours { get { return 10; } }
+        public override int LeadsStandard { get {
+            if (_deals != null && _deals.Count() > 0)
+                return 80;
+            else
+                return 105;
+        } }
+        public override int FaxOutStandard { 
+            get {
+                if (_deals != null && _deals.Count() > 0)
+                    return 40;
+                else
+                    return 50;
+            }
+        }
+        public override double CallHours
+        {
+            get
+            {
+                if (_deals != null && _deals.Count() > 0)
+                    return 8;
+                else
+                    return 10;
+            }
+        }
     }
 
     public class AjaxManagerMonthPerformance : AjaxMonthPerformance
