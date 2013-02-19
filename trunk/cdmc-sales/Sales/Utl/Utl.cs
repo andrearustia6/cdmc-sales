@@ -539,6 +539,14 @@ namespace Utl
 
     public class Utl
     {
+
+        //public int CalculateLeftWorkindDate(DateTime enddate)
+        //{
+
+        //    var duration = enddate - DateTime.Now;
+        //    duration.
+        //    duration.TotalDays
+        //}
         public static void GetMonthActualStartdateAndEnddate(int? month, out DateTime startdate, out DateTime enddate)
         {
             if (month == null) month = DateTime.Now.Month;

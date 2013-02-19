@@ -28,11 +28,11 @@
     c.Bound(item => item.AverageHours);
     c.Bound(item => item.AverageLead);
 })
-                            .DataBinding(d => d.Ajax().Select("_ManagerMonthPerformanceIndex", "report", new { month = ViewBag.SelectedMonth as int? }))
+                .DataBinding(d => d.Ajax().Select("_ManagerMonthPerformanceIndex", "report", new { month = ViewBag.SelectedMonth as int? }))
                 .Selectable().ClientEvents(events => events.OnRowSelect("onManagerRowSelected"))
-                      .Resizable(resizing => resizing.Columns(true)).Filterable()
-                    .Pageable(p => p.Style(GridPagerStyles.Status).PageOnScroll(true).PageSize(12)).Sortable()
-                         .Scrollable(s => s.Height(250))
+                .Resizable(resizing => resizing.Columns(true)).Filterable()
+                .Pageable(p => p.Style(GridPagerStyles.Status).PageOnScroll(true).PageSize(12)).Sortable()
+                .Scrollable(s => s.Height(250))
                     )
 </fieldset>
 <fieldset id="leaderfield" style="display: none">
@@ -46,14 +46,14 @@
     c.Bound(item => item.Name);
     c.Bound(item => item.Month).Hidden();
     c.Bound(item => item.CheckInComplatePercetage).ClientTemplate("<p><#= CheckInComplatePercetage #>%</p>");
-    c.Bound(item => item.CheckinScore);
+    c.Bound(item => item.CheckinScore).ClientTemplate("<p><#= CheckinScore #>%</p>");
     c.Bound(item => item.LeadNotQualifiedWeeksCount);
-    c.Bound(item => item.AddLeadScore);
+    c.Bound(item => item.AddLeadScore).ClientTemplate("<p><#= AddLeadScore #>%</p>");
     c.Bound(item => item.HoursOrFaxNotQualifiedWeeksCount);
-    c.Bound(item => item.FaxCallScore);
-    c.Bound(item => item.AssignedScore);
+    c.Bound(item => item.FaxCallScore).ClientTemplate("<p><#= FaxCallScore #>%</p>");
+    c.Bound(item => item.AssignedScore).ClientTemplate("<p><#= AssignedScore #>%</p>");
     c.Bound(item => item.Rate);
-    c.Bound(item => item.Score);
+    c.Bound(item => item.Score).ClientTemplate("<p><#= Score #>%</p>");
     c.Bound(item => item.WeekFaxOut).Title("各周FaxOut");
     c.Bound(item => item.WeekLeadsAdd).Title("各周Lead添加");
 })
@@ -75,13 +75,15 @@
                 }).Columns(c =>
                 {
                     c.Bound(item => item.Name);
+                    c.Bound(item => item.CheckInComplatePercetage).ClientTemplate("<p><#= CheckInComplatePercetage #>%</p>");
+                    c.Bound(item => item.CheckinScore).ClientTemplate("<p><#= CheckinScore #>%</p>");
                     c.Bound(item => item.LeadNotQualifiedWeeksCount);
-                    c.Bound(item => item.AddLeadScore);
+                    c.Bound(item => item.AddLeadScore).ClientTemplate("<p><#= AddLeadScore #>%</p>");
                     c.Bound(item => item.HoursOrFaxNotQualifiedWeeksCount);
-                    c.Bound(item => item.FaxCallScore);
-                    c.Bound(item => item.AssignedScore);
+                    c.Bound(item => item.FaxCallScore).ClientTemplate("<p><#= FaxCallScore #>%</p>");
+                    c.Bound(item => item.AssignedScore).ClientTemplate("<p><#= AssignedScore #>%</p>");
                     c.Bound(item => item.Rate);
-                    c.Bound(item => item.Score);
+                    c.Bound(item => item.Score).ClientTemplate("<p><#= Score #>%</p>");
                     c.Bound(item => item.WeekFaxOut).Title("各周FaxOut");
                     c.Bound(item => item.WeekLeadsAdd).Title("各周Lead添加");
                 })

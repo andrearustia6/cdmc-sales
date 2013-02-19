@@ -191,7 +191,7 @@ namespace Model
                 return Math.Round((double)(LeadCallsCount / MemberCounts), 1);
             }
         }
-        [Display(Name = "人平均Checkin")]
+        [Display(Name = "人平均CheckIn")]
         public decimal PerMemberCheckIn
         {
             get
@@ -201,10 +201,18 @@ namespace Model
             }
         }
 
+        [Display(Name = "个人项目CheckIn总额")]
+        public decimal TotalMemberCheckIn
+        { get; set;}
+
     }
 
     public class AjaxWeekProjectProgressStatistics : AjaxProgress
      {
+        [Display(Name = "项目CheckIn总额")]
+        public decimal? TotalProjectCheckIn
+        { get; set; }
+
          [Display(Name = "月份")]
          public int Month { get; set; }
          public int Year { get; set; }
@@ -287,6 +295,10 @@ namespace Model
 
     public class AjaxWeekMemberProgressStatistics : AjaxProgress
     {
+        [Display(Name = "项目CheckIn总额")]
+        public decimal? TotalProjectCheckIn
+        { get; set; }
+
         public override DateTime StartDate { get; set; }
 
         public override DateTime EndDate { get; set; }

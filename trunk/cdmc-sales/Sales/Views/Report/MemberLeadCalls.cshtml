@@ -36,7 +36,7 @@
         <legend>项目名称：@p.Name</legend>
         @(Html.Telerik().Grid<AjaxViewCallListData>().Name("Grid" + p.ID)
         .ToolBar(commands => commands.Template(
-         @<text>员工筛选： @Html.DropDownList("memberselect", new SelectList(CH.GetAllData<Member>(m => m.ProjectID == p.ID), "Name", "Name"), "所有销售", new { gridid = "Grid" + p.ID })</text>
+         @<text>员工筛选： @Html.DropDownList("memberselect", new SelectList(CH.GetAllData<Member>(m => m.ProjectID == p.ID), "Name", "Name"), "所有销售", new { gridid = "Grid" + p.ID, @class = "memberselect" })</text>
             //.ToHtmlString();
        ))
         .Columns(c =>
