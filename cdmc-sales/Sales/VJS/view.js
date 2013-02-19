@@ -23,7 +23,7 @@ function onSelectOrDiselect() {
 
 //callist member 下拉筛选
 function onMemberSelected() {
-    $('#memberselect').change(function () {
+    $('.memberselect').change(function () {
         var $this = $(this);
         var gridid = $this.attr('gridid')
         var member = $this.val();

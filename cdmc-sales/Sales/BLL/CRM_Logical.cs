@@ -5,7 +5,7 @@ using System.Web;
 using Entity;
 using Utl;
 using System.Web.Security;
-using Sales.Model;
+using Model;
 
 namespace BLL
 {

@@ -113,6 +113,7 @@ namespace Sales.Controllers
             var pids =ps.Select(s=>s.ID).ToList();
             var members = ps.SelectMany(s=>s.Members).Select(s=>s.Name).Distinct();
             var calls = from l in CH.DB.LeadCalls where l.CallDate< enddate && l.CallDate>= startdate  select l;
+            var calllist = calls.ToList().Distinct(new LeadCallLeadDistinct());
             var deals = from d in CH.DB.Deals where d.Abandoned==false && pids.Contains(d.ProjectID.Value) &&  d.ActualPaymentDate< enddate && d.ActualPaymentDate>= startdate  select d;
             var teamleads = CH.GetAllData<Project>(p=>p.Manager == manager).Select(s=>s.TeamLeader).ToList();
             var checkintargets = from ct in CH.DB.TargetOfMonths where ct.EndDate.Month == month && pids.Contains(ct.ProjectID.Value) select ct;
@@ -124,7 +125,7 @@ namespace Sales.Controllers
                        select new AjaxLeadMonthPerformance() { 
                             Name = tl,
                             Month = month.Value,
-                            LeadCalls = calls.Where(w=>w.Member.Name == tl).ToList(),
+                            LeadCalls = calllist.Where(w => w.Member.Name == tl).ToList(),
                             TotalCheckinTargets = checkintargets.Where(t => t.Project.TeamLeader == tl).Sum(s=>(decimal?)s.CheckIn),
                             Leads = addleads.Where(l=>l.Creator == tl).ToList(),
                             Deals = deals.Where(d=>d.Project.TeamLeader == tl),
@@ -149,6 +150,7 @@ namespace Sales.Controllers
             var pids = ps.Select(s => s.ID).ToList();
             var members = ps.SelectMany(s => s.Members).Select(s => s.Name).Distinct();
             var calls = from l in CH.DB.LeadCalls where l.CallDate < enddate && l.CallDate >= startdate select l;
+            var calllist = calls.ToList().Distinct(new LeadCallLeadDistinct());
             var deals = from d in CH.DB.Deals where d.Abandoned == false && pids.Contains(d.ProjectID.Value) && d.ActualPaymentDate < enddate && d.ActualPaymentDate >= startdate select d;
           
             var checkintargets = from ct in CH.DB.TargetOfMonths where ct.EndDate.Month == month && pids.Contains(ct.ProjectID.Value) select ct;
@@ -161,7 +163,7 @@ namespace Sales.Controllers
                        {
                            Name = tl,
                            Month = month.Value,
-                           LeadCalls = calls.Where(w => w.Member.Name == tl).ToList(),
+                           LeadCalls = calllist.Where(w => w.Member.Name == tl).ToList(),
                            TotalCheckinTargets = checkintargets.Where(t => t.Project.TeamLeader == tl).Sum(s => (decimal?)s.CheckIn),
                            Leads = addleads.Where(l => l.Creator == tl).ToList(),
                            Deals = deals.Where(d => d.Sales == tl),

@@ -278,7 +278,6 @@
     <Compile Include="Model\AjaxViewModel.cs" />
     <Compile Include="Model\Extensions.cs" />
     <Compile Include="Model\ViewModels.cs" />
-    <Compile Include="Model\WeeklyReport.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utl\Attributes.cs" />
     <Compile Include="Utl\CH.cs" />

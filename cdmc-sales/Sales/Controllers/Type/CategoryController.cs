@@ -8,7 +8,7 @@ using System.Web.Mvc;
 using Entity;
 using Sales;
 using Utl;
-using Sales.Model;
+using Model;
 
 namespace Sales.Controllers
 {

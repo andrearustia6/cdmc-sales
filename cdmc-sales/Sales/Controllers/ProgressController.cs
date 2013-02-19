@@ -64,7 +64,7 @@ namespace Sales.Controllers
             var deals = from d in CH.DB.Deals where d.Project.IsActived == true && d.Abandoned == false select d;
             var targets = from t in CH.DB.TargetOfWeeks where t.Project.IsActived == true select t;
             var calls = from c in CH.DB.LeadCalls where c.CompanyRelationship.Project.IsActived == true select c;
-
+            var totalprojectcheckin = from d in CH.DB.Deals where d.Project.IsActived == true && d.Abandoned == false select d;
             var ps = from p in CH.DB.Projects where p.IsActived == true select p;
             var pslist = ps.ToList();
             var list = from p in pslist
@@ -77,7 +77,8 @@ namespace Sales.Controllers
                            LeadCalls = calls.ToList(),
                            Deals = deals,
                            TotalDealinTargets = targets.Where(t => t.StartDate == startDate && t.ProjectID == p.ID).Sum(s => (decimal?)s.Deal),
-                           TotalCheckinTargets = targets.Where(t => t.StartDate == startDate && t.ProjectID == p.ID).Sum(s => (decimal?)s.CheckIn)
+                           TotalCheckinTargets = targets.Where(t => t.StartDate == startDate && t.ProjectID == p.ID).Sum(s => (decimal?)s.CheckIn),
+                           TotalProjectCheckIn =deals.Sum(s=>(decimal?)s.Income)
                        };
             var data = list.ToList();
 
@@ -148,7 +149,6 @@ namespace Sales.Controllers
                 week.TotalDealinTargets = targets.Where(t => t.StartDate == startdate).Sum(s => (decimal?)s.Deal);
                 week.Deals = deals;
                 week.LeadCalls = calls.ToList();
-
                 weeks.Add(week);
 
                 startdate = startdate.AddDays(7);
@@ -168,6 +168,7 @@ namespace Sales.Controllers
             DateTime startDate = DateTime.Parse(startdate);
             DateTime endDate = startDate.AddDays(7);
             var members = from m in CH.DB.Members where m.ProjectID == projectid select m;
+            var memberlist = members.ToList();
             var year = DateTime.Now.Year;
             var deals = from d in CH.DB.Deals where d.ProjectID == projectid && d.Project.IsActived == true && d.Abandoned == false select d;
             var targets = from t in CH.DB.TargetOfWeeks where t.Project.IsActived == true && t.ProjectID == projectid select t;
@@ -175,15 +176,17 @@ namespace Sales.Controllers
 
             var ps = from p in CH.DB.Projects where p.IsActived == true select p;
             var pslist = ps.ToList();
-            var list = from m in members
+            var list = from m in memberlist
                        select new AjaxWeekMemberProgressStatistics()
                        {
+                           Name = m.Name,
                            StartDate = startDate,
                            EndDate = endDate,
-                           LeadCalls = calls.Where(c=>c.Member.ID == m.ID).ToList(),
+                           LeadCalls = calls.Where(w=>w.Member.Name == m.Name).ToList(),
                            Deals = deals.Where(c=>c.Sales == m.Name),
-                           TotalDealinTargets = targets.Where(t => t.StartDate == startDate && t.ProjectID == projectid).Sum(s => (decimal?)s.Deal),
-                           TotalCheckinTargets = targets.Where(t => t.StartDate == startDate && t.ProjectID == projectid).Sum(s => (decimal?)s.CheckIn)
+                           TotalDealinTargets = targets.Where(t => t.StartDate == startDate && t.Member == m.Name && t.ProjectID == projectid).Sum(s => (decimal?)s.Deal),
+                           TotalCheckinTargets = targets.Where(t => t.StartDate == startDate && t.Member == m.Name && t.ProjectID == projectid).Sum(s => (decimal?)s.CheckIn),
+                           TotalProjectCheckIn =deals.Sum(s=>(decimal?)s.Income)
                        };
 
             var data = list.ToList();
