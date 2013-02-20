@@ -67,9 +67,11 @@ namespace Sales.Controllers
             var totalprojectcheckin = from d in CH.DB.Deals where d.Project.IsActived == true && d.Abandoned == false select d;
             var ps = from p in CH.DB.Projects where p.IsActived == true select p;
             var pslist = ps.ToList();
+
             var list = from p in pslist
                        select new AjaxWeekProjectProgressStatistics()
                        {
+                           WeekLeft = (p.EndDate-DateTime.Now).Days/7,
                            Project = p,
                            StartDate = startDate,
                            EndDate = endDate,
@@ -78,7 +80,7 @@ namespace Sales.Controllers
                            Deals = deals,
                            TotalDealinTargets = targets.Where(t => t.StartDate == startDate && t.ProjectID == p.ID).Sum(s => (decimal?)s.Deal),
                            TotalCheckinTargets = targets.Where(t => t.StartDate == startDate && t.ProjectID == p.ID).Sum(s => (decimal?)s.CheckIn),
-                           TotalProjectCheckIn =deals.Sum(s=>(decimal?)s.Income)
+                           TotalProjectCheckIn =deals.Where(w=>w.ProjectID==p.ID).Sum(s=>(decimal?)s.Income)
                        };
             var data = list.ToList();
 
@@ -118,6 +120,11 @@ namespace Sales.Controllers
 
         }
 
+        /// <summary>
+        /// total week
+        /// </summary>
+        /// <param name="month"></param>
+        /// <returns></returns>
         [GridAction]
         public ActionResult _WeekProgress(string month)
         {
@@ -186,7 +193,7 @@ namespace Sales.Controllers
                            Deals = deals.Where(c=>c.Sales == m.Name),
                            TotalDealinTargets = targets.Where(t => t.StartDate == startDate && t.Member == m.Name && t.ProjectID == projectid).Sum(s => (decimal?)s.Deal),
                            TotalCheckinTargets = targets.Where(t => t.StartDate == startDate && t.Member == m.Name && t.ProjectID == projectid).Sum(s => (decimal?)s.CheckIn),
-                           TotalProjectCheckIn =deals.Sum(s=>(decimal?)s.Income)
+                           TotalProjectCheckIn = deals.Where(w => w.Sales == m.Name).Sum(s => (decimal?)s.Income)
                        };
 
             var data = list.ToList();

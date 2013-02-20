@@ -209,6 +209,7 @@ namespace Model
 
     public class AjaxWeekProjectProgressStatistics : AjaxProgress
      {
+        public int WeekLeft { get; set; } 
         [Display(Name = "项目CheckIn总额")]
         public decimal? TotalProjectCheckIn
         { get; set; }

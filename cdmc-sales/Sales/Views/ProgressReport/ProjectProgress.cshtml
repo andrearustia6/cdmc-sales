@@ -64,11 +64,11 @@
         c.Bound(item => item.PerMemberDealIn).Aggregate(item => item.Average()).ClientFooterTemplate("<p>个人平均DealIn: <#= $.telerik.formatString('{0:c}', Average) #></p>").Format("{0:c}");
         c.Bound(item => item.PerMemberCall).Aggregate(item => item.Average()).ClientFooterTemplate("<p>个人平均Call数量: <#=  Average #></p>");
     }).DataBinding(dataBinding => dataBinding.Ajax().Select("_WeekProgress", "ProgressReport"))
-             .Selectable().ClientEvents(events => events.OnRowSelect("onWeekRowSelected"))
+                     .Selectable().ClientEvents(events => events.OnRowSelect("onWeekRowSelected"))
                              .ClientEvents(clientEvents => clientEvents.OnDataBinding("onWeeksBinding")).Pageable(p => p.Style(GridPagerStyles.Status).PageOnScroll(true).PageSize(4)).Resizable(resizing => resizing.Columns(true)).Sortable().Scrollable(s => s.Height(110))
     )
 </fieldset>
-
+@*项目每周进度*@
 <fieldset id="fieldsetprojectweek" style="display:none">
     <legend id="ProjectWeektext"></legend>
     @(Html.Telerik().Grid<AjaxWeekProjectProgressStatistics>().Name("projectweek")
@@ -85,7 +85,7 @@
         c.Bound(item => item.TotalDealinTargets).Title("总项目DeaIn总目标").Format("{0:c}").Aggregate(item => item.Sum()).ClientFooterTemplate("<p>DealIn目标总额: <#= $.telerik.formatString('{0:c}', Sum) #></p>");
         c.Bound(item => item.TotalDealIn).Title("总项目总DealIn").Format("{0:c}").Aggregate(item => item.Sum()).ClientFooterTemplate("<p>DealIn总额: <#= $.telerik.formatString('{0:c}', Sum) #></p>");
         c.Bound(item => item.DealInComplatePercetage).ClientTemplate("<p><#= DealInComplatePercetage #>%</p>");
-        c.Bound(item => item.TotalProjectCheckIn).ClientFooterTemplate("<p>CheckIn总额: <#= $.telerik.formatString('{0:c}', TotalProjectCheckIn) #></p>");
+        
         //c.Bound(item => item.MemberCounts);
         //c.Bound(item => item.LeadCallsCount).Aggregate(item => item.Sum()).ClientFooterTemplate("<p>Call总数: <#= Sum #></p>");
         //c.Bound(item => item.CallingCompanyCount).Aggregate(item => item.Sum()).ClientFooterTemplate("<p>已打公司总数: <#= Sum #></p>");
@@ -93,12 +93,14 @@
         c.Bound(item => item.PerMemberCheckIn).Aggregate(item => item.Average()).ClientFooterTemplate("<p>个人平均CheckIn: <#= $.telerik.formatString('{0:c}', Average) #></p>").Format("{0:c}");
         c.Bound(item => item.PerMemberDealIn).Aggregate(item => item.Average()).ClientFooterTemplate("<p>个人平均DealIn: <#= $.telerik.formatString('{0:c}', Average) #></p>").Format("{0:c}");
         c.Bound(item => item.PerMemberCall).Aggregate(item => item.Average()).ClientFooterTemplate("<p>个人平均Call数量: <#= Average #></p>");
+        c.Bound(item => item.TotalProjectCheckIn).Format("{0:c}");
+        c.Bound(item => item.WeekLeft);
     }).DataBinding(dataBinding => dataBinding.Ajax().Select("_ProjectWeekProgress", "ProgressReport"))
-     .Selectable().ClientEvents(events => events.OnRowSelect("onProjectWeekRowSelected"))
-             .ClientEvents(clientEvents => clientEvents.OnDataBinding("onProjectWeekBinding")).Pageable(p => p.Style(GridPagerStyles.Status).PageOnScroll(true).PageSize(4)).Sortable().Scrollable(s => s.Height(100)).Resizable(resizing => resizing.Columns(true))
+     .Selectable().ClientEvents(events => events.OnRowSelect("onProjectWeekRowSelected")).Scrollable()
+             .ClientEvents(clientEvents => clientEvents.OnDataBinding("onProjectWeekBinding")).Pageable(p => p.Style(GridPagerStyles.Status).PageOnScroll(true).PageSize(10)).Sortable().Scrollable(s => s.Height(150)).Resizable(resizing => resizing.Columns(true))
     )
 </fieldset>
-
+@*销售每周进度*@
 <fieldset id="fieldsetmemberweek" style="display:none">
     <legend id="memberWeektitle"></legend>
     @(Html.Telerik().Grid<AjaxWeekMemberProgressStatistics>().Name("memberweek")
@@ -113,9 +115,9 @@
         c.Bound(item => item.TotalDealinTargets).Title("周项目DeaIn总目标").Format("{0:c}").Aggregate(item => item.Sum()).ClientFooterTemplate("<p>DealIn目标总额: <#= $.telerik.formatString('{0:c}', Sum) #></p>");
         c.Bound(item => item.TotalDealIn).Title("周项目总DealIn").Format("{0:c}").Aggregate(item => item.Sum()).ClientFooterTemplate("<p>DealIn总额: <#= $.telerik.formatString('{0:c}', Sum) #></p>");
         c.Bound(item => item.DealInComplatePercetage).ClientTemplate("<p><#= DealInComplatePercetage #>%</p>");
-        c.Bound(item => item.TotalProjectCheckIn).ClientFooterTemplate("<p>CheckIn总额: <#= $.telerik.formatString('{0:c}', TotalProjectCheckIn) #></p>");
+        c.Bound(item => item.TotalProjectCheckIn).Format("{0:c}");
     }).DataBinding(dataBinding => dataBinding.Ajax().Select("_MemberWeekProgress", "ProgressReport"))
-                             .ClientEvents(clientEvents => clientEvents.OnDataBinding("onMemberWeeksBinding")).Pageable(p => p.Style(GridPagerStyles.Status).PageOnScroll(true).PageSize(4)).Resizable(resizing => resizing.Columns(true)).Sortable().Scrollable(s => s.Height(110))
+                             .ClientEvents(clientEvents => clientEvents.OnDataBinding("onMemberWeeksBinding")).Pageable(p => p.Style(GridPagerStyles.Status).PageOnScroll(true).PageSize(15)).Resizable(resizing => resizing.Columns(true)).Sortable().Scrollable(s => s.Height(150))
     )
 </fieldset>
 
@@ -148,7 +150,7 @@
         c.Bound(item => item.PerMemberCall).Aggregate(item => item.Average()).ClientFooterTemplate("<p>个人平均Call数量: <#= Average #></p>");
     }).DataBinding(dataBinding => dataBinding.Ajax().Select("_ProjectMonthProgress", "ProgressReport"))
      //.Selectable().ClientEvents(events => events.OnRowSelect("onWeekRowSelected"))
-            .ClientEvents(clientEvents => clientEvents.OnDataBinding("onMonthProjectBinding")).Pageable(p => p.Style(GridPagerStyles.Status).PageOnScroll(true).PageSize(4)).Sortable().Scrollable(s => s.Height(110)).Resizable(resizing => resizing.Columns(true))
+            .ClientEvents(clientEvents => clientEvents.OnDataBinding("onMonthProjectBinding")).Pageable(p => p.Style(GridPagerStyles.Status).PageOnScroll(true).PageSize(4)).Sortable().Scrollable(s => s.Height(150)).Resizable(resizing => resizing.Columns(true))
     )
     }
 </fieldset>
