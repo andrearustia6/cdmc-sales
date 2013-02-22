@@ -56,6 +56,7 @@ namespace Sales.Controllers
     [LeaderRequired]
     public class ReportController : SalesReportController
     {
+        [ManagerRequired]
         public ActionResult PerformanceIndex(int? selectedmonth)
         {
             ViewBag.SelectedMonth = selectedmonth;
@@ -74,6 +75,10 @@ namespace Sales.Controllers
             var ps = CH.GetAllData<Project>(p=>p.IsActived == true);
             var members = ps.SelectMany(s=>s.Members);
             var managers = ps.Select(s => s.Manager).Distinct();
+            if (Employee.EqualToManager())
+            {
+                managers = managers.Where(w => w == Employee.CurrentUserName);
+            }
             var leads = from l in CH.DB.Leads where l.CreatedDate.Value.Month == month select l;
             var calls = from l in CH.DB.LeadCalls where l.CallDate< enddate && l.CallDate>= startdate  select l;
             var deals = from d in CH.DB.Deals where  d.Abandoned == false && d.IsClosed==true && d.ActualPaymentDate.Value.Month == month　 select d;
@@ -112,8 +117,13 @@ namespace Sales.Controllers
             var ps = CH.GetAllData<Project>(p=>p.IsActived == true && p.Manager == manager);
             var pids =ps.Select(s=>s.ID).ToList();
             var members = ps.SelectMany(s=>s.Members).Select(s=>s.Name).Distinct();
-            var calls = from l in CH.DB.LeadCalls where l.CallDate< enddate && l.CallDate>= startdate  select l;
+
+            //取得所有call同lead的di
+            var alldistinct = CH.GetAllData<LeadCall>(l => l.Member.Project.Manager == manager).OrderByDescending(o => o.CallDate).Distinct(new LeadCallLeadDistinct());
+
+            var calls = from l in CH.DB.LeadCalls where l.CallDate< enddate && l.CallDate>= startdate   select l;
             var calllist = calls.ToList().Distinct(new LeadCallLeadDistinct());
+
             var deals = from d in CH.DB.Deals where d.Abandoned==false && pids.Contains(d.ProjectID.Value) &&  d.ActualPaymentDate< enddate && d.ActualPaymentDate>= startdate  select d;
             var teamleads = CH.GetAllData<Project>(p=>p.Manager == manager).Select(s=>s.TeamLeader).ToList();
             var checkintargets = from ct in CH.DB.TargetOfMonths where ct.EndDate.Month == month && pids.Contains(ct.ProjectID.Value) select ct;
@@ -377,6 +387,7 @@ namespace Sales.Controllers
             ViewBag.StartDate = startdate;
             ViewBag.EndDate = enddate;
             ViewBag.ChartType = charttype;
+            ViewBag.Right = ReviewRight.CallAnalysisReview;
             projectid = this.TrySetProjectIDForUser(projectid);
             ViewBag.ProjectID = projectid;
             if (projectid != null)
