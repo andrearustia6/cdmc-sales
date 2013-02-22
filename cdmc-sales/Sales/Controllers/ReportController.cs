@@ -119,10 +119,10 @@ namespace Sales.Controllers
             var members = ps.SelectMany(s=>s.Members).Select(s=>s.Name).Distinct();
 
             //取得所有call同lead的di
-            var alldistinct = CH.GetAllData<LeadCall>(l => l.Member.Project.Manager == manager).OrderByDescending(o => o.CallDate).Distinct(new LeadCallLeadDistinct());
+            var alldistinct = CH.GetAllData<LeadCall>(l =>l.CompanyRelationship.Project.IsActived==true && l.Member.Project.Manager == manager).OrderByDescending(o => o.CallDate).Distinct(new LeadCallLeadDistinct());
 
-            var calls = from l in CH.DB.LeadCalls where l.CallDate< enddate && l.CallDate>= startdate   select l;
-            var calllist = calls.ToList().Distinct(new LeadCallLeadDistinct());
+            var calls = from l in alldistinct where l.CallDate < enddate && l.CallDate >= startdate select l;
+
 
             var deals = from d in CH.DB.Deals where d.Abandoned==false && pids.Contains(d.ProjectID.Value) &&  d.ActualPaymentDate< enddate && d.ActualPaymentDate>= startdate  select d;
             var teamleads = CH.GetAllData<Project>(p=>p.Manager == manager).Select(s=>s.TeamLeader).ToList();
@@ -135,7 +135,7 @@ namespace Sales.Controllers
                        select new AjaxLeadMonthPerformance() { 
                             Name = tl,
                             Month = month.Value,
-                            LeadCalls = calllist.Where(w => w.Member.Name == tl).ToList(),
+                            LeadCalls = calls.Where(w => w.Member.Name == tl).ToList(),
                             TotalCheckinTargets = checkintargets.Where(t => t.Project.TeamLeader == tl).Sum(s=>(decimal?)s.CheckIn),
                             Leads = addleads.Where(l=>l.Creator == tl).ToList(),
                             Deals = deals.Where(d=>d.Project.TeamLeader == tl),
@@ -159,7 +159,13 @@ namespace Sales.Controllers
             var ps = CH.GetAllData<Project>(p => p.IsActived == true && p.TeamLeader== leader);
             var pids = ps.Select(s => s.ID).ToList();
             var members = ps.SelectMany(s => s.Members).Select(s => s.Name).Distinct();
-            var calls = from l in CH.DB.LeadCalls where l.CallDate < enddate && l.CallDate >= startdate select l;
+
+            //取得所有call同lead的di
+            var alldistinct = CH.GetAllData<LeadCall>(l => l.CompanyRelationship.Project.IsActived == true && l.Member.Project.TeamLeader == leader).OrderByDescending(o => o.CallDate).Distinct(new LeadCallLeadDistinct());
+
+            var calls = from l in alldistinct where l.CallDate < enddate && l.CallDate >= startdate select l;
+
+  
             var calllist = calls.ToList().Distinct(new LeadCallLeadDistinct());
             var deals = from d in CH.DB.Deals where d.Abandoned == false && pids.Contains(d.ProjectID.Value) && d.ActualPaymentDate < enddate && d.ActualPaymentDate >= startdate select d;
           
