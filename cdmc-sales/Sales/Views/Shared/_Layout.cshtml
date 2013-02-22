@@ -63,47 +63,12 @@
                            //item.Add().Text("角色管理").Url("~/Role/index");
                            item.Add().Text("成熟度").Url("~/progress/index");
                            item.Add().Text("登陆图片").Url("~/loginpageimage/index");
+                           item.Add().Text("权限类型").Url("~/accessright/index");
+                           item.Add().Text("配置项目权限").Url("~/projectright/index");
                        });
                    }
 
-                   menu.Add().Text("项目查看").ImageUrl("~/Content/Common/Icons/mvc.png").Items(item =>
-                   {
-                          item.Add().Url("~/Deal/IndexReview").Text("项目出单统计");
-                          item.Add().Url("~/Report/LeadCalls").Text("项目CallList统计");
-                          item.Add().Url("~/TargetOfMonth/index").Text("项目月目标查看");
-                          item.Add().Url("~/ProgressReport/ProjectProgress").Text("项目进展表");
-                          item.Add().Url("~/Report/PerformanceIndex").Text("考核表");
-                    });
-
-                   menu.Add().Text("销售查看").ImageUrl("~/Content/Common/Icons/mvc.png").Items(item =>
-                   {
-                       item.Add().Url("~/Report/MemberLeadCalls").Text("销售 Call List");
-                       item.Add().Url("~/Report/LeadCalls").Text("销售 Call List统计");
-                       item.Add().Url("~/Deal/IndexReview").Text("销售出单查看");
-                       item.Add().Url("~/TargetOfMonthforMember/index").Text("销售月目标查看");
-                       item.Add().Url("~/Report/MemberProgress").Text("销售进展表");
-                       item.Add().Url("~/Report/MemberLeadCallsChart").Text("销售已打Lead比较");
-                   });
-
-                   //menu.Add().Text("项目编辑").ImageUrl("~/Content/Common/Icons/mvc.png").Items(item =>
-                   //{
-                   //    item.Add().Url("~/Deal/IndexEdit").Text("出单编辑");
-                   //});
-                        
-                   if (score >=   ManagerRequired.LVL)
-                   {
-                       menu.Add().Text("业绩评估").ImageUrl("~/Content/Common/Icons/test.png").Items(item =>
-                       {
-                           item.Add().Text("销售考核").Url("~/ManagerReport/MemberPerformanceIndex");
-                       });
-                   }
-
-                   menu.Add().Text("Package").ImageUrl("~/Content/Common/Icons/sitefinity.png").Items(item =>
-                   {
-                       item.Add().Url("~/Package/index").Text("Package");
-                       //item.Add().Url("~/PackageItem/index").Text("Package项目").ImageUrl("~/Content/Common/Icons/Docking.gif");
-
-                   });
+                 
                    
                    if ( score >= ManagerRequired.LVL)
                    {
@@ -112,12 +77,6 @@
                            item.Add().Url("~/Project/index").Text("项目管理");
                            item.Add().Url("~/Report/MemberLeadCalls").Text("Team Call List");
                            item.Add().Url("~/Report/LeadCalls").Text("Team Call List统计");
-                           //item.Add().Url("~/Deal/index").Text("出单查看");
-                           //item.Add().Url("~/Research/index").Text("调研查看");
-                           //item.Add().Url("~/TargetOfMonthForMember/index").Text("销售月目标查看");
-                           //item.Add().Url("~/Report/MemberProgress").Text("销售进展表");
-                           //item.Add().Url("~/Report/ProjectProgress").Text("项目进展表");
-                           item.Add().Url("~/Report/MemberLeadCallsChart").Text("已打Lead比较");
                            item.Add().Url("~/AssignPerformanceScore/index").Text("打分");
                            if(score>=DirectorRequired.LVL)
                            {
@@ -133,31 +92,30 @@
                        });
                    }
 
-                   if (score == LeaderRequired.LVL)
+                   menu.Add().Text("查看").ImageUrl("~/Content/Common/Icons/mvc.png").Items(item =>
                    {
-                       menu.Add().Text("管理菜单").ImageUrl("~/Content/Common/Icons/Chart.gif").Items(item =>
+                       if(score>LeaderRequired.LVL)
                        {
-                           item.Add().Url("~/Report/MemberLeadCalls").Text("Team Call List");
-                           item.Add().Url("~/Report/LeadCalls").Text("Team Call List统计");
-                           //item.Add().Url("~/Deal/index").Text("出单查看");
-                           //item.Add().Url("~/Research/index").Text("调研查看");
-                           //item.Add().Url("~/TargetOfMonthForMember/index").Text("销售月目标查看");
-                           //item.Add().Url("~/Report/MemberProgress").Text("业绩比较");
-                           item.Add().Url("~/Report/MemberLeadCallsChart").Text("已打Lead比较");
-                           item.Add().Url("~/AssignPerformanceScore/index").Text("打分");
-                           
-                       });
-                   }
+                           item.Add().Url("~/ProgressReport/ProjectProgress").Text("项目进展表");
+                           item.Add().Url("~/Report/PerformanceIndex").Text("考核表");
+                       }
+                       if (score > SalesRequired.LVL)
+                       {
+                      
+                       item.Add().Url("~/Deal/IndexReview").Text("项目出单统计");
+                       item.Add().Url("~/Report/LeadCalls").Text("项目CallList统计");
+                       item.Add().Url("~/Report/MemberLeadCalls").Text("销售 Call List");
+                       item.Add().Url("~/Report/LeadCalls").Text("销售 Call List统计");
+                       item.Add().Url("~/TargetOfMonth/index").Text("项目月目标查看");
+                       item.Add().Url("~/TargetOfMonthforMember/index").Text("销售月目标查看");
+                       
+                       }
+                       item.Add().Url("~/ProtectedCompanys/CompanyIndex").Text("被保护的公司");
+                       item.Add().Url("~/salesReport/MemberLeadCallsChart").Text("已打Lead比较");
+                       item.Add().Url("~/Package/index").Text("Package");
+                   });
 
-                   if (score == SalesRequired.LVL )
-                   {
-                       menu.Add().Text("管理菜单").ImageUrl("~/Content/Common/Icons/Chart.gif").Items(item =>
-                       {
-                           item.Add().Url("~/salesReport/MemberLeadCallsChart").Text("已打Lead比较");
-                       });
-                   }
-                   
-                  
+                 
 
                    if ( score == AdministratorRequired.LVL)
                    {
@@ -210,7 +168,7 @@
                    
                       menu.Add().Text("保护公司").ImageUrl("~/Content/Common/Icons/GridView.gif").Items(item =>
                        {
-                           item.Add().Url("~/ProtectedCompanys/CompanyIndex").Text("被保护的公司");
+                          
                        });
                    
 

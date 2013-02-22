@@ -15,6 +15,7 @@ namespace Sales.Controllers
         /// <returns></returns>
         public ActionResult CompanyIndex(int? projectid)
         {
+            ViewBag.Right = ReviewRight.ProtectedCompanyReview.ToString();
              projectid = this.TrySetProjectIDForUser(projectid);
             ViewBag.ProjectID = projectid;
             if (projectid != null)

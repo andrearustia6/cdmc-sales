@@ -97,10 +97,12 @@ namespace BLL
 
              var plist = list.FindAll(f => IsContainLoginUser(f.Name)).Select(s=>s.Project).ToList();
 
-             if (plist.Count == 0)
-                 plist = GetUserInvolveProject();
+             
+               var  plistorigin = GetUserInvolveProject();
 
-             return plist;
+               plistorigin.AddRange(plist);
+               plistorigin = plistorigin.Distinct().ToList();
+               return plistorigin;
         }
 
         static bool IsContainLoginUser(string namelist)

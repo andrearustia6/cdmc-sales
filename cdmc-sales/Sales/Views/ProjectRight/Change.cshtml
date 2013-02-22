@@ -18,51 +18,51 @@
         @Html.ValidationMessageFor(model => model.Name)
     </div>
 </fieldset>
-
-
 <div>
+    @{
+        var rights = CH.GetAllData<AccessRight>();
+        List<int> checkedright = new List<int>();
 
-@{
-    var rights = CH.GetAllData<AccessRight>();
-    List<int> checkedright = new List<int>();
-
-    if (Model != null)
-    {
-        checkedright = Model.AccessRights.Select(s => s.ID).ToList();
-    }
-    <fieldset>
-   <legend>项目查看权限</legend>
-    <ul>
-    @foreach (var r in rights.FindAll(r=>r.Name.Contains("Review")))
-    {
-        <li  style="width:30%; float:left;"><span><input type="checkbox"
+        if (Model != null)
+        {
+            checkedright = Model.AccessRights.Select(s => s.ID).ToList();
+        }
+        <fieldset>
+            <legend>项目查看权限</legend>
+            <ul>
+                @foreach (var r in rights.FindAll(r => r.Name.Contains("Review")))
+                {
+                    <li style="width: 30%; float: left;"><span>
+                        <input type="checkbox"
         
         @if (checkedright.Contains(r.ID) || Model == null)
         {
             <text> checked="checked" </text>
         }
-         name="rights" value=@r.ID />  @r.Name</span></li>
-    }
-}
-</ul>
-    </fieldset>
+         name="rights" value=@r.ID />
+                        @r.Name</span></li>
+               
+                }
+            </ul>
+        </fieldset>
     
-    <fieldset>
-       <legend>项目编辑权限</legend>
-    <ul>
-    @foreach (var r in rights.FindAll(r=>r.Name.Contains("Edit")))
-    {
-        <li  style="width:30%; float:left;"><span><input type="checkbox"
+        <fieldset>
+            <legend>项目编辑权限</legend>
+            <ul>
+                @foreach (var r in rights.FindAll(r => r.Name.Contains("Edit")))
+                {
+                    <li style="width: 30%; float: left;"><span>
+                        <input type="checkbox"
         
-        @if (checkedright.Contains(r.ID) )
+        @if (checkedright.Contains(r.ID))
         {
             <text> checked="checked" </text>
         }
-         name="rights" value=@r.ID />  @r.Name</span></li>
+         name="rights" value=@r.ID />
+                        @r.Name</span></li>
+                
+                }
+            </ul>
+        </fieldset>
     }
-}
-</ul>
-    </fieldset>
-}
 </div>
-
