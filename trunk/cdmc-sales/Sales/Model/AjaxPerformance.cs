@@ -161,12 +161,12 @@ namespace Model
         {
             get
             {
-                return FaxOutCount > FaxOutStandard;
+                return FaxOutCount >= FaxOutStandard;
 
             }
         }
 
-        public bool IsLeadAddedQualified { get { return LeadsCount > LeadsStandard; } }
+        public bool IsLeadAddedQualified { get { return LeadsCount >= LeadsStandard; } }
     }
 
 
@@ -276,7 +276,8 @@ namespace Model
                     var ap = new AjaxLeadWeekPerformance() {
                         StartDate = startdate, EndDate = enddate,
                         LeadCalls = _leadCalls.FindAll(f => f.CallDate >= startdate && f.CallDate < enddate).ToList(),
-                        Leads = _leads.Where(f => f.CreatedDate >= startdate && f.CreatedDate < enddate).ToList()
+                        Leads = _leads.Where(f => f.CreatedDate >= startdate && f.CreatedDate < enddate).ToList(),
+                        Deals = _deals.Where(f=>f.ActualPaymentDate>=StartDate && f.ActualPaymentDate< EndDate)
                     };
                     _weeks.Add(ap);
                     startdate = enddate;
@@ -365,7 +366,8 @@ namespace Model
                             StartDate = startdate,
                             EndDate = enddate,
                             LeadCalls = _leadCalls.FindAll(f => f.CallDate >= startdate && f.CallDate < enddate),
-                            Leads = _leads.Where(f => f.CreatedDate >= startdate && f.CreatedDate < enddate).ToList()
+                            Leads = _leads.Where(f => f.CreatedDate >= startdate && f.CreatedDate < enddate).ToList(),
+                            Deals = _deals.Where(f => f.ActualPaymentDate >= StartDate && f.ActualPaymentDate < EndDate)
                         };
                         _weeks.Add(ap);
                         startdate = enddate;
