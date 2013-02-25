@@ -47,7 +47,7 @@
                    
                    if (score >= DirectorRequired.LVL)
                    {
-                       menu.Add().Text("配置").ImageUrl("~/Content/Common/Icons/mvc.png").Items(item =>
+                       menu.Add().Text("配置").ImageUrl("~/Content/Common/Icons/test.png").Items(item =>
                        {
                            item.Add().Text("行业").Url("~/Area/index");
                            item.Add().Text("货币").Url("~/CurrencyType/index");
@@ -94,8 +94,6 @@
                        menu.Add().Text("管理菜单").ImageUrl("~/Content/Common/Icons/Chart.gif").Items(item =>
                        {
                            item.Add().Url("~/Project/index").Text("项目管理");
-                           item.Add().Url("~/Report/MemberLeadCalls").Text("Team Call List");
-                           item.Add().Url("~/Report/LeadCalls").Text("Team Call List统计");
                            item.Add().Url("~/AssignPerformanceScore/index").Text("打分");
                            if(score>=DirectorRequired.LVL)
                            {
