@@ -161,7 +161,7 @@ namespace Sales.Controllers
             var members = ps.SelectMany(s => s.Members).Select(s => s.Name).Distinct();
 
             //取得所有call同lead的di
-            var alldistinct = CH.GetAllData<LeadCall>(l => l.CompanyRelationship.Project.IsActived == true && l.Member.Project.TeamLeader == leader).OrderByDescending(o => o.CallDate).Distinct(new LeadCallLeadDistinct());
+            var alldistinct = CH.GetAllData<LeadCall>(l => l.CompanyRelationship.Project.IsActived == true ).OrderByDescending(o => o.CallDate).Distinct(new LeadCallLeadDistinct());
 
             var calls = from l in alldistinct where l.CallDate < enddate && l.CallDate >= startdate select l;
 

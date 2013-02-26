@@ -20,10 +20,6 @@
                     c.Bound(item => item.TotalDealinTargets).Title("月项目DeaIn总目标").Format("{0:c}").Aggregate(item => item.Sum()).ClientFooterTemplate("<p>DealIn目标总额: <#= $.telerik.formatString('{0:c}', Sum) #></p>");
                     c.Bound(item => item.TotalDealIn).Title("月项目总DealIn").Format("{0:c}").Aggregate(item => item.Sum()).ClientFooterTemplate("<p>DealIn总额: <#= $.telerik.formatString('{0:c}', Sum) #></p>");
                     c.Bound(item => item.DealInComplatePercetage).ClientTemplate("<p><#= DealInComplatePercetage #>%</p>");
-                    c.Bound(item => item.MemberCounts);
-                    c.Bound(item => item.LeadCallsCount).Aggregate(item => item.Sum()).ClientFooterTemplate("<p>Call总数: <#= Sum #></p>");
-                    c.Bound(item => item.CallingCompanyCount).Aggregate(item => item.Sum()).ClientFooterTemplate("<p>已打公司总数: <#= Sum #></p>");
-                    c.Bound(item => item.CallingLeadCount).Aggregate(item => item.Sum()).ClientFooterTemplate("<p>已打Lead总数: <#= Sum #></p>");
                     c.Bound(item => item.PerMemberCheckIn).Aggregate(item => item.Average()).Format("{0:c}").ClientFooterTemplate("<p>个人月平均CheckIn: <#= $.telerik.formatString('{0:c}', Average) #> </p>");
                     c.Bound(item => item.PerMemberDealIn).Aggregate(item => item.Average()).Format("{0:c}").ClientFooterTemplate("<p>个人月平均DealIn: <#= $.telerik.formatString('{0:c}', Average) #></p>");
                     c.Bound(item => item.PerMemberCall).Aggregate(item => item.Average()).ClientFooterTemplate("<p>个人月平均Call数量: <#= Average #></p>");

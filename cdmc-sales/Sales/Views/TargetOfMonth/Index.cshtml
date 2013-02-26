@@ -53,7 +53,7 @@
      @* @Html.ActionLink("周目标创建", "Breakdown", "Project", new { projectid = projectid, targetofmonthid = tm.ID }, null)    *@
         
 }
-@helper RenderMembersTargetOfWeek(string key, List<TargetOfWeek> tm, int projectid, int targetofmonthid)
+@helper RenderMembersTargetOfWeek(string key, List<TargetOfWeek> tm, int? projectid, int targetofmonthid)
     {
          @Html.ActionLink("编辑", "editBreakdown", "Project", new { projectid = projectid, targetofmonthid = targetofmonthid, startdate = key }, null)   
     @(Html.Telerik().Grid(tm).Name("TargetOfWeek" + key)

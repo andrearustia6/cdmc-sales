@@ -14,8 +14,8 @@
                 })
                 .Columns(c =>
                 {
-                    c.Bound(item => item.CompanyRelationship.Company.Name).Title("客户名称").Width(250);
-                    c.Bound(item => item.Package.Name).Title("Package名称");
+                    c.Bound(item => item.CompanyRelationship.Company.Name).Title("客户名称").Width(200);
+                    c.Bound(item => item.Package.Name).Title("Package名称").Width(200);
                     c.Bound(item => item.Payment).Width(100).Format("{0:c}").Aggregate(aggregates => aggregates.Sum()).FooterTemplate(@<text>@if (item.Sum != null)
                                                                                                                                              {<p>应收款: @item.Sum.Format("{0:c}")</p>}</text>).GroupFooterTemplate(@<text>@if (item.Sum != null)
                                                                                                                                                                                                                         {<p>应收款: @item.Sum.Format("{0:c}")</p>}</text>).Width(100);
@@ -26,7 +26,7 @@
                     c.Bound(item => item.Committer).Width(100);
                     c.Bound(item => item.CommitterContect).Width(100);
                     c.Bound(item => item.Abandoned).Width(70);
-                    c.Bound(item => item.TicketDescription);
+                    c.Bound(item => item.TicketDescription).Width(200);
                     c.Bound(item => item.ExpectedPaymentDate).Format("{0:d}").Width(90);
                     c.Bound(item => item.ActualPaymentDate).Format("{0:d}").Width(100);
                     c.Bound(item => item.ID).Title("操作").Width(160).Template(@<span>
