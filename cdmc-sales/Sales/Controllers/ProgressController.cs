@@ -19,6 +19,7 @@ namespace Sales.Controllers
             return View();
         }
 
+        //Func<bool> f
         [GridAction]
         public ActionResult _MonthProgress()
         {
@@ -36,6 +37,17 @@ namespace Sales.Controllers
             }
 
             var ps = from p in CH.DB.Projects where p.IsActived == true select p;
+
+            //如果是manager 只能看到自己的项目
+            if (Employee.EqualToManager())
+            {
+                var managername = Employee.CurrentUserName;
+                ps = ps.Where(p => p.Manager ==managername );
+                deals = deals.Where(d => d.Project.Manager == managername);
+                targets = targets.Where(d => d.Project.Manager == managername);
+                calls = calls.Where(c => c.CompanyRelationship.Project.Manager == managername);
+            }
+
             var list = from i in months
                        select new AjaxMonthTotalProgressStatistics()
                        {
@@ -64,10 +76,21 @@ namespace Sales.Controllers
             var deals = from d in CH.DB.Deals where d.Project.IsActived == true && d.Abandoned == false select d;
             var targets = from t in CH.DB.TargetOfWeeks where t.Project.IsActived == true select t;
             var calls = from c in CH.DB.LeadCalls where c.CompanyRelationship.Project.IsActived == true select c;
-            var totalprojectcheckin = from d in CH.DB.Deals where d.Project.IsActived == true && d.Abandoned == false select d;
+            //var totalprojectcheckin = from d in CH.DB.Deals where d.Project.IsActived == true && d.Abandoned == false select d;
             var ps = from p in CH.DB.Projects where p.IsActived == true select p;
-            var pslist = ps.ToList();
+           
 
+            //如果是manager 只能看到自己的项目
+            if (Employee.EqualToManager())
+            {
+                var managername = Employee.CurrentUserName;
+                ps = ps.Where(p => p.Manager == managername);
+                deals = deals.Where(d => d.Project.Manager == managername);
+                targets = targets.Where(d => d.Project.Manager == managername);
+               // totalprojectcheckin = totalprojectcheckin.Where(d => d.Project.Manager == managername);
+                calls = calls.Where(c => c.CompanyRelationship.Project.Manager == managername);
+            }
+            var pslist = ps.ToList();
             var list = from p in pslist
                        select new AjaxWeekProjectProgressStatistics()
                        {
@@ -103,6 +126,17 @@ namespace Sales.Controllers
             //var companys = from c in CH.DB.CompanyRelationships where c.Project.IsActived == true select c;
 
             var ps = from p in CH.DB.Projects where p.IsActived == true select p;
+
+            //如果是manager 只能看到自己的项目
+            if (Employee.EqualToManager())
+            {
+                var managername = Employee.CurrentUserName;
+                ps = ps.Where(p => p.Manager == managername);
+                deals = deals.Where(d => d.Project.Manager == managername);
+                targets = targets.Where(d => d.Project.Manager == managername);
+                calls = calls.Where(c => c.CompanyRelationship.Project.Manager == managername);
+            }
+
             var pslist = ps.ToList();
             var list = from p in pslist
                        select new AjaxMonthProjectProgressStatistics()
@@ -147,6 +181,15 @@ namespace Sales.Controllers
             var targets = from t in CH.DB.TargetOfWeeks where t.Project.IsActived == true select t;
             var calls = from c in CH.DB.LeadCalls where c.CompanyRelationship.Project.IsActived == true select c;
 
+            //如果是manager 只能看到自己的项目
+            if (Employee.EqualToManager())
+            {
+                var managername = Employee.CurrentUserName;
+                deals = deals.Where(d => d.Project.Manager == managername);
+                targets = targets.Where(d => d.Project.Manager == managername);
+                calls = calls.Where(c => c.CompanyRelationship.Project.Manager == managername);
+            }
+
             while (enddate.Month <= monthid)
             {
                 var week = new AjaxWeekTotalProgressStatistics() { StartDate = startdate, EndDate = enddate };
@@ -182,6 +225,17 @@ namespace Sales.Controllers
             var calls = from c in CH.DB.LeadCalls where c.ProjectID == projectid select c;
 
             var ps = from p in CH.DB.Projects where p.IsActived == true select p;
+
+            //如果是manager 只能看到自己的项目
+            if (Employee.EqualToManager())
+            {
+                var managername = Employee.CurrentUserName;
+                deals = deals.Where(d => d.Project.Manager == managername);
+                targets = targets.Where(d => d.Project.Manager == managername);
+                calls = calls.Where(c => c.CompanyRelationship.Project.Manager == managername);
+                memberlist = memberlist.Where(m => m.Project.Manager == managername).ToList();
+            }
+
             var pslist = ps.ToList();
             var list = from m in memberlist
                        select new AjaxWeekMemberProgressStatistics()
@@ -207,36 +261,5 @@ namespace Sales.Controllers
         {
             return View();
         }
-
-        //[GridAction]
-        //public ActionResult _Progress()
-        //{
-        //    var deals = from d in CH.DB.Deals where d.Project.IsActived == true && d.Abandoned == false select d;
-        //    var targets = from t in CH.DB.TargetOfMonths where t.Project.IsActived == true select t;
-        //    var calls = from c in CH.DB.LeadCalls where c.CompanyRelationship.Project.IsActived == true select c;
-        //    var companys = from c in CH.DB.CompanyRelationships where c.Project.IsActived == true select c;
-
-        //    var ps = from p in CH.DB.Projects
-        //             where p.IsActived == true
-        //             select new AjaxViewProject()
-        //             {
-        //                 deals = deals,
-        //                 ProjectCode = p.ProjectCode,
-        //                 StartDay = p.StartDate,
-        //                 EndDay = p.EndDate,
-        //                 ProjectName = p.Name_CH,
-        //                 Manager = p.Manager,
-        //                 Lead = p.TeamLeader,
-        //                 ProjectTarget = p.Target,
-        //                 TotalCalls = calls.Where(c => c.ProjectID == p.ID).Count(),
-        //                 TotalCheckIn = deals.Where(d => d.ProjectID == p.ID).Sum(s => s.Income),
-        //                 TotalDealIn = deals.Where(d => d.ProjectID == p.ID).Sum(s => s.Payment),
-        //                 TotalDealCounts = deals.Where(d => d.ProjectID == p.ID).Count(),
-        //                 TotalCompanysCount = companys.Where(c => c.ProjectID == p.ID).Count(),
-        //                 ProjectID = p.ID
-        //             };
-        //    return View(new GridModel<AjaxViewProject> { Data = ps.ToList() });
-        //}
-
     }
 }
