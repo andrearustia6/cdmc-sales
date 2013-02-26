@@ -119,7 +119,7 @@ namespace Sales.Controllers
             var members = ps.SelectMany(s=>s.Members).Select(s=>s.Name).Distinct();
 
             //取得所有call同lead的di
-            var alldistinct = CH.GetAllData<LeadCall>(l =>l.CompanyRelationship.Project.IsActived==true && l.Member.Project.Manager == manager).OrderByDescending(o => o.CallDate).Distinct(new LeadCallLeadDistinct());
+            var alldistinct = CH.GetAllData<LeadCall>(l =>l.Project.IsActived==true && l.Member.Project.Manager == manager).OrderByDescending(o => o.CallDate).Distinct(new LeadCallLeadDistinct());
 
             var calls = from l in alldistinct where l.CallDate < enddate && l.CallDate >= startdate select l;
 
@@ -161,7 +161,7 @@ namespace Sales.Controllers
             var members = ps.SelectMany(s => s.Members).Select(s => s.Name).Distinct();
 
             //取得所有call同lead的di
-            var alldistinct = CH.GetAllData<LeadCall>(l => l.CompanyRelationship.Project.IsActived == true ).OrderByDescending(o => o.CallDate).Distinct(new LeadCallLeadDistinct());
+            var alldistinct = CH.GetAllData<LeadCall>(l => l.Project.IsActived == true ).OrderByDescending(o => o.CallDate).Distinct(new LeadCallLeadDistinct());
 
             var calls = from l in alldistinct where l.CallDate < enddate && l.CallDate >= startdate select l;
 
@@ -175,7 +175,7 @@ namespace Sales.Controllers
             var assignscores = from a in CH.DB.AssignPerformanceScores where a.Month == month && a.Year == DateTime.Now.Year select a;
             var assignrates = from a in CH.DB.AssignPerformanceRates where a.Month == month && a.Year == DateTime.Now.Year select a;
             var data = from tl in members
-                       select new AjaxLeadMonthPerformance()
+                       select new AjaxSalesMonthPerformance()
                        {
                            Name = tl,
                            Month = month.Value,
@@ -187,7 +187,7 @@ namespace Sales.Controllers
                            Rate = assignrates.Where(a => a.TargetName == tl).Sum(s => (double?)s.Rate)
                        };
 
-            return View(new GridModel<AjaxLeadMonthPerformance> { Data = data.ToList() });
+            return View(new GridModel<AjaxSalesMonthPerformance> { Data = data.ToList() });
         }
          
 

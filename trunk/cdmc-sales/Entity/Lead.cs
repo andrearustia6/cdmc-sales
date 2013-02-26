@@ -213,6 +213,7 @@ namespace Entity
     public class LeadCall : CompanyRelationshipChildItem
     {
         public int? ProjectID { get; set; }
+        public virtual Project Project { get; set; }
 
         public virtual Lead Lead { get; set; }
         [Display(Name = "致电客户"), Required]

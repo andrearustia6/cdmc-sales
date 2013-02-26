@@ -20,8 +20,8 @@
                     c.Bound(item => item.TotalDealinTargets).Title("月项目DeaIn总目标").Format("{0:c}").Aggregate(item => item.Sum()).ClientFooterTemplate("<p>DealIn目标总额: <#= $.telerik.formatString('{0:c}', Sum) #></p>");
                     c.Bound(item => item.TotalDealIn).Title("月项目总DealIn").Format("{0:c}").Aggregate(item => item.Sum()).ClientFooterTemplate("<p>DealIn总额: <#= $.telerik.formatString('{0:c}', Sum) #></p>");
                     c.Bound(item => item.DealInComplatePercetage).ClientTemplate("<p><#= DealInComplatePercetage #>%</p>");
-                    c.Bound(item => item.PerMemberCheckIn).Aggregate(item => item.Average()).Format("{0:c}").ClientFooterTemplate("<p>个人月平均CheckIn: <#= $.telerik.formatString('{0:c}', Average) #> </p>");
-                    c.Bound(item => item.PerMemberDealIn).Aggregate(item => item.Average()).Format("{0:c}").ClientFooterTemplate("<p>个人月平均DealIn: <#= $.telerik.formatString('{0:c}', Average) #></p>");
+                    c.Bound(item => item.PerMemberCheckIn).Aggregate(item => item.Sum()).Format("{0:c}").ClientFooterTemplate("<p>个人平均CheckIn: <#= $.telerik.formatString('{0:c}', Sum) #> </p>");
+                    c.Bound(item => item.PerMemberDealIn).Aggregate(item => item.Sum()).Format("{0:c}").ClientFooterTemplate("<p>个人平均DealIn: <#= $.telerik.formatString('{0:c}', Sum) #></p>");
                     c.Bound(item => item.PerMemberCall).Aggregate(item => item.Average()).ClientFooterTemplate("<p>个人月平均Call数量: <#= Average #></p>");
                 })
                         .DataBinding(d => d.Ajax().Select("_MonthProgress", "ProgressReport"))
@@ -52,10 +52,6 @@
         c.Bound(item => item.TotalDealinTargets).Title("周项目DeaIn总目标").Format("{0:c}").Aggregate(item => item.Sum()).ClientFooterTemplate("<p>DealIn目标总额: <#= $.telerik.formatString('{0:c}', Sum) #></p>");
         c.Bound(item => item.TotalDealIn).Title("周项目总DealIn").Format("{0:c}").Aggregate(item => item.Sum()).ClientFooterTemplate("<p>DealIn总额: <#= $.telerik.formatString('{0:c}', Sum) #></p>");
         c.Bound(item => item.DealInComplatePercetage).ClientTemplate("<p><#= DealInComplatePercetage #>%</p>");
-        //c.Bound(item => item.MemberCounts);
-        //c.Bound(item => item.LeadCallsCount).Aggregate(item => item.Sum()).ClientFooterTemplate("<p>Call总数: <#= Sum #></p>");
-        //c.Bound(item => item.CallingCompanyCount).Aggregate(item => item.Sum()).ClientFooterTemplate("<p>已打公司总数: <#= Sum #></p>");
-        //c.Bound(item => item.CallingLeadCount).Aggregate(item => item.Sum()).ClientFooterTemplate("<p>已打Lead总数: <#= Sum #></p>");
         c.Bound(item => item.PerMemberCheckIn).Aggregate(item => item.Average()).ClientFooterTemplate("<p>个人平均CheckIn: <#= $.telerik.formatString('{0:c}', Average) #></p>").Format("{0:c}");
         c.Bound(item => item.PerMemberDealIn).Aggregate(item => item.Average()).ClientFooterTemplate("<p>个人平均DealIn: <#= $.telerik.formatString('{0:c}', Average) #></p>").Format("{0:c}");
         c.Bound(item => item.PerMemberCall).Aggregate(item => item.Average()).ClientFooterTemplate("<p>个人平均Call数量: <#=  Average #></p>");
@@ -81,7 +77,6 @@
         c.Bound(item => item.TotalDealinTargets).Title("总项目DeaIn总目标").Format("{0:c}").Aggregate(item => item.Sum()).ClientFooterTemplate("<p>DealIn目标总额: <#= $.telerik.formatString('{0:c}', Sum) #></p>");
         c.Bound(item => item.TotalDealIn).Title("总项目总DealIn").Format("{0:c}").Aggregate(item => item.Sum()).ClientFooterTemplate("<p>DealIn总额: <#= $.telerik.formatString('{0:c}', Sum) #></p>");
         c.Bound(item => item.DealInComplatePercetage).ClientTemplate("<p><#= DealInComplatePercetage #>%</p>");
-        
         //c.Bound(item => item.MemberCounts);
         //c.Bound(item => item.LeadCallsCount).Aggregate(item => item.Sum()).ClientFooterTemplate("<p>Call总数: <#= Sum #></p>");
         //c.Bound(item => item.CallingCompanyCount).Aggregate(item => item.Sum()).ClientFooterTemplate("<p>已打公司总数: <#= Sum #></p>");
@@ -93,7 +88,7 @@
         c.Bound(item => item.WeekLeft);
     }).DataBinding(dataBinding => dataBinding.Ajax().Select("_ProjectWeekProgress", "ProgressReport"))
      .Selectable().ClientEvents(events => events.OnRowSelect("onProjectWeekRowSelected")).Scrollable()
-             .ClientEvents(clientEvents => clientEvents.OnDataBinding("onProjectWeekBinding")).Pageable(p => p.Style(GridPagerStyles.Status).PageOnScroll(true).PageSize(10)).Sortable().Scrollable(s => s.Height(150)).Resizable(resizing => resizing.Columns(true))
+             .ClientEvents(clientEvents => clientEvents.OnDataBinding("onProjectWeekBinding")).Pageable(p => p.Style(GridPagerStyles.Status).PageOnScroll(true).PageSize(30)).Sortable().Scrollable(s => s.Height(150)).Resizable(resizing => resizing.Columns(true))
     )
 </fieldset>
 @*销售每周进度*@
@@ -143,10 +138,10 @@
         //c.Bound(item => item.CallingLeadCount).Aggregate(item => item.Sum()).ClientFooterTemplate("<p>已打Lead总数: <#= Sum #></p>");
         c.Bound(item => item.PerMemberCheckIn).Aggregate(item => item.Average()).ClientFooterTemplate("<p>个人平均CheckIn: <#= $.telerik.formatString('{0:c}', Average) #></p>").Format("{0:c}");
         c.Bound(item => item.PerMemberDealIn).Aggregate(item => item.Average()).ClientFooterTemplate("<p>个人平均DealIn: <#= $.telerik.formatString('{0:c}', Average) #></p>").Format("{0:c}");
-        c.Bound(item => item.PerMemberCall).Aggregate(item => item.Average()).ClientFooterTemplate("<p>个人平均Call数量: <#= Average #></p>");
+        c.Bound(item => item.PerMemberCall).Aggregate(item => item.Average()).ClientFooterTemplate("<p>个人平均Call数量: <#=  Average #></p>");
     }).DataBinding(dataBinding => dataBinding.Ajax().Select("_ProjectMonthProgress", "ProgressReport"))
      //.Selectable().ClientEvents(events => events.OnRowSelect("onWeekRowSelected"))
-            .ClientEvents(clientEvents => clientEvents.OnDataBinding("onMonthProjectBinding")).Pageable(p => p.Style(GridPagerStyles.Status).PageOnScroll(true).PageSize(4)).Sortable().Scrollable(s => s.Height(150)).Resizable(resizing => resizing.Columns(true))
+            .ClientEvents(clientEvents => clientEvents.OnDataBinding("onMonthProjectBinding")).Pageable(p => p.Style(GridPagerStyles.Status).PageOnScroll(true).PageSize(30)).Sortable().Scrollable(s => s.Height(150)).Resizable(resizing => resizing.Columns(true))
     )
     }
 </fieldset>
@@ -216,72 +211,3 @@
   
     
 </script>
-@*@using Model
-@model List<AjaxViewProjectMonthPerformance>
-@Html.Partial("progressselector")
-@{
-    var selectedangels = ViewBag.SelectedAngels as List<string>;
-    foreach (var pv in Model)
-    {
-        var listm = new List<AjaxViewProjectMonthPerformance>();
-        listm.Add(pv);
-    <fieldset>
-        <legend>@pv.ProjectName </legend>
-        @if (selectedangels == null || selectedangels.Contains("week"))
-        {
-            foreach (AjaxViewProjectWeekPerformance wv in pv.AjaxViewProjectWeekPerformances)
-            {
-                var m = new List<AjaxViewProjectWeekPerformance>();
-                m.Add(wv);
-            <fieldset style="width: 22.1%; float: left;">
-                <legend>@wv.StartDate.ToShortDateString() ~ @wv.EndDate.ToShortDateString()</legend>
-                @(Html.Telerik().Chart<AjaxViewProjectWeekPerformance>(m).Name("chart" + wv.ProjectID + wv.StartDate.ToShortDateString()).Title(wv.ProjectName).Legend(legend => legend.Position(ChartLegendPosition.Bottom)).Series(series =>
-  {
-      series.Column(s => s.DealInTarget).Name("销售目标").Labels(labels => labels.Format("￥{0:#,##0}").Visible(true));
-      series.Column(s => s.DealIn).Name("实际出单").Labels(labels => labels.Format("￥{0:#,##0}").Visible(true));
-      series.Column(s => s.CheckInTarget).Name("入账目标").Labels(labels => labels.Format("￥{0:#,##0}").Visible(true));
-      series.Column(s => s.CheckIn).Name("实际入账").Labels(labels => labels.Format("￥{0:#,##0}").Visible(true));
-
-      //series.Bar(s => s.DealInTarget).Name("销售目标").Labels(labels => labels.Template(" 销售目标: <#= value #>").Visible(true));
-      //series.Bar(s => s.DealIn).Name("实际出单").Labels(labels => labels.Template(" 实际出单: <#= value #>").Visible(true));
-      //series.Bar(s => s.CheckInTarget).Name("入账目标").Labels(labels => labels.Template(" 入账目标: <#= value #>").Visible(true));
-      //series.Bar(s => s.CheckIn).Name("实际入账").Labels(labels => labels.Template(" 实际入账: <#= value #>").Visible(true));
-
-  })
-  .CategoryAxis(axis => axis.Categories(s => s.ComplatePercentage))
-      .ValueAxis(axis => axis.Numeric().Labels(labels => labels.Format("￥{0:,###0}")))
-      )
-            </fieldset> 
-            }
-        }
- @if (selectedangels == null || selectedangels.Contains("month"))
- {
-       @(Html.Telerik().Chart<AjaxViewProjectMonthPerformance>(listm).Name("chart" + pv.ProjectID).Title("月目标完成情况")
-        .Legend(legend => legend.Position(ChartLegendPosition.Bottom)).Series(series =>
-{
-    series.Bar(s => s.DealInTarget).Name("销售目标").Labels(labels => labels.Format("销售目标: ￥{0:#,##0}").Visible(true));
-    series.Bar(s => s.DealIn).Name("实际出单").Labels(labels => labels.Format("实际出单: ￥{0:#,##0}").Visible(true));
-    series.Bar(s => s.CheckInTarget).Name("入账目标").Labels(labels => labels.Format("入账目标: ￥{0:#,##0}").Visible(true));
-    series.Bar(s => s.CheckIn).Name("实际入账").Labels(labels => labels.Format("实际入账: ￥{0:#,##0}").Visible(true));
-    //series.Bar(s => s.DealInTarget).Name("销售目标").Labels(labels => labels.Template(" 销售目标: <#= value #>").Visible(true));
-}).CategoryAxis(axis => axis.Categories(s => s.ComplatePercentage))
-  .ValueAxis(axis => axis.Numeric().Labels(labels => labels.Format("￥{0:#,##0}"))).HtmlAttributes(new { style = "float:left; width:98%;height:250px;" }))
- }
-
-@* @(Html.Telerik().Chart<AjaxViewProjectMonthPerformance>(Model).Name("totalchart" + pv.ProjectID).Title("月目标完成情况比较")
-        .Legend(legend => legend.Position(ChartLegendPosition.Bottom)).Series(series => 
-{
-    series.Column(s => s.DealInTarget).Name("销售目标").Labels(true);
-    series.Column(s => s.DealIn).Name("实际出单").Labels(true);
-    series.Column(s => s.CheckInTarget).Name("入账目标").Labels(true);
-    series.Column(s => s.CheckIn).Name("实际入账").Labels(true);
-    //series.Bar(s => s.DealInTarget).Name("销售目标").Labels(labels => labels.Template(" 销售目标: <#= value #>").Visible(true));
-}).CategoryAxis(axis => axis.Categories(s => s.ComplatePercentage))
-      .ValueAxis(axis => axis.Numeric().Labels(labels => labels.Format("￥{0:#,##0}"))).HtmlAttributes(new { style="float:left; height:250px;"}))
-
-
-</fieldset>
-    }
-
-
-}*@ 

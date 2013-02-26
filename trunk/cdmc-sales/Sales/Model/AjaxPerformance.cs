@@ -145,9 +145,6 @@ namespace Model
 
         protected List<AjaxWeekPerformance> _weeks;
         public virtual List<AjaxWeekPerformance> Weeks{get;set;}
-
-
-
     }
 
 
@@ -166,7 +163,13 @@ namespace Model
             }
         }
 
-        public bool IsLeadAddedQualified { get { return LeadsCount >= LeadsStandard; } }
+        public bool IsLeadAddedQualified
+        {
+            get
+            {
+                return LeadsCount >= LeadsStandard;
+            }
+        }
     }
 
 
@@ -409,11 +412,11 @@ namespace Model
 
     public class AjaxManagerMonthPerformance : AjaxMonthPerformance
     {
-        [Display(Name = "平均通话时间")]
+        [Display(Name = "月人均通话")]
         public double AverageHours { get {
             if (MemberCount == 0) return 0;
             return CallHours / Members.Count(); } }
-        [Display(Name = "平均FaxOut数")]
+        [Display(Name = "月人均faxout")]
         public int AverageFax
         {
             get
@@ -423,7 +426,7 @@ namespace Model
             }
         }
 
-        [Display(Name = "平均添加Lead数")]
+        [Display(Name = "月人均添加Lead")]
         public int AverageLead
         {
             get
