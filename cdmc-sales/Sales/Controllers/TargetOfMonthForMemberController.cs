@@ -102,7 +102,7 @@ namespace Sales.Controllers
             if (ModelState.IsValid)
             {
                 CH.Create<TargetOfMonthForMember>(item);
-                return RedirectToAction("MyTargetIndex", new { projectid = item.ProjectID });
+                return RedirectToAction("Index", new { projectid = item.ProjectID });
             }
             ViewBag.ProjectID = item.ProjectID;
             return View(item);
@@ -137,7 +137,7 @@ namespace Sales.Controllers
             {
               
                 CH.Edit<TargetOfMonthForMember>(item);
-                return RedirectToAction("MyTargetIndex", new { projectid = item.ProjectID });
+                return RedirectToAction("Index", new { projectid = item.ProjectID });
             }
             ViewBag.ProjectID = item.ProjectID;
             return View(item);
@@ -156,7 +156,7 @@ namespace Sales.Controllers
         {
             var item = CH.GetDataById<TargetOfMonthForMember>(id);
             CH.Delete<TargetOfMonthForMember>(id);
-            return RedirectToAction("MyTargetIndex", new { projectid = item.ProjectID });
+            return RedirectToAction("Index", new { projectid = item.ProjectID });
         }
     }
 }
