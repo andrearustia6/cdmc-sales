@@ -82,7 +82,7 @@
     </div>
     <div class="editor-field">
          
-        @Html.Telerik().ComboBoxFor(model => model.TeamLeader).BindTo(new SelectList(Employee.GetEmplyeeByLVL(LeaderRequired.LVL), "UserName", "UserName"))
+        @Html.Telerik().ComboBoxFor(model => model.TeamLeader).BindTo(new SelectList(Employee.GetEmplyeeByLVL(LeaderRequired.LVL,ManagerRequired.LVL), "UserName", "UserName"))
         @Html.ValidationMessageFor(model => model.TeamLeader)
     </div>
       <div class="editor-label">

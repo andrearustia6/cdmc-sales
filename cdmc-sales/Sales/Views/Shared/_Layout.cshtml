@@ -100,6 +100,11 @@
                            {
                               item.Add().Url("~/AssignPerformanceRate/index").Text("设定考核系数");
                            }
+                           var ps = CH.GetAllData<Entity.Project>(p => p.TeamLeader == Employee.CurrentUserName);
+                           if (ps.Count>0)
+                           {
+                               item.Add().Url("~/teamleader/breakdownindex").Text("一周目标");
+                           }
                            
                        });
                        

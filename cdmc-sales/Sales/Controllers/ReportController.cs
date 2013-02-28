@@ -69,6 +69,8 @@ namespace Sales.Controllers
             
             DateTime startdate;
             DateTime enddate;
+            DateTime monthstartdate = new DateTime(DateTime.Now.Year, month.Value, 1);
+            DateTime monthenddate = monthstartdate.EndOfMonth();
             if (month == null) month = DateTime.Now.Month;
             Utl.Utl.GetMonthActualStartdateAndEnddate(month, out startdate, out enddate);
             
@@ -79,9 +81,9 @@ namespace Sales.Controllers
             {
                 managers = managers.Where(w => w == Employee.CurrentUserName);
             }
-            var leads = from l in CH.DB.Leads where l.CreatedDate.Value.Month == month select l;
+            var leads = from l in CH.DB.Leads where l.CreatedDate < enddate && l.CreatedDate >= startdate select l;
             var calls = from l in CH.DB.LeadCalls where l.CallDate< enddate && l.CallDate>= startdate  select l;
-            var deals = from d in CH.DB.Deals where  d.Abandoned == false && d.IsClosed==true && d.ActualPaymentDate.Value.Month == month　 select d;
+            var deals = from d in CH.DB.Deals where  d.Abandoned == false && d.IsClosed==true && d.ActualPaymentDate<monthenddate && d.ActualPaymentDate>= monthstartdate　 select d;
             var list = new List<AjaxManagerMonthPerformance>();
 
             foreach(var m in managers)
@@ -111,7 +113,8 @@ namespace Sales.Controllers
             if(string.IsNullOrEmpty(manager)|| month==null)  return View(new GridModel<AjaxLeadMonthPerformance> { Data = new List<AjaxLeadMonthPerformance>() });
             DateTime startdate;
             DateTime enddate;
-            
+            DateTime monthstartdate = new DateTime(DateTime.Now.Year,month.Value,1);
+            DateTime monthenddate = monthstartdate.EndOfMonth();
             Utl.Utl.GetMonthActualStartdateAndEnddate(month, out startdate, out enddate);
 
             var ps = CH.GetAllData<Project>(p=>p.IsActived == true && p.Manager == manager);
@@ -124,7 +127,7 @@ namespace Sales.Controllers
             var calls = from l in alldistinct where l.CallDate < enddate && l.CallDate >= startdate select l;
 
 
-            var deals = from d in CH.DB.Deals where d.Abandoned==false && pids.Contains(d.ProjectID.Value) &&  d.ActualPaymentDate< enddate && d.ActualPaymentDate>= startdate  select d;
+            var deals = from d in CH.DB.Deals where d.Abandoned == false && pids.Contains(d.ProjectID.Value) && d.ActualPaymentDate < monthenddate && d.ActualPaymentDate >= monthstartdate select d;
             var teamleads = CH.GetAllData<Project>(p=>p.Manager == manager).Select(s=>s.TeamLeader).ToList();
             var checkintargets = from ct in CH.DB.TargetOfMonths where ct.EndDate.Month == month && pids.Contains(ct.ProjectID.Value) select ct;
           
@@ -153,7 +156,8 @@ namespace Sales.Controllers
             if (string.IsNullOrEmpty(leader) || month == null) return View(new GridModel<AjaxLeadMonthPerformance> { Data = new List<AjaxLeadMonthPerformance>() });
             DateTime startdate;
             DateTime enddate;
-
+            DateTime monthstartdate = new DateTime(DateTime.Now.Year, month.Value, 1);
+            DateTime monthenddate = monthstartdate.EndOfMonth();
             Utl.Utl.GetMonthActualStartdateAndEnddate(month, out startdate, out enddate);
 
             var ps = CH.GetAllData<Project>(p => p.IsActived == true && p.TeamLeader== leader);
@@ -167,7 +171,7 @@ namespace Sales.Controllers
 
   
             var calllist = calls.ToList().Distinct(new LeadCallLeadDistinct());
-            var deals = from d in CH.DB.Deals where d.Abandoned == false && pids.Contains(d.ProjectID.Value) && d.ActualPaymentDate < enddate && d.ActualPaymentDate >= startdate select d;
+            var deals = from d in CH.DB.Deals where d.Abandoned == false && pids.Contains(d.ProjectID.Value) && d.ActualPaymentDate < monthenddate && d.ActualPaymentDate >= monthstartdate select d;
           
             var checkintargets = from ct in CH.DB.TargetOfMonths where ct.EndDate.Month == month && pids.Contains(ct.ProjectID.Value) select ct;
 
@@ -243,8 +247,8 @@ namespace Sales.Controllers
                 ps = this.GetProjectByAccount();
 
 
-            var cs = Utl.Utl.GetCallsInfo(ps, startdate, enddate);
-
+           // var cs = Utl.Utl.GetCallsInfo(ps, startdate, enddate);
+            var cs = new List<ViewPhoneInfo>();
             ps.ForEach(p =>
            {
                vl.Add(new ViewLeadCallAmountInProject() { LeadCallAmounts = p.GetProjectMemberLeadCalls(cs, startdate, enddate), project = p });
