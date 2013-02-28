@@ -8,7 +8,7 @@
         </div>
         <div class="editor-field">
             @Html.DropDownListFor(model => model.Year, new SelectList(new List<int>() { 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2010}), "-«Î—°‘Ò-")
-            @Html.ValidationMessageFor(model => model.Year)
+            @*@Html.ValidationMessageFor(model => model.Year)*@
         </div>
 
         <div class="editor-label">
@@ -16,7 +16,7 @@
         </div>
         <div class="editor-field">
             @Html.DropDownListFor(model => model.Month, new SelectList(new List<int>() { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 }), "-«Î—°‘Ò-")
-            @Html.ValidationMessageFor(model => model.Month)
+            @*@Html.ValidationMessageFor(model => model.Month)*@
         </div>
 
 
@@ -25,7 +25,7 @@
         </div>
         <div class="editor-field">
             @Html.DropDownListFor(model => model.Score, new SelectList(new List<int>() { 0,5,10 }), "-«Î—°‘Ò-")
-            @Html.ValidationMessageFor(model => model.Score)
+           @* @Html.ValidationMessageFor(model => model.Score)*@
         </div>
 
         <div class="editor-label">
@@ -33,18 +33,28 @@
         </div>
         <div class="editor-field">
         @{
-            IEnumerable<string> list = new List<string>();
+            List<string> list = new List<string>();
             if (Employee.CurrentRole.Level > 500)
             {
-               list= CH.GetAllData<Project>().Select(s => s.Manager).Distinct();
+               list= CH.GetAllData<Project>().Select(s => s.Manager).Distinct().ToList();
             }
             if(Employee.CurrentRole.Level == 500)
             {
-                list = CH.GetAllData<Project>(p => p.Manager == Employee.CurrentUserName).Select(s => s.TeamLeader).Distinct();
+                list = CH.GetAllData<Project>(p => p.Manager == Employee.CurrentUserName).Select(s => s.TeamLeader).Distinct().ToList();
+                var memberforleadsinprojects = CH.GetAllData<Project>(p => p.TeamLeader == Employee.CurrentUserName).SelectMany(m=>m.Members).Select(m=>m.Name).Distinct().ToList();
+                if(memberforleadsinprojects.Count()>0)
+                {
+                    list = list.ToList();
+                    list.AddRange(memberforleadsinprojects);
+                    if (list.Contains(Employee.CurrentUserName))
+                    {
+                        list.Remove(Employee.CurrentUserName);
+                    }
+                }
             }
             if (Employee.CurrentRole.Level == 100)
             {
-                list = CH.GetAllData<Project>(p => p.TeamLeader == Employee.CurrentUserName).SelectMany(s => s.Members).Where(w=>w.Name != Employee.CurrentUserName && w.IsActivated==true).Select(s => s.Name);
+                list = CH.GetAllData<Project>(p => p.TeamLeader == Employee.CurrentUserName).SelectMany(s => s.Members).Where(w=>w.Name != Employee.CurrentUserName && w.IsActivated==true).Select(s => s.Name).ToList();
             }
             
             @Html.DropDownListFor(model => model.TargetName, new SelectList(list), "-«Î—°‘Ò-")

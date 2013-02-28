@@ -8,7 +8,7 @@ using Entity;
 
 namespace Sales.Controllers
 {
-    [LeaderRequired(AccessType= AccessType.Equal)]
+    [LeaderRequired]
     public class TeamLeaderController : Controller
     {
         protected override void Dispose(bool disposing)
@@ -32,7 +32,7 @@ namespace Sales.Controllers
             projectid = this.TrySetProjectIDForUser(projectid);
             ViewBag.ProjectID = projectid;
 
-            return View(CH.GetAllData<TargetOfMonth>(m => m.ProjectID == projectid).OrderByDescending(o=>o.StartDate).ToList());
+            return View(CH.GetAllData<TargetOfMonth>(m => m.ProjectID == projectid && m.Project.TeamLeader==Employee.CurrentUserName).OrderByDescending(o=>o.StartDate).ToList());
         }
 
         public ActionResult AddBreakdown(int? projectid, int? targetofmonthid)

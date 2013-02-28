@@ -45,7 +45,12 @@ namespace Sales.Controllers
             {
                 CH.Edit<AssignPerformanceScore>(item);
             }
-            return View(new GridModel(CH.GetAllData<AssignPerformanceScore>()));
+            List<AssignPerformanceScore> list;
+            if (Employee.CurrentRole.Level < 1000)
+                list = CH.GetAllData<AssignPerformanceScore>(a => a.Assigner == Employee.CurrentUserName);
+            else
+                list = CH.GetAllData<AssignPerformanceScore>();
+            return View(new GridModel(list));
         }
         [AcceptVerbs(HttpVerbs.Post)]
 
@@ -59,7 +64,12 @@ namespace Sales.Controllers
                 CH.Create<AssignPerformanceScore>(item);
             }
             //Rebind the grid       
-            return View(new GridModel(CH.GetAllData<AssignPerformanceScore>()));
+            List<AssignPerformanceScore> list;
+            if (Employee.CurrentRole.Level < 1000)
+                list = CH.GetAllData<AssignPerformanceScore>(a => a.Assigner == Employee.CurrentUserName);
+            else
+                list = CH.GetAllData<AssignPerformanceScore>();
+            return View(new GridModel(list));
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
@@ -67,7 +77,12 @@ namespace Sales.Controllers
         public ActionResult _DeleteAjaxEditing(int id)
         {
             CH.Delete<AssignPerformanceScore>(id);
-            return View(new GridModel(CH.GetAllData<AssignPerformanceScore>()));
+            List<AssignPerformanceScore> list;
+            if (Employee.CurrentRole.Level < 1000)
+                list = CH.GetAllData<AssignPerformanceScore>(a => a.Assigner == Employee.CurrentUserName);
+            else
+                list = CH.GetAllData<AssignPerformanceScore>();
+            return View(new GridModel(list));
         }
 
     }
