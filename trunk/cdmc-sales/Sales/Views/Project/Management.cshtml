@@ -4,8 +4,97 @@
 @using Entity
 @using Utl
 @using BLL
-
 @model Project
+<script type="text/javascript">
+    function ChangeLinkHref() {
+        if ($('#companyFilter').val() != 0) {
+            $('#TabStrip-4 .t-grid .t-pager a').each(
+            function () {
+                var myurl = new SF.URL($(this).attr('href'));
+                myurl.set('memberFilterForCompany', $('#companyFilter').val());
+                $(this).attr('href', myurl.url());
+            }
+            );
+        }
+    }
+    $(
+        function () {
+            $('#companyFilter').change(
+                function () {
+                    var myurl = new SF.URL(window.location.href);
+                    myurl.set('tabindex', 3);
+                    myurl.set('memberFilterForCompany', $(this).val());
+                    myurl.set('Company-page', 1);
+                    window.location = myurl.url();
+                }
+            );
+            ChangeLinkHref();
+            $("#allCompanyBox").click(
+            function () {
+                $(".companybox").attr("checked", $(this).attr("checked") ? true : false);
+            }
+        );
+        }
+    );
+    function AssignCompanies() {
+        var selectedCompanies = "";
+        $('#TabStrip-4 .t-grid tbody input[type=checkbox]:checked').each(
+            function () {
+                selectedCompanies += $(this).val() + ",";
+            }
+        );
+        var selectedMembers = "";
+        $('#TabStrip-4 .assignableMembers input[type=checkbox]:checked').each(
+                function () {
+                    selectedMembers += $(this).val() + ",";
+                }
+            );
+        if (selectedCompanies.length > 0) {
+            selectedCompanies = selectedCompanies.substr(0, selectedCompanies.length - 1);
+        } else {
+            alert('请选择相应的公司');
+            return;
+        }
+        if (selectedMembers.length > 0) {
+            selectedMembers = selectedMembers.substr(0, selectedMembers.length - 1);
+        } else {
+            alert('请选择相应的销售');
+            return;
+        }
+        $.post('../AssignCompanies', { selectedCompanies: selectedCompanies, selectedMembers: selectedMembers }, function (result) {
+            alert(result);
+            var myurl = new SF.URL(window.location.href);
+            myurl.set('tabindex', 3);
+            window.location = myurl.url();
+        });
+    }
+
+    function UnsignCompanies() {
+        var selectedCompanyFilter = $('#companyFilter').val();
+        if (selectedCompanyFilter == '-1' || selectedCompanyFilter == '') {
+            return;
+        }
+        var selectedCompanies = "";
+        $('#TabStrip-4 .t-grid tbody input[type=checkbox]:checked').each(
+            function () {
+                selectedCompanies += $(this).val() + ",";
+            }
+        );
+        if (selectedCompanies.length > 0) {
+            selectedCompanies = selectedCompanies.substr(0, selectedCompanies.length - 1);
+        } else {
+            alert('请选择相应的公司');
+            return;
+        }
+
+        $.post('../UnsignCompanies', { selectedCompanyFilter: selectedCompanyFilter, selectedCompanies: selectedCompanies }, function (result) {
+            alert(result);
+            var myurl = new SF.URL(window.location.href);
+            myurl.set('tabindex', 3);
+            window.location = myurl.url();
+        });
+    }
+</script>
 @Html.Hidden("tabindex")
 @Html.Partial("contenttitle", "项目管理")
 @*@Html.Partial("MemberEditor", new LeadCall() { LeadID = Model.ID })
@@ -23,7 +112,7 @@
 )
 @helper Messages(Project project)
     {
-      @(Html.Telerik().Grid<Message>(project.Messages).Name("Message")
+    @(Html.Telerik().Grid<Message>(project.Messages).Name("Message")
                 .DataKeys(keys =>
                 {
                     keys.Add(s => s.ID);
@@ -33,7 +122,8 @@
                     c.Bound(item => item.Question).Width(200);
                     c.Bound(item => item.FlowNumber).Width(100);
                     c.Bound(item => item.IsAnswered).Width(70);
-                    c.Bound(item => item.Answer).Template(@<text>@Utl.ShortText(item.Answer, 500) </text>);
+                    c.Bound(item => item.Answer).Template(@<text>@Utl.ShortText(item.Answer, 500)
+    </text>);
                     c.Bound(item => item.ID).Title("操作").Width(120).Template(@<span> <a href=@Url.Content("~/Message/Edit/" + item.ID) >
                         编辑</a> | <a href=@Url.Content("~/Message/Details/" + item.ID)>详细</a> | <a href=@Url.Content("~/Message/delete/" + item.ID) >
                             删除</a> </span>);
@@ -42,60 +132,64 @@
 }
 @helper BaseInfo(Project project)
     { 
-         <table class="info">
-            <tr>
-                <td colspan="3">
-                    <span>项目名称：@Model.Name</span>
-                </td>
-            </tr>
-             <tr>
-                <td >
-                    <span>项目代码：@Model.ProjectCode</span>
-                </td>
-                <td>
-                    <span>开始日期：@Model.StartDate.ToShortDateString()</span>
-                </td>
-                <td>
-                    <span>结束日期：@Model.EndDate.ToShortDateString()</span>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <span>项目目标：@Html.DisplayFor(m => m.Target)</span>
-                </td>
-                <td>
-                    <span>版块负责人：@Model.Manager</span>
-                </td>
-                <td>
-                    <span>团队负责人：@Model.TeamLeader</span>
-                </td>
-            </tr>
-             <tr>
-                <td>
-                    <span>产品部接口人：@Model.Product</span>
-                </td>
-                <td>
-                    <span>市场部接口人：@Model.Market</span>
-                </td>
-                <td>
-                    <span>会议地点：@Model.Location</span>
-                </td>
-            </tr>
-            <tr><td > @Html.ActionLink("基本信息编辑", "Edit", "Project", new { id = Model.ID }, new { style = "margin-bottom:15px;" })
-    </td><td > <a href=@Url.Action("Service_File_Donwload", "project", new { fileurl = Model.SalesBriefUrl, filename = Model.SalesBriefName })>@project.SalesBriefName</a></td>
-    <td>@Html.ActionLink("项目新闻", "Index", "News", new { projectid = Model.ID }, new { style = "margin-bottom:15px;" })</td>
-    </tr>
-                
-                
-                </table>
-           @(Html.Telerik().Grid(project.Categorys).Name("Categorys" + project.ID).ToolBar(commands =>
+    <table class="info">
+        <tr>
+            <td colspan="3">
+                <span>项目名称：@Model.Name</span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span>项目代码：@Model.ProjectCode</span>
+            </td>
+            <td>
+                <span>开始日期：@Model.StartDate.ToShortDateString()</span>
+            </td>
+            <td>
+                <span>结束日期：@Model.EndDate.ToShortDateString()</span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span>项目目标：@Html.DisplayFor(m => m.Target)</span>
+            </td>
+            <td>
+                <span>版块负责人：@Model.Manager</span>
+            </td>
+            <td>
+                <span>团队负责人：@Model.TeamLeader</span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span>产品部接口人：@Model.Product</span>
+            </td>
+            <td>
+                <span>市场部接口人：@Model.Market</span>
+            </td>
+            <td>
+                <span>会议地点：@Model.Location</span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.ActionLink("基本信息编辑", "Edit", "Project", new { id = Model.ID }, new { style = "margin-bottom:15px;" })
+            </td>
+            <td>
+                <a href=@Url.Action("Service_File_Donwload", "project", new { fileurl = Model.SalesBriefUrl, filename = Model.SalesBriefName })>@project.SalesBriefName</a>
+            </td>
+            <td>@Html.ActionLink("项目新闻", "Index", "News", new { projectid = Model.ID }, new { style = "margin-bottom:15px;" })
+            </td>
+        </tr>
+    </table>
+    @(Html.Telerik().Grid(project.Categorys).Name("Categorys" + project.ID).ToolBar(commands =>
                                             commands.Custom().Text("添加细分行业").Action("Create", "ProjectCategory", new { projectid = Model.ID }))
                             .Columns(c =>
                             {
                                 c.Bound(o => o.Name);
                                 c.Bound(item => item.ID).Width(200).Title("操作").Template(@<span> <a href=@Url.Content("~/ProjectCategory/Edit/" + item.ID) >
-                        编辑</a> | <a href=@Url.Content("~/ProjectCategory/Details/" + item.ID)>详细</a> | <a href=@Url.Content("~/ProjectCategory/delete/" + item.ID ) >删除</a>
-</span>);
+                                    编辑</a> | <a href=@Url.Content("~/ProjectCategory/Details/" + item.ID)>详细</a> | <a href=@Url.Content("~/ProjectCategory/delete/" + item.ID) >
+                                        删除</a> </span>);
 
                             })
                                          .Resizable(resizing => resizing.Columns(true))
@@ -118,7 +212,7 @@
                 {
                     c.Bound(item => item.Name).Width(200);
                     c.Bound(item => item.Characters);
-                    c.Bound(item => item.IsActivated );
+                    c.Bound(item => item.IsActivated);
                     c.Bound(item => item).Template(@<text>@item.EmployeeDuration()</text>).Title("在职时间(月)");
                     c.Bound(item => item.SalesType.Name);
                     c.Bound(item => item.ID).Title("操作").Width(120).Template(@<span> <a href=@Url.Content("~/Member/Edit/" + item.ID) >
@@ -127,7 +221,6 @@
                 }).Resizable(resizing => resizing.Columns(true)).Scrollable(scrolling => scrolling.Height(350))
                                             )
 }
-        
 @helper Deals(Project p)
     {  
         ViewBag.Action = "Deals";
@@ -135,33 +228,38 @@
         ViewBag.RouteValue = new { projectid = p.ID };
         ViewBag.StartDate = ViewBag.DealStartDate;
         ViewBag.EndDate = ViewBag.DealEndDate;
-        var deals =p.GetProjectDeals(ViewBag.DealStartDate as DateTime?, ViewBag.DealEndDate as DateTime?);
+        var deals = p.GetProjectDeals(ViewBag.DealStartDate as DateTime?, ViewBag.DealEndDate as DateTime?);
      
     @(Html.Telerik().Grid<Deal>(deals).Name("Deals")
   @*  .ToolBar(commands => commands.Template(@<text>@Html.Partial("durationselector")</text>))*@
-                .DataKeys(keys =>
-                {
-                    keys.Add(s => s.ID);
-                })
+.DataKeys(keys =>
+{
+    keys.Add(s => s.ID);
+})
                 .Columns(c =>
                 {
                     c.Bound(item => item.Payment).Format("{0:c}").Aggregate(aggregates => aggregates.Sum())
                         .FooterTemplate(@<text>
-                        @if (item.Sum != null)
-                           {<p>应收款: @item.Sum.Format("{0:c}")</p>}</text>).GroupFooterTemplate(@<text>
-                           @if (item.Sum != null)                                                                                                                                                                                 
-                             {<p>应收款: @item.Sum.Format("{0:c}")</p>}</text>).Width(100);
+    @if (item.Sum != null)
+    {<p>
+        应收款: @item.Sum.Format("{0:c}")</p>}</text>).GroupFooterTemplate(@<text>
+    @if (item.Sum != null)
+    {<p>
+        应收款: @item.Sum.Format("{0:c}")</p>}</text>).Width(100);
                     c.Bound(item => item.Income).Format("{0:c}").Aggregate(aggregates =>
                         aggregates.Sum()).FooterTemplate(@<text>@if (item.Sum != null)
-                           {<p>实收款: @item.Sum.Format("{0:c}")</p>}</text>).GroupFooterTemplate(@<text>@if (item.Sum != null)
-                          {<p>实收款: @item.Sum.Format("{0:c}")</p>}</text>).Width(100);
+                                                                {<p>
+                                                                    实收款: @item.Sum.Format("{0:c}")</p>}</text>).GroupFooterTemplate(@<text>@if (item.Sum != null)
+                                                                                                                                           {<p>
+                                                                                                                                               实收款: @item.Sum.Format("{0:c}")</p>}</text>).Width(100);
                     c.Bound(item => item.IsClosed).Width(60);
                     c.Bound(item => item.ExpectedPaymentDate).Format("{0:d}").Width(100);
                     c.Bound(item => item.SignDate).Format("{0:d}").Width(80);
                     c.Bound(item => item.ActualPaymentDate).Format("{0:d}").Width(80);
                     c.Bound(item => item.CompanyRelationship.Company.Name).Title("客户公司").Width(130);
                     c.Bound(item => item.Sales).Width(100);
-                    c.Bound(item => item.ID).Title("操作").Width(200).Template(@<span><a href=@Url.Content("~/Deal/Details/" + item.ID)>详细</a> </span>);
+                    c.Bound(item => item.ID).Title("操作").Width(200).Template(@<span><a href=@Url.Content("~/Deal/Details/" + item.ID)>详细</a>
+                    </span>);
                 }).Resizable(resizing => resizing.Columns(true))
                                                                                                 .Filterable().Groupable()
                                                                                                   .Pageable(page => page.PageSize(15)).Scrollable(scrolling => scrolling.Height(350))
@@ -169,47 +267,63 @@
                                                         )
        
 }
-
 @helper CompanyRelationships(Project p)
     {  
-     @(Html.Telerik().Grid(p.CompanyRelationships).Name("Company").ToolBar(commands => commands.Custom().Text("通过项目添加").Action("SelectCompanyByProjectCode", "Project", new { projectid = Model.ID }))
-             //.ToolBar(commands => commands.Custom().Text("直接添加").Action("Create", "CompanyRelationship", new { projectid = Model.ID }))
+    
+    <div style="height: 30px;">
+        @Html.DropDownList("companyFilter", SelectHelper.MemberSelectListForProject(Model.ID, (string)ViewBag.MemberFilterForCompany), "All Members")
+        <button onclick="UnsignCompanies()">
+            取消分配</button>
+        @Html.ActionLink("通过项目添加", "SelectCompanyByProjectCode", "Project", new { projectid = Model.ID }, new { @class = "t-button", @style = "margin-left:890px;" })
+    </div>       
+    @(
+ Html.Telerik().Grid(p.CompanyRelationships).Name("Company")//.ToolBar(commands => commands.Custom().Text("通过项目添加").Action("SelectCompanyByProjectCode", "Project", new { projectid = Model.ID }))
+            //.ToolBar(commands => commands.Custom().Text("直接添加").Action("Create", "CompanyRelationship", new { projectid = Model.ID }))
                 .DataKeys(keys =>
                 {
                     keys.Add(s => s.ID);
                 })
                 .Columns(c =>
                 {
+                    c.Template(@<text><input name="checkedRecords" class="companybox" type="checkbox" value="@item.ID " title="checkedRecords"  />
+    </text>).Title("<input type='checkbox' id='allCompanyBox' />").Width(30).HtmlAttributes(new { style = "text-align:center" });
                     c.Bound(item => item.Company.Name).Title("公司名").Width(150);
                     c.Bound(item => item.SalesOnTheCompany).Title("销售").Width(70);
                     c.Bound(item => item.Importancy).Width(80);
                     c.Bound(item => item.CategoryString).Title("细分行业");
                     c.Bound(item => item.Company.CompanyType.Name).Width(100);
-                    c.Bound(item => item.ID).Title("操作").Width(260).Template(@<span><a  href=@Url.Content("~/CompanyRelationship/Edit/" + item.ID) >建议拨打人数</a> | 
-                    <a  href=@Url.Content("~/Project/AppointSales/?projectid=" + p.ID + "&companyrelationshipid=" + item.ID) >指定销售</a>
-                     | <a target="_blank" href=@Url.Content("~/LeadCall/CompanyRelationshipIndex/?projectid=" + p.ID + "&companyrelationshipid=" + item.ID) >Call List</a> 
-                     | <a href=@Url.Content("~/companyrelationship/delete/" + item.ID) >
-                            删除</a>  </span>);
+                    c.Bound(item => item.ID).Title("操作").Width(260).Template(@<span><a  href=@Url.Content("~/CompanyRelationship/Edit/" + item.ID) >建议拨打人数</a>
+                        | <a  href=@Url.Content("~/Project/AppointSales/?projectid=" + p.ID + "&companyrelationshipid=" + item.ID) >
+                            指定销售</a> | <a target="_blank" href=@Url.Content("~/LeadCall/CompanyRelationshipIndex/?projectid=" + p.ID + "&companyrelationshipid=" + item.ID) >
+                                Call List</a> | <a href=@Url.Content("~/companyrelationship/delete/" + item.ID) >删除</a>
+                    </span>);
 
-                })
-                                                                .DetailView(e => e.Template(
-                                                 @<text>
-                         @RenderGrid(item.Company, item)
-                        </text>
-                                                                                                        ))
-                                                        .Resizable(resizing => resizing.Columns(true))
+                }).Resizable(resizing => resizing.Columns(true))
                                                         .Pageable(page => page.PageSize(10))
-                                                        .Filterable().Sortable()
+                                                        .Sortable()
                                                         .Scrollable(scrolling => scrolling.Height(350))
-                                                       
-                                              )
+
+                                                       )
+    <fieldset>
+        <legend>可分配销售 </legend>
+        <div class="assignableMembers">
+            @foreach (SelectListItem selectListItem in SelectHelper.MemberSelectListForProject(Model.ID))
+            {
+                if (selectListItem.Value != (string)ViewBag.MemberFilterForCompany && selectListItem.Value != "-1" && selectListItem.Value != "")
+                {
+                <span style="display: inline-block; width: 100px">@Html.CheckBox(selectListItem.Value, new { value = selectListItem.Value })
+                    <label>@selectListItem.Text</label></span>
+                }
+            }
+        </div>
+        <div style="text-align: right;">
+            <button onclick="AssignCompanies()">
+                分配</button></div>
+    </fieldset>
 }
-
-
-
 @helper Targets(Project p)
     { 
-      @(Html.Telerik().Grid<TargetOfMonth>(p.TargetOfMonths).Name("TargetOfMonths").ToolBar(commands =>
+    @(Html.Telerik().Grid<TargetOfMonth>(p.TargetOfMonths).Name("TargetOfMonths").ToolBar(commands =>
                                     commands.Custom().Text("创建月目标").Action("Create", "TargetOfMonth", new { projectid = Model.ID }))
                 .DataKeys(keys =>
                 {
@@ -224,20 +338,18 @@
                     c.Bound(item => item.StartDate).Format("{0:d}").Width(100);
                     c.Bound(item => item.EndDate).Format("{0:d}").Width(100);
                     c.Bound(item => item.ID).Title("操作").Width(200).Template(@<span> <a href=@Url.Content("~/TargetOfMonth/Edit/" + item.ID) >
-                        编辑</a> | <a href=@Url.Content("~/TargetOfMonth/Details/" + item.ID)>详细</a> | 
-                        <a href=@Url.Content("~/TargetOfMonth/AddBreakdown/?projectid=" + item.ProjectID + "&targetofmonthid=" + item.ID) >划分创建</a> 
-                        | <a href=@Url.Content("~/TargetOfMonth/delete/" + item.ID) >
-                            删除</a> </span>);
+                        编辑</a> | <a href=@Url.Content("~/TargetOfMonth/Details/" + item.ID)>详细</a> | <a href=@Url.Content("~/TargetOfMonth/AddBreakdown/?projectid=" + item.ProjectID + "&targetofmonthid=" + item.ID) >
+                            划分创建</a> | <a href=@Url.Content("~/TargetOfMonth/delete/" + item.ID) >删除</a>
+                    </span>);
                 }).DetailView(e => e.Template(
                          @<text>
-                        
-                         @RenderTargetOfWeek(item)
-                        </text>
+    @RenderTargetOfWeek(item)
+    </text>
                    ))
                   .Resizable(resizing => resizing.Columns(true)).Scrollable(scrolling => scrolling.Height(350))
                                                                                                                     )
-        }
-@helper RenderGrid(Company company, CompanyRelationship cr)
+}
+@*@helper RenderGrid(Company company, CompanyRelationship cr)
     { 
         
            @( Html.Telerik().TabStrip().Name("comtab" + company.ID).SelectedIndex(0).Items(child =>
@@ -250,10 +362,7 @@
                     child.Add().Text("子公司").Content(@<text>@RenderSubCompanys(company, cr)
          </text>);
 
-                }))
-    
-    
-} 
+                })) }*@
 @helper RenderLeads(List<Lead> leads, CompanyRelationship cr)
     {
     @(Html.Telerik().Grid(leads).Name("Leads" + cr.ID)
@@ -263,16 +372,15 @@
                                 c.Bound(o => o.Title).Width(150);
                                 c.Bound(o => o.Gender).Width(150);
                                 c.Bound(o => o.SubCompany.Name).Title("子公司名称").Width(150);
-                                c.Bound(o => o).Title("Call List").Template(@<span> 
-                                <a href=@Url.Content("~/project/leaddelete/?id=" + item.ID + "&projectid=" + cr.ProjectID) >删除</a> 
-                                | <a  target="_blank" href=@Url.Content("~/LeadCall/LeadIndex/?projectid=" + cr.ProjectID + "&leadid=" + item.ID + "&companyrelationshipid=" + cr.ID) >Call List</a> </span>);
+                                c.Bound(o => o).Title("Call List").Template(@<span> <a href=@Url.Content("~/project/leaddelete/?id=" + item.ID + "&projectid=" + cr.ProjectID) >
+                                    删除</a> | <a  target="_blank" href=@Url.Content("~/LeadCall/LeadIndex/?projectid=" + cr.ProjectID + "&leadid=" + item.ID + "&companyrelationshipid=" + cr.ID) >
+                                        Call List</a> </span>);
                             })
                                                                                .Resizable(resizing => resizing.Columns(true))
                                                                                .Pageable(p => p.PageSize(20))
                                                                                .Sortable())
 }
-
-@helper RenderSubCompanys(Company company, CompanyRelationship cr)
+@*@helper RenderSubCompanys(Company company, CompanyRelationship cr)
     {
     @(Html.Telerik().Grid(CH.GetAllData<SubCompany>(s => s.CompanyID == company.ID)).Name("Leads" + company.ID)
                             .Columns(c =>
@@ -285,8 +393,7 @@
                                                .Resizable(resizing => resizing.Columns(true))
                                                .Pageable(p => p.PageSize(20))
                                                .Sortable())
-}
-@*@helper RenderLead(List<Lead> Leads, CompanyRelationship cr)
+}*@ @*@helper RenderLead(List<Lead> Leads, CompanyRelationship cr)
     { 
      @(Html.Telerik().Grid(Leads).Name("Leads" + cr.CompanyID)
                             .Columns(c =>
@@ -301,7 +408,6 @@
                                          .Pageable(p => p.PageSize(20))
                                          )
 } *@
-
 @helper RenderTargetOfWeek(TargetOfMonth tm)
     { 
         var tmid = tm.ID;
@@ -320,11 +426,11 @@
         }
     }
 }))
-        <br />
+    <br />
 }
 @helper RenderMembersTargetOfWeek(string key, List<TargetOfWeek> tm, int? projectid, int targetofmonthid)
     {
-         @Html.ActionLink("编辑划分", "EditBreakdown", "TargetOfMonth", new { projectid = projectid, targetofmonthid = targetofmonthid, startdate = key }, null)   
+    @Html.ActionLink("编辑划分", "EditBreakdown", "TargetOfMonth", new { projectid = projectid, targetofmonthid = targetofmonthid, startdate = key }, null)   
     @(Html.Telerik().Grid(tm).Name("TargetOfWeek" + key)
                             .Columns(c =>
                             {
@@ -336,7 +442,6 @@
                                                                                                     .Pageable(p => p.PageSize(20)).Sortable())
    
 }
-@{ Html.Telerik().ScriptRegistrar().OnDocumentReady(@<text> 
-      @*  onManagementTabLoad();*@
+@{ Html.Telerik().ScriptRegistrar().OnDocumentReady(@<text> @*  onManagementTabLoad();*@
     </text>);
 }

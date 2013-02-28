@@ -58,7 +58,7 @@ namespace Sales.Controllers
         {
             ViewBag.ProjectID = projectid;
             var p = CH.GetDataById<Project>(projectid);
-            var data = CH.GetAllData<Project>(i=>i.ID!=projectid);
+            var data = CH.GetAllData<Project>(i => i.ID != projectid);
             if (!string.IsNullOrEmpty(p.References))
             {
                 var refers = p.References.Split('|');
@@ -66,13 +66,13 @@ namespace Sales.Controllers
             }
             else
             {
-                data = data.FindAll(d =>  d.ProjectCode != p.ProjectCode);
+                data = data.FindAll(d => d.ProjectCode != p.ProjectCode);
             }
 
             return View(data);
         }
 
-      
+
         //public ViewResult AddToCompanyRelationship(int projectid)
         //{
         //    ViewBag.ProjectID = projectid;
@@ -80,9 +80,9 @@ namespace Sales.Controllers
         //    return View(CH.GetAllData<CompanyRelationship>(c => c.ProjectID == projectid));
         //}
 
-      
 
-  
+
+
         [HttpPost]
         public ActionResult SelectCompanyByProjectCode(int[] checkedRecords, int projectid)
         {
@@ -136,9 +136,9 @@ namespace Sales.Controllers
 
                 return View(data);
             }
-           
+
         }
-     
+
         #endregion
 
         #region 指定成员到公司
@@ -259,15 +259,92 @@ namespace Sales.Controllers
         }
 
 
-        public ActionResult Management(int? id, int? tabindex, DateTime? dealstartdate, DateTime? dealenddate)
+        public ActionResult Management(int? id, int? tabindex, DateTime? dealstartdate, DateTime? dealenddate, int? memberFilterForCompany)
         {
+            var Data = CH.GetAllData<Project>(i => i.ID == id).FirstOrDefault();
             ViewBag.DealStartDate = dealstartdate;
             ViewBag.DealEndDate = dealenddate;
             ViewBag.TabIndex = tabindex;
-            var Data = CH.GetAllData<Project>(i => i.ID == id).FirstOrDefault();
+            if (memberFilterForCompany.HasValue)
+            {
+                int memberId = memberFilterForCompany.Value;
+                ViewBag.MemberFilterForCompany = memberFilterForCompany.ToString();
+                if (memberId == -1)
+                {
+                    Data.CompanyRelationships = Data.CompanyRelationships.Where(c => c.Members.Count == 0).ToList();
+                }
+                else
+                {
+                    Data.CompanyRelationships = Data.CompanyRelationships.Where(c => c.Members.Any(m => m.ID == memberId)).ToList();
+                }
+            }
+            else
+            {
+                ViewBag.MemberId = "";
+            }
+
             return View(Data);
         }
 
+        [HttpPost]
+        public ActionResult AssignCompanies(string selectedCompanies, string selectedMembers)
+        {
+            if (string.IsNullOrWhiteSpace(selectedCompanies))
+            {
+                return Content("请选择公司!");
+            }
+            if (string.IsNullOrWhiteSpace(selectedMembers))
+            {
+                return Content("请选择销售人员!");
+            }
+            IEnumerable<int> companyIDs = selectedCompanies.Split(',').Select(c => int.Parse(c));
+            IEnumerable<int> memberIDs = selectedMembers.Split(',').Select(c => int.Parse(c));
+            foreach (int companyID in companyIDs)
+            {
+                var company = CH.GetAllData<CompanyRelationship>(i => i.ID == companyID, "Members").FirstOrDefault();
+                if (company != null)
+                {
+                    foreach (int memberID in memberIDs)
+                    {
+                        if (company.Members.All(m => m.ID != memberID))
+                        {
+                            var mem = CH.GetDataById<Member>(memberID);
+                            company.Members.Add(mem);
+                        }
+                    }
+                }
+                CH.Edit<CompanyRelationship>(company);
+            }
+
+            return Content("分配卡成功!");
+        }
+
+        [HttpPost]
+        public ActionResult UnsignCompanies(string selectedCompanyFilter, string selectedCompanies)
+        {
+            if (string.IsNullOrWhiteSpace(selectedCompanies))
+            {
+                return Content("请选择公司!");
+            }
+            if (string.IsNullOrWhiteSpace(selectedCompanyFilter))
+            {
+                return Content("请选择销售人员!");
+            }
+
+            int memberID = int.Parse(selectedCompanyFilter);
+            IEnumerable<int> companyIDs = selectedCompanies.Split(',').Select(c => int.Parse(c));
+            foreach (int companyID in companyIDs)
+            {
+                var company = CH.GetAllData<CompanyRelationship>(i => i.ID == companyID, "Members").FirstOrDefault();
+                if (company != null)
+                {
+                    var mem = CH.GetDataById<Member>(memberID);
+                    company.Members.Remove(mem);
+                }
+                CH.Edit<CompanyRelationship>(company);
+            }
+            return Content("取消分配成功!");
+        }
         [HttpPost]
         public ActionResult Create(Project item, IEnumerable<HttpPostedFileBase> attachments)
         {
@@ -360,7 +437,7 @@ namespace Sales.Controllers
             {
                 CH.Delete<LeadCall>(l.ID);
             });
-            
+
             p.Messages.ForEach(m =>
             {
                 CH.Delete<Message>(m.ID);
@@ -377,7 +454,7 @@ namespace Sales.Controllers
             {
                 CH.Delete<TargetOfMonth>(t.ID);
             });
-           
+
             p.CompanyRelationships.ForEach(t =>
             {
                 CH.Delete<CompanyRelationship>(t.ID);
@@ -390,20 +467,21 @@ namespace Sales.Controllers
             {
                 CH.Delete<Category>(t.ID);
             });
-            var deals = CH.GetAllData<Deal>(d=>d.ProjectID==p.ID);
-            deals.ForEach(d => {
+            var deals = CH.GetAllData<Deal>(d => d.ProjectID == p.ID);
+            deals.ForEach(d =>
+            {
                 CH.Delete<Deal>(d.ID);
             });
             p.PhoneSaleSupports.ForEach(t =>
             {
                 CH.Delete<PhoneSaleSupport>(t.ID);
             });
-          
+
             CH.Delete<Project>(id);
             return RedirectToAction("Index");
         }
 
-        public ActionResult Service_File_Donwload(string fileurl,string filename)
+        public ActionResult Service_File_Donwload(string fileurl, string filename)
         {
             string filePath = Request.MapPath(fileurl);
             if (System.IO.File.Exists(filePath))
@@ -417,7 +495,8 @@ namespace Sales.Controllers
         public ActionResult LeadDelete(int id, int projectid)
         {
             var calls = CH.GetAllData<LeadCall>(l => l.LeadID == id && l.ProjectID == projectid);
-            calls.ForEach(c => {
+            calls.ForEach(c =>
+            {
                 CH.Delete<LeadCall>(c.ID);
             });
             ViewBag.ProjectID = projectid;

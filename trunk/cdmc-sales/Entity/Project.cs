@@ -369,6 +369,15 @@ namespace Entity
 
     }
 
+    public class CompanyRelationshipMember
+    {
+        public int Member_ID { get; set; }
+        public virtual Member Member { get; set; }
+        public int CompanyRelationship_ID { get; set; }
+        public virtual CompanyRelationship CompanyRelationship { get; set; }
+        public bool MarkForDelete { get; set; }
+    }
+
     /// <summary>
     /// 团队成员
     /// </summary>

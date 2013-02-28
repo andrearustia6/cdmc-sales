@@ -1,4 +1,4 @@
-﻿@using Entity
+﻿@*@using Entity
 @model List<Title>
 @(Html.Telerik().Grid<Title>(Model).Name("Title")
                 .DataKeys(keys =>
@@ -22,3 +22,4 @@
                             )
 @Html.ActionLink("创建", "Create")
 
+*@
