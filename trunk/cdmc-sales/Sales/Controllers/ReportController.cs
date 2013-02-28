@@ -202,25 +202,7 @@ namespace Sales.Controllers
             return View(list);
         }
 
-        /// <summary>
-        /// 项目进度表
-        /// </summary>
-        /// <param name="selectedprojects"></param>
-        /// <param name="isActivated"></param>
-        /// <param name="startdate"></param>
-        /// <param name="enddate"></param>
-        /// <returns></returns>
-        //public ActionResult ProjectProgress(List<int> selectedprojects, List<string> selectedangels, int? month, int? year,string selecttype)
-        //{
-        //    ViewBag.Month = month;
-        //    ViewBag.Year = year;
-        //    ViewBag.SelectedProjects = selectedprojects;
-        //    ViewBag.SelectedAngels = selectedangels;
-        //    ViewBag.SelectType = selecttype;
-            
-        //    var list = Report.GetProjectProgressList(selectedprojects, month==null?DateTime.Now.Month:month.Value, year==null?DateTime.Now.Year:year.Value);
-        //    return View(list);
-        //}
+
 
         /// <summary>
         /// call list 统计

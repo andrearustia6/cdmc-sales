@@ -61,18 +61,24 @@
     <div class="editor-field">
     @{
         var pid = Model == null ? ViewBag.ProjectID as int? : Model.ProjectID;
-        var data = CH.GetAllData<Member>(mem => mem.ProjectID == pid);
+        
+        var user = Employee.CurrentUserName;
+        var data = from m in CH.DB.Members where  m.Project.TeamLeader == user select m;
+
+        var membernames = data.Select(s => s.Name).toList();     
+          var c = CH.GetAllData<Member>(mem => mem.ProjectID == pid);
+        
         
         
           var name = Employee.CurrentUserName;
           var mid = data.FirstOrDefault(f=>f.Name==Employee.CurrentUserName);
           if (mid!=null && Model==null)
           {
-          @Html.DropDownListFor(m => m.MemberID, new SelectList(data, "ID", "Name",mid.ID), "-请选择-")
+          @Html.DropDownListFor(m => m.MemberID, new SelectList(membernames, "ID", "Name", mid.ID), "-请选择-")
           }
           else
           {
-               @Html.DropDownListFor(m => m.MemberID, new SelectList(data, "ID", "Name"), "-请选择-")
+               @Html.DropDownListFor(m => m.MemberID, new SelectList(membernames, "ID", "Name"), "-请选择-")
           }
        
        }

@@ -103,7 +103,8 @@
                            var ps = CH.GetAllData<Entity.Project>(p => p.TeamLeader == Employee.CurrentUserName);
                            if (ps.Count>0)
                            {
-                               item.Add().Url("~/teamleader/breakdownindex").Text("一周目标");
+                               item.Add().Url("~/teamleader/breakdownindex").Text("周目标");
+                               item.Add().Url("~/TargetOfMonthForMember/TargetIndex").Text("月目标");
                            }
                            
                        });
@@ -143,7 +144,8 @@
                            item.Add().Url("~/Sales/MyMessageIndex").Text("留言求助");
                            if (score == LeaderRequired.LVL)
                              {
-                              item.Add().Url("~/teamleader/breakdownindex").Text("一周目标");
+                              item.Add().Url("~/teamleader/breakdownindex").Text("周目标");
+                              item.Add().Url("~/TargetOfMonthForMember/Index").Text("月目标");
                              }
                            //item.Add().Url("~/Sales/MyWeeklyReport").Text("我的周报").ImageUrl("~/Content/Common/Icons/Docking.gif");
                        });

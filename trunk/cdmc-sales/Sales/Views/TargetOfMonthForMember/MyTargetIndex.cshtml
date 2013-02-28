@@ -2,7 +2,7 @@
 @model List<TargetOfMonthForMember>
 @Html.Partial("contenttitle", "个人月目标")    
 @Html.Partial("projectselector")   
-@(Html.Telerik().Grid<TargetOfMonthForMember>(Model).Name("TargetOfMonthForMember").ToolBar(commands => commands.Custom().Text("个人月目标创建").Action("Create", "TargetOfMonthForMember"))
+@(Html.Telerik().Grid<TargetOfMonthForMember>(Model).Name("TargetOfMonthForMember")
                 .DataKeys(keys =>
                 {
                     keys.Add(s => s.ID);
@@ -14,9 +14,6 @@
                     c.Bound(item => item.CheckIn);
                     c.Bound(item => item.StartDate );
                     c.Bound(item => item.EndDate);
-                    c.Bound(item => item.ID).Width(200).Title("操作").Template(@<span>
-                    <a href=@Url.Content("~/TargetOfMonthForMember/Edit/" + item.ID) >编辑</a> | <a href=@Url.Content("~/TargetOfMonthForMember/Details/" + item.ID)>详细</a>  | <a href=@Url.Content("~/TargetOfMonthForMember/delete/" + item.ID) >删除</a> 
-                   </span>);
                 })
                 .Resizable(resizing => resizing.Columns(true))
                 .Filterable().Sortable().Groupable()
