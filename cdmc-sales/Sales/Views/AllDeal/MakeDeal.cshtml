@@ -13,7 +13,7 @@
 <fieldset>
     <legend>Deal</legend>
     <div class="editor-label">
-        @Html.LabelFor(model => model.LeadID, "Lead名称")
+        @Html.Label( "Lead名称")
     </div>
     <div class="editor-field">
         @Html.Label(CH.GetDataById<Lead>((int)ViewBag.LeadID).Name)

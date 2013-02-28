@@ -254,7 +254,7 @@ namespace Utl
                 return "未配置";
         }
 
-         static int GetCurrentRoleLevel()
+        public static int GetCurrentRoleLevel()
         {
 
             if (!string.IsNullOrEmpty(Employee.CurrentUserName))

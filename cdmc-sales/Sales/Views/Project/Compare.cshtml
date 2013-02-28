@@ -1,9 +1,9 @@
-﻿@{
+﻿@*@{
     ViewBag.Title = "Compare";
 }
 @using Entity
 @using Utl
-@using Sales.Model
+@using Model
 @model List<MemberItem>
 @Html.Partial("contenttitle","一周业绩")
 @using(Html.BeginForm())
@@ -19,4 +19,4 @@
     series.Bar(s => s.DealsAmount).Name("出单").Labels(labels => labels.Position(ChartBarLabelsPosition.OutsideEnd)
     .Visible(true));}).CategoryAxis(axis => axis.Categories(s => s.Member.Name)).ValueAxis(axis => axis.Numeric().Labels(labels => labels.Format("${0:#,##0}"))    )   
    .HtmlAttributes(new { style = "width: 670px;" })
-) 
+) *@

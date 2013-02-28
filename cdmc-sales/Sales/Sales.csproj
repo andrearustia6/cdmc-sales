@@ -13,7 +13,7 @@
     <RootNamespace>Sales</RootNamespace>
     <AssemblyName>Sales</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <MvcBuildViews>false</MvcBuildViews>
+    <MvcBuildViews>true</MvcBuildViews>
     <UseIISExpress>false</UseIISExpress>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -286,6 +286,7 @@
     <Compile Include="Utl\FilesRepository.cs" />
     <Compile Include="Utl\HtmlExtensions.cs" />
     <Compile Include="Utl\ImageController.cs" />
+    <Compile Include="Utl\SelectHelper.cs" />
     <Compile Include="Utl\Utl.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -567,6 +568,7 @@
     <Content Include="VJS\alextre.peopleFinder.js" />
     <Content Include="VJS\alextre.tableDesigner.js" />
     <Content Include="VJS\salesAvailableCompany.js" />
+    <Content Include="VJS\Site.js" />
     <Content Include="VJS\view.js" />
     <Content Include="VJS\addParticipants.js" />
     <Content Include="Web.config">

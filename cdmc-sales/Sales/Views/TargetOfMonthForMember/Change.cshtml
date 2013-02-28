@@ -65,7 +65,7 @@
         var user = Employee.CurrentUserName;
         var data = from m in CH.DB.Members where  m.Project.TeamLeader == user select m;
 
-        var membernames = data.Select(s => s.Name).toList();     
+        var membernames = data.Select(s => s.Name).ToList();   
           var c = CH.GetAllData<Member>(mem => mem.ProjectID == pid);
         
         

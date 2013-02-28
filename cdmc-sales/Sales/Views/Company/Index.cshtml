@@ -23,7 +23,7 @@
                 })
                 .DetailView(e => e.Template(
                         @<text>
-                         @RenderGrid(item.Leads, item.ID)
+                         @*@RenderGrid(item.Leads, item.ID)*@
                         </text>
                     ))
                 .Resizable(resizing => resizing.Columns(true))
@@ -37,7 +37,7 @@
 
 @helper RenderGrid(Company company)
     { 
-        @(Html.Telerik().TabStrip().Name("comtab" + company.ID).Items(item =>{
+       @* @(Html.Telerik().TabStrip().Name("comtab" + company.ID).Items(item =>{
         item.Add().Text("Lead").Content(@<text>
          @(Html.Telerik().Grid(company.Leads).Name("Leads" + company.ID)
                             .Columns(c =>
@@ -71,6 +71,6 @@
                                                .Sortable())
         </text>);   
         })
-        )
+        )*@
     
 } 
