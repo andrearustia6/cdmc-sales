@@ -49,7 +49,7 @@
 
         
 }
-@helper RenderMembersTargetOfWeek(string key, List<TargetOfWeek> tm, int projectid, int targetofmonthid)
+@helper RenderMembersTargetOfWeek(string key, List<TargetOfWeek> tm, int? projectid, int targetofmonthid)
     {
          @Html.ActionLink("编辑", "editBreakdown", "teamleader", new { projectid = projectid, targetofmonthid = targetofmonthid, startdate = key }, null)  
         <span> | </span>
