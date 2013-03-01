@@ -274,7 +274,7 @@
         @Html.DropDownList("companyFilter", SelectHelper.MemberSelectListForProject(Model.ID, (string)ViewBag.MemberFilterForCompany), "All Members")
         <button onclick="UnsignCompanies()">
             取消分配</button>
-        @Html.ActionLink("通过项目添加", "SelectCompanyByProjectCode", "Project", new { projectid = Model.ID }, new { @class = "t-button", @style = "margin-left:890px;" })
+      
     </div>       
     @(
  Html.Telerik().Grid(p.CompanyRelationships).Name("Company")//.ToolBar(commands => commands.Custom().Text("通过项目添加").Action("SelectCompanyByProjectCode", "Project", new { projectid = Model.ID }))
