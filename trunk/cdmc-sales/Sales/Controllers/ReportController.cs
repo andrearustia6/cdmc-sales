@@ -210,10 +210,12 @@ namespace Sales.Controllers
         /// <param name="startdate"></param>
         /// <param name="enddate"></param>
         /// <returns></returns>
-        public ActionResult LeadCalls(List<int> selectedprojects, bool? isActivated, DateTime? startdate, DateTime? enddate)
+        public ActionResult LeadCalls(List<int> selectedprojects, string selecttype, bool? isActivated, DateTime? startdate, DateTime? enddate)
         {
             ViewBag.StartDate = startdate;
             ViewBag.EndDate = enddate;
+            ViewBag.SelectedProjects = selectedprojects;
+            ViewBag.SelectType = selecttype;
 
             var result = new TotalLeadCallAmount();
 
@@ -226,7 +228,11 @@ namespace Sales.Controllers
                 ps = list.ToList();
             }
             else
-                ps = this.GetProjectByAccount();
+            {
+                return View();
+            }
+
+            
 
 
            // var cs = Utl.Utl.GetCallsInfo(ps, startdate, enddate);
@@ -302,7 +308,7 @@ namespace Sales.Controllers
             List<Project> ps;
             if (selectedprojects == null)
             {
-                ps = this.GetProjectByAccount();
+                return View();
             }
             else
             {

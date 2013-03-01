@@ -1,5 +1,6 @@
 ﻿@{
     ViewBag.Title = "Call List";
+    ViewBag.ShowDuration = "true";
 }
 @using Model
 @using Entity;
@@ -7,6 +8,8 @@
 @model TotalLeadCallAmount
 <br />
 @Html.Partial("multipleprojectselector")
+@if (Model != null)
+{
 <fieldset>
     <legend>统计</legend>
     <table  width="100%">
@@ -28,7 +31,7 @@
 {
     c.Bound(item => item.Name);
     c.Bound(item => item.CheckInSum);
-}).HtmlAttributes(new { style="margin-top:0px"}))
+}).HtmlAttributes(new { style = "margin-top:0px" }))
             </td>
             <td style="vertical-align:top">@(Html.Telerik().Grid(Model.TopCallers).Name("TopCallers").Columns(c =>
  {
@@ -40,16 +43,17 @@
             </td>
             <td style="vertical-align:top">@(Html.Telerik().Grid(Model.WorstCallers).Name("WorstCallers").Columns(c =>
 {
-      c.Bound(item => item.Name);
-      c.Bound(item => item.DurationSum).Template(@<text>@Math.Round(item.DurationSum, 2)</text>);
-      c.Bound(item => item.SalesType);
-      c.Bound(item => item.CallSum);
+    c.Bound(item => item.Name);
+    c.Bound(item => item.DurationSum).Template(@<text>@Math.Round(item.DurationSum, 2)</text>);
+    c.Bound(item => item.SalesType);
+    c.Bound(item => item.CallSum);
 }))
             </td>
         </tr>
     </table>
 
 </fieldset>
+
 <fieldset>
     @{
   
@@ -88,3 +92,4 @@
         </ul>
     }
 </fieldset>
+}

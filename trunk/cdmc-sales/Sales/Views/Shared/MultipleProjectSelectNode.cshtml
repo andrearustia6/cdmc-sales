@@ -52,8 +52,25 @@
                 }
             </ul>
         </div>
-    </fieldset>
-       
+         </fieldset>
+        if (displayduration=="true")
+        {
+   
+         <fieldset><legend>时间选择</legend>
+       <div style="margin: 10px">
+        <b><span>
+            <label> 开始时间：</label>
+            @Html.Telerik().DateTimePicker().Name("StartDate").Value(startdate)
+            <span>~ </span>
+            <label>
+                结束时间：</label>
+            @Html.Telerik().DateTimePicker().Name("EndDate").Value(enddate)
+            <span>  </span>
+           
+        </span></b>
+    </div>
+   </fieldset>
+            }
    
 }
 
