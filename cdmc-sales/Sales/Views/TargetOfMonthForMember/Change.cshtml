@@ -63,23 +63,17 @@
         var pid = Model == null ? ViewBag.ProjectID as int? : Model.ProjectID;
         
         var user = Employee.CurrentUserName;
-        var data = from m in CH.DB.Members where  m.Project.TeamLeader == user select m;
+        var membernames = CH.GetAllData<Member>(mem => mem.Project.TeamLeader == user).Select(s => s.Name).ToList();
 
-        var membernames = data.Select(s => s.Name).ToList();   
-          var c = CH.GetAllData<Member>(mem => mem.ProjectID == pid);
+    
         
         
         
           var name = Employee.CurrentUserName;
-          var mid = data.FirstOrDefault(f=>f.Name==Employee.CurrentUserName);
-          if (mid!=null && Model==null)
-          {
-          @Html.DropDownListFor(m => m.MemberID, new SelectList(membernames, "ID", "Name", mid.ID), "-请选择-")
-          }
-          else
-          {
-               @Html.DropDownListFor(m => m.MemberID, new SelectList(membernames, "ID", "Name"), "-请选择-")
-          }
+        
+         
+          @Html.DropDownListFor(m => m.MemberID, new SelectList(membernames, "ID", "Name"), "-请选择-")
+         
        
        }
          @Html.ValidationMessageFor(model => model.MemberID)
