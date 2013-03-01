@@ -316,7 +316,7 @@ namespace Sales.Controllers
                 CH.Edit<CompanyRelationship>(company);
             }
 
-            return Content("分配卡成功!");
+            return Content("分配成功!");
         }
 
         [HttpPost]
@@ -332,6 +332,7 @@ namespace Sales.Controllers
             }
 
             int memberID = int.Parse(selectedCompanyFilter);
+            selectedCompanies = selectedCompanies.Replace("on,", "");
             IEnumerable<int> companyIDs = selectedCompanies.Split(',').Select(c => int.Parse(c));
             foreach (int companyID in companyIDs)
             {

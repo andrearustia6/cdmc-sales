@@ -69,11 +69,11 @@ namespace Sales.Controllers
             
             DateTime startdate;
             DateTime enddate;
-            DateTime monthstartdate = new DateTime(DateTime.Now.Year, month.Value, 1);
-            DateTime monthenddate = monthstartdate.EndOfMonth();
+           
             if (month == null) month = DateTime.Now.Month;
             Utl.Utl.GetMonthActualStartdateAndEnddate(month, out startdate, out enddate);
-            
+            DateTime monthstartdate = new DateTime(DateTime.Now.Year, month.Value, 1);
+            DateTime monthenddate = monthstartdate.EndOfMonth();
             var ps = CH.GetAllData<Project>(p=>p.IsActived == true);
             var members = ps.SelectMany(s=>s.Members);
             var managers = ps.Select(s => s.Manager).Distinct();
@@ -113,10 +113,10 @@ namespace Sales.Controllers
             if(string.IsNullOrEmpty(manager)|| month==null)  return View(new GridModel<AjaxLeadMonthPerformance> { Data = new List<AjaxLeadMonthPerformance>() });
             DateTime startdate;
             DateTime enddate;
-            DateTime monthstartdate = new DateTime(DateTime.Now.Year,month.Value,1);
-            DateTime monthenddate = monthstartdate.EndOfMonth();
+           
             Utl.Utl.GetMonthActualStartdateAndEnddate(month, out startdate, out enddate);
-
+            DateTime monthstartdate = new DateTime(DateTime.Now.Year, month.Value, 1);
+            DateTime monthenddate = monthstartdate.EndOfMonth();
             var ps = CH.GetAllData<Project>(p=>p.IsActived == true && p.Manager == manager);
             var pids =ps.Select(s=>s.ID).ToList();
             var members = ps.SelectMany(s=>s.Members).Select(s=>s.Name).Distinct();
@@ -156,10 +156,10 @@ namespace Sales.Controllers
             if (string.IsNullOrEmpty(leader) || month == null) return View(new GridModel<AjaxLeadMonthPerformance> { Data = new List<AjaxLeadMonthPerformance>() });
             DateTime startdate;
             DateTime enddate;
+          
+            Utl.Utl.GetMonthActualStartdateAndEnddate(month, out startdate, out enddate);
             DateTime monthstartdate = new DateTime(DateTime.Now.Year, month.Value, 1);
             DateTime monthenddate = monthstartdate.EndOfMonth();
-            Utl.Utl.GetMonthActualStartdateAndEnddate(month, out startdate, out enddate);
-
             var ps = CH.GetAllData<Project>(p => p.IsActived == true && p.TeamLeader== leader);
             var pids = ps.Select(s => s.ID).ToList();
             var members = ps.SelectMany(s => s.Members).Select(s => s.Name).Distinct();
