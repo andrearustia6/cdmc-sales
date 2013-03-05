@@ -162,7 +162,7 @@ namespace Sales.Controllers
             DateTime monthenddate = monthstartdate.EndOfMonth();
             var ps = CH.GetAllData<Project>(p => p.IsActived == true && p.TeamLeader== leader);
             var pids = ps.Select(s => s.ID).ToList();
-            var members = ps.SelectMany(s => s.Members).Select(s => s.Name).Distinct();
+            var members = ps.SelectMany(s => s.Members).Where(w=>w.IsActivated==true).Select(s => s.Name).Distinct();
 
             //取得所有call同lead的di
             var alldistinct = CH.GetAllData<LeadCall>(l => l.Project.IsActived == true ).OrderByDescending(o => o.CallDate).Distinct(new LeadCallLeadDistinct());
@@ -340,7 +340,7 @@ namespace Sales.Controllers
             }
 
             var lcs = from l in CH.DB.LeadCalls
-                      where l.ProjectID == projectid &&l.Member.IsActivated==true && l.CallDate>= startdate && l.CallDate<= enddate
+                      where l.ProjectID == projectid && l.CallDate>= startdate && l.CallDate<= enddate
                       && selectedcallTypes.Any(a=>a==l.LeadCallTypeID)
                       select new AjaxViewCallListData
                       {
