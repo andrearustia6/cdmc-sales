@@ -23,7 +23,8 @@ namespace Utl
     /// </summary>
     public enum ReviewRight { 
         ProjectInfoReview, 
-        CallsReview, 
+        CallsReview,
+        CallsSumReview, 
         DealsReview,
         CallAnalysisReview, 
         ProgressReview, 

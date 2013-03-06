@@ -273,6 +273,10 @@ namespace Sales.Controllers
                 {
                     Data.CompanyRelationships = Data.CompanyRelationships.Where(c => c.Members.Count == 0).ToList();
                 }
+                else if (memberId == -2)
+                {
+                    Data.CompanyRelationships = Data.CompanyRelationships.Where(c => c.Members.Count != 0).ToList();
+                }
                 else
                 {
                     Data.CompanyRelationships = Data.CompanyRelationships.Where(c => c.Members.Any(m => m.ID == memberId)).ToList();
@@ -297,6 +301,7 @@ namespace Sales.Controllers
             {
                 return Content("请选择销售人员!");
             }
+            selectedCompanies = selectedCompanies.Replace("on,", "");
             IEnumerable<int> companyIDs = selectedCompanies.Split(',').Select(c => int.Parse(c));
             IEnumerable<int> memberIDs = selectedMembers.Split(',').Select(c => int.Parse(c));
             foreach (int companyID in companyIDs)
@@ -333,16 +338,37 @@ namespace Sales.Controllers
 
             int memberID = int.Parse(selectedCompanyFilter);
             selectedCompanies = selectedCompanies.Replace("on,", "");
-            IEnumerable<int> companyIDs = selectedCompanies.Split(',').Select(c => int.Parse(c));
+            IEnumerable<int> companyIDs;
+                if(selectedCompanies.Contains("all"))
+                {
+                    var pid = Int32.Parse(selectedCompanies.Replace("all",""));
+                    var coms = CH.GetAllData<CompanyRelationship>(c=>c.ProjectID ==pid );
+                    companyIDs = coms.Where(c=>c.Members!=null).Select(s => s.ID);
+                }
+                else
+               companyIDs = selectedCompanies.Split(',').Select(c => int.Parse(c));
             foreach (int companyID in companyIDs)
             {
                 var company = CH.GetAllData<CompanyRelationship>(i => i.ID == companyID, "Members").FirstOrDefault();
                 if (company != null)
                 {
-                    var mem = CH.GetDataById<Member>(memberID);
-                    company.Members.Remove(mem);
+                    if (memberID == -2)
+                    {
+                        company.Members.Clear();
+                        CH.Edit<CompanyRelationship>(company);
+                    }
+                    else
+                    {
+                        var mem = CH.GetDataById<Member>(memberID);
+                        if (mem != null)
+                        {
+                            company.Members.Remove(mem);
+                            CH.Edit<CompanyRelationship>(company);
+                        }
+                    }
+                    
                 }
-                CH.Edit<CompanyRelationship>(company);
+                
             }
             return Content("取消分配成功!");
         }

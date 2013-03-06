@@ -162,7 +162,7 @@ namespace Sales.Controllers
             DateTime monthenddate = monthstartdate.EndOfMonth();
             var ps = CH.GetAllData<Project>(p => p.IsActived == true && p.TeamLeader== leader);
             var pids = ps.Select(s => s.ID).ToList();
-            var members = ps.SelectMany(s => s.Members).Where(w=>w.IsActivated==true).Select(s => s.Name).Distinct();
+            var members = ps.SelectMany(s => s.Members).Where(w=>w.IsActivated==true && w.Name!=leader).Select(s => s.Name).Distinct();
 
             //取得所有call同lead的di
             var alldistinct = CH.GetAllData<LeadCall>(l => l.Project.IsActived == true ).OrderByDescending(o => o.CallDate).Distinct(new LeadCallLeadDistinct());
@@ -212,6 +212,9 @@ namespace Sales.Controllers
         /// <returns></returns>
         public ActionResult LeadCalls(List<int> selectedprojects, string selecttype, bool? isActivated, DateTime? startdate, DateTime? enddate)
         {
+
+        
+            ViewBag.Right = ReviewRight.CallsSumReview.ToString();
             ViewBag.StartDate = startdate;
             ViewBag.EndDate = enddate;
             ViewBag.SelectedProjects = selectedprojects;
@@ -297,12 +300,12 @@ namespace Sales.Controllers
         /// <param name="startdate"></param>
         /// <param name="enddate"></param>
         /// <returns></returns>
-        public ActionResult MemberLeadCalls(List<int> selectedprojects, List<int> selectedcallTypes, bool? isActivated, DateTime? startdate, DateTime? enddate,string selecttype)
+        public ActionResult MemberLeadCalls(List<int> selectedprojects,string selecttype, List<int> selectedcallTypes, bool? isActivated, DateTime? startdate, DateTime? enddate)
         {
             ViewBag.SelectedCallTypes = selectedcallTypes;
             ViewBag.SelectedProjects = selectedprojects;
             ViewBag.SelectType = selecttype;
-            //ViewBag.SelectedProgress = selectedprogress;
+            ViewBag.Right = ReviewRight.CallsReview.ToString();
             ViewBag.StartDate = startdate;
             ViewBag.EndDate = enddate;
             List<Project> ps;

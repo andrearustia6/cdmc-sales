@@ -9,6 +9,7 @@ using Entity;
 using Sales;
 using Utl;
 using Telerik.Web.Mvc;
+using BLL;
 
 namespace Sales.Controllers
 {
@@ -39,7 +40,7 @@ namespace Sales.Controllers
             }
             else 
             {
-                var ps = BLL.CRM_Logical.GetUserInvolveProject();
+                var ps = CRM_Logical.GetUserInvolveProject();
                 var rs = CH.GetAllData<Research>(r => ps.Any(sp => sp.ID == r.ProjectID) && r.CreatedDate >= startdate && r.CreatedDate <= enddate);
                 return View(rs);
             }

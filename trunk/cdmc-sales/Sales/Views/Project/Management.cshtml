@@ -74,13 +74,15 @@
         if (selectedCompanyFilter == '-1' || selectedCompanyFilter == '') {
             return;
         }
+
         var selectedCompanies = "";
+        if (selectedCompanyFilter == '-2')
         $('#TabStrip-4 .t-grid tbody input[type=checkbox]:checked').each(
             function () {
-                selectedCompanies += $(this).val() + ",";
+                selectedCompanies = "all" + $('#projectid').val();
             }
         );
-        if (selectedCompanies.length > 0) {
+        else if (selectedCompanies.length > 0) {
             selectedCompanies = selectedCompanies.substr(0, selectedCompanies.length - 1);
         } else {
             alert('请选择相应的公司');
@@ -95,6 +97,7 @@
         });
     }
 </script>
+@Html.Hidden("projectid",Model.ID)
 @Html.Hidden("tabindex")
 @Html.Partial("contenttitle", "项目管理")
 @*@Html.Partial("MemberEditor", new LeadCall() { LeadID = Model.ID })
@@ -271,7 +274,7 @@
     {  
     
     <div style="height: 30px;">
-        @Html.DropDownList("companyFilter", SelectHelper.MemberSelectListForProject(Model.ID, (string)ViewBag.MemberFilterForCompany), "All Members")
+        @Html.DropDownList("companyFilter", SelectHelper.MemberSelectListForProject(Model.ID, (string)ViewBag.MemberFilterForCompany), "-请选择-")
         <button onclick="UnsignCompanies()">
             取消分配</button>
       
@@ -309,7 +312,7 @@
         <div class="assignableMembers">
             @foreach (SelectListItem selectListItem in SelectHelper.MemberSelectListForProject(Model.ID))
             {
-                if (selectListItem.Value != (string)ViewBag.MemberFilterForCompany && selectListItem.Value != "-1" && selectListItem.Value != "")
+                if (selectListItem.Value != (string)ViewBag.MemberFilterForCompany && selectListItem.Value != "-1" && selectListItem.Value != "" && selectListItem.Value != "-2")
                 {
                 <span style="display: inline-block; width: 100px">@Html.CheckBox(selectListItem.Value, new { value = selectListItem.Value })
                     <label>@selectListItem.Text</label></span>

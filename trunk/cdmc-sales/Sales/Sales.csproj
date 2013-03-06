@@ -217,6 +217,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>UploadLocalization.zh-CN.resx</DependentUpon>
     </Compile>
+    <Compile Include="BLL\CompamyRelationshipSelectors.cs" />
     <Compile Include="BLL\CRM_Logical.cs" />
     <Compile Include="BLL\Report.cs" />
     <Compile Include="Controllers\AccountController.cs" />
