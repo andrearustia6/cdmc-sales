@@ -435,31 +435,6 @@ namespace Model
                 return LeadsCount / MemberCount;
             }
         }
-        //public override List<AjaxWeekPerformance> Weeks
-        //{
-        //    get
-        //    {
-        //        if (_weeks == null)
-        //        {
-        //           DateTime startdate,enddate;
-        //            Utl.Utl.GetMonthActualStartdateAndEnddate(Month,out startdate,out enddate);
-
-        //            StartDate = startdate; EndDate = enddate;
-        //            while(startdate<EndDate)
-        //            {
-        //                enddate = startdate.AddDays(7);
-        //                var ap = new AjaxManagerWeekPerformance() { StartDate = startdate, EndDate = enddate, LeadCalls = _leadCalls };
-        //                _weeks.Add(ap);
-        //                startdate = enddate;
-        //            }
-        //        }
-        //        return _weeks;
-        //    }
-        //}
-       
-       
-      
-
        
     }
 
