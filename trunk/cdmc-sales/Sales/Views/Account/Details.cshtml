@@ -1,7 +1,6 @@
 ﻿@{
     ViewBag.Title = "Details";
 }
-
 @model Entity.UserInfoModel
 @using Utl
 @using Entity
@@ -17,14 +16,15 @@
         @Html.LabelFor(m => m.RoleID)
     </div>
     <div class="editor-field">
-    @if (Model.RoleID == 0)
-    {
-        <p>未配置</p> 
-    }
-    else
-    {
-        @Html.Label(CH.GetDataById<Role>(Model.RoleID).Name)
-    }
+        @if (Model.RoleID == 0)
+        {
+            <p>
+                未配置</p> 
+        }
+        else
+        {
+            @Html.Label(CH.GetDataById<Role>(Model.RoleID).Name)
+        }
     </div>
     <div class="editor-label">
         @Html.LabelFor(m => m.Email)
@@ -38,18 +38,21 @@
     <div class="editor-field">
         @Html.DisplayFor(m => m.DisplayName)
     </div>
-    <div class="editor-label">
-        @Html.LabelFor(m => m.Contact)
-    </div>
-    <div class="editor-field">
-        @Html.DisplayFor(m => m.Contact)
-    </div>
-    <div class="editor-label">
-        @Html.LabelFor(m => m.Mobile)
-    </div>
-    <div class="editor-field">
-        @Html.DisplayFor(m => m.Mobile)
-    </div>
+    @if (Employee.AsDirector())
+    {
+        <div class="editor-label">
+            @Html.LabelFor(m => m.Contact)
+        </div>
+        <div class="editor-field">
+            @Html.DisplayFor(m => m.Contact)
+        </div>
+        <div class="editor-label">
+            @Html.LabelFor(m => m.Mobile)
+        </div>
+        <div class="editor-field">
+            @Html.DisplayFor(m => m.Mobile)
+        </div>
+    }
     <div class="editor-label">
         @Html.LabelFor(m => m.BirthDay)
     </div>
@@ -69,4 +72,4 @@
         @Html.DisplayFor(m => m.Department)
     </div>
 </fieldset>
-  @Html.ActionLink(SR.GobackToList, "Index")
+@Html.ActionLink(SR.GobackToList, "Index")
