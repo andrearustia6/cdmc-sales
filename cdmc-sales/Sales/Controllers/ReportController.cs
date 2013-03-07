@@ -128,7 +128,7 @@ namespace Sales.Controllers
 
 
             var deals = from d in CH.DB.Deals where d.Abandoned == false && pids.Contains(d.ProjectID.Value) && d.ActualPaymentDate < monthenddate && d.ActualPaymentDate >= monthstartdate select d;
-            var teamleads = CH.GetAllData<Project>(p=>p.Manager == manager).Select(s=>s.TeamLeader).ToList();
+            var teamleads = CH.GetAllData<Project>(p=>p.Manager == manager).Select(s=>s.TeamLeader).Distinct().ToList();
             var checkintargets = from ct in CH.DB.TargetOfMonths where ct.EndDate.Month == month && pids.Contains(ct.ProjectID.Value) select ct;
           
             var addleads = from l in CH.DB.Leads where l.CreatedDate >= startdate && l.CreatedDate <= enddate select l;
