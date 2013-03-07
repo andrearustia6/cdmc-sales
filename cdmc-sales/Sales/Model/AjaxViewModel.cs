@@ -31,24 +31,24 @@ namespace Model
         public string Email { get; set; }
 
         [Display(Name = "参会类型")]
-        public string  ParticipantTypeName { get { return Utl.Utl.GetFullName(ParticipantTypeNameCH, ParticipantTypeNameEN); } }
+        public string ParticipantTypeName { get { return Utl.Utl.GetFullName(ParticipantTypeNameCH, ParticipantTypeNameEN); } }
         public string ParticipantTypeNameCH { get; set; }
         public string ParticipantTypeNameEN { get; set; }
 
-        public string  ProjectCode { get; set; }
+        public string ProjectCode { get; set; }
         public int? ProjectID { get; set; }
     }
 
     public class AjaxViewLeadInProject
     {
-      
+
         public Lead Lead { get; set; }
         public int ProjectID { get; set; }
     }
 
     public class AjaxViewProject
     {
-       
+
 
         // public AjaxViewProject(IQueryable<Deal> deals)
         //{
@@ -71,7 +71,7 @@ namespace Model
         public DateTime EndDay { get; set; }
 
 
-        [Display(Name="剩余工作日")]
+        [Display(Name = "剩余工作日")]
         public TimeSpan LeftWorkingDays { get; set; }
         [Display(Name = "版块负责人")]
         public string Manager { get; set; }
@@ -103,35 +103,37 @@ namespace Model
         public int TotalDealCounts { get; set; }
 
         [Display(Name = "项目完成度")]
-        public double ComplatePercetage {
-            get {
-                if (ProjectTarget == 0 || TotalCheckIn==null)
+        public double ComplatePercetage
+        {
+            get
+            {
+                if (ProjectTarget == 0 || TotalCheckIn == null)
                     return 0;
                 else
                 {
-                    var p = (double)(TotalCheckIn*100/ProjectTarget);
-                     var v = Math.Round(p,2);
-                     return v;
+                    var p = (double)(TotalCheckIn * 100 / ProjectTarget);
+                    var v = Math.Round(p, 2);
+                    return v;
                 }
-                   
-            } 
+
+            }
         }
 
     }
 
-    public class AjaxViewDeal 
+    public class AjaxViewDeal
     {
         public int ID { get; set; }
 
         [Display(Name = "客户公司")]
         public string CompanyName { get { return Utl.Utl.GetFullName(CompanyNameCH, CompanyNameEN); } }
 
-         public string CompanyNameEN{get;set;}
+        public string CompanyNameEN { get; set; }
 
-         public string CompanyNameCH { get; set; }
+        public string CompanyNameCH { get; set; }
         [Display(Name = "项目编号")]
         public string ProjectCode { get; set; }
-        
+
         public int? ProjectID { get; set; }
 
         [Display(Name = "客户签单人")]
@@ -258,7 +260,7 @@ namespace Model
         public int? ProjectID { get; set; }
         [Display(Name = "人名")]
         public string LeadName { get { return Utl.Utl.GetFullName(LeadNameCH, LeadNameEN); } }
-        public  string LeadNameCH { get; set; }
+        public string LeadNameCH { get; set; }
         public string LeadNameEN { get; set; }
         public int? LeadID { get; set; }
 
@@ -272,7 +274,7 @@ namespace Model
         public string CompanyName { get { return Utl.Utl.GetFullName(CompanyNameCH, CompanyNameEN); } }
         public string CompanyNameCH { get; set; }
         public string CompanyNameEN { get; set; }
-   
+
         public string Mobile { get; set; }
 
         [Display(Name = "核心业务")]
@@ -286,7 +288,7 @@ namespace Model
 
                 var m = Mobile; if (string.IsNullOrEmpty(m)) return string.Empty;
                 string start = string.Empty;
-                if ( m.Length > 3)
+                if (m.Length > 3)
                 {
                     var hide = m.Substring(3, m.Length - 3);
                     var hidecount = hide.Count();
@@ -327,7 +329,7 @@ namespace Model
                 return m.Substring(0, 3) + start;
             }
         }
-   
+
         public string Contact { get; set; }
 
         [Display(Name = "所属客户关系")]
@@ -338,14 +340,14 @@ namespace Model
 
         public int CallTypeCode { get; set; }
         [Display(Name = "致电销售")]
-        public string Member  { get; set; }
+        public string Member { get; set; }
 
 
         [Required, Display(Name = "致电时间")]
         public DateTime CallDate { get; set; }
 
         [Display(Name = "是否有效")]
-        public bool FaxOut{ get; set; } 
+        public bool FaxOut { get; set; }
 
         [Display(Name = "结果描述")]
         public string Result { get; set; }
@@ -353,4 +355,94 @@ namespace Model
         [Display(Name = "回电时间")]
         public DateTime? CallBackDate { get; set; }
     }
+
+    public class AjaxViewAccount
+    {
+        public AjaxViewAccount(System.Web.Security.MembershipUser User)
+        {
+            this.UserName = User.UserName;
+            this.Email = User.Email;
+        }
+
+        [Display(Name = "用户名称")]
+        public string UserName { set; get; }
+
+        [Display(Name = "电子邮箱")]
+        public string Email { set; get; }
+
+        [Display(Name = "是否激活")]
+        public bool IsActivated
+        {
+            get
+            {
+                return Convert.ToBoolean(Utl.Employee.GetProfile("IsActivated", UserName));
+            }
+        }
+
+        [Display(Name = "入职时间")]
+        public DateTime? StartDate
+        {
+            get
+            {
+                string date = Utl.Employee.GetProfile("StartDate", UserName).ToString();
+                if (!string.IsNullOrWhiteSpace(date))
+                {
+                    return Convert.ToDateTime(date);
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
+
+        [Display(Name = "职级")]
+        public string RoleName
+        {
+            get
+            {
+                return Utl.Employee.GetRoleName(UserName);
+            }
+        }
+
+        [Display(Name = "Extension")]
+        public string Extension
+        {
+            get
+            {
+                return Utl.Employee.GetProfile("Contact", UserName).ToString();
+            }
+        }
+
+        [Display(Name = "部门")]
+        public string Department
+        {
+            get
+            {
+                var dps = Utl.CH.GetAllData<Department>();
+                var departmentid = Utl.Employee.GetProfile("DepartmentID", UserName) as int?;
+                if (departmentid != null)
+                {
+                    var dp = dps.FirstOrDefault(d => d.ID == departmentid);
+                    if (dp != null)
+                    {
+                        return dp.Name;
+                    }
+                    else
+                    {
+                        return string.Empty;
+                    }
+                }
+                else
+                {
+                    return string.Empty;
+                }
+            }
+        }
+
+
+
+
+    }
+
 }
