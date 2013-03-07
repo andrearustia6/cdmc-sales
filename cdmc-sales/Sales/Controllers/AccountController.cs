@@ -36,13 +36,13 @@ namespace MvcGlobalAuthorize.Controllers
             var activated = (bool)Employee.GetProfile("IsActivated", model.UserName);
             if (!activated && model.UserName != "karen")
             {
-                ModelState.AddModelError("","该账号为非激活状态,请联系管理员");
+                ModelState.AddModelError("", "该账号为非激活状态,请联系管理员");
             }
             if (ModelState.IsValid)
             {
                 if (Membership.ValidateUser(model.UserName, model.Password))
                 {
-                  
+
                     FormsAuthentication.SetAuthCookie(model.UserName, model.RememberMe);
                     if (Url.IsLocalUrl(returnUrl) && returnUrl.Length > 1 && returnUrl.StartsWith("/")
                         && !returnUrl.StartsWith("//") && !returnUrl.StartsWith("/\\"))
@@ -54,7 +54,7 @@ namespace MvcGlobalAuthorize.Controllers
                         //if (Employee.EqualToLeader() || Employee.EqualToSales())
                         //    return RedirectToAction("mypage", "sales");
                         //else
-                            return RedirectToAction("Index", "account");
+                        return RedirectToAction("Index", "account");
                     }
                 }
                 else
@@ -82,14 +82,14 @@ namespace MvcGlobalAuthorize.Controllers
         {
             if (username == null) return View();
             var user = Membership.GetUser(username.Trim());
-            if(user.IsLockedOut)
+            if (user.IsLockedOut)
                 user.UnlockUser();
             if (user != null)
             {
                 return View("ResetPassword", "", user.ResetPassword());
             }
             else
-                return View("ResetPassword","" ,"找不到对应的用户");
+                return View("ResetPassword", "", "找不到对应的用户");
         }
 
         [AdministratorRequired]
@@ -99,9 +99,9 @@ namespace MvcGlobalAuthorize.Controllers
             if (username == null) return View();
 
             var user = Membership.GetUser(username);
-    
+
             Membership.DeleteUser(username);
-            return  RedirectToAction("index", "account");
+            return RedirectToAction("index", "account");
         }
 
         [AllowAnonymous]
@@ -196,7 +196,7 @@ namespace MvcGlobalAuthorize.Controllers
             DateTime.TryParse(data.ToString(), out b);
             um.BirthDay = b;
             int contact = 0;
-            Int32.TryParse(objProfile.GetPropertyValue("Contact").ToString(),out contact);
+            Int32.TryParse(objProfile.GetPropertyValue("Contact").ToString(), out contact);
             um.Contact = contact;
             um.Mobile = objProfile.GetPropertyValue("Mobile") as string;
             um.Gender = objProfile.GetPropertyValue("Gender") as string;
@@ -258,7 +258,7 @@ namespace MvcGlobalAuthorize.Controllers
                 DateTime.TryParse(data.ToString(), out b);
                 um.BirthDay = b;
                 int con = 0;
-                Int32.TryParse(objProfile.GetPropertyValue("Contact").ToString(),out con);
+                Int32.TryParse(objProfile.GetPropertyValue("Contact").ToString(), out con);
                 int expid = 0;
                 Int32.TryParse(objProfile.GetPropertyValue("ExpLevelID").ToString(), out expid);
                 um.ExpLevelID = expid;
@@ -321,13 +321,13 @@ namespace MvcGlobalAuthorize.Controllers
             data = objProfile.GetPropertyValue("RoleLevelID");
             Int32.TryParse(data.ToString(), out roleid);
             um.RoleID = roleid;
-            
+
             object StartDate;
             DateTime startdate;
             StartDate = objProfile.GetPropertyValue("StartDate");
             DateTime.TryParse(StartDate.ToString(), out startdate);
             um.StartDate = startdate;
-       
+
 
             object activate = null;
             bool isactivated;
@@ -348,12 +348,12 @@ namespace MvcGlobalAuthorize.Controllers
         [DirectorRequired]
         public ActionResult SetRoleLevel(UserInfoModel model)
         {
-            if (Employee.IsEqualToCurrentUserName(model.UserName) || model.RoleID>0)
+            if (Employee.IsEqualToCurrentUserName(model.UserName) || model.RoleID > 0)
             {
                 ModelState.Remove("Password");
                 ModelState.Remove("UserName");
-                if ((model.RoleID == 0 || model.StartDate==null) && model.IsActivated == true)
-                    ModelState.AddModelError("","激活的账号必须设置职级和入职日期才能生效");
+                if ((model.RoleID == 0 || model.StartDate == null) && model.IsActivated == true)
+                    ModelState.AddModelError("", "激活的账号必须设置职级和入职日期才能生效");
                 if (ModelState.IsValid)
                 {
                     MembershipUser user = Membership.GetUser(model.UserName);
@@ -439,11 +439,21 @@ namespace MvcGlobalAuthorize.Controllers
             var role = CH.GetDataById<Role>(level);
             var list = Membership.GetAllUsers().Cast<MembershipUser>().ToList<MembershipUser>();
             if (role.Level >= 0 && role.Level < 500)
+            {
                 list = list.FindAll(i => Employee.IsEqualToCurrentUserName(i.UserName));
-            else if (role.Level>=500)
+            }
+            else if (role.Level >= 500)
+            {
                 list = list.FindAll(i => Employee.GetRoleLevel(i.UserName) <= role.Level);
-          
-            return View(list);
+            }
+
+            List<Model.AjaxViewAccount> users = new List<Model.AjaxViewAccount>();
+            foreach (var item in list)
+            {
+                users.Add(new Model.AjaxViewAccount(item));
+            }
+
+            return View(users);
         }
 
         #region Status Codes
