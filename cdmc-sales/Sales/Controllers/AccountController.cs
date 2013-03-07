@@ -435,17 +435,47 @@ namespace MvcGlobalAuthorize.Controllers
 
         public ActionResult Index()
         {
+
             var level = (int)Employee.GetCurrentProfile("RoleLevelID");
             var role = CH.GetDataById<Role>(level);
+
+
             var list = Membership.GetAllUsers().Cast<MembershipUser>().ToList<MembershipUser>();
             if (role.Level >= 0 && role.Level < 500)
             {
                 list = list.FindAll(i => Employee.IsEqualToCurrentUserName(i.UserName));
+
+                list = list.FindAll(i => i.UserName == Employee.CurrentUserName);  //只看自己资料
             }
             else if (role.Level >= 500)
             {
                 list = list.FindAll(i => Employee.GetRoleLevel(i.UserName) <= role.Level);
+
+                if (role.Level == 500)//版块负责人，只看自己项目成员信息
+                {
+                    var listClone = Membership.GetAllUsers().Cast<MembershipUser>().ToList<MembershipUser>();
+                    var project = CH.GetAllData<Project>(s => s.Manager == Employee.CurrentUserName);
+                    if (project != null || project.Count() > 0)
+                    {
+                        list.Clear();
+                        foreach (var itemPro in project)
+                        {
+                            var member = CH.GetAllData<Member>(s => s.ProjectID == itemPro.ID);
+                            if (member != null || member.Count() > 0)
+                            {
+                                foreach (var itemMem in member)
+                                {
+                                    list.Add(listClone.Find(s => s.UserName == itemMem.Name));
+                                }
+                            }
+                        }
+                    }
+                    list.Add(listClone.Find(s => s.UserName == Employee.CurrentUserName));
+                }
             }
+
+
+
 
             List<Model.AjaxViewAccount> users = new List<Model.AjaxViewAccount>();
             foreach (var item in list)
