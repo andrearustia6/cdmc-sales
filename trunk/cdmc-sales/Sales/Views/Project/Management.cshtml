@@ -76,13 +76,19 @@
         }
 
         var selectedCompanies = "";
-        if (selectedCompanyFilter == '-2')
-        $('#TabStrip-4 .t-grid tbody input[type=checkbox]:checked').each(
-            function () {
+
+
+        if (selectedCompanyFilter == '-2') {
                 selectedCompanies = "all" + $('#projectid').val();
-            }
-        );
-        else if (selectedCompanies.length > 0) {
+        }
+        else {
+            $('#TabStrip-4 .t-grid tbody input[type=checkbox]:checked').each(
+            function () {
+                selectedCompanies += $(this).val() + ",";
+            });
+        }
+
+        if (selectedCompanies.length > 0) {
             selectedCompanies = selectedCompanies.substr(0, selectedCompanies.length - 1);
         } else {
             alert('请选择相应的公司');
@@ -274,7 +280,7 @@
     {  
     
     <div style="height: 30px;">
-        @Html.DropDownList("companyFilter", SelectHelper.MemberSelectListForProject(Model.ID, (string)ViewBag.MemberFilterForCompany), "-请选择-")
+        @Html.DropDownList("companyFilter", SelectHelper.MemberSelectListForProject(Model.ID, (string)ViewBag.MemberFilterForCompany), "所有公司")
         <button onclick="UnsignCompanies()">
             取消分配</button>
       
@@ -303,7 +309,7 @@
 
                 }).Resizable(resizing => resizing.Columns(true))
                                                         .Pageable(page => page.PageSize(10))
-                                                        .Sortable()
+                                                        .Sortable().Filterable()
                                                         .Scrollable(scrolling => scrolling.Height(350))
 
                                                        )
@@ -319,7 +325,7 @@
                 }
             }
         </div>
-        <div style="text-align: right;">
+        <div style="text-align: left;">
             <button onclick="AssignCompanies()">
                 分配</button></div>
     </fieldset>
