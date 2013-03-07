@@ -42,7 +42,7 @@ namespace Model
             get
             {
                 if (_leadCalls == null) return 0;
-                return _leadCalls.Where(l => l.CallDate < EndDate && l.CallDate >= StartDate && l.LeadCallType.Code>=30).Count();
+                return _leadCalls.Where(l => l.CallDate < EndDate && l.CallDate >= StartDate).Count();
             }
         }
         

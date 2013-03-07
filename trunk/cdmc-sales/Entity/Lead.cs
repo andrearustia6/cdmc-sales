@@ -212,6 +212,10 @@ namespace Entity
       [JsonIgnoreAttribute("CompanyRelationship")]
     public class LeadCall : CompanyRelationshipChildItem
     {
+          public override string ToString()
+          {
+              return "客户：" + Lead.Name + "  致电结果：" + LeadCallType.Name + "  致电人：" + Member.Name + "  致电时间：" + CallDate + "  录入时间：" + CreatedDate+"  项目："+Project.ProjectCode;
+          }
         public int? ProjectID { get; set; }
         public virtual Project Project { get; set; }
 
