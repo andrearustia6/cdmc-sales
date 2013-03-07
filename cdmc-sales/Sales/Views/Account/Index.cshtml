@@ -1,14 +1,14 @@
 ﻿@{
     ViewBag.Title = "个人信息";
 }
-@model List<MembershipUser>
-
+@model List<AjaxViewAccount>
 @using Utl
 @using Entity
-@Html.Partial("contenttitle","个人信息")
+@using Model
+@Html.Partial("contenttitle", "个人信息")
 @{
     var dps = CH.GetAllData<Department>();
-    Html.Telerik().Grid<MembershipUser>(Model).Name("MembershipUser").ToolBar(commands =>
+    Html.Telerik().Grid<AjaxViewAccount>(Model).Name("AjaxViewAccount").ToolBar(commands =>
     {
         if (Employee.AsManager())
         {
@@ -16,7 +16,6 @@
         }
     }
     )
-
                 .DataKeys(keys =>
                 {
                     keys.Add(s => s.UserName);
@@ -25,52 +24,26 @@
                 {
                     c.Bound(item => item.UserName).Title("用户名称").Width(200);
                     c.Bound(item => item.Email).Title("电子邮箱").Width(200);
-
-                    c.Bound(item => item.UserName).Template(@<span>
-                     @{
-                         var departmentid = @Employee.GetProfile("DepartmentID", item.UserName) as int?;
-                         if (departmentid != null)
-                         {
-                             var dp = dps.FirstOrDefault(d => d.ID == departmentid);
-                             if (dp != null)
-                             {
-                                 <p>@dp.Name</p>
-                             }
-                         }
+                    c.Bound(item => item.Department).Width(100).Title("部门");
+                    c.Bound(item => item.IsActivated).Width(100).Title("是否激活");
+                    c.Bound(item => item.StartDate).Width(100).Title("入职时间");
+                    c.Bound(item => item.RoleName).Title("职级").Width(100);
+                    if (Employee.AsDirector())
+                    {
+                        c.Bound(item => item.Extension).Title("Extension").Width(100);
+                    }
+                    c.Template(@<span> <a href=@Url.Content("~/Account/Details/?name=" + item.UserName) >
+                        个人信息</a>
+                        @if (Employee.AsDirector())
+                        {
+                            <span>| </span><a href=@Url.Content("~/Account/SetRoleLevel/?name=" + item.UserName)>
+                                设置权限</a>
                         }
-                    </span>).Width(100).Title("部门");
-                    c.Bound(item => item.UserName).Template(@<span>
-                        @Employee.GetProfile("IsActivated", item.UserName)
-                    </span>).Width(100).Title("是否激活");
-                    c.Bound(item => item.UserName).Template(@<span>
-                        @Employee.GetProfile("StartDate", item.UserName)
-                    </span>).Width(100).Title("入职时间");
-                    c.Bound(item => item.UserName).Title("职级").Width(100).Template(@<span>
-                     @Employee.GetRoleName(item.UserName)
-                    </span>);
-    if(Employee.AsDirector())
-    {
-                    c.Bound(item => item.UserName).Title("Extension").Width(100).Template(@<span>
-                     @Employee.GetProfile("Contact", item.UserName)
-                    </span>);
-    }
-                    // c.Bound(item => ).Width(100);
-                    c.Bound(item => item.UserName).Title("操作").Width(150).Template(@<span> 
-                    <a href=@Url.Content("~/Account/Details/?name=" + item.UserName) >个人信息</a> 
-                     @if (Employee.AsDirector())
-                     {
-                      <span> | </span><a href=@Url.Content("~/Account/SetRoleLevel/?name=" + item.UserName)>设置权限</a>
-                     }
-                  
-                   </span>);
+                    </span>).Title("操作").Width(150);
                 })
                                                                   .Resizable(resizing => resizing.Columns(true))
                                                                   .Filterable().Sortable().Groupable()
                                                                   .Pageable(p => p.PageSize(20))
                                                                   .Scrollable(scrolling => scrolling.Height(350)).Render();
 
-                                                                  }
-
-
-
-
+}
