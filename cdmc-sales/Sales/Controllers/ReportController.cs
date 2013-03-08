@@ -77,10 +77,37 @@ namespace Sales.Controllers
             var ps = CH.GetAllData<Project>(p=>p.IsActived == true);
             var members = ps.SelectMany(s=>s.Members);
             var managers = ps.Select(s => s.Manager).Distinct();
+
+            
             if (Employee.EqualToManager())
             {
                 managers = managers.Where(w => w == Employee.CurrentUserName);
             }
+
+
+            var per = from manager in managers
+                      from p in  CH.DB.Projects where p.IsActived==true && p.Manager== manager
+                      from c in p.CompanyRelationships
+                      join m in CH.DB.Members on p.ID equals m.ProjectID into mems
+                      join d in CH.DB.Deals on p.ID equals d.ProjectID into ds
+                      join c in CH.DB.LeadCalls on p.ID equals c.ProjectID into lcs
+                      join l in CH.DB.Leads on c.CompanyID equals l.CompanyID into leds
+                      select new
+                      {
+                          p = p,
+                          mems = mems,
+                          ds = ds,
+                          lcs = lcs,
+                          leds = leds
+                      };
+            var data = new { 
+                ps = per.Select(s => s.p.ProjectCode),
+                ds = per.SelectMany(s=>s.ds).Where(d=>d.ActualPaymentDate<monthenddate && d.ActualPaymentDate>=monthstartdate),
+                lcs = per.SelectMany(s=>s.lcs).Where(l=>l.CallDate>=startdate && l.CallDate<enddate),
+                led = per.SelectMany(s=>s.leds).Where(l=>l.CreatedDate>=startdate && l.CreatedDate<enddate),
+                mem = per.SelectMany(s => s.mems).Select(s => s.Name).Distinct() 
+            };
+
             var leads = from l in CH.DB.Leads where l.CreatedDate < enddate && l.CreatedDate >= startdate select l;
             var calls = from l in CH.DB.LeadCalls where l.CallDate< enddate && l.CallDate>= startdate  select l;
             var deals = from d in CH.DB.Deals where  d.Abandoned == false && d.IsClosed==true && d.ActualPaymentDate<monthenddate && d.ActualPaymentDate>= monthstartdate　 select d;
