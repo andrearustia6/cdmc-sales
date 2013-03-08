@@ -9,6 +9,7 @@ using Entity;
 using System.Web.Profile;
 using Utl;
 using BLL;
+using Model;
 
 namespace MvcGlobalAuthorize.Controllers
 {
@@ -436,43 +437,65 @@ namespace MvcGlobalAuthorize.Controllers
         public ActionResult Index()
         {
 
-            var level = (int)Employee.GetCurrentProfile("RoleLevelID");
-            var role = CH.GetDataById<Role>(level);
-
-
-            var list = Membership.GetAllUsers().Cast<MembershipUser>().ToList<MembershipUser>();
+            var role = Employee.CurrentRole;
+            var list = new List<MembershipUser>() ;
             if (role.Level >= 0 && role.Level < 500)
             {
-                list = list.FindAll(i => Employee.IsEqualToCurrentUserName(i.UserName));
-
-                list = list.FindAll(i => i.UserName == Employee.CurrentUserName);  //只看自己资料
+                list.Add(Membership.GetUser(Employee.CurrentUserName));
             }
-            else if (role.Level >= 500)
+            else
             {
-                list = list.FindAll(i => Employee.GetRoleLevel(i.UserName) <= role.Level);
-
-                if (role.Level == 500)//版块负责人，只看自己项目成员信息
+                list = Membership.GetAllUsers().Cast<MembershipUser>().ToList<MembershipUser>();
+                if (role.Level == 500)
                 {
-                    var listClone = Membership.GetAllUsers().Cast<MembershipUser>().ToList<MembershipUser>();
-                    var project = CH.GetAllData<Project>(s => s.Manager == Employee.CurrentUserName);
-                    if (project != null || project.Count() > 0)
-                    {
-                        list.Clear();
-                        foreach (var itemPro in project)
-                        {
-                            var member = CH.GetAllData<Member>(s => s.ProjectID == itemPro.ID);
-                            if (member != null || member.Count() > 0)
-                            {
-                                foreach (var itemMem in member)
-                                {
-                                    list.Add(listClone.Find(s => s.UserName == itemMem.Name));
-                                }
-                            }
-                        }
-                    }
-                    list.Add(listClone.Find(s => s.UserName == Employee.CurrentUserName));
+                    var mems = CH.GetAllData<Member>(m => m.Project.Manager == Employee.CurrentUserName).Select(s => s.Name).Distinct();
+                    list = list.FindAll(f => mems.Contains(f.UserName));
                 }
             }
+           
+
+          
+
+            //var level = (int)Employee.GetCurrentProfile("RoleLevelID");
+            //var role = CH.GetDataById<Role>(level);
+
+
+            //var list = Membership.GetAllUsers().Cast<MembershipUser>().ToList<MembershipUser>();
+            //if (role.Level >= 0 && role.Level < 500)
+            //{
+            //    list = list.FindAll(i => Employee.IsEqualToCurrentUserName(i.UserName));
+
+            //    list = list.FindAll(i => i.UserName == Employee.CurrentUserName);  //只看自己资料
+            //}
+
+            //else if (role.Level > 500)
+            //{
+            //    list = list.FindAll(i => Employee.GetRoleLevel(i.UserName) <= role.Level);
+
+
+            //} 
+            //else if(role.Level == 500)//版块负责人，只看自己项目成员信息
+            //{
+
+            //    var listClone = Membership.GetAllUsers().Cast<MembershipUser>().ToList<MembershipUser>();
+            //    var project = CH.GetAllData<Project>(s => s.Manager == Employee.CurrentUserName);
+            //    if (project != null || project.Count() > 0)
+            //    {
+            //        list.Clear();
+            //        foreach (var itemPro in project)
+            //        {
+            //            var member = CH.GetAllData<Member>(s => s.ProjectID == itemPro.ID);
+            //            if (member != null || member.Count() > 0)
+            //            {
+            //                foreach (var itemMem in member)
+            //                {
+            //                    list.Add(listClone.Find(s => s.UserName == itemMem.Name));
+            //                }
+            //            }
+            //        }
+            //    }
+            //    list.Add(listClone.Find(s => s.UserName == Employee.CurrentUserName));
+            //}
 
 
 

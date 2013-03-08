@@ -358,6 +358,11 @@ namespace Model
 
     public class AjaxViewAccount
     {
+        public AjaxViewAccount()
+        {
+          
+        }
+
         public AjaxViewAccount(System.Web.Security.MembershipUser User)
         {
             this.UserName = User.UserName;
