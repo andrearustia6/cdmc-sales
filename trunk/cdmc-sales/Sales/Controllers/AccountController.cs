@@ -439,7 +439,7 @@ namespace MvcGlobalAuthorize.Controllers
 
             var role = Employee.CurrentRole;
             var list = new List<MembershipUser>() ;
-            if (role.Level >= 0 && role.Level < 500)
+            if (role.Level < 500)
             {
                 list.Add(Membership.GetUser(Employee.CurrentUserName));
             }
