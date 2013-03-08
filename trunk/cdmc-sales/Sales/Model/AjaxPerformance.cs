@@ -285,8 +285,6 @@ namespace Model
                     _weeks.Add(ap);
                     startdate = enddate;
                 }
-
-                
             }
                 return _weeks;
         } }
