@@ -546,17 +546,31 @@ namespace Utl
         public static string ErrorView { get { return @"~\views\shared\Error.cshtml"; } }
       
     }
+    public static class EnumerableExtensions
+    {
+        public static string ToStringList(this IEnumerable<string> item)
+        {
+            var temp = string.Empty;
+            foreach (var i in item)
+            {
+                if (string.IsNullOrEmpty(temp))
+                {
+                    temp = i;
+                }
+                else
+                {
+                    temp += ", " + i;
+                }
+            }
+            return temp;
+        }
+    }
 
     public class Utl
     {
 
-        //public int CalculateLeftWorkindDate(DateTime enddate)
-        //{
+        
 
-        //    var duration = enddate - DateTime.Now;
-        //    duration.
-        //    duration.TotalDays
-        //}
         public static void GetMonthActualStartdateAndEnddate(int? month, out DateTime startdate, out DateTime enddate)
         {
             if (month == null) month = DateTime.Now.Month;

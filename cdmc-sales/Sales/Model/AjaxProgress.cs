@@ -119,7 +119,7 @@ namespace Model
         public int Month { get; set; }
         public int Year { get; set; }
 
-        public override IQueryable<Deal> Deals
+        public override IEnumerable<Deal> Deals
         {
             set
             {
@@ -127,7 +127,7 @@ namespace Model
             }
         }
 
-        public override List<LeadCall> LeadCalls
+        public override IEnumerable<LeadCall> LeadCalls
         {
             set
             {
@@ -219,7 +219,7 @@ namespace Model
          public int Month { get; set; }
          public int Year { get; set; }
 
-         public override IQueryable<Deal> Deals
+         public override IEnumerable<Deal> Deals
          {
              set
              {
@@ -227,7 +227,7 @@ namespace Model
              }
          }
 
-         public override List<LeadCall> LeadCalls
+         public override  IEnumerable<LeadCall> LeadCalls
          {
              set
              {

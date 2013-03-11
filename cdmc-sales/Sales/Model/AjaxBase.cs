@@ -12,9 +12,9 @@ namespace Model
     public class AjaxStatistics
     {
         public virtual double CallHours { get; set; }
-            
-        public virtual List<Lead> Leads { set { _leads = value; } }
-        protected List<Lead> _leads { get; set; }
+
+        public virtual IEnumerable<Lead> Leads { set { _leads = value; } }
+        protected IEnumerable<Lead> _leads { get; set; }
         [Display(Name = "添加Lead数量")]
         public int LeadsCount
         {
@@ -24,8 +24,8 @@ namespace Model
                 return _leads.Count();
             }   
         }
-        public virtual List<LeadCall> LeadCalls { set { _leadCalls = value; } }
-        protected List<LeadCall> _leadCalls { get; set; }
+        public virtual IEnumerable<LeadCall> LeadCalls { set { _leadCalls = value; } }
+        protected IEnumerable<LeadCall> _leadCalls { get; set; }
         [Display(Name = "填写LeadCall数量")]
         public int LeadCallsCount
         {
@@ -42,13 +42,13 @@ namespace Model
             get
             {
                 if (_leadCalls == null) return 0;
-                return _leadCalls.Where(l => l.CallDate < EndDate && l.CallDate >= StartDate).Count();
+                return _leadCalls.Where(l => l.CallDate < EndDate && l.CallDate >= StartDate && l.LeadCallType.Code>=40).Count();
             }
         }
-        
-        protected IQueryable<Deal> _deals { get; set; }
-        public virtual IQueryable<Deal> Deals { set { _deals = value; } }
-        public IQueryable<CompanyRelationship> CompanyRelationships { get; set; }
+
+        protected IEnumerable<Deal> _deals { get; set; }
+        public virtual IEnumerable<Deal> Deals { set { _deals = value; } }
+        public IEnumerable<CompanyRelationship> CompanyRelationships { get; set; }
 
         public decimal? TotalDealinTargets { get; set; }
 
