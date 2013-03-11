@@ -63,10 +63,8 @@ namespace Sales.Controllers
             return View();
         }
 
-        [GridAction]
-        public ActionResult _ManagerMonthPerformanceIndex(int? month)
+         ProjectPerformaceData GetPerformanceData(int? month)
         {
-            
             DateTime startdate;
             DateTime enddate;
            
@@ -74,63 +72,66 @@ namespace Sales.Controllers
             Utl.Utl.GetMonthActualStartdateAndEnddate(month, out startdate, out enddate);
             DateTime monthstartdate = new DateTime(DateTime.Now.Year, month.Value, 1);
             DateTime monthenddate = monthstartdate.EndOfMonth();
-            var ps = CH.GetAllData<Project>(p=>p.IsActived == true);
-            var members = ps.SelectMany(s=>s.Members);
-            var managers = ps.Select(s => s.Manager).Distinct();
 
-            
-            if (Employee.EqualToManager())
-            {
-                managers = managers.Where(w => w == Employee.CurrentUserName);
-            }
-
-
-            var per = from manager in managers
-                      from p in  CH.DB.Projects where p.IsActived==true && p.Manager== manager
-                      from c in p.CompanyRelationships
+             //选择时间段内的数据
+            var per = from p in CH.DB.Projects where p.IsActived==true 
+                      join crm in CH.DB.CompanyRelationships on p.ID equals crm.ProjectID into crms
                       join m in CH.DB.Members on p.ID equals m.ProjectID into mems
                       join d in CH.DB.Deals on p.ID equals d.ProjectID into ds
                       join c in CH.DB.LeadCalls on p.ID equals c.ProjectID into lcs
-                      join l in CH.DB.Leads on c.CompanyID equals l.CompanyID into leds
-                      select new
+                    
+                      join tp in CH.DB.TargetOfMonths on p.ID equals tp.ProjectID into tps
+                      join tm in CH.DB.TargetOfMonthForMembers on p.ID equals tm.ProjectID into tms
+                      select new 
                       {
-                          p = p,
-                          mems = mems,
-                          ds = ds,
-                          lcs = lcs,
-                          leds = leds
+                          Project = p,
+                          Deals = ds.Where(d => d.ActualPaymentDate < monthenddate && d.ActualPaymentDate >= monthstartdate && d.Abandoned==false),
+                          LeadCalls = lcs.Where(l => l.CallDate >= startdate && l.CallDate < enddate),
+                          //Leads = leds.Where(l => l.CreatedDate >= startdate && l.CreatedDate < enddate),
+                          CRMs = crms,
+                          Mem=mems,
+                          Month = month,
+                          TPs = tps.Where(t => month == t.StartDate.Month),
+                          TMs = tms.Where(t => t.StartDate.Month == month)
                       };
-            var data = new { 
-                ps = per.Select(s => s.p.ProjectCode),
-                ds = per.SelectMany(s=>s.ds).Where(d=>d.ActualPaymentDate<monthenddate && d.ActualPaymentDate>=monthstartdate),
-                lcs = per.SelectMany(s=>s.lcs).Where(l=>l.CallDate>=startdate && l.CallDate<enddate),
-                led = per.SelectMany(s=>s.leds).Where(l=>l.CreatedDate>=startdate && l.CreatedDate<enddate),
-                mem = per.SelectMany(s => s.mems).Select(s => s.Name).Distinct() 
-            };
 
-            var leads = from l in CH.DB.Leads where l.CreatedDate < enddate && l.CreatedDate >= startdate select l;
-            var calls = from l in CH.DB.LeadCalls where l.CallDate< enddate && l.CallDate>= startdate  select l;
-            var deals = from d in CH.DB.Deals where  d.Abandoned == false && d.IsClosed==true && d.ActualPaymentDate<monthenddate && d.ActualPaymentDate>= monthstartdate　 select d;
-            var list = new List<AjaxManagerMonthPerformance>();
-
-            foreach(var m in managers)
+            var data = new ProjectPerformaceData()
             {
-                var cs =  from c in calls where m == c.Member.Project.Manager select c;
-                var mems = members.Where(w=>w.Project.Manager == m).Select(s=>s.Name).Distinct();
-                var ls = leads.Where(l => mems.Contains(l.Creator));
+                LeadCalls = per.SelectMany(s => s.LeadCalls),
+                Deals = per.SelectMany(s => s.Deals),
+                CRMs = per.SelectMany(s => s.CRMs),
+                StartDate = startdate,
+                EndDate = enddate,
+                Month = month.Value,
+                MonthStartDate = monthstartdate,
+                MonthEndDate = monthenddate,
+                ProjectTargets = per.SelectMany(s=>s.TPs),
+                MemberTargets = per.SelectMany(s=>s.TMs),
+                Projects = per.Select(p=>p.Project),
+                Members = per.SelectMany(p=>p.Mem)
+            };
+            data.Leads = data.CRMs.Select(s => s.Company).SelectMany(s => s.Leads).Where(l => l.CreatedDate >= startdate && l.CreatedDate < enddate);
+            return data;
 
-                var pnames = ps.Where(w=>w.Manager == m).Select(s => s.Name_CH).ToList();
-                var namestring = string.Empty;
-                pnames.ForEach(f => {
-                    if (namestring == string.Empty)
-                        namestring = f;
-                    else
-                        namestring = namestring + " | " + f;
-                });
-                var p = new AjaxManagerMonthPerformance() { LeadCalls = cs.ToList(), ProjectName= namestring, Month = month,  Name = m, Deals = deals, Members = mems.ToList(), Leads = ls.ToList() };
-                list.Add(p);
-            }
+        }
 
+        [GridAction]
+        public ActionResult _ManagerMonthPerformanceIndex(int? month)
+        {
+            var data = GetPerformanceData(month);
+            var list = from m in data.Projects.Select(s=>s.Manager).Distinct()
+                       select new AjaxManagerMonthPerformance()
+                       {
+                             Name = m,
+                             LeadCalls = data.LeadCalls.Where(l => l.Project.Manager == m),
+                             Deals = data.Deals.Where(d => d.Project.Manager == m),
+                             Leads = data.CRMs.Where(w=>w.Project.Manager==m).Select(s => s.Company).SelectMany(s => s.Leads).Where(l => l.CreatedDate >= data.StartDate && l.CreatedDate < data.EndDate),
+                             StartDate = data.StartDate,
+                             EndDate= data.EndDate,
+                             Month = data.Month,
+                             Members = data.Members.Where(w=>w.Project.Manager==m).Select(s => s.Name).Distinct(),
+                             ProjectName = data.Projects.Where(p=>p.Manager == m).Select(s=>s.ProjectCode).Distinct().ToStringList()
+                       };
             return View(new GridModel<AjaxManagerMonthPerformance> { Data = list });
         }
 
@@ -138,42 +139,29 @@ namespace Sales.Controllers
         public ActionResult _LeadMonthPerformanceIndex(int? month, string manager)
         {
             if(string.IsNullOrEmpty(manager)|| month==null)  return View(new GridModel<AjaxLeadMonthPerformance> { Data = new List<AjaxLeadMonthPerformance>() });
-            DateTime startdate;
-            DateTime enddate;
-           
-            Utl.Utl.GetMonthActualStartdateAndEnddate(month, out startdate, out enddate);
-            DateTime monthstartdate = new DateTime(DateTime.Now.Year, month.Value, 1);
-            DateTime monthenddate = monthstartdate.EndOfMonth();
-            var ps = CH.GetAllData<Project>(p=>p.IsActived == true && p.Manager == manager);
-            var pids =ps.Select(s=>s.ID).ToList();
-            var members = ps.SelectMany(s=>s.Members).Select(s=>s.Name).Distinct();
 
-            //取得所有call同lead的di
-            var alldistinct = CH.GetAllData<LeadCall>(l =>l.Project.IsActived==true && l.Member.Project.Manager == manager).OrderByDescending(o => o.CallDate).Distinct(new LeadCallLeadDistinct());
-
-            var calls = from l in alldistinct where l.CallDate < enddate && l.CallDate >= startdate select l;
-
-
-            var deals = from d in CH.DB.Deals where d.Abandoned == false && pids.Contains(d.ProjectID.Value) && d.ActualPaymentDate < monthenddate && d.ActualPaymentDate >= monthstartdate select d;
-            var teamleads = CH.GetAllData<Project>(p=>p.Manager == manager).Select(s=>s.TeamLeader).Distinct().ToList();
-            var checkintargets = from ct in CH.DB.TargetOfMonths where ct.EndDate.Month == month && pids.Contains(ct.ProjectID.Value) select ct;
-          
-            var addleads = from l in CH.DB.Leads where l.CreatedDate >= startdate && l.CreatedDate <= enddate select l;
             var assignscores  = from a in CH.DB.AssignPerformanceScores where a.Month==month && a.Year == DateTime.Now.Year select a;
             var assignrates = from a in CH.DB.AssignPerformanceRates where a.Month == month && a.Year == DateTime.Now.Year select a;
-            var data = from tl in teamleads
-                       select new AjaxLeadMonthPerformance() { 
-                            Name = tl,
-                            Month = month.Value,
-                            LeadCalls = calls.Where(w => w.Member.Name == tl).ToList(),
-                            TotalCheckinTargets = checkintargets.Where(t => t.Project.TeamLeader == tl).Sum(s=>(decimal?)s.CheckIn),
-                            Leads = addleads.Where(l=>l.Creator == tl).ToList(),
-                            Deals = deals.Where(d=>d.Project.TeamLeader == tl),
-                            AssignedScore = assignscores.Where(a=>a.TargetName == tl).Sum(s=>(int?)s.Score),
-                            Rate  = assignrates.Where(a=>a.TargetName == tl).Sum(s=>(double?)s.Rate) 
+            
+            var data = GetPerformanceData(month);
+            var list = from m in data.Projects.Where(w=>w.Manager==manager).Select(s => s.TeamLeader).Distinct()
+                       select new AjaxLeadMonthPerformance()
+                       {
+                           Name = m,
+                           LeadCalls = data.LeadCalls.Where(l => l.Member.Name == m),//考虑所有所在项目，不进行项目筛选
+                           Deals = data.Deals.Where(d => d.Project.TeamLeader == m),//考虑所有所在项目，不进行项目筛选
+                           Leads = data.CRMs.Where(w => w.Project.TeamLeader == m).Select(s => s.Company).SelectMany(s => s.Leads).Where(l => l.Creator == m && l.CreatedDate >= data.StartDate && l.CreatedDate < data.EndDate),//考虑所有所在项目，不进行项目筛选
+                           StartDate = data.StartDate,
+                           EndDate = data.EndDate,
+                           Month = month,
+                           Members = data.Members.Where(w => w.Project.TeamLeader == m).Select(s => s.Name).Distinct(),//考虑所有所在项目，不进行项目筛选
+                           ProjectName = data.Projects.Where(p => p.TeamLeader == m).Select(s => s.ProjectCode).ToStringList(),//考虑所有所在项目，不进行项目筛选
+                           TotalCheckinTargets = data.ProjectTargets.Where(t => t.Project.TeamLeader == m).Sum(s => (decimal?)s.CheckIn),//考虑所有所在项目，不进行项目筛选
+                           AssignedScore = assignscores.Where(a => a.TargetName == m).Average(s => (double?)s.Score),
+                           Rate  = assignrates.Where(a=>a.TargetName == m).Average(s=>(double?)s.Rate) 
                        };
-
-            return View(new GridModel<AjaxLeadMonthPerformance> { Data = data.ToList() });
+            return View(new GridModel<AjaxLeadMonthPerformance> { Data = list });
+           
         }
 
         [GridAction]
@@ -181,44 +169,27 @@ namespace Sales.Controllers
         {
 
             if (string.IsNullOrEmpty(leader) || month == null) return View(new GridModel<AjaxLeadMonthPerformance> { Data = new List<AjaxLeadMonthPerformance>() });
-            DateTime startdate;
-            DateTime enddate;
-          
-            Utl.Utl.GetMonthActualStartdateAndEnddate(month, out startdate, out enddate);
-            DateTime monthstartdate = new DateTime(DateTime.Now.Year, month.Value, 1);
-            DateTime monthenddate = monthstartdate.EndOfMonth();
-            var ps = CH.GetAllData<Project>(p => p.IsActived == true && p.TeamLeader== leader);
-            var pids = ps.Select(s => s.ID).ToList();
-            var members = ps.SelectMany(s => s.Members).Where(w=>w.IsActivated==true && w.Name!=leader).Select(s => s.Name).Distinct();
-
-            //取得所有call同lead的di
-            var alldistinct = CH.GetAllData<LeadCall>(l => l.Project.IsActived == true ).OrderByDescending(o => o.CallDate).Distinct(new LeadCallLeadDistinct());
-
-            var calls = from l in alldistinct where l.CallDate < enddate && l.CallDate >= startdate select l;
-
-  
-            var calllist = calls.ToList().Distinct(new LeadCallLeadDistinct());
-            var deals = from d in CH.DB.Deals where d.Abandoned == false && pids.Contains(d.ProjectID.Value) && d.ActualPaymentDate < monthenddate && d.ActualPaymentDate >= monthstartdate select d;
-          
-            var checkintargets = from ct in CH.DB.TargetOfMonths where ct.EndDate.Month == month && pids.Contains(ct.ProjectID.Value) select ct;
-
-            var addleads = from l in CH.DB.Leads where l.CreatedDate >= startdate && l.CreatedDate <= enddate select l;
-            var assignscores = from a in CH.DB.AssignPerformanceScores where a.Month == month && a.Year == DateTime.Now.Year select a;
+       
+            var assignscores  = from a in CH.DB.AssignPerformanceScores where a.Month==month && a.Year == DateTime.Now.Year select a;
             var assignrates = from a in CH.DB.AssignPerformanceRates where a.Month == month && a.Year == DateTime.Now.Year select a;
-            var data = from tl in members
+            
+            var data = GetPerformanceData(month);
+            var list = from m in data.Projects.Where(w=>w.TeamLeader==leader).SelectMany(s => s.Members).Where(w=>w.Name!=leader).Select(s=>s.Name).Distinct()
                        select new AjaxSalesMonthPerformance()
                        {
-                           Name = tl,
-                           Month = month.Value,
-                           LeadCalls = calllist.Where(w => w.Member.Name == tl).ToList(),
-                           TotalCheckinTargets = checkintargets.Where(t => t.Project.TeamLeader == tl).Sum(s => (decimal?)s.CheckIn),
-                           Leads = addleads.Where(l => l.Creator == tl).ToList(),
-                           Deals = deals.Where(d => d.Sales == tl),
-                           AssignedScore = assignscores.Where(a => a.TargetName == tl).Sum(s => (int?)s.Score),
-                           Rate = assignrates.Where(a => a.TargetName == tl).Sum(s => (double?)s.Rate)
+                           Name = m,
+                           LeadCalls = data.LeadCalls.Where(l => l.Member.Name == m),
+                           Deals = data.Deals.Where(d => d.Sales ==m),
+                           Leads = data.CRMs.Where(w => w.Project.TeamLeader == leader).Select(s => s.Company).SelectMany(s => s.Leads).Where(l => l.Creator==m && l.CreatedDate >= data.StartDate && l.CreatedDate < data.EndDate),
+                           StartDate = data.StartDate,
+                           EndDate = data.EndDate,
+                           Month = month,
+                           ProjectName = data.Projects.Where(p => p.TeamLeader == leader).Select(s => s.ProjectCode).ToStringList(),
+                           TotalCheckinTargets = data.MemberTargets.Where(t => t.Member.Name==m).Sum(s => (decimal?)s.CheckIn),
+                           AssignedScore = assignscores.Where(a => a.TargetName == m).Average(s => (double?)s.Score),
+                           Rate  = assignrates.Where(a=>a.TargetName == m).Average(s=>(double?)s.Rate) 
                        };
-
-            return View(new GridModel<AjaxSalesMonthPerformance> { Data = data.ToList() });
+            return View(new GridModel<AjaxSalesMonthPerformance> { Data = list });
         }
          
 
@@ -239,8 +210,6 @@ namespace Sales.Controllers
         /// <returns></returns>
         public ActionResult LeadCalls(List<int> selectedprojects, string selecttype, bool? isActivated, DateTime? startdate, DateTime? enddate)
         {
-
-        
             ViewBag.Right = ReviewRight.CallsSumReview.ToString();
             ViewBag.StartDate = startdate;
             ViewBag.EndDate = enddate;

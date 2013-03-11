@@ -7,6 +7,27 @@ using Entity;
 
 namespace Model
 {
+
+    /// <summary>
+    /// 一个月考勤周期的数据
+    /// </summary>
+    public class ProjectPerformaceData
+    {
+        public int Month { get; set; }
+        public DateTime StartDate{get;set;}
+        public DateTime EndDate{get;set;}
+        public DateTime MonthStartDate{get;set;}
+        public DateTime MonthEndDate{get;set;}
+        public IEnumerable<TargetOfMonth> ProjectTargets { get; set; }
+        public IEnumerable<TargetOfMonthForMember> MemberTargets { get; set; }
+        public IEnumerable<Member> Members{get;set;}
+        public IEnumerable<Deal> Deals{get;set;}
+        public IEnumerable<LeadCall> LeadCalls{get;set;}
+        public IEnumerable<Lead> Leads{get;set;}
+        public IEnumerable<CompanyRelationship> CRMs { get; set; }
+        public IEnumerable<Project> Projects { get; set; }
+    }
+
     public class AjaxPerformance:AjaxStatistics
     {
         [Display(Name="被考核人")]
@@ -37,7 +58,7 @@ namespace Model
         public virtual string WeekCallHours { get; set; }
         public virtual string WeekFaxOut { get; set; }
 
-        public List<string> Members { get; set; }
+        public IEnumerable<string> Members { get; set; }
         public int MemberCount
         {
             get
@@ -94,7 +115,7 @@ namespace Model
         }
 
         [Display(Name = "主观评分")]
-        public int? AssignedScore { get; set; }
+        public double? AssignedScore { get; set; }
 
         [Display(Name = "调研不达标周数")]
         public int LeadNotQualifiedWeeksCount
@@ -150,6 +171,9 @@ namespace Model
 
     public class AjaxWeekPerformance : AjaxPerformance
     {
+        protected int? _faxOutStandard { get; set; }
+        protected int? _leadsStandard { get; set; }
+        protected int? _callHoursStandard { get; set; }
         public virtual int FaxOutStandard { get; set; }
         public virtual int LeadsStandard { get; set; }
         public virtual int CallHoursStandard { get; set; }
@@ -182,20 +206,28 @@ namespace Model
         {
             get
             {
-                if (_deals!=null &&_deals.Count() > 0)
-                    return 60;
-                else
-                    return 70;
+                if (_leadsStandard == null)
+                {
+                    if (_deals != null && _deals.Count() > 0)
+                        _leadsStandard =  60;
+                    else
+                        _leadsStandard =  70;
+                }
+                return _leadsStandard.Value;
             }
         }
         public override int FaxOutStandard
         {
             get
             {
-                if (_deals!=null&& _deals.Count() > 0)
-                    return 28;
-                else
-                    return 35;
+                if (_faxOutStandard == null)
+                {
+                    if (_deals != null && _deals.Where(d=>d.SignDate>=StartDate && d.SignDate< EndDate).Count() > 0)
+                        _faxOutStandard = 28;
+                    else
+                        _faxOutStandard = 35;
+                }
+                return _faxOutStandard.Value;
             }
         }
         public override double CallHours
@@ -278,8 +310,8 @@ namespace Model
                     enddate = startdate.AddDays(7);
                     var ap = new AjaxLeadWeekPerformance() {
                         StartDate = startdate, EndDate = enddate,
-                        LeadCalls = _leadCalls.FindAll(f => f.CallDate >= startdate && f.CallDate < enddate).ToList(),
-                        Leads = _leads.Where(f => f.CreatedDate >= startdate && f.CreatedDate < enddate).ToList(),
+                        LeadCalls = _leadCalls.Where(f => f.CallDate >= startdate && f.CallDate < enddate),
+                        Leads = _leads.Where(f => f.CreatedDate >= startdate && f.CreatedDate < enddate),
                         Deals = _deals.Where(f=>f.ActualPaymentDate>=StartDate && f.ActualPaymentDate< EndDate)
                     };
                     _weeks.Add(ap);
@@ -334,6 +366,7 @@ namespace Model
         {
             get
             {
+
                 var t = string.Empty;
                 Weeks.ForEach(f =>
                 {
@@ -366,8 +399,8 @@ namespace Model
                         {
                             StartDate = startdate,
                             EndDate = enddate,
-                            LeadCalls = _leadCalls.FindAll(f => f.CallDate >= startdate && f.CallDate < enddate),
-                            Leads = _leads.Where(f => f.CreatedDate >= startdate && f.CreatedDate < enddate).ToList(),
+                            LeadCalls = _leadCalls.Where(f => f.CallDate >= startdate && f.CallDate < enddate),
+                            Leads = _leads.Where(f => f.CreatedDate >= startdate && f.CreatedDate < enddate),
                             Deals = _deals.Where(f => f.ActualPaymentDate >= StartDate && f.ActualPaymentDate < EndDate)
                         };
                         _weeks.Add(ap);
@@ -382,18 +415,34 @@ namespace Model
 
     public class AjaxSalesWeekPerformance : AjaxWeekPerformance
     {
-        public override int LeadsStandard { get {
-            if (_deals != null && _deals.Count() > 0)
-                return 80;
-            else
-                return 105;
-        } }
+        public override int LeadsStandard
+        {
+            get
+            {
+
+                if (_leadsStandard == null)
+                {
+                    if (_deals != null && _deals.Count() > 0)
+                        _leadsStandard = 80;
+                    else
+                        _leadsStandard = 105;
+                }
+                return _leadsStandard.Value;
+
+
+
+            }
+        }
         public override int FaxOutStandard { 
             get {
-                if (_deals != null && _deals.Count() > 0)
-                    return 40;
-                else
-                    return 50;
+                if (_faxOutStandard == null)
+                {
+                    if (_deals != null && _deals.Where(d => d.SignDate >= StartDate && d.SignDate < EndDate).Count() > 0)
+                        _faxOutStandard = 40;
+                    else
+                        _faxOutStandard = 50;
+                }
+                return _faxOutStandard.Value;
             }
         }
         public override double CallHours
