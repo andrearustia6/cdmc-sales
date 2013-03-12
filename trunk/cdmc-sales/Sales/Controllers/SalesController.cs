@@ -11,6 +11,7 @@ using System.Collections;
 using System.IO;
 using Telerik.Web.Mvc.Extensions;
 using System.Text;
+using Telerik.Web.Mvc;
 
 namespace Sales.Controllers
 {
@@ -161,7 +162,7 @@ namespace Sales.Controllers
                 return PartialView(@"~\views\shared\PageMessage.cshtml", "名字不能为空");
             }
 
-            if ( p.ParticipantTypeID == null)
+            if (p.ParticipantTypeID == null)
             {
                 return PartialView(@"~\views\shared\PageMessage.cshtml", "参会类型不能为空");
             }
@@ -175,7 +176,7 @@ namespace Sales.Controllers
         }
 
         [HttpPost]
-        public PartialViewResult JsonDeleteParticipant(int? participantid,int? dealid)
+        public PartialViewResult JsonDeleteParticipant(int? participantid, int? dealid)
         {
             if (participantid != null)
             {
@@ -185,7 +186,7 @@ namespace Sales.Controllers
             }
             return PartialView(@"~\views\shared\PageMessage.cshtml", "删除不成功");
         }
-        
+
 
         #region
         #endregion
@@ -556,7 +557,7 @@ namespace Sales.Controllers
                             categorystring += "|" + l.Name;
                     });
                     cr.CategoryString = categorystring;
-                  
+
                 }
                 cr.ProgressID = progressid;
                 CH.Edit<CompanyRelationship>(cr);
@@ -668,7 +669,7 @@ namespace Sales.Controllers
         #endregion
 
         #region SubCompany
-        public ViewResult AddSubCompany( int? companyid, int? projectid)
+        public ViewResult AddSubCompany(int? companyid, int? projectid)
         {
             ViewBag.companyID = companyid;
             ViewBag.ProjectID = projectid;
@@ -676,7 +677,7 @@ namespace Sales.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddSubCompany(SubCompany item,int? projectid)
+        public ActionResult AddSubCompany(SubCompany item, int? projectid)
         {
             this.AddErrorStateIfSalesNoAccessRightToTheProject(projectid);
             this.AddAddErrorStateIfOneOfNameExist<Company>(item.Name_EN, item.Name_CH);
@@ -773,7 +774,7 @@ namespace Sales.Controllers
                 return View();
             }
 
-           
+
         }
 
         public ViewResult DisplayNews(int? id, int? projectid)
@@ -797,26 +798,26 @@ namespace Sales.Controllers
             company.Leads = leads.ToList();
 
             var cr = CH.GetDataById<CompanyRelationship>(crmid);
-                List<Category> lc = new List<Category>();
-                if (categorys != null)
-                {
-                    cr.Categorys.Clear();
-                    lc = CH.GetAllData<Category>(i => categorys.Contains(i.ID));
-                    cr.Categorys.AddRange(lc);
+            List<Category> lc = new List<Category>();
+            if (categorys != null)
+            {
+                cr.Categorys.Clear();
+                lc = CH.GetAllData<Category>(i => categorys.Contains(i.ID));
+                cr.Categorys.AddRange(lc);
 
-                    string categorystring = string.Empty;
-                    lc.ForEach(l =>
-                    {
-                        if (string.IsNullOrEmpty(categorystring))
-                            categorystring = l.Name;
-                        else
-                            categorystring += "|" + l.Name;
-                    });
-                    cr.CategoryString = categorystring;
-                  
-                }
-                cr.ProgressID = progressid;
-                CH.Edit<CompanyRelationship>(cr);
+                string categorystring = string.Empty;
+                lc.ForEach(l =>
+                {
+                    if (string.IsNullOrEmpty(categorystring))
+                        categorystring = l.Name;
+                    else
+                        categorystring += "|" + l.Name;
+                });
+                cr.CategoryString = categorystring;
+
+            }
+            cr.ProgressID = progressid;
+            CH.Edit<CompanyRelationship>(cr);
             return PartialView(@"~\views\shared\CompanyInfo.cshtml", company);
 
         }
@@ -826,7 +827,7 @@ namespace Sales.Controllers
         //{
 
         //    CH.Edit<Company>(company);
-          
+
         //    var leads = from l in CH.DB.Leads where l.CompanyID == company.ID select l;
         //    company.Leads = leads.ToList();
         //    return PartialView(@"~\views\shared\CompanyInfo.cshtml", company);
@@ -858,7 +859,7 @@ namespace Sales.Controllers
             return PartialView(@"~\views\shared\leads.cshtml", leads.ToList());
         }
 
-        public PartialViewResult JsonGetCategorys(int? projectid,int? crmid)
+        public PartialViewResult JsonGetCategorys(int? projectid, int? crmid)
         {
             ViewBag.ProjectID = projectid;
             var categorys = from c in CH.DB.Categorys where c.CompanyRelationships.Any(r => r.ID == crmid) select c.ID;
@@ -868,11 +869,11 @@ namespace Sales.Controllers
 
         public PartialViewResult JsonRefreshLeadcalls(int? leadid, int? crmid)
         {
-             var calls = from l in CH.DB.LeadCalls where l.LeadID == leadid && l.CompanyRelationshipID == crmid select l;
-             return PartialView(@"~\views\shared\leadcalls.cshtml", calls);
+            var calls = from l in CH.DB.LeadCalls where l.LeadID == leadid && l.CompanyRelationshipID == crmid select l;
+            return PartialView(@"~\views\shared\leadcalls.cshtml", calls);
         }
 
-  
+
         public PartialViewResult JsonLeadCalls(int? leadid, int? projectid)
         {
             string user = Employee.CurrentUserName;
@@ -883,12 +884,12 @@ namespace Sales.Controllers
             return PartialView(@"~\views\shared\LeadCalls.cshtml", data);
         }
 
-        public PartialViewResult JsonCompanyInfo(int? companyid,int?crmid,int?projectid)
+        public PartialViewResult JsonCompanyInfo(int? companyid, int? crmid, int? projectid)
         {
             string user = Employee.CurrentUserName;
             ViewBag.ProjectID = projectid;
             ViewBag.CRMID = crmid;
-         
+
             var c = from company in CH.DB.Companys
                     where company.ID == companyid
                     select company;
@@ -897,9 +898,9 @@ namespace Sales.Controllers
                      where crm.ID == crmid
                      select crm;
             var tc = cr.FirstOrDefault();
-            if(tc!=null)
+            if (tc != null)
             {
-                ViewBag.Categorys = tc.Categorys.Select(x=>x.ID).ToList();
+                ViewBag.Categorys = tc.Categorys.Select(x => x.ID).ToList();
                 ViewBag.ProgressID = tc.ProgressID;
             }
 
@@ -907,7 +908,7 @@ namespace Sales.Controllers
             return PartialView(@"~\views\shared\CompanyInfo.cshtml", data);
         }
 
-        public PartialViewResult JsonGetCompanys(int? projectid, string condition,string sort )
+        public PartialViewResult JsonGetCompanys(int? projectid, string condition, string sort)
         {
             if (condition == null) condition = string.Empty;
             var lc = condition.Trim().ToLower();
@@ -923,8 +924,8 @@ namespace Sales.Controllers
                 return PartialView(@"~\views\shared\CRMList.cshtml", crms.OrderBy(o => o.Company.Name_EN).AsQueryable());
             }
             return PartialView(@"~\views\shared\CRMList.cshtml", crms.OrderByDescending(o => o.CreatedDate).AsQueryable());
-        
-            
+
+
         }
 
 
@@ -941,7 +942,7 @@ namespace Sales.Controllers
                 //保存公司
                 if (data.Company != null && types.Any(t => t == "company"))
                 {
-                    
+
                     CH.Create<Company>(data.Company);
                     data.Lead.CompanyID = data.Company.ID;//如果不是添加情况，不需要设companyid
                     //add crm
@@ -952,7 +953,7 @@ namespace Sales.Controllers
                     sales.AddRange(member);
 
                     var crm = new CompanyRelationship() { CompanyID = data.Company.ID, Importancy = 1, ProjectID = data.ProjectID, Members = sales };
-             
+
                     CH.Create<CompanyRelationship>(crm);
                     if (data.LeadCall != null)
                     {
@@ -983,8 +984,8 @@ namespace Sales.Controllers
                     //创建新的数据
                     CH.Create<LeadCall>(data.LeadCall);
                 }
-               
-              
+
+
                 return PartialView(@"~\views\shared\SalesInputWindow.cshtml", data);
             }
             else
@@ -1002,7 +1003,7 @@ namespace Sales.Controllers
             if (types.Any(t => t == "company"))
             {
                 //检查公司名
-               
+
                 if (string.IsNullOrEmpty(data.Company.Name_CH) && string.IsNullOrEmpty(data.Company.Name_EN))
                 {
                     data.Satisfied = false;
@@ -1014,13 +1015,13 @@ namespace Sales.Controllers
 
                 //检查是否是可打公司
                 var dbcrm = from crm in CH.DB.CompanyRelationships
-                            where crm.ProjectID == data.ProjectID && (crm.Company.Name_CH == data.Company.Name_CH || crm.Company.Name_EN == data.Company.Name_EN )
+                            where crm.ProjectID == data.ProjectID && (crm.Company.Name_CH == data.Company.Name_CH || crm.Company.Name_EN == data.Company.Name_EN)
                             select crm;
 
                 if (dbcrm.Count() > 0)
                 {
                     data.Satisfied = false;
-                    if (!dbcrm.Any(c=>c.Members.Any(m=>m.Name==username)))
+                    if (!dbcrm.Any(c => c.Members.Any(m => m.Name == username)))
                         data.Message = "此公司在公司数据库中存在同名公司, 但并不是您的可打公司，请联系项目管理人员把该公司加到您的可打公司";
                     else
                         data.Message = "此公司已经在你的可打列表中，不可以重复添加此公司";
@@ -1062,12 +1063,87 @@ namespace Sales.Controllers
         #endregion
 
         #region contancted leads
-        public ViewResult ContectedLeads(int? projectid)
+        public ViewResult ContectedLeads(int? projectid, DateTime? startdate, DateTime? enddate, int filterId = 0, int? leadCallTypeId = null)
         {
-            projectid = this.TrySetProjectIDForUser(projectid);
-            ViewBag.ProjectID = projectid;
-            return View(GetContedtedLeadData(projectid));
+            ViewBag.FilterID = filterId;
+            ViewBag.StartDate = startdate;
+            ViewBag.EndDate = enddate;
+            ViewBag.ProjectID = this.TrySetProjectIDForUser(projectid); ;
+            ViewBag.LeadCallTypeId = leadCallTypeId;
+            return View();
         }
+
+        [GridAction]
+        public ActionResult _ContectedLeads(int? projectid, DateTime? startdate, DateTime? enddate, int filterId = 0, int? leadCallTypeId = null)
+        {
+            List<int> projectIds = new List<int>();
+
+            IQueryable<LeadCall> leadCallQuery = CH.DB.LeadCalls.Where(c => c.Member.Name == Employee.CurrentUserName);
+            if (projectid.HasValue)
+            {
+                leadCallQuery = leadCallQuery.Where(c => c.ProjectID == projectid);
+            }
+            if (leadCallTypeId.HasValue)
+            {
+                leadCallQuery = leadCallQuery.Where(c => c.LeadCallTypeID == leadCallTypeId);
+            }
+            if (startdate.HasValue && enddate.HasValue)
+            {
+                leadCallQuery = leadCallQuery.Where(c => c.CallDate > startdate.Value && c.CallDate < enddate.Value);
+            }
+
+            if (filterId == 1)
+            {
+                leadCallQuery = leadCallQuery.Where(leadCall => leadCall.LeadCallType.Code >= 40);
+            }
+
+            if (filterId == 2)
+            {
+                List<int> lastLeadCallIds = leadCallQuery.GroupBy(c => c.LeadID).Select(c => c.Max(l => l.ID)).ToList();
+                leadCallQuery = CH.DB.LeadCalls.Where(c => lastLeadCallIds.Contains(c.ID));
+            }
+
+            List<AjaxViewSaleCallListData> ajaxViewCallListDatas = new List<AjaxViewSaleCallListData>();
+            foreach (LeadCall leadCall in leadCallQuery)
+            {
+                AjaxViewSaleCallListData ajaxViewSalCallListData = new AjaxViewSaleCallListData
+                {
+                    CallDate = leadCall.CallDate,
+                    CompanyContact = leadCall.Lead.SubCompanyID == null ? leadCall.Lead.Company.Contact : leadCall.Lead.SubCompany.Contact,
+                    CompanyName = leadCall.Lead.Company.Name_CH,
+                    CompanyRelationShipId = leadCall.CompanyRelationshipID,
+                    Id = leadCall.ID,
+                    CallTypeName = leadCall.LeadCallType.Name,
+                    LeaderContact = leadCall.Lead.Contact,
+                    LeaderEmail = leadCall.Lead.EMail,
+                    LeaderFax = leadCall.Lead.Fax,
+                    LeaderGender = leadCall.Lead.Gender,
+                    LeaderMobile = leadCall.Lead.Mobile,
+                    LeaderName = leadCall.Lead.Name_CH,
+                    LeadTitle = leadCall.Lead.Title,
+                    Result = leadCall.Result
+                };
+                if (leadCall.Lead.SubCompanyID == null)
+                {
+                    if (leadCall.Lead.Company.DistrictNumber != null)
+                    {
+                        ajaxViewSalCallListData.TimeDifference = leadCall.Lead.Company.DistrictNumber.TimeDifference;
+                    }
+                }
+                else
+                {
+                    if (leadCall.Lead.SubCompany.DistrictNumber != null)
+                    {
+                        ajaxViewSalCallListData.TimeDifference = leadCall.Lead.SubCompany.DistrictNumber.TimeDifference;
+                    }
+                }
+                ajaxViewCallListDatas.Add(ajaxViewSalCallListData);
+            }
+
+            return View(new GridModel<AjaxViewSaleCallListData> { Data = ajaxViewCallListDatas });
+        }
+
+
 
         public List<ViewContactedLead> GetContedtedLeadData(int? projectid)
         {

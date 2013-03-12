@@ -1,74 +1,46 @@
 ﻿@{
     ViewBag.Title = "已打客户列表";
 }
-
+@using BLL
 @using Entity
 @using Utl
 @using Model
-@model List<ViewContactedLead>
-
 @Html.Partial("contenttitle", "Call List")
-@Html.Partial("projectselector")
-@(Html.Telerik().Grid<ViewContactedLead>(Model).Name("Grid").ToolBar(commands => commands.Custom()
+@using (Html.BeginForm())
+{
+    <span style="display: inline-block; width: 290px"><b>目标项目：</b> @Html.DropDownList("ProjectID", SelectHelper.SaleRelatedProjects((int?)ViewBag.ProjectID), null, new { onchange = "this.form.submit();" })</span>
+    <span style="display: inline-block; width: 130px"><b>筛选：</b> @Html.DropDownList("FilterID", SelectHelper.SaleCallListFilter((int)ViewBag.FilterID), null, new { onchange = "this.form.submit();" })</span>
+    <span style="display: inline-block; width: 190px"><b>状态：</b> @Html.DropDownList("leadCallTypeId", SelectHelper.LeadCallTypeSelect((int?)ViewBag.LeadCallTypeId), "-请选择-", new { onchange = "this.form.submit();" })</span>
+    <span style="display: inline-block; width: 230px"><b>开始时间：</b>@Html.Telerik().DateTimePicker().Name("startdate").Value((DateTime?)ViewBag.StartDate)</span>
+    <span style="display: inline-block; width: 230px"><b>结束时间：</b>@Html.Telerik().DateTimePicker().Name("enddate").Value((DateTime?)ViewBag.EndDate)</span>
+    <span style="display: inline-block; margin-left:20px; width: 60px">
+        <input type="submit" value="搜索" /></span>
+}
+@(Html.Telerik().Grid<AjaxViewSaleCallListData>().Name("Grid").ToolBar(commands => commands.Custom()
     .HtmlAttributes(new { id = "export" }).Text("导出客户电子邮件").Action("ExportCsv", "sales", new { projectid = ViewBag.projectid == null ? null : ViewBag.ProjectID as int?, orderBy = "~", filter = "~" }))
                 .ClientEvents(events => events.OnDataBound("onCallListDataBound"))
                 .Columns(c =>
                 {
                     //公司名，人名，性别，职务，公司总机，时差，客户直线，移动电话，电子邮箱，传真，致电时间，状态，结果描述
-                    c.Bound(item => item.Lead.Company.Name).Title("公司名").Width(120);
-                    c.Bound(item => item.Lead.Name).Title("人名").Width(120);
-                    c.Bound(item => item.Lead.Gender).Width(70);
-                    c.Bound(item => item.Lead.Title).Width(120);
-                    c.Bound(item => item.Lead).Title("公司总机").Template(@<text>
-                    @{
-                        var lead = item.Lead;
-                        if (lead.SubCompanyID == null)
-                        {
-                            <p>@lead.Company.Contact</p>
-                        }
-                        else
-                        {
-                            <p>@lead.SubCompany.Contact</p>
-                        }
-                        }
-                    </text>).Width(110);
-                    c.Bound(item => item.Lead.Company.DistrictNumber.TimeDifference).Template(@<text>
-                     @{
-                         var lead = item.Lead;
-                         if (lead.SubCompanyID == null)
-                         {
-                             if (lead.Company.DistrictNumber != null)
-                             {
-                            <p>@lead.Company.DistrictNumber.TimeDifference</p>
-                             }
-                         }
-                         else
-                         {
-                             if (lead.SubCompany.DistrictNumber != null)
-                             {
-                            <p>@lead.SubCompany.DistrictNumber.TimeDifference</p>
-                             }
-                         }
-                        }
-                    </text>).Width(60);
-                    c.Bound(item => item.Lead.Contact).Width(110);
-                    c.Bound(item => item.Lead.Mobile).Width(110);
-                    c.Bound(item => item.Lead.EMail).Width(85);
-                    c.Bound(item => item.Lead.Fax).Width(85);
-                    c.Bound(item => item.LastCall.CallDate).Width(85);
-
-                    c.Bound(item => item.LastCall.LeadCallType.Name).Width(90);
-                    c.Bound(item => item.LastCall.Result).Width(200);
-                    c.Bound(item => item.ID).Title("操作").Width(70).Template(@<span> <a  href=@Url.Content("~/Sales/LeadCallsIndex/?crid=" + item.CompanyRelationshipID + "&leadid=" + item.ID) >Call List</a> 
-                     </span>);
-                })
+                    c.Bound(item => item.CompanyName).Title("公司名").Width(120);
+                    c.Bound(item => item.LeaderName).Title("人名").Width(120);
+                    c.Bound(item => item.LeaderGender).Width(70);
+                    c.Bound(item => item.LeadTitle).Width(120);
+                    c.Bound(item => item.CompanyContact).Title("公司总机").Width(110);
+                    c.Bound(item => item.TimeDifference).Width(60);
+                    c.Bound(item => item.LeaderContact).Width(110);
+                    c.Bound(item => item.LeaderMobile).Width(110);
+                    c.Bound(item => item.LeaderEmail).Width(85);
+                    c.Bound(item => item.LeaderFax).Width(85);
+                    c.Bound(item => item.CallDate).Width(85);
+                    c.Bound(item => item.CallTypeName).Width(90);
+                    c.Bound(item => item.Result).Width(200);
+                    c.Bound(item => item.ActionLink).Title("操作").Width(70).ClientTemplate("<span> <a  href='<#= ActionLink #>' >Call List</a></span>");
+                }).DataBinding(dataBinding => dataBinding.Ajax().Select("_ContectedLeads", "Sales", new { projectid = ViewBag.ProjectID, filterId = ViewBag.FilterID, leadCallTypeId = ViewBag.LeadCallTypeId, startdate = ViewBag.StartDate, enddate = ViewBag.EndDate }))
                                             .Resizable(resizing => resizing.Columns(true))
                                             .Filterable().Sortable().Groupable()
-                                            .Pageable(p => p.PageSize(20))
-                                            .Scrollable(scrolling => scrolling.Height(350))
-                        )
-
-@{ Html.Telerik().ScriptRegistrar().OnDocumentReady(@<text> 
-     onCallListDataBound();
+                                            .Pageable(paging => paging.Style(GridPagerStyles.Status).PageOnScroll(true).PageSize(10)))
+.Scrollable(scrolling => scrolling.Height(350)) )
+@{ Html.Telerik().ScriptRegistrar().OnDocumentReady(@<text> onCallListDataBound();
     </text>);
 }

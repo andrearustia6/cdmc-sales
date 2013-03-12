@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using Utl;
 using Entity;
+using BLL;
 
 namespace Utl
 {
@@ -32,14 +33,54 @@ namespace Utl
             {
                 selectListItemAll.Selected = true;
             }
-            
+
             selectList.Add(selectListItemNone);
-            selectList.Add(selectListItemAll); 
-   
+            selectList.Add(selectListItemAll);
+
             foreach (Member m in CH.GetAllData<Member>(c => c.ProjectID == projectID))
             {
                 SelectListItem selectListItem = new SelectListItem { Text = m.Name, Value = m.ID.ToString() };
                 if (m.ID.ToString() == selectVal)
+                {
+                    selectListItem.Selected = true;
+                }
+                selectList.Add(selectListItem);
+            }
+            return selectList;
+        }
+
+        public static IEnumerable<SelectListItem> SaleRelatedProjects(int? selectVal = null)
+        {
+            List<SelectListItem> selectList = new List<SelectListItem>();
+            foreach (Project p in CRM_Logical.GetUserInvolveProject())
+            {
+                SelectListItem selectListItem = new SelectListItem { Text = p.Name, Value = p.ID.ToString() };
+                if (selectVal.HasValue && p.ID == selectVal.Value)
+                {
+                    selectListItem.Selected = true;
+                }
+                selectList.Add(selectListItem);
+            }
+            return selectList;
+        }
+
+        public static IEnumerable<SelectListItem> SaleCallListFilter(int selectVal = 0)
+        {
+            List<SelectListItem> selectList = new List<SelectListItem>();
+            selectList.Add(new SelectListItem { Text = "All Call", Value = "0", Selected = (selectVal == 0) });
+            selectList.Add(new SelectListItem { Text = "Fax out", Value = "1", Selected = (selectVal == 1) });
+            selectList.Add(new SelectListItem { Text = "最后状态", Value = "2", Selected = (selectVal == 2) });
+
+            return selectList;
+        }
+
+        public static IEnumerable<SelectListItem> LeadCallTypeSelect(int? selectVal)
+        {
+            List<SelectListItem> selectList = new List<SelectListItem>();
+            foreach (LeadCallType leadCallType in CH.GetAllData<LeadCallType>())
+            {
+                SelectListItem selectListItem = new SelectListItem() { Text = leadCallType.Name, Value = leadCallType.ID.ToString() };
+                if (selectVal.HasValue && leadCallType.ID == selectVal.Value)
                 {
                     selectListItem.Selected = true;
                 }
