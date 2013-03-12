@@ -310,9 +310,9 @@ namespace Model
                     enddate = startdate.AddDays(7);
                     var ap = new AjaxLeadWeekPerformance() {
                         StartDate = startdate, EndDate = enddate,
-                        LeadCalls = _leadCalls.Where(f => f.CallDate >= startdate && f.CallDate < enddate),
-                        Leads = _leads.Where(f => f.CreatedDate >= startdate && f.CreatedDate < enddate),
-                        Deals = _deals.Where(f=>f.ActualPaymentDate>=StartDate && f.ActualPaymentDate< EndDate)
+                        LeadCalls = _leadCalls.Where(f => f.CallDate >= startdate && f.CallDate < enddate).ToList(),
+                        Leads = _leads.Where(f => f.CreatedDate >= startdate && f.CreatedDate < enddate).ToList(),
+                        Deals = _deals.Where(f => f.ActualPaymentDate >= StartDate && f.ActualPaymentDate < EndDate).ToList(),
                     };
                     _weeks.Add(ap);
                     startdate = enddate;
