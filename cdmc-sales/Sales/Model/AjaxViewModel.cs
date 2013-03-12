@@ -356,6 +356,35 @@ namespace Model
         public DateTime? CallBackDate { get; set; }
     }
 
+    /// <summary>
+    /// Added by Raymond
+    /// </summary>
+    public class AjaxViewSaleCallListData
+    {        
+        public string CompanyName { get; set; }
+        public string LeaderName { get; set; }
+        public string LeaderGender { get; set; }
+        public string LeadTitle { get; set; }
+        public string CompanyContact { get; set; }
+        public double TimeDifference { get; set; }
+        public string LeaderContact { get; set; }
+        public string LeaderMobile { get; set; }
+        public string LeaderEmail { get; set; }
+        public string LeaderFax { get; set; }
+        public DateTime CallDate { get; set; }
+        public string CallTypeName { get; set; }
+        public string Result { get; set; }
+        public int? CompanyRelationShipId { get; set; }
+        public int? Id { get; set; }
+        public string ActionLink
+        {
+            get
+            {
+                return string.Format("?crid={0}&leadid={1}", CompanyRelationShipId, Id);
+            }
+        }
+
+    }
     public class AjaxViewAccount
     {
         public AjaxViewAccount()
