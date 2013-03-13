@@ -1207,6 +1207,48 @@ namespace Sales.Controllers
 
             return View(SR.ErrorView, null, SR.CannotDownload);
         }
-    }
 
+        public ActionResult CallableCompanies()
+        {
+            return View();
+        }
+
+         [GridAction]
+        public ActionResult _CallableCompanies()
+        {
+              string user = Employee.CurrentUserName;
+              List<AjaxViewSaleCompany> AjaxViewSaleCompanies = new List<AjaxViewSaleCompany>();
+              foreach (CompanyRelationship companyRelationship in CH.GetAllData<CompanyRelationship>(c => c.Members.Any(m => m.Name == user)))
+              {
+                  AjaxViewSaleCompany ajaxViewSaleCompany = new AjaxViewSaleCompany()
+                  {
+                      Address = companyRelationship.Company.Address,
+                      Business = companyRelationship.Company.Business,
+                      Desc = companyRelationship.Company.Description,
+                      DistrictNumberId = companyRelationship.Company.DistrictNumberID,
+                      Fax = companyRelationship.Company.Fax,
+                      Name_CN = companyRelationship.Company.Name_CH,
+                      Name_EN = companyRelationship.Company.Name_EN,
+                      Phone=companyRelationship.Company.Contact
+                    
+                  };
+                  if (companyRelationship.Company.Area != null)
+                  {
+                      ajaxViewSaleCompany.IndustryString = companyRelationship.Company.Area.Name_CH;
+                  }
+                  if (companyRelationship.Company.CompanyType != null)
+                  {
+                      ajaxViewSaleCompany.TypeString = companyRelationship.Company.CompanyType.Name;
+                  }
+                  if (companyRelationship.Progress != null)
+                  {
+                      ajaxViewSaleCompany.ProgressString = companyRelationship.Progress.Description;
+                  }
+
+                  AjaxViewSaleCompanies.Add(ajaxViewSaleCompany);
+              }
+
+              return View(new GridModel<AjaxViewSaleCompany> { Data = AjaxViewSaleCompanies });
+        }
+    }
 }

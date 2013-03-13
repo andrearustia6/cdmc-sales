@@ -40,7 +40,7 @@
                                             .Resizable(resizing => resizing.Columns(true))
                                             .Filterable().Sortable().Groupable()
                                             .Pageable(paging => paging.Style(GridPagerStyles.Status).PageOnScroll(true).PageSize(10)))
-.Scrollable(scrolling => scrolling.Height(350)) )
+.Scrollable(scrolling => scrolling.Height(350)))
 @{ Html.Telerik().ScriptRegistrar().OnDocumentReady(@<text> onCallListDataBound();
     </text>);
 }

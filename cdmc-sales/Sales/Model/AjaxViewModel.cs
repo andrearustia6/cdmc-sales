@@ -356,6 +356,29 @@ namespace Model
         public DateTime? CallBackDate { get; set; }
     }
 
+    public class AjaxViewSaleCompany
+    {
+        public string Name_CN { get; set; }
+        public string Name_EN { get; set; }
+        public int IndustryId { get; set; }
+        public string IndustryString { get; set; }
+        public int TypeId { get; set; }
+        public string TypeString { get; set; }
+        public string Phone { get; set; }
+        public string Fax { get; set; }
+        public string ZipCode { get; set; }
+        public string WebSite { get; set; }
+        public string Address { get; set; }
+        public int? DistrictNumberId { get; set; }
+        public string DistrictNumberString { get; set; }
+        public int ProgressId { get; set; }
+        public string ProgressString { get; set; }
+        public string Business { get; set; }
+        public string Desc { get; set; }
+        public List<int> Categories { get; set; }
+        public string CategoryString { get; set; }
+
+    }
     /// <summary>
     /// Added by Raymond
     /// </summary>

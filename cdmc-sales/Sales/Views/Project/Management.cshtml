@@ -103,7 +103,7 @@
         });
     }
 </script>
-@Html.Hidden("projectid",Model.ID)
+@Html.Hidden("projectid", Model.ID)
 @Html.Hidden("tabindex")
 @Html.Partial("contenttitle", "项目管理")
 @*@Html.Partial("MemberEditor", new LeadCall() { LeadID = Model.ID })
@@ -307,12 +307,12 @@
                                 Call List</a> | <a href=@Url.Content("~/companyrelationship/delete/" + item.ID) >删除</a>
                     </span>);
 
-                }).Resizable(resizing => resizing.Columns(true))
-                                                        .Pageable(page => page.PageSize(10))
-                                                        .Sortable().Filterable()
-                                                        .Scrollable(scrolling => scrolling.Height(350))
+                }).DetailView(e => e.Template(@<text>@RenderGrid(item.Company, item) </text> )).Resizable(resizing => resizing.Columns(true))
+                                                                                     .Pageable(page => page.PageSize(10))
+                                                                                     .Sortable().Filterable()
+                                                                                     .Scrollable(scrolling => scrolling.Height(350))
 
-                                                       )
+                                                                                    )
     <fieldset>
         <legend>可分配销售 </legend>
         <div class="assignableMembers">
@@ -358,7 +358,7 @@
                   .Resizable(resizing => resizing.Columns(true)).Scrollable(scrolling => scrolling.Height(350))
                                                                                                                     )
 }
-@*@helper RenderGrid(Company company, CompanyRelationship cr)
+@helper RenderGrid(Company company, CompanyRelationship cr)
     { 
         
            @( Html.Telerik().TabStrip().Name("comtab" + company.ID).SelectedIndex(0).Items(child =>
@@ -371,7 +371,7 @@
                     child.Add().Text("子公司").Content(@<text>@RenderSubCompanys(company, cr)
          </text>);
 
-                })) }*@
+                })) }
 @helper RenderLeads(List<Lead> leads, CompanyRelationship cr)
     {
     @(Html.Telerik().Grid(leads).Name("Leads" + cr.ID)
@@ -389,7 +389,7 @@
                                                                                .Pageable(p => p.PageSize(20))
                                                                                .Sortable())
 }
-@*@helper RenderSubCompanys(Company company, CompanyRelationship cr)
+@helper RenderSubCompanys(Company company, CompanyRelationship cr)
     {
     @(Html.Telerik().Grid(CH.GetAllData<SubCompany>(s => s.CompanyID == company.ID)).Name("Leads" + company.ID)
                             .Columns(c =>
@@ -402,7 +402,8 @@
                                                .Resizable(resizing => resizing.Columns(true))
                                                .Pageable(p => p.PageSize(20))
                                                .Sortable())
-}*@ @*@helper RenderLead(List<Lead> Leads, CompanyRelationship cr)
+} 
+@*@helper RenderLead(List<Lead> Leads, CompanyRelationship cr)
     { 
      @(Html.Telerik().Grid(Leads).Name("Leads" + cr.CompanyID)
                             .Columns(c =>
