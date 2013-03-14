@@ -73,12 +73,14 @@ namespace Sales.Controllers
             DateTime monthstartdate = new DateTime(DateTime.Now.Year, month.Value, 1);
             DateTime monthenddate = monthstartdate.EndOfMonth();
 
+
+          
              //选择时间段内的数据
             var per = from p in CH.DB.Projects where p.IsActived==true 
                       join crm in CH.DB.CompanyRelationships on p.ID equals crm.ProjectID into crms
                       join m in CH.DB.Members on p.ID equals m.ProjectID into mems
                       join d in CH.DB.Deals on p.ID equals d.ProjectID into ds
-                      join c in CH.DB.LeadCalls on p.ID equals c.ProjectID into lcs
+                      //join c in CH.DB.LeadCalls on p.ID equals c.ProjectID into lcs
                     
                       join tp in CH.DB.TargetOfMonths on p.ID equals tp.ProjectID into tps
                       join tm in CH.DB.TargetOfMonthForMembers on p.ID equals tm.ProjectID into tms
@@ -86,8 +88,6 @@ namespace Sales.Controllers
                       {
                           Project = p,
                           Deals = ds.Where(d => d.ActualPaymentDate < monthenddate && d.ActualPaymentDate >= monthstartdate && d.Abandoned==false),
-                          LeadCalls = lcs.Where(l => l.CallDate >= startdate && l.CallDate < enddate),
-                          //Leads = leds.Where(l => l.CreatedDate >= startdate && l.CreatedDate < enddate),
                           CRMs = crms,
                           Mem=mems,
                           Month = month,
@@ -97,7 +97,7 @@ namespace Sales.Controllers
 
             var data = new ProjectPerformaceData()
             {
-                LeadCalls = per.SelectMany(s => s.LeadCalls),
+                //Faxouts = per.SelectMany(s => s.Faxouts),
                 Deals = per.SelectMany(s => s.Deals),
                 CRMs = per.SelectMany(s => s.CRMs),
                 StartDate = startdate,
@@ -111,6 +111,7 @@ namespace Sales.Controllers
                 Members = per.SelectMany(p=>p.Mem)
             };
             data.Leads = data.CRMs.Select(s => s.Company).SelectMany(s => s.Leads).Where(l => l.CreatedDate >= startdate && l.CreatedDate < enddate);
+            data.Faxouts =  CRM_Logical.GetProjectFaxoutList(startdate,enddate,CH.DB.Projects.Where(p=>p.IsActived==true).Select(s=>s.ID).ToList());
             return data;
 
         }
@@ -118,12 +119,14 @@ namespace Sales.Controllers
         [GridAction]
         public ActionResult _ManagerMonthPerformanceIndex(int? month)
         {
+            
             var data = GetPerformanceData(month);
+
             var list = from m in data.Projects.Select(s=>s.Manager).Distinct()
                        select new AjaxManagerMonthPerformance()
                        {
                              Name = m,
-                             LeadCalls = data.LeadCalls.Where(l => l.Project.Manager == m),
+                             Faxouts = data.Faxouts.Where(l => l.Project.Manager == m),
                              Deals = data.Deals.Where(d => d.Project.Manager == m),
                              Leads = data.CRMs.Where(w=>w.Project.Manager==m).Select(s => s.Company).SelectMany(s => s.Leads).Where(l => l.CreatedDate >= data.StartDate && l.CreatedDate < data.EndDate),
                              StartDate = data.StartDate,
@@ -148,7 +151,7 @@ namespace Sales.Controllers
                        select new AjaxLeadMonthPerformance()
                        {
                            Name = m,
-                           LeadCalls = data.LeadCalls.Where(l => l.Member.Name == m),//考虑所有所在项目，不进行项目筛选
+                           Faxouts = data.Faxouts.Where(l => l.Member.Name == m),//考虑所有所在项目，不进行项目筛选
                            Deals = data.Deals.Where(d => d.Project.TeamLeader == m),//考虑所有所在项目，不进行项目筛选
                            Leads = data.CRMs.Where(w => w.Project.TeamLeader == m).Select(s => s.Company).SelectMany(s => s.Leads).Where(l => l.Creator == m && l.CreatedDate >= data.StartDate && l.CreatedDate < data.EndDate),//考虑所有所在项目，不进行项目筛选
                            StartDate = data.StartDate,
@@ -178,7 +181,7 @@ namespace Sales.Controllers
                        select new AjaxSalesMonthPerformance()
                        {
                            Name = m,
-                           LeadCalls = data.LeadCalls.Where(l => l.Member.Name == m),
+                           Faxouts = data.Faxouts.Where(l => l.Member.Name == m),
                            Deals = data.Deals.Where(d => d.Sales ==m),
                            Leads = data.CRMs.Where(w => w.Project.TeamLeader == leader).Select(s => s.Company).SelectMany(s => s.Leads).Where(l => l.Creator==m && l.CreatedDate >= data.StartDate && l.CreatedDate < data.EndDate),
                            StartDate = data.StartDate,

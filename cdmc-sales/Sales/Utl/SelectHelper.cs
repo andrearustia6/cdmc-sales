@@ -54,7 +54,7 @@ namespace Utl
             List<SelectListItem> selectList = new List<SelectListItem>();
             foreach (Project p in CRM_Logical.GetUserInvolveProject())
             {
-                SelectListItem selectListItem = new SelectListItem { Text = p.Name, Value = p.ID.ToString() };
+                SelectListItem selectListItem = new SelectListItem { Text = p.ProjectCode, Value = p.ID.ToString() };
                 if (selectVal.HasValue && p.ID == selectVal.Value)
                 {
                     selectListItem.Selected = true;
@@ -67,9 +67,9 @@ namespace Utl
         public static IEnumerable<SelectListItem> SaleCallListFilter(int selectVal = 0)
         {
             List<SelectListItem> selectList = new List<SelectListItem>();
-            selectList.Add(new SelectListItem { Text = "All Call", Value = "0", Selected = (selectVal == 0) });
-            selectList.Add(new SelectListItem { Text = "Fax out", Value = "1", Selected = (selectVal == 1) });
-            selectList.Add(new SelectListItem { Text = "最后状态", Value = "2", Selected = (selectVal == 2) });
+            selectList.Add(new SelectListItem { Text = "显示所有通话记录", Value = "0", Selected = (selectVal == 0) });
+            selectList.Add(new SelectListItem { Text = "显示每个客户第一次联系，并且为Pitched记录(Faxout)", Value = "1", Selected = (selectVal == 1) });
+            selectList.Add(new SelectListItem { Text = "显示每个客户最后一次通话状态(Lead最后通话状态)", Value = "2", Selected = (selectVal == 2) });
 
             return selectList;
         }

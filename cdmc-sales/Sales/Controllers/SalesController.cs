@@ -1068,7 +1068,7 @@ namespace Sales.Controllers
             ViewBag.FilterID = filterId;
             ViewBag.StartDate = startdate;
             ViewBag.EndDate = enddate;
-            ViewBag.ProjectID = this.TrySetProjectIDForUser(projectid); ;
+            ViewBag.ProjectID = projectid == null? this.TrySetProjectIDForUser(projectid):projectid;
             ViewBag.LeadCallTypeId = leadCallTypeId;
             return View();
         }
@@ -1077,6 +1077,10 @@ namespace Sales.Controllers
         public ActionResult _ContectedLeads(int? projectid, DateTime? startdate, DateTime? enddate, int filterId = 0, int? leadCallTypeId = null)
         {
             List<int> projectIds = new List<int>();
+            if (projectid.HasValue)
+            {
+                projectIds.Add(projectid.Value);
+            }
 
             IQueryable<LeadCall> leadCallQuery = CH.DB.LeadCalls.Where(c => c.Member.Name == Employee.CurrentUserName);
             if (projectid.HasValue)
@@ -1094,7 +1098,8 @@ namespace Sales.Controllers
 
             if (filterId == 1)
             {
-                leadCallQuery = leadCallQuery.Where(leadCall => leadCall.LeadCallType.Code >= 40);
+                leadCallQuery = CRM_Logical.GetProjectFaxoutList(startdate, enddate, projectIds).AsQueryable();
+                leadCallTypeId = null;
             }
 
             if (filterId == 2)
@@ -1102,7 +1107,7 @@ namespace Sales.Controllers
                 List<int> lastLeadCallIds = leadCallQuery.GroupBy(c => c.LeadID).Select(c => c.Max(l => l.ID)).ToList();
                 leadCallQuery = CH.DB.LeadCalls.Where(c => lastLeadCallIds.Contains(c.ID));
             }
-
+            leadCallQuery = leadCallQuery.Where(w => w.Member.Name == Employee.CurrentUserName);
             List<AjaxViewSaleCallListData> ajaxViewCallListDatas = new List<AjaxViewSaleCallListData>();
             foreach (LeadCall leadCall in leadCallQuery)
             {

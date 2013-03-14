@@ -24,25 +24,15 @@ namespace Model
                 return _leads.Count();
             }   
         }
-        public virtual IEnumerable<LeadCall> LeadCalls { set { _leadCalls = value; } }
+        public virtual IEnumerable<LeadCall> Faxouts { set { _leadCalls = value; } }
         protected IEnumerable<LeadCall> _leadCalls { get; set; }
-        [Display(Name = "填写LeadCall数量")]
-        public int LeadCallsCount
+        [Display(Name = "Faxout数量")]
+        public int FaxOutCount
         {
             get
             {   
                 if (_leadCalls == null) return 0;
                 return _leadCalls.Where(l => l.CallDate < EndDate && l.CallDate >= StartDate).Count();
-            }
-        }
-
-        [Display(Name = "FaxOut数量")]
-        public int FaxOutCount
-        {
-            get
-            {
-                if (_leadCalls == null) return 0;
-                return _leadCalls.Where(l => l.CallDate < EndDate && l.CallDate >= StartDate && l.LeadCallType.Code>=40).Count();
             }
         }
 

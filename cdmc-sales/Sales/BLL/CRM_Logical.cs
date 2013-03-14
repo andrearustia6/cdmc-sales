@@ -88,6 +88,29 @@ namespace BLL
 
         #endregion 
 
+        public static List<LeadCall> GetProjectFaxoutList(DateTime? startdate, DateTime? enddate, List<int> projectids)
+        {
+            if (!startdate.HasValue)
+            {
+                startdate = new DateTime(1, 1, 1);
+            }
+            if (!enddate.HasValue)
+            {
+                enddate = new DateTime(9999, 1, 1);
+            }
+
+            var calls = from l in CH.DB.LeadCalls where  l.LeadCallType.Code >= 40 select l;
+            if (projectids.Count > 0)
+            {
+                calls = calls.Where(l=>projectids.Contains(l.ProjectID.Value));
+            }
+            var list = calls.OrderBy(o=>o.CallDate).ToList();
+            list = list.Distinct(new LeadCallLeadDistinct()).Where(w=>w.CallDate>= startdate && w.CallDate<enddate).ToList();
+      
+            return list;
+
+        }
+
         public static List<Project> GetUserProjectRight(string funtionname)
         {
             var ps = from p in CH.DB.ProjectRights where p.Project.IsActived == true && p.AccessRights.Select(s => s.Name).Contains(funtionname) select p;
