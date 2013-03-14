@@ -22,7 +22,7 @@ namespace Model
         public IEnumerable<TargetOfMonthForMember> MemberTargets { get; set; }
         public IEnumerable<Member> Members{get;set;}
         public IEnumerable<Deal> Deals{get;set;}
-        public IEnumerable<LeadCall> LeadCalls{get;set;}
+        public IEnumerable<LeadCall> Faxouts { get; set; }
         public IEnumerable<Lead> Leads{get;set;}
         public IEnumerable<CompanyRelationship> CRMs { get; set; }
         public IEnumerable<Project> Projects { get; set; }
@@ -310,7 +310,7 @@ namespace Model
                     enddate = startdate.AddDays(7);
                     var ap = new AjaxLeadWeekPerformance() {
                         StartDate = startdate, EndDate = enddate,
-                        LeadCalls = _leadCalls.Where(f => f.CallDate >= startdate && f.CallDate < enddate).ToList(),
+                        Faxouts = _leadCalls.Where(f => f.CallDate >= startdate && f.CallDate < enddate).ToList(),
                         Leads = _leads.Where(f => f.CreatedDate >= startdate && f.CreatedDate < enddate).ToList(),
                         Deals = _deals.Where(f => f.ActualPaymentDate >= StartDate && f.ActualPaymentDate < EndDate).ToList(),
                     };
@@ -399,7 +399,7 @@ namespace Model
                         {
                             StartDate = startdate,
                             EndDate = enddate,
-                            LeadCalls = _leadCalls.Where(f => f.CallDate >= startdate && f.CallDate < enddate),
+                            Faxouts = _leadCalls.Where(f => f.CallDate >= startdate && f.CallDate < enddate),
                             Leads = _leads.Where(f => f.CreatedDate >= startdate && f.CreatedDate < enddate),
                             Deals = _deals.Where(f => f.ActualPaymentDate >= StartDate && f.ActualPaymentDate < EndDate)
                         };

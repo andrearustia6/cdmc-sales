@@ -83,7 +83,7 @@ namespace Model
         }
 
 
-         [Display(Name = "人平均DealIn")]
+         [Display(Name = "人均DealIn")]
         public decimal PerMemberDealIn
         {
             get
@@ -92,16 +92,16 @@ namespace Model
                 return   Math.Round(TotalDealIn.Value/MemberCounts,1);
             }
         }
-        [Display(Name = "人平均Call数量")]
-        public double PerMemberCall
+        [Display(Name = "人均Faxout数量")]
+        public double PerFaxout
         {
             get
             {
                 if (MemberCounts == 0) return 0;
-                return  Math.Round((double)(LeadCallsCount/MemberCounts),1);
+                return  Math.Round((double)(FaxOutCount/MemberCounts),1);
             }
         }
-        [Display(Name = "人平均Checkin")]
+        [Display(Name = "人均Checkin")]
         public decimal PerMemberCheckIn
         {
             get
@@ -127,11 +127,11 @@ namespace Model
             }
         }
 
-        public override IEnumerable<LeadCall> LeadCalls
+        public override IEnumerable<LeadCall> Faxouts
         {
             set
             {
-                base.LeadCalls = value.Where(d => d.ProjectID == _project.ID).ToList();
+                base.Faxouts = value.Where(d => d.ProjectID == _project.ID).ToList();
             }
         }
 
@@ -173,7 +173,7 @@ namespace Model
         }
 
 
-        [Display(Name = "人平均DealIn")]
+        [Display(Name = "人均DealIn")]
         public decimal PerMemberDealIn
         {
             get
@@ -182,16 +182,16 @@ namespace Model
                 return Math.Round(TotalDealIn.Value / MemberCounts, 1);
             }
         }
-        [Display(Name = "人平均Call数量")]
+        [Display(Name = "人均Call数量")]
         public double PerMemberCall
         {
             get
             {
                 if (MemberCounts == 0) return 0;
-                return Math.Round((double)(LeadCallsCount / MemberCounts), 1);
+                return Math.Round((double)(FaxOutCount / MemberCounts), 1);
             }
         }
-        [Display(Name = "人平均CheckIn")]
+        [Display(Name = "人均CheckIn")]
         public decimal PerMemberCheckIn
         {
             get
@@ -227,11 +227,11 @@ namespace Model
              }
          }
 
-         public override  IEnumerable<LeadCall> LeadCalls
+         public override  IEnumerable<LeadCall> Faxouts
          {
              set
              {
-                 base.LeadCalls = value.Where(d => d.ProjectID == _project.ID).ToList();
+                 base.Faxouts = value.Where(d => d.ProjectID == _project.ID).ToList();
              }
          }
 
@@ -275,16 +275,16 @@ namespace Model
                  return Math.Round(TotalDealIn.Value / MemberCounts, 1);
              }
          }
-         [Display(Name = "人平均Call数量")]
+         [Display(Name = "人均Call数量")]
          public double PerMemberCall
          {
              get
              {
                  if (MemberCounts == 0) return 0;
-                 return Math.Round((double)(LeadCallsCount / MemberCounts), 1);
+                 return Math.Round((double)(FaxOutCount / MemberCounts), 1);
              }
          }
-         [Display(Name = "人平均Checkin")]
+         [Display(Name = "人均Checkin")]
          public decimal PerMemberCheckIn
          {
              get
@@ -359,13 +359,13 @@ namespace Model
             }
         }
 
-        [Display(Name = "人平均Call数量")]
+        [Display(Name = "人均Call数量")]
         public double PerMemberCall
         {
             get
             {
                 if (MemberCounts == 0) return 0;
-                return Math.Round((double)(LeadCallsCount / MemberCounts), 1);
+                return Math.Round((double)(FaxOutCount / MemberCounts), 1);
             }
         }
 

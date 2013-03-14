@@ -8,13 +8,15 @@
 @Html.Partial("contenttitle", "Call List")
 @using (Html.BeginForm())
 {
-    <span style="display: inline-block; width: 290px"><b>目标项目：</b> @Html.DropDownList("ProjectID", SelectHelper.SaleRelatedProjects((int?)ViewBag.ProjectID), null, new { onchange = "this.form.submit();" })</span>
-    <span style="display: inline-block; width: 130px"><b>筛选：</b> @Html.DropDownList("FilterID", SelectHelper.SaleCallListFilter((int)ViewBag.FilterID), null, new { onchange = "this.form.submit();" })</span>
-    <span style="display: inline-block; width: 190px"><b>状态：</b> @Html.DropDownList("leadCallTypeId", SelectHelper.LeadCallTypeSelect((int?)ViewBag.LeadCallTypeId), "-请选择-", new { onchange = "this.form.submit();" })</span>
-    <span style="display: inline-block; width: 230px"><b>开始时间：</b>@Html.Telerik().DateTimePicker().Name("startdate").Value((DateTime?)ViewBag.StartDate)</span>
-    <span style="display: inline-block; width: 230px"><b>结束时间：</b>@Html.Telerik().DateTimePicker().Name("enddate").Value((DateTime?)ViewBag.EndDate)</span>
-    <span style="display: inline-block; margin-left:20px; width: 60px">
-        <input type="submit" value="搜索" /></span>
+   <div style="padding:3px;"> <span style="display: inline-block;"><b>开始时间：</b>@Html.Telerik().DateTimePicker().Name("startdate").Value((DateTime?)ViewBag.StartDate)
+   <b>结束时间：</b>@Html.Telerik().DateTimePicker().Name("enddate").Value((DateTime?)ViewBag.EndDate) <input type="submit" value="搜索" /></span></div>
+    <div></div>
+    <span style="display: inline-block;" ><b>项目筛选：</b> @Html.DropDownList("ProjectID", SelectHelper.SaleRelatedProjects((int?)ViewBag.ProjectID), null, new { onchange = "this.form.submit();" })
+     <b>致电类型筛选：</b> @Html.DropDownList("leadCallTypeId", SelectHelper.LeadCallTypeSelect((int?)ViewBag.LeadCallTypeId), "-请选择-", new { onchange = "this.form.submit();" })
+    <b>状态筛选：</b>@Html.DropDownList("FilterID", SelectHelper.SaleCallListFilter((int)ViewBag.FilterID), null, new { onchange = "this.form.submit();" })
+   </span>
+   
+    
 }
 @(Html.Telerik().Grid<AjaxViewSaleCallListData>().Name("Grid").ToolBar(commands => commands.Custom()
     .HtmlAttributes(new { id = "export" }).Text("导出客户电子邮件").Action("ExportCsv", "sales", new { projectid = ViewBag.projectid == null ? null : ViewBag.ProjectID as int?, orderBy = "~", filter = "~" }))
@@ -39,7 +41,7 @@
                 }).DataBinding(dataBinding => dataBinding.Ajax().Select("_ContectedLeads", "Sales", new { projectid = ViewBag.ProjectID, filterId = ViewBag.FilterID, leadCallTypeId = ViewBag.LeadCallTypeId, startdate = ViewBag.StartDate, enddate = ViewBag.EndDate }))
                                             .Resizable(resizing => resizing.Columns(true))
                                             .Filterable().Sortable().Groupable()
-                                            .Pageable(paging => paging.Style(GridPagerStyles.Status).PageOnScroll(true).PageSize(10)))
+                                            .Pageable(paging => paging.Style(GridPagerStyles.Status).PageOnScroll(true).PageSize(10))
 .Scrollable(scrolling => scrolling.Height(350)))
 @{ Html.Telerik().ScriptRegistrar().OnDocumentReady(@<text> onCallListDataBound();
     </text>);

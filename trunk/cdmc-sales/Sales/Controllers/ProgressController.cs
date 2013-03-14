@@ -53,7 +53,7 @@ namespace Sales.Controllers
                        {
                            Month = i,
                            Year = year,
-                           LeadCalls = calls.ToList(),
+                           Faxouts = calls.ToList(),
                            Deals = deals,
                            Projects = ps,
                            TotalDealinTargets = targets.Where(t => t.StartDate.Month == i).Sum(s => (decimal?)s.Deal),
@@ -99,7 +99,7 @@ namespace Sales.Controllers
                            StartDate = startDate,
                            EndDate = endDate,
                            Year = year,
-                           LeadCalls = calls.ToList(),
+                           Faxouts = calls.ToList(),
                            Deals = deals,
                            TotalDealinTargets = targets.Where(t => t.StartDate == startDate && t.ProjectID == p.ID).Sum(s => (decimal?)s.Deal),
                            TotalCheckinTargets = targets.Where(t => t.StartDate == startDate && t.ProjectID == p.ID).Sum(s => (decimal?)s.CheckIn),
@@ -144,7 +144,7 @@ namespace Sales.Controllers
                            Project = p,
                            Month = monthid,
                            Year = year,
-                           LeadCalls = calls.ToList(),
+                           Faxouts = calls.ToList(),
                            Deals = deals,
                            TotalDealinTargets = targets.Where(t => t.StartDate.Month == monthid && t.ProjectID == p.ID).Sum(s => (decimal?)s.Deal),
                            TotalCheckinTargets = targets.Where(t => t.StartDate.Month == monthid && t.ProjectID == p.ID).Sum(s => (decimal?)s.CheckIn)
@@ -198,7 +198,7 @@ namespace Sales.Controllers
                 week.TotalCheckinTargets = targets.Where(t => t.StartDate == startdate).Sum(s => (decimal?)s.CheckIn);
                 week.TotalDealinTargets = targets.Where(t => t.StartDate == startdate).Sum(s => (decimal?)s.Deal);
                 week.Deals = deals;
-                week.LeadCalls = calls.ToList();
+                week.Faxouts = calls.ToList();
                 weeks.Add(week);
 
                 startdate = startdate.AddDays(7);
@@ -243,7 +243,7 @@ namespace Sales.Controllers
                            Name = m.Name,
                            StartDate = startDate,
                            EndDate = endDate,
-                           LeadCalls = calls.Where(w=>w.Member.Name == m.Name).ToList(),
+                           Faxouts = calls.Where(w=>w.Member.Name == m.Name).ToList(),
                            Deals = deals.Where(c=>c.Sales == m.Name),
                            TotalDealinTargets = targets.Where(t => t.StartDate == startDate && t.Member == m.Name && t.ProjectID == projectid).Sum(s => (decimal?)s.Deal),
                            TotalCheckinTargets = targets.Where(t => t.StartDate == startDate && t.Member == m.Name && t.ProjectID == projectid).Sum(s => (decimal?)s.CheckIn),
