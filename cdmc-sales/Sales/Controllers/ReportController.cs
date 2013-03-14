@@ -53,10 +53,12 @@ namespace Sales.Controllers
         }
     }
 
-    [LeaderRequired]
+    //[LeaderRequired]
+    [PoliticsInterfaceRequired]
     public class ReportController : SalesReportController
     {
-        [ManagerRequired]
+        //[ManagerRequired]
+        [PoliticsInterfaceRequired]
         public ActionResult PerformanceIndex(int? selectedmonth)
         {
             ViewBag.SelectedMonth = selectedmonth;
@@ -373,7 +375,8 @@ namespace Sales.Controllers
  
     }
 
-    [SalesRequired]
+    //[SalesRequired]
+    [PoliticsInterfaceRequired]
     public class SalesReportController : Controller
     {
         protected override void Dispose(bool disposing)
