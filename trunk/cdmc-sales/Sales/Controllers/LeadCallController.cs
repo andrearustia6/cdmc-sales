@@ -19,7 +19,8 @@ namespace Sales.Controllers
             base.Dispose(disposing);
         }
 
-        [ManagerRequired]
+        //[ManagerRequired]
+        [ProductInterfaceRequired]
         public ViewResult Index()
         {
             return View(CH.GetAllData<LeadCall>().OrderByDescending(o=>o.CreatedDate).ToList());
