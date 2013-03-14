@@ -30,7 +30,7 @@ public sealed class LogonRequired : AuthorizeAttribute
 {
     public override void OnAuthorization(AuthorizationContext filterContext)
     {
-        
+
         bool skipAuthorization = filterContext.ActionDescriptor.IsDefined(typeof(AllowAnonymousAttribute), true);
 
         //skipAuthorization = true;
@@ -44,7 +44,7 @@ public sealed class LogonRequired : AuthorizeAttribute
 
 public enum AccessType
 {
-    Equal, Upper, Lower,Multiple
+    Equal, Upper, Lower, Multiple
 }
 
 
@@ -85,7 +85,7 @@ public class RoleRequired : AuthorizeAttribute
         if (level == 99999)
         {
             skipAuthorization = true;
-            return ;
+            return;
         }
         if (AccessType == AccessType.Upper)
         {
@@ -120,19 +120,19 @@ public sealed class ProjectInformationAccess : AuthorizeAttribute
     public int[] Levels { get; set; }
     public ProjectInformationAccess(params int[] levels)
     {
-        Levels = new int[]{RoleLevel.ProductInterface,RoleLevel.Director,RoleLevel.Manager};
+        Levels = new int[] { RoleLevel.ProductInterface, RoleLevel.Director, RoleLevel.Manager };
     }
 
     public override void OnAuthorization(AuthorizationContext filterContext)
     {
         bool skipAuthorization = false;
         var level = Employee.CurrentRole.Level;
-        if (Levels.Any(l=>l == level))
+        if (Levels.Any(l => l == level))
         {
             skipAuthorization = true;
         }
         if (!skipAuthorization)
-          base.OnAuthorization(filterContext);
+            base.OnAuthorization(filterContext);
     }
 }
 
@@ -223,7 +223,7 @@ public sealed class MarketInterfaceRequired : RoleRequired
 }
 
 /// <summary>
-/// 1
+/// 99999
 /// </summary>
 public sealed class AdministratorRequired : RoleRequired
 {
@@ -246,6 +246,18 @@ public sealed class ProductInterfaceRequired : RoleRequired
     }
 }
 
+/// <summary>
+/// 2
+/// </summary>
+public sealed class PoliticsInterfaceRequired : RoleRequired
+{
+    public const int LVL = 2;
+    public override int Level
+    {
+        get { return LVL; }
+    }
+}
+
 public class RoleLevel
 {
     public static int Director = 1000;
@@ -253,6 +265,7 @@ public class RoleLevel
     public static int Leader = 100;
     public static int Sales = 10;
     public static int ProductInterface = 5;
+    public static int PoliticsInterface = 2;
     public static int MarketInterface = 1;
 }
 
