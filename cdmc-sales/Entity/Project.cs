@@ -35,10 +35,10 @@ namespace Entity
         public int? ImageID { get; set; }
 
         public string AddPerson { get; set; }
-        
+
         public virtual Project Project { get; set; }
 
-        [Display(Name = "项目"),Required]
+        [Display(Name = "项目"), Required]
         public int? ProjectID { get; set; }
     }
 
@@ -242,7 +242,7 @@ namespace Entity
 
         public virtual List<Member> Members { get; set; }
 
-         [Display(Name = "可打销售")]
+        [Display(Name = "可打销售")]
         public string SalesOnTheCompany
         {
             get
@@ -272,10 +272,10 @@ namespace Entity
         [Display(Name = "项目名称"), Required]
         public int? ProjectID { get; set; }
 
-        [Display(Name = "开始日期"),DisplayFormat(DataFormatString = "{0:d}")]
+        [Display(Name = "开始日期"), DisplayFormat(DataFormatString = "{0:d}")]
         public DateTime StartDate { get; set; }
 
-        [Display(Name = "结束日期"),  DisplayFormat(DataFormatString = "{0:d}")]
+        [Display(Name = "结束日期"), DisplayFormat(DataFormatString = "{0:d}")]
         public DateTime EndDate { get; set; }
 
         [Display(Name = "销售目标"), Required, DisplayFormat(DataFormatString = "{0:c}")]
@@ -299,10 +299,10 @@ namespace Entity
         [Display(Name = "项目名称"), Required]
         public int? ProjectID { get; set; }
 
-        [Display(Name = "开始日期"),  DisplayFormat(DataFormatString = "{0:d}")]
+        [Display(Name = "开始日期"), DisplayFormat(DataFormatString = "{0:d}")]
         public DateTime StartDate { get; set; }
 
-        [Display(Name = "结束日期"),  DisplayFormat(DataFormatString = "{0:d}")]
+        [Display(Name = "结束日期"), DisplayFormat(DataFormatString = "{0:d}")]
         public DateTime EndDate { get; set; }
 
         [Display(Name = "销售目标"), Required, DisplayFormat(DataFormatString = "{0:c}")]
@@ -420,6 +420,9 @@ namespace Entity
         [Display(Name = "项目名称"), Required]
         public int? ProjectID { get; set; }
 
+        [Display(Name = "出单号")]
+        public string DealCode { get; set; }
+
         [Display(Name = "客户签单人"), Required]
         public string Committer { get; set; }
 
@@ -483,5 +486,5 @@ namespace Entity
 
 
 }
-   
+
 
