@@ -201,6 +201,17 @@ namespace Sales.Controllers
             if (ModelState.IsValid)
             {
                 item.Sales = Employee.CurrentUserName;
+                string prefix = CH.GetDataById<Project>(projectid).ProjectCode + DateTime.Now.Year.ToString();
+                var records = CH.GetAllData<Deal>().Where(s => s.DealCode != null && s.DealCode.StartsWith(prefix));
+                if (records != null && records.Count() > 0)
+                {
+                    item.DealCode = prefix + string.Format("{0:D3}", Convert.ToInt32(records.OrderByDescending(s => s.DealCode).First().DealCode.Substring(prefix.Length)) + 1);
+                }
+                else
+                {
+                    item.DealCode = prefix + "001";
+                }
+
                 CH.Create<Deal>(item);
                 return RedirectToAction("MyDealIndex", "Sales", new { projectid = projectid });
             }
@@ -1068,7 +1079,7 @@ namespace Sales.Controllers
             ViewBag.FilterID = filterId;
             ViewBag.StartDate = startdate;
             ViewBag.EndDate = enddate;
-            ViewBag.ProjectID = projectid == null? this.TrySetProjectIDForUser(projectid):projectid;
+            ViewBag.ProjectID = projectid == null ? this.TrySetProjectIDForUser(projectid) : projectid;
             ViewBag.LeadCallTypeId = leadCallTypeId;
             return View();
         }
@@ -1218,42 +1229,42 @@ namespace Sales.Controllers
             return View();
         }
 
-         [GridAction]
+        [GridAction]
         public ActionResult _CallableCompanies()
         {
-              string user = Employee.CurrentUserName;
-              List<AjaxViewSaleCompany> AjaxViewSaleCompanies = new List<AjaxViewSaleCompany>();
-              foreach (CompanyRelationship companyRelationship in CH.GetAllData<CompanyRelationship>(c => c.Members.Any(m => m.Name == user)))
-              {
-                  AjaxViewSaleCompany ajaxViewSaleCompany = new AjaxViewSaleCompany()
-                  {
-                      Address = companyRelationship.Company.Address,
-                      Business = companyRelationship.Company.Business,
-                      Desc = companyRelationship.Company.Description,
-                      DistrictNumberId = companyRelationship.Company.DistrictNumberID,
-                      Fax = companyRelationship.Company.Fax,
-                      Name_CN = companyRelationship.Company.Name_CH,
-                      Name_EN = companyRelationship.Company.Name_EN,
-                      Phone=companyRelationship.Company.Contact
-                    
-                  };
-                  if (companyRelationship.Company.Area != null)
-                  {
-                      ajaxViewSaleCompany.IndustryString = companyRelationship.Company.Area.Name_CH;
-                  }
-                  if (companyRelationship.Company.CompanyType != null)
-                  {
-                      ajaxViewSaleCompany.TypeString = companyRelationship.Company.CompanyType.Name;
-                  }
-                  if (companyRelationship.Progress != null)
-                  {
-                      ajaxViewSaleCompany.ProgressString = companyRelationship.Progress.Description;
-                  }
+            string user = Employee.CurrentUserName;
+            List<AjaxViewSaleCompany> AjaxViewSaleCompanies = new List<AjaxViewSaleCompany>();
+            foreach (CompanyRelationship companyRelationship in CH.GetAllData<CompanyRelationship>(c => c.Members.Any(m => m.Name == user)))
+            {
+                AjaxViewSaleCompany ajaxViewSaleCompany = new AjaxViewSaleCompany()
+                {
+                    Address = companyRelationship.Company.Address,
+                    Business = companyRelationship.Company.Business,
+                    Desc = companyRelationship.Company.Description,
+                    DistrictNumberId = companyRelationship.Company.DistrictNumberID,
+                    Fax = companyRelationship.Company.Fax,
+                    Name_CN = companyRelationship.Company.Name_CH,
+                    Name_EN = companyRelationship.Company.Name_EN,
+                    Phone = companyRelationship.Company.Contact
 
-                  AjaxViewSaleCompanies.Add(ajaxViewSaleCompany);
-              }
+                };
+                if (companyRelationship.Company.Area != null)
+                {
+                    ajaxViewSaleCompany.IndustryString = companyRelationship.Company.Area.Name_CH;
+                }
+                if (companyRelationship.Company.CompanyType != null)
+                {
+                    ajaxViewSaleCompany.TypeString = companyRelationship.Company.CompanyType.Name;
+                }
+                if (companyRelationship.Progress != null)
+                {
+                    ajaxViewSaleCompany.ProgressString = companyRelationship.Progress.Description;
+                }
 
-              return View(new GridModel<AjaxViewSaleCompany> { Data = AjaxViewSaleCompanies });
+                AjaxViewSaleCompanies.Add(ajaxViewSaleCompany);
+            }
+
+            return View(new GridModel<AjaxViewSaleCompany> { Data = AjaxViewSaleCompanies });
         }
     }
 }
