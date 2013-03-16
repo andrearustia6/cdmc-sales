@@ -1,75 +1,78 @@
 ﻿@model Entity.Deal
-
 @{
     ViewBag.Title = "出单详细";
 }
 @using Utl
 <fieldset>
     <legend>@SR.Form</legend>
-
-    <div class="display-label">公司</div>
+    <div class="display-label">
+        公司</div>
     <div class="display-field">
         @Html.DisplayFor(model => model.CompanyRelationship.Company.Name)
     </div>
-
-    <div class="display-label">Package</div>
+    <div class="display-label">
+        出单号</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.DealCode)
+    </div>
+    <div class="display-label">
+        Package</div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Package.Name)
     </div>
-
-    <div class="display-label">合约付款日期</div>
+    <div class="display-label">
+        合约付款日期</div>
     <div class="display-field">
         @Html.DisplayFor(model => model.ExpectedPaymentDate)
     </div>
-
-     <div class="display-label">签单人</div>
+    <div class="display-label">
+        签单人</div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Committer)
     </div>
-
-     <div class="display-label">签单人联系方式</div>
+    <div class="display-label">
+        签单人联系方式</div>
     <div class="display-field">
         @Html.DisplayFor(model => model.CommitterContect)
     </div>
-
-    <div class="display-label">实际付款日期</div>
+    <div class="display-label">
+        实际付款日期</div>
     <div class="display-field">
         @Html.DisplayFor(model => model.ActualPaymentDate)
     </div>
-    <div class="display-label">签约日期</div>
+    <div class="display-label">
+        签约日期</div>
     <div class="display-field">
         @Html.DisplayFor(model => model.SignDate)
     </div>
-    <div class="display-label">是否已付款</div>
+    <div class="display-label">
+        是否已付款</div>
     <div class="display-field">
         @Html.DisplayFor(model => model.IsClosed)
     </div>
-
-    <div class="display-label">实际入账</div>
+    <div class="display-label">
+        实际入账</div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Income)
     </div>
-
-    <div class="display-label">出单价格</div>
+    <div class="display-label">
+        出单价格</div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Payment)
     </div>
-    <div class="display-label">Sales</div>
+    <div class="display-label">
+        Sales</div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Sales)
     </div>
-
-
-    <div class="display-label">出单描述</div>
+    <div class="display-label">
+        出单描述</div>
     <div class="display-field">
         @Html.DisplayFor(model => model.PaymentDetail)
     </div>
-
-    <div class="display-label">参会权益描述</div>
+    <div class="display-label">
+        参会权益描述</div>
     <div class="display-field">
         @Html.DisplayFor(model => model.TicketDescription)
     </div>
-
-    
 </fieldset>
-
