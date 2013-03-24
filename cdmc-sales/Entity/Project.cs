@@ -260,6 +260,12 @@ namespace Entity
                 return v;
             }
         }
+
+        [Display(Name = "销售Blow")]
+        public string HasBlowed { get; set; }
+
+        [Display(Name = "逻辑删除")]
+        public bool MarkForDelete { get; set; }
     }
 
     /// <summary>

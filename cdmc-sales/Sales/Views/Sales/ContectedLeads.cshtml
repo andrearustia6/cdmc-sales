@@ -15,8 +15,6 @@
      <b>致电类型筛选：</b> @Html.DropDownList("leadCallTypeId", SelectHelper.LeadCallTypeSelect((int?)ViewBag.LeadCallTypeId), "-请选择-", new { onchange = "this.form.submit();" })
     <b>状态筛选：</b>@Html.DropDownList("FilterID", SelectHelper.SaleCallListFilter((int)ViewBag.FilterID), null, new { onchange = "this.form.submit();" })
    </span>
-   
-    
 }
 @(Html.Telerik().Grid<AjaxViewSaleCallListData>().Name("Grid").ToolBar(commands => commands.Custom()
     .HtmlAttributes(new { id = "export" }).Text("导出客户电子邮件").Action("ExportCsv", "sales", new { projectid = ViewBag.projectid == null ? null : ViewBag.ProjectID as int?, orderBy = "~", filter = "~" }))

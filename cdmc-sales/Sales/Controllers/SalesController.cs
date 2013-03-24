@@ -1224,20 +1224,23 @@ namespace Sales.Controllers
             return View(SR.ErrorView, null, SR.CannotDownload);
         }
 
-        public ActionResult CallableCompanies()
+        public ActionResult CallableCompanies(int? projectid)
         {
+            ViewBag.ProjectID = projectid == null ? this.TrySetProjectIDForUser(projectid) : projectid;
             return View();
         }
 
         [GridAction]
-        public ActionResult _CallableCompanies()
+        public ActionResult _CallableCompanies(int? projectid)
         {
             string user = Employee.CurrentUserName;
             List<AjaxViewSaleCompany> AjaxViewSaleCompanies = new List<AjaxViewSaleCompany>();
-            foreach (CompanyRelationship companyRelationship in CH.GetAllData<CompanyRelationship>(c => c.Members.Any(m => m.Name == user)))
+            foreach (CompanyRelationship companyRelationship in CH.GetAllData<CompanyRelationship>(c => c.MarkForDelete == false && c.Members.Any(m => m.Name == user) && c.ProjectID == projectid))
             {
                 AjaxViewSaleCompany ajaxViewSaleCompany = new AjaxViewSaleCompany()
                 {
+                    CompanRelationshipId = companyRelationship.ID,
+                    CompanyId = companyRelationship.CompanyID,
                     Address = companyRelationship.Company.Address,
                     Business = companyRelationship.Company.Business,
                     Desc = companyRelationship.Company.Description,
@@ -1246,8 +1249,8 @@ namespace Sales.Controllers
                     Name_CN = companyRelationship.Company.Name_CH,
                     Name_EN = companyRelationship.Company.Name_EN,
                     Phone = companyRelationship.Company.Contact
-
                 };
+
                 if (companyRelationship.Company.Area != null)
                 {
                     ajaxViewSaleCompany.IndustryString = companyRelationship.Company.Area.Name_CH;
@@ -1260,11 +1263,284 @@ namespace Sales.Controllers
                 {
                     ajaxViewSaleCompany.ProgressString = companyRelationship.Progress.Description;
                 }
-
                 AjaxViewSaleCompanies.Add(ajaxViewSaleCompany);
             }
-
             return View(new GridModel<AjaxViewSaleCompany> { Data = AjaxViewSaleCompanies });
+        }
+
+        [GridAction]
+        public ActionResult _LeadInCompany(int? companyId)
+        {
+            List<AjaxViewLead> AjaxViewLeads = new List<AjaxViewLead>();
+            foreach (Lead lead in CH.GetAllData<Lead>(c => c.CompanyID == companyId && c.MarkForDelete == false))
+            {
+                AjaxViewLead ajaxViewLead = new AjaxViewLead()
+                {
+                    Address = lead.Address,
+                    Birthday = lead.Birthday,
+                    CellPhone = lead.Contact,
+                    Department = lead.Department,
+                    Desc = lead.Description,
+                    Fax = lead.Fax,
+                    Gender = lead.Gender,
+                    LeadId = lead.ID,
+                    Name_CN = lead.Name_CH,
+                    Name_EN = lead.Name_EN,
+                    PersonelEmail = lead.PersonalEmailAddress,
+                    Title = lead.Title,
+                    Telephone = lead.Contact,
+                    WorkingEmail = lead.EMail,
+                    Zip = lead.ZIP
+                };
+                if (lead.SubCompany != null)
+                {
+                    ajaxViewLead.SubCompany = lead.SubCompany.Name_CH;
+                }
+                AjaxViewLeads.Add(ajaxViewLead);
+            }
+            return View(new GridModel<AjaxViewLead> { Data = AjaxViewLeads });
+        }
+
+        [GridAction]
+        public ActionResult _CallInLead(int? leadId)
+        {
+            string userName = Employee.CurrentUserName;
+            List<AjaxViewLeadCall> ajaxViewCalls = new List<AjaxViewLeadCall>();
+            foreach (LeadCall leadCall in CH.GetAllData<LeadCall>(c => c.LeadID == leadId && c.Member.Name == userName))
+            {
+                AjaxViewLeadCall ajaxViewLeadCall = new AjaxViewLeadCall()
+                {
+                    LeadId = leadCall.LeadID.Value,
+                    CallId = leadCall.ID,
+                    CallDate = leadCall.CallDate,
+                    CallBackDate = leadCall.CallBackDate,
+                    Result = leadCall.Result
+                };
+
+                if (leadCall.LeadCallType != null)
+                {
+                    ajaxViewLeadCall.CallTypeId = leadCall.LeadCallTypeID.Value;
+                    ajaxViewLeadCall.CallTypeString = leadCall.LeadCallType.Name;
+                }
+                ajaxViewCalls.Add(ajaxViewLeadCall);
+            }
+
+            return View(new GridModel<AjaxViewLeadCall> { Data = ajaxViewCalls });
+        }
+
+        public ActionResult AddSaleCompany(AjaxViewSaleCompany ajaxViewSaleCompany)
+        {
+            CompanyRelationship companyRelationship = new CompanyRelationship();
+            companyRelationship.Company = new Company();
+            companyRelationship.Company.Address = ajaxViewSaleCompany.Address;
+            companyRelationship.Company.AreaID = ajaxViewSaleCompany.IndustryId;
+            companyRelationship.Company.Business = ajaxViewSaleCompany.Business;
+            companyRelationship.Company.CompanyTypeID = ajaxViewSaleCompany.TypeId;
+            companyRelationship.Company.Contact = ajaxViewSaleCompany.Phone;
+            companyRelationship.Company.Description = ajaxViewSaleCompany.Desc;
+            companyRelationship.Company.DistrictNumberID = ajaxViewSaleCompany.DistrictNumberId;
+            companyRelationship.Company.Fax = ajaxViewSaleCompany.Fax;
+            companyRelationship.Company.Name_CH = ajaxViewSaleCompany.Name_CN;
+            companyRelationship.Company.Name_EN = ajaxViewSaleCompany.Name_EN;
+            companyRelationship.Company.WebSite = ajaxViewSaleCompany.WebSite;
+            companyRelationship.Company.ZIP = ajaxViewSaleCompany.ZipCode;
+            companyRelationship.Description = ajaxViewSaleCompany.Desc;
+            companyRelationship.ProgressID = ajaxViewSaleCompany.ProgressId;
+            companyRelationship.Members = new List<Member>() { };
+            companyRelationship.Members.Add(CH.GetAllData<Member>(c => c.Name == Employee.CurrentUserName).First());
+            companyRelationship.ProjectID = ajaxViewSaleCompany.ProjectId;
+            companyRelationship.Categorys = CH.GetAllData<Category>(c => ajaxViewSaleCompany.Categories.Contains(c.ID)).ToList();
+            CH.Create<CompanyRelationship>(companyRelationship);
+
+            return RedirectToAction("CallableCompanies");
+        }
+
+        public ActionResult GetEditSaleCompany(int companyId)
+        {
+            CompanyRelationship companyRelationship = CH.GetAllData<CompanyRelationship>(c => c.CompanyID == companyId).First();
+            AjaxViewSaleCompany ajaxViewSaleCompany = new AjaxViewSaleCompany()
+            {
+                ProjectId = companyRelationship.ProjectID,
+                CompanyId = companyRelationship.CompanyID,
+                Address = companyRelationship.Company.Address,
+                Business = companyRelationship.Company.Business,
+                Desc = companyRelationship.Company.Description,
+                DistrictNumberId = companyRelationship.Company.DistrictNumberID,
+                Fax = companyRelationship.Company.Fax,
+                Name_CN = companyRelationship.Company.Name_CH,
+                Name_EN = companyRelationship.Company.Name_EN,
+                Phone = companyRelationship.Company.Contact,
+                Categories = companyRelationship.Categorys.Select(c => c.ID).ToList()
+            };
+
+            if (companyRelationship.Company.Area != null)
+            {
+                ajaxViewSaleCompany.IndustryId = companyRelationship.Company.AreaID.Value;
+                ajaxViewSaleCompany.IndustryString = companyRelationship.Company.Area.Name_CH;
+            }
+            if (companyRelationship.Company.CompanyType != null)
+            {
+                ajaxViewSaleCompany.TypeId = companyRelationship.Company.CompanyTypeID.Value;
+                ajaxViewSaleCompany.TypeString = companyRelationship.Company.CompanyType.Name;
+            }
+            if (companyRelationship.Progress != null)
+            {
+                ajaxViewSaleCompany.ProgressId = companyRelationship.ProgressID.Value;
+                ajaxViewSaleCompany.ProgressString = companyRelationship.Progress.Description;
+            }
+
+            return PartialView("CompanyEdit", ajaxViewSaleCompany);
+        }
+
+        public ActionResult GetAddSaleCompany(int projectId)
+        {
+            AjaxViewSaleCompany ajaxViewSaleCompany = new AjaxViewSaleCompany() { ProjectId = projectId, Categories = new List<int>() { } };
+            return PartialView("CompanyAdd", ajaxViewSaleCompany);
+        }
+
+        [HttpPost]
+        public ActionResult EditSaleCompany(AjaxViewSaleCompany ajaxViewSaleCompany)
+        {
+            CompanyRelationship companyRelationship = CH.GetAllData<CompanyRelationship>(c => c.CompanyID == ajaxViewSaleCompany.CompanyId).First();
+            companyRelationship.Company.Address = ajaxViewSaleCompany.Address;
+            companyRelationship.Company.AreaID = ajaxViewSaleCompany.IndustryId;
+            companyRelationship.Company.Business = ajaxViewSaleCompany.Business;
+            companyRelationship.Company.CompanyTypeID = ajaxViewSaleCompany.TypeId;
+            companyRelationship.Company.Contact = ajaxViewSaleCompany.Phone;
+            companyRelationship.Company.Description = ajaxViewSaleCompany.Desc;
+            companyRelationship.Company.DistrictNumberID = ajaxViewSaleCompany.DistrictNumberId;
+            companyRelationship.Company.Fax = ajaxViewSaleCompany.Fax;
+            companyRelationship.Company.Name_CH = ajaxViewSaleCompany.Name_CN;
+            companyRelationship.Company.Name_EN = ajaxViewSaleCompany.Name_EN;
+            companyRelationship.Company.WebSite = ajaxViewSaleCompany.WebSite;
+            companyRelationship.Company.ZIP = ajaxViewSaleCompany.ZipCode;
+            companyRelationship.Description = ajaxViewSaleCompany.Desc;
+            companyRelationship.ProgressID = ajaxViewSaleCompany.ProgressId;
+            companyRelationship.Categorys.Clear();
+            companyRelationship.Categorys = CH.GetAllData<Category>(c => ajaxViewSaleCompany.Categories.Contains(c.ID)).ToList();
+            CH.Edit<CompanyRelationship>(companyRelationship);
+            return RedirectToAction("CallableCompanies");
+        }
+
+        [HttpPost]
+        public ActionResult DeleteSaleCompany(int companyId)
+        {
+            CompanyRelationship companyRelationship = CH.GetAllData<CompanyRelationship>(c => c.CompanyID == companyId).First();
+            companyRelationship.MarkForDelete = true;
+            CH.Edit<CompanyRelationship>(companyRelationship);
+            return Content("公司删除成功！");
+        }
+
+        public ActionResult GetAddSaleLead(int companyId)
+        {
+            AjaxViewLead ajaxViewLead = new AjaxViewLead() { CompanyId = companyId };
+            return PartialView("LeadAdd", ajaxViewLead);
+        }
+
+        public ActionResult AddSaleLead(AjaxViewLead ajaxViewLead)
+        {
+            Lead lead = new Lead()
+            {
+                Name_CH = ajaxViewLead.Name_CN,
+                Name_EN = ajaxViewLead.Name_EN,
+                CompanyID = ajaxViewLead.CompanyId,
+                Address = ajaxViewLead.Address,
+                Birthday = ajaxViewLead.Birthday,
+                Contact = ajaxViewLead.Telephone,
+                Department = ajaxViewLead.Department,
+                Description = ajaxViewLead.Desc,
+                EMail = ajaxViewLead.WorkingEmail,
+                Fax = ajaxViewLead.Fax,
+                Gender = ajaxViewLead.Gender,
+                Mobile = ajaxViewLead.CellPhone
+            };
+
+            CH.Create<Lead>(lead);
+            return RedirectToAction("CallableCompanies");
+        }
+
+        public ActionResult GetEditSaleLead(int leadId)
+        {
+            Lead lead = CH.GetAllData<Lead>(c => c.ID == leadId).First();
+            AjaxViewLead ajaxViewLead = new AjaxViewLead()
+            {
+                CompanyId = lead.CompanyID.Value,
+                Address = lead.Address,
+                Birthday = lead.Birthday,
+                CellPhone = lead.Contact,
+                Department = lead.Department,
+                Desc = lead.Description,
+                Fax = lead.Fax,
+                Gender = lead.Gender,
+                LeadId = lead.ID,
+                Name_CN = lead.Name_CH,
+                Name_EN = lead.Name_EN,
+                PersonelEmail = lead.PersonalEmailAddress,
+                Title = lead.Title,
+                Telephone = lead.Contact,
+                WorkingEmail = lead.EMail,
+                Zip = lead.ZIP
+            };
+            return PartialView("LeadEdit", ajaxViewLead);
+        }
+
+        [HttpPost]
+        public ActionResult EditSaleLead(AjaxViewLead ajaxViewLead)
+        {
+            Lead lead = CH.GetAllData<Lead>(c => c.ID == ajaxViewLead.LeadId).First();
+            lead.Name_CH = ajaxViewLead.Name_CN;
+            lead.Name_EN = ajaxViewLead.Name_EN;
+            lead.CompanyID = ajaxViewLead.CompanyId;
+            lead.Address = ajaxViewLead.Address;
+            lead.Birthday = ajaxViewLead.Birthday;
+            lead.Contact = ajaxViewLead.Telephone;
+            lead.Department = ajaxViewLead.Department;
+            lead.Description = ajaxViewLead.Desc;
+            lead.EMail = ajaxViewLead.WorkingEmail;
+            lead.Fax = ajaxViewLead.Fax;
+            lead.Gender = ajaxViewLead.Gender;
+            lead.Mobile = ajaxViewLead.CellPhone;
+            CH.Edit<Lead>(lead);
+            return RedirectToAction("CallableCompanies");
+        }
+
+        public ActionResult GetAddSaleCall(int leadId, int companyRelationId, int projectId)
+        {
+            AjaxViewLeadCall ajaxViewLeadCall = new AjaxViewLeadCall() { LeadId = leadId, CompanyRelationshipId = companyRelationId, ProjectId = projectId };
+            return PartialView("CallAdd", ajaxViewLeadCall);
+        }
+
+        public ActionResult AddSaleCall(AjaxViewLeadCall ajaxViewLeadCall)
+        {
+            LeadCall leadCall = new LeadCall();
+            leadCall.CallBackDate = ajaxViewLeadCall.CallBackDate;
+            leadCall.CallDate = ajaxViewLeadCall.CallDate;
+            leadCall.CompanyRelationshipID = ajaxViewLeadCall.CompanyRelationshipId;
+            leadCall.LeadCallTypeID = ajaxViewLeadCall.CallTypeId;
+            leadCall.LeadID = ajaxViewLeadCall.LeadId;
+            leadCall.Member = CH.GetAllData<Member>(c => c.Name == Employee.CurrentUserName).First();
+            leadCall.ProjectID = ajaxViewLeadCall.ProjectId;
+            leadCall.Result = ajaxViewLeadCall.Result;
+            CH.Create<LeadCall>(leadCall);
+            return RedirectToAction("CallableCompanies");
+        }
+
+        public ActionResult DeleteSaleLead(int leadId)
+        {
+            Lead lead = CH.GetAllData<Lead>(c => c.ID == leadId).First();
+            lead.MarkForDelete = true;
+            CH.Edit<Lead>(lead);
+            return Content("Lead删除成功！");
+        }
+
+        public ActionResult CheckCompanyExist(string beforeUpdate, string afterUpdate)
+        {
+            if (CH.GetAllData<CompanyRelationship>(c => c.MarkForDelete == false && c.Company.Name_CH == afterUpdate && c.Company.Name_CH != beforeUpdate).Count > 0)
+            {
+                return Content("同名公司名字已存在！");
+            }
+
+            return Content("");
         }
     }
 }
