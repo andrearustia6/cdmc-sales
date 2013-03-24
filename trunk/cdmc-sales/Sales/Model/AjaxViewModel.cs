@@ -358,32 +358,120 @@ namespace Model
 
     public class AjaxViewSaleCompany
     {
+        
+        public int? ProjectId { get; set; }
+        public int? CompanRelationshipId { get; set; }
+        [Display(Name = "ID")]
+        public int? CompanyId { get; set; }
+        [Required( ErrorMessage= " ")]
+        [Display(Name = "中文名字")]
         public string Name_CN { get; set; }
+        [Display(Name = "英文名字")]
         public string Name_EN { get; set; }
+        [Required(ErrorMessage = " ")]
+        [Display(Name = "行业类型")]
         public int IndustryId { get; set; }
+        [Display(Name = "行业类型")]
         public string IndustryString { get; set; }
+        [Required(ErrorMessage = " ")]
+        [Display(Name = "公司类型")]
         public int TypeId { get; set; }
+        [Display(Name = "公司类型")]
         public string TypeString { get; set; }
+        [Display(Name = "公司总机")]
         public string Phone { get; set; }
+        [Display(Name = "公司传真")]
         public string Fax { get; set; }
+        [Display(Name = "公司邮编")]
         public string ZipCode { get; set; }
+        [Display(Name = "公司网站")]
         public string WebSite { get; set; }
+        [Display(Name = "公司地址")]
         public string Address { get; set; }
+        [Required(ErrorMessage = " ")]
+        [Display(Name = "区号/时差")]
         public int? DistrictNumberId { get; set; }
+        [Display(Name = "区号/时差")]
         public string DistrictNumberString { get; set; }
+        [Required(ErrorMessage = " ")]
+        [Display(Name = "成熟度")]
         public int ProgressId { get; set; }
+        [Display(Name = "成熟度")]
         public string ProgressString { get; set; }
+        [Display(Name = "主营业务")]
         public string Business { get; set; }
+        [Display(Name = "公司业务")]
         public string Desc { get; set; }
+        [Display(Name = "分类")]
         public List<int> Categories { get; set; }
+        [Display(Name = "分类")]
         public string CategoryString { get; set; }
 
+    }
+
+    public class AjaxViewLead
+    {
+        public int CompanyId { get; set; }
+        public int LeadId { get; set; }
+        [Required(ErrorMessage=" ")]
+        [Display(Name = "中文名称")]
+        public string Name_CN { get; set; }
+        [Display(Name = "英文名称")]
+        public string Name_EN { get; set; }
+        [Display(Name = "客户职位")]
+        public string Title { get; set; }
+        [Display(Name = "所在部门")]
+        public string Department { get; set; }
+        [Display(Name = "客户直线")]
+        public string Telephone { get; set; }
+        [Display(Name = "工作邮箱")]
+        public string WorkingEmail { get; set; }
+        [Display(Name = "移动电话")]
+        public string CellPhone { get; set; }
+        [Display(Name = "工作传真")]
+        public string Fax { get; set; }
+        [Display(Name = "客户生日")]
+        public DateTime? Birthday { get; set; }
+        [Display(Name = "个人邮箱")]
+        public string PersonelEmail { get; set; }
+        [Display(Name = "联系地址")]
+        public string Address { get; set; }
+        [Display(Name = "联系邮编")]
+        public string Zip { get; set; }
+        [Display(Name = "现在所在分公司")]
+        public string SubCompany { get; set; }
+        [Display(Name = "客户性别")]
+        public string Gender { get; set; }
+        [Display(Name = "排序")]
+        public int Order { get; set; }
+        [Display(Name = "说明")]
+        public string Desc { get; set; }
+    }
+
+    public class AjaxViewLeadCall
+    {
+        public int CompanyRelationshipId { get; set; }
+        public int LeadId { get; set; }
+        public int CallId { get; set; }
+        public int ProjectId { get; set; }
+        [Required( ErrorMessage=" ")]
+        [Display(Name = "致电时间")]
+        public DateTime CallDate { get; set; }
+        [Display(Name = "回打时间")]
+        public DateTime? CallBackDate { get; set; }
+        [Required(ErrorMessage = " ")]
+        [Display(Name = "Call类型")]
+        public int CallTypeId { get; set; }
+        [Display(Name = "Call类型")]
+        public string CallTypeString { get; set; }
+        [Display(Name = "致电结果")]
+        public string Result { get; set; }
     }
     /// <summary>
     /// Added by Raymond
     /// </summary>
     public class AjaxViewSaleCallListData
-    {        
+    {
         public string CompanyName { get; set; }
         public string LeaderName { get; set; }
         public string LeaderGender { get; set; }
@@ -412,7 +500,7 @@ namespace Model
     {
         public AjaxViewAccount()
         {
-          
+
         }
 
         public AjaxViewAccount(System.Web.Security.MembershipUser User)

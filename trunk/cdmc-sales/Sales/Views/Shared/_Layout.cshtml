@@ -5,6 +5,7 @@
     <title>@ViewBag.Title</title>
     <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
     <link href="@Url.Content("~/css/css.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/css/Form.css")" rel="stylesheet" type="text/css" />
     <link href="@Url.Content("~/Content/jquery-ui-1.8.23.custom.css")" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src=@Url.Content(@"/scripts/jquery-1.6.4.min.js")></script>@*确保在页面能引用到jquery*@
     <script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
@@ -196,7 +197,7 @@
                 <div id="main">@RenderBody()</div>
             </div>
         </div>
-    </div>
+    </div><div id="ajax-holder"></div>
 </body>
 <footer>
 </footer>

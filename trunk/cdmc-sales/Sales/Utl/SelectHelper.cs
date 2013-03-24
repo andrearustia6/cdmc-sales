@@ -88,5 +88,101 @@ namespace Utl
             }
             return selectList;
         }
+
+        public static IEnumerable<SelectListItem> CompanyIndustrySelectList(int? selectVal)
+        {
+            List<SelectListItem> selectList = new List<SelectListItem>();
+            foreach (Area area in CH.GetAllData<Area>())
+            {
+                SelectListItem selectListItem = new SelectListItem() { Text = area.Name, Value = area.ID.ToString() };
+                if (selectVal.HasValue && area.ID == selectVal.Value)
+                {
+                    selectListItem.Selected = true;
+                }
+                selectList.Add(selectListItem);
+            }
+            return selectList;
+        }
+
+        public static IEnumerable<SelectListItem> CompanyTypeSelectList(int? selectVal)
+        {
+            List<SelectListItem> selectList = new List<SelectListItem>();
+            foreach (CompanyType companyType in CH.GetAllData<CompanyType>())
+            {
+                SelectListItem selectListItem = new SelectListItem() { Text = companyType.Name, Value = companyType.ID.ToString() };
+                if (selectVal.HasValue && companyType.ID == selectVal.Value)
+                {
+                    selectListItem.Selected = true;
+                }
+                selectList.Add(selectListItem);
+            }
+            return selectList;
+        }
+
+        public static IEnumerable<SelectListItem> DistinctNumberSelectList(int? selectVal)
+        {
+            List<SelectListItem> selectList = new List<SelectListItem>();
+            foreach (DistrictNumber districtNumber in CH.GetAllData<DistrictNumber>())
+            {
+                SelectListItem selectListItem = new SelectListItem() { Text = districtNumber.Name, Value = districtNumber.ID.ToString() };
+                if (selectVal.HasValue && districtNumber.ID == selectVal.Value)
+                {
+                    selectListItem.Selected = true;
+                }
+                selectList.Add(selectListItem);
+            }
+            return selectList;
+        }
+
+        public static IEnumerable<SelectListItem> ProgressSelectList(int? selectVal)
+        {
+            List<SelectListItem> selectList = new List<SelectListItem>();
+            foreach (Progress progress in CH.GetAllData<Progress>())
+            {
+                SelectListItem selectListItem = new SelectListItem() { Text = progress.Name, Value = progress.ID.ToString() };
+                if (selectVal.HasValue && progress.ID == selectVal.Value)
+                {
+                    selectListItem.Selected = true;
+                }
+                selectList.Add(selectListItem);
+            }
+            return selectList;
+        }
+
+        public static IEnumerable<SelectListItem> GenderSelectList(string selectVal)
+        {
+            List<SelectListItem> selectList = new List<SelectListItem>();
+
+            SelectListItem selectListItem = new SelectListItem() { Text = "Mr", Value = "Mr" };
+            if (selectVal == "Mr")
+            {
+                selectListItem.Selected = true;
+            }
+            selectList.Add(selectListItem);
+
+            selectListItem = new SelectListItem() { Text = "Ms", Value = "Ms" };
+            if (selectVal == "Ms")
+            {
+                selectListItem.Selected = true;
+            }
+            selectList.Add(selectListItem);
+
+            return selectList;
+        }
+
+        public static IEnumerable<SelectListItem> CallTypeSelectList(int? selectVal)
+        {
+            List<SelectListItem> selectList = new List<SelectListItem>();
+            foreach (LeadCallType leadCallType in CH.GetAllData<LeadCallType>())
+            {
+                SelectListItem selectListItem = new SelectListItem() { Text = leadCallType.Name, Value = leadCallType.ID.ToString() };
+                if (selectVal.HasValue && leadCallType.ID == selectVal.Value)
+                {
+                    selectListItem.Selected = true;
+                }
+                selectList.Add(selectListItem);
+            }
+            return selectList;
+        }
     }
 }
