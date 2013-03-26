@@ -1,0 +1,52 @@
+﻿.addcompany-left, .addlead-left,.addcall-left
+{
+    display: inline-block;
+    width: 345px;
+}
+.addcompany-left label, .addlead-left label,.addcall-left label
+{
+    display: inline-block;
+    width: 100px;
+    text-align:right;
+}
+
+.addcompany-right, .addlead-right, .addcall-right
+{
+    display: inline-block;
+    width: 345px;
+}
+.addcompany-right label, .addlead-right label,.addcall-right label
+{
+    display: inline-block;
+    width: 100px;
+    text-align:right;
+}
+.dialogue-addcompany, .dialogue-editcompany, .dialogue-addlead,  .dialogue-editlead,.dialogue-addcall
+{
+    padding-top:30px;
+    padding-left:20px;
+    padding-right:20px;    
+}
+
+.dialogue-addcompany ul li, .dialogue-editcompany ul li, .dialogue-addlead ul li,  .dialogue-editlead ul li, .dialogue-addcall ul li
+{
+    min-height:27px;    
+}
+
+.dialogue-buttons
+{
+        text-align:center;
+}
+
+.dialogue-buttons input[type=button]
+{
+    margin:10px;    
+}
+
+.company-category
+{
+    width:100px;
+    display:inline-block;
+    text-align:right;    
+}
+
