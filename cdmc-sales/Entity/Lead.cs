@@ -259,5 +259,8 @@ namespace Entity
         [Display(Name = "回电时间")]
         public DateTime? CallBackDate { get; set; }
 
+        [Display(Name = "逻辑删除")]
+        public bool MarkForDelete { get; set; }
+
     }
 }

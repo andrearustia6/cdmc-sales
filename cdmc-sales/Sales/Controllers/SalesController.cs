@@ -1224,9 +1224,9 @@ namespace Sales.Controllers
             return View(SR.ErrorView, null, SR.CannotDownload);
         }
 
-        public ActionResult CallableCompanies(int? projectid)
+        public ActionResult CallableCompanies(int? project_filter)
         {
-            ViewBag.ProjectID = projectid == null ? this.TrySetProjectIDForUser(projectid) : projectid;
+            ViewBag.ProjectID = project_filter == null ? this.TrySetProjectIDForUser(project_filter) : project_filter;
             return View();
         }
 
@@ -1306,7 +1306,7 @@ namespace Sales.Controllers
         {
             string userName = Employee.CurrentUserName;
             List<AjaxViewLeadCall> ajaxViewCalls = new List<AjaxViewLeadCall>();
-            foreach (LeadCall leadCall in CH.GetAllData<LeadCall>(c => c.LeadID == leadId && c.Member.Name == userName))
+            foreach (LeadCall leadCall in CH.GetAllData<LeadCall>(c => c.LeadID == leadId && c.Member.Name == userName && c.MarkForDelete == false))
             {
                 AjaxViewLeadCall ajaxViewLeadCall = new AjaxViewLeadCall()
                 {
@@ -1525,12 +1525,48 @@ namespace Sales.Controllers
             return RedirectToAction("CallableCompanies");
         }
 
+        public ActionResult GetEditSaleCall(int leadCallId)
+        {
+            LeadCall leadCall = CH.GetAllData<LeadCall>(c => c.ID == leadCallId).First();
+            AjaxViewLeadCall ajaxViewLeadCall = new AjaxViewLeadCall();
+            ajaxViewLeadCall.CallId = leadCallId;
+            ajaxViewLeadCall.CallBackDate = leadCall.CallBackDate;
+            ajaxViewLeadCall.CallDate = leadCall.CallDate;
+            ajaxViewLeadCall.CompanyRelationshipId = leadCall.CompanyRelationshipID.Value;
+            ajaxViewLeadCall.CallTypeId = leadCall.LeadCallTypeID.Value;
+            ajaxViewLeadCall.LeadId = leadCall.LeadID.Value;
+            ajaxViewLeadCall.ProjectId = leadCall.ProjectID.Value;
+            ajaxViewLeadCall.Result = leadCall.Result;
+
+            return PartialView("CallEdit", ajaxViewLeadCall);
+        }
+
+        public ActionResult EditSaleCall(AjaxViewLeadCall ajaxViewLeadCall)
+        {
+            LeadCall leadCall = CH.GetAllData<LeadCall>(c => c.ID == ajaxViewLeadCall.CallId).First();
+            leadCall.CallBackDate = ajaxViewLeadCall.CallBackDate;
+            leadCall.CallDate = ajaxViewLeadCall.CallDate;
+            leadCall.LeadCallTypeID = ajaxViewLeadCall.CallTypeId;
+            leadCall.Member = CH.GetAllData<Member>(c => c.Name == Employee.CurrentUserName).First();
+            leadCall.Result = ajaxViewLeadCall.Result;
+            CH.Edit<LeadCall>(leadCall);
+            return RedirectToAction("CallableCompanies");
+        }
+
         public ActionResult DeleteSaleLead(int leadId)
         {
             Lead lead = CH.GetAllData<Lead>(c => c.ID == leadId).First();
             lead.MarkForDelete = true;
             CH.Edit<Lead>(lead);
             return Content("Lead删除成功！");
+        }
+
+        public ActionResult DeleteSaleCall(int callId)
+        {
+            LeadCall leadCall = CH.GetAllData<LeadCall>(c => c.ID == callId).First();
+            leadCall.MarkForDelete = true;
+            CH.Edit<LeadCall>(leadCall);
+            return Content("Call删除成功！");
         }
 
         public ActionResult CheckCompanyExist(string beforeUpdate, string afterUpdate)
