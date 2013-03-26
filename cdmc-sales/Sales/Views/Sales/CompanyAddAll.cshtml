@@ -1,0 +1,136 @@
+﻿@using Entity
+@using Utl
+@model  Model.AjaxViewSaleCompanyAll
+
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+@using (Html.BeginForm("AddSaleCompanyAll", "Sales"))
+{
+    <fieldset>
+        <legend>Company</legend>
+        @Html.HiddenFor(model => model.AjaxViewSaleCompany.ProjectId)
+        @Html.HiddenFor(model => model.AjaxViewSaleCompany.CompanyId)
+        <ul>
+            <li><span class="addcompany-left">@Html.LabelFor(model => model.AjaxViewSaleCompany.Name_CN)
+                @Html.TextBoxFor(model => model.AjaxViewSaleCompany.Name_CN)
+                @Html.ValidationMessageFor(model => model.AjaxViewSaleCompany.Name_CN)</span> <span
+                    class="addcompany-right">
+                    @Html.LabelFor(model => model.AjaxViewSaleCompany.Name_EN) @Html.TextBoxFor(model => model.AjaxViewSaleCompany.Name_EN)
+                    @Html.ValidationMessageFor(model => model.AjaxViewSaleCompany.Name_EN)
+                </span></li>
+            <li><span class="addcompany-left">@Html.LabelFor(model => model.AjaxViewSaleCompany.IndustryId)
+                @Html.DropDownListFor(model => model.AjaxViewSaleCompany.IndustryId, SelectHelper.CompanyIndustrySelectList(null), "请选择", new { })
+                @Html.ValidationMessageFor(model => model.AjaxViewSaleCompany.IndustryId)</span>
+                <span class="addcompany-right">
+                    @Html.LabelFor(model => model.AjaxViewSaleCompany.TypeId) @Html.DropDownListFor(model => model.AjaxViewSaleCompany.TypeId, SelectHelper.CompanyTypeSelectList(null), "请选择", new { })
+                    @Html.ValidationMessageFor(model => model.AjaxViewSaleCompany.TypeId)
+                </span></li>
+            <li><span class="addcompany-left">@Html.LabelFor(model => model.AjaxViewSaleCompany.Phone)
+                @Html.TextBoxFor(model => model.AjaxViewSaleCompany.Phone)
+                @Html.ValidationMessageFor(model => model.AjaxViewSaleCompany.Phone)</span> <span
+                    class="addcompany-right">
+                    @Html.LabelFor(model => model.AjaxViewSaleCompany.Fax) @Html.TextBoxFor(model => model.AjaxViewSaleCompany.Fax)
+                    @Html.ValidationMessageFor(model => model.AjaxViewSaleCompany.Fax)
+                </span></li>
+            <li><span class="addcompany-left">@Html.LabelFor(model => model.AjaxViewSaleCompany.ZipCode)
+                @Html.TextBoxFor(model => model.AjaxViewSaleCompany.ZipCode)
+                @Html.ValidationMessageFor(model => model.AjaxViewSaleCompany.ZipCode)</span> <span
+                    class="addcompany-right">
+                    @Html.LabelFor(model => model.AjaxViewSaleCompany.WebSite) @Html.TextBoxFor(model => model.AjaxViewSaleCompany.WebSite)
+                    @Html.ValidationMessageFor(model => model.AjaxViewSaleCompany.WebSite)
+                </span></li>
+            <li><span class="addcompany-left">@Html.LabelFor(model => model.AjaxViewSaleCompany.Address)
+                @Html.TextBoxFor(model => model.AjaxViewSaleCompany.Address)
+                @Html.ValidationMessageFor(model => model.AjaxViewSaleCompany.Address)</span> <span
+                    class="addcompany-right">
+                    @Html.LabelFor(model => model.AjaxViewSaleCompany.DistrictNumberId) @Html.TextBoxFor(model => model.AjaxViewSaleCompany.WebSite)
+                    @Html.ValidationMessageFor(model => model.AjaxViewSaleCompany.DistrictNumberId)
+                </span></li>
+            <li><span class="addcompany-left">@Html.LabelFor(model => model.AjaxViewSaleCompany.ProgressId)
+                @Html.DropDownListFor(model => model.AjaxViewSaleCompany.ProgressId, SelectHelper.ProgressSelectList(null), "请选择", new { })
+                @Html.ValidationMessageFor(model => model.AjaxViewSaleCompany.ProgressId)</span>
+            </li>
+            <li><span>@Html.LabelFor(model => model.AjaxViewSaleCompany.Business) @Html.TextAreaFor(model => model.AjaxViewSaleCompany.Business)
+                @Html.ValidationMessageFor(model => model.AjaxViewSaleCompany.Business)</span>
+            </li>
+            <li><span>@Html.LabelFor(model => model.AjaxViewSaleCompany.Desc) @Html.Telerik().EditorFor(model => model.AjaxViewSaleCompany.Desc)
+                @Html.ValidationMessageFor(model => model.AjaxViewSaleCompany.Desc)</span> </li>
+            <li>
+                <fieldset>
+                    <legend>Categories</legend>
+                    @foreach (Category category in CH.GetAllData<Category>(c => c.ProjectID == Model.AjaxViewSaleCompany.ProjectId))
+                    { 
+                        <label class="company-category">@category.Name
+                        </label>
+                        <input  name="AjaxViewSaleCompany.Categories" type="checkbox" value="@category.ID" /> 
+                    }
+                </fieldset>
+            </li>
+        </ul>
+    </fieldset>
+
+    <fieldset>
+        <legend>Lead</legend>
+        @Html.HiddenFor(model => model.AjaxViewLead.CompanyId)
+        @Html.HiddenFor(model => model.AjaxViewLead.LeadId)
+        <ul>
+            <li><span class="addlead-left">@Html.LabelFor(model => model.AjaxViewLead.Name_CN) @Html.TextBoxFor(model => model.AjaxViewLead.Name_CN)
+                @Html.ValidationMessageFor(model => model.AjaxViewLead.Name_CN)</span> <span class="addlead-right">
+                    @Html.LabelFor(model => model.AjaxViewLead.Name_EN) @Html.TextBoxFor(model => model.AjaxViewLead.Name_EN)
+                    @Html.ValidationMessageFor(model => model.AjaxViewLead.Name_EN)
+                </span></li>
+            <li><span class="addlead-left">@Html.LabelFor(model => model.AjaxViewLead.Telephone)
+                @Html.TextBoxFor(model => model.AjaxViewLead.Telephone)
+                @Html.ValidationMessageFor(model => model.AjaxViewLead.Telephone)</span> <span class="addlead-right">
+                    @Html.LabelFor(model => model.AjaxViewLead.CellPhone) @Html.TextBoxFor(model => model.AjaxViewLead.CellPhone)
+                    @Html.ValidationMessageFor(model => model.AjaxViewLead.CellPhone)
+                </span></li>
+            <li><span class="addlead-left">@Html.LabelFor(model => model.AjaxViewLead.Title) @Html.TextBoxFor(model => model.AjaxViewLead.Title)
+                @Html.ValidationMessageFor(model => model.AjaxViewLead.Title)</span> <span class="addlead-right">
+                    @Html.LabelFor(model => model.AjaxViewLead.Department) @Html.TextBoxFor(model => model.AjaxViewLead.Department)
+                    @Html.ValidationMessageFor(model => model.AjaxViewLead.Department)
+                </span></li>
+            <li><span class="addlead-left">@Html.LabelFor(model => model.AjaxViewLead.WorkingEmail)
+                @Html.TextBoxFor(model => model.AjaxViewLead.WorkingEmail)
+                @Html.ValidationMessageFor(model => model.AjaxViewLead.WorkingEmail)</span> <span
+                    class="addlead-right">
+                    @Html.LabelFor(model => model.AjaxViewLead.PersonelEmail) @Html.TextBoxFor(model => model.AjaxViewLead.PersonelEmail)
+                    @Html.ValidationMessageFor(model => model.AjaxViewLead.PersonelEmail)
+                </span></li>
+            <li><span class="addlead-left">@Html.LabelFor(model => model.AjaxViewLead.Address) @Html.TextBoxFor(model => model.AjaxViewLead.Address)
+                @Html.ValidationMessageFor(model => model.AjaxViewLead.Address)</span> <span class="addlead-right">
+                    @Html.LabelFor(model => model.AjaxViewLead.Zip) @Html.TextBoxFor(model => model.AjaxViewLead.Zip)
+                    @Html.ValidationMessageFor(model => model.AjaxViewLead.Zip)
+                </span></li>
+            <li><span class="addlead-left">@Html.LabelFor(model => model.AjaxViewLead.Birthday)
+                @Html.TextBoxFor(model => model.AjaxViewLead.Birthday)
+                @Html.ValidationMessageFor(model => model.AjaxViewLead.Birthday)</span> <span class="addlead-right">
+                    @Html.LabelFor(model => model.AjaxViewLead.Gender) @Html.DropDownListFor(model => model.AjaxViewLead.Gender, SelectHelper.GenderSelectList(Model.AjaxViewLead.Gender), "-请选择-")
+                    @Html.ValidationMessageFor(model => model.AjaxViewLead.Gender)
+                </span></li>
+        </ul>
+    </fieldset>
+
+    <fieldset>
+        <legend>Lead Call</legend>
+        @Html.HiddenFor(model => model.AjaxViewLeadCall.CompanyRelationshipId)
+        @Html.HiddenFor(model => model.AjaxViewLeadCall.LeadId)
+        @Html.HiddenFor(model => model.AjaxViewLeadCall.CallId)
+        @Html.HiddenFor(model => model.AjaxViewLeadCall.ProjectId)
+        <ul>
+            <li><span class="addcall-left">@Html.LabelFor(model => model.AjaxViewLeadCall.CallDate)
+                @Html.Telerik().DatePickerFor(model => model.AjaxViewLeadCall.CallDate)
+                @Html.ValidationMessageFor(model => model.AjaxViewLeadCall.CallDate)</span> <span
+                    class="addcall-right">
+                    @Html.LabelFor(model => model.AjaxViewLeadCall.CallBackDate) @Html.Telerik().DatePickerFor(model => model.AjaxViewLeadCall.CallBackDate)
+                    @Html.ValidationMessageFor(model => model.AjaxViewLeadCall.CallBackDate)
+                </span></li>
+            <li><span class="addcall-left">@Html.LabelFor(model => model.AjaxViewLeadCall.CallTypeId)
+                @Html.DropDownListFor(model => model.AjaxViewLeadCall.CallTypeId, SelectHelper.CallTypeSelectList(Model.AjaxViewLeadCall.CallTypeId), "-请选择-")
+                @Html.ValidationMessageFor(model => model.AjaxViewLeadCall.CallTypeId)</span>
+            </li>
+            <li><span>@Html.LabelFor(model => model.AjaxViewLeadCall.Result) @Html.TextAreaFor(model => model.AjaxViewLeadCall.Result)
+                @Html.ValidationMessageFor(model => model.AjaxViewLeadCall.Result)</span> </li>
+        </ul>
+    </fieldset>
+}

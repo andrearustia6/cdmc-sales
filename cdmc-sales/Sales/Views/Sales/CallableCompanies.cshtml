@@ -1,0 +1,377 @@
+﻿@using Model
+@using Utl
+<script type="text/javascript">
+    var currentCompanyId;
+    var currentCompanyRelationshipId;
+    var currentCompanyName;
+    var currentLeadId;
+    var currentCallId;
+    function onCompanyRowSelected(e) {
+        currentCompanyId = e.row.cells[0].innerHTML;
+        currentCompanyRelationshipId = e.row.cells[1].innerHTML;
+        currentCompanyName = e.row.cells[2].innerHTML;
+        currentLeadId = null;
+        currentCallId = null;
+        var leadsGrid = $('#leadGrid').data('tGrid');
+        leadsGrid.rebind();
+        $('#currentCompanyName').html(' in ' + e.row.cells[2].innerHTML);
+        var callGrid = $('#callGrid').data('tGrid');
+        callGrid.rebind();
+        $('#currentLeaderName').html(' ');
+    }
+    function onLeadRowSelected(e) {
+        currentLeadId = e.row.cells[0].innerHTML;
+        currentCallId = null;
+        var callGrid = $('#callGrid').data('tGrid');
+        callGrid.rebind();
+        $('#currentLeaderName').html(' of ' + e.row.cells[2].innerHTML);
+    }
+    function onCallRowSelected(e) {
+        currentCallId = e.row.cells[0].innerHTML;
+    }
+    function onLeadDataBinding(e) {
+        e.data = $.extend(e.data, { companyId: currentCompanyId });
+    }
+    function onCallDataBinding(e) {
+        e.data = $.extend(e.data, { leadId: currentLeadId });
+    }
+    function onCompanyAdd(evt) {
+        stopEvent(evt);
+        $.post('GetAddSaleCompanyAll', { projectId: $('#project_filter').val() }, function (result) {
+            $('.companyAdd-wrapper').html(result);
+            var window = $('#AddCompany').data('tWindow');
+            window.center().open();
+        });
+    }
+    function onCompanyEdit(evt) {
+        stopEvent(evt);
+        if (currentCompanyId == null || currentCompanyId == undefined) {
+            return alert('请先选择公司');
+        }
+
+        $.post('GetEditSaleCompany', { companyId: currentCompanyId }, function (result) {
+            $('.companyEdit-wrapper').html(result);
+            var window = $('#EditCompany').data('tWindow');
+            window.center().open();
+        });
+
+    }
+    function onCompanyDelete(evt) {
+        stopEvent(evt);
+        if (currentCompanyId == null || currentCompanyId == undefined) {
+            return alert('请先选择公司');
+        }
+        if (confirm('确实要删除吗?')) {
+            $.post('DeleteSaleCompany', { companyId: currentCompanyId }, function (result) {
+                alert(result);
+                window.location = window.location;
+            });
+        }
+    }
+
+    function onLeadAdd(evt) {
+        stopEvent(evt);
+        if (currentCompanyId == null || currentCompanyId == undefined) {
+            alert('请先选择公司');
+            return;
+        }
+        $.post('GetAddSaleLead', { companyId: currentCompanyId }, function (result) {
+            $('.leadadd-wrapper').html(result);
+            var window = $('#AddLead').data('tWindow');
+            window.center().open();
+        });
+    }
+
+    function onLeadEdit(evt) {
+        stopEvent(evt);
+        if (currentLeadId == null || currentLeadId == undefined) {
+            alert('请先选择Lead');
+            return;
+        }
+        $.post('GetEditSaleLead', { leadId: currentLeadId }, function (result) {
+            $('.leadedit-wrapper').html(result);
+            var window = $('#EditLead').data('tWindow');
+            window.center().open();
+        });
+    }
+    function onLeadDelete(evt) {
+        stopEvent(evt);
+        if (currentLeadId == null || currentLeadId == undefined) {
+            alert('请先选择Lead');
+            return;
+        }
+        if (confirm('确实要删除吗?')) {
+            $.post('DeleteSaleLead', { leadId: currentLeadId }, function (result) {
+                alert(result);
+                window.location = window.location;
+            });
+        }
+    }
+    function onCallAdd(evt) {
+        stopEvent(evt);
+        if (currentLeadId == null || currentLeadId == undefined) {
+            alert('请先选择Lead');
+            return;
+        }
+        var currentProejctId = $('#project_filter').val();
+        $.post('GetAddSaleCall', { leadId: currentLeadId, companyRelationId: currentCompanyRelationshipId, projectId: currentProejctId }, function (result) {
+            $('.calladd-wrapper').html(result);
+            var window = $('#AddCall').data('tWindow');
+            window.center().open();
+        });
+    }
+    function onCallEdit(evt) {
+        stopEvent(evt);
+        if (currentCallId == null || currentCallId == undefined) {
+            alert('请先选择Call');
+            return;
+        }
+        $.post('GetEditSaleCall', { leadCallId: currentCallId }, function (result) {
+            $('.calledit-wrapper').html(result);
+            var window = $('#EditCall').data('tWindow');
+            window.center().open();
+        });
+    }
+    function onCallDelete(evt) {
+        stopEvent(evt);
+        if (currentCallId == null || currentCallId == undefined) {
+            alert('请先选择Call');
+            return;
+        }
+        if (confirm('确实要删除吗?')) {
+            $.post('DeleteSaleCall', { callId: currentCallId }, function (result) {
+                alert(result);
+                window.location = window.location;
+            });
+        }
+    }
+    function Addcompany() {
+        var companyName = $('.dialogue-addcompany #AjaxViewSaleCompany_Name_CN').val();
+        $.post('CheckCompanyExist', { beforeUpdate: null, afterUpdate: companyName }, function (result) {
+            if (result.length > 0) {
+                alert(result);
+            } else {
+                $('.dialogue-addcompany form').first().submit();
+            }
+        });
+    }
+
+    function CancelAddcompany() {
+        var window = $('#AddCompany').data('tWindow');
+        window.close();
+    }
+
+    function Editcompany() {
+        var companyName = $('.dialogue-editcompany #Name_CN').val();
+        $.post('CheckCompanyExist', { beforeUpdate: currentCompanyName, afterUpdate: companyName }, function (result) {
+            if (result.length > 0) {
+                alert(result);
+            } else {
+                $('.dialogue-editcompany form').first().submit();
+            }
+        });
+    }
+
+    function CancelEditcompany() {
+        var window = $('#EditCompany').data('tWindow');
+        window.close();
+    }
+
+    function AddLead() {
+        $('.dialogue-addlead form').first().submit();
+    }
+    function CancelAddLead() {
+        var window = $('#AddLead').data('tWindow');
+        window.close();
+    }
+
+    function EditLead() {
+        $('.dialogue-editlead form').first().submit();
+    }
+
+    function CancelEditLead() {
+        var window = $('#EditLead').data('tWindow');
+        window.close();
+    }
+
+    function AddCall() {
+        $('.dialogue-addcall form').first().submit();
+    }
+
+    function CancelAddCall() {
+        var window = $('#AddCall').data('tWindow');
+        window.close();
+    }
+
+    function EditCall() {
+        $('.dialogue-editcall form').first().submit();
+    }
+
+    function CancelEditCall() {
+        var window = $('#EditCall').data('tWindow');
+        window.close();
+    }
+
+    function SubmitFilterForm() {
+        $('#filter-form').submit();
+    }
+
+    $(function () {
+        $('#ProjectId').val($('#project_filter').val());
+    });
+</script>
+@using (Html.BeginForm("CallableCompanies", "Sales", FormMethod.Post, new { id = "filter-form" }))
+{  
+    <span style="display: inline-block;"><b>项目筛选：</b> @Html.DropDownList("project_filter", SelectHelper.SaleRelatedProjects((int?)ViewBag.ProjectID), null, new { onchange = "SubmitFilterForm()" })
+    </span>     
+}
+@(Html.Telerik().Grid<AjaxViewSaleCompany>().Name("companyGrid").ToolBar(commands =>
+{
+    commands.Custom().ButtonType(GridButtonType.Text).Text("新增").HtmlAttributes(new { onclick = "onCompanyAdd()" });
+    commands.Custom().ButtonType(GridButtonType.Text).Text("更新").HtmlAttributes(new { onclick = "onCompanyEdit()" });
+    commands.Custom().ButtonType(GridButtonType.Text).Text("删除").HtmlAttributes(new { onclick = "onCompanyDelete()" });
+})
+    .Columns(c =>
+    {
+        c.Bound(item => item.CompanyId).Hidden(true);
+        c.Bound(item => item.CompanRelationshipId).Hidden(true);
+        c.Bound(item => item.Name_CN).Title("公司名").Width(120);
+        c.Bound(item => item.IndustryString).Title("行业类型").Width(120);
+        c.Bound(item => item.TypeString).Title("公司类型").Width(120);
+        c.Bound(item => item.Phone).Title("总机").Width(120);
+        c.Bound(item => item.ProgressString).Title("成熟度").Width(120);
+    }).DataBinding(dataBinding => dataBinding.Ajax().Select("_CallableCompanies", "Sales", new { projectid = ViewBag.ProjectID }))
+        .Filterable(f => f.Enabled(false)).Pageable(paging => paging.Style(GridPagerStyles.Status).PageOnScroll(true).PageSize(10))
+        .Selectable()
+        .ClientEvents(events => events.OnRowSelect("onCompanyRowSelected"))
+       )
+<h3>
+    Leaders <span id="currentCompanyName"></span>
+</h3>
+@(Html.Telerik().Grid<AjaxViewLead>().Name("leadGrid").ToolBar(commands =>
+{
+    commands.Custom().ButtonType(GridButtonType.Text).Text("新增").HtmlAttributes(new { onclick = "onLeadAdd()" });
+    commands.Custom().ButtonType(GridButtonType.Text).Text("更新").HtmlAttributes(new { onclick = "onLeadEdit()" });
+    commands.Custom().ButtonType(GridButtonType.Text).Text("删除").HtmlAttributes(new { onclick = "onLeadDelete()" });
+}).Columns(columns =>
+    {
+        columns.Bound(c => c.LeadId).Hidden(true);
+        columns.Bound(c => c.Name_CN).Title("中文名字").Width(120);
+        columns.Bound(c => c.CellPhone).Title("手机号码").Width(120);
+        columns.Bound(c => c.Department).Title("部门").Width(120);
+        columns.Bound(c => c.WorkingEmail).Title("工作邮箱").Width(120);
+    }).DataBinding(dataBinding => dataBinding.Ajax().Select("_LeadInCompany", "Sales", new { }))
+    .Filterable(f => f.Enabled(false)).Pageable(paging => paging.Style(GridPagerStyles.Status).PageOnScroll(true).PageSize(10))
+    .Selectable()
+    .ClientEvents(events => events.OnDataBinding("onLeadDataBinding").OnRowSelect("onLeadRowSelected"))
+    )
+<h3>
+    Calls <span id="currentLeaderName"></span>
+</h3>
+@(Html.Telerik().Grid<AjaxViewLeadCall>().Name("callGrid").ToolBar(commands =>
+{
+    commands.Custom().ButtonType(GridButtonType.Text).Text("新增").HtmlAttributes(new { onclick = "onCallAdd()" });
+    commands.Custom().ButtonType(GridButtonType.Text).Text("更新").HtmlAttributes(new { onclick = "onCallEdit()" });
+    commands.Custom().ButtonType(GridButtonType.Text).Text("删除").HtmlAttributes(new { onclick = "onCallDelete()" });
+}).Columns(columns =>
+    {
+        columns.Bound(c => c.CallId).Hidden(true);
+        columns.Bound(c => c.CallDate).Title("致电时间").Width(120);
+        columns.Bound(c => c.CallTypeString).Title("致电类型").Width(120);
+        columns.Bound(c => c.Result).Title("结果").Width(200);
+    }).DataBinding(dataBinding => dataBinding.Ajax().Select("_CallInLead", "Sales", new { }))
+    .Filterable(f => f.Enabled(false)).Pageable(paging => paging.Style(GridPagerStyles.Status).PageOnScroll(true).PageSize(10))
+    .Selectable()
+    .ClientEvents(events => events.OnDataBinding("onCallDataBinding").OnRowSelect("onCallRowSelected"))
+    )
+@(Html.Telerik().Window()
+    .Name("AddCompany")
+    .Buttons(buttons => buttons.Close())
+    .Content(@<text><div class="dialogue-addcompany">
+        <div class="companyAdd-wrapper">
+        </div>
+        <div class="dialogue-buttons">
+            <input type="button" value="确定" class="t-button" onclick="Addcompany()" />
+            <input type="button" value="取消" class="t-button" onclick="CancelAddcompany()" />
+        </div>
+    </div></text>)
+        .Width(800)
+        .Height(680)
+        .Modal(true).Visible(false)
+    )
+@(Html.Telerik().Window()
+    .Name("EditCompany")
+    .Buttons(buttons => buttons.Close())
+    .Content(@<text><div class="dialogue-editcompany">
+        <div class="companyEdit-wrapper">
+        </div>
+        <div class="dialogue-buttons">
+            <input type="button" value="确定" class="t-button" onclick="Editcompany()" />
+            <input type="button" value="取消" class="t-button" onclick="CancelEditcompany()" />
+        </div>
+    </div></text>)
+    .Width(750)
+    .Height(680)
+    .Modal(true).Visible(false)
+)
+@(Html.Telerik().Window()
+    .Name("AddLead")
+    .Buttons(buttons => buttons.Close())
+    .Content(@<text><div class="dialogue-addlead">
+        <div class="leadadd-wrapper">
+        </div>
+        <div class="dialogue-buttons">
+            <input type="button" value="确定" class="t-button" onclick="AddLead()" />
+            <input type="button" value="取消" class="t-button" onclick="CancelAddLead()" />
+        </div>
+    </div></text>)
+    .Width(750)
+    .Height(300)
+    .Modal(true).Visible(false)
+)
+@(Html.Telerik().Window()
+    .Name("EditLead")
+    .Buttons(buttons => buttons.Close())
+    .Content(@<text><div class="dialogue-editlead">
+        <div class="leadedit-wrapper">
+        </div>
+        <div class="dialogue-buttons">
+            <input type="button" value="确定" class="t-button" onclick="EditLead()" />
+            <input type="button" value="取消" class="t-button" onclick="CancelEditLead()" />
+        </div>
+    </div></text>)
+    .Width(750)
+    .Height(300)
+    .Modal(true).Visible(false)
+)
+@(Html.Telerik().Window()
+    .Name("AddCall")
+    .Buttons(buttons => buttons.Close())
+    .Content(@<text><div class="dialogue-addcall">
+        <div class="calladd-wrapper">
+        </div>
+        <div class="dialogue-buttons">
+            <input type="button" value="确定" class="t-button" onclick="AddCall()" />
+            <input type="button" value="取消" class="t-button" onclick="CancelAddCall()" />
+        </div>
+    </div></text>)
+    .Width(750)
+    .Height(250)
+    .Modal(true).Visible(false)
+)
+
+@(Html.Telerik().Window()
+    .Name("EditCall")
+    .Buttons(buttons => buttons.Close())
+    .Content(@<text><div class="dialogue-editcall">
+        <div class="calledit-wrapper">
+        </div>
+        <div class="dialogue-buttons">
+            <input type="button" value="确定" class="t-button" onclick="EditCall()" />
+            <input type="button" value="取消" class="t-button" onclick="CancelEditCall()" />
+        </div>
+    </div></text>)
+    .Width(750)
+    .Height(250)
+    .Modal(true).Visible(false)
+)
