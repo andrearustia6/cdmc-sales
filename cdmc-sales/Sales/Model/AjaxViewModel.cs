@@ -467,6 +467,14 @@ namespace Model
         [Display(Name = "致电结果")]
         public string Result { get; set; }
     }
+
+    public class AjaxViewSaleCompanyAll
+    {
+        public AjaxViewSaleCompany AjaxViewSaleCompany { get; set; }
+        public AjaxViewLead AjaxViewLead { get; set; }
+        public AjaxViewLeadCall AjaxViewLeadCall { get; set; }
+    }
+
     /// <summary>
     /// Added by Raymond
     /// </summary>
