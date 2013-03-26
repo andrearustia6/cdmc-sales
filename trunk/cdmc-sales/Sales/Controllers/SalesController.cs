@@ -1349,7 +1349,10 @@ namespace Sales.Controllers
             companyRelationship.Members = new List<Member>() { };
             companyRelationship.Members.Add(CH.GetAllData<Member>(c => c.Name == Employee.CurrentUserName).First());
             companyRelationship.ProjectID = ajaxViewSaleCompany.ProjectId;
-            companyRelationship.Categorys = CH.GetAllData<Category>(c => ajaxViewSaleCompany.Categories.Contains(c.ID)).ToList();
+            if (ajaxViewSaleCompany.Categories != null)
+            {
+                companyRelationship.Categorys = CH.GetAllData<Category>(c => ajaxViewSaleCompany.Categories.Contains(c.ID)).ToList();
+            }
             CH.Create<CompanyRelationship>(companyRelationship);
 
             return RedirectToAction("CallableCompanies");
@@ -1396,6 +1399,73 @@ namespace Sales.Controllers
         {
             AjaxViewSaleCompany ajaxViewSaleCompany = new AjaxViewSaleCompany() { ProjectId = projectId, Categories = new List<int>() { } };
             return PartialView("CompanyAdd", ajaxViewSaleCompany);
+        }
+
+        public ActionResult GetAddSaleCompanyAll(int projectId)
+        {
+            AjaxViewSaleCompanyAll ajaxViewSaleCompanyAll = new AjaxViewSaleCompanyAll();
+            ajaxViewSaleCompanyAll.AjaxViewSaleCompany = new AjaxViewSaleCompany() { ProjectId = projectId, Categories = new List<int>() { } };
+            ajaxViewSaleCompanyAll.AjaxViewLead = new AjaxViewLead();
+            ajaxViewSaleCompanyAll.AjaxViewLeadCall = new AjaxViewLeadCall();
+            return PartialView("CompanyAddAll", ajaxViewSaleCompanyAll);
+        }
+
+        public ActionResult AddSaleCompanyAll(AjaxViewSaleCompanyAll ajaxViewSaleCompanyAll)
+        {
+            CompanyRelationship companyRelationship = new CompanyRelationship();
+            companyRelationship.Company = new Company();
+            companyRelationship.Company.Address = ajaxViewSaleCompanyAll.AjaxViewSaleCompany.Address;
+            companyRelationship.Company.AreaID = ajaxViewSaleCompanyAll.AjaxViewSaleCompany.IndustryId;
+            companyRelationship.Company.Business = ajaxViewSaleCompanyAll.AjaxViewSaleCompany.Business;
+            companyRelationship.Company.CompanyTypeID = ajaxViewSaleCompanyAll.AjaxViewSaleCompany.TypeId;
+            companyRelationship.Company.Contact = ajaxViewSaleCompanyAll.AjaxViewSaleCompany.Phone;
+            companyRelationship.Company.Description = ajaxViewSaleCompanyAll.AjaxViewSaleCompany.Desc;
+            companyRelationship.Company.DistrictNumberID = ajaxViewSaleCompanyAll.AjaxViewSaleCompany.DistrictNumberId;
+            companyRelationship.Company.Fax = ajaxViewSaleCompanyAll.AjaxViewSaleCompany.Fax;
+            companyRelationship.Company.Name_CH = ajaxViewSaleCompanyAll.AjaxViewSaleCompany.Name_CN;
+            companyRelationship.Company.Name_EN = ajaxViewSaleCompanyAll.AjaxViewSaleCompany.Name_EN;
+            companyRelationship.Company.WebSite = ajaxViewSaleCompanyAll.AjaxViewSaleCompany.WebSite;
+            companyRelationship.Company.ZIP = ajaxViewSaleCompanyAll.AjaxViewSaleCompany.ZipCode;
+            companyRelationship.Description = ajaxViewSaleCompanyAll.AjaxViewSaleCompany.Desc;
+            companyRelationship.ProgressID = ajaxViewSaleCompanyAll.AjaxViewSaleCompany.ProgressId;
+            companyRelationship.Members = new List<Member>() { };
+            companyRelationship.Members.Add(CH.GetAllData<Member>(c => c.Name == Employee.CurrentUserName).First());
+            companyRelationship.ProjectID = ajaxViewSaleCompanyAll.AjaxViewSaleCompany.ProjectId;
+            if (ajaxViewSaleCompanyAll.AjaxViewSaleCompany.Categories != null)
+            {
+                companyRelationship.Categorys = CH.GetAllData<Category>(c => ajaxViewSaleCompanyAll.AjaxViewSaleCompany.Categories.Contains(c.ID)).ToList();
+            }
+            CH.Create<CompanyRelationship>(companyRelationship);
+
+            Lead lead = new Lead()
+            {
+                Name_CH = ajaxViewSaleCompanyAll.AjaxViewLead.Name_CN,
+                Name_EN = ajaxViewSaleCompanyAll.AjaxViewLead.Name_EN,
+                CompanyID = companyRelationship.Company.ID,
+                Address = ajaxViewSaleCompanyAll.AjaxViewLead.Address,
+                Birthday = ajaxViewSaleCompanyAll.AjaxViewLead.Birthday,
+                Contact = ajaxViewSaleCompanyAll.AjaxViewLead.Telephone,
+                Department = ajaxViewSaleCompanyAll.AjaxViewLead.Department,
+                Description = ajaxViewSaleCompanyAll.AjaxViewLead.Desc,
+                EMail = ajaxViewSaleCompanyAll.AjaxViewLead.WorkingEmail,
+                Fax = ajaxViewSaleCompanyAll.AjaxViewLead.Fax,
+                Gender = ajaxViewSaleCompanyAll.AjaxViewLead.Gender,
+                Mobile = ajaxViewSaleCompanyAll.AjaxViewLead.CellPhone
+            };
+            CH.Create<Lead>(lead);
+
+            LeadCall leadCall = new LeadCall();
+            leadCall.CallBackDate = ajaxViewSaleCompanyAll.AjaxViewLeadCall.CallBackDate;
+            leadCall.CallDate = ajaxViewSaleCompanyAll.AjaxViewLeadCall.CallDate;
+            leadCall.CompanyRelationshipID = companyRelationship.ID;
+            leadCall.LeadCallTypeID = ajaxViewSaleCompanyAll.AjaxViewLeadCall.CallTypeId;
+            leadCall.LeadID = lead.ID;
+            leadCall.Member = CH.GetAllData<Member>(c => c.Name == Employee.CurrentUserName).First();
+            leadCall.ProjectID = ajaxViewSaleCompanyAll.AjaxViewSaleCompany.ProjectId;
+            leadCall.Result = ajaxViewSaleCompanyAll.AjaxViewLeadCall.Result;
+            CH.Create<LeadCall>(leadCall);
+
+            return RedirectToAction("CallableCompanies");
         }
 
         [HttpPost]
