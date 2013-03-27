@@ -21,6 +21,7 @@ namespace Model
         public IEnumerable<TargetOfMonth> ProjectTargets { get; set; }
         public IEnumerable<TargetOfMonthForMember> MemberTargets { get; set; }
         public IEnumerable<Member> Members{get;set;}
+        public IEnumerable<string> MemberNames { get; set; }
         public IEnumerable<Deal> Deals{get;set;}
         public IEnumerable<LeadCall> Faxouts { get; set; }
         public IEnumerable<Lead> Leads{get;set;}
@@ -89,6 +90,7 @@ namespace Model
         {
             get
             {
+             
                 if (LeadNotQualifiedWeeksCount == 0) return 20;
                 else if (LeadNotQualifiedWeeksCount == 1) return 15;
                 else if (LeadNotQualifiedWeeksCount == 2) return 10;
@@ -98,6 +100,7 @@ namespace Model
         }
         [Display(Name = "通话时间/FaxOut分数")]
         public int FaxCallScore { get {
+          
             if (HoursOrFaxNotQualifiedWeeksCount == 0) return 20;
             else if (HoursOrFaxNotQualifiedWeeksCount == 1) return 15;
             else if (HoursOrFaxNotQualifiedWeeksCount == 2) return 10;
@@ -117,25 +120,42 @@ namespace Model
         [Display(Name = "主观评分")]
         public double? AssignedScore { get; set; }
 
+
+        protected int? _leadNotQualifiedWeeksCount;
         [Display(Name = "调研不达标周数")]
         public int LeadNotQualifiedWeeksCount
         {
             get
             {
-                if (Weeks == null) return 4;
-                return Weeks.FindAll(f => f.IsLeadAddedQualified == false).Count;
+                if (!_leadNotQualifiedWeeksCount.HasValue)
+                {
+                    if (Weeks == null)
+                        _leadNotQualifiedWeeksCount = 4;
+                    else
+                    _leadNotQualifiedWeeksCount = _weeks.FindAll(f => f.IsLeadAddedQualified == false).Count;
+                }
+                return _leadNotQualifiedWeeksCount.Value;
             }
         }
 
-   
+
+        protected int? _hoursOrFaxNotQualifiedWeeksCount;
+
 
         [Display(Name = "通话|FaxOut不达标周数")]
         public int HoursOrFaxNotQualifiedWeeksCount
         {
             get
             {
-                if (Weeks == null) return 4;
-                return Weeks.FindAll(f => f.IsFaxOutOrCallHoursQualified == false).Count;
+                if (!_hoursOrFaxNotQualifiedWeeksCount.HasValue)
+                {
+                    if (Weeks == null)
+                        _hoursOrFaxNotQualifiedWeeksCount = 4;
+                    else
+                    _hoursOrFaxNotQualifiedWeeksCount = _weeks.FindAll(f => f.IsFaxOutOrCallHoursQualified == false).Count;
+                }
+
+                return _hoursOrFaxNotQualifiedWeeksCount.Value;
             }
         }
 
@@ -399,9 +419,9 @@ namespace Model
                         {
                             StartDate = startdate,
                             EndDate = enddate,
-                            Faxouts = _leadCalls.Where(f => f.CallDate >= startdate && f.CallDate < enddate),
-                            Leads = _leads.Where(f => f.CreatedDate >= startdate && f.CreatedDate < enddate),
-                            Deals = _deals.Where(f => f.ActualPaymentDate >= StartDate && f.ActualPaymentDate < EndDate)
+                            Faxouts = _leadCalls.Where(f => f.CallDate >= startdate && f.CallDate < enddate).ToList(),
+                            Leads = _leads.Where(f => f.CreatedDate >= startdate && f.CreatedDate < enddate).ToList(),
+                            Deals = _deals.Where(f => f.ActualPaymentDate >= StartDate && f.ActualPaymentDate < EndDate).ToList()
                         };
                         _weeks.Add(ap);
                         startdate = enddate;

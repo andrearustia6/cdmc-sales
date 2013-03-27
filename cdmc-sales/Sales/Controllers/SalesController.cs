@@ -1126,7 +1126,7 @@ namespace Sales.Controllers
                 {
                     CallDate = leadCall.CallDate,
                     CompanyContact = leadCall.Lead.SubCompanyID == null ? leadCall.Lead.Company.Contact : leadCall.Lead.SubCompany.Contact,
-                    CompanyName = leadCall.Lead.Company.Name_CH,
+                    CompanyName = leadCall.Lead.Company.Name,
                     CompanyRelationShipId = leadCall.CompanyRelationshipID,
                     Id = leadCall.ID,
                     CallTypeName = leadCall.LeadCallType.Name,
@@ -1135,7 +1135,7 @@ namespace Sales.Controllers
                     LeaderFax = leadCall.Lead.Fax,
                     LeaderGender = leadCall.Lead.Gender,
                     LeaderMobile = leadCall.Lead.Mobile,
-                    LeaderName = leadCall.Lead.Name_CH,
+                    LeaderName = leadCall.Lead.Name,
                     LeadTitle = leadCall.Lead.Title,
                     Result = leadCall.Result
                 };
