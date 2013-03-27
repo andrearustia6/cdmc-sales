@@ -1545,9 +1545,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Sales\CallableCompanies.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Views\Sales\CompanyAdd.cshtml" />
   </ItemGroup>
   <ItemGroup>

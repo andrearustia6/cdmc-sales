@@ -65,7 +65,7 @@ namespace Sales.Controllers
                 return RedirectToAction("management", "project", new { id = projectid, tabindex = 2 });
             }
 
-            return View("Breakdown", CH.GetAllData<Member>(m => m.ProjectID == projectid));
+            return View("Breakdown", CH.GetAllData<Member>(m => m.ProjectID == projectid && m.IsActivated==true));
         }
 
         public ActionResult EditBreakdown(int? projectid, int? targetofmonthid, string startdate)
@@ -82,7 +82,7 @@ namespace Sales.Controllers
                 ViewBag.Targets = targets;
             }
 
-            return View("Breakdown", CH.GetAllData<Member>(m => m.ProjectID == projectid));
+            return View("Breakdown", CH.GetAllData<Member>(m => m.ProjectID == projectid && m.IsActivated == true));
         }
 
         [HttpPost]

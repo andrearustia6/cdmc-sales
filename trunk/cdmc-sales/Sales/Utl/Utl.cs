@@ -575,14 +575,31 @@ namespace Utl
         {
             if (month == null) month = DateTime.Now.Month;
 
+            startdate = DateTime.Now.StartOfMonth();
+            enddate = DateTime.Now.EndOfMonth();
 
-            startdate = new DateTime(DateTime.Now.Year, month.Value, 1);
-
+            //如果是周末。往后加1天 循环到周1为止
+            while (startdate.DayOfWeek == DayOfWeek.Saturday || startdate.DayOfWeek == DayOfWeek.Sunday)
+            {
+                startdate = startdate.AddDays(1);
+            }
+            //工作日跨月的周，计入本月
             while (startdate.DayOfWeek != DayOfWeek.Monday)
             {
                 startdate = startdate.AddDays(-1);
             }
-            enddate = startdate.AddDays(28);
+
+            while (enddate.DayOfWeek == DayOfWeek.Saturday || enddate.DayOfWeek == DayOfWeek.Friday)
+            {
+                enddate = enddate.AddDays(1);
+            }
+
+            while (enddate.DayOfWeek != DayOfWeek.Sunday)
+            {
+                enddate = enddate.AddDays(-1);
+            }
+          
+           // enddate = startdate.AddDays(28);
         }
 
         public static string ConvertSelectProjectIDtoString(List<int> selectedprojects)

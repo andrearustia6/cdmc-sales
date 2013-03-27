@@ -286,7 +286,7 @@ namespace Model
             get
             {
 
-                var m = Mobile; if (string.IsNullOrEmpty(m)) return string.Empty;
+                var m = Mobile; if (string.IsNullOrWhiteSpace(m)) return string.Empty;
                 string start = string.Empty;
                 if (m.Length > 3)
                 {
@@ -311,7 +311,7 @@ namespace Model
             {
 
                 var m = Contact;
-                if (string.IsNullOrEmpty(m)) return string.Empty;
+                if (string.IsNullOrWhiteSpace(m)) return string.Empty;
                 if (m.Length <= 3) return m;
                 string start = string.Empty;
                 if (!string.IsNullOrEmpty(m) && m.Length > 3)

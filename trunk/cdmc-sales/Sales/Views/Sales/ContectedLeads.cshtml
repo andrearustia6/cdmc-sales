@@ -27,14 +27,14 @@
                     c.Bound(item => item.LeaderGender).Width(70);
                     c.Bound(item => item.LeadTitle).Width(120);
                     c.Bound(item => item.CompanyContact).Title("公司总机").Width(110);
-                    c.Bound(item => item.TimeDifference).Width(60);
-                    c.Bound(item => item.LeaderContact).Width(110);
-                    c.Bound(item => item.LeaderMobile).Width(110);
-                    c.Bound(item => item.LeaderEmail).Width(85);
-                    c.Bound(item => item.LeaderFax).Width(85);
-                    c.Bound(item => item.CallDate).Width(85);
-                    c.Bound(item => item.CallTypeName).Width(90);
-                    c.Bound(item => item.Result).Width(200);
+                    c.Bound(item => item.TimeDifference).Width(60).Title("时差");
+                    c.Bound(item => item.LeaderContact).Width(110).Title("客户直线");
+                    c.Bound(item => item.LeaderMobile).Width(110).Title("移动电话");
+                    c.Bound(item => item.LeaderEmail).Width(85).Title("电子邮箱");
+                    c.Bound(item => item.LeaderFax).Width(85).Title("传真");
+                    c.Bound(item => item.CallDate).Width(85).Title("致电时间");
+                    c.Bound(item => item.CallTypeName).Width(90).Title("状态");
+                    c.Bound(item => item.Result).Width(200).Title("结果描述");
                     c.Bound(item => item.ActionLink).Title("操作").Width(70).ClientTemplate("<span> <a  href='<#= ActionLink #>' >Call List</a></span>");
                 }).DataBinding(dataBinding => dataBinding.Ajax().Select("_ContectedLeads", "Sales", new { projectid = ViewBag.ProjectID, filterId = ViewBag.FilterID, leadCallTypeId = ViewBag.LeadCallTypeId, startdate = ViewBag.StartDate, enddate = ViewBag.EndDate }))
                                             .Resizable(resizing => resizing.Columns(true))
