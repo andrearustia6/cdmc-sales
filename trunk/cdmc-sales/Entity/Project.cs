@@ -265,7 +265,7 @@ namespace Entity
         public string HasBlowed { get; set; }
 
         [Display(Name = "逻辑删除")]
-        public bool MarkForDelete { get; set; }
+        public bool? MarkForDelete { get; set; }
     }
 
     /// <summary>

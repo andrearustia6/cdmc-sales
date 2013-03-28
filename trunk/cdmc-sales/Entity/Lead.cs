@@ -185,7 +185,7 @@ namespace Entity
         public virtual Image Image { get; set; }
         public int?  ImageID { get; set; }
         [Display(Name = "逻辑删除"), Required]
-        public bool MarkForDelete { get; set; }
+        public bool? MarkForDelete { get; set; }
     }
 
     /// <summary>
@@ -260,7 +260,7 @@ namespace Entity
         public DateTime? CallBackDate { get; set; }
 
         [Display(Name = "逻辑删除")]
-        public bool MarkForDelete { get; set; }
+        public bool? MarkForDelete { get; set; }
 
     }
 }
