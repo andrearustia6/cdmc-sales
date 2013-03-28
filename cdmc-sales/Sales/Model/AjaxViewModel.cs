@@ -134,6 +134,9 @@ namespace Model
         [Display(Name = "项目编号")]
         public string ProjectCode { get; set; }
 
+        [Display(Name = "出单号")]
+        public string DealCode { get; set; }
+
         public int? ProjectID { get; set; }
 
         [Display(Name = "客户签单人")]
