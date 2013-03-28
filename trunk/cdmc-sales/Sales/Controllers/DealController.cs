@@ -23,16 +23,16 @@ namespace Sales.Controllers
             CH.DB.Dispose();
             base.Dispose(disposing);
         }
-        public ViewResult IndexEdit(List<int> selectedprojects,string selecttype)
+        public ViewResult IndexEdit(List<int> selectedprojects, string selecttype)
         {
             ViewBag.SelectedProjects = selectedprojects;
             selectedprojects = this.TryGetSelectedProjectIDs(selectedprojects);
-            ViewBag.Right =  EditRight.DealsEdit.ToString();
+            ViewBag.Right = EditRight.DealsEdit.ToString();
             ViewBag.SelectType = selecttype;
             return View("index");
         }
 
-        public ViewResult IndexReview(List<int> selectedprojects,string selecttype)
+        public ViewResult IndexReview(List<int> selectedprojects, string selecttype)
         {
             ViewBag.SelectedProjects = selectedprojects;
             selectedprojects = this.TryGetSelectedProjectIDs(selectedprojects);
@@ -40,32 +40,32 @@ namespace Sales.Controllers
             ViewBag.SelectType = selecttype;
             return View("index");
         }
-          [GridAction]
+        [GridAction]
         public ActionResult _ParticipantsInDeal(int? dealid)
         {
             if (dealid != null)
             {
                 var ps = from p in CH.DB.Participants
                          where p.DealID == dealid
-                               select new AjaxViewParticipant
-                               {
-                                   ID = p.ID,
-                                   Contact = p.Contact,
-                                   Name = p.Name,
-                                   DealID = p.ID,
-                                   Email = p.Email,
-                                   Gender = p.Gender,
-                                   Mobile = p.Mobile,
-                                   ProjectCode = p.Project.ProjectCode,
-                                   ParticipantTypeNameCH = p.ParticipantType.Name_CH,
-                                   ParticipantTypeNameEN = p.ParticipantType.Name_EN,
-                                   ProjectID = p.ProjectID
-                               };
+                         select new AjaxViewParticipant
+                         {
+                             ID = p.ID,
+                             Contact = p.Contact,
+                             Name = p.Name,
+                             DealID = p.ID,
+                             Email = p.Email,
+                             Gender = p.Gender,
+                             Mobile = p.Mobile,
+                             ProjectCode = p.Project.ProjectCode,
+                             ParticipantTypeNameCH = p.ParticipantType.Name_CH,
+                             ParticipantTypeNameEN = p.ParticipantType.Name_EN,
+                             ProjectID = p.ProjectID
+                         };
                 return View(new GridModel<AjaxViewParticipant> { Data = ps.ToList() });
             }
-            return View(new GridModel<AjaxViewParticipant> {  });
+            return View(new GridModel<AjaxViewParticipant> { });
         }
-         [GridAction]
+        [GridAction]
         public ActionResult _Index(string sp)
         {
             var selectedprojects = Utl.Utl.ConvertStringToSelectProjectID(sp);
@@ -76,6 +76,7 @@ namespace Sales.Controllers
                      {
                          CompanyNameEN = d.CompanyRelationship.Company.Name_EN,
                          CompanyNameCH = d.CompanyRelationship.Company.Name_CH,
+                         DealCode = d.DealCode,
                          Abandoned = d.Abandoned,
                          AbandonReason = d.AbandonReason,
                          ActualPaymentDate = d.ActualPaymentDate,
