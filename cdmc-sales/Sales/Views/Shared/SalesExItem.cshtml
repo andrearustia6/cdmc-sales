@@ -1,0 +1,17 @@
+﻿<fieldset class="fieldblock">
+<legend>公司</legend>
+<span class="fieldname"><font>  名称:</font><#= CompanyName #> <font>  直线:</font><#= CompanyContact #><font>  传真:</font><#= CompanyFax #> <font>  区号:</font><#= CompanyDistrictNumberString #> <font>  成熟度:</font><#= Progressstring #>
+</span>
+</fieldset class="fieldblock">
+<fieldset>
+<legend>Lead</legend>
+
+<span>名称:<#= LeadName #> 直线:<#= LeadContact #>传真:<#= LeadFax #> 客户区号:<#= CompanyDistrictNumberString #> Lead传真:<#= LeadTitle #></span>
+
+<#= AjaxCalls[0].Caller #>
+</fieldset>
+
+<style>
+.fieldblock{ width:46%; float:left; display:inline-block;}    
+.fieldname font{ font-size:11px;  color:Green;  margin-left:5px;}
+</style>

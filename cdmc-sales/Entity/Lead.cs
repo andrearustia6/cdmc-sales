@@ -133,6 +133,10 @@ namespace Entity
     [JsonIgnoreAttribute("ModifiedTime","Company","Image")]
     public class Lead :NameEntity
     {
+        public virtual DistrictNumber DistrictNumber { get; set; }
+        [Display(Name = "区号/时差")]
+        public int? DistrictNumberID { get; set; }
+
         public virtual SubCompany SubCompany { get; set; }
         [Display(Name="所在分公司")]
         public int? SubCompanyID { get; set; }

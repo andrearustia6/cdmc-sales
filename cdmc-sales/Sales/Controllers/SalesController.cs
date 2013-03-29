@@ -18,6 +18,8 @@ namespace Sales.Controllers
     [SalesRequired]
     public class SalesController : Controller
     {
+
+
         protected override void Dispose(bool disposing)
         {
             CH.DB.Dispose();
