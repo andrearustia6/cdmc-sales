@@ -449,7 +449,7 @@ namespace MvcGlobalAuthorize.Controllers
                 if (role.Level == 500)
                 {
                     var mems = CH.GetAllData<Member>(m => m.Project.Manager == Employee.CurrentUserName).Select(s => s.Name).Distinct();
-                    list = list.FindAll(f => mems.Contains(f.UserName));
+                    list = list.FindAll(f => mems.Contains(f.UserName) || f.UserName== Employee.CurrentUserName );
                 }
             }
            

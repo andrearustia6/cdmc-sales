@@ -1,0 +1,59 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+
+@using Model
+
+@(Html.Telerik().Grid<AjaxCRM>().Name("companyGrid")
+
+    .Columns(c =>
+    {
+        c.Bound(item => item.CompanyID);
+        c.Bound(item => item.CompanyName);
+        c.Bound(item => item.CompanyContact);
+        c.Bound(item => item.CompanyFax);
+        c.Bound(item => item.CompanyDistrictNumberString);
+        c.Bound(item => item.Progressstring);
+
+        c.Bound(item => item.LeadID);
+        c.Bound(item => item.LeadName);
+        c.Bound(item => item.LeadContact);
+        c.Bound(item => item.LeadDistinctNumberString);
+        c.Bound(item => item.LeadEmail);
+        c.Bound(item => item.LeadMobile);
+        c.Bound(item => item.LeadFax);
+        c.Bound(item => item.LeadTitle);
+
+        c.Bound(item => item.AjaxCalls);
+    })
+   
+    .ClientRowTemplate(grid => 
+        Html.Partial("SalesExItem").ToHtmlString()
+       //"<table >"+
+       // "<tr><td>公司:<#= CompanyName #></td><td>公司直线:<#= CompanyContact #></td><td>传真:<#= CompanyFax #></td><td>公司区号:<#= CompanyDistrictNumberString #></td><td>成熟度:<#= Progressstring #></td></tr>" +
+       //     "<tr><td>Lead:<#= LeadName #></td><td>Lead直线:<#= LeadContact #></td><td>Lead传真:<#= LeadFax #></td><td>客户区号:<#= CompanyDistrictNumberString #></td><td>Lead传真:<#= LeadTitle #></td></tr>" +
+       // "</table>"
+        )
+         .DetailView(details => details.ClientTemplate(
+                Html.Telerik().Grid<AjaxCall>()
+                                     .Name("Leads_<#= LeadID #>")
+                                    .Columns(columns =>
+                                    {
+                                        columns.Bound(o => o.CallType).Width(100);
+                                        columns.Bound(o => o.CallBackDate).Width(100);
+                                        columns.Bound(o => o.CallDate).Width(100);
+                                        columns.Bound(o => o.Caller).Width(100);
+                                        columns.Bound(o => o.Result);
+                                    })
+                                  
+                                    .Pageable()
+                                    .Sortable()
+                                        .Filterable().ToHtmlString()
+                ))
+    .DataBinding(dataBinding => dataBinding.Ajax().Select("_Index", "SalesEx"))
+        .Filterable(f => f.Enabled(false)).Pageable(paging => paging.Style(GridPagerStyles.Status).PageOnScroll(true).PageSize(50))
+            .Selectable().Scrollable(scrolling => scrolling.Height(450)
+            )
+       )
+
+       
