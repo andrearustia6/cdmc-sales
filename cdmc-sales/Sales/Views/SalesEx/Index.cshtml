@@ -8,52 +8,58 @@
 
     .Columns(c =>
     {
-        c.Bound(item => item.CompanyID);
-        c.Bound(item => item.CompanyName);
-        c.Bound(item => item.CompanyContact);
-        c.Bound(item => item.CompanyFax);
-        c.Bound(item => item.CompanyDistrictNumberString);
-        c.Bound(item => item.Progressstring);
+        c.Bound(item => item.CompanyID).Visible(false);
+        c.Bound(item => item.CompanyName).Visible(false);
+        c.Bound(item => item.CompanyContact).Visible(false);
+        c.Bound(item => item.CompanyFax).Visible(false);
+        c.Bound(item => item.CompanyDistrictNumberString).Visible(false);
+        c.Bound(item => item.Progressstring).Visible(false);
 
-        c.Bound(item => item.LeadID);
-        c.Bound(item => item.LeadName);
-        c.Bound(item => item.LeadContact);
-        c.Bound(item => item.LeadDistinctNumberString);
-        c.Bound(item => item.LeadEmail);
-        c.Bound(item => item.LeadMobile);
-        c.Bound(item => item.LeadFax);
-        c.Bound(item => item.LeadTitle);
+        c.Bound(item => item.LeadID).Visible(false);
+        c.Bound(item => item.LeadName).Visible(false);
+        c.Bound(item => item.LeadContact).Visible(false);
+        c.Bound(item => item.LeadDistinctNumberString).Visible(false);
+        c.Bound(item => item.LeadEmail).Visible(false);
+        c.Bound(item => item.LeadMobile).Visible(false);
+        c.Bound(item => item.LeadFax).Visible(false);
+        c.Bound(item => item.LeadTitle).Visible(false);
 
-        c.Bound(item => item.AjaxCalls);
+        //c.Bound(item => item.AjaxCalls);
     })
-   
-    .ClientRowTemplate(grid => 
-        Html.Partial("SalesExItem").ToHtmlString()
-       //"<table >"+
-       // "<tr><td>公司:<#= CompanyName #></td><td>公司直线:<#= CompanyContact #></td><td>传真:<#= CompanyFax #></td><td>公司区号:<#= CompanyDistrictNumberString #></td><td>成熟度:<#= Progressstring #></td></tr>" +
-       //     "<tr><td>Lead:<#= LeadName #></td><td>Lead直线:<#= LeadContact #></td><td>Lead传真:<#= LeadFax #></td><td>客户区号:<#= CompanyDistrictNumberString #></td><td>Lead传真:<#= LeadTitle #></td></tr>" +
-       // "</table>"
+        .ClientEvents(events => events.OnRowDataBound("onRowDataBound"))
+    .ClientRowTemplate(grid =>
+            Html.Partial("SalesExItem").ToHtmlString()
         )
          .DetailView(details => details.ClientTemplate(
                 Html.Telerik().Grid<AjaxCall>()
-                                     .Name("Leads_<#= LeadID #>")
+                                     .Name("calls_<#= LeadID #>")
                                     .Columns(columns =>
                                     {
-                                        columns.Bound(o => o.CallType).Width(100);
+                                        columns.Bound(o => o.CallType).Width(80);
                                         columns.Bound(o => o.CallBackDate).Width(100);
                                         columns.Bound(o => o.CallDate).Width(100);
-                                        columns.Bound(o => o.Caller).Width(100);
+                                        columns.Bound(o => o.Caller).Width(80);
                                         columns.Bound(o => o.Result);
                                     })
-                                  
-                                    .Pageable()
-                                    .Sortable()
+                                        .DataBinding(dataBinding => dataBinding.Ajax().Select("_CallIndex", "SalesEx", new { leadid = "<#=LeadID #>" }))
+                                                .Pageable(paging => paging.Enabled(false)).Resizable(resizing => resizing.Columns(true))
+                                        .Sortable().Scrollable(scrolling => scrolling.Enabled(false))
                                         .Filterable().ToHtmlString()
                 ))
     .DataBinding(dataBinding => dataBinding.Ajax().Select("_Index", "SalesEx"))
-        .Filterable(f => f.Enabled(false)).Pageable(paging => paging.Style(GridPagerStyles.Status).PageOnScroll(true).PageSize(50))
-            .Selectable().Scrollable(scrolling => scrolling.Height(450)
+        .Pageable(paging => paging.Style(GridPagerStyles.Status).PageOnScroll(true).PageSize(10))
+           .Scrollable(scrolling => scrolling.Height(450)
             )
        )
 
-       
+<script type="text/javascript">
+
+    function expandRow(grid, row) {
+            grid.expandRow(row);
+    }
+
+    function onRowDataBound(e) {
+        var grid = $(this).data('tGrid');
+        expandRow(grid, e.row);
+    }
+</script>

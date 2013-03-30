@@ -39,7 +39,7 @@
                 }).DataBinding(dataBinding => dataBinding.Ajax().Select("_ContectedLeads", "Sales", new { projectid = ViewBag.ProjectID, filterId = ViewBag.FilterID, leadCallTypeId = ViewBag.LeadCallTypeId, startdate = ViewBag.StartDate, enddate = ViewBag.EndDate }))
                                             .Resizable(resizing => resizing.Columns(true))
                                             .Filterable().Sortable().Groupable()
-                                            .Pageable(paging => paging.Style(GridPagerStyles.Status).PageOnScroll(true).PageSize(10))
+                                            .Pageable(paging => paging.Style(GridPagerStyles.Status).PageOnScroll(true).PageSize(5))
 .Scrollable(scrolling => scrolling.Height(350)))
 @{ Html.Telerik().ScriptRegistrar().OnDocumentReady(@<text> onCallListDataBound();
     </text>);
