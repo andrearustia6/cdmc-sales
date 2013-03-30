@@ -1,17 +1,82 @@
-﻿<fieldset class="fieldblock">
-<legend>公司</legend>
-<span class="fieldname"><font>  名称:</font><#= CompanyName #> <font>  直线:</font><#= CompanyContact #><font>  传真:</font><#= CompanyFax #> <font>  区号:</font><#= CompanyDistrictNumberString #> <font>  成熟度:</font><#= Progressstring #>
-</span>
-</fieldset class="fieldblock">
-<fieldset>
-<legend>Lead</legend>
+﻿<fieldset >
+    <legend><#= LeadName #>（<#= LeadTitle #>）</legend>
+    <dl class="fieldblock">
+        <dt style="font-size:13px;">公司信息:</dt>
+        <dd class="fieldname">
+            <div>
+                <font>中文名：</font><#= CompanyNameCH #></div>
+            <div>
+                <font>英文名：</font><#= CompanyNameEN #></div>
+            <div>
+                <font>直线：</font><#= CompanyContact #></div>
+            <div>
+                <font>传真：</font><#= CompanyFax #></div>
+            <div>
+                <font>区号：</font><#= CompanyDistrictNumberString #></div>
+            <div>
+                <font>成熟度：</font><#= Progressstring #>
+            </div>
+            <div>
+                <font>细分行业：</font><#= CompanyCategoryStrings #>
+            </div>
+        </dd>
 
-<span>名称:<#= LeadName #> 直线:<#= LeadContact #>传真:<#= LeadFax #> 客户区号:<#= CompanyDistrictNumberString #> Lead传真:<#= LeadTitle #></span>
-
-<#= AjaxCalls[0].Caller #>
+        <dt style="font-size:13px;">个人信息</dt>
+        <dd class="fieldname">
+            <div>
+                <font>中文名：</font><#= LeadNameCH #>
+            </div>
+            <div>
+                <font>英文名：</font><#= LeadNameEN #>
+            </div>
+            <div>
+                <font>直线：</font><#= LeadContact #>
+            </div>
+            <div>
+                <font>手机：</font><#= LeadMobile #>
+            </div>
+            <div>
+                <font>传真：</font><#= LeadFax #>
+            </div>
+            <div>
+                <font>客户区号：</font><#= CompanyDistrictNumberString #>
+            </div>
+            <div>
+                <font>Lead职位：</font><#= LeadTitle #>
+            </div>
+            <div>
+                <font>Lead传真：</font><#= LeadFax #>
+            </div>
+        </dd>
+         <dt style="font-size:13px;">描述</dt>
+        <dd class="fieldname">
+         <div>
+                <font><#= Status #></font>
+            </div>
+        </dd>
+    </dl>
 </fieldset>
-
 <style>
-.fieldblock{ width:46%; float:left; display:inline-block;}    
-.fieldname font{ font-size:11px;  color:Green;  margin-left:5px;}
+    .fieldblock
+    {
+    
+    }
+    .fieldname div
+    {
+        padding: 2px;
+        min-width: 100px;
+        background-color: #FFDEAD;
+        border-bottom-color: #FF8C00;
+        border: 1px solid #CCC;
+        display: inline-block;
+      
+      
+        margin-left: 8px;
+        margin-bottom: 8px;
+    }
+    .fieldname div font
+    {
+        font-size: 12px;
+        color: Green;
+    }
 </style>
