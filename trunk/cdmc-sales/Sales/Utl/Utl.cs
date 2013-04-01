@@ -575,8 +575,9 @@ namespace Utl
         {
             if (month == null) month = DateTime.Now.Month;
 
-            startdate = DateTime.Now.StartOfMonth();
-            enddate = DateTime.Now.EndOfMonth();
+            var selectedmonth = new DateTime(DateTime.Now.Year, month.Value, 1);
+            startdate = selectedmonth.StartOfMonth();
+            enddate = selectedmonth.EndOfMonth();
 
             //如果是周末。往后加1天 循环到周1为止
             while (startdate.DayOfWeek == DayOfWeek.Saturday || startdate.DayOfWeek == DayOfWeek.Sunday)
