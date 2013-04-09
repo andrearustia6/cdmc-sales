@@ -6,6 +6,7 @@ using Utl;
 using System.Collections.Generic;
 using Entity;
 using System.Reflection;
+using System.ComponentModel.DataAnnotations;
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
 public sealed class AllowAnonymousAttribute : Attribute { }
 
@@ -46,6 +47,7 @@ public enum AccessType
 {
     Equal, Upper, Lower, Multiple
 }
+
 
 
 

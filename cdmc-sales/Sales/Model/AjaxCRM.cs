@@ -8,15 +8,29 @@ using Utl;
 
 namespace Model
 {
+    public class AjaxCrmTypedList
+    {
+        public IQueryable<AjaxCRM> AllCRMs { get; set; }
+        public IQueryable<AjaxGroupedCRM> CustomCrmGroups { get; set; }
+    }
+
+    public class AjaxGroupedCRM
+    {
+        public string UserName { get; set; }
+        public string DisplayName { get; set; }
+        public IQueryable<AjaxCRM> GroupedCRMs { get; set; }
+    }
+
     public class AjaxCRM
     {
         #region projecy
         public string ProjectName { get; set; }
         public int? ProjectID { get; set; }
         #endregion
+
         #region crm
         public Progress Progress { private get; set; }
-        public string Progressstring
+        public string ProgressString
         {
             get
             {
@@ -56,28 +70,79 @@ namespace Model
         public DistrictNumber CompanyDistinct { set; private get; }
         #endregion
 
+        // public string Status
+        //{
+        //    get
+        //    {
+        //        var status = string.Empty;
+        //        var contactedlead = AjaxLeads.Where(w=>w.AjaxCalls.)
+        //    }
+        public string DisplayText
+        {
+            get
+            {
+                List<string> v = new List<string>();
+                v.Add(CompanyName);
+                if(!string.IsNullOrEmpty(ProgressString))
+                {
+                    v.Add(ProgressString);
+                };
+                var nocontactleadcount =  AjaxLeads.Count(c => c.AjaxCalls.Count() == 0);
+                if (nocontactleadcount > 0)
+                {
+                    v.Add(nocontactleadcount.ToString() + "Leads未打");
+                }
+                return string.Join(",", v);
+            }
+        }
+        public IEnumerable<AjaxLead> AjaxLeads { get; set; }
+    }
+
+    public class AjaxLead
+    {
         #region lead
-        public string HasBlowed {get;set;}
-        public string LeadName { get {return Utl.Utl.GetFullName(LeadNameCH,LeadNameEN);} }
+        public string HasBlowed { get; set; }
+        public string LeadName { get { return Utl.Utl.GetFullName(LeadNameCH, LeadNameEN); } }
         public string LeadNameCH { get; set; }
         public string LeadNameEN { get; set; }
         public string LeadFax { get; set; }
+        public int CRMID { get; set; }
         public int LeadID { get; set; }
         public string LeadTitle { get; set; }
         public DateTime? LeadCreateDate { get; set; }
-        public int CallsCount { get; set;}
+        public int CallsCount { get; set; }
+        public string DisplayText
+        {
+            get
+            {
+                var lastcall = "未打";
+                if (AjaxCalls != null && AjaxCalls.Count() > 0)
+                {
+                    lastcall = AjaxCalls.OrderByDescending(o => o.CallDate).FirstOrDefault().CallType;
+                }
+
+                List<string> v = new List<string> { LeadName };
+                if(!string.IsNullOrEmpty(LeadTitle))
+                {
+                   v.Add(LeadTitle);
+                }
+                v.Add(lastcall);
+                return string.Join(",", v);
+            }
+        }
         public string Status
         {
             get
             {
-                var status = " 公司共有" + LeadsCount + "人";
-                var calltimes = Calls.Where(w => w.LeadID == LeadID);
-                
-                if (calltimes.Count() > 0)
+             
+                 string status = string.Empty;
+                var ajaxcallcount = AjaxCalls.Count();
+                if (ajaxcallcount > 0)
                 {
-                    status += ", 此人已打" + calltimes.Count() + "次";
-                    status += "，最后通话状态为" + Calls.LastOrDefault().LeadCallType.Name;
-                    var haspitch = calltimes.Where(w=>w.LeadCallType.Code>30);
+                    status += "此人已打" + ajaxcallcount + "次";
+                    var lastcall = AjaxCalls.OrderByDescending(o=>o.CallDate).FirstOrDefault();
+                    status += "，最后通话状态为" + lastcall.CallType;
+                    var haspitch = AjaxCalls.Where(w => w.LeadCallTypeCode > 30);
                     if (haspitch.Count() > 0)
                     {
                         status += ", 此客户已经Pitched过了";
@@ -92,38 +157,14 @@ namespace Model
                     status += "此客户尚未联系";
                 }
 
-                var otherpitchced = Calls.Where(w => w.LeadID != LeadID && w.LeadCallType.Code > 30);
-
-                if (otherpitchced.Count() > 0 && LeadsCount > 1)
-                {
-                    var pitchedleads = otherpitchced.Select(s => s.Lead.Name).Distinct();
-                    var pitchedleadsname = string.Join(",", pitchedleads);
-
-                    status += ", 此外，此公司的客户" + pitchedleadsname + "也Pitched过了";
-
-                    string allleads = string.Join(",",CH.DB.Leads.Where(w=>w.CompanyID==CompanyID).ToList().Select(s=>s.Name).Distinct() );
-                    foreach (var pl in pitchedleads)
-                    {
-                        allleads = allleads.Replace(pl, "");
-                    }
-                    allleads = allleads.Replace(LeadName, "");
-                    allleads = allleads.Replace(",,", ",");//没有pitched过的
-
-                    var checklast = allleads.Replace(",", "");
-                    if (!string.IsNullOrEmpty(checklast))
-                    {
-
-                        var cleannopitchedlead = string.Join(",", allleads.Split(new string[]{","}, StringSplitOptions.RemoveEmptyEntries));
-
-                        status += "，但是，还没有Pitched过的Lead有" + cleannopitchedlead;
-                    }
-                }
+           
+            
                 return status;
             }
         }
-        
-        public List<LeadCall> Calls { private get;set; }
-       
+
+
+
         public string LeadDistinctNumberString
         {
             get
@@ -134,17 +175,22 @@ namespace Model
         public DistrictNumber LeadDistinct { set; private get; }
         public string LeadContact { get; set; }
         public string LeadMobile { get; set; }
-        public string LeadEmail {get;set;}
-        #endregion
+        public string LeadEmail { get; set; }
 
         #region calls
         //public int AjaxCallsCount { get{return AjaxCalls.Count();}}
         public IEnumerable<AjaxCall> AjaxCalls { get; set; }
+
+
+        #endregion
+
         #endregion
     }
 
     public class AjaxCall 
     {
+       
+        public int LeadCallTypeCode { get; set; }
         public int LeadCallID { get; set; }
         public int LeadID { get; set; }
         public int CompanyID { get; set; }

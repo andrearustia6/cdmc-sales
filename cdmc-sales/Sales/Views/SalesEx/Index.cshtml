@@ -1,59 +1,178 @@
 ﻿@{
     ViewBag.Title = "Index";
 }
-
+@using Entity
 @using Model
+@model AjaxCrmTypedList
 
-@(Html.Telerik().Grid<AjaxCRM>().Name("companyGrid")
 
-    .Columns(c =>
+@(Html.Telerik().Splitter().Name("sp1").HtmlAttributes(new { style = "min-height: 800px;" })
+              .Orientation(SplitterOrientation.Horizontal).Panes(panes =>
+              {
+                  panes.Add().Size("20%").Content(@<text>@GetCRMS()</text>);
+                  panes.Add().Content(@<text>@GetCompanyDetails()</text>);
+              }))
+@helper GetCRMS()
+{
+    
+<div>
+<button id="addgroup-open-button" >添加分组</button>
+@(Html.Telerik().Window()
+        .Name("Window")
+        .Title("添加分组")
+        .Content(@<text>
+          @Html.Partial("createwindow", new UserFavorsCrmGroup())
+            </text>)
+        .Width(400)
+        .Draggable(true)
+        .Modal(true)
+        .Visible(false)
+)
+
+<div>
+
+   @(Html.Telerik().TreeView().ShowCheckBox(true).Name("customView").ExpandAll(true)
+        .ClientEvents(e=>e.OnSelect("onIndexSelect"))
+               .BindTo(Model.CustomCrmGroups, mappings =>
+        {
+            mappings.For<AjaxGroupedCRM>(binding => binding
+                    .ItemDataBound((item, ajaxCRM) =>
+                    {
+                        item.Text = ajaxCRM.DisplayName;
+                        item.Value = "$";
+                    })
+                    .Children(group => group.GroupedCRMs));
+            
+            mappings.For<AjaxCRM>(binding => binding
+                    .ItemDataBound((item, ajaxCRM) =>
+                    {
+                        item.Text = ajaxCRM.DisplayText;
+                        item.Value = ajaxCRM.CRMID.ToString();
+                    })
+                    .Children(company => company.AjaxLeads));
+
+            mappings.For<AjaxLead>(binding => binding
+                    .ItemDataBound((item, Lead) =>
+                    {
+                        item.Text = Lead.DisplayText;
+                        item.Value = Lead.CRMID.ToString()+","+ Lead.LeadID.ToString();
+                    }));
+        })
+)
+
+</div>
+<div>
+    @(Html.Telerik().TreeView().ShowCheckBox(true)
+                .Name("navigationView").ExpandAll(true)
+        .ClientEvents(e=>e.OnSelect("onIndexSelect"))
+                .BindTo(Model.AllCRMs, mappings =>
+        {
+            mappings.For<AjaxCRM>(binding => binding
+                    .ItemDataBound((item, ajaxCRM) =>
+                    {
+                        item.Text = ajaxCRM.DisplayText;
+                        item.Value = ajaxCRM.CRMID.ToString();
+                    })
+                    .Children(company => company.AjaxLeads));
+
+            mappings.For<AjaxLead>(binding => binding
+                    .ItemDataBound((item, Lead) =>
+                    {
+                        item.Text = Lead.DisplayText;
+                        item.Value = Lead.CRMID.ToString()+","+ Lead.LeadID.ToString();
+                    }));
+        })
+) 
+</div>
+</div>
+ 
+}
+@helper GetCompanyDetails()
+{
+    <div id="crmdetailscontainer">
+    @if (Model.AllCRMs.FirstOrDefault() != null)
     {
-        c.Bound(item => item.CompanyID).Visible(false);
-        c.Bound(item => item.CompanyName).Visible(false);
-        c.Bound(item => item.CompanyContact).Visible(false);
-        c.Bound(item => item.CompanyFax).Visible(false);
-        c.Bound(item => item.CompanyDistrictNumberString).Visible(false);
-        c.Bound(item => item.Progressstring).Visible(false);
+       @Html.Partial("salesexitem",Model.AllCRMs.FirstOrDefault())
+    }
+    </div>
+}
 
-        c.Bound(item => item.LeadID).Visible(false);
-        c.Bound(item => item.LeadName).Visible(false);
-        c.Bound(item => item.LeadContact).Visible(false);
-        c.Bound(item => item.LeadDistinctNumberString).Visible(false);
-        c.Bound(item => item.LeadEmail).Visible(false);
-        c.Bound(item => item.LeadMobile).Visible(false);
-        c.Bound(item => item.LeadFax).Visible(false);
-        c.Bound(item => item.LeadTitle).Visible(false);
-
-        //c.Bound(item => item.AjaxCalls);
-    })
-        .ClientEvents(events => events.OnRowDataBound("onRowDataBound"))
-    .ClientRowTemplate(grid =>
-            Html.Partial("SalesExItem").ToHtmlString()
-        )
-         .DetailView(details => details.ClientTemplate(
-                Html.Telerik().Grid<AjaxCall>()
-                                     .Name("calls_<#= LeadID #>")
-                                    .Columns(columns =>
-                                    {
-                                        columns.Bound(o => o.CallType).Width(80);
-                                        columns.Bound(o => o.CallBackDate).Width(100);
-                                        columns.Bound(o => o.CallDate).Width(100);
-                                        columns.Bound(o => o.Caller).Width(80);
-                                        columns.Bound(o => o.Result);
-                                    })
-                                        .DataBinding(dataBinding => dataBinding.Ajax().Select("_CallIndex", "SalesEx", new { leadid = "<#=LeadID #>" }))
-                                                .Pageable(paging => paging.Enabled(false)).Resizable(resizing => resizing.Columns(true))
-                                        .Sortable().Scrollable(scrolling => scrolling.Enabled(false))
-                                        .Filterable().ToHtmlString()
-                ))
-    .DataBinding(dataBinding => dataBinding.Ajax().Select("_Index", "SalesEx"))
-        .Pageable(paging => paging.Style(GridPagerStyles.Status).PageOnScroll(true).PageSize(10))
-           .Scrollable(scrolling => scrolling.Height(450)
-            )
-       )
+ <ul id="contextmenu" class="jeegoocontext cm_default">
+        <li id="regroup">
+            <span class=""></span>
+            移动可打公司至
+            <ul>
+                <li >
+                    <span class="icon file"></span>
+                    file1.txt
+                </li>
+                <li class="icon">
+                    <span class="icon file"></span>
+                    file2.txt
+                </li>
+                <li>file3.unknown</li>
+            </ul>
+        </li>
+        <li class="separator"></li>
+        <li class="icon">
+            <span class="icon drive"></span>
+            已经Blowed，释放回公司池
+        </li>
+    </ul>    
 
 <script type="text/javascript">
 
+    $(document).ready(function () {
+
+        //生成关联菜单子菜单
+        var ul = $("#regroup").append("<ul></ul>").find("ul");
+        var customli = $('#customView ul li');
+        for (var i = 0; i < customli.Length; i++) { 
+          
+        }
+
+
+
+
+        //取消checkbox
+        var companys = $('#navigationView  .t-treeview-lines li ul');
+        companys.find('.t-checkbox').remove();
+
+        //添加分组
+        $('#addgroup-open-button')
+                .click(function (e) {
+                    e.preventDefault();
+                    $('#Window').data('tWindow').center().open();
+                });
+
+
+
+        $('.t-item').jeegoocontext('contextmenu', {
+            widthOverflowOffset: 0,
+            heightOverflowOffset: 3,
+            submenuLeftOffset: -4,
+            submenuTopOffset: -5
+        });
+
+
+    });
+
+    //获取主树
+    function nv() {
+        return $('#navigationView').data('tTreeView');
+    }
+
+    //公司选择 
+    function onIndexSelect(e) {
+        var indexs = nv().getItemValue(e.item);
+        if (indexs != "$") {
+            $.post('JsonSelectedList', { indexs: indexs }, function (result) {
+                $('#crmdetailscontainer').html(result);
+            });
+        }
+    }
+
+    //展开所有leads
     function expandRow(grid, row) {
             grid.expandRow(row);
     }
@@ -62,4 +181,33 @@
         var grid = $(this).data('tGrid');
         expandRow(grid, e.row);
     }
+
 </script>
+
+
+<style>
+    .fieldblock
+    {
+    
+    }
+    .fieldname div
+    {
+        padding: 2px;
+        min-width: 100px;
+        background-color: #FFDEAD;
+        border-bottom-color: #FF8C00;
+        border: 1px solid #CCC;
+        display: inline-block;
+      
+      
+        margin-left: 8px;
+        margin-bottom: 8px;
+    }
+    .fieldname div font
+    {
+        font-size: 12px;
+        color: Green;
+    }
+</style>
+
+
