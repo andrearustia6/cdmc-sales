@@ -1,61 +1,107 @@
-﻿<fieldset >
-    <legend><#= LeadName #>（<#= LeadTitle #>）</legend>
-    <dl class="fieldblock">
+﻿@using Model
+@model AjaxCRM
+           
+@if (Model != null)
+{
+   Html.Telerik().Splitter().Name("sp2").HtmlAttributes(new { style = "min-height: 790px;" })
+              .Orientation(SplitterOrientation.Vertical).Panes(panes =>
+              {
+                  panes.Add().Size("20%").Content(@<text>@CompanyInfo()</text>);
+                  panes.Add().Content(@<text>@LeadsInfo()</text>);
+              }).Render();
+}
+@helper CompanyInfo()
+{
+    <fieldset class="fieldblock">
+    <legend>@Model.CompanyName</legend>
+    <dl >
         <dt style="font-size:13px;">公司信息:</dt>
         <dd class="fieldname">
             <div>
-                <font>中文名：</font><#= CompanyNameCH #></div>
+                <font>中文名：</font>@Model.CompanyNameCH</div>
             <div>
-                <font>英文名：</font><#= CompanyNameEN #></div>
+                <font>英文名：</font>@Model.CompanyNameEN</div>
             <div>
-                <font>直线：</font><#= CompanyContact #></div>
+                <font>直线：</font>@Model.CompanyContact</div>
             <div>
-                <font>传真：</font><#= CompanyFax #></div>
+                <font>传真：</font>@Model.CompanyFax</div>
             <div>
-                <font>区号：</font><#= CompanyDistrictNumberString #></div>
+                <font>区号：</font>@Model.CompanyDistrictNumberString</div>
             <div>
-                <font>成熟度：</font><#= Progressstring #>
-            </div>
+                <font>成熟度：</font>@Model.ProgressString</div>
             <div>
-                <font>细分行业：</font><#= CompanyCategoryStrings #>
+                <font>细分行业：</font>@Model.CompanyCategoryStrings
             </div>
         </dd>
+    </dl>
+      
+</fieldset>
+}
 
-        <dt style="font-size:13px;">个人信息</dt>
+@helper LeadsInfo()
+{
+   <dl>
+
+@foreach (var lead in Model.AjaxLeads)
+{
+    <fieldset style=" margin:20px;">
+ <legend>@lead.DisplayText</legend>
+
+      <dt style="font-size:13px;">个人信息</dt>
         <dd class="fieldname">
             <div>
-                <font>中文名：</font><#= LeadNameCH #>
+                <font>中文名：</font>@lead.LeadNameCH
             </div>
             <div>
-                <font>英文名：</font><#= LeadNameEN #>
+                <font>英文名：</font>@lead.LeadNameEN
             </div>
             <div>
-                <font>直线：</font><#= LeadContact #>
+                <font>直线：</font>@lead.LeadContact
             </div>
             <div>
-                <font>手机：</font><#= LeadMobile #>
+                <font>手机：</font>@lead.LeadMobile
             </div>
             <div>
-                <font>传真：</font><#= LeadFax #>
+                <font>传真：</font>@lead.LeadFax
             </div>
             <div>
-                <font>客户区号：</font><#= CompanyDistrictNumberString #>
+                <font>客户区号：</font>@lead.LeadDistinctNumberString
             </div>
             <div>
-                <font>Lead职位：</font><#= LeadTitle #>
+                <font>Lead职位：</font>@lead.LeadTitle
             </div>
             <div>
-                <font>Lead传真：</font><#= LeadFax #>
+                <font>Lead传真：</font>@lead.LeadFax
             </div>
         </dd>
          <dt style="font-size:13px;">描述</dt>
         <dd class="fieldname">
          <div>
                 <font><#= Status #></font>
-            </div>
+          </div>
         </dd>
-    </dl>
-</fieldset>
+  <dt style="font-size:13px;">致电列表</dt>
+  <dd>
+        @(Html.Telerik().Grid<AjaxCall>(lead.AjaxCalls).Name("lead" + lead.LeadID)
+                    .Columns(columns =>
+                    {
+                        columns.Bound(o => o.CallType).Width(80);
+                        columns.Bound(o => o.CallBackDate).Width(100);
+                        columns.Bound(o => o.CallDate).Width(100);
+                        columns.Bound(o => o.Caller).Width(80);
+                        columns.Bound(o => o.Result);
+                    })
+                    .Pageable(paging => paging.Enabled(false)).Resizable(resizing => resizing.Columns(true))
+                    .Sortable().Scrollable(scrolling => scrolling.Enabled(false))
+                    .Filterable()
+        )
+        </dd>
+         </fieldset>
+}
+
+</dl>
+}
+
 <style>
     .fieldblock
     {

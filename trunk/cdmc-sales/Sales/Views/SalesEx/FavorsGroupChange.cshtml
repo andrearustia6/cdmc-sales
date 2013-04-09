@@ -1,0 +1,22 @@
+﻿@using Entity
+@model UserFavorsCrmGroup
+           
+
+@using (Html.BeginForm("create", "favorsGroup", FormMethod.Post))
+{
+    <table width="100%">
+               <tr><td>自定义组名称:</td><td> @Html.TextBoxFor(m => m.DisplayName) </td></tr>
+               <tr><td>自定义排序:</td><td> @Html.TextBoxFor(m => m.Sequence) </td></tr>
+               <tr><td>自定义组描述:</td><td> @Html.TextAreaFor(m => m.Description)</td></tr>
+</table>
+
+    <div>
+        <center>
+            <input type="submit" value="保存" />
+      
+        </center>
+    </div>
+}
+
+
+

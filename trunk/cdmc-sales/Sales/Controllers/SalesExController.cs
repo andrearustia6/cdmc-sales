@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using Utl;
 using Model;
 using Telerik.Web.Mvc;
+using Entity;
 
 namespace Sales.Controllers
 {
@@ -15,57 +16,137 @@ namespace Sales.Controllers
         // GET: /SalesEx/
         public ActionResult Index()
         {
-            return View();
+            var d = new AjaxCrmTypedList();
+            d.AllCRMs = GetCrmDataQuery();
+            d.CustomCrmGroups = GetcustomCrmGroupDataQuery();
+            return View(d);
         }
 
-        [GridAction]
-        public ActionResult _Index()
+        private IQueryable<AjaxGroupedCRM> GetcustomCrmGroupDataQuery()
         {
             var user = Employee.CurrentUserName;
-            var query = from c in CH.DB.CompanyRelationships
-                        from com in CH.DB.Companys
-                        from l in CH.DB.Leads
-                        where c.CompanyID == com.ID && com.ID == l.CompanyID && c.Members.Select(s=>s.Name).Contains(user)
-                         select new AjaxCRM 
-                        {
-                            ProjectID = c.ProjectID.Value,
-                            LeadID =  l.ID,
-                            CompanyID = com.ID,
-                            CRMID = c.ID,
+            var data = from f in CH.DB.UserFavorsCrmGroups
+                       where f.UserName == user
+                       select new AjaxGroupedCRM()
+                       {
+                           UserName = f.UserName,
+                           DisplayName = f.DisplayName,
+                           GroupedCRMs = (from u in CH.DB.UserFavorsCRMs
+                                          from c in CH.DB.CompanyRelationships
+                                          from m in c.Members
+                                          where m.Name == user
+                                          && c.ID == u.CompanyRelationshipID.Value
+                                          && f.UserFavorsCRMs.Select(s=>s.ID).Contains(u.ID)
+                                          select new AjaxCRM
+                                          {
+                                              CompanyNameEN = c.Company.Name_EN,
+                                              CompanyNameCH = c.Company.Name_CH,
+                                              CompanyContact = c.Company.Contact,
+                                              Progress = c.Progress,
+                                              CompanyFax = c.Company.Fax,
+                                              CompanyCategories = c.Categorys,
+                                              CompanyDistinct = c.Company.DistrictNumber,
+                                              CompanyCreateDate = c.Company.CreatedDate,
+                                              CRMID = c.ID,
+                                              AjaxLeads = (from l in c.Company.Leads
+                                                           select new AjaxLead
+                                                           {
+                                                               LeadNameCH = l.Name_CH,
+                                                               LeadNameEN = l.Name_EN,
+                                                               LeadContact = l.Contact,
+                                                               LeadDistinct = l.DistrictNumber,
+                                                               LeadEmail = l.EMail,
+                                                               LeadMobile = l.Mobile,
+                                                               LeadTitle = l.Title,
+                                                               LeadFax = l.Fax,
+                                                               CRMID = c.ID,
+                                                               LeadID = l.ID,
+                                                               LeadCreateDate = l.CreatedDate,
+                                                               AjaxCalls = (from call in c.LeadCalls
+                                                                            select new AjaxCall
+                                                                            {
+                                                                                CallDate = call.CallDate,
+                                                                                CallBackDate = call.CallBackDate,
+                                                                                CallType = call.LeadCallType.Name,
+                                                                                Caller = call.Member.Name,
+                                                                                LeadCallTypeCode = call.LeadCallType.Code
 
-                            ProjectName = c.Project.Name_CH,
+                                                                            })
+                                                           })
 
-                            Progress = c.Progress,
-                            HasBlowed = c.HasBlowed,
-                            CrmCreateDate = c.CreatedDate,
-                            CompanyCategories = c.Categorys,
+                                          }
+                                          )
 
-                            CompanyNameCH = com.Name_CH,
-                            CompanyNameEN = com.Name_EN,
-                            CompanyContact = com.Contact,
-                            CompanyFax = com.Fax,
-                            CompanyDistinct = com.DistrictNumber,
-                            CompanyCreateDate = com.CreatedDate,
-                            LeadsCount = com.Leads.Count,
-                            //LeadsName = com.Leads.Select(s=>s.Name),
-
-                            LeadNameCH = l.Name_CH,
-                            LeadNameEN = l.Name_EN,
-                            LeadContact = l.Contact,
-                            LeadDistinct = l.DistrictNumber,
-                            LeadEmail = l.EMail,
-                            LeadMobile = l.Mobile,
-                            LeadTitle = l.Title,
-                            LeadFax = l.Fax,
-                            LeadCreateDate = l.CreatedDate,
-                            CallsCount = c.LeadCalls.Where(f => f.LeadID == l.ID).Count(),
-                            Calls= c.LeadCalls
-                        };
-           
-
-            return View(new GridModel<AjaxCRM> { Data = query.OrderByDescending(o => o.CrmCreateDate) });
+                       };
+            return data;
         }
 
+        IQueryable<AjaxCRM> GetCrmDataQuery()
+        {
+            var user = Employee.CurrentUserName;
+            var data = from c in CH.DB.CompanyRelationships
+                       from m in c.Members
+
+                       where m.Name == user && m.CompanyRelationships.Select(s => s.ID).Contains(c.ID)
+                       select new AjaxCRM
+                       {
+                           CompanyNameEN = c.Company.Name_EN,
+                           CompanyNameCH = c.Company.Name_CH,
+                           CompanyContact = c.Company.Contact,
+                           Progress = c.Progress,
+                           CompanyFax = c.Company.Fax,
+                           CompanyCategories = c.Categorys,
+                           CompanyDistinct = c.Company.DistrictNumber,
+                           CompanyCreateDate = c.Company.CreatedDate,
+                           CRMID = c.ID,
+                           AjaxLeads = (from l in c.Company.Leads
+                                        select new AjaxLead
+                                        {
+                                            LeadNameCH = l.Name_CH,
+                                            LeadNameEN = l.Name_EN,
+                                            LeadContact = l.Contact,
+                                            LeadDistinct = l.DistrictNumber,
+                                            LeadEmail = l.EMail,
+                                            LeadMobile = l.Mobile,
+                                            LeadTitle = l.Title,
+                                            LeadFax = l.Fax,
+                                            CRMID = c.ID,
+                                            LeadID = l.ID,
+                                            LeadCreateDate = l.CreatedDate,
+                                            AjaxCalls = (from call in c.LeadCalls
+                                                         select new AjaxCall
+                                                         {
+                                                             CallDate = call.CallDate,
+                                                             CallBackDate = call.CallBackDate,
+                                                             CallType = call.LeadCallType.Name,
+                                                             Caller = call.Member.Name,
+                                                             LeadCallTypeCode = call.LeadCallType.Code
+                                                              
+                                                         })
+                                        })
+
+                       };
+
+            return data;
+        }
+        public PartialViewResult JsonSelectedList(string indexs)
+        {
+            var ids = indexs.Split(new string[]{","}, StringSplitOptions.RemoveEmptyEntries);
+            var crmid = int.Parse(ids[0]);
+            var leadid = 0;
+            if (ids.Count() > 1)
+            {
+                leadid = int.Parse(ids[1]);
+            }
+            var data = GetCrmDataQuery().FirstOrDefault(f=>f.CRMID == crmid);
+
+            if (leadid != 0 && data!=null)
+            {
+                data.AjaxLeads = data.AjaxLeads.Where(w => w.LeadID == leadid);
+            }
+          
+            return PartialView(@"~\views\shared\salesexitem.cshtml", data);
+        }
 
         [GridAction]
         public ActionResult _CallIndex(int? leadid)

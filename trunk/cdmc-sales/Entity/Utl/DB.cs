@@ -55,6 +55,9 @@ namespace Utl
         public DbSet<Participant> Participants { get; set; }
         public DbSet<TargetOfMonthForMember> TargetOfMonthForMembers { get; set; }
 
+        public DbSet<UserFavorsCrmGroup> UserFavorsCrmGroups { get; set; }
+        public DbSet<UserFavorsCRM> UserFavorsCRMs { get; set; }
+
         public DB()
         {
           //Database.SetInitializer<DB>(new DBInitializer());
