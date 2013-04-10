@@ -16,6 +16,7 @@ namespace Model
 
     public class AjaxGroupedCRM
     {
+        public int ID { get; set; }
         public string UserName { get; set; }
         public string DisplayName { get; set; }
         public IQueryable<AjaxCRM> GroupedCRMs { get; set; }

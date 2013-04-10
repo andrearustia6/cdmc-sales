@@ -1,0 +1,33 @@
+﻿@using Entity
+@using Model
+@model IQueryable<AjaxGroupedCRM>
+
+
+ @(Html.Telerik().TreeView().Name("customView").ExpandAll(true)
+        .ClientEvents(e=>e.OnSelect("onIndexSelect"))
+               .BindTo(Model, mappings =>
+        {
+            mappings.For<AjaxGroupedCRM>(binding => binding
+                    .ItemDataBound((item, ajaxGroupedCRM) =>
+                    {
+                        item.Text = ajaxGroupedCRM.DisplayName + "分组";
+                        item.Value = ajaxGroupedCRM.ID.ToString();
+                    })
+                    .Children(group => group.GroupedCRMs));
+            
+            mappings.For<AjaxCRM>(binding => binding
+                    .ItemDataBound((item, ajaxCRM) =>
+                    {
+                        item.Text = ajaxCRM.DisplayText;
+                        item.Value = ajaxCRM.CRMID.ToString();
+                    })
+                    .Children(company => company.AjaxLeads));
+
+            mappings.For<AjaxLead>(binding => binding
+                    .ItemDataBound((item, Lead) =>
+                    {
+                        item.Text = Lead.DisplayText;
+                        item.Value = Lead.CRMID.ToString()+","+ Lead.LeadID.ToString();
+                    }));
+        })
+)

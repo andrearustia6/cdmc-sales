@@ -29,6 +29,7 @@ namespace Sales.Controllers
                        where f.UserName == user
                        select new AjaxGroupedCRM()
                        {
+                           ID= f.ID,
                            UserName = f.UserName,
                            DisplayName = f.DisplayName,
                            GroupedCRMs = (from u in CH.DB.UserFavorsCRMs
@@ -129,6 +130,12 @@ namespace Sales.Controllers
 
             return data;
         }
+
+        /// <summary>
+        /// 导航选中的公司或者lead
+        /// </summary>
+        /// <param name="indexs"></param>
+        /// <returns></returns>
         public PartialViewResult JsonSelectedList(string indexs)
         {
             var ids = indexs.Split(new string[]{","}, StringSplitOptions.RemoveEmptyEntries);
@@ -146,6 +153,24 @@ namespace Sales.Controllers
             }
           
             return PartialView(@"~\views\shared\salesexitem.cshtml", data);
+        }
+
+        /// <summary>
+        /// 把选中的公司分到指定的分组
+        /// </summary>
+        /// <param name="indexs"></param>
+        /// <returns></returns>
+        public PartialViewResult JsonCopyCrmToGroup(string crmid, string groupid)
+        {
+            var sourcecrmid = Int32.Parse(crmid);
+            var targetgroupid = Int32.Parse(groupid);
+
+            var target = CH.GetDataById<UserFavorsCrmGroup>(targetgroupid);
+            target.UserFavorsCRMs.Add(new UserFavorsCRM() { CompanyRelationshipID = sourcecrmid, UserFavorsCrmGroupID = targetgroupid });
+            CH.Edit<UserFavorsCrmGroup>(target);
+            var username = Employee.CurrentUserName;
+            var data = GetcustomCrmGroupDataQuery();
+            return PartialView(@"~\views\salesex\FavorsCRM.cshtml", data);
         }
 
         [GridAction]

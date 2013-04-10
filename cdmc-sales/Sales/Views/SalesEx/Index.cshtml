@@ -29,40 +29,13 @@
         .Visible(false)
 )
 
-<div>
-
-   @(Html.Telerik().TreeView().ShowCheckBox(true).Name("customView").ExpandAll(true)
-        .ClientEvents(e=>e.OnSelect("onIndexSelect"))
-               .BindTo(Model.CustomCrmGroups, mappings =>
-        {
-            mappings.For<AjaxGroupedCRM>(binding => binding
-                    .ItemDataBound((item, ajaxCRM) =>
-                    {
-                        item.Text = ajaxCRM.DisplayName;
-                        item.Value = "$";
-                    })
-                    .Children(group => group.GroupedCRMs));
-            
-            mappings.For<AjaxCRM>(binding => binding
-                    .ItemDataBound((item, ajaxCRM) =>
-                    {
-                        item.Text = ajaxCRM.DisplayText;
-                        item.Value = ajaxCRM.CRMID.ToString();
-                    })
-                    .Children(company => company.AjaxLeads));
-
-            mappings.For<AjaxLead>(binding => binding
-                    .ItemDataBound((item, Lead) =>
-                    {
-                        item.Text = Lead.DisplayText;
-                        item.Value = Lead.CRMID.ToString()+","+ Lead.LeadID.ToString();
-                    }));
-        })
-)
+<div id="crmdfavorsscontainer">
+   @Html.Partial("FavorsCRM", Model.CustomCrmGroups)
+  
 
 </div>
 <div>
-    @(Html.Telerik().TreeView().ShowCheckBox(true)
+    @(Html.Telerik().TreeView()
                 .Name("navigationView").ExpandAll(true)
         .ClientEvents(e=>e.OnSelect("onIndexSelect"))
                 .BindTo(Model.AllCRMs, mappings =>
@@ -96,21 +69,29 @@
     }
     </div>
 }
-
- <ul id="contextmenu" class="jeegoocontext cm_default">
-        <li id="regroup">
+ <ul id="favorscontextmenu" class="jeegoocontext cm_default">
+        <li class="regroup">
             <span class=""></span>
-            移动可打公司至
+            <p class= "regrouptext">移动可打公司至</p>
             <ul>
-                <li >
-                    <span class="icon file"></span>
-                    file1.txt
-                </li>
-                <li class="icon">
-                    <span class="icon file"></span>
-                    file2.txt
-                </li>
-                <li>file3.unknown</li>
+            </ul>
+        </li>
+         <li class="separator"></li>
+        <li class="icon">
+            <span class="icon drive"></span>
+            从组中移出
+        </li>
+        <li class="separator"></li>
+        <li class="icon">
+            <span class="icon drive"></span>
+            已经Blowed，释放回公司池
+        </li>
+    </ul>   
+ <ul id="contextmenu" class="jeegoocontext cm_default">
+        <li class="regroup">
+            <span class=""></span>
+            <p class= "regrouptext">移动可打公司至</p>
+            <ul>
             </ul>
         </li>
         <li class="separator"></li>
@@ -125,18 +106,17 @@
     $(document).ready(function () {
 
         //生成关联菜单子菜单
-        var ul = $("#regroup").append("<ul></ul>").find("ul");
-        var customli = $('#customView ul li');
-        for (var i = 0; i < customli.Length; i++) { 
-          
-        }
+        var ul = $("#regroup ul");
+        var customli = $('#customView >ul >li');
+        customli.each(function () {
+            var t = $(this).find('>div >span').text();
+            var v = $(this).find('>div >input').val();
+            ul.append('<li>' + t + '<input type="hidden" value=' + v + '></li>');
+        });
 
-
-
-
-        //取消checkbox
-        var companys = $('#navigationView  .t-treeview-lines li ul');
-        companys.find('.t-checkbox').remove();
+        //        //取消checkbox
+        //        var companys = $('#navigationView  .t-treeview-lines li ul');
+        //        companys.find('.t-checkbox').remove();
 
         //添加分组
         $('#addgroup-open-button')
@@ -145,17 +125,46 @@
                     $('#Window').data('tWindow').center().open();
                 });
 
-
-
-        $('.t-item').jeegoocontext('contextmenu', {
+      
+        $('#navigationView').find('>ul >li').jeegoocontext('contextmenu', {
             widthOverflowOffset: 0,
             heightOverflowOffset: 3,
             submenuLeftOffset: -4,
-            submenuTopOffset: -5
+            submenuTopOffset: -5,
+            onSelect: contextMenuSelected,
+            onShow: generateContextMenu,
         });
 
-
+         $('#customView').find('>ul >li >ul >li').jeegoocontext('favorscontextmenu', {
+            widthOverflowOffset: 0,
+            heightOverflowOffset: 3,
+            submenuLeftOffset: -4,
+            submenuTopOffset: -5,
+            onSelect: contextMenuSelected,
+            onShow: generateContextMenu,
+        });
     });
+
+    //生成动态子菜单
+    function generateContextMenu(e, context) {
+        //更新context菜单公司名
+        var crmtext = $(context).find('>div >span.t-in').text();
+        crmtext = crmtext.split(',')[0];
+        $(' .regrouptext').text("拷贝" + crmtext + "到");
+
+      
+    }
+
+    //子菜单选中
+    function contextMenuSelected(e, context) {
+                var crmid = $(context).find('>div >input').val();
+                var groupid = $(e.currentTarget).find('input').val();
+
+                $.post('JsonCopyCrmToGroup', { crmid: crmid, groupid: groupid }, function (result) {
+                    $('#crmdfavorsscontainer').html(result);
+                });
+               // alert(groupid);
+     }
 
     //获取主树
     function nv() {
@@ -164,8 +173,9 @@
 
     //公司选择 
     function onIndexSelect(e) {
+      
         var indexs = nv().getItemValue(e.item);
-        if (indexs != "$") {
+        if (indexs.indexOf("分组") > 0 ) {
             $.post('JsonSelectedList', { indexs: indexs }, function (result) {
                 $('#crmdetailscontainer').html(result);
             });
