@@ -44,6 +44,11 @@
     }
     </div>
 }
+<ul id="groupcontextmenu" class="jeegoocontext cm_default">
+  <li id="renamegroup"> <span class=""></span><p class= "regrouptext">重命名</p> </li>
+  <li id="deletegroup"> <span class=""></span><p class= "regrouptext">删除组</p> </li>
+</ul>
+
  <ul id="favorscontextmenu" class="jeegoocontext cm_default">
         <li class="regroup">
             <span class=""></span>
@@ -95,7 +100,6 @@
         customli.each(function () {
             var t = $(this).find('>div >span').text();
             var v = $(this).find('>div >input').val();
-            
             ul.append('<li class="grouptarget">' + t + '<input type="hidden" value=' + v + '></li>');
         });
 
@@ -116,6 +120,14 @@
             onShow: generateContextMenu
         });
 
+        $('#customView').find('>ul >li').jeegoocontext('groupcontextmenu', {
+            widthOverflowOffset: 0,
+            heightOverflowOffset: 3,
+            submenuLeftOffset: -4,
+            submenuTopOffset: -5,
+            onSelect: groupContextMenuSelected,
+        });
+        
         $('#customView').find('>ul >li >ul >li').jeegoocontext('favorscontextmenu', {
             widthOverflowOffset: 0,
             heightOverflowOffset: 3,
@@ -125,8 +137,6 @@
             onShow: generateContextMenu
         });
     }
-
-
 
     //生成动态子菜单
     function generateContextMenu(e, context) {
@@ -138,7 +148,19 @@
       
     }
 
-    //子菜单选中
+    //分组关联菜单选中
+    function groupContextMenuSelected(e, context) {
+       var groupid = $(context).find('input').val();
+       var targetid = $(e.currentTarget).attr('id');
+       if(targetid=='renamegroup')
+       {
+       }
+       if(targetid =='deletegroup')
+       {
+       }
+    }
+
+    //关联菜单选中
     function contextMenuSelected(e, context) {
         var $target = $(e.target);
         //copy到新分组
@@ -150,7 +172,7 @@
                 $('#crmdfavorsscontainer').html(result);
                 initial();
             });
-            // alert(groupid);
+           
         }
 
         //释放回公司池
