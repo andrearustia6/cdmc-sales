@@ -136,7 +136,7 @@ namespace Sales.Controllers
         /// </summary>
         /// <param name="indexs"></param>
         /// <returns></returns>
-        public PartialViewResult JsonSelectedList(string indexs)
+        public PartialViewResult _SelectedList(string indexs)
         {
             var ids = indexs.Split(new string[]{","}, StringSplitOptions.RemoveEmptyEntries);
             var crmid = int.Parse(ids[0]);
@@ -154,13 +154,39 @@ namespace Sales.Controllers
           
             return PartialView(@"~\views\shared\salesexitem.cshtml", data);
         }
+        public PartialViewResult _CrmBlowed(string crmid)
+        {
+            var sourcecrmid = Int32.Parse(crmid);
+            var user = Employee.CurrentUserName;
 
+            //移除自定义组里面crm记录
+            var hasassigntouser = CH.DB.UserFavorsCrmGroups.Count(i => i.UserName == user && i.UserFavorsCRMs.Select(s => s.CompanyRelationshipID).Contains(sourcecrmid)) > 0;
+            if (hasassigntouser)
+            {
+                 var favorcrms = CH.DB.UserFavorsCrmGroups.Where(i => i.UserName == user).SelectMany(s=>s.UserFavorsCRMs).Where(w=>w.CompanyRelationshipID==sourcecrmid);
+                 foreach (var f in favorcrms)
+                 {
+                     CH.DB.Set<UserFavorsCRM>().Remove(f);
+                 }
+                 CH.DB.SaveChanges();
+            }
+            //移除销售对crm公司的分配
+            var crm = CH.GetDataById<CompanyRelationship>(sourcecrmid);
+            var member = crm.Members.FirstOrDefault(f=>f.Name == user);
+            crm.Members.Remove(member);
+            CH.Edit<CompanyRelationship>(crm);
+
+            var d = new AjaxCrmTypedList();
+            d.AllCRMs = GetCrmDataQuery();
+            d.CustomCrmGroups = GetcustomCrmGroupDataQuery();
+            return PartialView(@"~\views\salesex\MainNavigationContainer.cshtml", d);
+        }
         /// <summary>
         /// 把选中的公司分到指定的分组
         /// </summary>
         /// <param name="indexs"></param>
         /// <returns></returns>
-        public PartialViewResult JsonCopyCrmToGroup(string crmid, string groupid)
+        public PartialViewResult _CopyCrmToGroup(string crmid, string groupid)
         {
             var sourcecrmid = Int32.Parse(crmid);
             var targetgroupid = Int32.Parse(groupid);
@@ -188,7 +214,6 @@ namespace Sales.Controllers
                             Caller = call.Member.Name,
                             CallBackDate = call.CallBackDate,
                             Editable = user==call.Member.Name?true:false
-                             
                         };
 
             return View(new GridModel<AjaxCall> { Data = calls.OrderByDescending(o=>o.CallDate) });
