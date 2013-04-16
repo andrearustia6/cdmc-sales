@@ -1,20 +1,17 @@
 ﻿@using Entity
 @using Model
-@model IQueryable<AjaxGroupedCRM>
+@model AjaxCrmTypedList
+<div id="crmdfavorsscontainer">
+   @Html.Partial("FavorsCRM", Model.CustomCrmGroups)
+  
 
-
- @(Html.Telerik().TreeView().Name("customView").ExpandAll(false)
+</div>
+<div>
+    @(Html.Telerik().TreeView()
+                .Name("navigationView").ExpandAll(true)
         .ClientEvents(e=>e.OnSelect("onIndexSelect"))
-               .BindTo(Model, mappings =>
+                .BindTo(Model.AllCRMs, mappings =>
         {
-            mappings.For<AjaxGroupedCRM>(binding => binding
-                    .ItemDataBound((item, ajaxGroupedCRM) =>
-                    {
-                        item.Text = ajaxGroupedCRM.DisplayName + "分组";
-                        item.Value = ajaxGroupedCRM.ID.ToString();
-                    })
-                    .Children(group => group.GroupedCRMs));
-            
             mappings.For<AjaxCRM>(binding => binding
                     .ItemDataBound((item, ajaxCRM) =>
                     {
@@ -30,4 +27,5 @@
                         item.Value = Lead.CRMID.ToString()+","+ Lead.LeadID.ToString();
                     }));
         })
-)
+) 
+</div>

@@ -1587,10 +1587,13 @@
     <Content Include="Views\SalesEx\FavorsGroupChange.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Shared\CreateWindow.cshtml" />
+    <Content Include="Views\SalesEx\CreateWindow.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\SalesEx\FavorsCRM.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\SalesEx\MainNavigationContainer.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

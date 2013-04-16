@@ -18,7 +18,7 @@
 <div>
 <button id="addgroup-open-button" >添加分组</button>
 @(Html.Telerik().Window()
-        .Name("Window")
+        .Name("addGroup")
         .Title("添加分组")
         .Content(@<text>
           @Html.Partial("createwindow", new UserFavorsCrmGroup())
@@ -28,34 +28,9 @@
         .Modal(true)
         .Visible(false)
 )
+<div id="mainnavigationcontainer">
 
-<div id="crmdfavorsscontainer">
-   @Html.Partial("FavorsCRM", Model.CustomCrmGroups)
-  
-
-</div>
-<div>
-    @(Html.Telerik().TreeView()
-                .Name("navigationView").ExpandAll(true)
-        .ClientEvents(e=>e.OnSelect("onIndexSelect"))
-                .BindTo(Model.AllCRMs, mappings =>
-        {
-            mappings.For<AjaxCRM>(binding => binding
-                    .ItemDataBound((item, ajaxCRM) =>
-                    {
-                        item.Text = ajaxCRM.DisplayText;
-                        item.Value = ajaxCRM.CRMID.ToString();
-                    })
-                    .Children(company => company.AjaxLeads));
-
-            mappings.For<AjaxLead>(binding => binding
-                    .ItemDataBound((item, Lead) =>
-                    {
-                        item.Text = Lead.DisplayText;
-                        item.Value = Lead.CRMID.ToString()+","+ Lead.LeadID.ToString();
-                    }));
-        })
-) 
+@Html.Partial("mainnavigationcontainer",Model)
 </div>
 </div>
  
@@ -82,9 +57,9 @@
             从组中移出
         </li>
         <li class="separator"></li>
-        <li class="icon">
+        <li class="blowed">
             <span class="icon drive"></span>
-            已经Blowed，释放回公司池
+            Blowed，放回公司池
         </li>
     </ul>   
  <ul id="contextmenu" class="jeegoocontext cm_default">
@@ -95,55 +70,63 @@
             </ul>
         </li>
         <li class="separator"></li>
-        <li class="icon">
+        <li class="blowed">
             <span class="icon drive"></span>
-            已经Blowed，释放回公司池
+            Blowed，放回公司池
         </li>
     </ul>    
 
 <script type="text/javascript">
 
     $(document).ready(function () {
+        initial();
+    });
+
+    function initial() {
+        //Blowed，放回公司池
+        $('.blowed').bind('click', function () {
+
+        });
 
         //生成关联菜单子菜单
-        var ul = $("#regroup ul");
+        var ul = $(".regroup ul");
+        ul.children().remove();
         var customli = $('#customView >ul >li');
         customli.each(function () {
             var t = $(this).find('>div >span').text();
             var v = $(this).find('>div >input').val();
-            ul.append('<li>' + t + '<input type="hidden" value=' + v + '></li>');
+            
+            ul.append('<li class="grouptarget">' + t + '<input type="hidden" value=' + v + '></li>');
         });
-
-        //        //取消checkbox
-        //        var companys = $('#navigationView  .t-treeview-lines li ul');
-        //        companys.find('.t-checkbox').remove();
 
         //添加分组
         $('#addgroup-open-button')
                 .click(function (e) {
                     e.preventDefault();
-                    $('#Window').data('tWindow').center().open();
+                    $('#addGroup').data('tWindow').center().open();
                 });
 
-      
+
         $('#navigationView').find('>ul >li').jeegoocontext('contextmenu', {
             widthOverflowOffset: 0,
             heightOverflowOffset: 3,
             submenuLeftOffset: -4,
             submenuTopOffset: -5,
             onSelect: contextMenuSelected,
-            onShow: generateContextMenu,
+            onShow: generateContextMenu
         });
 
-         $('#customView').find('>ul >li >ul >li').jeegoocontext('favorscontextmenu', {
+        $('#customView').find('>ul >li >ul >li').jeegoocontext('favorscontextmenu', {
             widthOverflowOffset: 0,
             heightOverflowOffset: 3,
             submenuLeftOffset: -4,
             submenuTopOffset: -5,
             onSelect: contextMenuSelected,
-            onShow: generateContextMenu,
+            onShow: generateContextMenu
         });
-    });
+    }
+
+
 
     //生成动态子菜单
     function generateContextMenu(e, context) {
@@ -157,13 +140,28 @@
 
     //子菜单选中
     function contextMenuSelected(e, context) {
-                var crmid = $(context).find('>div >input').val();
-                var groupid = $(e.currentTarget).find('input').val();
+        var $target = $(e.target);
+        //copy到新分组
+        if ($target.hasClass('grouptarget')) {
+            var crmid = $(context).find('>div >input').val();
+            var groupid = $(e.currentTarget).find('input').val();
 
-                $.post('JsonCopyCrmToGroup', { crmid: crmid, groupid: groupid }, function (result) {
-                    $('#crmdfavorsscontainer').html(result);
-                });
-               // alert(groupid);
+            $.post('_CopyCrmToGroup', { crmid: crmid, groupid: groupid }, function (result) {
+                $('#crmdfavorsscontainer').html(result);
+                initial();
+            });
+            // alert(groupid);
+        }
+
+        //释放回公司池
+        if ($target.hasClass('blowed')) {
+            var crmid = $(context).find('>div >input').val();
+            $.post('_CrmBlowed', { crmid: crmid }, function (result) {
+                $('#mainnavigationcontainer').html(result);
+                initial();
+            });
+        }
+        
      }
 
     //获取主树
@@ -176,7 +174,7 @@
       
         var indexs = nv().getItemValue(e.item);
         if (indexs.indexOf("分组") > 0 ) {
-            $.post('JsonSelectedList', { indexs: indexs }, function (result) {
+            $.post('_SelectedList', { indexs: indexs }, function (result) {
                 $('#crmdetailscontainer').html(result);
             });
         }
@@ -191,6 +189,8 @@
         var grid = $(this).data('tGrid');
         expandRow(grid, e.row);
     }
+
+
 
 </script>
 
