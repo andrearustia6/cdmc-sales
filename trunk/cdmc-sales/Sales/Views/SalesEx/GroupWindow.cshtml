@@ -1,6 +1,9 @@
-﻿@using Entity
+﻿<h2>创建表单</h2>
+@using Entity
 @model UserFavorsCrmGroup
-           
+@using Utl
+@Html.ValidationSummary(true)
+
 
 @using (Html.BeginForm("create", "favorsGroup", FormMethod.Post))
 {
@@ -13,10 +16,6 @@
     <div>
         <center>
             <input type="submit" value="保存" />
-      
         </center>
     </div>
 }
-
-
-

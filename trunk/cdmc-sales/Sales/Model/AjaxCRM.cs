@@ -17,9 +17,28 @@ namespace Model
     public class AjaxGroupedCRM
     {
         public int ID { get; set; }
+        [Display(Name = "自定义分组所属用户")]
         public string UserName { get; set; }
+        [Display(Name="自定义分组名称")]
         public string DisplayName { get; set; }
         public IQueryable<AjaxCRM> GroupedCRMs { get; set; }
+
+        [Display(Name = "描述")]
+        public string Description { get; set; }
+        [Display(Name = "排序")]
+        public int? Sequence { get; set; }
+
+        [Display(Name = "更改用户")]
+        public string ModifiedUser { get; set; }
+
+        [Display(Name = "更改时间")]
+        public DateTime? ModifiedDate { get; set; }
+
+        [Display(Name = "创建用户")]
+        public string Creator { get; set; }
+
+        [Display(Name = "创建时间")]
+        public DateTime? CreatedDate { get; set; }
     }
 
     public class AjaxCRM
