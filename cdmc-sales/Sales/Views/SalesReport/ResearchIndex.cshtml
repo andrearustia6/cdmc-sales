@@ -1,0 +1,20 @@
+﻿@{
+    ViewBag.Title = "ResearchIndex";
+}
+@using Model
+@model 
+<fieldset>项目</fieldset>
+
+ @(Html.Telerik().Grid<AjaxCall>(lead.AjaxCalls.OrderByDescending(o=>o.CallDate)).Name("lead" + lead.LeadID)
+                    .Columns(columns =>
+                    {
+                        columns.Bound(o => o.CallType).Width(80);
+                        columns.Bound(o => o.CallBackDate).Width(100);
+                        columns.Bound(o => o.CallDate).Width(100);
+                        columns.Bound(o => o.Caller).Width(80);
+                        columns.Bound(o => o.Result);
+                    })
+                    .Pageable(paging => paging.Enabled(false)).Resizable(resizing => resizing.Columns(true))
+                    .Sortable().Scrollable(scrolling => scrolling.Enabled(false))
+                    .Filterable()
+ )

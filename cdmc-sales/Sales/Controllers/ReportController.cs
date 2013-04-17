@@ -13,6 +13,7 @@ using System.Data;
 using BLL;
 using System.Web.Security;
 using Telerik.Web.Mvc;
+using Sales.Model;
 
 namespace Sales.Controllers
 {
@@ -387,6 +388,27 @@ namespace Sales.Controllers
     [PoliticsInterfaceRequired]
     public class SalesReportController : Controller
     {
+        public ActionResult ResearchIndex()
+        {
+            return View();
+        }
+
+        [GridAction]
+        public ActionResult _ResearchIndex(int? month)
+        {
+            Utl.mo
+            var start1 = 
+            var projects = Query.AliveProjects();
+            var prs = from p in projects select new _ProjectResearch() { 
+                  ProjectName = p.Name_CH,
+                  MemberCount = p.Members.Count,
+                  FirstWeekCompanyCount = p.CompanyRelationships.cre
+                    
+            };
+            return View(new GridModel(prs));
+        }
+
+
         protected override void Dispose(bool disposing)
         {
             CH.DB.Dispose();
