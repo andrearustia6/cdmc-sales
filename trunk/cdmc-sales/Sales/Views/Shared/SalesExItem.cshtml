@@ -82,7 +82,7 @@
         </dd>
   <dt style="font-size:13px;">致电列表</dt>
   <dd>
-        @(Html.Telerik().Grid<AjaxCall>(lead.AjaxCalls).Name("lead" + lead.LeadID)
+        @(Html.Telerik().Grid<AjaxCall>(lead.AjaxCalls.OrderByDescending(o=>o.CallDate)).Name("lead" + lead.LeadID)
                     .Columns(columns =>
                     {
                         columns.Bound(o => o.CallType).Width(80);

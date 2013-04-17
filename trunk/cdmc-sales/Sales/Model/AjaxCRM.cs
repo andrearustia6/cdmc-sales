@@ -135,10 +135,22 @@ namespace Model
         {
             get
             {
-                var lastcall = "未打";
+                var lastcall = "&0*";
                 if (AjaxCalls != null && AjaxCalls.Count() > 0)
                 {
-                    lastcall = AjaxCalls.OrderByDescending(o => o.CallDate).FirstOrDefault().CallType;
+                    var code = AjaxCalls.OrderByDescending(o => o.CallDate).FirstOrDefault().LeadCallTypeCode;
+                    if (code == 20)
+                        lastcall = "&2*";//blowed
+                    else if (code == 60)
+                        lastcall = "&6*";//wait for approve
+                    else if (code == 90)
+                        lastcall = "&9*";//wait for approve
+                    else if(code == 80)
+                        lastcall = "&8*";//Qualified Decision
+                    else if(code == 70)
+                        lastcall = "&7*";//Waiting for Approval
+                    else
+                        lastcall = string.Empty;
                 }
 
                 List<string> v = new List<string> { LeadName };
