@@ -9,7 +9,7 @@
 @(Html.Telerik().Splitter().Name("sp1").HtmlAttributes(new { style = "min-height: 800px;" })
               .Orientation(SplitterOrientation.Horizontal).Panes(panes =>
               {
-                  panes.Add().Size("20%").Content(@<text>@GetCRMS()</text>);
+                  panes.Add().Size("30%").Content(@<text>@GetCRMS()</text>);
                   panes.Add().Content(@<text>@GetCompanyDetails()</text>);
               }))
 @helper GetCRMS()
@@ -98,7 +98,43 @@
     });
 
     function initial() {
-
+        //lead状态颜色标注
+         $('#mainnavigationcontainer span').each(function(){
+          var $this = $(this);
+          var spantext = $this.text();
+          if(spantext.indexOf(',&6*')>0)//Call-Backed
+          {
+             $this.css('background-color','#95CACA');
+             spantext = spantext.replace(",&6*","");
+          }
+          else if(spantext.indexOf(',&2*')>0)//blowed
+          {
+             $this.css('background-color','#E0E0E0');
+             spantext = spantext.replace(",&2*","");
+          }
+          else if(spantext.indexOf(',&0*')>0)//no call
+          {
+            $this.css('background-color','red');
+            spantext = spantext.replace(",&0*","");
+          }
+          else if(spantext.indexOf(',&9*')>0)//close
+          {
+          $this.css('background-color','#CEFFCE');
+          spantext = spantext.replace(",&9*","");
+          }
+          else if(spantext.indexOf(',&7*')>0)//Waiting for Approval
+          {
+          $this.css('background-color','#D3A4FF');
+          spantext = spantext.replace(",&7*","");
+          }
+          else if(spantext.indexOf(',&8*')>0)//Qualified Decision
+          {
+            $this.css('background-color','yellow');
+            spantext = spantext.replace(",&8*","");
+          }
+          $this.text(spantext);
+         });
+        
         //生成关联菜单子菜单
         var ul = $(".regroup ul");
         ul.children().remove();

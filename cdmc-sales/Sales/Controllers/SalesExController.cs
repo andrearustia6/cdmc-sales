@@ -63,7 +63,7 @@ namespace Sales.Controllers
                                                                CRMID = c.ID,
                                                                LeadID = l.ID,
                                                                LeadCreateDate = l.CreatedDate,
-                                                               AjaxCalls = (from call in c.LeadCalls
+                                                               AjaxCalls = (from call in c.LeadCalls.Where(w => w.LeadID == l.ID)
                                                                             select new AjaxCall
                                                                             {
                                                                                 CallDate = call.CallDate,
