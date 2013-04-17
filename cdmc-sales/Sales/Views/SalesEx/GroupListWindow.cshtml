@@ -1,0 +1,29 @@
+﻿
+@using Entity
+@using Utl
+@model IQueryable<AjaxGroupedCRM>
+@using Model;
+@Html.ValidationSummary(true)
+@{
+  
+  
+@(Html.Telerik().Grid<AjaxGroupedCRM>(Model).Name("grouplist")
+.DataKeys(keys => { keys.Add(p => p.ID); })
+.ToolBar(commands => commands.Insert().ImageHtmlAttributes(new { style = "margin-left:0" }))
+.DataBinding(dataBinding => { dataBinding.Ajax()
+    .Select("_Select", "UserFavorsCrmGroup")
+    .Insert("_Insert", "UserFavorsCrmGroup")
+    .Update("_Update", "UserFavorsCrmGroup")
+    .Delete("_Delete", "UserFavorsCrmGroup");
+})
+.Columns(columns => {
+    columns.Bound(p => p.DisplayName).Title("自定义组名称").Width(300);
+   columns.Command(commands => { 
+       commands.Edit();
+       commands.Delete();
+   }).Width(200).Title("操作"); })
+   .Editable(editing => editing.Mode( GridEditMode.PopUp))
+   .Pageable(p=>p.Style(GridPagerStyles.Status)
+       .PageOnScroll(true)).Scrollable().Sortable().Filterable()
+)
+}

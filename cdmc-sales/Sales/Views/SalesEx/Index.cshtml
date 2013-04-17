@@ -16,18 +16,29 @@
 {
     
 <div>
-<button id="addgroup-open-button" >添加分组</button>
+<button id="group-open-button" >分组管理</button>
 @(Html.Telerik().Window()
-        .Name("addGroup")
-        .Title("添加分组")
+        .Name("groupWindow")
+        .Title("分组")
         .Content(@<text>
-          @Html.Partial("createwindow", new UserFavorsCrmGroup())
+          @Html.Partial("groupwindow", new UserFavorsCrmGroup())
             </text>)
         .Width(400)
         .Draggable(true)
         .Modal(true)
         .Visible(false)
 )
+@(Html.Telerik().Window()
+        .Name("groupListWindow")
+        .Title("分组")
+        .Content(@<text>
+          @Html.Partial("grouplistwindow", Model.CustomCrmGroups)
+            </text>).Width(600).ClientEvents(e => e.OnClose("onGroupListWindowSubmit"))
+        .Draggable(true)
+        .Modal(true)
+        .Visible(false)
+)
+
 <div id="mainnavigationcontainer">
 
 @Html.Partial("mainnavigationcontainer",Model)
@@ -45,8 +56,7 @@
     </div>
 }
 <ul id="groupcontextmenu" class="jeegoocontext cm_default">
-  <li id="renamegroup"> <span class=""></span><p class= "regrouptext">重命名</p> </li>
-  <li id="deletegroup"> <span class=""></span><p class= "regrouptext">删除组</p> </li>
+  <li id="groupmanagement"> <span class=""></span><p class= "regrouptext">分组管理</p> </li>
 </ul>
 
  <ul id="favorscontextmenu" class="jeegoocontext cm_default">
@@ -88,10 +98,6 @@
     });
 
     function initial() {
-        //Blowed，放回公司池
-        $('.blowed').bind('click', function () {
-
-        });
 
         //生成关联菜单子菜单
         var ul = $(".regroup ul");
@@ -104,10 +110,10 @@
         });
 
         //添加分组
-        $('#addgroup-open-button')
+        $('#group-open-button')
                 .click(function (e) {
                     e.preventDefault();
-                    $('#addGroup').data('tWindow').center().open();
+                    gw().center().open();
                 });
 
 
@@ -148,21 +154,22 @@
       
     }
 
-    //分组关联菜单选中
+    //分组管理
     function groupContextMenuSelected(e, context) {
        var groupid = $(context).find('input').val();
        var targetid = $(e.currentTarget).attr('id');
-       if(targetid=='renamegroup')
+       if(targetid=='groupmanagement')
        {
+            e.preventDefault();
+            gw().center().open();
        }
-       if(targetid =='deletegroup')
-       {
-       }
+      
     }
 
-    //关联菜单选中
+    //公司关联菜单选中
     function contextMenuSelected(e, context) {
         var $target = $(e.target);
+
         //copy到新分组
         if ($target.hasClass('grouptarget')) {
             var crmid = $(context).find('>div >input').val();
@@ -172,7 +179,6 @@
                 $('#crmdfavorsscontainer').html(result);
                 initial();
             });
-           
         }
 
         //释放回公司池
@@ -183,7 +189,6 @@
                 initial();
             });
         }
-        
      }
 
     //获取主树
@@ -191,11 +196,23 @@
         return $('#navigationView').data('tTreeView');
     }
 
+    //获取分组窗口
+    function gw() {
+        return $('#groupListWindow').data('tWindow');
+    }
+   //提交分组更改
+   function onGroupListWindowSubmit(e)
+   {
+       $.post('_RefreshCrmList', null, function (result) {
+                $('#mainnavigationcontainer').html(result);
+                initial();
+            });
+   }
     //公司选择 
     function onIndexSelect(e) {
       
         var indexs = nv().getItemValue(e.item);
-        if (indexs.indexOf("分组") > 0 ) {
+        if (indexs.indexOf("分组") < 0 ) {
             $.post('_SelectedList', { indexs: indexs }, function (result) {
                 $('#crmdetailscontainer').html(result);
             });

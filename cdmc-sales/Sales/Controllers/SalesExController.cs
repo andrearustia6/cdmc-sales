@@ -114,7 +114,7 @@ namespace Sales.Controllers
                                             CRMID = c.ID,
                                             LeadID = l.ID,
                                             LeadCreateDate = l.CreatedDate,
-                                            AjaxCalls = (from call in c.LeadCalls
+                                            AjaxCalls = (from call in c.LeadCalls.Where(w=> w.LeadID == l.ID)
                                                          select new AjaxCall
                                                          {
                                                              CallDate = call.CallDate,
@@ -154,6 +154,7 @@ namespace Sales.Controllers
           
             return PartialView(@"~\views\shared\salesexitem.cshtml", data);
         }
+
         public PartialViewResult _CrmBlowed(string crmid)
         {
             var sourcecrmid = Int32.Parse(crmid);
@@ -181,6 +182,7 @@ namespace Sales.Controllers
             d.CustomCrmGroups = GetcustomCrmGroupDataQuery();
             return PartialView(@"~\views\salesex\MainNavigationContainer.cshtml", d);
         }
+
         /// <summary>
         /// 把选中的公司分到指定的分组
         /// </summary>
@@ -197,6 +199,18 @@ namespace Sales.Controllers
             var username = Employee.CurrentUserName;
             var data = GetcustomCrmGroupDataQuery();
             return PartialView(@"~\views\salesex\FavorsCRM.cshtml", data);
+        }
+
+        /// <summary>
+        /// 刷新导航栏
+        /// </summary>
+        /// <returns></returns>
+        public PartialViewResult _RefreshCrmList()
+        {
+            var d = new AjaxCrmTypedList();
+            d.AllCRMs = GetCrmDataQuery();
+            d.CustomCrmGroups = GetcustomCrmGroupDataQuery();
+            return PartialView(@"~\views\salesex\MainNavigationContainer.cshtml", d);
         }
 
         [GridAction]
