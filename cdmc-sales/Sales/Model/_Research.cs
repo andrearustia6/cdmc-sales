@@ -63,10 +63,66 @@ namespace Sales.Model
 
     public class _UserResearch : _ResearchCount
     {
-        [Display(Name = "项目名称")]
+        [Display(Name = "姓名")]
         public string UserName { get; set; }
 
         [Display(Name = "入职时间（月）")]
         public int EmployeeDuration { get; set; }
+    }
+
+    public class _UserResearchDetail 
+    {
+        [Display(Name = "姓名")]
+        public string UserName { get; set; }
+
+        [Display(Name = "公司名称")]
+        public string CompanyName
+        {
+            get
+            {
+                string[] s = new string[] { CompanyNameEN, CompanyNameCH };
+                return string.Join("|", s);
+            }
+        }
+
+        [Display(Name = "公司名称")]
+        public string CompanyNameCH { get; set; }
+
+        [Display(Name = "公司名称")]
+        public string CompanyNameEN { get; set; }
+
+        [Display(Name = "Lead姓名")]
+        public string LeadNameEN { get; set; }
+
+        [Display(Name = "Lead姓名")]
+        public string LeadNameCH { get; set; }
+
+        [Display(Name = "移动电话")]
+        public string LeadMobile { get; set; }
+
+        [Display(Name = "Lead")]
+        public string LeadTitle { get; set; }
+        
+
+        public string LeadName
+        {
+            get
+            {
+                string[] s = new string[] { LeadNameEN, LeadNameCH };
+                return string.Join("|", s);
+            }
+        }
+
+        [Display(Name = "公司总机")]
+        public string CompanyContact { get; set; }
+
+        [Display(Name = "Lead直线")]
+        public string LeadContact { get; set; }
+
+        [Display(Name = "Lead邮件")]
+        public string Email { get; set; }
+
+        [Display(Name = "公司调研")]
+        public string CompanyDesicription { get; set; }
     }
 }
