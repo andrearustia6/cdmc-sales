@@ -22,6 +22,9 @@ namespace Sales.Controllers
             return View(md);
         }
 
+
+        
+
         [GridAction]
         public ActionResult _UserResearchIndex(int? month)
         {
@@ -71,11 +74,31 @@ namespace Sales.Controllers
 
             return View(new GridModel(prs));
         }
+        public JsonResult _ResearchUserName(string username)        
+        {
+            return Json(new { username = username });    
+        }
+
 
         public PartialViewResult _UserResearchList(string username) 
         {
-           
-            return PartialView("UserResearchListView");
+            var details = from l in CH.DB.Leads.Where(w => w.Creator == username)
+                          select new _UserResearchDetail()
+                          {
+                              LeadNameEN = l.Name_EN,
+                              LeadNameCH = l.Name_CH,
+                              CompanyNameCH = l.Company.Name_EN,
+                              CompanyNameEN = l.Company.Name_CH,
+                              CompanyContact = l.Company.Contact,
+                              CompanyDesicription = l.Company.Description,
+                              Email = l.EMail,
+                              LeadContact = l.Contact,
+                              LeadMobile = l.Mobile,
+                              LeadTitle = l.Title
+                          };
+
+            return PartialView(@"~\views\research\UserResearchListView.cshtml", details);
+       
         }
         
 
@@ -102,11 +125,11 @@ namespace Sales.Controllers
                   FivethWeekLeadCount = p.CompanyRelationships.Select(s => s.Company).SelectMany(s => s.Leads).Count(w => w.CreatedDate >= md.StartDate5 && w.CreatedDate < md.EndDate5),
                   LeadAverage = p.CompanyRelationships.Select(s => s.Company).SelectMany(s => s.Leads).Count(w => w.CreatedDate >= md.StartDate1 && w.CreatedDate < md.EndDate5) / p.Members.Count
             };
-            foreach (var p in prs)
-            {
-                p.CompanyAverage = Math.Round(p.CompanyAverage, 1);
-                p.LeadAverage = Math.Round(p.LeadAverage, 1);
-            }
+            //foreach (var p in prs)
+            //{
+            //    p.CompanyAverage = Math.Round(p.CompanyAverage, 1);
+            //    p.LeadAverage = Math.Round(p.LeadAverage, 1);
+            //}
             return View(new GridModel(prs));
         }
 

@@ -80,7 +80,7 @@
     columns.Bound(p => p.ThirdWeekLeadCount).Title(Model.DurationStrings[2] + " Lead添加数");
     columns.Bound(p => p.FourthWeekLeadCount).Title(Model.DurationStrings[3] + " Lead添加数");
     columns.Command(command => command.Custom("viewDetails").Text("调研查看") .DataRouteValues(route => route.Add(o => o.UserName).RouteKey("UserName")).Ajax(true)
-    .Action("_UserResearchList", "Research")).HtmlAttributes(new { style = "text-align: center" }).Width(150);
+    .Action("_ResearchUserName", "Research")).HtmlAttributes(new { style = "text-align: center" }).Width(150);
 
     
     if (Model.DurationStrings.Count == 5)
@@ -97,16 +97,31 @@
 
 
 @(Html.Telerik().Window().Name("Details").Visible(false).Title("调研列表").Modal(true).Width(500).Height(200).Content(@<text> 
-               <div id="customer-details" style="width:300px;height:300px;">                   
-                 </div>    
- </text>).Resizable().Scrollable(true))
+               <div id="researchlistcontainer">   
+               @Html.Partial("userresearchlistview")                
+               </div>    
+ </text>).Resizable().Scrollable(true).Draggable(true))
 
  <script type="text/javascript">
+//     $(document).ready(function () {
+//         $.post('_UserResearchList', { username: 'sean' }, function (result) {
+//            
+//             var detailWindow = $("#Details").data("tWindow");
+//             detailWindow.center().open();
+//         });
+//     });
+
      function onComplete(e) {
-         if (e.name == "viewDetails") {  
-        var detailWindow = $("#Details").data("tWindow");
-         detailWindow.center().open();
-     } 
- }
+         if (e.name == "viewDetails") {
+             var username = e.response.username;
+             $.post('_UserResearchList', { username: username }, function (result) {
+                 $('#researchlistcontainer').html(result);
+                 var detailWindow = $("#Details").data("tWindow");
+                 detailWindow.center().open();
+             });
+         }
+     }
+
+
      
      </script>
