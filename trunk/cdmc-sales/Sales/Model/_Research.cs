@@ -51,6 +51,10 @@ namespace Sales.Model
 
     public class _ProjectResearch : _ResearchCount
     {
+        [Display(Name = "项目编码")]
+        public int ProjectID { get; set; }
+        [Display(Name = "项目编码")]
+        public string ProjectCode { get; set; }
         [Display(Name="项目名称")]
         public string ProjectName { get; set; }
         [Display(Name = "项目人数")]
@@ -80,10 +84,11 @@ namespace Sales.Model
         {
             get
             {
-                string[] s = new string[] { CompanyNameEN, CompanyNameCH };
-                return string.Join("|", s);
+                return Utl.Utl.GetFullString(",", CompanyNameEN, CompanyNameCH);
             }
         }
+        [Display(Name = "添加销售")]
+        public string Creator { get; set; }
 
         [Display(Name = "公司名称")]
         public string CompanyNameCH { get; set; }
@@ -108,8 +113,7 @@ namespace Sales.Model
         {
             get
             {
-                string[] s = new string[] { LeadNameEN, LeadNameCH };
-                return string.Join("|", s);
+                return Utl.Utl.GetFullString(",", LeadNameEN, LeadNameCH);
             }
         }
 

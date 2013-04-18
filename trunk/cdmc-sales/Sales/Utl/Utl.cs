@@ -710,6 +710,19 @@ namespace Utl
             return source;
         }
 
+        public static string GetFullString(string seperator, params string[] datas)
+        {
+            var s = new List<string>();
+            foreach (var d in datas)
+            {
+                if (!string.IsNullOrEmpty(d))
+                {
+                    s.Add(d);
+                }
+            }
+            return string.Join(seperator, s);
+        }
+
         public static string GetFullName(string ch, string en)
         {
             if (string.IsNullOrEmpty(ch) && !string.IsNullOrEmpty(en))

@@ -79,26 +79,52 @@ namespace Sales.Controllers
             return Json(new { username = username });    
         }
 
-
-        public PartialViewResult _UserResearchList(string username) 
+        [GridAction]
+        public ActionResult _UserResearchList(string name, string type) 
         {
-            var details = from l in CH.DB.Leads.Where(w => w.Creator == username)
-                          select new _UserResearchDetail()
-                          {
-                              LeadNameEN = l.Name_EN,
-                              LeadNameCH = l.Name_CH,
-                              CompanyNameCH = l.Company.Name_EN,
-                              CompanyNameEN = l.Company.Name_CH,
-                              CompanyContact = l.Company.Contact,
-                              CompanyDesicription = l.Company.Description,
-                              Email = l.EMail,
-                              LeadContact = l.Contact,
-                              LeadMobile = l.Mobile,
-                              LeadTitle = l.Title
-                          };
+            if (type == "project")
+            {
+                int id = int.Parse(name);
+                var details = from l in CH.DB.CompanyRelationships.Where(w => w.Project.ID == id).Select(s => s.Company).SelectMany(s => s.Leads)
+                              select new _UserResearchDetail()
+                              {
+                                  LeadNameEN = l.Name_EN,
+                                  LeadNameCH = l.Name_CH,
+                                  CompanyNameCH = l.Company.Name_EN,
+                                  CompanyNameEN = l.Company.Name_CH,
+                                  CompanyContact = l.Company.Contact,
+                                  CompanyDesicription = l.Company.Description,
+                                  Email = l.EMail,
+                                  LeadContact = l.Contact,
+                                  LeadMobile = l.Mobile,
+                                  LeadTitle = l.Title
+                              };
 
-            return PartialView(@"~\views\research\UserResearchListView.cshtml", details);
-       
+                return View(new GridModel(details.ToList()));
+ 
+            }
+            if (type == "user")
+            {
+                var details = from l in CH.DB.Leads.Where(w => w.Creator == name)
+                              select new _UserResearchDetail()
+                              {
+                                  LeadNameEN = l.Name_EN,
+                                  LeadNameCH = l.Name_CH,
+                                  CompanyNameCH = l.Company.Name_EN,
+                                  CompanyNameEN = l.Company.Name_CH,
+                                  CompanyContact = l.Company.Contact,
+                                  CompanyDesicription = l.Company.Description,
+                                  Email = l.EMail,
+                                  LeadContact = l.Contact,
+                                  LeadMobile = l.Mobile,
+                                  LeadTitle = l.Title,
+                                  Creator = l.Creator,
+                              };
+
+                return View(new GridModel(details.ToList()));
+            }
+
+            return View(new GridModel(new List<_UserResearchDetail>()));
         }
         
 
@@ -111,19 +137,21 @@ namespace Sales.Controllers
             var prs = from p in projects select new _ProjectResearch() { 
                   ProjectName = p.Name_CH,
                   MemberCount = p.Members.Count,
+                  ProjectCode = p.ProjectCode,
+                  ProjectID = p.ID,
                   FirstWeekCompanyCount = p.CompanyRelationships.Count(w=>w.CreatedDate >= md.StartDate1 && w.CreatedDate<md.EndDate1),
                   SecondWeekCompanyCount = p.CompanyRelationships.Count(w=>w.CreatedDate >= md.StartDate2 && w.CreatedDate<md.EndDate2),
                   ThirdWeekCompanyCount = p.CompanyRelationships.Count(w=>w.CreatedDate >= md.StartDate3 && w.CreatedDate<md.EndDate3),
                   FourthWeekCompanyCount = p.CompanyRelationships.Count(w => w.CreatedDate >= md.StartDate4 && w.CreatedDate < md.EndDate4),
                   FivethWeekCompanyCount = p.CompanyRelationships.Count(w => w.CreatedDate >= md.StartDate5 && w.CreatedDate < md.EndDate5),
-                  CompanyAverage = p.CompanyRelationships.Count(w =>w.CreatedDate>=md.StartDate1 && w.CreatedDate <md.EndDate5)/p.Members.Count,
+                 // CompanyAverage = p.CompanyRelationships.Count(w =>w.CreatedDate>=md.StartDate1 && w.CreatedDate <md.EndDate5)/p.Members.Count,
 
                   FirstWeekLeadCount = p.CompanyRelationships.Select(s => s.Company).SelectMany(s => s.Leads).Count(w => w.CreatedDate >= md.StartDate1 && w.CreatedDate < md.EndDate1),
                   SecondWeekLeadCount = p.CompanyRelationships.Select(s => s.Company).SelectMany(s => s.Leads).Count(w => w.CreatedDate >= md.StartDate2 && w.CreatedDate < md.EndDate2),
                   ThirdWeekLeadCount = p.CompanyRelationships.Select(s => s.Company).SelectMany(s => s.Leads).Count(w => w.CreatedDate >= md.StartDate3 && w.CreatedDate < md.EndDate3),
                   FourthWeekLeadCount = p.CompanyRelationships.Select(s => s.Company).SelectMany(s => s.Leads).Count(w => w.CreatedDate >= md.StartDate4 && w.CreatedDate < md.EndDate4),
                   FivethWeekLeadCount = p.CompanyRelationships.Select(s => s.Company).SelectMany(s => s.Leads).Count(w => w.CreatedDate >= md.StartDate5 && w.CreatedDate < md.EndDate5),
-                  LeadAverage = p.CompanyRelationships.Select(s => s.Company).SelectMany(s => s.Leads).Count(w => w.CreatedDate >= md.StartDate1 && w.CreatedDate < md.EndDate5) / p.Members.Count
+                 // LeadAverage = p.CompanyRelationships.Select(s => s.Company).SelectMany(s => s.Leads).Count(w => w.CreatedDate >= md.StartDate1 && w.CreatedDate < md.EndDate5) / p.Members.Count
             };
             //foreach (var p in prs)
             //{

@@ -16,14 +16,12 @@ namespace Sales.Controllers
     [SalesRequired]
     public class TargetOfMonthForMemberController : Controller
     {
-
-
         protected override void Dispose(bool disposing)
         {
             CH.DB.Dispose();
             base.Dispose(disposing);
         }
-        [LeaderRequired]
+       
         public ViewResult Index(List<int> selectedprojects, bool? isActivated, DateTime? startdate, DateTime? enddate)
         {
             startdate = startdate == null ? new DateTime(1, 1, 1) : startdate;
@@ -103,7 +101,7 @@ namespace Sales.Controllers
             if (ModelState.IsValid)
             {
                 CH.Create<TargetOfMonthForMember>(item);
-                return RedirectToAction("Index", new { projectid = item.ProjectID });
+                return RedirectToAction("MyTargetIndex", new { projectid = item.ProjectID });
             }
             ViewBag.ProjectID = item.ProjectID;
             return View(item);
@@ -138,7 +136,7 @@ namespace Sales.Controllers
             {
               
                 CH.Edit<TargetOfMonthForMember>(item);
-                return RedirectToAction("Index", new { projectid = item.ProjectID });
+                return RedirectToAction("MyTargetIndex", new { projectid = item.ProjectID });
             }
             ViewBag.ProjectID = item.ProjectID;
             return View(item);
@@ -157,7 +155,7 @@ namespace Sales.Controllers
         {
             var item = CH.GetDataById<TargetOfMonthForMember>(id);
             CH.Delete<TargetOfMonthForMember>(id);
-            return RedirectToAction("Index", new { projectid = item.ProjectID });
+            return RedirectToAction("MyTargetIndex", new { projectid = item.ProjectID });
         }
     }
 }
