@@ -14,6 +14,11 @@ namespace Utl
             return CH.DB.Projects.Where(w => w.IsActived == true);
         }
 
+        public static IQueryable<string> AliveMemberNames()
+        {
+            return AliveMembers().Select(s => s.Name).Distinct();
+        }
+
         public static IQueryable<Member> AliveMembers()
         {
             return CH.DB.Members.Where(w => w.IsActivated == true);

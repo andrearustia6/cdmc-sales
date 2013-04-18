@@ -1,0 +1,112 @@
+﻿@{
+    ViewBag.Title = "月调研报表";
+}
+@using Sales.Model
+@model MonthDuration
+<fieldset>
+    <legend>月份</legend>
+    @{
+        using (Html.BeginForm())
+        {
+            var m = ViewBag.SelectedMonth as int?;
+            m = m == null ? DateTime.Now.Month : m;
+        @Html.DropDownList("selectedmonth", new SelectList(new List<int>() { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 }, m), new { onchange = "this.form.submit();" })
+        }
+    }
+</fieldset>
+<fieldset> 
+<legend>@Model.Month 月项目调研情况</legend>       
+@(Html.Telerik().Grid<_ProjectResearch>().Name("Grid")
+.DataKeys(keys => { keys.Add(p => p.ID); })
+    .DataBinding(dataBinding =>
+    {
+        dataBinding.Ajax().Select("_ProjectResearchIndex", "Research", new { month = Model.Month });
+    })
+.Columns(columns =>
+{
+    columns.Bound(p => p.ProjectName).ClientFooterTemplate("总计"); 
+    columns.Bound(p => p.MemberCount).Width(60);
+    columns.Bound(p => p.CompanyAverage).Width(100);
+    columns.Bound(p => p.LeadAverage).Width(100);
+    columns.Bound(p => p.FirstWeekCompanyCount).Title(Model.DurationStrings[0] + " 公司添加数").Aggregate(a => a.Sum()).ClientFooterTemplate("<#= Sum #>");
+    columns.Bound(p => p.SecondWeekCompanyCount).Title(Model.DurationStrings[1] + " 公司添加数").Aggregate(a => a.Sum()).ClientFooterTemplate(" <#= Sum #>");
+    columns.Bound(p => p.ThirdWeekCompanyCount).Title(Model.DurationStrings[2] + " 公司添加数").Aggregate(a => a.Sum()).ClientFooterTemplate(" <#= Sum #>");
+    columns.Bound(p => p.FourthWeekCompanyCount).Title(Model.DurationStrings[3] + " 公司添加数").Aggregate(a => a.Sum()).ClientFooterTemplate(" <#= Sum #>");
+    if (Model.DurationStrings.Count == 5)
+    {
+        columns.Bound(p => p.FivethWeekCompanyCount).Title(Model.DurationStrings[4]);
+    }
+    columns.Bound(p => p.FirstWeekLeadCount).Title(Model.DurationStrings[0] + " Lead添加数").Aggregate(a => a.Sum()).ClientFooterTemplate(" <#= Sum #>");
+    columns.Bound(p => p.SecondWeekLeadCount).Title(Model.DurationStrings[1] + " Lead添加数").Aggregate(a => a.Sum()).ClientFooterTemplate("<#= Sum #>");
+    columns.Bound(p => p.ThirdWeekLeadCount).Title(Model.DurationStrings[2] + " Lead添加数").Aggregate(a => a.Sum()).ClientFooterTemplate("<#= Sum #>");
+    columns.Bound(p => p.FourthWeekLeadCount).Title(Model.DurationStrings[3] + " Lead添加数").Aggregate(a => a.Sum()).ClientFooterTemplate(" <#= Sum #>");
+
+
+    if (Model.DurationStrings.Count == 5)
+    {
+        columns.Bound(p => p.FirstWeekLeadCount).Title(Model.DurationStrings[4]);
+    }
+})
+   .Pageable(p => p.Style(GridPagerStyles.Status).PageSize(50)
+       .PageOnScroll(true)).Scrollable().Sortable().Groupable().Resizable(r=>r.Columns(true))
+)
+</fieldset> 
+
+<fieldset> 
+<legend>@Model.Month 月员工调研情况</legend>       
+@(Html.Telerik().Grid<_UserResearch>().Name("_UserResearch")
+.DataKeys(keys => { keys.Add(p => p.ID); })
+    .DataBinding(dataBinding =>
+    {
+        dataBinding.Ajax().Select("_UserResearchIndex", "Research", new {month=Model.Month });
+    })
+.Columns(columns =>
+{
+    columns.Bound(p => p.UserName).ClientFooterTemplate("总计"); ;
+    //columns.Bound(p => p.FirstWeekCompanyCount).Title(Model.DurationStrings[0] + "公司添加数");
+    //columns.Bound(p => p.SecondWeekCompanyCount).Title(Model.DurationStrings[1] + "公司添加数");
+    //columns.Bound(p => p.ThirdWeekCompanyCount).Title(Model.DurationStrings[2] + "公司添加数");
+    //columns.Bound(p => p.FourthWeekCompanyCount).Title(Model.DurationStrings[3] + "公司添加数");
+    //if (Model.DurationStrings.Count == 5)
+    //{
+    //    columns.Bound(p => p.FivethWeekCompanyCount).Title(Model.DurationStrings[4]);
+    //}
+    //columns.Bound(p => p.FirstWeekLeadCount).Title(Model.DurationStrings[0] + "Lead添加数").Aggregate(a => a.Sum()).ClientFooterTemplate(" <#= Sum #>");
+    //columns.Bound(p => p.SecondWeekLeadCount).Title(Model.DurationStrings[1] + "Lead添加数").Aggregate(a => a.Sum()).ClientFooterTemplate("<#= Sum #>");
+    //columns.Bound(p => p.ThirdWeekLeadCount).Title(Model.DurationStrings[2] + "Lead添加数").Aggregate(a => a.Sum()).ClientFooterTemplate(" <#= Sum #>");
+    //columns.Bound(p => p.FourthWeekLeadCount).Title(Model.DurationStrings[3] + "Lead添加数").Aggregate(a => a.Sum()).ClientFooterTemplate("<#= Sum #>");
+    columns.Bound(p => p.FirstWeekLeadCount).Title(Model.DurationStrings[0] + " Lead添加数");
+    columns.Bound(p => p.SecondWeekLeadCount).Title(Model.DurationStrings[1] + " Lead添加数");
+    columns.Bound(p => p.ThirdWeekLeadCount).Title(Model.DurationStrings[2] + " Lead添加数");
+    columns.Bound(p => p.FourthWeekLeadCount).Title(Model.DurationStrings[3] + " Lead添加数");
+    columns.Command(command => command.Custom("viewDetails").Text("调研查看") .DataRouteValues(route => route.Add(o => o.UserName).RouteKey("UserName")).Ajax(true)
+    .Action("_UserResearchList", "Research")).HtmlAttributes(new { style = "text-align: center" }).Width(150);
+
+    
+    if (Model.DurationStrings.Count == 5)
+    {
+        columns.Bound(p => p.FirstWeekLeadCount).Title(Model.DurationStrings[4]);
+    }
+})
+       .Pageable(p => p.Style(GridPagerStyles.Status).PageSize(50)
+       .PageOnScroll(true)).Scrollable().Sortable().Groupable().Resizable(r=>r.Columns(true)).Filterable()
+       .ClientEvents(events => events.OnComplete("onComplete"))
+)
+</fieldset> 
+
+
+
+@(Html.Telerik().Window().Name("Details").Visible(false).Title("调研列表").Modal(true).Width(500).Height(200).Content(@<text> 
+               <div id="customer-details" style="width:300px;height:300px;">                   
+                 </div>    
+ </text>).Resizable().Scrollable(true))
+
+ <script type="text/javascript">
+     function onComplete(e) {
+         if (e.name == "viewDetails") {  
+        var detailWindow = $("#Details").data("tWindow");
+         detailWindow.center().open();
+     } 
+ }
+     
+     </script>
