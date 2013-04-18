@@ -1,8 +1,8 @@
-﻿@{
+﻿@*@{
     ViewBag.Title = "ResearchIndex";
 }
 @using Model
-@model 
+@model AjaxCall
 <fieldset>项目</fieldset>
 
  @(Html.Telerik().Grid<AjaxCall>(lead.AjaxCalls.OrderByDescending(o=>o.CallDate)).Name("lead" + lead.LeadID)
@@ -17,4 +17,4 @@
                     .Pageable(paging => paging.Enabled(false)).Resizable(resizing => resizing.Columns(true))
                     .Sortable().Scrollable(scrolling => scrolling.Enabled(false))
                     .Filterable()
- )
+ )*@

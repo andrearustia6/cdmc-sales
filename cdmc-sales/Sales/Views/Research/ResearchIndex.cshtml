@@ -26,8 +26,8 @@
 {
     columns.Bound(p => p.ProjectName).ClientFooterTemplate("总计"); 
     columns.Bound(p => p.MemberCount).Width(60);
-    columns.Bound(p => p.CompanyAverage).Width(100);
-    columns.Bound(p => p.LeadAverage).Width(100);
+    //columns.Bound(p => p.CompanyAverage).Width(100);
+    //columns.Bound(p => p.LeadAverage).Width(100);
     columns.Bound(p => p.FirstWeekCompanyCount).Title(Model.DurationStrings[0] + " 公司添加数").Aggregate(a => a.Sum()).ClientFooterTemplate("<#= Sum #>");
     columns.Bound(p => p.SecondWeekCompanyCount).Title(Model.DurationStrings[1] + " 公司添加数").Aggregate(a => a.Sum()).ClientFooterTemplate(" <#= Sum #>");
     columns.Bound(p => p.ThirdWeekCompanyCount).Title(Model.DurationStrings[2] + " 公司添加数").Aggregate(a => a.Sum()).ClientFooterTemplate(" <#= Sum #>");
@@ -36,19 +36,22 @@
     {
         columns.Bound(p => p.FivethWeekCompanyCount).Title(Model.DurationStrings[4]);
     }
-    columns.Bound(p => p.FirstWeekLeadCount).Title(Model.DurationStrings[0] + " Lead添加数").Aggregate(a => a.Sum()).ClientFooterTemplate(" <#= Sum #>");
-    columns.Bound(p => p.SecondWeekLeadCount).Title(Model.DurationStrings[1] + " Lead添加数").Aggregate(a => a.Sum()).ClientFooterTemplate("<#= Sum #>");
-    columns.Bound(p => p.ThirdWeekLeadCount).Title(Model.DurationStrings[2] + " Lead添加数").Aggregate(a => a.Sum()).ClientFooterTemplate("<#= Sum #>");
-    columns.Bound(p => p.FourthWeekLeadCount).Title(Model.DurationStrings[3] + " Lead添加数").Aggregate(a => a.Sum()).ClientFooterTemplate(" <#= Sum #>");
+    //columns.Bound(p => p.FirstWeekLeadCount).Title(Model.DurationStrings[0] + " Lead添加数").Aggregate(a => a.Sum()).ClientFooterTemplate(" <#= Sum #>");
+    //columns.Bound(p => p.SecondWeekLeadCount).Title(Model.DurationStrings[1] + " Lead添加数").Aggregate(a => a.Sum()).ClientFooterTemplate("<#= Sum #>");
+    //columns.Bound(p => p.ThirdWeekLeadCount).Title(Model.DurationStrings[2] + " Lead添加数").Aggregate(a => a.Sum()).ClientFooterTemplate("<#= Sum #>");
+    //columns.Bound(p => p.FourthWeekLeadCount).Title(Model.DurationStrings[3] + " Lead添加数").Aggregate(a => a.Sum()).ClientFooterTemplate(" <#= Sum #>");
 
 
-    if (Model.DurationStrings.Count == 5)
-    {
-        columns.Bound(p => p.FirstWeekLeadCount).Title(Model.DurationStrings[4]);
-    }
+    //if (Model.DurationStrings.Count == 5)
+    //{
+    //    columns.Bound(p => p.FirstWeekLeadCount).Title(Model.DurationStrings[4]);
+    //}
+    columns.Command(command => command.Custom("viewprojectDetails").Text("调研查看").DataRouteValues(route => route.Add(o => o.ProjectID).RouteKey("UserName")).Ajax(true)).HtmlAttributes(new { style = "text-align: center" }).Width(150).Title("操作");
+
 })
    .Pageable(p => p.Style(GridPagerStyles.Status).PageSize(50)
        .PageOnScroll(true)).Scrollable().Sortable().Groupable().Resizable(r=>r.Columns(true))
+                .ClientEvents(events => events.OnCommand("onProjectDetails"))
 )
 </fieldset> 
 
@@ -63,14 +66,14 @@
 .Columns(columns =>
 {
     columns.Bound(p => p.UserName).ClientFooterTemplate("总计"); ;
-    //columns.Bound(p => p.FirstWeekCompanyCount).Title(Model.DurationStrings[0] + "公司添加数");
-    //columns.Bound(p => p.SecondWeekCompanyCount).Title(Model.DurationStrings[1] + "公司添加数");
-    //columns.Bound(p => p.ThirdWeekCompanyCount).Title(Model.DurationStrings[2] + "公司添加数");
-    //columns.Bound(p => p.FourthWeekCompanyCount).Title(Model.DurationStrings[3] + "公司添加数");
-    //if (Model.DurationStrings.Count == 5)
-    //{
-    //    columns.Bound(p => p.FivethWeekCompanyCount).Title(Model.DurationStrings[4]);
-    //}
+    columns.Bound(p => p.FirstWeekCompanyCount).Title(Model.DurationStrings[0] + "公司添加数");
+    columns.Bound(p => p.SecondWeekCompanyCount).Title(Model.DurationStrings[1] + "公司添加数");
+    columns.Bound(p => p.ThirdWeekCompanyCount).Title(Model.DurationStrings[2] + "公司添加数");
+    columns.Bound(p => p.FourthWeekCompanyCount).Title(Model.DurationStrings[3] + "公司添加数");
+    if (Model.DurationStrings.Count == 5)
+    {
+        columns.Bound(p => p.FivethWeekCompanyCount).Title(Model.DurationStrings[4]);
+    }
     //columns.Bound(p => p.FirstWeekLeadCount).Title(Model.DurationStrings[0] + "Lead添加数").Aggregate(a => a.Sum()).ClientFooterTemplate(" <#= Sum #>");
     //columns.Bound(p => p.SecondWeekLeadCount).Title(Model.DurationStrings[1] + "Lead添加数").Aggregate(a => a.Sum()).ClientFooterTemplate("<#= Sum #>");
     //columns.Bound(p => p.ThirdWeekLeadCount).Title(Model.DurationStrings[2] + "Lead添加数").Aggregate(a => a.Sum()).ClientFooterTemplate(" <#= Sum #>");
@@ -79,8 +82,7 @@
     columns.Bound(p => p.SecondWeekLeadCount).Title(Model.DurationStrings[1] + " Lead添加数");
     columns.Bound(p => p.ThirdWeekLeadCount).Title(Model.DurationStrings[2] + " Lead添加数");
     columns.Bound(p => p.FourthWeekLeadCount).Title(Model.DurationStrings[3] + " Lead添加数");
-    columns.Command(command => command.Custom("viewDetails").Text("调研查看") .DataRouteValues(route => route.Add(o => o.UserName).RouteKey("UserName")).Ajax(true)
-    .Action("_ResearchUserName", "Research")).HtmlAttributes(new { style = "text-align: center" }).Width(150);
+    columns.Command(command => command.Custom("viewUserDetails").Text("调研查看").DataRouteValues(route => route.Add(o => o.UserName).RouteKey("UserName")).Ajax(true)).HtmlAttributes(new { style = "text-align: center" }).Width(150).Title("操作");
 
     
     if (Model.DurationStrings.Count == 5)
@@ -90,38 +92,51 @@
 })
        .Pageable(p => p.Style(GridPagerStyles.Status).PageSize(50)
        .PageOnScroll(true)).Scrollable().Sortable().Groupable().Resizable(r=>r.Columns(true)).Filterable()
-       .ClientEvents(events => events.OnComplete("onComplete"))
+       .ClientEvents(events => events.OnCommand("onUserDetails"))
 )
 </fieldset> 
 
 
 
-@(Html.Telerik().Window().Name("Details").Visible(false).Title("调研列表").Modal(true).Width(500).Height(200).Content(@<text> 
-               <div id="researchlistcontainer">   
-               @Html.Partial("userresearchlistview")                
-               </div>    
- </text>).Resizable().Scrollable(true).Draggable(true))
+@(Html.Telerik().Window().Name("DetailsWindow").Visible(false).Title("调研列表").Modal(true).Width(800).Height(500).Content(@<text> 
+               @(Html.Telerik().Grid<_UserResearchDetail>().Name("DetailsGrid")
+        .DataBinding(dataBinding =>
+        {
+            dataBinding.Ajax().Select("_UserResearchList", "Research");
+        })
+.Columns(columns =>
+{
+    columns.Bound(p => p.CompanyName);
+    columns.Bound(p => p.LeadName).Width(100);
+    columns.Bound(p => p.CompanyContact).Width(80);
+    columns.Bound(p => p.LeadContact).Width(80);
+    columns.Bound(p => p.LeadMobile).Width(80);
+    columns.Bound(p => p.CompanyDesicription);
+
+})
+.Pageable(p => p.Style(GridPagerStyles.Status).PageSize(100)
+        .PageOnScroll(true)).Scrollable().Sortable().Groupable(g => g.Groups(i => i.Add(child => child.CompanyName))).Resizable(r => r.Columns(true)).Scrollable(scrolling => scrolling.Height(400))
+)  
+ </text>).Resizable().Draggable(true))
 
  <script type="text/javascript">
-//     $(document).ready(function () {
-//         $.post('_UserResearchList', { username: 'sean' }, function (result) {
-//            
-//             var detailWindow = $("#Details").data("tWindow");
-//             detailWindow.center().open();
-//         });
-//     });
-
-     function onComplete(e) {
-         if (e.name == "viewDetails") {
-             var username = e.response.username;
-             $.post('_UserResearchList', { username: username }, function (result) {
-                 $('#researchlistcontainer').html(result);
-                 var detailWindow = $("#Details").data("tWindow");
-                 detailWindow.center().open();
-             });
-         }
+     function onUserDetails(e) {
+         var user = e.dataItem.UserName;
+         dg().ajaxRequest({ name: user, type: 'user' });
+         dw().center().open();
      }
 
+     function onProjectDetails(e) {
+         var id = e.dataItem.ProjectID;
+         dg().ajaxRequest({ name: id, type: 'project' });
+         dw().center().open();
+     }
 
-     
+    function dw() {
+         return $("#DetailsWindow").data("tWindow");
+     }
+
+    function dg() {
+        return $('#DetailsGrid').data('tGrid');
+    }
      </script>

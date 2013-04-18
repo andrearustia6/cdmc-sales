@@ -1,18 +1,19 @@
 ﻿@using Sales.Model
-@model _UserResearchDetail
+@model string
 @(Html.Telerik().Grid<_UserResearchDetail>().Name("Grid")
-
-
+        .DataBinding(dataBinding =>
+        {
+            dataBinding.Ajax().Select("_UserResearchListData", "Research", new { username = Model });
+        })
 .Columns(columns =>
 {
     columns.Bound(p => p.LeadName).ClientFooterTemplate("总计"); 
     columns.Bound(p => p.CompanyName).Width(60);
     columns.Bound(p => p.CompanyContact).Width(100);
     columns.Bound(p => p.LeadContact).Width(100);
-    columns.Bound(p => p.LeadMobile).Title(Model.DurationStrings[0] + " 公司添加数").Aggregate(a => a.Sum()).ClientFooterTemplate("<#= Sum #>");
-    columns.Bound(p => p.CompanyDesicription).Title(Model.DurationStrings[1] + " 公司添加数").Aggregate(a => a.Sum()).ClientFooterTemplate(" <#= Sum #>");
-   
-    }
+    columns.Bound(p => p.LeadMobile);
+    columns.Bound(p => p.CompanyDesicription);
+    
 })
    .Pageable(p => p.Style(GridPagerStyles.Status).PageSize(50)
        .PageOnScroll(true)).Scrollable().Sortable().Groupable().Resizable(r=>r.Columns(true))
