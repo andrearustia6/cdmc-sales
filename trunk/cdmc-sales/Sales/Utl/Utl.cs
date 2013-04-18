@@ -754,6 +754,12 @@ namespace Utl
 
     public static class DateTimeExtensions
     {
+        public static string ToShortMonthString(this DateTime dt)
+        {
+
+            return dt.Month.ToString() + "-" + dt.Day.ToString(); ;
+        }
+
         public static DateTime StartOfWeek(this DateTime dt)
         {
             int diff = dt.DayOfWeek - DayOfWeek.Monday; if (diff < 0) { diff += 7; }
