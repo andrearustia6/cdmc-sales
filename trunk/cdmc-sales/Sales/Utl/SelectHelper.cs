@@ -11,6 +11,18 @@ namespace Utl
 {
     public static class SelectHelper
     {
+        public static IEnumerable<SelectListItem> DurationSelectList()
+        {
+            List<SelectListItem> selectList = new List<SelectListItem>();
+            selectList.Add(new SelectListItem() { Text = "所有", Value = "0" });
+            selectList.Add(new SelectListItem() { Text = "1天内", Value = "1" });
+            selectList.Add(new SelectListItem() { Text = "3天内", Value = "3" });
+            selectList.Add(new SelectListItem() { Text = "7天内", Value = "7" });
+            selectList.Add(new SelectListItem() { Text = "30天内", Value = "30" });
+            
+            return selectList;
+        }
+
         public static IEnumerable<SelectListItem> TrueOrFalseSelectList()
         {
             List<SelectListItem> selectList = new List<SelectListItem>();

@@ -22,15 +22,15 @@ namespace Sales.Controllers
             return View(md);
         }
 
-
-        
-
         [GridAction]
         public ActionResult _UserResearchIndex(int? month)
         {
             var md = MonthDuration.GetMonthInstance(month);
 
             var users = Query.AliveMemberNames();
+            //权限控制
+            var mems = CRM_Logical.GetUserInvolveProject().Select(s => s.Members.Where(w=>w.IsActivated));
+
             var prs = //from c in CH.DB.CompanyRelationships group c by new {c.Creator} into cg
                       from l in CH.DB.Leads group l by new { l.Creator } into lg
                       from u in users
@@ -80,12 +80,13 @@ namespace Sales.Controllers
         }
 
         [GridAction]
-        public ActionResult _UserResearchList(string name, string type) 
+        public ActionResult _UserResearchList(string name, string type, int? duration) 
         {
+            IQueryable<_UserResearchDetail> details=null;
             if (type == "project")
             {
                 int id = int.Parse(name);
-                var details = from l in CH.DB.CompanyRelationships.Where(w => w.Project.ID == id).Select(s => s.Company).SelectMany(s => s.Leads)
+                details = from l in CH.DB.CompanyRelationships.Where(w => w.Project.ID == id).Select(s => s.Company).SelectMany(s => s.Leads)
                               select new _UserResearchDetail()
                               {
                                   LeadNameEN = l.Name_EN,
@@ -97,15 +98,13 @@ namespace Sales.Controllers
                                   Email = l.EMail,
                                   LeadContact = l.Contact,
                                   LeadMobile = l.Mobile,
-                                  LeadTitle = l.Title
+                                  LeadTitle = l.Title,
+                                  CreateDate = l.CreatedDate
                               };
-
-                return View(new GridModel(details.ToList()));
- 
             }
             if (type == "user")
             {
-                var details = from l in CH.DB.Leads.Where(w => w.Creator == name)
+                details = from l in CH.DB.Leads.Where(w => w.Creator == name)
                               select new _UserResearchDetail()
                               {
                                   LeadNameEN = l.Name_EN,
@@ -119,12 +118,28 @@ namespace Sales.Controllers
                                   LeadMobile = l.Mobile,
                                   LeadTitle = l.Title,
                                   Creator = l.Creator,
+                                  CreateDate = l.CreatedDate
                               };
-
-                return View(new GridModel(details.ToList()));
             }
 
-            return View(new GridModel(new List<_UserResearchDetail>()));
+            List<_UserResearchDetail> Detailslist = new List<_UserResearchDetail>();
+            if (details != null)
+            {
+                if (duration != null && duration!=0)
+                {
+                    DateTime startdate = DateTime.Now;
+                    startdate = startdate.AddDays(-duration.Value);
+                    details = details.Where(d => d.CreateDate >= startdate && d.CreateDate <= DateTime.Now);
+                }
+
+                //权限控制
+
+                Detailslist = details.OrderByDescending(o=>o.CreateDate).ToList();
+            }
+          
+            
+            
+            return View(new GridModel(Detailslist));
         }
         
 
@@ -132,9 +147,11 @@ namespace Sales.Controllers
         public ActionResult _ProjectResearchIndex(int? month)
         {
             var md = MonthDuration.GetMonthInstance(month);
-         
+
+            //权限控制
+            var ps = CRM_Logical.GetUserInvolveProject().Select(s => s.ID);
             var projects = Query.AliveProjects();
-            var prs = from p in projects select new _ProjectResearch() { 
+            var prs = from p in projects.Where(w=>ps.Contains(w.ID)) select new _ProjectResearch() { 
                   ProjectName = p.Name_CH,
                   MemberCount = p.Members.Count,
                   ProjectCode = p.ProjectCode,
@@ -146,11 +163,11 @@ namespace Sales.Controllers
                   FivethWeekCompanyCount = p.CompanyRelationships.Count(w => w.CreatedDate >= md.StartDate5 && w.CreatedDate < md.EndDate5),
                  // CompanyAverage = p.CompanyRelationships.Count(w =>w.CreatedDate>=md.StartDate1 && w.CreatedDate <md.EndDate5)/p.Members.Count,
 
-                  FirstWeekLeadCount = p.CompanyRelationships.Select(s => s.Company).SelectMany(s => s.Leads).Count(w => w.CreatedDate >= md.StartDate1 && w.CreatedDate < md.EndDate1),
-                  SecondWeekLeadCount = p.CompanyRelationships.Select(s => s.Company).SelectMany(s => s.Leads).Count(w => w.CreatedDate >= md.StartDate2 && w.CreatedDate < md.EndDate2),
-                  ThirdWeekLeadCount = p.CompanyRelationships.Select(s => s.Company).SelectMany(s => s.Leads).Count(w => w.CreatedDate >= md.StartDate3 && w.CreatedDate < md.EndDate3),
-                  FourthWeekLeadCount = p.CompanyRelationships.Select(s => s.Company).SelectMany(s => s.Leads).Count(w => w.CreatedDate >= md.StartDate4 && w.CreatedDate < md.EndDate4),
-                  FivethWeekLeadCount = p.CompanyRelationships.Select(s => s.Company).SelectMany(s => s.Leads).Count(w => w.CreatedDate >= md.StartDate5 && w.CreatedDate < md.EndDate5),
+                  //FirstWeekLeadCount = p.CompanyRelationships.Select(s => s.Company).SelectMany(s => s.Leads).Count(w => w.CreatedDate >= md.StartDate1 && w.CreatedDate < md.EndDate1),
+                  //SecondWeekLeadCount = p.CompanyRelationships.Select(s => s.Company).SelectMany(s => s.Leads).Count(w => w.CreatedDate >= md.StartDate2 && w.CreatedDate < md.EndDate2),
+                  //ThirdWeekLeadCount = p.CompanyRelationships.Select(s => s.Company).SelectMany(s => s.Leads).Count(w => w.CreatedDate >= md.StartDate3 && w.CreatedDate < md.EndDate3),
+                  //FourthWeekLeadCount = p.CompanyRelationships.Select(s => s.Company).SelectMany(s => s.Leads).Count(w => w.CreatedDate >= md.StartDate4 && w.CreatedDate < md.EndDate4),
+                  //FivethWeekLeadCount = p.CompanyRelationships.Select(s => s.Company).SelectMany(s => s.Leads).Count(w => w.CreatedDate >= md.StartDate5 && w.CreatedDate < md.EndDate5),
                  // LeadAverage = p.CompanyRelationships.Select(s => s.Company).SelectMany(s => s.Leads).Count(w => w.CreatedDate >= md.StartDate1 && w.CreatedDate < md.EndDate5) / p.Members.Count
             };
             //foreach (var p in prs)

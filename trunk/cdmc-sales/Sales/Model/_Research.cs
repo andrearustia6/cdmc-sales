@@ -105,10 +105,12 @@ namespace Sales.Model
         [Display(Name = "移动电话")]
         public string LeadMobile { get; set; }
 
-        [Display(Name = "Lead")]
+        [Display(Name = "职位")]
         public string LeadTitle { get; set; }
-        
 
+
+        public DateTime? CreateDate { get; set; }
+        [Display(Name = "Lead姓名")]
         public string LeadName
         {
             get
