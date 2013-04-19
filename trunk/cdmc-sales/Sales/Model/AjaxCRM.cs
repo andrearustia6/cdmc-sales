@@ -122,9 +122,11 @@ namespace Model
     {
         #region lead
         public string HasBlowed { get; set; }
+        public string Gender { get; set; }
         public string LeadName { get { return Utl.Utl.GetFullName(LeadNameCH, LeadNameEN); } }
         public string LeadNameCH { get; set; }
         public string LeadNameEN { get; set; }
+        public string LeadPersonalEmail { get; set; }
         public string LeadFax { get; set; }
         public int CRMID { get; set; }
         public int LeadID { get; set; }
@@ -194,7 +196,20 @@ namespace Model
                 return status;
             }
         }
+        [Display(Name = "微博账号")]
+        public string WeiBo { get; set; }
 
+        [Display(Name = "微信账号")]
+        public string WeiXin { get; set; }
+
+        [Display(Name = "LinkIn账号")]
+        public string LinkIn { get; set; }
+
+        [Display(Name = "FaceBook账号")]
+        public string FaceBook { get; set; }
+
+        [Display(Name = "博客地址")]
+        public string Blog { get; set; }
 
 
         public string LeadDistinctNumberString

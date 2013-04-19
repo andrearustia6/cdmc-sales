@@ -178,6 +178,21 @@ namespace Entity
         [Display(Name = "移动电话")]
         public string Mobile { get; set; }
 
+        [Display(Name = "微博账号")]
+        public string WeiBo { get; set; }
+
+        [Display(Name = "微信账号")]
+        public string WeiXin { get; set; }
+
+        [Display(Name = "LinkIn账号")]
+        public string LinkIn { get; set; }
+
+        [Display(Name = "FaceBook账号")]
+        public string FaceBook { get; set; }
+
+        [Display(Name = "博客地址")]
+        public string Blog { get; set; }
+
         public virtual Company Company { get; set; }
         [Display(Name = "所属公司"),Required]
         public int? CompanyID { get; set; }
@@ -185,6 +200,8 @@ namespace Entity
         public virtual List<TargetOfPackage> TargetOfPackages { get; set; }
 
         public virtual List<Project> Projects { get; set; }
+
+
 
         public virtual Image Image { get; set; }
         public int?  ImageID { get; set; }
