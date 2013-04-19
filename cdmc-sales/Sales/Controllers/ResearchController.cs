@@ -18,6 +18,7 @@ namespace Sales.Controllers
     {
         public ActionResult ResearchIndex(int? month)
         {
+            ViewBag.SelectedMonth = month;
             var md = MonthDuration.GetMonthInstance(month);
             return View(md);
         }

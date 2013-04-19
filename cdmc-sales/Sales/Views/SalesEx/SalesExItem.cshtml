@@ -1,88 +1,108 @@
 ﻿@using Model
 @model AjaxCRM
-           
 @if (Model != null)
 {
-   Html.Telerik().Splitter().Name("sp2").HtmlAttributes(new { style = "min-height: 790px;" })
-              .Orientation(SplitterOrientation.Vertical).Panes(panes =>
-              {
-                  panes.Add().Size("20%").Content(@<text>@CompanyInfo()</text>);
-                  panes.Add().Content(@<text>@LeadsInfo()</text>);
-              }).Render();
+    Html.Telerik().Splitter().Name("sp2").HtmlAttributes(new { style = "min-height: 790px;" })
+               .Orientation(SplitterOrientation.Vertical).Panes(panes =>
+               {
+                   panes.Add().Size("20%").Content(@<text>@CompanyInfo()</text>);
+                   panes.Add().Content(@<text>@LeadsInfo()</text>);
+               }).Render();
 }
 @helper CompanyInfo()
-{
+    {
     <fieldset class="fieldblock">
-    <legend>@Model.CompanyName</legend>
-    <dl >
-        <dt style="font-size:13px;">公司信息:</dt>
-        <dd class="fieldname">
-            <div>
-                <font>中文名：</font>@Model.CompanyNameCH</div>
-            <div>
-                <font>英文名：</font>@Model.CompanyNameEN</div>
-            <div>
-                <font>直线：</font>@Model.CompanyContact</div>
-            <div>
-                <font>传真：</font>@Model.CompanyFax</div>
-            <div>
-                <font>区号：</font>@Model.CompanyDistrictNumberString</div>
-            <div>
-                <font>成熟度：</font>@Model.ProgressString</div>
-            <div>
-                <font>细分行业：</font>@Model.CompanyCategoryStrings
-            </div>
-        </dd>
-    </dl>
-      
-</fieldset>
+        <legend>@Model.CompanyName</legend>
+        <dl>
+            <dt style="font-size: 13px;">公司信息:</dt>
+            <dd class="fieldname">
+                <div>
+                    <font>中文名：</font>@Model.CompanyNameCH</div>
+                <div>
+                    <font>英文名：</font>@Model.CompanyNameEN</div>
+                <div>
+                    <font>区号：</font>@Model.CompanyDistrictNumberString</div>
+                <div>
+                    <font>公司总机：</font>@Model.CompanyContact</div>
+                <div>
+                    <font>传真：</font>@Model.CompanyFax</div>
+                <div>
+                    <font>细分行业：</font>@Model.CompanyCategoryStrings
+                </div>
+                <div>
+                    <font>成熟度：</font>@Model.ProgressString</div>
+            </dd>
+        </dl>
+    </fieldset>
 }
-
 @helper LeadsInfo()
-{
-   <dl>
-
-@foreach (var lead in Model.AjaxLeads)
-{
-    <fieldset style=" margin:20px;">
- <legend>@lead.DisplayText</legend>
-
-      <dt style="font-size:13px;">个人信息</dt>
-        <dd class="fieldname">
-            <div>
-                <font>中文名：</font>@lead.LeadNameCH
-            </div>
-            <div>
-                <font>英文名：</font>@lead.LeadNameEN
-            </div>
-            <div>
-                <font>直线：</font>@lead.LeadContact
-            </div>
-            <div>
-                <font>手机：</font>@lead.LeadMobile
-            </div>
-            <div>
-                <font>传真：</font>@lead.LeadFax
-            </div>
-            <div>
-                <font>客户区号：</font>@lead.LeadDistinctNumberString
-            </div>
-            <div>
-                <font>Lead职位：</font>@lead.LeadTitle
-            </div>
-            <div>
-                <font>Lead传真：</font>@lead.LeadFax
-            </div>
-        </dd>
-         <dt style="font-size:13px;">描述</dt>
-        <dd class="fieldname">
-         <div>
-                <font><#= Status #></font>
-          </div>
-        </dd>
-  <dt style="font-size:13px;">致电列表</dt>
-  <dd>
-        @(Html.Telerik().Grid<AjaxCall>(lead.AjaxCalls.OrderByDescending(o=>o.CallDate)).Name("lead" + lead.LeadID)
+    {
+    <dl>
+        @foreach (var lead in Model.AjaxLeads)
+        {
+            <fieldset style="margin: 20px;">
+                <legend>@lead.DisplayText</legend>
+                <dt style="font-size: 13px;">个人信息</dt>
+                <dd class="fieldname">
+                    <div>
+                        <font>中文名：</font>@lead.LeadNameCH
+                    </div>
+                    <div>
+                        <font>英文名：</font>@lead.LeadNameEN
+                    </div>
+                    <div>
+                        <font>Lead职位：</font>@lead.LeadTitle
+                    </div>
+                    div> <font>Lead性别：</font>@lead.Gender
+                    </div>
+                    <div>
+                        <font>客户区号：</font>@lead.LeadDistinctNumberString
+                    </div>
+                </dd>
+                <dd>
+                    <div>
+                        <font>公司邮箱：</font>@lead.LeadEmail
+                    </div>
+                    <div>
+                        <font>个人邮箱：</font>@lead.LeadPersonalEmail
+                    </div>
+                    <div>
+                        <font>直线：</font>@lead.LeadContact
+                    </div>
+                    <div>
+                        <font>手机：</font>@lead.LeadMobile
+                    </div>
+                    <div>
+                        <font>传真：</font>@lead.LeadFax
+                    </div>
+                    <div>
+                        <font>微博账号：</font>@lead.WeiBo
+                    </div>
+                    <div>
+                        <font>微信账号：</font>@lead.WeiXin
+                    </div>
+                    <div>
+                        <font>LinkIn账号：</font>@lead.LinkIn
+                    </div>
+                    <div>
+                        <font>FaceBook账号：</font>@lead.FaceBook
+                    </div>
+                    <div>
+                        <font>传真：</font>@lead.LeadFax
+                    </div>
+                    <div>
+                        <font>博客地址：</font>@lead.Blog
+                    </div>
+                </dd>
+                <dt style="font-size: 13px;">描述</dt>
+                <dd class="fieldname">
+                    <div>
+                        <font><#= Status #></font>
+                    </div>
+                </dd>
+                <dt style="font-size: 13px;">致电列表</dt>
+                <dd>
+                    @(Html.Telerik().Grid<AjaxCall>(lead.AjaxCalls.OrderByDescending(o => o.CallDate)).Name("lead" + lead.LeadID)
                     .Columns(columns =>
                     {
                         columns.Bound(o => o.CallType).Width(80);
@@ -95,17 +115,14 @@
                     .Sortable().Scrollable(scrolling => scrolling.Enabled(false))
                     .Filterable()
         )
-        </dd>
-         </fieldset>
+                </dd>
+            </fieldset>
+        }
+    </dl>
 }
-
-</dl>
-}
-
 <style>
     .fieldblock
     {
-    
     }
     .fieldname div
     {
@@ -115,8 +132,6 @@
         border-bottom-color: #FF8C00;
         border: 1px solid #CCC;
         display: inline-block;
-      
-      
         margin-left: 8px;
         margin-bottom: 8px;
     }

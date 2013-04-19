@@ -10,7 +10,7 @@
         {
             var m = ViewBag.SelectedMonth as int?;
             m = m == null ? DateTime.Now.Month : m;
-        @Html.DropDownList("selectedmonth", new SelectList(new List<int>() { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 }, m), new { onchange = "this.form.submit();" })
+        @Html.DropDownList("month", new SelectList(new List<int>() { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 }, m), new { onchange = "this.form.submit();" })
         }
     }
 </fieldset>
