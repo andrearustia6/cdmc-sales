@@ -134,12 +134,9 @@ namespace Sales.Controllers
                 }
 
                 //权限控制
-
                 Detailslist = details.OrderByDescending(o=>o.CreateDate).ToList();
             }
-          
-            
-            
+
             return View(new GridModel(Detailslist));
         }
         
