@@ -108,7 +108,6 @@ namespace BLL
             list = list.Distinct(new LeadCallLeadDistinct()).Where(w=>w.CallDate>= startdate && w.CallDate<enddate).ToList();
       
             return list;
-
         }
 
         public static List<Project> GetUserProjectRight(string funtionname)

@@ -82,61 +82,130 @@
     columns.Bound(p => p.SecondWeekLeadCount).Title(Model.DurationStrings[1] + " Lead添加数");
     columns.Bound(p => p.ThirdWeekLeadCount).Title(Model.DurationStrings[2] + " Lead添加数");
     columns.Bound(p => p.FourthWeekLeadCount).Title(Model.DurationStrings[3] + " Lead添加数");
-    columns.Command(command => command.Custom("viewUserDetails").Text("调研查看").DataRouteValues(route => route.Add(o => o.UserName).RouteKey("UserName")).Ajax(true)).HtmlAttributes(new { style = "text-align: center" }).Width(150).Title("操作");
-
-    
     if (Model.DurationStrings.Count == 5)
     {
         columns.Bound(p => p.FirstWeekLeadCount).Title(Model.DurationStrings[4]);
     }
+    
+    columns.Command(command => command.Custom("viewUserDetails").Text("调研查看").DataRouteValues(route => route.Add(o => o.UserName).RouteKey("UserName")).Ajax(true)).HtmlAttributes(new { style = "text-align: center" }).Width(150).Title("操作");
+
+    
+   
 })
        .Pageable(p => p.Style(GridPagerStyles.Status).PageSize(50)
        .PageOnScroll(true)).Scrollable().Sortable().Groupable().Resizable(r=>r.Columns(true)).Filterable()
-       .ClientEvents(events => events.OnCommand("onUserDetails"))
+               .ClientEvents(events => events.OnCommand("onUserDetails").OnRowDataBound("onDetailLoad"))
 )
 </fieldset> 
 
 
 
-@(Html.Telerik().Window().Name("DetailsWindow").Visible(false).Title("调研列表").Modal(true).Width(800).Height(500).Content(@<text> 
-               @(Html.Telerik().Grid<_UserResearchDetail>().Name("DetailsGrid")
+@(Html.Telerik().Window().Name("DetailsWindow").Visible(false).Title("调研列表").Modal(true).Width(900).Height(610).Content(@<text> 
+       @DetailList()       
+ </text>).Resizable().Draggable(true)
+)
+
+ @helper DetailList()
+ {
+      @(Html.Telerik().Grid<_UserResearchDetail>().Name("DetailsGrid")
         .DataBinding(dataBinding =>
         {
-            dataBinding.Ajax().Select("_UserResearchList", "Research");
+            dataBinding.Ajax().Select("_UserResearchList", "Research", new { name = "", type = "" });
         })
-.Columns(columns =>
-{
-    columns.Bound(p => p.CompanyName);
-    columns.Bound(p => p.LeadName).Width(100);
-    columns.Bound(p => p.CompanyContact).Width(80);
-    columns.Bound(p => p.LeadContact).Width(80);
-    columns.Bound(p => p.LeadMobile).Width(80);
-    columns.Bound(p => p.CompanyDesicription);
+         .ToolBar(toolBar => toolBar.Template(
+            @<text><label > 时间筛选: </label>
+         @Html.DropDownList("durationselect", Utl.SelectHelper.DurationSelectList())
+        
+    </text>))
+      
+      .Columns(columns =>
+      {
+          columns.Bound(p => p.CompanyName);
+          columns.Bound(p => p.LeadName).Width(100);
+          columns.Bound(p => p.LeadTitle).Width(100);
+          columns.Bound(p => p.CompanyContact).Width(80);
+          columns.Bound(p => p.LeadContact).Width(80);
+          columns.Bound(p => p.LeadMobile).Width(80);
+          columns.Bound(p => p.CreateDate);
+          columns.Bound(p => p.Creator);
+          columns.Bound(p => p.CompanyDesicription);
 
-})
-.Pageable(p => p.Style(GridPagerStyles.Status).PageSize(100)
-        .PageOnScroll(true)).Scrollable().Sortable().Groupable(g => g.Groups(i => i.Add(child => child.CompanyName))).Resizable(r => r.Columns(true)).Scrollable(scrolling => scrolling.Height(400))
-)  
- </text>).Resizable().Draggable(true))
+      })
+      
+      .Pageable(p => p.Style(GridPagerStyles.Status).PageSize(100)
+              .PageOnScroll(true)).Scrollable().Sortable().Groupable().Resizable(r => r.Columns(true))
+              .Scrollable(scrolling => scrolling.Height(500))
+      )  
+}
+<input id="detailtype" type="hidden" />
+<input id="detailname" type="hidden" />
+<input id="username" type="hidden" value=@Utl.Employee.CurrentUserName />
 
  <script type="text/javascript">
+     function dw() {
+         return $("#DetailsWindow").data("tWindow");
+     }
+
+     function dg() {
+         return $('#DetailsGrid').data('tGrid');
+     }
+
+     function ddl() {
+         return $('#durationselect');
+     }
+
+     function onDetailLoad(e) {
+
+         if ($(e.row).children().first().text() != currentuser) {
+             $(e.row).children().last().find('a').hide();
+         }
+        
+     }
+var currentuser;
+     $(document).ready(function () {
+
+         currentuser = $('#username').val();
+
+         ddl().bind('change', function () {
+             var duration = ddl().val();
+             var d = dg();
+
+             var type = $("#detailtype").val();
+             var name = $("#detailname").val();
+             dg().ajaxRequest({ name: name, type: type, duration: duration });
+
+         });
+     });
+
      function onUserDetails(e) {
+         resetddl();
          var user = e.dataItem.UserName;
+         var d = dg();
+         setdetailselections(user, 'user');
+         dg().ajax.selectUrl = "/Research/_UserResearchList/?name=" + user + "&type=user";
+         
          dg().ajaxRequest({ name: user, type: 'user' });
          dw().center().open();
      }
 
      function onProjectDetails(e) {
+         resetddl();
          var id = e.dataItem.ProjectID;
+         var d = dg();
+         setdetailselections(id, 'project');
+         dg().ajax.selectUrl = "/Research/_UserResearchList/?name="+id+"&type=project";
          dg().ajaxRequest({ name: id, type: 'project' });
+         
          dw().center().open();
      }
-
-    function dw() {
-         return $("#DetailsWindow").data("tWindow");
+     //重设ddl
+     function resetddl() {
+         ddl().val('0');
      }
-
-    function dg() {
-        return $('#DetailsGrid').data('tGrid');
-    }
+     //保存details配置
+     function setdetailselections(name, type) {
+         $('#detailtype').val(type);
+         $('#detailname').val(name);
+     }
+    
      </script>
