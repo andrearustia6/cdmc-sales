@@ -33,6 +33,7 @@ namespace Sales.Controllers
             var mems = CRM_Logical.GetUserInvolveProject().Select(s => s.Members.Where(w=>w.IsActivated));
 
             var prs = //from c in CH.DB.CompanyRelationships group c by new {c.Creator} into cg
+                      //from l in CH.DB.Leads group c by new {c.companyid} into lg
                       from l in CH.DB.Leads group l by new { l.Creator } into lg
                       from u in users
                       where lg.Key.Creator == u 
