@@ -40,9 +40,8 @@
     <dl>
         @foreach (var lead in Model.AjaxLeads)
         {
-           
-             @*   <legend>@lead.DisplayText</legend>*@
-                <dt style="font-size: 13px;">个人信息</dt>
+           <fieldset>
+                <dt style="font-size: 13px; margin:5px; ">@lead.DisplayText</dt>
                 <dd class="fieldname">
                     <div>
                         <font>中文名：</font>@lead.LeadNameCH
@@ -60,7 +59,7 @@
                     </div>
                 </dd>
              <dt style="font-size: 13px;">联系方式</dt>
-                <dd>
+                <dd class="fieldname">
                     <div>
                         <font>公司邮箱：</font>@lead.LeadEmail
                     </div>
@@ -98,7 +97,7 @@
                 <dt style="font-size: 13px;">描述</dt>
                 <dd class="fieldname">
                     <div>
-                        <font><#= Status #></font>
+                        <font></font>
                     </div>
                 </dd>
                 <dt style="font-size: 13px;">致电列表</dt>
@@ -117,7 +116,7 @@
                     .Filterable()
         )
                 </dd>
-          
+          </fieldset>
         }
     </dl>
 }
