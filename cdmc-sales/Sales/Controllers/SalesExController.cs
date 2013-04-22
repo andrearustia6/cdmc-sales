@@ -89,13 +89,20 @@ namespace Sales.Controllers
             return data;
         }
 
-        IQueryable<AjaxCRM> GetCrmDataQuery()
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="alldata">true 为选择所有数据</param>
+        /// <returns></returns>
+        IQueryable<AjaxCRM> GetCrmDataQuery(bool? alldata=false)
         {
+          
             var user = Employee.CurrentUserName;
+             var custom  = from cg in CH.DB.UserFavorsCRMs.Where(w=>w.UserFavorsCrmGroup.UserName==user) select cg;
             var data = from c in CH.DB.CompanyRelationships
                        from m in c.Members
-
-                       where m.Name == user && m.CompanyRelationships.Select(s => s.ID).Contains(c.ID)
+                       
+                       where m.Name == user && m.CompanyRelationships.Select(s => s.ID).Contains(c.ID) && (!custom.Select(s=>s.CompanyRelationshipID).Contains(c.ID)||alldata.Value)
                        select new AjaxCRM
                        {
                            CompanyNameEN = c.Company.Name_EN,
@@ -160,14 +167,15 @@ namespace Sales.Controllers
             {
                 leadid = int.Parse(ids[1]);
             }
-            var data = GetCrmDataQuery().FirstOrDefault(f => f.CRMID == crmid);
+            var data = GetCrmDataQuery(true).FirstOrDefault(f => f.CRMID == crmid);
+
 
             if (leadid != 0 && data != null)
             {
                 data.AjaxLeads = data.AjaxLeads.Where(w => w.LeadID == leadid);
             }
 
-            return PartialView(@"~\views\shared\salesexitem.cshtml", data);
+            return PartialView(@"~\views\salesex\salesexitem.cshtml", data);
         }
 
         /// <summary>
@@ -197,10 +205,15 @@ namespace Sales.Controllers
             crm.Members.Remove(member);
             CH.Edit<CompanyRelationship>(crm);
 
+            return PartialView(@"~\views\salesex\MainNavigationContainer.cshtml", GetNavigationBar());
+        }
+
+        AjaxCrmTypedList GetNavigationBar()
+        {
             var d = new AjaxCrmTypedList();
             d.AllCRMs = GetCrmDataQuery();
             d.CustomCrmGroups = GetcustomCrmGroupDataQuery();
-            return PartialView(@"~\views\salesex\MainNavigationContainer.cshtml", d);
+            return d;
         }
 
         /// <summary>
@@ -214,22 +227,39 @@ namespace Sales.Controllers
             var targetgroupid = Int32.Parse(groupid);
 
             var target = CH.GetDataById<UserFavorsCrmGroup>(targetgroupid);
-            //取得crm已存在degroup
-            var crmbelonggroups = CH.GetAllData<UserFavorsCrmGroup>(w => w.UserName == Employee.CurrentUserName && w.UserFavorsCRMs.Select(s => s.ID).Contains(sourcecrmid));
-            if (crmbelonggroups.Count > 0)
-            {
-                foreach (var g in crmbelonggroups)
-                {
-                    g.UserFavorsCRMs.RemoveAll(r=>r.CompanyRelationshipID == sourcecrmid);
-                    CH.Edit<UserFavorsCrmGroup>(g);
-                }
-            }
+            RemoveFromGroup(crmid);
+
             target.UserFavorsCRMs.Add(new UserFavorsCRM() { CompanyRelationshipID = sourcecrmid, UserFavorsCrmGroupID = targetgroupid });
             CH.Edit<UserFavorsCrmGroup>(target);
             var username = Employee.CurrentUserName;
-            var data = GetcustomCrmGroupDataQuery();
-            return PartialView(@"~\views\salesex\FavorsCRM.cshtml", data);
+            return PartialView(@"~\views\salesex\MainNavigationContainer.cshtml", GetNavigationBar());
         }
+
+        public void RemoveFromGroup(string crmid)
+        {
+            var sourcecrmid = Int32.Parse(crmid);
+            var username = Employee.CurrentUserName;
+            var targets = CH.GetAllData<UserFavorsCrmGroup>(w => w.UserName == username && w.UserFavorsCRMs.Any(a => a.CompanyRelationshipID == sourcecrmid));
+
+
+            targets.ForEach(f =>
+            {
+                var sources = f.UserFavorsCRMs.FindAll(a => a.CompanyRelationshipID == sourcecrmid);
+                sources.ForEach(s =>
+                {
+                    f.UserFavorsCRMs.Remove(s);
+                });
+
+                CH.Edit<UserFavorsCrmGroup>(f);
+            });
+        }
+        public PartialViewResult _CrmRemove(string crmid)
+        {
+            RemoveFromGroup(crmid);
+            var data = GetcustomCrmGroupDataQuery();
+            return PartialView(@"~\views\salesex\MainNavigationContainer.cshtml", GetNavigationBar());
+        }
+        
 
         /// <summary>
         /// 刷新导航栏
@@ -237,10 +267,7 @@ namespace Sales.Controllers
         /// <returns></returns>
         public PartialViewResult _RefreshCrmList()
         {
-            var d = new AjaxCrmTypedList();
-            d.AllCRMs = GetCrmDataQuery();
-            d.CustomCrmGroups = GetcustomCrmGroupDataQuery();
-            return PartialView(@"~\views\salesex\MainNavigationContainer.cshtml", d);
+            return PartialView(@"~\views\salesex\MainNavigationContainer.cshtml", GetNavigationBar());
         }
 
         [GridAction]

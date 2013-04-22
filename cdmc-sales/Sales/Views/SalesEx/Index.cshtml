@@ -67,13 +67,13 @@
             </ul>
         </li>
          <li class="separator"></li>
-        <li class="icon">
-            <span class="icon drive"></span>
+        <li class="remove" id="remove">
+            <span class=""></span>
             从组中移出
         </li>
         <li class="separator"></li>
         <li class="blowed">
-            <span class="icon drive"></span>
+            <span class=""></span>
             Blowed，放回公海
         </li>
     </ul>   
@@ -98,38 +98,44 @@
     });
 
     function initial() {
+
+        //分组字体标注
+        $('#customView').find('>ul >li >div >span').css("fontSize", "23px");
+        $('#customView').find('>ul >li >ul >li >div >span').css("fontSize", "15px");
+        $('#navigationView').find('>ul >li >div >span').css("fontSize", "15px");
+        
         //lead状态颜色标注
          $('#mainnavigationcontainer span').each(function(){
           var $this = $(this);
           var spantext = $this.text();
           if(spantext.indexOf(',&6*')>0)//Call-Backed
           {
-             $this.css('background-color','#95CACA');
+              $this.css('color', '#95CACA');
              spantext = spantext.replace(",&6*","");
           }
           else if(spantext.indexOf(',&2*')>0)//blowed
           {
-             $this.css('background-color','#E0E0E0');
+              $this.css('color', '#E0E0E0');
              spantext = spantext.replace(",&2*","");
           }
           else if(spantext.indexOf(',&0*')>0)//no call
           {
-            $this.css('background-color','red');
+            $this.css('color','red');
             spantext = spantext.replace(",&0*","");
           }
           else if(spantext.indexOf(',&9*')>0)//close
           {
-          $this.css('background-color','#CEFFCE');
+              $this.css('color', '#CEFFCE');
           spantext = spantext.replace(",&9*","");
           }
           else if(spantext.indexOf(',&7*')>0)//Waiting for Approval
           {
-          $this.css('background-color','#D3A4FF');
+              $this.css('color', '#D3A4FF');
           spantext = spantext.replace(",&7*","");
           }
           else if(spantext.indexOf(',&8*')>0)//Qualified Decision
           {
-            $this.css('background-color','yellow');
+              $this.css('color', 'yellow');
             spantext = spantext.replace(",&8*","");
           }
           $this.text(spantext);
@@ -167,7 +173,7 @@
             heightOverflowOffset: 3,
             submenuLeftOffset: -4,
             submenuTopOffset: -5,
-            onSelect: groupContextMenuSelected,
+            onSelect: groupContextMenuSelected
         });
         
         $('#customView').find('>ul >li >ul >li').jeegoocontext('favorscontextmenu', {
@@ -185,8 +191,7 @@
         //更新context菜单公司名
         var crmtext = $(context).find('>div >span.t-in').text();
         crmtext = crmtext.split(',')[0];
-        $(' .regrouptext').text("拷贝" + crmtext + "到");
-
+        $(' .regrouptext').text("移动" + crmtext + "到");
       
     }
 
@@ -199,10 +204,11 @@
             e.preventDefault();
             gw().center().open();
        }
+     
       
     }
 
-    //公司关联菜单选中
+    //公司关联菜单选中/自定义组公司关联选中
     function contextMenuSelected(e, context) {
         var $target = $(e.target);
 
@@ -222,6 +228,17 @@
             var crmid = $(context).find('>div >input').val();
             $.post('_CrmBlowed', { crmid: crmid }, function (result) {
                 $('#mainnavigationcontainer').html(result);
+                initial();
+            });
+        }
+
+
+        //释放回公司池
+        if ($target.hasClass('remove')) {
+            var crmid = $(context).find('>div >input').val();
+            var groupid = $(e.currentTarget).find('input').val();
+            $.post('_CrmRemove', { crmid: crmid }, function (result) {
+                $('#crmdfavorsscontainer').html(result);
                 initial();
             });
         }
