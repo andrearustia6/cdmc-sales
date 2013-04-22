@@ -170,6 +170,11 @@ namespace Sales.Controllers
             return PartialView(@"~\views\shared\salesexitem.cshtml", data);
         }
 
+        /// <summary>
+        /// 放弃可打公司，只把member从companyrelationship中移除，不删除客户信息
+        /// </summary>
+        /// <param name="crmid"></param>
+        /// <returns></returns>
         public PartialViewResult _CrmBlowed(string crmid)
         {
             var sourcecrmid = Int32.Parse(crmid);
@@ -209,6 +214,16 @@ namespace Sales.Controllers
             var targetgroupid = Int32.Parse(groupid);
 
             var target = CH.GetDataById<UserFavorsCrmGroup>(targetgroupid);
+            //取得crm已存在degroup
+            var crmbelonggroups = CH.GetAllData<UserFavorsCrmGroup>(w => w.UserName == Employee.CurrentUserName && w.UserFavorsCRMs.Select(s => s.ID).Contains(sourcecrmid));
+            if (crmbelonggroups.Count > 0)
+            {
+                foreach (var g in crmbelonggroups)
+                {
+                    g.UserFavorsCRMs.RemoveAll(r=>r.CompanyRelationshipID == sourcecrmid);
+                    CH.Edit<UserFavorsCrmGroup>(g);
+                }
+            }
             target.UserFavorsCRMs.Add(new UserFavorsCRM() { CompanyRelationshipID = sourcecrmid, UserFavorsCrmGroupID = targetgroupid });
             CH.Edit<UserFavorsCrmGroup>(target);
             var username = Employee.CurrentUserName;
