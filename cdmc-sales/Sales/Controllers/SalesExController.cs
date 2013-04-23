@@ -320,6 +320,10 @@ namespace Sales.Controllers
             companyRelationship.Description = ajaxCRM.Desc;
             companyRelationship.ProgressID = ajaxCRM.ProgressID;
             companyRelationship.Categorys.Clear();
+            if (ajaxCRM.Categories == null)
+            {
+                ajaxCRM.Categories = new List<int>() { };
+            }
             companyRelationship.Categorys = CH.GetAllData<Category>(c => ajaxCRM.Categories.Contains(c.ID)).ToList();
             CH.Edit<CompanyRelationship>(companyRelationship);
             return null;
