@@ -94,17 +94,18 @@ namespace Sales.Controllers
         /// </summary>
         /// <param name="alldata">true 为选择所有数据</param>
         /// <returns></returns>
-        IQueryable<AjaxCRM> GetCrmDataQuery(bool? alldata=false)
+        IQueryable<AjaxCRM> GetCrmDataQuery(bool? alldata = false)
         {
-          
+
             var user = Employee.CurrentUserName;
-             var custom  = from cg in CH.DB.UserFavorsCRMs.Where(w=>w.UserFavorsCrmGroup.UserName==user) select cg;
+            var custom = from cg in CH.DB.UserFavorsCRMs.Where(w => w.UserFavorsCrmGroup.UserName == user) select cg;
             var data = from c in CH.DB.CompanyRelationships
                        from m in c.Members
-                       
-                       where m.Name == user && m.CompanyRelationships.Select(s => s.ID).Contains(c.ID) && (!custom.Select(s=>s.CompanyRelationshipID).Contains(c.ID)||alldata.Value)
+
+                       where m.Name == user && m.CompanyRelationships.Select(s => s.ID).Contains(c.ID) && (!custom.Select(s => s.CompanyRelationshipID).Contains(c.ID) || alldata.Value)
                        select new AjaxCRM
                        {
+                           CompanyID = c.CompanyID,
                            CompanyNameEN = c.Company.Name_EN,
                            CompanyNameCH = c.Company.Name_CH,
                            CompanyContact = c.Company.Contact,
@@ -114,6 +115,16 @@ namespace Sales.Controllers
                            CompanyDistinct = c.Company.DistrictNumber,
                            CompanyCreateDate = c.Company.CreatedDate,
                            CRMID = c.ID,
+                           DistrictNumberID = c.Company.DistrictNumberID,
+                           ProgressID = c.ProgressID,
+                           AreaID = c.Company.AreaID,
+                           CompanyTypeID = c.Company.CompanyTypeID,
+                           ZipCode = c.Company.ZIP,
+                           WebSite = c.Company.WebSite,
+                           Address = c.Company.Address,
+                           Business = c.Company.Business,
+                           Desc = c.Company.Description,
+                           Categories = c.Categorys.Select(ca => ca.ID),
                            AjaxLeads = (from l in c.Company.Leads
                                         select new AjaxLead
                                         {
@@ -259,7 +270,7 @@ namespace Sales.Controllers
             var data = GetcustomCrmGroupDataQuery();
             return PartialView(@"~\views\salesex\MainNavigationContainer.cshtml", GetNavigationBar());
         }
-        
+
 
         /// <summary>
         /// 刷新导航栏
@@ -288,6 +299,40 @@ namespace Sales.Controllers
                         };
 
             return View(new GridModel<AjaxCall> { Data = calls.OrderByDescending(o => o.CallDate) });
+        }
+
+        [HttpPost]
+        public ActionResult EditSaleCompany(AjaxCRM ajaxCRM)
+        {
+            CompanyRelationship companyRelationship = CH.GetAllData<CompanyRelationship>(c => c.CompanyID == ajaxCRM.CompanyID).First();
+            companyRelationship.Company.Address = ajaxCRM.Address;
+            companyRelationship.Company.AreaID = ajaxCRM.AreaID;
+            companyRelationship.Company.Business = ajaxCRM.Business;
+            companyRelationship.Company.CompanyTypeID = ajaxCRM.CompanyTypeID;
+            companyRelationship.Company.Contact = ajaxCRM.CompanyContact;
+            companyRelationship.Company.Description = ajaxCRM.Desc;
+            companyRelationship.Company.DistrictNumberID = ajaxCRM.DistrictNumberID;
+            companyRelationship.Company.Fax = ajaxCRM.CompanyFax;
+            companyRelationship.Company.Name_CH = ajaxCRM.CompanyNameCH;
+            companyRelationship.Company.Name_EN = ajaxCRM.CompanyNameEN;
+            companyRelationship.Company.WebSite = ajaxCRM.WebSite;
+            companyRelationship.Company.ZIP = ajaxCRM.ZipCode;
+            companyRelationship.Description = ajaxCRM.Desc;
+            companyRelationship.ProgressID = ajaxCRM.ProgressID;
+            companyRelationship.Categorys.Clear();
+            companyRelationship.Categorys = CH.GetAllData<Category>(c => ajaxCRM.Categories.Contains(c.ID)).ToList();
+            CH.Edit<CompanyRelationship>(companyRelationship);
+            return null;
+        }
+
+        public ActionResult CheckCompanyExist(string beforeUpdate, string afterUpdate)
+        {
+            if (CH.GetAllData<CompanyRelationship>(c => c.MarkForDelete == false && c.Company.Name_CH == afterUpdate && c.Company.Name_CH != beforeUpdate).Count > 0)
+            {
+                return Content("同名公司名字已存在！");
+            }
+
+            return Content("");
         }
     }
 }

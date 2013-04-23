@@ -89,7 +89,8 @@
             <span class="icon drive"></span>
             Blowed，放回公海
         </li>
-    </ul>    
+    </ul>    
+
 
 <script type="text/javascript">
 
@@ -262,8 +263,8 @@
             });
    }
     //公司选择 
-    function onIndexSelect(e) {
-      
+   function onIndexSelect(e) {
+           
         var indexs = nv().getItemValue(e.item);
         if (indexs.indexOf("分组") < 0 ) {
             $.post('_SelectedList', { indexs: indexs }, function (result) {

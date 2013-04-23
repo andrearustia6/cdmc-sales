@@ -166,7 +166,7 @@
         $.post('CheckCompanyExist', { beforeUpdate: currentCompanyName, afterUpdate: companyName }, function (result) {
             if (result.length > 0) {
                 alert(result);
-            } else {
+            } else {                
                 $('.dialogue-editcompany form').first().submit();
             }
         });
