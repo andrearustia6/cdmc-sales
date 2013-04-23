@@ -70,12 +70,17 @@ namespace Model
         #endregion
 
         #region company
+        [Required(ErrorMessage = " ")]
+        [Display(Name = "中文名字")]
         public string CompanyNameCH { get; set; }
+         [Display(Name = "英文名字")]
         public string CompanyNameEN { get; set; }
         public int LeadsCount{ get; set; }
         public string CompanyName { get { return Utl.Utl.GetFullName(CompanyNameCH,CompanyNameEN); } }
-        public int CompanyID { get; set; }
+        public int? CompanyID { get; set; }
+         [Display(Name = "公司总机")]
         public string CompanyContact {get;set;}
+        [Display(Name = "公司传真")]
         public string CompanyFax{get;set;}
         //public IEnumerable<String> LeadsName { get; set; }
         public DateTime? CompanyCreateDate { get; set; }
@@ -85,8 +90,7 @@ namespace Model
             {
                 return CompanyDistinct == null ? string.Empty : CompanyDistinct.Name;
             }
-        }
-
+        }        
         public DistrictNumber CompanyDistinct { set; private get; }
         #endregion
 
@@ -116,6 +120,32 @@ namespace Model
             }
         }
         public IEnumerable<AjaxLead> AjaxLeads { get; set; }
+
+        //Added for Company Edit.
+        [Display(Name = "区号/时差")]
+        public int? DistrictNumberID { get; set; }
+        [Required(ErrorMessage = " ")]
+        [Display(Name = "成熟度")]
+        public int? ProgressID { get; set; }
+        [Display(Name = "行业类型")]
+        public int? AreaID { get; set; }
+        [Display(Name = "公司类型")]
+        public int? CompanyTypeID { get; set; }
+        [Required(ErrorMessage = " ")]
+        [Display(Name = "公司邮编")]
+        public string ZipCode { get; set; }
+        [Display(Name = "公司网站")]
+        public string WebSite { get; set; }
+        [Display(Name = "公司地址")]
+        public string Address { get; set; }
+        [Display(Name = "主营业务")]
+        public string Business { get; set; }
+        [Display(Name = "公司业务")]
+        public string Desc { get; set; }
+        [Display(Name = "分类")]
+        public IEnumerable<int> Categories { get; set; }
+        [Display(Name = "分类")]
+        public string CategoryString { get; set; }
     }
 
     public class AjaxLead
