@@ -228,7 +228,7 @@ namespace Model
             {
                 if (_leadsStandard == null)
                 {
-                    if (_deals != null && _deals.Count() > 0)
+                    if (_deals != null && _deals.Count() >= 3)
                         _leadsStandard =  60;
                     else
                         _leadsStandard =  70;
@@ -242,7 +242,7 @@ namespace Model
             {
                 if (_faxOutStandard == null)
                 {
-                    if (_deals != null && _deals.Where(d=>d.SignDate>=StartDate && d.SignDate< EndDate).Count() > 0)
+                    if (_deals != null && _deals.Where(d=>d.SignDate>=StartDate && d.SignDate< EndDate).Count() >= 3)
                         _faxOutStandard = 28;
                     else
                         _faxOutStandard = 35;
@@ -254,7 +254,7 @@ namespace Model
         {
             get
             {
-                if (_deals!=null && _deals.Count() > 0)
+                if (_deals != null && _deals.Where(d => d.SignDate >= StartDate && d.SignDate < EndDate).Count() >= 3)
                     return 6;
                 else
                     return 7.5;
@@ -457,7 +457,7 @@ namespace Model
             get {
                 if (_faxOutStandard == null)
                 {
-                    if (_deals != null && _deals.Where(d => d.SignDate >= StartDate && d.SignDate < EndDate).Count() > 0)
+                    if (_deals != null && _deals.Where(d => d.SignDate >= StartDate && d.SignDate < EndDate).Count() >= 3)
                         _faxOutStandard = 40;
                     else
                         _faxOutStandard = 50;
@@ -469,7 +469,7 @@ namespace Model
         {
             get
             {
-                if (_deals != null && _deals.Count() > 0)
+                if (_deals != null && _deals.Where(d => d.SignDate >= StartDate && d.SignDate < EndDate).Count() >= 3)
                     return 8;
                 else
                     return 10;
