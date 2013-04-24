@@ -338,6 +338,62 @@ namespace Sales.Controllers
 
             return Content("");
         }
+
+        public ActionResult GetEditLead(int leadId)
+        {
+            Lead lead = CH.GetAllData<Lead>(c => c.ID == leadId).First();
+            AjaxViewLead ajaxViewLead = new AjaxViewLead()
+            {
+                CompanyId = lead.CompanyID.Value,
+                Address = lead.Address,
+                Birthday = lead.Birthday,
+                CellPhone = lead.Contact,
+                Department = lead.Department,
+                Desc = lead.Description,
+                Fax = lead.Fax,
+                Gender = lead.Gender,
+                LeadId = lead.ID,
+                Name_CN = lead.Name_CH,
+                Name_EN = lead.Name_EN,
+                PersonelEmail = lead.PersonalEmailAddress,
+                Title = lead.Title,
+                Telephone = lead.Contact,
+                WorkingEmail = lead.EMail,
+                Zip = lead.ZIP,
+                WeiBo = lead.WeiBo,
+                WeiXin = lead.WeiXin,
+                LinkIn = lead.LinkIn,
+                FaceBook = lead.FaceBook,
+                Blog = lead.Blog
+
+            };
+            return PartialView("EditLead", ajaxViewLead);
+        }
+
+        [HttpPost]
+        public ActionResult EditLead(AjaxViewLead ajaxViewLead)
+        {
+            Lead lead = CH.GetAllData<Lead>(c => c.ID == ajaxViewLead.LeadId).First();
+            lead.Name_CH = ajaxViewLead.Name_CN;
+            lead.Name_EN = ajaxViewLead.Name_EN;
+            lead.CompanyID = ajaxViewLead.CompanyId;
+            lead.Address = ajaxViewLead.Address;
+            lead.Birthday = ajaxViewLead.Birthday;
+            lead.Contact = ajaxViewLead.Telephone;
+            lead.Department = ajaxViewLead.Department;
+            lead.Description = ajaxViewLead.Desc;
+            lead.EMail = ajaxViewLead.WorkingEmail;
+            lead.Fax = ajaxViewLead.Fax;
+            lead.Gender = ajaxViewLead.Gender;
+            lead.Mobile = ajaxViewLead.CellPhone;
+            lead.WeiBo = ajaxViewLead.WeiBo;
+            lead.WeiXin = ajaxViewLead.WeiXin;
+            lead.LinkIn = ajaxViewLead.LinkIn;
+            lead.FaceBook = ajaxViewLead.FaceBook;
+            lead.Blog = ajaxViewLead.Blog;
+            CH.Edit<Lead>(lead);
+            return null;
+        }
     }
 }
 
