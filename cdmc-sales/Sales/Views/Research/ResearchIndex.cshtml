@@ -66,10 +66,10 @@
 .Columns(columns =>
 {
     columns.Bound(p => p.UserName).ClientFooterTemplate("总计"); ;
-    columns.Bound(p => p.FirstWeekCompanyCount).Title(Model.DurationStrings[0] + "公司添加数");
-    columns.Bound(p => p.SecondWeekCompanyCount).Title(Model.DurationStrings[1] + "公司添加数");
-    columns.Bound(p => p.ThirdWeekCompanyCount).Title(Model.DurationStrings[2] + "公司添加数");
-    columns.Bound(p => p.FourthWeekCompanyCount).Title(Model.DurationStrings[3] + "公司添加数");
+    //columns.Bound(p => p.FirstWeekCompanyCount).Title(Model.DurationStrings[0] + "公司添加数");
+    //columns.Bound(p => p.SecondWeekCompanyCount).Title(Model.DurationStrings[1] + "公司添加数");
+    //columns.Bound(p => p.ThirdWeekCompanyCount).Title(Model.DurationStrings[2] + "公司添加数");
+    //columns.Bound(p => p.FourthWeekCompanyCount).Title(Model.DurationStrings[3] + "公司添加数");
     if (Model.DurationStrings.Count == 5)
     {
         columns.Bound(p => p.FivethWeekCompanyCount).Title(Model.DurationStrings[4]);

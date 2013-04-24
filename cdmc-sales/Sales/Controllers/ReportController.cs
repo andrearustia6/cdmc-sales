@@ -90,7 +90,7 @@ namespace Sales.Controllers
                       select new 
                       {
                           Project = p,
-                          Deals = ds.Where(d => d.ActualPaymentDate < monthenddate && d.ActualPaymentDate >= monthstartdate && d.Abandoned==false),
+                          Deals = ds.Where(d => (d.ActualPaymentDate < monthenddate && d.ActualPaymentDate >= monthstartdate) || (d.SignDate < monthenddate && d.SignDate >= monthstartdate) && d.Abandoned == false),
                           //CRMs = crms,
                           Mem=mems.Where(m=>m.IsActivated==true && m.Project!=null),
                           Month = month,
