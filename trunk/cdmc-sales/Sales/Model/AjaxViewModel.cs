@@ -449,6 +449,21 @@ namespace Model
         public int Order { get; set; }
         [Display(Name = "说明")]
         public string Desc { get; set; }
+
+        [Display(Name = "微博账号")]
+        public string WeiBo { get; set; }
+
+        [Display(Name = "微信账号")]
+        public string WeiXin { get; set; }
+
+        [Display(Name = "LinkIn账号")]
+        public string LinkIn { get; set; }
+
+        [Display(Name = "FaceBook账号")]
+        public string FaceBook { get; set; }
+
+        [Display(Name = "博客地址")]
+        public string Blog { get; set; }
     }
 
     public class AjaxViewLeadCall

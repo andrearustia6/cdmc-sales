@@ -1551,7 +1551,12 @@ namespace Sales.Controllers
                 Title = lead.Title,
                 Telephone = lead.Contact,
                 WorkingEmail = lead.EMail,
-                Zip = lead.ZIP
+                Zip = lead.ZIP,
+                WeiBo = lead.WeiBo,
+                WeiXin = lead.WeiXin,
+                LinkIn = lead.LinkIn,
+                FaceBook = lead.FaceBook,
+                Blog = lead.Blog
             };
             return PartialView("LeadEdit", ajaxViewLead);
         }
@@ -1572,6 +1577,11 @@ namespace Sales.Controllers
             lead.Fax = ajaxViewLead.Fax;
             lead.Gender = ajaxViewLead.Gender;
             lead.Mobile = ajaxViewLead.CellPhone;
+            lead.WeiBo = ajaxViewLead.WeiBo;
+            lead.WeiXin = ajaxViewLead.WeiXin;
+            lead.LinkIn = ajaxViewLead.LinkIn;
+            lead.FaceBook = ajaxViewLead.FaceBook;
+            lead.Blog = ajaxViewLead.Blog;
             CH.Edit<Lead>(lead);
             return RedirectToAction("CallableCompanies");
         }

@@ -83,7 +83,32 @@
                 });
             }
         });
+    }
 
+    function onLeadEdit(leadId) {
+        $.post('GetEditLead', { leadId: leadId }, function (result) {
+            $('.leadedit-wrapper').html(result);
+            $('#EditLead').data('tWindow').center().open();           
+        });
+    }
+    function CancelEditLead() {
+        var window = $('#EditLead').data('tWindow');
+        window.close();
+    }
+    function EditLead()
+    {     
+       if($('.dialogue-editlead form').valid())
+       {
+         var query = $('.dialogue-editlead form').serialize();
+                $.post('EditLead?' + query, null, function (result) {
+                   if (result.length > 0) {
+                        alert(result);
+                    } else {                        
+                        $('#EditLead').data('tWindow').close();                       
+                        alert('Lead更新成功');
+                    }
+          });
+       }      
     }
 </script>
 @if (Model != null)
@@ -189,15 +214,33 @@
         </div>
     </div></text>)
     .Width(750)
-    .Height(680)
+    .Height(600)
     .Modal(true).Visible(false)
 )
 }
+
+@(Html.Telerik().Window()
+    .Name("EditLead")
+    .Buttons(buttons => buttons.Close())
+    .Content(@<text><div class="dialogue-editlead">
+        <div class="leadedit-wrapper">
+        </div>
+        <div class="dialogue-buttons">
+            <input type="button" value="确定" class="t-button" onclick="EditLead()" />
+            <input type="button" value="取消" class="t-button" onclick="CancelEditLead()" />
+        </div>
+    </div></text>)
+    .Width(750)
+    .Height(500)
+    .Modal(true).Visible(false)
+)
+
 @helper LeadsInfo()
-    {
+    {     
     <dl>
         @foreach (var lead in Model.AjaxLeads)
         {
+           <input style="margin:10px; padding:5px;" type="button" onclick="onLeadEdit(@(lead.LeadID))" value="更新Lead" />
             <fieldset>
                 <dt style="font-size: 13px; margin: 5px;">@lead.DisplayText</dt>
                 <dd class="fieldname">
