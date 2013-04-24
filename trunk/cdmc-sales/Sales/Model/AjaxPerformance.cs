@@ -421,7 +421,7 @@ namespace Model
                             EndDate = enddate,
                             Faxouts = _leadCalls.Where(f => f.CallDate >= startdate && f.CallDate < enddate).ToList(),
                             Leads = _leads.Where(f => f.CreatedDate >= startdate && f.CreatedDate < enddate).ToList(),
-                            Deals = _deals.Where(f => f.ActualPaymentDate >= StartDate && f.ActualPaymentDate < EndDate).ToList()
+                            Deals = _deals.Where(f => f.SignDate >= StartDate && f.SignDate < EndDate).ToList()
                         };
                         _weeks.Add(ap);
                         startdate = enddate;
