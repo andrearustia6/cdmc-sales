@@ -2,14 +2,14 @@
 @using Model
 @model AjaxCrmTypedList
 <div id="crmdfavorsscontainer" class="groupcompany">
-<div class="groupcompanyhead"><button id="group-open-button" >分组管理</button></div>
+<div class="groupcompanyhead"><input type="image" id="group-open-button" src="../images/fenzuguanli_2.jpg" style=" margin-top:-3px; margin-left:-5px"></div>
    @Html.Partial("FavorsCRM", Model.CustomCrmGroups)
   
 
 </div>
 <div class="ungroupcompany">
 <h2 class="ungroupcompanyhead">未分组公司</h2>
-    @(Html.Telerik().TreeView() .Name("navigationView").ExpandAll(true)
+    @(Html.Telerik().TreeView().Name("navigationView").ExpandAll(true).HtmlAttributes(new { style="margin-top:-15px;"})
         .ClientEvents(e => e.OnSelect("onIndexSelect"))
                 .BindTo(Model.AllCRMs, mappings =>
         {
@@ -31,8 +31,8 @@
 ) 
 </div>
 <style>
-.ungroupcompanyhead{ padding:6px 10px 15px 10px; font-size:12px; color:#fff; background:url(../images/bj.jpg) no-repeat 0px 0px;}
- .groupcompanyhead{ padding:6px 10px 15px 10px; font-size:12px; color:#fff; background:url(../images/bj-2.jpg) no-repeat 0px 0px;}   
+.ungroupcompanyhead{ padding:6px 10px 25px 10px; font-size:12px; color:#fff; background:url(../images/bj.jpg) no-repeat 0px 0px;}
+ .groupcompanyhead{ padding:6px 10px 1px 10px; font-size:12px; color:#fff; background:url(../images/bj-2.jpg) no-repeat 0px 0px;}   
 .ungroupcompany{background:#f0f7ff;}  
 .groupcompany{background:#fff4eb;} 
 </style>
