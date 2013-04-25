@@ -42,7 +42,7 @@
         if (hasError) {
             return;
         }
-      
+
         var currentCompanyName = $('#currentCompanyName').html();
         var companyName = $('#@(guidFormName) .updateName').val();
         $.post('CheckCompanyExist', { beforeUpdate: currentCompanyName, afterUpdate: companyName }, function (result) {
@@ -84,31 +84,76 @@
             }
         });
     }
-
+    var currentLeadID = undefined;
     function onLeadEdit(leadId) {
+        currentLeadID = leadId;
         $.post('GetEditLead', { leadId: leadId }, function (result) {
             $('.leadedit-wrapper').html(result);
-            $('#EditLead').data('tWindow').center().open();           
+            $('#EditLead').data('tWindow').center().open();
         });
     }
     function CancelEditLead() {
         var window = $('#EditLead').data('tWindow');
         window.close();
     }
-    function EditLead()
-    {     
-       if($('.dialogue-editlead form').valid())
-       {
-         var query = $('.dialogue-editlead form').serialize();
-                $.post('EditLead?' + query, null, function (result) {
-                   if (result.length > 0) {
-                        alert(result);
-                    } else {                        
-                        $('#EditLead').data('tWindow').close();                       
-                        alert('Lead更新成功');
-                    }
-          });
-       }      
+    function UpdateLead() {
+        if ($('.dialogue-editlead form').valid()) {
+            var query = $('.dialogue-editlead form').serialize();
+            $.post('EditLead?' + query, null, function (result) {
+                if (result.length > 0) {
+                    alert(result);
+                } else {
+                    $('#' + currentLeadID + ' .leadNameCN').html($('.dialogue-editlead form #Name_CN').val());
+                    $('#' + currentLeadID + ' .leadNamEN').html($('.dialogue-editlead form #Name_EN').val());
+                    $('#' + currentLeadID + ' .leadTitle').html($('.dialogue-editlead form #Title').val());
+                    $('#' + currentLeadID + ' .leadGender').html($('.dialogue-editlead form #Gender').val());
+                    $('#' + currentLeadID + ' .LeadDistinctNumberString').html($('.dialogue-editlead form #Name_CN option:selected').text());
+                    $('#' + currentLeadID + ' .LeadEmail').html($('.dialogue-editlead form #WorkingEmail').val());
+                    $('#' + currentLeadID + ' .LeadPersonalEmail').html($('.dialogue-editlead form #PersonelEmail').val());
+                    $('#' + currentLeadID + ' .LeadContact').html($('.dialogue-editlead form #Telephone').val());
+                    $('#' + currentLeadID + ' .LeadMobile').html($('.dialogue-editlead form #CellPhone').val());
+                    $('#' + currentLeadID + ' .LeadFax').html($('.dialogue-editlead form #Fax').val());
+                    $('#' + currentLeadID + ' .WeiBo').html($('.dialogue-editlead form #WeiBo').val());
+                    $('#' + currentLeadID + ' .WeiXin').html($('.dialogue-editlead form #WeiXin').val());
+                    $('#' + currentLeadID + ' .LinkIn').html($('.dialogue-editlead form #LinkIn').val());
+                    $('#' + currentLeadID + ' .FaceBook').html($('.dialogue-editlead form #FaceBook').val());
+                    $('#' + currentLeadID + ' .Blog').html($('.dialogue-editlead form #Blog').val());
+                    $('#EditLead').data('tWindow').close();
+                    alert('Lead更新成功');
+                }
+            });
+        }
+    }
+
+    var currentLeadCallID = undefined;
+    function EditLeadCall(leadCallID) {
+        currentLeadCallID = leadCallID;
+        $.post('GetEditLeadCall', { leadCallId: leadCallID }, function (result) {
+            $('.calledit-wrapper').html(result);
+            var window = $('#EditCall').data('tWindow');
+            window.center().open();
+        });
+    }
+    function CancelEditLead() {
+        var window = $('#EditCall').data('tWindow');
+        window.close();
+    }
+    function UpdateCall() {
+        if ($('.calledit-wrapper form').valid()) {
+            var query = $('.calledit-wrapper form').serialize();
+            $.post('EditLeadCall?' + query, null, function (result) {
+                if (result.length > 0) {
+                    alert(result);
+                } else {
+                    $('#' + currentLeadCallID + '_CallType').html($('.dialogue-editcall form #CallTypeId option:selected').text());
+                    $('#' + currentLeadCallID + '_CallBackDate').html($('.dialogue-editcall form #CallBackDate').val());
+                    $('#' + currentLeadCallID + '_CallDate').html($('.dialogue-editcall form #CallDate').val());
+                    $('#' + currentLeadCallID + '_Result').html($('.dialogue-editcall form #Result').val());
+                    $('#EditCall').data('tWindow').close();
+                    alert('LeadCall更新成功');
+                }
+            });
+        }
     }
 </script>
 @if (Model != null)
@@ -218,7 +263,6 @@
     .Modal(true).Visible(false)
 )
 }
-
 @(Html.Telerik().Window()
     .Name("EditLead")
     .Buttons(buttons => buttons.Close())
@@ -226,74 +270,88 @@
         <div class="leadedit-wrapper">
         </div>
         <div class="dialogue-buttons">
-            <input type="button" value="确定" class="t-button" onclick="EditLead()" />
+            <input type="button" value="确定" class="t-button" onclick="UpdateLead()" />
             <input type="button" value="取消" class="t-button" onclick="CancelEditLead()" />
         </div>
     </div></text>)
     .Width(750)
-    .Height(500)
+    .Height(350)
     .Modal(true).Visible(false)
 )
-
+@(Html.Telerik().Window()
+    .Name("EditCall")
+    .Buttons(buttons => buttons.Close())
+    .Content(@<text><div class="dialogue-editcall">
+        <div class="calledit-wrapper">
+        </div>
+        <div class="dialogue-buttons">
+            <input type="button" value="确定" class="t-button" onclick="UpdateCall()" />
+            <input type="button" value="取消" class="t-button" onclick="CancelEditCall()" />
+        </div>
+    </div></text>)
+    .Width(750)
+    .Height(200)
+    .Modal(true).Visible(false)
+)
 @helper LeadsInfo()
     {     
     <dl>
         @foreach (var lead in Model.AjaxLeads)
         {
-           <input style="margin:10px; padding:5px;" type="button" onclick="onLeadEdit(@(lead.LeadID))" value="更新Lead" />
-            <fieldset>
+            <input style="margin:10px; padding:5px;" type="button" onclick="onLeadEdit(@(lead.LeadID))" value="更新Lead" />
+            <fieldset id="@(lead.LeadID)">
                 <dt style="font-size: 13px; margin: 5px;">@lead.DisplayText</dt>
                 <dd class="fieldname">
                     <div>
-                        <font>中文名：</font>@lead.LeadNameCH
+                        <font>中文名：</font><span class="leadNameCN">@lead.LeadNameCH</span>
                     </div>
                     <div>
-                        <font>英文名：</font>@lead.LeadNameEN
+                        <font>英文名：</font><span class="leadNamEN">@lead.LeadNameEN</span>
                     </div>
                     <div>
-                        <font>Lead职位：</font>@lead.LeadTitle
+                        <font>Lead职位：</font><span class="leadTitle"> @lead.LeadTitle</span>
                     </div>
                     <div>
-                        <font>Lead性别：</font>@lead.Gender
+                        <font>Lead性别：</font><span class="leadGender"> @lead.Gender</span>
                     </div>
                     <div>
-                        <font>客户区号：</font>@lead.LeadDistinctNumberString
+                        <font>客户区号：</font><span class="LeadDistinctNumberString"> @lead.LeadDistinctNumberString</span>
                     </div>
                 </dd>
                 <dt style="font-size: 13px;">联系方式</dt>
                 <dd class="fieldname">
                     <div>
-                        <font>公司邮箱：</font>@lead.LeadEmail
+                        <font>公司邮箱：</font><span class="LeadEmail">@lead.LeadEmail</span>
                     </div>
                     <div>
-                        <font>个人邮箱：</font>@lead.LeadPersonalEmail
+                        <font>个人邮箱：</font><span class="LeadPersonalEmail">@lead.LeadPersonalEmail </span>
                     </div>
                     <div>
-                        <font>直线：</font>@lead.LeadContact
+                        <font>直线：</font><span class="LeadContact">@lead.LeadContact</span>
                     </div>
                     <div>
-                        <font>手机：</font>@lead.LeadMobile
+                        <font>手机：</font><span class="LeadMobile">@lead.LeadMobile</span>
                     </div>
                     <div>
-                        <font>传真：</font>@lead.LeadFax
+                        <font>传真：</font><span class="LeadFax">@lead.LeadFax</span>
                     </div>
                     <div>
-                        <font>微博账号：</font>@lead.WeiBo
+                        <font>微博账号：</font><span class="WeiBo">@lead.WeiBo</span>
                     </div>
                     <div>
-                        <font>微信账号：</font>@lead.WeiXin
+                        <font>微信账号：</font><span class="WeiXin">@lead.WeiXin</span>
                     </div>
                     <div>
-                        <font>LinkIn账号：</font>@lead.LinkIn
+                        <font>LinkIn账号：</font><span class="LinkIn">@lead.LinkIn</span>
                     </div>
                     <div>
-                        <font>FaceBook账号：</font>@lead.FaceBook
+                        <font>FaceBook账号：</font><span class="FaceBook">@lead.FaceBook</span>
                     </div>
                     <div>
-                        <font>传真：</font>@lead.LeadFax
+                        <font>传真：</font><span class="LeadFax">@lead.LeadFax</span>
                     </div>
                     <div>
-                        <font>博客地址：</font>@lead.Blog
+                        <font>博客地址：</font><span class="Blog">@lead.Blog</span>
                     </div>
                 </dd>
                 <dt style="font-size: 13px;">描述</dt>
@@ -307,16 +365,14 @@
                     @(Html.Telerik().Grid<AjaxCall>(lead.AjaxCalls.OrderByDescending(o => o.CallDate)).Name("lead" + lead.LeadID)
                     .Columns(columns =>
                     {
-                        columns.Bound(o => o.CallType).Width(80);
-                        columns.Bound(o => o.CallBackDate).Width(100);
-                        columns.Bound(o => o.CallDate).Width(100);
-                        columns.Bound(o => o.Caller).Width(80);
-                        columns.Bound(o => o.Result);
-                    })
-                    .Pageable(paging => paging.Enabled(false)).Resizable(resizing => resizing.Columns(true))
-                    .Sortable().Scrollable(scrolling => scrolling.Enabled(false))
-                    .Filterable()
-        )
+                        columns.Bound(o => o.CallType).Template(@<text><span id="@(item.LeadCallID)_CallType">@item.CallType</span></text>).Width(80);
+                        columns.Bound(o => o.CallBackDate).Template(@<text><span id="@(item.LeadCallID)_CallBackDate">@item.CallBackDate</span></text>).Width(100);
+                        columns.Bound(o => o.CallDate).Template(@<text><span id="@(item.LeadCallID)_CallDate">@item.CallDate</span></text>).Width(100);
+                        columns.Bound(o => o.Caller).Template(@<text><span id="@(item.LeadCallID)_Caller">@item.Caller</span></text>).Width(80);
+                        columns.Bound(o => o.Result).Template(@<text><span id="@(item.LeadCallID)_Result">@item.Result</span></text>);
+                        columns.Bound(o => o.LeadCallID).Template(@<text><input onclick='EditLeadCall(@item.LeadCallID)' type='button' value='update' style='padding:5px 10px' /></text>);
+                    }).Pageable(paging => paging.Enabled(false)).Resizable(resizing => resizing.Columns(true)).Sortable().Scrollable(scrolling => scrolling.Enabled(false))
+                       .Filterable())
                 </dd>
             </fieldset>
         }
