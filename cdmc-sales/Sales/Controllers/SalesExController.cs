@@ -154,7 +154,8 @@ namespace Sales.Controllers
                                                              CallBackDate = call.CallBackDate,
                                                              CallType = call.LeadCallType.Name,
                                                              Caller = call.Member.Name,
-                                                             LeadCallTypeCode = call.LeadCallType.Code
+                                                             LeadCallTypeCode = call.LeadCallType.Code,
+                                                             LeadCallID=call.ID
 
                                                          })
                                         })
@@ -392,6 +393,34 @@ namespace Sales.Controllers
             lead.FaceBook = ajaxViewLead.FaceBook;
             lead.Blog = ajaxViewLead.Blog;
             CH.Edit<Lead>(lead);
+            return null;
+        }
+
+        public ActionResult GetEditLeadCall(int leadCallId)
+        {
+            LeadCall leadCall = CH.GetAllData<LeadCall>(c => c.ID == leadCallId).First();
+            AjaxViewLeadCall ajaxViewLeadCall = new AjaxViewLeadCall();
+            ajaxViewLeadCall.CallId = leadCallId;
+            ajaxViewLeadCall.CallBackDate = leadCall.CallBackDate;
+            ajaxViewLeadCall.CallDate = leadCall.CallDate;
+            ajaxViewLeadCall.CompanyRelationshipId = leadCall.CompanyRelationshipID.Value;
+            ajaxViewLeadCall.CallTypeId = leadCall.LeadCallTypeID.Value;
+            ajaxViewLeadCall.LeadId = leadCall.LeadID.Value;
+            ajaxViewLeadCall.ProjectId = leadCall.ProjectID.Value;
+            ajaxViewLeadCall.Result = leadCall.Result;
+
+            return PartialView("EditLeadCall", ajaxViewLeadCall);
+        }
+
+        public ActionResult EditLeadCall(AjaxViewLeadCall ajaxViewLeadCall)
+        {
+            LeadCall leadCall = CH.GetAllData<LeadCall>(c => c.ID == ajaxViewLeadCall.CallId).First();
+            leadCall.CallBackDate = ajaxViewLeadCall.CallBackDate;
+            leadCall.CallDate = ajaxViewLeadCall.CallDate;
+            leadCall.LeadCallTypeID = ajaxViewLeadCall.CallTypeId;
+            leadCall.Member = CH.GetAllData<Member>(c => c.Name == Employee.CurrentUserName).First();
+            leadCall.Result = ajaxViewLeadCall.Result;
+            CH.Edit<LeadCall>(leadCall);
             return null;
         }
     }

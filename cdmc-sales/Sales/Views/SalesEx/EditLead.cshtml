@@ -50,6 +50,8 @@
             </span></li>
             <li><span class="addlead-left">@Html.LabelFor(model => model.Blog) @Html.TextBoxFor(model => model.Blog)
             @Html.ValidationMessageFor(model => model.Blog)</span> <span class="addlead-right">
+              @Html.LabelFor(model => model.Fax) @Html.TextBoxFor(model => model.Fax)
+                @Html.ValidationMessageFor(model => model.Fax)
             </span></li>
     </ul>
 }
