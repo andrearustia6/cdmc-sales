@@ -4,7 +4,7 @@
 
 
  @(Html.Telerik().TreeView().Name("customView").ExpandAll(false)
-        .ClientEvents(e=>e.OnSelect("onIndexSelect"))
+             .ClientEvents(e => e.OnSelect("onIndexSelect"))
                .BindTo(Model, mappings =>
         {
             mappings.For<AjaxGroupedCRM>(binding => binding
@@ -14,7 +14,7 @@
                         item.Value = ajaxGroupedCRM.ID.ToString();
                     })
                     .Children(group => group.GroupedCRMs));
-            
+
             mappings.For<AjaxCRM>(binding => binding
                     .ItemDataBound((item, ajaxCRM) =>
                     {
@@ -27,7 +27,7 @@
                     .ItemDataBound((item, Lead) =>
                     {
                         item.Text = Lead.DisplayText;
-                        item.Value = Lead.CRMID.ToString()+","+ Lead.LeadID.ToString();
+                        item.Value = Lead.CRMID.ToString() + "," + Lead.LeadID.ToString();
                     }));
         })
 )
