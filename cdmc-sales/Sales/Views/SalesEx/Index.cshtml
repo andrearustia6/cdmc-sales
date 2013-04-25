@@ -16,7 +16,7 @@
 {
     
 <div>
-<button id="group-open-button" >分组管理</button>
+
 @(Html.Telerik().Window()
         .Name("groupWindow")
         .Title("分组")
@@ -101,9 +101,10 @@
     function initial() {
 
         //分组字体标注
-        $('#customView').find('>ul >li >div >span').css("fontSize", "23px");
-        $('#customView').find('>ul >li >ul >li >div >span').css("fontSize", "15px");
-        $('#navigationView').find('>ul >li >div >span').css("fontSize", "15px");
+        $('#customView').find('>ul >li >div >span').css("fontSize", "23px").css("font-weigh","bold").css('line-height','28px');
+
+        $('#customView').find('>ul >li >ul >li >div >span').css("fontSize", "15px").css("font-weigh", "bold");
+        $('#navigationView').find('>ul >li >div >span').css("fontSize", "15px").css("font-weigh", "bold") ;
         
         //lead状态颜色标注
          $('#mainnavigationcontainer span').each(function(){

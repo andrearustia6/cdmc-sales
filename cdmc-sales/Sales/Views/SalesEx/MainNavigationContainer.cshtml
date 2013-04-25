@@ -1,15 +1,16 @@
 ﻿@using Entity
 @using Model
 @model AjaxCrmTypedList
-<div id="crmdfavorsscontainer">
+<div id="crmdfavorsscontainer" class="groupcompany">
+<div class="groupcompanyhead"><button id="group-open-button" >分组管理</button></div>
    @Html.Partial("FavorsCRM", Model.CustomCrmGroups)
   
 
 </div>
-<div>
-    @(Html.Telerik().TreeView()
-                .Name("navigationView").ExpandAll(true)
-        .ClientEvents(e=>e.OnSelect("onIndexSelect"))
+<div class="ungroupcompany">
+<h2 class="ungroupcompanyhead">未分组公司</h2>
+    @(Html.Telerik().TreeView() .Name("navigationView").ExpandAll(true)
+        .ClientEvents(e => e.OnSelect("onIndexSelect"))
                 .BindTo(Model.AllCRMs, mappings =>
         {
             mappings.For<AjaxCRM>(binding => binding
@@ -24,8 +25,14 @@
                     .ItemDataBound((item, Lead) =>
                     {
                         item.Text = Lead.DisplayText;
-                        item.Value = Lead.CRMID.ToString()+","+ Lead.LeadID.ToString();
+                        item.Value = Lead.CRMID.ToString() + "," + Lead.LeadID.ToString();
                     }));
         })
 ) 
 </div>
+<style>
+.ungroupcompanyhead{ padding:6px 10px 15px 10px; font-size:12px; color:#fff; background:url(../images/bj.jpg) no-repeat 0px 0px;}
+ .groupcompanyhead{ padding:6px 10px 15px 10px; font-size:12px; color:#fff; background:url(../images/bj-2.jpg) no-repeat 0px 0px;}   
+.ungroupcompany{background:#f0f7ff;}  
+.groupcompany{background:#fff4eb;} 
+</style>
