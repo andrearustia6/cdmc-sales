@@ -314,6 +314,7 @@
     <Content Include="images\fenzuguanli.jpg" />
     <Content Include="images\fenzuguanli_2.jpg" />
     <Content Include="images\hover.gif" />
+    <Content Include="images\input.jpg" />
     <Content Include="images\logo_2.gif" />
     <Content Include="images\separator.gif" />
     <Content Include="images\submenu.gif" />

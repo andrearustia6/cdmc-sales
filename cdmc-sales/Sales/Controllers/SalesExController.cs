@@ -330,6 +330,7 @@ namespace Sales.Controllers
             return null;
         }
 
+        [ValidateInput(false)]
         public ActionResult CheckCompanyExist(string beforeUpdate, string afterUpdate)
         {
             if (CH.GetAllData<CompanyRelationship>(c => c.MarkForDelete == false && c.Company.Name_CH == afterUpdate && c.Company.Name_CH != beforeUpdate).Count > 0)
