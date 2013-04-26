@@ -185,11 +185,7 @@ textarea
     min-height: 75px; width:100%;
 }
 
-input[type="text"] 
-{
-    width: 200px;
-    border: 1px solid #CCC;
-}
+
 
 input[type="password"] 
 {
@@ -198,6 +194,11 @@ input[type="password"]
 }
 
 /* TABLE
+input[type="text"] 
+{
+    width: 200px;
+    border: 1px solid #CCC;
+}
 ----------------------------------------------------------*/
 
 table 

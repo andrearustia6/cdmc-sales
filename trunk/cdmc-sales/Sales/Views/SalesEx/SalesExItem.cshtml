@@ -7,6 +7,261 @@
 }
 <script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
 <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+@if (Model != null)
+{
+    Html.Telerik().Splitter().Name("sp2").HtmlAttributes(new { style = "min-height: 790px;" })
+               .Orientation(SplitterOrientation.Vertical).Panes(panes =>
+               {
+                   panes.Add().Size("20%").Content(@<text>@CompanyInfo(guidFormName)</text>);
+                   panes.Add().Content(@<text>@LeadsInfo()</text>);
+               }).Render();
+}
+@helper CompanyInfo(string guidFormName)
+    {
+   
+        
+  <div class="fenge">
+	<div class="fenge_2">@Model.CompanyName   
+    <input type="button" style="float:right" value="+Lead" onclick="editCompany()" />
+    <input style="float:right" type="button" onclick="onLeadEdit(@(@Model.CRMID))" value="更新" />
+    </div>
+     
+    <div class="fenge_3">
+    <fieldset>
+    <legend>公司信息</legend>
+       <ul class="fieldname">
+            <li><font>中文名：</font><span id="currentCompanyName" class="datainfo">@Model.CompanyNameCH </span></li>
+            <li><font>英文名：</font><span id="currentCompanyNameEN" class="datainfo">@Model.CompanyNameEN</span></li>
+                <li><font>区号：</font><span id="currentCompanyDistrictNumberString" class="datainfo">@Model.CompanyDistrictNumberString</span></li>
+                <li><font>公司总机：</font><span id="currentCompanyContact" class="datainfo">@Model.CompanyContact</span></li>
+                <li><font>传真：</font><span id="currentCompanyFax" class="datainfo">@Model.CompanyFax</li>
+                <li><font>细分行业：</font><span id="currentCompanyCategoryStrings" class="datainfo">@Model.CompanyCategoryStrings</span>
+                </li>
+                <li><font>成熟度：</font><span id="currentProgressString" class="datainfo">@Model.ProgressString</span>
+                </li>
+        </ul>
+        </fieldset>
+    </div>
+    </div>
+     
+    
+     
+       
+   
+    @(Html.Telerik().Window().Title("更新公司")
+            .Name(guidFormName)
+    .Buttons(buttons => buttons.Close())
+    .Content(@<text><div class="dialogue-editcompany">
+        <div class="companyEdit-wrapper">
+            <form action="/SalesEx/EditSaleCompany" data-ajax="true" data-ajax-mode="replace"
+            data-ajax-update="ajax-holder" class="companyEditForm" method="post">
+            @Html.HiddenFor(model => model.ProjectID)
+            @Html.HiddenFor(model => model.CompanyID)
+            <ul>
+                <li><span class="addcompany-left">@Html.LabelFor(model => model.CompanyNameCH) @Html.TextBoxFor(model => model.CompanyNameCH, new { @class = "updateName" })
+                    @Html.ValidationMessageFor(model => model.CompanyNameCH)</span> <span class="addcompany-right">
+                        @Html.LabelFor(model => model.CompanyNameEN) @Html.TextBoxFor(model => model.CompanyNameEN)
+                        @Html.ValidationMessageFor(model => model.CompanyNameEN)
+                    </span></li>
+                <li><span class="addcompany-left">@Html.LabelFor(model => model.AreaID) @Html.DropDownListFor(model => model.AreaID, SelectHelper.CompanyIndustrySelectList(null), "请选择", new { })
+                    @Html.ValidationMessageFor(model => model.AreaID)</span> <span class="addcompany-right">
+                        @Html.LabelFor(model => model.CompanyTypeID) @Html.DropDownListFor(model => model.CompanyTypeID, SelectHelper.CompanyTypeSelectList(null), "请选择", new { })
+                        @Html.ValidationMessageFor(model => model.CompanyTypeID)
+                    </span></li>
+                <li><span class="addcompany-left">@Html.LabelFor(model => model.CompanyContact) @Html.TextBoxFor(model => model.CompanyContact)
+                    @Html.ValidationMessageFor(model => model.CompanyContact)</span> <span class="addcompany-right">
+                        @Html.LabelFor(model => model.CompanyFax) @Html.TextBoxFor(model => model.CompanyFax)
+                        @Html.ValidationMessageFor(model => model.CompanyFax)
+                    </span></li>
+                <li><span class="addcompany-left">@Html.LabelFor(model => model.ZipCode) @Html.TextBoxFor(model => model.ZipCode)
+                    @Html.ValidationMessageFor(model => model.ZipCode)</span> <span class="addcompany-right">
+                        @Html.LabelFor(model => model.WebSite) @Html.TextBoxFor(model => model.WebSite)
+                        @Html.ValidationMessageFor(model => model.WebSite)
+                    </span></li>
+                <li><span class="addcompany-left">@Html.LabelFor(model => model.Address) @Html.TextBoxFor(model => model.Address)
+                    @Html.ValidationMessageFor(model => model.Address)</span> <span class="addcompany-right">
+                        @Html.LabelFor(model => model.DistrictNumberID) @Html.DropDownListFor(model => model.DistrictNumberID, SelectHelper.DistinctNumberSelectList(null), "请选择", new { })
+                        @Html.ValidationMessageFor(model => model.DistrictNumberID)
+                    </span></li>
+                <li><span class="addcompany-left">@Html.LabelFor(model => model.ProgressID) @Html.DropDownListFor(model => model.ProgressID, SelectHelper.ProgressSelectList(null), "请选择", new { })
+                    @Html.ValidationMessageFor(model => model.ProgressID)</span> </li>
+                <li><span>@Html.LabelFor(model => model.Business) @Html.TextAreaFor(model => model.Business)
+                    @Html.ValidationMessageFor(model => model.Business)</span> </li>
+                <li><span>@Html.LabelFor(model => model.Desc) @Html.TextAreaFor(model => model.Desc)
+                    @Html.ValidationMessageFor(model => model.Desc)</span> </li>
+                <li class="companyCategory">
+                    <fieldset>
+                        <legend>Categories</legend>
+                        @foreach (Category category in CH.GetAllData<Category>(c => c.ProjectID == Model.ProjectID))
+                        { 
+                            <label class="company-category">@category.Name</label>
+                            if (Model.Categories.Contains(category.ID))
+                            {
+                            <input  name="Categories" type="checkbox" value="@category.ID" checked="checked" />
+                            }
+                            else
+                            { 
+                            <input  name="Categories" type="checkbox" value="@category.ID"/>
+                            }
+                        }
+                    </fieldset>
+                </li>
+            </ul>
+            </form>
+        </div>
+        <div class="dialogue-buttons">
+            <input type="button" value="确定" class="t-button" onclick="updatecompany()" />
+            <input type="button" value="取消" class="t-button" onclick="cancelEditcompany()" />
+        </div>
+    </div></text>)
+    .Width(750)
+    .Height(600)
+    .Modal(true).Visible(false)
+)
+}
+@(Html.Telerik().Window()
+    .Name("EditLead")
+    .Buttons(buttons => buttons.Close())
+    .Content(@<text><div class="dialogue-editlead">
+        <div class="leadedit-wrapper">
+        </div>
+        <div class="dialogue-buttons">
+            <input type="button" value="确定" class="t-button" onclick="UpdateLead()" />
+            <input type="button" value="取消" class="t-button" onclick="CancelEditLead()" />
+        </div>
+    </div></text>)
+    .Width(750)
+    .Height(350)
+    .Modal(true).Visible(false)
+)
+@(Html.Telerik().Window()
+    .Name("EditCall")
+    .Buttons(buttons => buttons.Close())
+    .Content(@<text><div class="dialogue-editcall">
+        <div class="calledit-wrapper">
+        </div>
+        <div class="dialogue-buttons">
+            <input type="button" value="确定" class="t-button" onclick="UpdateCall()" />
+            <input type="button" value="取消" class="t-button" onclick="CancelEditCall()" />
+        </div>
+    </div></text>)
+    .Width(750)
+    .Height(200)
+    .Modal(true).Visible(false)
+)
+@helper LeadsInfo()
+    {     
+        
+       foreach (var lead in Model.AjaxLeads)
+        {
+      <div class="fenge">
+	<div class="fenge_2">@lead.LeadName  <input style="float:right" type="button" onclick="onLeadEdit(@(lead.LeadID))" value="+Call" /><input style="float:right" type="button" onclick="onLeadEdit(@(lead.LeadID))" value="更新" /></div>
+     
+    <div class="fenge_3">
+   @*  <div style=" width:100%; height:25px; margin-bottom:-5px; margin-top:10px;">
+            
+            </div>*@
+            <fieldset id="@(lead.LeadID)">
+                <legend style="font-size: 13px; margin: 5px;"> 
+                @lead.LeadName</legend>
+               
+                <ul class="fieldname">
+                    <li><font>中文名：</font><span class="leadNameCN datainfo">@lead.LeadNameCH</span> </li>
+                    <li><font>英文名：</font><span class="leadNamEN datainfo">@lead.LeadNameEN</span> </li>
+                    <li><font>Lead职位：</font><span class="leadTitle datainfo">@lead.LeadTitle</span> </li>
+                    <li><font>Lead性别：</font><span class="leadGender datainfo">@lead.Gender</span> </li>
+                    <li><font>客户区号：</font><span class="LeadDistinctNumberString datainfo">@lead.LeadDistinctNumberString</span>
+                    </li>
+                </ul>
+          </fieldset>
+       
+        <fieldset>
+        <legend>联系方式</legend>
+                <ul class="fieldname">
+                <li><font>直线：</font><span class="LeadContact datainfo">@lead.LeadContact</span> </li>
+                    <li><font>手机：</font><span class="LeadMobile datainfo">@lead.LeadMobile</span> </li>
+                    <li><font>公司邮箱：</font><span class="LeadEmail datainfo">@lead.Gender</span> </li>
+                    <li><font>传真：</font><span class="LeadFax datainfo">@lead.LeadFax</span> </li>
+                    <li><font>个人邮箱：</font><span class="LeadPersonalEmail datainfo">@lead.Gender</span></li>
+                    <li><font>微博账号：</font><span class="WeiBo datainfo">@lead.WeiBo</span> </li>
+                    <li><font>微信账号：</font><span class="WeiXin datainfo">@lead.WeiXin</span> </li>
+                    <li><font>LinkIn账号：</font><span class="LinkIn datainfo">@lead.LinkIn</span> </li>
+                    <li><font>FaceBook账号：</font><span class="FaceBook datainfo">@lead.FaceBook</span> </li>
+                    <li><font>传真：</font><span class="LeadFax datainfo">@lead.LeadFax</span> </li>
+                    <li><font>博客地址：</font><span class="Blog datainfo">@lead.Blog</span> </li>
+                    </ul>
+             </fieldset>
+              @*  <span style="font-size: 13px;">描述</span> 
+                 <dd class="fieldname">
+                        <div>
+                            <font></font>
+                        </div>
+                    </dd>*@
+              @* <dt style="font-size: 13px;">致电列表</dt>
+                <dd>*@
+                @if (lead.AjaxCalls.Count()>0)
+                {
+        <fieldset>
+        <legend>通话记录</legend>
+        
+                    @(Html.Telerik().Grid<AjaxCall>(lead.AjaxCalls.OrderByDescending(o => o.CallDate)).Name("lead" + lead.LeadID)
+                    .Columns(columns =>
+                    {
+                        columns.Bound(o => o.CallType).Template(@<text><span id="@(item.LeadCallID)_CallType">@item.CallType</span></text>).Width(80);
+                        columns.Bound(o => o.CallBackDate).Template(@<text><span id="@(item.LeadCallID)_CallBackDate">@item.CallBackDate</span></text>).Width(100);
+                        columns.Bound(o => o.CallDate).Template(@<text><span id="@(item.LeadCallID)_CallDate">@item.CallDate</span></text>).Width(100);
+                        columns.Bound(o => o.Caller).Template(@<text><span id="@(item.LeadCallID)_Caller">@item.Caller</span></text>).Width(80);
+                        columns.Bound(o => o.Result).Template(@<text><span id="@(item.LeadCallID)_Result">@item.Result</span></text>);
+                        columns.Bound(o => o.LeadCallID).Template(@<text><input onclick='EditLeadCall(@item.LeadCallID)' type='button' value='update' style='padding:5px 10px' /></text>);
+                    }).Pageable(paging => paging.Enabled(false)).Resizable(resizing => resizing.Columns(true)).Sortable().Scrollable(scrolling => scrolling.Enabled(false))
+                       .Filterable())
+                @*</dd>
+                </dl>*@
+            </fieldset>
+                    }
+    </div>
+</div>
+
+        
+          
+           
+        }
+
+}
+<style>
+    .fieldblock
+    {
+    	
+    }
+    
+ 
+    .fieldError
+    {
+        border: 1px solid red !important;
+    }
+    
+    .fieldname
+    {
+        list-style-type: none;
+    }
+    .fieldname li{ font-size:12px; color:#666; float:left; padding-right:15px;}
+    .datainfo
+    {
+        font-size: 12px;
+        color: #d05f00;
+        border: 1px solid #FFF;
+
+    
+         max-width: 76px;
+        height: 21px;
+        line-height: 21px;
+      
+      
+    }
+    .fenge{ width:96%; margin:15px;}
+.fenge_2{ background:#FF5809; line-height:30px; border:1px solid #000; border-bottom:none;text-align:center; color:#fff;}
+.fenge_3{ border:1px solid #000; padding:6px 20px; line-height:24px;}
+</style>
 <script type="text/javascript">
     function editCompany() {
         var window = $('#@(guidFormName)').data('tWindow');
@@ -156,251 +411,3 @@
         }
     }
 </script>
-@if (Model != null)
-{
-    Html.Telerik().Splitter().Name("sp2").HtmlAttributes(new { style = "min-height: 790px;" })
-               .Orientation(SplitterOrientation.Vertical).Panes(panes =>
-               {
-                   panes.Add().Size("20%").Content(@<text>@CompanyInfo(guidFormName)</text>);
-                   panes.Add().Content(@<text>@LeadsInfo()</text>);
-               }).Render();
-}
-@helper CompanyInfo(string guidFormName)
-    {
-    <input type="button" style="margin: 10px; padding: 5px 10px;" value="更新" onclick="editCompany()" />
-    <fieldset class="fieldblock">
-        <legend>@Model.CompanyName</legend>
-        <dl>
-            <dt style="font-size: 13px;">公司信息:</dt>
-            <dd class="fieldname">
-                <div>
-                    <font>中文名：</font><span id="currentCompanyName">@Model.CompanyNameCH</span></div>
-                <div>
-                    <font>英文名：</font><span id="currentCompanyNameEN">@Model.CompanyNameEN</span></div>
-                <div>
-                    <font>区号：</font><span id="currentCompanyDistrictNumberString">@Model.CompanyDistrictNumberString</span></div>
-                <div>
-                    <font>公司总机：</font><span id="currentCompanyContact">@Model.CompanyContact</span></div>
-                <div>
-                    <font>传真：</font><span id="currentCompanyFax">@Model.CompanyFax</span></div>
-                <div>
-                    <font>细分行业：</font><span id="currentCompanyCategoryStrings">@Model.CompanyCategoryStrings</span>
-                </div>
-                <div>
-                    <font>成熟度：</font><span id="currentProgressString">@Model.ProgressString </span>
-                </div>
-            </dd>
-        </dl>
-    </fieldset>
-    @(Html.Telerik().Window().Title("更新公司")
-            .Name(guidFormName)
-    .Buttons(buttons => buttons.Close())
-    .Content(@<text><div class="dialogue-editcompany">
-        <div class="companyEdit-wrapper">
-            <form action="/SalesEx/EditSaleCompany" data-ajax="true" data-ajax-mode="replace"
-            data-ajax-update="ajax-holder" class="companyEditForm" method="post">
-            @Html.HiddenFor(model => model.ProjectID)
-            @Html.HiddenFor(model => model.CompanyID)
-            <ul>
-                <li><span class="addcompany-left">@Html.LabelFor(model => model.CompanyNameCH) @Html.TextBoxFor(model => model.CompanyNameCH, new { @class = "updateName" })
-                    @Html.ValidationMessageFor(model => model.CompanyNameCH)</span> <span class="addcompany-right">
-                        @Html.LabelFor(model => model.CompanyNameEN) @Html.TextBoxFor(model => model.CompanyNameEN)
-                        @Html.ValidationMessageFor(model => model.CompanyNameEN)
-                    </span></li>
-                <li><span class="addcompany-left">@Html.LabelFor(model => model.AreaID) @Html.DropDownListFor(model => model.AreaID, SelectHelper.CompanyIndustrySelectList(null), "请选择", new { })
-                    @Html.ValidationMessageFor(model => model.AreaID)</span> <span class="addcompany-right">
-                        @Html.LabelFor(model => model.CompanyTypeID) @Html.DropDownListFor(model => model.CompanyTypeID, SelectHelper.CompanyTypeSelectList(null), "请选择", new { })
-                        @Html.ValidationMessageFor(model => model.CompanyTypeID)
-                    </span></li>
-                <li><span class="addcompany-left">@Html.LabelFor(model => model.CompanyContact) @Html.TextBoxFor(model => model.CompanyContact)
-                    @Html.ValidationMessageFor(model => model.CompanyContact)</span> <span class="addcompany-right">
-                        @Html.LabelFor(model => model.CompanyFax) @Html.TextBoxFor(model => model.CompanyFax)
-                        @Html.ValidationMessageFor(model => model.CompanyFax)
-                    </span></li>
-                <li><span class="addcompany-left">@Html.LabelFor(model => model.ZipCode) @Html.TextBoxFor(model => model.ZipCode)
-                    @Html.ValidationMessageFor(model => model.ZipCode)</span> <span class="addcompany-right">
-                        @Html.LabelFor(model => model.WebSite) @Html.TextBoxFor(model => model.WebSite)
-                        @Html.ValidationMessageFor(model => model.WebSite)
-                    </span></li>
-                <li><span class="addcompany-left">@Html.LabelFor(model => model.Address) @Html.TextBoxFor(model => model.Address)
-                    @Html.ValidationMessageFor(model => model.Address)</span> <span class="addcompany-right">
-                        @Html.LabelFor(model => model.DistrictNumberID) @Html.DropDownListFor(model => model.DistrictNumberID, SelectHelper.DistinctNumberSelectList(null), "请选择", new { })
-                        @Html.ValidationMessageFor(model => model.DistrictNumberID)
-                    </span></li>
-                <li><span class="addcompany-left">@Html.LabelFor(model => model.ProgressID) @Html.DropDownListFor(model => model.ProgressID, SelectHelper.ProgressSelectList(null), "请选择", new { })
-                    @Html.ValidationMessageFor(model => model.ProgressID)</span> </li>
-                <li><span>@Html.LabelFor(model => model.Business) @Html.TextAreaFor(model => model.Business)
-                    @Html.ValidationMessageFor(model => model.Business)</span> </li>
-                <li><span>@Html.LabelFor(model => model.Desc) @Html.TextAreaFor(model => model.Desc)
-                    @Html.ValidationMessageFor(model => model.Desc)</span> </li>
-                <li class="companyCategory">
-                    <fieldset>
-                        <legend>Categories</legend>
-                        @foreach (Category category in CH.GetAllData<Category>(c => c.ProjectID == Model.ProjectID))
-                        { 
-                            <label class="company-category">@category.Name</label>
-                            if (Model.Categories.Contains(category.ID))
-                            {
-                            <input  name="Categories" type="checkbox" value="@category.ID" checked="checked" />
-                            }
-                            else
-                            { 
-                            <input  name="Categories" type="checkbox" value="@category.ID"/>
-                            }
-                        }
-                    </fieldset>
-                </li>
-            </ul>
-            </form>
-        </div>
-        <div class="dialogue-buttons">
-            <input type="button" value="确定" class="t-button" onclick="updatecompany()" />
-            <input type="button" value="取消" class="t-button" onclick="cancelEditcompany()" />
-        </div>
-    </div></text>)
-    .Width(750)
-    .Height(600)
-    .Modal(true).Visible(false)
-)
-}
-@(Html.Telerik().Window()
-    .Name("EditLead")
-    .Buttons(buttons => buttons.Close())
-    .Content(@<text><div class="dialogue-editlead">
-        <div class="leadedit-wrapper">
-        </div>
-        <div class="dialogue-buttons">
-            <input type="button" value="确定" class="t-button" onclick="UpdateLead()" />
-            <input type="button" value="取消" class="t-button" onclick="CancelEditLead()" />
-        </div>
-    </div></text>)
-    .Width(750)
-    .Height(350)
-    .Modal(true).Visible(false)
-)
-@(Html.Telerik().Window()
-    .Name("EditCall")
-    .Buttons(buttons => buttons.Close())
-    .Content(@<text><div class="dialogue-editcall">
-        <div class="calledit-wrapper">
-        </div>
-        <div class="dialogue-buttons">
-            <input type="button" value="确定" class="t-button" onclick="UpdateCall()" />
-            <input type="button" value="取消" class="t-button" onclick="CancelEditCall()" />
-        </div>
-    </div></text>)
-    .Width(750)
-    .Height(200)
-    .Modal(true).Visible(false)
-)
-@helper LeadsInfo()
-    {     
-    <dl>
-        @foreach (var lead in Model.AjaxLeads)
-        {
-            <input style="margin:10px; padding:5px;" type="button" onclick="onLeadEdit(@(lead.LeadID))" value="更新Lead" />
-            <fieldset id="@(lead.LeadID)">
-                <dt style="font-size: 13px; margin: 5px;">@lead.DisplayText</dt>
-                <dd class="fieldname">
-                    <div>
-                        <font>中文名：</font><span class="leadNameCN">@lead.LeadNameCH</span>
-                    </div>
-                    <div>
-                        <font>英文名：</font><span class="leadNamEN">@lead.LeadNameEN</span>
-                    </div>
-                    <div>
-                        <font>Lead职位：</font><span class="leadTitle"> @lead.LeadTitle</span>
-                    </div>
-                    <div>
-                        <font>Lead性别：</font><span class="leadGender"> @lead.Gender</span>
-                    </div>
-                    <div>
-                        <font>客户区号：</font><span class="LeadDistinctNumberString"> @lead.LeadDistinctNumberString</span>
-                    </div>
-                </dd>
-                <dt style="font-size: 13px;">联系方式</dt>
-                <dd class="fieldname">
-                    <div>
-                        <font>公司邮箱：</font><span class="LeadEmail">@lead.LeadEmail</span>
-                    </div>
-                    <div>
-                        <font>个人邮箱：</font><span class="LeadPersonalEmail">@lead.LeadPersonalEmail </span>
-                    </div>
-                    <div>
-                        <font>直线：</font><span class="LeadContact">@lead.LeadContact</span>
-                    </div>
-                    <div>
-                        <font>手机：</font><span class="LeadMobile">@lead.LeadMobile</span>
-                    </div>
-                    <div>
-                        <font>传真：</font><span class="LeadFax">@lead.LeadFax</span>
-                    </div>
-                    <div>
-                        <font>微博账号：</font><span class="WeiBo">@lead.WeiBo</span>
-                    </div>
-                    <div>
-                        <font>微信账号：</font><span class="WeiXin">@lead.WeiXin</span>
-                    </div>
-                    <div>
-                        <font>LinkIn账号：</font><span class="LinkIn">@lead.LinkIn</span>
-                    </div>
-                    <div>
-                        <font>FaceBook账号：</font><span class="FaceBook">@lead.FaceBook</span>
-                    </div>
-                    <div>
-                        <font>传真：</font><span class="LeadFax">@lead.LeadFax</span>
-                    </div>
-                    <div>
-                        <font>博客地址：</font><span class="Blog">@lead.Blog</span>
-                    </div>
-                </dd>
-                <dt style="font-size: 13px;">描述</dt>
-                <dd class="fieldname">
-                    <div>
-                        <font></font>
-                    </div>
-                </dd>
-                <dt style="font-size: 13px;">致电列表</dt>
-                <dd>
-                    @(Html.Telerik().Grid<AjaxCall>(lead.AjaxCalls.OrderByDescending(o => o.CallDate)).Name("lead" + lead.LeadID)
-                    .Columns(columns =>
-                    {
-                        columns.Bound(o => o.CallType).Template(@<text><span id="@(item.LeadCallID)_CallType">@item.CallType</span></text>).Width(80);
-                        columns.Bound(o => o.CallBackDate).Template(@<text><span id="@(item.LeadCallID)_CallBackDate">@item.CallBackDate</span></text>).Width(100);
-                        columns.Bound(o => o.CallDate).Template(@<text><span id="@(item.LeadCallID)_CallDate">@item.CallDate</span></text>).Width(100);
-                        columns.Bound(o => o.Caller).Template(@<text><span id="@(item.LeadCallID)_Caller">@item.Caller</span></text>).Width(80);
-                        columns.Bound(o => o.Result).Template(@<text><span id="@(item.LeadCallID)_Result">@item.Result</span></text>);
-                        columns.Bound(o => o.LeadCallID).Template(@<text><input onclick='EditLeadCall(@item.LeadCallID)' type='button' value='update' style='padding:5px 10px' /></text>);
-                    }).Pageable(paging => paging.Enabled(false)).Resizable(resizing => resizing.Columns(true)).Sortable().Scrollable(scrolling => scrolling.Enabled(false))
-                       .Filterable())
-                </dd>
-            </fieldset>
-        }
-    </dl>
-}
-<style>
-    .fieldblock
-    {
-    }
-    .fieldname div
-    {
-        padding: 2px;
-        min-width: 100px;
-        background-color: #FFDEAD;
-        border-bottom-color: #FF8C00;
-        border: 1px solid #CCC;
-        display: inline-block;
-        margin-left: 8px;
-        margin-bottom: 8px;
-    }
-    .fieldname div font
-    {
-        font-size: 12px;
-        color: Green;
-    }
-    
-    .fieldError
-    {
-        border: 1px solid red !important;
-    }
-</style>
