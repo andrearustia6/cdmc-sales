@@ -29,17 +29,19 @@
     <div class="fenge_3">
     <fieldset>
     <legend>公司信息</legend>
-       <ul class="fieldname">
-            <li><font>中文名：</font><span id="currentCompanyName" class="datainfo">@Model.CompanyNameCH </span></li>
-            <li><font>英文名：</font><span id="currentCompanyNameEN" class="datainfo">@Model.CompanyNameEN</span></li>
-                <li><font>区号：</font><span id="currentCompanyDistrictNumberString" class="datainfo">@Model.CompanyDistrictNumberString</span></li>
-                <li><font>公司总机：</font><span id="currentCompanyContact" class="datainfo">@Model.CompanyContact</span></li>
-                <li><font>传真：</font><span id="currentCompanyFax" class="datainfo">@Model.CompanyFax</li>
-                <li><font>细分行业：</font><span id="currentCompanyCategoryStrings" class="datainfo">@Model.CompanyCategoryStrings</span>
-                </li>
-                <li><font>成熟度：</font><span id="currentProgressString" class="datainfo">@Model.ProgressString</span>
-                </li>
-        </ul>
+
+       <dl class="fieldname">
+            <dd><font>中文名：</font><span id="currentCompanyName" class="datainfo">@Model.CompanyNameCH </span></dd>
+            <dd><font>英文名：</font><span id="currentCompanyNameEN" class="datainfo">@Model.CompanyNameEN</span></dd>
+                <dd><font>区号：</font><span id="currentCompanyDistrictNumberString" class="datainfo">@Model.CompanyDistrictNumberString</span></dd>
+                <dd><font>公司总机：</font><span id="currentCompanyContact" class="datainfo">@Model.CompanyContact</span></dd>
+                <dd><font>传真：</font><span id="currentCompanyFax" class="datainfo">@Model.CompanyFax</dd>
+                <dd><font>细分行业：</font><span id="currentCompanyCategoryStrings" class="datainfo">@Model.CompanyCategoryStrings</span>
+                </dd>
+                <dd><font>成熟度：</font><span id="currentProgressString" class="datainfo">@Model.ProgressString</span>
+                </dd>
+        </dl>
+        
         </fieldset>
     </div>
     </div>
@@ -166,11 +168,11 @@
                 @lead.LeadName</legend>
                
                 <ul class="fieldname">
-                    <li><font>中文名：</font><span class="leadNameCN datainfo">@lead.LeadNameCH</span> </li>
-                    <li><font>英文名：</font><span class="leadNamEN datainfo">@lead.LeadNameEN</span> </li>
-                    <li><font>Lead职位：</font><span class="leadTitle datainfo">@lead.LeadTitle</span> </li>
-                    <li><font>Lead性别：</font><span class="leadGender datainfo">@lead.Gender</span> </li>
-                    <li><font>客户区号：</font><span class="LeadDistinctNumberString datainfo">@lead.LeadDistinctNumberString</span>
+                    <li><span class="leadNameCN datainfo"><font>中文名：</font>@lead.LeadNameCH</span> </li>
+                    <li><span class="leadNamEN datainfo"><font>英文名：</font>@lead.LeadNameEN</span> </li>
+                    <li><span class="leadTitle datainfo"><font>Lead职位：</font>@lead.LeadTitle</span> </li>
+                    <li><span class="leadGender datainfo"><font>Lead性别：</font>@lead.Gender</span> </li>
+                    <li><span class="LeadDistinctNumberString datainfo"><font>客户区号：</font>@lead.LeadDistinctNumberString</span>
                     </li>
                 </ul>
           </fieldset>
@@ -242,15 +244,15 @@
     
     .fieldname
     {
-        list-style-type: none;
+       
     }
-    .fieldname li{ font-size:12px; color:#666; float:left; padding-right:15px;}
+    .fieldname dd{ font-size:15px;  float:left;  padding-left:10px; padding-right:10px; margin:10px;   background-color:#FFBB77;}
     .datainfo
     {
-        font-size: 12px;
-        color: #d05f00;
-        border: 1px solid #FFF;
-
+        font-size: 15px;
+         color:Black;
+   
+      
     
          max-width: 76px;
         height: 21px;
