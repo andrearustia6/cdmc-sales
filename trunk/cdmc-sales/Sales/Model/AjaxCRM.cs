@@ -117,6 +117,7 @@ namespace Model
                        where m.Name == user && m.CompanyRelationships.Select(s => s.ID).Contains(c.ID) && (!custom.Select(s => s.CompanyRelationshipID).Contains(c.ID) || alldata.Value)
                        select new AjaxCRM
                        {
+                           ProjectID = c.ProjectID,
                            CompanyID = c.CompanyID,
                            CompanyNameEN = c.Company.Name_EN,
                            CompanyNameCH = c.Company.Name_CH,

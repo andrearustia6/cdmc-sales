@@ -21,9 +21,9 @@
    
         
   <div class="fenge">
-	<div class="fenge_2">@Model.CompanyName   
-    <input type="button" style="float:right" value="+Lead" onclick="editCompany()" />
-    <input style="float:right" type="button" onclick="onLeadEdit(@(@Model.CRMID))" value="更新" />
+	<div class="fenge_2">@Model.CompanyName    
+    <input style="float:right;padding:5px;;margin:0 5px;" type="button" onclick="onLeadAdd(@(Model.CompanyID))" value="添加lead" />
+     <input type="button" style="float:right;padding:5px;margin:0 5px;" value="更新" onclick="editCompany()" />
     </div>
      
     <div class="fenge_3">
@@ -122,6 +122,21 @@
 )
 }
 @(Html.Telerik().Window()
+    .Name("AddLead")
+    .Buttons(buttons => buttons.Close())
+    .Content(@<text><div class="dialogue-addlead">
+        <div class="leadadd-wrapper">
+        </div>
+        <div class="dialogue-buttons">
+            <input type="button" value="确定" class="t-button" onclick="AddLead()" />
+            <input type="button" value="取消" class="t-button" onclick="CancelAddLead()" />
+        </div>
+    </div></text>)
+    .Width(750)
+    .Height(320)
+    .Modal(true).Visible(false)
+)
+@(Html.Telerik().Window()
     .Name("EditLead")
     .Buttons(buttons => buttons.Close())
     .Content(@<text><div class="dialogue-editlead">
@@ -151,13 +166,30 @@
     .Height(200)
     .Modal(true).Visible(false)
 )
+
+@(Html.Telerik().Window()
+    .Name("AddCall")
+    .Buttons(buttons => buttons.Close())
+    .Content(@<text><div class="dialogue-addcall">
+        <div class="calladd-wrapper">
+        </div>
+        <div class="dialogue-buttons">
+            <input type="button" value="确定" class="t-button" onclick="AddCall()" />
+            <input type="button" value="取消" class="t-button" onclick="CancelAddCall()" />
+        </div>
+    </div></text>)
+    .Width(750)
+    .Height(250)
+    .Modal(true).Visible(false)
+)
+
 @helper LeadsInfo()
     {     
         
        foreach (var lead in Model.AjaxLeads)
         {
       <div class="fenge">
-	<div class="fenge_2">@lead.LeadName  <input style="float:right" type="button" onclick="onLeadEdit(@(lead.LeadID))" value="+Call" /><input style="float:right" type="button" onclick="onLeadEdit(@(lead.LeadID))" value="更新" /></div>
+	<div class="fenge_2">@lead.LeadName  <input style="float:right;padding:5px;;margin:0 5px;" type="button" onclick="onCallAdd(@(lead.LeadID),@(lead.CRMID),@(Model.ProjectID))" value="添加Call" /><input style="float:right;;padding:5px;;margin:0 5px;" type="button" onclick="onLeadEdit(@(lead.LeadID))" value="更新" /></div>
      
     <div class="fenge_3">
    @*  <div style=" width:100%; height:25px; margin-bottom:-5px; margin-top:10px;">
@@ -317,7 +349,7 @@
                         $('#currentCompanyName').html(tempVal);
                         tempVal = $('#@(guidFormName) .companyEditForm #CompanyNameEN').val();
                         $('#currentCompanyNameEN').html(tempVal);
-                        tempVal = $('#@(guidFormName) .companyEditForm #DistrictNumberID option:selected').text();
+                        tempVal = $('#@(guidFormName) .companyEditForm #DistrictNumberID option:selected').first().text();
                         $('#currentCompanyDistrictNumberString').html(tempVal);
                         tempVal = $('#@(guidFormName) .companyEditForm #CompanyContact').val();
                         $('#currentCompanyContact').html(tempVal);
@@ -331,7 +363,7 @@
                             tempVal = tempVal.substr(0, tempVal.length - 1);
                         }
                         $('#currentCompanyCategoryStrings').html(tempVal);
-                        tempVal = $('#@(guidFormName) .companyEditForm #ProgressID option:selected').text();
+                        tempVal = $('#@(guidFormName) .companyEditForm #ProgressID option:selected').first().text();
                         $('#currentProgressString').html(tempVal);
                         var window = $('#@(guidFormName)').data('tWindow');
                         window.close();
@@ -364,7 +396,7 @@
                     $('#' + currentLeadID + ' .leadNamEN').html($('.dialogue-editlead form #Name_EN').val());
                     $('#' + currentLeadID + ' .leadTitle').html($('.dialogue-editlead form #Title').val());
                     $('#' + currentLeadID + ' .leadGender').html($('.dialogue-editlead form #Gender').val());
-                    $('#' + currentLeadID + ' .LeadDistinctNumberString').html($('.dialogue-editlead form #Name_CN option:selected').text());
+                    $('#' + currentLeadID + ' .LeadDistinctNumberString').html($('.dialogue-editlead form #Name_CN option:selected').first().text());
                     $('#' + currentLeadID + ' .LeadEmail').html($('.dialogue-editlead form #WorkingEmail').val());
                     $('#' + currentLeadID + ' .LeadPersonalEmail').html($('.dialogue-editlead form #PersonelEmail').val());
                     $('#' + currentLeadID + ' .LeadContact').html($('.dialogue-editlead form #Telephone').val());
@@ -382,6 +414,14 @@
         }
     }
 
+    function onLeadAdd(currentCompanyId) {      
+        $.post('GetAddLead', { companyId: currentCompanyId }, function (result) {
+            $('.leadadd-wrapper').html(result);
+            var window = $('#AddLead').data('tWindow');
+            window.center().open();
+        });
+    }
+
     var currentLeadCallID = undefined;
     function EditLeadCall(leadCallID) {
         currentLeadCallID = leadCallID;
@@ -395,6 +435,32 @@
         var window = $('#EditCall').data('tWindow');
         window.close();
     }
+    function onCallAdd(currentLeadId, currentCompanyRelationshipId,currentProejctId) {     
+        $.post('GetAddCall', { leadId: currentLeadId, companyRelationId: currentCompanyRelationshipId,projectId: currentProejctId }, function (result) {
+            $('.calladd-wrapper').html(result);
+            var window = $('#AddCall').data('tWindow');
+            window.center().open();
+        });
+    }
+    function AddCall() { 
+        if ($('.dialogue-addcall form').valid()) {
+            var query = $('.dialogue-addcall form').serialize();
+            $.post('AddCall?' + query, null, function (result) {
+                if (result.length > 0) {
+                    alert('LeadCall新增失败');
+                } else {
+                    $('#AddCall').data('tWindow').close();
+                    alert('LeadCall新增成功');
+                    window.location=window.location;
+                }
+            });
+        }
+    }
+
+    function CancelAddCall() {
+        var window = $('#AddCall').data('tWindow');
+        window.close();
+    }
     function UpdateCall() {
         if ($('.calledit-wrapper form').valid()) {
             var query = $('.calledit-wrapper form').serialize();
@@ -402,7 +468,7 @@
                 if (result.length > 0) {
                     alert(result);
                 } else {
-                    $('#' + currentLeadCallID + '_CallType').html($('.dialogue-editcall form #CallTypeId option:selected').text());
+                    $('#' + currentLeadCallID + '_CallType').html($('.dialogue-editcall form #CallTypeId option:selected').first().text());
                     $('#' + currentLeadCallID + '_CallBackDate').html($('.dialogue-editcall form #CallBackDate').val());
                     $('#' + currentLeadCallID + '_CallDate').html($('.dialogue-editcall form #CallDate').val());
                     $('#' + currentLeadCallID + '_Result').html($('.dialogue-editcall form #Result').val());
@@ -412,4 +478,23 @@
             });
         }
     }
+    function AddLead() {   
+        if ($('.dialogue-addlead form').valid()) {
+            var query = $('.dialogue-addlead form').serialize();
+            $.post('AddLead?' + query, null, function (result) {
+                if (result.length > 0) {
+                    $('#AddLead').data('tWindow').close();
+                    alert('Lead新增成功');
+                    onCallAdd(result,@(Model.CRMID),@(Model.ProjectID));
+                } else {
+                    alert('Lead新增失败');                    
+                }
+            });
+        }
+    }
+    function CancelAddLead() {
+        var window = $('#AddLead').data('tWindow');
+        window.close();
+    }
+
 </script>
