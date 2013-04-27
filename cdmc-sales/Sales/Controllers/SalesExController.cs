@@ -20,7 +20,7 @@ namespace Sales.Controllers
             return View(GetNavigationBar());
         }
 
- 
+
 
         /// <summary>
         /// 导航选中的公司或者lead
@@ -261,6 +261,40 @@ namespace Sales.Controllers
             return null;
         }
 
+        public ActionResult GetAddLead(int companyId)
+        {
+            AjaxViewLead ajaxViewLead = new AjaxViewLead() { CompanyId = companyId };
+            return PartialView("AddLead", ajaxViewLead);
+        }
+
+        public ActionResult AddLead(AjaxViewLead ajaxViewLead)
+        {
+            Lead lead = new Lead()
+            {
+                Name_CH = ajaxViewLead.Name_CN,
+                Name_EN = ajaxViewLead.Name_EN,
+                CompanyID = ajaxViewLead.CompanyId,
+                Address = ajaxViewLead.Address,
+                Birthday = ajaxViewLead.Birthday,
+                Contact = ajaxViewLead.Telephone,
+                Department = ajaxViewLead.Department,
+                Description = ajaxViewLead.Desc,
+                EMail = ajaxViewLead.WorkingEmail,
+                Fax = ajaxViewLead.Fax,
+                Gender = ajaxViewLead.Gender,
+                Mobile = ajaxViewLead.CellPhone,
+                WeiBo = ajaxViewLead.WeiBo,
+                WeiXin = ajaxViewLead.WeiXin,
+                LinkIn = ajaxViewLead.LinkIn,
+                FaceBook = ajaxViewLead.FaceBook,
+                Blog = ajaxViewLead.Blog,
+                MarkForDelete = false
+            };
+
+            CH.Create<Lead>(lead);
+            return Content(lead.ID.ToString());
+        }
+
         public ActionResult GetEditLeadCall(int leadCallId)
         {
             LeadCall leadCall = CH.GetAllData<LeadCall>(c => c.ID == leadCallId).First();
@@ -286,6 +320,29 @@ namespace Sales.Controllers
             leadCall.Member = CH.GetAllData<Member>(c => c.Name == Employee.CurrentUserName).First();
             leadCall.Result = ajaxViewLeadCall.Result;
             CH.Edit<LeadCall>(leadCall);
+            return null;
+        }
+
+        public ActionResult GetAddCall(int leadId, int companyRelationId, int projectId)
+        {
+            AjaxViewLeadCall ajaxViewLeadCall = new AjaxViewLeadCall() { LeadId = leadId, CompanyRelationshipId = companyRelationId, ProjectId = projectId };
+            return PartialView("AddCall", ajaxViewLeadCall);
+        }
+
+        public ActionResult AddCall(AjaxViewLeadCall ajaxViewLeadCall)
+        {
+            LeadCall leadCall = new LeadCall();
+            leadCall.CallBackDate = ajaxViewLeadCall.CallBackDate;
+            leadCall.CallDate = ajaxViewLeadCall.CallDate;
+            leadCall.CompanyRelationshipID = ajaxViewLeadCall.CompanyRelationshipId;
+            leadCall.LeadCallTypeID = ajaxViewLeadCall.CallTypeId;
+            leadCall.LeadID = ajaxViewLeadCall.LeadId;
+            leadCall.Member = CH.GetAllData<Member>(c => c.Name == Employee.CurrentUserName).First();
+            leadCall.ProjectID = ajaxViewLeadCall.ProjectId;
+            leadCall.Result = ajaxViewLeadCall.Result;
+            leadCall.MarkForDelete = false;
+            CH.Create<LeadCall>(leadCall);
+
             return null;
         }
     }
