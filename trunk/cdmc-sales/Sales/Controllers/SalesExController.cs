@@ -10,167 +10,24 @@ using Entity;
 
 namespace Sales.Controllers
 {
+   
     public class SalesExController : Controller
     {
         //
         // GET: /SalesEx/
         public ActionResult Index()
         {
-            var d = new AjaxCrmTypedList();
-            d.AllCRMs = GetCrmDataQuery();
-            d.CustomCrmGroups = GetcustomCrmGroupDataQuery();
-            return View(d);
+            return View(GetNavigationBar());
         }
 
-        private IQueryable<AjaxGroupedCRM> GetcustomCrmGroupDataQuery()
-        {
-            var user = Employee.CurrentUserName;
-            var data = from f in CH.DB.UserFavorsCrmGroups
-                       where f.UserName == user
-                       select new AjaxGroupedCRM()
-                       {
-                           ID = f.ID,
-                           UserName = f.UserName,
-                           DisplayName = f.DisplayName,
-                           GroupedCRMs = (from u in CH.DB.UserFavorsCRMs
-                                          from c in CH.DB.CompanyRelationships
-                                          from m in c.Members
-                                          where m.Name == user
-                                          && c.ID == u.CompanyRelationshipID.Value
-                                          && f.UserFavorsCRMs.Select(s => s.ID).Contains(u.ID)
-                                          select new AjaxCRM
-                                          {
-                                              CompanyNameEN = c.Company.Name_EN,
-                                              CompanyNameCH = c.Company.Name_CH,
-                                              CompanyContact = c.Company.Contact,
-                                              Progress = c.Progress,
-                                              CompanyFax = c.Company.Fax,
-                                              CompanyCategories = c.Categorys,
-                                              CompanyDistinct = c.Company.DistrictNumber,
-                                              CompanyCreateDate = c.Company.CreatedDate,
-                                              CRMID = c.ID,
-                                              AjaxLeads = (from l in c.Company.Leads
-                                                           select new AjaxLead
-                                                           {
-                                                               Blog = l.Blog,
-                                                               Gender = l.Gender,
-                                                               LeadPersonalEmail = l.PersonalEmailAddress,
-                                                               FaceBook = l.FaceBook,
-                                                               LinkIn = l.LinkIn,
-                                                               WeiBo = l.WeiBo,
-                                                               WeiXin = l.WeiXin,
-                                                               LeadNameCH = l.Name_CH,
-                                                               LeadNameEN = l.Name_EN,
-                                                               LeadContact = l.Contact,
-                                                               LeadDistinct = l.DistrictNumber,
-                                                               LeadEmail = l.EMail,
-                                                               LeadMobile = l.Mobile,
-                                                               LeadTitle = l.Title,
-                                                               LeadFax = l.Fax,
-                                                               CRMID = c.ID,
-                                                               LeadID = l.ID,
-                                                               LeadCreateDate = l.CreatedDate,
-                                                               AjaxCalls = (from call in c.LeadCalls.Where(w => w.LeadID == l.ID)
-                                                                            select new AjaxCall
-                                                                            {
-                                                                                CallDate = call.CallDate,
-                                                                                CallBackDate = call.CallBackDate,
-                                                                                CallType = call.LeadCallType.Name,
-                                                                                Caller = call.Member.Name,
-                                                                                LeadCallTypeCode = call.LeadCallType.Code
-
-                                                                            })
-                                                           })
-
-                                          }
-                                          )
-
-                       };
-            return data;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="alldata">true 为选择所有数据</param>
-        /// <returns></returns>
-        IQueryable<AjaxCRM> GetCrmDataQuery(bool? alldata = false)
-        {
-
-            var user = Employee.CurrentUserName;
-            var custom = from cg in CH.DB.UserFavorsCRMs.Where(w => w.UserFavorsCrmGroup.UserName == user) select cg;
-            var data = from c in CH.DB.CompanyRelationships
-                       from m in c.Members
-
-                       where m.Name == user && m.CompanyRelationships.Select(s => s.ID).Contains(c.ID) && (!custom.Select(s => s.CompanyRelationshipID).Contains(c.ID) || alldata.Value)
-                       select new AjaxCRM
-                       {
-                           CompanyID = c.CompanyID,
-                           CompanyNameEN = c.Company.Name_EN,
-                           CompanyNameCH = c.Company.Name_CH,
-                           CompanyContact = c.Company.Contact,
-                           Progress = c.Progress,
-                           CompanyFax = c.Company.Fax,
-                           CompanyCategories = c.Categorys,
-                           CompanyDistinct = c.Company.DistrictNumber,
-                           CompanyCreateDate = c.Company.CreatedDate,
-                           CRMID = c.ID,
-                           DistrictNumberID = c.Company.DistrictNumberID,
-                           ProgressID = c.ProgressID,
-                           AreaID = c.Company.AreaID,
-                           CompanyTypeID = c.Company.CompanyTypeID,
-                           ZipCode = c.Company.ZIP,
-                           WebSite = c.Company.WebSite,
-                           Address = c.Company.Address,
-                           Business = c.Company.Business,
-                           Desc = c.Company.Description,
-                           Categories = c.Categorys.Select(ca => ca.ID),
-                           AjaxLeads = (from l in c.Company.Leads
-                                        select new AjaxLead
-                                        {
-                                            Blog = l.Blog,
-                                            Gender = l.Gender,
-                                            LeadPersonalEmail = l.PersonalEmailAddress,
-                                            FaceBook = l.FaceBook,
-                                            LinkIn = l.LinkIn,
-                                            WeiBo = l.WeiBo,
-                                            WeiXin = l.WeiXin,
-
-                                            LeadNameCH = l.Name_CH,
-                                            LeadNameEN = l.Name_EN,
-                                            LeadContact = l.Contact,
-                                            LeadDistinct = l.DistrictNumber,
-                                            LeadEmail = l.EMail,
-                                            LeadMobile = l.Mobile,
-                                            LeadTitle = l.Title,
-                                            LeadFax = l.Fax,
-                                            CRMID = c.ID,
-                                            LeadID = l.ID,
-                                            LeadCreateDate = l.CreatedDate,
-                                            AjaxCalls = (from call in c.LeadCalls.Where(w => w.LeadID == l.ID)
-                                                         select new AjaxCall
-                                                         {
-                                                             CallDate = call.CallDate,
-                                                             CallBackDate = call.CallBackDate,
-                                                             CallType = call.LeadCallType.Name,
-                                                             Caller = call.Member.Name,
-                                                             LeadCallTypeCode = call.LeadCallType.Code,
-                                                             LeadCallID=call.ID
-
-                                                         })
-                                        })
-
-                       };
-
-            return data;
-        }
+ 
 
         /// <summary>
         /// 导航选中的公司或者lead
         /// </summary>
         /// <param name="indexs"></param>
         /// <returns></returns>
-        public PartialViewResult _SelectedList(string indexs)
+        public PartialViewResult _SelectedList(string indexs, CompanyFilters filters = null)
         {
             var ids = indexs.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
             var crmid = int.Parse(ids[0]);
@@ -179,8 +36,10 @@ namespace Sales.Controllers
             {
                 leadid = int.Parse(ids[1]);
             }
-            var data = GetCrmDataQuery(true).FirstOrDefault(f => f.CRMID == crmid);
-
+            var d = GetNavigationBar(filters);
+            var data = d.AllCRMs.FirstOrDefault(f => f.CRMID == crmid);
+            if(data==null)
+                data = d.CustomCrmGroups.SelectMany(s=>s.GroupedCRMs).FirstOrDefault(f => f.CRMID == crmid);
 
             if (leadid != 0 && data != null)
             {
@@ -195,7 +54,7 @@ namespace Sales.Controllers
         /// </summary>
         /// <param name="crmid"></param>
         /// <returns></returns>
-        public PartialViewResult _CrmBlowed(string crmid)
+        public PartialViewResult _CrmBlowed(string crmid, CompanyFilters filters=null )
         {
             var sourcecrmid = Int32.Parse(crmid);
             var user = Employee.CurrentUserName;
@@ -217,14 +76,12 @@ namespace Sales.Controllers
             crm.Members.Remove(member);
             CH.Edit<CompanyRelationship>(crm);
 
-            return PartialView(@"~\views\salesex\MainNavigationContainer.cshtml", GetNavigationBar());
+            return PartialView(@"~\views\salesex\MainNavigationContainer.cshtml", GetNavigationBar(filters));
         }
 
-        AjaxCrmTypedList GetNavigationBar()
+        AjaxCrmTypedList GetNavigationBar(CompanyFilters filters=null)
         {
-            var d = new AjaxCrmTypedList();
-            d.AllCRMs = GetCrmDataQuery();
-            d.CustomCrmGroups = GetcustomCrmGroupDataQuery();
+            var d = new AjaxCrmTypedList(filters);
             return d;
         }
 
@@ -233,7 +90,7 @@ namespace Sales.Controllers
         /// </summary>
         /// <param name="indexs"></param>
         /// <returns></returns>
-        public PartialViewResult _CopyCrmToGroup(string crmid, string groupid)
+        public PartialViewResult _CopyCrmToGroup(string crmid, string groupid, CompanyFilters filters=null )
         {
             var sourcecrmid = Int32.Parse(crmid);
             var targetgroupid = Int32.Parse(groupid);
@@ -247,7 +104,7 @@ namespace Sales.Controllers
             return PartialView(@"~\views\salesex\MainNavigationContainer.cshtml", GetNavigationBar());
         }
 
-        public void RemoveFromGroup(string crmid)
+         void RemoveFromGroup(string crmid)
         {
             var sourcecrmid = Int32.Parse(crmid);
             var username = Employee.CurrentUserName;
@@ -265,11 +122,16 @@ namespace Sales.Controllers
                 CH.Edit<UserFavorsCrmGroup>(f);
             });
         }
-        public PartialViewResult _CrmRemove(string crmid)
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="crmid"></param>
+        /// <returns></returns>
+         public PartialViewResult _CrmRemove(string crmid, CompanyFilters filters = null)
         {
             RemoveFromGroup(crmid);
-            var data = GetcustomCrmGroupDataQuery();
-            return PartialView(@"~\views\salesex\MainNavigationContainer.cshtml", GetNavigationBar());
+            return PartialView(@"~\views\salesex\MainNavigationContainer.cshtml", GetNavigationBar(filters));
         }
 
 
@@ -277,9 +139,11 @@ namespace Sales.Controllers
         /// 刷新导航栏
         /// </summary>
         /// <returns></returns>
-        public PartialViewResult _RefreshCrmList()
+        public PartialViewResult _RefreshCrmList(CompanyFilters filters=null)
         {
-            return PartialView(@"~\views\salesex\MainNavigationContainer.cshtml", GetNavigationBar());
+
+            var bar = GetNavigationBar(filters);
+            return PartialView(@"~\views\salesex\MainNavigationContainer.cshtml", bar);
         }
 
         [GridAction]

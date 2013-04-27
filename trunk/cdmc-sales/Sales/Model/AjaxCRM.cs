@@ -8,8 +8,184 @@ using Utl;
 
 namespace Model
 {
+     public class CompanyFilters
+    {
+
+        public int? CompanyAssignDate { get; set; }
+        public int? CompanyProgress { get; set; }
+    }
+
     public class AjaxCrmTypedList
     {
+        IQueryable<CompanyRelationship> GetFilteredCRM()
+        { 
+           var query = from  c in CH.DB.CompanyRelationships select c;
+           if (Filters!=null && Filters.CompanyAssignDate.HasValue)
+            {
+                var date = DateTime.Now.AddDays(-Filters.CompanyAssignDate.Value);
+                query = query.Where(q=>q.CreatedDate.Value >= date);
+            }
+           if (Filters != null && Filters.CompanyProgress.HasValue)
+           {
+               query = query.Where(q => q.Progress == null || (q.Progress == null && q.Progress.Code >= Filters.CompanyProgress));
+           }
+            return query;
+        }
+        
+        private IQueryable<AjaxGroupedCRM> GetcustomCrmGroupDataQuery()
+        {
+            var user = Employee.CurrentUserName;
+            var filteredcrm = GetFilteredCRM();
+
+            var data = from f in CH.DB.UserFavorsCrmGroups
+                       where f.UserName == user
+                       select new AjaxGroupedCRM()
+                       {
+                           ID = f.ID,
+                           UserName = f.UserName,
+                           DisplayName = f.DisplayName,
+                           GroupedCRMs = (from u in CH.DB.UserFavorsCRMs
+                                          from c in filteredcrm
+                                          from m in c.Members
+                                          where m.Name == user
+                                          && c.ID == u.CompanyRelationshipID.Value
+                                          && f.UserFavorsCRMs.Select(s => s.ID).Contains(u.ID)
+                                          select new AjaxCRM
+                                          {
+                                              CompanyNameEN = c.Company.Name_EN,
+                                              CompanyNameCH = c.Company.Name_CH,
+                                              CompanyContact = c.Company.Contact,
+                                              Progress = c.Progress,
+                                              CompanyFax = c.Company.Fax,
+                                              CompanyCategories = c.Categorys,
+                                              CompanyDistinct = c.Company.DistrictNumber,
+                                              CompanyCreateDate = c.Company.CreatedDate,
+                                              CRMID = c.ID,
+                                              AjaxLeads = (from l in c.Company.Leads
+                                                           select new AjaxLead
+                                                           {
+                                                               Blog = l.Blog,
+                                                               Gender = l.Gender,
+                                                               LeadPersonalEmail = l.PersonalEmailAddress,
+                                                               FaceBook = l.FaceBook,
+                                                               LinkIn = l.LinkIn,
+                                                               WeiBo = l.WeiBo,
+                                                               WeiXin = l.WeiXin,
+                                                               LeadNameCH = l.Name_CH,
+                                                               LeadNameEN = l.Name_EN,
+                                                               LeadContact = l.Contact,
+                                                               LeadDistinct = l.DistrictNumber,
+                                                               LeadEmail = l.EMail,
+                                                               LeadMobile = l.Mobile,
+                                                               LeadTitle = l.Title,
+                                                               LeadFax = l.Fax,
+                                                               CRMID = c.ID,
+                                                               LeadID = l.ID,
+                                                               LeadCreateDate = l.CreatedDate,
+                                                               AjaxCalls = (from call in c.LeadCalls.Where(w => w.LeadID == l.ID)
+                                                                            select new AjaxCall
+                                                                            {
+                                                                                CallDate = call.CallDate,
+                                                                                CallBackDate = call.CallBackDate,
+                                                                                CallType = call.LeadCallType.Name,
+                                                                                Caller = call.Member.Name,
+                                                                                LeadCallTypeCode = call.LeadCallType.Code
+
+                                                                            })
+                                                           })
+
+                                          }
+                                          )
+
+                       };
+            return data;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="alldata">true 为选择所有数据</param>
+        /// <returns></returns>
+        IQueryable<AjaxCRM> GetCrmDataQuery(bool? alldata = false)
+        {
+
+            var user = Employee.CurrentUserName;
+            var custom = from cg in CH.DB.UserFavorsCRMs.Where(w => w.UserFavorsCrmGroup.UserName == user) select cg;
+            var filteredcrm = GetFilteredCRM();
+            var data = from c in filteredcrm
+                       from m in c.Members
+                       where m.Name == user && m.CompanyRelationships.Select(s => s.ID).Contains(c.ID) && (!custom.Select(s => s.CompanyRelationshipID).Contains(c.ID) || alldata.Value)
+                       select new AjaxCRM
+                       {
+                           CompanyID = c.CompanyID,
+                           CompanyNameEN = c.Company.Name_EN,
+                           CompanyNameCH = c.Company.Name_CH,
+                           CompanyContact = c.Company.Contact,
+                           Progress = c.Progress,
+                           CompanyFax = c.Company.Fax,
+                           CompanyCategories = c.Categorys,
+                           CompanyDistinct = c.Company.DistrictNumber,
+                           CompanyCreateDate = c.Company.CreatedDate,
+                           CRMID = c.ID,
+                           DistrictNumberID = c.Company.DistrictNumberID,
+                           ProgressID = c.ProgressID,
+                           AreaID = c.Company.AreaID,
+                           CompanyTypeID = c.Company.CompanyTypeID,
+                           ZipCode = c.Company.ZIP,
+                           WebSite = c.Company.WebSite,
+                           Address = c.Company.Address,
+                           Business = c.Company.Business,
+                           Desc = c.Company.Description,
+                           Categories = c.Categorys.Select(ca => ca.ID),
+                           AjaxLeads = (from l in c.Company.Leads
+                                        select new AjaxLead
+                                        {
+                                            Blog = l.Blog,
+                                            Gender = l.Gender,
+                                            LeadPersonalEmail = l.PersonalEmailAddress,
+                                            FaceBook = l.FaceBook,
+                                            LinkIn = l.LinkIn,
+                                            WeiBo = l.WeiBo,
+                                            WeiXin = l.WeiXin,
+
+                                            LeadNameCH = l.Name_CH,
+                                            LeadNameEN = l.Name_EN,
+                                            LeadContact = l.Contact,
+                                            LeadDistinct = l.DistrictNumber,
+                                            LeadEmail = l.EMail,
+                                            LeadMobile = l.Mobile,
+                                            LeadTitle = l.Title,
+                                            LeadFax = l.Fax,
+                                            CRMID = c.ID,
+                                            LeadID = l.ID,
+                                            LeadCreateDate = l.CreatedDate,
+                                            AjaxCalls = (from call in c.LeadCalls.Where(w => w.LeadID == l.ID)
+                                                         select new AjaxCall
+                                                         {
+                                                             CallDate = call.CallDate,
+                                                             CallBackDate = call.CallBackDate,
+                                                             CallType = call.LeadCallType.Name,
+                                                             Caller = call.Member.Name,
+                                                             LeadCallTypeCode = call.LeadCallType.Code,
+                                                             LeadCallID = call.ID
+
+                                                         })
+                                        })
+
+                       };
+
+            return data;
+        }
+
+
+        public CompanyFilters Filters { get; set; }
+        public AjaxCrmTypedList(CompanyFilters filters)
+        {
+            Filters = filters;
+            AllCRMs = GetCrmDataQuery();
+            CustomCrmGroups = GetcustomCrmGroupDataQuery();
+        }
+    
         public IQueryable<AjaxCRM> AllCRMs { get; set; }
         public IQueryable<AjaxGroupedCRM> CustomCrmGroups { get; set; }
     }

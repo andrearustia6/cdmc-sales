@@ -12,7 +12,7 @@
     Html.Telerik().Splitter().Name("sp2").HtmlAttributes(new { style = "min-height: 790px;" })
                .Orientation(SplitterOrientation.Vertical).Panes(panes =>
                {
-                   panes.Add().Size("20%").Content(@<text>@CompanyInfo(guidFormName)</text>);
+                   panes.Add().Size("35%").Content(@<text>@CompanyInfo(guidFormName)</text>);
                    panes.Add().Content(@<text>@LeadsInfo()</text>);
                }).Render();
 }
