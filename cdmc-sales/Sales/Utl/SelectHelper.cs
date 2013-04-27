@@ -11,6 +11,21 @@ namespace Utl
 {
     public static class SelectHelper
     {
+        public static IEnumerable<SelectListItem> CrmProgessSelectList()
+        {
+            var ps = CH.GetAllData<Progress>();
+            List<SelectListItem> selectList = new List<SelectListItem>();
+            foreach(var p in ps)
+            {
+                selectList.Add(new SelectListItem() { Text = p.Name, Value = p.Code.ToString() });
+            }
+          
+
+            return selectList;
+        }
+
+     
+
         public static IEnumerable<SelectListItem> DurationSelectList()
         {
             List<SelectListItem> selectList = new List<SelectListItem>();
