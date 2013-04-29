@@ -391,7 +391,7 @@ namespace Model
         public string WebSite { get; set; }
         [Display(Name = "公司地址")]
         public string Address { get; set; }
-        [Required(ErrorMessage = " ")]
+        //[Required(ErrorMessage = " ")]
         [Display(Name = "区号/时差")]
         public int? DistrictNumberId { get; set; }
         [Display(Name = "区号/时差")]

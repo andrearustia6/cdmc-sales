@@ -9,7 +9,7 @@
     成熟度: @Html.DropDownList("companyprogress", SelectHelper.CrmProgessSelectList())
     <input id="search" type="button" value="查找" />
 </span>
-<input type="button" style="float: right; padding: 5px;" value="添加公司" onclick="GetAddCompany()" />
+<input type="button" style="float: right; padding: 5px; margin-right:20px;" value="添加公司" onclick="GetAddCompany()" />
 <div style="clear: both;">
 </div>
 @(Html.Telerik().Splitter().Name("sp1").HtmlAttributes(new { style = "min-height: 800px;" })
@@ -314,25 +314,24 @@
         });
     }
     function Addcompany() {
-        var hasError = false;
-        $('.dialogue-addcompany form input').removeClass('fieldError');
-        $('.dialogue-addcompany form select').removeClass('fieldError');
-        String.prototype.isEmpty = function () { return /^\s*$/.test(this); }
-        if ($('.dialogue-addcompany form #DistrictNumberId option:selected').val().isEmpty()) {
-            if ($('.dialogue-addcompany form #ZipCode').val().isEmpty()) {
-                $('.dialogue-addcompany form #ZipCode').addClass('fieldError');
-                hasError = true;
-            }
-            if ($('.dialogue-addcompany form #Address').val().isEmpty()) {
-                $('.dialogue-addcompany form #Address').addClass('fieldError');
-                hasError = true;
-            }
-        }
-        if (hasError) {
-            return;
-        }
-
         if ($('.dialogue-addcompany form').valid()) {
+            var hasError = false;
+            $('.dialogue-addcompany form input').removeClass('fieldError');
+            $('.dialogue-addcompany form select').removeClass('fieldError');
+            String.prototype.isEmpty = function () { return /^\s*$/.test(this); }
+            if ($('.dialogue-addcompany form #DistrictNumberId option:selected').val().isEmpty()) {
+                if ($('.dialogue-addcompany form #ZipCode').val().isEmpty()) {
+                    $('.dialogue-addcompany form #ZipCode').addClass('fieldError');
+                    hasError = true;
+                }
+                if ($('.dialogue-addcompany form #Address').val().isEmpty()) {
+                    $('.dialogue-addcompany form #Address').addClass('fieldError');
+                    hasError = true;
+                }
+            }
+            if (hasError) {
+                return;
+            }
             var companyName = $('.dialogue-addcompany #Name_CN').val();
             $.post('CheckCompanyExist', { beforeUpdate: null, afterUpdate: companyName }, function (result) {
                 if (result.length > 0) {

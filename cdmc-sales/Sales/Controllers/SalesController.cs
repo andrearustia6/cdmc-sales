@@ -1471,7 +1471,7 @@ namespace Sales.Controllers
         }
 
         [HttpPost]
-        public ActionResult EditSaleCompany(AjaxViewSaleCompany ajaxViewSaleCompany)
+        public ActionResult EditCompany(AjaxViewSaleCompany ajaxViewSaleCompany)
         {
             CompanyRelationship companyRelationship = CH.GetAllData<CompanyRelationship>(c => c.CompanyID == ajaxViewSaleCompany.CompanyId).First();
             companyRelationship.Company.Address = ajaxViewSaleCompany.Address;
