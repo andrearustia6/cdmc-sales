@@ -5,16 +5,13 @@
 @using Model
 @using Utl
 @model AjaxCrmTypedList
-
-
- 
-   <span>添加时间: @Html.DropDownList("companyassigndate", SelectHelper.DurationSelectList()) 
-     成熟度: @Html.DropDownList("companyprogress", SelectHelper.CrmProgessSelectList())  <input id="search" type="button" value="查找" />
-   
-   
-   </span>
-
-
+<span>添加时间: @Html.DropDownList("companyassigndate", SelectHelper.DurationSelectList())
+    成熟度: @Html.DropDownList("companyprogress", SelectHelper.CrmProgessSelectList())
+    <input id="search" type="button" value="查找" />
+</span>
+<input type="button" style="float: right; padding: 5px;" value="添加公司" onclick="GetAddCompany()" />
+<div style="clear: both;">
+</div>
 @(Html.Telerik().Splitter().Name("sp1").HtmlAttributes(new { style = "min-height: 800px;" })
               .Orientation(SplitterOrientation.Horizontal).Panes(panes =>
               {
@@ -24,83 +21,86 @@
 @helper GetCRMS()
     {
     
-<div>
-
-@(Html.Telerik().Window()
+    <div>
+        @(Html.Telerik().Window()
         .Name("groupWindow")
         .Title("分组")
         .Content(@<text>
-          @Html.Partial("groupwindow", new UserFavorsCrmGroup())
-            </text>)
+        @Html.Partial("groupwindow", new UserFavorsCrmGroup())
+        </text>)
         .Width(400)
         .Draggable(true)
         .Modal(true)
         .Visible(false)
 )
-@(Html.Telerik().Window()
+        @(Html.Telerik().Window()
         .Name("groupListWindow")
         .Title("分组")
         .Content(@<text>
-          @Html.Partial("grouplistwindow", Model.CustomCrmGroups)
-            </text>).Width(600).ClientEvents(e => e.OnClose("onGroupListWindowSubmit"))
+        @Html.Partial("grouplistwindow", Model.CustomCrmGroups)
+        </text>).Width(600).ClientEvents(e => e.OnClose("onGroupListWindowSubmit"))
         .Draggable(true)
         .Modal(true)
         .Visible(false)
 )
-
-<div id="mainnavigationcontainer">
-
-@Html.Partial("mainnavigationcontainer", Model)
-</div>
-</div>
+        <div id="mainnavigationcontainer">
+            @Html.Partial("mainnavigationcontainer", Model)
+        </div>
+    </div>
  
 }
 @helper GetCompanyDetails()
     {
     <div id="crmdetailscontainer">
-    @if (Model.AllCRMs.FirstOrDefault() != null)
-    {
-       @Html.Partial("salesexitem", Model.AllCRMs.FirstOrDefault())
-    }
+        @if (Model.AllCRMs.FirstOrDefault() != null)
+        {
+            @Html.Partial("salesexitem", Model.AllCRMs.FirstOrDefault())
+        }
     </div>
 }
 <ul id="groupcontextmenu" class="jeegoocontext cm_default">
-  <li id="groupmanagement"> <span class=""></span><p class= "regrouptext">分组管理</p> </li>
+    <li id="groupmanagement"><span class=""></span>
+        <p class="regrouptext">
+            分组管理</p>
+    </li>
 </ul>
-
- <ul id="favorscontextmenu" class="jeegoocontext cm_default">
-        <li class="regroup">
-            <span class=""></span>
-            <p class= "regrouptext">移动可打公司至</p>
-            <ul>
-            </ul>
-        </li>
-         <li class="separator"></li>
-        <li class="remove" id="remove">
-            <span class=""></span>
-            从组中移出
-        </li>
-        <li class="separator"></li>
-        <li class="blowed">
-            <span class=""></span>
-            Blowed，放回公海
-        </li>
-    </ul>   
- <ul id="contextmenu" class="jeegoocontext cm_default">
-        <li class="regroup">
-            <span class=""></span>
-            <p class= "regrouptext">移动可打公司至</p>
-            <ul>
-            </ul>
-        </li>
-        <li class="separator"></li>
-        <li class="blowed">
-            <span class="icon drive"></span>
-            Blowed，放回公海
-        </li>
-    </ul>    
-
-
+<ul id="favorscontextmenu" class="jeegoocontext cm_default">
+    <li class="regroup"><span class=""></span>
+        <p class="regrouptext">
+            移动可打公司至</p>
+        <ul>
+        </ul>
+    </li>
+    <li class="separator"></li>
+    <li class="remove" id="remove"><span class=""></span>从组中移出 </li>
+    <li class="separator"></li>
+    <li class="blowed"><span class=""></span>Blowed，放回公海 </li>
+</ul>
+<ul id="contextmenu" class="jeegoocontext cm_default">
+    <li class="regroup"><span class=""></span>
+        <p class="regrouptext">
+            移动可打公司至</p>
+        <ul>
+        </ul>
+    </li>
+    <li class="separator"></li>
+    <li class="blowed"><span class="icon drive"></span>Blowed，放回公海 </li>
+</ul>
+@(Html.Telerik().Window()
+    .Name("AddCompany")
+    .Buttons(buttons => buttons.Close())
+    .Content(@<text><div class="dialogue-addcompany">
+        <div class="companyAdd-wrapper">
+        </div>
+        <div class="dialogue-buttons">
+            <input type="button" value="确定" class="t-button" onclick="Addcompany()" />
+            <input type="button" value="取消" class="t-button" onclick="CancelAddcompany()" />
+        </div>
+    </div></text>)
+        .Width(800)
+        .Height(600)
+        .Modal(true).Visible(false)
+    )
 <script type="text/javascript">
 
     $(document).ready(function () {
@@ -108,7 +108,7 @@
 
         $('#search').unbind('click').bind('click', function () {
             var f = GetFilters();
-            $.post('_RefreshCrmList',  f, function (result) {
+            $.post('_RefreshCrmList', f, function (result) {
                 $('#mainnavigationcontainer').html(result);
                 initial();
             });
@@ -122,50 +122,50 @@
     function initial() {
 
         //
-      
+
         //分组字体标注
-        $('#customView').find('>ul >li >div >span').css("fontSize", "23px").css("font-weigh","bold").css('line-height','28px');
+        $('#customView').find('>ul >li >div >span').css("fontSize", "23px").css("font-weigh", "bold").css('line-height', '28px');
 
         $('#customView').find('>ul >li >ul >li >div >span').css("fontSize", "15px").css("font-weigh", "bold");
-        $('#navigationView').find('>ul >li >div >span').css("fontSize", "15px").css("font-weigh", "bold") ;
-        
+        $('#navigationView').find('>ul >li >div >span').css("fontSize", "15px").css("font-weigh", "bold");
+
         //lead状态颜色标注
-         $('#mainnavigationcontainer span').each(function(){
-          var $this = $(this);
-          var spantext = $this.text();
-          if(spantext.indexOf(',&6*')>0)//Call-Backed
-          {
-              $this.css('color', '#95CACA');
-             spantext = spantext.replace(",&6*","");
-          }
-          else if(spantext.indexOf(',&2*')>0)//blowed
-          {
-              $this.css('color', '#E0E0E0');
-             spantext = spantext.replace(",&2*","");
-          }
-          else if(spantext.indexOf(',&0*')>0)//no call
-          {
-            $this.css('color','red');
-            spantext = spantext.replace(",&0*","");
-          }
-          else if(spantext.indexOf(',&9*')>0)//close
-          {
-              $this.css('color', '#CEFFCE');
-          spantext = spantext.replace(",&9*","");
-          }
-          else if(spantext.indexOf(',&7*')>0)//Waiting for Approval
-          {
-              $this.css('color', '#D3A4FF');
-          spantext = spantext.replace(",&7*","");
-          }
-          else if(spantext.indexOf(',&8*')>0)//Qualified Decision
-          {
-              $this.css('color', 'yellow');
-            spantext = spantext.replace(",&8*","");
-          }
-          $this.text(spantext);
-         });
-        
+        $('#mainnavigationcontainer span').each(function () {
+            var $this = $(this);
+            var spantext = $this.text();
+            if (spantext.indexOf(',&6*') > 0)//Call-Backed
+            {
+                $this.css('color', '#95CACA');
+                spantext = spantext.replace(",&6*", "");
+            }
+            else if (spantext.indexOf(',&2*') > 0)//blowed
+            {
+                $this.css('color', '#E0E0E0');
+                spantext = spantext.replace(",&2*", "");
+            }
+            else if (spantext.indexOf(',&0*') > 0)//no call
+            {
+                $this.css('color', 'red');
+                spantext = spantext.replace(",&0*", "");
+            }
+            else if (spantext.indexOf(',&9*') > 0)//close
+            {
+                $this.css('color', '#CEFFCE');
+                spantext = spantext.replace(",&9*", "");
+            }
+            else if (spantext.indexOf(',&7*') > 0)//Waiting for Approval
+            {
+                $this.css('color', '#D3A4FF');
+                spantext = spantext.replace(",&7*", "");
+            }
+            else if (spantext.indexOf(',&8*') > 0)//Qualified Decision
+            {
+                $this.css('color', 'yellow');
+                spantext = spantext.replace(",&8*", "");
+            }
+            $this.text(spantext);
+        });
+
         //生成关联菜单子菜单
         var ul = $(".regroup ul");
         ul.children().remove();
@@ -200,7 +200,7 @@
             submenuTopOffset: -5,
             onSelect: groupContextMenuSelected
         });
-        
+
         $('#customView').find('>ul >li >ul >li').jeegoocontext('favorscontextmenu', {
             widthOverflowOffset: 0,
             heightOverflowOffset: 3,
@@ -217,20 +217,19 @@
         var crmtext = $(context).find('>div >span.t-in').text();
         crmtext = crmtext.split(',')[0];
         $(' .regrouptext').text("移动" + crmtext + "到");
-      
+
     }
 
     //分组管理
     function groupContextMenuSelected(e, context) {
-       var groupid = $(context).find('input').val();
-       var targetid = $(e.currentTarget).attr('id');
-       if(targetid=='groupmanagement')
-       {
+        var groupid = $(context).find('input').val();
+        var targetid = $(e.currentTarget).attr('id');
+        if (targetid == 'groupmanagement') {
             e.preventDefault();
             gw().center().open();
-       }
-     
-      
+        }
+
+
     }
 
     //公司关联菜单选中/自定义组公司关联选中
@@ -268,7 +267,7 @@
                 initial();
             });
         }
-     }
+    }
 
     //获取主树
     function nv() {
@@ -279,19 +278,18 @@
     function gw() {
         return $('#groupListWindow').data('tWindow');
     }
-   //提交分组更改
-   function onGroupListWindowSubmit(e)
-   {
-       $.post('_RefreshCrmList', null, function (result) {
-                $('#mainnavigationcontainer').html(result);
-                initial();
-            });
-   }
+    //提交分组更改
+    function onGroupListWindowSubmit(e) {
+        $.post('_RefreshCrmList', null, function (result) {
+            $('#mainnavigationcontainer').html(result);
+            initial();
+        });
+    }
     //公司选择 
-   function onIndexSelect(e) {
-           
+    function onIndexSelect(e) {
+
         var indexs = nv().getItemValue(e.item);
-        if (indexs.indexOf("分组") < 0 ) {
+        if (indexs.indexOf("分组") < 0) {
             $.post('_SelectedList', { indexs: indexs, filters: GetFilters() }, function (result) {
                 $('#crmdetailscontainer').html(result);
             });
@@ -300,7 +298,7 @@
 
     //展开所有leads
     function expandRow(grid, row) {
-            grid.expandRow(row);
+        grid.expandRow(row);
     }
 
     function onRowDataBound(e) {
@@ -308,15 +306,67 @@
         expandRow(grid, e.row);
     }
 
+    function GetAddCompany() {
+        $.post('GetAddCompany', {}, function (result) {
+            $('.companyAdd-wrapper').html(result);
+            var window = $('#AddCompany').data('tWindow');
+            window.center().open();
+        });
+    }
+    function Addcompany() {
+        var hasError = false;
+        $('.dialogue-addcompany form input').removeClass('fieldError');
+        $('.dialogue-addcompany form select').removeClass('fieldError');
+        String.prototype.isEmpty = function () { return /^\s*$/.test(this); }
+        if ($('.dialogue-addcompany form #DistrictNumberId option:selected').val().isEmpty()) {
+            if ($('.dialogue-addcompany form #ZipCode').val().isEmpty()) {
+                $('.dialogue-addcompany form #ZipCode').addClass('fieldError');
+                hasError = true;
+            }
+            if ($('.dialogue-addcompany form #Address').val().isEmpty()) {
+                $('.dialogue-addcompany form #Address').addClass('fieldError');
+                hasError = true;
+            }
+        }
+        if (hasError) {
+            return;
+        }
 
+        if ($('.dialogue-addcompany form').valid()) {
+            var companyName = $('.dialogue-addcompany #Name_CN').val();
+            $.post('CheckCompanyExist', { beforeUpdate: null, afterUpdate: companyName }, function (result) {
+                if (result.length > 0) {
+                    alert(result);
+                } else {
+                    var query = $('.dialogue-addcompany form').serialize();
+                    $.post('AddCompany?' + query, null, function (result) {
+                        if (result.companyRelationshipId != null) {
+                            $('#AddCompany').data('tWindow').close();
+                            if (confirm('公司新增成功,是否要往新增公司里面增加Lead')) {
+                                $('#CRMID').val(result.companyRelationshipId);
+                                $('#ProjectID').val(result.projectId);
+                                onLeadAdd(result.companyId);
+                            } else {
+                                window.location = window.location;
+                            }
+                        } else {
+                            alert('公司新增失败');
+                        }
+                    });
+                }
+            });
+        }
+    }
+
+    function CancelAddcompany() {
+        var window = $('#AddCompany').data('tWindow');
+        window.close();
+    }
 
 </script>
-
-
 <style>
     .fieldblock
     {
-    
     }
     .fieldname div
     {
@@ -326,8 +376,6 @@
         border-bottom-color: #FF8C00;
         border: 1px solid #CCC;
         display: inline-block;
-      
-      
         margin-left: 8px;
         margin-bottom: 8px;
     }
@@ -337,5 +385,3 @@
         color: Green;
     }
 </style>
-
-
