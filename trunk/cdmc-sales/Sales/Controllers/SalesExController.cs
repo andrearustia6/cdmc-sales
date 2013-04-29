@@ -10,7 +10,7 @@ using Entity;
 
 namespace Sales.Controllers
 {
-   
+
     public class SalesExController : Controller
     {
         //
@@ -38,8 +38,8 @@ namespace Sales.Controllers
             }
             var d = GetNavigationBar(filters);
             var data = d.AllCRMs.FirstOrDefault(f => f.CRMID == crmid);
-            if(data==null)
-                data = d.CustomCrmGroups.SelectMany(s=>s.GroupedCRMs).FirstOrDefault(f => f.CRMID == crmid);
+            if (data == null)
+                data = d.CustomCrmGroups.SelectMany(s => s.GroupedCRMs).FirstOrDefault(f => f.CRMID == crmid);
 
             if (leadid != 0 && data != null)
             {
@@ -54,7 +54,7 @@ namespace Sales.Controllers
         /// </summary>
         /// <param name="crmid"></param>
         /// <returns></returns>
-        public PartialViewResult _CrmBlowed(string crmid, CompanyFilters filters=null )
+        public PartialViewResult _CrmBlowed(string crmid, CompanyFilters filters = null)
         {
             var sourcecrmid = Int32.Parse(crmid);
             var user = Employee.CurrentUserName;
@@ -79,7 +79,7 @@ namespace Sales.Controllers
             return PartialView(@"~\views\salesex\MainNavigationContainer.cshtml", GetNavigationBar(filters));
         }
 
-        AjaxCrmTypedList GetNavigationBar(CompanyFilters filters=null)
+        AjaxCrmTypedList GetNavigationBar(CompanyFilters filters = null)
         {
             var d = new AjaxCrmTypedList(filters);
             return d;
@@ -90,7 +90,7 @@ namespace Sales.Controllers
         /// </summary>
         /// <param name="indexs"></param>
         /// <returns></returns>
-        public PartialViewResult _CopyCrmToGroup(string crmid, string groupid, CompanyFilters filters=null )
+        public PartialViewResult _CopyCrmToGroup(string crmid, string groupid, CompanyFilters filters = null)
         {
             var sourcecrmid = Int32.Parse(crmid);
             var targetgroupid = Int32.Parse(groupid);
@@ -104,7 +104,7 @@ namespace Sales.Controllers
             return PartialView(@"~\views\salesex\MainNavigationContainer.cshtml", GetNavigationBar());
         }
 
-         void RemoveFromGroup(string crmid)
+        void RemoveFromGroup(string crmid)
         {
             var sourcecrmid = Int32.Parse(crmid);
             var username = Employee.CurrentUserName;
@@ -128,7 +128,7 @@ namespace Sales.Controllers
         /// </summary>
         /// <param name="crmid"></param>
         /// <returns></returns>
-         public PartialViewResult _CrmRemove(string crmid, CompanyFilters filters = null)
+        public PartialViewResult _CrmRemove(string crmid, CompanyFilters filters = null)
         {
             RemoveFromGroup(crmid);
             return PartialView(@"~\views\salesex\MainNavigationContainer.cshtml", GetNavigationBar(filters));
@@ -139,7 +139,7 @@ namespace Sales.Controllers
         /// 刷新导航栏
         /// </summary>
         /// <returns></returns>
-        public PartialViewResult _RefreshCrmList(CompanyFilters filters=null)
+        public PartialViewResult _RefreshCrmList(CompanyFilters filters = null)
         {
 
             var bar = GetNavigationBar(filters);
@@ -166,33 +166,6 @@ namespace Sales.Controllers
             return View(new GridModel<AjaxCall> { Data = calls.OrderByDescending(o => o.CallDate) });
         }
 
-        [HttpPost]
-        public ActionResult EditCompany(AjaxCRM ajaxCRM)
-        {
-            CompanyRelationship companyRelationship = CH.GetAllData<CompanyRelationship>(c => c.CompanyID == ajaxCRM.CompanyID).First();
-            companyRelationship.Company.Address = ajaxCRM.Address;
-            companyRelationship.Company.AreaID = ajaxCRM.AreaID;
-            companyRelationship.Company.Business = ajaxCRM.Business;
-            companyRelationship.Company.CompanyTypeID = ajaxCRM.CompanyTypeID;
-            companyRelationship.Company.Contact = ajaxCRM.CompanyContact;
-            companyRelationship.Company.Description = ajaxCRM.Desc;
-            companyRelationship.Company.DistrictNumberID = ajaxCRM.DistrictNumberID;
-            companyRelationship.Company.Fax = ajaxCRM.CompanyFax;
-            companyRelationship.Company.Name_CH = ajaxCRM.CompanyNameCH;
-            companyRelationship.Company.Name_EN = ajaxCRM.CompanyNameEN;
-            companyRelationship.Company.WebSite = ajaxCRM.WebSite;
-            companyRelationship.Company.ZIP = ajaxCRM.ZipCode;
-            companyRelationship.Description = ajaxCRM.Desc;
-            companyRelationship.ProgressID = ajaxCRM.ProgressID;
-            companyRelationship.Categorys.Clear();
-            if (ajaxCRM.Categories == null)
-            {
-                ajaxCRM.Categories = new List<int>() { };
-            }
-            companyRelationship.Categorys = CH.GetAllData<Category>(c => ajaxCRM.Categories.Contains(c.ID)).ToList();
-            CH.Edit<CompanyRelationship>(companyRelationship);
-            return null;
-        }
 
         [ValidateInput(false)]
         public ActionResult CheckCompanyExist(string beforeUpdate, string afterUpdate)
@@ -331,7 +304,7 @@ namespace Sales.Controllers
 
         public ActionResult AddCall(AjaxViewLeadCall ajaxViewLeadCall)
         {
-          
+
             LeadCall leadCall = new LeadCall();
             leadCall.CallBackDate = ajaxViewLeadCall.CallBackDate;
             leadCall.CallDate = ajaxViewLeadCall.CallDate;
@@ -339,7 +312,7 @@ namespace Sales.Controllers
             leadCall.LeadCallTypeID = ajaxViewLeadCall.CallTypeId;
             leadCall.LeadID = ajaxViewLeadCall.LeadId;
             leadCall.Member = CH.GetAllData<Member>(c => c.Name == Employee.CurrentUserName).First();
-            leadCall.ProjectID = ajaxViewLeadCall.ProjectId;           
+            leadCall.ProjectID = ajaxViewLeadCall.ProjectId;
             leadCall.Result = ajaxViewLeadCall.Result;
             leadCall.MarkForDelete = false;
             CH.Create<LeadCall>(leadCall);
@@ -382,6 +355,71 @@ namespace Sales.Controllers
             CH.Create<CompanyRelationship>(companyRelationship);
 
             return Json(new { companyRelationshipId = companyRelationship.ID, companyId = companyRelationship.CompanyID, projectId = companyRelationship.ProjectID });
+        }
+
+        public ActionResult GetEditCompany(int companyId)
+        {
+            CompanyRelationship companyRelationship = CH.GetAllData<CompanyRelationship>(c => c.CompanyID == companyId).First();
+            AjaxViewSaleCompany ajaxViewSaleCompany = new AjaxViewSaleCompany()
+            {
+                ProjectId = companyRelationship.ProjectID,
+                CompanyId = companyRelationship.CompanyID,
+                Address = companyRelationship.Company.Address,
+                Business = companyRelationship.Company.Business,
+                Desc = companyRelationship.Company.Description,
+                DistrictNumberId = companyRelationship.Company.DistrictNumberID,
+                Fax = companyRelationship.Company.Fax,
+                Name_CN = companyRelationship.Company.Name_CH,
+                Name_EN = companyRelationship.Company.Name_EN,
+                Phone = companyRelationship.Company.Contact,
+                ZipCode = companyRelationship.Company.ZIP,
+                Categories = companyRelationship.Categorys.Select(c => c.ID).ToList()
+            };
+
+            if (companyRelationship.Company.Area != null)
+            {
+                ajaxViewSaleCompany.IndustryId = companyRelationship.Company.AreaID.Value;
+                ajaxViewSaleCompany.IndustryString = companyRelationship.Company.Area.Name_CH;
+            }
+            if (companyRelationship.Company.CompanyType != null)
+            {
+                ajaxViewSaleCompany.TypeId = companyRelationship.Company.CompanyTypeID.Value;
+                ajaxViewSaleCompany.TypeString = companyRelationship.Company.CompanyType.Name;
+            }
+            if (companyRelationship.Progress != null)
+            {
+                ajaxViewSaleCompany.ProgressId = companyRelationship.ProgressID.Value;
+                ajaxViewSaleCompany.ProgressString = companyRelationship.Progress.Description;
+            }
+
+            return PartialView("EditCompany", ajaxViewSaleCompany);
+        }
+
+        [HttpPost]
+        public ActionResult EditCompany(AjaxViewSaleCompany ajaxViewSaleCompany)
+        {
+            CompanyRelationship companyRelationship = CH.GetAllData<CompanyRelationship>(c => c.CompanyID == ajaxViewSaleCompany.CompanyId).First();
+            companyRelationship.Company.Address = ajaxViewSaleCompany.Address;
+            companyRelationship.Company.AreaID = ajaxViewSaleCompany.IndustryId;
+            companyRelationship.Company.Business = ajaxViewSaleCompany.Business;
+            companyRelationship.Company.CompanyTypeID = ajaxViewSaleCompany.TypeId;
+            companyRelationship.Company.Contact = ajaxViewSaleCompany.Phone;
+            companyRelationship.Company.Description = ajaxViewSaleCompany.Desc;
+            companyRelationship.Company.DistrictNumberID = ajaxViewSaleCompany.DistrictNumberId;
+            companyRelationship.Company.Fax = ajaxViewSaleCompany.Fax;
+            companyRelationship.Company.Name_CH = ajaxViewSaleCompany.Name_CN;
+            companyRelationship.Company.Name_EN = ajaxViewSaleCompany.Name_EN;
+            companyRelationship.Company.WebSite = ajaxViewSaleCompany.WebSite;
+            companyRelationship.Company.ZIP = ajaxViewSaleCompany.ZipCode;
+            companyRelationship.Description = ajaxViewSaleCompany.Desc;
+            companyRelationship.ProgressID = ajaxViewSaleCompany.ProgressId;
+            companyRelationship.Categorys.Clear();
+            if (ajaxViewSaleCompany.Categories != null)
+            {
+                companyRelationship.Categorys = CH.GetAllData<Category>(c => ajaxViewSaleCompany.Categories.Contains(c.ID)).ToList();
+            }
+            CH.Edit<CompanyRelationship>(companyRelationship);
+            return null;
         }
     }
 }

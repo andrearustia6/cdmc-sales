@@ -2,9 +2,7 @@
 @using Utl
 @using Entity
 @model AjaxCRM
-@{
-    string guidFormName = Guid.NewGuid().ToString("N");
-}
+
 <script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
 <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
 @if (Model != null)
@@ -12,17 +10,17 @@
     Html.Telerik().Splitter().Name("sp2").HtmlAttributes(new { style = "min-height: 790px;" })
                .Orientation(SplitterOrientation.Vertical).Panes(panes =>
                {
-                   panes.Add().Size("35%").Content(@<text>@CompanyInfo(guidFormName)</text>);
+                   panes.Add().Size("35%").Content(@<text>@CompanyInfo()</text>);
                    panes.Add().Content(@<text>@LeadsInfo()</text>);
                }).Render();
 }
-@helper CompanyInfo(string guidFormName)
+@helper CompanyInfo()
     {
     <div class="fenge">     
-        <div class="fenge_2">@Model.CompanyName
+        <div class="fenge_2"><span id="currentCompanyName">@Model.CompanyName</span>
             <input style="float:right;padding:5px;margin:0 5px;" type="button" onclick="onLeadAdd(@(Model.CompanyID))" value="添加lead" />
             <input type="button" style="float: right; padding: 5px; margin: 0 5px;" value="更新"
-                onclick="editCompany()" />
+                onclick="onCompanyEdit(@(Model.CompanyID))" />
         </div>
         <div class="fenge_3">
         @Html.HiddenFor(model=>model.ProjectID)
@@ -31,7 +29,7 @@
                 <legend>公司信息</legend>
                 <dl class="fieldname">
                     <dd>
-                        <font>中文名：</font><span id="currentCompanyName" class="datainfo">@Model.CompanyNameCH
+                        <font>中文名：</font><span id="currentCompanyNameCN" class="datainfo">@Model.CompanyNameCH
                         </span>
                     </dd>
                     <dd>
@@ -51,79 +49,25 @@
                 </dl>
             </fieldset>
         </div>
-    </div>
-        
-    @(Html.Telerik().Window().Title("更新公司")
-            .Name(guidFormName)
+    </div>    
+}
+
+@(Html.Telerik().Window()
+    .Name("EditCompany")
     .Buttons(buttons => buttons.Close())
     .Content(@<text><div class="dialogue-editcompany">
         <div class="companyEdit-wrapper">
-            <form action="/SalesEx/EditSaleCompany" data-ajax="true" data-ajax-mode="replace"
-            data-ajax-update="ajax-holder" class="companyEditForm" method="post">
-            @Html.HiddenFor(model => model.ProjectID)
-            @Html.HiddenFor(model => model.CompanyID)
-            <ul>
-                <li><span class="addcompany-left">@Html.LabelFor(model => model.CompanyNameCH) @Html.TextBoxFor(model => model.CompanyNameCH, new { @class = "updateName" })
-                    @Html.ValidationMessageFor(model => model.CompanyNameCH)</span> <span class="addcompany-right">
-                        @Html.LabelFor(model => model.CompanyNameEN) @Html.TextBoxFor(model => model.CompanyNameEN)
-                        @Html.ValidationMessageFor(model => model.CompanyNameEN)
-                    </span></li>
-                <li><span class="addcompany-left">@Html.LabelFor(model => model.AreaID) @Html.DropDownListFor(model => model.AreaID, SelectHelper.CompanyIndustrySelectList(null), "请选择", new { })
-                    @Html.ValidationMessageFor(model => model.AreaID)</span> <span class="addcompany-right">
-                        @Html.LabelFor(model => model.CompanyTypeID) @Html.DropDownListFor(model => model.CompanyTypeID, SelectHelper.CompanyTypeSelectList(null), "请选择", new { })
-                        @Html.ValidationMessageFor(model => model.CompanyTypeID)
-                    </span></li>
-                <li><span class="addcompany-left">@Html.LabelFor(model => model.CompanyContact) @Html.TextBoxFor(model => model.CompanyContact)
-                    @Html.ValidationMessageFor(model => model.CompanyContact)</span> <span class="addcompany-right">
-                        @Html.LabelFor(model => model.CompanyFax) @Html.TextBoxFor(model => model.CompanyFax)
-                        @Html.ValidationMessageFor(model => model.CompanyFax)
-                    </span></li>
-                <li><span class="addcompany-left">@Html.LabelFor(model => model.ZipCode) @Html.TextBoxFor(model => model.ZipCode)
-                    @Html.ValidationMessageFor(model => model.ZipCode)</span> <span class="addcompany-right">
-                        @Html.LabelFor(model => model.WebSite) @Html.TextBoxFor(model => model.WebSite)
-                        @Html.ValidationMessageFor(model => model.WebSite)
-                    </span></li>
-                <li><span class="addcompany-left">@Html.LabelFor(model => model.Address) @Html.TextBoxFor(model => model.Address)
-                    @Html.ValidationMessageFor(model => model.Address)</span> <span class="addcompany-right">
-                        @Html.LabelFor(model => model.DistrictNumberID) @Html.DropDownListFor(model => model.DistrictNumberID, SelectHelper.DistinctNumberSelectList(null), "请选择", new { })
-                        @Html.ValidationMessageFor(model => model.DistrictNumberID)
-                    </span></li>
-                <li><span class="addcompany-left">@Html.LabelFor(model => model.ProgressID) @Html.DropDownListFor(model => model.ProgressID, SelectHelper.ProgressSelectList(null), "请选择", new { })
-                    @Html.ValidationMessageFor(model => model.ProgressID)</span> </li>
-                <li><span>@Html.LabelFor(model => model.Business) @Html.TextAreaFor(model => model.Business)
-                    @Html.ValidationMessageFor(model => model.Business)</span> </li>
-                <li><span>@Html.LabelFor(model => model.Desc) @Html.TextAreaFor(model => model.Desc)
-                    @Html.ValidationMessageFor(model => model.Desc)</span> </li>
-                <li class="companyCategory">
-                    <fieldset>
-                        <legend>Categories</legend>
-                        @foreach (Category category in CH.GetAllData<Category>(c => c.ProjectID == Model.ProjectID))
-                        { 
-                            <label class="company-category">@category.Name</label>
-                            if (Model.Categories.Contains(category.ID))
-                            {
-                            <input  name="Categories" type="checkbox" value="@category.ID" checked="checked" />
-                            }
-                            else
-                            { 
-                            <input  name="Categories" type="checkbox" value="@category.ID"/>
-                            }
-                        }
-                    </fieldset>
-                </li>
-            </ul>
-            </form>
         </div>
         <div class="dialogue-buttons">
-            <input type="button" value="确定" class="t-button" onclick="updatecompany()" />
-            <input type="button" value="取消" class="t-button" onclick="cancelEditcompany()" />
+            <input type="button" value="确定" class="t-button" onclick="Editcompany()" />
+            <input type="button" value="取消" class="t-button" onclick="CancelEditcompany()" />
         </div>
     </div></text>)
     .Width(750)
-    .Height(600)
+    .Height(570)
     .Modal(true).Visible(false)
 )
-}
+
 @(Html.Telerik().Window()
     .Name("AddLead")
     .Buttons(buttons => buttons.Close())
@@ -189,23 +133,23 @@
         
         foreach (var lead in Model.AjaxLeads)
         {
-    <div class="fenge">
+    <div class="fenge" id="@(lead.LeadID)">
         <div class="fenge_2">@lead.LeadName
-            <input style="float:right;padding:5px;;margin:0 5px;" type="button" onclick="onCallAdd(@(lead.LeadID))" value="添加Call" /><input style="float:right;;padding:5px;;margin:0 5px;" type="button" onclick="onLeadEdit(@(lead.LeadID))" value="更新" /></div>
+            <input style="float:right;padding:5px;margin:0 5px;" type="button" onclick="onCallAdd(@(lead.LeadID))" value="添加Call" /><input style="float:right;;padding:5px;;margin:0 5px;" type="button" onclick="onLeadEdit(@(lead.LeadID))" value="更新" /></div>
         <div class="fenge_3">
             @*  <div style=" width:100%; height:25px; margin-bottom:-5px; margin-top:10px;">
             
             </div>*@
-            <fieldset id="@(lead.LeadID)">
+            <fieldset >
                 <legend style="font-size: 13px; margin: 5px;">
                     @lead.LeadName</legend>
                 <ul class="fieldname">
-                    <li><span class="leadNameCN datainfo"><font>中文名：</font>@lead.LeadNameCH</span> </li>
-                    <li><span class="leadNamEN datainfo"><font>英文名：</font>@lead.LeadNameEN</span> </li>
-                    <li><span class="leadTitle datainfo"><font>Lead职位：</font>@lead.LeadTitle</span>
+                    <li><font>中文名：</font><span class="leadNameCN datainfo">@lead.LeadNameCH</span> </li>
+                    <li><font>英文名：</font><span class="leadNamEN datainfo">@lead.LeadNameEN</span> </li>
+                    <li><font>Lead职位：</font><span class="leadTitle datainfo">@lead.LeadTitle</span>
                     </li>
-                    <li><span class="leadGender datainfo"><font>Lead性别：</font>@lead.Gender</span> </li>
-                    <li><span class="LeadDistinctNumberString datainfo"><font>客户区号：</font>@lead.LeadDistinctNumberString</span>
+                    <li><font>Lead性别：</font><span class="leadGender datainfo">@lead.Gender</span> </li>
+                    <li><font>客户区号：</font><span class="LeadDistinctNumberString datainfo">@lead.LeadDistinctNumberString</span>
                     </li>
                 </ul>
             </fieldset>
@@ -315,82 +259,89 @@
     }
 </style>
 <script type="text/javascript">
-    function editCompany() {
-        var window = $('#@(guidFormName)').data('tWindow');
-        window.center().open();
+    var currentCompanyName = undefined;
+    function onCompanyEdit(currentCompanyId) {
+       
+        currentCompanyName = $('#currentCompanyNameCN').html().replace(/(^\s*)|(\s*$)/g, '');
+        $.post('GetEditCompany', { companyId: currentCompanyId }, function (result) {
+            ;
+            $('.companyEdit-wrapper').html(result);
+            var window = $('#EditCompany').data('tWindow');
+            window.center().open();
+       
+                        while($('.dialogue-editcompany form').length>1)
+                        {
+                          $('.dialogue-editcompany form').last().remove();
+                        }
+        });
+
     }
-    function cancelEditcompany() {
-        var window = $('#@(guidFormName)').data('tWindow');
+
+    function Editcompany() {
+        if ($('.dialogue-editcompany form').valid()) {
+            var hasError = false;
+            $('.dialogue-editcompany form input').removeClass('fieldError');
+            $('.dialogue-editcompany form select').removeClass('fieldError');
+            String.prototype.isEmpty = function () { return /^\s*$/.test(this); }
+            if ($('.dialogue-editcompany form #DistrictNumberId option:selected').val().isEmpty()) {
+                if ($('.dialogue-editcompany form #ZipCode').val().isEmpty()) {
+                    $('.dialogue-editcompany form #ZipCode').addClass('fieldError');
+                    hasError = true;
+                }
+                if ($('.dialogue-editcompany form #Address').val().isEmpty()) {
+                    $('.dialogue-editcompany form #Address').addClass('fieldError');
+                    hasError = true;
+                }
+            }
+            if (hasError) {
+                return;
+            }
+            var companyName = $('.dialogue-editcompany form #Name_CN').val();
+            $.post('CheckCompanyExist', { beforeUpdate: currentCompanyName, afterUpdate: companyName }, function (result) {
+                if (result.length > 0) {
+                    alert(result);
+                } else {
+                    var query = $('.dialogue-editcompany form').serialize();
+                    $.post('EditCompany?' + query, null, function (result) {
+                        if (result.length > 0) {
+                            alert(result);
+                        } else {
+                            tempVal = $('.dialogue-editcompany form #Name_CN').val() + $('.dialogue-editcompany form #Name_EN').val();
+                            $('#currentCompanyName').html(tempVal);
+                            tempVal = $('.dialogue-editcompany form #Name_CN').val();
+                            $('#currentCompanyNameCN').html(tempVal);
+                            tempVal = $('.dialogue-editcompany form #Name_EN').val();
+                            $('#currentCompanyNameEN').html(tempVal);
+                            tempVal = $('.dialogue-editcompany form #DistrictNumberId option:selected').first().text();
+                            $('#currentCompanyDistrictNumberString').html(tempVal);
+                            tempVal = $('.dialogue-editcompany form #Phone').val();
+                            $('#currentCompanyContact').html(tempVal);
+                            tempVal = $('.dialogue-editcompany form #Fax').val();
+                            $('#currentCompanyFax').html(tempVal);
+                            tempVal = '';                       
+                            $('.dialogue-editcompany form input[type=checkbox][name=Categories]:checked').each(function () {                               
+                                tempVal += $(this).prev('label.company-category').html() + ',';
+                            });
+                            if (tempVal.length > 0) {
+                                tempVal = tempVal.substr(0, tempVal.length - 1);
+                            }
+                            $('#currentCompanyCategoryStrings').html(tempVal);
+                            tempVal = $('.dialogue-editcompany form #ProgressId option:selected').first().text();
+                            $('#currentProgressString').html(tempVal);
+                            $('#EditCompany').data('tWindow').close();
+                            alert('公司更新成功');
+                        }
+                    });
+                }
+            });
+        }
+    }
+
+    function CancelEditcompany() {
+        var window = $('#EditCompany').data('tWindow');
         window.close();
     }
-    function updatecompany() {
-        $('#@(guidFormName) .companyEditForm input').removeClass('fieldError');
-        $('#@(guidFormName) .companyEditForm select').removeClass('fieldError');
-        String.prototype.isEmpty = function () { return /^\s*$/.test(this); }
-        var hasError = false;
-        if ($('#@(guidFormName) .companyEditForm #CompanyNameCH').val().isEmpty()) {
-            $('#@(guidFormName) .companyEditForm #CompanyNameCH').addClass('fieldError');
-            hasError = true;
-        }
-        if ($('#@(guidFormName) .companyEditForm #DistrictNumberID option:selected').val().isEmpty()) {
-            if ($('#@(guidFormName) .companyEditForm #ZipCode').val().isEmpty()) {
-                $('#@(guidFormName) .companyEditForm #ZipCode').addClass('fieldError');
-                hasError = true;
-            }
-            if ($('#@(guidFormName) .companyEditForm #Address').val().isEmpty()) {
-                $('#@(guidFormName) .companyEditForm #Address').addClass('fieldError');
-                hasError = true;
-            }
-        }
-        if ($('#@(guidFormName) .companyEditForm #ProgressID option:selected').val().isEmpty()) {
-            $('#@(guidFormName) .companyEditForm #ProgressID').addClass('fieldError');
-            hasError = true;
-        }
-        if (hasError) {
-            return;
-        }
 
-        var currentCompanyName = $('#currentCompanyName').html().replace(/(^\s*)|(\s*$)/g, '');
-        var companyName = $('#@(guidFormName) .updateName').val();
-        $.post('CheckCompanyExist', { beforeUpdate: currentCompanyName, afterUpdate: companyName }, function (result) {
-            if (result.length > 0) {
-                alert(result);
-            } else {
-                var query = $('#@(guidFormName) .companyEditForm').serialize();
-                $.post('EditCompany?' + query, null, function (result) {
-                    if (result.length > 0) {
-                        alert(result);
-
-                    } else {
-                        var tempVal = '';
-                        tempVal = $('#@(guidFormName) .companyEditForm #CompanyNameCH').val();
-                        $('#currentCompanyName').html(tempVal);
-                        tempVal = $('#@(guidFormName) .companyEditForm #CompanyNameEN').val();
-                        $('#currentCompanyNameEN').html(tempVal);
-                        tempVal = $('#@(guidFormName) .companyEditForm #DistrictNumberID option:selected').first().text();
-                        $('#currentCompanyDistrictNumberString').html(tempVal);
-                        tempVal = $('#@(guidFormName) .companyEditForm #CompanyContact').val();
-                        $('#currentCompanyContact').html(tempVal);
-                        tempVal = $('#@(guidFormName) .companyEditForm #CompanyFax').val();
-                        $('#currentCompanyFax').html(tempVal);
-                        tempVal = '';
-                        $('#@(guidFormName) .companyEditForm input[type=checkbox]:checked').each(function () {
-                            tempVal += $(this).prev().html() + ',';
-                        });
-                        if (tempVal.length > 0) {
-                            tempVal = tempVal.substr(0, tempVal.length - 1);
-                        }
-                        $('#currentCompanyCategoryStrings').html(tempVal);
-                        tempVal = $('#@(guidFormName) .companyEditForm #ProgressID option:selected').first().text();
-                        $('#currentProgressString').html(tempVal);
-                        var window = $('#@(guidFormName)').data('tWindow');
-                        window.close();
-                        alert('公司更新成功');
-                    }
-                });
-            }
-        });
-    }
     var currentLeadID = undefined;
     function onLeadEdit(leadId) {
         currentLeadID = leadId;
@@ -409,22 +360,22 @@
             $.post('EditLead?' + query, null, function (result) {
                 if (result.length > 0) {
                     alert(result);
-                } else {
-                    $('#' + currentLeadID + ' .leadNameCN').html($('.dialogue-editlead form #Name_CN').val());
-                    $('#' + currentLeadID + ' .leadNamEN').html($('.dialogue-editlead form #Name_EN').val());
-                    $('#' + currentLeadID + ' .leadTitle').html($('.dialogue-editlead form #Title').val());
-                    $('#' + currentLeadID + ' .leadGender').html($('.dialogue-editlead form #Gender').val());
-                    $('#' + currentLeadID + ' .LeadDistinctNumberString').html($('.dialogue-editlead form #Name_CN option:selected').first().text());
-                    $('#' + currentLeadID + ' .LeadEmail').html($('.dialogue-editlead form #WorkingEmail').val());
-                    $('#' + currentLeadID + ' .LeadPersonalEmail').html($('.dialogue-editlead form #PersonelEmail').val());
-                    $('#' + currentLeadID + ' .LeadContact').html($('.dialogue-editlead form #Telephone').val());
-                    $('#' + currentLeadID + ' .LeadMobile').html($('.dialogue-editlead form #CellPhone').val());
-                    $('#' + currentLeadID + ' .LeadFax').html($('.dialogue-editlead form #Fax').val());
-                    $('#' + currentLeadID + ' .WeiBo').html($('.dialogue-editlead form #WeiBo').val());
-                    $('#' + currentLeadID + ' .WeiXin').html($('.dialogue-editlead form #WeiXin').val());
-                    $('#' + currentLeadID + ' .LinkIn').html($('.dialogue-editlead form #LinkIn').val());
-                    $('#' + currentLeadID + ' .FaceBook').html($('.dialogue-editlead form #FaceBook').val());
-                    $('#' + currentLeadID + ' .Blog').html($('.dialogue-editlead form #Blog').val());
+                } else {                   
+                    $('#' + currentLeadID + ' span.leadNameCN').html($('.dialogue-editlead form #Name_CN').val());
+                    $('#' + currentLeadID + ' span.leadNamEN').html($('.dialogue-editlead form #Name_EN').val());
+                    $('#' + currentLeadID + ' span.leadTitle').html($('.dialogue-editlead form #Title').val());
+                    $('#' + currentLeadID + ' span.leadGender').html($('.dialogue-editlead form #Gender').val());
+                    $('#' + currentLeadID + ' span.LeadDistinctNumberString').html($('.dialogue-editlead form #Name_CN option:selected').first().text());
+                    $('#' + currentLeadID + ' span.LeadEmail').html($('.dialogue-editlead form #WorkingEmail').val());
+                    $('#' + currentLeadID + ' span.LeadPersonalEmail').html($('.dialogue-editlead form #PersonelEmail').val());
+                    $('#' + currentLeadID + ' span.LeadContact').html($('.dialogue-editlead form #Telephone').val());
+                    $('#' + currentLeadID + ' span.LeadMobile').html($('.dialogue-editlead form #CellPhone').val());
+                    $('#' + currentLeadID + ' span.LeadFax').html($('.dialogue-editlead form #Fax').val());
+                    $('#' + currentLeadID + ' span.WeiBo').html($('.dialogue-editlead form #WeiBo').val());
+                    $('#' + currentLeadID + ' span.WeiXin').html($('.dialogue-editlead form #WeiXin').val());
+                    $('#' + currentLeadID + ' span.LinkIn').html($('.dialogue-editlead form #LinkIn').val());
+                    $('#' + currentLeadID + ' span.FaceBook').html($('.dialogue-editlead form #FaceBook').val());
+                    $('#' + currentLeadID + ' span.Blog').html($('.dialogue-editlead form #Blog').val());
                     $('#EditLead').data('tWindow').close();
                     alert('Lead更新成功');
                 }
