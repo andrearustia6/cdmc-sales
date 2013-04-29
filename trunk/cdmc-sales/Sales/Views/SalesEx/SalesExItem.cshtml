@@ -18,38 +18,41 @@
 }
 @helper CompanyInfo(string guidFormName)
     {
-   
+    <div class="fenge">     
+        <div class="fenge_2">@Model.CompanyName
+            <input style="float:right;padding:5px;margin:0 5px;" type="button" onclick="onLeadAdd(@(Model.CompanyID))" value="添加lead" />
+            <input type="button" style="float: right; padding: 5px; margin: 0 5px;" value="更新"
+                onclick="editCompany()" />
+        </div>
+        <div class="fenge_3">
+        @Html.HiddenFor(model=>model.ProjectID)
+        @Html.HiddenFor(model=>model.CRMID)
+            <fieldset>
+                <legend>公司信息</legend>
+                <dl class="fieldname">
+                    <dd>
+                        <font>中文名：</font><span id="currentCompanyName" class="datainfo">@Model.CompanyNameCH
+                        </span>
+                    </dd>
+                    <dd>
+                        <font>英文名：</font><span id="currentCompanyNameEN" class="datainfo">@Model.CompanyNameEN</span></dd>
+                    <dd>
+                        <font>区号：</font><span id="currentCompanyDistrictNumberString" class="datainfo">@Model.CompanyDistrictNumberString</span></dd>
+                    <dd>
+                        <font>公司总机：</font><span id="currentCompanyContact" class="datainfo">@Model.CompanyContact</span></dd>
+                    <dd>
+                        <font>传真：</font><span id="currentCompanyFax" class="datainfo">@Model.CompanyFax</dd>
+                    <dd>
+                        <font>细分行业：</font><span id="currentCompanyCategoryStrings" class="datainfo">@Model.CompanyCategoryStrings</span>
+                    </dd>
+                    <dd>
+                        <font>成熟度：</font><span id="currentProgressString" class="datainfo">@Model.ProgressString</span>
+                    </dd>
+                </dl>
+            </fieldset>
+        </div>
+    </div>
         
-  <div class="fenge">
-	<div class="fenge_2">@Model.CompanyName    
-    <input style="float:right;padding:5px;;margin:0 5px;" type="button" onclick="onLeadAdd(@(Model.CompanyID))" value="添加lead" />
-     <input type="button" style="float:right;padding:5px;margin:0 5px;" value="更新" onclick="editCompany()" />
-    </div>
-     
-    <div class="fenge_3">
-    <fieldset>
-    <legend>公司信息</legend>
-
-       <dl class="fieldname">
-            <dd><font>中文名：</font><span id="currentCompanyName" class="datainfo">@Model.CompanyNameCH </span></dd>
-            <dd><font>英文名：</font><span id="currentCompanyNameEN" class="datainfo">@Model.CompanyNameEN</span></dd>
-                <dd><font>区号：</font><span id="currentCompanyDistrictNumberString" class="datainfo">@Model.CompanyDistrictNumberString</span></dd>
-                <dd><font>公司总机：</font><span id="currentCompanyContact" class="datainfo">@Model.CompanyContact</span></dd>
-                <dd><font>传真：</font><span id="currentCompanyFax" class="datainfo">@Model.CompanyFax</dd>
-                <dd><font>细分行业：</font><span id="currentCompanyCategoryStrings" class="datainfo">@Model.CompanyCategoryStrings</span>
-                </dd>
-                <dd><font>成熟度：</font><span id="currentProgressString" class="datainfo">@Model.ProgressString</span>
-                </dd>
-        </dl>
-        
-        </fieldset>
-    </div>
-    </div>
-     
-    
-     
-       
-   
     @(Html.Telerik().Window().Title("更新公司")
             .Name(guidFormName)
     .Buttons(buttons => buttons.Close())
@@ -166,7 +169,6 @@
     .Height(200)
     .Modal(true).Visible(false)
 )
-
 @(Html.Telerik().Window()
     .Name("AddCall")
     .Buttons(buttons => buttons.Close())
@@ -182,37 +184,36 @@
     .Height(250)
     .Modal(true).Visible(false)
 )
-
 @helper LeadsInfo()
     {     
         
-       foreach (var lead in Model.AjaxLeads)
+        foreach (var lead in Model.AjaxLeads)
         {
-      <div class="fenge">
-	<div class="fenge_2">@lead.LeadName  <input style="float:right;padding:5px;;margin:0 5px;" type="button" onclick="onCallAdd(@(lead.LeadID),@(lead.CRMID),@(Model.ProjectID))" value="添加Call" /><input style="float:right;;padding:5px;;margin:0 5px;" type="button" onclick="onLeadEdit(@(lead.LeadID))" value="更新" /></div>
-     
-    <div class="fenge_3">
-   @*  <div style=" width:100%; height:25px; margin-bottom:-5px; margin-top:10px;">
+    <div class="fenge">
+        <div class="fenge_2">@lead.LeadName
+            <input style="float:right;padding:5px;;margin:0 5px;" type="button" onclick="onCallAdd(@(lead.LeadID))" value="添加Call" /><input style="float:right;;padding:5px;;margin:0 5px;" type="button" onclick="onLeadEdit(@(lead.LeadID))" value="更新" /></div>
+        <div class="fenge_3">
+            @*  <div style=" width:100%; height:25px; margin-bottom:-5px; margin-top:10px;">
             
             </div>*@
             <fieldset id="@(lead.LeadID)">
-                <legend style="font-size: 13px; margin: 5px;"> 
-                @lead.LeadName</legend>
-               
+                <legend style="font-size: 13px; margin: 5px;">
+                    @lead.LeadName</legend>
                 <ul class="fieldname">
                     <li><span class="leadNameCN datainfo"><font>中文名：</font>@lead.LeadNameCH</span> </li>
                     <li><span class="leadNamEN datainfo"><font>英文名：</font>@lead.LeadNameEN</span> </li>
-                    <li><span class="leadTitle datainfo"><font>Lead职位：</font>@lead.LeadTitle</span> </li>
+                    <li><span class="leadTitle datainfo"><font>Lead职位：</font>@lead.LeadTitle</span>
+                    </li>
                     <li><span class="leadGender datainfo"><font>Lead性别：</font>@lead.Gender</span> </li>
                     <li><span class="LeadDistinctNumberString datainfo"><font>客户区号：</font>@lead.LeadDistinctNumberString</span>
                     </li>
                 </ul>
-          </fieldset>
-       
-        <fieldset>
-        <legend>联系方式</legend>
+            </fieldset>
+            <fieldset>
+                <legend>联系方式</legend>
                 <ul class="fieldname">
-                <li><font>直线：</font><span class="LeadContact datainfo">@lead.LeadContact</span> </li>
+                    <li><font>直线：</font><span class="LeadContact datainfo">@lead.LeadContact</span>
+                    </li>
                     <li><font>手机：</font><span class="LeadMobile datainfo">@lead.LeadMobile</span> </li>
                     <li><font>公司邮箱：</font><span class="LeadEmail datainfo">@lead.Gender</span> </li>
                     <li><font>传真：</font><span class="LeadFax datainfo">@lead.LeadFax</span> </li>
@@ -220,24 +221,23 @@
                     <li><font>微博账号：</font><span class="WeiBo datainfo">@lead.WeiBo</span> </li>
                     <li><font>微信账号：</font><span class="WeiXin datainfo">@lead.WeiXin</span> </li>
                     <li><font>LinkIn账号：</font><span class="LinkIn datainfo">@lead.LinkIn</span> </li>
-                    <li><font>FaceBook账号：</font><span class="FaceBook datainfo">@lead.FaceBook</span> </li>
+                    <li><font>FaceBook账号：</font><span class="FaceBook datainfo">@lead.FaceBook</span>
+                    </li>
                     <li><font>传真：</font><span class="LeadFax datainfo">@lead.LeadFax</span> </li>
                     <li><font>博客地址：</font><span class="Blog datainfo">@lead.Blog</span> </li>
-                    </ul>
-             </fieldset>
-              @*  <span style="font-size: 13px;">描述</span> 
+                </ul>
+            </fieldset>
+            @*  <span style="font-size: 13px;">描述</span> 
                  <dd class="fieldname">
                         <div>
                             <font></font>
                         </div>
-                    </dd>*@
-              @* <dt style="font-size: 13px;">致电列表</dt>
+                    </dd>*@ @* <dt style="font-size: 13px;">致电列表</dt>
                 <dd>*@
-                @if (lead.AjaxCalls.Count()>0)
-                {
-        <fieldset>
-        <legend>通话记录</legend>
-        
+            @if (lead.AjaxCalls.Count() > 0)
+            {
+                <fieldset>
+                    <legend>通话记录</legend>
                     @(Html.Telerik().Grid<AjaxCall>(lead.AjaxCalls.OrderByDescending(o => o.CallDate)).Name("lead" + lead.LeadID)
                     .Columns(columns =>
                     {
@@ -249,12 +249,12 @@
                         columns.Bound(o => o.LeadCallID).Template(@<text><input onclick='EditLeadCall(@item.LeadCallID)' type='button' value='update' style='padding:5px 10px' /></text>);
                     }).Pageable(paging => paging.Enabled(false)).Resizable(resizing => resizing.Columns(true)).Sortable().Scrollable(scrolling => scrolling.Enabled(false))
                        .Filterable())
-                @*</dd>
+                    @*</dd>
                 </dl>*@
-            </fieldset>
-                    }
+                </fieldset>
+            }
+        </div>
     </div>
-</div>
 
         
           
@@ -265,10 +265,9 @@
 <style>
     .fieldblock
     {
-    	
     }
     
- 
+    
     .fieldError
     {
         border: 1px solid red !important;
@@ -276,25 +275,44 @@
     
     .fieldname
     {
-       
     }
-    .fieldname dd{ font-size:15px;  float:left;  padding-left:10px; padding-right:10px; margin:10px;   background-color:#FFBB77;}
+    .fieldname dd
+    {
+        font-size: 15px;
+        float: left;
+        padding-left: 10px;
+        padding-right: 10px;
+        margin: 10px;
+        background-color: #FFBB77;
+    }
     .datainfo
     {
         font-size: 15px;
-         color:Black;
-   
-      
-    
-         max-width: 76px;
+        color: Black;
+        max-width: 76px;
         height: 21px;
         line-height: 21px;
-      
-      
     }
-    .fenge{ width:96%; margin:15px;}
-.fenge_2{ background:#FF5809; line-height:30px; border:1px solid #000; border-bottom:none;text-align:center; color:#fff;}
-.fenge_3{ border:1px solid #000; padding:6px 20px; line-height:24px;}
+    .fenge
+    {
+        width: 96%;
+        margin: 15px;
+    }
+    .fenge_2
+    {
+        background: #FF5809;
+        line-height: 30px;
+        border: 1px solid #000;
+        border-bottom: none;
+        text-align: center;
+        color: #fff;
+    }
+    .fenge_3
+    {
+        border: 1px solid #000;
+        padding: 6px 20px;
+        line-height: 24px;
+    }
 </style>
 <script type="text/javascript">
     function editCompany() {
@@ -332,14 +350,14 @@
             return;
         }
 
-        var currentCompanyName = $('#currentCompanyName').html();
+        var currentCompanyName = $('#currentCompanyName').html().replace(/(^\s*)|(\s*$)/g, '');
         var companyName = $('#@(guidFormName) .updateName').val();
         $.post('CheckCompanyExist', { beforeUpdate: currentCompanyName, afterUpdate: companyName }, function (result) {
             if (result.length > 0) {
                 alert(result);
             } else {
                 var query = $('#@(guidFormName) .companyEditForm').serialize();
-                $.post('EditSaleCompany?' + query, null, function (result) {
+                $.post('EditCompany?' + query, null, function (result) {
                     if (result.length > 0) {
                         alert(result);
 
@@ -415,7 +433,7 @@
     }
 
     function onLeadAdd(currentCompanyId) {      
-        $.post('GetAddLead', { companyId: currentCompanyId }, function (result) {
+        $.post('GetAddLead', { companyId: currentCompanyId}, function (result) {
             $('.leadadd-wrapper').html(result);
             var window = $('#AddLead').data('tWindow');
             window.center().open();
@@ -435,14 +453,23 @@
         var window = $('#EditCall').data('tWindow');
         window.close();
     }
-    function onCallAdd(currentLeadId, currentCompanyRelationshipId,currentProejctId) {     
-        $.post('GetAddCall', { leadId: currentLeadId, companyRelationId: currentCompanyRelationshipId,projectId: currentProejctId }, function (result) {
+    function onCallAdd(currentLeadId) {      
+        currentCompanyRelationshipId= $('#CRMID').val();
+        currentProjectId = $('#ProjectID').val().replace(/(^\s*)|(\s*$)/g, '');
+        if (currentProjectId.length == 0) {
+            currentProjectId = null;
+        }      
+        $.post('GetAddCall', { leadId: currentLeadId, companyRelationId: currentCompanyRelationshipId,projectId: currentProjectId }, function (result) {
             $('.calladd-wrapper').html(result);
             var window = $('#AddCall').data('tWindow');
             window.center().open();
-        });
+        });     
     }
-    function AddCall() { 
+    function AddCall() {
+        if ($('.dialogue-addcall form #ProjectId').val() == 'null') {
+            $('.dialogue-addcall form #ProjectId').val('');
+        }
+       
         if ($('.dialogue-addcall form').valid()) {
             var query = $('.dialogue-addcall form').serialize();
             $.post('AddCall?' + query, null, function (result) {
@@ -478,16 +505,24 @@
             });
         }
     }
+    function CancelEditCall() {
+        var window = $('#EditCall').data('tWindow');
+        window.close();
+    }
     function AddLead() {   
         if ($('.dialogue-addlead form').valid()) {
             var query = $('.dialogue-addlead form').serialize();
             $.post('AddLead?' + query, null, function (result) {
                 if (result.length > 0) {
                     $('#AddLead').data('tWindow').close();
-                    alert('Lead新增成功');
-                    onCallAdd(result,@(Model.CRMID),@(Model.ProjectID));
+                    if (confirm('Lead新增成功,是否新增相应Call')) {                       
+                        onCallAdd(result);                       
+                    } else {
+                        window.location = window.location;
+                    }
+
                 } else {
-                    alert('Lead新增失败');                    
+                    alert('Lead新增失败');
                 }
             });
         }
@@ -496,5 +531,6 @@
         var window = $('#AddLead').data('tWindow');
         window.close();
     }
+
 
 </script>

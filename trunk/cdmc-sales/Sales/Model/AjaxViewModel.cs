@@ -361,7 +361,7 @@ namespace Model
 
     public class AjaxViewSaleCompany
     {
-        
+        [Display(Name = "项目")]
         public int? ProjectId { get; set; }
         public int? CompanRelationshipId { get; set; }
         [Display(Name = "ID")]
@@ -470,8 +470,8 @@ namespace Model
     {
         public int CompanyRelationshipId { get; set; }
         public int LeadId { get; set; }
-        public int CallId { get; set; }
-        public int ProjectId { get; set; }
+        public int CallId { get; set; }       
+        public int? ProjectId { get; set; }
         [Required( ErrorMessage=" ")]
         [Display(Name = "致电时间")]
         public DateTime CallDate { get; set; }

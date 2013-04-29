@@ -243,5 +243,20 @@ namespace Utl
             }
             return selectList;
         }
+
+        public static IEnumerable<SelectListItem> ProjectSelectList(string currentUserName,int? selectVal)
+        {
+            List<SelectListItem> selectList = new List<SelectListItem>();
+            foreach (Project project in CRM_Logical.GetUserProjectRight(currentUserName))
+            {
+                SelectListItem selectListItem = new SelectListItem() { Text = project.Name, Value = project.ID.ToString() };
+                if (selectVal.HasValue && project.ID == selectVal.Value)
+                {
+                    selectListItem.Selected = true;
+                }
+                selectList.Add(selectListItem);
+            }
+            return selectList;
+        }
     }
 }

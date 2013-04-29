@@ -167,7 +167,7 @@ namespace Sales.Controllers
         }
 
         [HttpPost]
-        public ActionResult EditSaleCompany(AjaxCRM ajaxCRM)
+        public ActionResult EditCompany(AjaxCRM ajaxCRM)
         {
             CompanyRelationship companyRelationship = CH.GetAllData<CompanyRelationship>(c => c.CompanyID == ajaxCRM.CompanyID).First();
             companyRelationship.Company.Address = ajaxCRM.Address;
@@ -323,7 +323,7 @@ namespace Sales.Controllers
             return null;
         }
 
-        public ActionResult GetAddCall(int leadId, int companyRelationId, int projectId)
+        public ActionResult GetAddCall(int leadId, int companyRelationId, int? projectId)
         {
             AjaxViewLeadCall ajaxViewLeadCall = new AjaxViewLeadCall() { LeadId = leadId, CompanyRelationshipId = companyRelationId, ProjectId = projectId };
             return PartialView("AddCall", ajaxViewLeadCall);
@@ -331,6 +331,7 @@ namespace Sales.Controllers
 
         public ActionResult AddCall(AjaxViewLeadCall ajaxViewLeadCall)
         {
+          
             LeadCall leadCall = new LeadCall();
             leadCall.CallBackDate = ajaxViewLeadCall.CallBackDate;
             leadCall.CallDate = ajaxViewLeadCall.CallDate;
@@ -338,12 +339,49 @@ namespace Sales.Controllers
             leadCall.LeadCallTypeID = ajaxViewLeadCall.CallTypeId;
             leadCall.LeadID = ajaxViewLeadCall.LeadId;
             leadCall.Member = CH.GetAllData<Member>(c => c.Name == Employee.CurrentUserName).First();
-            leadCall.ProjectID = ajaxViewLeadCall.ProjectId;
+            leadCall.ProjectID = ajaxViewLeadCall.ProjectId;           
             leadCall.Result = ajaxViewLeadCall.Result;
             leadCall.MarkForDelete = false;
             CH.Create<LeadCall>(leadCall);
 
             return null;
+        }
+
+        public ActionResult GetAddCompany()
+        {
+            AjaxViewSaleCompany ajaxViewSaleCompany = new AjaxViewSaleCompany() { Categories = new List<int>() { }, ProgressId = 11 };
+            return PartialView("AddCompany", ajaxViewSaleCompany);
+        }
+
+        public ActionResult AddCompany(AjaxViewSaleCompany ajaxViewSaleCompany)
+        {
+            CompanyRelationship companyRelationship = new CompanyRelationship();
+            companyRelationship.Company = new Company();
+            companyRelationship.Company.Address = ajaxViewSaleCompany.Address;
+            companyRelationship.Company.AreaID = ajaxViewSaleCompany.IndustryId;
+            companyRelationship.Company.Business = ajaxViewSaleCompany.Business;
+            companyRelationship.Company.CompanyTypeID = ajaxViewSaleCompany.TypeId;
+            companyRelationship.Company.Contact = ajaxViewSaleCompany.Phone;
+            companyRelationship.Company.Description = ajaxViewSaleCompany.Desc;
+            companyRelationship.Company.DistrictNumberID = ajaxViewSaleCompany.DistrictNumberId;
+            companyRelationship.Company.Fax = ajaxViewSaleCompany.Fax;
+            companyRelationship.Company.Name_CH = ajaxViewSaleCompany.Name_CN;
+            companyRelationship.Company.Name_EN = ajaxViewSaleCompany.Name_EN;
+            companyRelationship.Company.WebSite = ajaxViewSaleCompany.WebSite;
+            companyRelationship.Company.ZIP = ajaxViewSaleCompany.ZipCode;
+            companyRelationship.Description = ajaxViewSaleCompany.Desc;
+            companyRelationship.ProgressID = ajaxViewSaleCompany.ProgressId;
+            companyRelationship.Members = new List<Member>() { };
+            companyRelationship.Members.Add(CH.GetAllData<Member>(c => c.Name == Employee.CurrentUserName).First());
+            companyRelationship.ProjectID = ajaxViewSaleCompany.ProjectId;
+            companyRelationship.MarkForDelete = false;
+            if (ajaxViewSaleCompany.Categories != null)
+            {
+                companyRelationship.Categorys = CH.GetAllData<Category>(c => ajaxViewSaleCompany.Categories.Contains(c.ID)).ToList();
+            }
+            CH.Create<CompanyRelationship>(companyRelationship);
+
+            return Json(new { companyRelationshipId = companyRelationship.ID, companyId = companyRelationship.CompanyID, projectId = companyRelationship.ProjectID });
         }
     }
 }
