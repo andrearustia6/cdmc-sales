@@ -304,7 +304,7 @@ namespace Sales.Controllers
 
         public ActionResult GetAddCall(int leadId, int companyRelationId, int? projectId)
         {
-            AjaxViewLeadCall ajaxViewLeadCall = new AjaxViewLeadCall() { LeadId = leadId, CompanyRelationshipId = companyRelationId, ProjectId = projectId };
+            AjaxViewLeadCall ajaxViewLeadCall = new AjaxViewLeadCall() { LeadId = leadId, CompanyRelationshipId = companyRelationId, ProjectId = projectId, CallBackDate = DateTime.Now, CallDate = DateTime.Now };
             return PartialView("AddCall", ajaxViewLeadCall);
         }
 

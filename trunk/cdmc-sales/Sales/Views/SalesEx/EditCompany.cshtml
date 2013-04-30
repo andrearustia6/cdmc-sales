@@ -5,8 +5,8 @@
 <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
 @using (Html.BeginForm("EditSaleCompany", "Sales"))
 {
-     @Html.HiddenFor(model => model.ProjectId)
-     @Html.HiddenFor(model => model.CompanyId)
+    @Html.HiddenFor(model => model.ProjectId)
+    @Html.HiddenFor(model => model.CompanyId)
     <ul>
         <li><span class="addcompany-left">@Html.LabelFor(model => model.Name_CN) @Html.TextBoxFor(model => model.Name_CN)
             @Html.ValidationMessageFor(model => model.Name_CN)</span> <span class="addcompany-right">
@@ -14,10 +14,9 @@
                 @Html.ValidationMessageFor(model => model.Name_EN)
             </span></li>
         <li><span class="addcompany-left">@Html.LabelFor(model => model.IndustryId) @Html.DropDownListFor(model => model.IndustryId, SelectHelper.CompanyIndustrySelectList(null), "请选择", new { })
-            @Html.ValidationMessageFor(model => model.IndustryId)</span> <span class="addcompany-right">
-                @Html.LabelFor(model => model.TypeId) @Html.DropDownListFor(model => model.TypeId, SelectHelper.CompanyTypeSelectList(null), "请选择", new { })
-                @Html.ValidationMessageFor(model => model.TypeId)
-            </span></li>
+            @Html.ValidationMessageFor(model => model.IndustryId)</span> </li>
+        <li><span class="addcompany-left">@Html.LabelFor(model => model.TypeId) @Html.DropDownListFor(model => model.TypeId, SelectHelper.CompanyTypeSelectList(null), "请选择", new { })
+            @Html.ValidationMessageFor(model => model.TypeId)</span> </li>
         <li><span class="addcompany-left">@Html.LabelFor(model => model.Phone) @Html.TextBoxFor(model => model.Phone)
             @Html.ValidationMessageFor(model => model.Phone)</span> <span class="addcompany-right">
                 @Html.LabelFor(model => model.Fax) @Html.TextBoxFor(model => model.Fax)
@@ -30,7 +29,7 @@
             </span></li>
         <li><span class="addcompany-left">@Html.LabelFor(model => model.Address) @Html.TextBoxFor(model => model.Address)
             @Html.ValidationMessageFor(model => model.Address)</span> <span class="addcompany-right">
-                @Html.LabelFor(model => model.DistrictNumberId)   @Html.DropDownListFor(model => model.DistrictNumberId, SelectHelper.DistinctNumberSelectList(null), "请选择", new { })
+                @Html.LabelFor(model => model.DistrictNumberId) @Html.DropDownListFor(model => model.DistrictNumberId, SelectHelper.DistinctNumberSelectList(null), "请选择", new { })
                 @Html.ValidationMessageFor(model => model.DistrictNumberId)
             </span></li>
         <li><span class="addcompany-left">@Html.LabelFor(model => model.ProgressId) @Html.DropDownListFor(model => model.ProgressId, SelectHelper.ProgressSelectList(null), "请选择", new { })
@@ -39,19 +38,19 @@
             @Html.ValidationMessageFor(model => model.Business)</span> </li>
         <li><span>@Html.LabelFor(model => model.Desc) @Html.TextAreaFor(model => model.Desc)
             @Html.ValidationMessageFor(model => model.Desc)</span> </li>
-                 <li>
+        <li>
             <fieldset>
                 <legend>Categories</legend>
                 @foreach (Category category in CH.GetAllData<Category>(c => c.ProjectID == Model.ProjectId))
                 { 
-                    <label  class="company-category">@category.Name</label>
-                    if(Model.Categories.Contains(category.ID))
+                    <label class="company-category">@category.Name</label>
+                    if (Model.Categories.Contains(category.ID))
                     {
-                     <input  name="Categories" type="checkbox" value="@category.ID" checked="checked" />
+                    <input  name="Categories" type="checkbox" value="@category.ID" checked="checked" />
                     }
                     else
                     { 
-                      <input  name="Categories" type="checkbox" value="@category.ID"/>
+                    <input  name="Categories" type="checkbox" value="@category.ID"/>
                     }
                 }
             </fieldset>

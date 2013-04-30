@@ -375,10 +375,9 @@ namespace Model
         [Display(Name = "行业类型")]
         public int IndustryId { get; set; }
         [Display(Name = "行业类型")]
-        public string IndustryString { get; set; }
-        [Required(ErrorMessage = " ")]
+        public string IndustryString { get; set; }      
         [Display(Name = "公司类型")]
-        public int TypeId { get; set; }
+        public int? TypeId { get; set; }
         [Display(Name = "公司类型")]
         public string TypeString { get; set; }
         [Display(Name = "公司总机")]
