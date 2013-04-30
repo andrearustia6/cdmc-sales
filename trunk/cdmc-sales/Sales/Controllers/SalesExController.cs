@@ -326,9 +326,9 @@ namespace Sales.Controllers
             return null;
         }
 
-        public ActionResult GetAddCompany()
+        public ActionResult GetAddCompany(int? projectId)
         {
-            AjaxViewSaleCompany ajaxViewSaleCompany = new AjaxViewSaleCompany() { Categories = new List<int>() { }, ProgressId = 11 };
+            AjaxViewSaleCompany ajaxViewSaleCompany = new AjaxViewSaleCompany() { ProjectId = projectId, Categories = new List<int>() { }, ProgressId = 11 };
             return PartialView("AddCompany", ajaxViewSaleCompany);
         }
 

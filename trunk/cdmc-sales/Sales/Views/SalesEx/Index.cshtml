@@ -7,6 +7,7 @@
 @model AjaxCrmTypedList
 <span>添加时间: @Html.DropDownList("companyassigndate", SelectHelper.DurationSelectList())
     成熟度: @Html.DropDownList("companyprogress", SelectHelper.CrmProgessSelectList())
+    <label>项目:</label>@Html.DropDownListFor(model => model.CurrentProjectId, SelectHelper.ProjectSelectList(EditRight.DealsEdit.ToString(), Model.CurrentProjectId))
     <input id="search" type="button" value="查找" />
 </span>
 <input type="button" style="float: right; padding: 5px; margin-right:20px;" value="添加公司" onclick="GetAddCompany()" />
@@ -98,7 +99,7 @@
         </div>
     </div></text>)
         .Width(800)
-        .Height(600)
+        .Height(660)
         .Modal(true).Visible(false)
     )
 <script type="text/javascript">
@@ -307,7 +308,7 @@
     }
 
     function GetAddCompany() {
-        $.post('GetAddCompany', {}, function (result) {
+        $.post('GetAddCompany', { projectId: $('#CurrentProjectId').val() }, function (result) {
             $('.companyAdd-wrapper').html(result);
             var window = $('#AddCompany').data('tWindow');
             window.center().open();

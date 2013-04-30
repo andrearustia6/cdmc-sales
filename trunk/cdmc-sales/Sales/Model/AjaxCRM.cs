@@ -17,6 +17,7 @@ namespace Model
 
     public class AjaxCrmTypedList
     {
+        public int? CurrentProjectId { get; set; }
         IQueryable<CompanyRelationship> GetFilteredCRM()
         { 
            var query = from  c in CH.DB.CompanyRelationships select c;
