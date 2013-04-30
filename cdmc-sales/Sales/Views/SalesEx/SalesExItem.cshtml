@@ -80,7 +80,7 @@
         </div>
     </div></text>)
     .Width(750)
-    .Height(320)
+    .Height(340)
     .Modal(true).Visible(false)
 )
 @(Html.Telerik().Window()
@@ -91,7 +91,7 @@
         </div>
         <div class="dialogue-buttons">
             <input type="button" value="确定" class="t-button" onclick="UpdateLead()" />
-            <input type="button" value="取消" class="t-button" onclick="CancelEditLead()" />
+            <input type="button" value="取消" class="t-button" onclick="javascript:$('#EditLead').data('tWindow').close();" />
         </div>
     </div></text>)
     .Width(750)
@@ -350,10 +350,12 @@
             $('#EditLead').data('tWindow').center().open();
         });
     }
-    function CancelEditLead() {
+
+    function CancelEditLead() {      
         var window = $('#EditLead').data('tWindow');
         window.close();
     }
+
     function UpdateLead() {
         if ($('.dialogue-editlead form').valid()) {
             var query = $('.dialogue-editlead form').serialize();
@@ -376,6 +378,7 @@
                     $('#' + currentLeadID + ' span.LinkIn').html($('.dialogue-editlead form #LinkIn').val());
                     $('#' + currentLeadID + ' span.FaceBook').html($('.dialogue-editlead form #FaceBook').val());
                     $('#' + currentLeadID + ' span.Blog').html($('.dialogue-editlead form #Blog').val());
+                    $('#' + currentLeadID + ' span.LeadDistinctNumberString').html($('.dialogue-editlead form #DistrictNumberId option:selected').first().text());
                     $('#EditLead').data('tWindow').close();
                     alert('Lead更新成功');
                 }

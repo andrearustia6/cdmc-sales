@@ -203,8 +203,8 @@ namespace Sales.Controllers
                 WeiXin = lead.WeiXin,
                 LinkIn = lead.LinkIn,
                 FaceBook = lead.FaceBook,
-                Blog = lead.Blog
-
+                Blog = lead.Blog,
+                DistrictNumberId = lead.DistrictNumberID
             };
             return PartialView("EditLead", ajaxViewLead);
         }
@@ -222,6 +222,8 @@ namespace Sales.Controllers
             lead.Department = ajaxViewLead.Department;
             lead.Description = ajaxViewLead.Desc;
             lead.EMail = ajaxViewLead.WorkingEmail;
+            lead.PersonalEmailAddress = ajaxViewLead.PersonelEmail;
+            lead.Title = ajaxViewLead.Title;
             lead.Fax = ajaxViewLead.Fax;
             lead.Gender = ajaxViewLead.Gender;
             lead.Mobile = ajaxViewLead.CellPhone;
@@ -230,6 +232,7 @@ namespace Sales.Controllers
             lead.LinkIn = ajaxViewLead.LinkIn;
             lead.FaceBook = ajaxViewLead.FaceBook;
             lead.Blog = ajaxViewLead.Blog;
+            lead.DistrictNumberID = ajaxViewLead.DistrictNumberId;
             CH.Edit<Lead>(lead);
             return null;
         }
@@ -246,7 +249,7 @@ namespace Sales.Controllers
             {
                 Name_CH = ajaxViewLead.Name_CN,
                 Name_EN = ajaxViewLead.Name_EN,
-                Title = ajaxViewLead.Title,        
+                Title = ajaxViewLead.Title,
                 CompanyID = ajaxViewLead.CompanyId,
                 Address = ajaxViewLead.Address,
                 Birthday = ajaxViewLead.Birthday,
@@ -262,7 +265,9 @@ namespace Sales.Controllers
                 LinkIn = ajaxViewLead.LinkIn,
                 FaceBook = ajaxViewLead.FaceBook,
                 Blog = ajaxViewLead.Blog,
-                MarkForDelete = false
+                MarkForDelete = false,
+                DistrictNumberID = ajaxViewLead.DistrictNumberId,
+                PersonalEmailAddress = ajaxViewLead.PersonelEmail
             };
 
             CH.Create<Lead>(lead);

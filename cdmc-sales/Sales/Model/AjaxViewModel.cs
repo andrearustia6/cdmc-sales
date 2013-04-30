@@ -464,6 +464,9 @@ namespace Model
 
         [Display(Name = "博客地址")]
         public string Blog { get; set; }
+
+        [Display(Name = "区号/时差")]
+        public int? DistrictNumberId { get; set; }
     }
 
     public class AjaxViewLeadCall
