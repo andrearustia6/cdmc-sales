@@ -5,11 +5,14 @@
 @using Model
 @using Utl
 @model AjaxCrmTypedList
+ <form style=" float:left">
 <span>添加时间: @Html.DropDownList("companyassigndate", SelectHelper.DurationSelectList())
     成熟度: @Html.DropDownList("companyprogress", SelectHelper.CrmProgessSelectList())
     <label>项目:</label>@Html.DropDownListFor(model => model.CurrentProjectId, SelectHelper.ProjectSelectList(EditRight.DealsEdit.ToString(), Model.CurrentProjectId))
-    <input id="search" type="button" value="查找" />
+    <input id="search" style=" padding:5px" type="button" value="查找" />
+    <input type="reset"  style=" padding:5px"  value="重置"/>
 </span>
+</form>
 <input type="button" style="float: right; padding: 5px; margin-right:20px;" value="添加公司" onclick="GetAddCompany()" />
 <div style="clear: both;">
 </div>
