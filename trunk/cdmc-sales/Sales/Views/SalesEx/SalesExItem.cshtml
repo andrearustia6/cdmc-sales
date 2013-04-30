@@ -20,7 +20,7 @@
         <div class="fenge_2"><span id="currentCompanyName">@Model.CompanyName</span>
             <input style="float:right;padding:5px;margin:0 5px;" type="button" onclick="onLeadAdd(@(Model.CompanyID))" value="添加lead" />
             <input type="button" style="float: right; padding: 5px; margin: 0 5px;" value="更新"
-                onclick="onCompanyEdit(@(Model.CompanyID))" />
+                onclick="onCompanyEdit(@(Model.CompanyID))" />             
         </div>
         <div class="fenge_3">
         @Html.HiddenFor(model=>model.ProjectID)
@@ -64,7 +64,7 @@
         </div>
     </div></text>)
     .Width(800)
-    .Height(660)
+    .Height(620)
     .Modal(true).Visible(false)
 )
 
@@ -135,7 +135,7 @@
         {
     <div class="fenge" id="@(lead.LeadID)">
         <div class="fenge_2">@lead.LeadName
-            <input style="float:right;padding:5px;margin:0 5px;" type="button" onclick="onCallAdd(@(lead.LeadID))" value="添加Call" /><input style="float:right;;padding:5px;;margin:0 5px;" type="button" onclick="onLeadEdit(@(lead.LeadID))" value="更新" /></div>
+            <input style="float:right;padding:5px;margin:0 5px;" type="button" onclick="onCallAdd(@(lead.LeadID))" value="添加Call" /><input style="float:right;padding:5px;margin:0 5px;" type="button" onclick="onLeadEdit(@(lead.LeadID))" value="更新" /></div>
         <div class="fenge_3">
             @*  <div style=" width:100%; height:25px; margin-bottom:-5px; margin-top:10px;">
             
