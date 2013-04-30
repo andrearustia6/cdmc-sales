@@ -35,7 +35,7 @@
                     @Html.LabelFor(model => model.DistrictNumberId) @Html.DropDownListFor(model => model.DistrictNumberId, SelectHelper.DistinctNumberSelectList(null), "请选择", new { })
                     @Html.ValidationMessageFor(model => model.DistrictNumberId)
                 </span></li>
-            <li><span class="addcompany-left">@Html.LabelFor(model => model.IndustryId) @Html.DropDownListFor(model => model.IndustryId, SelectHelper.CompanyIndustrySelectList(null), "请选择", new { })
+            <li><span class="addcompany-left">@Html.LabelFor(model => model.IndustryId) @Html.DropDownListFor(model => model.IndustryId, SelectHelper.CompanyIndustrySelectList(null), "请选择", new { style = "width:200px" })
                 @Html.ValidationMessageFor(model => model.IndustryId)</span> </li>
             <li><span>@Html.LabelFor(model => model.Business) @Html.TextAreaFor(model => model.Business)
                 @Html.ValidationMessageFor(model => model.Business)</span> </li>
@@ -61,3 +61,9 @@
         </ul>
     </fieldset>
 }
+<style>
+    select
+    {
+        width:150px;
+     }
+</style>
