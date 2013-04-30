@@ -402,6 +402,44 @@ namespace Sales.Controllers
             return PartialView("EditCompany", ajaxViewSaleCompany);
         }
 
+        public ActionResult GetDetailCompany(int companyId)
+        {
+            CompanyRelationship companyRelationship = CH.GetAllData<CompanyRelationship>(c => c.CompanyID == companyId).First();
+            AjaxViewSaleCompany ajaxViewSaleCompany = new AjaxViewSaleCompany()
+            {
+                ProjectId = companyRelationship.ProjectID,
+                CompanyId = companyRelationship.CompanyID,
+                Address = companyRelationship.Company.Address,
+                Business = companyRelationship.Company.Business,
+                Desc = companyRelationship.Company.Description,
+                DistrictNumberId = companyRelationship.Company.DistrictNumberID,
+                Fax = companyRelationship.Company.Fax,
+                Name_CN = companyRelationship.Company.Name_CH,
+                Name_EN = companyRelationship.Company.Name_EN,
+                Phone = companyRelationship.Company.Contact,
+                ZipCode = companyRelationship.Company.ZIP,
+                WebSite = companyRelationship.Company.WebSite,
+                Categories = companyRelationship.Categorys.Select(c => c.ID).ToList()
+            };
+
+            if (companyRelationship.Company.Area != null)
+            {
+                ajaxViewSaleCompany.IndustryId = companyRelationship.Company.AreaID.Value;
+                ajaxViewSaleCompany.IndustryString = companyRelationship.Company.Area.Name_CH;
+            }
+            if (companyRelationship.Company.CompanyType != null)
+            {
+                ajaxViewSaleCompany.TypeId = companyRelationship.Company.CompanyTypeID.Value;
+                ajaxViewSaleCompany.TypeString = companyRelationship.Company.CompanyType.Name;
+            }
+            if (companyRelationship.Progress != null)
+            {
+                ajaxViewSaleCompany.ProgressId = companyRelationship.ProgressID.Value;
+                ajaxViewSaleCompany.ProgressString = companyRelationship.Progress.Description;
+            }
+
+            return PartialView("DetailCompany", ajaxViewSaleCompany);
+        }
         [HttpPost]
         public ActionResult EditCompany(AjaxViewSaleCompany ajaxViewSaleCompany)
         {

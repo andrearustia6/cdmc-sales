@@ -21,14 +21,14 @@
     width: 100px;
     text-align:right;
 }
-.dialogue-addcompany, .dialogue-editcompany, .dialogue-addlead,  .dialogue-editlead,.dialogue-addcall
+.dialogue-addcompany, .dialogue-editcompany, .dialogue-addlead,  .dialogue-editlead,.dialogue-addcall,.dialogue-detailcompany
 {
     padding-top:30px;
     padding-left:20px;
     padding-right:20px;    
 }
 
-.dialogue-addcompany ul li, .dialogue-editcompany ul li, .dialogue-addlead ul li,  .dialogue-editlead ul li, .dialogue-addcall ul li
+.dialogue-addcompany ul li, .dialogue-editcompany ul li, .dialogue-addlead ul li,  .dialogue-editlead ul li, .dialogue-addcall ul li, .dialogue-detailcompany ul li
 {
     min-height:27px;    
 }

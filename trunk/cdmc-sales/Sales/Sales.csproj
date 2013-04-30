@@ -1632,6 +1632,7 @@
     <Content Include="Views\SalesEx\AddCompany.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Views\SalesEx\DetailCompany.cshtml" />
     <None Include="Views\SalesEx\EditCompany.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
