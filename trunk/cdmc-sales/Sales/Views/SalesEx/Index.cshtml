@@ -5,15 +5,15 @@
 @using Model
 @using Utl
 @model AjaxCrmTypedList
- <form style=" float:left">
+ <form style=" float:left; height:30px; line-height:30px; display:inline-block;">
 <span>添加时间: @Html.DropDownList("companyassigndate", SelectHelper.DurationSelectList())
     成熟度: @Html.DropDownList("companyprogress", SelectHelper.CrmProgessSelectList())
     <label>项目:</label>@Html.DropDownListFor(model => model.CurrentProjectId, SelectHelper.ProjectSelectList(EditRight.DealsEdit.ToString(), Model.CurrentProjectId))
-    <input id="search" style=" padding:5px" type="button" value="查找" />
-    <input type="reset"  style=" padding:5px"  value="重置"/>
+    <input id="search" style="border:none;:inline-block; width:67px; height:21px; background-image:url('../images/chazhao.jpg'); cursor:pointer;" type="button" />
+    <input type="reset"  style="border:none;width:67px; height:21px; background-image:url('../images/chongzhi.jpg'); cursor:pointer;" value=" " />
 </span>
 </form>
-<input type="button" style="float: right; padding: 5px; margin-right:20px;" value="添加公司" onclick="GetAddCompany()" />
+<input type="button" style="float: right;border:none;width:91px; height:27px; background-image:url('../images/tianjia.jpg'); margin-right:20px; cursor:pointer;" onclick="GetAddCompany()" />
 <div style="clear: both;">
 </div>
 @(Html.Telerik().Splitter().Name("sp1").HtmlAttributes(new { style = "min-height: 800px;" })
@@ -97,8 +97,8 @@
         <div class="companyAdd-wrapper">
         </div>
         <div class="dialogue-buttons">
-            <input type="button" value="确定" class="t-button" onclick="Addcompany()" />
-            <input type="button" value="取消" class="t-button" onclick="CancelAddcompany()" />
+            <input type="button" class="btn-queding"  onclick="Addcompany()" />
+            <input type="button" class="btn-quxiao" onclick="CancelAddcompany()" />
         </div>
     </div></text>)
         .Width(800)

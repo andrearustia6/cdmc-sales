@@ -1,13 +1,13 @@
-﻿.addcompany-left, .addlead-left,.addcall-left
+﻿.addcompany-left, .addlead-left, .addcall-left
 {
     display: inline-block;
     width: 345px;
 }
-.addcompany-left label, .addlead-left label,.addcall-left label
+.addcompany-left label, .addlead-left label, .addcall-left label
 {
     display: inline-block;
     width: 100px;
-    text-align:right;
+    text-align: right;
 }
 
 .addcompany-right, .addlead-right, .addcall-right
@@ -15,38 +15,60 @@
     display: inline-block;
     width: 345px;
 }
-.addcompany-right label, .addlead-right label,.addcall-right label
+.addcompany-right label, .addlead-right label, .addcall-right label
 {
     display: inline-block;
     width: 100px;
-    text-align:right;
+    text-align: right;
 }
-.dialogue-addcompany, .dialogue-editcompany, .dialogue-addlead,  .dialogue-editlead,.dialogue-addcall,.dialogue-detailcompany
+.dialogue-addcompany, .dialogue-editcompany, .dialogue-addlead, .dialogue-editlead, .dialogue-addcall, .dialogue-detailcompany
 {
-    padding-top:30px;
-    padding-left:20px;
-    padding-right:20px;    
+    padding-top: 30px;
+    padding-left: 20px;
+    padding-right: 20px;
 }
 
-.dialogue-addcompany ul li, .dialogue-editcompany ul li, .dialogue-addlead ul li,  .dialogue-editlead ul li, .dialogue-addcall ul li, .dialogue-detailcompany ul li
+.dialogue-addcompany ul li, .dialogue-editcompany ul li, .dialogue-addlead ul li, .dialogue-editlead ul li, .dialogue-addcall ul li, .dialogue-detailcompany ul li
 {
-    min-height:27px;    
+    min-height: 27px;
 }
 
 .dialogue-buttons
 {
-        text-align:center;
+    text-align: center;
 }
 
 .dialogue-buttons input[type=button]
 {
-    margin:10px;    
+    margin: 10px;
 }
 
 .company-category
 {
-    width:100px;
-    display:inline-block;
-    text-align:right;    
+    width: 100px;
+    display: inline-block;
+    text-align: right;
 }
 
+.btn-queding
+{
+    border: none;
+    display: inline-block;
+    border: none;
+    width: 67px;
+    height: 21px;
+    background-image: url('../images/queding.jpg');
+    margin: 0 5px;
+    cursor: pointer;
+}
+.btn-quxiao
+{
+    border: none;
+    display: inline-block;
+    border: none;
+    width: 67px;
+    height: 21px;
+    background-image: url('../images/quxiao.jpg');
+    margin: 0 5px;
+    cursor: pointer;
+}

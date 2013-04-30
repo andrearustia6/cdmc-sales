@@ -18,9 +18,8 @@
     <div class="fenge">
         <div class="fenge_2">
             <span id="currentCompanyName">@Model.CompanyName</span>
-            <input style="float:right;padding:5px;margin:0 5px;" type="button" onclick="onLeadAdd(@(Model.CompanyID))" value="添加lead" />
-            <input type="button" style="float: right; padding: 5px; margin: 0 5px;" value="更新"
-                onclick="onCompanyEdit(@(Model.CompanyID))" />
+            <input style="border:none;display:inline-block;float:right;border:none;width:91px; height:27px; background-image:url('../images/tianjia_2.jpg');margin:0 5px; cursor:pointer;" type="button" onclick="onLeadAdd(@(Model.CompanyID))" />
+            <input type="button" style="border:none;display:inline-block;float: right;border:none;width:91px; height:27px; background-image:url('../images/gengxin.jpg'); margin: 0 5px; cursor:pointer;"  onclick="onCompanyEdit(@(Model.CompanyID))" />
             <input type="button" style="float: right; padding: 5px; margin: 0 5px;" value="公司概况"
                 onclick="onCompanyDetail(@(Model.CompanyID))" />
         </div>
@@ -28,14 +27,15 @@
             @Html.HiddenFor(model => model.ProjectID)
             @Html.HiddenFor(model => model.CRMID)
             <fieldset>
-                <legend>公司信息</legend>
+                <legend>公司信息</legend><span id="currentCompanyNameCN" class="datainfo" style="display: none">@Model.CompanyNameCH
+                </span>
                 <dl class="fieldname">
-                    <dd>
+                    @*       <dd>
                         <font>中文名：</font><span id="currentCompanyNameCN" class="datainfo">@Model.CompanyNameCH
                         </span>
                     </dd>
                     <dd>
-                        <font>英文名：</font><span id="currentCompanyNameEN" class="datainfo">@Model.CompanyNameEN</span></dd>
+                        <font>英文名：</font><span id="currentCompanyNameEN" class="datainfo">@Model.CompanyNameEN</span></dd>*@
                     <dd>
                         <font>区号：</font><span id="currentCompanyDistrictNumberString" class="datainfo">@Model.CompanyDistrictNumberString</span></dd>
                     <dd>
@@ -53,18 +53,18 @@
         </div>
     </div>    
 }
-@(Html.Telerik().Window().Title("公司详情")
+@(Html.Telerik().Window().Title("公司概况")
     .Name("DetailCompany")
     .Buttons(buttons => buttons.Close())
     .Content(@<text><div class="dialogue-detailcompany">
         <div class="companyDetail-wrapper">
         </div>
         <div class="dialogue-buttons">
-            <input type="button" value="确定" class="t-button" onclick="Javescript:$('#DetailCompany').data('tWindow').close();" />           
+            <input type="button" class="btn-queding" onclick="Javescript:$('#DetailCompany').data('tWindow').close();" />
         </div>
     </div></text>)
     .Width(800)
-    .Height(620)
+    .Height(300)
     .Modal(true).Visible(false)
 )
 @(Html.Telerik().Window().Title("更新公司")
@@ -74,8 +74,8 @@
         <div class="companyEdit-wrapper">
         </div>
         <div class="dialogue-buttons">
-            <input type="button" value="确定" class="t-button" onclick="Editcompany()" />
-            <input type="button" value="取消" class="t-button" onclick="CancelEditcompany()" />
+            <input type="button" class="btn-queding" onclick="Editcompany()" />
+            <input type="button" class="btn-quxiao" onclick="CancelEditcompany()" />
         </div>
     </div></text>)
     .Width(800)
@@ -89,8 +89,8 @@
         <div class="leadadd-wrapper">
         </div>
         <div class="dialogue-buttons">
-            <input type="button" value="确定" class="t-button" onclick="AddLead()" />
-            <input type="button" value="取消" class="t-button" onclick="CancelAddLead()" />
+            <input type="button" class="btn-queding" onclick="AddLead()" />
+            <input type="button" class="btn-quxiao" onclick="CancelAddLead()" />
         </div>
     </div></text>)
     .Width(750)
@@ -104,8 +104,8 @@
         <div class="leadedit-wrapper">
         </div>
         <div class="dialogue-buttons">
-            <input type="button" value="确定" class="t-button" onclick="UpdateLead()" />
-            <input type="button" value="取消" class="t-button" onclick="javascript:$('#EditLead').data('tWindow').close();" />
+            <input type="button" class="btn-queding" onclick="UpdateLead()" />
+            <input type="button" class="btn-quxiao"  onclick="javascript:$('#EditLead').data('tWindow').close();" />
         </div>
     </div></text>)
     .Width(750)
@@ -119,8 +119,8 @@
         <div class="calledit-wrapper">
         </div>
         <div class="dialogue-buttons">
-            <input type="button" value="确定" class="t-button" onclick="UpdateCall()" />
-            <input type="button" value="取消" class="t-button" onclick="CancelEditCall()" />
+            <input type="button" class="btn-queding" onclick="UpdateCall()" />
+            <input type="button" class="btn-quxiao"  onclick="CancelEditCall()" />
         </div>
     </div></text>)
     .Width(750)
@@ -134,8 +134,8 @@
         <div class="calladd-wrapper">
         </div>
         <div class="dialogue-buttons">
-            <input type="button" value="确定" class="t-button" onclick="AddCall()" />
-            <input type="button" value="取消" class="t-button" onclick="CancelAddCall()" />
+            <input type="button" class="btn-queding" onclick="AddCall()" />
+            <input type="button" class="btn-quxiao" onclick="CancelAddCall()" />
         </div>
     </div></text>)
     .Width(750)
@@ -149,7 +149,7 @@
         {
     <div class="fenge" id="@(lead.LeadID)">
         <div class="fenge_2">@lead.LeadName
-            <input style="float:right;padding:5px;margin:0 5px;" type="button" onclick="onCallAdd(@(lead.LeadID))" value="添加Call" /><input style="float:right;padding:5px;margin:0 5px;" type="button" onclick="onLeadEdit(@(lead.LeadID))" value="更新" /></div>
+            <input style="float:right;padding:5px;margin:0 5px;" type="button" onclick="onCallAdd(@(lead.LeadID))" value="添加Call" /><input style="border:none;display:inline-block;float: right;border:none;width:91px; height:27px; background-image:url('../images/gengxin.jpg'); margin: 0 5px; cursor:pointer;" type="button" onclick="onLeadEdit(@(lead.LeadID))" /></div>
         <div class="fenge_3">
             @*  <div style=" width:100%; height:25px; margin-bottom:-5px; margin-top:10px;">
             
@@ -158,8 +158,8 @@
                 <legend style="font-size: 13px; margin: 5px;">
                     @lead.LeadName</legend>
                 <ul class="fieldname">
-                    <li><font>中文名：</font><span class="leadNameCN datainfo">@lead.LeadNameCH</span> </li>
-                    <li><font>英文名：</font><span class="leadNamEN datainfo">@lead.LeadNameEN</span> </li>
+                    @*   <li><font>中文名：</font><span class="leadNameCN datainfo">@lead.LeadNameCH</span> </li>
+                    <li><font>英文名：</font><span class="leadNamEN datainfo">@lead.LeadNameEN</span> </li>*@
                     <li><font>Lead职位：</font><span class="leadTitle datainfo">@lead.LeadTitle</span>
                     </li>
                     <li><font>Lead性别：</font><span class="leadGender datainfo">@lead.Gender</span> </li>
@@ -259,11 +259,12 @@
         max-width: 76px;
         height: 21px;
         line-height: 21px;
+        font-weight: bold;
     }
     .fenge
     {
-        width: 96%;
-        margin: 15px;
+        width: 98%;
+        margin: 5px;
     }
     .fenge_2
     {
@@ -273,11 +274,11 @@
         border-bottom: none;
         text-align: center;
         color: #fff;
+        padding:5px;
     }
     .fenge_3
     {
         border: 1px solid #000;
-        padding: 6px 20px;
         line-height: 24px;
     }
 </style>
@@ -340,10 +341,10 @@
                         } else {
                             tempVal = $('.dialogue-editcompany form #Name_CN').val() + $('.dialogue-editcompany form #Name_EN').val();
                             $('#currentCompanyName').html(tempVal);
-                            tempVal = $('.dialogue-editcompany form #Name_CN').val();
-                            $('#currentCompanyNameCN').html(tempVal);
-                            tempVal = $('.dialogue-editcompany form #Name_EN').val();
-                            $('#currentCompanyNameEN').html(tempVal);
+                            //                            tempVal = $('.dialogue-editcompany form #Name_CN').val();
+                            //                            $('#currentCompanyNameCN').html(tempVal);
+                            //                            tempVal = $('.dialogue-editcompany form #Name_EN').val();
+                            //                            $('#currentCompanyNameEN').html(tempVal);
                             tempVal = $('.dialogue-editcompany form #DistrictNumberId option:selected').first().text();
                             $('#currentCompanyDistrictNumberString').html(tempVal);
                             tempVal = $('.dialogue-editcompany form #Phone').val();
@@ -395,8 +396,8 @@
                 if (result.length > 0) {
                     alert(result);
                 } else {
-                    $('#' + currentLeadID + ' span.leadNameCN').html($('.dialogue-editlead form #Name_CN').val());
-                    $('#' + currentLeadID + ' span.leadNamEN').html($('.dialogue-editlead form #Name_EN').val());
+                    //                    $('#' + currentLeadID + ' span.leadNameCN').html($('.dialogue-editlead form #Name_CN').val());
+                    //                    $('#' + currentLeadID + ' span.leadNamEN').html($('.dialogue-editlead form #Name_EN').val());
                     $('#' + currentLeadID + ' span.leadTitle').html($('.dialogue-editlead form #Title').val());
                     $('#' + currentLeadID + ' span.leadGender').html($('.dialogue-editlead form #Gender').val());
                     $('#' + currentLeadID + ' span.LeadDistinctNumberString').html($('.dialogue-editlead form #Name_CN option:selected').first().text());
