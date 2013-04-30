@@ -366,12 +366,12 @@ namespace Model
         public int? CompanRelationshipId { get; set; }
         [Display(Name = "ID")]
         public int? CompanyId { get; set; }
-        [Required( ErrorMessage= " ")]
+        [Required( ErrorMessage= "必填")]
         [Display(Name = "中文名字")]
         public string Name_CN { get; set; }
         [Display(Name = "英文名字")]
         public string Name_EN { get; set; }
-        [Required(ErrorMessage = " ")]
+        [Required(ErrorMessage = "必填")]
         [Display(Name = "行业类型")]
         public int IndustryId { get; set; }
         [Display(Name = "行业类型")]
@@ -395,7 +395,7 @@ namespace Model
         public int? DistrictNumberId { get; set; }
         [Display(Name = "区号/时差")]
         public string DistrictNumberString { get; set; }
-        [Required(ErrorMessage = " ")]
+        [Required(ErrorMessage = "必填")]
         [Display(Name = "成熟度")]
         public int ProgressId { get; set; }
         [Display(Name = "成熟度")]
@@ -415,7 +415,7 @@ namespace Model
     {
         public int CompanyId { get; set; }
         public int LeadId { get; set; }
-        [Required(ErrorMessage=" ")]
+        [Required(ErrorMessage = "必填")]
         [Display(Name = "中文名称")]
         public string Name_CN { get; set; }
         [Display(Name = "英文名称")]
@@ -474,12 +474,12 @@ namespace Model
         public int LeadId { get; set; }
         public int CallId { get; set; }       
         public int? ProjectId { get; set; }
-        [Required( ErrorMessage=" ")]
+        [Required(ErrorMessage = "必填")]
         [Display(Name = "致电时间")]
         public DateTime CallDate { get; set; }
         [Display(Name = "回打时间")]
         public DateTime? CallBackDate { get; set; }
-        [Required(ErrorMessage = " ")]
+        [Required(ErrorMessage = "必填")]
         [Display(Name = "Call类型")]
         public int CallTypeId { get; set; }
         [Display(Name = "Call类型")]
