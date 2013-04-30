@@ -246,6 +246,7 @@ namespace Sales.Controllers
             {
                 Name_CH = ajaxViewLead.Name_CN,
                 Name_EN = ajaxViewLead.Name_EN,
+                Title = ajaxViewLead.Title,        
                 CompanyID = ajaxViewLead.CompanyId,
                 Address = ajaxViewLead.Address,
                 Birthday = ajaxViewLead.Birthday,
@@ -373,6 +374,7 @@ namespace Sales.Controllers
                 Name_EN = companyRelationship.Company.Name_EN,
                 Phone = companyRelationship.Company.Contact,
                 ZipCode = companyRelationship.Company.ZIP,
+                WebSite = companyRelationship.Company.WebSite,
                 Categories = companyRelationship.Categorys.Select(c => c.ID).ToList()
             };
 
