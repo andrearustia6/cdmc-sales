@@ -315,6 +315,7 @@
     <Content Include="images\chongzhi.jpg" />
     <Content Include="images\fenzuguanli.jpg" />
     <Content Include="images\fenzuguanli_2.jpg" />
+    <Content Include="images\gaikuo.jpg" />
     <Content Include="images\gengxin.jpg" />
     <Content Include="images\hover.gif" />
     <Content Include="images\input.jpg" />
@@ -326,6 +327,7 @@
     <Content Include="images\submenu_dis.gif" />
     <Content Include="images\tianjia.jpg" />
     <Content Include="images\tianjia_2.jpg" />
+    <Content Include="images\tianjia_3.jpg" />
     <Content Include="images\tijiaoanniu.jpg" />
     <Content Include="images\tu.jpg" />
     <Content Include="images\tubiao.gif" />
@@ -1642,7 +1644,6 @@
     <Content Include="Views\SalesEx\DetailCompany.cshtml" />
     <None Include="Views\SalesEx\EditCompany.cshtml" />
   </ItemGroup>
-
   <ItemGroup>
     <Content Include="Views\TargetOfMonthForMember\Confirm.cshtml" />
   </ItemGroup>

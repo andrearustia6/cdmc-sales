@@ -18,10 +18,9 @@
     <div class="fenge">
         <div class="fenge_2">
             <span id="currentCompanyName">@Model.CompanyName</span>
-            <input style="border:none;display:inline-block;float:right;border:none; background-image:url('../images/tianjia_2.jpg');margin:0 5px; cursor:pointer;" type="button" onclick="onLeadAdd(@(Model.CompanyID))" />
-            <input type="button" style="border:none;display:inline-block;float: right;border:none; background-image:url('../images/gengxin.jpg'); margin: 0 5px; cursor:pointer;"  onclick="onCompanyEdit(@(Model.CompanyID))" />
-            <input type="button" style="float: right; padding: 5px; margin: 0 5px;" value="公司概况"
-                onclick="onCompanyDetail(@(Model.CompanyID))" />
+            <input class="salebtn" style=" background-image:url('../images/tianjia_3.jpg');" type="button" onclick="onLeadAdd(@(Model.CompanyID))" />
+            <input type="button" class="salebtn"  style="background-image:url('../images/gengxin.jpg');"  onclick="onCompanyEdit(@(Model.CompanyID))" />
+            <input type="button"class="salebtn"  style="background-image:url('../images/gaikuo.jpg'); " value="" onclick="onCompanyDetail(@(Model.CompanyID))" />
         </div>
         <div class="fenge_3">
             @Html.HiddenFor(model => model.ProjectID)
@@ -149,7 +148,7 @@
         {
     <div class="fenge" id="@(lead.LeadID)">
         <div class="fenge_2">@lead.LeadName
-            <input style="float:right;padding:5px;margin:0 5px;" type="button" onclick="onCallAdd(@(lead.LeadID))" value="添加Call" /><input style="border:none;display:inline-block;float: right;border:none; background-image:url('../images/gengxin.jpg'); margin: 0 5px; cursor:pointer;" type="button" onclick="onLeadEdit(@(lead.LeadID))" /></div>
+            <input style="background-image:url('../images/tianjia_2.jpg');" class="salebtn" type="button" onclick="onCallAdd(@(lead.LeadID))" value="" /><input class="salebtn" style=" background-image:url('../images/gengxin.jpg');" type="button" onclick="onLeadEdit(@(lead.LeadID))" /></div>
         <div class="fenge_3">
             @*  <div style=" width:100%; height:25px; margin-bottom:-5px; margin-top:10px;">
             
@@ -204,7 +203,7 @@
                         columns.Bound(o => o.CallDate).Template(@<text><span id="@(item.LeadCallID)_CallDate">@item.CallDate</span></text>).Width(100);
                         columns.Bound(o => o.Caller).Template(@<text><span id="@(item.LeadCallID)_Caller">@item.Caller</span></text>).Width(80);
                         columns.Bound(o => o.Result).Template(@<text><span id="@(item.LeadCallID)_Result">@item.Result</span></text>);
-                        columns.Bound(o => o.LeadCallID).Width(120).Template(@<text><input onclick='EditLeadCall(@item.LeadCallID)' type='button' style="border:none;display:inline-block;float: right;border:none; background-image:url('../images/gengxin.jpg'); margin: 0 5px; cursor:pointer;" /></text>);
+                        columns.Bound(o => o.LeadCallID).Width(120).Template(@<text><input onclick='EditLeadCall(@item.LeadCallID)' type='button' class="salebtn" style=" background-image:url('../images/gengxin.jpg');" /></text>);
                     }).Pageable(paging => paging.Enabled(false)).Resizable(resizing => resizing.Columns(true)).Sortable().Scrollable(scrolling => scrolling.Enabled(false))
                       )
                     @*</dd>
@@ -224,7 +223,12 @@
     .fieldblock
     {
     }
-    
+    .salebtn
+{
+    width: 24px;
+    height:25px;
+    border:none;display:inline-block;float: right;border:none;  margin: 0 5px; cursor:pointer;
+}
     
     .fieldError
     {
