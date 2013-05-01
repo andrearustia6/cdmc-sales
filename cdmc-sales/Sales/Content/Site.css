@@ -193,6 +193,12 @@ input[type="password"]
     border: 1px solid #CCC;
 }
 
+input[type="button"] 
+{
+    width: 67px;
+    height:21px;
+}
+
 /* TABLE
 input[type="text"] 
 {

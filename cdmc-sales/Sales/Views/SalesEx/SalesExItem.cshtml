@@ -18,8 +18,8 @@
     <div class="fenge">
         <div class="fenge_2">
             <span id="currentCompanyName">@Model.CompanyName</span>
-            <input style="border:none;display:inline-block;float:right;border:none;width:91px; height:27px; background-image:url('../images/tianjia_2.jpg');margin:0 5px; cursor:pointer;" type="button" onclick="onLeadAdd(@(Model.CompanyID))" />
-            <input type="button" style="border:none;display:inline-block;float: right;border:none;width:91px; height:27px; background-image:url('../images/gengxin.jpg'); margin: 0 5px; cursor:pointer;"  onclick="onCompanyEdit(@(Model.CompanyID))" />
+            <input style="border:none;display:inline-block;float:right;border:none; background-image:url('../images/tianjia_2.jpg');margin:0 5px; cursor:pointer;" type="button" onclick="onLeadAdd(@(Model.CompanyID))" />
+            <input type="button" style="border:none;display:inline-block;float: right;border:none; background-image:url('../images/gengxin.jpg'); margin: 0 5px; cursor:pointer;"  onclick="onCompanyEdit(@(Model.CompanyID))" />
             <input type="button" style="float: right; padding: 5px; margin: 0 5px;" value="公司概况"
                 onclick="onCompanyDetail(@(Model.CompanyID))" />
         </div>
@@ -64,7 +64,7 @@
         </div>
     </div></text>)
     .Width(800)
-    .Height(300)
+        .Height(300).Draggable(true)
     .Modal(true).Visible(false)
 )
 @(Html.Telerik().Window().Title("更新公司")
@@ -79,7 +79,7 @@
         </div>
     </div></text>)
     .Width(800)
-    .Height(620)
+        .Height(620).Draggable(true)
     .Modal(true).Visible(false)
 )
 @(Html.Telerik().Window().Title("新增lead")
@@ -94,7 +94,7 @@
         </div>
     </div></text>)
     .Width(750)
-    .Height(340)
+        .Height(340).Draggable(true)
     .Modal(true).Visible(false)
 )
 @(Html.Telerik().Window().Title("更新Lead")
@@ -109,7 +109,7 @@
         </div>
     </div></text>)
     .Width(750)
-    .Height(350)
+        .Height(350).Draggable(true)
     .Modal(true).Visible(false)
 )
 @(Html.Telerik().Window().Title("更新LeadCall")
@@ -124,7 +124,7 @@
         </div>
     </div></text>)
     .Width(750)
-    .Height(200)
+        .Height(200).Draggable(true)
     .Modal(true).Visible(false)
 )
 @(Html.Telerik().Window().Title("新增LeadCall")
@@ -139,7 +139,7 @@
         </div>
     </div></text>)
     .Width(750)
-    .Height(250)
+    .Height(250).Draggable(true)
     .Modal(true).Visible(false)
 )
 @helper LeadsInfo()
@@ -149,7 +149,7 @@
         {
     <div class="fenge" id="@(lead.LeadID)">
         <div class="fenge_2">@lead.LeadName
-            <input style="float:right;padding:5px;margin:0 5px;" type="button" onclick="onCallAdd(@(lead.LeadID))" value="添加Call" /><input style="border:none;display:inline-block;float: right;border:none;width:91px; height:27px; background-image:url('../images/gengxin.jpg'); margin: 0 5px; cursor:pointer;" type="button" onclick="onLeadEdit(@(lead.LeadID))" /></div>
+            <input style="float:right;padding:5px;margin:0 5px;" type="button" onclick="onCallAdd(@(lead.LeadID))" value="添加Call" /><input style="border:none;display:inline-block;float: right;border:none; background-image:url('../images/gengxin.jpg'); margin: 0 5px; cursor:pointer;" type="button" onclick="onLeadEdit(@(lead.LeadID))" /></div>
         <div class="fenge_3">
             @*  <div style=" width:100%; height:25px; margin-bottom:-5px; margin-top:10px;">
             
@@ -204,9 +204,9 @@
                         columns.Bound(o => o.CallDate).Template(@<text><span id="@(item.LeadCallID)_CallDate">@item.CallDate</span></text>).Width(100);
                         columns.Bound(o => o.Caller).Template(@<text><span id="@(item.LeadCallID)_Caller">@item.Caller</span></text>).Width(80);
                         columns.Bound(o => o.Result).Template(@<text><span id="@(item.LeadCallID)_Result">@item.Result</span></text>);
-                        columns.Bound(o => o.LeadCallID).Template(@<text><input onclick='EditLeadCall(@item.LeadCallID)' type='button' value='update' style='padding:5px 10px' /></text>);
+                        columns.Bound(o => o.LeadCallID).Width(120).Template(@<text><input onclick='EditLeadCall(@item.LeadCallID)' type='button' style="border:none;display:inline-block;float: right;border:none; background-image:url('../images/gengxin.jpg'); margin: 0 5px; cursor:pointer;" /></text>);
                     }).Pageable(paging => paging.Enabled(false)).Resizable(resizing => resizing.Columns(true)).Sortable().Scrollable(scrolling => scrolling.Enabled(false))
-                       .Filterable())
+                      )
                     @*</dd>
                 </dl>*@
                 </fieldset>

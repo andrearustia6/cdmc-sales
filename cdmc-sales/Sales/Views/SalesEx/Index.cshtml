@@ -6,20 +6,26 @@
 @using Utl
 @model AjaxCrmTypedList
  <form style=" float:left; height:30px; line-height:30px; display:inline-block;">
-<span>添加时间: @Html.DropDownList("companyassigndate", SelectHelper.DurationSelectList())
-    成熟度: @Html.DropDownList("companyprogress", SelectHelper.CrmProgessSelectList())
-    <label>项目:</label>@Html.DropDownListFor(model => model.CurrentProjectId, SelectHelper.ProjectSelectList(EditRight.DealsEdit.ToString(), Model.CurrentProjectId))
+<div class="selections">
+   <span> <label>项目:</label>@Html.DropDownListFor(model => model.CurrentProjectId, SelectHelper.ProjectSelectList(EditRight.DealsEdit.ToString(), Model.CurrentProjectId))</span>
+   <span>分配时间: @Html.DropDownList("companyassigndate", SelectHelper.DurationSelectList(), "不指定")</span>
+    <span>成熟度: @Html.DropDownList("companyprogress", SelectHelper.CrmProgessSelectList(), "不指定")</span>
+   <span>Lead通话状态: @Html.DropDownList("leadprogress", SelectHelper.LeadConditionSelectList(), "不指定")</span>
+   <span>出单状态: @Html.DropDownList("dealprogress", SelectHelper.DealConditionSelectList(), "不指定")</span>
+   <span>最近通话: @Html.DropDownList("callprogress", SelectHelper.CallConditionSelectList(), "不指定")</span>
+   
     <input id="search" style="border:none;:inline-block; width:67px; height:21px; background-image:url('../images/chazhao.jpg'); cursor:pointer;" type="button" />
     <input type="reset"  style="border:none;width:67px; height:21px; background-image:url('../images/chongzhi.jpg'); cursor:pointer;" value=" " />
-</span>
+    </div>
+
 </form>
-<input type="button" style="float: right;border:none;width:91px; height:27px; background-image:url('../images/tianjia.jpg'); margin-right:20px; cursor:pointer;" onclick="GetAddCompany()" />
+<input type="button" style="float: right;border:none; background-image:url('../images/tianjia.jpg'); margin-right:20px; cursor:pointer;" onclick="GetAddCompany()" />
 <div style="clear: both;">
 </div>
 @(Html.Telerik().Splitter().Name("sp1").HtmlAttributes(new { style = "min-height: 800px;" })
               .Orientation(SplitterOrientation.Horizontal).Panes(panes =>
               {
-                  panes.Add().Size("30%").Content(@<text>@GetCRMS()</text>);
+                  panes.Add().Size("26%").Content(@<text>@GetCRMS()</text>);
                   panes.Add().Content(@<text>@GetCompanyDetails()</text>);
               }))
 @helper GetCRMS()
@@ -103,7 +109,7 @@
     </div></text>)
         .Width(800)
         .Height(620)
-        .Modal(true).Visible(false)
+        .Modal(true).Visible(false).Draggable(true)
     )
 <script type="text/javascript">
 
@@ -119,13 +125,16 @@
         });
     });
     function GetFilters() {
+        var id = $('#CurrentProjectId').val();
         var companyprogress = $('#companyprogress').val();
         var companyassigndate = $('#companyassigndate').val();
-        return { CompanyProgress: companyprogress, CompanyAssignDate: companyassigndate };
+        var leadprogress = $('#leadprogress').val();
+        var dealprogress = $('#dealprogress').val();
+        var callprogress = $('#callprogress').val();
+        //var companyassigndate = $('#companyassigndate').val();
+        return { CompanyProgress: companyprogress, CompanyAssignDate: companyassigndate, LeadProgress: leadprogress, DealProgress: dealprogress, CallProgress: callprogress,PrjectID:id };
     }
     function initial() {
-
-        //
 
         //分组字体标注
         $('#customView').find('>ul >li >div >span').css("fontSize", "23px").css("font-weigh", "bold").css('line-height', '28px');
@@ -386,5 +395,9 @@
     {
         font-size: 12px;
         color: Green;
+    }
+    
+    .selections span 
+    {
     }
 </style>
