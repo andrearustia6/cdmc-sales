@@ -1,7 +1,7 @@
 ﻿@using Entity
 @model List<TargetOfMonthForMember>
-@Html.Partial("contenttitle", "个人月目标")    
-@Html.Partial("projectselector")   
+@Html.Partial("contenttitle", "个人月目标")
+@Html.Partial("projectselector")
 @(Html.Telerik().Grid<TargetOfMonthForMember>(Model).Name("TargetOfMonthForMember").ToolBar(commands => commands.Custom().Text("月目标创建").Action("Create", "TargetOfMonthForMember"))
                 .DataKeys(keys =>
                 {
@@ -12,15 +12,18 @@
                     c.Bound(item => item.BaseDeal);
                     c.Bound(item => item.Deal);
                     c.Bound(item => item.CheckIn);
-                    c.Bound(item => item.StartDate );
+                    c.Bound(item => item.StartDate);
                     c.Bound(item => item.EndDate);
-                    c.Bound(item => item.ID).Width(200).Title("操作").Template(@<span>
-                    <a href=@Url.Content("~/TargetOfMonthForMember/Edit/" + item.ID) >编辑</a> | <a href=@Url.Content("~/TargetOfMonthForMember/Details/" + item.ID)>详细</a>  | <a href=@Url.Content("~/TargetOfMonthForMember/delete/" + item.ID) >删除</a> 
-                   </span>);
-                })
-                .Resizable(resizing => resizing.Columns(true))
-                .Filterable().Sortable().Groupable()
-                .Pageable(p => p.PageSize(20))
-                .Scrollable(scrolling => scrolling.Height(350))
 
-)
+                    c.Template(item => (item.IsConfirm == true) ? "是" : "否").Title("是否确认");
+
+                    c.Bound(item => item.ID).Width(200).Title("操作").Template(@<span> <a href=@Url.Content("~/TargetOfMonthForMember/Details/" + item.ID)>
+                        详细</a> | <a href=@Url.Content("~/TargetOfMonthForMember/delete/" + item.ID) >删除</a>
+                        @{if (item.IsConfirm != true)
+                        {
+                           <span>| </span> <a href=@Url.Content("~/TargetOfMonthForMember/Edit/" + item.ID) >编辑</a>
+                        }}
+                    </span>)
+;
+                }).Resizable(resizing => resizing.Columns(true)).Filterable().Sortable().Groupable()
+.Pageable(p => p.PageSize(20)).Scrollable(scrolling => scrolling.Height(350)))
