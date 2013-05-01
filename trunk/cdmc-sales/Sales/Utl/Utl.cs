@@ -21,20 +21,22 @@ namespace Utl
     /// <summary>
     /// 权限标记
     /// </summary>
-    public enum ReviewRight { 
-        ProjectInfoReview, 
+    public enum ReviewRight
+    {
+        ProjectInfoReview,
         CallsReview,
-        CallsSumReview, 
+        CallsSumReview,
         DealsReview,
-        CallAnalysisReview, 
-        ProgressReview, 
+        CallAnalysisReview,
+        ProgressReview,
         EvaluationsReview,
         ProtectedCompanyReview,
         TargetsView,
-        AvailableCompaniesReview }
+        AvailableCompaniesReview
+    }
 
-    public enum EditRight { ProjectInfoEdit, MembersEdit, DealsEdit,  EvaluationsEdit, TargetsEdit, AvailableCompaniesEdit }
-   
+    public enum EditRight { ProjectInfoEdit, MembersEdit, DealsEdit, EvaluationsEdit, TargetsEdit, AvailableCompaniesEdit }
+
     public class LeadCallLeadDistinct : IEqualityComparer<LeadCall>
     {
         public bool Equals(LeadCall x, LeadCall y)
@@ -137,24 +139,24 @@ namespace Utl
         }
 
 
-         static UserInfoModel GetCurrentUser()
+        static UserInfoModel GetCurrentUser()
         {
             return GetUserByName(Employee.CurrentUserName);
         }
 
-         static string GetCurrentUserName()
+        static string GetCurrentUserName()
         {
-       
-            var mode = ConfigurationManager.AppSettings["DebugModel"].ToString(); 
+
+            var mode = ConfigurationManager.AppSettings["DebugModel"].ToString();
             var user = HttpContext.Current.User.Identity.Name;
-            
+
             if (mode == "true" && Employee.GetRole(user).Name == "系统管理员")
             {
                 var name = ConfigurationManager.AppSettings["DebugAccount"].ToString();
                 return name;
             }
             else
-            return HttpContext.Current.User.Identity.Name;
+                return HttpContext.Current.User.Identity.Name;
         }
 
         public static UserInfoModel GetUserByName(string username)
@@ -167,12 +169,12 @@ namespace Utl
             var displayName = objProfile.GetPropertyValue("DisplayName") as string;
             var mobile = objProfile.GetPropertyValue("Mobile") as string;
             int con = 0;
-            Int32.TryParse(objProfile.GetPropertyValue("Contact").ToString(),out con);
+            Int32.TryParse(objProfile.GetPropertyValue("Contact").ToString(), out con);
             var contact = con;
             var departmentid = objProfile.GetPropertyValue("DepartmentID") as int?;
             var startDate = objProfile.GetPropertyValue("StartDate") as string;
             DateTime date;
-            DateTime.TryParse(startDate,out date);
+            DateTime.TryParse(startDate, out date);
             var userinfo = new UserInfoModel()
             {
                 RoleID = roleid,
@@ -203,7 +205,8 @@ namespace Utl
         {
             var list = Membership.GetAllUsers().Cast<MembershipUser>().ToList<MembershipUser>();
             var data = new List<MembershipUser>();
-            list.ForEach(l => {
+            list.ForEach(l =>
+            {
                 if (lvl.Contains(GetRoleLevel(l.UserName)))
                     data.Add(l);
             });
@@ -214,20 +217,21 @@ namespace Utl
         /// 添加成员
         /// </summary>
         /// <returns></returns>
-        public static List<MembershipUser> GetAvailbleSales(int? projectid,params string[] ms)
+        public static List<MembershipUser> GetAvailbleSales(int? projectid, params string[] ms)
         {
             var list = GetEmplyeeByLVL(SalesRequired.LVL, LeaderRequired.LVL);
-            var p = CH.GetDataById<Project>(projectid,"Members");
+            var p = CH.GetDataById<Project>(projectid, "Members");
             list = list.FindAll(l => p.Members.Exists(m => m.Name == l.UserName) == false);
 
             if (ms != null)
             {
-                ms.ToList().ForEach(m => {
+                ms.ToList().ForEach(m =>
+                {
                     if (!string.IsNullOrEmpty(m))
-                    list.Add(Membership.GetUser(m));
+                        list.Add(Membership.GetUser(m));
                 });
             }
-           
+
             return list;
         }
 
@@ -310,7 +314,7 @@ namespace Utl
             return GetCurrentRoleLevel() >= LeaderRequired.LVL;
         }
 
-       
+
 
         public static bool AsManager()
         {
@@ -330,15 +334,15 @@ namespace Utl
         }
 
         #endregion
-       
 
-      
-      
 
-      
 
-     
-        
+
+
+
+
+
+
 
         public static int GetRoleLevel(string name)
         {
@@ -533,6 +537,7 @@ namespace Utl
 
     public class SR
     {
+    
         public static string GobackToList { get { return "回到列表"; } }
         public static string Save { get { return "保存"; } }
         public static string Delete { get { return "删除"; } }
@@ -544,7 +549,8 @@ namespace Utl
         public static string CannotDelete { get { return "此项已经被引用，无法直接删除，需要取消引用后再进行删除"; } }
         public static string CannotDownload { get { return "此文件不存在，不能继续下载"; } }
         public static string ErrorView { get { return @"~\views\shared\Error.cshtml"; } }
-      
+        public static string Confirm { get { return "确认"; } }
+
     }
     public static class EnumerableExtensions
     {
@@ -569,7 +575,7 @@ namespace Utl
     public class Utl
     {
 
-        
+
 
         public static void GetMonthActualStartdateAndEnddate(int? month, out DateTime startdate, out DateTime enddate)
         {
@@ -599,8 +605,8 @@ namespace Utl
             {
                 enddate = enddate.AddDays(-1);
             }
-          
-           // enddate = startdate.AddDays(28);
+
+            // enddate = startdate.AddDays(28);
         }
 
         public static string ConvertSelectProjectIDtoString(List<int> selectedprojects)
@@ -608,7 +614,7 @@ namespace Utl
             var s = string.Empty;
             if (selectedprojects != null)
             {
-                foreach (var p in selectedprojects) 
+                foreach (var p in selectedprojects)
                 {
                     s = s + p.ToString() + "|";
                 }
@@ -633,30 +639,30 @@ namespace Utl
         }
 
         string plsstring = string.Empty;
-        public static IEnumerable<DataRow> GetCallsInfoForPerformanceDataRows( DateTime startdate, DateTime enddate, List<string> members)
+        public static IEnumerable<DataRow> GetCallsInfoForPerformanceDataRows(DateTime startdate, DateTime enddate, List<string> members)
         {
 
             IEnumerable<DataRow> phones;
-             
 
-                string cstr = ConfigurationManager.ConnectionStrings["BillDB"].ToString();
-                using (var con = new OleDbConnection(cstr))
-                {
-                    string sql = "SELECT * FROM bill ";
 
-                    //string sql = "SELECT * FROM bill";
-                    OleDbDataAdapter da = new OleDbDataAdapter(sql, con);
-                    OleDbCommand c = new OleDbCommand(sql, con);
-                    da.SelectCommand = c;
-                    DataSet ds = new DataSet();//创建数据集
-                    da.Fill(ds, "bill");//填充数据集
-                    DataTable tb = ds.Tables["bill"];//创建表
-                    var rows = ds.Tables["bill"].Select();
-                    phones = rows.Where(p => p["duration"].ToString() != "00:00:00");
-                    
-                    con.Close();
-                }
-                return phones;
+            string cstr = ConfigurationManager.ConnectionStrings["BillDB"].ToString();
+            using (var con = new OleDbConnection(cstr))
+            {
+                string sql = "SELECT * FROM bill ";
+
+                //string sql = "SELECT * FROM bill";
+                OleDbDataAdapter da = new OleDbDataAdapter(sql, con);
+                OleDbCommand c = new OleDbCommand(sql, con);
+                da.SelectCommand = c;
+                DataSet ds = new DataSet();//创建数据集
+                da.Fill(ds, "bill");//填充数据集
+                DataTable tb = ds.Tables["bill"];//创建表
+                var rows = ds.Tables["bill"].Select();
+                phones = rows.Where(p => p["duration"].ToString() != "00:00:00");
+
+                con.Close();
+            }
+            return phones;
         }
 
         public static List<ViewPhoneInfo> GetCallsInfo(List<Project> ps, DateTime? startdate, DateTime? enddate)
@@ -687,11 +693,11 @@ namespace Utl
                     da.Fill(ds, "bill");//填充数据集
                     DataTable tb = ds.Tables["bill"];//创建表
                     var rows = ds.Tables["bill"].Select();
-                    var phones = rows.Where(p=>p["duration"].ToString()!= "00:00:00").GroupBy(r => r["phone"]);
+                    var phones = rows.Where(p => p["duration"].ToString() != "00:00:00").GroupBy(r => r["phone"]);
                     foreach (var p in phones)
                     {
 
-                         var total =  p.Sum(s => (TimeSpan.Parse(s["duration"].ToString())).TotalMinutes);
+                        var total = p.Sum(s => (TimeSpan.Parse(s["duration"].ToString())).TotalMinutes);
                         var t = new ViewPhoneInfo() { Phone = p.Key.ToString(), Duration = TimeSpan.FromMinutes(total) };
                         phonelist.Add(t);
                     }
@@ -742,11 +748,11 @@ namespace Utl
 
             return string.Empty;
         }
-        
+
 
         public static string ShortText(string str, int length)
         {
-            if (str!=null && str.Length > length)
+            if (str != null && str.Length > length)
                 return str.Remove(length, str.Length - length) + "...";
             else
                 return str;
@@ -781,13 +787,13 @@ namespace Utl
 
         public static DateTime EndOfWeek(this DateTime dt)
         {
-            int diff = DayOfWeek.Saturday - dt.DayOfWeek; 
-            if (diff < 0) 
+            int diff = DayOfWeek.Saturday - dt.DayOfWeek;
+            if (diff < 0)
             { diff += 7; }
-            var re= dt.AddDays(1 * diff).AddHours(23).Date;
+            var re = dt.AddDays(1 * diff).AddHours(23).Date;
             return re;
         }
-            
+
         public static DateTime StartOfMonth(this DateTime dt)
         {
             return new DateTime(dt.Year, dt.Month, 1);
