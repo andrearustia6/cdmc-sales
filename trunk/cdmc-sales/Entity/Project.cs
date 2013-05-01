@@ -324,6 +324,10 @@ namespace Entity
         [Display(Name = "对应销售"), Required]
         public int? MemberID { get; set; }
 
+        [Display(Name = "是否确定")]
+        public bool? IsConfirm { get; set; }
+
+
     }
 
 
@@ -475,8 +479,9 @@ namespace Entity
         [Display(Name = "应付款"), Required]
         public decimal Payment { get; set; }
 
-        [Display(Name = "出单描述"), MaxLength(2000)]
+        [Display(Name = "出单描述"), MaxLength(2000), Required]
         public string PaymentDetail { get; set; }
+
     }
 
 
