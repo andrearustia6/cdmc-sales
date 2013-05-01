@@ -13,6 +13,10 @@ namespace Model
 
         public int? CompanyAssignDate { get; set; }
         public int? CompanyProgress { get; set; }
+        public int? ProjectId { get; set; }
+        public int? LeadProgress { get; set; }
+        public int? DealProgress { get; set; }
+        public int? CallProgress { get; set; }
     }
 
     public class AjaxCrmTypedList
@@ -21,14 +25,58 @@ namespace Model
         IQueryable<CompanyRelationship> GetFilteredCRM()
         { 
            var query = from  c in CH.DB.CompanyRelationships select c;
+            //分配时间
            if (Filters!=null && Filters.CompanyAssignDate.HasValue)
             {
                 var date = DateTime.Now.AddDays(-Filters.CompanyAssignDate.Value);
                 query = query.Where(q=>q.CreatedDate.Value >= date);
             }
+            //成熟度
            if (Filters != null && Filters.CompanyProgress.HasValue)
            {
                query = query.Where(q => q.Progress == null || (q.Progress == null && q.Progress.Code >= Filters.CompanyProgress));
+           }
+            //出单
+           if (Filters != null && Filters.DealProgress.HasValue)
+           {
+               if(Filters.DealProgress == 0)
+               query = query.Where(q =>q.Deals.Count()==0 );
+               else if (Filters.DealProgress == 1)
+               {
+                   query = query.Where(q =>  (q.Deals.Count() > 0));
+               }
+               else if(Filters.DealProgress == 2)
+               {
+                   query = query.Where(q =>  q.Deals.Any(d=>d.IsClosed==false));
+               }
+               else if (Filters.DealProgress == 3)
+               {
+                   query = query.Where(q =>  q.Deals.Any(d => d.IsClosed == true && d.Income>0) );
+               }
+
+           }
+            //lead 进展
+           if (Filters != null && Filters.LeadProgress.HasValue)
+           {
+               if (Filters.LeadProgress == 1)
+               query = query.Where(q =>  (q.Company.Leads.Count == q.LeadCalls.Select(s=>s.LeadID).Distinct().Count()) && q.LeadCalls.All(a=>a.LeadCallType.Code == 20));
+               else if (Filters.LeadProgress == 3)
+                    query = query.Where(q => q.Company.Leads.Count > q.LeadCalls.Select(s=>s.LeadID).Distinct().Count());
+               else if (Filters.LeadProgress == 5)
+                {
+                    var datestart = DateTime.Now.AddDays(2);
+                    var dateend = DateTime.Now.AddDays(-22);
+                    query = query.Where(q => q.LeadCalls.Any(a => a.CallBackDate >= datestart && a.CallBackDate <= dateend));
+                }
+           }
+            //leadcall date
+           if (Filters != null && Filters.CallProgress.HasValue)
+           {
+               var now = DateTime.Now;
+               var day = now.AddDays(-Filters.CallProgress.Value);
+
+               query = query.Where(q => q.LeadCalls.Any(a => a.CallDate >= day));
+             
            }
             return query;
         }

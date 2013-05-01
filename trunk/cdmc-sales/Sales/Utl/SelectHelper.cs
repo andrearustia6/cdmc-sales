@@ -13,9 +13,9 @@ namespace Utl
     {
         public static IEnumerable<SelectListItem> CrmProgessSelectList()
         {
-            var ps = CH.GetAllData<Progress>();
+            var ps = CH.GetAllData<Progress>().OrderBy(o=>o.Code);
             List<SelectListItem> selectList = new List<SelectListItem>();
-            selectList.Add(new SelectListItem() { Text = "不指定", Value = "-1" });
+           // selectList.Add(new SelectListItem() { Text = "不指定", Value = "-1" });
             foreach(var p in ps)
             {
                 selectList.Add(new SelectListItem() { Text = p.Name, Value = p.Code.ToString() });
@@ -30,7 +30,7 @@ namespace Utl
             List<SelectListItem> selectList = new List<SelectListItem>();
             selectList.Add(new SelectListItem() { Text = "Lead都已Blowed", Value = "1" });
             selectList.Add(new SelectListItem() { Text = "含有Lead未打", Value = "3" });
-            selectList.Add(new SelectListItem() { Text = "3天内有CallBack计划", Value = "5" });
+            selectList.Add(new SelectListItem() { Text = "2天内/2天后有CallBack计划", Value = "5" });
 
             return selectList;
         }
@@ -38,9 +38,9 @@ namespace Utl
         public static IEnumerable<SelectListItem> DealConditionSelectList()
         {
             List<SelectListItem> selectList = new List<SelectListItem>();
-            selectList.Add(new SelectListItem() { Text = "未出单的公司", Value = "1" });
+            selectList.Add(new SelectListItem() { Text = "未出单的公司", Value = "0" });
             selectList.Add(new SelectListItem() { Text = "已出单", Value = "1" });
-            selectList.Add(new SelectListItem() { Text = "已出单未付款", Value = "3" });
+            selectList.Add(new SelectListItem() { Text = "已出单未付款", Value = "2" });
             selectList.Add(new SelectListItem() { Text = "已付款", Value = "3"  });
 
             return selectList;
@@ -50,9 +50,9 @@ namespace Utl
         {
             List<SelectListItem> selectList = new List<SelectListItem>();
             selectList.Add(new SelectListItem() { Text = "1天内打过", Value = "1" });
-            selectList.Add(new SelectListItem() { Text = "3天内打过", Value = "2" });
-            selectList.Add(new SelectListItem() { Text = "1周内打过", Value = "3" });
-            selectList.Add(new SelectListItem() { Text = "2周内打过", Value = "4" });
+            selectList.Add(new SelectListItem() { Text = "3天内打过", Value = "3" });
+            selectList.Add(new SelectListItem() { Text = "1周内打过", Value = "7" });
+            selectList.Add(new SelectListItem() { Text = "2周内打过", Value = "14" });
 
             return selectList;
         }
@@ -60,7 +60,7 @@ namespace Utl
         public static IEnumerable<SelectListItem> DurationSelectList()
         {
             List<SelectListItem> selectList = new List<SelectListItem>();
-            selectList.Add(new SelectListItem() { Text = "不指定", Value = "0" });
+            //selectList.Add(new SelectListItem() { Text = "不指定", Value = "0" });
             selectList.Add(new SelectListItem() { Text = "1天内", Value = "1" });
             selectList.Add(new SelectListItem() { Text = "3天内", Value = "3" });
             selectList.Add(new SelectListItem() { Text = "7天内", Value = "7" });
