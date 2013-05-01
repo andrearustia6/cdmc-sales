@@ -1,0 +1,153 @@
+﻿@model Entity.Deal
+@{
+    ViewBag.Title = "出单确认";
+}
+@using Entity
+@using Utl
+@using BLL
+<fieldset>
+    <legend>@SR.Form</legend>
+    <div class="display-field">
+        @Html.LabelFor(model => model.DealCode)
+    </div>
+    <div class="display-field">
+        @Html.TextBox("DealCode", Model == null ? "出单后自动生成" : Model.DealCode, new { READONLY = "readonly" })
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.PackageID, "Package")
+    </div>
+    <div class="editor-field">
+        @Html.DropDownListFor(m => m.PackageID, new SelectList(CH.GetAllData<Package>(), "ID", "Name"), "-请选择-")
+        @Html.ValidationMessageFor(model => model.PackageID)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.CompanyRelationshipID, "公司")
+    </div>
+    <div class="editor-field">
+        @{
+            //var data = ViewBag.AvaibleCRM==null? CH.GetAllData<CompanyRelationship>():ViewBag.AvaibleCRM as List<CompanyRelationship>;
+            List<CompanyRelationship> data;
+            var lvl = Employee.CurrentRole.Level;
+            int? projectid = Model == null ? ViewBag.ProjectID as int? : Model.ProjectID;
+            var project = CH.GetDataById<Project>(projectid);
+            if (lvl <= 100 && lvl >= 10)
+            {
+                data = project.CompanyRelationships.FindAll(c => c.WhoCallTheCompanyMemberName().Split('|').Any(s => s == Employee.CurrentUserName));
+            }
+            else
+            {
+                data = project.CompanyRelationships;
+            }
+            @Html.DropDownListFor(m => m.CompanyRelationshipID, new SelectList(data.OrderBy(o => o.Company.Name).ToList(), "ID", "CompanyName"), "-请选择-")
+            @Html.ValidationMessageFor(model => model.CompanyRelationshipID)
+        }
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.ExpectedPaymentDate)
+    </div>
+    <div class="editor-field">
+        @Html.Telerik().DatePickerFor(model => model.ExpectedPaymentDate)
+        @Html.ValidationMessageFor(model => model.ExpectedPaymentDate)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.SignDate)
+    </div>
+    <div class="editor-field">
+        @Html.Telerik().DatePicker().Name("SignDate").Value(Model == null ? DateTime.Now : Model.SignDate)
+        @Html.ValidationMessageFor(model => model.SignDate)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.Payment)
+    </div>
+    <div class="editor-field">
+        @Html.Telerik().CurrencyTextBoxFor(model => model.Payment)
+        @Html.ValidationMessageFor(model => model.Payment)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.IsClosed)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.IsClosed)
+        @Html.ValidationMessageFor(model => model.IsClosed)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.Committer)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.Committer)
+        @Html.ValidationMessageFor(model => model.Committer)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.CommitterContect)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.CommitterContect)
+        @Html.ValidationMessageFor(model => model.CommitterContect)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.CommitterEmail)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.CommitterEmail)
+        @Html.ValidationMessageFor(model => model.CommitterEmail)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.ActualPaymentDate)
+    </div>
+    <div class="editor-field">
+        @Html.Telerik().DatePickerFor(model => model.ActualPaymentDate)
+        @Html.ValidationMessageFor(model => model.ActualPaymentDate)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.Income)
+    </div>
+    <div class="editor-field">
+        @Html.Telerik().CurrencyTextBoxFor(model => model.Income)
+        @Html.ValidationMessageFor(model => model.Income)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.Sales)
+    </div>
+    <div class="editor-field">
+        @{
+            var name = Model == null ? Employee.CurrentUserName : Model.Sales;
+            <input  name ="Sales" value="@name" />
+        }
+        @Html.ValidationMessageFor(model => model.Sales)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.PaymentDetail)
+    </div>
+    <div class="editor-field">
+        @Html.TextAreaFor(model => model.PaymentDetail)
+        @Html.ValidationMessageFor(model => model.PaymentDetail)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.TicketDescription)
+    </div>
+    <div class="editor-field">
+        @Html.TextAreaFor(model => model.TicketDescription)
+        @Html.ValidationMessageFor(model => model.TicketDescription)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.Abandoned, "是否坏账")
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(m => m.Abandoned)
+        @Html.ValidationMessageFor(model => model.Abandoned)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.AbandonReason, "坏账原因")
+    </div>
+    <div class="editor-field">
+        @Html.TextAreaFor(m => m.AbandonReason)
+        @Html.ValidationMessageFor(model => model.AbandonReason)
+    </div>
+    @Html.Hidden("ProjectID", (int)ViewBag.ProjectID)
+</fieldset>
+@{
+    if (Model != null)
+    {
+        Html.Partial("Participants", Model.Participants == null ? new List<Participant>() : Model.Participants);
+    }
+}
