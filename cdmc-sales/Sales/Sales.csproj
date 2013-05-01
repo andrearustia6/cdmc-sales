@@ -1642,6 +1642,22 @@
     <Content Include="Views\SalesEx\DetailCompany.cshtml" />
     <None Include="Views\SalesEx\EditCompany.cshtml" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Views\TargetOfMonthForMember\Confirm.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\TargetOfMonthForMember\ConfirmList.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Deal\ConfirmList.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Deal\Confirm.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Deal\ConfirmTemp.cshtml" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
