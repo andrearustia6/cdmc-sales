@@ -1,0 +1,17 @@
+﻿@model Entity.EntityBase
+@using Utl
+@{
+    ViewBag.Title = SR.Confirm;
+}
+<h2>
+    月目标确认</h2>
+@Html.Partial("display", Model)
+@Html.Partial("displaycommon", Model)
+@using (Html.BeginForm())
+{
+    <center>
+        <p>
+            <input type="submit" value=@SR.Confirm />
+        </p>
+    </center>
+}
