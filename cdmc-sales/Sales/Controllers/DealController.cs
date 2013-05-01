@@ -94,7 +94,7 @@ namespace Sales.Controllers
                          Sales = d.Sales,
                          ProjectCode = d.Project.ProjectCode,
                          SignDate = d.SignDate,
-                         TicketDescription = d.TicketDescription
+                         TicketDescription = d.TicketDescription,
                      };
             var list = ds.OrderBy(o => o.SignDate).ToList();
             return View(new GridModel<AjaxViewDeal> { Data = list });
@@ -143,6 +143,37 @@ namespace Sales.Controllers
             CH.Delete<Deal>(id);
 
             return RedirectToAction("index", new { id = projectid });
+        }
+
+        public ViewResult ConfirmList(int? projectid)
+        {
+            projectid = this.TrySetProjectIDForUser(projectid);
+            ViewBag.ProjectID = projectid;
+            var data = CH.GetAllData<Deal>();
+            ViewBag.ProjectID = projectid;
+            return View(data.FindAll(d => d.CompanyRelationship.ProjectID == projectid).OrderByDescending(m => m.CreatedDate).ToList());
+        }
+
+
+        [HttpPost]
+        public ActionResult ConfirmTemp(Deal item, int? projectid)
+        {
+            ViewBag.ProjectID = projectid;
+            ViewBag.CompanyRelationshipID = item.CompanyRelationshipID;
+            if (ModelState.IsValid)
+            {
+                CH.Edit<Deal>(item);
+                return RedirectToAction("ConfirmList", "Deal", new { projectid = projectid });
+            }
+            return View(item);
+        }
+
+        public ActionResult ConfirmTemp(int id)
+        {
+            var item = CH.GetDataById<Deal>(id);
+            ViewBag.ProjectID = item.CompanyRelationship.ProjectID;
+            ViewBag.CompanyRelationshipID = item.CompanyRelationshipID;
+            return View(item);
         }
     }
 }
