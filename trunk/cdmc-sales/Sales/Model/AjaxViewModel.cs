@@ -186,6 +186,9 @@ namespace Model
 
         [Display(Name = "出单描述")]
         public string PaymentDetail { get; set; }
+
+        [Display(Name = "是否确认")]
+        public string IsConfirm { get; set; }
     }
 
     public class AjaxViewPercentage
@@ -366,7 +369,7 @@ namespace Model
         public int? CompanRelationshipId { get; set; }
         [Display(Name = "ID")]
         public int? CompanyId { get; set; }
-        [Required( ErrorMessage= "必填")]
+        [Required(ErrorMessage = "必填")]
         [Display(Name = "中文名字")]
         public string Name_CN { get; set; }
         [Display(Name = "英文名字")]
@@ -375,7 +378,7 @@ namespace Model
         [Display(Name = "行业类型")]
         public int IndustryId { get; set; }
         [Display(Name = "行业类型")]
-        public string IndustryString { get; set; }      
+        public string IndustryString { get; set; }
         [Display(Name = "公司类型")]
         public int? TypeId { get; set; }
         [Display(Name = "公司类型")]
@@ -472,7 +475,7 @@ namespace Model
     {
         public int CompanyRelationshipId { get; set; }
         public int LeadId { get; set; }
-        public int CallId { get; set; }       
+        public int CallId { get; set; }
         public int? ProjectId { get; set; }
         [Required(ErrorMessage = "必填")]
         [Display(Name = "致电时间")]
