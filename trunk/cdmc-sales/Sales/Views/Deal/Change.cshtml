@@ -63,13 +63,13 @@
         @Html.Telerik().CurrencyTextBoxFor(model => model.Payment)
         @Html.ValidationMessageFor(model => model.Payment)
     </div>
-@*    <div class="editor-label">
+    <div class="editor-label">
         @Html.LabelFor(model => model.IsClosed)
     </div>
     <div class="editor-field">
-        @Html.DisplayFor(model => model.IsClosed, new { @readonly = "readonly" })
+        @Html.EditorFor(model => model.IsClosed)
         @Html.ValidationMessageFor(model => model.IsClosed)
-    </div>*@
+    </div>
     <div class="editor-label">
         @Html.LabelFor(model => model.Committer)
     </div>
@@ -91,20 +91,20 @@
         @Html.EditorFor(model => model.CommitterEmail)
         @Html.ValidationMessageFor(model => model.CommitterEmail)
     </div>
-@*    <div class="editor-label">
+    <div class="editor-label">
         @Html.LabelFor(model => model.ActualPaymentDate)
     </div>
     <div class="editor-field">
-        @Html.Telerik().DatePickerFor(model => model.ActualPaymentDate).Enable(false)
+        @Html.Telerik().DatePickerFor(model => model.ActualPaymentDate)
         @Html.ValidationMessageFor(model => model.ActualPaymentDate)
-    </div>*@
-@*    <div class="editor-label">
+    </div>
+    <div class="editor-label">
         @Html.LabelFor(model => model.Income)
     </div>
     <div class="editor-field">
-        @Html.Telerik().CurrencyTextBoxFor(model => model.Income).Enable(false)
+        @Html.Telerik().CurrencyTextBoxFor(model => model.Income)
         @Html.ValidationMessageFor(model => model.Income)
-    </div>*@
+    </div>
     <div class="editor-label">
         @Html.LabelFor(model => model.Sales)
     </div>
@@ -129,20 +129,23 @@
         @Html.TextAreaFor(model => model.TicketDescription)
         @Html.ValidationMessageFor(model => model.TicketDescription)
     </div>
-    @*<div class="editor-label">
+    <div class="editor-label">
         @Html.LabelFor(model => model.Abandoned, "是否坏账")
     </div>
     <div class="editor-field">
-        @Html.DisplayFor(m => m.Abandoned, new { @readonly = "readonly" })
+        @Html.EditorFor(m => m.Abandoned)
         @Html.ValidationMessageFor(model => model.Abandoned)
     </div>
     <div class="editor-label">
         @Html.LabelFor(model => model.AbandonReason, "坏账原因")
     </div>
     <div class="editor-field">
-        @Html.TextAreaFor(m => m.AbandonReason, new { @readonly = "readonly" })
+        @Html.TextAreaFor(m => m.AbandonReason)
         @Html.ValidationMessageFor(model => model.AbandonReason)
-    </div>*@
+    </div>
+    <div class="editor-field">
+        @Html.HiddenFor(m => m.IsConfirm)
+    </div>
     @Html.Hidden("ProjectID", (int)ViewBag.ProjectID)
 </fieldset>
 @{
