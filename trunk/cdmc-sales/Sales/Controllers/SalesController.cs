@@ -254,12 +254,8 @@ namespace Sales.Controllers
             ViewBag.CompanyRelationshipID = item.CompanyRelationshipID;
             if (ModelState.IsValid)
             {
-                Deal old = CH.DB.Deals.AsNoTracking().Where(s => s.ID == item.ID).Single();
-                item.IsClosed = old.IsClosed;
-                item.ActualPaymentDate = old.ActualPaymentDate;
-                item.Income = old.Income;
-                item.Abandoned = old.Abandoned;
-                item.AbandonReason = old.AbandonReason;
+                //Deal old = CH.DB.Deals.AsNoTracking().Where(s => s.ID == item.ID).Single();
+                //item.IsConfirm = old.IsConfirm;
                 CH.Edit<Deal>(item);
                 return RedirectToAction("MyDealIndex", "Sales", new { projectid = projectid });
             }
