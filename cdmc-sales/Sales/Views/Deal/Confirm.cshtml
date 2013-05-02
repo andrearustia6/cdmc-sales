@@ -5,6 +5,10 @@
 @using Entity
 @using Utl
 @using BLL
+@{
+    List<SelectListItem> convert = new List<SelectListItem>() { new SelectListItem() { Text = "是", Value = "true" }, new SelectListItem() { Text = "否", Value = "false" } };
+}
+}
 <fieldset>
     <legend>@SR.Form</legend>
     <div class="display-field">
@@ -142,6 +146,13 @@
     <div class="editor-field">
         @Html.TextAreaFor(m => m.AbandonReason)
         @Html.ValidationMessageFor(model => model.AbandonReason)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.IsConfirm, "是否确认")
+    </div>
+    <div class="editor-field">
+        @Html.DropDownListFor(m => m.IsConfirm, convert, "请选择");
+        @Html.ValidationMessageFor(model => model.IsConfirm)
     </div>
     @Html.Hidden("ProjectID", (int)ViewBag.ProjectID)
 </fieldset>
