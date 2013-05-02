@@ -24,7 +24,7 @@
     c.Bound(item => item.CommitterContect).Width(100); c.Bound(item => item.Abandoned).Width(70);
     c.Bound(item => item.TicketDescription).Width(200); c.Bound(item => item.SignDate).Format("{0:d}").Width(90);
     c.Bound(item => item.ExpectedPaymentDate).Format("{0:d}").Width(90); c.Bound(item => item.ActualPaymentDate).Format("{0:d}").Width(100);
-    //c.Bound(item => item.PaymentDetail).Width(200);
+    c.Template(item => item.IsConfirm == true ? "是" : "否").Width(100).Title("是否确认");
     c.Bound(item => item.ID).Title("到账确认").Width(160).Template(@<span><a href=@Url.Content("~/deal/ConfirmTemp/?id=" + item.ID + "&projectid=" + item.ProjectID) >确认</a></span>);
 }).DetailView(e => e.Template(
 @<text>

@@ -3,20 +3,18 @@
     ViewBag.ShowDuration = "false";
     
 }
-
 @using Entity
 @using Model
 @model List<AjaxViewDeal>
 @using Utl;
 @Html.Partial("contenttitle", "项目出单")
-
 @Html.Partial("multipleprojectselector")
 @{
     var pls = ViewBag.SelectedProjects as List<int>;
     var sid = Utl.ConvertSelectProjectIDtoString(pls);
     string plsstring = string.Empty;
     var right = ViewBag.Right as EditRight?;
-@(Html.Telerik().Grid<AjaxViewDeal>().Name("Deal")
+    @(Html.Telerik().Grid<AjaxViewDeal>().Name("Deal")
                 .DataKeys(keys =>
                 {
                     keys.Add(s => s.ID);
@@ -28,7 +26,7 @@
                     c.Bound(item => item.Sales).Width(70);
                     c.Bound(item => item.PackageName).Title("Package").Width(150);
                     c.Bound(item => item.Payment).Format("{0:c}").Aggregate(aggregates => aggregates.Sum()).ClientFooterTemplate("<p>应收款: <#= Sum #></p>");
-                    c.Bound(item => item.Income).Format("{0:c}").Aggregate(aggregates =>aggregates.Sum()) .ClientFooterTemplate("<p>已收款: <#= Sum #></p>");
+                    c.Bound(item => item.Income).Format("{0:c}").Aggregate(aggregates => aggregates.Sum()).ClientFooterTemplate("<p>已收款: <#= Sum #></p>");
                     c.Bound(item => item.IsClosed).Width(70);
                     c.Bound(item => item.Abandoned).Width(70);
                     c.Bound(item => item.TicketDescription);
@@ -36,17 +34,18 @@
                     c.Bound(item => item.ExpectedPaymentDate).Format("{0:d}").Width(100);
                     c.Bound(item => item.ActualPaymentDate).Format("{0:d}").Width(100);
                     c.Bound(item => item.ProjectCode);
+                    c.Bound(item => item.IsConfirm);
                     if (right != null && right.Value == EditRight.DealsEdit)
                     {
                         c.Bound(item => item.ID).Title("操作").ClientTemplate("<span><a href=" + Url.Content("~/Deal/Edit/") + "<#= ID #> >编辑</a> | <a href=" + Url.Content("~/Deal/Details/" + "<#= ID #>>详细</a>  | <a href=" + Url.Content("~/Deal/delete/") + "<#= ID #> >删除</a></span>"));
                     }
                 }
-                ).DataBinding(b => b.Ajax().Select("_Index", "Deal", new { sp =sid}))
+                ).DataBinding(b => b.Ajax().Select("_Index", "Deal", new { sp = sid }))
                 .DetailView(d => d.ClientTemplate(
                 Html.Telerik().Grid<AjaxViewParticipant>().Name("mastersheet<#= ID #>").DataKeys(keys =>
             {
                 keys.Add(s => s.ID);
-            }) .DataBinding(dataBinding => dataBinding.Ajax().Select("_ParticipantsInDeal", "Deal", new { dealID = "<#= ID #>" }))
+            }).DataBinding(dataBinding => dataBinding.Ajax().Select("_ParticipantsInDeal", "Deal", new { dealID = "<#= ID #>" }))
                 .Columns(c =>
                 {
                     c.Bound(o => o.Name);
@@ -56,7 +55,7 @@
 
                 }).Resizable(resizing => resizing.Columns(true))
                                         .Filterable().Sortable().Groupable()
-                                                                .Pageable(p=>p.Style(GridPagerStyles.Status).PageOnScroll(true).PageSize(100))
+                                                                .Pageable(p => p.Style(GridPagerStyles.Status).PageOnScroll(true).PageSize(100))
                                         .Scrollable(scrolling => scrolling.Height(150)
                                        ).ToHtmlString()))
                                                                 .Resizable(resizing => resizing.Columns(true))
@@ -66,5 +65,4 @@
 
                                             )
 
-    }
-
+}
