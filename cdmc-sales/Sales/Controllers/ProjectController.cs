@@ -536,5 +536,42 @@ namespace Sales.Controllers
             CH.Delete<Lead>(id);
             return RedirectToAction("Management", "Project", new { id = projectid, tabindex = 3 });
         }
+
+        [HttpGet]
+        public ActionResult AssignCompany(int? projectId, int? memberFilterForCompany)
+        {
+            Project project = null;
+            if (projectId.HasValue)
+            {
+                project = CH.GetAllData<Project>(i => i.ID == projectId.Value).FirstOrDefault();
+            }
+            else
+            {
+                project = CH.GetAllData<Project>().FirstOrDefault();
+            }
+            if (memberFilterForCompany.HasValue)
+            {
+                int memberId = memberFilterForCompany.Value;
+                ViewBag.MemberFilterForCompany = memberFilterForCompany.ToString();
+                if (memberId == -1)
+                {
+                    project.CompanyRelationships = project.CompanyRelationships.Where(c => c.Members.Count == 0).ToList();
+                }
+                else if (memberId == -2)
+                {
+                    project.CompanyRelationships = project.CompanyRelationships.Where(c => c.Members.Count != 0).ToList();
+                }
+                else
+                {
+                    project.CompanyRelationships = project.CompanyRelationships.Where(c => c.Members.Any(m => m.ID == memberId)).ToList();
+                }
+            }
+            else
+            {
+                ViewBag.MemberId = "";
+            }
+
+            return View(project);
+        }
     }
 }
