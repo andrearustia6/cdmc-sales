@@ -95,6 +95,7 @@ namespace Sales.Controllers
                          ProjectCode = d.Project.ProjectCode,
                          SignDate = d.SignDate,
                          TicketDescription = d.TicketDescription,
+                         IsConfirm = (d.IsConfirm == true ? "是" : "否")
                      };
             var list = ds.OrderBy(o => o.SignDate).ToList();
             return View(new GridModel<AjaxViewDeal> { Data = list });
