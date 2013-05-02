@@ -1,0 +1,147 @@
+﻿@{
+    ViewBag.Title = "分配公司";
+}
+@using Entity
+@using Utl
+@using BLL
+@model Entity.Project         
+<div id="filter-container" style="height: 30px;">
+    <span>
+        <label style="margin:5px;">
+            项目:</label>@Html.DropDownListFor(model => model.ID, SelectHelper.ProjectSelectList(EditRight.DealsEdit.ToString(), Model.ID), new { id = "projectFilter" })</span>
+    <span>
+        <label style="margin:5px;">
+            销售:</label>
+        @Html.DropDownList("companyFilter", SelectHelper.MemberSelectListForProject(Model.ID, (string)ViewBag.MemberFilterForCompany), "所有公司")</span>
+    <button onclick="UnsignCompanies()">
+        取消分配</button>
+</div>
+@(
+ Html.Telerik().Grid(Model.CompanyRelationships).Name("Company").DataKeys(keys =>
+                {
+                    keys.Add(s => s.ID);
+                })
+                .Columns(c =>
+                {
+                    c.Template(@<text><input name="checkedRecords" class="companybox" type="checkbox" value="@item.ID " title="checkedRecords"  />
+</text>).Title("<input type='checkbox' id='allCompanyBox' />").Width(30).HtmlAttributes(new { style = "text-align:center" });
+                    c.Bound(item => item.Company.Name).Title("公司名").Width(150);
+                    c.Bound(item => item.SalesOnTheCompany).Title("销售").Width(70);
+                    c.Bound(item => item.Importancy).Width(80);
+                    c.Bound(item => item.CategoryString).Title("细分行业");
+                    c.Bound(item => item.Company.CompanyType.Name).Width(100);
+                    c.Bound(item => item.CreatedDate).Title("添加时间");
+                    c.Bound(item => item.Creator).Title("添加人");
+
+                }).Resizable(resizing => resizing.Columns(true)).Pageable(page => page.Enabled(false).PageSize(10)).Sortable().Filterable().Scrollable(scrolling => scrolling.Height(350))
+
+ )
+<fieldset>
+    <legend>可分配销售 </legend>
+    <div class="assignableMembers">
+        @foreach (SelectListItem selectListItem in SelectHelper.MemberSelectListForProject(Model.ID))
+        {
+            if (selectListItem.Value != (string)ViewBag.MemberFilterForCompany && selectListItem.Value != "-1" && selectListItem.Value != "" && selectListItem.Value != "-2")
+            {
+            <span style="display: inline-block; width: 100px">@Html.CheckBox(selectListItem.Value, new { value = selectListItem.Value })
+                <label>@selectListItem.Text</label></span>
+            }
+        }
+    </div>
+    <div style="text-align: left;">
+        <button onclick="AssignCompanies()">
+            分配</button></div>
+</fieldset>
+<script type="text/javascript">
+    $(
+        function () {
+            $('#projectFilter').change(function () {
+                $('#companyFilter option').eq(0).prop('selected', true);
+                freshPage();
+            });
+            $('#companyFilter').change(
+                function () {
+                    freshPage();
+                }
+            );
+
+            $("#allCompanyBox").click(
+            function () {
+                $(".companybox").attr("checked", $(this).attr("checked") ? true : false);
+            }
+        );
+        }
+    );
+    
+    function AssignCompanies() {
+        var selectedCompanies = "";
+        $('.t-grid tbody input[type=checkbox]:checked').each(
+            function () {
+                selectedCompanies += $(this).val() + ",";
+            }
+        );
+        var selectedMembers = "";
+        $('.assignableMembers input[type=checkbox]:checked').each(
+                function () {
+                    selectedMembers += $(this).val() + ",";
+                }
+            );
+        if (selectedCompanies.length > 0) {
+            selectedCompanies = selectedCompanies.substr(0, selectedCompanies.length - 1);
+        } else {
+            alert('请选择相应的公司');
+            return;
+        }
+        if (selectedMembers.length > 0) {
+            selectedMembers = selectedMembers.substr(0, selectedMembers.length - 1);
+        } else {
+            alert('请选择相应的销售');
+            return;
+        }
+        $.post('AssignCompanies', { selectedCompanies: selectedCompanies, selectedMembers: selectedMembers }, function (result) {
+            alert(result);
+            freshPage();
+        });
+    }
+
+    function UnsignCompanies() {
+        var selectedCompanyFilter = $('#companyFilter').val();
+        if (selectedCompanyFilter == '-1' || selectedCompanyFilter == '') {
+            return;
+        }
+
+        var selectedCompanies = "";
+
+
+        if (selectedCompanyFilter == '-2') {
+            selectedCompanies = "all" + $('#projectid').val();
+        }
+        else {
+            $('.t-grid tbody input[type=checkbox]:checked').each(
+            function () {
+                selectedCompanies += $(this).val() + ",";
+            });
+        }
+
+        if (selectedCompanies.length > 0) {
+            selectedCompanies = selectedCompanies.substr(0, selectedCompanies.length - 1);
+        } else {
+            alert('请选择相应的公司');
+            return;
+        }
+
+        $.post('UnsignCompanies', { selectedCompanyFilter: selectedCompanyFilter, selectedCompanies: selectedCompanies }, function (result) {
+            alert(result);
+            freshPage();
+        });
+    }
+
+    function freshPage() {
+        var projectFilterId = $('#projectFilter').val();
+        var assignCompanyId = $('#companyFilter').val();       
+        var myurl = new SF.URL(window.location.href);
+        myurl.set('projectId', projectFilterId);
+        myurl.set('memberFilterForCompany', assignCompanyId);
+        window.location = myurl.url();
+    }
+</script>

@@ -1642,6 +1642,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\SalesEx\DetailCompany.cshtml" />
+    <Content Include="Views\Project\AssignCompany.cshtml" />
     <None Include="Views\SalesEx\EditCompany.cshtml" />
   </ItemGroup>
   <ItemGroup>
