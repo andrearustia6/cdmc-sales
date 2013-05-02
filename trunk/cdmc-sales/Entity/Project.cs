@@ -482,6 +482,8 @@ namespace Entity
         [Display(Name = "出单描述"), MaxLength(2000), Required]
         public string PaymentDetail { get; set; }
 
+        [Display(Name = "是否确认")]
+        public bool? IsConfirm { get; set; }
     }
 
 
