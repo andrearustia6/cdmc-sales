@@ -9,7 +9,7 @@
     Html.Telerik().Splitter().Name("sp2").HtmlAttributes(new { style = "min-height: 790px;" })
                .Orientation(SplitterOrientation.Vertical).Panes(panes =>
                {
-                   panes.Add().Size("35%").Content(@<text>@CompanyInfo()</text>);
+                   panes.Add().Size("20%").Content(@<text>@CompanyInfo()</text>);
                    panes.Add().Content(@<text>@LeadsInfo()</text>);
                }).Render();
 }
@@ -25,16 +25,8 @@
         <div class="fenge_3">
             @Html.HiddenFor(model => model.ProjectID)
             @Html.HiddenFor(model => model.CRMID)
-            <fieldset>
-                <legend>公司信息</legend><span id="currentCompanyNameCN" class="datainfo" style="display: none">@Model.CompanyNameCH
-                </span>
+              
                 <dl class="fieldname">
-                    @*       <dd>
-                        <font>中文名：</font><span id="currentCompanyNameCN" class="datainfo">@Model.CompanyNameCH
-                        </span>
-                    </dd>
-                    <dd>
-                        <font>英文名：</font><span id="currentCompanyNameEN" class="datainfo">@Model.CompanyNameEN</span></dd>*@
                     <dd>
                         <font>区号：</font><span id="currentCompanyDistrictNumberString" class="datainfo">@Model.CompanyDistrictNumberString</span></dd>
                     <dd>
@@ -48,10 +40,79 @@
                         <font>成熟度：</font><span id="currentProgressString" class="datainfo">@Model.ProgressString</span>
                     </dd>
                 </dl>
-            </fieldset>
+           
         </div>
     </div>    
 }
+@helper LeadsInfo()
+    {     
+        
+        foreach (var lead in Model.AjaxLeads)
+        {
+    <div class="fenge" id="@(lead.LeadID)">
+        <div class="fenge_2">@lead.LeadName
+            <input style="background-image:url('../images/tianjia_2.jpg');" class="salebtn" type="button" onclick="onCallAdd(@(lead.LeadID))" value="" /><input class="salebtn" style=" background-image:url('../images/gengxin.jpg');" type="button" onclick="onLeadEdit(@(lead.LeadID))" /></div>
+        <div class="fenge_3">
+            @*  <div style=" width:100%; height:25px; margin-bottom:-5px; margin-top:10px;">
+            
+            </div>*@
+                <ul class="fieldname">
+                    <li><font>Lead职位：</font><span class="leadTitle datainfo">@lead.LeadTitle</span>
+                    </li>
+                    <li><font>Lead性别：</font><span class="leadGender datainfo">@lead.Gender</span> </li>
+                    <li><font>客户区号：</font><span class="LeadDistinctNumberString datainfo">@lead.LeadDistinctNumberString</span>
+                    </li>
+                </ul>
+          
+                <ul class="fieldname">
+                    <li><font>直线：</font><span class="LeadContact datainfo">@lead.LeadContact</span>
+                    </li>
+                    <li><font>手机：</font><span class="LeadMobile datainfo">@lead.LeadMobile</span> </li>
+                    <li><font>公司邮箱：</font><span class="LeadEmail datainfo">@lead.Gender</span> </li>
+                    <li><font>传真：</font><span class="LeadFax datainfo">@lead.LeadFax</span> </li>
+                    <li><font>个人邮箱：</font><span class="LeadPersonalEmail datainfo">@lead.LeadPersonalEmail</span></li>
+                    <li><font>微博账号：</font><span class="WeiBo datainfo">@lead.WeiBo</span> </li>
+                    <li><font>微信账号：</font><span class="WeiXin datainfo">@lead.WeiXin</span> </li>
+                    <li><font>LinkIn账号：</font><span class="LinkIn datainfo">@lead.LinkIn</span> </li>
+                    <li><font>FaceBook账号：</font><span class="FaceBook datainfo">@lead.FaceBook</span>
+                    </li>
+                    <li><font>传真：</font><span class="LeadFax datainfo">@lead.LeadFax</span> </li>
+                    <li><font>博客地址：</font><span class="Blog datainfo">@lead.Blog</span> </li>
+                </ul>
+          
+            @*  <span style="font-size: 13px;">描述</span> 
+                 <dd class="fieldname">
+                        <div>
+                            <font></font>
+                        </div>
+                    </dd>*@ @* <dt style="font-size: 13px;">致电列表</dt>
+                <dd>*@
+            @if (lead.AjaxCalls.Count() > 0)
+            {
+                <fieldset  style="width:97%">
+                    <legend>通话记录</legend>
+                    @(Html.Telerik().Grid<AjaxCall>(lead.AjaxCalls.OrderByDescending(o => o.CallDate)).Name("lead" + lead.LeadID)
+                    .Columns(columns =>
+                    {
+                        columns.Bound(o => o.CallType).Template(@<text><span id="@(item.LeadCallID)_CallType">@item.CallType</span></text>).Width(80);
+                        columns.Bound(o => o.CallBackDate).Template(@<text><span id="@(item.LeadCallID)_CallBackDate">@item.CallBackDate</span></text>).Width(100);
+                        columns.Bound(o => o.CallDate).Template(@<text><span id="@(item.LeadCallID)_CallDate">@item.CallDate</span></text>).Width(100);
+                        columns.Bound(o => o.Caller).Template(@<text><span id="@(item.LeadCallID)_Caller">@item.Caller</span></text>).Width(80);
+                        columns.Bound(o => o.Result).Template(@<text><span id="@(item.LeadCallID)_Result">@item.Result</span></text>);
+                        columns.Bound(o => o.LeadCallID).Width(120).Template(@<text><input onclick='EditLeadCall(@item.LeadCallID)' type='button' class="salebtn" style=" background-image:url('../images/gengxin.jpg');" /></text>);
+                    }).Pageable(paging => paging.Enabled(false)).Resizable(resizing => resizing.Columns(true)).Sortable().Scrollable(scrolling => scrolling.Enabled(false))
+                      )
+                    @*</dd>
+                </dl>*@
+                </fieldset>
+            }
+        </div>
+    </div>     
+        }
+
+}
+
+
 @(Html.Telerik().Window().Title("公司概况")
     .Name("DetailCompany")
     .Buttons(buttons => buttons.Close())
@@ -141,84 +202,6 @@
     .Height(250).Draggable(true)
     .Modal(true).Visible(false)
 )
-@helper LeadsInfo()
-    {     
-        
-        foreach (var lead in Model.AjaxLeads)
-        {
-    <div class="fenge" id="@(lead.LeadID)">
-        <div class="fenge_2">@lead.LeadName
-            <input style="background-image:url('../images/tianjia_2.jpg');" class="salebtn" type="button" onclick="onCallAdd(@(lead.LeadID))" value="" /><input class="salebtn" style=" background-image:url('../images/gengxin.jpg');" type="button" onclick="onLeadEdit(@(lead.LeadID))" /></div>
-        <div class="fenge_3">
-            @*  <div style=" width:100%; height:25px; margin-bottom:-5px; margin-top:10px;">
-            
-            </div>*@
-            <fieldset>
-                <legend style="font-size: 13px; margin: 5px;">
-                    @lead.LeadName</legend>
-                <ul class="fieldname">
-                    @*   <li><font>中文名：</font><span class="leadNameCN datainfo">@lead.LeadNameCH</span> </li>
-                    <li><font>英文名：</font><span class="leadNamEN datainfo">@lead.LeadNameEN</span> </li>*@
-                    <li><font>Lead职位：</font><span class="leadTitle datainfo">@lead.LeadTitle</span>
-                    </li>
-                    <li><font>Lead性别：</font><span class="leadGender datainfo">@lead.Gender</span> </li>
-                    <li><font>客户区号：</font><span class="LeadDistinctNumberString datainfo">@lead.LeadDistinctNumberString</span>
-                    </li>
-                </ul>
-            </fieldset>
-            <fieldset>
-                <legend>联系方式</legend>
-                <ul class="fieldname">
-                    <li><font>直线：</font><span class="LeadContact datainfo">@lead.LeadContact</span>
-                    </li>
-                    <li><font>手机：</font><span class="LeadMobile datainfo">@lead.LeadMobile</span> </li>
-                    <li><font>公司邮箱：</font><span class="LeadEmail datainfo">@lead.Gender</span> </li>
-                    <li><font>传真：</font><span class="LeadFax datainfo">@lead.LeadFax</span> </li>
-                    <li><font>个人邮箱：</font><span class="LeadPersonalEmail datainfo">@lead.LeadPersonalEmail</span></li>
-                    <li><font>微博账号：</font><span class="WeiBo datainfo">@lead.WeiBo</span> </li>
-                    <li><font>微信账号：</font><span class="WeiXin datainfo">@lead.WeiXin</span> </li>
-                    <li><font>LinkIn账号：</font><span class="LinkIn datainfo">@lead.LinkIn</span> </li>
-                    <li><font>FaceBook账号：</font><span class="FaceBook datainfo">@lead.FaceBook</span>
-                    </li>
-                    <li><font>传真：</font><span class="LeadFax datainfo">@lead.LeadFax</span> </li>
-                    <li><font>博客地址：</font><span class="Blog datainfo">@lead.Blog</span> </li>
-                </ul>
-            </fieldset>
-            @*  <span style="font-size: 13px;">描述</span> 
-                 <dd class="fieldname">
-                        <div>
-                            <font></font>
-                        </div>
-                    </dd>*@ @* <dt style="font-size: 13px;">致电列表</dt>
-                <dd>*@
-            @if (lead.AjaxCalls.Count() > 0)
-            {
-                <fieldset>
-                    <legend>通话记录</legend>
-                    @(Html.Telerik().Grid<AjaxCall>(lead.AjaxCalls.OrderByDescending(o => o.CallDate)).Name("lead" + lead.LeadID)
-                    .Columns(columns =>
-                    {
-                        columns.Bound(o => o.CallType).Template(@<text><span id="@(item.LeadCallID)_CallType">@item.CallType</span></text>).Width(80);
-                        columns.Bound(o => o.CallBackDate).Template(@<text><span id="@(item.LeadCallID)_CallBackDate">@item.CallBackDate</span></text>).Width(100);
-                        columns.Bound(o => o.CallDate).Template(@<text><span id="@(item.LeadCallID)_CallDate">@item.CallDate</span></text>).Width(100);
-                        columns.Bound(o => o.Caller).Template(@<text><span id="@(item.LeadCallID)_Caller">@item.Caller</span></text>).Width(80);
-                        columns.Bound(o => o.Result).Template(@<text><span id="@(item.LeadCallID)_Result">@item.Result</span></text>);
-                        columns.Bound(o => o.LeadCallID).Width(120).Template(@<text><input onclick='EditLeadCall(@item.LeadCallID)' type='button' class="salebtn" style=" background-image:url('../images/gengxin.jpg');" /></text>);
-                    }).Pageable(paging => paging.Enabled(false)).Resizable(resizing => resizing.Columns(true)).Sortable().Scrollable(scrolling => scrolling.Enabled(false))
-                      )
-                    @*</dd>
-                </dl>*@
-                </fieldset>
-            }
-        </div>
-    </div>
-
-        
-          
-           
-        }
-
-}
 <style>
     .fieldblock
     {
@@ -269,6 +252,8 @@
     {
         width: 98%;
         margin: 5px;
+          float:left;
+        width:99%
     }
     .fenge_2
     {
@@ -279,11 +264,15 @@
         text-align: center;
         color: #fff;
         padding:5px;
+          float:left;
+        width:99.2%
     }
     .fenge_3
     {
         border: 1px solid #000;
         line-height: 24px;
+        float:left;
+        width:100%
     }
 </style>
 <script type="text/javascript">

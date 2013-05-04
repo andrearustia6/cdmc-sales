@@ -328,6 +328,7 @@
     <Content Include="images\tianjia.jpg" />
     <Content Include="images\tianjia_2.jpg" />
     <Content Include="images\tianjia_3.jpg" />
+    <Content Include="images\tianjia_4.jpg" />
     <Content Include="images\tijiaoanniu.jpg" />
     <Content Include="images\tu.jpg" />
     <Content Include="images\tubiao.gif" />
@@ -1677,7 +1678,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>7045</DevelopmentServerPort>
+          <DevelopmentServerPort>57166</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>

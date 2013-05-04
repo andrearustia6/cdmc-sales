@@ -380,6 +380,12 @@ namespace Model
         public string HasBlowed { get; set; }
         public string Gender { get; set; }
         public string LeadName { get { return Utl.Utl.GetFullName(LeadNameCH, LeadNameEN); } }
+
+        public string LeadShowName { get {
+
+            return Utl.Utl.GetFullString(LeadNameCH, LeadNameEN,LeadTitle,Gender); 
+        } }
+
         public string LeadNameCH { get; set; }
         public string LeadNameEN { get; set; }
         public string LeadPersonalEmail { get; set; }
