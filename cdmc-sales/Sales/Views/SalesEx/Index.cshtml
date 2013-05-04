@@ -5,21 +5,60 @@
 @using Model
 @using Utl
 @model AjaxCrmTypedList
- <form style=" float:left; height:30px; line-height:30px; display:inline-block;">
-<div class="selections">
-   <span> <label>项目:</label>@Html.DropDownListFor(model => model.CurrentProjectId, SelectHelper.ProjectSelectList(EditRight.DealsEdit.ToString(), Model.CurrentProjectId))</span>
-   <span>分配时间: @Html.DropDownList("companyassigndate", SelectHelper.DurationSelectList(), "不指定")</span>
-    <span>成熟度: @Html.DropDownList("companyprogress", SelectHelper.CrmProgessSelectList(), "不指定")</span>
-   <span>Lead通话状态: @Html.DropDownList("leadprogress", SelectHelper.LeadConditionSelectList(), "不指定")</span>
-   <span>出单状态: @Html.DropDownList("dealprogress", SelectHelper.DealConditionSelectList(), "不指定")</span>
-   <span>最近通话: @Html.DropDownList("callprogress", SelectHelper.CallConditionSelectList(), "不指定")</span>
-   
-    <input id="search" style="border:none;:inline-block; width:67px; height:21px; background-image:url('../images/chazhao.jpg'); cursor:pointer;" type="button" />
-    <input type="reset"  style="border:none;width:67px; height:21px; background-image:url('../images/chongzhi.jpg'); cursor:pointer;" value=" " />
-    </div>
+@*<form style="line-height: 30px; display: inline-block;">
 
-</form>
-<input type="button" style="float: right;border:none; background-image:url('../images/tianjia.jpg'); margin-right:20px; cursor:pointer;" onclick="GetAddCompany()" />
+</form>*@
+<center>
+<div class="selections" style="width:95%">
+<center>
+    <table style="width:798px; display:inline-block"">
+        <tr>
+            <td>
+                <span>项目选择:@Html.DropDownListFor(model => model.CurrentProjectId, SelectHelper.ProjectSelectList(EditRight.DealsEdit.ToString(), Model.CurrentProjectId), new { style = "width:200px;" })</span>
+            </td>
+            <td>
+                <span>分配时间: @Html.DropDownList("companyassigndate", SelectHelper.DurationSelectList(), "不指定", new { style = "width:200px;" })</span>
+            </td>
+             <td>
+                <span>成熟程度: @Html.DropDownList("companyprogress", SelectHelper.CrmProgessSelectList(), "不指定", new { style = "width:200px;" })</span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span>出单状态: @Html.DropDownList("dealprogress", SelectHelper.DealConditionSelectList(), "不指定", new { style = "width:200px;" })</span>
+            </td>
+       
+        <td>
+            <span>最近通话: @Html.DropDownList("callprogress", SelectHelper.CallConditionSelectList(), "不指定", new { style = "width:200px;" })</span>
+        </td>
+            <td>
+                <span>通话状态: @Html.DropDownList("leadprogress", SelectHelper.LeadConditionSelectList(), "不指定", new { style = "width:200px;" })</span>
+            </td>
+        </tr>
+        <tr>
+        
+           <td colspan="3"><center>  <input id="search" style="border: none;  width: 67px; height: 21px; background-image: url('../images/chazhao.jpg'); cursor: pointer;" type="button" />
+    <input type="reset" style="border: none; width: 67px; height: 21px; background-image: url('../images/chongzhi.jpg'); cursor: pointer;" value=" " />
+    <input type="button"  style="border: none;  width: 67px; height: 21px; background-image: url('../images/tianjia_4.jpg'); cursor: pointer;" onclick="GetAddCompany()" />
+    </center>
+    </td>
+        </tr> 
+        <tr>
+         <td colspan="3" ><span>Lead最后一次通话状态颜色:</span>
+  <span style="color:#0000C6">Call-Backed</span>
+   <span style="color:#6C6C6C">Blowed</span>
+    <span style="color:red">NotCall</span>
+   <span style="color:#006030">Closed</span>
+   <span style="color:#005757">Waiting for Approval</span>
+     <span style="color:#FF00CC">Qualified Decision</span></td>
+        </tr>
+    </table>
+
+   </center>
+ 
+</div>
+</center>
+
 <div style="clear: both;">
 </div>
 @(Html.Telerik().Splitter().Name("sp1").HtmlAttributes(new { style = "min-height: 800px;" })
@@ -103,7 +142,7 @@
         <div class="companyAdd-wrapper">
         </div>
         <div class="dialogue-buttons">
-            <input type="button" class="btn-queding"  onclick="Addcompany()" />
+            <input type="button" class="btn-queding" onclick="Addcompany()" />
             <input type="button" class="btn-quxiao" onclick="CancelAddcompany()" />
         </div>
     </div></text>)
@@ -132,7 +171,7 @@
         var dealprogress = $('#dealprogress').val();
         var callprogress = $('#callprogress').val();
         //var companyassigndate = $('#companyassigndate').val();
-        return { CompanyProgress: companyprogress, CompanyAssignDate: companyassigndate, LeadProgress: leadprogress, DealProgress: dealprogress, CallProgress: callprogress,PrjectID:id };
+        return { CompanyProgress: companyprogress, CompanyAssignDate: companyassigndate, LeadProgress: leadprogress, DealProgress: dealprogress, CallProgress: callprogress, PrjectID: id };
     }
     function initial() {
 
@@ -148,12 +187,12 @@
             var spantext = $this.text();
             if (spantext.indexOf(',&6*') > 0)//Call-Backed
             {
-                $this.css('color', '#95CACA');
+                $this.css('color', '#0000C6');
                 spantext = spantext.replace(",&6*", "");
             }
             else if (spantext.indexOf(',&2*') > 0)//blowed
             {
-                $this.css('color', '#E0E0E0');
+                $this.css('color', '#6C6C6C');
                 spantext = spantext.replace(",&2*", "");
             }
             else if (spantext.indexOf(',&0*') > 0)//no call
@@ -163,17 +202,17 @@
             }
             else if (spantext.indexOf(',&9*') > 0)//close
             {
-                $this.css('color', '#CEFFCE');
+                $this.css('color', '#006030');
                 spantext = spantext.replace(",&9*", "");
             }
             else if (spantext.indexOf(',&7*') > 0)//Waiting for Approval
             {
-                $this.css('color', '#D3A4FF');
+                $this.css('color', '#005757');
                 spantext = spantext.replace(",&7*", "");
             }
             else if (spantext.indexOf(',&8*') > 0)//Qualified Decision
             {
-                $this.css('color', 'yellow');
+                $this.css('color', '#FF00CC');
                 spantext = spantext.replace(",&8*", "");
             }
             $this.text(spantext);
@@ -206,13 +245,13 @@
             onShow: generateContextMenu
         });
 
-        $('#customView').find('>ul >li').jeegoocontext('groupcontextmenu', {
-            widthOverflowOffset: 0,
-            heightOverflowOffset: 3,
-            submenuLeftOffset: -4,
-            submenuTopOffset: -5,
-            onSelect: groupContextMenuSelected
-        });
+//        $('#customView').find('>ul >li').jeegoocontext('groupcontextmenu', {
+//            widthOverflowOffset: 0,
+//            heightOverflowOffset: 3,
+//            submenuLeftOffset: -4,
+//            submenuTopOffset: -5,
+//            onSelect: groupContextMenuSelected
+//        });
 
         $('#customView').find('>ul >li >ul >li').jeegoocontext('favorscontextmenu', {
             widthOverflowOffset: 0,
@@ -255,7 +294,7 @@
             var groupid = $(e.currentTarget).find('input').val();
             var f = GetFilters();
             $.post('_CopyCrmToGroup', { crmid: crmid, groupid: groupid, filters: f }, function (result) {
-                $('#crmdfavorsscontainer').html(result);
+                $('#mainnavigationcontainer').html(result);
                 initial();
             });
         }
@@ -276,7 +315,7 @@
             var crmid = $(context).find('>div >input').val();
             var groupid = $(e.currentTarget).find('input').val();
             $.post('_CrmRemove', { crmid: crmid, filters: GetFilters() }, function (result) {
-                $('#crmdfavorsscontainer').html(result);
+                $('#mainnavigationcontainer').html(result);
                 initial();
             });
         }
@@ -397,7 +436,7 @@
         color: Green;
     }
     
-    .selections span 
+    .selections span
     {
     }
 </style>

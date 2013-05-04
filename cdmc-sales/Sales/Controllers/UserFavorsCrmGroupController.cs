@@ -79,9 +79,9 @@ namespace Sales.Controllers
         {
             var d = CH.GetDataById<UserFavorsCrmGroup>(id);
             var list = d.UserFavorsCRMs;
-            foreach (var i in list)
+            for (var i = 0; i < list.Count; i++)
             {
-                CH.DB.Set<UserFavorsCRM>().Remove(i);
+                CH.Delete<UserFavorsCRM>(list[i].ID);
             }
             CH.DB.SaveChanges();
             CH.Delete<UserFavorsCrmGroup>(id);
