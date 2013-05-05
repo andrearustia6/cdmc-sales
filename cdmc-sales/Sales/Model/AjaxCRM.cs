@@ -25,6 +25,11 @@ namespace Model
         IQueryable<CompanyRelationship> GetFilteredCRM()
         { 
            var query = from  c in CH.DB.CompanyRelationships select c;
+            //项目
+           if (Filters != null && Filters.ProjectId.HasValue)
+           {
+               query = query.Where(q => q.ProjectID == Filters.ProjectId);
+           }
             //分配时间
            if (Filters!=null && Filters.CompanyAssignDate.HasValue)
             {
