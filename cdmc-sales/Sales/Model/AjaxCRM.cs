@@ -31,12 +31,12 @@ namespace Model
             //客户名称搜索
            if (Filters != null && !string.IsNullOrWhiteSpace(Filters.customerName))
             {
-                query = query.Where(q => q.Company.Name_EN.Contains(Filters.customerName));
+                query = query.Where(q =>q.Company.Leads.Any(l => l.Name_CH.Contains(Filters.customerName) || l.Name_EN.Contains(Filters.customerName)));
             }
             //公司名称搜索
            if (Filters != null && !string.IsNullOrWhiteSpace(Filters.companyName))
             {
-                query = query.Where(q => q.Company.Name_CH.Contains(Filters.companyName));
+                query = query.Where(q => q.Company.Name_CH.Contains(Filters.companyName) || q.Company.Name_EN.Contains(Filters.companyName));
             }
             //公司电话搜索
            if (Filters != null && !string.IsNullOrWhiteSpace(Filters.phoneNum))
