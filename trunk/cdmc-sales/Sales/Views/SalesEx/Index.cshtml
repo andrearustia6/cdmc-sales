@@ -35,6 +35,18 @@
                 <span>通话状态: @Html.DropDownList("leadprogress", SelectHelper.LeadConditionSelectList(), "不指定", new { style = "width:200px;" })</span>
             </td>
         </tr>
+            <tr>
+            <td>
+                <span>客户姓名: @Html.TextBox("f-customerName")</span>
+            </td>
+       
+        <td>
+            <span>公司名称: @Html.TextBox("f-companyName")</span>
+        </td>
+            <td>
+                <span>电话号码: @Html.TextBox("f-phoneNum")</span>
+            </td>
+        </tr>
         <tr>
         
            <td colspan="3"><center>  <input id="search" style="border: none;  width: 67px; height: 21px; background-image: url('../images/chazhao.jpg'); cursor: pointer;" type="button" />
@@ -170,8 +182,11 @@
         var leadprogress = $('#leadprogress').val();
         var dealprogress = $('#dealprogress').val();
         var callprogress = $('#callprogress').val();
+        var customerName = $('#f-customerName').val();
+        var companyName = $('#f-companyName').val();
+        var phoneNum = $('#f-phoneNum').val(); 
         //var companyassigndate = $('#companyassigndate').val();
-        return { CompanyProgress: companyprogress, CompanyAssignDate: companyassigndate, LeadProgress: leadprogress, DealProgress: dealprogress, CallProgress: callprogress, ProjectId: id };
+        return { CompanyProgress: companyprogress, CompanyAssignDate: companyassigndate, LeadProgress: leadprogress, DealProgress: dealprogress, CallProgress: callprogress, ProjectId: id, customerName: customerName, companyName: companyName, phoneNum: phoneNum };
     }
     function initial() {
 

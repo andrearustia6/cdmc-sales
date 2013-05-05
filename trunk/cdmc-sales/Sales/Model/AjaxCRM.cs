@@ -8,15 +8,18 @@ using Utl;
 
 namespace Model
 {
-     public class CompanyFilters
+    public class CompanyFilters
     {
-
         public int? CompanyAssignDate { get; set; }
         public int? CompanyProgress { get; set; }
         public int? ProjectId { get; set; }
         public int? LeadProgress { get; set; }
         public int? DealProgress { get; set; }
         public int? CallProgress { get; set; }
+
+        public string customerName { get; set; }
+        public string companyName { get; set; }
+        public string phoneNum { get; set; }
     }
 
     public class AjaxCrmTypedList
@@ -25,6 +28,21 @@ namespace Model
         IQueryable<CompanyRelationship> GetFilteredCRM()
         { 
            var query = from  c in CH.DB.CompanyRelationships select c;
+            //客户名称搜索
+           if (Filters != null && !string.IsNullOrWhiteSpace(Filters.customerName))
+            {
+                query = query.Where(q => q.Company.Name_EN.Contains(Filters.customerName));
+            }
+            //公司名称搜索
+           if (Filters != null && !string.IsNullOrWhiteSpace(Filters.companyName))
+            {
+                query = query.Where(q => q.Company.Name_CH.Contains(Filters.companyName));
+            }
+            //公司电话搜索
+           if (Filters != null && !string.IsNullOrWhiteSpace(Filters.phoneNum))
+            {
+                query = query.Where(q => q.Company.Contact.Contains(Filters.phoneNum));
+            }
             //项目
            if (Filters != null && Filters.ProjectId.HasValue)
            {
@@ -85,7 +103,7 @@ namespace Model
            }
             return query;
         }
-        
+
         private IQueryable<AjaxGroupedCRM> GetcustomCrmGroupDataQuery()
         {
             var user = Employee.CurrentUserName;
@@ -240,7 +258,7 @@ namespace Model
             AllCRMs = GetCrmDataQuery();
             CustomCrmGroups = GetcustomCrmGroupDataQuery();
         }
-    
+
         public IQueryable<AjaxCRM> AllCRMs { get; set; }
         public IQueryable<AjaxGroupedCRM> CustomCrmGroups { get; set; }
     }
@@ -250,7 +268,7 @@ namespace Model
         public int ID { get; set; }
         [Display(Name = "自定义分组所属用户")]
         public string UserName { get; set; }
-        [Display(Name="自定义分组名称")]
+        [Display(Name = "自定义分组名称")]
         public string DisplayName { get; set; }
         public IQueryable<AjaxCRM> GroupedCRMs { get; set; }
 
@@ -304,15 +322,15 @@ namespace Model
         [Required(ErrorMessage = " ")]
         [Display(Name = "中文名字")]
         public string CompanyNameCH { get; set; }
-         [Display(Name = "英文名字")]
+        [Display(Name = "英文名字")]
         public string CompanyNameEN { get; set; }
-        public int LeadsCount{ get; set; }
-        public string CompanyName { get { return Utl.Utl.GetFullName(CompanyNameCH,CompanyNameEN); } }
+        public int LeadsCount { get; set; }
+        public string CompanyName { get { return Utl.Utl.GetFullName(CompanyNameCH, CompanyNameEN); } }
         public int? CompanyID { get; set; }
-         [Display(Name = "公司总机")]
-        public string CompanyContact {get;set;}
+        [Display(Name = "公司总机")]
+        public string CompanyContact { get; set; }
         [Display(Name = "公司传真")]
-        public string CompanyFax{get;set;}
+        public string CompanyFax { get; set; }
         //public IEnumerable<String> LeadsName { get; set; }
         public DateTime? CompanyCreateDate { get; set; }
         public string CompanyDistrictNumberString
@@ -321,7 +339,7 @@ namespace Model
             {
                 return CompanyDistinct == null ? string.Empty : CompanyDistinct.Name;
             }
-        }        
+        }
         public DistrictNumber CompanyDistinct { set; private get; }
         #endregion
 
@@ -338,11 +356,11 @@ namespace Model
             {
                 List<string> v = new List<string>();
                 v.Add(CompanyName);
-                if(!string.IsNullOrEmpty(ProgressString))
+                if (!string.IsNullOrEmpty(ProgressString))
                 {
                     v.Add(ProgressString);
                 };
-                var nocontactleadcount =  AjaxLeads.Count(c => c.AjaxCalls.Count() == 0);
+                var nocontactleadcount = AjaxLeads.Count(c => c.AjaxCalls.Count() == 0);
                 if (nocontactleadcount > 0)
                 {
                     v.Add(nocontactleadcount.ToString() + "Leads未打");
@@ -386,10 +404,14 @@ namespace Model
         public string Gender { get; set; }
         public string LeadName { get { return Utl.Utl.GetFullName(LeadNameCH, LeadNameEN); } }
 
-        public string LeadShowName { get {
+        public string LeadShowName
+        {
+            get
+            {
 
-            return Utl.Utl.GetFullString(LeadNameCH, LeadNameEN,LeadTitle,Gender); 
-        } }
+                return Utl.Utl.GetFullString(LeadNameCH, LeadNameEN, LeadTitle, Gender);
+            }
+        }
 
         public string LeadNameCH { get; set; }
         public string LeadNameEN { get; set; }
@@ -414,18 +436,18 @@ namespace Model
                         lastcall = "&6*";//wait for approve
                     else if (code == 90)
                         lastcall = "&9*";//wait for approve
-                    else if(code == 80)
+                    else if (code == 80)
                         lastcall = "&8*";//Qualified Decision
-                    else if(code == 70)
+                    else if (code == 70)
                         lastcall = "&7*";//Waiting for Approval
                     else
                         lastcall = string.Empty;
                 }
 
                 List<string> v = new List<string> { LeadName };
-                if(!string.IsNullOrEmpty(LeadTitle))
+                if (!string.IsNullOrEmpty(LeadTitle))
                 {
-                   v.Add(LeadTitle);
+                    v.Add(LeadTitle);
                 }
                 v.Add(lastcall);
                 return string.Join(",", v);
@@ -435,13 +457,13 @@ namespace Model
         {
             get
             {
-             
-                 string status = string.Empty;
+
+                string status = string.Empty;
                 var ajaxcallcount = AjaxCalls.Count();
                 if (ajaxcallcount > 0)
                 {
                     status += "此人已打" + ajaxcallcount + "次";
-                    var lastcall = AjaxCalls.OrderByDescending(o=>o.CallDate).FirstOrDefault();
+                    var lastcall = AjaxCalls.OrderByDescending(o => o.CallDate).FirstOrDefault();
                     status += "，最后通话状态为" + lastcall.CallType;
                     var haspitch = AjaxCalls.Where(w => w.LeadCallTypeCode > 30);
                     if (haspitch.Count() > 0)
@@ -458,8 +480,8 @@ namespace Model
                     status += "此客户尚未联系";
                 }
 
-           
-            
+
+
                 return status;
             }
         }
@@ -501,14 +523,14 @@ namespace Model
         #endregion
     }
 
-    public class AjaxCall 
+    public class AjaxCall
     {
-       
+
         public int LeadCallTypeCode { get; set; }
         public int LeadCallID { get; set; }
         public int LeadID { get; set; }
         public int CompanyID { get; set; }
-        [Display(Name="致电结果")]
+        [Display(Name = "致电结果")]
         public string Result { get; set; }
         [Display(Name = "致电类型")]
         public string CallType { get; set; }
@@ -517,7 +539,7 @@ namespace Model
         [Display(Name = "预约CallBack")]
         public DateTime? CallBackDate { get; set; }
         [Display(Name = "致电人")]
-        public string Caller{ get; set; }
+        public string Caller { get; set; }
         public bool Editable { get; set; }
 
     }

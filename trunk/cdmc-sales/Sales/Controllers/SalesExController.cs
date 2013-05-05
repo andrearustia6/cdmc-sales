@@ -209,6 +209,7 @@ namespace Sales.Controllers
             return PartialView("EditLead", ajaxViewLead);
         }
 
+        [ValidateInput(false)]
         [HttpPost]
         public ActionResult EditLead(AjaxViewLead ajaxViewLead)
         {
@@ -243,6 +244,7 @@ namespace Sales.Controllers
             return PartialView("AddLead", ajaxViewLead);
         }
 
+        [ValidateInput(false)]
         public ActionResult AddLead(AjaxViewLead ajaxViewLead)
         {
             Lead lead = new Lead()
@@ -290,6 +292,7 @@ namespace Sales.Controllers
             return PartialView("EditLeadCall", ajaxViewLeadCall);
         }
 
+        [ValidateInput(false)]
         public ActionResult EditLeadCall(AjaxViewLeadCall ajaxViewLeadCall)
         {
             LeadCall leadCall = CH.GetAllData<LeadCall>(c => c.ID == ajaxViewLeadCall.CallId).First();
@@ -308,6 +311,7 @@ namespace Sales.Controllers
             return PartialView("AddCall", ajaxViewLeadCall);
         }
 
+        [ValidateInput(false)]
         public ActionResult AddCall(AjaxViewLeadCall ajaxViewLeadCall)
         {
 
@@ -332,6 +336,7 @@ namespace Sales.Controllers
             return PartialView("AddCompany", ajaxViewSaleCompany);
         }
 
+        [ValidateInput(false)]
         public ActionResult AddCompany(AjaxViewSaleCompany ajaxViewSaleCompany)
         {
             CompanyRelationship companyRelationship = new CompanyRelationship();
@@ -440,7 +445,9 @@ namespace Sales.Controllers
 
             return PartialView("DetailCompany", ajaxViewSaleCompany);
         }
+
         [HttpPost]
+        [ValidateInput(false)]
         public ActionResult EditCompany(AjaxViewSaleCompany ajaxViewSaleCompany)
         {
             CompanyRelationship companyRelationship = CH.GetAllData<CompanyRelationship>(c => c.CompanyID == ajaxViewSaleCompany.CompanyId).First();
