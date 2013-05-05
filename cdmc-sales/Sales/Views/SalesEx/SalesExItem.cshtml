@@ -50,7 +50,7 @@
         foreach (var lead in Model.AjaxLeads)
         {
     <div class="fenge" id="@(lead.LeadID)">
-        <div class="fenge_2">@lead.LeadName
+        <div class="fenge_2"><span class="t-leadName">@lead.LeadName</span>
             <input style="background-image:url('../images/tianjia_2.jpg');" class="salebtn" type="button" onclick="onCallAdd(@(lead.LeadID))" value="" /><input class="salebtn" style=" background-image:url('../images/gengxin.jpg');" type="button" onclick="onLeadEdit(@(lead.LeadID))" /></div>
         <div class="fenge_3">
             @*  <div style=" width:100%; height:25px; margin-bottom:-5px; margin-top:10px;">
@@ -327,12 +327,12 @@
                 if (result.length > 0) {
                     alert(result);
                 } else {
-                    var query = $('.dialogue-editcompany form').serialize();
-                    $.post('EditCompany?' + query, null, function (result) {
+                    var query = $('.dialogue-editcompany form').serializeArray();
+                    $.post('EditCompany' , query,  function (result) {
                         if (result.length > 0) {
                             alert(result);
                         } else {
-                            tempVal = $('.dialogue-editcompany form #Name_CN').val() + $('.dialogue-editcompany form #Name_EN').val();
+                            tempVal = $('.dialogue-editcompany form #Name_CN').val() + ' | ' + $('.dialogue-editcompany form #Name_EN').val();
                             $('#currentCompanyName').html(tempVal);
                             //                            tempVal = $('.dialogue-editcompany form #Name_CN').val();
                             //                            $('#currentCompanyNameCN').html(tempVal);
@@ -391,6 +391,7 @@
                 } else {
                     //                    $('#' + currentLeadID + ' span.leadNameCN').html($('.dialogue-editlead form #Name_CN').val());
                     //                    $('#' + currentLeadID + ' span.leadNamEN').html($('.dialogue-editlead form #Name_EN').val());
+                    $('#' + currentLeadID + ' span.t-leadName').html($('.dialogue-editlead form #Name_CN').val() + ' | ' + $('.dialogue-editlead form #Name_EN').val());
                     $('#' + currentLeadID + ' span.leadTitle').html($('.dialogue-editlead form #Title').val());
                     $('#' + currentLeadID + ' span.leadGender').html($('.dialogue-editlead form #Gender').val());
                     $('#' + currentLeadID + ' span.LeadDistinctNumberString').html($('.dialogue-editlead form #Name_CN option:selected').first().text());
