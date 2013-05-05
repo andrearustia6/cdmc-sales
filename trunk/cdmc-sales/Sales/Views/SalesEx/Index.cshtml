@@ -14,7 +14,7 @@
     <table style="width:798px; display:inline-block"">
         <tr>
             <td>
-                <span>项目选择:@Html.DropDownListFor(model => model.CurrentProjectId, SelectHelper.ProjectSelectList(EditRight.DealsEdit.ToString(), Model.CurrentProjectId), new { style = "width:200px;" })</span>
+                <span>项目选择:@Html.DropDownListFor(model => model.CurrentProjectId, SelectHelper.ProjectSelectList(EditRight.DealsEdit.ToString(), Model.CurrentProjectId),"不指定", new { style = "width:200px;" })</span>
             </td>
             <td>
                 <span>分配时间: @Html.DropDownList("companyassigndate", SelectHelper.DurationSelectList(), "不指定", new { style = "width:200px;" })</span>
@@ -164,14 +164,14 @@
         });
     });
     function GetFilters() {
-        var id = $('#CurrentProjectId').val();
+        var id = $('#CurrentProjectId').val();     
         var companyprogress = $('#companyprogress').val();
         var companyassigndate = $('#companyassigndate').val();
         var leadprogress = $('#leadprogress').val();
         var dealprogress = $('#dealprogress').val();
         var callprogress = $('#callprogress').val();
         //var companyassigndate = $('#companyassigndate').val();
-        return { CompanyProgress: companyprogress, CompanyAssignDate: companyassigndate, LeadProgress: leadprogress, DealProgress: dealprogress, CallProgress: callprogress, PrjectID: id };
+        return { CompanyProgress: companyprogress, CompanyAssignDate: companyassigndate, LeadProgress: leadprogress, DealProgress: dealprogress, CallProgress: callprogress, ProjectId: id };
     }
     function initial() {
 
@@ -359,6 +359,11 @@
     }
 
     function GetAddCompany() {
+        if ($('#CurrentProjectId').val() == '') {
+            alert('请先选择项目');
+            return false;
+        }       
+       
         $.post('GetAddCompany', { projectId: $('#CurrentProjectId').val() }, function (result) {
             $('.companyAdd-wrapper').html(result);
             var window = $('#AddCompany').data('tWindow');
