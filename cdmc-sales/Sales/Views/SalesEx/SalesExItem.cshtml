@@ -25,7 +25,7 @@
         <div class="fenge_3">
             @Html.HiddenFor(model => model.ProjectID)
             @Html.HiddenFor(model => model.CRMID)
-              
+              <span style=" display:none" id="currentCompanyNameCN">@Model.CompanyNameCH</span>
                 <dl class="fieldname">
                     <dd>
                         <font>区号：</font><span id="currentCompanyDistrictNumberString" class="datainfo">@Model.CompanyDistrictNumberString</span></dd>
