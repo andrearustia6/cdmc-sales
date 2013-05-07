@@ -20,12 +20,12 @@
             <span id="currentCompanyName">@Model.CompanyName</span>
             <input class="salebtn" style=" background-image:url('../images/tianjia_3.jpg');" type="button" onclick="onLeadAdd(@(Model.CompanyID))" />
             <input type="button" class="salebtn"  style="background-image:url('../images/gengxin.jpg');"  onclick="onCompanyEdit(@(Model.CompanyID))" />
-            <input type="button"class="salebtn"  style="background-image:url('../images/gaikuo.jpg'); " value="" onclick="onCompanyDetail(@(Model.CompanyID))" />
+            <input type="button"class="salebtn"  style="background-image:url('../images/gaikuo.jpg'); " onclick="onCompanyDetail(@(Model.CompanyID))" />
         </div>
         <div class="fenge_3">
             @Html.HiddenFor(model => model.ProjectID)
             @Html.HiddenFor(model => model.CRMID)
-<<<<<<< .mine
+
               
                 <dl class="fieldname">
                 @if (!string.IsNullOrEmpty(Model.CompanyDistrictNumberString))
