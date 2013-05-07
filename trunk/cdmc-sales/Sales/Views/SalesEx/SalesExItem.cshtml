@@ -25,42 +25,8 @@
         <div class="fenge_3">
             @Html.HiddenFor(model => model.ProjectID)
             @Html.HiddenFor(model => model.CRMID)
-
-              
-                <dl class="fieldname">
-                @if (!string.IsNullOrEmpty(Model.CompanyDistrictNumberString))
-                {
-                    <dd>
-                        <font>区号：</font><span id="currentCompanyDistrictNumberString" class="datainfo">@Model.CompanyDistrictNumberString</span></dd>
-                }
-                    
-                 @if (!string.IsNullOrEmpty(Model.CompanyContact))
-                 {
-                      <dd>  <font>公司总机：</font><span id="currentCompanyContact" class="datainfo">@Model.CompanyContact</span></dd>
-                 }
-                @if (!string.IsNullOrEmpty(Model.CompanyFax))
-                {
-                    <dd>
-                        <font>传真：</font><span id="currentCompanyFax" class="datainfo">@Model.CompanyFax</span></dd>
-                }
-                @if (!string.IsNullOrEmpty(Model.CompanyCategoryStrings))
-                {
-                    <dd>
-
-                        <font>细分行业：</font><span id="currentCompanyCategoryStrings" class="datainfo">@Model.CompanyCategoryStrings</span>
-                    </dd>
-                }
-                 @if (!string.IsNullOrEmpty(Model.ProgressString))
-                 {
-                    <dd>
-                        <font>成熟度：</font><span id="currentProgressString" class="datainfo">@Model.ProgressString</span>
-                    </dd>
-                 }
-                </dl>
-                
-           
-@*=======
             <span style="display: none" id="currentCompanyNameCN">@Model.CompanyNameCH</span>
+            <span style="display: none" id="currentCompanyNameEN">@Model.CompanyNameEN</span>
             <dl class="fieldname">
                 <dd>
                     <font>区号：</font><span id="currentCompanyDistrictNumberString" class="datainfo">@Model.CompanyDistrictNumberString</span></dd>
@@ -75,7 +41,6 @@
                     <font>成熟度：</font><span id="currentProgressString" class="datainfo">@Model.ProgressString</span>
                 </dd>
             </dl>
->>>>>>> .r535*@
         </div>
     </div>    
 }
@@ -85,74 +50,12 @@
         foreach (var lead in Model.AjaxLeads)
         {
     <div class="fenge" id="@(lead.LeadID)">
-
-        <div class="fenge_2">@lead.LeadShowName
-
+        <div class="fenge_2">
+            <span class="LeadShowName">@lead.LeadShowName</span>
             <input style="background-image:url('../images/tianjia_2.jpg');" class="salebtn" type="button" onclick="onCallAdd(@(lead.LeadID))" value="" /><input class="salebtn" style=" background-image:url('../images/gengxin.jpg');" type="button" onclick="onLeadEdit(@(lead.LeadID))" /></div>
         <div class="fenge_3">
-            @*  <div style=" width:100%; height:25px; margin-bottom:-5px; margin-top:10px;">
-            
-            </div>*@
-
-          
-                <ul class="fieldname">
-                 @if (!string.IsNullOrEmpty(lead.LeadDistinctNumberString))
-                 {
-                     <li><font>客户区号：</font><span class="LeadDistinctNumberString datainfo">@lead.LeadDistinctNumberString</span></li>
-                  }
-                  @if (!string.IsNullOrEmpty(lead.LeadContact))
-                  {
-                    <li><font>直线：</font><span class="LeadContact datainfo">@lead.LeadContact</span> </li>
-                  }
-                  @if (!string.IsNullOrEmpty(lead.LeadMobile))
-                  {
-                    <li><font>手机：</font><span class="LeadMobile datainfo">@lead.LeadMobile</span> </li>
-                  }
-                  @if (!string.IsNullOrEmpty(lead.Gender))
-                  {
-                    <li><font>公司邮箱：</font><span class="LeadEmail datainfo">@lead.Gender</span> </li>
-                  }
-                  @if (!string.IsNullOrEmpty(lead.LeadFax))
-                  {
-                        <li><font>传真：</font><span class="LeadFax datainfo">@lead.LeadFax</span> </li>
-                  }
-                  @if (!string.IsNullOrEmpty(lead.LeadPersonalEmail))
-                  {
-                       <li><font>个人邮箱：</font><span class="LeadPersonalEmail datainfo">@lead.LeadPersonalEmail</span></li>
-                  }
-                  @if (!string.IsNullOrEmpty(lead.WeiBo))
-                  {
-                       <li><font>微博账号：</font><span class="WeiBo datainfo">@lead.WeiBo</span> </li>
-                  }
-                  @if (!string.IsNullOrEmpty(lead.WeiXin))
-                  {
-                       <li><font>微信账号：</font><span class="WeiXin datainfo">@lead.WeiXin</span> </li>
-                  }
-                  @if (!string.IsNullOrEmpty(lead.LinkIn))
-                  {
-                       <li><font>LinkIn账号：</font><span class="LinkIn datainfo">@lead.LinkIn</span> </li>
-                  }
-                  @if (!string.IsNullOrEmpty(lead.FaceBook))
-                  {
-                      <li><font>FaceBook账号：</font><span class="FaceBook datainfo">@lead.FaceBook</span>
-                    </li>
-                  }
-                
-                  @if (!string.IsNullOrEmpty(lead.Blog))
-                  {
-                       <li><font>博客地址：</font><span class="Blog datainfo">@lead.Blog</span> </li>
-                  }
-                </ul>
-          
-@*=======
             <ul class="fieldname">
-                <li><font>Lead职位：</font><span class="leadTitle datainfo">@lead.LeadTitle</span>
-                </li>
-                <li><font>Lead性别：</font><span class="leadGender datainfo">@lead.Gender</span> </li>
-                <li><font>客户区号：</font><span class="LeadDistinctNumberString datainfo">@lead.LeadDistinctNumberString</span>
-                </li>
-            </ul>
-            <ul class="fieldname">
+                <li><font>客户区号：</font><span class="LeadDistinctNumberString datainfo">@lead.LeadDistinctNumberString</span></li>
                 <li><font>直线：</font><span class="LeadContact datainfo">@lead.LeadContact</span>
                 </li>
                 <li><font>手机：</font><span class="LeadMobile datainfo">@lead.LeadMobile</span> </li>
@@ -166,14 +69,6 @@
                 </li>
                 <li><font>博客地址：</font><span class="Blog datainfo">@lead.Blog</span> </li>
             </ul>
->>>>>>> .r535*@
-            @*  <span style="font-size: 13px;">描述</span> 
-                 <dd class="fieldname">
-                        <div>
-                            <font></font>
-                        </div>
-                    </dd>*@ @* <dt style="font-size: 13px;">致电列表</dt>
-                <dd>*@
             @if (lead.AjaxCalls.Count() > 0)
             {
                 <fieldset style="width: 97%">
@@ -293,8 +188,8 @@
     }
     .salebtn
     {
-        width: 24px;
-        height: 25px;
+        width: 18px;
+        height: 18px;
         border: none;
         display: inline-block;
         float: right;
@@ -347,7 +242,7 @@
     .fenge_2
     {
         background: #FF5809;
-        line-height: 30px;
+        line-height: 20px;
         border: 1px solid #000;
         border-bottom: none;
         text-align: center;
@@ -359,15 +254,18 @@
     .fenge_3
     {
         border: 1px solid #000;
-        line-height: 24px;
+        line-height: 20px;
         float: left;
-        width: 100%;
+        padding: 2px;
+        width: 99.2%;
     }
 </style>
 <script type="text/javascript">
-    var currentCompanyName = undefined;
+    var currentCompanyNameCN = undefined;
+    var currentCompanyNameEN = undefined;
     function onCompanyEdit(currentCompanyId) {
-       // currentCompanyName = $('#currentCompanyNameCN').html().replace(/(^\s*)|(\s*$)/g, '');
+        currentCompanyNameCN = $('#currentCompanyNameCN').html().replace(/(^\s*)|(\s*$)/g, '');
+        currentCompanyNameEN = $('#currentCompanyNameEN').html().replace(/(^\s*)|(\s*$)/g, '');
         $.post('GetEditCompany', { companyId: currentCompanyId }, function (result) {
             $('.companyEdit-wrapper').html(result);
             var window = $('#EditCompany').data('tWindow');
@@ -408,7 +306,7 @@
                     hasError = true;
                 }
             }
-           
+
             if ($('.dialogue-editcompany form input[type=checkbox][name=Categories]:checked').length == 0) {
                 $('fieldset#categories').addClass('fieldError');
                 hasError = true;
@@ -419,8 +317,9 @@
             if (hasError) {
                 return;
             }
-            var companyName = $('.dialogue-editcompany form #Name_CN').val();
-            $.post('CheckCompanyExist', { beforeUpdate: currentCompanyName, afterUpdate: companyName }, function (result) {
+            var companyNameCN = $('.dialogue-editcompany form #Name_CN').val();
+            var companyNameEN = $('.dialogue-editcompany form #Name_EN').val();
+            $.post('CheckCompanyExist', { beforeUpdateCN: currentCompanyNameCN, afterUpdateCN: companyNameCN, beforeUpdateEN: currentCompanyNameEN, afterUpdateEN: companyNameEN }, function (result) {
                 if (result.length > 0) {
                     alert(result);
                 } else {
@@ -429,14 +328,19 @@
                         if (result.length > 0) {
                             alert(result);
                         } else {
-                            tempVal = $('.dialogue-editcompany form #Name_CN').val() + ' | ' + $('.dialogue-editcompany form #Name_EN').val();
+                            tempVal = $('.dialogue-editcompany form #Name_EN').val() + ' | ' + $('.dialogue-editcompany form #Name_CN').val();
                             $('#currentCompanyName').html(tempVal);
                             //                            tempVal = $('.dialogue-editcompany form #Name_CN').val();
                             //                            $('#currentCompanyNameCN').html(tempVal);
                             //                            tempVal = $('.dialogue-editcompany form #Name_EN').val();
                             //                            $('#currentCompanyNameEN').html(tempVal);
-                            tempVal = $('.dialogue-editcompany form #DistrictNumberId option:selected').first().text();
-                            $('#currentCompanyDistrictNumberString').html(tempVal);
+                            if ($('.dialogue-editcompany form #DistrictNumberId option:selected').val() == '') {
+                                $('#currentCompanyDistrictNumberString').html('');
+                            } else {
+                                tempVal = $('.dialogue-editcompany form #DistrictNumberId option:selected').first().text();
+                                $('#currentCompanyDistrictNumberString').html(tempVal);
+                            }
+
                             tempVal = $('.dialogue-editcompany form #Phone').val();
                             $('#currentCompanyContact').html(tempVal);
                             tempVal = $('.dialogue-editcompany form #Fax').val();
@@ -489,9 +393,9 @@
                 } else {
                     //                    $('#' + currentLeadID + ' span.leadNameCN').html($('.dialogue-editlead form #Name_CN').val());
                     //                    $('#' + currentLeadID + ' span.leadNamEN').html($('.dialogue-editlead form #Name_EN').val());
-                    $('#' + currentLeadID + ' span.t-leadName').html($('.dialogue-editlead form #Name_CN').val() + ' | ' + $('.dialogue-editlead form #Name_EN').val());
-                    $('#' + currentLeadID + ' span.leadTitle').html($('.dialogue-editlead form #Title').val());
-                    $('#' + currentLeadID + ' span.leadGender').html($('.dialogue-editlead form #Gender').val());
+                    $('#' + currentLeadID + ' span.LeadShowName').html($('.dialogue-editlead form #Gender').val() + ' ' + $('.dialogue-editlead form #Name_CN').val() + ' ' + $('.dialogue-editlead form #Name_EN').val() + ' ' + $('.dialogue-editlead form #Title').val());
+                    //                    $('#' + currentLeadID + ' span.leadTitle').html($('.dialogue-editlead form #Title').val());
+                    //                    $('#' + currentLeadID + ' span.leadGender').html($('.dialogue-editlead form #Gender').val());
                     $('#' + currentLeadID + ' span.LeadEmail').html($('.dialogue-editlead form #WorkingEmail').val());
                     $('#' + currentLeadID + ' span.LeadPersonalEmail').html($('.dialogue-editlead form #PersonelEmail').val());
                     $('#' + currentLeadID + ' span.LeadContact').html($('.dialogue-editlead form #Telephone').val());

@@ -168,11 +168,15 @@ namespace Sales.Controllers
 
 
         [ValidateInput(false)]
-        public ActionResult CheckCompanyExist(string beforeUpdate, string afterUpdate)
+        public ActionResult CheckCompanyExist(string beforeUpdateCN, string afterUpdateCN,string beforeUpdateEN, string afterUpdateEN)
         {
-            if (CH.GetAllData<CompanyRelationship>(c => c.MarkForDelete == false && c.Company.Name_CH == afterUpdate && c.Company.Name_CH != beforeUpdate).Count > 0)
+            if (CH.GetAllData<CompanyRelationship>(c => c.MarkForDelete == false && c.Company.Name_CH == afterUpdateCN && c.Company.Name_CH != beforeUpdateCN).Count > 0)
             {
-                return Content("同名公司名字已存在！");
+                return Content("同名中文公司名字已存在！");
+            }
+            if (CH.GetAllData<CompanyRelationship>(c => c.MarkForDelete == false && c.Company.Name_EN == afterUpdateEN && c.Company.Name_EN != beforeUpdateEN).Count > 0)
+            {
+                return Content("同名英文公司名字已存在！");
             }
 
             return Content("");
@@ -234,6 +238,7 @@ namespace Sales.Controllers
             lead.FaceBook = ajaxViewLead.FaceBook;
             lead.Blog = ajaxViewLead.Blog;
             lead.DistrictNumberID = ajaxViewLead.DistrictNumberId;
+            lead.ModifiedDate = DateTime.Now;
             CH.Edit<Lead>(lead);
             return null;
         }
@@ -269,7 +274,9 @@ namespace Sales.Controllers
                 Blog = ajaxViewLead.Blog,
                 MarkForDelete = false,
                 DistrictNumberID = ajaxViewLead.DistrictNumberId,
-                PersonalEmailAddress = ajaxViewLead.PersonelEmail
+                PersonalEmailAddress = ajaxViewLead.PersonelEmail,
+                CreatedDate = DateTime.Now,
+                ModifiedDate = DateTime.Now
             };
 
             CH.Create<Lead>(lead);
@@ -359,6 +366,8 @@ namespace Sales.Controllers
             companyRelationship.Members.Add(CH.GetAllData<Member>(c => c.Name == Employee.CurrentUserName).First());
             companyRelationship.ProjectID = ajaxViewSaleCompany.ProjectId;
             companyRelationship.MarkForDelete = false;
+            companyRelationship.CreatedDate = DateTime.Now;
+            companyRelationship.ModifiedDate = DateTime.Now;
             if (ajaxViewSaleCompany.Categories != null)
             {
                 companyRelationship.Categorys = CH.GetAllData<Category>(c => ajaxViewSaleCompany.Categories.Contains(c.ID)).ToList();
@@ -465,6 +474,7 @@ namespace Sales.Controllers
             companyRelationship.Company.ZIP = ajaxViewSaleCompany.ZipCode;
             companyRelationship.Description = ajaxViewSaleCompany.Desc;
             companyRelationship.ProgressID = ajaxViewSaleCompany.ProgressId;
+            companyRelationship.ModifiedDate = DateTime.Now;
             companyRelationship.Categorys.Clear();
             if (ajaxViewSaleCompany.Categories != null)
             {
