@@ -403,16 +403,41 @@
                     $('.dialogue-addcompany form #Address').addClass('fieldError');
                     hasError = true;
                 }
+                if ($('.dialogue-addcompany form #Name_CN').val().isEmpty()) {
+                    $('.dialogue-addcompany form #Name_CN').addClass('fieldError');
+                    hasError = true;
+                }
+            }
+            else {
+                if ($('.dialogue-addcompany form #Name_EN').val().isEmpty()) {
+                    $('.dialogue-addcompany form #Name_EN').addClass('fieldError');
+                    hasError = true;
+                }
             }
 
-            if ($('.dialogue-addcompany form input[type=checkbox][name=Categories]:checked').length == 0) {
+             if ($('.dialogue-addcompany form input[type=checkbox][name=Categories]:checked').length == 0) {
                 $('fieldset#categories').addClass('fieldError');
                 hasError = true;
             } else {
                 $('fieldset#categories').removeClass('fieldError');
             }
 
+//            if ($("input[name='Categories']").serializeArray().length == 0)
+//           {
+//               hasError = true;
+//           }
+
+
+//            if ($('.dialogue-addcompany form input[type=checkbox][name=Categories]:checked').length == 0) {
+//                $('fieldset#categories').addClass('fieldError');
+//                hasError = true;
+//            } else {
+//                $('fieldset#categories').removeClass('fieldError');
+//            }
+
+//>>>>>>> .r535
             if (hasError) {
+                alert('数据不完整,公司细分业务至少选一项，国内公司中文名和地址，邮编必填；外国公司英文名必填. ');
                 return;
             }
             var companyName = $('.dialogue-addcompany #Name_CN').val();
