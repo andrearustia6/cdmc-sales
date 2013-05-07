@@ -369,12 +369,14 @@ namespace Model
         public int? CompanRelationshipId { get; set; }
         [Display(Name = "ID")]
         public int? CompanyId { get; set; }
+
         [Required(ErrorMessage = "必填")]
         [Display(Name = "中文名字")]
         public string Name_CN { get; set; }
+
+        [Required(ErrorMessage = "必填")]
         [Display(Name = "英文名字")]
         public string Name_EN { get; set; }
-        [Required(ErrorMessage = "必填")]
         [Display(Name = "行业类型")]
         public int IndustryId { get; set; }
         [Display(Name = "行业类型")]

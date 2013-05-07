@@ -25,6 +25,41 @@
         <div class="fenge_3">
             @Html.HiddenFor(model => model.ProjectID)
             @Html.HiddenFor(model => model.CRMID)
+<<<<<<< .mine
+              
+                <dl class="fieldname">
+                @if (!string.IsNullOrEmpty(Model.CompanyDistrictNumberString))
+                {
+                    <dd>
+                        <font>区号：</font><span id="currentCompanyDistrictNumberString" class="datainfo">@Model.CompanyDistrictNumberString</span></dd>
+                }
+                    
+                 @if (!string.IsNullOrEmpty(Model.CompanyContact))
+                 {
+                      <dd>  <font>公司总机：</font><span id="currentCompanyContact" class="datainfo">@Model.CompanyContact</span></dd>
+                 }
+                @if (!string.IsNullOrEmpty(Model.CompanyFax))
+                {
+                    <dd>
+                        <font>传真：</font><span id="currentCompanyFax" class="datainfo">@Model.CompanyFax</span></dd>
+                }
+                @if (!string.IsNullOrEmpty(Model.CompanyCategoryStrings))
+                {
+                    <dd>
+
+                        <font>细分行业：</font><span id="currentCompanyCategoryStrings" class="datainfo">@Model.CompanyCategoryStrings</span>
+                    </dd>
+                }
+                 @if (!string.IsNullOrEmpty(Model.ProgressString))
+                 {
+                    <dd>
+                        <font>成熟度：</font><span id="currentProgressString" class="datainfo">@Model.ProgressString</span>
+                    </dd>
+                 }
+                </dl>
+                
+           
+@*=======
             <span style="display: none" id="currentCompanyNameCN">@Model.CompanyNameCH</span>
             <dl class="fieldname">
                 <dd>
@@ -40,6 +75,7 @@
                     <font>成熟度：</font><span id="currentProgressString" class="datainfo">@Model.ProgressString</span>
                 </dd>
             </dl>
+>>>>>>> .r535*@
         </div>
     </div>    
 }
@@ -49,13 +85,66 @@
         foreach (var lead in Model.AjaxLeads)
         {
     <div class="fenge" id="@(lead.LeadID)">
-        <div class="fenge_2">
-            <span class="t-leadName">@lead.LeadName</span>
+
+        <div class="fenge_2">@lead.LeadShowName
+
             <input style="background-image:url('../images/tianjia_2.jpg');" class="salebtn" type="button" onclick="onCallAdd(@(lead.LeadID))" value="" /><input class="salebtn" style=" background-image:url('../images/gengxin.jpg');" type="button" onclick="onLeadEdit(@(lead.LeadID))" /></div>
         <div class="fenge_3">
             @*  <div style=" width:100%; height:25px; margin-bottom:-5px; margin-top:10px;">
             
             </div>*@
+
+          
+                <ul class="fieldname">
+                 @if (!string.IsNullOrEmpty(lead.LeadDistinctNumberString))
+                 {
+                     <li><font>客户区号：</font><span class="LeadDistinctNumberString datainfo">@lead.LeadDistinctNumberString</span></li>
+                  }
+                  @if (!string.IsNullOrEmpty(lead.LeadContact))
+                  {
+                    <li><font>直线：</font><span class="LeadContact datainfo">@lead.LeadContact</span> </li>
+                  }
+                  @if (!string.IsNullOrEmpty(lead.LeadMobile))
+                  {
+                    <li><font>手机：</font><span class="LeadMobile datainfo">@lead.LeadMobile</span> </li>
+                  }
+                  @if (!string.IsNullOrEmpty(lead.Gender))
+                  {
+                    <li><font>公司邮箱：</font><span class="LeadEmail datainfo">@lead.Gender</span> </li>
+                  }
+                  @if (!string.IsNullOrEmpty(lead.LeadFax))
+                  {
+                        <li><font>传真：</font><span class="LeadFax datainfo">@lead.LeadFax</span> </li>
+                  }
+                  @if (!string.IsNullOrEmpty(lead.LeadPersonalEmail))
+                  {
+                       <li><font>个人邮箱：</font><span class="LeadPersonalEmail datainfo">@lead.LeadPersonalEmail</span></li>
+                  }
+                  @if (!string.IsNullOrEmpty(lead.WeiBo))
+                  {
+                       <li><font>微博账号：</font><span class="WeiBo datainfo">@lead.WeiBo</span> </li>
+                  }
+                  @if (!string.IsNullOrEmpty(lead.WeiXin))
+                  {
+                       <li><font>微信账号：</font><span class="WeiXin datainfo">@lead.WeiXin</span> </li>
+                  }
+                  @if (!string.IsNullOrEmpty(lead.LinkIn))
+                  {
+                       <li><font>LinkIn账号：</font><span class="LinkIn datainfo">@lead.LinkIn</span> </li>
+                  }
+                  @if (!string.IsNullOrEmpty(lead.FaceBook))
+                  {
+                      <li><font>FaceBook账号：</font><span class="FaceBook datainfo">@lead.FaceBook</span>
+                    </li>
+                  }
+                
+                  @if (!string.IsNullOrEmpty(lead.Blog))
+                  {
+                       <li><font>博客地址：</font><span class="Blog datainfo">@lead.Blog</span> </li>
+                  }
+                </ul>
+          
+@*=======
             <ul class="fieldname">
                 <li><font>Lead职位：</font><span class="leadTitle datainfo">@lead.LeadTitle</span>
                 </li>
@@ -77,6 +166,7 @@
                 </li>
                 <li><font>博客地址：</font><span class="Blog datainfo">@lead.Blog</span> </li>
             </ul>
+>>>>>>> .r535*@
             @*  <span style="font-size: 13px;">描述</span> 
                  <dd class="fieldname">
                         <div>
@@ -277,7 +367,7 @@
 <script type="text/javascript">
     var currentCompanyName = undefined;
     function onCompanyEdit(currentCompanyId) {
-        currentCompanyName = $('#currentCompanyNameCN').html().replace(/(^\s*)|(\s*$)/g, '');
+       // currentCompanyName = $('#currentCompanyNameCN').html().replace(/(^\s*)|(\s*$)/g, '');
         $.post('GetEditCompany', { companyId: currentCompanyId }, function (result) {
             $('.companyEdit-wrapper').html(result);
             var window = $('#EditCompany').data('tWindow');

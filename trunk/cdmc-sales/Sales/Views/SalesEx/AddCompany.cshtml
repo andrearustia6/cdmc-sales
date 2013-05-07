@@ -10,9 +10,13 @@
     <fieldset>
         <legend>公司信息</legend>
         <ul>
-            <li><span class="addcompany-left">@Html.LabelFor(model => model.Name_CN) @Html.TextBoxFor(model => model.Name_CN)
-                @Html.ValidationMessageFor(model => model.Name_CN)</span> <span class="addcompany-right">
-                    @Html.LabelFor(model => model.Name_EN) @Html.TextBoxFor(model => model.Name_EN)
+            <li><span class="addcompany-left">
+            @Html.LabelFor(model => model.Name_CN) 
+            @Html.TextBoxFor(model => model.Name_CN)
+                @Html.ValidationMessageFor(model => model.Name_CN)</span> 
+                <span class="addcompany-right">
+                    @Html.LabelFor(model => model.Name_EN)
+                     @Html.TextBoxFor(model => model.Name_EN)
                     @Html.ValidationMessageFor(model => model.Name_EN)
                 </span></li>
             <li><span class="addcompany-left">@Html.LabelFor(model => model.TypeId) @Html.DropDownListFor(model => model.TypeId, SelectHelper.CompanyTypeSelectList(null), "请选择", new { })
