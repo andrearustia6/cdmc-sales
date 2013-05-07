@@ -9,7 +9,7 @@
 </div>
 <div class="ungroupcompany">
 <h2 class="ungroupcompanyhead">未分组公司</h2>
-    @(Html.Telerik().TreeView().Name("navigationView").ExpandAll(true).HtmlAttributes(new { style="margin-top:-15px;"})
+    @(Html.Telerik().TreeView().Name("navigationView").ExpandAll(Model.ExpandAll).HtmlAttributes(new { style = "margin-top:-15px;" })
         .ClientEvents(e => e.OnSelect("onIndexSelect"))
                 .BindTo(Model.AllCRMs, mappings =>
         {

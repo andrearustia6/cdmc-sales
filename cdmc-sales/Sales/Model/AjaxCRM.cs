@@ -17,91 +17,94 @@ namespace Model
         public int? DealProgress { get; set; }
         public int? CallProgress { get; set; }
 
-        public string customerName { get; set; }
-        public string companyName { get; set; }
-        public string phoneNum { get; set; }
+        public bool? Unfold { get; set; }
+        public string fuzzyQuery { get; set; }
     }
 
     public class AjaxCrmTypedList
     {
+        public bool ExpandAll
+        {
+            get
+            {
+                bool retVal = false;
+                if (this.Filters != null && this.Filters.Unfold.HasValue && this.Filters.Unfold.Value == true)
+                {
+                    retVal = true;
+                }
+
+                return retVal;
+            }
+        }
         public int? CurrentProjectId { get; set; }
         IQueryable<CompanyRelationship> GetFilteredCRM()
-        { 
-           var query = from  c in CH.DB.CompanyRelationships select c;
-            //客户名称搜索
-           if (Filters != null && !string.IsNullOrWhiteSpace(Filters.customerName))
+        {
+            var query = from c in CH.DB.CompanyRelationships select c;
+            //模糊搜索
+            if (Filters != null && !string.IsNullOrWhiteSpace(Filters.fuzzyQuery))
             {
-                query = query.Where(q =>q.Company.Leads.Any(l => l.Name_CH.Contains(Filters.customerName) || l.Name_EN.Contains(Filters.customerName)));
+                query = query.Where(q => q.Company.Leads.Any(l => l.Name_CH.Contains(Filters.fuzzyQuery) || l.Name_EN.Contains(Filters.fuzzyQuery)) || q.Company.Name_CH.Contains(Filters.fuzzyQuery) || q.Company.Name_EN.Contains(Filters.fuzzyQuery) || q.Company.Contact.Contains(Filters.fuzzyQuery));
             }
-            //公司名称搜索
-           if (Filters != null && !string.IsNullOrWhiteSpace(Filters.companyName))
-            {
-                query = query.Where(q => q.Company.Name_CH.Contains(Filters.companyName) || q.Company.Name_EN.Contains(Filters.companyName));
-            }
-            //公司电话搜索
-           if (Filters != null && !string.IsNullOrWhiteSpace(Filters.phoneNum))
-            {
-                query = query.Where(q => q.Company.Contact.Contains(Filters.phoneNum));
-            }
+          
             //项目
-           if (Filters != null && Filters.ProjectId.HasValue)
-           {
-               query = query.Where(q => q.ProjectID == Filters.ProjectId);
-           }
+            if (Filters != null && Filters.ProjectId.HasValue)
+            {
+                query = query.Where(q => q.ProjectID == Filters.ProjectId);
+            }
             //分配时间
-           if (Filters!=null && Filters.CompanyAssignDate.HasValue)
+            if (Filters != null && Filters.CompanyAssignDate.HasValue)
             {
                 var date = DateTime.Now.AddDays(-Filters.CompanyAssignDate.Value);
-                query = query.Where(q=>q.CreatedDate.Value >= date);
+                query = query.Where(q => q.CreatedDate.Value >= date);
             }
             //成熟度
-           if (Filters != null && Filters.CompanyProgress.HasValue)
-           {
-               query = query.Where(q => q.Progress == null || (q.Progress == null && q.Progress.Code >= Filters.CompanyProgress));
-           }
+            if (Filters != null && Filters.CompanyProgress.HasValue)
+            {
+                query = query.Where(q => q.Progress == null || (q.Progress == null && q.Progress.Code >= Filters.CompanyProgress));
+            }
             //出单
-           if (Filters != null && Filters.DealProgress.HasValue)
-           {
-               if(Filters.DealProgress == 0)
-               query = query.Where(q =>q.Deals.Count()==0 );
-               else if (Filters.DealProgress == 1)
-               {
-                   query = query.Where(q =>  (q.Deals.Count() > 0));
-               }
-               else if(Filters.DealProgress == 2)
-               {
-                   query = query.Where(q =>  q.Deals.Any(d=>d.IsClosed==false));
-               }
-               else if (Filters.DealProgress == 3)
-               {
-                   query = query.Where(q =>  q.Deals.Any(d => d.IsClosed == true && d.Income>0) );
-               }
+            if (Filters != null && Filters.DealProgress.HasValue)
+            {
+                if (Filters.DealProgress == 0)
+                    query = query.Where(q => q.Deals.Count() == 0);
+                else if (Filters.DealProgress == 1)
+                {
+                    query = query.Where(q => (q.Deals.Count() > 0));
+                }
+                else if (Filters.DealProgress == 2)
+                {
+                    query = query.Where(q => q.Deals.Any(d => d.IsClosed == false));
+                }
+                else if (Filters.DealProgress == 3)
+                {
+                    query = query.Where(q => q.Deals.Any(d => d.IsClosed == true && d.Income > 0));
+                }
 
-           }
+            }
             //lead 进展
-           if (Filters != null && Filters.LeadProgress.HasValue)
-           {
-               if (Filters.LeadProgress == 1)
-               query = query.Where(q =>  (q.Company.Leads.Count == q.LeadCalls.Select(s=>s.LeadID).Distinct().Count()) && q.LeadCalls.All(a=>a.LeadCallType.Code == 20));
-               else if (Filters.LeadProgress == 3)
-                    query = query.Where(q => q.Company.Leads.Count > q.LeadCalls.Select(s=>s.LeadID).Distinct().Count());
-               else if (Filters.LeadProgress == 5)
+            if (Filters != null && Filters.LeadProgress.HasValue)
+            {
+                if (Filters.LeadProgress == 1)
+                    query = query.Where(q => (q.Company.Leads.Count == q.LeadCalls.Select(s => s.LeadID).Distinct().Count()) && q.LeadCalls.All(a => a.LeadCallType.Code == 20));
+                else if (Filters.LeadProgress == 3)
+                    query = query.Where(q => q.Company.Leads.Count > q.LeadCalls.Select(s => s.LeadID).Distinct().Count());
+                else if (Filters.LeadProgress == 5)
                 {
                     var datestart = DateTime.Now.AddDays(2);
                     var dateend = DateTime.Now.AddDays(-22);
                     query = query.Where(q => q.LeadCalls.Any(a => a.CallBackDate >= datestart && a.CallBackDate <= dateend));
                 }
-           }
+            }
             //leadcall date
-           if (Filters != null && Filters.CallProgress.HasValue)
-           {
-               var now = DateTime.Now;
-               var day = now.AddDays(-Filters.CallProgress.Value);
+            if (Filters != null && Filters.CallProgress.HasValue)
+            {
+                var now = DateTime.Now;
+                var day = now.AddDays(-Filters.CallProgress.Value);
 
-               query = query.Where(q => q.LeadCalls.Any(a => a.CallDate >= day));
-             
-           }
-            return query.OrderBy(o=>o.CreatedDate);
+                query = query.Where(q => q.LeadCalls.Any(a => a.CallDate >= day));
+
+            }
+            return query.OrderBy(o => o.CreatedDate);
         }
 
         private IQueryable<AjaxGroupedCRM> GetCustomCrmGroupDataQuery()
@@ -188,7 +191,7 @@ namespace Model
             var data = from c in filteredcrm
                        from m in c.Members
                        where m.Name == user && m.CompanyRelationships.Select(s => s.ID).Contains(c.ID) && (!custom.Select(s => s.CompanyRelationshipID).Contains(c.ID) || alldata.Value)
-                        
+                       orderby c.CreatedDate
                        select new AjaxCRM
                        {
                            ProjectID = c.ProjectID,
@@ -416,7 +419,7 @@ namespace Model
             }
         }
 
-             
+
 
 
 

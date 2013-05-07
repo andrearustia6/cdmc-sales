@@ -1653,9 +1653,9 @@ namespace Sales.Controllers
             return Content("Call删除成功！");
         }
 
-        public ActionResult CheckCompanyExist(string beforeUpdate, string afterUpdate)
+        public ActionResult CheckCompanyExist(string beforeUpdateCN, string afterUpdateCN)
         {
-            if (CH.GetAllData<CompanyRelationship>(c => c.MarkForDelete == false && c.Company.Name_CH == afterUpdate && c.Company.Name_CH != beforeUpdate).Count > 0)
+            if (CH.GetAllData<CompanyRelationship>(c => c.MarkForDelete == false && c.Company.Name_CH == afterUpdateCN && c.Company.Name_CH != beforeUpdateCN).Count > 0)
             {
                 return Content("同名公司名字已存在！");
             }

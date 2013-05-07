@@ -38,21 +38,21 @@
         </tr>
             <tr>
             <td>
-                <span>客户姓名: @Html.TextBox("f-customerName")</span>
+                <span>模糊查询: @Html.TextBox("f-fuzzy")</span>
             </td>
        
         <td>
-            <span>公司名称: @Html.TextBox("f-companyName")</span>
+            <span>是否展开:<select id="unfoldCompany"><option value=''>不指定</option><option value='true'>展开公司/lead</option><option value='false'>展开公司</option></select> </span>
         </td>
             <td>
-                <span>电话号码: @Html.TextBox("f-phoneNum")</span>
+                <span></span>
             </td>
         </tr>
         <tr>
         
            <td colspan="3"><center style="line-height:30px; height:30">  <input id="search" style="border: none;  width: 67px; height: 21px; background-image: url('../images/chazhao.jpg'); cursor: pointer;" type="button" />
-    <input type="reset" style="border: none; position:relative; top:2px; width: 67px; height: 21px; background-image: url('../images/chongzhi.jpg'); cursor: pointer;" value=" " />
-   <input type="button"  style="border: none; position:relative; top:2px; width: 67px; height: 21px; background-image: url('../images/tianjia_4.jpg'); cursor: pointer;" onclick="GetAddCompany()" />
+    <input type="reset" style="border: none;  width: 67px; height: 21px; background-image: url('../images/chongzhi.jpg'); cursor: pointer;" value=" " />
+   <input type="button"  style="border: none;  width: 67px; height: 21px; background-image: url('../images/tianjia_4.jpg'); cursor: pointer;" onclick="GetAddCompany()" />
     </center>
     </td>
         </tr> 
@@ -185,11 +185,10 @@
         var leadprogress = $('#leadprogress').val();
         var dealprogress = $('#dealprogress').val();
         var callprogress = $('#callprogress').val();
-        var customerName = $('#f-customerName').val();
-        var companyName = $('#f-companyName').val();
-        var phoneNum = $('#f-phoneNum').val(); 
+        var fuzzyQuery = $('#f-fuzzy').val();
+        var unfold = $('#unfoldCompany').val();    
         //var companyassigndate = $('#companyassigndate').val();
-        return { CompanyProgress: companyprogress, CompanyAssignDate: companyassigndate, LeadProgress: leadprogress, DealProgress: dealprogress, CallProgress: callprogress, ProjectId: id, customerName: customerName, companyName: companyName, phoneNum: phoneNum };
+        return { CompanyProgress: companyprogress, CompanyAssignDate: companyassigndate, LeadProgress: leadprogress, DealProgress: dealprogress, CallProgress: callprogress, ProjectId: id, fuzzyQuery: fuzzyQuery, Unfold: unfold };
     }
     function initial() {
 
@@ -440,13 +439,14 @@
                 alert('数据不完整,公司细分业务至少选一项，国内公司中文名和地址，邮编必填；外国公司英文名必填. ');
                 return;
             }
-            var companyName = $('.dialogue-addcompany #Name_CN').val();
-            $.post('CheckCompanyExist', { beforeUpdate: null, afterUpdate: companyName }, function (result) {
+            var companyNameCN = $('.dialogue-addcompany #Name_CN').val();
+            var companyNameEN = $('.dialogue-addcompany form #Name_EN').val();
+            $.post('CheckCompanyExist', { beforeUpdateCN: null, afterUpdateCN: companyNameCN, beforeUpdateEN: null, afterUpdateEN: companyNameEN }, function (result) {
                 if (result.length > 0) {
                     alert(result);
                 } else {
-                    var query = $('.dialogue-addcompany form').serialize();
-                    $.post('AddCompany?' + query, null, function (result) {
+                    var query = $('.dialogue-addcompany form').serializeArray();
+                    $.post('AddCompany' , query, function (result) {
                         if (result.companyRelationshipId != null) {
                             $('#AddCompany').data('tWindow').close();
                             if (confirm('公司新增成功,是否要往新增公司里面增加Lead')) {
