@@ -10,6 +10,7 @@
 </form>*@
 <center>
 <div class="selections" style="width:95%">
+<form>
 <center>
     <table style="width:798px; display:inline-block"">
         <tr>
@@ -49,9 +50,9 @@
         </tr>
         <tr>
         
-           <td colspan="3"><center>  <input id="search" style="border: none;  width: 67px; height: 21px; background-image: url('../images/chazhao.jpg'); cursor: pointer;" type="button" />
-    <input type="reset" style="border: none; width: 67px; height: 21px; background-image: url('../images/chongzhi.jpg'); cursor: pointer;" value=" " />
-    <input type="button"  style="border: none;  width: 67px; height: 21px; background-image: url('../images/tianjia_4.jpg'); cursor: pointer;" onclick="GetAddCompany()" />
+           <td colspan="3"><center style="line-height:30px; height:30">  <input id="search" style="border: none;  width: 67px; height: 21px; background-image: url('../images/chazhao.jpg'); cursor: pointer;" type="button" />
+    <input type="reset" style="border: none; position:relative; top:2px; width: 67px; height: 21px; background-image: url('../images/chongzhi.jpg'); cursor: pointer;" value=" " />
+   
     </center>
     </td>
         </tr> 
@@ -65,15 +66,17 @@
      <span style="color:#FF00CC">Qualified Decision</span></td>
         </tr>
     </table>
-
+  
    </center>
- 
+   </form>
 </div>
 </center>
 
+<input type="button"  style="border: none; float:right; margin:5px;  width: 67px; height: 21px; background-image: url('../images/tianjia_4.jpg'); cursor: pointer;" onclick="GetAddCompany()" />
 <div style="clear: both;">
 </div>
-@(Html.Telerik().Splitter().Name("sp1").HtmlAttributes(new { style = "min-height: 800px;" })
+ 
+@(Html.Telerik().Splitter().Name("sp1").HtmlAttributes(new { style = "height: 800px;" })
               .Orientation(SplitterOrientation.Horizontal).Panes(panes =>
               {
                   panes.Add().Size("26%").Content(@<text>@GetCRMS()</text>);
@@ -112,7 +115,7 @@
 }
 @helper GetCompanyDetails()
     {
-    <div id="crmdetailscontainer">
+    <div id="crmdetailscontainer" style="overflow:hidden; height:790px;">
         @if (Model.AllCRMs.FirstOrDefault() != null)
         {
             @Html.Partial("salesexitem", Model.AllCRMs.FirstOrDefault())
@@ -401,6 +404,14 @@
                     hasError = true;
                 }
             }
+
+            if ($('.dialogue-addcompany form input[type=checkbox][name=Categories]:checked').length == 0) {
+                $('fieldset#categories').addClass('fieldError');
+                hasError = true;
+            } else {
+                $('fieldset#categories').removeClass('fieldError');
+            }
+
             if (hasError) {
                 return;
             }

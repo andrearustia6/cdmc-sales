@@ -42,8 +42,8 @@
             <li><span>@Html.LabelFor(model => model.Desc) @Html.TextAreaFor(model => model.Desc)
                 @Html.ValidationMessageFor(model => model.Desc)</span> </li>
             <li>
-                <fieldset>
-                    <legend>Categories</legend>
+                <fieldset id="categories">
+                    <legend>Categories <span id="categoriesError">必须选择一项</span></legend>
                     @foreach (Category category in CH.GetAllData<Category>(c => c.ProjectID == Model.ProjectId))
                     { 
                         <label class="company-category">@category.Name</label>
@@ -64,6 +64,14 @@
 <style>
     select
     {
-        width:150px;
-     }
+        width: 150px;
+    }
+    #categoriesError
+    {
+        display: none;
+    }
+    fieldset.fieldError span
+    {
+        display: inline-block !important;
+    }
 </style>
