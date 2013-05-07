@@ -1,6 +1,9 @@
 ﻿@using Entity
 @using Model
 @model AjaxCrmTypedList
+@{
+    ViewBag.ExpandAll = Model.ExpandAll;
+}
 <div id="crmdfavorsscontainer" class="groupcompany">
 <div class="groupcompanyhead"><input type="image" id="group-open-button" src="../images/fenzuguanli_2.jpg" style=" margin-top:-3px; margin-left:-5px"></div>
    @Html.Partial("FavorsCRM", Model.CustomCrmGroups)
@@ -9,7 +12,7 @@
 </div>
 <div class="ungroupcompany">
 <h2 class="ungroupcompanyhead">未分组公司</h2>
-    @(Html.Telerik().TreeView().Name("navigationView").ExpandAll(Model.ExpandAll).HtmlAttributes(new { style = "margin-top:-15px;" })
+    @(Html.Telerik().TreeView().Name("navigationView").ExpandAll((bool)ViewBag.ExpandAll).HtmlAttributes(new { style = "margin-top:-15px;" })
         .ClientEvents(e => e.OnSelect("onIndexSelect"))
                 .BindTo(Model.AllCRMs, mappings =>
         {

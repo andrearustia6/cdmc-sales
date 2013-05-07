@@ -3,7 +3,7 @@
 @model IQueryable<AjaxGroupedCRM>
 
 
- @(Html.Telerik().TreeView().Name("customView").ExpandAll(false)
+ @(Html.Telerik().TreeView().Name("customView").ExpandAll((bool)ViewBag.ExpandAll)
              .ClientEvents(e => e.OnSelect("onIndexSelect"))
                .BindTo(Model, mappings =>
         {
