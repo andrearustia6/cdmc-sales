@@ -101,10 +101,10 @@ namespace Model
                query = query.Where(q => q.LeadCalls.Any(a => a.CallDate >= day));
              
            }
-            return query;
+            return query.OrderBy(o=>o.CreatedDate);
         }
 
-        private IQueryable<AjaxGroupedCRM> GetcustomCrmGroupDataQuery()
+        private IQueryable<AjaxGroupedCRM> GetCustomCrmGroupDataQuery()
         {
             var user = Employee.CurrentUserName;
             var filteredcrm = GetFilteredCRM();
@@ -122,6 +122,7 @@ namespace Model
                                           where m.Name == user
                                           && c.ID == u.CompanyRelationshipID.Value
                                           && f.UserFavorsCRMs.Select(s => s.ID).Contains(u.ID)
+                                          orderby c.CreatedDate
                                           select new AjaxCRM
                                           {
                                               CompanyNameEN = c.Company.Name_EN,
@@ -187,6 +188,7 @@ namespace Model
             var data = from c in filteredcrm
                        from m in c.Members
                        where m.Name == user && m.CompanyRelationships.Select(s => s.ID).Contains(c.ID) && (!custom.Select(s => s.CompanyRelationshipID).Contains(c.ID) || alldata.Value)
+                        
                        select new AjaxCRM
                        {
                            ProjectID = c.ProjectID,
@@ -256,7 +258,7 @@ namespace Model
         {
             Filters = filters;
             AllCRMs = GetCrmDataQuery();
-            CustomCrmGroups = GetcustomCrmGroupDataQuery();
+            CustomCrmGroups = GetCustomCrmGroupDataQuery();
         }
 
         public IQueryable<AjaxCRM> AllCRMs { get; set; }
@@ -409,9 +411,15 @@ namespace Model
             get
             {
 
-                return Utl.Utl.GetFullString(LeadNameCH, LeadNameEN, LeadTitle, Gender);
+
+                return Utl.Utl.GetFullString(" ", Gender, LeadNameCH, LeadNameEN, LeadTitle);
             }
         }
+
+             
+
+
+
 
         public string LeadNameCH { get; set; }
         public string LeadNameEN { get; set; }
