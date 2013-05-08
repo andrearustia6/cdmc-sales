@@ -152,6 +152,7 @@ namespace Model
                                                                LeadContact = l.Contact,
                                                                LeadDistinct = l.DistrictNumber,
                                                                LeadEmail = l.EMail,
+                                                               LeadAddress = l.Address,
                                                                LeadMobile = l.Mobile,
                                                                LeadTitle = l.Title,
                                                                LeadFax = l.Fax,
@@ -225,7 +226,7 @@ namespace Model
                                             LinkIn = l.LinkIn,
                                             WeiBo = l.WeiBo,
                                             WeiXin = l.WeiXin,
-
+                                            LeadAddress = l.Address,
                                             LeadNameCH = l.Name_CH,
                                             LeadNameEN = l.Name_EN,
                                             LeadContact = l.Contact,
@@ -523,7 +524,7 @@ namespace Model
         public string LeadContact { get; set; }
         public string LeadMobile { get; set; }
         public string LeadEmail { get; set; }
-
+        public string LeadAddress { get; set; }
         #region calls
         //public int AjaxCallsCount { get{return AjaxCalls.Count();}}
         public IEnumerable<AjaxCall> AjaxCalls { get; set; }
