@@ -28,18 +28,33 @@
             <span style="display: none" id="currentCompanyNameCN">@Model.CompanyNameCH</span>
             <span style="display: none" id="currentCompanyNameEN">@Model.CompanyNameEN</span>
             <dl class="fieldname">
-                <dd>
-                    <font>区号：</font><span id="currentCompanyDistrictNumberString" class="datainfo">@Model.CompanyDistrictNumberString</span></dd>
-                <dd>
-                    <font>公司总机：</font><span id="currentCompanyContact" class="datainfo">@Model.CompanyContact</span></dd>
-                <dd>
-                    <font>传真：</font><span id="currentCompanyFax" class="datainfo">@Model.CompanyFax</span></dd>
-                <dd>
-                    <font>细分行业：</font><span id="currentCompanyCategoryStrings" class="datainfo">@Model.CompanyCategoryStrings</span>
-                </dd>
-                <dd>
-                    <font>成熟度：</font><span id="currentProgressString" class="datainfo">@Model.ProgressString</span>
-                </dd>
+                @if (!string.IsNullOrWhiteSpace(Model.CompanyDistrictNumberString))
+                {
+                    <dd>
+                        <font>区号：</font><span id="currentCompanyDistrictNumberString" class="datainfo">@Model.CompanyDistrictNumberString</span></dd>
+                }
+                @if (!string.IsNullOrWhiteSpace(Model.CompanyContact))
+                {
+                    <dd>
+                        <font>公司总机：</font><span id="currentCompanyContact" class="datainfo">@Model.CompanyContact</span></dd>
+                }
+                @if (!string.IsNullOrWhiteSpace(Model.CompanyFax))
+                {
+                    <dd>
+                        <font>传真：</font><span id="currentCompanyFax" class="datainfo">@Model.CompanyFax</span></dd>
+                }
+                @if (!string.IsNullOrWhiteSpace(Model.CompanyCategoryStrings))
+                {
+                    <dd>
+                        <font>细分行业：</font><span id="currentCompanyCategoryStrings" class="datainfo">@Model.CompanyCategoryStrings</span>
+                    </dd>
+                }
+                @if (!string.IsNullOrWhiteSpace(Model.ProgressString))
+                {
+                    <dd>
+                        <font>成熟度：</font><span id="currentProgressString" class="datainfo">@Model.ProgressString</span>
+                    </dd>
+                }
             </dl>
         </div>
     </div>    
@@ -55,20 +70,56 @@
             <input style="background-image:url('../images/tianjia_2.jpg');" class="salebtn" type="button" onclick="onCallAdd(@(lead.LeadID))" value="" /><input class="salebtn" style=" background-image:url('../images/gengxin.jpg');" type="button" onclick="onLeadEdit(@(lead.LeadID))" /></div>
         <div class="fenge_3">
             <ul class="fieldname">
-                <li><font>客户区号：</font><span class="LeadDistinctNumberString datainfo">@lead.LeadDistinctNumberString</span></li>
-                <li><font>直线：</font><span class="LeadContact datainfo">@lead.LeadContact</span>
-                </li>
-                <li><font>手机：</font><span class="LeadMobile datainfo">@lead.LeadMobile</span> </li>
-                <li><font>公司邮箱：</font><span class="LeadEmail datainfo">@lead.Gender</span> </li>
-                <li><font>传真：</font><span class="LeadFax datainfo">@lead.LeadFax</span> </li>
-                <li><font>个人邮箱：</font><span class="LeadPersonalEmail datainfo">@lead.LeadPersonalEmail</span></li>
-                <li><font>微博账号：</font><span class="WeiBo datainfo">@lead.WeiBo</span> </li>
-                <li><font>微信账号：</font><span class="WeiXin datainfo">@lead.WeiXin</span> </li>
-                <li><font>LinkedIn账号：</font><span class="LinkIn datainfo">@lead.LinkIn</span> </li>
-                <li><font>FaceBook账号：</font><span class="FaceBook datainfo">@lead.FaceBook</span>
-                </li>
-                <li><font>博客地址：</font><span class="Blog datainfo">@lead.Blog</span> </li>
-                 <li><font>地址：</font><span class="address datainfo">@lead.LeadAddress</span> </li>
+                @if (!string.IsNullOrWhiteSpace(lead.LeadDistinctNumberString))
+                {
+                    <li><font>客户区号：</font><span class="LeadDistinctNumberString datainfo">@lead.LeadDistinctNumberString</span></li>
+                }
+                @if (!string.IsNullOrWhiteSpace(lead.LeadContact))
+                {
+                    <li><font>直线：</font><span class="LeadContact datainfo">@lead.LeadContact</span>
+                    </li>
+                }
+                @if (!string.IsNullOrWhiteSpace(lead.LeadMobile))
+                {
+                    <li><font>手机：</font><span class="LeadMobile datainfo">@lead.LeadMobile</span> </li>
+                }
+                @if (!string.IsNullOrWhiteSpace(lead.Gender))
+                {
+                    <li><font>公司邮箱：</font><span class="LeadEmail datainfo">@lead.Gender</span> </li>
+                }
+                @if (!string.IsNullOrWhiteSpace(lead.LeadFax))
+                {
+                    <li><font>传真：</font><span class="LeadFax datainfo">@lead.LeadFax</span> </li>
+                }
+                @if (!string.IsNullOrWhiteSpace(lead.LeadPersonalEmail))
+                {
+                    <li><font>个人邮箱：</font><span class="LeadPersonalEmail datainfo">@lead.LeadPersonalEmail</span></li>
+                }
+                @if (!string.IsNullOrWhiteSpace(lead.WeiBo))
+                {
+                    <li><font>微博账号：</font><span class="WeiBo datainfo">@lead.WeiBo</span> </li>
+                }
+                @if (!string.IsNullOrWhiteSpace(lead.WeiXin))
+                {
+                    <li><font>微信账号：</font><span class="WeiXin datainfo">@lead.WeiXin</span> </li>
+                }
+                @if (!string.IsNullOrWhiteSpace(lead.LinkIn))
+                {
+                    <li><font>LinkedIn账号：</font><span class="LinkIn datainfo">@lead.LinkIn</span> </li>
+                }
+                @if (!string.IsNullOrWhiteSpace(lead.FaceBook))
+                {
+                    <li><font>FaceBook账号：</font><span class="FaceBook datainfo">@lead.FaceBook</span>
+                    </li>
+                }
+                @if (!string.IsNullOrWhiteSpace(lead.Blog))
+                {
+                    <li><font>博客地址：</font><span class="Blog datainfo">@lead.Blog</span> </li>
+                }
+                @if (!string.IsNullOrWhiteSpace(lead.LeadAddress))
+                {
+                    <li><font>地址：</font><span class="address datainfo">@lead.LeadAddress</span> </li>
+                }
             </ul>
             @if (lead.AjaxCalls.Count() > 0)
             {
@@ -292,91 +343,92 @@
 
 
     function Editcompany() {
-//        if ($('.dialogue-editcompany form').valid()) {
-            var hasError = false;
-            $('.dialogue-editcompany form input').removeClass('fieldError');
-            $('.dialogue-editcompany form select').removeClass('fieldError');
-            $('.dialogue-editcompany form #ProgressId').addClass('fieldError');
+        //        if ($('.dialogue-editcompany form').valid()) {
+        var hasError = false;
+        $('.dialogue-editcompany form input').removeClass('fieldError');
+        $('.dialogue-editcompany form select').removeClass('fieldError');
+        $('.dialogue-editcompany form #ProgressId').addClass('fieldError');
 
-            String.prototype.isEmpty = function () { return /^\s*$/.test(this); }
-            if ($('.dialogue-editcompany form #DistrictNumberId option:selected').val().isEmpty()) {
-                if ($('.dialogue-editcompany form #ZipCode').val().isEmpty()) {
-                    $('.dialogue-editcompany form #ZipCode').addClass('fieldError');
-                    hasError = true;
-                }
-                if ($('.dialogue-editcompany form #Address').val().isEmpty()) {
-                    $('.dialogue-editcompany form #Address').addClass('fieldError');
-                    hasError = true;
-                }
-                if ($('.dialogue-editcompany form #Name_CN').val().isEmpty()) {
-                    $('.dialogue-editcompany form #Name_CN').addClass('fieldError');
-                    hasError = true;
-                }
-            }
-            else {
-                if ($('.dialogue-editcompany form #Name_EN').val().isEmpty()) {
-                    $('.dialogue-editcompany form #Name_EN').addClass('fieldError');
-                    hasError = true;
-                }
-            }
-
-            if ($('.dialogue-editcompany form input[type=checkbox][name=Categories]:checked').length == 0) {
-                $('fieldset#categories').addClass('fieldError');
+        String.prototype.isEmpty = function () { return /^\s*$/.test(this); }
+        if ($('.dialogue-editcompany form #DistrictNumberId option:selected').val().isEmpty()) {
+            if ($('.dialogue-editcompany form #ZipCode').val().isEmpty()) {
+                $('.dialogue-editcompany form #ZipCode').addClass('fieldError');
                 hasError = true;
+            }
+            if ($('.dialogue-editcompany form #Address').val().isEmpty()) {
+                $('.dialogue-editcompany form #Address').addClass('fieldError');
+                hasError = true;
+            }
+            if ($('.dialogue-editcompany form #Name_CN').val().isEmpty()) {
+                $('.dialogue-editcompany form #Name_CN').addClass('fieldError');
+                hasError = true;
+            }
+        }
+        else {
+            if ($('.dialogue-editcompany form #Name_EN').val().isEmpty()) {
+                $('.dialogue-editcompany form #Name_EN').addClass('fieldError');
+                hasError = true;
+            }
+        }
+
+        if ($('.dialogue-editcompany form input[type=checkbox][name=Categories]:checked').length == 0) {
+            $('fieldset#categories').addClass('fieldError');
+            hasError = true;
+        } else {
+            $('fieldset#categories').removeClass('fieldError');
+        }
+
+        if (hasError) {
+            // alert('数据不完整,公司细分业务至少选一项，国内公司中文名和地址，邮编必填；外国公司英文名必填. ');
+            return;
+        }
+        var companyNameCN = $('.dialogue-editcompany form #Name_CN').val();
+        var companyNameEN = $('.dialogue-editcompany form #Name_EN').val();
+        $.post('CheckCompanyExist', { beforeUpdateCN: currentCompanyNameCN, afterUpdateCN: companyNameCN, beforeUpdateEN: currentCompanyNameEN, afterUpdateEN: companyNameEN }, function (result) {
+            if (result.length > 0) {
+                alert(result);
             } else {
-                $('fieldset#categories').removeClass('fieldError');
-            }
+                var query = $('.dialogue-editcompany form').serializeArray();
+                $.post('EditCompany', query, function (result) {
+                    if (result.length > 0) {
+                        alert(result);
+                    } else {
+                        //                            tempVal = $('.dialogue-editcompany form #Name_EN').val() + ' | ' + $('.dialogue-editcompany form #Name_CN').val();
+                        //                            $('#currentCompanyName').html(tempVal);
+                        //                            //                            tempVal = $('.dialogue-editcompany form #Name_CN').val();
+                        //                            //                            $('#currentCompanyNameCN').html(tempVal);
+                        //                            //                            tempVal = $('.dialogue-editcompany form #Name_EN').val();
+                        //                            //                            $('#currentCompanyNameEN').html(tempVal);
+                        //                            if ($('.dialogue-editcompany form #DistrictNumberId option:selected').val() == '') {
+                        //                                $('#currentCompanyDistrictNumberString').html('');
+                        //                            } else {
+                        //                                tempVal = $('.dialogue-editcompany form #DistrictNumberId option:selected').first().text();
+                        //                                $('#currentCompanyDistrictNumberString').html(tempVal);
+                        //                            }
 
-            if (hasError) {
-                // alert('数据不完整,公司细分业务至少选一项，国内公司中文名和地址，邮编必填；外国公司英文名必填. ');
-                return;
+                        //                            tempVal = $('.dialogue-editcompany form #Phone').val();
+                        //                            $('#currentCompanyContact').html(tempVal);
+                        //                            tempVal = $('.dialogue-editcompany form #Fax').val();
+                        //                            $('#currentCompanyFax').html(tempVal);
+                        //                            tempVal = '';
+                        //                            $('.dialogue-editcompany form input[type=checkbox][name=Categories]:checked').each(function () {
+                        //                                tempVal += $(this).prev('label.company-category').html() + ',';
+                        //                            });
+                        //                            if (tempVal.length > 0) {
+                        //                                tempVal = tempVal.substr(0, tempVal.length - 1);
+                        //                            }
+                        //                            $('#currentCompanyCategoryStrings').html(tempVal);
+                        //                            tempVal = $('.dialogue-editcompany form #ProgressId option:selected').first().text();
+                        //                            $('#currentProgressString').html(tempVal);
+                        $('#EditCompany').data('tWindow').close();
+                        //                            HandleEmptySpan()
+                        alert('公司更新成功');
+                        window.location = window.location;
+                    }
+                });
             }
-            var companyNameCN = $('.dialogue-editcompany form #Name_CN').val();
-            var companyNameEN = $('.dialogue-editcompany form #Name_EN').val();
-            $.post('CheckCompanyExist', { beforeUpdateCN: currentCompanyNameCN, afterUpdateCN: companyNameCN, beforeUpdateEN: currentCompanyNameEN, afterUpdateEN: companyNameEN }, function (result) {
-                if (result.length > 0) {
-                    alert(result);
-                } else {
-                    var query = $('.dialogue-editcompany form').serializeArray();
-                    $.post('EditCompany', query, function (result) {
-                        if (result.length > 0) {
-                            alert(result);
-                        } else {
-                            tempVal = $('.dialogue-editcompany form #Name_EN').val() + ' | ' + $('.dialogue-editcompany form #Name_CN').val();
-                            $('#currentCompanyName').html(tempVal);
-                            //                            tempVal = $('.dialogue-editcompany form #Name_CN').val();
-                            //                            $('#currentCompanyNameCN').html(tempVal);
-                            //                            tempVal = $('.dialogue-editcompany form #Name_EN').val();
-                            //                            $('#currentCompanyNameEN').html(tempVal);
-                            if ($('.dialogue-editcompany form #DistrictNumberId option:selected').val() == '') {
-                                $('#currentCompanyDistrictNumberString').html('');
-                            } else {
-                                tempVal = $('.dialogue-editcompany form #DistrictNumberId option:selected').first().text();
-                                $('#currentCompanyDistrictNumberString').html(tempVal);
-                            }
-
-                            tempVal = $('.dialogue-editcompany form #Phone').val();
-                            $('#currentCompanyContact').html(tempVal);
-                            tempVal = $('.dialogue-editcompany form #Fax').val();
-                            $('#currentCompanyFax').html(tempVal);
-                            tempVal = '';
-                            $('.dialogue-editcompany form input[type=checkbox][name=Categories]:checked').each(function () {
-                                tempVal += $(this).prev('label.company-category').html() + ',';
-                            });
-                            if (tempVal.length > 0) {
-                                tempVal = tempVal.substr(0, tempVal.length - 1);
-                            }
-                            $('#currentCompanyCategoryStrings').html(tempVal);
-                            tempVal = $('.dialogue-editcompany form #ProgressId option:selected').first().text();
-                            $('#currentProgressString').html(tempVal);
-                            $('#EditCompany').data('tWindow').close();
-                            HandleEmptySpan()
-                            alert('公司更新成功');
-                        }
-                    });
-                }
-            });
-       // }
+        });
+        // }
     }
 
     function CancelEditcompany() {
@@ -407,27 +459,28 @@
                 } else {
                     //                    $('#' + currentLeadID + ' span.leadNameCN').html($('.dialogue-editlead form #Name_CN').val());
                     //                    $('#' + currentLeadID + ' span.leadNamEN').html($('.dialogue-editlead form #Name_EN').val());
-                    $('#' + currentLeadID + ' span.LeadShowName').html($('.dialogue-editlead form #Gender').val() + ' ' + $('.dialogue-editlead form #Name_CN').val() + ' ' + $('.dialogue-editlead form #Name_EN').val() + ' ' + $('.dialogue-editlead form #Title').val());
-                    //                    $('#' + currentLeadID + ' span.leadTitle').html($('.dialogue-editlead form #Title').val());
-                    //                    $('#' + currentLeadID + ' span.leadGender').html($('.dialogue-editlead form #Gender').val());
-                    $('#' + currentLeadID + ' span.LeadEmail').html($('.dialogue-editlead form #WorkingEmail').val());
-                    $('#' + currentLeadID + ' span.LeadPersonalEmail').html($('.dialogue-editlead form #PersonelEmail').val());
-                    $('#' + currentLeadID + ' span.LeadContact').html($('.dialogue-editlead form #Telephone').val());
-                    $('#' + currentLeadID + ' span.LeadMobile').html($('.dialogue-editlead form #CellPhone').val());
-                    $('#' + currentLeadID + ' span.LeadFax').html($('.dialogue-editlead form #Fax').val());
-                    $('#' + currentLeadID + ' span.WeiBo').html($('.dialogue-editlead form #WeiBo').val());
-                    $('#' + currentLeadID + ' span.WeiXin').html($('.dialogue-editlead form #WeiXin').val());
-                    $('#' + currentLeadID + ' span.LinkIn').html($('.dialogue-editlead form #LinkIn').val());
-                    $('#' + currentLeadID + ' span.FaceBook').html($('.dialogue-editlead form #FaceBook').val());
-                    $('#' + currentLeadID + ' span.Blog').html($('.dialogue-editlead form #Blog').val());
-                    if ($('.dialogue-editlead form #DistrictNumberId option:selected').first().val() == '') {
-                        $('#' + currentLeadID + ' span.LeadDistinctNumberString').html('');
-                    } else {
-                        $('#' + currentLeadID + ' span.LeadDistinctNumberString').html($('.dialogue-editlead form #DistrictNumberId option:selected').first().text());
-                    }
+                    //                    $('#' + currentLeadID + ' span.LeadShowName').html($('.dialogue-editlead form #Gender').val() + ' ' + $('.dialogue-editlead form #Name_CN').val() + ' ' + $('.dialogue-editlead form #Name_EN').val() + ' ' + $('.dialogue-editlead form #Title').val());
+                    //                    //                    $('#' + currentLeadID + ' span.leadTitle').html($('.dialogue-editlead form #Title').val());
+                    //                    //                    $('#' + currentLeadID + ' span.leadGender').html($('.dialogue-editlead form #Gender').val());
+                    //                    $('#' + currentLeadID + ' span.LeadEmail').html($('.dialogue-editlead form #WorkingEmail').val());
+                    //                    $('#' + currentLeadID + ' span.LeadPersonalEmail').html($('.dialogue-editlead form #PersonelEmail').val());
+                    //                    $('#' + currentLeadID + ' span.LeadContact').html($('.dialogue-editlead form #Telephone').val());
+                    //                    $('#' + currentLeadID + ' span.LeadMobile').html($('.dialogue-editlead form #CellPhone').val());
+                    //                    $('#' + currentLeadID + ' span.LeadFax').html($('.dialogue-editlead form #Fax').val());
+                    //                    $('#' + currentLeadID + ' span.WeiBo').html($('.dialogue-editlead form #WeiBo').val());
+                    //                    $('#' + currentLeadID + ' span.WeiXin').html($('.dialogue-editlead form #WeiXin').val());
+                    //                    $('#' + currentLeadID + ' span.LinkIn').html($('.dialogue-editlead form #LinkIn').val());
+                    //                    $('#' + currentLeadID + ' span.FaceBook').html($('.dialogue-editlead form #FaceBook').val());
+                    //                    $('#' + currentLeadID + ' span.Blog').html($('.dialogue-editlead form #Blog').val());
+                    //                    if ($('.dialogue-editlead form #DistrictNumberId option:selected').first().val() == '') {
+                    //                        $('#' + currentLeadID + ' span.LeadDistinctNumberString').html('');
+                    //                    } else {
+                    //                        $('#' + currentLeadID + ' span.LeadDistinctNumberString').html($('.dialogue-editlead form #DistrictNumberId option:selected').first().text());
+                    //                    }
                     $('#EditLead').data('tWindow').close();
-                    HandleEmptySpan()
+                    //                    HandleEmptySpan()
                     alert('Lead更新成功');
+                    window.location = window.location;
                 }
             });
         }
