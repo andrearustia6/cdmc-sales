@@ -32,7 +32,7 @@ namespace Model
                 {
                     retVal = true;
                 }
-                if (!string.IsNullOrWhiteSpace(Filters.fuzzyQuery))
+                if (this.Filters != null && !string.IsNullOrWhiteSpace(Filters.fuzzyQuery))
                 {
                     retVal = true;
                 }
