@@ -32,6 +32,10 @@ namespace Model
                 {
                     retVal = true;
                 }
+                if (!string.IsNullOrWhiteSpace(Filters.fuzzyQuery))
+                {
+                    retVal = true;
+                }
 
                 return retVal;
             }

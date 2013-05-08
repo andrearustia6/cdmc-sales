@@ -82,7 +82,7 @@ namespace Sales.Controllers
 
         AjaxCrmTypedList GetNavigationBar(CompanyFilters filters = null)
         {
-            var d = new AjaxCrmTypedList(filters);
+            var d = new AjaxCrmTypedList(filters);           
             return d;
         }
 
