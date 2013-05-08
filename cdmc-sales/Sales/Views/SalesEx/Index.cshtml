@@ -15,7 +15,7 @@
     <table style="width:798px; display:inline-block"">
         <tr>
             <td>
-                <span>项目选择:@Html.DropDownListFor(model => model.CurrentProjectId, SelectHelper.ProjectSelectList(EditRight.DealsEdit.ToString(), Model.CurrentProjectId),"不指定", new { style = "width:200px;" })</span>
+                <span>项目选择:@Html.DropDownListFor(model => model.CurrentProjectId, SelectHelper.ProjectSelectList(EditRight.DealsEdit.ToString(), Model.CurrentProjectId), new { style = "width:200px;" })</span>
             </td>
             <td>
                 <span>分配时间: @Html.DropDownList("companyassigndate", SelectHelper.DurationSelectList(), "不指定", new { style = "width:200px;" })</span>
@@ -38,19 +38,22 @@
         </tr>
             <tr>
             <td>
-                <span>模糊查询: @Html.TextBox("f-fuzzy")</span>
+              <span>细分行业: @Html.DropDownList("leadprogress", SelectHelper.CategoresSelectList(Model.CurrentProjectId), "不指定", new { style = "width:200px;" })</span>
             </td>
        
         <td>
-            <span>是否展开:<select id="unfoldCompany"><option value=''>不指定</option><option value='true'>展开公司/lead</option><option value='false'>展开公司</option></select> </span>
+            <span>是否展开:<select  style = "width:200px;" id="unfoldCompany"><option value=''>不指定</option><option value='true'>展开公司/lead</option><option value='false'>展开公司</option></select> </span>
         </td>
             <td>
                 <span></span>
             </td>
         </tr>
         <tr>
+        <td  colspan=3"">   <span>模糊查询,寻找匹配的名称,邮件,电话: @Html.TextBox("f-fuzzy", "", new { style="width:500px"})</span></td>
+        </tr>
+        <tr>
         
-           <td colspan="3" style=" height:21"><center >  <input id="search" style="border: none;  width: 67px; height: 21px; background-image: url('../images/chazhao.jpg'); cursor: pointer;" type="button" />
+      <td colspan="3" style=" height:21"><center >  <input id="search" style="border: none;  width: 67px; height: 21px; background-image: url('../images/chazhao.jpg'); cursor: pointer;" type="button" />
     <input type="reset" style="border: none;  width: 67px; height: 21px; background-image: url('../images/chongzhi.jpg'); cursor: pointer;" value=" " />
    <input type="button"  style="border: none;  width: 67px; height: 21px; background-image: url('../images/tianjia_4.jpg'); cursor: pointer;" onclick="GetAddCompany()" />
     </center>
