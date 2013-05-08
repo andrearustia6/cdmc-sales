@@ -396,10 +396,13 @@
         });
     }
     function Addcompany() {
-        if ($('.dialogue-addcompany form').valid()) {
+//        if ($('.dialogue-addcompany form').valid()) {
             var hasError = false;
             $('.dialogue-addcompany form input').removeClass('fieldError');
             $('.dialogue-addcompany form select').removeClass('fieldError');
+
+            $('.dialogue-addcompany form #ProgressId').addClass('fieldError');
+
             String.prototype.isEmpty = function () { return /^\s*$/.test(this); }
             if ($('.dialogue-addcompany form #DistrictNumberId option:selected').val().isEmpty()) {
                 if ($('.dialogue-addcompany form #ZipCode').val().isEmpty()) {
@@ -430,7 +433,7 @@
             }
 
             if (hasError) {
-                alert('数据不完整,公司细分业务至少选一项，国内公司中文名和地址，邮编必填；外国公司英文名必填. ');
+               // alert('数据不完整,公司细分业务至少选一项，国内公司中文名和地址，邮编必填；外国公司英文名必填. ');
                 return;
             }
             var companyNameCN = $('.dialogue-addcompany #Name_CN').val();
@@ -458,7 +461,7 @@
                     });
                 }
             });
-        }
+       // }
     }
 
     function CancelAddcompany() {
