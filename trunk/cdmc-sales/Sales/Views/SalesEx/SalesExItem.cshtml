@@ -296,31 +296,31 @@
             var hasError = false;
             $('.dialogue-editcompany form input').removeClass('fieldError');
             $('.dialogue-editcompany form select').removeClass('fieldError');
-            $('.dialogue-addcompany form #ProgressId').addClass('fieldError');
+            $('.dialogue-editcompany form #ProgressId').addClass('fieldError');
 
             String.prototype.isEmpty = function () { return /^\s*$/.test(this); }
-            if ($('.dialogue-addcompany form #DistrictNumberId option:selected').val().isEmpty()) {
-                if ($('.dialogue-addcompany form #ZipCode').val().isEmpty()) {
-                    $('.dialogue-addcompany form #ZipCode').addClass('fieldError');
+            if ($('.dialogue-editcompany form #DistrictNumberId option:selected').val().isEmpty()) {
+                if ($('.dialogue-editcompany form #ZipCode').val().isEmpty()) {
+                    $('.dialogue-editcompany form #ZipCode').addClass('fieldError');
                     hasError = true;
                 }
-                if ($('.dialogue-addcompany form #Address').val().isEmpty()) {
-                    $('.dialogue-addcompany form #Address').addClass('fieldError');
+                if ($('.dialogue-editcompany form #Address').val().isEmpty()) {
+                    $('.dialogue-editcompany form #Address').addClass('fieldError');
                     hasError = true;
                 }
-                if ($('.dialogue-addcompany form #Name_CN').val().isEmpty()) {
-                    $('.dialogue-addcompany form #Name_CN').addClass('fieldError');
+                if ($('.dialogue-editcompany form #Name_CN').val().isEmpty()) {
+                    $('.dialogue-editcompany form #Name_CN').addClass('fieldError');
                     hasError = true;
                 }
             }
             else {
-                if ($('.dialogue-addcompany form #Name_EN').val().isEmpty()) {
-                    $('.dialogue-addcompany form #Name_EN').addClass('fieldError');
+                if ($('.dialogue-editcompany form #Name_EN').val().isEmpty()) {
+                    $('.dialogue-editcompany form #Name_EN').addClass('fieldError');
                     hasError = true;
                 }
             }
 
-            if ($('.dialogue-addcompany form input[type=checkbox][name=Categories]:checked').length == 0) {
+            if ($('.dialogue-editcompany form input[type=checkbox][name=Categories]:checked').length == 0) {
                 $('fieldset#categories').addClass('fieldError');
                 hasError = true;
             } else {
