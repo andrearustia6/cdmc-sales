@@ -9,7 +9,7 @@
         {
             mappings.For<AjaxGroupedCRM>(binding => binding
                     .ItemDataBound((item, ajaxGroupedCRM) =>
-                    {
+                    {                        
                         item.Text = ajaxGroupedCRM.DisplayName + "分组";
                         item.Value = ajaxGroupedCRM.ID.ToString();
                     })

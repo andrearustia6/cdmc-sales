@@ -43,9 +43,9 @@ namespace Model
             //模糊搜索
             if (Filters != null && !string.IsNullOrWhiteSpace(Filters.fuzzyQuery))
             {
-                query = query.Where(q => q.Company.Leads.Any(l => l.Name_CH.Contains(Filters.fuzzyQuery) || l.Name_EN.Contains(Filters.fuzzyQuery)) || q.Company.Name_CH.Contains(Filters.fuzzyQuery) || q.Company.Name_EN.Contains(Filters.fuzzyQuery) || q.Company.Contact.Contains(Filters.fuzzyQuery));
+                query = query.Where(q => q.Company.Leads.Any(l => l.Name_CH.Contains(Filters.fuzzyQuery) || l.Name_EN.Contains(Filters.fuzzyQuery) || l.EMail.Contains(Filters.fuzzyQuery) || l.PersonalEmailAddress.Contains(Filters.fuzzyQuery)) || q.Company.Name_CH.Contains(Filters.fuzzyQuery) || q.Company.Name_EN.Contains(Filters.fuzzyQuery) || q.Company.Contact.Contains(Filters.fuzzyQuery));
             }
-          
+
             //项目
             if (Filters != null && Filters.ProjectId.HasValue)
             {
