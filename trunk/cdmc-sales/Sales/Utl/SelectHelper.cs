@@ -35,6 +35,20 @@ namespace Utl
             return selectList;
         }
 
+        public static IEnumerable<SelectListItem> CategoresSelectList(int? projectid)
+        {
+            List<SelectListItem> selectList = new List<SelectListItem>();
+
+            var ps = CH.GetAllData<Category>(o=>o.ProjectID==projectid);
+            foreach (var p in ps)
+            {
+                selectList.Add(new SelectListItem() { Text = p.Name, Value = p.ID.ToString() });
+            }
+         
+
+            return selectList;
+        }
+
         public static IEnumerable<SelectListItem> DealConditionSelectList()
         {
             List<SelectListItem> selectList = new List<SelectListItem>();
