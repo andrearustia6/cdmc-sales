@@ -18,7 +18,7 @@
         {
             mappings.For<AjaxCRM>(binding => binding
                     .ItemDataBound((item, ajaxCRM) =>
-                    {
+                    {                                 
                         item.Text = ajaxCRM.DisplayText;
                         item.Value = ajaxCRM.CRMID.ToString();
                     })
@@ -26,7 +26,7 @@
 
             mappings.For<AjaxLead>(binding => binding
                     .ItemDataBound((item, Lead) =>
-                    {
+                    {                            
                         item.Text = Lead.DisplayText;
                         item.Value = Lead.CRMID.ToString() + "," + Lead.LeadID.ToString();
                     }));

@@ -15,9 +15,10 @@ namespace Sales.Controllers
     {
         //
         // GET: /SalesEx/
-        public ActionResult Index()
+        public ActionResult Index(int? crmId)
         {
-            return View(GetNavigationBar());
+            AjaxCrmTypedList ajaxCrmTypedList = GetNavigationBar();               
+            return View(ajaxCrmTypedList);
         }
 
 

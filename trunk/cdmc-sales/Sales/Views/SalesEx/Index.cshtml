@@ -376,12 +376,20 @@
     }
 
     function GetAddCompany() {
-        if ($('#CurrentProjectId').val() == '') {
-            alert('请先选择项目');
-            return false;
-        }       
-       
-        $.post('GetAddCompany', { projectId: $('#CurrentProjectId').val() }, function (result) {
+          
+        var currentProjectId = undefined;
+        if($('#CurrentProjectId option').length == 2)
+        {
+            currentProjectId=$('#CurrentProjectId option').get(1).value
+        } else {
+            currentProjectId = $('#CurrentProjectId').val();
+            if (currentProjectId == '') {
+                alert('请先选择项目');
+                return false;
+            }
+        }
+
+        $.post('GetAddCompany', { projectId: currentProjectId }, function (result) {
             $('.companyAdd-wrapper').html(result);
             var window = $('#AddCompany').data('tWindow');
             window.center().open();
@@ -421,20 +429,6 @@
                 $('fieldset#categories').removeClass('fieldError');
             }
 
-//            if ($("input[name='Categories']").serializeArray().length == 0)
-//           {
-//               hasError = true;
-//           }
-
-
-//            if ($('.dialogue-addcompany form input[type=checkbox][name=Categories]:checked').length == 0) {
-//                $('fieldset#categories').addClass('fieldError');
-//                hasError = true;
-//            } else {
-//                $('fieldset#categories').removeClass('fieldError');
-//            }
-
-//>>>>>>> .r535
             if (hasError) {
                 alert('数据不完整,公司细分业务至少选一项，国内公司中文名和地址，邮编必填；外国公司英文名必填. ');
                 return;
@@ -454,7 +448,9 @@
                                 $('#ProjectID').val(result.projectId);
                                 onLeadAdd(result.companyId);
                             } else {
-                                window.location = window.location;
+                                var myurl = new SF.URL(window.location.href);
+                                myurl.set('crmId', result.companyRelationshipId);                               
+                                window.location = myurl.url();                              
                             }
                         } else {
                             alert('公司新增失败');
