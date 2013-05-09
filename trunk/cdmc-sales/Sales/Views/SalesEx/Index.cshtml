@@ -5,9 +5,10 @@
 @using Model
 @using Utl
 @model AjaxCrmTypedList
-@*<form style="line-height: 30px; display: inline-block;">
-
-</form>*@
+@{
+    IEnumerable<SelectListItem> projectList=SelectHelper.ProjectSelectList(EditRight.DealsEdit.ToString(), Model.CurrentProjectId);
+    Model.CurrentProjectId = int.Parse(projectList.First().Value);
+ }
 <center>
 <div class="selections" style="width:95%">
 <form>
@@ -15,7 +16,7 @@
     <table style="width:798px; display:inline-block"">
         <tr>
             <td>
-                <span>项目选择:@Html.DropDownListFor(model => model.CurrentProjectId, SelectHelper.ProjectSelectList(EditRight.DealsEdit.ToString(), Model.CurrentProjectId), new { style = "width:200px;" })</span>
+                <span>项目选择:@Html.DropDownListFor(model => model.CurrentProjectId, projectList, new { style = "width:200px;" })</span>
             </td>
             <td>
                 <span>分配时间: @Html.DropDownList("companyassigndate", SelectHelper.DurationSelectList(), "不指定", new { style = "width:200px;" })</span>
@@ -38,7 +39,7 @@
         </tr>
             <tr>
             <td>
-              <span>细分行业: @Html.DropDownList("leadprogress", SelectHelper.CategoresSelectList(Model.CurrentProjectId), "不指定", new { style = "width:200px;" })</span>
+              <span>细分行业: @Html.DropDownList("f-category", SelectHelper.CategoresSelectList(Model.CurrentProjectId), "不指定", new { style = "width:200px;" })</span>
             </td>
        
         <td>
@@ -172,7 +173,9 @@
 
     $(document).ready(function () {
         initial();
-
+        $('#CurrentProjectId').change(function () {
+            CurrentProjectChange($('#CurrentProjectId').val());
+        });
         $('#search').unbind('click').bind('click', function () {
             var f = GetFilters();
             $.post('_RefreshCrmList', f, function (result) {
@@ -181,6 +184,16 @@
             });
         });
     });
+    function CurrentProjectChange(currentProjectId) {
+        $.get('GetCatagories', { currentProjectId: currentProjectId }, function (result) {
+            $('#f-category').empty();
+            $("<option value=''>不指定</option>").appendTo("#f-category")
+            $.each(result, function (index) {
+                $("<option value='" + result[index].value + "'>" + result[index].text + "</option>").appendTo("#f-category");
+            });
+        });
+    }
+
     function GetFilters() {
         var id = $('#CurrentProjectId').val();     
         var companyprogress = $('#companyprogress').val();
@@ -188,10 +201,11 @@
         var leadprogress = $('#leadprogress').val();
         var dealprogress = $('#dealprogress').val();
         var callprogress = $('#callprogress').val();
+        var categoryId = $('#f-category').val();
         var fuzzyQuery = $('#f-fuzzy').val();
         var unfold = $('#unfoldCompany').val();    
         //var companyassigndate = $('#companyassigndate').val();
-        return { CompanyProgress: companyprogress, CompanyAssignDate: companyassigndate, LeadProgress: leadprogress, DealProgress: dealprogress, CallProgress: callprogress, ProjectId: id, fuzzyQuery: fuzzyQuery, Unfold: unfold };
+        return { CompanyProgress: companyprogress, CompanyAssignDate: companyassigndate, LeadProgress: leadprogress, DealProgress: dealprogress, CallProgress: callprogress, ProjectId: id, FuzzyQuery: fuzzyQuery, Unfold: unfold, CategoryId: categoryId };
     }
     function initial() {
 
@@ -491,7 +505,7 @@
         font-size: 12px;
         color: Green;
     }
-    
+
     .selections span
     {
     }
