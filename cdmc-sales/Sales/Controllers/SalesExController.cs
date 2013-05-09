@@ -484,6 +484,13 @@ namespace Sales.Controllers
             CH.Edit<CompanyRelationship>(companyRelationship);
             return null;
         }
+
+        [HttpGet]
+        public ActionResult GetCatagories(int currentProjectId)
+        {
+            List<Category> categoriylist = CH.GetAllData<Category>(o => o.ProjectID == currentProjectId).ToList();
+            return Json(categoriylist.Select(c => new { value = c.ID, text = c.Name }), JsonRequestBehavior.AllowGet);
+        }
     }
 }
 

@@ -16,9 +16,9 @@ namespace Model
         public int? LeadProgress { get; set; }
         public int? DealProgress { get; set; }
         public int? CallProgress { get; set; }
-
+        public int? CategoryId { get; set; }
         public bool? Unfold { get; set; }
-        public string fuzzyQuery { get; set; }
+        public string FuzzyQuery { get; set; }
     }
 
     public class AjaxCrmTypedList
@@ -32,7 +32,7 @@ namespace Model
                 {
                     retVal = true;
                 }
-                if (this.Filters != null && !string.IsNullOrWhiteSpace(Filters.fuzzyQuery))
+                if (this.Filters != null && !string.IsNullOrWhiteSpace(Filters.FuzzyQuery))
                 {
                     retVal = true;
                 }
@@ -45,9 +45,9 @@ namespace Model
         {
             var query = from c in CH.DB.CompanyRelationships select c;
             //模糊搜索
-            if (Filters != null && !string.IsNullOrWhiteSpace(Filters.fuzzyQuery))
+            if (Filters != null && !string.IsNullOrWhiteSpace(Filters.FuzzyQuery))
             {
-                query = query.Where(q => q.Company.Leads.Any(l => l.Name_CH.Contains(Filters.fuzzyQuery) || l.Name_EN.Contains(Filters.fuzzyQuery) || l.EMail.Contains(Filters.fuzzyQuery) || l.PersonalEmailAddress.Contains(Filters.fuzzyQuery)) || q.Company.Name_CH.Contains(Filters.fuzzyQuery) || q.Company.Name_EN.Contains(Filters.fuzzyQuery) || q.Company.Contact.Contains(Filters.fuzzyQuery));
+                query = query.Where(q => q.Company.Leads.Any(l => l.Name_CH.Contains(Filters.FuzzyQuery) || l.Name_EN.Contains(Filters.FuzzyQuery) || l.EMail.Contains(Filters.FuzzyQuery) || l.PersonalEmailAddress.Contains(Filters.FuzzyQuery)) || q.Company.Name_CH.Contains(Filters.FuzzyQuery) || q.Company.Name_EN.Contains(Filters.FuzzyQuery) || q.Company.Contact.Contains(Filters.FuzzyQuery));
             }
 
             //项目
@@ -107,6 +107,11 @@ namespace Model
 
                 query = query.Where(q => q.LeadCalls.Any(a => a.CallDate >= day));
 
+            }
+
+            if (Filters != null && Filters.CategoryId.HasValue)
+            {
+                query = query.Where(q => q.Categorys.Any(c => c.ID == Filters.CategoryId.Value));
             }
             return query.OrderBy(o => o.CreatedDate);
         }
