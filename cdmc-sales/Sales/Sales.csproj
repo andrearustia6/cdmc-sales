@@ -307,6 +307,9 @@
     <Content Include="images\anniu_1.gif" />
     <Content Include="images\anniu_2.gif" />
     <Content Include="images\background.gif" />
+    <Content Include="images\bianji.jpg" />
+    <Content Include="images\bianji_2.jpg" />
+    <Content Include="images\bianji_3.jpg" />
     <Content Include="images\bj-2.jpg" />
     <Content Include="images\bj.jpg" />
     <Content Include="images\bj_3.gif" />
