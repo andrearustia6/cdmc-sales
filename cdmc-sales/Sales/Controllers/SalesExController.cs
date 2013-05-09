@@ -17,7 +17,7 @@ namespace Sales.Controllers
         // GET: /SalesEx/
         public ActionResult Index(int? crmId)
         {
-            AjaxCrmTypedList ajaxCrmTypedList = GetNavigationBar();               
+            AjaxCrmTypedList ajaxCrmTypedList = GetNavigationBar();
             return View(ajaxCrmTypedList);
         }
 
@@ -82,7 +82,7 @@ namespace Sales.Controllers
 
         AjaxCrmTypedList GetNavigationBar(CompanyFilters filters = null)
         {
-            var d = new AjaxCrmTypedList(filters);           
+            var d = new AjaxCrmTypedList(filters);
             return d;
         }
 
@@ -169,7 +169,7 @@ namespace Sales.Controllers
 
 
         [ValidateInput(false)]
-        public ActionResult CheckCompanyExist(string beforeUpdateCN, string afterUpdateCN,string beforeUpdateEN, string afterUpdateEN)
+        public ActionResult CheckCompanyExist(string beforeUpdateCN, string afterUpdateCN, string beforeUpdateEN, string afterUpdateEN)
         {
             if (CH.GetAllData<CompanyRelationship>(c => c.MarkForDelete == false && c.Company.Name_CH == afterUpdateCN && c.Company.Name_CH != beforeUpdateCN).Count > 0)
             {
@@ -383,6 +383,7 @@ namespace Sales.Controllers
             CompanyRelationship companyRelationship = CH.GetAllData<CompanyRelationship>(c => c.CompanyID == companyId).First();
             AjaxViewSaleCompany ajaxViewSaleCompany = new AjaxViewSaleCompany()
             {
+                CompanRelationshipId = companyRelationship.ID,
                 ProjectId = companyRelationship.ProjectID,
                 CompanyId = companyRelationship.CompanyID,
                 Address = companyRelationship.Company.Address,

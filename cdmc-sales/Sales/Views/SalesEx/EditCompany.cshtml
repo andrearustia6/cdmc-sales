@@ -7,6 +7,7 @@
 {
     @Html.HiddenFor(model => model.ProjectId)
     @Html.HiddenFor(model => model.CompanyId)
+    @Html.HiddenFor(model => model.CompanRelationshipId)
     <fieldset>
         <legend>公司信息</legend>
         <ul>
@@ -36,9 +37,7 @@
                     @Html.ValidationMessageFor(model => model.DistrictNumberId)
                 </span></li>
             <li><span class="addcompany-left">@Html.LabelFor(model => model.IndustryId) @Html.DropDownListFor(model => model.IndustryId, SelectHelper.CompanyIndustrySelectList(null), "请选择", new { style = "width:200px" })
-                @Html.ValidationMessageFor(model => model.IndustryId)</span> </li>
-            <li><span>@Html.LabelFor(model => model.Business) @Html.TextAreaFor(model => model.Business)
-                @Html.ValidationMessageFor(model => model.Business)</span> </li>
+                @Html.ValidationMessageFor(model => model.IndustryId)</span> </li>         
             <li><span>@Html.LabelFor(model => model.Desc) @Html.TextAreaFor(model => model.Desc)
                 @Html.ValidationMessageFor(model => model.Desc)</span> </li>
             <li>

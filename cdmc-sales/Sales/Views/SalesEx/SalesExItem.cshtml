@@ -171,7 +171,7 @@
         </div>
     </div></text>)
     .Width(800)
-        .Height(620).Draggable(true)
+        .Height(500).Draggable(true)
     .Modal(true).Visible(false)
 )
 @(Html.Telerik().Window().Title("新增lead")
@@ -423,7 +423,9 @@
                         $('#EditCompany').data('tWindow').close();
                         //                            HandleEmptySpan()
                         alert('公司更新成功');
-                        window.location = window.location;
+                        onCompanyChanging($('#mainnavigationcontainer span.t-state-selected').next().val());
+
+                        //                        window.location = window.location;
                     }
                 });
             }
@@ -477,10 +479,11 @@
                     //                    } else {
                     //                        $('#' + currentLeadID + ' span.LeadDistinctNumberString').html($('.dialogue-editlead form #DistrictNumberId option:selected').first().text());
                     //                    }
+                    onCompanyChanging($('#mainnavigationcontainer span.t-state-selected').next().val());
                     $('#EditLead').data('tWindow').close();
                     //                    HandleEmptySpan()
                     alert('Lead更新成功');
-                    window.location = window.location;
+                    
                 }
             });
         }

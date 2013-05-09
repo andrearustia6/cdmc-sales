@@ -166,7 +166,7 @@
         </div>
     </div></text>)
         .Width(800)
-        .Height(620)
+            .Height(500)
         .Modal(true).Visible(false).Draggable(true)
     )
 <script type="text/javascript">
@@ -373,13 +373,18 @@
     }
     //公司选择 
     function onIndexSelect(e) {
-
-        var indexs = nv().getItemValue(e.item);
+        var indexs = nv().getItemValue(e.item);       
         if (indexs.indexOf("分组") < 0) {
             $.post('_SelectedList', { indexs: indexs, filters: GetFilters() }, function (result) {
                 $('#crmdetailscontainer').html(result);
             });
         }
+    }
+
+    function onCompanyChanging(indexs) {    
+         $.post('_SelectedList', { indexs: indexs, filters: GetFilters() }, function (result) {
+                $('#crmdetailscontainer').html(result);
+         });       
     }
 
     //展开所有leads
