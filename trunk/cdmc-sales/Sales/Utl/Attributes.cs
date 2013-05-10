@@ -84,11 +84,6 @@ public class RoleRequired : AuthorizeAttribute
         bool skipAuthorization = filterContext.ActionDescriptor.IsDefined(typeof(AllowAnonymousAttribute), true)
         || filterContext.ActionDescriptor.ControllerDescriptor.IsDefined(typeof(AllowAnonymousAttribute), true);
         var level = Employee.CurrentRole.Level;
-        if (level == 99999)
-        {
-            skipAuthorization = true;
-            return;
-        }
         if (AccessType == AccessType.Upper)
         {
             if (level >= Level) skipAuthorization = true;
@@ -234,6 +229,22 @@ public sealed class AdministratorRequired : RoleRequired
     {
         get { return LVL; }
     }
+
+    /// <summary>
+    /// Override authriztion method for admin.
+    /// </summary>
+    /// <param name="filterContext">Default para.</param>
+    public override void OnAuthorization(AuthorizationContext filterContext)
+    {
+        //Judging against login user rather than current user.
+        bool loginUserIsAdmin = Employee.LoginUserIsAdmin();
+        if (!loginUserIsAdmin)
+        {
+            filterContext.Result = new HttpUnauthorizedResult();
+            base.OnAuthorization(filterContext);
+        }
+    }
+
 }
 
 /// <summary>

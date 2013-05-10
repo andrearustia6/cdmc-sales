@@ -146,17 +146,21 @@ namespace Utl
 
         static string GetCurrentUserName()
         {
+            var username = GetLoginUserName();
 
-            var mode = ConfigurationManager.AppSettings["DebugModel"].ToString();
-            var user = HttpContext.Current.User.Identity.Name;
-
-            if (mode == "true" && Employee.GetRole(user).Name == "系统管理员")
+            if (LoginUserIsAdmin())
             {
-                var name = ConfigurationManager.AppSettings["DebugAccount"].ToString();
-                return name;
+                // Access system with simulator authority.
+                SimulatorConfig simulatorConfig =
+                    CH.GetAllData<SimulatorConfig>(s => s.AdminName == username).SingleOrDefault();
+                if (simulatorConfig == null)
+                {
+                    return username;
+                }
+                return simulatorConfig.SimulatorName;
             }
             else
-                return HttpContext.Current.User.Identity.Name;
+                return username;
         }
 
         public static UserInfoModel GetUserByName(string username)
@@ -188,6 +192,26 @@ namespace Utl
                 UserName = username
             };
             return userinfo;
+        }
+
+        /// <summary>
+        /// Gets the name of current login user.
+        /// </summary>
+        /// <returns>User name of current logon user.</returns>
+        public static string GetLoginUserName()
+        {
+            return HttpContext.Current.User.Identity.Name;
+        }
+
+        /// <summary>
+        /// Gets the role of current login user.
+        /// Note: This method only be used when admin login system with other role.
+        /// In such case, Logon user is different from current user.
+        /// </summary>
+        /// <returns>User name of current logon user.</returns>
+        public static bool LoginUserIsAdmin()
+        {
+            return GetRoleLevel(GetLoginUserName()) == AdministratorRequired.LVL;
         }
 
         public static List<MembershipUser> GetAllEmployees()

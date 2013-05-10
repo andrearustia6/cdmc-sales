@@ -1,0 +1,22 @@
+﻿@using Entity
+@Html.Partial("contenttitle", "模拟人配置")
+@(Html.Telerik().Grid<SimulatorConfig>().Name("Grid")
+.DataKeys(keys => { keys.Add(sc => sc.ID); })
+.DataBinding(dataBinding =>
+{
+    dataBinding.Ajax()
+        .Select("_SelectIndex", "SimulatorConfig")
+        .Update("_SaveAjaxEditing", "SimulatorConfig");
+})
+.Columns(columns =>
+{
+    columns.Bound(sc => sc.SimulatorName);
+    columns.Command(commands =>
+    {
+        commands.Edit();
+    }).Width(220).Title("操作");
+})
+   .Editable(editing => editing.Mode(GridEditMode.PopUp))
+   .Pageable(p => p.Style(GridPagerStyles.Status)
+       .PageOnScroll(true)).Scrollable().Sortable().Filterable().Groupable()
+)
