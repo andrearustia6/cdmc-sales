@@ -130,12 +130,15 @@ namespace Sales.Controllers
             List<_UserResearchDetail> Detailslist = new List<_UserResearchDetail>();
             if (details != null)
             {
-                if (duration != null && duration!=0)
+               
+                if (duration == null)
                 {
+                    duration = 1;
+                }
                     DateTime startdate = DateTime.Now;
                     startdate = startdate.AddDays(-duration.Value);
                     details = details.Where(d => d.CreateDate >= startdate && d.CreateDate <= DateTime.Now);
-                }
+              
 
                 //权限控制
                 Detailslist = details.OrderByDescending(o=>o.CreateDate).ToList();

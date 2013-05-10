@@ -722,9 +722,9 @@ namespace Utl
                     start += "*";
                 }
 
-
+                return m.Substring(0, 3) + start;
             }
-            return m.Substring(0, 3) + start;
+            return m;
         }
             
         
