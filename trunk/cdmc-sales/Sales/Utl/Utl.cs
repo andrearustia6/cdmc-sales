@@ -706,6 +706,28 @@ namespace Utl
             }
             return phonelist;
         }
+
+        public static string HidePhoneNumber(string origin)
+        {
+            var m = origin; 
+            if (string.IsNullOrWhiteSpace(m)) return string.Empty;
+            string start = string.Empty;
+            if (m.Length > 3)
+            {
+                var hide = m.Substring(3, m.Length - 3);
+                var hidecount = hide.Count();
+
+                for (int i = 0; i < hidecount; i++)
+                {
+                    start += "*";
+                }
+
+
+            }
+            return m.Substring(0, 3) + start;
+        }
+            
+        
         public static string FilterStr(string source)
         {
             source = source.Replace("& ", "& ");

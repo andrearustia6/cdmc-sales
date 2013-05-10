@@ -88,7 +88,9 @@ namespace Sales.Controllers
             if (type == "project")
             {
                 int id = int.Parse(name);
-                details = from l in CH.DB.CompanyRelationships.Where(w => w.Project.ID == id).Select(s => s.Company).SelectMany(s => s.Leads)
+               
+                details = from c in CH.DB.CompanyRelationships.Where(w => w.Project.ID == id)
+                          from l in  c.Company.Leads
                               select new _UserResearchDetail()
                               {
                                   LeadNameEN = l.Name_EN,
@@ -101,7 +103,8 @@ namespace Sales.Controllers
                                   LeadContact = l.Contact,
                                   LeadMobile = l.Mobile,
                                   LeadTitle = l.Title,
-                                  CreateDate = l.CreatedDate
+                                  CreateDate = l.CreatedDate,
+                                  Categoris = c.CategoryString
                               };
             }
             if (type == "user")

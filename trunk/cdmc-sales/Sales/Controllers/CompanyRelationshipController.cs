@@ -117,7 +117,7 @@ namespace Sales.Controllers
                         if (string.IsNullOrEmpty(categorystring))
                             categorystring = l.Name;
                         else
-                            categorystring += "|" + l.Name;
+                            categorystring += "," + l.Name;
                     });
                     item.CategoryString = categorystring;
                     CH.Edit<CompanyRelationship>(item);

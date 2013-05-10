@@ -123,15 +123,15 @@
           columns.Bound(p => p.CompanyName);
           columns.Bound(p => p.LeadName).Width(100);
           columns.Bound(p => p.LeadTitle).Width(100);
-          columns.Bound(p => p.CompanyContact).Width(80);
-          columns.Bound(p => p.LeadContact).Width(80);
-          columns.Bound(p => p.LeadMobile).Width(80);
+          columns.Bound(p => p.HideCompanyContact).Width(80);
+          columns.Bound(p => p.HideLeadContact).Width(80);
+          columns.Bound(p => p.HideLeadMobile).Width(80);
           columns.Bound(p => p.CreateDate);
           columns.Bound(p => p.Creator);
-          columns.Bound(p => p.CompanyDesicription);
+          columns.Bound(p => p.Categoris);
 
       })
-      
+                 .DetailView(details => details.ClientTemplate("<#= CompanyDesicription #>"))
       .Pageable(p => p.Style(GridPagerStyles.Status).PageSize(100)
               .PageOnScroll(true)).Scrollable().Sortable().Groupable().Resizable(r => r.Columns(true))
               .Scrollable(scrolling => scrolling.Height(500))
