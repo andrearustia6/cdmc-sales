@@ -291,22 +291,22 @@ namespace Model
         {
             get
             {
+                return Utl.Utl.HidePhoneNumber(Mobile);
+                //var m = Mobile; if (string.IsNullOrWhiteSpace(m)) return string.Empty;
+                //string start = string.Empty;
+                //if (m.Length > 3)
+                //{
+                //    var hide = m.Substring(3, m.Length - 3);
+                //    var hidecount = hide.Count();
 
-                var m = Mobile; if (string.IsNullOrWhiteSpace(m)) return string.Empty;
-                string start = string.Empty;
-                if (m.Length > 3)
-                {
-                    var hide = m.Substring(3, m.Length - 3);
-                    var hidecount = hide.Count();
-
-                    for (int i = 0; i < hidecount; i++)
-                    {
-                        start += "*";
-                    }
+                //    for (int i = 0; i < hidecount; i++)
+                //    {
+                //        start += "*";
+                //    }
 
 
-                }
-                return m.Substring(0, 3) + start;
+                //}
+                //return m.Substring(0, 3) + start;
             }
         }
 
@@ -315,24 +315,24 @@ namespace Model
         {
             get
             {
+                return Utl.Utl.HidePhoneNumber(Contact);
+                //var m = Contact;
+                //if (string.IsNullOrWhiteSpace(m)) return string.Empty;
+                //if (m.Length <= 3) return m;
+                //string start = string.Empty;
+                //if (!string.IsNullOrEmpty(m) && m.Length > 3)
+                //{
+                //    var hide = m.Substring(3, m.Length - 3);
+                //    var hidecount = hide.Count();
 
-                var m = Contact;
-                if (string.IsNullOrWhiteSpace(m)) return string.Empty;
-                if (m.Length <= 3) return m;
-                string start = string.Empty;
-                if (!string.IsNullOrEmpty(m) && m.Length > 3)
-                {
-                    var hide = m.Substring(3, m.Length - 3);
-                    var hidecount = hide.Count();
-
-                    for (int i = 0; i < hidecount; i++)
-                    {
-                        start += "*";
-                    }
+                //    for (int i = 0; i < hidecount; i++)
+                //    {
+                //        start += "*";
+                //    }
 
 
-                }
-                return m.Substring(0, 3) + start;
+                //}
+                //return m.Substring(0, 3) + start;
             }
         }
 

@@ -373,6 +373,15 @@ namespace Sales.Controllers
             {
                 companyRelationship.Categorys = CH.GetAllData<Category>(c => ajaxViewSaleCompany.Categories.Contains(c.ID)).ToList();
             }
+            string categorystring = string.Empty;
+            companyRelationship.Categorys.ForEach(l =>
+            {
+                if (string.IsNullOrEmpty(categorystring))
+                    categorystring = l.Name;
+                else
+                    categorystring += "," + l.Name;
+            });
+            companyRelationship.CategoryString = categorystring;
             CH.Create<CompanyRelationship>(companyRelationship);
 
             return Json(new { companyRelationshipId = companyRelationship.ID, companyId = companyRelationship.CompanyID, projectId = companyRelationship.ProjectID });
@@ -482,6 +491,16 @@ namespace Sales.Controllers
             {
                 companyRelationship.Categorys = CH.GetAllData<Category>(c => ajaxViewSaleCompany.Categories.Contains(c.ID)).ToList();
             }
+            string categorystring = string.Empty;
+            companyRelationship.Categorys.ForEach(l =>
+            {
+                if (string.IsNullOrEmpty(categorystring))
+                    categorystring = l.Name;
+                else
+                    categorystring += "," + l.Name;
+            });
+            companyRelationship.CategoryString = categorystring;
+
             CH.Edit<CompanyRelationship>(companyRelationship);
             return null;
         }

@@ -125,6 +125,17 @@ namespace Sales.Model
         [Display(Name = "Lead直线")]
         public string LeadContact { get; set; }
 
+        [Display(Name = "公司总机")]
+        public string HideCompanyContact { get { return Utl.Utl.HidePhoneNumber(CompanyContact); } }
+
+        [Display(Name = "Lead直线")]
+        public string HideLeadContact { get { return Utl.Utl.HidePhoneNumber(LeadContact); } }
+
+        [Display(Name = "移动电话")]
+        public string HideLeadMobile { get { return Utl.Utl.HidePhoneNumber(LeadMobile); } }
+        [Display(Name = "细分行业")]
+        public string Categoris { get; set; }
+
         [Display(Name = "Lead邮件")]
         public string Email { get; set; }
 
