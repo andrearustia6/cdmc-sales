@@ -30,8 +30,8 @@
             @Html.ActionLink("[关于]", "Index", "About")
             @Html.ActionLink("[退出]", "LogOff", "Account")
         </div>
-        <div class="logo">
-            <img src="/images/logo_2.gif" width="509" height="59" alt="logo" /></div>
+      @*  <div class="logo">
+            <img src="/images/logo_2.gif" width="509" height="59" alt="logo" /></div>*@
         <div class="page">
             <div>
                 @{ 
@@ -143,10 +143,9 @@
                            menu.Add().Text("日常工作").ImageUrl("~/Content/Common/Icons/editor.png").Items(item =>
                            {
                                item.Add().Url("~/Sales/mypage").Text("我的主页");
-                               item.Add().Url("~/Research/MyIndex").Text("调研管理");
+                               //item.Add().Url("~/Research/MyIndex").Text("调研管理");
                                item.Add().Url("~/Sales/companyrelationshipindex").Text("可打公司");
                                //item.Add().Url("~/Sales/AvailableCompanys").Text("可打公司 V2.0");
-                               //item.Add().Url("~/Sales/CallableCompanies").Text("可打公司 V3.0");
                                item.Add().Url("~/SalesEx/index").Text("可打公司 V2.0");
                                item.Add().Url("~/Sales/ContectedLeads").Text("Call List");
                                item.Add().Url("~/TargetOfMonthForMember/MyTargetIndex").Text("我的月目标");
