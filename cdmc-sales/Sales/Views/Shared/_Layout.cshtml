@@ -41,7 +41,8 @@
                         var score = role.Level;
                         Html.Telerik().Menu().Name("Menu1").Items(menu =>
                    {
-                       if (score == AdministratorRequired.LVL)
+                       var loginUserIsAdmin = Employee.LoginUserIsAdmin();
+                       if (loginUserIsAdmin)
                        {
                            menu.Add().Text("管理员配置").ImageUrl("~/Content/Common/Icons/wpf.png").Items(item =>
                           {
@@ -49,6 +50,7 @@
                               item.Add().Text("职级").Url("~/explevel/index");
                               item.Add().Text("权限配置").Url("~/accessright/index");
                               item.Add().Text("项目权限").Url("~/projectright/index");
+                              item.Add().Text("模拟人配置").Url("~/SimulatorConfig/index");
                           });
                        }
 

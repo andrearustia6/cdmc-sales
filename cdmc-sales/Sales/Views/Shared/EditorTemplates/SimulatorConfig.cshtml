@@ -1,0 +1,23 @@
+@model SimulatorConfig
+@using Entity
+@using Utl
+<fieldset>
+    <legend>@SR.Form</legend>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.SimulatorName)
+    </div>
+    <div class="editor-field">
+        @{
+            List<string> list = new List<string>();
+
+            list = Membership.GetAllUsers().Cast<MembershipUser>().ToList<MembershipUser>()
+                .Where(user => Employee.GetRoleLevel(user.UserName) < AdministratorRequired.LVL)
+                .Select(user => user.UserName).ToList();
+            list.Add(Employee.GetLoginUserName());
+            
+            @Html.DropDownListFor(model => model.SimulatorName, new SelectList(list), "-ÇëÑ¡Ôñ-")
+            @Html.ValidationMessageFor(model => model.SimulatorName)
+        }
+    </div>
+</fieldset>
+@Html.Partial("editcommon", Model)

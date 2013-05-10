@@ -224,6 +224,7 @@
     <Compile Include="Controllers\AssignPerformanceRateController.cs" />
     <Compile Include="Controllers\AssignPerformanceScoreController.cs" />
     <Compile Include="Controllers\CompanyRelationshipController.cs" />
+    <Compile Include="Controllers\SimulatorConfigController.cs" />
     <Compile Include="Controllers\DealController.cs" />
     <Compile Include="Controllers\FavorsGroupController.cs" />
     <Compile Include="Controllers\NewsController.cs" />
@@ -1647,7 +1648,9 @@
   <ItemGroup>
     <Content Include="Views\SalesEx\DetailCompany.cshtml" />
     <Content Include="Views\Project\AssignCompany.cshtml" />
+    <Content Include="Views\SimulatorConfig\Index.cshtml" />
     <None Include="Views\SalesEx\EditCompany.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\SimulatorConfig.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\TargetOfMonthForMember\Confirm.cshtml" />
