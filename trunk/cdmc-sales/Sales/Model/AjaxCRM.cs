@@ -255,8 +255,8 @@ namespace Model
                                                              CallType = call.LeadCallType.Name,
                                                              Caller = call.Member.Name,
                                                              LeadCallTypeCode = call.LeadCallType.Code,
-                                                             LeadCallID = call.ID
-
+                                                             LeadCallID = call.ID,
+                                                             Result = call.Result
                                                          })
                                         })
 
