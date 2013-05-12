@@ -451,10 +451,13 @@
 
     var currentLeadID = undefined;
     function onLeadEdit(leadId) {
-        currentLeadID = leadId;
+        currentLeadID = leadId;      
         $.post('GetEditLead', { leadId: leadId }, function (result) {
             $('.leadedit-wrapper').html(result);
             $('#EditLead').data('tWindow').center().open();
+            while ($('.dialogue-editlead form').length > 1) {
+                $('.dialogue-editlead form').last().remove();
+            }
         });
     }
 
@@ -495,6 +498,9 @@
             $('.calledit-wrapper').html(result);
             var window = $('#EditCall').data('tWindow');
             window.center().open();
+            while ($('.dialogue-editcall form').length > 1) {
+                $('.dialogue-editcall form').last().remove();
+            }
         });
     }
     function CancelEditLead() {
