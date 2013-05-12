@@ -344,7 +344,8 @@ namespace Model
         [Display(Name = "英文名字")]
         public string CompanyNameEN { get; set; }
         public int LeadsCount { get; set; }
-        public string CompanyName { get { return Utl.Utl.GetFullName(CompanyNameCH, CompanyNameEN); } }
+        public string CompanyName { get { return Utl.Utl.GetFullString(",",CompanyNameCH, CompanyNameEN); } }
+        public string CompanyDisplayName { get { return Utl.Utl.GetFullString(" ", CompanyNameCH, CompanyNameEN, CategoryString, ProgressString); } }
         public int? CompanyID { get; set; }
         [Display(Name = "公司总机")]
         public string CompanyContact { get; set; }
