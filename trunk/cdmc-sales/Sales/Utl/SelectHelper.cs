@@ -263,7 +263,7 @@ namespace Utl
             List<SelectListItem> selectList = new List<SelectListItem>();
             foreach (Project project in CRM_Logical.GetUserProjectRight(currentUserName))
             {
-                SelectListItem selectListItem = new SelectListItem() { Text = project.Name, Value = project.ID.ToString() };
+                SelectListItem selectListItem = new SelectListItem() { Text = project.ProjectCode, Value = project.ID.ToString() };
                 if (selectVal.HasValue && project.ID == selectVal.Value)
                 {
                     selectListItem.Selected = true;
