@@ -21,7 +21,7 @@
     {
     <div class="fenge">
         <div class="fenge_2">
-            <span id="currentCompanyName" style="font-weight:bold">@Model.CompanyName</span>
+            <span id="currentCompanyName" style="font-weight:bold">@Model.CompanyDisplayName</span>
             <input class="salebtn" style=" background-image:url('../images/tianjia_3.jpg');" type="button" onclick="onLeadAdd(@(Model.CompanyID))" />
             <input type="button" class="salebtn"  style="background-image:url('../images/gengxin.jpg');"  onclick="onCompanyEdit(@(Model.CompanyID))" />
             <input type="button"class="salebtn"  style="background-image:url('../images/gaikuo.jpg'); " onclick="onCompanyDetail(@(Model.CompanyID))" />
@@ -53,12 +53,12 @@
                         <font>细分行业：</font><span id="currentCompanyCategoryStrings" class="datainfo">@Model.CompanyCategoryStrings</span>
                     </dd>
                 }
-                @if (!string.IsNullOrWhiteSpace(Model.ProgressString))
+              @*  @if (!string.IsNullOrWhiteSpace(Model.ProgressString))
                 {
                     <dd>
                         <font>成熟度：</font><span id="currentProgressString" class="datainfo">@Model.ProgressString</span>
                     </dd>
-                }
+                }*@
                 @if (!string.IsNullOrWhiteSpace(Model.Address))
                 {
                     <dd>
@@ -105,7 +105,7 @@
                 }
                 @if (!string.IsNullOrWhiteSpace(lead.Gender))
                 {
-                    <li><font>公司邮箱：</font><span class="LeadEmail datainfo">@lead.Gender</span> </li>
+                    <li><font>公司邮箱：</font><span class="LeadEmail datainfo">@lead.LeadEmail</span> </li>
                 }
                 @if (!string.IsNullOrWhiteSpace(lead.LeadFax))
                 {
@@ -438,8 +438,9 @@
                         alert(result);
                     } else {                      
                         $('#EditCompany').data('tWindow').close();
-                      
+
                         alert('公司更新成功');
+                       // RefreshCrmList(result.companyRelationshipId);
                         onCompanyChanging($('#mainnavigationcontainer span.t-state-selected').next().val());
                     }
                 });
