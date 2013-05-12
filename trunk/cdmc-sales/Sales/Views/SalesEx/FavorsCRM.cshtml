@@ -11,8 +11,7 @@
                     .ItemDataBound((item, ajaxGroupedCRM) =>
                     {                       
                         item.Text = ajaxGroupedCRM.DisplayName + "分组";
-                        item.Value = ajaxGroupedCRM.ID.ToString();
-                        item.Selected = item.Value == ViewBag.selectedVal;
+                        item.Value = ajaxGroupedCRM.ID.ToString();                       
                     })
                     .Children(group => group.GroupedCRMs));
 
@@ -21,6 +20,7 @@
                     {
                         item.Text = ajaxCRM.DisplayText;
                         item.Value = ajaxCRM.CRMID.ToString();
+                        item.Selected = item.Value == ViewBag.selectedVal;
                     })
                     .Children(company => company.AjaxLeads));
 

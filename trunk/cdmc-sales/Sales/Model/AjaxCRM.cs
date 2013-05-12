@@ -139,6 +139,7 @@ namespace Model
                                           orderby c.CreatedDate descending
                                           select new AjaxCRM
                                           {
+                                              CompanyID = c.CompanyID,
                                               CompanyNameEN = c.Company.Name_EN,
                                               CompanyNameCH = c.Company.Name_CH,
                                               CompanyContact = c.Company.Contact,

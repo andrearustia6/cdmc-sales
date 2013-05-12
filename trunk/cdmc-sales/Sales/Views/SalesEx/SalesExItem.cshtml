@@ -192,7 +192,7 @@
         </div>
     </div></text>)
         .Width(1000)
-            .Height(520).Draggable(true)
+            .Height(540).Draggable(true)
     .Modal(true).Visible(false)
 )
 @(Html.Telerik().Window().Title("新增lead")
@@ -334,7 +334,7 @@
     var currentCompanyNameEN = undefined;
     function onCompanyEdit(currentCompanyId) {
         currentCompanyNameCN = $('#currentCompanyNameCN').html().replace(/(^\s*)|(\s*$)/g, '');
-        currentCompanyNameEN = $('#currentCompanyNameEN').html().replace(/(^\s*)|(\s*$)/g, '');
+        currentCompanyNameEN = $('#currentCompanyNameEN').html().replace(/(^\s*)|(\s*$)/g, '');        
         $.post('GetEditCompany', { companyId: currentCompanyId }, function (result) {
             $('.companyEdit-wrapper').html(result);
             var window = $('#EditCompany').data('tWindow');
@@ -385,11 +385,7 @@
             if ($('.dialogue-editcompany form #Name_EN').val().isEmpty()) {
                 $('.dialogue-editcompany form #Name_EN').addClass('fieldError');
                 hasError = true;
-            }
-            if ($('.dialogue-editcompany form #Address_EN').val().isEmpty()) {
-                $('.dialogue-editcompany form #Address_EN').addClass('fieldError');
-                hasError = true;
-            }
+            }          
         }
         if ($('.dialogue-editcompany form #Phone').val().isEmpty()) {
             $('.dialogue-editcompany form #Phone').addClass('fieldError');
@@ -436,12 +432,12 @@
                 $.post('EditCompany', query, function (result) {
                     if (result.length > 0) {
                         alert(result);
-                    } else {                      
+                    } else {
                         $('#EditCompany').data('tWindow').close();
-
                         alert('公司更新成功');
-                       // RefreshCrmList(result.companyRelationshipId);
-                        onCompanyChanging($('#mainnavigationcontainer span.t-state-selected').next().val());
+                        var Indexes = $('.dialogue-editcompany form #CompanRelationshipId').val();
+                        RefreshCrmList(Indexes);
+                        onCompanyChanging(Indexes);
                     }
                 });
             }
@@ -469,15 +465,15 @@
 
     function UpdateLead() {
         if ($('.dialogue-editlead form').valid()) {
-            var query = $('.dialogue-editlead form').serialize();
-            $.post('EditLead?' + query, null, function (result) {
+            var query = $('.dialogue-editlead form').serializeArray();
+            $.post('EditLead' , query, function (result) {
                 if (result.length > 0) {
                     alert(result);
-                } else {           
-                    onCompanyChanging($('#mainnavigationcontainer span.t-state-selected').next().val());
+                } else {
                     $('#EditLead').data('tWindow').close();
                     alert('Lead更新成功');
                     selectedVal = $('#CRMID').val() + "," + $('.dialogue-editlead form #LeadId').val();
+                    RefreshCrmList(selectedVal);
                     onCompanyChanging(selectedVal);
                 }
             });
@@ -523,8 +519,8 @@
         }
 
         if ($('.dialogue-addcall form').valid()) {
-            var query = $('.dialogue-addcall form').serialize();
-            $.post('AddCall?' + query, null, function (result) {
+            var query = $('.dialogue-addcall form').serializeArray();
+            $.post('AddCall' + query, function (result) {
                 if (result.length > 0) {
                     alert('LeadCall新增失败');
                 } else {
