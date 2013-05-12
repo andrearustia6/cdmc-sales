@@ -377,10 +377,10 @@ namespace Model
             {
                 List<string> v = new List<string>();
                 v.Add(CompanyName);
-                if (!string.IsNullOrEmpty(ProgressString))
-                {
-                    v.Add(ProgressString);
-                };
+                //if (!string.IsNullOrEmpty(ProgressString))
+                //{
+                //    v.Add(ProgressString);
+                //};
                 var nocontactleadcount = AjaxLeads.Count(c => c.AjaxCalls.Count() == 0);
                 if (nocontactleadcount > 0)
                 {

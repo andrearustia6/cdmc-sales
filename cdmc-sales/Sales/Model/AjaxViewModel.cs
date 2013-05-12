@@ -538,9 +538,12 @@ namespace Model
         public DateTime CallDate { get; set; }
         [Display(Name = "回打时间")]
         public DateTime? CallBackDate { get; set; }
+
+
         [Required(ErrorMessage = "必填")]
         [Display(Name = "Call类型")]
         public int CallTypeId { get; set; }
+
         [Display(Name = "Call类型")]
         public string CallTypeString { get; set; }
         [Display(Name = "致电结果")]
