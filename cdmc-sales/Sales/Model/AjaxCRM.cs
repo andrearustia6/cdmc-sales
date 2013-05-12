@@ -19,6 +19,8 @@ namespace Model
         public int? CategoryId { get; set; }
         public bool? Unfold { get; set; }
         public string FuzzyQuery { get; set; }
+
+        public string selectedVal { get; set; }
     }
 
     public class AjaxCrmTypedList
@@ -134,7 +136,7 @@ namespace Model
                                           where m.Name == user
                                           && c.ID == u.CompanyRelationshipID.Value
                                           && f.UserFavorsCRMs.Select(s => s.ID).Contains(u.ID)
-                                          orderby c.CreatedDate
+                                          orderby c.CreatedDate descending
                                           select new AjaxCRM
                                           {
                                               CompanyNameEN = c.Company.Name_EN,
@@ -149,6 +151,7 @@ namespace Model
                                               AjaxLeads = (from l in c.Company.Leads
                                                            select new AjaxLead
                                                            {
+                                                               Department = l.Department,
                                                                Blog = l.Blog,
                                                                Gender = l.Gender,
                                                                LeadPersonalEmail = l.PersonalEmailAddress,
@@ -201,7 +204,7 @@ namespace Model
             var data = from c in filteredcrm
                        from m in c.Members
                        where m.Name == user && m.CompanyRelationships.Select(s => s.ID).Contains(c.ID) && (!custom.Select(s => s.CompanyRelationshipID).Contains(c.ID) || alldata.Value)
-                       orderby c.CreatedDate
+                       orderby c.CreatedDate descending
                        select new AjaxCRM
                        {
                            ProjectID = c.ProjectID,
@@ -228,6 +231,7 @@ namespace Model
                            AjaxLeads = (from l in c.Company.Leads
                                         select new AjaxLead
                                         {
+                                            Department = l.Department,
                                             Blog = l.Blog,
                                             Gender = l.Gender,
                                             LeadPersonalEmail = l.PersonalEmailAddress,
@@ -521,6 +525,8 @@ namespace Model
         [Display(Name = "博客地址")]
         public string Blog { get; set; }
 
+        [Display(Name = "部门")]
+        public string Department { get; set; }
 
         public string LeadDistinctNumberString
         {

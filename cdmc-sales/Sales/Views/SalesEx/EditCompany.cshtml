@@ -10,60 +10,157 @@
     @Html.HiddenFor(model => model.CompanRelationshipId)
     <fieldset>
         <legend>公司信息</legend>
-        <ul>
-            <li><span class="addcompany-left">@Html.LabelFor(model => model.Name_CN) @Html.TextBoxFor(model => model.Name_CN)
-                @Html.ValidationMessageFor(model => model.Name_CN)</span> <span class="addcompany-right">
-                    @Html.LabelFor(model => model.Name_EN) @Html.TextBoxFor(model => model.Name_EN)
-                    @Html.ValidationMessageFor(model => model.Name_EN)
-                </span></li>
-            <li><span class="addcompany-left">@Html.LabelFor(model => model.TypeId) @Html.DropDownListFor(model => model.TypeId, SelectHelper.CompanyTypeSelectList(null), "请选择", new { })
-                @Html.ValidationMessageFor(model => model.TypeId)</span> <span class="addcompany-right">
-                    @Html.LabelFor(model => model.Phone) @Html.TextBoxFor(model => model.Phone)
-                    @Html.ValidationMessageFor(model => model.Phone)
-                </span></li>
-            <li><span class="addcompany-left">@Html.LabelFor(model => model.ZipCode) @Html.TextBoxFor(model => model.ZipCode)
-                @Html.ValidationMessageFor(model => model.ZipCode) </span><span class="addcompany-right">
-                    @Html.LabelFor(model => model.Fax) @Html.TextBoxFor(model => model.Fax)
-                    @Html.ValidationMessageFor(model => model.Fax)
-                </span></li>
-            <li><span class="addcompany-left">@Html.LabelFor(model => model.Address) @Html.TextBoxFor(model => model.Address)
-                @Html.ValidationMessageFor(model => model.Address)</span> <span class="addcompany-right">
-                    @Html.LabelFor(model => model.WebSite) @Html.TextBoxFor(model => model.WebSite)
-                    @Html.ValidationMessageFor(model => model.WebSite)
-                </span></li>
-            <li><span class="addcompany-left">@Html.LabelFor(model => model.ProgressId) @Html.DropDownListFor(model => model.ProgressId, SelectHelper.ProgressSelectList(null), "请选择", new { })
-                @Html.ValidationMessageFor(model => model.ProgressId)</span> <span class="addcompany-right">
-                    @Html.LabelFor(model => model.DistrictNumberId) @Html.DropDownListFor(model => model.DistrictNumberId, SelectHelper.DistinctNumberSelectList(null), "请选择", new { })
-                    @Html.ValidationMessageFor(model => model.DistrictNumberId)
-                </span></li>
-            <li><span class="addcompany-left">@Html.LabelFor(model => model.IndustryId) @Html.DropDownListFor(model => model.IndustryId, SelectHelper.CompanyIndustrySelectList(null), "请选择", new { style = "width:200px" })
-                @Html.ValidationMessageFor(model => model.IndustryId)</span> </li>         
-            <li><span>@Html.LabelFor(model => model.Desc) @Html.TextAreaFor(model => model.Desc)
-                @Html.ValidationMessageFor(model => model.Desc)</span> </li>
-            <li>
-                <fieldset id="categories">
-                    <legend>Categories <span id="categoriesError">必须选择一项</span></legend>
-                    @foreach (Category category in CH.GetAllData<Category>(c => c.ProjectID == Model.ProjectId))
-                    { 
-                        <label class="company-category">@category.Name</label>
-                        if (Model.Categories.Contains(category.ID))
-                        {
-                        <input  name="Categories" type="checkbox" value="@category.ID" checked="checked" />
-                        }
-                        else
-                        { 
-                        <input  name="Categories" type="checkbox" value="@category.ID"/>
-                        }
-                    }
-                </fieldset>
-            </li>
-        </ul>
+        <table>
+            <tr>
+                <td colspan="2">
+                    @Html.LabelFor(model => model.Name_CN)
+                    @Html.TextBoxFor(model => model.Name_CN, new { @style = "width:370px" })
+                </td>
+                <td colspan="2">
+                    @Html.LabelFor(model => model.Name_EN)
+                    @Html.TextBoxFor(model => model.Name_EN, new { @style = "width:370px" })
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    @Html.LabelFor(model => model.Address)
+                    @Html.TextBoxFor(model => model.Address, new { @style = "width:370px" })
+                </td>
+                <td colspan="2">
+                    @Html.LabelFor(model => model.Address_EN)
+                    @Html.TextBoxFor(model => model.Address_EN, new { @style = "width:370px" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.DistrictNumberId)
+                    @Html.DropDownListFor(model => model.DistrictNumberId, SelectHelper.DistinctNumberSelectList(null), "请选择", new { })
+                </td>
+                <td>
+                    @Html.LabelFor(model => model.Province)
+                    @Html.TextBoxFor(model => model.Province)
+                </td>
+                <td>
+                    @Html.LabelFor(model => model.City)
+                    @Html.TextBoxFor(model => model.City)
+                </td>
+                <td>
+                    @Html.LabelFor(model => model.ZipCode)
+                    @Html.TextBoxFor(model => model.ZipCode)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.Phone)
+                    @Html.TextBoxFor(model => model.Phone)
+                </td>
+                <td>
+                    @Html.LabelFor(model => model.Fax)
+                    @Html.TextBoxFor(model => model.Fax)
+                </td>
+                <td colspan="2">
+                    @Html.LabelFor(model => model.WebSite)
+                    @Html.TextBoxFor(model => model.WebSite, new { @style = "width:370px" })
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    @Html.LabelFor(model => model.IndustryId)
+                    @Html.DropDownListFor(model => model.IndustryId, SelectHelper.CompanyIndustrySelectList(null), "请选择", new { @style = "width:370px" })
+                </td>
+                <td>
+                    @Html.LabelFor(model => model.TypeId)
+                    @Html.DropDownListFor(model => model.TypeId, SelectHelper.CompanyTypeSelectList(null), "请选择", new { })
+                </td>
+                <td>
+                    @Html.LabelFor(model => model.ProgressId)
+                    @Html.DropDownListFor(model => model.ProgressId, SelectHelper.ProgressSelectList(null), "请选择", new { })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.Scale)
+                    @Html.DropDownListFor(model => model.Scale, SelectHelper.CompanyScaleSelectList(null), "请选择")
+                </td>
+                <td>
+                    @Html.LabelFor(model => model.AnnualSales)
+                    @Html.DropDownListFor(model => model.AnnualSales, SelectHelper.AnnualSaleSelectList(null), "请选择")
+                </td>
+                <td>
+                    @Html.LabelFor(model => model.MainProduct)
+                    @Html.TextBoxFor(model => model.MainProduct)
+                </td>
+                <td>
+                    @Html.LabelFor(model => model.MainClient)
+                    @Html.TextBoxFor(model => model.MainClient)
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4">
+                    @Html.LabelFor(model => model.Desc)
+                    @Html.TextAreaFor(model => model.Desc)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.Creator)
+                    @Html.TextBoxFor(model => model.Creator, new { @readonly = "readonly" })
+                </td>
+                <td>
+                    @Html.LabelFor(model => model.CreatedDate)
+                    @Html.TextBoxFor(model => model.CreatedDate, new { @readonly = "readonly" })
+                </td>
+                <td>
+                    @Html.LabelFor(model => model.ModifiedUser)
+                    @Html.TextBoxFor(model => model.ModifiedUser, new { @readonly = "readonly" })
+                </td>
+                <td>
+                    @Html.LabelFor(model => model.ModifiedUser)
+                    @Html.TextBoxFor(model => model.ModifiedUser, new { @readonly = "readonly" })
+                </td>
+            </tr>
+        </table>
+        <fieldset id="categories">
+            <legend>Categories <span id="categoriesError">必须选择一项</span></legend>
+            @foreach (Category category in CH.GetAllData<Category>(c => c.ProjectID == Model.ProjectId))
+            { 
+                <label class="company-category">@category.Name
+                </label>
+                if (Model.Categories.Contains(category.ID))
+                {
+                <input  name="Categories" type="checkbox" value="@category.ID" checked="checked" />
+                }
+                else
+                { 
+                <input  name="Categories" type="checkbox" value="@category.ID"/>
+                }
+            }
+        </fieldset>
     </fieldset>
 }
 <style>
-    select
+    table
     {
-        width: 150px;
+        border: none;
+    }
+    table tr td
+    {
+        width: 240px;
+        border: none;
+    }
+    table tr td label
+    {
+        display: inline-block;
+        width: 55px;
+        padding-right: 5px;
+    }
+    table tr td input, table tr td select
+    {
+        width: 140px;
+    }
+    table tr td textarea
+    {
+        height: 100px;
     }
     #categoriesError
     {
@@ -72,6 +169,6 @@
     fieldset.fieldError span
     {
         display: inline-block !important;
-        color:Red;
+        color: Red;
     }
 </style>

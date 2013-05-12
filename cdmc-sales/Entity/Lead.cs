@@ -115,6 +115,26 @@ namespace Entity
         [Display(Name = "公司传真")]
         public string Fax { get; set; }
 
+        [Display(Name = "中文地址")]
+        public string Address_EN { get; set; }
+
+        [Display(Name = "省")]
+        public string Province { get; set; }
+
+        [Display(Name = "市")]
+        public string City { get; set; }
+
+        [Display(Name = "公司规模")]
+        public string Scale { get; set; }   
+
+        [Display(Name = "年销售额")]
+        public string AnnualSales { get; set; }
+
+        [Display(Name = "主要产品")]
+        public string MainProduct { get; set; }
+
+        [Display(Name = "主要客户")]
+        public string MainClient { get; set; }
     }
 
     /// <summary>
@@ -196,6 +216,23 @@ namespace Entity
         public virtual Company Company { get; set; }
         [Display(Name = "所属公司"),Required]
         public int? CompanyID { get; set; }
+
+        [Display(Name = "私人电话")]
+        public string PersonalPhone { get; set; }
+        [Display(Name = "私人手机")]
+        public string PersonalCellPhone { get; set; }
+        [Display(Name = "私人传真")]
+        public string PersonalFax { get; set; }
+        [Display(Name = "备注")]
+        public string Comment { get; set; }
+        [Display(Name = "lead角色")]
+        public string LeadRoles { get; set; }
+        [Display(Name = "QQ账号")]
+        public string QQ { get; set; }
+        [Display(Name = "Twitter账号")]
+        public string Twitter { get; set; }
+        [Display(Name = "所在分支机构")]
+        public string Branch { get; set; }
 
         public virtual List<TargetOfPackage> TargetOfPackages { get; set; }
 

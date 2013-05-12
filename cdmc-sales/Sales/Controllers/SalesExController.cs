@@ -209,7 +209,15 @@ namespace Sales.Controllers
                 LinkIn = lead.LinkIn,
                 FaceBook = lead.FaceBook,
                 Blog = lead.Blog,
-                DistrictNumberId = lead.DistrictNumberID
+                DistrictNumberId = lead.DistrictNumberID,
+                PersonalPhone = lead.PersonalPhone,
+                PersonalCellPhone = lead.PersonalCellPhone,
+                PersonalFax = lead.PersonalFax,
+                Comment = lead.Comment,
+                LeadRoles = lead.LeadRoles,
+                QQ = lead.QQ,
+                Twitter = lead.Twitter,
+                Branch = lead.Branch
             };
             return PartialView("EditLead", ajaxViewLead);
         }
@@ -240,6 +248,16 @@ namespace Sales.Controllers
             lead.Blog = ajaxViewLead.Blog;
             lead.DistrictNumberID = ajaxViewLead.DistrictNumberId;
             lead.ModifiedDate = DateTime.Now;
+            lead.PersonalPhone = ajaxViewLead.PersonalPhone;
+            lead.PersonalCellPhone = ajaxViewLead.PersonalCellPhone;
+            lead.PersonalFax = ajaxViewLead.PersonalFax;
+            lead.Comment = ajaxViewLead.Comment;
+            lead.LeadRoles = ajaxViewLead.LeadRoles;
+            lead.QQ = ajaxViewLead.QQ;
+            lead.Twitter = ajaxViewLead.Twitter;
+            lead.Branch = ajaxViewLead.Branch;
+            lead.ZIP = ajaxViewLead.Zip;
+
             CH.Edit<Lead>(lead);
             return null;
         }
@@ -277,7 +295,16 @@ namespace Sales.Controllers
                 DistrictNumberID = ajaxViewLead.DistrictNumberId,
                 PersonalEmailAddress = ajaxViewLead.PersonelEmail,
                 CreatedDate = DateTime.Now,
-                ModifiedDate = DateTime.Now
+                ModifiedDate = DateTime.Now,
+                PersonalPhone = ajaxViewLead.PersonalPhone,
+                PersonalCellPhone = ajaxViewLead.PersonalCellPhone,
+                PersonalFax = ajaxViewLead.PersonalFax,
+                Comment = ajaxViewLead.Comment,
+                LeadRoles = ajaxViewLead.LeadRoles,
+                QQ = ajaxViewLead.QQ,
+                Twitter = ajaxViewLead.Twitter,
+                Branch = ajaxViewLead.Branch,
+                ZIP = ajaxViewLead.Zip
             };
 
             CH.Create<Lead>(lead);
@@ -361,6 +388,17 @@ namespace Sales.Controllers
             companyRelationship.Company.Name_EN = ajaxViewSaleCompany.Name_EN;
             companyRelationship.Company.WebSite = ajaxViewSaleCompany.WebSite;
             companyRelationship.Company.ZIP = ajaxViewSaleCompany.ZipCode;
+            companyRelationship.Company.CreatedDate = DateTime.Now;
+            companyRelationship.Company.Creator = Employee.CurrentUserName;
+            companyRelationship.Company.ModifiedDate = DateTime.Now;
+            companyRelationship.Company.ModifiedUser = Employee.CurrentUserName;
+            companyRelationship.Company.Address_EN = ajaxViewSaleCompany.Address_EN;
+            companyRelationship.Company.Province = ajaxViewSaleCompany.Province;
+            companyRelationship.Company.City = ajaxViewSaleCompany.City;
+            companyRelationship.Company.Scale = ajaxViewSaleCompany.Scale;
+            companyRelationship.Company.AnnualSales = ajaxViewSaleCompany.AnnualSales;
+            companyRelationship.Company.MainProduct = ajaxViewSaleCompany.MainProduct;
+            companyRelationship.Company.MainClient = ajaxViewSaleCompany.MainClient;
             companyRelationship.Description = ajaxViewSaleCompany.Desc;
             companyRelationship.ProgressID = ajaxViewSaleCompany.ProgressId;
             companyRelationship.Members = new List<Member>() { };
@@ -405,7 +443,18 @@ namespace Sales.Controllers
                 Phone = companyRelationship.Company.Contact,
                 ZipCode = companyRelationship.Company.ZIP,
                 WebSite = companyRelationship.Company.WebSite,
-                Categories = companyRelationship.Categorys.Select(c => c.ID).ToList()
+                Categories = companyRelationship.Categorys.Select(c => c.ID).ToList(),
+                Address_EN = companyRelationship.Company.Address_EN,
+                Province = companyRelationship.Company.Province,
+                City = companyRelationship.Company.City,
+                Scale = companyRelationship.Company.Scale,
+                AnnualSales = companyRelationship.Company.AnnualSales,
+                MainProduct = companyRelationship.Company.MainProduct,
+                MainClient = companyRelationship.Company.MainClient,
+                CreatedDate = companyRelationship.Company.CreatedDate.ToString(),
+                Creator = companyRelationship.Company.Creator,
+                ModifiedDate = companyRelationship.Company.ModifiedDate.ToString(),
+                ModifiedUser = companyRelationship.Company.ModifiedUser
             };
 
             if (companyRelationship.Company.Area != null)
@@ -444,7 +493,17 @@ namespace Sales.Controllers
                 Phone = companyRelationship.Company.Contact,
                 ZipCode = companyRelationship.Company.ZIP,
                 WebSite = companyRelationship.Company.WebSite,
-                Categories = companyRelationship.Categorys.Select(c => c.ID).ToList()
+                Categories = companyRelationship.Categorys.Select(c => c.ID).ToList(),
+                Province = companyRelationship.Company.Province,
+                City = companyRelationship.Company.City,
+                Scale = companyRelationship.Company.Scale,
+                AnnualSales = companyRelationship.Company.AnnualSales,
+                MainProduct = companyRelationship.Company.MainProduct,
+                MainClient = companyRelationship.Company.MainClient,
+                CreatedDate = companyRelationship.Company.CreatedDate.ToString(),
+                Creator = companyRelationship.Company.Creator,
+                ModifiedDate = companyRelationship.Company.ModifiedDate.ToString(),
+                ModifiedUser = companyRelationship.Company.ModifiedUser
             };
 
             if (companyRelationship.Company.Area != null)
@@ -475,7 +534,16 @@ namespace Sales.Controllers
             companyRelationship.Company.AreaID = ajaxViewSaleCompany.IndustryId;
             companyRelationship.Company.Business = ajaxViewSaleCompany.Business;
             companyRelationship.Company.CompanyTypeID = ajaxViewSaleCompany.TypeId;
-            companyRelationship.Company.Contact = ajaxViewSaleCompany.Phone;
+            companyRelationship.Company.Contact = ajaxViewSaleCompany.Phone;          
+            companyRelationship.Company.ModifiedDate = DateTime.Now;
+            companyRelationship.Company.ModifiedUser = Employee.CurrentUserName;
+            companyRelationship.Company.Address_EN = ajaxViewSaleCompany.Address_EN;
+            companyRelationship.Company.Province = ajaxViewSaleCompany.Province;
+            companyRelationship.Company.City = ajaxViewSaleCompany.City;
+            companyRelationship.Company.Scale = ajaxViewSaleCompany.Scale;
+            companyRelationship.Company.AnnualSales = ajaxViewSaleCompany.AnnualSales;
+            companyRelationship.Company.MainProduct = ajaxViewSaleCompany.MainProduct;
+            companyRelationship.Company.MainClient = ajaxViewSaleCompany.MainClient;
             companyRelationship.Company.Description = ajaxViewSaleCompany.Desc;
             companyRelationship.Company.DistrictNumberID = ajaxViewSaleCompany.DistrictNumberId;
             companyRelationship.Company.Fax = ajaxViewSaleCompany.Fax;

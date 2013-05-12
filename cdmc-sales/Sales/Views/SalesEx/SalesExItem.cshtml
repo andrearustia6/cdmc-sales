@@ -4,6 +4,10 @@
 @model AjaxCRM
 <script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
 <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+<script type="text/javascript">
+    var tempProjectId = undefined;
+    var tempCRMID = undefined;
+</script>
 @if (Model != null)
 {
     Html.Telerik().Splitter().Name("sp2").HtmlAttributes(new { style = "height: 790px;" })
@@ -17,7 +21,7 @@
     {
     <div class="fenge">
         <div class="fenge_2">
-            <span id="currentCompanyName">@Model.CompanyName</span>
+            <span id="currentCompanyName" style="font-weight:bold">@Model.CompanyName</span>
             <input class="salebtn" style=" background-image:url('../images/tianjia_3.jpg');" type="button" onclick="onLeadAdd(@(Model.CompanyID))" />
             <input type="button" class="salebtn"  style="background-image:url('../images/gengxin.jpg');"  onclick="onCompanyEdit(@(Model.CompanyID))" />
             <input type="button"class="salebtn"  style="background-image:url('../images/gaikuo.jpg'); " onclick="onCompanyDetail(@(Model.CompanyID))" />
@@ -78,10 +82,14 @@
         {
     <div class="fenge" id="@(lead.LeadID)">
         <div class="fenge_2">
-            <span class="LeadShowName">@lead.LeadShowName</span>
+            <span class="LeadShowName"  style="font-weight:bold">@lead.LeadShowName</span>
             <input style="background-image:url('../images/tianjia_2.jpg');" class="salebtn" type="button" onclick="onCallAdd(@(lead.LeadID))" value="" /><input class="salebtn" style=" background-image:url('../images/gengxin.jpg');" type="button" onclick="onLeadEdit(@(lead.LeadID))" /></div>
         <div class="fenge_3">
             <ul class="fieldname">
+                @if (!string.IsNullOrWhiteSpace(lead.Department))
+                {
+                    <li><font>所属部门：</font><span class="Department datainfo">@lead.Department</span></li>
+                }
                 @if (!string.IsNullOrWhiteSpace(lead.LeadDistinctNumberString))
                 {
                     <li><font>客户区号：</font><span class="LeadDistinctNumberString datainfo">@lead.LeadDistinctNumberString</span></li>
@@ -158,8 +166,7 @@
 
 }
 @(Html.Telerik().Window().Title("公司概况")
-    .Name("DetailCompany")
-    .Buttons(buttons => buttons.Close())
+    .Name("DetailCompany")   
     .Content(@<text><div class="dialogue-detailcompany">
         <div class="companyDetail-wrapper">
         </div>
@@ -172,8 +179,7 @@
     .Modal(true).Visible(false)
 )
 @(Html.Telerik().Window().Title("更新公司")
-    .Name("EditCompany")
-    .Buttons(buttons => buttons.Close())
+    .Name("EditCompany")   
     .Content(@<text><div class="dialogue-editcompany">
         <div class="companyEdit-wrapper">
         </div>
@@ -182,13 +188,12 @@
             <input type="button" class="btn-quxiao" onclick="CancelEditcompany()" />
         </div>
     </div></text>)
-    .Width(800)
-        .Height(500).Draggable(true)
+        .Width(1000)
+            .Height(520).Draggable(true)
     .Modal(true).Visible(false)
 )
 @(Html.Telerik().Window().Title("新增lead")
-    .Name("AddLead")
-    .Buttons(buttons => buttons.Close())
+    .Name("AddLead")   
     .Content(@<text><div class="dialogue-addlead">
         <div class="leadadd-wrapper">
         </div>
@@ -197,13 +202,12 @@
             <input type="button" class="btn-quxiao" onclick="CancelAddLead()" />
         </div>
     </div></text>)
-    .Width(750)
+        .Width(1000)
         .Height(340).Draggable(true)
     .Modal(true).Visible(false)
 )
 @(Html.Telerik().Window().Title("更新Lead")
-    .Name("EditLead")
-    .Buttons(buttons => buttons.Close())
+    .Name("EditLead")   
     .Content(@<text><div class="dialogue-editlead">
         <div class="leadedit-wrapper">
         </div>
@@ -212,13 +216,12 @@
             <input type="button" class="btn-quxiao" onclick="javascript:$('#EditLead').data('tWindow').close();" />
         </div>
     </div></text>)
-    .Width(750)
-        .Height(350).Draggable(true)
+    .Width(1000)
+        .Height(340).Draggable(true)
     .Modal(true).Visible(false)
 )
 @(Html.Telerik().Window().Title("更新LeadCall")
-    .Name("EditCall")
-    .Buttons(buttons => buttons.Close())
+    .Name("EditCall")   
     .Content(@<text><div class="dialogue-editcall">
         <div class="calledit-wrapper">
         </div>
@@ -232,8 +235,7 @@
     .Modal(true).Visible(false)
 )
 @(Html.Telerik().Window().Title("新增LeadCall")
-    .Name("AddCall")
-    .Buttons(buttons => buttons.Close())
+    .Name("AddCall")   
     .Content(@<text><div class="dialogue-addcall">
         <div class="calladd-wrapper">
         </div>
@@ -355,13 +357,13 @@
 
 
     function Editcompany() {
-        //        if ($('.dialogue-editcompany form').valid()) {
+
         var hasError = false;
         $('.dialogue-editcompany form input').removeClass('fieldError');
         $('.dialogue-editcompany form select').removeClass('fieldError');
-        $('.dialogue-editcompany form #ProgressId').addClass('fieldError');
 
         String.prototype.isEmpty = function () { return /^\s*$/.test(this); }
+
         if ($('.dialogue-editcompany form #DistrictNumberId option:selected').val().isEmpty()) {
             if ($('.dialogue-editcompany form #ZipCode').val().isEmpty()) {
                 $('.dialogue-editcompany form #ZipCode').addClass('fieldError');
@@ -381,8 +383,35 @@
                 $('.dialogue-editcompany form #Name_EN').addClass('fieldError');
                 hasError = true;
             }
+            if ($('.dialogue-editcompany form #Address_EN').val().isEmpty()) {
+                $('.dialogue-editcompany form #Address_EN').addClass('fieldError');
+                hasError = true;
+            }
         }
-
+        if ($('.dialogue-editcompany form #Phone').val().isEmpty()) {
+            $('.dialogue-editcompany form #Phone').addClass('fieldError');
+            hasError = true;
+        }
+        if ($('.dialogue-editcompany form #Fax').val().isEmpty()) {
+            $('.dialogue-editcompany form #Fax').addClass('fieldError');
+            hasError = true;
+        }
+        if ($('.dialogue-editcompany form #WebSite').val().isEmpty()) {
+            $('.dialogue-editcompany form #WebSite').addClass('fieldError');
+            hasError = true;
+        }
+        if ($('.dialogue-editcompany form #IndustryId').val().isEmpty()) {
+            $('.dialogue-editcompany form #IndustryId').addClass('fieldError');
+            hasError = true;
+        }
+        if ($('.dialogue-editcompany form #TypeId').val().isEmpty()) {
+            $('.dialogue-editcompany form #TypeId').addClass('fieldError');
+            hasError = true;
+        }
+        if ($('.dialogue-editcompany form #ProgressId').val().isEmpty()) {
+            $('.dialogue-editcompany form #ProgressId').addClass('fieldError');
+            hasError = true;
+        }
         if ($('.dialogue-editcompany form input[type=checkbox][name=Categories]:checked').length == 0) {
             $('fieldset#categories').addClass('fieldError');
             hasError = true;
@@ -391,9 +420,9 @@
         }
 
         if (hasError) {
-            // alert('数据不完整,公司细分业务至少选一项，国内公司中文名和地址，邮编必填；外国公司英文名必填. ');
             return;
         }
+
         var companyNameCN = $('.dialogue-editcompany form #Name_CN').val();
         var companyNameEN = $('.dialogue-editcompany form #Name_EN').val();
         $.post('CheckCompanyExist', { beforeUpdateCN: currentCompanyNameCN, afterUpdateCN: companyNameCN, beforeUpdateEN: currentCompanyNameEN, afterUpdateEN: companyNameEN }, function (result) {
@@ -404,45 +433,15 @@
                 $.post('EditCompany', query, function (result) {
                     if (result.length > 0) {
                         alert(result);
-                    } else {
-                        //                            tempVal = $('.dialogue-editcompany form #Name_EN').val() + ' | ' + $('.dialogue-editcompany form #Name_CN').val();
-                        //                            $('#currentCompanyName').html(tempVal);
-                        //                            //                            tempVal = $('.dialogue-editcompany form #Name_CN').val();
-                        //                            //                            $('#currentCompanyNameCN').html(tempVal);
-                        //                            //                            tempVal = $('.dialogue-editcompany form #Name_EN').val();
-                        //                            //                            $('#currentCompanyNameEN').html(tempVal);
-                        //                            if ($('.dialogue-editcompany form #DistrictNumberId option:selected').val() == '') {
-                        //                                $('#currentCompanyDistrictNumberString').html('');
-                        //                            } else {
-                        //                                tempVal = $('.dialogue-editcompany form #DistrictNumberId option:selected').first().text();
-                        //                                $('#currentCompanyDistrictNumberString').html(tempVal);
-                        //                            }
-
-                        //                            tempVal = $('.dialogue-editcompany form #Phone').val();
-                        //                            $('#currentCompanyContact').html(tempVal);
-                        //                            tempVal = $('.dialogue-editcompany form #Fax').val();
-                        //                            $('#currentCompanyFax').html(tempVal);
-                        //                            tempVal = '';
-                        //                            $('.dialogue-editcompany form input[type=checkbox][name=Categories]:checked').each(function () {
-                        //                                tempVal += $(this).prev('label.company-category').html() + ',';
-                        //                            });
-                        //                            if (tempVal.length > 0) {
-                        //                                tempVal = tempVal.substr(0, tempVal.length - 1);
-                        //                            }
-                        //                            $('#currentCompanyCategoryStrings').html(tempVal);
-                        //                            tempVal = $('.dialogue-editcompany form #ProgressId option:selected').first().text();
-                        //                            $('#currentProgressString').html(tempVal);
+                    } else {                      
                         $('#EditCompany').data('tWindow').close();
-                        //                            HandleEmptySpan()
+                      
                         alert('公司更新成功');
                         onCompanyChanging($('#mainnavigationcontainer span.t-state-selected').next().val());
-
-                        //                        window.location = window.location;
                     }
                 });
             }
-        });
-        // }
+        });       
     }
 
     function CancelEditcompany() {
@@ -470,32 +469,12 @@
             $.post('EditLead?' + query, null, function (result) {
                 if (result.length > 0) {
                     alert(result);
-                } else {
-                    //                    $('#' + currentLeadID + ' span.leadNameCN').html($('.dialogue-editlead form #Name_CN').val());
-                    //                    $('#' + currentLeadID + ' span.leadNamEN').html($('.dialogue-editlead form #Name_EN').val());
-                    //                    $('#' + currentLeadID + ' span.LeadShowName').html($('.dialogue-editlead form #Gender').val() + ' ' + $('.dialogue-editlead form #Name_CN').val() + ' ' + $('.dialogue-editlead form #Name_EN').val() + ' ' + $('.dialogue-editlead form #Title').val());
-                    //                    //                    $('#' + currentLeadID + ' span.leadTitle').html($('.dialogue-editlead form #Title').val());
-                    //                    //                    $('#' + currentLeadID + ' span.leadGender').html($('.dialogue-editlead form #Gender').val());
-                    //                    $('#' + currentLeadID + ' span.LeadEmail').html($('.dialogue-editlead form #WorkingEmail').val());
-                    //                    $('#' + currentLeadID + ' span.LeadPersonalEmail').html($('.dialogue-editlead form #PersonelEmail').val());
-                    //                    $('#' + currentLeadID + ' span.LeadContact').html($('.dialogue-editlead form #Telephone').val());
-                    //                    $('#' + currentLeadID + ' span.LeadMobile').html($('.dialogue-editlead form #CellPhone').val());
-                    //                    $('#' + currentLeadID + ' span.LeadFax').html($('.dialogue-editlead form #Fax').val());
-                    //                    $('#' + currentLeadID + ' span.WeiBo').html($('.dialogue-editlead form #WeiBo').val());
-                    //                    $('#' + currentLeadID + ' span.WeiXin').html($('.dialogue-editlead form #WeiXin').val());
-                    //                    $('#' + currentLeadID + ' span.LinkIn').html($('.dialogue-editlead form #LinkIn').val());
-                    //                    $('#' + currentLeadID + ' span.FaceBook').html($('.dialogue-editlead form #FaceBook').val());
-                    //                    $('#' + currentLeadID + ' span.Blog').html($('.dialogue-editlead form #Blog').val());
-                    //                    if ($('.dialogue-editlead form #DistrictNumberId option:selected').first().val() == '') {
-                    //                        $('#' + currentLeadID + ' span.LeadDistinctNumberString').html('');
-                    //                    } else {
-                    //                        $('#' + currentLeadID + ' span.LeadDistinctNumberString').html($('.dialogue-editlead form #DistrictNumberId option:selected').first().text());
-                    //                    }
+                } else {           
                     onCompanyChanging($('#mainnavigationcontainer span.t-state-selected').next().val());
                     $('#EditLead').data('tWindow').close();
-                    //                    HandleEmptySpan()
                     alert('Lead更新成功');
-                    
+                    selectedVal = $('#CRMID').val() + "," + $('.dialogue-editlead form #LeadId').val();
+                    onCompanyChanging(selectedVal);
                 }
             });
         }
@@ -547,13 +526,29 @@
                 } else {
                     $('#AddCall').data('tWindow').close();
                     alert('LeadCall新增成功');
-                    window.location = window.location;
+
+                    var selectedVal = undefined;
+                    if (tempCRMID == undefined) {
+                        selectedVal = $('#CRMID').val() + "," + $('.dialogue-addcall form #LeadId').val();
+                    } else {
+                        selectedVal = tempCRMID + "," + $('.dialogue-addcall form #LeadId').val();
+                        tempCRMID = undefined;
+                        tempProjectId = undefined;
+                    }
+                    RefreshCrmList(selectedVal);
+                    onCompanyChanging(selectedVal);
                 }
             });
         }
     }
 
     function CancelAddCall() {
+        if (tempCRMID != undefined) {
+            RefreshCrmList(tempCRMID);
+            onCompanyChanging(tempCRMID);
+            tempCRMID = undefined;
+            tempProjectId = undefined;
+        }
         var window = $('#AddCall').data('tWindow');
         window.close();
     }
@@ -569,7 +564,7 @@
                     $('#' + currentLeadCallID + '_CallDate').html($('.dialogue-editcall form #CallDate').val());
                     $('#' + currentLeadCallID + '_Result').html($('.dialogue-editcall form #Result').val());
                     $('#EditCall').data('tWindow').close();
-                    alert('LeadCall更新成功');
+                    alert('LeadCall更新成功');                   
                 }
             });
         }
@@ -587,7 +582,17 @@
                     if (confirm('Lead新增成功,是否新增相应Call')) {
                         onCallAdd(result);
                     } else {
-                        window.location = window.location;
+                        var selectedVal = undefined;
+                        if (tempCRMID == undefined) {
+                            selectedVal = $('#CRMID').val() + "," + result;
+                        } else {
+                            selectedVal = tempCRMID + "," + result;
+                            tempCRMID = undefined;
+                            tempProjectId = undefined;
+                        }
+                       
+                        RefreshCrmList(selectedVal);
+                        onCompanyChanging(selectedVal);
                     }
 
                 } else {
@@ -597,6 +602,13 @@
         }
     }
     function CancelAddLead() {
+        if (tempCRMID != undefined) {
+            RefreshCrmList(tempCRMID);
+            onCompanyChanging(tempCRMID);
+            tempCRMID = undefined;
+            tempProjectId = undefined;
+        }
+
         var window = $('#AddLead').data('tWindow');
         window.close();
     }

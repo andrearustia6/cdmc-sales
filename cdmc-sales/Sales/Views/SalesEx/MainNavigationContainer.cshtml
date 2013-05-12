@@ -3,12 +3,11 @@
 @model AjaxCrmTypedList
 @{
     ViewBag.ExpandAll = Model.ExpandAll;
+    ViewBag.selectedVal = Model.Filters == null ? "" : Model.Filters.selectedVal;
 }
 <div id="crmdfavorsscontainer" class="groupcompany">
 <div class="groupcompanyhead"><input type="image" id="group-open-button" src="../images/fenzuguanli_2.jpg" style=" margin-top:-3px; margin-left:-5px"></div>
-   @Html.Partial("FavorsCRM", Model.CustomCrmGroups)
-  
-
+   @Html.Partial("FavorsCRM", Model.CustomCrmGroups) 
 </div>
 <div class="ungroupcompany">
 <h2 class="ungroupcompanyhead">未分组公司</h2>
@@ -21,6 +20,7 @@
                     {                                 
                         item.Text = ajaxCRM.DisplayText;
                         item.Value = ajaxCRM.CRMID.ToString();
+                        item.Selected = item.Value == ViewBag.selectedVal;
                     })
                     .Children(company => company.AjaxLeads));
 
@@ -29,6 +29,7 @@
                     {                            
                         item.Text = Lead.DisplayText;
                         item.Value = Lead.CRMID.ToString() + "," + Lead.LeadID.ToString();
+                        item.Selected = item.Value == ViewBag.selectedVal;
                     }));
         })
 ) 

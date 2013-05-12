@@ -154,8 +154,7 @@
     <li class="blowed"><span class="icon drive"></span>Blowed，放回公海 </li>
 </ul>
 @(Html.Telerik().Window()
-    .Name("AddCompany")
-    .Buttons(buttons => buttons.Close())
+    .Name("AddCompany")   
     .Content(@<text><div class="dialogue-addcompany">
         <div class="companyAdd-wrapper">
         </div>
@@ -164,8 +163,8 @@
             <input type="button" class="btn-quxiao" onclick="CancelAddcompany()" />
         </div>
     </div></text>)
-        .Width(800)
-            .Height(500)
+        .Width(1000)
+            .Height(520)
         .Modal(true).Visible(false).Draggable(true)
     )
 <script type="text/javascript">
@@ -176,13 +175,18 @@
             CurrentProjectChange($('#CurrentProjectId').val());
         });
         $('#search').unbind('click').bind('click', function () {
-            var f = GetFilters();
-            $.post('_RefreshCrmList', f, function (result) {
-                $('#mainnavigationcontainer').html(result);
-                initial();
-            });
+            RefreshCrmList(null);
         });
     });
+
+    function RefreshCrmList(selectedVal) {
+        var f = GetFilters();
+        f.selectedVal = selectedVal;
+        $.post('_RefreshCrmList', f, function (result) {
+            $('#mainnavigationcontainer').html(result);
+            initial();
+        });
+    }
     function CurrentProjectChange(currentProjectId) {
         $.get('GetCatagories', { currentProjectId: currentProjectId }, function (result) {
             $('#f-category').empty();
@@ -397,19 +401,7 @@
     }
 
     function GetAddCompany() {
-          
-        var currentProjectId = undefined;
-        if($('#CurrentProjectId option').length == 2)
-        {
-            currentProjectId=$('#CurrentProjectId option').get(0).value
-        } else {
-            currentProjectId = $('#CurrentProjectId').val();
-            if (currentProjectId == '') {
-                alert('请先选择项目');
-                return false;
-            }
-        }
-
+        var currentProjectId = $('#CurrentProjectId').val();
         $.post('GetAddCompany', { projectId: currentProjectId }, function (result) {
             $('.companyAdd-wrapper').html(result);
             var window = $('#AddCompany').data('tWindow');
@@ -417,14 +409,14 @@
         });
     }
     function Addcompany() {
-//        if ($('.dialogue-addcompany form').valid()) {
             var hasError = false;
             $('.dialogue-addcompany form input').removeClass('fieldError');
             $('.dialogue-addcompany form select').removeClass('fieldError');
 
-            $('.dialogue-addcompany form #ProgressId').addClass('fieldError');
+
 
             String.prototype.isEmpty = function () { return /^\s*$/.test(this); }
+
             if ($('.dialogue-addcompany form #DistrictNumberId option:selected').val().isEmpty()) {
                 if ($('.dialogue-addcompany form #ZipCode').val().isEmpty()) {
                     $('.dialogue-addcompany form #ZipCode').addClass('fieldError');
@@ -444,8 +436,35 @@
                     $('.dialogue-addcompany form #Name_EN').addClass('fieldError');
                     hasError = true;
                 }
+                if ($('.dialogue-addcompany form #Address_EN').val().isEmpty()) {
+                    $('.dialogue-addcompany form #Address_EN').addClass('fieldError');
+                    hasError = true;
+                }
             }
-
+            if ($('.dialogue-addcompany form #Phone').val().isEmpty()) {
+                $('.dialogue-addcompany form #Phone').addClass('fieldError');
+                hasError = true;
+            }
+            if ($('.dialogue-addcompany form #Fax').val().isEmpty()) {
+                $('.dialogue-addcompany form #Fax').addClass('fieldError');
+                hasError = true;
+            }
+            if ($('.dialogue-addcompany form #WebSite').val().isEmpty()) {
+                $('.dialogue-addcompany form #WebSite').addClass('fieldError');
+                hasError = true;
+            }
+            if ($('.dialogue-addcompany form #IndustryId').val().isEmpty()) {
+                $('.dialogue-addcompany form #IndustryId').addClass('fieldError');
+                hasError = true;
+            }
+            if ($('.dialogue-addcompany form #TypeId').val().isEmpty()) {
+                $('.dialogue-addcompany form #TypeId').addClass('fieldError');
+                hasError = true;
+            }
+            if ($('.dialogue-addcompany form #ProgressId').val().isEmpty()) {
+                $('.dialogue-addcompany form #ProgressId').addClass('fieldError');
+                hasError = true;
+            }
              if ($('.dialogue-addcompany form input[type=checkbox][name=Categories]:checked').length == 0) {
                 $('fieldset#categories').addClass('fieldError');
                 hasError = true;
@@ -453,8 +472,7 @@
                 $('fieldset#categories').removeClass('fieldError');
             }
 
-            if (hasError) {
-               // alert('数据不完整,公司细分业务至少选一项，国内公司中文名和地址，邮编必填；外国公司英文名必填. ');
+            if (hasError) {  
                 return;
             }
             var companyNameCN = $('.dialogue-addcompany #Name_CN').val();
@@ -467,20 +485,21 @@
                     $.post('AddCompany', query, function (result) {
                         if (result.companyRelationshipId != null) {
                             $('#AddCompany').data('tWindow').close();
-                            if (confirm('公司新增成功,是否要往新增公司里面增加Lead')) {
-                                $('#CRMID').val(result.companyRelationshipId);
-                                $('#ProjectID').val(result.projectId);
+                            if (confirm('公司新增成功,是否要往新增公司里面增加Lead')) {                              
+                                tempProjectId = result.projectId;
+                                tempCRMID = result.companyRelationshipId;
                                 onLeadAdd(result.companyId);
-                            } else {                             
-                                window.location = window.location;
+                            }
+                            else {
+                                RefreshCrmList(result.companyRelationshipId);
+                                onCompanyChanging(result.companyRelationshipId);
                             }
                         } else {
                             alert('公司新增失败');
                         }
                     });
                 }
-            });
-       // }
+            });      
     }
 
     function CancelAddcompany() {
