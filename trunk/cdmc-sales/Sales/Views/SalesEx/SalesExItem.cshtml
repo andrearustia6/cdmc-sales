@@ -55,6 +55,18 @@
                         <font>成熟度：</font><span id="currentProgressString" class="datainfo">@Model.ProgressString</span>
                     </dd>
                 }
+                @if (!string.IsNullOrWhiteSpace(Model.Address))
+                {
+                    <dd>
+                        <font>地址：</font><span id="currentAddressString" class="datainfo">@Model.Address</span>
+                    </dd>
+                }
+                 @if (!string.IsNullOrWhiteSpace(Model.ZipCode))
+                {
+                    <dd>
+                        <font>邮编：</font><span id="currentZipCodeString" class="datainfo">@Model.ZipCode</span>
+                    </dd>
+                }
             </dl>
         </div>
     </div>    
