@@ -475,9 +475,10 @@ namespace Model
         public DateTime? Birthday { get; set; }
         [Display(Name = "个人邮箱")]
         public string PersonelEmail { get; set; }
-        //[Required(ErrorMessage = "必填")]
+        [Required(ErrorMessage = "必填")]
         [Display(Name = "联系地址")]
         public string Address { get; set; }
+        [Required(ErrorMessage = "必填")]
         [Display(Name = "联系邮编")]
         public string Zip { get; set; }
         [Display(Name = "现在所在分公司")]
