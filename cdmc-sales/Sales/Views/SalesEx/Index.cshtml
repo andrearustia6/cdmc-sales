@@ -51,7 +51,7 @@
 
 
     <input id="search" style="border: none;  width: 67px; height: 21px; background-image: url('../images/chazhao.jpg');" type="button" />
-   <input type="button" style="border: none;  width: 67px; height: 21px; background-image: url('../images/chongzhi.jpg');"  />
+   <input type="button" style="border: none;  width: 67px; height: 21px; background-image: url('../images/chongzhi.jpg');" onclick="resetquery()"  />
    <input type="button"  style="border: none;  width: 67px; height: 21px; background-image: url('../images/tianjia_4.jpg');" onclick="GetAddCompany()" />
 
    </span></td>
@@ -398,6 +398,17 @@
     function onRowDataBound(e) {
         var grid = $(this).data('tGrid');
         expandRow(grid, e.row);
+    }
+
+    function resetquery() {
+        $('#companyprogress').val($('#companyprogress option').get(0).value);
+        $('#companyassigndate').val($('#companyassigndate option').get(0).value);
+        $('#leadprogress').val($('#leadprogress option').get(0).value);
+        $('#dealprogress').val($('#dealprogress option').get(0).value);
+        $('#callprogress').val($('#callprogress option').get(0).value);
+        $('#f-category').val($('#f-category option').get(0).value);
+        $('#f-fuzzy').val("");
+        $('#unfoldCompany').val($('#unfoldCompany option').get(0).value);
     }
 
     function GetAddCompany() {
