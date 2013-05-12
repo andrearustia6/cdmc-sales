@@ -12,14 +12,14 @@
             <td>@Html.LabelFor(model => model.Name_CN)
                 @Html.TextBoxFor(model => model.Name_CN)
             </td>
+             <td>@Html.LabelFor(model => model.Name_EN)
+                @Html.TextBoxFor(model => model.Name_EN)
+            </td>
             <td>
                 @Html.LabelFor(model => model.Gender)
                 @Html.DropDownListFor(model => model.Gender, SelectHelper.GenderSelectList(null), "-请选择-")
             </td>
-            <td>
-                @Html.LabelFor(model => model.Department)
-                @Html.TextBoxFor(model => model.Department)
-            </td>
+           
             <td>
                 @Html.LabelFor(model => model.Title)
                 @Html.TextBoxFor(model => model.Title)
@@ -34,10 +34,11 @@
                 @Html.LabelFor(model => model.CellPhone)
                 @Html.TextBoxFor(model => model.CellPhone)
             </td>
-            <td>
-                @Html.LabelFor(model => model.Fax)
-                @Html.TextBoxFor(model => model.Fax)
+             <td>
+                @Html.LabelFor(model => model.Department)
+                @Html.TextBoxFor(model => model.Department)
             </td>
+           
             <td>
                 @Html.LabelFor(model => model.WorkingEmail)
                 @Html.TextBoxFor(model => model.WorkingEmail)
@@ -52,10 +53,12 @@
                 @Html.LabelFor(model => model.PersonalCellPhone)
                 @Html.TextBoxFor(model => model.PersonalCellPhone)
             </td>
-            <td>
-                @Html.LabelFor(model => model.PersonalFax)
-                @Html.TextBoxFor(model => model.PersonalFax)
+             <td>
+                @Html.LabelFor(model => model.Fax)
+                @Html.TextBoxFor(model => model.Fax)
             </td>
+
+          
             <td>
                 @Html.LabelFor(model => model.PersonelEmail)
                 @Html.TextBoxFor(model => model.PersonelEmail)
@@ -84,10 +87,16 @@
                 @Html.LabelFor(model => model.QQ)
                 @Html.TextBoxFor(model => model.QQ)
             </td>
-            <td colspan="3">
+              <td>
+                @Html.LabelFor(model => model.PersonalFax)
+                @Html.TextBoxFor(model => model.PersonalFax)
+            </td>
+            <td colspan="2">
                 @Html.LabelFor(model => model.Twitter)
                 @Html.TextBoxFor(model => model.Twitter)
             </td>
+
+            
         </tr>
         <tr>
             <td>
@@ -118,7 +127,7 @@
             </td>
             <td colspan="2">
                 @Html.LabelFor(model => model.LeadRoles)
-                @if (Model.LeadRoles.Contains("决策人"))
+              @if (Model.LeadRoles != null && Model.LeadRoles.Contains("决策人"))
                 {
                     <span class="leadRole">
                         <input type="checkbox" value="决策人" checked="checked" name="leadRole" />
@@ -132,7 +141,7 @@
                         <label>
                             决策人</label></span>
                 }
-                @if (Model.LeadRoles.Contains("参与人"))
+                @if (Model.LeadRoles != null && Model.LeadRoles.Contains("参与人"))
                 {
                     <span class="leadRole">
                         <input type="checkbox" value="参与人" checked="checked" name="leadRole" />
@@ -146,7 +155,7 @@
                         <label>
                             参与人</label></span> 
                 }
-                @if (Model.LeadRoles.Contains("联系人"))
+                @if (Model.LeadRoles != null && Model.LeadRoles.Contains("联系人"))
                 {
                     <span class="leadRole">
                         <input type="checkbox" value="联系人" checked="checked" name="leadRole" />
