@@ -4,7 +4,7 @@ ul{ list-style-type: none;}
 img{vertical-align:top; border:0; margin:0px; padding:0px;}
 .clear{ clear:both; height:0; overflow:hidden}
 
-.top{ width:95%; margin:0 auto; height:170px;}
+.top{ width:95%; margin:0 auto; height:60px;}
 .top_1{ float:right; padding:15px 0;}
 .top_1 a{ font-size:12px; color:#f18024; padding-left:10px; text-decoration:none;}
 .top_1 a:hover{color:#f18024;}
