@@ -377,13 +377,13 @@ namespace Model
         [Required(ErrorMessage = "必填")]
         [Display(Name = "英文名字")]
         public string Name_EN { get; set; }
-        [Display(Name = "行业类型")]
+        [Display(Name = "所属行业")]
         public int? IndustryId { get; set; }
-        [Display(Name = "行业类型")]
+        [Display(Name = "所属行业")]
         public string IndustryString { get; set; }
-        [Display(Name = "公司类型")]
+        [Display(Name = "公司性质")]
         public int? TypeId { get; set; }
-        [Display(Name = "公司类型")]
+        [Display(Name = "公司性质")]
         public string TypeString { get; set; }
         [Display(Name = "公司总机")]
         public string Phone { get; set; }
@@ -407,12 +407,45 @@ namespace Model
         public string ProgressString { get; set; }
         [Display(Name = "主营业务")]
         public string Business { get; set; }
-        [Display(Name = "公司业务")]
+        [Display(Name = "公司介绍")]
         public string Desc { get; set; }
         [Display(Name = "分类")]
         public List<int> Categories { get; set; }
         [Display(Name = "分类")]
         public string CategoryString { get; set; }
+
+        [Display(Name = "英文地址")]
+        public string Address_EN { get; set; }
+
+        [Display(Name = "省")]
+        public string Province { get; set; }
+
+        [Display(Name = "市")]
+        public string City { get; set; }
+
+        [Display(Name = "公司规模")]
+        public string Scale { get; set; }
+
+        [Display(Name = "年销售额")]
+        public string AnnualSales { get; set; }
+
+        [Display(Name = "主要产品")]
+        public string MainProduct { get; set; }
+
+        [Display(Name = "主要客户")]
+        public string MainClient { get; set; }
+
+        [Display(Name = "创建时间")]
+        public string CreatedDate { get; set; }
+
+        [Display(Name = "创建人")]
+        public string Creator { get; set; }
+
+        [Display(Name = "更新时间")]
+        public string ModifiedDate { get; set; }
+
+        [Display(Name = "更新人")]
+        public string ModifiedUser { get; set; }
 
     }
 
@@ -427,7 +460,8 @@ namespace Model
         public string Name_EN { get; set; }
         [Display(Name = "客户职位")]
         public string Title { get; set; }
-        [Display(Name = "所在部门")]
+        [Required(ErrorMessage = "必填")]
+        [Display(Name = "部门")]
         public string Department { get; set; }
         [Display(Name = "客户直线")]
         public string Telephone { get; set; }
@@ -441,13 +475,15 @@ namespace Model
         public DateTime? Birthday { get; set; }
         [Display(Name = "个人邮箱")]
         public string PersonelEmail { get; set; }
+        //[Required(ErrorMessage = "必填")]
         [Display(Name = "联系地址")]
         public string Address { get; set; }
         [Display(Name = "联系邮编")]
         public string Zip { get; set; }
         [Display(Name = "现在所在分公司")]
         public string SubCompany { get; set; }
-        [Display(Name = "客户性别")]
+        [Display(Name = "称谓")]
+        [Required(ErrorMessage = "必填")]
         public string Gender { get; set; }
         [Display(Name = "排序")]
         public int Order { get; set; }
@@ -460,10 +496,10 @@ namespace Model
         [Display(Name = "微信账号")]
         public string WeiXin { get; set; }
 
-        [Display(Name = "LinkIn账号")]
+        [Display(Name = "LinkIn")]
         public string LinkIn { get; set; }
 
-        [Display(Name = "FaceBook账号")]
+        [Display(Name = "FaceBook")]
         public string FaceBook { get; set; }
 
         [Display(Name = "博客地址")]
@@ -471,6 +507,23 @@ namespace Model
 
         [Display(Name = "区号/时差")]
         public int? DistrictNumberId { get; set; }
+
+        [Display(Name = "私人电话")]
+        public string PersonalPhone { get; set; }
+        [Display(Name = "私人手机")]
+        public string PersonalCellPhone { get; set; }
+        [Display(Name = "私人传真")]
+        public string PersonalFax { get; set; }
+        [Display(Name = "备注")]
+        public string Comment { get; set; }
+        [Display(Name = "lead角色")]
+        public string LeadRoles { get; set; }
+        [Display(Name = "QQ账号")]
+        public string QQ { get; set; }
+        [Display(Name = "Twitter")]
+        public string Twitter { get; set; }
+        [Display(Name = "分支机构")]
+        public string Branch { get; set; }
     }
 
     public class AjaxViewLeadCall

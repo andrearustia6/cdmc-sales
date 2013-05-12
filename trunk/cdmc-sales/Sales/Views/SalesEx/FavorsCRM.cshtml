@@ -12,6 +12,7 @@
                     {                       
                         item.Text = ajaxGroupedCRM.DisplayName + "分组";
                         item.Value = ajaxGroupedCRM.ID.ToString();
+                        item.Selected = item.Value == ViewBag.selectedVal;
                     })
                     .Children(group => group.GroupedCRMs));
 
@@ -28,6 +29,7 @@
                     {
                         item.Text = Lead.DisplayText;
                         item.Value = Lead.CRMID.ToString() + "," + Lead.LeadID.ToString();
+                        item.Selected = item.Value == ViewBag.selectedVal;
                     }));
         })
 )

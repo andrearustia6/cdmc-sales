@@ -13,14 +13,14 @@ namespace Utl
     {
         public static IEnumerable<SelectListItem> CrmProgessSelectList()
         {
-            var ps = CH.GetAllData<Progress>().OrderBy(o=>o.Code);
+            var ps = CH.GetAllData<Progress>().OrderBy(o => o.Code);
             List<SelectListItem> selectList = new List<SelectListItem>();
-           // selectList.Add(new SelectListItem() { Text = "不指定", Value = "-1" });
-            foreach(var p in ps)
+            // selectList.Add(new SelectListItem() { Text = "不指定", Value = "-1" });
+            foreach (var p in ps)
             {
                 selectList.Add(new SelectListItem() { Text = p.Name, Value = p.Code.ToString() });
             }
-          
+
 
             return selectList;
         }
@@ -39,12 +39,12 @@ namespace Utl
         {
             List<SelectListItem> selectList = new List<SelectListItem>();
 
-            var ps = CH.GetAllData<Category>(o=>o.ProjectID==projectid);
+            var ps = CH.GetAllData<Category>(o => o.ProjectID == projectid);
             foreach (var p in ps)
             {
                 selectList.Add(new SelectListItem() { Text = p.Name, Value = p.ID.ToString() });
             }
-         
+
 
             return selectList;
         }
@@ -55,7 +55,7 @@ namespace Utl
             selectList.Add(new SelectListItem() { Text = "未出单的公司", Value = "0" });
             selectList.Add(new SelectListItem() { Text = "已出单", Value = "1" });
             selectList.Add(new SelectListItem() { Text = "已出单未付款", Value = "2" });
-            selectList.Add(new SelectListItem() { Text = "已付款", Value = "3"  });
+            selectList.Add(new SelectListItem() { Text = "已付款", Value = "3" });
 
             return selectList;
         }
@@ -80,7 +80,7 @@ namespace Utl
             selectList.Add(new SelectListItem() { Text = "7天内", Value = "7" });
             selectList.Add(new SelectListItem() { Text = "14天内", Value = "14" });
             selectList.Add(new SelectListItem() { Text = "30天内", Value = "30" });
-            
+
             return selectList;
         }
 
@@ -258,7 +258,7 @@ namespace Utl
             return selectList;
         }
 
-        public static IEnumerable<SelectListItem> ProjectSelectList(string currentUserName,int? selectVal)
+        public static IEnumerable<SelectListItem> ProjectSelectList(string currentUserName, int? selectVal)
         {
             List<SelectListItem> selectList = new List<SelectListItem>();
             foreach (Project project in CRM_Logical.GetUserProjectRight(currentUserName))
@@ -268,6 +268,30 @@ namespace Utl
                 {
                     selectListItem.Selected = true;
                 }
+                selectList.Add(selectListItem);
+            }
+            return selectList;
+        }
+
+        public static IEnumerable<SelectListItem> CompanyScaleSelectList(string selectVal)
+        {
+            List<SelectListItem> selectList = new List<SelectListItem>();
+            string[] companyScales = new string[] { "1-50人", "51-100人", "101-500人", "501-1000人", "1001-5000人", "5001-10000人", "10000+人" };
+            foreach (string companyScale in companyScales)
+            {
+                SelectListItem selectListItem = new SelectListItem() { Text = companyScale, Value = companyScale, Selected = companyScale == selectVal };
+                selectList.Add(selectListItem);
+            }
+            return selectList;
+        }
+
+        public static IEnumerable<SelectListItem> AnnualSaleSelectList(string selectVal)
+        {
+            List<SelectListItem> selectList = new List<SelectListItem>();
+            string[] annualSales = new string[] { "人民币1000万以下", "人民币1000 - 5000万", "人民币5000万 - 1亿", "人民币1- 10亿", "人民币10 - 100亿", "人民币100-1000亿", "人民币1000亿以上" };
+            foreach (string annualSale in annualSales)
+            {
+                SelectListItem selectListItem = new SelectListItem() { Text = annualSale, Value = annualSale, Selected = annualSale == selectVal };
                 selectList.Add(selectListItem);
             }
             return selectList;
