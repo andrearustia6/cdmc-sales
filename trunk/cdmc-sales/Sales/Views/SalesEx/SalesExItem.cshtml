@@ -520,7 +520,7 @@
 
         if ($('.dialogue-addcall form').valid()) {
             var query = $('.dialogue-addcall form').serializeArray();
-            $.post('AddCall' + query, function (result) {
+            $.post('AddCall' , query, function (result) {
                 if (result.length > 0) {
                     alert('LeadCall新增失败');
                 } else {
@@ -554,8 +554,8 @@
     }
     function UpdateCall() {
         if ($('.calledit-wrapper form').valid()) {
-            var query = $('.calledit-wrapper form').serialize();
-            $.post('EditLeadCall?' + query, null, function (result) {
+            var query = $('.calledit-wrapper form').serializeArray();
+            $.post('EditLeadCall' , query, function (result) {
                 if (result.length > 0) {
                     alert(result);
                 } else {
@@ -574,9 +574,9 @@
         window.close();
     }
     function AddLead() {
-        if ($('.dialogue-addlead form').valid()) {
-            var query = $('.dialogue-addlead form').serialize();
-            $.post('AddLead?' + query, null, function (result) {
+        if ($('.dialogue-addlead form').valid()) {            
+            var query = $('.dialogue-addlead form').serializeArray();
+            $.post('AddLead', query,  function (result) {
                 if (result.length > 0) {
                     $('#AddLead').data('tWindow').close();
                     if (confirm('Lead新增成功,是否新增相应Call')) {

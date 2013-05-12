@@ -214,7 +214,7 @@ namespace Sales.Controllers
                 PersonalCellPhone = lead.PersonalCellPhone,
                 PersonalFax = lead.PersonalFax,
                 Comment = lead.Comment,
-                LeadRoles = lead.LeadRoles,
+                LeadRoles = lead.LeadRoles==null?string.Empty:lead.LeadRoles,
                 QQ = lead.QQ,
                 Twitter = lead.Twitter,
                 Branch = lead.Branch
@@ -224,7 +224,7 @@ namespace Sales.Controllers
 
         [ValidateInput(false)]
         [HttpPost]
-        public ActionResult EditLead(AjaxViewLead ajaxViewLead)
+        public ActionResult EditLead(AjaxViewLead ajaxViewLead, string[] leadRole)
         {
             Lead lead = CH.GetAllData<Lead>(c => c.ID == ajaxViewLead.LeadId).First();
             lead.Name_CH = ajaxViewLead.Name_CN;
@@ -251,13 +251,19 @@ namespace Sales.Controllers
             lead.PersonalPhone = ajaxViewLead.PersonalPhone;
             lead.PersonalCellPhone = ajaxViewLead.PersonalCellPhone;
             lead.PersonalFax = ajaxViewLead.PersonalFax;
-            lead.Comment = ajaxViewLead.Comment;
-            lead.LeadRoles = ajaxViewLead.LeadRoles;
+            lead.Comment = ajaxViewLead.Comment;           
             lead.QQ = ajaxViewLead.QQ;
             lead.Twitter = ajaxViewLead.Twitter;
             lead.Branch = ajaxViewLead.Branch;
             lead.ZIP = ajaxViewLead.Zip;
-
+            lead.LeadRoles = string.Empty;
+            if (leadRole != null)
+            {
+                foreach (string leadrole in leadRole)
+                {
+                    lead.LeadRoles += leadrole + ";";
+                }
+            }
             CH.Edit<Lead>(lead);
             return null;
         }
@@ -269,7 +275,7 @@ namespace Sales.Controllers
         }
 
         [ValidateInput(false)]
-        public ActionResult AddLead(AjaxViewLead ajaxViewLead)
+        public ActionResult AddLead(AjaxViewLead ajaxViewLead, string[] leadRole)
         {
             Lead lead = new Lead()
             {
@@ -299,13 +305,19 @@ namespace Sales.Controllers
                 PersonalPhone = ajaxViewLead.PersonalPhone,
                 PersonalCellPhone = ajaxViewLead.PersonalCellPhone,
                 PersonalFax = ajaxViewLead.PersonalFax,
-                Comment = ajaxViewLead.Comment,
-                LeadRoles = ajaxViewLead.LeadRoles,
+                Comment = ajaxViewLead.Comment,              
                 QQ = ajaxViewLead.QQ,
                 Twitter = ajaxViewLead.Twitter,
                 Branch = ajaxViewLead.Branch,
                 ZIP = ajaxViewLead.Zip
             };
+            if (leadRole != null)
+            {
+                foreach (string leadrole in leadRole)
+                {
+                    lead.LeadRoles += leadrole + ";";
+                }
+            }
 
             CH.Create<Lead>(lead);
             return Content(lead.ID.ToString());

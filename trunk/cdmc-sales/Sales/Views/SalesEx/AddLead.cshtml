@@ -117,7 +117,9 @@
             </td>
             <td colspan="2">
                 @Html.LabelFor(model => model.LeadRoles)
-                @Html.TextBoxFor(model => model.LeadRoles)
+                <span class="leadRole"><input type="checkbox" value="决策人"  name="leadRole"/> <label>决策人</label></span>
+                <span class="leadRole"><input type="checkbox" value="参与人"  name="leadRole"/> <label>参与人</label></span>
+                <span class="leadRole"><input type="checkbox" value="联系人"  name="leadRole" /> <label>联系人</label></span>
             </td>
         </tr>
     </table>
@@ -138,7 +140,7 @@
         width: 55px;
         padding-right: 5px;
     }
-    table tr td input, table tr td select
+    table tr td input[type=text], table tr td select
     {
         width: 140px;
     }
@@ -154,5 +156,10 @@
     {
         display: inline-block !important;
         color: Red;
+    }
+    span.leadRole
+    {
+        margin-left:5px;
+        margin-right:5px;
     }
 </style>

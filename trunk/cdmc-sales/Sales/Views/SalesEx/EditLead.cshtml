@@ -7,7 +7,7 @@
 {
     @Html.HiddenFor(model => model.CompanyId)
     @Html.HiddenFor(model => model.LeadId)
-  <table>
+    <table>
         <tr>
             <td>@Html.LabelFor(model => model.Name_CN)
                 @Html.TextBoxFor(model => model.Name_CN)
@@ -118,13 +118,54 @@
             </td>
             <td colspan="2">
                 @Html.LabelFor(model => model.LeadRoles)
-                @Html.TextBoxFor(model => model.LeadRoles)
+                @if (Model.LeadRoles.Contains("决策人"))
+                {
+                    <span class="leadRole">
+                        <input type="checkbox" value="决策人" checked="checked" name="leadRole" />
+                        <label>
+                            决策人</label></span>
+                }
+                else
+                { 
+                    <span class="leadRole">
+                        <input type="checkbox" value="决策人" name="leadRole" />
+                        <label>
+                            决策人</label></span>
+                }
+                @if (Model.LeadRoles.Contains("参与人"))
+                {
+                    <span class="leadRole">
+                        <input type="checkbox" value="参与人" checked="checked" name="leadRole" />
+                        <label>
+                            参与人</label></span> 
+                }
+                else
+                { 
+                    <span class="leadRole">
+                        <input type="checkbox" value="参与人" name="leadRole" />
+                        <label>
+                            参与人</label></span> 
+                }
+                @if (Model.LeadRoles.Contains("参与人"))
+                {
+                    <span class="leadRole">
+                        <input type="checkbox" value="联系人" checked="checked" name="leadRole" />
+                        <label>
+                            联系人</label></span>
+                }
+                else
+                { 
+                    <span class="leadRole">
+                        <input type="checkbox" value="联系人" name="leadRole" />
+                        <label>
+                            联系人</label></span>
+                }
             </td>
         </tr>
     </table>
 }
 <style>
-  table
+    table
     {
         border: none;
     }
@@ -139,7 +180,7 @@
         width: 55px;
         padding-right: 5px;
     }
-    table tr td input, table tr td select
+    table tr td input[type=text], table tr td select
     {
         width: 140px;
     }
