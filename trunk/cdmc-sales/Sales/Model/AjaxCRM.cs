@@ -66,7 +66,7 @@ namespace Model
             //成熟度
             if (Filters != null && Filters.CompanyProgress.HasValue)
             {
-                query = query.Where(q => q.Progress == null || (q.Progress == null && q.Progress.Code >= Filters.CompanyProgress));
+                query = query.Where(q => q.Progress == null || (q.Progress != null && q.Progress.Code >= Filters.CompanyProgress));
             }
             //出单
             if (Filters != null && Filters.DealProgress.HasValue)
