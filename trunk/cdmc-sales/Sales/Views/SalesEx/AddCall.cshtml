@@ -10,9 +10,9 @@
     @Html.HiddenFor(model => model.CallId)
     @Html.HiddenFor(model => model.ProjectId)
     <ul>
-        <li><span class="addcall-left">@Html.LabelFor(model => model.CallDate) @Html.Telerik().DatePickerFor(model => model.CallDate)
+        <li><span class="addcall-left">@Html.LabelFor(model => model.CallDate) @Html.Telerik().DateTimePickerFor(model => model.CallDate)
             @Html.ValidationMessageFor(model => model.CallDate)</span> <span class="addcall-right">
-                @Html.LabelFor(model => model.CallBackDate) @Html.Telerik().DatePickerFor(model => model.CallBackDate)
+                @Html.LabelFor(model => model.CallBackDate) @Html.Telerik().DateTimePickerFor(model => model.CallBackDate)
                 @Html.ValidationMessageFor(model => model.CallBackDate)
             </span></li>
         <li><span class="addcall-left">@Html.LabelFor(model => model.CallTypeId) @Html.DropDownListFor(model => model.CallTypeId, SelectHelper.CallTypeSelectList(Model.CallTypeId), "-请选择-")
