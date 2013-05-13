@@ -251,84 +251,7 @@
     .Height(250).Draggable(true)
     .Modal(true).Visible(false)
 )
-<style>
-    .fieldblock
-    {
-    }
-    .salebtn
-    {
-        width: 20px;
-        height: 20px;
-        border: none;
-        display: inline-block;
-        float: right;
-        border: none;
-        margin: 0 5px;
-        cursor: pointer;
-    }
-    
-    .fieldError
-    {
-        border: 1px solid red !important;
-    }
-    
-    .fieldname
-    {
-    }
-    .fieldname dd
-    {
-        font-size: 15px;
-        float: left;
-        padding-left: 10px;
-        padding-right: 10px;
-        margin: 10px;
-        background-color: #FFBB77;
-    }
-    .fieldname li
-    {
-        font-size: 15px;
-        float: left;
-        padding-left: 10px;
-        padding-right: 10px;
-        margin: 10px;
-        background-color: #FFBB77;
-    }
-    .datainfo
-    {
-        font-size: 15px;
-        color: Black;
-        max-width: 76px;
-        height: 21px;
-        line-height: 21px;
-        font-weight: bold;
-    }
-    .fenge
-    {
-        width: 98%;
-        margin: 5px;
-        float: left;
-    }
-    .fenge_2
-    {
-        background: #FFA042;
-        line-height: 20px;
-        border: 1px solid #000;
-        border-bottom: none;
-        text-align: center;
-        color: #fff;
-        padding: 2px;
-        float: left;
-        width: 99.2%;
-    }
-    .fenge_3
-    {
-        border: 1px solid #000;
-        line-height: 20px;
-        float: left;
-        padding: 2px;
-        width: 99.2%;
-    }
-</style>
+
 <script type="text/javascript">
     var currentCompanyNameCN = undefined;
     var currentCompanyNameEN = undefined;
@@ -467,20 +390,79 @@
     }
 
     function UpdateLead() {
-        if ($('.dialogue-editlead form').valid()) {
-            var query = $('.dialogue-editlead form').serializeArray();
-            $.post('EditLead' , query, function (result) {
-                if (result.length > 0) {
-                    alert(result);
-                } else {
-                    $('#EditLead').data('tWindow').close();
-                    alert('Lead更新成功');
-                    selectedVal = $('#CRMID').val() + "," + $('.dialogue-editlead form #LeadId').val();
-                    RefreshCrmList(selectedVal);
-                    onCompanyChanging(selectedVal);
-                }
-            });
+
+        var haserror = false;
+
+        $('.dialogue-editlead form input').removeClass('fieldError');
+        $('.dialogue-editlead form select').removeClass('fieldError');
+
+        $gender = $('.dialogue-editlead form #Gender');
+        if ($gender.val().length == 0) {
+            $gender.addClass('fieldError');
+             haserror = true;
+         }
+         $department = $('.dialogue-editlead form #Department');
+         if ($department.val().length == 0) {
+             $department.addClass('fieldError');
+             haserror = true;
+         }
+         $title = $('.dialogue-editlead form #Title');
+         if ($title.val().length == 0) {
+             $title.addClass('fieldError');
+             haserror = true;
+         }
+
+         $district = $('.dialogue-editlead form #DistrictNumberId');
+         if ($district.val().length == 0)//国内
+       {
+           $namecn = $('.dialogue-editlead form #Name_CN');
+           if ($namecn.val().length == 0) {
+             $namecn.addClass('fieldError');
+             haserror = true;
+         }
+
+         $address = $('.dialogue-editlead form #Address');
+         if ($address.val().length == 0) {
+            $address.addClass('fieldError');
+            haserror = true;
         }
+
+        $zip = $('.dialogue-editlead form #Zip');
+        if ($zip.val().length == 0) {
+            $zip.addClass('fieldError');
+            haserror = true;
+        }
+
+       }
+       else//国外
+       {
+           $nameen = $('.dialogue-editlead form #Name_EN');
+           if ($nameen.val().length == 0)
+         {
+             $nameen.addClass('fieldError');
+         }
+         if ($nameen.val().length == 0) {
+             $nameen.addClass('fieldError');
+         }
+       }
+     if (haserror) {
+           return;
+       }
+        
+
+        var query = $('.dialogue-editlead form').serializeArray();
+        $.post('EditLead' , query, function (result) {
+            if (result.length > 0) {
+                alert(result);
+            } else {
+                $('#EditLead').data('tWindow').close();
+                alert('Lead更新成功');
+                selectedVal = $('#CRMID').val() + "," + $('.dialogue-editlead form #LeadId').val();
+                RefreshCrmList(selectedVal);
+                onCompanyChanging(selectedVal);
+            }
+        });
+       
     }
 
     function onLeadAdd(currentCompanyId) {
@@ -580,7 +562,64 @@
         window.close();
     }
     function AddLead() {
-        if ($('.dialogue-addlead form').valid()) {            
+      
+            var haserror = false;
+
+            $('.dialogue-addlead form input').removeClass('fieldError');
+            $('.dialogue-addlead form select').removeClass('fieldError');
+
+            $gender = $('.dialogue-addlead form #Gender');
+            if ($gender.val().length == 0) {
+                $gender.addClass('fieldError');
+                haserror = true;
+            }
+            $department = $('.dialogue-addlead form #Department');
+            if ($department.val().length == 0) {
+                $department.addClass('fieldError');
+                haserror = true;
+            }
+            $title = $('.dialogue-addlead form #Title');
+            if ($title.val().length == 0) {
+                $title.addClass('fieldError');
+                haserror = true;
+            }
+
+            $district = $('.dialogue-addlead form #DistrictNumberId');
+            if ($district.val().length == 0)//国内
+            {
+                $namecn = $('.dialogue-addlead form #Name_CN');
+                if ($namecn.val().length == 0) {
+                    $namecn.addClass('fieldError');
+                    haserror = true;
+                }
+
+                $address = $('.dialogue-addlead form #Address');
+                if ($address.val().length == 0) {
+                    $address.addClass('fieldError');
+                    haserror = true;
+                }
+
+                $zip = $('.dialogue-addlead form #Zip');
+                if ($zip.val().length == 0) {
+                    $zip.addClass('fieldError');
+                    haserror = true;
+                }
+
+            }
+            else//国外
+            {
+                $nameen = $('.dialogue-addlead form #Name_EN');
+                if ($nameen.val().length == 0) {
+                    $nameen.addClass('fieldError');
+                }
+                if ($nameen.val().length == 0) {
+                    $nameen.addClass('fieldError');
+                }
+            }
+            if (haserror) {
+                return;
+            }
+                   
             var query = $('.dialogue-addlead form').serializeArray();
             $.post('AddLead', query,  function (result) {
                 if (result.length > 0) {
@@ -605,7 +644,7 @@
                     alert('Lead新增失败');
                 }
             });
-        }
+      
     }
     function CancelAddLead() {
         if (tempCRMID != undefined) {
@@ -633,3 +672,83 @@
         HandleEmptySpan();
     });
 </script>
+
+
+<style>
+    .fieldblock
+    {
+    }
+    .salebtn
+    {
+        width: 20px;
+        height: 20px;
+        border: none;
+        display: inline-block;
+        float: right;
+        border: none;
+        margin: 0 5px;
+        cursor: pointer;
+    }
+    
+    .fieldError
+    {
+        border: 1px solid red !important;
+    }
+    
+    .fieldname
+    {
+    }
+    .fieldname dd
+    {
+        font-size: 15px;
+        float: left;
+        padding-left: 10px;
+        padding-right: 10px;
+        margin: 10px;
+        background-color: #FFBB77;
+    }
+    .fieldname li
+    {
+        font-size: 15px;
+        float: left;
+        padding-left: 10px;
+        padding-right: 10px;
+        margin: 10px;
+        background-color: #FFBB77;
+    }
+    .datainfo
+    {
+        font-size: 15px;
+        color: Black;
+        max-width: 76px;
+        height: 21px;
+        line-height: 21px;
+        font-weight: bold;
+    }
+    .fenge
+    {
+        width: 98%;
+        margin: 5px;
+        float: left;
+    }
+    .fenge_2
+    {
+        background: #FFA042;
+        line-height: 20px;
+        border: 1px solid #000;
+        border-bottom: none;
+        text-align: center;
+        color: #fff;
+        padding: 2px;
+        float: left;
+        width: 99.2%;
+    }
+    .fenge_3
+    {
+        border: 1px solid #000;
+        line-height: 20px;
+        float: left;
+        padding: 2px;
+        width: 99.2%;
+    }
+</style>
