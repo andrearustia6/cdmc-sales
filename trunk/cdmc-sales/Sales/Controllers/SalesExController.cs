@@ -37,8 +37,11 @@ namespace Sales.Controllers
             {
                 leadid = int.Parse(ids[1]);
             }
+            string start = DateTime.Now.ToString();
             var d = GetNavigationBar(filters);
-            var data = d.AllCRMs.FirstOrDefault(f => f.CRMID == crmid);
+            string start1 = DateTime.Now.ToString();
+            var data = d.AllCRMs.Where(f => f.CRMID == crmid).FirstOrDefault();
+            string start2 = DateTime.Now.ToString();
             if (data == null)
                 data = d.CustomCrmGroups.SelectMany(s => s.GroupedCRMs).FirstOrDefault(f => f.CRMID == crmid);
 
@@ -46,7 +49,7 @@ namespace Sales.Controllers
             {
                 data.AjaxLeads = data.AjaxLeads.Where(w => w.LeadID == leadid);
             }
-
+            string end = DateTime.Now.ToString();
             return PartialView(@"~\views\salesex\salesexitem.cshtml", data);
         }
 

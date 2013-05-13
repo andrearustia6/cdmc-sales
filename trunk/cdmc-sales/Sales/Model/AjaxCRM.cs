@@ -45,7 +45,8 @@ namespace Model
         public int? CurrentProjectId { get; set; }
         IQueryable<CompanyRelationship> GetFilteredCRM()
         {
-            var query = from c in CH.DB.CompanyRelationships select c;
+            string user = Employee.CurrentUserName;
+            var query = from c in CH.DB.CompanyRelationships.Where(w => w.Members.Select(s=>s.Name).Contains(user)) select c;
             //模糊搜索
             if (Filters != null && !string.IsNullOrWhiteSpace(Filters.FuzzyQuery))
             {
@@ -122,7 +123,6 @@ namespace Model
         {
             var user = Employee.CurrentUserName;
             var filteredcrm = GetFilteredCRM();
-
             var data = from f in CH.DB.UserFavorsCrmGroups
                        where f.UserName == user
                        select new AjaxGroupedCRM()
@@ -130,12 +130,12 @@ namespace Model
                            ID = f.ID,
                            UserName = f.UserName,
                            DisplayName = f.DisplayName,
-                           GroupedCRMs = (from u in CH.DB.UserFavorsCRMs
+                           GroupedCRMs = (
+                                          //from u in CH.DB.UserFavorsCRMs
                                           from c in filteredcrm
-                                          from m in c.Members
-                                          where m.Name == user
-                                          && c.ID == u.CompanyRelationshipID.Value
-                                          && f.UserFavorsCRMs.Select(s => s.ID).Contains(u.ID)
+                                          where 
+                                          //c.ID == u.CompanyRelationshipID.Value
+                                           f.UserFavorsCRMs.Select(s => s.CompanyRelationshipID).Contains(c.ID)
                                           orderby c.CreatedDate descending
                                           select new AjaxCRM
                                           {
@@ -201,10 +201,9 @@ namespace Model
 
             var user = Employee.CurrentUserName;
             var custom = from cg in CH.DB.UserFavorsCRMs.Where(w => w.UserFavorsCrmGroup.UserName == user) select cg;
-            var filteredcrm = GetFilteredCRM();
+             var filteredcrm = GetFilteredCRM();
             var data = from c in filteredcrm
-                       from m in c.Members
-                       where m.Name == user && m.CompanyRelationships.Select(s => s.ID).Contains(c.ID) && (!custom.Select(s => s.CompanyRelationshipID).Contains(c.ID) || alldata.Value)
+                       where  (!custom.Select(s => s.CompanyRelationshipID).Contains(c.ID))
                        orderby c.CreatedDate descending
                        select new AjaxCRM
                        {
@@ -266,7 +265,7 @@ namespace Model
                                         })
 
                        };
-
+          
             return data;
         }
 
