@@ -376,17 +376,16 @@ namespace Model
             get
             {
                 List<string> v = new List<string>();
-                v.Add(CompanyName);
-                //if (!string.IsNullOrEmpty(ProgressString))
-                //{
-                //    v.Add(ProgressString);
-                //};
+              
                 var nocontactleadcount = AjaxLeads.Count(c => c.AjaxCalls.Count() == 0);
                 if (nocontactleadcount > 0)
                 {
-                    v.Add(nocontactleadcount.ToString() + "Leads未打");
+                    return Utl.Utl.GetFullString(", ", CompanyName, nocontactleadcount.ToString() + "Leads未打");
                 }
-                return string.Join(",", v);
+                else
+                {
+                    return CompanyName;
+                }
             }
         }
         public IEnumerable<AjaxLead> AjaxLeads { get; set; }
@@ -477,7 +476,7 @@ namespace Model
                     v.Add(LeadTitle);
                 }
                 v.Add(lastcall);
-                return string.Join(",", v);
+                return Utl.Utl.GetFullString(",", v.ToArray());
             }
         }
         public string Status

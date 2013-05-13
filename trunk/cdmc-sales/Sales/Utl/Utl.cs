@@ -775,6 +775,7 @@ namespace Utl
             return string.Join(seperator, s);
         }
 
+
         public static string GetFullName(string ch, string en)
         {
             if (string.IsNullOrEmpty(ch) && !string.IsNullOrEmpty(en))
