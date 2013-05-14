@@ -457,6 +457,8 @@ namespace Model
                     var code = AjaxCalls.OrderByDescending(o => o.CallDate).FirstOrDefault().LeadCallTypeCode;
                     if (code == 20)
                         lastcall = "&2*";//blowed
+                    if (code == 40)
+                        lastcall = "&4*";//pitched
                     else if (code == 60)
                         lastcall = "&6*";//wait for approve
                     else if (code == 90)
@@ -466,7 +468,7 @@ namespace Model
                     else if (code == 70)
                         lastcall = "&7*";//Waiting for Approval
                     else
-                        lastcall = string.Empty;
+                        lastcall = " ";
                 }
 
                 List<string> v = new List<string> { LeadName };

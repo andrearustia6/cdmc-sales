@@ -44,7 +44,7 @@
         </td>
         </tr>
         <tr>
-        <td  colspan="5">   <span>模糊查询,寻找匹配的名称,邮件,电话: @Html.TextBox("f-fuzzy", "", new { style="width:400px;line-height:22px"})
+        <td  colspan="5">   <span>寻找匹配的名称,邮件,电话: @Html.TextBox("f-fuzzy", "", new { style="width:260px;line-height:22px"})
 
 
 
@@ -58,13 +58,14 @@
         
  
      
-         <td colspan="3" ><span>Lead最后一次通话状态颜色:</span>
+  <td colspan="3" ><span>最后一次通话状态:</span>
+  <span style="color:red">NotCall</span>
   <span style="color:#0000C6">Call-Backed</span>
-   <span style="color:#6C6C6C">Blowed</span>
-    <span style="color:red">NotCall</span>
-   <span style="color:#006030">Closed</span>
-   <span style="color:#005757">Waiting for Approval</span>
-     <span style="color:#FF00CC">Qualified Decision</span></td>
+  <span style="color:#6C6C6C">Blowed</span>
+  <span style="color:#00DB00">Pitched</span>
+  <span style="color:#006030">Closed</span>
+  <span style="color:#005757">Waiting for Approval</span>
+  <span style="color:#FF00CC">Qualified Decision</span></td>
         </tr>
     </table>
   
@@ -229,6 +230,11 @@
             {
                 $this.css('color', '#6C6C6C');
                 spantext = spantext.replace(",&2*", "");
+            }
+            else if (spantext.indexOf(',&4*') > 0)//pitch
+            {
+                $this.css('color', '#00DB00');
+                spantext = spantext.replace(",&4*", "");
             }
             else if (spantext.indexOf(',&0*') > 0)//no call
             {
