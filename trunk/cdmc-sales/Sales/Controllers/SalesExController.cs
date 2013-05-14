@@ -248,8 +248,7 @@ namespace Sales.Controllers
         }
 
         public ActionResult GetEditLead(int leadId)
-        {
-           // Lead lead = CH.GetAllData<Lead>(c => c.ID == leadId).First();
+        {           
             var lead = CH.DB.Leads.FirstOrDefault(f => f.ID == leadId);  
             AjaxViewLead ajaxViewLead = new AjaxViewLead()
             {
@@ -291,8 +290,7 @@ namespace Sales.Controllers
         [HttpPost]
         public ActionResult EditLead(AjaxViewLead ajaxViewLead, string[] leadRole)
         {
-            var lead = CH.DB.Leads.FirstOrDefault(c => c.ID == ajaxViewLead.LeadId);  
-           // Lead lead = CH.GetAllData<Lead>(c => c.ID == ajaxViewLead.LeadId).First();
+            var lead = CH.DB.Leads.FirstOrDefault(c => c.ID == ajaxViewLead.LeadId);           
             lead.Name_CH = ajaxViewLead.Name_CN;
             lead.Name_EN = ajaxViewLead.Name_EN;
             lead.CompanyID = ajaxViewLead.CompanyId;
@@ -391,8 +389,7 @@ namespace Sales.Controllers
 
         public ActionResult GetEditLeadCall(int leadCallId)
         {
-            var leadCall = CH.DB.LeadCalls.FirstOrDefault(c => c.ID == leadCallId);  
-            //LeadCall leadCall = CH.GetAllData<LeadCall>(c => c.ID == leadCallId).First();
+            var leadCall = CH.DB.LeadCalls.FirstOrDefault(c => c.ID == leadCallId);           
             AjaxViewLeadCall ajaxViewLeadCall = new AjaxViewLeadCall();
             ajaxViewLeadCall.CallId = leadCallId;
             ajaxViewLeadCall.CallBackDate = leadCall.CallBackDate;
@@ -409,12 +406,11 @@ namespace Sales.Controllers
         [ValidateInput(false)]
         public ActionResult EditLeadCall(AjaxViewLeadCall ajaxViewLeadCall)
         {
-            var leadCall = CH.DB.LeadCalls.FirstOrDefault(c => c.ID == ajaxViewLeadCall.CallId);  
-            //LeadCall leadCall = CH.GetAllData<LeadCall>(c => c.ID == ajaxViewLeadCall.CallId).First();
+            var leadCall = CH.DB.LeadCalls.FirstOrDefault(c => c.ID == ajaxViewLeadCall.CallId);             
             leadCall.CallBackDate = ajaxViewLeadCall.CallBackDate;
             leadCall.CallDate = ajaxViewLeadCall.CallDate;
             leadCall.LeadCallTypeID = ajaxViewLeadCall.CallTypeId;
-            leadCall.Member = CH.GetAllData<Member>(c => c.Name == Employee.CurrentUserName).First();
+            leadCall.Member = CH.DB.Members.FirstOrDefault(c => c.Name == Employee.CurrentUserName);
             leadCall.Result = ajaxViewLeadCall.Result;
             CH.Edit<LeadCall>(leadCall);
             return null;
@@ -436,7 +432,7 @@ namespace Sales.Controllers
             leadCall.CompanyRelationshipID = ajaxViewLeadCall.CompanyRelationshipId;
             leadCall.LeadCallTypeID = ajaxViewLeadCall.CallTypeId;
             leadCall.LeadID = ajaxViewLeadCall.LeadId;
-            leadCall.Member = CH.GetAllData<Member>(c => c.Name == Employee.CurrentUserName).First();
+            leadCall.Member = CH.DB.Members.FirstOrDefault(c => c.Name == Employee.CurrentUserName);
             leadCall.ProjectID = ajaxViewLeadCall.ProjectId;
             leadCall.Result = ajaxViewLeadCall.Result;
             leadCall.MarkForDelete = false;
@@ -482,7 +478,7 @@ namespace Sales.Controllers
             companyRelationship.Description = ajaxViewSaleCompany.Desc;
             companyRelationship.ProgressID = ajaxViewSaleCompany.ProgressId;
             companyRelationship.Members = new List<Member>() { };
-            companyRelationship.Members.Add(CH.GetAllData<Member>(c => c.Name == Employee.CurrentUserName).First());
+            companyRelationship.Members.Add(CH.DB.Members.FirstOrDefault(c => c.Name == Employee.CurrentUserName));
             companyRelationship.ProjectID = ajaxViewSaleCompany.ProjectId;
             companyRelationship.MarkForDelete = false;
             companyRelationship.CreatedDate = DateTime.Now;
@@ -506,8 +502,7 @@ namespace Sales.Controllers
         }
 
         public ActionResult GetEditCompany(int companyId)
-        {
-            //CompanyRelationship companyRelationship = CH.GetAllData<CompanyRelationship>(c => c.CompanyID == companyId).First();
+        {           
             var companyRelationship = CH.DB.CompanyRelationships.FirstOrDefault(c => c.CompanyID == companyId);  
             AjaxViewSaleCompany ajaxViewSaleCompany = new AjaxViewSaleCompany()
             {
@@ -558,8 +553,7 @@ namespace Sales.Controllers
         }
 
         public ActionResult GetDetailCompany(int companyId)
-        {
-            //CompanyRelationship companyRelationship = CH.GetAllData<CompanyRelationship>(c => c.CompanyID == companyId).First();
+        {            
             var companyRelationship = CH.DB.CompanyRelationships.FirstOrDefault(c => c.CompanyID == companyId);  
             AjaxViewSaleCompany ajaxViewSaleCompany = new AjaxViewSaleCompany()
             {
@@ -610,8 +604,7 @@ namespace Sales.Controllers
         [HttpPost]
         [ValidateInput(false)]
         public ActionResult EditCompany(AjaxViewSaleCompany ajaxViewSaleCompany)
-        {
-           // CompanyRelationship companyRelationship = CH.GetAllData<CompanyRelationship>(c => c.CompanyID == ajaxViewSaleCompany.CompanyId).First();
+        {         
             var companyRelationship = CH.DB.CompanyRelationships.FirstOrDefault(c => c.CompanyID == ajaxViewSaleCompany.CompanyId);  
             companyRelationship.Company.Address = ajaxViewSaleCompany.Address;
             companyRelationship.Company.AreaID = ajaxViewSaleCompany.IndustryId;
