@@ -141,7 +141,7 @@
                     <li><font>地址：</font><span class="address datainfo">@lead.LeadAddress</span> </li>
                 }
             </ul>
-            @if (lead.AjaxCalls.Count() > 0)
+            @if (lead.AjaxCalls!=null && lead.AjaxCalls.Count() > 0)
             {
                 <fieldset style="width: 97%">
                     <legend>通话记录</legend>
