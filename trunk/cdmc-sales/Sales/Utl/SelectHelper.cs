@@ -261,7 +261,9 @@ namespace Utl
         public static IEnumerable<SelectListItem> ProjectSelectList(string currentUserName, int? selectVal)
         {
             List<SelectListItem> selectList = new List<SelectListItem>();
-            foreach (Project project in CRM_Logical.GetUserProjectRight(currentUserName))
+            var user = Employee.CurrentUserName;
+            var projects = CH.GetAllData<Project>(w => w.Members.Select(s => s.Name).Contains(user)==true);
+            foreach (Project project in projects)
             {
                 SelectListItem selectListItem = new SelectListItem() { Text = project.ProjectCode, Value = project.ID.ToString() };
                 if (selectVal.HasValue && project.ID == selectVal.Value)
