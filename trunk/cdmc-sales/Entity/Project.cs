@@ -52,7 +52,9 @@ namespace Entity
         public const int LVL_TeamLeader = 100;
         public const int LVL_Sales = 10;
         public const int LVL_ProductInterface = 5;
+        public const int LVL_FinancialInterface = 4;
         public const int LVL_MarketInterface = 1;
+
 
         [Display(Name = "职级名称"), Required]
         public String Name { get; set; }

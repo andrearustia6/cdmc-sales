@@ -15,7 +15,7 @@ namespace Sales.Controllers
 {
 
 
-    [LeaderRequired]
+    //[LeaderRequired]
     public class DealController : Controller
     {
         protected override void Dispose(bool disposing)
@@ -148,11 +148,12 @@ namespace Sales.Controllers
 
         public ViewResult ConfirmList(int? projectid)
         {
-            projectid = this.TrySetProjectIDForUser(projectid);
-            ViewBag.ProjectID = projectid;
-            var data = CH.GetAllData<Deal>();
-            ViewBag.ProjectID = projectid;
-            return View(data.FindAll(d => d.CompanyRelationship.ProjectID == projectid).OrderByDescending(m => m.CreatedDate).ToList());
+            //projectid = this.TrySetProjectIDForUser(projectid);
+            //ViewBag.ProjectID = projectid;
+            //var data = CH.GetAllData<Deal>();
+            //ViewBag.ProjectID = projectid;
+            //return View(data.FindAll(d => d.CompanyRelationship.ProjectID == projectid).OrderByDescending(m => m.CreatedDate).ToList());
+            return View(CH.DB.Deals.OrderByDescending(s => s.ID).ToList());
         }
 
 
