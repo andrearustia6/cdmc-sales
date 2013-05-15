@@ -12,11 +12,10 @@
     <script type="text/javascript" src=@Url.Content(@"/scripts/jquery-1.8.2.min.js")></script>@*确保在页面能引用到jquery*@
     <script type="text/javascript" src=@Url.Content(@"/scripts/jquery.ui.position.js")></script>@*确保在页面能引用到jquery*@
     <script type="text/javascript" src=@Url.Content(@"/scripts/jquery.contextMenu.js")></script>@*确保在页面能引用到jquery*@
-     <script type="text/javascript" src=@Url.Content(@"/scripts/jquery.validate.min.js")></script>@*确保在页面能引用到jquery*@
+    <script type="text/javascript" src=@Url.Content(@"/scripts/jquery.validate.min.js")></script>@*确保在页面能引用到jquery*@
     <script type="text/javascript" src=@Url.Content(@"/scripts/jquery.validate.unobtrusive.min.js")></script>@*确保在页面能引用到jquery*@
-@*    <script type="text/javascript" src=@Url.Content(@"/scripts/screen.js")></script>@*确保在页面能引用到jquery*@
-  @*  <script type="text/javascript" src=@Url.Content(@"/scripts/prettify.js")></script>@*确保在页面能引用到jquery*@
-    
+    @*    <script type="text/javascript" src=@Url.Content(@"/scripts/screen.js")></script>@*确保在页面能引用到jquery*@
+    @*  <script type="text/javascript" src=@Url.Content(@"/scripts/prettify.js")></script>@*确保在页面能引用到jquery*@
     @(Html.Telerik().StyleSheetRegistrar().DefaultGroup(group => group.Add("telerik.common.css").Add("telerik.telerik.css").Combined(true).Compress(true)))
     <script type="text/javascript" src=@Url.Content(@"~/vjs/view.js")></script>@*确保在页面能引用到jquery*@
     <script type="text/javascript" src=@Url.Content(@"~/vjs/salesAvailableCompany.js")></script>
@@ -30,7 +29,7 @@
             @Html.ActionLink("[关于]", "Index", "About")
             @Html.ActionLink("[退出]", "LogOff", "Account")
         </div>
-      @*  <div class="logo">
+        @*  <div class="logo">
             <img src="/images/logo_2.gif" width="509" height="59" alt="logo" /></div>*@
         <div class="page">
             <div>
@@ -52,6 +51,14 @@
                               item.Add().Text("项目权限").Url("~/projectright/index");
                               item.Add().Text("模拟人配置").Url("~/SimulatorConfig/index");
                           });
+                       }
+
+                       if (score == FinancialInterfaceRequired.LVL)
+                       {
+                           menu.Add().Text("管理菜单").ImageUrl("~/Content/Common/Icons/Chart.gif").Items(item =>
+                           {
+                               item.Add().Url("~/Deal/ConfirmList").Text("出单到账确认");
+                           });
                        }
 
                        if (score >= DirectorRequired.LVL)
@@ -206,7 +213,9 @@
                 <div id="main">@RenderBody()</div>
             </div>
         </div>
-    </div><div id="ajax-holder"></div>
+    </div>
+    <div id="ajax-holder">
+    </div>
 </body>
 <footer>
 </footer>
@@ -214,11 +223,11 @@
                    .Add(@"jquery.validate.min.js")
                .Add(@"jquery-ui-1.8.23.custom.min.js")
                    .Add(@"jquery.validate.unobtrusive.min.js")
-                   //.Add(@"jquery-1.8.2.min.js")
+    //.Add(@"jquery-1.8.2.min.js")
                .Add(@"jquery-1.6.4.min.js")
                 .Add(@"json2.js")
                 .Add(@"jquery.jeegoocontext.min.js")
-                //.Add(@"screen.js")
+    //.Add(@"screen.js")
                 .Add(@"~/VJS/alextre.tableDesigner.js")
                 .Add(@"~/VJS/alextre.peopleFinder.js")
                 .Combined(false).Compress(false)))

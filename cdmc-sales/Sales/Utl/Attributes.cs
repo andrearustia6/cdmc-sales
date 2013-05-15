@@ -260,6 +260,18 @@ public sealed class ProductInterfaceRequired : RoleRequired
 }
 
 /// <summary>
+/// 4
+/// </summary>
+public sealed class FinancialInterfaceRequired : RoleRequired
+{
+    public const int LVL = 4;
+    public override int Level
+    {
+        get { return LVL; }
+    }
+}
+
+/// <summary>
 /// 2
 /// </summary>
 public sealed class PoliticsInterfaceRequired : RoleRequired

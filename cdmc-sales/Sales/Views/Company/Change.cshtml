@@ -107,7 +107,7 @@
     <div class="editor-field">
         @{if (Model != null)
           {
-            <img  alt="上传文件" width="300" height="200" src=@Url.Action("ShowImage", "Image", new { id = Model.ImageID }) />
+            <img  alt="上传文件" width="300" height="200" src=@Url.Action("DisplayImage", "Image", new { id = Model.ImageID }) />
           }
         }
         @Html.Telerik().Upload().Async(a=>a.AutoUpload(true)).Name("attachments").Multiple(false)
