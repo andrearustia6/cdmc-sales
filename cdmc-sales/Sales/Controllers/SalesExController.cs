@@ -432,7 +432,10 @@ namespace Sales.Controllers
             leadCall.CompanyRelationshipID = ajaxViewLeadCall.CompanyRelationshipId;
             leadCall.LeadCallTypeID = ajaxViewLeadCall.CallTypeId;
             leadCall.LeadID = ajaxViewLeadCall.LeadId;
-            leadCall.Member = CH.DB.Members.FirstOrDefault(c => c.Name == Employee.CurrentUserName);
+            var c = CH.GetDataById<CompanyRelationship>(ajaxViewLeadCall.CompanyRelationshipId);
+            var mem = c.Members.FirstOrDefault(m => m.Name == Employee.CurrentUserName);
+            leadCall.MemberID = mem.ID; 
+            //leadCall.Member = CH.DB.Members.FirstOrDefault(c => c.Name == Employee.CurrentUserName);
             leadCall.ProjectID = ajaxViewLeadCall.ProjectId;
             leadCall.Result = ajaxViewLeadCall.Result;
             leadCall.MarkForDelete = false;

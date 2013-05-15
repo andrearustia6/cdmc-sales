@@ -314,10 +314,10 @@
             $('.dialogue-editcompany form #Phone').addClass('fieldError');
             hasError = true;
         }
-        if ($('.dialogue-editcompany form #Fax').val().isEmpty()) {
-            $('.dialogue-editcompany form #Fax').addClass('fieldError');
-            hasError = true;
-        }
+//        if ($('.dialogue-editcompany form #Fax').val().isEmpty()) {
+//            $('.dialogue-editcompany form #Fax').addClass('fieldError');
+//            hasError = true;
+//        }
         if ($('.dialogue-editcompany form #WebSite').val().isEmpty()) {
             $('.dialogue-editcompany form #WebSite').addClass('fieldError');
             hasError = true;
@@ -621,10 +621,14 @@
             }
                    
             var query = $('.dialogue-addlead form').serializeArray();
-            $.post('AddLead', query,  function (result) {
+            $.post('AddLead', query, function (result) {
                 if (result.length > 0) {
                     $('#AddLead').data('tWindow').close();
+
                     if (confirm('Lead新增成功,是否新增相应Call')) {
+                        if (tempCRMID != undefined) {
+                            $('#CRMID').val(tempCRMID);
+                        }
                         onCallAdd(result);
                     } else {
                         var selectedVal = undefined;
@@ -635,7 +639,7 @@
                             tempCRMID = undefined;
                             tempProjectId = undefined;
                         }
-                       
+
                         RefreshCrmList(selectedVal);
                         onCompanyChanging(selectedVal);
                     }
