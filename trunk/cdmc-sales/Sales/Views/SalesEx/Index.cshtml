@@ -456,10 +456,10 @@
                 $('.dialogue-addcompany form #Phone').addClass('fieldError');
                 hasError = true;
             }
-            if ($('.dialogue-addcompany form #Fax').val().isEmpty()) {
-                $('.dialogue-addcompany form #Fax').addClass('fieldError');
-                hasError = true;
-            }
+//            if ($('.dialogue-addcompany form #Fax').val().isEmpty()) {
+//                $('.dialogue-addcompany form #Fax').addClass('fieldError');
+//                hasError = true;
+//            }
             if ($('.dialogue-addcompany form #WebSite').val().isEmpty()) {
                 $('.dialogue-addcompany form #WebSite').addClass('fieldError');
                 hasError = true;
@@ -499,6 +499,7 @@
                             if (confirm('公司新增成功,是否要往新增公司里面增加Lead')) {                              
                                 tempProjectId = result.projectId;
                                 tempCRMID = result.companyRelationshipId;
+
                                 onLeadAdd(result.companyId);
                             }
                             else {
