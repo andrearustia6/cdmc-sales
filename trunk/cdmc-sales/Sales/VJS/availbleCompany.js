@@ -501,7 +501,7 @@ var currentCompanyNameEN = undefined;
             }
             else if (spantext.indexOf(',&9*') > 0)//close
             {
-                $this.css('color', '#FF5809');
+                $this.css('color', '#4DFFFF');
                 spantext = spantext.replace(",&9*", "");
             }
             else if (spantext.indexOf(',&7*') > 0)//Waiting for Approval
