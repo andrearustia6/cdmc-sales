@@ -1,0 +1,32 @@
+﻿@{
+    ViewBag.Title = "Master";
+    Layout = "~/Views/shared/_Layout.cshtml";
+}
+
+<div>
+  <div style="width:82%; float:right; ">
+        	@RenderBody()
+        </div>
+		 <div style="width:15%; float:left; position:fixed; ">
+         @(Html.Telerik().Menu().Name("Menudirector").HtmlAttributes(new { style = "width:150px;" })
+         .Orientation(MenuOrientation.Vertical).Items(menu =>
+     {
+         menu.Add().Text("出单入账").Items(item =>
+         {
+             item.Add().Text("销售").Action("DealGroupBySales", "DirectorReport");
+             item.Add().Text("项目").Action("DealGroupByProject", "DirectorReport");
+         });
+         menu.Add().Text("通话情况").Items(item =>
+         {
+             item.Add().Text("销售").Action("index", "TotalApprove");
+             item.Add().Text("项目").Action("index", "CategoryApprove");
+         });
+         menu.Add().Text("公司客户").Items(item =>
+         {
+             item.Add().Text("公司").Action("index", "DirectorTotal"); ;
+             item.Add().Text("客户").Action("index", "directorEfficent");
+         });
+     }))
+        </div>
+
+        </div>
