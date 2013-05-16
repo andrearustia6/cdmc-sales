@@ -30,88 +30,96 @@ namespace Sales.Controllers
         /// <returns></returns>
         public PartialViewResult _SelectedList(string indexs, CompanyFilters filters = null)
         {
-            var ids = indexs.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
-            var crmid = int.Parse(ids[0]);
-
-            var c = CH.GetDataById<CompanyRelationship>(crmid);
-
-            var leadid = 0;
-            if (ids.Count() > 1)
+            if (!string.IsNullOrEmpty(indexs))
             {
-                leadid = int.Parse(ids[1]);
-                c.Company.Leads = c.Company.Leads.Where(l => l.ID == leadid).ToList();
+                var ids = indexs.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+                var crmid = int.Parse(ids[0]);
+
+                var c = CH.GetDataById<CompanyRelationship>(crmid);
+
+                var leadid = 0;
+                if (ids.Count() > 1)
+                {
+                    leadid = int.Parse(ids[1]);
+                    c.Company.Leads = c.Company.Leads.Where(l => l.ID == leadid).ToList();
+                }
+
+                if (c != null)
+                {
+                    var data = new AjaxCRM()
+                    {
+                        ProjectID = c.ProjectID,
+                        CompanyID = c.CompanyID,
+                        CompanyNameEN = c.Company.Name_EN,
+                        CompanyNameCH = c.Company.Name_CH,
+                        CompanyContact = c.Company.Contact,
+                        Progress = c.Progress,
+                        CompanyFax = c.Company.Fax,
+                        CompanyCategories = c.Categorys,
+                        CompanyDistinct = c.Company.DistrictNumber,
+                        CompanyCreateDate = c.Company.CreatedDate,
+                        CRMID = c.ID,
+                        DistrictNumberID = c.Company.DistrictNumberID,
+                        ProgressID = c.ProgressID,
+                        AreaID = c.Company.AreaID,
+                        CompanyTypeID = c.Company.CompanyTypeID,
+                        ZipCode = c.Company.ZIP,
+                        WebSite = c.Company.WebSite,
+                        Address = c.Company.Address,
+                        Business = c.Company.Business,
+                        Desc = c.Company.Description,
+                        Categories = c.Categorys.Select(ca => ca.ID),
+                        AjaxLeads = (from l in c.Company.Leads
+                                     select new AjaxLead
+                                     {
+                                         Department = l.Department,
+                                         Blog = l.Blog,
+                                         Gender = l.Gender,
+                                         LeadPersonalEmail = l.PersonalEmailAddress,
+                                         FaceBook = l.FaceBook,
+                                         LinkIn = l.LinkIn,
+                                         WeiBo = l.WeiBo,
+                                         WeiXin = l.WeiXin,
+                                         LeadAddress = l.Address,
+                                         LeadNameCH = l.Name_CH,
+                                         LeadNameEN = l.Name_EN,
+                                         LeadContact = l.Contact,
+                                         LeadDistinct = l.DistrictNumber,
+                                         LeadEmail = l.EMail,
+                                         LeadMobile = l.Mobile,
+                                         LeadTitle = l.Title,
+                                         LeadFax = l.Fax,
+                                         CRMID = c.ID,
+                                         LeadID = l.ID,
+                                         LeadCreateDate = l.CreatedDate,
+                                         AjaxCalls = (from call in c.LeadCalls.Where(w => w.LeadID == l.ID)
+                                                      select new AjaxCall
+                                                      {
+                                                          CallDate = call.CallDate,
+                                                          CallBackDate = call.CallBackDate,
+                                                          CallType = call.LeadCallType.Name,
+                                                          Caller = call.Member.Name,
+                                                          LeadCallTypeCode = call.LeadCallType.Code,
+                                                          LeadCallID = call.ID,
+                                                          Result = call.Result
+                                                      })
+                                     })
+                    };
+                    return PartialView(@"~\views\salesex\salesexitem.cshtml", data);
+                }
+                //var d = GetNavigationBar(filters);
+
+                //var data = d.AllCRMs.Where(f => f.CRMID == crmid).FirstOrDefault();
+
+                //if (data == null)
+                //    data = d.CustomCrmGroups.SelectMany(s => s.GroupedCRMs).FirstOrDefault(f => f.CRMID == crmid);
+
+
+
+               
             }
-            
-           
-            var data = new AjaxCRM()
-            {
-                ProjectID = c.ProjectID,
-                CompanyID = c.CompanyID,
-                CompanyNameEN = c.Company.Name_EN,
-                CompanyNameCH = c.Company.Name_CH,
-                CompanyContact = c.Company.Contact,
-                Progress = c.Progress,
-                CompanyFax = c.Company.Fax,
-                CompanyCategories = c.Categorys,
-                CompanyDistinct = c.Company.DistrictNumber,
-                CompanyCreateDate = c.Company.CreatedDate,
-                CRMID = c.ID,
-                DistrictNumberID = c.Company.DistrictNumberID,
-                ProgressID = c.ProgressID,
-                AreaID = c.Company.AreaID,
-                CompanyTypeID = c.Company.CompanyTypeID,
-                ZipCode = c.Company.ZIP,
-                WebSite = c.Company.WebSite,
-                Address = c.Company.Address,
-                Business = c.Company.Business,
-                Desc = c.Company.Description,
-                Categories = c.Categorys.Select(ca => ca.ID),
-                AjaxLeads = (from l in c.Company.Leads
-                             select new AjaxLead
-                             {
-                                 Department = l.Department,
-                                 Blog = l.Blog,
-                                 Gender = l.Gender,
-                                 LeadPersonalEmail = l.PersonalEmailAddress,
-                                 FaceBook = l.FaceBook,
-                                 LinkIn = l.LinkIn,
-                                 WeiBo = l.WeiBo,
-                                 WeiXin = l.WeiXin,
-                                 LeadAddress = l.Address,
-                                 LeadNameCH = l.Name_CH,
-                                 LeadNameEN = l.Name_EN,
-                                 LeadContact = l.Contact,
-                                 LeadDistinct = l.DistrictNumber,
-                                 LeadEmail = l.EMail,
-                                 LeadMobile = l.Mobile,
-                                 LeadTitle = l.Title,
-                                 LeadFax = l.Fax,
-                                 CRMID = c.ID,
-                                 LeadID = l.ID,
-                                 LeadCreateDate = l.CreatedDate,
-                                 AjaxCalls = (from call in c.LeadCalls.Where(w => w.LeadID == l.ID)
-                                              select new AjaxCall
-                                              {
-                                                  CallDate = call.CallDate,
-                                                  CallBackDate = call.CallBackDate,
-                                                  CallType = call.LeadCallType.Name,
-                                                  Caller = call.Member.Name,
-                                                  LeadCallTypeCode = call.LeadCallType.Code,
-                                                  LeadCallID = call.ID,
-                                                  Result = call.Result
-                                              })
-                             })
-            };
-            //var d = GetNavigationBar(filters);
-           
-            //var data = d.AllCRMs.Where(f => f.CRMID == crmid).FirstOrDefault();
-           
-            //if (data == null)
-            //    data = d.CustomCrmGroups.SelectMany(s => s.GroupedCRMs).FirstOrDefault(f => f.CRMID == crmid);
 
-          
-           
-            return PartialView(@"~\views\salesex\salesexitem.cshtml", data);
+            return PartialView(@"~\views\salesex\salesexitem.cshtml", new AjaxCRM());
         }
 
         /// <summary>

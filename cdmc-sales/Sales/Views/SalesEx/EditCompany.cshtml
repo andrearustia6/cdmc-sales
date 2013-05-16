@@ -1,8 +1,7 @@
 ﻿@using Entity
 @using Utl
 @model Model.AjaxViewSaleCompany
-<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
-<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+
 @using (Html.BeginForm("EditSaleCompany", "Sales"))
 {
     @Html.HiddenFor(model => model.ProjectId)
@@ -21,16 +20,37 @@
                     @Html.TextBoxFor(model => model.Name_EN, new { @style = "width:370px" })
                 </td>
             </tr>
-            <tr>
-                <td colspan="2">
-                    @Html.LabelFor(model => model.Address)
-                    @Html.TextBoxFor(model => model.Address, new { @style = "width:370px" })
+
+                <tr>
+                <td>
+                    @Html.LabelFor(model => model.Phone)
+                    @Html.TextBoxFor(model => model.Phone)
+                </td>
+                <td>
+                    @Html.LabelFor(model => model.Fax)
+                    @Html.TextBoxFor(model => model.Fax)
                 </td>
                 <td colspan="2">
-                    @Html.LabelFor(model => model.Address_EN)
-                    @Html.TextBoxFor(model => model.Address_EN, new { @style = "width:370px" })
+                    @Html.LabelFor(model => model.WebSite)
+                    @Html.TextBoxFor(model => model.WebSite, new { @style = "width:370px" })
                 </td>
             </tr>
+               <tr>
+                <td colspan="2">
+                    @Html.LabelFor(model => model.IndustryId)
+                    @Html.DropDownListFor(model => model.IndustryId, SelectHelper.CompanyIndustrySelectList(null), "请选择", new { @style = "width:370px" })
+                </td>
+                <td>
+                    @Html.LabelFor(model => model.TypeId)
+                    @Html.DropDownListFor(model => model.TypeId, SelectHelper.CompanyTypeSelectList(null), "请选择", new { })
+                </td>
+                <td>
+                    @Html.LabelFor(model => model.ProgressId)
+                    @Html.DropDownListFor(model => model.ProgressId, SelectHelper.ProgressSelectList(null), "请选择", new { })
+                </td>
+            </tr>
+         
+              
             <tr>
                 <td>
                     @Html.LabelFor(model => model.DistrictNumberId)
@@ -49,34 +69,12 @@
                     @Html.TextBoxFor(model => model.ZipCode)
                 </td>
             </tr>
-            <tr>
-                <td>
-                    @Html.LabelFor(model => model.Phone)
-                    @Html.TextBoxFor(model => model.Phone)
-                </td>
-                <td>
-                    @Html.LabelFor(model => model.Fax)
-                    @Html.TextBoxFor(model => model.Fax)
-                </td>
-                <td colspan="2">
-                    @Html.LabelFor(model => model.WebSite)
-                    @Html.TextBoxFor(model => model.WebSite, new { @style = "width:370px" })
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2">
-                    @Html.LabelFor(model => model.IndustryId)
-                    @Html.DropDownListFor(model => model.IndustryId, SelectHelper.CompanyIndustrySelectList(null), "请选择", new { @style = "width:370px" })
-                </td>
-                <td>
-                    @Html.LabelFor(model => model.TypeId)
-                    @Html.DropDownListFor(model => model.TypeId, SelectHelper.CompanyTypeSelectList(null), "请选择", new { })
-                </td>
-                <td>
-                    @Html.LabelFor(model => model.ProgressId)
-                    @Html.DropDownListFor(model => model.ProgressId, SelectHelper.ProgressSelectList(null), "请选择", new { })
-                </td>
-            </tr>
+
+
+        
+
+
+       
             <tr>
                 <td>
                     @Html.LabelFor(model => model.Scale)
@@ -95,12 +93,23 @@
                     @Html.TextBoxFor(model => model.MainClient)
                 </td>
             </tr>
+              <tr>
+                <td colspan="2">
+                    @Html.LabelFor(model => model.Address)
+                    @Html.TextBoxFor(model => model.Address, new { @style = "width:370px" })
+                </td>
+                <td colspan="2">
+                    @Html.LabelFor(model => model.Address_EN)
+                    @Html.TextBoxFor(model => model.Address_EN, new { @style = "width:370px" })
+                </td>
+            </tr>      
             <tr>
                 <td colspan="4">
                     @Html.LabelFor(model => model.Desc)
                     @Html.TextAreaFor(model => model.Desc)
                 </td>
-            </tr>        
+            </tr>  
+             
         </table>
 
         <fieldset id="categories">

@@ -67,7 +67,7 @@ namespace Model
             //成熟度
             if (Filters != null && Filters.CompanyProgress.HasValue)
             {
-                query = query.Where(q => q.Progress == null || (q.Progress != null && q.Progress.Code >= Filters.CompanyProgress));
+                query = query.Where(q => q.Progress.Code == Filters.CompanyProgress);
             }
             //出单
             if (Filters != null && Filters.DealProgress.HasValue)
@@ -92,13 +92,13 @@ namespace Model
             if (Filters != null && Filters.LeadProgress.HasValue)
             {
                 if (Filters.LeadProgress == 1)
-                    query = query.Where(q => (q.Company.Leads.Count == q.LeadCalls.Select(s => s.LeadID).Distinct().Count()) && q.LeadCalls.All(a => a.LeadCallType.Code == 20));
+                    query = query.Where(q => (q.Company.Leads.Count == q.LeadCalls.Select(s => s.LeadID).Distinct().Count()) && q.LeadCalls.Count>0 && q.LeadCalls.All(a => a.LeadCallType.Code == 20));
                 else if (Filters.LeadProgress == 3)
                     query = query.Where(q => q.Company.Leads.Count > q.LeadCalls.Select(s => s.LeadID).Distinct().Count());
                 else if (Filters.LeadProgress == 5)
                 {
-                    var datestart = DateTime.Now.AddDays(2);
-                    var dateend = DateTime.Now.AddDays(-22);
+                    var datestart = DateTime.Now.AddDays(-2);
+                    var dateend = DateTime.Now.AddDays(2);
                     query = query.Where(q => q.LeadCalls.Any(a => a.CallBackDate >= datestart && a.CallBackDate <= dateend));
                 }
             }
@@ -131,7 +131,7 @@ namespace Model
                            UserName = f.UserName,
                            DisplayName = f.DisplayName,
                            GroupedCRMs = (
-                                          //from u in CH.DB.UserFavorsCRMs
+                                         
                                           from c in filteredcrm
                                           where 
                                           //c.ID == u.CompanyRelationshipID.Value
@@ -142,46 +142,23 @@ namespace Model
                                               CompanyID = c.CompanyID,
                                               CompanyNameEN = c.Company.Name_EN,
                                               CompanyNameCH = c.Company.Name_CH,
-                                            //  CompanyContact = c.Company.Contact,
-                                             // Progress = c.Progress,
-                                             // CompanyFax = c.Company.Fax,
-                                             // CompanyCategories = c.Categorys,
-                                             // CompanyDistinct = c.Company.DistrictNumber,
-                                             // CompanyCreateDate = c.Company.CreatedDate,
                                               CRMID = c.ID,
                                               AjaxLeads = (from l in c.Company.Leads
                                                            select new AjaxLead
                                                            {
-                                                               //Department = l.Department,
-                                                               //Blog = l.Blog,
-                                                               //Gender = l.Gender,
-                                                               //LeadPersonalEmail = l.PersonalEmailAddress,
-                                                               //FaceBook = l.FaceBook,
-                                                               //LinkIn = l.LinkIn,
-                                                               //WeiBo = l.WeiBo,
-                                                              // WeiXin = l.WeiXin,
                                                                LeadNameCH = l.Name_CH,
                                                                LeadNameEN = l.Name_EN,
-                                                             //  LeadContact = l.Contact,
-                                                             //  LeadDistinct = l.DistrictNumber,
-                                                             //  LeadEmail = l.EMail,
-                                                             //  LeadAddress = l.Address,
-                                                             //  LeadMobile = l.Mobile,
-                                                             //  LeadTitle = l.Title,
-                                                             //  LeadFax = l.Fax,
                                                                CRMID = c.ID,
                                                                LeadID = l.ID,
-                                                            //   LeadCreateDate = l.CreatedDate,
-                                                               //AjaxCalls = (from call in c.LeadCalls.Where(w => w.LeadID == l.ID)
-                                                               //             select new AjaxCall
-                                                               //             {
-                                                               //                 CallDate = call.CallDate,
-                                                               //                 CallBackDate = call.CallBackDate,
-                                                               //                 CallType = call.LeadCallType.Name,
-                                                               //                 Caller = call.Member.Name,
-                                                               //                 LeadCallTypeCode = call.LeadCallType.Code
-
-                                                               //             })
+                                                               AjaxCalls = (from call in c.LeadCalls.Where(w => w.LeadID == l.ID)
+                                                                            select new AjaxCall
+                                                                            {
+                                                                                CallDate = call.CallDate,
+                                                                                CallBackDate = call.CallBackDate,
+                                                                                CallType = call.LeadCallType.Name,
+                                                                                Caller = call.Member.Name,
+                                                                                LeadCallTypeCode = call.LeadCallType.Code
+                                                                            })
                                                            })
 
                                           }
@@ -222,8 +199,16 @@ namespace Model
                                             LeadNameCH = l.Name_CH,
                                             LeadNameEN = l.Name_EN,
                                             CRMID = c.ID,
-                                            LeadID = l.ID
-                                           
+                                            LeadID = l.ID,
+                                            AjaxCalls = (from call in c.LeadCalls.Where(w => w.LeadID == l.ID)
+                                                                            select new AjaxCall
+                                                                            {
+                                                                                CallDate = call.CallDate,
+                                                                                CallBackDate = call.CallBackDate,
+                                                                                CallType = call.LeadCallType.Name,
+                                                                                Caller = call.Member.Name,
+                                                                                LeadCallTypeCode = call.LeadCallType.Code
+                                                                            })
                                         })
 
                        };
@@ -339,18 +324,18 @@ namespace Model
         {
             get
             {
-                //List<string> v = new List<string>();
+                List<string> v = new List<string>();
               
-                //var nocontactleadcount = AjaxLeads.Count(c => c.AjaxCalls.Count() == 0);
-                //if (nocontactleadcount > 0)
-                //{
-                //    return Utl.Utl.GetFullString(", ", CompanyName, nocontactleadcount.ToString() + "Leads未打");
-                //}
-                //else
-                //{
+                var nocontactleadcount = AjaxLeads.Count(c => c.AjaxCalls.Count() == 0);
+                if (nocontactleadcount > 0)
+                {
+                    return Utl.Utl.GetFullString(", ", CompanyName, nocontactleadcount.ToString() + "人未打");
+                }
+                else
+                {
                 var name = string.IsNullOrEmpty(CompanyName) ? "未填" : CompanyName;
                 return name;
-               // }
+              }
             }
         }
         public IEnumerable<AjaxLead> AjaxLeads { get; set; }
@@ -426,7 +411,7 @@ namespace Model
                     var code = AjaxCalls.OrderByDescending(o => o.CallDate).FirstOrDefault().LeadCallTypeCode;
                     if (code == 20)
                         lastcall = "&2*";//blowed
-                    if (code == 40)
+                    if (code == 40 || code == 50)
                         lastcall = "&4*";//pitched
                     else if (code == 60)
                         lastcall = "&6*";//wait for approve
@@ -441,8 +426,8 @@ namespace Model
                 }
               
                 var leadname = string.IsNullOrEmpty(LeadName) ? "未填" : LeadName;
-                //v.Add(lastcall);
-                return Utl.Utl.GetFullString(",", leadname, LeadTitle);
+              
+                return Utl.Utl.GetFullString(",", leadname, LeadTitle, lastcall);
             }
         }
         public string Status

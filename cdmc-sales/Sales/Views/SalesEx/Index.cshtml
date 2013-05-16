@@ -17,34 +17,32 @@
         <tr>
             <td>
                 <span>项目选择:@Html.DropDownListFor(model => model.CurrentProjectId, projectList)</span>
-            </td>
-            <td>
-                <span>分配时间: @Html.DropDownList("companyassigndate", SelectHelper.DurationSelectList(), "不指定")</span>
-            </td>
+          
              <td>
-                <span>成熟程度: @Html.DropDownList("companyprogress", SelectHelper.CrmProgessSelectList(), "不指定")</span>
-            </td>
-              <td>
-              <span>细分行业: @Html.DropDownList("f-category", SelectHelper.CategoresSelectList(Model.CurrentProjectId), "不指定")</span>
-            </td>
-
-       
-            <td>
-                <span>出单状态: @Html.DropDownList("dealprogress", SelectHelper.DealConditionSelectList(), "不指定")</span>
-            </td>
-       
-        <td>
             <span>最近通话: @Html.DropDownList("callprogress", SelectHelper.CallConditionSelectList(), "不指定")</span>
         </td>
             <td>
                 <span>通话状态: @Html.DropDownList("leadprogress", SelectHelper.LeadConditionSelectList(), "不指定")</span>
+            </td>
+             
+           @*  <td>
+                <span>分配时间: @Html.DropDownList("companyassigndate", SelectHelper.DurationSelectList(), "不指定")</span>
+            </td>*@
+             <td>
+                <span>成熟程度: @Html.DropDownList("companyprogress", SelectHelper.CrmProgessSelectList(), "不指定")</span>
+            </td>
+            <td>
+                <span>出单状态: @Html.DropDownList("dealprogress", SelectHelper.DealConditionSelectList(), "不指定")</span>
+            </td>
+             <td>
+              <span>细分行业: @Html.DropDownList("f-category", SelectHelper.CategoresSelectList(Model.CurrentProjectId), "不指定")</span>
             </td>
              <td>
             <span>是否展开:<select  style = "width:200px;" id="unfoldCompany"><option value=''>不指定</option><option value='true'>展开公司/lead</option><option value='false'>展开公司</option></select> </span>
         </td>
         </tr>
         <tr>
-        <td  colspan="8">   <span>寻找匹配的名称,邮件,电话: @Html.TextBox("f-fuzzy", "", new { style="width:260px;line-height:22px"})
+        <td  colspan="7">   <span>寻找匹配的名称,邮件,电话: @Html.TextBox("f-fuzzy", "", new { style="width:260px;line-height:22px"})
 
 
 
@@ -58,13 +56,13 @@
         
  
      
- <span>最后一次通话状态:</span>
+ <span>最后通话状态:</span>
   <span style="color:red">NotCall</span>
   <span style="color:#0000C6">Call-Backed</span>
-  <span style="color:#6C6C6C">Blowed</span>
-  <span style="color:#00DB00">Pitched</span>
-  <span style="color:#006030">Closed</span>
-  <span style="color:#005757">Waiting for Approval</span>
+  <span style="color:#000000">Blowed</span>
+  <span style="color:#336666">Pitched</span>
+  <span style="color:#FF5809">Closed</span>
+  <span style="color:#9F35FF">Waiting for Approval</span>
   <span style="color:#FF00CC">Qualified Decision</span></td>
         </tr>
     </table>
@@ -178,346 +176,7 @@
         });
     });
 
-    function RefreshCrmList(selectedVal) {
-        var f = GetFilters();
-        f.selectedVal = selectedVal;
-        $.post('_RefreshCrmList', f, function (result) {
-            $('#mainnavigationcontainer').html(result);
-            initial();
-        });
-    }
-    function CurrentProjectChange(currentProjectId) {
-        $.get('GetCatagories', { currentProjectId: currentProjectId }, function (result) {
-            $('#f-category').empty();
-            $("<option value=''>不指定</option>").appendTo("#f-category")
-            $.each(result, function (index) {
-                $("<option value='" + result[index].value + "'>" + result[index].text + "</option>").appendTo("#f-category");
-            });
-        });
-    }
-
-    function GetFilters() {
-        var id = $('#CurrentProjectId').val();     
-        var companyprogress = $('#companyprogress').val();
-        var companyassigndate = $('#companyassigndate').val();
-        var leadprogress = $('#leadprogress').val();
-        var dealprogress = $('#dealprogress').val();
-        var callprogress = $('#callprogress').val();
-        var categoryId = $('#f-category').val();
-        var fuzzyQuery = $('#f-fuzzy').val();
-        var unfold = $('#unfoldCompany').val();    
-        //var companyassigndate = $('#companyassigndate').val();
-        return { CompanyProgress: companyprogress, CompanyAssignDate: companyassigndate, LeadProgress: leadprogress, DealProgress: dealprogress, CallProgress: callprogress, ProjectId: id, FuzzyQuery: fuzzyQuery, Unfold: unfold, CategoryId: categoryId };
-    }
-    function initial() {
-
-        //分组字体标注
-        $('#customView').find('>ul >li >div >span').css("fontSize", "23px").css("font-weigh", "bold").css('line-height', '28px');
-
-        $('#customView').find('>ul >li >ul >li >div >span').css("fontSize", "15px").css("font-weigh", "bold");
-        $('#navigationView').find('>ul >li >div >span').css("fontSize", "15px").css("font-weigh", "bold");
-
-        //lead状态颜色标注
-        $('#mainnavigationcontainer span').each(function () {
-            var $this = $(this);
-            var spantext = $this.text();
-            if (spantext.indexOf(',&6*') > 0)//Call-Backed
-            {
-                $this.css('color', '#0000C6');
-                spantext = spantext.replace(",&6*", "");
-            }
-            else if (spantext.indexOf(',&2*') > 0)//blowed
-            {
-                $this.css('color', '#6C6C6C');
-                spantext = spantext.replace(",&2*", "");
-            }
-            else if (spantext.indexOf(',&4*') > 0)//pitch
-            {
-                $this.css('color', '#00DB00');
-                spantext = spantext.replace(",&4*", "");
-            }
-            else if (spantext.indexOf(',&0*') > 0)//no call
-            {
-                $this.css('color', 'red');
-                spantext = spantext.replace(",&0*", "");
-            }
-            else if (spantext.indexOf(',&9*') > 0)//close
-            {
-                $this.css('color', '#006030');
-                spantext = spantext.replace(",&9*", "");
-            }
-            else if (spantext.indexOf(',&7*') > 0)//Waiting for Approval
-            {
-                $this.css('color', '#005757');
-                spantext = spantext.replace(",&7*", "");
-            }
-            else if (spantext.indexOf(',&8*') > 0)//Qualified Decision
-            {
-                $this.css('color', '#FF00CC');
-                spantext = spantext.replace(",&8*", "");
-            }
-            $this.text(spantext);
-        });
-
-        //生成关联菜单子菜单
-        var ul = $(".regroup ul");
-        ul.children().remove();
-        var customli = $('#customView >ul >li');
-        customli.each(function () {
-            var t = $(this).find('>div >span').text();
-            var v = $(this).find('>div >input').val();
-            ul.append('<li class="grouptarget">' + t + '<input type="hidden" value=' + v + '></li>');
-        });
-
-        //添加分组
-        $('#group-open-button')
-                .click(function (e) {
-                    e.preventDefault();
-                    gw().center().open();
-                });
-
-
-        $('#navigationView').find('>ul >li').jeegoocontext('contextmenu', {
-            widthOverflowOffset: 0,
-            heightOverflowOffset: 3,
-            submenuLeftOffset: -4,
-            submenuTopOffset: -5,
-            onSelect: contextMenuSelected,
-            onShow: generateContextMenu
-        });
-
-//        $('#customView').find('>ul >li').jeegoocontext('groupcontextmenu', {
-//            widthOverflowOffset: 0,
-//            heightOverflowOffset: 3,
-//            submenuLeftOffset: -4,
-//            submenuTopOffset: -5,
-//            onSelect: groupContextMenuSelected
-//        });
-
-        $('#customView').find('>ul >li >ul >li').jeegoocontext('favorscontextmenu', {
-            widthOverflowOffset: 0,
-            heightOverflowOffset: 3,
-            submenuLeftOffset: -4,
-            submenuTopOffset: -5,
-            onSelect: contextMenuSelected,
-            onShow: generateContextMenu
-        });
-    }
-
-    //生成动态子菜单
-    function generateContextMenu(e, context) {
-        //更新context菜单公司名
-        var crmtext = $(context).find('>div >span.t-in').text();
-        crmtext = crmtext.split(',')[0];
-        $(' .regrouptext').text("移动" + crmtext + "到");
-
-    }
-
-    //分组管理
-    function groupContextMenuSelected(e, context) {
-        var groupid = $(context).find('input').val();
-        var targetid = $(e.currentTarget).attr('id');
-        if (targetid == 'groupmanagement') {
-            e.preventDefault();
-            gw().center().open();
-        }
-
-
-    }
-
-    //公司关联菜单选中/自定义组公司关联选中
-    function contextMenuSelected(e, context) {
-        var $target = $(e.target);
-
-        //copy到新分组
-        if ($target.hasClass('grouptarget')) {
-            var crmid = $(context).find('>div >input').val();
-            var groupid = $(e.currentTarget).find('input').val();
-            var f = GetFilters();
-            $.post('_CopyCrmToGroup', { crmid: crmid, groupid: groupid, filters: f }, function (result) {
-                $('#mainnavigationcontainer').html(result);
-                initial();
-            });
-        }
-
-        //释放回公司池
-        if ($target.hasClass('blowed')) {
-            var crmid = $(context).find('>div >input').val();
-            var f = GetFilters();
-            $.post('_CrmBlowed', { crmid: crmid, filters: f }, function (result) {
-                $('#mainnavigationcontainer').html(result);
-                initial();
-            });
-        }
-
-
-        //释放回公司池
-        if ($target.hasClass('remove')) {
-            var crmid = $(context).find('>div >input').val();
-            var groupid = $(e.currentTarget).find('input').val();
-            $.post('_CrmRemove', { crmid: crmid, filters: GetFilters() }, function (result) {
-                $('#mainnavigationcontainer').html(result);
-                initial();
-            });
-        }
-    }
-
-    //获取主树
-    function nv() {
-        return $('#navigationView').data('tTreeView');
-    }
-
-    //获取分组窗口
-    function gw() {
-        return $('#groupListWindow').data('tWindow');
-    }
-    //提交分组更改
-    function onGroupListWindowSubmit(e) {
-        $.post('_RefreshCrmList', null, function (result) {
-            $('#mainnavigationcontainer').html(result);
-            initial();
-        });
-    }
-    //公司选择 
-    function onIndexSelect(e) {
-        var indexs = nv().getItemValue(e.item);       
-        if (indexs.indexOf("分组") < 0) {
-            $.post('_SelectedList', { indexs: indexs, filters: GetFilters() }, function (result) {
-                $('#crmdetailscontainer').html(result);
-            });
-        }
-    }
-
-    function onCompanyChanging(indexs) {    
-         $.post('_SelectedList', { indexs: indexs, filters: GetFilters() }, function (result) {
-                $('#crmdetailscontainer').html(result);
-         });       
-    }
-
-    //展开所有leads
-    function expandRow(grid, row) {
-        grid.expandRow(row);
-    }
-
-    function onRowDataBound(e) {
-        var grid = $(this).data('tGrid');
-        expandRow(grid, e.row);
-    }
-
-    function resetquery() {
-        $('#companyprogress').val($('#companyprogress option').get(0).value);
-        $('#companyassigndate').val($('#companyassigndate option').get(0).value);
-        $('#leadprogress').val($('#leadprogress option').get(0).value);
-        $('#dealprogress').val($('#dealprogress option').get(0).value);
-        $('#callprogress').val($('#callprogress option').get(0).value);
-        $('#f-category').val($('#f-category option').get(0).value);
-        $('#f-fuzzy').val("");
-        $('#unfoldCompany').val($('#unfoldCompany option').get(0).value);
-    }
-
-    function GetAddCompany() {
-        var currentProjectId = $('#CurrentProjectId').val();
-        $.post('GetAddCompany', { projectId: currentProjectId }, function (result) {
-            $('.companyAdd-wrapper').html(result);
-            var window = $('#AddCompany').data('tWindow');
-            window.center().open();
-        });
-    }
-    function Addcompany() {
-            var hasError = false;
-            $('.dialogue-addcompany form input').removeClass('fieldError');
-            $('.dialogue-addcompany form select').removeClass('fieldError');
-
-
-
-            String.prototype.isEmpty = function () { return /^\s*$/.test(this); }
-
-            if ($('.dialogue-addcompany form #DistrictNumberId option:selected').val().isEmpty()) {
-                if ($('.dialogue-addcompany form #ZipCode').val().isEmpty()) {
-                    $('.dialogue-addcompany form #ZipCode').addClass('fieldError');
-                    hasError = true;
-                }
-                if ($('.dialogue-addcompany form #Address').val().isEmpty()) {
-                    $('.dialogue-addcompany form #Address').addClass('fieldError');
-                    hasError = true;
-                }
-                if ($('.dialogue-addcompany form #Name_CN').val().isEmpty()) {
-                    $('.dialogue-addcompany form #Name_CN').addClass('fieldError');
-                    hasError = true;
-                }
-            }
-            else {
-                if ($('.dialogue-addcompany form #Name_EN').val().isEmpty()) {
-                    $('.dialogue-addcompany form #Name_EN').addClass('fieldError');
-                    hasError = true;
-                }              
-            }
-            if ($('.dialogue-addcompany form #Phone').val().isEmpty()) {
-                $('.dialogue-addcompany form #Phone').addClass('fieldError');
-                hasError = true;
-            }
-//            if ($('.dialogue-addcompany form #Fax').val().isEmpty()) {
-//                $('.dialogue-addcompany form #Fax').addClass('fieldError');
-//                hasError = true;
-//            }
-            if ($('.dialogue-addcompany form #WebSite').val().isEmpty()) {
-                $('.dialogue-addcompany form #WebSite').addClass('fieldError');
-                hasError = true;
-            }
-            if ($('.dialogue-addcompany form #IndustryId').val().isEmpty()) {
-                $('.dialogue-addcompany form #IndustryId').addClass('fieldError');
-                hasError = true;
-            }
-            if ($('.dialogue-addcompany form #TypeId').val().isEmpty()) {
-                $('.dialogue-addcompany form #TypeId').addClass('fieldError');
-                hasError = true;
-            }
-            if ($('.dialogue-addcompany form #ProgressId').val().isEmpty()) {
-                $('.dialogue-addcompany form #ProgressId').addClass('fieldError');
-                hasError = true;
-            }
-             if ($('.dialogue-addcompany form input[type=checkbox][name=Categories]:checked').length == 0) {
-                $('fieldset#categories').addClass('fieldError');
-                hasError = true;
-            } else {
-                $('fieldset#categories').removeClass('fieldError');
-            }
-
-            if (hasError) {  
-                return;
-            }
-            var companyNameCN = $('.dialogue-addcompany #Name_CN').val();
-            var companyNameEN = $('.dialogue-addcompany form #Name_EN').val();
-            $.post('CheckCompanyExist', { beforeUpdateCN: null, afterUpdateCN: companyNameCN, beforeUpdateEN: null, afterUpdateEN: companyNameEN }, function (result) {
-                if (result.length > 0) {
-                    alert(result);
-                } else {
-                    var query = $('.dialogue-addcompany form').serializeArray();
-                    $.post('AddCompany', query, function (result) {
-                        if (result.companyRelationshipId != null) {
-                            $('#AddCompany').data('tWindow').close();
-                            if (confirm('公司新增成功,是否要往新增公司里面增加Lead')) {                              
-                                tempProjectId = result.projectId;
-                                tempCRMID = result.companyRelationshipId;
-
-                                onLeadAdd(result.companyId);
-                            }
-                            else {
-                                RefreshCrmList(result.companyRelationshipId);
-                                onCompanyChanging(result.companyRelationshipId);
-                            }
-                        } else {
-                            alert('公司新增失败');
-                        }
-                    });
-                }
-            });      
-    }
-
-    function CancelAddcompany() {
-        var window = $('#AddCompany').data('tWindow');
-        window.close();
-    }
+  
 
 </script>
 <style>

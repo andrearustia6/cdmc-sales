@@ -604,6 +604,7 @@
     <Content Include="Scripts\jquery-1.6.4.min.js" />
     <Content Include="VJS\alextre.peopleFinder.js" />
     <Content Include="VJS\alextre.tableDesigner.js" />
+    <Content Include="VJS\availbleCompany.js" />
     <Content Include="VJS\salesAvailableCompany.js" />
     <Content Include="VJS\Site.js" />
     <Content Include="VJS\view.js" />

@@ -1,13 +1,12 @@
 ﻿@using Entity
 @using Utl
 @model Model.AjaxViewLead
-<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
-<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+
 @using (Html.BeginForm("EditLead", "SalesEx"))
 {
     @Html.HiddenFor(model => model.CompanyId)
     @Html.HiddenFor(model => model.LeadId)
-    <table>
+     <table>
         <tr>
             <td>@Html.LabelFor(model => model.Name_CN)
                 @Html.TextBoxFor(model => model.Name_CN)
@@ -17,7 +16,7 @@
             </td>
             <td>
                 @Html.LabelFor(model => model.Gender)
-                @Html.DropDownListFor(model => model.Gender, SelectHelper.GenderSelectList(null), "中国(默认)")
+                @Html.DropDownListFor(model => model.Gender, SelectHelper.GenderSelectList(null), "-请选择-")
             </td>
            
             <td>
@@ -64,41 +63,11 @@
                 @Html.TextBoxFor(model => model.PersonelEmail)
             </td>
         </tr>
-        <tr>
+           <tr>
             <td>
-                @Html.LabelFor(model => model.LinkIn)
-                @Html.TextBoxFor(model => model.LinkIn)
+                @Html.LabelFor(model => model.DistrictNumberId)
+                @Html.DropDownListFor(model => model.DistrictNumberId, SelectHelper.DistinctNumberSelectList(null), "中国(默认)")
             </td>
-            <td>
-                @Html.LabelFor(model => model.FaceBook)
-                @Html.TextBoxFor(model => model.FaceBook)
-            </td>
-            <td>
-                @Html.LabelFor(model => model.WeiXin)
-                @Html.TextBoxFor(model => model.WeiXin)
-            </td>
-            <td>
-                @Html.LabelFor(model => model.WeiBo)
-                @Html.TextBoxFor(model => model.WeiBo)
-            </td>
-        </tr>
-        <tr>
-            <td>
-                @Html.LabelFor(model => model.QQ)
-                @Html.TextBoxFor(model => model.QQ)
-            </td>
-              <td>
-                @Html.LabelFor(model => model.PersonalFax)
-                @Html.TextBoxFor(model => model.PersonalFax)
-            </td>
-            <td colspan="2">
-                @Html.LabelFor(model => model.Twitter)
-                @Html.TextBoxFor(model => model.Twitter)
-            </td>
-
-            
-        </tr>
-        <tr>
             <td>
                 @Html.LabelFor(model => model.Branch)
                 @Html.TextBoxFor(model => model.Branch)
@@ -111,10 +80,7 @@
                 @Html.LabelFor(model => model.Zip)
                 @Html.TextBoxFor(model => model.Zip)
             </td>
-            <td>
-                @Html.LabelFor(model => model.DistrictNumberId)
-                @Html.DropDownListFor(model => model.DistrictNumberId, SelectHelper.DistinctNumberSelectList(null), "-请选择-")
-            </td>
+           
         </tr>
         <tr>
             <td>
@@ -127,7 +93,7 @@
             </td>
             <td colspan="2">
                 @Html.LabelFor(model => model.LeadRoles)
-              @if (Model.LeadRoles != null && Model.LeadRoles.Contains("决策人"))
+                @if (Model.LeadRoles != null && Model.LeadRoles.Contains("决策人"))
                 {
                     <span class="leadRole">
                         <input type="checkbox" value="决策人" checked="checked" name="leadRole" />
@@ -171,6 +137,41 @@
                 }
             </td>
         </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(model => model.LinkIn)
+                @Html.TextBoxFor(model => model.LinkIn)
+            </td>
+            <td>
+                @Html.LabelFor(model => model.FaceBook)
+                @Html.TextBoxFor(model => model.FaceBook)
+            </td>
+            <td>
+                @Html.LabelFor(model => model.WeiXin)
+                @Html.TextBoxFor(model => model.WeiXin)
+            </td>
+            <td>
+                @Html.LabelFor(model => model.WeiBo)
+                @Html.TextBoxFor(model => model.WeiBo)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(model => model.QQ)
+                @Html.TextBoxFor(model => model.QQ)
+            </td>
+              <td>
+                @Html.LabelFor(model => model.PersonalFax)
+                @Html.TextBoxFor(model => model.PersonalFax)
+            </td>
+            <td colspan="2">
+                @Html.LabelFor(model => model.Twitter)
+                @Html.TextBoxFor(model => model.Twitter)
+            </td>
+
+            
+        </tr>
+     
     </table>
 }
 <style>
