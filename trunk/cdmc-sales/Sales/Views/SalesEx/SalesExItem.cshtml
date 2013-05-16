@@ -2,24 +2,8 @@
 @using Utl
 @using Entity
 @model AjaxCRM
-<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
-<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
-<script type="text/javascript">
-    var tempProjectId = undefined;
-    var tempCRMID = undefined;
-</script>
-@if (Model != null)
-{
-    Html.Telerik().Splitter().Name("sp2").HtmlAttributes(new { style = "height: 790px;" })
-               .Orientation(SplitterOrientation.Vertical).Panes(panes =>
-               {
-                   panes.Add().Size("20%").Content(@<text>@CompanyInfo()</text>);
-                   panes.Add().Content(@<text>@LeadsInfo()</text>);
-               }).Render();
-}
-@helper CompanyInfo()
-    {
-    <div class="fenge">
+
+  <div class="fenge">
         <div class="fenge_2">
             <span id="currentCompanyName" style="font-weight:bold">@Model.CompanyDisplayName</span>
             <input class="salebtn" style=" background-image:url('../images/tianjia_3.jpg');" type="button" onclick="onLeadAdd(@(Model.CompanyID))" />
@@ -53,12 +37,7 @@
                         <font>细分行业：</font><span id="currentCompanyCategoryStrings" class="datainfo">@Model.CompanyCategoryStrings</span>
                     </dd>
                 }
-              @*  @if (!string.IsNullOrWhiteSpace(Model.ProgressString))
-                {
-                    <dd>
-                        <font>成熟度：</font><span id="currentProgressString" class="datainfo">@Model.ProgressString</span>
-                    </dd>
-                }*@
+             
                 @if (!string.IsNullOrWhiteSpace(Model.Address))
                 {
                     <dd>
@@ -66,20 +45,18 @@
                     </dd>
                 }
                  @if (!string.IsNullOrWhiteSpace(Model.ZipCode))
-                {
+                 {
                     <dd>
                         <font>邮编：</font><span id="currentZipCodeString" class="datainfo">@Model.ZipCode</span>
                     </dd>
-                }
+                 }
             </dl>
         </div>
-    </div>    
-}
-@helper LeadsInfo()
-    {     
-        
-        foreach (var lead in Model.AjaxLeads)
+    </div>   
+   @if (Model.AjaxLeads!=null)
         {
+      foreach (var lead in Model.AjaxLeads)
+      {
     <div class="fenge" id="@(lead.LeadID)">
         <div class="fenge_2">
             <span class="LeadShowName"  style="font-weight:bold">@lead.LeadShowName</span>
@@ -141,11 +118,23 @@
                     <li><font>地址：</font><span class="address datainfo">@lead.LeadAddress</span> </li>
                 }
             </ul>
-            @if (lead.AjaxCalls!=null && lead.AjaxCalls.Count() > 0)
+            @if (lead.AjaxCalls != null && lead.AjaxCalls.Count() > 0)
             {
-                <fieldset style="width: 97%">
-                    <legend>通话记录</legend>
-                    @(Html.Telerik().Grid<AjaxCall>(lead.AjaxCalls.OrderByDescending(o => o.CallDate)).Name("lead" + lead.LeadID)
+                var orders = lead.AjaxCalls.OrderByDescending(o => o.CallDate);
+                     <table style="width:98%; margin:10px;">
+                     <tr><th width="80px">致电类型</th><th width="100px">回打时间</th><th width="80px">致电人</th><th width="80px">致电时间</th><th>结果</th>@if (Employee.LoginUserIsAdmin())
+                                                                                                                                            {
+                                                                                                                                                <th>操作</th>
+                                                                                                                                            }</tr>
+                     @foreach (var call in orders)
+                     {
+                         <tr><td>@call.CallType</td><td>@call.CallBackDate</td><td>@call.Caller</td><td>@call.CallDate</td><td>@call.Result</td>@if (Employee.LoginUserIsAdmin())
+                                                                                                                                            {
+                                                                                                                                                <td><input onclick='EditLeadCall(@call.LeadCallID)' type='button' class="salebtn" style=" background-image:url('../images/gengxin.jpg');" /></td>
+                                                                                                                                            }</tr>
+                     }
+                    </table>
+                   @* @(Html.Telerik().Grid<AjaxCall>(lead.AjaxCalls.OrderByDescending(o => o.CallDate)).Name("lead" + lead.LeadID)
                     .Columns(columns =>
                     {
                         columns.Bound(o => o.CallType).Template(@<text><span id="@(item.LeadCallID)_CallType">@item.CallType</span></text>).Width(80);
@@ -158,18 +147,35 @@
                             columns.Bound(o => o.LeadCallID).Width(120).Template(@<text><input onclick='EditLeadCall(@item.LeadCallID)' type='button' class="salebtn" style=" background-image:url('../images/gengxin.jpg');" /></text>);
                         }
                     }).Pageable(paging => paging.Enabled(false)).Resizable(resizing => resizing.Columns(true)).Sortable().Scrollable(scrolling => scrolling.Enabled(false))
-                      )
-                    @*</dd>
-                </dl>*@
-                </fieldset>
+                      )*@
+                  
+               
             }
         </div>
     </div>     
-        }
+      }
+      }
+@*@if (Model != null)
+{
+    Html.Telerik().Splitter().Name("sp2").HtmlAttributes(new { style = "height: 790px;" })
+               .Orientation(SplitterOrientation.Vertical).Panes(panes =>
+               {
+                   panes.Add().Size("20%").Content(@<text>@CompanyInfo()</text>);
+                   panes.Add().Content(@<text>@LeadsInfo()</text>);
+               }).Render();
+}*@
+@helper CompanyInfo()
+    {
+   
+}
+@helper LeadsInfo()
+    {     
+        
+     
 
 }
 @(Html.Telerik().Window().Title("公司概况")
-    .Name("DetailCompany")   
+    .Name("DetailCompany")
     .Content(@<text><div class="dialogue-detailcompany">
         <div class="companyDetail-wrapper">
         </div>
@@ -182,7 +188,7 @@
     .Modal(true).Visible(false)
 )
 @(Html.Telerik().Window().Title("更新公司")
-    .Name("EditCompany")   
+    .Name("EditCompany")
     .Content(@<text><div class="dialogue-editcompany">
         <div class="companyEdit-wrapper">
         </div>
@@ -196,7 +202,7 @@
     .Modal(true).Visible(false)
 )
 @(Html.Telerik().Window().Title("新增lead")
-    .Name("AddLead")   
+    .Name("AddLead")
     .Content(@<text><div class="dialogue-addlead">
         <div class="leadadd-wrapper">
         </div>
@@ -210,7 +216,7 @@
     .Modal(true).Visible(false)
 )
 @(Html.Telerik().Window().Title("更新Lead")
-    .Name("EditLead")   
+    .Name("EditLead")
     .Content(@<text><div class="dialogue-editlead">
         <div class="leadedit-wrapper">
         </div>
@@ -224,7 +230,7 @@
     .Modal(true).Visible(false)
 )
 @(Html.Telerik().Window().Title("更新LeadCall")
-    .Name("EditCall")   
+    .Name("EditCall")
     .Content(@<text><div class="dialogue-editcall">
         <div class="calledit-wrapper">
         </div>
@@ -238,7 +244,7 @@
     .Modal(true).Visible(false)
 )
 @(Html.Telerik().Window().Title("新增LeadCall")
-    .Name("AddCall")   
+    .Name("AddCall")
     .Content(@<text><div class="dialogue-addcall">
         <div class="calladd-wrapper">
         </div>
@@ -252,430 +258,7 @@
     .Modal(true).Visible(false)
 )
 
-<script type="text/javascript">
-    var currentCompanyNameCN = undefined;
-    var currentCompanyNameEN = undefined;
-    function onCompanyEdit(currentCompanyId) {
-        currentCompanyNameCN = $('#currentCompanyNameCN').html().replace(/(^\s*)|(\s*$)/g, '');
-        currentCompanyNameEN = $('#currentCompanyNameEN').html().replace(/(^\s*)|(\s*$)/g, '');        
-        $.post('GetEditCompany', { companyId: currentCompanyId }, function (result) {
-            $('.companyEdit-wrapper').html(result);
-            var window = $('#EditCompany').data('tWindow');
-            window.center().open();
 
-            while ($('.dialogue-editcompany form').length > 1) {
-                $('.dialogue-editcompany form').last().remove();
-            }
-        });
-    }
-
-    function onCompanyDetail(currentCompanyId) {
-        $.post('GetDetailCompany', { companyId: currentCompanyId }, function (result) {
-            $('.companyDetail-wrapper').html(result);
-            var window = $('#DetailCompany').data('tWindow');
-            window.center().open();
-
-            while ($('.dialogue-detailcompany form').length > 1) {
-                $('.dialogue-detailcompany form').last().remove();
-            }
-        });
-    }
-
-
-    function Editcompany() {
-
-        var hasError = false;
-        $('.dialogue-editcompany form input').removeClass('fieldError');
-        $('.dialogue-editcompany form select').removeClass('fieldError');
-
-        String.prototype.isEmpty = function () { return /^\s*$/.test(this); }
-
-        if ($('.dialogue-editcompany form #DistrictNumberId option:selected').val().isEmpty()) {
-            if ($('.dialogue-editcompany form #ZipCode').val().isEmpty()) {
-                $('.dialogue-editcompany form #ZipCode').addClass('fieldError');
-                hasError = true;
-            }
-            if ($('.dialogue-editcompany form #Address').val().isEmpty()) {
-                $('.dialogue-editcompany form #Address').addClass('fieldError');
-                hasError = true;
-            }
-            if ($('.dialogue-editcompany form #Name_CN').val().isEmpty()) {
-                $('.dialogue-editcompany form #Name_CN').addClass('fieldError');
-                hasError = true;
-            }
-        }
-        else {
-            if ($('.dialogue-editcompany form #Name_EN').val().isEmpty()) {
-                $('.dialogue-editcompany form #Name_EN').addClass('fieldError');
-                hasError = true;
-            }          
-        }
-        if ($('.dialogue-editcompany form #Phone').val().isEmpty()) {
-            $('.dialogue-editcompany form #Phone').addClass('fieldError');
-            hasError = true;
-        }
-//        if ($('.dialogue-editcompany form #Fax').val().isEmpty()) {
-//            $('.dialogue-editcompany form #Fax').addClass('fieldError');
-//            hasError = true;
-//        }
-        if ($('.dialogue-editcompany form #WebSite').val().isEmpty()) {
-            $('.dialogue-editcompany form #WebSite').addClass('fieldError');
-            hasError = true;
-        }
-        if ($('.dialogue-editcompany form #IndustryId').val().isEmpty()) {
-            $('.dialogue-editcompany form #IndustryId').addClass('fieldError');
-            hasError = true;
-        }
-        if ($('.dialogue-editcompany form #TypeId').val().isEmpty()) {
-            $('.dialogue-editcompany form #TypeId').addClass('fieldError');
-            hasError = true;
-        }
-        if ($('.dialogue-editcompany form #ProgressId').val().isEmpty()) {
-            $('.dialogue-editcompany form #ProgressId').addClass('fieldError');
-            hasError = true;
-        }
-        if ($('.dialogue-editcompany form input[type=checkbox][name=Categories]:checked').length == 0) {
-            $('fieldset#categories').addClass('fieldError');
-            hasError = true;
-        } else {
-            $('fieldset#categories').removeClass('fieldError');
-        }
-
-        if (hasError) {
-            return;
-        }
-
-        var companyNameCN = $('.dialogue-editcompany form #Name_CN').val();
-        var companyNameEN = $('.dialogue-editcompany form #Name_EN').val();
-        $.post('CheckCompanyExist', { beforeUpdateCN: currentCompanyNameCN, afterUpdateCN: companyNameCN, beforeUpdateEN: currentCompanyNameEN, afterUpdateEN: companyNameEN }, function (result) {
-            if (result.length > 0) {
-                alert(result);
-            } else {
-                var query = $('.dialogue-editcompany form').serializeArray();
-                $.post('EditCompany', query, function (result) {
-                    if (result.length > 0) {
-                        alert(result);
-                    } else {
-                        $('#EditCompany').data('tWindow').close();
-                        alert('公司更新成功');
-                        var Indexes = $('.dialogue-editcompany form #CompanRelationshipId').val();
-                        RefreshCrmList(Indexes);
-                        onCompanyChanging(Indexes);
-                    }
-                });
-            }
-        });       
-    }
-
-    function CancelEditcompany() {
-        var window = $('#EditCompany').data('tWindow');
-        window.close();
-    }
-
-    var currentLeadID = undefined;
-    function onLeadEdit(leadId) {
-        currentLeadID = leadId;      
-        $.post('GetEditLead', { leadId: leadId }, function (result) {
-            $('.leadedit-wrapper').html(result);
-            $('#EditLead').data('tWindow').center().open();
-            while ($('.dialogue-editlead form').length > 1) {
-                $('.dialogue-editlead form').last().remove();
-            }
-        });
-    }
-
-    function CancelEditLead() {
-        var window = $('#EditLead').data('tWindow');
-        window.close();
-    }
-
-    function UpdateLead() {
-
-        var haserror = false;
-
-        $('.dialogue-editlead form input').removeClass('fieldError');
-        $('.dialogue-editlead form select').removeClass('fieldError');
-
-        $gender = $('.dialogue-editlead form #Gender');
-        if ($gender.val().length == 0) {
-            $gender.addClass('fieldError');
-             haserror = true;
-         }
-         $department = $('.dialogue-editlead form #Department');
-         if ($department.val().length == 0) {
-             $department.addClass('fieldError');
-             haserror = true;
-         }
-         $title = $('.dialogue-editlead form #Title');
-         if ($title.val().length == 0) {
-             $title.addClass('fieldError');
-             haserror = true;
-         }
-
-         $district = $('.dialogue-editlead form #DistrictNumberId');
-         if ($district.val().length == 0)//国内
-       {
-           $namecn = $('.dialogue-editlead form #Name_CN');
-           if ($namecn.val().length == 0) {
-             $namecn.addClass('fieldError');
-             haserror = true;
-         }
-
-         $address = $('.dialogue-editlead form #Address');
-         if ($address.val().length == 0) {
-            $address.addClass('fieldError');
-            haserror = true;
-        }
-
-        $zip = $('.dialogue-editlead form #Zip');
-        if ($zip.val().length == 0) {
-            $zip.addClass('fieldError');
-            haserror = true;
-        }
-
-       }
-       else//国外
-       {
-           $nameen = $('.dialogue-editlead form #Name_EN');
-           if ($nameen.val().length == 0)
-         {
-             $nameen.addClass('fieldError');
-         }
-         if ($nameen.val().length == 0) {
-             $nameen.addClass('fieldError');
-         }
-       }
-     if (haserror) {
-           return;
-       }
-        
-
-        var query = $('.dialogue-editlead form').serializeArray();
-        $.post('EditLead' , query, function (result) {
-            if (result.length > 0) {
-                alert(result);
-            } else {
-                $('#EditLead').data('tWindow').close();
-                alert('Lead更新成功');
-                selectedVal = $('#CRMID').val() + "," + $('.dialogue-editlead form #LeadId').val();
-                RefreshCrmList(selectedVal);
-                onCompanyChanging(selectedVal);
-            }
-        });
-       
-    }
-
-    function onLeadAdd(currentCompanyId) {
-        $.post('GetAddLead', { companyId: currentCompanyId }, function (result) {
-            $('.leadadd-wrapper').html(result);
-            var window = $('#AddLead').data('tWindow');
-            window.center().open();
-        });
-    }
-
-    var currentLeadCallID = undefined;
-    function EditLeadCall(leadCallID) {
-        currentLeadCallID = leadCallID;
-        $.post('GetEditLeadCall', { leadCallId: leadCallID }, function (result) {
-            $('.calledit-wrapper').html(result);
-            var window = $('#EditCall').data('tWindow');
-            window.center().open();
-            while ($('.dialogue-editcall form').length > 1) {
-                $('.dialogue-editcall form').last().remove();
-            }
-        });
-    }
-    function CancelEditLead() {
-        var window = $('#EditCall').data('tWindow');
-        window.close();
-    }
-    function onCallAdd(currentLeadId) {
-        currentCompanyRelationshipId = $('#CRMID').val();
-        currentProjectId = $('#ProjectID').val().replace(/(^\s*)|(\s*$)/g, '');
-        if (currentProjectId.length == 0) {
-            currentProjectId = null;
-        }
-        $.post('GetAddCall', { leadId: currentLeadId, companyRelationId: currentCompanyRelationshipId, projectId: currentProjectId }, function (result) {
-            $('.calladd-wrapper').html(result);
-            var window = $('#AddCall').data('tWindow');
-            window.center().open();
-        });
-    }
-    function AddCall() {
-        if ($('.dialogue-addcall form #ProjectId').val() == 'null') {
-            $('.dialogue-addcall form #ProjectId').val('');
-        }
-
-        if ($('.dialogue-addcall form').valid()) {
-            var query = $('.dialogue-addcall form').serializeArray();
-            $.post('AddCall' , query, function (result) {
-                if (result.length > 0) {
-                    alert('LeadCall新增失败');
-                } else {
-                    $('#AddCall').data('tWindow').close();
-                    alert('LeadCall新增成功');
-
-                    var selectedVal = undefined;
-                    if (tempCRMID == undefined) {
-                        selectedVal = $('#CRMID').val() + "," + $('.dialogue-addcall form #LeadId').val();
-                    } else {
-                        selectedVal = tempCRMID + "," + $('.dialogue-addcall form #LeadId').val();
-                        tempCRMID = undefined;
-                        tempProjectId = undefined;
-                    }
-                    RefreshCrmList(selectedVal);
-                    onCompanyChanging(selectedVal);
-                }
-            });
-        }
-    }
-
-    function CancelAddCall() {
-        if (tempCRMID != undefined) {
-            RefreshCrmList(tempCRMID);
-            onCompanyChanging(tempCRMID);
-            tempCRMID = undefined;
-            tempProjectId = undefined;
-        }
-        var window = $('#AddCall').data('tWindow');
-        window.close();
-    }
-    function UpdateCall() {
-        if ($('.calledit-wrapper form').valid()) {
-            var query = $('.calledit-wrapper form').serializeArray();
-            $.post('EditLeadCall' , query, function (result) {
-                if (result.length > 0) {
-                    alert(result);
-                } else {
-                    $('#' + currentLeadCallID + '_CallType').html($('.dialogue-editcall form #CallTypeId option:selected').first().text());
-                    $('#' + currentLeadCallID + '_CallBackDate').html($('.dialogue-editcall form #CallBackDate').val());
-                    $('#' + currentLeadCallID + '_CallDate').html($('.dialogue-editcall form #CallDate').val());
-                    $('#' + currentLeadCallID + '_Result').html($('.dialogue-editcall form #Result').val());
-                    $('#EditCall').data('tWindow').close();
-                    alert('LeadCall更新成功');                   
-                }
-            });
-        }
-    }
-    function CancelEditCall() {
-        var window = $('#EditCall').data('tWindow');
-        window.close();
-    }
-    function AddLead() {
-      
-            var haserror = false;
-
-            $('.dialogue-addlead form input').removeClass('fieldError');
-            $('.dialogue-addlead form select').removeClass('fieldError');
-
-            $gender = $('.dialogue-addlead form #Gender');
-            if ($gender.val().length == 0) {
-                $gender.addClass('fieldError');
-                haserror = true;
-            }
-            $department = $('.dialogue-addlead form #Department');
-            if ($department.val().length == 0) {
-                $department.addClass('fieldError');
-                haserror = true;
-            }
-            $title = $('.dialogue-addlead form #Title');
-            if ($title.val().length == 0) {
-                $title.addClass('fieldError');
-                haserror = true;
-            }
-
-            $district = $('.dialogue-addlead form #DistrictNumberId');
-            if ($district.val().length == 0)//国内
-            {
-                $namecn = $('.dialogue-addlead form #Name_CN');
-                if ($namecn.val().length == 0) {
-                    $namecn.addClass('fieldError');
-                    haserror = true;
-                }
-
-                $address = $('.dialogue-addlead form #Address');
-                if ($address.val().length == 0) {
-                    $address.addClass('fieldError');
-                    haserror = true;
-                }
-
-                $zip = $('.dialogue-addlead form #Zip');
-                if ($zip.val().length == 0) {
-                    $zip.addClass('fieldError');
-                    haserror = true;
-                }
-
-            }
-            else//国外
-            {
-                $nameen = $('.dialogue-addlead form #Name_EN');
-                if ($nameen.val().length == 0) {
-                    $nameen.addClass('fieldError');
-                }
-                if ($nameen.val().length == 0) {
-                    $nameen.addClass('fieldError');
-                }
-            }
-            if (haserror) {
-                return;
-            }
-                   
-            var query = $('.dialogue-addlead form').serializeArray();
-            $.post('AddLead', query, function (result) {
-                if (result.length > 0) {
-                    $('#AddLead').data('tWindow').close();
-
-                    if (confirm('Lead新增成功,是否新增相应Call')) {
-                        if (tempCRMID != undefined) {
-                            $('#CRMID').val(tempCRMID);
-                        }
-                        onCallAdd(result);
-                    } else {
-                        var selectedVal = undefined;
-                        if (tempCRMID == undefined) {
-                            selectedVal = $('#CRMID').val() + "," + result;
-                        } else {
-                            selectedVal = tempCRMID + "," + result;
-                            tempCRMID = undefined;
-                            tempProjectId = undefined;
-                        }
-
-                        RefreshCrmList(selectedVal);
-                        onCompanyChanging(selectedVal);
-                    }
-
-                } else {
-                    alert('Lead新增失败');
-                }
-            });
-      
-    }
-    function CancelAddLead() {
-        if (tempCRMID != undefined) {
-            RefreshCrmList(tempCRMID);
-            onCompanyChanging(tempCRMID);
-            tempCRMID = undefined;
-            tempProjectId = undefined;
-        }
-
-        var window = $('#AddLead').data('tWindow');
-        window.close();
-    }
-
-    function HandleEmptySpan() {
-        $('span.datainfo').each(function () {
-            if ($(this).html().replace(/(^\s*)|(\s*$)/g, '').length == 0) {
-                $(this).parent().hide();
-            } else {
-                $(this).parent().show();
-            }
-        });
-    }
-
-    $(function () {
-        HandleEmptySpan();
-    });
-</script>
 
 
 <style>
