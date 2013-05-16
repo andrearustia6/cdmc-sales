@@ -172,17 +172,17 @@ var currentCompanyNameEN = undefined;
              haserror = true;
          }
 
-         $address = $('.dialogue-editlead form #Address');
-         if ($address.val().length == 0) {
-            $address.addClass('fieldError');
-            haserror = true;
-        }
+//         $address = $('.dialogue-editlead form #Address');
+//         if ($address.val().length == 0) {
+//            $address.addClass('fieldError');
+//            haserror = true;
+//        }
 
-        $zip = $('.dialogue-editlead form #Zip');
-        if ($zip.val().length == 0) {
-            $zip.addClass('fieldError');
-            haserror = true;
-        }
+//        $zip = $('.dialogue-editlead form #Zip');
+//        if ($zip.val().length == 0) {
+//            $zip.addClass('fieldError');
+//            haserror = true;
+//        }
 
        }
        else//国外
@@ -192,9 +192,7 @@ var currentCompanyNameEN = undefined;
          {
              $nameen.addClass('fieldError');
          }
-         if ($nameen.val().length == 0) {
-             $nameen.addClass('fieldError');
-         }
+      
        }
      if (haserror) {
            return;
@@ -355,17 +353,17 @@ var currentCompanyNameEN = undefined;
                     haserror = true;
                 }
 
-                $address = $('.dialogue-addlead form #Address');
-                if ($address.val().length == 0) {
-                    $address.addClass('fieldError');
-                    haserror = true;
-                }
+//                $address = $('.dialogue-addlead form #Address');
+//                if ($address.val().length == 0) {
+//                    $address.addClass('fieldError');
+//                    haserror = true;
+//                }
 
-                $zip = $('.dialogue-addlead form #Zip');
-                if ($zip.val().length == 0) {
-                    $zip.addClass('fieldError');
-                    haserror = true;
-                }
+//                $zip = $('.dialogue-addlead form #Zip');
+//                if ($zip.val().length == 0) {
+//                    $zip.addClass('fieldError');
+//                    haserror = true;
+//                }
 
             }
             else//国外
