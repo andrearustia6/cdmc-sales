@@ -3,19 +3,18 @@
     Layout = "~/Views/DirectorReport/Master.cshtml";
 }
 @using Sales.Model
-@model IQueryable<_DealBySales>
+@model IQueryable<_DealByProject>
 <form id="form" > 
 @Html.Partial("yearandmonthselector")
  </form>
 @if (Model.Count()>0)
 {
 <div class="reportdiv" style=" ">
-@(Html.Telerik().Grid<_DealBySales>(Model.OrderByDescending(o=>o.IncomeAmount)).Name("persale")
+@(Html.Telerik().Grid<_DealByProject>(Model.OrderByDescending(o => o.IncomeAmount)).Name("perproject")
                 .Columns(c =>
                 {
                     //c.Bound(item => item.Year).Width(100);
                     //c.Bound(item => item.Month).Width(80);
-                    c.Bound(item => item.Sales).Width(100);
                     c.Bound(item => item.ProjectName).Width(200);
                     c.Bound(item => item.IncomeAmount).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" }).Width(100);
                     c.Bound(item => item.DealAmount).Width(100).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
@@ -32,7 +31,6 @@
 <script>
     $(document).ready(function () {
         $('#Year,#Month').change(function () {
-
             $('#form').submit();
         });
     });
