@@ -26,18 +26,15 @@
     <div class="editor-field">
         @{
             //var data = ViewBag.AvaibleCRM==null? CH.GetAllData<CompanyRelationship>():ViewBag.AvaibleCRM as List<CompanyRelationship>;
-            List<CompanyRelationship> data;
+            List<CompanyRelationship> data=null;
             var lvl = Employee.CurrentRole.Level;
             int? projectid = Model == null ? ViewBag.ProjectID as int? : Model.ProjectID;
-            var project = CH.GetDataById<Project>(projectid);
+            //var project = CH.GetDataById<Project>(projectid);
             if (lvl <= 100 && lvl >= 10)
             {
-                data = project.CompanyRelationships.FindAll(c => c.WhoCallTheCompanyMemberName().Split('|').Any(s => s == Employee.CurrentUserName));
+                data = CRM_Logical.GetUserCallingCRM().ToList();
             }
-            else
-            {
-                data = project.CompanyRelationships;
-            }
+           
             @Html.DropDownListFor(m => m.CompanyRelationshipID, new SelectList(data.OrderBy(o => o.Company.Name).ToList(), "ID", "CompanyName"), "-请选择-")
             @Html.ValidationMessageFor(model => model.CompanyRelationshipID)
         }

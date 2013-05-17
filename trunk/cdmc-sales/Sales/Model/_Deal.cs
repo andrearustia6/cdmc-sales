@@ -10,17 +10,49 @@ namespace Sales.Model
     {
         public _DealBySales DealBySales { get; set; } 
     }
-    public class _DealBySales
+
+
+    public class _DealBase
+    {
+         [Display(Name = "入账")]
+        public decimal? IncomeAmount { get; set; }
+
+        [Display(Name = "出单")]
+        public decimal? DealAmount { get; set; }
+
+        public double Percent { get { return Utl.Utl.GetPercent(IncomeAmount.Value, DealAmount.Value); } }
+
+        [Display(Name = "回款/出单比率")]
+        public string PercentString { get { return Percent.ToString() + "%"; } }
+
+        [Display(Name = "年")]
+        public int? Year { get; set; }
+
+        [Display(Name = "月")]
+        public int? Month { get; set; }
+
+
+        [Display(Name = "所有入账总额")]
+        public decimal? TotalIncomeAmount { get; set; }
+    }
+
+    public class _DealByProject: _DealBase
+    {
+        [Display(Name = "项目名称")]
+        public string ProjectName { get; set; }
+
+        [Display(Name = "项目人数")]
+        public int MemberCount { get; set; }
+    }
+
+    public class _DealBySales : _DealBase
     {
         [Display(Name="项目名称")]
         public string ProjectName { get; set; }
-        [Display(Name = "入账总额")]
-        public decimal IncomeAmount { get; set; }
-        [Display(Name = "年")]
-        public int? Year { get; set; }
-        [Display(Name = "月")]
-        public int? Month { get; set; }
+
         [Display(Name = "出单销售")]
         public string Sales { get; set; }
+
+    
     }
 }

@@ -88,6 +88,14 @@ namespace BLL
 
         #endregion 
 
+        public static IQueryable<CompanyRelationship> GetUserCallingCRM()
+        {
+            var user = Employee.CurrentUserName;
+            var data = CH.DB.CompanyRelationships.Where(c => c.Members.Any(s => s.Name == user));
+            return data;
+        }
+
+
         public static List<LeadCall> GetProjectFaxoutList(DateTime? startdate, DateTime? enddate, List<int> projectids)
         {
             if (!startdate.HasValue)
