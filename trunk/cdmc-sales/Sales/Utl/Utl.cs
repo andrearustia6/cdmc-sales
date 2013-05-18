@@ -598,6 +598,18 @@ namespace Utl
 
     public class Utl
     {
+        public static bool DebugModel()
+        {
+            if (HttpContext.Current != null && HttpContext.Current.Items["DebugModel"] == null)
+            {
+                var settings = ConfigurationManager.AppSettings.GetValues("DebugModel");
+                var debug =  bool.Parse(settings.FirstOrDefault());
+                HttpContext.Current.Items["DebugModel"] = debug;
+            }
+
+            return (bool)HttpContext.Current.Items["DebugModel"];
+          
+        }
         public static double GetPercent(double child, double father)
         {
             if(father==0) return 100;

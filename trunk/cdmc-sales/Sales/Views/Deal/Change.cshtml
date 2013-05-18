@@ -32,7 +32,8 @@
             //var project = CH.GetDataById<Project>(projectid);
             if (lvl <= 100 && lvl >= 10)
             {
-                data = CRM_Logical.GetUserCallingCRM().ToList();
+                data = CRM_Logical.GetUserCallingCRM(projectid).ToList();
+                
             }
            
             @Html.DropDownListFor(m => m.CompanyRelationshipID, new SelectList(data.OrderBy(o => o.Company.Name).ToList(), "ID", "CompanyName"), "-请选择-")
