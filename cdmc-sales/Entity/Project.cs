@@ -86,6 +86,9 @@ namespace Entity
     /// </summary>
     public class Project : NameEntity
     {
+        [Display(Name = "测试数据")]
+        public bool Test { get; set; }
+
         [Display(Name = "销售简介文件下载显示名称")]
         public string SalesBriefName { get; set; }
 
@@ -396,6 +399,9 @@ namespace Entity
     [JsonIgnoreAttribute("CompanyRelationships", "LeadCalls", "Project", "TargetOfWeeks", "SalesType")]
     public class Member : EntityBase
     {
+        [Display(Name = "测试数据")]
+        public bool Test { get; set; }
+
         [Display(Name = "成员"), Required]
         public string Name { get; set; }
 

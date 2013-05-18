@@ -1654,7 +1654,7 @@
     <Content Include="Views\SimulatorConfig\Index.cshtml" />
     <Content Include="Views\DirectorReport\Master.cshtml" />
     <Content Include="Views\DirectorReport\DealGroupBySales.cshtml" />
-    <Content Include="Views\DirectorReport\DealGroupByProjects.cshtml" />
+    <Content Include="Views\DirectorReport\DealGroupByProject.cshtml" />
     <None Include="Views\SalesEx\EditCompany.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\SimulatorConfig.cshtml" />
   </ItemGroup>

@@ -88,10 +88,14 @@ namespace BLL
 
         #endregion 
 
-        public static IQueryable<CompanyRelationship> GetUserCallingCRM()
+        public static IQueryable<CompanyRelationship> GetUserCallingCRM(int? projectid=null)
         {
             var user = Employee.CurrentUserName;
             var data = CH.DB.CompanyRelationships.Where(c => c.Members.Any(s => s.Name == user));
+            if (projectid != null)
+            {
+                data = data.Where(w => w.ProjectID == projectid);
+            }
             return data;
         }
 
