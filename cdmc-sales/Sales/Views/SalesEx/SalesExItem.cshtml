@@ -125,13 +125,27 @@
                      <tr><th width="80px">致电类型</th><th width="100px">回打时间</th><th width="80px">致电人</th><th width="80px">致电时间</th><th>结果</th>@if (Employee.LoginUserIsAdmin())
                                                                                                                                             {
                                                                                                                                                 <th>操作</th>
-                                                                                                                                            }</tr>
-                     @foreach (var call in orders)
+                                                                                                                   }</tr>
+
+                     @{bool colorSignal = true;
+                     foreach (var call in orders)
                      {
-                         <tr><td>@call.CallType</td><td>@call.CallBackDate</td><td>@call.Caller</td><td>@call.CallDate</td><td>@call.Result</td>@if (Employee.LoginUserIsAdmin())
+                         string classname = string.Empty;
+                         if(colorSignal)
+                         {
+                             classname = "calllistone";
+                         }
+                         else
+                         {
+                             classname = "calllisttwo";
+                         }
+                         
+                         <tr class=@classname><td>@call.CallType</td><td>@call.CallBackDate</td><td>@call.Caller</td><td>@call.CallDate</td><td>@call.Result</td>@if (Employee.LoginUserIsAdmin())
                                                                                                                                                 {
-                                                                                                                                                <td><input onclick='EditLeadCall(@call.LeadCallID)' type='button' class="salebtn" style=" background-image:url('../images/gengxin.jpg');" /></td>
+                                                                                                                             <td><input onclick='EditLeadCall(@call.LeadCallID)' type='button' class="salebtn" style=" background-image:url('../images/gengxin.jpg');" /></td>
                                                                                                                                                 }</tr>
+                         colorSignal = !colorSignal;
+                     }
                      }
                     </table>
                    @* @(Html.Telerik().Grid<AjaxCall>(lead.AjaxCalls.OrderByDescending(o => o.CallDate)).Name("lead" + lead.LeadID)
@@ -339,5 +353,10 @@
         float: left;
         padding: 2px;
         width: 99.2%;
+    }
+    
+    .calllisttwo
+    {
+        background-color:#FFBB77;
     }
 </style>

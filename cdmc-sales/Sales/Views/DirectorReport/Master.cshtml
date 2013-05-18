@@ -13,18 +13,18 @@
      {
          menu.Add().Text("出单入账").Items(item =>
          {
-             item.Add().Text("销售").Action("DealGroupBySales", "DirectorReport");
-             item.Add().Text("项目").Action("DealGroupByProject", "DirectorReport");
+             item.Add().Text("销售").Url("~/DirectorReport/DealGroupBySales");
+             item.Add().Text("项目").Url("~/DirectorReport/DealGroupByProject");
          });
          menu.Add().Text("通话情况").Items(item =>
          {
-             item.Add().Text("销售").Action("index", "TotalApprove");
-             item.Add().Text("项目").Action("index", "CategoryApprove");
+             item.Add().Text("销售").Url("~/TotalApprove/index");
+             item.Add().Text("项目").Url("~/CategoryApprove/index");
          });
          menu.Add().Text("公司客户").Items(item =>
          {
-             item.Add().Text("公司").Action("index", "DirectorTotal"); ;
-             item.Add().Text("客户").Action("index", "directorEfficent");
+             item.Add().Text("公司").Url("~/DirectorTotal/index"); ;
+             item.Add().Text("客户").Url("~/directorEfficent/index");
          });
      }))
         </div>
