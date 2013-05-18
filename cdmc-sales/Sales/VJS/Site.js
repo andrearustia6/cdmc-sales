@@ -212,3 +212,55 @@ function stopEvent(evt) {
     }
 
 })();
+
+
+/******************** 
+函数名称：IsTelephone 
+函数功能：固话，手机号码检查函数，合法返回true,反之,返回false 
+函数参数：obj,待检查的号码 
+检查规则： 
+  (1)电话号码由数字、"("、")"和"-"构成 
+  (2)电话号码为3到8位 
+  (3)如果电话号码中包含有区号，那么区号为三位或四位 
+  (4)区号用"("、")"或"-"和其他部分隔开 
+  (5)移动电话号码为11或12位，如果为12位,那么第一位为0 
+  (6)11位移动电话号码的第一位和第二位为"13" 
+  (7)12位移动电话号码的第二位和第三位为"13" 
+********************/ 
+function IsTelephone(obj)// 正则判断
+{ 
+var pattern=/(^[0-9]{3,4}\-[0-9]{3,8}$)|(^[0-9]{3,8}$)|(^\([0-9]{3,4}\)[0-9]{3,8}$)|(^0{0,1}13[0-9]{9}$)/; 
+if(pattern.test(obj)) 
+{ 
+return true; 
+} 
+else 
+{ 
+return false; 
+} 
+} 
+
+function isphonenumber(str) //非正则判断
+{ 
+   var i,strlengh,tempchar; 
+   str=CStr(str); 
+   if(str=="") return false; 
+   strlength=str.length; 
+   for(i=0;i<strlength;i++) 
+   { 
+        tempchar=str.substring(i,i+1); 
+        if(!(tempchar==0||tempchar==1||tempchar==2||tempchar==3||tempchar==4||tempchar==5||tempchar==6||tempchar==7||tempchar==8||tempchar==9||tempchar==';-')) 
+        { 
+//        alert("电话号码只能输入数字和中划线 "); 
+        return(false); 
+        }    
+   } 
+   return(true); 
+}
+
+function validateEmail(elementValue)
+{
+   var emailPattern = /^(?!\.)[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+
+   return emailPattern.test(elementValue);
+}

@@ -59,12 +59,15 @@ var currentCompanyNameEN = undefined;
             if ($('.dialogue-editcompany form #Name_EN').val().isEmpty()) {
                 $('.dialogue-editcompany form #Name_EN').addClass('fieldError');
                 hasError = true;
-            }          
+            }
         }
-        if ($('.dialogue-editcompany form #Phone').val().isEmpty()) {
-            $('.dialogue-editcompany form #Phone').addClass('fieldError');
+
+        var telephone = $('.dialogue-editcompany form #Phone');
+        if (telephone.val().isEmpty() || !IsTelephone(telephone.val())) {
+            telephone.addClass('fieldError');
             hasError = true;
         }
+       
 //        if ($('.dialogue-editcompany form #Fax').val().isEmpty()) {
 //            $('.dialogue-editcompany form #Fax').addClass('fieldError');
 //            hasError = true;
@@ -84,7 +87,8 @@ var currentCompanyNameEN = undefined;
         if ($('.dialogue-editcompany form #ProgressId').val().isEmpty()) {
             $('.dialogue-editcompany form #ProgressId').addClass('fieldError');
             hasError = true;
-        }
+        }      
+
         if ($('.dialogue-editcompany form input[type=checkbox][name=Categories]:checked').length == 0) {
             $('fieldset#categories').addClass('fieldError');
             hasError = true;
@@ -160,6 +164,24 @@ var currentCompanyNameEN = undefined;
          $title = $('.dialogue-editlead form #Title');
          if ($title.val().length == 0) {
              $title.addClass('fieldError');
+             haserror = true;
+         }
+
+         var telephone = $('.dialogue-editlead form #Telephone');
+         if (telephone.val().length != 0 && !IsTelephone(telephone.val())) {
+             telephone.addClass('fieldError');
+             haserror = true;
+         }
+
+         var personelEmail = $('.dialogue-editlead form #PersonelEmail');
+         if (personelEmail.val().length != 0 && !validateEmail(personelEmail.val())) {
+             personelEmail.addClass('fieldError');
+             haserror = true;
+         }
+
+         var workingEmail = $('.dialogue-editlead form #WorkingEmail');
+         if (workingEmail.val().length != 0 && !validateEmail(workingEmail.val())) {
+             workingEmail.addClass('fieldError');
              haserror = true;
          }
 
@@ -343,6 +365,25 @@ var currentCompanyNameEN = undefined;
                 $title.addClass('fieldError');
                 haserror = true;
             }
+             
+            var telephone=$('.dialogue-addlead form #Telephone');
+            if (telephone.val().length!=0 && !IsTelephone(telephone.val())) {
+                telephone.addClass('fieldError');
+                haserror = true;
+            }
+
+            var personelEmail = $('.dialogue-addlead form #PersonelEmail');
+            if (personelEmail.val().length != 0 && !validateEmail(personelEmail.val())) {
+                personelEmail.addClass('fieldError');
+                haserror = true;
+            }
+
+            var workingEmail = $('.dialogue-addlead form #WorkingEmail');
+            if (workingEmail.val().length != 0 && !validateEmail(workingEmail.val())) {
+                workingEmail.addClass('fieldError');
+                haserror = true;
+            }
+
 
             $district = $('.dialogue-addlead form #DistrictNumberId');
             if ($district.val().length == 0)//国内
@@ -715,8 +756,10 @@ var currentCompanyNameEN = undefined;
                 hasError = true;
             }
         }
-        if ($('.dialogue-addcompany form #Phone').val().isEmpty()) {
-            $('.dialogue-addcompany form #Phone').addClass('fieldError');
+
+        var telephone=$('.dialogue-addcompany form #Phone');
+        if (telephone.val().isEmpty() || !IsTelephone(telephone.val())) {
+            telephone.addClass('fieldError');
             hasError = true;
         }
         //            if ($('.dialogue-addcompany form #Fax').val().isEmpty()) {
@@ -738,7 +781,9 @@ var currentCompanyNameEN = undefined;
         if ($('.dialogue-addcompany form #ProgressId').val().isEmpty()) {
             $('.dialogue-addcompany form #ProgressId').addClass('fieldError');
             hasError = true;
-        }
+        }      
+    
+   
         if ($('.dialogue-addcompany form input[type=checkbox][name=Categories]:checked').length == 0) {
             $('fieldset#categories').addClass('fieldError');
             hasError = true;
