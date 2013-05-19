@@ -547,7 +547,14 @@ namespace Sales.Controllers
             }
             else
             {
-                project = CH.GetAllData<Project>().FirstOrDefault();
+                if (Employee.CurrentRole.Level == 1000)
+                {
+                    project = CH.DB.Projects.FirstOrDefault();
+                }
+                else
+                {
+                    project = CH.DB.Projects.Where(w => w.Members.Select(s => s.Name).Contains(Employee.CurrentUserName) == true).FirstOrDefault();
+                }
             }
             if (memberFilterForCompany.HasValue)
             {

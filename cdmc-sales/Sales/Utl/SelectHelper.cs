@@ -261,8 +261,16 @@ namespace Utl
         public static IEnumerable<SelectListItem> ProjectSelectList(string currentUserName, int? selectVal)
         {
             List<SelectListItem> selectList = new List<SelectListItem>();
-            var user = Employee.CurrentUserName;
-            var projects = CH.GetAllData<Project>(w => w.Members.Select(s => s.Name).Contains(user)==true);
+           
+            IEnumerable<Project> projects = null;
+            if (Employee.CurrentRole.Level == 1000)
+            {
+                projects = CH.DB.Projects;
+            }
+            else
+            {
+                projects = CH.DB.Projects.Where(w => w.Members.Select(s => s.Name).Contains(Employee.CurrentUserName) == true);
+            }
             foreach (Project project in projects)
             {
                 SelectListItem selectListItem = new SelectListItem() { Text = project.ProjectCode, Value = project.ID.ToString() };
