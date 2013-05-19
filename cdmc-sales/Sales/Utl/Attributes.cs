@@ -260,6 +260,18 @@ public sealed class ProductInterfaceRequired : RoleRequired
 }
 
 /// <summary>
+/// 3
+/// </summary>
+public sealed class ConferenceInterfaceRequired : RoleRequired
+{
+    public const int LVL = 3;
+    public override int Level
+    {
+        get { return LVL; }
+    }
+}
+
+/// <summary>
 /// 4
 /// </summary>
 public sealed class FinancialInterfaceRequired : RoleRequired
@@ -290,6 +302,8 @@ public class RoleLevel
     public static int Leader = 100;
     public static int Sales = 10;
     public static int ProductInterface = 5;
+    public static int FinancialInterface = 4;
+    public static int ConferenceInterface = 3;
     public static int PoliticsInterface = 2;
     public static int MarketInterface = 1;
 }

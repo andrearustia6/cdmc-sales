@@ -53,6 +53,7 @@ namespace Entity
         public const int LVL_Sales = 10;
         public const int LVL_ProductInterface = 5;
         public const int LVL_FinancialInterface = 4;
+        public const int LVL_ConferenceInterface = 3;
         public const int LVL_MarketInterface = 1;
 
 
@@ -297,6 +298,9 @@ namespace Entity
 
         [Display(Name = "入账目标"), Required, DisplayFormat(DataFormatString = "{0:c}")]
         public decimal CheckIn { get; set; }
+
+        [Display(Name = "是否确定")]
+        public bool? IsConfirm { get; set; }
     }
 
     /// <summary>
