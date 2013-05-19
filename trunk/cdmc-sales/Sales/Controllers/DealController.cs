@@ -148,14 +148,119 @@ namespace Sales.Controllers
 
         public ViewResult ConfirmList(int? projectid)
         {
-            //projectid = this.TrySetProjectIDForUser(projectid);
-            //ViewBag.ProjectID = projectid;
-            //var data = CH.GetAllData<Deal>();
-            //ViewBag.ProjectID = projectid;
-            //return View(data.FindAll(d => d.CompanyRelationship.ProjectID == projectid).OrderByDescending(m => m.CreatedDate).ToList());
-            return View(CH.DB.Deals.OrderByDescending(s => s.ID).ToList());
+            //if (Employee.CurrentRole.Level == 500)
+            //{
+            //    projectid = this.TrySetProjectIDForUser(projectid);
+            //    ViewBag.ProjectID = projectid;
+            //    var data = CH.GetAllData<Deal>();
+            //    ViewBag.ProjectID = projectid;
+            //    return View(data.FindAll(d => d.CompanyRelationship.ProjectID == projectid).OrderByDescending(m => m.CreatedDate).ToList());
+            //}
+            //else if (Employee.CurrentRole.Level == 4)
+            //{
+            //    return View(CH.DB.Deals.Where(s => s.IsConfirm == true).OrderByDescending(s => s.CreatedDate).ToList());
+            //}
+            //else
+            //{
+            //    return View();
+            //}
+            return View();
         }
 
+        [GridAction]
+        public ActionResult _SelectIndex()
+        {
+            return View(new GridModel(getData()));
+        }
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        [GridAction]
+        public ActionResult _SaveAjaxEditing(int id)
+        {
+            if (Employee.CurrentRole.Level == 4)
+            {
+                AjaxViewDeal newData = new AjaxViewDeal();
+                TryUpdateModel<AjaxViewDeal>(newData);
+                var item = CH.GetDataById<Deal>(id);
+                item.Income = newData.Income;
+                CH.Edit<Deal>(item);
+            }
+            else
+            {
+                var item = CH.GetDataById<Deal>(id);
+                item.IsConfirm = true;
+                CH.Edit<Deal>(item);
+            }
+            return View(new GridModel(getData()));
+        }
+
+        private List<AjaxViewDeal> getData()
+        {
+            if (Employee.CurrentRole.Level == 4)
+            {
+                var ds = from d in CH.DB.Deals
+                         where d.Abandoned == false && d.IsConfirm == true
+                         select new AjaxViewDeal
+                         {
+                             CompanyNameEN = d.CompanyRelationship.Company.Name_EN,
+                             CompanyNameCH = d.CompanyRelationship.Company.Name_CH,
+                             DealCode = d.DealCode,
+                             Abandoned = d.Abandoned,
+                             AbandonReason = d.AbandonReason,
+                             ActualPaymentDate = d.ActualPaymentDate,
+                             Committer = d.Committer,
+                             CommitterContect = d.Committer,
+                             CommitterEmail = d.CommitterEmail,
+                             ExpectedPaymentDate = d.ExpectedPaymentDate,
+                             ID = d.ID,
+                             Income = d.Income,
+                             IsClosed = d.IsClosed,
+                             PackageNameCH = d.Package.Name_CH,
+                             PackageNameEN = d.Package.Name_EN,
+                             Payment = d.Payment,
+                             PaymentDetail = d.PaymentDetail,
+                             Sales = d.Sales,
+                             ProjectCode = d.Project.ProjectCode,
+                             SignDate = d.SignDate,
+                             TicketDescription = d.TicketDescription,
+                             IsConfirm = (d.IsConfirm == true ? "是" : "否")
+                         };
+                return ds.OrderBy(o => o.SignDate).ToList();
+            }
+            else
+            {
+
+                
+                var ds = from d in CH.DB.Deals
+                         where d.Abandoned == false
+                         select new AjaxViewDeal
+                         {
+                             CompanyNameEN = d.CompanyRelationship.Company.Name_EN,
+                             CompanyNameCH = d.CompanyRelationship.Company.Name_CH,
+                             DealCode = d.DealCode,
+                             Abandoned = d.Abandoned,
+                             AbandonReason = d.AbandonReason,
+                             ActualPaymentDate = d.ActualPaymentDate,
+                             Committer = d.Committer,
+                             CommitterContect = d.Committer,
+                             CommitterEmail = d.CommitterEmail,
+                             ExpectedPaymentDate = d.ExpectedPaymentDate,
+                             ID = d.ID,
+                             Income = d.Income,
+                             IsClosed = d.IsClosed,
+                             PackageNameCH = d.Package.Name_CH,
+                             PackageNameEN = d.Package.Name_EN,
+                             Payment = d.Payment,
+                             PaymentDetail = d.PaymentDetail,
+                             Sales = d.Sales,
+                             ProjectCode = d.Project.ProjectCode,
+                             SignDate = d.SignDate,
+                             TicketDescription = d.TicketDescription,
+                             IsConfirm = (d.IsConfirm == true ? "是" : "否")
+                         };
+                return ds.OrderBy(o => o.SignDate).ToList();
+            }
+        }
 
         [HttpPost]
         public ActionResult ConfirmTemp(Deal item, int? projectid)
