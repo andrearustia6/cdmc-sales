@@ -1,0 +1,42 @@
+﻿@using Utl
+@using Entity
+@model Model.AjaxTargetOfMonth
+<fieldset>
+    <legend>是否确定以下项目月目标</legend>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.ProjectName)
+    </div>
+    <div class="editor-field">
+        @Html.TextBoxFor(model => model.ProjectName, new { @readOnly = "true" })
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.StartDate)
+    </div>
+    <div class="editor-field">
+        @Html.TextBoxFor(model => model.StartDate, new { @readOnly = "true" })
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.EndDate)
+    </div>
+    <div class="editor-field">
+        @Html.TextBoxFor(model => model.EndDate, new { @readOnly = "true" })
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.BaseDeal)
+    </div>
+    <div class="editor-field">
+        @Html.Telerik().CurrencyTextBoxFor(model => model.BaseDeal).Enable(false)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.Deal)
+    </div>
+    <div class="editor-field">
+        @Html.Telerik().CurrencyTextBoxFor(model => model.Deal).Enable(false)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.CheckIn)
+    </div>
+    <div class="editor-field">
+        @Html.Telerik().CurrencyTextBoxFor(m => m.CheckIn).Enable(false)
+    </div>
+</fieldset>

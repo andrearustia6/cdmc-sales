@@ -680,4 +680,68 @@ namespace Model
 
     }
 
+    /// <summary>
+    /// 月目标管理
+    /// </summary>
+    public class AjaxTargetOfMonthForMember
+    {
+
+        public int ID { set; get; }
+
+        public int Month { get { return StartDate.Month; } }
+
+        [Display(Name = "项目名称"), Required]
+        public string SalesBriefName { get; set; }
+
+        [Display(Name = "开始日期"), DisplayFormat(DataFormatString = "{0:d}")]
+        public DateTime StartDate { get; set; }
+
+        [Display(Name = "结束日期"), DisplayFormat(DataFormatString = "{0:d}")]
+        public DateTime EndDate { get; set; }
+
+        [Display(Name = "销售目标"), Required, DisplayFormat(DataFormatString = "{0:c}")]
+        public decimal Deal { get; set; }
+
+        [Display(Name = "保底目标"), Required, DisplayFormat(DataFormatString = "{0:c}")]
+        public decimal BaseDeal { get; set; }
+
+        [Display(Name = "入账目标"), Required, DisplayFormat(DataFormatString = "{0:c}")]
+        public decimal CheckIn { get; set; }
+
+        [Display(Name = "对应销售"), Required]
+        public string MemberName { get; set; }
+
+        [Display(Name = "是否确定")]
+        public string IsConfirm { get; set; }
+    }
+
+    public class AjaxTargetOfMonth
+    {
+        public int ID { set; get; }
+
+        public int Month { get { return EndDate.Month; } }
+
+        public int? ProjectID { get; set; }
+
+        [Display(Name = "项目名称"), Required]
+        public string ProjectName { get; set; }
+
+        [Display(Name = "开始日期"), DisplayFormat(DataFormatString = "{0:d}")]
+        public DateTime StartDate { get; set; }
+
+        [Display(Name = "结束日期"), DisplayFormat(DataFormatString = "{0:d}")]
+        public DateTime EndDate { get; set; }
+
+        [Display(Name = "销售目标"), Required, DisplayFormat(DataFormatString = "{0:c}")]
+        public decimal Deal { get; set; }
+
+        [Display(Name = "保底目标"), Required, DisplayFormat(DataFormatString = "{0:c}")]
+        public decimal BaseDeal { get; set; }
+
+        [Display(Name = "入账目标"), Required, DisplayFormat(DataFormatString = "{0:c}")]
+        public decimal CheckIn { get; set; }
+
+        [Display(Name = "是否确定")]
+        public string IsConfirm { get; set; }
+    }
 }

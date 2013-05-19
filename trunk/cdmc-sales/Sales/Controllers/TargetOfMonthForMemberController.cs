@@ -10,6 +10,8 @@ using Sales;
 using Utl;
 using BLL;
 using System.Data.Entity.Infrastructure;
+using Telerik.Web.Mvc;
+using Model;
 
 namespace Sales.Controllers
 {
@@ -157,25 +159,25 @@ namespace Sales.Controllers
 
         public ActionResult ConfirmList(int? projectid)
         {
-            var list = CH.DB.ChangeTracker.Entries<TargetOfMonthForMember>().ToList();
-            projectid = this.TrySetProjectIDForUser(projectid);
-            ViewBag.ProjectID = projectid;
-            if (projectid != null)
-            {
-                list = CH.DB.ChangeTracker.Entries<TargetOfMonthForMember>().ToList();
-                var data = from t in CH.DB.TargetOfMonthForMembers.AsNoTracking()
-                           where t.ProjectID == projectid
-                           select t;
+            //var list = CH.DB.ChangeTracker.Entries<TargetOfMonthForMember>().ToList();
+            //projectid = this.TrySetProjectIDForUser(projectid);
+            //ViewBag.ProjectID = projectid;
+            //if (projectid != null)
+            //{
+            //    list = CH.DB.ChangeTracker.Entries<TargetOfMonthForMember>().ToList();
+            //    var data = from t in CH.DB.TargetOfMonthForMembers.AsNoTracking()
+            //               where t.ProjectID == projectid
+            //               select t;
 
-                var td = data.OrderByDescending(o => o.EndDate).ToList().Where(s => s.IsConfirm != true);
+            //    var td = data.OrderByDescending(o => o.EndDate).ToList().Where(s => s.IsConfirm != true);
 
-                list = CH.DB.ChangeTracker.Entries<TargetOfMonthForMember>().ToList();
-                if (list.Count > 0)
-                {
-                    var id = list.First().Entity.ID;
-                }
-                return View(td.ToList());
-            }
+            //    list = CH.DB.ChangeTracker.Entries<TargetOfMonthForMember>().ToList();
+            //    if (list.Count > 0)
+            //    {
+            //        var id = list.First().Entity.ID;
+            //    }
+            //    return View(td.ToList());
+            //}
             return View();
         }
 
@@ -191,6 +193,42 @@ namespace Sales.Controllers
             item.IsConfirm = true;
             CH.Edit<TargetOfMonthForMember>(item);
             return RedirectToAction("ConfirmList", item.ProjectID);
+        }
+
+
+        [GridAction]
+        public ActionResult _SelectIndex()
+        {
+            return View(new GridModel(getData()));
+        }
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        [GridAction]
+        public ActionResult _SaveAjaxEditing(int id)
+        {
+            var item = CH.GetDataById<TargetOfMonthForMember>(id);
+            item.IsConfirm = true;
+            CH.Edit<TargetOfMonthForMember>(item);
+
+            return View(new GridModel(getData()));
+        }
+
+        public List<AjaxTargetOfMonthForMember> getData()
+        {
+            return (from db in CH.DB.TargetOfMonthForMembers
+                    orderby db.ID descending
+                    select new AjaxTargetOfMonthForMember
+                    {
+                        ID = db.ID,
+                        IsConfirm = db.IsConfirm == true ? "是" : "否",
+                        SalesBriefName = db.Project.SalesBriefName,
+                        Deal = db.Deal,
+                        BaseDeal = db.BaseDeal,
+                        CheckIn = db.CheckIn,
+                        EndDate = db.EndDate,
+                        MemberName = db.Member.Name,
+                        StartDate = db.StartDate
+                    }).ToList();
         }
     }
 }

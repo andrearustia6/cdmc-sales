@@ -1,0 +1,34 @@
+﻿@using Entity
+@using Utl
+@Html.Partial("contenttitle", "项目月目标确认")
+@(Html.Telerik().Grid<Model.AjaxTargetOfMonth>().Name("TargetOfMonth")
+                .DataKeys(keys =>
+                {
+                    keys.Add(s => s.ID);
+                })
+                    .DataBinding(dataBinding =>
+                    {
+                        dataBinding.Ajax()
+                            .Select("_SelectIndex", "TargetOfMonth")
+                            .Update("_SaveAjaxEditing", "TargetOfMonth");
+                    })
+                .Columns(c =>
+                {
+                    c.Bound(item => item.ProjectName);
+                    c.Bound(item => item.BaseDeal);
+                    c.Bound(item => item.Deal);
+                    c.Bound(item => item.CheckIn);
+                    c.Bound(item => item.StartDate);
+                    c.Bound(item => item.EndDate);
+                    c.Bound(item => item.IsConfirm);
+                    c.Command(commands =>
+                    {
+                        commands.Edit().ButtonType(GridButtonType.Image);
+
+                    }).Title("确定");
+                })
+               .Editable(editing => editing.Mode(GridEditMode.PopUp))
+        .Pageable(p => p.PageSize(20))
+                .Scrollable(scrolling => scrolling.Height(350)).Filterable()
+                .Sortable()
+    )
