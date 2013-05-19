@@ -8,6 +8,8 @@ using System.Web.Mvc;
 using Entity;
 using Sales;
 using Utl;
+using Telerik.Web.Mvc;
+using Model;
 
 namespace Sales.Controllers
 {
@@ -24,14 +26,14 @@ namespace Sales.Controllers
         {
             ViewBag.ProjectID = projectid;
 
-            return View(CH.GetAllData<TargetOfMonth>(m => m.ProjectID == projectid).OrderByDescending(o=>o.StartDate).ToList());
+            return View(CH.GetAllData<TargetOfMonth>(m => m.ProjectID == projectid).OrderByDescending(o => o.StartDate).ToList());
         }
 
         public ActionResult AddBreakdown(int? projectid, int? targetofmonthid)
         {
             ViewBag.ProjectID = projectid;
             ViewBag.TargetOfMonthID = targetofmonthid;
-            return View("Breakdown",CH.GetAllData<Member>(m => m.ProjectID == projectid));
+            return View("Breakdown", CH.GetAllData<Member>(m => m.ProjectID == projectid));
         }
 
         [HttpPost]
@@ -58,14 +60,14 @@ namespace Sales.Controllers
                         var dlvalue = dl[1];
 
                         CH.Create<TargetOfWeek>(new TargetOfWeek() { CheckIn = Decimal.Parse(ckvalue), Deal = Decimal.Parse(dlvalue), EndDate = enddate.Value, Member = name, StartDate = startdate.Value, ProjectID = projectid, TargetOfMonthID = TargetOfMonthid });
-                       
+
                     }
                 }
 
                 return RedirectToAction("management", "project", new { id = projectid, tabindex = 2 });
             }
 
-            return View("Breakdown", CH.GetAllData<Member>(m => m.ProjectID == projectid && m.IsActivated==true));
+            return View("Breakdown", CH.GetAllData<Member>(m => m.ProjectID == projectid && m.IsActivated == true));
         }
 
         public ActionResult EditBreakdown(int? projectid, int? targetofmonthid, string startdate)
@@ -93,8 +95,8 @@ namespace Sales.Controllers
 
             this.AddErrorStateIfStartDateAndEndDateEmpty(startdate, enddate);
             if (ModelState.IsValid)
-            this.AddErrorStateIfNotFromMondayToFriday(startdate, enddate);
-            
+                this.AddErrorStateIfNotFromMondayToFriday(startdate, enddate);
+
             if (ModelState.IsValid)
             {
                 if (checkin != null)
@@ -107,8 +109,8 @@ namespace Sales.Controllers
                         var dl = dealin[i].Split('|');
                         var dlvalue = dl[1];
                         var ts = CH.GetAllData<TargetOfWeek>(t => t.Member == name && t.ProjectID == projectid && t.TargetOfMonthID == TargetOfMonthid && startdate == t.StartDate);
-                      
-                        
+
+
                         var item = ts.FirstOrDefault();
                         if (item == null)
                         {
@@ -152,7 +154,7 @@ namespace Sales.Controllers
             if (ModelState.IsValid)
             {
                 CH.Create<TargetOfMonth>(item);
-                return RedirectToAction("Management", "Project", new { id = item.ProjectID,tabindex=2 });
+                return RedirectToAction("Management", "Project", new { id = item.ProjectID, tabindex = 2 });
             }
             ViewBag.ProjectID = item.ProjectID;
             return View(item);
@@ -187,6 +189,47 @@ namespace Sales.Controllers
             CH.Delete<TargetOfMonth>(id);
 
             return RedirectToAction("Management", "Project", new { id = pid, tabindex = 2 });
+        }
+
+
+        public ActionResult ConfirmList()
+        {
+            return View();
+        }
+
+        [GridAction]
+        public ActionResult _SelectIndex()
+        {
+            return View(new GridModel(getData()));
+        }
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        [GridAction]
+        public ActionResult _SaveAjaxEditing(int id)
+        {
+            var item = CH.GetDataById<TargetOfMonth>(id);
+            item.IsConfirm = true;
+            CH.Edit<TargetOfMonth>(item);
+
+            return View(new GridModel(getData()));
+        }
+
+        public List<AjaxTargetOfMonth> getData()
+        {
+            return (from db in CH.DB.TargetOfMonths
+                    orderby db.ID descending
+                    select new AjaxTargetOfMonth
+                    {
+                        ID = db.ID,
+                        IsConfirm = db.IsConfirm == true ? "是" : "否",
+                        ProjectID = db.ProjectID,
+                        ProjectName = db.Project.Name_CH,
+                        Deal = db.Deal,
+                        BaseDeal = db.BaseDeal,
+                        CheckIn = db.CheckIn,
+                        EndDate = db.EndDate,
+                        StartDate = db.StartDate
+                    }).ToList();
         }
     }
 }

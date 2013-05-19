@@ -8,7 +8,6 @@
 @{
     List<SelectListItem> convert = new List<SelectListItem>() { new SelectListItem() { Text = "是", Value = "true" }, new SelectListItem() { Text = "否", Value = "false" } };
 }
-}
 <fieldset>
     <legend>@SR.Form</legend>
     <div class="display-field">
@@ -41,7 +40,7 @@
         @Html.LabelFor(model => model.IsConfirm, "是否确认")
     </div>
     <div class="editor-field">
-        @Html.DropDownListFor(m => m.IsConfirm, convert, "请选择");
+        @Html.DropDownListFor(m => m.IsConfirm, convert, "请选择")
         @Html.ValidationMessageFor(model => model.IsConfirm)
     </div>
 </fieldset>

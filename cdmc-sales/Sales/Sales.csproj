@@ -753,6 +753,7 @@
     <Content Include="App_GlobalResources\GridLocalization.de-DE.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>GridLocalization.de-DE.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
   <ItemGroup>
@@ -777,6 +778,7 @@
     <Content Include="App_GlobalResources\GridLocalization.nl-NL.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>GridLocalization.nl-NL.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
   <ItemGroup>
@@ -819,6 +821,7 @@
     <Content Include="App_GlobalResources\GridLocalization.zh-CN.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>GridLocalization.zh-CN.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
   <ItemGroup>
@@ -1657,6 +1660,10 @@
     <Content Include="Views\DirectorReport\DealGroupByProject.cshtml" />
     <None Include="Views\SalesEx\EditCompany.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\SimulatorConfig.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\AjaxTargetOfMonthForMember.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\AjaxViewDeal.cshtml" />
+    <Content Include="Views\TargetOfMonth\ConfirmList.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\AjaxTargetOfMonth.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\TargetOfMonthForMember\Confirm.cshtml" />
