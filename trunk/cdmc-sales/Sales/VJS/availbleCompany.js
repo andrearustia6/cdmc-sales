@@ -67,6 +67,12 @@ var currentCompanyNameEN = undefined;
             telephone.addClass('fieldError');
             hasError = true;
         }
+
+        var fax = $('.dialogue-editcompany form #Fax');
+        if ((!fax.val().isEmpty()) && (!IsTelephone(fax.val()))) {
+            fax.addClass('fieldError');
+            hasError = true;
+        }
        
 //        if ($('.dialogue-editcompany form #Fax').val().isEmpty()) {
 //            $('.dialogue-editcompany form #Fax').addClass('fieldError');
@@ -170,6 +176,24 @@ var currentCompanyNameEN = undefined;
          var telephone = $('.dialogue-editlead form #Telephone');
          if (telephone.val().length != 0 && !IsTelephone(telephone.val())) {
              telephone.addClass('fieldError');
+             haserror = true;
+         }
+
+         var cellPhone = $('.dialogue-editlead form #CellPhone');
+         if (cellPhone.val().length != 0 && !IsTelephone(cellPhone.val())) {
+             cellPhone.addClass('fieldError');
+             haserror = true;
+         }
+
+         var personalPhone = $('.dialogue-editlead form #PersonalPhone ');
+         if (personalPhone.val().length != 0 && !IsTelephone(personalPhone.val())) {
+             personalPhone.addClass('fieldError');
+             haserror = true;
+         }
+
+         var personalCellPhone = $('.dialogue-editlead form #PersonalCellPhone ');
+         if (personalCellPhone.val().length != 0 && !IsTelephone(personalCellPhone.val())) {
+             personalCellPhone.addClass('fieldError');
              haserror = true;
          }
 
@@ -369,6 +393,24 @@ var currentCompanyNameEN = undefined;
             var telephone=$('.dialogue-addlead form #Telephone');
             if (telephone.val().length!=0 && !IsTelephone(telephone.val())) {
                 telephone.addClass('fieldError');
+                haserror = true;
+            }
+
+            var cellPhone = $('.dialogue-addlead form #CellPhone');
+            if (cellPhone.val().length != 0 && !IsTelephone(cellPhone.val())) {
+                cellPhone.addClass('fieldError');
+                haserror = true;
+            }
+
+            var personalPhone = $('.dialogue-addlead form #PersonalPhone ');
+            if (personalPhone.val().length != 0 && !IsTelephone(personalPhone.val())) {
+                personalPhone.addClass('fieldError');
+                haserror = true;
+            }
+
+            var personalCellPhone = $('.dialogue-addlead form #PersonalCellPhone ');
+            if (personalCellPhone.val().length != 0 && !IsTelephone(personalCellPhone.val())) {
+                personalCellPhone.addClass('fieldError');
                 haserror = true;
             }
 
@@ -760,6 +802,12 @@ var currentCompanyNameEN = undefined;
         var telephone=$('.dialogue-addcompany form #Phone');
         if (telephone.val().isEmpty() || !IsTelephone(telephone.val())) {
             telephone.addClass('fieldError');
+            hasError = true;
+        }
+
+        var fax = $('.dialogue-addcompany form #Fax');
+        if ((!fax.val().isEmpty()) && (!IsTelephone(fax.val()))) {
+            fax.addClass('fieldError');
             hasError = true;
         }
         //            if ($('.dialogue-addcompany form #Fax').val().isEmpty()) {
