@@ -16,13 +16,16 @@
       }
       else
       {
-        <legend>是否确定出单</legend>
+        <legend>是否确定出单11</legend>
         <div class="editor-label">
             @Html.LabelFor(model => model.CompanyName)
         </div>
         <div class="editor-field">
+        @{
+          var c = "s";
             <label>
                 @Model.CompanyName</label>
+      }
             @*@Html.TextBoxFor(model => model.CompanyName, new { @readOnly = "true", style = "width:300px" })*@
         </div>
         <div class="editor-label">

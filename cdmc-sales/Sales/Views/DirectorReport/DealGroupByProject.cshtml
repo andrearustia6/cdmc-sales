@@ -46,14 +46,9 @@
 }
 
 <div class="reportdiv" >
-@(Html.Telerik().Chart(Model._DealByProjectInMonth .OrderByDescending(o => o.IncomeAmount)).Name("projectlineinmonth").Series(series =>
-{
-   
-        series.Line(s => s.IncomeAmount).Name("单月入账").Labels(true);
-  
-    
-}
-).CategoryAxis(axis => axis.Categories(s => s.DurationCategory))
+@(Html.Telerik().Chart(Model._DealByProjectInMonth).Name("incomeinprojectmonth")
+        .ClientEvents(e => e.OnLoad("onIncomeinprojectmonthLoad"))
+.CategoryAxis(axis => axis.Categories(s => s.DurationCategory))
     .ValueAxis(axis => axis.Numeric())
     .Tooltip(tooltip => tooltip.Visible(true))
     .Legend(legend => legend.Position(ChartLegendPosition.Top).Visible(true)).HtmlAttributes(new { style="height:800px;"})
@@ -65,7 +60,31 @@
         $('#Year,#Month').change(function () {
             $('#form').submit();
         });
+
     });
+
+
+    function onIncomeinprojectmonthLoad(){
+
+        $.post('_GetIncomebyProjectInMonth', function (result) {
+            var $chart = $("#incomeinprojectmonth").data("tChart");
+
+            for (var i = 0; i < result.length; i++) {
+                thechart.options.series.push({
+                    name: result[i].ProjectName,
+                    //data: result[i].seriesValue.split(','),
+                    type: "line"
+                });
+
+            }
+            $chart.refresh();
+            $chart.rebind(data);
+
+        });
+
+  
+
+    }
 </script>
 <style>
     .reportdiv
