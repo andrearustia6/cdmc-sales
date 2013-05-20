@@ -31,6 +31,8 @@ namespace Sales.Model
         [Display(Name = "月")]
         public int? Month { get; set; }
 
+      
+
 
         [Display(Name = "所有入账总额")]
         public decimal? TotalIncomeAmount { get; set; }
@@ -43,6 +45,31 @@ namespace Sales.Model
 
         [Display(Name = "项目人数")]
         public int MemberCount { get; set; }
+
+        public string DurationCategory { get { return Year.ToString() + "年" + Month.ToString() + "月"; } }
+          [Display(Name = "人均入账")]
+        public decimal? Average { get { return Utl.Utl.GetAverage(IncomeAmount, MemberCount); } }
+    }
+    public class _DealByProjectData
+    {
+
+        public IQueryable<_DealByProject> _DealByProject { get; set; }
+
+        public IQueryable<_DealByProjectInMonth> _DealByProjectInMonth { get; set; }
+    }
+    public class _DealByProjectInMonthItem : _DealBase
+    {
+        [Display(Name = "项目名称")]
+        public string ProjectName { get; set; }
+
+        [Display(Name = "项目入账")]
+        public decimal? IncomeAmount { get; set; }
+    }
+
+    public class _DealByProjectInMonth : _DealBase
+    {
+        public IQueryable<_DealByProjectInMonthItem> Items { get; set; }
+        public string DurationCategory { get { return Year.ToString() + "年" + Month.ToString() + "月"; } }
     }
 
     public class _DealBySales : _DealBase

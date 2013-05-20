@@ -11,23 +11,23 @@ namespace BLL
 {
     public class CRM_Logical
     {
-        public static IQueryable<Deal> GetDeals(bool? acitivatedprojectonly=false, int? projectid=null,string? sales=null)
+        public static IQueryable<Deal> GetDeals(bool? acitivatedprojectonly=false, int? projectid=null,string sales=null)
         {
             IQueryable<Deal> deals;
             if (Utl.Utl.DebugModel() == false)
             {
                 var debugmembers = from m in CH.DB.Members.Where(w => w.Test == true) select m;
                 var names = debugmembers.Select(s => s.Name);
-                deals = from deal in CH.DB.Deals.Where(d => names.Any(a => a == d.Sales) == false && d.Abandoned == false && d.Income > 0) select deal;
+                deals = from deal in CH.DB.Deals.Where(d => names.Any(a => a == d.Sales) == false && d.Abandoned == false) select deal;
             }
             else
             {
                 deals = from deal in CH.DB.Deals.Where(d => d.Abandoned == false && d.Income > 0) select deal;
             }
 
-            if (acitivatedprojectonly==true)//只取激活的项目的deals
+            if (acitivatedprojectonly==true )//只取激活的项目的deals
             {
-                deals = deals.Where(w => w.Project.IsActived == true);
+                deals = deals.Where(w => w.Project.IsActived == true );
             }
 
             if (projectid !=null)//只取对应的项目的deals
@@ -35,9 +35,9 @@ namespace BLL
                 deals = deals.Where(w => w.ProjectID == projectid);
             }
 
-            if (sales != null)//只取对应的sales
+            if (!string.IsNullOrEmpty(sales) )//只取对应的sales
             {
-                deals = deals.Where(w => w.Sales == sales.Value);
+                deals = deals.Where(w => w.Sales == sales);
             }
             return deals;
 
