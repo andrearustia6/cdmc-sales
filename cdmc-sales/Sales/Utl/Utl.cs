@@ -610,6 +610,12 @@ namespace Utl
             return (bool)HttpContext.Current.Items["DebugModel"];
           
         }
+        public static decimal GetAverage(decimal? child, int father)
+        {
+            if (father == 0) return 100;
+            return Math.Round(((decimal)child / (decimal)father), 2);
+        }
+
         public static double GetPercent(double child, double father)
         {
             if(father==0) return 100;

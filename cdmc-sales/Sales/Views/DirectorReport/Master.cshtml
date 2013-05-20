@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "Master";
+ 
     Layout = "~/Views/shared/_Layout.cshtml";
 }
 
@@ -7,7 +7,7 @@
   <div style="width:82%; float:right; ">
         	@RenderBody()
         </div>
-		 <div style="width:15%; float:left; position:fixed; ">
+		 <div style="width:15%; float:left; position:fixed;  margin-left:35px; margin-top:200px; ">
          @(Html.Telerik().Menu().Name("Menudirector").HtmlAttributes(new { style = "width:150px;" })
          .Orientation(MenuOrientation.Vertical).Items(menu =>
      {
@@ -18,13 +18,13 @@
          });
          menu.Add().Text("通话情况").Items(item =>
          {
-             item.Add().Text("销售").Url("~/TotalApprove/index");
-             item.Add().Text("项目").Url("~/CategoryApprove/index");
+             item.Add().Text("销售");
+             item.Add().Text("项目");
          });
          menu.Add().Text("公司客户").Items(item =>
          {
-             item.Add().Text("公司").Url("~/DirectorTotal/index"); ;
-             item.Add().Text("客户").Url("~/directorEfficent/index");
+             item.Add().Text("公司");
+             item.Add().Text("客户");
          });
      }))
         </div>

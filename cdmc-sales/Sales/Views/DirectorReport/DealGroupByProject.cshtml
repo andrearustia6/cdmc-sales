@@ -1,33 +1,65 @@
 ﻿@{
-    ViewBag.Title = "DealGroupBySales";
+    ViewBag.Title = "项目入账情况统计";
     Layout = "~/Views/DirectorReport/Master.cshtml";
 }
 @using Sales.Model
-@model IQueryable<_DealByProject>
+@model _DealByProjectData
 <form id="form" > 
 @Html.Partial("yearandmonthselector")
  </form>
-@if (Model.Count()>0)
+@if (Model._DealByProject.Count()>0)
 {
-<div class="reportdiv" style=" ">
-@(Html.Telerik().Grid<_DealByProject>(Model.OrderByDescending(o => o.IncomeAmount)).Name("perproject")
+<div class="reportdiv">
+@(Html.Telerik().Grid<_DealByProject>(Model._DealByProject.OrderByDescending(o => o.IncomeAmount)).Name("perproject")
                 .Columns(c =>
                 {
                     //c.Bound(item => item.Year).Width(100);
                     //c.Bound(item => item.Month).Width(80);
-                    c.Bound(item => item.ProjectName).Width(200);
-                    c.Bound(item => item.IncomeAmount).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" }).Width(100);
-                    c.Bound(item => item.DealAmount).Width(100).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
-                    c.Bound(item => item.PercentString).Width(100).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
+                    c.Bound(item => item.ProjectName).Width(200).Title("项目名称");
+                    c.Bound(item => item.IncomeAmount).Title("单月入账").HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" }).Width(100);
+                    c.Bound(item => item.DealAmount).Title("单月出单").Width(100).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
+                    c.Bound(item => item.PercentString).Sortable(false).Width(100).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
                     c.Bound(item => item.TotalIncomeAmount).Width(100).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
                 })
                 .Resizable(resizing => resizing.Columns(true)).Sortable()
-                .Scrollable(scrolling => scrolling.Height(650))
+                .Scrollable(scrolling => scrolling.Height(450))
 
 )
 
 </div>
+    
+    
+<div class="reportdiv" >
+@(Html.Telerik().Chart(Model._DealByProject.OrderByDescending(o => o.IncomeAmount)).Name("projectbar").Series(series =>
+{
+    series.Bar(s => s.IncomeAmount).Name("单月入账").Labels(true);
+    series.Bar(s => s.Average).Name("单月人均入账").Labels(true);
+    series.Bar(s => s.TotalIncomeAmount).Name("入账总额").Labels(true);
 }
+).CategoryAxis(axis => axis.Categories(s => s.ProjectName))
+    .ValueAxis(axis => axis.Numeric())
+    .Tooltip(tooltip => tooltip.Visible(true))
+    .Legend(legend => legend.Position(ChartLegendPosition.Top).Visible(true)).HtmlAttributes(new { style="height:800px;"})
+)
+
+</div>
+}
+
+<div class="reportdiv" >
+@(Html.Telerik().Chart(Model._DealByProjectInMonth .OrderByDescending(o => o.IncomeAmount)).Name("projectlineinmonth").Series(series =>
+{
+   
+        series.Line(s => s.IncomeAmount).Name("单月入账").Labels(true);
+  
+    
+}
+).CategoryAxis(axis => axis.Categories(s => s.DurationCategory))
+    .ValueAxis(axis => axis.Numeric())
+    .Tooltip(tooltip => tooltip.Visible(true))
+    .Legend(legend => legend.Position(ChartLegendPosition.Top).Visible(true)).HtmlAttributes(new { style="height:800px;"})
+)
+
+</div>
 <script>
     $(document).ready(function () {
         $('#Year,#Month').change(function () {
