@@ -11,6 +11,28 @@ namespace BLL
 {
     public class CRM_Logical
     {
+        public static IQueryable<Deal> GetDeals(bool? acitivatedprojectonly=false)
+        {
+            IQueryable<Deal> deals;
+            if (Utl.Utl.DebugModel() == false)
+            {
+                var debugmembers = from m in CH.DB.Members.Where(w => w.Test == true) select m;
+                var names = debugmembers.Select(s => s.Name);
+                deals = from deal in CH.DB.Deals.Where(d => names.Any(a => a == d.Sales) == false && d.Abandoned == false && d.Income > 0) select deal;
+            }
+            else
+            {
+                deals = from deal in CH.DB.Deals.Where(d => d.Abandoned == false && d.Income > 0) select deal;
+            }
+
+            if (acitivatedprojectonly==true)//只取激活的项目的deals
+            {
+                deals = deals.Where(w => w.Project.IsActived == true);
+            }
+            return deals;
+
+        }
+
         #region Project Management
         public List<Project> GetProjectByCurrentRole()
         {
