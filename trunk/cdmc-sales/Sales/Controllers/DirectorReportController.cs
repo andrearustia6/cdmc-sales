@@ -7,13 +7,43 @@ using Utl;
 using Sales.Model;
 using Entity;
 using BLL;
+using System.Web.UI.WebControls;
 
 namespace Sales.Controllers
 {
     [DirectorRequired]
     public class DirectorReportController : Controller
     {
-        
+        public JsonResult _GetIncomebyProjectInMonth()
+        {
+             var totaldeals = CRM_Logical.GetDeals(true);
+            totaldeals = totaldeals.Where(w => w.Income > 0);
+
+              var dealprojectmonth = from d in totaldeals
+                                   group d by new { d.ActualPaymentDate.Value.Month, d.ActualPaymentDate.Value.Year,d.Project.Name_CH }
+                           into grp
+
+                           select new 
+                           {
+                               Year = grp.Key.Year,
+                               Month = grp.Key.Month,
+                               IncomeAmount = grp.Sum(c => c.Income),
+                               ProjectName = grp.Key.Name_CH,
+                               Category = grp.Key.Year.ToString()+"年"+grp.Key.Month.ToString()+"月",
+                           };
+            var ps = from p in CH.DB.Projects.Where(p=>p.IsActived==true) 
+                     select new {
+                         Name =p.Name_CH,
+                         Categories = string.Join(",", dealprojectmonth.Where(w=>w.ProjectName == p.Name_CH).Select(s=>s.Category) ),
+                         IncomeAmount = string.Join(",", dealprojectmonth.Where(w => w.ProjectName == p.Name_CH).Select(s => s.IncomeAmount)),
+                     };
+                   
+            //var data = from p in ps{}
+            //                       from p in ps 
+            //                        group d by new { d.ActualPaymentDate.Value.Month, d.ActualPaymentDate.Value.Year,d.Project.Name_CH }
+            return Json(ps);
+    
+        }
         public ActionResult DealGroupByProject(int? year, int? month)
         {
             _DealByProjectData data = new _DealByProjectData();
@@ -41,18 +71,8 @@ namespace Sales.Controllers
                            };
 
             data._DealByProject = dealbyproject;
-            var dealprojectmonth = from d in totaldeals
-                                   group d by new { d.ActualPaymentDate.Value.Month, d.ActualPaymentDate.Value.Year,d.Project.Name_CH }
-                           into grp
-
-                           select new _DealByProject
-                           {
-                               Year = grp.Key.Year,
-                               Month = grp.Key.Month,
-                               IncomeAmount = grp.Sum(c => c.Income),
-                               ProjectName = grp.Key.Name_CH
-                           };
-             data._DealByProjectInMonth = dealprojectmonth;
+            var l = new List<_DealByProjectInMonth>();
+            data._DealByProjectInMonth = l.AsQueryable();
             return View(data);
         }
 

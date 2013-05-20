@@ -57,18 +57,22 @@ namespace Sales.Model
 
         public IQueryable<_DealByProjectInMonth> _DealByProjectInMonth { get; set; }
     }
-    public class _DealByProjectInMonthItem : _DealBase
+
+
+    public class _DealByProjectInMonth 
     {
         [Display(Name = "项目名称")]
         public string ProjectName { get; set; }
 
         [Display(Name = "项目入账")]
         public decimal? IncomeAmount { get; set; }
-    }
 
-    public class _DealByProjectInMonth : _DealBase
-    {
-        public IQueryable<_DealByProjectInMonthItem> Items { get; set; }
+        [Display(Name = "年")]
+        public int? Year { get; set; }
+
+        [Display(Name = "月")]
+        public int? Month { get; set; }
+
         public string DurationCategory { get { return Year.ToString() + "年" + Month.ToString() + "月"; } }
     }
 

@@ -11,6 +11,8 @@ namespace BLL
 {
     public class CRM_Logical
     {
+       
+
         public static IQueryable<Deal> GetDeals(bool? acitivatedprojectonly=false, int? projectid=null,string sales=null)
         {
             IQueryable<Deal> deals;
