@@ -361,19 +361,9 @@
                                                                                                                     )
 }
 @helper RenderGrid(Company company, CompanyRelationship cr)
-    { 
-        
-           @( Html.Telerik().TabStrip().Name("comtab" + company.ID).SelectedIndex(0).Items(child =>
-                {
-
-                    child.Add().Text("Lead").Content(@<text>
-         @RenderLeads(CH.GetAllData<Lead>(l => l.CompanyID == cr.CompanyID), cr)
-        </text>);
-
-                    child.Add().Text("子公司").Content(@<text>@RenderSubCompanys(company, cr)
-         </text>);
-
-                })) }
+{   
+   @RenderLeads(company.Leads, cr)
+ }
 @helper RenderLeads(List<Lead> leads, CompanyRelationship cr)
     {
     @(Html.Telerik().Grid(leads).Name("Leads" + cr.ID)
@@ -391,20 +381,7 @@
                                                                                .Pageable(p => p.PageSize(20))
                                                                                .Sortable())
 }
-@helper RenderSubCompanys(Company company, CompanyRelationship cr)
-    {
-    @(Html.Telerik().Grid(CH.GetAllData<SubCompany>(s => s.CompanyID == company.ID)).Name("Leads" + company.ID)
-                            .Columns(c =>
-                            {
-                                c.Bound(o => o.Name);
-                                c.Bound(o => o.ID).Title("操作").Width(150).Template(@<span>
-                    <a href=@Url.Content("~/subcompany/delete/?id=" + item.ID + "&projectid=" + cr.ProjectID) >删除</a> 
-                   </span>);
-                            })
-                                               .Resizable(resizing => resizing.Columns(true))
-                                               .Pageable(p => p.PageSize(20))
-                                               .Sortable())
-} 
+
 @*@helper RenderLead(List<Lead> Leads, CompanyRelationship cr)
     { 
      @(Html.Telerik().Grid(Leads).Name("Leads" + cr.CompanyID)
@@ -424,7 +401,7 @@
     { 
         var tmid = tm.ID;
         var projectid = tm.ProjectID;
-        var tw = CH.GetAllData<TargetOfWeek>(t => t.ProjectID == projectid && t.TargetOfMonthID == tm.ID);
+        var tw =  CH.GetAllData<TargetOfWeek>(t => t.ProjectID == projectid && t.TargetOfMonthID == tm.ID);
         var datas = tw.OrderBy(i => i.StartDate).GroupBy(sd => sd.StartDate);
     @(Html.Telerik().TabStrip().Name("TabStrip" + tmid).SelectedIndex(0).Items(items =>
 {
