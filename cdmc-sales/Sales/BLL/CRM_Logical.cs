@@ -11,7 +11,7 @@ namespace BLL
 {
     public class CRM_Logical
     {
-        public static IQueryable<Deal> GetDeals(bool? acitivatedprojectonly=false)
+        public static IQueryable<Deal> GetDeals(bool? acitivatedprojectonly=false, int? projectid=null,string? sales=null)
         {
             IQueryable<Deal> deals;
             if (Utl.Utl.DebugModel() == false)
@@ -28,6 +28,16 @@ namespace BLL
             if (acitivatedprojectonly==true)//只取激活的项目的deals
             {
                 deals = deals.Where(w => w.Project.IsActived == true);
+            }
+
+            if (projectid !=null)//只取对应的项目的deals
+            {
+                deals = deals.Where(w => w.ProjectID == projectid);
+            }
+
+            if (sales != null)//只取对应的sales
+            {
+                deals = deals.Where(w => w.Sales == sales.Value);
             }
             return deals;
 
