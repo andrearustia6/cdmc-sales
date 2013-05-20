@@ -547,14 +547,7 @@ namespace Sales.Controllers
             }
             else
             {
-                if (Employee.CurrentRole.Level == 1000)
-                {
-                    project = CH.DB.Projects.FirstOrDefault();
-                }
-                else
-                {
-                    project = CH.DB.Projects.Where(w => w.Members.Select(s => s.Name).Contains(Employee.CurrentUserName) == true).FirstOrDefault();
-                }
+                project = CRM_Logical.GetUserInvolveProject().FirstOrDefault();               
             }
             if (memberFilterForCompany.HasValue)
             {
