@@ -261,16 +261,10 @@ namespace Utl
         public static IEnumerable<SelectListItem> ProjectSelectList(string currentUserName, int? selectVal)
         {
             List<SelectListItem> selectList = new List<SelectListItem>();
-           
-            IEnumerable<Project> projects = null;
-            if (Employee.CurrentRole.Level == 1000)
-            {
-                projects = CH.DB.Projects;
-            }
-            else
-            {
-                projects = CH.DB.Projects.Where(w => w.Members.Select(s => s.Name).Contains(Employee.CurrentUserName) == true);
-            }
+
+            var user = Employee.CurrentUserName;
+            var projects = CRM_Logical.GetUserInvolveProject();
+
             foreach (Project project in projects)
             {
                 SelectListItem selectListItem = new SelectListItem() { Text = project.ProjectCode, Value = project.ID.ToString() };
