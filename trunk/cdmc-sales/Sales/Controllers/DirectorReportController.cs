@@ -6,35 +6,20 @@ using System.Web.Mvc;
 using Utl;
 using Sales.Model;
 using Entity;
+using BLL;
 
 namespace Sales.Controllers
 {
     [DirectorRequired]
     public class DirectorReportController : Controller
     {
-        IQueryable<Deal> GetDeals()
-        {
-            IQueryable<Deal> deals;
-            if (Utl.Utl.DebugModel() == false)
-            {
-                var debugmembers = from m in CH.DB.Members.Where(w => w.Test == true) select m;
-                var names = debugmembers.Select(s => s.Name);
-                deals = from deal in CH.DB.Deals.Where(d => names.Any(a => a == d.Sales) == false && d.Abandoned == false && d.Income > 0) select deal;
-            }
-            else
-            {
-                deals = from deal in CH.DB.Deals.Where(d => d.Abandoned == false && d.Income > 0) select deal;
-            }
-
-            return deals;
-
-        }
+        
         public ActionResult DealGroupByProject(int? year, int? month)
         {
             if (year == null) year = DateTime.Now.Year;
             if (month == null) month = DateTime.Now.Month;
 
-            var totaldeals = GetDeals();
+            var totaldeals = CRM_Logical.GetDeals();
             var deals = totaldeals.Where(d => d.ActualPaymentDate.Value.Year == year && d.ActualPaymentDate.Value.Month == month);
 
             
@@ -60,7 +45,7 @@ namespace Sales.Controllers
         {
             if(year==null)year = DateTime.Now.Year;
             if(month==null)month = DateTime.Now.Month;
-            var totaldeals = GetDeals();
+            var totaldeals = CRM_Logical.GetDeals();
              var deals = totaldeals.Where(d =>d.ActualPaymentDate.Value.Year == year && d.ActualPaymentDate.Value.Month== month);
              var data = from d in deals
                          group d by new { d.Sales,d.Project.Name_CH}
