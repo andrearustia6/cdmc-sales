@@ -9,7 +9,9 @@
             @Html.LabelFor(model => model.Income)
         </div>
         <div class="editor-field">
-            @Html.Telerik().CurrencyTextBoxFor(model => model.Income)
+            <label>
+                @Model.Income</label>
+            @*@Html.Telerik().CurrencyTextBoxFor(model => model.Income)*@
         </div>
       }
       else
@@ -19,19 +21,25 @@
             @Html.LabelFor(model => model.CompanyName)
         </div>
         <div class="editor-field">
-            @Html.TextBoxFor(model => model.CompanyName, new { @readOnly = "true", style = "width:300px" })
+            <label>
+                @Model.CompanyName</label>
+            @*@Html.TextBoxFor(model => model.CompanyName, new { @readOnly = "true", style = "width:300px" })*@
         </div>
         <div class="editor-label">
             @Html.LabelFor(model => model.DealCode)
         </div>
         <div class="editor-field">
-            @Html.TextBoxFor(model => model.DealCode, new { @readOnly = "true", style = "width:300px" })
+            <label>
+                @Model.DealCode</label>
+            @* @Html.TextBoxFor(model => model.DealCode, new { @readOnly = "true", style = "width:300px" })*@
         </div>
         <div class="editor-label">
             @Html.LabelFor(model => model.PackageName)
         </div>
         <div class="editor-field">
-            @Html.TextBoxFor(model => model.PackageName, new { @readOnly = "true", style = "width:300px" })
+            <label>
+                @Model.PackageName</label>
+            @*@Html.TextBoxFor(model => model.PackageName, new { @readOnly = "true", style = "width:300px" })*@
         </div>
       }
     }
