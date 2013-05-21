@@ -217,7 +217,7 @@ namespace Sales.Controllers
         public List<AjaxTargetOfMonth> getData()
         {
             var data = from db in CH.DB.TargetOfMonths
-                       where db.IsConfirm != true
+                       where db.IsConfirm == null || db.IsConfirm == false
                        select new AjaxTargetOfMonth
                        {
                            ID = db.ID,
