@@ -1,6 +1,6 @@
 ﻿@using Entity
 @using Utl
-@Html.Partial("contenttitle", "项目月目标确认")
+@Html.Partial("contenttitle", "未确认列表")
 @(Html.Telerik().Grid<Model.AjaxTargetOfMonth>().Name("TargetOfMonth")
                 .DataKeys(keys =>
                 {
@@ -25,7 +25,7 @@
                     {
                         commands.Edit().ButtonType(GridButtonType.Image);
 
-                    }).Title("确定");
+                    }).Title("确认");
                 })
                .Editable(editing => editing.Mode(GridEditMode.PopUp))
         .Pageable(p => p.PageSize(20))
