@@ -226,12 +226,12 @@ namespace Sales.Controllers
                              TicketDescription = d.TicketDescription,
                              IsConfirm = (d.IsConfirm == true ? "是" : "否")
                          };
-                return ds.OrderBy(o => o.SignDate).ToList();
+                return ds.OrderByDescending(o => o.SignDate).ToList();
             }
             else//会务确定出单
             {
                 var ds = from d in CH.DB.Deals
-                         where d.Abandoned == false && d.IsConfirm != true
+                         where d.Abandoned == false && (d.IsConfirm == null || d.IsConfirm == false)
                          select new AjaxViewDeal
                          {
                              CompanyNameEN = d.CompanyRelationship.Company.Name_EN,
@@ -257,7 +257,7 @@ namespace Sales.Controllers
                              TicketDescription = d.TicketDescription,
                              IsConfirm = (d.IsConfirm == true ? "是" : "否")
                          };
-                return ds.OrderBy(o => o.SignDate).ToList();
+                return ds.OrderByDescending(o => o.SignDate).ToList();
             }
         }
 
