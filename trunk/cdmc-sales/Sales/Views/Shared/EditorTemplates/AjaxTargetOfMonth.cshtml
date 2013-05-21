@@ -2,24 +2,24 @@
 @using Entity
 @model Model.AjaxTargetOfMonth
 <fieldset>
-    <legend>是否确定以下项目月目标</legend>
+    <legend>请确认以下项目月目标</legend>
     <div class="editor-label">
         @Html.LabelFor(model => model.ProjectName)
     </div>
     <div class="editor-field">
-        @Html.TextBoxFor(model => model.ProjectName, new { @readOnly = "true" })
+        @Html.TextBoxFor(model => model.ProjectName, new { @readOnly = "true", style = "border-style: none" })
     </div>
     <div class="editor-label">
         @Html.LabelFor(model => model.StartDate)
     </div>
     <div class="editor-field">
-        @Html.TextBoxFor(model => model.StartDate, new { @readOnly = "true" })
+        @Html.TextBoxFor(model => model.StartDate, new { @readOnly = "true", style = "border-style: none" })
     </div>
     <div class="editor-label">
         @Html.LabelFor(model => model.EndDate)
     </div>
     <div class="editor-field">
-        @Html.TextBoxFor(model => model.EndDate, new { @readOnly = "true" })
+        @Html.TextBoxFor(model => model.EndDate, new { @readOnly = "true", style = "border-style: none" })
     </div>
     <div class="editor-label">
         @Html.LabelFor(model => model.BaseDeal)
