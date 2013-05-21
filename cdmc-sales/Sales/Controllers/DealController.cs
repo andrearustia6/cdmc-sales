@@ -199,7 +199,7 @@ namespace Sales.Controllers
         {
             if (Employee.CurrentRole.Level == 4)//财务填写income
             {
-                var ds = from d in CH.DB.Deals
+                var ds = from d in CRM_Logical.GetDeals()
                          where d.Abandoned == false && d.IsConfirm == true
                          select new AjaxViewDeal
                          {
@@ -230,7 +230,7 @@ namespace Sales.Controllers
             }
             else//会务确定出单
             {
-                var ds = from d in CH.DB.Deals
+                var ds = from d in CRM_Logical.GetDeals()
                          where d.Abandoned == false && (d.IsConfirm == null || d.IsConfirm == false)
                          select new AjaxViewDeal
                          {

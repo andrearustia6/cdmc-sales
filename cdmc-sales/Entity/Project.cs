@@ -299,7 +299,7 @@ namespace Entity
         [Display(Name = "入账目标"), Required, DisplayFormat(DataFormatString = "{0:c}")]
         public decimal CheckIn { get; set; }
 
-        [Display(Name = "是否确定")]
+        [Display(Name = "是否确认")]
         public bool? IsConfirm { get; set; }
     }
 
@@ -333,7 +333,7 @@ namespace Entity
         [Display(Name = "对应销售"), Required]
         public int? MemberID { get; set; }
 
-        [Display(Name = "是否确定")]
+        [Display(Name = "是否确认")]
         public bool? IsConfirm { get; set; }
 
 
