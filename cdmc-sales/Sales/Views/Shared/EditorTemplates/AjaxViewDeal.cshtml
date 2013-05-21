@@ -4,45 +4,88 @@
 <fieldset>
     @{if (Employee.CurrentRole.Level == 4)
       {
-        <legend>请填写到账金额</legend>
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Income)
-        </div>
-        <div class="editor-field">
-            <label>
-                @Model.Income</label>
-            @*@Html.Telerik().CurrencyTextBoxFor(model => model.Income)*@
-        </div>
-      }
-      else
-      {
-        <legend>是否确定出单11</legend>
+        <legend>请填写实际付款日期和实际入账金额</legend>
         <div class="editor-label">
             @Html.LabelFor(model => model.CompanyName)
         </div>
         <div class="editor-field">
-        @{
-          var c = "s";
-            <label>
-                @Model.CompanyName</label>
-      }
-            @*@Html.TextBoxFor(model => model.CompanyName, new { @readOnly = "true", style = "width:300px" })*@
+            @Html.TextBoxFor(model => model.CompanyName, new { @readOnly = "true", style = "width:300px;border-style: none" })
         </div>
         <div class="editor-label">
             @Html.LabelFor(model => model.DealCode)
         </div>
         <div class="editor-field">
-            <label>
-                @Model.DealCode</label>
-            @* @Html.TextBoxFor(model => model.DealCode, new { @readOnly = "true", style = "width:300px" })*@
+            @Html.TextBoxFor(model => model.DealCode, new { @readOnly = "true", style = "width:300px;border-style: none" })
         </div>
         <div class="editor-label">
             @Html.LabelFor(model => model.PackageName)
         </div>
         <div class="editor-field">
-            <label>
-                @Model.PackageName</label>
-            @*@Html.TextBoxFor(model => model.PackageName, new { @readOnly = "true", style = "width:300px" })*@
+            @Html.TextBoxFor(model => model.PackageName, new { @readOnly = "true", style = "width:300px;border-style: none" })
+        </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Payment)
+        </div>
+        <div class="editor-field">
+            @Html.Telerik().CurrencyTextBoxFor(model => model.Payment).Enable(false)
+        </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ActualPaymentDate)
+        </div>
+        <div class="editor-field">
+            @Html.Telerik().DatePickerFor(model => model.ActualPaymentDate)
+        </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Income)
+        </div>
+        <div class="editor-field">
+            @Html.Telerik().CurrencyTextBoxFor(model => model.Income)
+        </div>
+      }
+      else
+      {
+        <legend>请确认出单</legend>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.CompanyName)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.CompanyName, new { @readOnly = "true", style = "width:300px;border-style: none" })
+        </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.DealCode)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.DealCode, new { @readOnly = "true", style = "width:300px;border-style: none" })
+        </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.PackageName)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.PackageName, new { @readOnly = "true", style = "width:300px;border-style: none" })
+        </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Payment)
+        </div>
+        <div class="editor-field">
+            @Html.Telerik().CurrencyTextBoxFor(model => model.Payment).Enable(false)
+        </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Income)
+        </div>
+        <div class="editor-field">
+            @Html.Telerik().CurrencyTextBoxFor(model => model.Income).Enable(false)
+        </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ExpectedPaymentDate)
+        </div>
+        <div class="editor-field">
+            @Html.Telerik().DatePickerFor(model => model.ExpectedPaymentDate).Enable(false)
+        </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ActualPaymentDate)
+        </div>
+        <div class="editor-field">
+            @Html.Telerik().DatePickerFor(model => model.ActualPaymentDate).Enable(false)
         </div>
       }
     }
