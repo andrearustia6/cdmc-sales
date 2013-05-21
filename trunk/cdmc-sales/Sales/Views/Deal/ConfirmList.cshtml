@@ -13,26 +13,38 @@
     })
 .Columns(c =>
 {
-    c.Bound(item => item.CompanyName).Width(200);
-    c.Bound(item => item.DealCode).Width(100);
-    c.Bound(item => item.PackageName).Width(200);
-    c.Bound(item => item.Payment).Width(100).Format("{0:c}");
-    c.Bound(item => item.Income).Width(90).Format("{0:c}");
-    c.Bound(item => item.IsClosed).Width(70);
-    c.Bound(item => item.Committer).Width(100);
-    c.Bound(item => item.CommitterContect).Width(100);
-    c.Bound(item => item.Abandoned).Width(70);
-    c.Bound(item => item.TicketDescription).Width(200);
-    c.Bound(item => item.SignDate).Format("{0:d}").Width(90);
-    c.Bound(item => item.ExpectedPaymentDate).Format("{0:d}").Width(90);
-    c.Bound(item => item.ActualPaymentDate).Format("{0:d}").Width(100);
-    c.Bound(item => item.IsConfirm).Width(100);
+    c.Bound(item => item.CompanyName);//客户公司
+    c.Bound(item => item.DealCode);//出单号
+    c.Bound(item => item.PackageName);//Package中文名
+    c.Bound(item => item.Payment).Format("{0:c}");//应付款
+    c.Bound(item => item.Income).Format("{0:c}");//实际入账
+    //c.Bound(item => item.IsClosed).Width(70);
+    //c.Bound(item => item.Committer).Width(100);
+    //c.Bound(item => item.CommitterContect).Width(100);
+    //c.Bound(item => item.Abandoned).Width(70);
+    c.Bound(item => item.ExpectedPaymentDate).Format("{0:d}");
+    c.Bound(item => item.ActualPaymentDate).Format("{0:d}");
+    c.Bound(item => item.TicketDescription);
+    c.Bound(item => item.SignDate).Format("{0:d}");
+    //c.Bound(item => item.IsConfirm).Width(100);
 
-    c.Command(commands =>
+    if (Utl.Employee.CurrentRole.Level == 4)//财务
     {
-        commands.Edit().ButtonType(GridButtonType.Image);
+        c.Command(commands =>
+        {
+            commands.Edit().ButtonType(GridButtonType.Image);
 
-    }).Width(100).Title("确定");
+        }).Title("出单到账操作");
+    }
+    else//会务
+    {
+        c.Command(commands =>
+        {
+            commands.Edit().ButtonType(GridButtonType.Image);
+
+        }).Title("确定");
+    }
+
 })
 .Editable(editing => editing.Mode(GridEditMode.PopUp))
 .Resizable(resizing => resizing.Columns(true)).Filterable().Sortable().Groupable()
