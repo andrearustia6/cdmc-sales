@@ -2,32 +2,32 @@
 @using Entity
 @model Model.AjaxTargetOfMonthForMember
 <fieldset>
-    <legend>是否确定以下月目标</legend>
+    <legend>请确认以下月目标</legend>
     <div class="editor-label">
         @Html.LabelFor(model => model.MemberName)
     </div>
     <div class="editor-field">
-        @Html.TextBoxFor(model => model.MemberName, new { @readOnly = "true" })
-    </div>
-    <div class="editor-label">
-        @Html.LabelFor(model => model.StartDate)
-    </div>
-    <div class="editor-field">
-        @Html.TextBoxFor(model => model.StartDate, new { @readOnly = "true" })
-    </div>
-    <div class="editor-label">
-        @Html.LabelFor(model => model.EndDate)
-    </div>
-    <div class="editor-field">
-        @Html.TextBoxFor(model => model.EndDate, new { @readOnly = "true" })
+        @Html.TextBoxFor(model => model.MemberName, new { @readOnly = "true", style = "border-style: none" })
     </div>
     <div class="editor-label">
         @Html.LabelFor(model => model.SalesBriefName)
     </div>
     <div class="editor-field">
-        @Html.TextBoxFor(m => m.SalesBriefName, new { @readOnly = "true" })
+        @Html.TextBoxFor(m => m.SalesBriefName, new { @readOnly = "true", style = "border-style: none" })
     </div>
     <div class="editor-label">
+        <div class="editor-label">
+            @Html.LabelFor(model => model.StartDate)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.StartDate, new { @readOnly = "true", style = "border-style: none" })
+        </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.EndDate)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.EndDate, new { @readOnly = "true", style = "border-style: none" })
+        </div>
         @Html.LabelFor(model => model.BaseDeal)
     </div>
     <div class="editor-field">
