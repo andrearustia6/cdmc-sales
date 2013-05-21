@@ -183,6 +183,7 @@ namespace Sales.Controllers
                 TryUpdateModel<AjaxViewDeal>(newData);
                 var item = CH.GetDataById<Deal>(id);
                 item.Income = newData.Income;
+                item.ActualPaymentDate = newData.ActualPaymentDate;
                 CH.Edit<Deal>(item);
             }
             else
@@ -196,10 +197,10 @@ namespace Sales.Controllers
 
         private List<AjaxViewDeal> getData()
         {
-            if (Employee.CurrentRole.Level == 4)
+            if (Employee.CurrentRole.Level == 4)//财务填写income
             {
                 var ds = from d in CH.DB.Deals
-                         where d.Abandoned == false && d.IsConfirm == true
+                         where d.Abandoned == false && d.IsConfirm != true
                          select new AjaxViewDeal
                          {
                              CompanyNameEN = d.CompanyRelationship.Company.Name_EN,
@@ -227,12 +228,10 @@ namespace Sales.Controllers
                          };
                 return ds.OrderBy(o => o.SignDate).ToList();
             }
-            else
+            else//会务确定出单
             {
-
-                
                 var ds = from d in CH.DB.Deals
-                         where d.Abandoned == false
+                         where d.Abandoned == false && d.Income > 0 && d.IsConfirm != true
                          select new AjaxViewDeal
                          {
                              CompanyNameEN = d.CompanyRelationship.Company.Name_EN,
