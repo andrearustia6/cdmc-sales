@@ -200,7 +200,7 @@ namespace Sales.Controllers
             if (Employee.CurrentRole.Level == 4)//财务填写income
             {
                 var ds = from d in CH.DB.Deals
-                         where d.Abandoned == false && d.IsConfirm != true
+                         where d.Abandoned == false && d.IsConfirm == true
                          select new AjaxViewDeal
                          {
                              CompanyNameEN = d.CompanyRelationship.Company.Name_EN,
@@ -231,7 +231,7 @@ namespace Sales.Controllers
             else//会务确定出单
             {
                 var ds = from d in CH.DB.Deals
-                         where d.Abandoned == false && d.Income > 0 && d.IsConfirm != true
+                         where d.Abandoned == false && d.IsConfirm != true
                          select new AjaxViewDeal
                          {
                              CompanyNameEN = d.CompanyRelationship.Company.Name_EN,
