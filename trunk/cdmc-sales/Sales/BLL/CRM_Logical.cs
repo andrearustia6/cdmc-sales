@@ -11,9 +11,9 @@ namespace BLL
 {
     public class CRM_Logical
     {
-       
 
-        public static IQueryable<Deal> GetDeals(bool? acitivatedprojectonly=false, int? projectid=null,string sales=null)
+
+        public static IQueryable<Deal> GetDeals(bool? acitivatedprojectonly = false, int? projectid = null, string sales = null)
         {
             IQueryable<Deal> deals;
             if (Utl.Utl.DebugModel() == false)
@@ -24,20 +24,20 @@ namespace BLL
             }
             else
             {
-                deals = from deal in CH.DB.Deals.Where(d => d.Abandoned == false && d.Income > 0) select deal;
+                deals = from deal in CH.DB.Deals.Where(d => d.Abandoned == false) select deal;
             }
 
-            if (acitivatedprojectonly==true )//只取激活的项目的deals
+            if (acitivatedprojectonly == true)//只取激活的项目的deals
             {
-                deals = deals.Where(w => w.Project.IsActived == true );
+                deals = deals.Where(w => w.Project.IsActived == true);
             }
 
-            if (projectid !=null)//只取对应的项目的deals
+            if (projectid != null)//只取对应的项目的deals
             {
                 deals = deals.Where(w => w.ProjectID == projectid);
             }
 
-            if (!string.IsNullOrEmpty(sales) )//只取对应的sales
+            if (!string.IsNullOrEmpty(sales))//只取对应的sales
             {
                 deals = deals.Where(w => w.Sales == sales);
             }
@@ -67,15 +67,15 @@ namespace BLL
                 else
                 {
                     projects = CH.GetAllData<Project>();
-                    projects = projects.FindAll(p=>p.Members.Any(m=>Employee.IsEqualToCurrentUserName(m.Name)));
+                    projects = projects.FindAll(p => p.Members.Any(m => Employee.IsEqualToCurrentUserName(m.Name)));
                 }
             }
             return projects;
         }
 
-        public static TargetOfWeek GetTargetOfWeek(int projectid,int targetofmonth,string member,DateTime startdate,DateTime enddate)
+        public static TargetOfWeek GetTargetOfWeek(int projectid, int targetofmonth, string member, DateTime startdate, DateTime enddate)
         {
-            var data = CH.GetAllData<TargetOfWeek>(tw => tw.ProjectID == projectid && tw.TargetOfMonthID == targetofmonth&&tw.Member==member);
+            var data = CH.GetAllData<TargetOfWeek>(tw => tw.ProjectID == projectid && tw.TargetOfMonthID == targetofmonth && tw.Member == member);
             var result = data.FirstOrDefault(t => t.StartDate == startdate && t.EndDate == enddate);
             return result;
         }
@@ -92,10 +92,10 @@ namespace BLL
             return new List<string>() { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", 
                 "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z" };
         }
-       
+
         public static bool IsCompanySelectedForProject(Company c, int projectid)
         {
-            var p = CH.GetAllData<Project>(i=>i.ID == projectid).FirstOrDefault();
+            var p = CH.GetAllData<Project>(i => i.ID == projectid).FirstOrDefault();
 
             if (p != null && p.CompanyRelationships.FirstOrDefault(child => child.CompanyID == c.ID) != null)
             {
@@ -120,9 +120,9 @@ namespace BLL
             return false;
         }
 
-        #endregion 
+        #endregion
 
-        public static IQueryable<CompanyRelationship> GetUserCallingCRM(int? projectid=null)
+        public static IQueryable<CompanyRelationship> GetUserCallingCRM(int? projectid = null)
         {
             var user = Employee.CurrentUserName;
             var data = CH.DB.CompanyRelationships.Where(c => c.Members.Any(s => s.Name == user));
@@ -145,14 +145,14 @@ namespace BLL
                 enddate = new DateTime(9999, 1, 1);
             }
 
-            var calls = from l in CH.DB.LeadCalls where  l.LeadCallType.Code >= 40 select l;
+            var calls = from l in CH.DB.LeadCalls where l.LeadCallType.Code >= 40 select l;
             if (projectids.Count > 0)
             {
-                calls = calls.Where(l=>projectids.Contains(l.ProjectID.Value));
+                calls = calls.Where(l => projectids.Contains(l.ProjectID.Value));
             }
-            var list = calls.OrderBy(o=>o.CallDate).ToList();
-            list = list.Distinct(new LeadCallLeadDistinct()).Where(w=>w.CallDate>= startdate && w.CallDate<enddate).ToList();
-      
+            var list = calls.OrderBy(o => o.CallDate).ToList();
+            list = list.Distinct(new LeadCallLeadDistinct()).Where(w => w.CallDate >= startdate && w.CallDate < enddate).ToList();
+
             return list;
         }
 
@@ -163,14 +163,14 @@ namespace BLL
             var list = ps.ToList();
 
 
-             var plist = list.FindAll(f => IsContainLoginUser(f.Name)).Select(s=>s.Project).ToList();
+            var plist = list.FindAll(f => IsContainLoginUser(f.Name)).Select(s => s.Project).ToList();
 
-             
-               var  plistorigin = GetUserInvolveProject();
 
-               plistorigin.AddRange(plist);
-               plistorigin = plistorigin.Distinct().ToList();
-               return plistorigin;
+            var plistorigin = GetUserInvolveProject();
+
+            plistorigin.AddRange(plist);
+            plistorigin = plistorigin.Distinct().ToList();
+            return plistorigin;
         }
 
         static bool IsContainLoginUser(string namelist)
@@ -227,7 +227,7 @@ namespace BLL
             var now = DateTime.Now;
             var projects = CH.GetAllData<Project>();
 
-            var data = projects.FindAll(p=>(p.Members.Any(m=>m.Name == name) || p.TeamLeader == name) &&  p.IsActived==true );
+            var data = projects.FindAll(p => (p.Members.Any(m => m.Name == name) || p.TeamLeader == name) && p.IsActived == true);
             return data;
         }
 
@@ -237,7 +237,7 @@ namespace BLL
             var now = DateTime.Now;
             var projects = CH.GetAllData<Project>(p => p.Manager == name);
 
-            var data = projects.FindAll(p => p.IsActived == true );
+            var data = projects.FindAll(p => p.IsActived == true);
             return data;
         }
 
@@ -247,7 +247,7 @@ namespace BLL
             var now = DateTime.Now;
             var projects = CH.GetAllData<Project>();
 
-            var data = projects.FindAll(p =>  p.IsActived == true );
+            var data = projects.FindAll(p => p.IsActived == true);
             return data;
         }
 
@@ -256,7 +256,7 @@ namespace BLL
             var name = Employee.CurrentUserName;
             var now = DateTime.Now;
             var projects = CH.GetAllData<Project>(p => p.Product == name);
-            var data = projects.FindAll(p => p.IsActived == true );
+            var data = projects.FindAll(p => p.IsActived == true);
             return data;
         }
 
@@ -266,8 +266,8 @@ namespace BLL
             var now = DateTime.Now;
             var projects = CH.GetAllData<Project>();
 
-            var data = projects.FindAll(p => p.Market == name && p.IsActived == true );
+            var data = projects.FindAll(p => p.Market == name && p.IsActived == true);
             return data;
-        }    
+        }
     }
 }
