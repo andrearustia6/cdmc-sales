@@ -1,5 +1,5 @@
 ﻿@using Entity
-@Html.Partial("contenttitle", "月目标确认")
+@Html.Partial("contenttitle", "未确认列表")
 @(Html.Telerik().Grid<Model.AjaxTargetOfMonthForMember>().Name("Grid")
 .DataKeys(keys => { keys.Add(p => p.ID); })
 .DataBinding(dataBinding =>
@@ -23,7 +23,7 @@
     {
         commands.Edit().ButtonType(GridButtonType.Image);
 
-    }).Width(100).Title("确定");
+    }).Width(100).Title("确认");
 })
    .Editable(editing => editing.Mode(GridEditMode.PopUp))
         .Pageable(p => p.PageSize(20))
