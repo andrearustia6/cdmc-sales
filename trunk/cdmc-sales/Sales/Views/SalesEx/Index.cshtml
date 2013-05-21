@@ -6,8 +6,18 @@
 @using Utl
 @model AjaxCrmTypedList
 @{
-    IEnumerable<SelectListItem> projectList=SelectHelper.ProjectSelectList(EditRight.DealsEdit.ToString(), Model.CurrentProjectId);
-    Model.CurrentProjectId = int.Parse(projectList.First().Value);
+    //IEnumerable<SelectListItem> projectList=SelectHelper.ProjectSelectList(EditRight.DealsEdit.ToString(), Model.CurrentProjectId);
+    var ps =  BLL.CRM_Logical.GetUserInvolveProject();
+    List<SelectListItem> projectList = new List<SelectListItem>();
+    foreach(var p in ps)
+    {
+        projectList.Add(new SelectListItem() { Value = p.ID.ToString(), Text = p.ProjectCode });
+    }
+   // IEnumerable<SelectListItem> projectList = BLL.CRM_Logical.GetUserInvolveProject().AsEnumerable();
+    if (projectList.Count>0)
+    {
+        Model.CurrentProjectId = int.Parse(projectList.First().Value);
+    }
  }
 <center>
 <div class="selections" style="width:95%">
