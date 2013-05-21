@@ -215,20 +215,21 @@ namespace Sales.Controllers
 
         public List<AjaxTargetOfMonthForMember> getData()
         {
-            return (from db in CH.DB.TargetOfMonthForMembers
-                    orderby db.ID descending
-                    select new AjaxTargetOfMonthForMember
-                    {
-                        ID = db.ID,
-                        IsConfirm = db.IsConfirm == true ? "是" : "否",
-                        SalesBriefName = db.Project.SalesBriefName,
-                        Deal = db.Deal,
-                        BaseDeal = db.BaseDeal,
-                        CheckIn = db.CheckIn,
-                        EndDate = db.EndDate,
-                        MemberName = db.Member.Name,
-                        StartDate = db.StartDate
-                    }).ToList();
+            var data = from db in CH.DB.TargetOfMonthForMembers
+                       where db.IsConfirm != true
+                       select new AjaxTargetOfMonthForMember
+                       {
+                           ID = db.ID,
+                           IsConfirm = db.IsConfirm == true ? "是" : "否",
+                           SalesBriefName = db.Project.SalesBriefName,
+                           Deal = db.Deal,
+                           BaseDeal = db.BaseDeal,
+                           CheckIn = db.CheckIn,
+                           EndDate = db.EndDate,
+                           MemberName = db.Member.Name,
+                           StartDate = db.StartDate
+                       };
+            return data.OrderByDescending(s => s.EndDate).ToList();
         }
     }
 }
