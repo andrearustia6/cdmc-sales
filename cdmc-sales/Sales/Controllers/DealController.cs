@@ -190,6 +190,7 @@ namespace Sales.Controllers
             {
                 var item = CH.GetDataById<Deal>(id);
                 item.IsConfirm = true;
+                item.Confirmor = Employee.CurrentUserName;
                 CH.Edit<Deal>(item);
             }
             return View(new GridModel(getData()));
@@ -200,7 +201,7 @@ namespace Sales.Controllers
             if (Employee.CurrentRole.Level == 4)//财务填写income
             {
                 var ds = from d in CRM_Logical.GetDeals()
-                         where d.Abandoned == false && d.IsConfirm == true && (d.Income == 0 || d.ActualPaymentDate == null)
+                         where d.IsConfirm == true && (d.Income == 0 || d.ActualPaymentDate == null)
                          select new AjaxViewDeal
                          {
                              CompanyNameEN = d.CompanyRelationship.Company.Name_EN,
@@ -231,7 +232,7 @@ namespace Sales.Controllers
             else//会务确定出单
             {
                 var ds = from d in CRM_Logical.GetDeals()
-                         where d.Abandoned == false && (d.IsConfirm == null || d.IsConfirm == false)
+                         where d.IsConfirm == null || d.IsConfirm == false
                          select new AjaxViewDeal
                          {
                              CompanyNameEN = d.CompanyRelationship.Company.Name_EN,

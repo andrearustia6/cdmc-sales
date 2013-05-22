@@ -301,6 +301,9 @@ namespace Entity
 
         [Display(Name = "是否确认")]
         public bool? IsConfirm { get; set; }
+
+        [Display(Name = "确认人")]
+        public string Confirmor { get; set; }
     }
 
     /// <summary>
@@ -496,6 +499,9 @@ namespace Entity
 
         [Display(Name = "是否确认")]
         public bool? IsConfirm { get; set; }
+
+        [Display(Name = "确认人")]
+        public string Confirmor { get; set; }
     }
 
 

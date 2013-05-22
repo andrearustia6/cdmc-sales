@@ -208,9 +208,9 @@ namespace Sales.Controllers
         public ActionResult _SaveAjaxEditing(int id)
         {
             var item = CH.GetDataById<TargetOfMonth>(id);
+            item.Confirmor = Employee.CurrentUserName;
             item.IsConfirm = true;
             CH.Edit<TargetOfMonth>(item);
-
             return View(new GridModel(getData()));
         }
 
