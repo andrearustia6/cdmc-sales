@@ -148,6 +148,7 @@ namespace Model
                                                            {
                                                                LeadNameCH = l.Name_CH,
                                                                LeadNameEN = l.Name_EN,
+                                                               LeadTitle = l.Title,
                                                                CRMID = c.ID,
                                                                LeadID = l.ID,
                                                                AjaxCalls = (from call in c.LeadCalls.Where(w => w.LeadID == l.ID)
@@ -198,6 +199,7 @@ namespace Model
                                         {
                                             LeadNameCH = l.Name_CH,
                                             LeadNameEN = l.Name_EN,
+                                            LeadTitle = l.Title,
                                             CRMID = c.ID,
                                             LeadID = l.ID,
                                             AjaxCalls = (from call in c.LeadCalls.Where(w => w.LeadID == l.ID)

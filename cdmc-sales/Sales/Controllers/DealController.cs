@@ -200,7 +200,7 @@ namespace Sales.Controllers
             if (Employee.CurrentRole.Level == 4)//财务填写income
             {
                 var ds = from d in CRM_Logical.GetDeals()
-                         where d.Abandoned == false && d.IsConfirm == true
+                         where d.Abandoned == false && d.IsConfirm == true && (d.Income == 0 || d.ActualPaymentDate == null)
                          select new AjaxViewDeal
                          {
                              CompanyNameEN = d.CompanyRelationship.Company.Name_EN,

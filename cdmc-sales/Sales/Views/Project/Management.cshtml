@@ -334,7 +334,7 @@
 }
 @helper Targets(Project p)
     { 
-    @(Html.Telerik().Grid<TargetOfMonth>(p.TargetOfMonths).Name("TargetOfMonths").ToolBar(commands =>
+    @(Html.Telerik().Grid<TargetOfMonth>(p.TargetOfMonths.OrderByDescending(o=>o.StartDate)).Name("TargetOfMonths").ToolBar(commands =>
                                     commands.Custom().Text("创建月目标").Action("Create", "TargetOfMonth", new { projectid = Model.ID }))
                 .DataKeys(keys =>
                 {
