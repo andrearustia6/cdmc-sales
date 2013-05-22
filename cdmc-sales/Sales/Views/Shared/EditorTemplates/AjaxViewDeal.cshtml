@@ -5,87 +5,93 @@
     @{if (Employee.CurrentRole.Level == 4)
       {
         <legend>请填写实际付款日期和实际入账金额</legend>
-        <div class="editor-label">
-            @Html.LabelFor(model => model.CompanyName)
-        </div>
-        <div class="editor-field">
-            @Html.TextBoxFor(model => model.CompanyName, new { @readOnly = "true", style = "width:300px;border-style: none" })
-        </div>
-        <div class="editor-label">
-            @Html.LabelFor(model => model.DealCode)
-        </div>
-        <div class="editor-field">
-            @Html.TextBoxFor(model => model.DealCode, new { @readOnly = "true", style = "width:300px;border-style: none" })
-        </div>
-        <div class="editor-label">
-            @Html.LabelFor(model => model.PackageName)
-        </div>
-        <div class="editor-field">
-            @Html.TextBoxFor(model => model.PackageName, new { @readOnly = "true", style = "width:300px;border-style: none" })
-        </div>
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Payment)
-        </div>
-        <div class="editor-field">
-            @Html.Telerik().CurrencyTextBoxFor(model => model.Payment).Enable(false)
-        </div>
-        <div class="editor-label">
-            @Html.LabelFor(model => model.ActualPaymentDate)
-        </div>
-        <div class="editor-field">
-            @Html.Telerik().DatePickerFor(model => model.ActualPaymentDate)
-        </div>
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Income)
-        </div>
-        <div class="editor-field">
-            @Html.Telerik().CurrencyTextBoxFor(model => model.Income)
+        <div style="padding: 5px 20px 10px 20px; margin: 5px">
+            <div class="editor-label">
+                @Html.LabelFor(model => model.CompanyName)
+            </div>
+            <div class="editor-field">
+                @Html.TextBoxFor(model => model.CompanyName, new { @readOnly = "true", style = "width:300px;border-style: none" })
+            </div>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.DealCode)
+            </div>
+            <div class="editor-field">
+                @Html.TextBoxFor(model => model.DealCode, new { @readOnly = "true", style = "width:300px;border-style: none" })
+            </div>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.PackageName)
+            </div>
+            <div class="editor-field">
+                @Html.TextBoxFor(model => model.PackageName, new { @readOnly = "true", style = "width:300px;border-style: none" })
+            </div>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.Payment)
+            </div>
+            <div class="editor-field">
+                @Html.Telerik().CurrencyTextBoxFor(model => model.Payment).Enable(false)
+            </div>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.ActualPaymentDate)
+            </div>
+            <div class="editor-field">
+                @Html.Telerik().DatePickerFor(model => model.ActualPaymentDate)
+            </div>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.Income)
+            </div>
+            <div class="editor-field">
+                @Html.Telerik().CurrencyTextBoxFor(model => model.Income)
+            </div>
         </div>
       }
       else
-      {
+      { 
         <legend>请确认出单</legend>
-        <div class="editor-label">
-            @Html.LabelFor(model => model.CompanyName)
-        </div>
-        <div class="editor-field">
-            @Html.TextBoxFor(model => model.CompanyName, new { @readOnly = "true", style = "width:300px;border-style: none" })
-        </div>
-        <div class="editor-label">
-            @Html.LabelFor(model => model.DealCode)
-        </div>
-        <div class="editor-field">
-            @Html.TextBoxFor(model => model.DealCode, new { @readOnly = "true", style = "width:300px;border-style: none" })
-        </div>
-        <div class="editor-label">
-            @Html.LabelFor(model => model.PackageName)
-        </div>
-        <div class="editor-field">
-            @Html.TextBoxFor(model => model.PackageName, new { @readOnly = "true", style = "width:300px;border-style: none" })
-        </div>
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Payment)
-        </div>
-        <div class="editor-field">
-            @Html.Telerik().CurrencyTextBoxFor(model => model.Payment).Enable(false)
-        </div>
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Income)
-        </div>
-        <div class="editor-field">
-            @Html.Telerik().CurrencyTextBoxFor(model => model.Income).Enable(false)
-        </div>
-        <div class="editor-label">
-            @Html.LabelFor(model => model.ExpectedPaymentDate)
-        </div>
-        <div class="editor-field">
-            @Html.Telerik().DatePickerFor(model => model.ExpectedPaymentDate).Enable(false)
-        </div>
-        <div class="editor-label">
-            @Html.LabelFor(model => model.ActualPaymentDate)
-        </div>
-        <div class="editor-field">
-            @Html.Telerik().DatePickerFor(model => model.ActualPaymentDate).Enable(false)
+        <div style="padding: 5px 20px 10px 20px; margin: 5px">
+            <div class="editor-label">
+                @Html.LabelFor(model => model.CompanyName)
+            </div>
+            <div class="editor-field">
+                @Html.TextBoxFor(model => model.CompanyName, new { @readOnly = "true", style = "width:300px;border-style: none" })
+            </div>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.DealCode)
+            </div>
+            <div class="editor-field">
+                @Html.TextBoxFor(model => model.DealCode, new { @readOnly = "true", style = "width:300px;border-style: none" })
+            </div>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.PackageName)
+            </div>
+            <div class="editor-field">
+                @Html.TextBoxFor(model => model.PackageName, new { @readOnly = "true", style = "width:300px;border-style: none" })
+            </div>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.Payment)
+            </div>
+            <div class="editor-field">
+                @Html.Telerik().CurrencyTextBoxFor(model => model.Payment).Enable(false)
+            </div>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.Income)
+            </div>
+            <div class="editor-field">
+                @Html.Telerik().CurrencyTextBoxFor(model => model.Income).Enable(false)
+            </div>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.ExpectedPaymentDate)
+            </div>
+            <div class="editor-field">
+                @*@Html.Telerik().DatePickerFor(model => model.ExpectedPaymentDate).Enable(false)*@
+                @Html.TextBoxFor(model => model.ExpectedPaymentDate, new { @readOnly = "true", style = "width:300px;border-style: none" })
+            </div>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.ActualPaymentDate)
+            </div>
+            <div class="editor-field">
+                @Html.TextBoxFor(model => model.ActualPaymentDate, new { @readOnly = "true", style = "width:300px;border-style: none" })
+                @*@Html.Telerik().DatePickerFor(model => model.ActualPaymentDate).Enable(false)*@
+            </div>
         </div>
       }
     }

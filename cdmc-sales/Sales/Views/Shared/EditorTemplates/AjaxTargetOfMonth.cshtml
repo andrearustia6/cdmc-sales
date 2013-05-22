@@ -3,40 +3,42 @@
 @model Model.AjaxTargetOfMonth
 <fieldset>
     <legend>请确认以下项目月目标</legend>
-    <div class="editor-label">
-        @Html.LabelFor(model => model.ProjectName)
-    </div>
-    <div class="editor-field">
-        @Html.TextBoxFor(model => model.ProjectName, new { @readOnly = "true", style = "border-style: none" })
-    </div>
-    <div class="editor-label">
-        @Html.LabelFor(model => model.StartDate)
-    </div>
-    <div class="editor-field">
-        @Html.TextBoxFor(model => model.StartDate, new { @readOnly = "true", style = "border-style: none" })
-    </div>
-    <div class="editor-label">
-        @Html.LabelFor(model => model.EndDate)
-    </div>
-    <div class="editor-field">
-        @Html.TextBoxFor(model => model.EndDate, new { @readOnly = "true", style = "border-style: none" })
-    </div>
-    <div class="editor-label">
-        @Html.LabelFor(model => model.BaseDeal)
-    </div>
-    <div class="editor-field">
-        @Html.Telerik().CurrencyTextBoxFor(model => model.BaseDeal).Enable(false)
-    </div>
-    <div class="editor-label">
-        @Html.LabelFor(model => model.Deal)
-    </div>
-    <div class="editor-field">
-        @Html.Telerik().CurrencyTextBoxFor(model => model.Deal).Enable(false)
-    </div>
-    <div class="editor-label">
-        @Html.LabelFor(model => model.CheckIn)
-    </div>
-    <div class="editor-field">
-        @Html.Telerik().CurrencyTextBoxFor(m => m.CheckIn).Enable(false)
+    <div style="padding: 5px 20px 10px 20px; margin: 5px">
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ProjectName)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.ProjectName, new { @readOnly = "true", style = "border-style: none" })
+        </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.StartDate)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.StartDate, new { @readOnly = "true", style = "border-style: none" })
+        </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.EndDate)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.EndDate, new { @readOnly = "true", style = "border-style: none" })
+        </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.BaseDeal)
+        </div>
+        <div class="editor-field">
+            @Html.Telerik().CurrencyTextBoxFor(model => model.BaseDeal).Enable(false)
+        </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Deal)
+        </div>
+        <div class="editor-field">
+            @Html.Telerik().CurrencyTextBoxFor(model => model.Deal).Enable(false)
+        </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.CheckIn)
+        </div>
+        <div class="editor-field">
+            @Html.Telerik().CurrencyTextBoxFor(m => m.CheckIn).Enable(false)
+        </div>
     </div>
 </fieldset>
