@@ -295,12 +295,25 @@ public sealed class PoliticsInterfaceRequired : RoleRequired
     }
 }
 
+/// <summary>
+/// 6
+/// </summary>
+public sealed class ImportingInterfaceRequired : RoleRequired
+{
+    public const int LVL = 6;
+    public override int Level
+    {
+        get { return LVL; }
+    }
+}
+
 public class RoleLevel
 {
     public static int Director = 1000;
     public static int Manager = 500;
     public static int Leader = 100;
     public static int Sales = 10;
+    public static int ImportingInterfaceRequired = 6;
     public static int ProductInterface = 5;
     public static int FinancialInterface = 4;
     public static int ConferenceInterface = 3;

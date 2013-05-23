@@ -51,6 +51,7 @@ namespace Entity
         public const int LVL_Manager = 500;
         public const int LVL_TeamLeader = 100;
         public const int LVL_Sales = 10;
+        public const int LVL_ImportingInterface = 6;
         public const int LVL_ProductInterface = 5;
         public const int LVL_FinancialInterface = 4;
         public const int LVL_ConferenceInterface = 3;
