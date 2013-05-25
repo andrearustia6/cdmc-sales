@@ -14,18 +14,19 @@
 .Columns(c =>
 {
     c.Bound(item => item.CompanyName);//客户公司
+    c.Bound(item => item.ProjectCode);//项目编号
     c.Bound(item => item.DealCode);//出单号
     c.Bound(item => item.PackageName);//Package中文名
+    c.Bound(item => item.Committer);//客户签单人
+    c.Bound(item => item.TicketDescription);//权益描述
+    c.Bound(item => item.SignDate).Format("{0:d}");//签约日期
+    c.Bound(item => item.ExpectedPaymentDate).Format("{0:d}");//合约付款日期
     c.Bound(item => item.Payment).Format("{0:c}");//应付款
+    c.Bound(item => item.ActualPaymentDate).Format("{0:d}");//实际付款日期
     c.Bound(item => item.Income).Format("{0:c}");//实际入账
     //c.Bound(item => item.IsClosed).Width(70);
-    //c.Bound(item => item.Committer).Width(100);
     //c.Bound(item => item.CommitterContect).Width(100);
     //c.Bound(item => item.Abandoned).Width(70);
-    c.Bound(item => item.ExpectedPaymentDate).Format("{0:d}");
-    c.Bound(item => item.ActualPaymentDate).Format("{0:d}");
-    c.Bound(item => item.TicketDescription);
-    c.Bound(item => item.SignDate).Format("{0:d}");
     //c.Bound(item => item.IsConfirm).Width(100);
 
     if (Utl.Employee.CurrentRole.Level == 4)//财务
