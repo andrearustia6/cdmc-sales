@@ -7,85 +7,74 @@
 @model AjaxCrmTypedList
 @{
     //IEnumerable<SelectListItem> projectList=SelectHelper.ProjectSelectList(EditRight.DealsEdit.ToString(), Model.CurrentProjectId);
-    var ps =  BLL.CRM_Logical.GetUserInvolveProject();
+    var ps = BLL.CRM_Logical.GetUserInvolveProject();
     List<SelectListItem> projectList = new List<SelectListItem>();
-    foreach(var p in ps)
+    foreach (var p in ps)
     {
         projectList.Add(new SelectListItem() { Value = p.ID.ToString(), Text = p.ProjectCode });
     }
-   // IEnumerable<SelectListItem> projectList = BLL.CRM_Logical.GetUserInvolveProject().AsEnumerable();
-    if (projectList.Count>0)
+    // IEnumerable<SelectListItem> projectList = BLL.CRM_Logical.GetUserInvolveProject().AsEnumerable();
+    if (projectList.Count > 0)
     {
         Model.CurrentProjectId = int.Parse(projectList.First().Value);
     }
- }
+}
 <center>
-<div class="selections" style="width:95%">
-<form>
-<center>
-    <table >
-        <tr>
-            <td>
-                <span>项目选择:@Html.DropDownListFor(model => model.CurrentProjectId, projectList)</span>
-          
-             <td>
-            <span>最近通话: @Html.DropDownList("callprogress", SelectHelper.CallConditionSelectList(), "不指定")</span>
-        </td>
-            <td>
-                <span>通话状态: @Html.DropDownList("leadprogress", SelectHelper.LeadConditionSelectList(), "不指定")</span>
-            </td>
-             
-           @*  <td>
+    <div class="selections" style="width: 95%">
+        <form>
+        <center>
+            <table>
+                <tr>
+                    <td>
+                        <span>项目选择:@Html.DropDownListFor(model => model.CurrentProjectId, projectList)</span>
+                        <td>
+                            <span>最近通话: @Html.DropDownList("callprogress", SelectHelper.CallConditionSelectList(), "不指定")</span>
+                        </td>
+                        <td>
+                            <span>通话状态: @Html.DropDownList("leadprogress", SelectHelper.LeadConditionSelectList(), "不指定")</span>
+                        </td>
+                        @*  <td>
                 <span>分配时间: @Html.DropDownList("companyassigndate", SelectHelper.DurationSelectList(), "不指定")</span>
             </td>*@
-             <td>
-                <span>成熟程度: @Html.DropDownList("companyprogress", SelectHelper.CrmProgessSelectList(), "不指定")</span>
-            </td>
-            <td>
-                <span>出单状态: @Html.DropDownList("dealprogress", SelectHelper.DealConditionSelectList(), "不指定")</span>
-            </td>
-             <td>
-              <span>细分行业: @Html.DropDownList("f-category", SelectHelper.CategoresSelectList(Model.CurrentProjectId), "不指定")</span>
-            </td>
-             <td>
-            <span>是否展开:<select  style = "width:200px;" id="unfoldCompany"><option value=''>不指定</option><option value='true'>展开公司/lead</option><option value='false'>展开公司</option></select> </span>
-        </td>
-        </tr>
-        <tr>
-        <td  colspan="7">   <span>寻找匹配的名称,邮件,电话: @Html.TextBox("f-fuzzy", "", new { style="width:260px;line-height:22px"})
-
-
-
-    <input id="search" style="border: none;  width: 67px; height: 21px; background-image: url('../images/chazhao.jpg');" type="button" />
-   <input type="button" style="border: none;  width: 67px; height: 21px; background-image: url('../images/chongzhi.jpg');" onclick="resetquery()"  />
-   <input type="button"  style="border: none;  width: 67px; height: 21px; background-image: url('../images/tianjia_4.jpg');" onclick="GetAddCompany()" />
-
-   </span>
-      
-     
-        
- 
-     
- <span>最后通话状态:</span>
-  <span style="color:red">NotCall</span>
-  <span style="color:#0000C6">Call-Backed</span>
-  <span style="color:#000000">Blowed</span>
-  <span style="color:#336666">Pitched</span>
-  <span style="color:#009393">Closed</span>
-  <span style="color:#9F35FF">Waiting for Approval</span>
-  <span style="color:#FF00CC">Qualified Decision</span></td>
-        </tr>
-    </table>
-  
-   </center>
-   </form>
-</div>
+                        <td>
+                            <span>成熟程度: @Html.DropDownList("companyprogress", SelectHelper.CrmProgessSelectList(), "不指定")</span>
+                        </td>
+                        <td>
+                            <span>出单状态: @Html.DropDownList("dealprogress", SelectHelper.DealConditionSelectList(), "不指定")</span>
+                        </td>
+                        <td>
+                            <span>细分行业: @Html.DropDownList("f-category", SelectHelper.CategoresSelectList(Model.CurrentProjectId), "不指定")</span>
+                        </td>
+                        <td>
+                            <span>是否展开:<select style="width: 200px;" id="unfoldCompany"><option value=''>不指定</option>
+                                <option value='true'>展开公司/lead</option>
+                                <option value='false'>展开公司</option>
+                            </select>
+                            </span>
+                        </td>
+                </tr>
+                <tr>
+                    <td colspan="7">
+                        <span>寻找匹配的名称,邮件,电话: @Html.TextBox("f-fuzzy", "", new { style = "width:260px;line-height:22px" })
+                            <input id="search" style="border: none; width: 67px; height: 21px; background-image: url('../images/chazhao.jpg');"
+                                type="button" />
+                            <input type="button" style="border: none; width: 67px; height: 21px; background-image: url('../images/chongzhi.jpg');"
+                                onclick="resetquery()" />
+                            <input type="button" style="border: none; width: 67px; height: 21px; background-image: url('../images/tianjia_4.jpg');"
+                                onclick="GetAddCompany()" />
+                        </span><span>最后通话状态:</span> <span style="color: red">NotCall</span> <span style="color: #0000C6">
+                            Call-Backed</span> <span style="color: #000000">Blowed</span> <span style="color: #336666">
+                                Pitched</span> <span style="color: #009393">Closed</span> <span style="color: #9F35FF">
+                                    Waiting for Approval</span> <span style="color: #FF00CC">Qualified Decision</span>
+                    </td>
+                </tr>
+            </table>
+        </center>
+        </form>
+    </div>
 </center>
-
-
-<div style="clear: both; ">
+<div style="clear: both;">
 </div>
- 
 @(Html.Telerik().Splitter().Name("sp1").HtmlAttributes(new { style = "height: 800px;overflow:auto;" })
               .Orientation(SplitterOrientation.Horizontal).Panes(panes =>
               {
@@ -125,7 +114,7 @@
 }
 @helper GetCompanyDetails()
     {
-    <div id="crmdetailscontainer" style="overflow:scroll; height:790px;">
+    <div id="crmdetailscontainer" style="overflow: scroll; height: 790px;">
         @if (Model.AllCRMs.FirstOrDefault() != null)
         {
             @Html.Partial("salesexitem", Model.AllCRMs.FirstOrDefault())
@@ -161,7 +150,7 @@
     <li class="blowed"><span class="icon drive"></span>Blowed，放回公海 </li>
 </ul>
 @(Html.Telerik().Window()
-    .Name("AddCompany")   
+    .Name("AddCompany")
     .Content(@<text><div class="dialogue-addcompany">
         <div class="companyAdd-wrapper">
         </div>
@@ -209,8 +198,12 @@
         font-size: 12px;
         color: Green;
     }
-
+    
     .selections span
     {
+    }
+    .fieldError
+    {
+        border: 1px solid red !important;
     }
 </style>
