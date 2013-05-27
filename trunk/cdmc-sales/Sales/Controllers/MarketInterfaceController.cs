@@ -22,7 +22,7 @@ namespace Sales.Controllers
         public ViewResult MarketIndex(int? projectid)
         {
 
-            var pj =  CH.GetDataById<Project>(projectid,"CompanyRElationships");
+            var pj =  CH.GetDataById<Project>(projectid);
             if (pj == null)
             {
                 pj = CH.GetAllData<Project>().FirstOrDefault();
@@ -43,7 +43,7 @@ namespace Sales.Controllers
 
         public ActionResult EmailExportCsv(int? projectid)
         {
-            var pj = CH.GetDataById<Project>(projectid, "CompanyRelationships");
+            var pj = CH.GetDataById<Project>(projectid);
             if (pj == null)
             {
                 return RedirectToAction("MarketIndex", new { projectid = projectid });

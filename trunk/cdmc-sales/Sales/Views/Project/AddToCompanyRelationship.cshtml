@@ -33,7 +33,7 @@
         </div>
         <div class="editor-field">
          @{
-            Project p = CH.GetDataById<Project>(ViewBag.ProjectID,"Categorys");
+            Project p = CH.GetDataById<Project>(ViewBag.ProjectID);
             if (p.Categorys != null)
             { 
                   <ul>

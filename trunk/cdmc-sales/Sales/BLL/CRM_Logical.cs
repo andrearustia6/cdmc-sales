@@ -11,7 +11,67 @@ namespace BLL
 {
     public class CRM_Logical
     {
+        public static class CRM
+        {
+            //导入公司
+            public static void ImportCompany(int[] sourceprojectids, int targetprojectid, string user)
+            {
+                //导入的目标
+                var p = CH.GetDataById<Project>(targetprojectid);
+                user = "系统导入:" + user;
+                //取得要导入的公司
+                var comapnytoexport = CH.GetAllData<CompanyRelationship>(c => sourceprojectids.Contains(c.ID)).Select(s => s.Company);
+                var crms = from c in comapnytoexport
+                           select new CompanyRelationship()
+                           {
+                               CompanyID = c.ID,
+                               Company = c,
+                               ProjectID = p.ID,
+                               Project = p,
+                               Creator = user,
+                               CreatedDate = DateTime.Now
+                           };
+               // Company.IsCompanyExist();
 
+                //公司名在这个项目中是否存在
+                var existscompanynames = from c in p.CompanyRelationships.Select(s => s.Company)
+                                         select new { namech = c.Name_CH, nameen = c.Name_EN, id = c.ID };
+
+               crms = crms.Where(c=> (!string.IsNullOrEmpty(c.Company.Name_CH) && existscompanynames.Any(a=>a.namech== c.Company.Name_CH)==false)
+                   && (!string.IsNullOrEmpty(c.Company.Name_EN) && existscompanynames.Any(a => a.nameen == c.Company.Name_EN) == false));
+                p.CompanyRelationships.AddRange(crms);
+
+                CH.Edit<Project>(p);
+                //CH.GetAllData<>
+            }
+ 
+        }
+
+        public  class Company
+        {
+            //public static bool IsCompanyExist(string namech, string nameen, int? projectid = null, int? comid = null)
+            //{
+            //    IQueryable<Company> companys;
+            //    if (projectid != null)
+            //    {
+            //        companys = CH.DB.CompanyRelationships.Select(s => s.Company);
+            //    }
+            //    else
+            //    {
+            //        companys = CH.DB.Companys;
+            //    }
+            //    companys = companys.Where(w => w.Name_EN == nameen || w.Name_CH == namech);
+            //    if (comid != null)
+            //    {
+
+            //    }
+
+
+            //}
+        }
+
+         //公司是否存在
+     
 
         public static IQueryable<Deal> GetDeals(bool? acitivatedprojectonly = false, int? projectid = null, string sales = null)
         {

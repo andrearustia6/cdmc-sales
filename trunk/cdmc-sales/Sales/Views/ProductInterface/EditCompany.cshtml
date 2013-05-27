@@ -17,10 +17,10 @@
 <legend>Catagory</legend>
  <div class="editor-field">
         @{
-        Project p = CH.GetDataById<Project>((int)ViewBag.ProjectID, "Categorys");
+        Project p = CH.GetDataById<Project>((int)ViewBag.ProjectID);
         if (p.Categorys != null)
         {
-            var cr = CH.GetDataById<CompanyRelationship>((int)ViewBag.CompanyRelationshipID, "Categorys");
+            var cr = CH.GetDataById<CompanyRelationship>((int)ViewBag.CompanyRelationshipID);
             <ul>
                 @foreach (var c in p.Categorys)
                 {

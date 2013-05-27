@@ -12,6 +12,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Entity", "Entity\Entity.csproj", "{ED3E7DDB-7DD6-4D97-990E-F791DD070FED}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{1FDE2E89-9C52-42A6-BABF-957CA905C55D}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Sales.vsmdi
@@ -29,6 +31,10 @@ Global
 		{ED3E7DDB-7DD6-4D97-990E-F791DD070FED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ED3E7DDB-7DD6-4D97-990E-F791DD070FED}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ED3E7DDB-7DD6-4D97-990E-F791DD070FED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1FDE2E89-9C52-42A6-BABF-957CA905C55D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1FDE2E89-9C52-42A6-BABF-957CA905C55D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1FDE2E89-9C52-42A6-BABF-957CA905C55D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1FDE2E89-9C52-42A6-BABF-957CA905C55D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
