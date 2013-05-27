@@ -41,7 +41,7 @@ namespace Sales.Controllers
             {
 
                 item.Member = Employee.CurrentUserName;
-                var p = CH.GetDataById<Project>(item.ProjectID,"Members");
+                var p = CH.GetDataById<Project>(item.ProjectID);
                 item = item.SetFlowNumber(p);
                 var m = p.GetMemberInProjectByName(item.Member);
                 item.SalesTypeID = m.SalesTypeID;

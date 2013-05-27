@@ -24,7 +24,7 @@
         List<CompanyRelationship> data;
         var lvl = Employee.CurrentRole.Level;
         int? projectid = ViewBag.ProjectID as int?;
-        var project = CH.GetDataById<Project>(projectid, "CompanyRelationships");
+        var project = CH.GetDataById<Project>(projectid);
         if (lvl<=100 && lvl>=10)
         {
             data = project.CompanyRelationships.FindAll(c => c.WhoCallTheCompanyMemberName().Split('|').Any(s => s == Employee.CurrentUserName));

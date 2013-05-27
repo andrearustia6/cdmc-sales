@@ -133,7 +133,7 @@ namespace System.Web.Mvc
                 name = Employee.CurrentUserName;
             }
 
-            var p = CH.GetDataById<Project>(projectid, "Members");
+            var p = CH.GetDataById<Project>(projectid);
 
             if (p.Members.Any(m=>m.Name==name))
             {

@@ -244,7 +244,7 @@ namespace Utl
         public static List<MembershipUser> GetAvailbleSales(int? projectid, params string[] ms)
         {
             var list = GetEmplyeeByLVL(SalesRequired.LVL, LeaderRequired.LVL);
-            var p = CH.GetDataById<Project>(projectid, "Members");
+            var p = CH.GetDataById<Project>(projectid);
             list = list.FindAll(l => p.Members.Exists(m => m.Name == l.UserName) == false);
 
             if (ms != null)

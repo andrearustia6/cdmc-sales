@@ -79,7 +79,8 @@ namespace Utl
         public static T GetDataById<T>(int? id)
             where T : class
         {
-            return GetAllRowData<T>().Find(id);
+            return CH.DB.Set<T>().Find(id);
+            //return GetAllRowData<T>().Find(id);
         }
 
         public static T GetDataById<T>(int? id, params string[] property)

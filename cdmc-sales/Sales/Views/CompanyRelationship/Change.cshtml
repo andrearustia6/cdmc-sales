@@ -73,7 +73,7 @@
     <legend>Catagory</legend>
       <div class="editor-field">
         @{
-            Project p = CH.GetDataById<Project>((int)ViewBag.ProjectID, "Categorys");
+            Project p = CH.GetDataById<Project>((int)ViewBag.ProjectID);
             if (p.Categorys != null)
             { 
             <ul>
