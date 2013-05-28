@@ -45,9 +45,10 @@
 
 .company-category
 {
-    width: 100px;
+  
     display: inline-block;
     text-align: right;
+     margin-right:10px;
 }
 
 .btn-queding

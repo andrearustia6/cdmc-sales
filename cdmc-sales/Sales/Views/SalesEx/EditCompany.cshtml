@@ -116,16 +116,18 @@
             <legend>Categories <span id="categoriesError">必须选择一项</span></legend>
             @foreach (Category category in CH.GetAllData<Category>(c => c.ProjectID == Model.ProjectId))
             { 
-                <label class="company-category">@category.Name
-                </label>
-                if (Model.Categories.Contains(category.ID))
+                  if (Model.Categories.Contains(category.ID))
                 {
                 <input  name="Categories" type="checkbox" value="@category.ID" checked="checked" />
                 }
-                else
-                { 
+                  else
+                  { 
                 <input  name="Categories" type="checkbox" value="@category.ID"/>
-                }
+                  }
+                  
+                <label class="company-category">@category.Name
+                </label>
+              
             }
         </fieldset>
     </fieldset>
