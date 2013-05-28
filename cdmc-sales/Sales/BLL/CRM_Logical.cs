@@ -20,7 +20,7 @@ namespace BLL
                 var p = CH.GetDataById<Project>(targetprojectid);
                 user = "系统导入:" + user;
                 //取得要导入的公司
-                var comapnytoexport = CH.GetAllData<CompanyRelationship>(c => sourceprojectids.Contains(c.ID)).Select(s => s.Company);
+                var comapnytoexport = CH.GetAllData<CompanyRelationship>(c =>c.ProjectID!=null && sourceprojectids.Contains(c.ProjectID.Value)).Select(s => s.Company);
                 var crms = from c in comapnytoexport
                            select new CompanyRelationship()
                            {
@@ -37,11 +37,13 @@ namespace BLL
                 var existscompanynames = from c in p.CompanyRelationships.Select(s => s.Company)
                                          select new { namech = c.Name_CH, nameen = c.Name_EN, id = c.ID };
 
-               crms = crms.Where(c=> (!string.IsNullOrEmpty(c.Company.Name_CH) && existscompanynames.Any(a=>a.namech== c.Company.Name_CH)==false)
-                   && (!string.IsNullOrEmpty(c.Company.Name_EN) && existscompanynames.Any(a => a.nameen == c.Company.Name_EN) == false));
-                p.CompanyRelationships.AddRange(crms);
-
-                CH.Edit<Project>(p);
+               crms = crms.Where(c=> (string.IsNullOrEmpty(c.Company.Name_CH) || existscompanynames.Any(a=>a.namech== c.Company.Name_CH)==false)
+                   && (string.IsNullOrEmpty(c.Company.Name_EN) || existscompanynames.Any(a => a.nameen == c.Company.Name_EN) == false));
+               if (crms.Count() > 0)
+               {
+                   p.CompanyRelationships.AddRange(crms);
+                   CH.Edit<Project>(p);
+               }
                 //CH.GetAllData<>
             }
  

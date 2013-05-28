@@ -61,6 +61,7 @@ namespace Utl
 
         public DB(string connection=null)
         {
+
           //Database.SetInitializer<DB>(new DBInitializer());
           Database.SetInitializer<DB>(null);
           if (!string.IsNullOrEmpty(connection))

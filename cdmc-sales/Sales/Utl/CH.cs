@@ -21,6 +21,7 @@ namespace Utl
     }
     public class CH
     {
+        public static DB TestDB { get; set; }
         public static DB DB
         {
             get
@@ -36,8 +37,13 @@ namespace Utl
                     //entityConnectionStringBuilder.Provider = "System.Data.SqlClient";
                     //entityConnectionStringBuilder.ConnectionString = "Server=192.168.93.143;Initial Catalog=processfix;User ID=process;password=cdncsqld3j7;Max Pool Size=512;MultipleActiveResultSets=true;";
                     //entityConnectionStringBuilder.Metadata = @"res://*/processfix.csdl|res://*/processfix.ssdl|res://*/processfix.msl";
-                    var db = new DB("Server=192.168.93.143;Initial Catalog=processfix;User ID=process;password=cdncsqld3j7;Max Pool Size=512;MultipleActiveResultSets=true;");
-                    return db;
+                    if (TestDB == null)
+                    {
+                        var db = new DB("Server=192.168.93.143;Initial Catalog=processfix;User ID=process;password=cdncsqld3j7;Max Pool Size=512;MultipleActiveResultSets=true;");
+                        TestDB = db;
+                        return TestDB;
+                    }
+                    return TestDB;
                   
                 }
                 return HttpContext.Current.Items["DB"] as DB;
