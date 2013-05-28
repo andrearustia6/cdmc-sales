@@ -39,6 +39,8 @@ namespace Utl
                     //entityConnectionStringBuilder.Metadata = @"res://*/processfix.csdl|res://*/processfix.ssdl|res://*/processfix.msl";
                     if (TestDB == null)
                     {
+                       
+                       
                         var db = new DB("Server=192.168.93.143;Initial Catalog=processfix;User ID=process;password=cdncsqld3j7;Max Pool Size=512;MultipleActiveResultSets=true;");
                         TestDB = db;
                         return TestDB;
