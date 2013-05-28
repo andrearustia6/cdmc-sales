@@ -97,9 +97,18 @@
     </div>
     <div class="editor-field">
          
-        @Html.Telerik().ComboBoxFor(model => model.Product).BindTo(new SelectList(Employee.GetEmplyeeByLVL(ProductInterfaceRequired.LVL), "UserName", "UserName"))
+        @Html.Telerik().ComboBoxFor(model => model.Product).BindTo(new SelectList(Employee.GetEmplyeeByLVL( ProductInterfaceRequired.LVL ), "UserName", "UserName"))
         @Html.ValidationMessageFor(model => model.Product)
     </div>
+     <div class="editor-label">
+        @Html.LabelFor(model => model.Product)
+    </div>
+    <div class="editor-field">
+         
+        @Html.Telerik().ComboBoxFor(model => model.Conference).BindTo(new SelectList(Employee.GetEmplyeeByLVL(ConferenceInterfaceRequired.LVL), "UserName", "UserName"))
+        @Html.ValidationMessageFor(model => model.Conference)
+    </div>
+
     <div class="editor-label">
         @Html.LabelFor(model => model.Target)
     </div>

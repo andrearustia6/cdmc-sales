@@ -231,7 +231,8 @@ namespace Sales.Controllers
             }
             else//会务确定出单
             {
-                var ds = from d in CRM_Logical.GetDeals()
+                var user = Employee.CurrentUserName;
+                var ds = from d in CRM_Logical.GetDeals().Where(w => w.Project.Conference == user)
                          where d.IsConfirm == null || d.IsConfirm == false
                          select new AjaxViewDeal
                          {
