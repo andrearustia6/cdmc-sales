@@ -59,14 +59,15 @@ namespace Utl
         public DbSet<UserFavorsCrmGroup> UserFavorsCrmGroups { get; set; }
         public DbSet<UserFavorsCRM> UserFavorsCRMs { get; set; }
 
-        public DB()
+        public DB(string connection=null)
         {
           //Database.SetInitializer<DB>(new DBInitializer());
-         Database.SetInitializer<DB>(null);
-
+          Database.SetInitializer<DB>(null);
+          if (!string.IsNullOrEmpty(connection))
+              this.Database.Connection.ConnectionString = connection;
 
           this.Configuration.LazyLoadingEnabled = true;
-            this.Configuration.ValidateOnSaveEnabled = false;
+          this.Configuration.ValidateOnSaveEnabled = false;
         }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

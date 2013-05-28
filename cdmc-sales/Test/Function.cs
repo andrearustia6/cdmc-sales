@@ -13,7 +13,8 @@ namespace Test
         [TestMethod]
         public void TestCompanyImport()
         {
-            //CRM_Logical.CRM.ImportCompany();
+            var source =new int[]{28};
+            CRM_Logical.CRM.ImportCompany(source,26,"黄歆");
         }
     }
 }

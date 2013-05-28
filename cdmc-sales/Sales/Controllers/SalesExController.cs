@@ -263,7 +263,7 @@ namespace Sales.Controllers
                 CompanyId = lead.CompanyID.Value,
                 Address = lead.Address,
                 Birthday = lead.Birthday,
-                CellPhone = lead.Contact,
+                CellPhone = lead.Mobile,
                 Department = lead.Department,
                 Desc = lead.Description,
                 Fax = lead.Fax,

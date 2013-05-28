@@ -47,8 +47,8 @@ namespace BLL
  
         }
 
-        public  class Company
-        {
+       // public  class Company
+        //{
             //public static bool IsCompanyExist(string namech, string nameen, int? projectid = null, int? comid = null)
             //{
             //    IQueryable<Company> companys;
@@ -68,7 +68,7 @@ namespace BLL
 
 
             //}
-        }
+       // }
 
          //公司是否存在
      
