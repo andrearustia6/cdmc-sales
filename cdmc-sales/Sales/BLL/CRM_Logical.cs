@@ -224,9 +224,7 @@ namespace BLL
 
             var list = ps.ToList();
 
-
             var plist = list.FindAll(f => IsContainLoginUser(f.Name)).Select(s => s.Project).ToList();
-
 
             var plistorigin = GetUserInvolveProject();
 

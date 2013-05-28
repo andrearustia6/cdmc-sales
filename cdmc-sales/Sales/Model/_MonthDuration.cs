@@ -26,21 +26,21 @@ namespace Sales.Model
             d.EndDate1 = d.StartDate1.AddDays(7);
             d.DurationStrings.Add(d.StartDate1.ToShortMonthString() + "~" + d.EndDate1.ToShortMonthString());
             
-            d.StartDate2 = d.EndDate1.AddDays(1);
+            d.StartDate2 = d.EndDate1;
             d.EndDate2 = d.StartDate2.AddDays(7);
             d.DurationStrings.Add(d.StartDate2.ToShortMonthString() + "~" + d.EndDate2.ToShortMonthString());
 
-            d.StartDate3 = d.EndDate2.AddDays(1);
+            d.StartDate3 = d.EndDate2;
             d.EndDate3 = d.StartDate3.AddDays(7);
             d.DurationStrings.Add(d.StartDate3.ToShortMonthString() + "~" + d.EndDate3.ToShortMonthString());
 
-            d.StartDate4 = d.EndDate3.AddDays(1);
+            d.StartDate4 = d.EndDate3;
             d.EndDate4 = d.StartDate4.AddDays(7);
             d.DurationStrings.Add(d.StartDate4.ToShortMonthString() + "~" + d.EndDate4.ToShortMonthString());
 
             if (d.EndDate4.AddDays(7).Month == d.StartDate1.Month)//存在第5周
             {
-                d.StartDate5 = d.EndDate4.AddDays(1);
+                d.StartDate5 = d.EndDate4;
                 d.EndDate5 = d.StartDate5.Value.AddDays(7);
                 d.DurationStrings.Add(d.StartDate5.Value.ToShortMonthString() + "~" + d.EndDate5.Value.ToShortMonthString());
             }

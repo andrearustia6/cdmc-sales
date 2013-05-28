@@ -615,6 +615,20 @@ namespace Utl
             return (bool)HttpContext.Current.Items["DebugModel"];
           
         }
+
+        public static string DebugAccount()
+        {
+            if (HttpContext.Current != null && HttpContext.Current.Items["DebugAccount"] == null)
+            {
+                var settings = ConfigurationManager.AppSettings.GetValues("DebugAccount");
+              
+                HttpContext.Current.Items["DebugAccount"] = settings[0] as String;
+            }
+
+            return (string)HttpContext.Current.Items["DebugAccount"];
+
+        }
+
         public static decimal GetAverage(decimal? child, int father)
         {
             if (father == 0) return 100;

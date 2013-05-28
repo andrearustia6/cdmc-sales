@@ -22,12 +22,12 @@
         <div class="editor-field">
             @Html.TextBoxFor(model => model.EndDate, new { @readOnly = "true", style = "border-style: none" })
         </div>
-        <div class="editor-label">
+        @*<div class="editor-label">
             @Html.LabelFor(model => model.BaseDeal)
         </div>
         <div class="editor-field">
             @Html.Telerik().CurrencyTextBoxFor(model => model.BaseDeal).Enable(false)
-        </div>
+        </div>*@
         <div class="editor-label">
             @Html.LabelFor(model => model.Deal)
         </div>

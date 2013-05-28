@@ -31,8 +31,15 @@ public sealed class LogonRequired : AuthorizeAttribute
 {
     public override void OnAuthorization(AuthorizationContext filterContext)
     {
-
+       
         bool skipAuthorization = filterContext.ActionDescriptor.IsDefined(typeof(AllowAnonymousAttribute), true);
+
+        if (Utl.Utl.DebugModel())
+        {
+            skipAuthorization = true;
+            var name = Utl.Utl.DebugAccount();
+            FormsAuthentication.SetAuthCookie(name, true);
+        }
 
         //skipAuthorization = true;
 
@@ -258,6 +265,8 @@ public sealed class ProductInterfaceRequired : RoleRequired
         get { return LVL; }
     }
 }
+
+
 
 /// <summary>
 /// 3

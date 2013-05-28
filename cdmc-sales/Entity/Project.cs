@@ -110,6 +110,8 @@ namespace Entity
         [Display(Name = "市场部接口人")]
         public string Market { get; set; }
 
+        [Display(Name = "会务部接口人")]
+        public string Conference { get; set; }
 
         [Display(Name = "产品部接口人")]
         public string Product { get; set; }
