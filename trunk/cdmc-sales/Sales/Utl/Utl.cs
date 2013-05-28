@@ -129,6 +129,10 @@ namespace Utl
                 {
                     HttpContext.Current.Items["CurrentUserName"] = GetCurrentUserName().ToLower();
                 }
+                if (HttpContext.Current == null)
+                {
+                    return "";
+                }
                 return HttpContext.Current.Items["CurrentUserName"] as string;
             }
             set
@@ -383,6 +387,7 @@ namespace Utl
             int id;
             int.TryParse(roleid, out id);
             var role = CH.GetDataById<Role>(id);
+           
             return role;
         }
 

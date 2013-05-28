@@ -8,6 +8,9 @@ using System.Collections;
 using System.Reflection;
 using Entity;
 using Utilities;
+using System.Data.SqlClient;
+using System.Data.EntityClient;
+using System.Configuration;
 
 namespace Utl
 {
@@ -25,6 +28,17 @@ namespace Utl
                 if (HttpContext.Current != null && HttpContext.Current.Items["DB"] == null)
                 {
                     HttpContext.Current.Items["DB"] = new DB();
+                }
+                if (HttpContext.Current == null)//为测试情况
+                {
+                    var entityConnectionStringBuilder = new EntityConnectionStringBuilder();
+
+                    //entityConnectionStringBuilder.Provider = "System.Data.SqlClient";
+                    //entityConnectionStringBuilder.ConnectionString = "Server=192.168.93.143;Initial Catalog=processfix;User ID=process;password=cdncsqld3j7;Max Pool Size=512;MultipleActiveResultSets=true;";
+                    //entityConnectionStringBuilder.Metadata = @"res://*/processfix.csdl|res://*/processfix.ssdl|res://*/processfix.msl";
+                    var db = new DB("Server=192.168.93.143;Initial Catalog=processfix;User ID=process;password=cdncsqld3j7;Max Pool Size=512;MultipleActiveResultSets=true;");
+                    return db;
+                  
                 }
                 return HttpContext.Current.Items["DB"] as DB;
             }
@@ -96,7 +110,7 @@ namespace Utl
             {
                 var eb = entity as EntityBase;
                 eb.CreatedDate = DateTime.Now;
-                eb.Creator = HttpContext.Current.User.Identity.Name;
+                eb.Creator = Employee.CurrentUserName;
             }
         }
 
@@ -106,7 +120,7 @@ namespace Utl
             {
                 var eb = entity as EntityBase;
                 eb.ModifiedDate = DateTime.Now;
-                eb.ModifiedUser = HttpContext.Current.User.Identity.Name;
+                eb.ModifiedUser = Employee.CurrentUserName;
             }
         }
 
