@@ -22,7 +22,13 @@ namespace Model
 
         public string selectedVal { get; set; }
     }
-
+    public class AjaxProject
+    {
+        public string ProjectName { get; set; }
+        public string ProjectCode { get; set; }
+        public int ProjectID { get; set; }
+        public IEnumerable<AjaxCRM> CRMs { get; set; }
+    }
     public class AjaxCrmTypedList
     {
         public bool ExpandAll
@@ -261,12 +267,12 @@ namespace Model
     public class AjaxCRM
     {
         
-        #region projecy
+        #region project
         public string ProjectName { get; set; }
         public int? ProjectID { get; set; }
         #endregion
 
-
+        
         #region crm
         public Progress Progress { private get; set; }
         public string ProgressString
@@ -286,10 +292,32 @@ namespace Model
             }
         }
         public int CRMID { get; set; }
+        [Display(Name = "录入时间")]
         public DateTime? CrmCreateDate { get; set; }
+        [Display(Name = "添加人")]
+        public string CrmCreator{ get; set; }
+
+        public string MembersString { get {
+            if (Members == null) return string.Empty;
+
+            return string.Join(",",Members.Select(s => s.Name));
+        } }
+
+        public  IEnumerable<int> MembersIds
+        {
+            get
+            {
+                if (Members == null) return null;
+
+                return Members.Select(s => s.ID);
+            }
+        }
         #endregion
 
         #region company
+        public List<Member> Members { set; private get; }
+        [Display(Name = "公司类型")]
+        public string CompanyType { get; set; }
         [Required(ErrorMessage = " ")]
         [Display(Name = "中文名字")]
         public string CompanyNameCH { get; set; }
@@ -341,8 +369,10 @@ namespace Model
             }
         }
         public IEnumerable<AjaxLead> AjaxLeads { get; set; }
-
+        
         //Added for Company Edit.
+       
+
         [Display(Name = "区号/时差")]
         public int? DistrictNumberID { get; set; }
         [Required(ErrorMessage = " ")]

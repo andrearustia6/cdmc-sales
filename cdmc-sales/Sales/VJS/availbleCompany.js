@@ -106,9 +106,10 @@ var currentCompanyNameEN = undefined;
             return;
         }
 
+        var projectid = $('#CurrentProjectId').val();
         var companyNameCN = $('.dialogue-editcompany form #Name_CN').val();
         var companyNameEN = $('.dialogue-editcompany form #Name_EN').val();
-        $.post('CheckCompanyExist', { beforeUpdateCN: currentCompanyNameCN, afterUpdateCN: companyNameCN, beforeUpdateEN: currentCompanyNameEN, afterUpdateEN: companyNameEN }, function (result) {
+        $.post('CheckCompanyExist', { projectid:projectid, beforeUpdateCN: currentCompanyNameCN, afterUpdateCN: companyNameCN, beforeUpdateEN: currentCompanyNameEN, afterUpdateEN: companyNameEN }, function (result) {
             if (result.length > 0) {
                 alert(result);
             } else {
@@ -842,9 +843,10 @@ var currentCompanyNameEN = undefined;
         if (hasError) {
             return;
         }
+        var projectid = $('#CurrentProjectId').val();
         var companyNameCN = $('.dialogue-addcompany #Name_CN').val();
         var companyNameEN = $('.dialogue-addcompany form #Name_EN').val();
-        $.post('CheckCompanyExist', { beforeUpdateCN: null, afterUpdateCN: companyNameCN, beforeUpdateEN: null, afterUpdateEN: companyNameEN }, function (result) {
+        $.post('CheckCompanyExist', { projectid:projectid,beforeUpdateCN: null, afterUpdateCN: companyNameCN, beforeUpdateEN: null, afterUpdateEN: companyNameEN }, function (result) {
             if (result.length > 0) {
                 alert(result);
             } else {

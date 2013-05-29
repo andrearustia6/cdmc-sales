@@ -301,12 +301,14 @@ namespace Sales.Controllers
             {
                 return Content("请选择销售人员!");
             }
-            selectedCompanies = selectedCompanies.Replace("on,", "");
-            IEnumerable<int> companyIDs = selectedCompanies.Split(',').Select(c => int.Parse(c));
+            //以下的companyid为crmdid 请注意
+            selectedCRMs = selectedCompanies.Replace("on,", "");
+            IEnumerable<int> crmIDs = selectedCRMs.Split(',').Select(c => int.Parse(c));
             IEnumerable<int> memberIDs = selectedMembers.Split(',').Select(c => int.Parse(c));
-            foreach (int companyID in companyIDs)
+            foreach (int companyID in crmIDs)
             {
-                var company = CH.GetAllData<CompanyRelationship>(i => i.ID == companyID, "Members").FirstOrDefault();
+               // var company = CH.GetAllData<CompanyRelationship>(i => i.ID == companyID, "Members").FirstOrDefault();
+                var company = CH.GetDataById<CompanyRelationship>(companyID);
                 if (company != null)
                 {
                     foreach (int memberID in memberIDs)
@@ -342,14 +344,17 @@ namespace Sales.Controllers
                 if(selectedCompanies.Contains("all"))
                 {
                     var pid = Int32.Parse(selectedCompanies.Replace("all",""));
-                    var coms = CH.GetAllData<CompanyRelationship>(c=>c.ProjectID ==pid );
-                    companyIDs = coms.Where(c=>c.Members!=null).Select(s => s.ID);
+                    //var coms = CH.GetAllData<CompanyRelationship>(c=>c.ProjectID ==pid );
+
+                    var  coms = from c in CH.DB.CompanyRelationships.Where(w=>w.ProjectID.Value == pid) select c;
+                    companyIDs = coms.Where(c=>c.Members.Count>0).Select(s => s.ID);
                 }
                 else
                companyIDs = selectedCompanies.Split(',').Select(c => int.Parse(c));
+
             foreach (int companyID in companyIDs)
             {
-                var company = CH.GetAllData<CompanyRelationship>(i => i.ID == companyID, "Members").FirstOrDefault();
+                var company = CH.GetDataById<CompanyRelationship>(companyID);
                 if (company != null)
                 {
                     if (memberID == -2)
@@ -543,35 +548,40 @@ namespace Sales.Controllers
             Project project = null;
             if (projectId.HasValue)
             {
-                project = CH.GetAllData<Project>(i => i.ID == projectId.Value).FirstOrDefault();
+                project = CH.GetDataById<Project>(projectId);
             }
             else
             {
                 project = CRM_Logical.GetUserInvolveProject().FirstOrDefault();               
             }
+
+            var p = CRM_Logical._Project.GetAjaxProject(project.ID);
             if (memberFilterForCompany.HasValue)
             {
                 int memberId = memberFilterForCompany.Value;
                 ViewBag.MemberFilterForCompany = memberFilterForCompany.ToString();
-                if (memberId == -1)
+             
+                if (memberId == -1)//未分配公司
                 {
-                    project.CompanyRelationships = project.CompanyRelationships.Where(c => c.Members.Count == 0).ToList();
+                    p.CRMs = p.CRMs.Where(c => string.IsNullOrEmpty(c.MembersString)).ToList();
                 }
-                else if (memberId == -2)
+                else if (memberId == -2)//已分配公司
                 {
-                    project.CompanyRelationships = project.CompanyRelationships.Where(c => c.Members.Count != 0).ToList();
+                    p.CRMs = p.CRMs.Where(c => !string.IsNullOrEmpty(c.MembersString)).ToList();
                 }
-                else
+                else//指定公司
                 {
-                    project.CompanyRelationships = project.CompanyRelationships.Where(c => c.Members.Any(m => m.ID == memberId)).ToList();
+                    p.CRMs = p.CRMs.Where(c => c.MembersIds.Any(m => m == memberId)).ToList();
                 }
             }
             else
             {
                 ViewBag.MemberId = "";
             }
-
-            return View(project);
+            p.CRMs = p.CRMs.ToList();
+            return View(p);
         }
+
+        public string selectedCRMs { get; set; }
     }
 }
