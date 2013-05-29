@@ -11,7 +11,22 @@ namespace BLL
 {
     public class CRM_Logical
     {
-        public static class CRM
+        public static class _Project
+        {
+            public static AjaxProject GetAjaxProject(int? projectid)
+            {
+                var p = CH.GetDataById<Project>(projectid);
+                var data = new AjaxProject()
+                {
+                    ProjectCode = p.ProjectCode,
+                    ProjectID = p.ID,
+                    ProjectName = p.Name,
+                    CRMs = _CRM.GetCrmByProjectId(projectid)
+                };
+                return data;
+            }
+        }
+        public static class _CRM
         {
             //导入公司
             public static void ImportCompany(int[] sourceprojectids, int targetprojectid, string user)
@@ -45,6 +60,31 @@ namespace BLL
                    CH.Edit<Project>(p);
                }
                 //CH.GetAllData<>
+            }
+
+           
+
+            public static IEnumerable<AjaxCRM> GetCrmByProjectId(int? projectid)
+            {
+                if (projectid != null)
+                { 
+                    var crms = CH.DB.CompanyRelationships.Where(c=>c.ProjectID == projectid);
+                    var ajaxcrms = from c in crms
+                                   select new AjaxCRM()
+                                   {
+                                       CrmCreateDate = c.CreatedDate,
+                                       CRMID = c.ID,
+                                       CompanyCategories = c.Categorys,
+                                       Members = c.Members,
+                                       CompanyNameEN = c.Company.Name_EN,
+                                       CompanyNameCH = c.Company.Name_CH,
+                                       CrmCreator = c.Creator,
+                                       CompanyType = c.Company.CompanyType.Name,
+                                   };
+                    return ajaxcrms;
+                }
+
+                return null;
             }
  
         }

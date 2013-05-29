@@ -4,42 +4,22 @@
 @using Entity
 @using Utl
 @using BLL
-@model Entity.Project         
+@model Model.AjaxProject         
 <div id="filter-container" style="height: 30px;">
     <span>
         <label style="margin:5px;">
-            项目:</label>@Html.DropDownListFor(model => model.ID, SelectHelper.ProjectSelectList(EditRight.DealsEdit.ToString(), Model.ID), new { id = "projectFilter" })</span>
+            项目:</label>@Html.DropDownListFor(model => model.ProjectID, SelectHelper.ProjectSelectList(EditRight.DealsEdit.ToString(), Model.ProjectID), new { id = "projectFilter" })</span>
     <span>
         <label style="margin:5px;">
             销售:</label>
-        @Html.DropDownList("companyFilter", SelectHelper.MemberSelectListForProject(Model.ID, (string)ViewBag.MemberFilterForCompany), "所有公司")</span>
+        @Html.DropDownList("companyFilter", SelectHelper.MemberSelectListForProject(Model.ProjectID , (string)ViewBag.MemberFilterForCompany), "所有公司")</span>
     <button onclick="UnsignCompanies()">
         取消分配</button>
 </div>
-@(
- Html.Telerik().Grid(Model.CompanyRelationships).Name("Company").DataKeys(keys =>
-                {
-                    keys.Add(s => s.ID);
-                })
-                .Columns(c =>
-                {
-                    c.Template(@<text><input name="checkedRecords" class="companybox" type="checkbox" value="@item.ID " title="checkedRecords"  />
-</text>).Title("<input type='checkbox' id='allCompanyBox' />").Width(30).HtmlAttributes(new { style = "text-align:center" });
-                    c.Bound(item => item.Company.Name).Title("公司名").Width(150);
-                    c.Bound(item => item.SalesOnTheCompany).Title("销售").Width(70);
-                    c.Bound(item => item.Importancy).Width(80);
-                    c.Bound(item => item.CategoryString).Title("细分行业");
-                    c.Bound(item => item.Company.CompanyType.Name).Width(100);
-                    c.Bound(item => item.CreatedDate).Title("添加时间");
-                    c.Bound(item => item.Creator).Title("添加人");
-
-                }).Resizable(resizing => resizing.Columns(true)).Pageable(page => page.Enabled(false).PageSize(10)).Sortable().Filterable().Scrollable(scrolling => scrolling.Height(350))
-
- )
 <fieldset>
     <legend>可分配销售 </legend>
     <div class="assignableMembers">
-        @foreach (SelectListItem selectListItem in SelectHelper.MemberSelectListForProject(Model.ID))
+        @foreach (SelectListItem selectListItem in SelectHelper.MemberSelectListForProject(Model.ProjectID))
         {
             if (selectListItem.Value != (string)ViewBag.MemberFilterForCompany && selectListItem.Value != "-1" && selectListItem.Value != "" && selectListItem.Value != "-2")
             {
@@ -52,6 +32,29 @@
         <button onclick="AssignCompanies()">
             分配</button></div>
 </fieldset>
+@{
+
+@(Html.Telerik().Grid(Model.CRMs).Name("Company").DataKeys(keys =>
+                {
+                    keys.Add(s => s.CRMID);
+                })
+                .Columns(c =>
+                {
+                    c.Template(@<text><input name="checkedRecords" class="companybox" type="checkbox" value="@item.CRMID " title="checkedRecords"  />
+</text>).Title("<input type='checkbox' id='allCompanyBox' />").Width(30).HtmlAttributes(new { style = "text-align:center" });
+                    c.Bound(item => item.CompanyName).Title("公司名").Width(300);
+                    c.Bound(item => item.MembersString).Title("销售").Width(70);
+                    //c.Bound(item => item.Importancy).Width(80);
+                    c.Bound(item => item.CategoryString).Title("细分行业");
+                    c.Bound(item => item.CompanyType).Width(100);
+                    c.Bound(item => item.CrmCreateDate).Title("添加时间").Width(200);
+                    c.Bound(item => item.CrmCreator).Title("添加人").Width(100);
+
+                }).Resizable(resizing => resizing.Columns(true)).Pageable(page => page.Enabled(false).PageSize(10)).Sortable().Filterable().Scrollable(scrolling => scrolling.Height(550))
+
+ )
+}
+
 <script type="text/javascript">
     $(
         function () {
@@ -106,22 +109,31 @@
 
     function UnsignCompanies() {
         var selectedCompanyFilter = $('#companyFilter').val();
-        if (selectedCompanyFilter == '-1' || selectedCompanyFilter == '') {
+//        if (selectedCompanyFilter == '-1' || selectedCompanyFilter == '') {
+//            return;
+        //        }
+
+        if (selectedCompanyFilter == '') {
             return;
         }
 
         var selectedCompanies = "";
 
 
-        if (selectedCompanyFilter == '-2') {
-            selectedCompanies = "all" + $('#projectid').val();
-        }
-        else {
-            $('.t-grid tbody input[type=checkbox]:checked').each(
+//        if (selectedCompanyFilter == '-2') {
+//            selectedCompanies = "all" + $('#projectid').val();
+//        }
+//        else {
+//            $('.t-grid tbody input[type=checkbox]:checked').each(
+//            function () {
+//                selectedCompanies += $(this).val() + ",";
+//            });
+//        }
+
+        $('.t-grid tbody input[type=checkbox]:checked').each(
             function () {
                 selectedCompanies += $(this).val() + ",";
             });
-        }
 
         if (selectedCompanies.length > 0) {
             selectedCompanies = selectedCompanies.substr(0, selectedCompanies.length - 1);

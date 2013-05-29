@@ -241,13 +241,27 @@ namespace Sales.Controllers
 
 
         [ValidateInput(false)]
-        public ActionResult CheckCompanyExist(string beforeUpdateCN, string afterUpdateCN, string beforeUpdateEN, string afterUpdateEN)
+        public ActionResult CheckCompanyExist(int?projectid ,string beforeUpdateCN, string afterUpdateCN, string beforeUpdateEN, string afterUpdateEN)
         {
-            //if (CH.GetAllData<CompanyRelationship>(c => c.MarkForDelete == false && c.Company.Name_CH == afterUpdateCN && c.Company.Name_CH != beforeUpdateCN).Count > 0)
+            var exist = from c in CH.DB.CompanyRelationships.Where(w => w.ProjectID == projectid) select c;
+            var chcount = exist.Count((c => !string.IsNullOrEmpty(afterUpdateCN) & c.Company.Name_CH == afterUpdateCN && c.Company.Name_CH != beforeUpdateCN));
+            if (chcount > 0)
+            {
+                return Content("同名中文公司名字已存在！");
+            }
+
+            var encount = exist.Count(c => !string.IsNullOrEmpty(afterUpdateEN) & c.Company.Name_EN == afterUpdateEN && c.Company.Name_EN != beforeUpdateEN);
+            if (encount > 0)
+            {
+                return Content("同名英文公司名字已存在！");
+            }
+
+
+            //if (CH.GetAllData<CompanyRelationship>(c => c.Company.Name_CH == afterUpdateCN && c.Company.Name_CH != beforeUpdateCN).Count > 0)
             //{
             //    return Content("同名中文公司名字已存在！");
             //}
-            //if (CH.GetAllData<CompanyRelationship>(c => c.MarkForDelete == false && c.Company.Name_EN == afterUpdateEN && c.Company.Name_EN != beforeUpdateEN).Count > 0)
+            //if (CH.GetAllData<CompanyRelationship>(c => c.Company.Name_EN == afterUpdateEN && c.Company.Name_EN != beforeUpdateEN).Count > 0)
             //{
             //    return Content("同名英文公司名字已存在！");
             //}
