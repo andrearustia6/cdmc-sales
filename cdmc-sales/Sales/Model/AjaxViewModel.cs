@@ -483,7 +483,7 @@ namespace Model
         public string Zip { get; set; }
         [Display(Name = "现在所在分公司")]
         public string SubCompany { get; set; }
-        [Display(Name = "称谓")]
+        [Display(Name = "性别")]
         [Required(ErrorMessage = "必填")]
         public string Gender { get; set; }
         [Display(Name = "排序")]

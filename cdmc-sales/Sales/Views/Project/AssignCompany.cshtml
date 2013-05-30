@@ -13,7 +13,7 @@
         <label style="margin:5px;">
             销售:</label>
         @Html.DropDownList("companyFilter", SelectHelper.MemberSelectListForProject(Model.ProjectID , (string)ViewBag.MemberFilterForCompany), "所有公司")</span>
-    <button onclick="UnsignCompanies()">
+    <button id="UnsignCompanies" onclick="UnsignCompanies()">
         取消分配</button>
 </div>
 <fieldset>
@@ -29,7 +29,7 @@
         }
     </div>
     <div style="text-align: left;">
-        <button onclick="AssignCompanies()">
+        <button id="AssignCompanies" onclick="AssignCompanies()">
             分配</button></div>
 </fieldset>
 @{
@@ -101,6 +101,7 @@
             alert('请选择相应的销售');
             return;
         }
+        $("#AssignCompanies").attr("disabled", "disabled"); 
         $.post('AssignCompanies', { selectedCompanies: selectedCompanies, selectedMembers: selectedMembers }, function (result) {
             alert(result);
             freshPage();
@@ -138,7 +139,7 @@
             alert('请选择相应的公司');
             return;
         }
-
+        $("#UnsignCompanies").attr("disabled", "disabled"); 
         $.post('UnsignCompanies', { selectedCompanyFilter: selectedCompanyFilter, selectedCompanies: selectedCompanies }, function (result) {
             alert(result);
             freshPage();
