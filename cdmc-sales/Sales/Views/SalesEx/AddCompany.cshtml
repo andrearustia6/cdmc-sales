@@ -108,9 +108,8 @@
             <legend>Categories <span id="categoriesError">必须选择一项</span></legend>
             @foreach (Category category in CH.GetAllData<Category>(c => c.ProjectID == Model.ProjectId))
             { 
-                 <input  name="Categories" type="checkbox" value="@category.ID" /> 
-                <label class="company-category">@category.Name
-                </label>
+                
+                <label class="company-category"> <input  name="Categories" type="checkbox" value="@category.ID" /> @category.Name </label>
                
             }
         </fieldset>

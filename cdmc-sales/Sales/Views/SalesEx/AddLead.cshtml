@@ -5,7 +5,7 @@
 @using (Html.BeginForm("AddLead", "SalesEx"))
 {
     @Html.HiddenFor(model => model.CompanyId)
-  <table>
+  <table  class="leadinput">
         <tr>
             <td>@Html.LabelFor(model => model.Name_CN)
                 @Html.TextBoxFor(model => model.Name_CN)
