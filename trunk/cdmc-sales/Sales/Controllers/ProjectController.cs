@@ -10,6 +10,7 @@ using Sales;
 using Utl;
 using BLL;
 using System.IO;
+using System.Data.Entity.Infrastructure;
 
 namespace Sales.Controllers
 {
@@ -305,23 +306,43 @@ namespace Sales.Controllers
             selectedCRMs = selectedCompanies.Replace("on,", "");
             IEnumerable<int> crmIDs = selectedCRMs.Split(',').Select(c => int.Parse(c));
             IEnumerable<int> memberIDs = selectedMembers.Split(',').Select(c => int.Parse(c));
-            foreach (int companyID in crmIDs)
+            //foreach (int companyID in crmIDs)
+            //{
+            //   // var company = CH.GetAllData<CompanyRelationship>(i => i.ID == companyID, "Members").FirstOrDefault();
+            //    var company = CH.GetDataById<CompanyRelationship>(companyID);
+            //    if (company != null)
+            //    {
+            //        foreach (int memberID in memberIDs)
+            //        {
+            //            if (company.Members.All(m => m.ID != memberID))
+            //            {
+            //                var mem = CH.GetDataById<Member>(memberID);
+            //                company.Members.Add(mem);
+            //            }
+            //        }
+            //    }
+            //    CH.Edit<CompanyRelationship>(company);
+            //}
+            List<DbEntityEntry> copys = new List<DbEntityEntry>();
+            var crms = CH.DB.CompanyRelationships.Where(w => crmIDs.Contains(w.ID));
+            foreach (var c in crms)
             {
-               // var company = CH.GetAllData<CompanyRelationship>(i => i.ID == companyID, "Members").FirstOrDefault();
-                var company = CH.GetDataById<CompanyRelationship>(companyID);
-                if (company != null)
-                {
+               
                     foreach (int memberID in memberIDs)
                     {
-                        if (company.Members.All(m => m.ID != memberID))
+                        if (!c.Members.Any(m => m.ID == memberID))
                         {
                             var mem = CH.GetDataById<Member>(memberID);
-                            company.Members.Add(mem);
+                            c.Members.Add(mem);
                         }
                     }
-                }
-                CH.Edit<CompanyRelationship>(company);
+                    var data = CH.DB.Entry(c);
+                    data.State = EntityState.Modified;
+                    copys.Add(data);
+                    
+            
             }
+            CH.DB.SaveChanges();
 
             return Content("分配成功!");
         }
@@ -339,42 +360,67 @@ namespace Sales.Controllers
             }
 
             int memberID = int.Parse(selectedCompanyFilter);
+       
             selectedCompanies = selectedCompanies.Replace("on,", "");
-            IEnumerable<int> companyIDs;
+            IEnumerable<int> crmIDs;
                 if(selectedCompanies.Contains("all"))
                 {
                     var pid = Int32.Parse(selectedCompanies.Replace("all",""));
                     //var coms = CH.GetAllData<CompanyRelationship>(c=>c.ProjectID ==pid );
 
                     var  coms = from c in CH.DB.CompanyRelationships.Where(w=>w.ProjectID.Value == pid) select c;
-                    companyIDs = coms.Where(c=>c.Members.Count>0).Select(s => s.ID);
+                    crmIDs = coms.Where(c=>c.Members.Count>0).Select(s => s.ID);
                 }
                 else
-               companyIDs = selectedCompanies.Split(',').Select(c => int.Parse(c));
+               crmIDs = selectedCompanies.Split(',').Select(c => int.Parse(c));
 
-            foreach (int companyID in companyIDs)
+            //foreach (int companyID in companyIDs)
+            //{
+            //    var company = CH.GetDataById<CompanyRelationship>(companyID);
+            //    if (company != null)
+            //    {
+            //        if (memberID == -2)
+            //        {
+            //            company.Members.Clear();
+            //            CH.Edit<CompanyRelationship>(company);
+            //        }
+            //        else
+            //        {
+            //            var exists = CH.DB.Members.Any(a => a.ID == memberID);
+            //            if (exists == true)
+            //            {
+            //                company.Members.Remove(company.Members.Where(w => w.ID == memberID).FirstOrDefault());
+            //                CH.Edit<CompanyRelationship>(company);
+            //            }
+            //        }
+            //    }
+            //}
+
+            var crms = CH.DB.CompanyRelationships.Where(w => crmIDs.Contains(w.ID));
+
+            List<DbEntityEntry> copys = new List<DbEntityEntry>();
+            foreach (var c in crms)
             {
-                var company = CH.GetDataById<CompanyRelationship>(companyID);
-                if (company != null)
+                if (memberID == -2)
                 {
-                    if (memberID == -2)
-                    {
-                        company.Members.Clear();
-                        CH.Edit<CompanyRelationship>(company);
-                    }
-                    else
-                    {
-                        var mem = CH.GetDataById<Member>(memberID);
-                        if (mem != null)
-                        {
-                            company.Members.Remove(mem);
-                            CH.Edit<CompanyRelationship>(company);
-                        }
-                    }
-                    
+                    c.Members.Clear();
                 }
+                else
+                {
+                    var exists = c.Members.Any(a => a.ID == memberID);
+                    if (exists == true)
+                    {
+                        c.Members.Remove(c.Members.Where(w => w.ID == memberID).FirstOrDefault());
+                     
+                    }
+                }
+              
+                var data = CH.DB.Entry(c);
                 
+                data.State = EntityState.Modified;
+                copys.Add(data);
             }
+            CH.DB.SaveChanges();
             return Content("取消分配成功!");
         }
         [HttpPost]
