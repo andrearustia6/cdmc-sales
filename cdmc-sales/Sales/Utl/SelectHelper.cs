@@ -110,7 +110,7 @@ namespace Utl
             selectList.Add(selectListItemNone);
             selectList.Add(selectListItemAll);
 
-            foreach (Member m in CH.GetAllData<Member>(c => c.ProjectID == projectID))
+            foreach (Member m in CH.GetAllData<Member>(c => c.ProjectID == projectID && c.IsActivated==true))
             {
                 SelectListItem selectListItem = new SelectListItem { Text = m.Name, Value = m.ID.ToString() };
                 if (m.ID.ToString() == selectVal)
