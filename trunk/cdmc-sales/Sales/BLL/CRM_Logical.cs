@@ -115,7 +115,7 @@ namespace BLL
          //公司是否存在
      
 
-        public static IQueryable<Deal> GetDeals(bool? acitivatedprojectonly = false, int? projectid = null, string sales = null)
+        public static IQueryable<Deal> GetDeals(bool? acitivatedprojectonly = false, int? projectid = null, string sales = null, string filter = null)
         {
             IQueryable<Deal> deals;
             if (Utl.Utl.DebugModel() == false)
@@ -142,6 +142,36 @@ namespace BLL
             if (!string.IsNullOrEmpty(sales))//只取对应的sales
             {
                 deals = deals.Where(w => w.Sales == sales);
+            }
+
+            if (!string.IsNullOrEmpty(filter))
+            {
+                switch (filter)
+                { 
+                    case "1":
+                        DateTime oneday = DateTime.Now.AddDays(-1);
+                        deals = deals.Where(w => w.SignDate > oneday);
+                        break;
+                    case "7":
+                        DateTime oneweek = DateTime.Now.AddDays(-7);
+                        deals = deals.Where(w => w.SignDate > oneweek);
+                        break;
+                    case "14":
+                        DateTime twoweek = DateTime.Now.AddDays(-14);
+                        deals = deals.Where(w => w.SignDate > twoweek);
+                        break;
+                    case "30":
+                        DateTime onemonth = DateTime.Now.AddMonths(-1);
+                        deals = deals.Where(w => w.SignDate > onemonth);
+                        break;
+                    case "2":
+
+                        deals = deals.Where(w => w.IsConfirm == null || w.IsConfirm == false);
+                        break;
+                    case "3":
+                        deals = deals.Where(w => w.IsConfirm == true && (w.Income == 0 || w.ActualPaymentDate == null));
+                        break;
+                }
             }
             return deals;
 
@@ -345,7 +375,7 @@ namespace BLL
         {
             var name = Employee.CurrentUserName;
             var now = DateTime.Now;
-            var projects = CH.GetAllData<Project>();
+            var projects = CH.GetAllData<Project>().OrderByDescending(p => p.ConferenceEndDate).ToList();
 
             var data = projects.FindAll(p => p.IsActived == true);
             return data;

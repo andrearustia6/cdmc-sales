@@ -226,11 +226,11 @@ namespace MvcGlobalAuthorize.Controllers
             {
                 // Attempt to register the user
                 MembershipCreateStatus createStatus;
-                Membership.CreateUser(model.UserName, model.Password, model.Email, null, null, true, null, out createStatus);
+                Membership.CreateUser(model.UserName.Trim(), model.Password.Trim(), model.Email.Trim(), null, null, true, null, out createStatus);
 
                 if (createStatus == MembershipCreateStatus.Success)
                 {
-                    ProfileBase objProfile = ProfileBase.Create(model.UserName);
+                    ProfileBase objProfile = ProfileBase.Create(model.UserName.Trim());
 
                     objProfile.SetPropertyValue("RoleLevelID", 0);
                     objProfile.SetPropertyValue("IsActivated", false);

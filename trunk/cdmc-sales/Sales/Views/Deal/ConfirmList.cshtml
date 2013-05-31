@@ -3,14 +3,24 @@
     ViewBag.Title = "出单到账确认";
 }
 @Html.Partial("contenttitle", "出单到账确认")
+<div id="filter-container" style="height: 30px;">
+    <span>
+        <label style="margin:5px;float: left;">筛选:</label>
+     @(Html.Telerik().ComboBox()
+        .Name("Filters")
+        .BindTo(Utl.SelectHelper.FilterSelectList())
+        .AutoFill(true)
+        .Filterable(filtering =>
+        {
+            filtering.FilterMode(AutoCompleteFilterMode.StartsWith);
+        })
+        .HtmlAttributes(new { style = "width: 300px; margin:5px; float: left;" })
+        .ClientEvents(events => events.OnChange("filterChange").OnLoad("onComboBoxLoad"))
+    )
+    </span>
+</div>
 @(Html.Telerik().Grid<Model.AjaxViewDeal>().Name("Grid")
 .DataKeys(keys => { keys.Add(s => s.ID); })
-.DataBinding(dataBinding =>
-    {
-        dataBinding.Ajax()
-            .Select("_SelectIndex", "Deal")
-            .Update("_SaveAjaxEditing", "Deal");
-    })
 .Columns(c =>
 {
     c.Bound(item => item.CompanyName);//客户公司
@@ -45,8 +55,40 @@
 
         }).Title("确认");
     }
-
+})
+.ClientEvents(events => events.OnDataBinding("dataBinding"))
+.DataBinding(dataBinding =>
+{
+    dataBinding.Ajax()
+        .Select("_SelectIndex", "Deal")
+        .Update("_SaveAjaxEditing", "Deal");
 })
 .Editable(editing => editing.Mode(GridEditMode.PopUp))
 .Resizable(resizing => resizing.Columns(true)).Filterable().Sortable().Groupable()
 .Pageable(p => p.PageSize(20)).Scrollable(scrolling => scrolling.Height(350)))
+
+<script type="text/javascript">
+    function filterChange() {
+        $("#Grid").data("tGrid").rebind();
+    }
+    function dataBinding(e) {
+        var filter = $("#Filters").data("tComboBox").value();
+        e.data = $.extend(e.data, { filterId: filter });
+
+        //alert(JSON.stringify($("#Grid").data("tGrid")));
+//        var gird = $(this).data('tGrid');
+//        alert(JSON.stringify(gird));
+//        alert(JSON.stringify(e));
+//        e.data = $.extend(e.data, { filter: filter });
+//        alert(JSON.stringify(e));
+//        alert(filter);
+    }
+
+    function selectedFilter() {
+        return $("#Filters").data("tComboBox").value();
+    }
+    function onComboBoxLoad() {
+        $(this).data("tComboBox").fill();
+    }
+
+</script>

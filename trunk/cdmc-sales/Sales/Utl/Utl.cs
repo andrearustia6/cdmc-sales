@@ -242,6 +242,22 @@ namespace Utl
         }
 
         /// <summary>
+        /// 取得所有 基本的对象 for autocomplete multiple
+        /// </summary>
+        /// <returns></returns>
+        public static List<string> GetEmplyeeNameByLVL(params int[] lvl)
+        {
+            var list = Membership.GetAllUsers().Cast<MembershipUser>().ToList<MembershipUser>();
+            var data = new List<string>();
+            list.ForEach(l =>
+            {
+                if (lvl.Contains(GetRoleLevel(l.UserName)))
+                    data.Add(l.UserName);
+            });
+            return data;
+        }
+
+        /// <summary>
         /// 添加成员
         /// </summary>
         /// <returns></returns>

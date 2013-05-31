@@ -604,6 +604,12 @@
     <Content Include="Scripts\2011.3.1115\telerik.upload.min.js" />
     <Content Include="Scripts\2011.3.1115\telerik.window.min.js" />
     <Content Include="Scripts\jquery-1.6.4.min.js" />
+    <Content Include="Views\Deal\Confirm.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Views\Deal\ConfirmList.cshtml">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="VJS\alextre.peopleFinder.js" />
     <Content Include="VJS\alextre.tableDesigner.js" />
     <Content Include="VJS\availbleCompany.js" />
@@ -1673,12 +1679,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\TargetOfMonthForMember\ConfirmList.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Deal\ConfirmList.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Deal\Confirm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Deal\ConfirmTemp.cshtml" />
