@@ -103,6 +103,7 @@ namespace Sales.Controllers
                                   LeadContact = l.Contact,
                                   LeadMobile = l.Mobile,
                                   LeadTitle = l.Title,
+                                  Creator = l.Creator,
                                   CreateDate = l.CreatedDate,
                                   Categoris = c.CategoryString
                               };
@@ -124,6 +125,7 @@ namespace Sales.Controllers
                                   LeadTitle = l.Title,
                                   Creator = l.Creator,
                                   CreateDate = l.CreatedDate
+
                               };
             }
 

@@ -73,15 +73,7 @@ var currentCompanyNameEN = undefined;
             fax.addClass('fieldError');
             hasError = true;
         }
-       
-//        if ($('.dialogue-editcompany form #Fax').val().isEmpty()) {
-//            $('.dialogue-editcompany form #Fax').addClass('fieldError');
-//            hasError = true;
-//        }
-//        if ($('.dialogue-editcompany form #WebSite').val().isEmpty()) {
-//            $('.dialogue-editcompany form #WebSite').addClass('fieldError');
-//            hasError = true;
-//        }
+
         if ($('.dialogue-editcompany form #IndustryId').val().isEmpty()) {
             $('.dialogue-editcompany form #IndustryId').addClass('fieldError');
             hasError = true;
@@ -210,41 +202,19 @@ var currentCompanyNameEN = undefined;
              haserror = true;
          }
 
-         $district = $('.dialogue-editlead form #DistrictNumberId');
-         if ($district.val().length == 0)//国内
-       {
-           $namecn = $('.dialogue-editlead form #Name_CN');
-           if ($namecn.val().length == 0) {
+         var $namecn = $('.dialogue-editlead form #Name_CN');
+         var $nameen = $('.dialogue-editlead form #Name_EN');
+
+         if ($namecn.val().length == 0 && $nameen.val().length == 0) {
              $namecn.addClass('fieldError');
+             $nameen.addClass('fieldError');
+             alert('Lead中英文名必需至少填一个');
              haserror = true;
          }
 
-//         $address = $('.dialogue-editlead form #Address');
-//         if ($address.val().length == 0) {
-//            $address.addClass('fieldError');
-//            haserror = true;
-//        }
-
-//        $zip = $('.dialogue-editlead form #Zip');
-//        if ($zip.val().length == 0) {
-//            $zip.addClass('fieldError');
-//            haserror = true;
-//        }
-
-       }
-       else//国外
-       {
-           $nameen = $('.dialogue-editlead form #Name_EN');
-           if ($nameen.val().length == 0)
-         {
-             $nameen.addClass('fieldError');
-         }
-      
-       }
-     if (haserror) {
-           return;
-       }
-        
+         if (haserror) {
+               return;
+           }
 
         var query = $('.dialogue-editlead form').serializeArray();
         $.post('EditLead' , query, function (result) {
@@ -258,7 +228,6 @@ var currentCompanyNameEN = undefined;
                 onCompanyChanging(selectedVal);
             }
         });
-       
     }
 
     function onLeadAdd(currentCompanyId) {
@@ -427,39 +396,15 @@ var currentCompanyNameEN = undefined;
                 haserror = true;
             }
 
-
-            $district = $('.dialogue-addlead form #DistrictNumberId');
-            if ($district.val().length == 0)//国内
-            {
-                $namecn = $('.dialogue-addlead form #Name_CN');
-                if ($namecn.val().length == 0) {
-                    $namecn.addClass('fieldError');
-                    haserror = true;
-                }
-
-//                $address = $('.dialogue-addlead form #Address');
-//                if ($address.val().length == 0) {
-//                    $address.addClass('fieldError');
-//                    haserror = true;
-//                }
-
-//                $zip = $('.dialogue-addlead form #Zip');
-//                if ($zip.val().length == 0) {
-//                    $zip.addClass('fieldError');
-//                    haserror = true;
-//                }
-
+            var $namecn = $('.dialogue-addlead form #Name_CN');
+            var $nameen = $('.dialogue-addlead form #Name_EN');
+            if ($namecn.val().length == 0 && $nameen.val().length == 0) {
+                $namecn.addClass('fieldError');
+                $nameen.addClass('fieldError');
+                alert('Lead中英文名必需至少填一个');
+                haserror = true;
             }
-            else//国外
-            {
-                $nameen = $('.dialogue-addlead form #Name_EN');
-                if ($nameen.val().length == 0) {
-                    $nameen.addClass('fieldError');
-                }
-                if ($nameen.val().length == 0) {
-                    $nameen.addClass('fieldError');
-                }
-            }
+
             if (haserror) {
                 return;
             }
@@ -725,7 +670,7 @@ var currentCompanyNameEN = undefined;
     //公司选择 
     function onIndexSelect(e) {
         var indexs = nv().getItemValue(e.item);
-        if (indexs.indexOf("分组") < 0) {
+        if (e.item.innerText.indexOf("分组") < 0) {
             $.post('_SelectedList', { indexs: indexs, filters: GetFilters() }, function (result) {
                 $('#crmdetailscontainer').html(result);
                 //count++;
