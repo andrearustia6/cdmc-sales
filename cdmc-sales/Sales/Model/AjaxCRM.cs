@@ -22,6 +22,35 @@ namespace Model
 
         public string selectedVal { get; set; }
     }
+
+     public class AjaxMember
+     {
+         public string Name { get; set; }
+     }
+     public class AjaxProjectPerformanceInMonth
+     {
+         public decimal? TotalTarget { get; set; }
+         public decimal? CheckinTarget { get; set; }
+         public decimal? CheckIn { get; set; }
+         public decimal CallCount { get; set; }
+         public double Percent { get; set; }
+         public DateTime Range { get { return new DateTime(Year, Month, 1); } }
+         public int Year { get; set; }
+         public int Month { get; set; }
+     }
+    public class AjaxProjectPerformance
+    {
+        public double LeftDays { get; set; }
+        public double Duration { get; set; }
+        public decimal? Target { get; set; }
+        public string ProjectCode { get; set; }
+        public string Name_CH { get; set; }
+        public  IEnumerable<AjaxMember> Memebers { get; set; }
+        public int ProjectID { get; set; }
+        public IEnumerable<AjaxProjectPerformanceInMonth> AjaxProjectPerformanceInMonths { get; set; }
+
+    }
+
     public class AjaxProject
     {
         public string ProjectName { get; set; }

@@ -13,6 +13,45 @@ namespace BLL
     {
         public static class _Project
         {
+            public static List<AjaxProjectPerformance> GetAllProjectPerformance()
+            {
+                var pid = CRM_Logical.GetUserInvolveProject().Select(s=>s.ID);
+                var list = new List<AjaxProjectPerformance>();
+                foreach(var id in pid)
+                {
+                   var performance =  GetAjaxProjectPerformance(id);
+                    list.Add(performance);
+                }
+                return list;
+            }
+            public static AjaxProjectPerformance GetAjaxProjectPerformance(int? projectid)
+            {
+                var p = CH.GetDataById<Project>(projectid);
+                var pdeals= CH.DB.Deals.Where(w=>w.ProjectID==projectid && w.Abandoned==false && w.Income>0 && w.ActualPaymentDate!=null);
+                var pt = CH.DB.TargetOfMonths.Where(w=>w.ProjectID==projectid );
+                var now = DateTime.Now;
+                var data = new AjaxProjectPerformance()
+                {
+                    ProjectCode = p.ProjectCode,
+                    LeftDays = (p.ConferenceStartDate-now).TotalDays,
+                    Duration = (p.EndDate-p.StartDate ).TotalDays,
+                    ProjectID = p.ID,
+                    Name_CH = p.Name_CH,
+                    Target = p.Target,
+                    Memebers = (from m in p.Members.Where(a=>a.IsActivated == true) select new AjaxMember { Name= m.Name}),
+                    AjaxProjectPerformanceInMonths = (from d in pdeals group d by new {d.ActualPaymentDate.Value.Month,d.ActualPaymentDate.Value.Year} into grp
+                                                          select new AjaxProjectPerformanceInMonth{
+                                                            Year= grp.Key.Year,
+                                                            Month = grp.Key.Month,
+                                                            CheckIn =pdeals.Sum(s=>s.Income),
+                                                            CheckinTarget = pt.Where(w => w.StartDate.Month == grp.Key.Month && w.StartDate.Year== grp.Key.Year).Sum(s=>s.CheckIn)
+                                                          })
+                    
+                };
+
+                return data;
+            }
+
             public static AjaxProject GetAjaxProject(int? projectid)
             {
                 var p = CH.GetDataById<Project>(projectid);
@@ -26,6 +65,7 @@ namespace BLL
                 return data;
             }
         }
+
         public static class _CRM
         {
             //导入公司
