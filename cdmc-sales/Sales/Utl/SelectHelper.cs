@@ -84,6 +84,21 @@ namespace Utl
             return selectList;
         }
 
+        public static IEnumerable<SelectListItem> FilterSelectList()
+        {
+            List<SelectListItem> selectList = new List<SelectListItem>();
+            selectList.Add(new SelectListItem() { Text = "请选择", Value = "" });
+            selectList.Add(new SelectListItem() { Text = "所有出单", Value = "0" });
+            selectList.Add(new SelectListItem() { Text = "24小时内出单", Value = "1" });
+            selectList.Add(new SelectListItem() { Text = "一周内出单", Value = "7" });
+            selectList.Add(new SelectListItem() { Text = "两周内出单", Value = "14" });
+            selectList.Add(new SelectListItem() { Text = "一月内出单", Value = "30" });
+            selectList.Add(new SelectListItem() { Text = "未确认出单", Value = "2" });
+            selectList.Add(new SelectListItem() { Text = "未付款出单", Value = "3" });
+
+            return selectList;
+        }
+
         public static IEnumerable<SelectListItem> TrueOrFalseSelectList()
         {
             List<SelectListItem> selectList = new List<SelectListItem>();

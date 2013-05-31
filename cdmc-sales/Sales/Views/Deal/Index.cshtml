@@ -25,8 +25,8 @@
                     c.Bound(item => item.DealCode).Title("出单号").Width(100);
                     c.Bound(item => item.Sales).Width(70);
                     c.Bound(item => item.PackageName).Title("Package").Width(150);
-                    c.Bound(item => item.Payment).Format("{0:c}").Aggregate(aggregates => aggregates.Sum()).ClientFooterTemplate("<p>应收款: <#= Sum #></p>");
-                    c.Bound(item => item.Income).Format("{0:c}").Aggregate(aggregates => aggregates.Sum()).ClientFooterTemplate("<p>已收款: <#= Sum #></p>");
+                    c.Bound(item => item.Payment).Title("销售总额").Format("{0:c}").Aggregate(aggregates => aggregates.Sum()).ClientFooterTemplate("<p>应收款: <#= Sum #></p>");
+                    c.Bound(item => item.Income).Title("入账总额").Format("{0:c}").Aggregate(aggregates => aggregates.Sum()).ClientFooterTemplate("<p>已收款: <#= Sum #></p>");
                     c.Bound(item => item.IsClosed).Width(70);
                     c.Bound(item => item.Abandoned).Width(70);
                     c.Bound(item => item.TicketDescription);

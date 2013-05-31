@@ -6,156 +6,192 @@
       {
         <legend>请填写实际付款日期和实际入账金额</legend>
         <div style="padding: 5px 20px 10px 20px; margin: 5px">
-            <div class="editor-label">
-                @Html.LabelFor(model => model.CompanyName)
-            </div>
-            <div class="editor-field">
-                @Html.TextBoxFor(model => model.CompanyName, new { @readOnly = "true", style = "width:300px;border-style: none" })
-            </div>
-            <div class="editor-label">
-                @Html.LabelFor(model => model.ProjectCode)
-            </div>
-            <div class="editor-field">
-                @Html.TextBoxFor(model => model.ProjectCode, new { @readOnly = "true", style = "width:300px;border-style: none" })
-            </div>
-            <div class="editor-label">
-                @Html.LabelFor(model => model.DealCode)
-            </div>
-            <div class="editor-field">
-                @Html.TextBoxFor(model => model.DealCode, new { @readOnly = "true", style = "width:300px;border-style: none" })
-            </div>
-            <div class="editor-label">
-                @Html.LabelFor(model => model.PackageName)
-            </div>
-            <div class="editor-field">
-                @Html.TextBoxFor(model => model.PackageName, new { @readOnly = "true", style = "width:300px;border-style: none" })
-            </div>
-            <div class="editor-label">
-                @Html.LabelFor(model => model.Committer)
-            </div>
-            <div class="editor-field">
-                @Html.TextBoxFor(model => model.Committer, new { @readOnly = "true", style = "width:300px;border-style: none" })
-            </div>
-            <div class="editor-label">
-                @Html.LabelFor(model => model.CommitterContect)
-            </div>
-            <div class="editor-field">
-                @Html.TextBoxFor(model => model.CommitterContect, new { @readOnly = "true", style = "width:300px;border-style: none" })
-            </div>
-            <div class="editor-label">
-                @Html.LabelFor(model => model.CommitterEmail)
-            </div>
-            <div class="editor-field">
-                @Html.TextBoxFor(model => model.CommitterEmail, new { @readOnly = "true", style = "width:300px;border-style: none" })
-            </div>
-            <div class="editor-label">
-                @Html.LabelFor(model => model.TicketDescription)
-            </div>
-            <div class="editor-field">
-                @Html.TextAreaFor(model => model.TicketDescription, new { @readOnly = "true", style = "width:300px" })
-            </div>
-            <div class="editor-label">
-                @Html.LabelFor(model => model.Payment)
-            </div>
-            <div class="editor-field">
-                @Html.Telerik().CurrencyTextBoxFor(model => model.Payment).Enable(false)
-            </div>
-            <div class="editor-label">
-                @Html.LabelFor(model => model.ExpectedPaymentDate)
-            </div>
-            <div class="editor-field">
-                @Html.Telerik().DatePickerFor(model => model.ExpectedPaymentDate).Enable(false)
-            </div>
-            <div class="editor-label">
-                @Html.LabelFor(model => model.PaymentDetail)
-            </div>
-            <div class="editor-field">
-                @Html.TextAreaFor(model => model.PaymentDetail, new { @readOnly = "true", style = "width:300px" })
-            </div>
-            <div class="editor-label">
-                @Html.LabelFor(model => model.ActualPaymentDate)
-            </div>
-            <div class="editor-field">
-                @Html.Telerik().DatePickerFor(model => model.ActualPaymentDate)
-            </div>
-            <div class="editor-label">
-                @Html.LabelFor(model => model.Income)
-            </div>
-            <div class="editor-field">
-                @Html.Telerik().CurrencyTextBoxFor(model => model.Income)
-            </div>
+            <table>
+                <tr>
+                    <td>
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.CompanyName)
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.CompanyName, new { @readOnly = "true", style = "width:300px;border-style: none" })
+                        </div>
+
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.ProjectCode)
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.ProjectCode, new { @readOnly = "true", style = "width:300px;border-style: none" })
+                        </div>
+
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.DealCode)
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.DealCode, new { @readOnly = "true", style = "width:300px;border-style: none" })
+                        </div>
+
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.PackageName)
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.PackageName, new { @readOnly = "true", style = "width:300px;border-style: none" })
+                        </div>
+
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.Committer)
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.Committer, new { @readOnly = "true", style = "width:300px;border-style: none" })
+                        </div>
+
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.CommitterContect)
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.CommitterContect, new { @readOnly = "true", style = "width:300px;border-style: none" })
+                        </div>
+
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.CommitterEmail)
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.CommitterEmail, new { @readOnly = "true", style = "width:300px;border-style: none" })
+                        </div>
+                    </td>
+                    <td>
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.TicketDescription)
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextAreaFor(model => model.TicketDescription, new { @readOnly = "true", style = "width:300px" })
+                        </div>
+
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.Payment)
+                        </div>
+                        <div class="editor-field">
+                            @Html.Telerik().CurrencyTextBoxFor(model => model.Payment).Enable(false)
+                        </div>
+
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.ExpectedPaymentDate)
+                        </div>
+                        <div class="editor-field">
+                            @Html.Telerik().DatePickerFor(model => model.ExpectedPaymentDate).Enable(false)
+                        </div>
+
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.PaymentDetail)
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextAreaFor(model => model.PaymentDetail, new { @readOnly = "true", style = "width:300px" })
+                        </div>
+
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.ActualPaymentDate)
+                        </div>
+                        <div class="editor-field">
+                            @Html.Telerik().DatePickerFor(model => model.ActualPaymentDate)
+                        </div>
+
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.Income)
+                        </div>
+                        <div class="editor-field">
+                            @Html.Telerik().CurrencyTextBoxFor(model => model.Income)
+                        </div>
+                    </td>
+                </tr>
+            </table>
         </div>
       }
       else
       { 
         <legend>请确认出单</legend>
         <div style="padding: 5px 20px 10px 20px; margin: 5px">
-            <div class="editor-label">
-                @Html.LabelFor(model => model.CompanyName)
-            </div>
-            <div class="editor-field">
-                @Html.TextBoxFor(model => model.CompanyName, new { @readOnly = "true", style = "width:300px;border-style: none" })
-            </div>
-            <div class="editor-label">
-                @Html.LabelFor(model => model.ProjectCode)
-            </div>
-            <div class="editor-field">
-                @Html.TextBoxFor(model => model.ProjectCode, new { @readOnly = "true", style = "width:300px;border-style: none" })
-            </div>
-            <div class="editor-label">
-                @Html.LabelFor(model => model.DealCode)
-            </div>
-            <div class="editor-field">
-                @Html.TextBoxFor(model => model.DealCode, new { @readOnly = "true", style = "width:300px;border-style: none" })
-            </div>
-            <div class="editor-label">
-                @Html.LabelFor(model => model.PackageName)
-            </div>
-            <div class="editor-field">
-                @Html.TextBoxFor(model => model.PackageName, new { @readOnly = "true", style = "width:300px;border-style: none" })
-            </div>
-            <div class="editor-label">
-                @Html.LabelFor(model => model.Committer)
-            </div>
-            <div class="editor-field">
-                @Html.TextBoxFor(model => model.Committer, new { @readOnly = "true", style = "width:300px;border-style: none" })
-            </div>
-            <div class="editor-label">
-                @Html.LabelFor(model => model.CommitterContect)
-            </div>
-            <div class="editor-field">
-                @Html.TextBoxFor(model => model.CommitterContect, new { @readOnly = "true", style = "width:300px;border-style: none" })
-            </div>
-            <div class="editor-label">
-                @Html.LabelFor(model => model.CommitterEmail)
-            </div>
-            <div class="editor-field">
-                @Html.TextBoxFor(model => model.CommitterEmail, new { @readOnly = "true", style = "width:300px;border-style: none" })
-            </div>
-            <div class="editor-label">
-                @Html.LabelFor(model => model.TicketDescription)
-            </div>
-            <div class="editor-field">
-                @Html.TextAreaFor(model => model.TicketDescription, new { @readOnly = "true", style = "width:300px" })
-            </div>
-            <div class="editor-label">
-                @Html.LabelFor(model => model.Payment)
-            </div>
-            <div class="editor-field">
-                @Html.Telerik().CurrencyTextBoxFor(model => model.Payment).Enable(false)
-            </div>
-            <div class="editor-label">
-                @Html.LabelFor(model => model.ExpectedPaymentDate)
-            </div>
-            <div class="editor-field">
-                @Html.Telerik().DatePickerFor(model => model.ExpectedPaymentDate).Enable(false)
-            </div>
-            <div class="editor-label">
-                @Html.LabelFor(model => model.PaymentDetail)
-            </div>
-            <div class="editor-field">
-                @Html.TextAreaFor(model => model.PaymentDetail, new { @readOnly = "true", style = "width:300px" })
-            </div>
+            <table>
+                <tr>
+                    <td>
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.CompanyName)
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.CompanyName, new { @readOnly = "true", style = "width:300px;border-style: none" })
+                        </div>
+
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.ProjectCode)
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.ProjectCode, new { @readOnly = "true", style = "width:300px;border-style: none" })
+                        </div>
+
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.DealCode)
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.DealCode, new { @readOnly = "true", style = "width:300px;border-style: none" })
+                        </div>
+
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.PackageName)
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.PackageName, new { @readOnly = "true", style = "width:300px;border-style: none" })
+                        </div>
+
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.Committer)
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.Committer, new { @readOnly = "true", style = "width:300px;border-style: none" })
+                        </div>
+
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.CommitterContect)
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.CommitterContect, new { @readOnly = "true", style = "width:300px;border-style: none" })
+                        </div>
+                    </td>
+                    <td>
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.CommitterEmail)
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.CommitterEmail, new { @readOnly = "true", style = "width:300px;border-style: none" })
+                        </div>
+
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.TicketDescription)
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextAreaFor(model => model.TicketDescription, new { @readOnly = "true", style = "width:300px" })
+                        </div>
+
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.Payment)
+                        </div>
+                        <div class="editor-field">
+                            @Html.Telerik().CurrencyTextBoxFor(model => model.Payment).Enable(false)
+                        </div>
+
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.ExpectedPaymentDate)
+                        </div>
+                        <div class="editor-field">
+                            @Html.Telerik().DatePickerFor(model => model.ExpectedPaymentDate).Enable(false)
+                        </div>
+
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.PaymentDetail)
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextAreaFor(model => model.PaymentDetail, new { @readOnly = "true", style = "width:300px" })
+                        </div>
+                    </td>
+                </tr>
+            </table>
         </div>
       }
     }

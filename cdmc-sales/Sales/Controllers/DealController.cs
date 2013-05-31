@@ -168,9 +168,11 @@ namespace Sales.Controllers
         }
 
         [GridAction]
-        public ActionResult _SelectIndex()
+        public ActionResult _SelectIndex(string filterId)
         {
-            return View(new GridModel(getData()));
+            List<AjaxViewDeal> deals;
+            deals = string.IsNullOrEmpty(filterId) ? getData() : getData(filterId);
+            return View(new GridModel(deals));
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
@@ -201,7 +203,8 @@ namespace Sales.Controllers
             if (Employee.CurrentRole.Level == 4)//财务填写income
             {
                 var ds = from d in CRM_Logical.GetDeals()
-                         where d.IsConfirm == true && (d.Income == 0 || d.ActualPaymentDate == null)
+                         // modified on 2013/05/30 解决财务填写确认和会务部确认后单据不显示问题
+                         //where d.IsConfirm == true && (d.Income == 0 || d.ActualPaymentDate == null)
                          select new AjaxViewDeal
                          {
                              CompanyNameEN = d.CompanyRelationship.Company.Name_EN,
@@ -232,8 +235,10 @@ namespace Sales.Controllers
             else//会务确定出单
             {
                 var user = Employee.CurrentUserName;
-                var ds = from d in CRM_Logical.GetDeals().Where(w => w.Project.Conference == user)
-                         where d.IsConfirm == null || d.IsConfirm == false
+                // modified on 2013/05/30 解决会务部接口人多选问题
+                var ds = from d in CRM_Logical.GetDeals().Where(w => w.Project.Conference.Contains(user))
+                         // modified on 2013/05/30 解决财务填写确认和会务部确认后单据不显示问题
+                         // where d.IsConfirm == null || d.IsConfirm == false
                          select new AjaxViewDeal
                          {
                              CompanyNameEN = d.CompanyRelationship.Company.Name_EN,
@@ -263,6 +268,76 @@ namespace Sales.Controllers
             }
         }
 
+        private List<AjaxViewDeal> getData(string filter)
+        {
+            if (Employee.CurrentRole.Level == 4)//财务填写income
+            {
+                var ds = from d in CRM_Logical.GetDeals(false,null,null,filter)
+                         // modified on 2013/05/30 解决财务填写确认和会务部确认后单据不显示问题
+                         //where d.IsConfirm == true && (d.Income == 0 || d.ActualPaymentDate == null)
+                         select new AjaxViewDeal
+                         {
+                             CompanyNameEN = d.CompanyRelationship.Company.Name_EN,
+                             CompanyNameCH = d.CompanyRelationship.Company.Name_CH,
+                             DealCode = d.DealCode,
+                             Abandoned = d.Abandoned,
+                             AbandonReason = d.AbandonReason,
+                             ActualPaymentDate = d.ActualPaymentDate,
+                             Committer = d.Committer,
+                             CommitterContect = d.Committer,
+                             CommitterEmail = d.CommitterEmail,
+                             ExpectedPaymentDate = d.ExpectedPaymentDate,
+                             ID = d.ID,
+                             Income = d.Income,
+                             IsClosed = d.IsClosed,
+                             PackageNameCH = d.Package.Name_CH,
+                             PackageNameEN = d.Package.Name_EN,
+                             Payment = d.Payment,
+                             PaymentDetail = d.PaymentDetail,
+                             Sales = d.Sales,
+                             ProjectCode = d.Project.ProjectCode,
+                             SignDate = d.SignDate,
+                             TicketDescription = d.TicketDescription,
+                             IsConfirm = (d.IsConfirm == true ? "是" : "否")
+                         };
+                return ds.OrderByDescending(o => o.SignDate).ToList();
+            }
+            else//会务确定出单
+            {
+                var user = Employee.CurrentUserName;
+                // modified on 2013/05/30 解决会务部接口人多选问题
+                var ds = from d in CRM_Logical.GetDeals(false, null, null, filter).Where(w => w.Project.Conference.Contains(user))
+                         // modified on 2013/05/30 解决财务填写确认和会务部确认后单据不显示问题
+                         // where d.IsConfirm == null || d.IsConfirm == false
+                         select new AjaxViewDeal
+                         {
+                             CompanyNameEN = d.CompanyRelationship.Company.Name_EN,
+                             CompanyNameCH = d.CompanyRelationship.Company.Name_CH,
+                             DealCode = d.DealCode,
+                             Abandoned = d.Abandoned,
+                             AbandonReason = d.AbandonReason,
+                             ActualPaymentDate = d.ActualPaymentDate,
+                             Committer = d.Committer,
+                             CommitterContect = d.Committer,
+                             CommitterEmail = d.CommitterEmail,
+                             ExpectedPaymentDate = d.ExpectedPaymentDate,
+                             ID = d.ID,
+                             Income = d.Income,
+                             IsClosed = d.IsClosed,
+                             PackageNameCH = d.Package.Name_CH,
+                             PackageNameEN = d.Package.Name_EN,
+                             Payment = d.Payment,
+                             PaymentDetail = d.PaymentDetail,
+                             Sales = d.Sales,
+                             ProjectCode = d.Project.ProjectCode,
+                             SignDate = d.SignDate,
+                             TicketDescription = d.TicketDescription,
+                             IsConfirm = (d.IsConfirm == true ? "是" : "否")
+                         };
+                return ds.OrderByDescending(o => o.SignDate).ToList();
+            }
+        }
+        
         [HttpPost]
         public ActionResult ConfirmTemp(Deal item, int? projectid)
         {
@@ -283,5 +358,15 @@ namespace Sales.Controllers
             ViewBag.CompanyRelationshipID = item.CompanyRelationshipID;
             return View(item);
         }
+
+        [HttpPost]
+        public ActionResult _GetFilter()
+        {
+            return new JsonResult
+            {
+                Data = Utl.SelectHelper.FilterSelectList()
+            };
+        }
+
     }
 }

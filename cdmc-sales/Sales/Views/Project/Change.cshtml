@@ -96,7 +96,6 @@
         @Html.LabelFor(model => model.Product)
     </div>
     <div class="editor-field">
-         
         @Html.Telerik().ComboBoxFor(model => model.Product).BindTo(new SelectList(Employee.GetEmplyeeByLVL( ProductInterfaceRequired.LVL ), "UserName", "UserName"))
         @Html.ValidationMessageFor(model => model.Product)
     </div>
@@ -104,8 +103,14 @@
         @Html.LabelFor(model => model.Conference)
     </div>
     <div class="editor-field">
-         
-        @Html.Telerik().ComboBoxFor(model => model.Conference).BindTo(new SelectList(Employee.GetEmplyeeByLVL(ConferenceInterfaceRequired.LVL), "UserName", "UserName"))
+        
+        @*<div class="t-widget t-combobox t-header">
+            <div class="t-dropdown-wrap t-state-default">
+                @Html.DropDownListFor(model => model.Product, new SelectList(Employee.GetEmplyeeByLVL(ProductInterfaceRequired.LVL), "UserName", "UserName"), new { @class = "t-input", style="width:152px;height:20px;" })
+            </div>
+        </div>*@
+        @Html.Telerik().AutoCompleteFor(model => model.Conference).AutoFill(true).Multiple(multi => { multi.Separator("; ").Enabled(true); }).BindTo(Employee.GetEmplyeeNameByLVL(ConferenceInterfaceRequired.LVL))
+        @*@Html.Telerik().ComboBoxFor(model => model.Conference).BindTo(new SelectList(Employee.GetEmplyeeByLVL(ConferenceInterfaceRequired.LVL), "UserName", "UserName"))*@
         @Html.ValidationMessageFor(model => model.Conference)
     </div>
 
