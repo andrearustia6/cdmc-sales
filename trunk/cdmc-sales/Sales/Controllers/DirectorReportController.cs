@@ -44,37 +44,75 @@ namespace Sales.Controllers
             return Json(ps);
     
         }
-        public ActionResult DealGroupByProject(int? year, int? month)
-        {
-            _DealByProjectData data = new _DealByProjectData();
-            if (year == null) year = DateTime.Now.Year;
-            if (month == null) month = DateTime.Now.Month;
 
-            var totaldeals = CRM_Logical.GetDeals(true);
-            totaldeals = totaldeals.Where(w => w.Income > 0);
-            var deals = totaldeals.Where(d => d.ActualPaymentDate.Value.Year == year && d.ActualPaymentDate.Value.Month == month);
+        public ActionResult DealGroupByProject()
+        {
+            return View(CRM_Logical._Project.GetAllProjectPerformance());
+        }
+
+        //public ActionResult DealGroupByProject(int? year, int? month)
+        //{
+        //    _DealByProjectData data = new _DealByProjectData();
+        //    if (year == null) year = DateTime.Now.Year;
+        //    if (month == null) month = DateTime.Now.Month;
+
+        //   var totaldeals = CRM_Logical.GetDeals(true);
+        //    totaldeals = totaldeals.Where(w => w.Income > 0);
+        //    var deals = totaldeals.Where(d => d.ActualPaymentDate.Value.Year == year && d.ActualPaymentDate.Value.Month == month);
+
+
+        //    var ps = from p in CH.DB.Projects select p;
+        //    var mems = from m in CH.DB.Members select m;
+        //    var dealbyproject = from d in deals
+        //                        group d by new { d.Project.Name_CH, d.Project.ID }
+        //                            into grp
+
+        //                            select new _DealByProject
+        //                            {
+        //                                MemberCount = mems.Count(m => m.ProjectID == grp.Key.ID),
+        //                                IncomeAmount = grp.Sum(c => c.Income),
+        //                                DealAmount = grp.Sum(c => c.Payment),
+        //                                ProjectName = grp.Key.Name_CH,
+        //                                TotalIncomeAmount = totaldeals.Where(w => w.ProjectID == grp.Key.ID).Sum(s => s.Income)
+        //                            };
+
+        //    data._DealByProject = dealbyproject;
+        //    var l = new List<_DealByProjectInMonth>();
+        //    data._DealByProjectInMonth = l.AsQueryable();
+        //    return View(data);
+        //}
+
+        //public ActionResult DealGroupByProject(int? year, int? month)
+        //{
+        //    _DealByProjectData data = new _DealByProjectData();
+        //    if (year == null) year = DateTime.Now.Year;
+        //    if (month == null) month = DateTime.Now.Month;
+
+        //    var totaldeals = CRM_Logical.GetDeals(true);
+        //    totaldeals = totaldeals.Where(w => w.Income > 0);
+        //    var deals = totaldeals.Where(d => d.ActualPaymentDate.Value.Year == year && d.ActualPaymentDate.Value.Month == month);
 
            
-            var ps = from p in CH.DB.Projects select p;
-            var mems = from m in CH.DB.Members select m;
-            var dealbyproject = from d in deals
-                       group d by new { d.Project.Name_CH,d.Project.ID  }
-                           into grp
+        //    var ps = from p in CH.DB.Projects select p;
+        //    var mems = from m in CH.DB.Members select m;
+        //    var dealbyproject = from d in deals
+        //               group d by new { d.Project.Name_CH,d.Project.ID  }
+        //                   into grp
                           
-                           select new _DealByProject
-                           {
-                               MemberCount = mems.Count(m=>m.ProjectID==grp.Key.ID),
-                               IncomeAmount = grp.Sum(c => c.Income),
-                               DealAmount = grp.Sum(c => c.Payment),
-                               ProjectName = grp.Key.Name_CH,
-                               TotalIncomeAmount = totaldeals.Where(w => w.ProjectID == grp.Key.ID).Sum(s => s.Income)
-                           };
+        //                   select new _DealByProject
+        //                   {
+        //                       MemberCount = mems.Count(m=>m.ProjectID==grp.Key.ID),
+        //                       IncomeAmount = grp.Sum(c => c.Income),
+        //                       DealAmount = grp.Sum(c => c.Payment),
+        //                       ProjectName = grp.Key.Name_CH,
+        //                       TotalIncomeAmount = totaldeals.Where(w => w.ProjectID == grp.Key.ID).Sum(s => s.Income)
+        //                   };
 
-            data._DealByProject = dealbyproject;
-            var l = new List<_DealByProjectInMonth>();
-            data._DealByProjectInMonth = l.AsQueryable();
-            return View(data);
-        }
+        //    data._DealByProject = dealbyproject;
+        //    var l = new List<_DealByProjectInMonth>();
+        //    data._DealByProjectInMonth = l.AsQueryable();
+        //    return View(data);
+        //}
 
         public ActionResult DealGroupBySales(int? year, int? month)
         {
