@@ -37,7 +37,7 @@ namespace BLL
                            Rate = rates.Where(w=>w.TargetName==l).Sum(s=>s.Rate),
                            TeamLeadPerformanceInWeeks = wd.Select(s => new _TeamLeadPerformanceInWeek {
                                                 //FaxOutCount = calls.Where(c => c.Member != null && c.Member.Name == l).GroupBy(c=>c.LeadID).Select(g=>g.FirstOrDefault()).Count(c=>c.CreatedDate >= s && c.CreatedDate < EntityFunctions.AddDays(s, 7)),
-                               FaxOutCount = calls.Count(c => c.Member != null && c.Member.Name == l&&c.CreatedDate >= s && c.CreatedDate < EntityFunctions.AddDays(s, 7)),
+                               FaxOutCount = calls.OrderBy(o=>o.CallDate).Count(c => c.Member != null && c.Member.Name == l&&c.CreatedDate >= s && c.CreatedDate < EntityFunctions.AddDays(s, 7)),
                                                 DealsCount = deals.Count(c => c.SignDate >= s && c.SignDate < EntityFunctions.AddDays(s, 7)),
                                                 StartDate = s,
                                                 EndDate = EntityFunctions.AddDays(s, 7).Value,
