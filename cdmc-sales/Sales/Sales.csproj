@@ -225,6 +225,7 @@
     <Compile Include="Controllers\AssignPerformanceScoreController.cs" />
     <Compile Include="Controllers\CompanyRelationshipController.cs" />
     <Compile Include="Controllers\DirectorReportController.cs" />
+    <Compile Include="Controllers\PerformanceController.cs" />
     <Compile Include="Controllers\SimulatorConfigController.cs" />
     <Compile Include="Controllers\DealController.cs" />
     <Compile Include="Controllers\FavorsGroupController.cs" />
@@ -288,6 +289,7 @@
     <Compile Include="Model\Validations.cs" />
     <Compile Include="Model\ViewModels.cs" />
     <Compile Include="Model\_Deal.cs" />
+    <Compile Include="Model\_EmployeePerformance.cs" />
     <Compile Include="Model\_MonthDuration.cs" />
     <Compile Include="Model\_Research.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -1667,6 +1669,7 @@
     <Content Include="Views\DirectorReport\Master.cshtml" />
     <Content Include="Views\DirectorReport\DealGroupBySales.cshtml" />
     <Content Include="Views\DirectorReport\DealGroupByProject.cshtml" />
+    <Content Include="Views\Performance\Index.cshtml" />
     <None Include="Views\SalesEx\EditCompany.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\SimulatorConfig.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\AjaxTargetOfMonthForMember.cshtml" />

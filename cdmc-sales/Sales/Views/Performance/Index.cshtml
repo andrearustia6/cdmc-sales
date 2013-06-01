@@ -1,0 +1,25 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+@using Sales.Model;
+@(Html.Telerik().Grid<_TeamLeadPerformance>().Name("lead")
+    .DataBinding(dataBinding =>
+    {
+        dataBinding.Ajax() .Select("_SelectLeadIndex", "Performance");
+})
+.Columns(columns => {
+    columns.Bound(p => p.Name);
+    columns.Bound(p => p.CompletePercent);
+    columns.Bound(p => p.CheckinScore);
+    columns.Bound(p => p.LeadNotQualifiedWeeksCount);
+    columns.Bound(p => p.AddLeadScore);
+    columns.Bound(p => p.HoursOrFaxNotQualifiedWeeksCount);
+    columns.Bound(p => p.FaxCallScore);
+    columns.Bound(p => p.AssignedScore);
+    columns.Bound(p => p.Rate);
+    columns.Bound(p => p.Score);
+    columns.Bound(p => p.FaxOutCountString);
+    columns.Bound(p => p.LeadAddCountString);
+  }) .Pageable(p=>p.Style(GridPagerStyles.Status)
+       .PageOnScroll(true).PageSize(35)).Scrollable(scrolling => scrolling.Height(450)).Sortable().Filterable()
+)
