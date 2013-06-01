@@ -15,7 +15,7 @@ using System.Data.Entity.Infrastructure;
 namespace Sales.Controllers
 {
 
-    [ManagerRequired]
+    //[ManagerRequired]
     public class ProjectController : Controller
     {
         protected override void Dispose(bool disposing)
@@ -327,20 +327,20 @@ namespace Sales.Controllers
             var crms = CH.DB.CompanyRelationships.Where(w => crmIDs.Contains(w.ID));
             foreach (var c in crms)
             {
-               
-                    foreach (int memberID in memberIDs)
+
+                foreach (int memberID in memberIDs)
+                {
+                    if (!c.Members.Any(m => m.ID == memberID))
                     {
-                        if (!c.Members.Any(m => m.ID == memberID))
-                        {
-                            var mem = CH.GetDataById<Member>(memberID);
-                            c.Members.Add(mem);
-                        }
+                        var mem = CH.GetDataById<Member>(memberID);
+                        c.Members.Add(mem);
                     }
-                    var data = CH.DB.Entry(c);
-                    data.State = EntityState.Modified;
-                    copys.Add(data);
-                    
-            
+                }
+                var data = CH.DB.Entry(c);
+                data.State = EntityState.Modified;
+                copys.Add(data);
+
+
             }
             CH.DB.SaveChanges();
 
@@ -360,19 +360,19 @@ namespace Sales.Controllers
             }
 
             int memberID = int.Parse(selectedCompanyFilter);
-       
+
             selectedCompanies = selectedCompanies.Replace("on,", "");
             IEnumerable<int> crmIDs;
-                if(selectedCompanies.Contains("all"))
-                {
-                    var pid = Int32.Parse(selectedCompanies.Replace("all",""));
-                    //var coms = CH.GetAllData<CompanyRelationship>(c=>c.ProjectID ==pid );
+            if (selectedCompanies.Contains("all"))
+            {
+                var pid = Int32.Parse(selectedCompanies.Replace("all", ""));
+                //var coms = CH.GetAllData<CompanyRelationship>(c=>c.ProjectID ==pid );
 
-                    var  coms = from c in CH.DB.CompanyRelationships.Where(w=>w.ProjectID.Value == pid) select c;
-                    crmIDs = coms.Where(c=>c.Members.Count>0).Select(s => s.ID);
-                }
-                else
-               crmIDs = selectedCompanies.Split(',').Select(c => int.Parse(c));
+                var coms = from c in CH.DB.CompanyRelationships.Where(w => w.ProjectID.Value == pid) select c;
+                crmIDs = coms.Where(c => c.Members.Count > 0).Select(s => s.ID);
+            }
+            else
+                crmIDs = selectedCompanies.Split(',').Select(c => int.Parse(c));
 
             //foreach (int companyID in companyIDs)
             //{
@@ -411,12 +411,12 @@ namespace Sales.Controllers
                     if (exists == true)
                     {
                         c.Members.Remove(c.Members.Where(w => w.ID == memberID).FirstOrDefault());
-                     
+
                     }
                 }
-              
+
                 var data = CH.DB.Entry(c);
-                
+
                 data.State = EntityState.Modified;
                 copys.Add(data);
             }
@@ -598,7 +598,7 @@ namespace Sales.Controllers
             }
             else
             {
-                project = CRM_Logical.GetUserInvolveProject().FirstOrDefault();               
+                project = CRM_Logical.GetUserInvolveProject().FirstOrDefault();
             }
 
             var p = CRM_Logical._Project.GetAjaxProject(project.ID);
@@ -606,7 +606,7 @@ namespace Sales.Controllers
             {
                 int memberId = memberFilterForCompany.Value;
                 ViewBag.MemberFilterForCompany = memberFilterForCompany.ToString();
-             
+
                 if (memberId == -1)//未分配公司
                 {
                     p.CRMs = p.CRMs.Where(c => string.IsNullOrEmpty(c.MembersString)).ToList();
@@ -629,5 +629,54 @@ namespace Sales.Controllers
         }
 
         public string selectedCRMs { get; set; }
+
+        public ActionResult ImportCompany()
+        {
+            return View(CH.GetAllData<Project>());
+        }
+
+        [HttpPost]
+        public ActionResult ImportCompany(string action, int[] checkedRecords, int importID, string companyName, string manager, DateTime? startDate, DateTime? endDate)
+        {
+            if (action == "search")
+            {
+                var selProject = CH.GetAllData<Project>().AsEnumerable();
+                if (!string.IsNullOrWhiteSpace(companyName))
+                {
+                    selProject = selProject.Where(s => s.Name.Contains(companyName));
+                }
+                if (!string.IsNullOrWhiteSpace(manager))
+                {
+                    selProject = selProject.Where(s => s.Manager == manager);
+                }
+                if (startDate != null)
+                {
+                    selProject = selProject.Where(s => s.StartDate >= startDate);
+                }
+                if (endDate != null)
+                {
+                    selProject = selProject.Where(s => s.StartDate <= endDate);
+                }
+                return View(selProject.ToList());
+            }
+            else
+            {
+                if (checkedRecords == null)
+                {
+                    return View();
+                }
+                List<Company> conflictCompany;
+                CRM_Logical._CRM.ImportCompany(checkedRecords, importID, Employee.CurrentUserName, out conflictCompany);
+                if (conflictCompany == null)
+                {
+                    return View(CH.GetAllData<Project>());
+                }
+                else
+                {
+                    return View("ConfliceCompany", conflictCompany);
+                }
+            }
+        }
+
     }
 }
