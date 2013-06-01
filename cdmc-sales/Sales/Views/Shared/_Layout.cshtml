@@ -44,13 +44,14 @@
                        if (loginUserIsAdmin)
                        {
                            menu.Add().Text("管理员配置").ImageUrl("~/Content/Common/Icons/wpf.png").Items(item =>
-                          {
-                              item.Add().Text("部门").Url("~/department/index");
-                              item.Add().Text("职级").Url("~/explevel/index");
-                              item.Add().Text("权限配置").Url("~/accessright/index");
-                              item.Add().Text("项目权限").Url("~/projectright/index");
-                              item.Add().Text("模拟人配置").Url("~/SimulatorConfig/index");
-                          });
+                           {
+                               item.Add().Text("部门").Url("~/department/index");
+                               item.Add().Text("职级").Url("~/explevel/index");
+                               item.Add().Text("权限配置").Url("~/accessright/index");
+                               item.Add().Text("项目权限").Url("~/projectright/index");
+                               item.Add().Text("模拟人配置").Url("~/SimulatorConfig/index");
+                               item.Add().Url("~/Project/ImportCompany").Text("客户数据导入");
+                           });
                        }
 
                        if (score == FinancialInterfaceRequired.LVL)
@@ -203,6 +204,14 @@
                            menu.Add().Text("管理菜单").ImageUrl("~/Content/Common/Icons/Chart.gif").Items(item =>
                            {
                                item.Add().Url("~/LeadCall/Index").Text("致电结果描述");//研发角色登陆后看到致电结果描述
+                           });
+                       }
+
+                       if (score == ImportingInterfaceRequired.LVL)
+                       {
+                           menu.Add().Text("日常工作").ImageUrl("~/Content/Common/Icons/editor.png").Items(item =>
+                           {
+                               item.Add().Url("~/Project/ImportCompany").Text("客户数据导入");
                            });
                        }
 
