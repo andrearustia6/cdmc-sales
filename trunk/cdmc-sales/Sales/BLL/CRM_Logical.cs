@@ -160,13 +160,13 @@ namespace BLL
         public static class _CRM
         {
             //导入公司
-            public static void ImportCompany(int[] sourceprojectids, int targetprojectid, string user)
+            public static void ImportCompany(int[] sourceprojectids, int targetprojectid, string user, out List<Company> conflictCompany)
             {
                 //导入的目标
                 var p = CH.GetDataById<Project>(targetprojectid);
                 user = "系统导入:" + user;
                 //取得要导入的公司
-                var comapnytoexport = CH.GetAllData<CompanyRelationship>(c =>c.ProjectID!=null && sourceprojectids.Contains(c.ProjectID.Value)).Select(s => s.Company);
+                var comapnytoexport = CH.GetAllData<CompanyRelationship>(c => c.ProjectID != null && sourceprojectids.Contains(c.ProjectID.Value)).Select(s => s.Company);
                 var crms = from c in comapnytoexport
                            select new CompanyRelationship()
                            {
@@ -177,20 +177,44 @@ namespace BLL
                                Creator = user,
                                CreatedDate = DateTime.Now
                            };
-               // Company.IsCompanyExist();
+                // Company.IsCompanyExist();
 
                 //公司名在这个项目中是否存在
                 var existscompanynames = from c in p.CompanyRelationships.Select(s => s.Company)
                                          select new { namech = c.Name_CH, nameen = c.Name_EN, id = c.ID };
 
-               crms = crms.Where(c=> (string.IsNullOrEmpty(c.Company.Name_CH) || existscompanynames.Any(a=>a.namech== c.Company.Name_CH)==false)
-                   && (string.IsNullOrEmpty(c.Company.Name_EN) || existscompanynames.Any(a => a.nameen == c.Company.Name_EN) == false));
-               if (crms.Count() > 0)
-               {
-                   p.CompanyRelationships.AddRange(crms);
-                   CH.Edit<Project>(p);
-               }
-                //CH.GetAllData<>
+                var importCrms = crms.Where(c => (string.IsNullOrEmpty(c.Company.Name_CH) || existscompanynames.Any(a => a.namech == c.Company.Name_CH) == false)
+                     && (string.IsNullOrEmpty(c.Company.Name_EN) || existscompanynames.Any(a => a.nameen == c.Company.Name_EN) == false));
+
+                var conflictCrms = crms.Except(importCrms);
+
+                if (conflictCrms.Count() > 0)
+                {
+                    conflictCompany = (from s in CH.GetAllData<Company>()
+                                       from c in conflictCrms
+                                       where s.ID == c.CompanyID
+                                       select s).Distinct().ToList();
+                }
+                else
+                {
+                    conflictCompany = null;
+                }
+
+                if (importCrms.Count() > 0)
+                {
+                    ImportCompanyTrace newdata = new ImportCompanyTrace();
+                    newdata.ImportDate = DateTime.Now;
+                    newdata.ImportUserName = Employee.CurrentUserName;
+                    newdata.ImportCompanyCount = importCrms.Count();
+                    newdata.ImportLeadCount = (from i in importCrms
+                                               from l in CH.GetAllData<Lead>()
+                                               where l.CompanyID == i.ID
+                                               select l).Count();
+                    CH.Create<ImportCompanyTrace>(newdata);
+
+                    p.CompanyRelationships.AddRange(importCrms);
+                    CH.Edit<Project>(p);
+                }
             }
 
            
