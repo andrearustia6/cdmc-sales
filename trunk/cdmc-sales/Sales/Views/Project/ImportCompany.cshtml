@@ -1,0 +1,57 @@
+﻿@using Entity
+@using Utl;
+@model List<Project>
+@{ Html.BeginForm(); }
+@{ViewBag.Title = "客户数据导入";}
+@Html.Partial("contenttitle", "客户数据导入")
+@{List<Project> allData = CH.GetAllData<Project>();}
+<div style="margin: 5px">
+    <label>
+        公司名称：</label>
+    @Html.TextBox("companyName")
+    <label>
+        板块负责人：</label>
+    @Html.DropDownList("manager", new SelectList(allData.Select(m => m.Manager).Distinct()), "--请选择--")
+    <label>
+        项目开始时间范围：</label>
+    @Html.Telerik().DatePicker().Name("startDate")
+    <label>
+        到</label>
+    @Html.Telerik().DatePicker().Name("endDate")
+    <button value="search" type="submit" name="action">
+        筛选</button>
+</div>
+@(Html.Telerik().Grid<Project>(Model).Name("Project")
+                .DataKeys(keys =>
+                {
+                    keys.Add(s => s.ID);
+                })
+                .Columns(c =>
+                {
+                    c.Template(@<text><input name="checkedRecords" type="checkbox" value="@item.ID " title="选择导入项目"  /></text>).Title("").Width(36).HtmlAttributes(new { style = "text-align:center" });
+                    c.Bound(item => item.Name);
+                    c.Bound(item => item.ProjectCode).Width(120);
+                    c.Bound(item => item.StartDate).Format("{0:d}").Width(100);
+                    c.Bound(item => item.EndDate).Format("{0:d}").Width(100);
+                    c.Bound(item => item.EndDate).Template(@<text>
+@{
+    var span = item.EndDate - DateTime.Now;
+    @Html.Label(span.Days.ToString())
+}</text>).Format("{0:d}").Title("剩余时间").Width(100);
+                    c.Bound(item => item.ConferenceStartDate).Width(70);
+                    c.Bound(item => item.IsActived).Width(70);
+                    c.Bound(item => item.Manager).Width(70);
+                    c.Bound(item => item.TeamLeader).Width(70);
+                    c.Bound(item => item.Target).Width(120).Format("{0:C}");
+                    c.Bound(item => item.ID).Width(150).Title("操作").Template(@<span> <a href=@Url.Content("~/Project/Details/" + item.ID)>
+                        详细</a> | <a href=@Url.Content("~/Project/Management/" + item.ID)>项目管理</a></span>);
+                }).Resizable(resizing => resizing.Columns(true)).Filterable().Sortable().Groupable()
+   .Scrollable(scrolling => scrolling.Height(350)))
+<div style="margin: 5px">
+    <label>
+        选择要导入的项目名：</label>
+    @Html.DropDownList("importID", new SelectList(allData, "ID", "Name"))
+    <button value="export" id="export" type="submit" name="action" onclick="return confirm('是否导入所选项目？');">
+        导入</button>
+</div>
+@{ Html.EndForm(); }
