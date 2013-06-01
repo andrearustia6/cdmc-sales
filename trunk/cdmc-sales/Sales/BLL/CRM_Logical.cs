@@ -6,11 +6,102 @@ using Entity;
 using Utl;
 using System.Web.Security;
 using Model;
+using Sales.Model;
+using System.Data.Objects;
 
 namespace BLL
 {
     public class CRM_Logical
     {
+        public static class _EmployeePerformance
+        {
+             public static IEnumerable<_TeamLeadPerformance> GetTeamLeadsPerformances(int month)
+        {
+            var leads = CH.DB.Projects.Where(w => w.IsActived == true && !string.IsNullOrEmpty(w.TeamLeader)).Select(s=>s.TeamLeader).Distinct();
+            if (Utl.Utl.DebugModel() != true)
+            {
+                leads = leads.Where(w => w != "sean");
+            }
+             var deals = CRM_Logical.GetDeals();
+             var calls = from l in CH.DB.LeadCalls select l;
+             calls =from c in calls group c by c.LeadID into g select g.FirstOrDefault();//分组并选择第一个
+             var leadadds = from l in CH.DB.Leads select l;
+             var rates = from r in CH.DB.AssignPerformanceRates.Where(w=>w.Month==month && w.Year==DateTime.Now.Year) select r;
+             var wd =  MonthDuration.GetMonthInstance(month).WeekDurations.Select(s=>s.StartDate);
+             var lps = from l in leads
+                       select new _TeamLeadPerformance()
+                       {
+                           Target = CH.DB.TargetOfMonths.Where(t => t.Project.TeamLeader == l).Sum(s => s.CheckIn),
+                           CheckIn = deals.Where(d => d.Project.TeamLeader == l).Sum(s => s.Income),
+                           Name = l,
+                           Rate = rates.Where(w=>w.TargetName==l).Sum(s=>s.Rate),
+                           TeamLeadPerformanceInWeeks = wd.Select(s => new _TeamLeadPerformanceInWeek {
+                                                //FaxOutCount = calls.Where(c => c.Member != null && c.Member.Name == l).GroupBy(c=>c.LeadID).Select(g=>g.FirstOrDefault()).Count(c=>c.CreatedDate >= s && c.CreatedDate < EntityFunctions.AddDays(s, 7)),
+                               FaxOutCount = calls.Count(c => c.Member != null && c.Member.Name == l&&c.CreatedDate >= s && c.CreatedDate < EntityFunctions.AddDays(s, 7)),
+                                                DealsCount = deals.Count(c => c.SignDate >= s && c.SignDate < EntityFunctions.AddDays(s, 7)),
+                                                StartDate = s,
+                                                EndDate = EntityFunctions.AddDays(s, 7).Value,
+                                                LeadsCount = leadadds.Count(c => c.Creator == l && c.CreatedDate >= s && c.CreatedDate < EntityFunctions.AddDays(s, 7))
+                                                }) 
+                              
+                       };
+             return lps;
+        }
+
+            #region lead考核的业务逻辑
+            /// <summary>
+            /// 当周出单三次或以上，28个faxout达标，否则35个faxout达标
+            /// </summary>
+            public static int GetLeadFaxoutStandard(int dealscount)
+            {
+                if (dealscount >= 3)
+                    return 28;
+                else
+                    return 35;
+            }
+
+            /// <summary>
+            /// 当周出单三次或以上，60个Lead添加达标，否则70个Lead添加达标
+            /// </summary>
+            public static int GetLeadAddStandard(int dealscount)
+            {
+                if (dealscount >= 3)
+                    return 60;
+                else
+                    return 70;
+            }
+
+
+            public static int GetCheckInScore(double? completePercent)
+            {
+                if (completePercent >= 140) return 70;
+                else if (completePercent >= 120) return 60;
+                else if (completePercent >= 100) return 50;
+                else if (completePercent >= 80) return 40;
+                else if (completePercent >= 60) return 30;
+                return 0;
+            }
+
+            public static int GetLeadAddScore(int leadNotQualifiedWeeksCount)
+            {
+                if (leadNotQualifiedWeeksCount == 0) return 20;
+                else if (leadNotQualifiedWeeksCount == 1) return 15;
+                else if (leadNotQualifiedWeeksCount == 2) return 10;
+                else if (leadNotQualifiedWeeksCount == 3) return 5;
+                return 0;
+            }
+
+            public static int GetFaxOutScore(int hoursOrFaxNotQualifiedWeeksCount)
+            {
+                if (hoursOrFaxNotQualifiedWeeksCount == 0) return 20;
+                else if (hoursOrFaxNotQualifiedWeeksCount == 1) return 15;
+                else if (hoursOrFaxNotQualifiedWeeksCount == 2) return 10;
+                else if (hoursOrFaxNotQualifiedWeeksCount == 3) return 5;
+                return 0;
+            }
+            #endregion
+
+        }
         public static class _Project
         {
             public static List<AjaxProjectPerformance> GetAllProjectPerformance()
@@ -128,32 +219,6 @@ namespace BLL
             }
  
         }
-
-       // public  class Company
-        //{
-            //public static bool IsCompanyExist(string namech, string nameen, int? projectid = null, int? comid = null)
-            //{
-            //    IQueryable<Company> companys;
-            //    if (projectid != null)
-            //    {
-            //        companys = CH.DB.CompanyRelationships.Select(s => s.Company);
-            //    }
-            //    else
-            //    {
-            //        companys = CH.DB.Companys;
-            //    }
-            //    companys = companys.Where(w => w.Name_EN == nameen || w.Name_CH == namech);
-            //    if (comid != null)
-            //    {
-
-            //    }
-
-
-            //}
-       // }
-
-         //公司是否存在
-     
 
         public static IQueryable<Deal> GetDeals(bool? acitivatedprojectonly = false, int? projectid = null, string sales = null, string filter = null)
         {
