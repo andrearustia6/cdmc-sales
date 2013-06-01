@@ -51,7 +51,7 @@ namespace Sales.Model
             d.EndDate4 = d.StartDate4.AddDays(7);
             d.DurationStrings.Add(d.StartDate4.ToShortMonthString() + "~" + d.EndDate4.ToShortMonthString());
             d.WeekDurations.Add(new WeekDuration() { StartDate = d.StartDate4, EndDate = d.EndDate4, order = 4 });
-            if (d.EndDate4.AddDays(7).Month == d.StartDate1.Month)//存在第5周
+            if (d.EndDate4.AddDays(7).Month == month)//存在第5周
             {
                 d.StartDate5 = d.EndDate4;
                 d.EndDate5 = d.StartDate5.Value.AddDays(7);
