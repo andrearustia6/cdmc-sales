@@ -518,7 +518,20 @@ namespace Entity
 
     }
 
+    public class ImportCompanyTrace : EntityBase
+    {
+        [Display(Name = "导入人")]
+        public string ImportUserName { get; set; }
 
+        [Display(Name = "导入时间")]
+        public DateTime ImportDate { get; set; }
+
+        [Display(Name = "导入公司数")]
+        public int ImportCompanyCount { get; set; }
+
+        [Display(Name = "导入Lead数")]
+        public int ImportLeadCount { get; set; }
+    }
 }
 
 
