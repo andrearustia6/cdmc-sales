@@ -8,42 +8,43 @@
 @Html.Partial("contenttitle", "个人信息")
 @{
     var dps = CH.GetAllData<Department>();
-    Html.Telerik().Grid<AjaxViewAccount>(Model).Name("AjaxViewAccount").ToolBar(commands =>
-    {
-        if (Employee.AsManager())
+    Html.Telerik().Grid<AjaxViewAccount>(Model)
+    .Name("AjaxViewAccount")
+    .ToolBar(commands =>
         {
-            commands.Custom().Text("添加用户").Action("register", "account");
+            if (Employee.AsManager())
+            {
+                commands.Custom().Text("添加用户").Action("register", "account");
+            }
+    })
+    .DataKeys(keys =>
+    {
+        keys.Add(s => s.UserName);
+    })
+    .Columns(c =>
+    {
+        c.Bound(item => item.UserName).Title("用户名称").Width(200);
+        c.Bound(item => item.Email).Title("电子邮箱").Width(200);
+        c.Bound(item => item.Department).Width(100).Title("部门");
+        c.Bound(item => item.IsActivated).Width(100).Title("是否激活");
+        c.Bound(item => item.StartDate).Width(100).Title("入职时间");
+        c.Bound(item => item.RoleName).Title("职级").Width(100);
+        if (Employee.AsDirector())
+        {
+            c.Bound(item => item.Extension).Title("Extension").Width(100);
         }
-    }
-    )
-                .DataKeys(keys =>
-                {
-                    keys.Add(s => s.UserName);
-                })
-                .Columns(c =>
-                {
-                    c.Bound(item => item.UserName).Title("用户名称").Width(200);
-                    c.Bound(item => item.Email).Title("电子邮箱").Width(200);
-                    c.Bound(item => item.Department).Width(100).Title("部门");
-                    c.Bound(item => item.IsActivated).Width(100).Title("是否激活");
-                    c.Bound(item => item.StartDate).Width(100).Title("入职时间");
-                    c.Bound(item => item.RoleName).Title("职级").Width(100);
-                    if (Employee.AsDirector())
-                    {
-                        c.Bound(item => item.Extension).Title("Extension").Width(100);
-                    }
-                    c.Template(@<span> <a href=@Url.Content("~/Account/Details/?name=" + item.UserName) >
-                        个人信息</a>
-                        @if (Employee.AsDirector())
-                        {
-                            <span>| </span><a href=@Url.Content("~/Account/SetRoleLevel/?name=" + item.UserName)>
-                                设置权限</a>
-                        }
-                    </span>).Title("操作").Width(150);
-                })
-                                                                  .Resizable(resizing => resizing.Columns(true))
-                                                                  .Filterable().Sortable().Groupable()
-                                                                  .Pageable(p => p.PageSize(20))
-                                                                  .Scrollable(scrolling => scrolling.Height(350)).Render();
+        c.Template(@<span> <a href=@Url.Content("~/Account/Details/?name=" + item.UserName) >
+            个人信息</a>
+            @if (Employee.AsDirector())
+            {
+                <span>| </span><a href=@Url.Content("~/Account/SetRoleLevel/?name=" + item.UserName)>
+                    设置权限</a>
+            }
+        </span>).Title("操作").Width(150);
+    })
+    .Resizable(resizing => resizing.Columns(true))
+    .Filterable().Sortable().Groupable()
+    .Pageable(p => p.PageSize(20))
+    .Scrollable(scrolling => scrolling.Height(350)).Render();
 
 }

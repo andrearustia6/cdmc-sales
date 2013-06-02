@@ -16,16 +16,16 @@
                     c.Bound(item => item.DealCode).Title("出单号").Width(100);
                     c.Bound(item => item.Package.Name).Title("Package名称").Width(200);
 
-                    c.Bound(item => item.Payment).Width(100).Format("{0:c}").Aggregate(aggregates => aggregates.Sum()).FooterTemplate(@<text>@if (item.Sum != null)
+                    c.Bound(item => item.Payment).Title("销售总额").Width(100).Format("{0:c}").Aggregate(aggregates => aggregates.Sum()).FooterTemplate(@<text>@if (item.Sum != null)
                                                                                                                                              {<p>
-                                                                                                                                                 应收款: @item.Sum.Format("{0:c}")</p>}</text>).GroupFooterTemplate(@<text>@if (item.Sum != null)
+                                                                                                                                                 销售总额: @item.Sum.Format("{0:c}")</p>}</text>).GroupFooterTemplate(@<text>@if (item.Sum != null)
                                                                                                                                                                                                                         {<p>
-                                                                                                                                                                                                                            应收款: @item.Sum.Format("{0:c}")</p>}</text>).Width(100);
-                    c.Bound(item => item.Income).Width(90).Format("{0:c}").Aggregate(aggregates => aggregates.Sum()).FooterTemplate(@<text>@if (item.Sum != null)
+                                                                                                                                                                                                                            销售总额: @item.Sum.Format("{0:c}")</p>}</text>).Width(100);
+                    c.Bound(item => item.Income).Title("入账总额").Width(90).Format("{0:c}").Aggregate(aggregates => aggregates.Sum()).FooterTemplate(@<text>@if (item.Sum != null)
                                                                                                                                            {<p>
-                                                                                                                                               实收款: @item.Sum.Format("{0:c}")</p>}</text>).GroupFooterTemplate(@<text>@if (item.Sum != null)
+                                                                                                                                               入账总额: @item.Sum.Format("{0:c}")</p>}</text>).GroupFooterTemplate(@<text>@if (item.Sum != null)
                                                                                                                                                                                                                       {<p>
-                                                                                                                                                                                                                          实收款: @item.Sum.Format("{0:c}")</p>}</text>).Width(100); ;
+                                                                                                                                                                                                                          入账总额: @item.Sum.Format("{0:c}")</p>}</text>).Width(100); ;
                     c.Bound(item => item.IsClosed).Width(70);
                     c.Bound(item => item.Committer).Width(100);
                     c.Bound(item => item.CommitterContect).Width(100);
@@ -47,9 +47,9 @@
                               }}
                         </span>);
                 }).DetailView(e => e.Template(
-                          @<text>
-@RenderGrid(item)
-</text>
+                        @<text>
+                            @RenderGrid(item)
+                        </text>
                    ))
                     .Resizable(resizing => resizing.Columns(true))
                     .Filterable().Sortable().Groupable()

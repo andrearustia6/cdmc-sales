@@ -352,7 +352,6 @@ namespace BLL
                         deals = deals.Where(w => w.SignDate > onemonth);
                         break;
                     case "2":
-
                         deals = deals.Where(w => w.IsConfirm == null || w.IsConfirm == false);
                         break;
                     case "3":
