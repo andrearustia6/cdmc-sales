@@ -26,9 +26,6 @@
 </script>
 <div style="margin: 5px">
     <label>
-        公司名称：</label>
-    @Html.TextBox("companyName")
-    <label>
         板块负责人：</label>
     @Html.DropDownList("manager", new SelectList(allData.Select(m => m.Manager).Distinct()), "--请选择--")
     <label>

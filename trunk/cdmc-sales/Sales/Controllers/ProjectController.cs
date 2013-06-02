@@ -636,15 +636,12 @@ namespace Sales.Controllers
         }
 
         [HttpPost]
-        public ActionResult ImportCompany(string action, int[] checkedRecords, int importID, string companyName, string manager, DateTime? startDate, DateTime? endDate)
+        public ActionResult ImportCompany(string action, int[] checkedRecords, int importID, string manager, DateTime? startDate, DateTime? endDate)
         {
             if (action == "search")
             {
                 var selProject = CH.GetAllData<Project>().AsEnumerable();
-                if (!string.IsNullOrWhiteSpace(companyName))
-                {
-                    selProject = selProject.Where(s => s.Name.Contains(companyName));
-                }
+
                 if (!string.IsNullOrWhiteSpace(manager))
                 {
                     selProject = selProject.Where(s => s.Manager == manager);
@@ -666,7 +663,7 @@ namespace Sales.Controllers
                     return View();
                 }
                 List<Company> conflictCompany;
-                CRM_Logical._CRM.ImportCompany(checkedRecords, importID, Employee.CurrentUserName, out conflictCompany);
+                CRM_Logical._CRM.ImportCompany(checkedRecords, importID, Employee.GetLoginUserName(), out conflictCompany);
                 if (conflictCompany == null)
                 {
                     return View(CH.GetAllData<Project>());
@@ -676,6 +673,11 @@ namespace Sales.Controllers
                     return View("ConfliceCompany", conflictCompany);
                 }
             }
+        }
+
+        public ActionResult ImportTrace()
+        {
+            return View(CH.GetAllData<ImportCompanyTrace>().OrderByDescending(s => s.ImportDate).ToList());
         }
 
     }

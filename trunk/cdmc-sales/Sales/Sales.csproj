@@ -1674,8 +1674,11 @@
     <Content Include="Views\DirectorReport\Master.cshtml" />
     <Content Include="Views\DirectorReport\DealGroupBySales.cshtml" />
     <Content Include="Views\DirectorReport\DealGroupByProject.cshtml" />
-    <Content Include="Views\Performance\Index.cshtml" />    <Content Include="Views\Project\ImportCompany.cshtml" />
-    <Content Include="Views\Project\ConfliceCompany.cshtml" />    <None Include="Views\SalesEx\EditCompany.cshtml" />
+    <Content Include="Views\Performance\Index.cshtml" />
+    <Content Include="Views\Project\ImportCompany.cshtml" />
+    <Content Include="Views\Project\ConfliceCompany.cshtml" />
+    <Content Include="Views\Project\ImportTrace.cshtml" />
+    <None Include="Views\SalesEx\EditCompany.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\SimulatorConfig.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\AjaxTargetOfMonthForMember.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\AjaxViewDeal.cshtml" />
