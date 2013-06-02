@@ -26,14 +26,14 @@ namespace BLL
                 var calls = from l in CH.DB.LeadCalls.Where(w => w.LeadCallTypeID != null && w.LeadCallType.Code >= 40) select l;
                 // calls =from c in calls group c by c.LeadID into g select g.FirstOrDefault();//分组并选择第一个
                 var leadadds = from l in CH.DB.Leads select l;
-                var year =  DateTime.Now.Year;
+                var year = DateTime.Now.Year;
                 var rates = from r in CH.DB.AssignPerformanceRates.Where(w => w.Month == month && w.Year == year) select r;
                 var scores = from r in CH.DB.AssignPerformanceScores.Where(w => w.Month == month && w.Year == year) select r;
                 var wd = MonthDuration.GetMonthInstance(month).WeekDurations.Select(s => s.StartDate);
                 var lps = from l in leads
                           select new _TeamLeadPerformance()
                           {
-                              Target = CH.DB.TargetOfMonths.Where(t => t.Project.TeamLeader == l && t.Project.IsActived == true && t.StartDate.Month==month).Sum(s => s.CheckIn),
+                              Target = CH.DB.TargetOfMonths.Where(t => t.Project.TeamLeader == l && t.Project.IsActived == true && t.StartDate.Month == month).Sum(s => s.CheckIn),
                               CheckIn = deals.Where(d => d.Project.TeamLeader == l).Sum(s => s.Income),
                               Name = l,
                               Rate = rates.Where(w => w.TargetName == l).Average(s => s.Rate),
@@ -54,7 +54,7 @@ namespace BLL
 
             public static IEnumerable<_SalesPerformance> GetSalesPerformances(int month)
             {
-                var sales = CH.DB.Members.Where(w => w.IsActivated == true && w.Project.IsActived==true).Select(s=>s.Name).Distinct();
+                var sales = CH.DB.Members.Where(w => w.IsActivated == true && w.Project.IsActived == true).Select(s => s.Name).Distinct();
                 if (Utl.Utl.DebugModel() != true)
                 {
                     sales = sales.Where(w => w != "john");
@@ -69,7 +69,7 @@ namespace BLL
                 var lps = from l in sales
                           select new _SalesPerformance()
                           {
-                              Target = CH.DB.TargetOfMonthForMembers.Where(t => t.Member.Name== l && t.StartDate.Month==month && t.Project.IsActived==true).Sum(s => s.CheckIn),
+                              Target = CH.DB.TargetOfMonthForMembers.Where(t => t.Member.Name == l && t.StartDate.Month == month && t.Project.IsActived == true).Sum(s => s.CheckIn),
                               CheckIn = deals.Where(d => d.Project.TeamLeader == l).Sum(s => s.Income),
                               Name = l,
                               Rate = rates.Where(w => w.TargetName == l).Average(s => s.Rate),
@@ -165,11 +165,11 @@ namespace BLL
         {
             public static List<AjaxProjectPerformance> GetAllProjectPerformance()
             {
-                var pid = CRM_Logical.GetUserInvolveProject().Select(s=>s.ID);
+                var pid = CRM_Logical.GetUserInvolveProject().Select(s => s.ID);
                 var list = new List<AjaxProjectPerformance>();
-                foreach(var id in pid)
+                foreach (var id in pid)
                 {
-                   var performance =  GetAjaxProjectPerformance(id);
+                    var performance = GetAjaxProjectPerformance(id);
                     list.Add(performance);
                 }
                 return list;
@@ -177,26 +177,28 @@ namespace BLL
             public static AjaxProjectPerformance GetAjaxProjectPerformance(int? projectid)
             {
                 var p = CH.GetDataById<Project>(projectid);
-                var pdeals= CH.DB.Deals.Where(w=>w.ProjectID==projectid && w.Abandoned==false && w.Income>0 && w.ActualPaymentDate!=null);
-                var pt = CH.DB.TargetOfMonths.Where(w=>w.ProjectID==projectid );
+                var pdeals = CH.DB.Deals.Where(w => w.ProjectID == projectid && w.Abandoned == false && w.Income > 0 && w.ActualPaymentDate != null);
+                var pt = CH.DB.TargetOfMonths.Where(w => w.ProjectID == projectid);
                 var now = DateTime.Now;
                 var data = new AjaxProjectPerformance()
                 {
                     ProjectCode = p.ProjectCode,
-                    LeftDays = (p.ConferenceStartDate-now).TotalDays,
-                    Duration = (p.EndDate-p.StartDate ).TotalDays,
+                    LeftDays = (p.ConferenceStartDate - now).TotalDays,
+                    Duration = (p.EndDate - p.StartDate).TotalDays,
                     ProjectID = p.ID,
                     Name_CH = p.Name_CH,
                     Target = p.Target,
-                    Memebers = (from m in p.Members.Where(a=>a.IsActivated == true) select new AjaxMember { Name= m.Name}),
-                    AjaxProjectPerformanceInMonths = (from d in pdeals group d by new {d.ActualPaymentDate.Value.Month,d.ActualPaymentDate.Value.Year} into grp
-                                                          select new AjaxProjectPerformanceInMonth{
-                                                            Year= grp.Key.Year,
-                                                            Month = grp.Key.Month,
-                                                            CheckIn =pdeals.Sum(s=>s.Income),
-                                                            CheckinTarget = pt.Where(w => w.StartDate.Month == grp.Key.Month && w.StartDate.Year== grp.Key.Year).Sum(s=>s.CheckIn)
-                                                          })
-                    
+                    Memebers = (from m in p.Members.Where(a => a.IsActivated == true) select new AjaxMember { Name = m.Name }),
+                    AjaxProjectPerformanceInMonths = (from d in pdeals
+                                                      group d by new { d.ActualPaymentDate.Value.Month, d.ActualPaymentDate.Value.Year } into grp
+                                                      select new AjaxProjectPerformanceInMonth
+                                                      {
+                                                          Year = grp.Key.Year,
+                                                          Month = grp.Key.Month,
+                                                          CheckIn = pdeals.Sum(s => s.Income),
+                                                          CheckinTarget = pt.Where(w => w.StartDate.Month == grp.Key.Month && w.StartDate.Year == grp.Key.Year).Sum(s => s.CheckIn)
+                                                      })
+
                 };
 
                 return data;
@@ -241,10 +243,10 @@ namespace BLL
                 //公司名在这个项目中是否存在
                 var existscompanynames = from c in p.CompanyRelationships.Select(s => s.Company)
                                          select new { namech = c.Name_CH, nameen = c.Name_EN, id = c.ID };
-
+                //获取导入公司
                 var importCrms = crms.Where(c => (string.IsNullOrEmpty(c.Company.Name_CH) || existscompanynames.Any(a => a.namech == c.Company.Name_CH) == false)
                      && (string.IsNullOrEmpty(c.Company.Name_EN) || existscompanynames.Any(a => a.nameen == c.Company.Name_EN) == false));
-
+                //获取冲突公司
                 var conflictCrms = crms.Except(importCrms);
 
                 if (conflictCrms.Count() > 0)
@@ -263,7 +265,7 @@ namespace BLL
                 {
                     ImportCompanyTrace newdata = new ImportCompanyTrace();
                     newdata.ImportDate = DateTime.Now;
-                    newdata.ImportUserName = Employee.CurrentUserName;
+                    newdata.ImportUserName = user;
                     newdata.ImportCompanyCount = importCrms.Count();
                     newdata.ImportLeadCount = (from i in importCrms
                                                from l in CH.GetAllData<Lead>()
@@ -276,13 +278,13 @@ namespace BLL
                 }
             }
 
-           
+
 
             public static IEnumerable<AjaxCRM> GetCrmByProjectId(int? projectid)
             {
                 if (projectid != null)
-                { 
-                    var crms = CH.DB.CompanyRelationships.Where(c=>c.ProjectID == projectid);
+                {
+                    var crms = CH.DB.CompanyRelationships.Where(c => c.ProjectID == projectid);
                     var ajaxcrms = from c in crms
                                    select new AjaxCRM()
                                    {
@@ -300,7 +302,7 @@ namespace BLL
 
                 return null;
             }
- 
+
         }
 
         public static IQueryable<Deal> GetDeals(bool? acitivatedprojectonly = false, int? projectid = null, string sales = null, string filter = null)
@@ -335,7 +337,7 @@ namespace BLL
             if (!string.IsNullOrEmpty(filter))
             {
                 switch (filter)
-                { 
+                {
                     case "1":
                         DateTime oneday = DateTime.Now.AddDays(-1);
                         deals = deals.Where(w => w.SignDate > oneday);

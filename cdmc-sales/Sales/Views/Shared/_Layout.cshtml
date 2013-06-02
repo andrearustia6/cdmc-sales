@@ -50,7 +50,7 @@
                                item.Add().Text("权限配置").Url("~/accessright/index");
                                item.Add().Text("项目权限").Url("~/projectright/index");
                                item.Add().Text("模拟人配置").Url("~/SimulatorConfig/index");
-                               item.Add().Url("~/Project/ImportCompany").Text("客户数据导入");
+
                            });
                        }
 
@@ -97,12 +97,17 @@
 
                        menu.Add().Text("查看").ImageUrl("~/Content/Common/Icons/mvc.png").Items(item =>
                        {
+                           if (score >= DirectorRequired.LVL)
+                           {
+                               item.Add().Url("~/Project/ImportCompany").Text("客户数据导入");
+                               item.Add().Url("~/Project/ImportTrace").Text("历史导入操作");
+                           }
                            if (score > LeaderRequired.LVL)
                            {
                                item.Add().Url("~/ProgressReport/ProjectProgress").Text("项目进展表");
                                item.Add().Url("~/Report/PerformanceIndex").Text("考核表");
                                item.Add().Url("~/Performance/Index").Text("考核表 2.0");
-                               
+
                            }
                            if (score > SalesRequired.LVL)
                            {
@@ -212,6 +217,7 @@
                            menu.Add().Text("日常工作").ImageUrl("~/Content/Common/Icons/editor.png").Items(item =>
                            {
                                item.Add().Url("~/Project/ImportCompany").Text("客户数据导入");
+                               item.Add().Url("~/Project/ImportTrace").Text("历史导入操作");
                            });
                        }
 
