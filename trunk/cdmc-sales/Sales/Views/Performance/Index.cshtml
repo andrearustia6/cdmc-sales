@@ -2,10 +2,24 @@
     ViewBag.Title = "Index";
 }
 @using Sales.Model;
+
+<fieldset>
+    <legend>月份</legend>
+    @{
+        using (Html.BeginForm())
+        {
+            var m = ViewBag.SelectedMonth as int?;
+            m = m == null ? DateTime.Now.Month : m;
+        @Html.DropDownList("selectedmonth", new SelectList(new List<int>() { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 }, m), new { onchange = "this.form.submit();" })
+        }
+    }
+</fieldset>
+<fieldset>
+
 @(Html.Telerik().Grid<_TeamLeadPerformance>().Name("lead")
     .DataBinding(dataBinding =>
     {
-        dataBinding.Ajax() .Select("_SelectLeadIndex", "Performance");
+        dataBinding.Ajax().Select("_SelectLeadIndex", "Performance", new { month=ViewBag.Month as int?});
 })
 .Columns(columns => {
     columns.Bound(p => p.Name);
@@ -23,3 +37,114 @@
   }) .Pageable(p=>p.Style(GridPagerStyles.Status)
        .PageOnScroll(true).PageSize(35)).Scrollable(scrolling => scrolling.Height(450)).Sortable().Filterable()
 )
+
+@(Html.Telerik().Grid<_TeamLeadPerformance>().Name("sales")
+    .DataBinding(dataBinding =>
+    {
+        dataBinding.Ajax().Select("_SelectSalesIndex", "Performance", new { month = ViewBag.Month as int? });
+})
+.Columns(columns => {
+    columns.Bound(p => p.Name);
+    columns.Bound(p => p.CompletePercent);
+    columns.Bound(p => p.CheckinScore);
+    columns.Bound(p => p.LeadNotQualifiedWeeksCount);
+    columns.Bound(p => p.AddLeadScore);
+    columns.Bound(p => p.HoursOrFaxNotQualifiedWeeksCount);
+    columns.Bound(p => p.FaxCallScore);
+    columns.Bound(p => p.AssignedScore);
+    columns.Bound(p => p.Rate);
+    columns.Bound(p => p.Score);
+    columns.Bound(p => p.FaxOutCountString);
+    columns.Bound(p => p.LeadAddCountString);
+  }) .Pageable(p=>p.Style(GridPagerStyles.Status)
+       .PageOnScroll(true).PageSize(35)).Scrollable(scrolling => scrolling.Height(450)).Sortable().Filterable()
+)
+<fieldset>
+    <legend>考核标准</legend>
+    <table width="100%">
+        <tr>
+            <td>
+                CheckIn每月目标完成
+            </td>
+            <td>
+                R≥140%, 70%
+            </td>
+            <td>
+                R≥120%,60%
+            </td>
+            <td>
+                R≥100%,50%
+            </td>
+            <td>
+                R≥80%,40%
+            </td>
+            <td>
+                R≥60%,30%
+            </td>
+            <td>
+                R<60%,0%
+            </td>
+        </tr>
+        <tr>
+            <td>
+                调研每周达标
+            </td>
+            <td>
+                每周达标, 20%
+            </td>
+            <td>
+                一周不达标, 15%
+            </td>
+            <td>
+                两周不达标, 10%
+            </td>
+            <td>
+                三周不达标, 5%
+            </td>
+            <td colspan="2">
+                四周及以上不达标,0%
+            </td>
+          
+        </tr>
+        <tr>
+            <td>
+                FaxOut|Call每周达标
+            </td>
+            <td>
+                每周达标, 20%
+            </td>
+            <td>
+                一周不达标, 15%
+            </td>
+            <td>
+                两周不达标, 10%
+            </td>
+            <td>
+                三周不达标, 5%
+            </td>
+            <td colspan="2">
+                四周及以上不达标,0%
+            </td>
+        </tr>
+        <tr>
+            <td>
+                完成布置的任务
+            </td>
+            <td colspan="2">
+                始终做到,10%
+            </td>
+            <td colspan="2">
+                一次做不到,5%
+            </td>
+            <td colspan="2">
+                两次及以上做不到,0%
+            </td>
+        </tr>
+        <tr>
+        <td>
+                考核系数
+            </td>
+        <td colspan="6"> 销售系统使用情况 本人或组员未按公司要求使用系统,0 本人及组员系统使用情况良好,1.2 （Karen打分, 系统默认考核系数为1）</td></tr>
+    </table>
+    
+</fieldset>
