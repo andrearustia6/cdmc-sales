@@ -1,0 +1,11 @@
+﻿@using Entity
+@using Utl
+@using Model
+<fieldset>
+<legend>个人信息</legend>
+@{
+    var user = Employee.GetUserByName(Model);
+    var role = CH.GetDataById<Role>(user.RoleID);
+    
+}
+</fieldset>

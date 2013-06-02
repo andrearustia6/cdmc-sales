@@ -1662,5 +1662,10 @@ namespace Sales.Controllers
 
             return Content("");
         }
+
+        public ActionResult SalesDashboard()
+        {
+            return View();
+        }
     }
 }
