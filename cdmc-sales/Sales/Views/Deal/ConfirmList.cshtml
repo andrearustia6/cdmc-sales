@@ -86,7 +86,7 @@
             else
             { <text>请您确认</text> }
         }';
-        $(e.form).closest(".t-window-content").width(850).height(780);
+        $(e.form).closest(".t-window-content").width(650).height(550);
         var popup = $("#" + e.currentTarget.id + "PopUp");
         popup.find(".t-window-title").html(title);
         var popupDataWin = popup.data("tWindow");
@@ -95,9 +95,10 @@
         //alert(JSON.stringify(popup));
     }
     function onRowDataBound(e) {
-        if (e.dataItem.IsConfirm == "是") {
-          $(e.row).find('a.t-grid-edit').remove(); //remove Edit button
-    }}
+        if ((e.dataItem.IsConfirm == "是") && ( e.dataItem.Income != 0  || e.dataItem.ActualPaymentDate != null )) {
+            $(e.row).find('a.t-grid-edit').remove(); //remove Edit button
+        }
+    }
 
 
 </script>

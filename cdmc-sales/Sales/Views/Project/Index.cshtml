@@ -4,40 +4,40 @@
 @{ViewBag.Title = "项目列表";}
 @Html.Partial("contenttitle", "项目管理")
 @(Html.Telerik().Grid<Project>(Model).Name("Project").ToolBar(commands => commands.Custom().Text("项目立项").Action("Create", "Project"))
-                .DataKeys(keys =>
+        .DataKeys(keys =>
+        {
+            keys.Add(s => s.ID);
+        })
+        .Columns(c =>
+        {
+            c.Bound(item => item.Name);
+            c.Bound(item => item.ProjectCode).Width(120);
+            c.Bound(item => item.StartDate).Format("{0:d}").Width(100);
+            c.Bound(item => item.EndDate).Format("{0:d}").Width(100);
+            c.Bound(item => item.EndDate).Template(@<text>
+            @{
+                var span = item.EndDate - DateTime.Now;
+                @Html.Label(span.Days.ToString())
+                }</text>).Format("{0:d}").Title("剩余时间").Width(100);
+            c.Bound(item => item.ConferenceStartDate).Width(70);
+            c.Bound(item => item.IsActived).Width(70);
+            c.Bound(item => item.Manager).Width(70);
+            c.Bound(item => item.TeamLeader).Width(70);
+            c.Bound(item => item.Conference).Width(70);
+            c.Bound(item => item.Target).Width(120).Format("{0:C}");
+            c.Bound(item => item.ID).Width(150).Title("操作").Template(@<span> <a href=@Url.Content("~/Project/Edit/" + item.ID) >
+                编辑</a> | <a href=@Url.Content("~/Project/Details/" + item.ID)>详细</a>
+                | <a href=@Url.Content("~/Project/Management/" + item.ID)> 项目管理</a>
+                @if(Employee.EqualToAdministrator())
                 {
-                    keys.Add(s => s.ID);
-                })
-                .Columns(c =>
-                {
-                    c.Bound(item => item.Name);
-                    c.Bound(item => item.ProjectCode).Width(120);
-                    c.Bound(item => item.StartDate).Format("{0:d}").Width(100);
-                    c.Bound(item => item.EndDate).Format("{0:d}").Width(100);
-                    c.Bound(item => item.EndDate).Template(@<text>
-                    @{
-                        var span = item.EndDate - DateTime.Now;
-                        @Html.Label(span.Days.ToString())
-                        }</text>).Format("{0:d}").Title("剩余时间").Width(100);
-                    c.Bound(item => item.ConferenceStartDate).Width(70);
-                    c.Bound(item => item.IsActived).Width(70);
-                    c.Bound(item => item.Manager).Width(70);
-                    c.Bound(item => item.TeamLeader).Width(70);
-                    c.Bound(item => item.Target).Width(120).Format("{0:C}");
-                    c.Bound(item => item.ID).Width(150).Title("操作").Template(@<span> <a href=@Url.Content("~/Project/Edit/" + item.ID) >
-                        编辑</a> | <a href=@Url.Content("~/Project/Details/" + item.ID)>详细</a>
-                        | <a href=@Url.Content("~/Project/Management/" + item.ID)> 项目管理</a>
-                        @if(Employee.EqualToAdministrator())
-                        {
-                            <text>
-                            | <a href=@Url.Content("~/Project/delete/" + item.ID)>删除</a>
-                            </text>
-                            }
-                         </span>);
-                })
-               
-.Resizable(resizing => resizing.Columns(true))
-                                                                         .Filterable().Sortable().Groupable()
-                                                                         .Pageable(p => p.PageSize(20))
-                                                                         .Scrollable(scrolling => scrolling.Height(350))
+                <text>
+                | <a href=@Url.Content("~/Project/delete/" + item.ID)>删除</a>
+                </text>
+                }
+            </span>);
+        })
+        .Resizable(resizing => resizing.Columns(true))
+        .Filterable().Sortable().Groupable()
+        .Pageable(p => p.PageSize(20))
+        .Scrollable(scrolling => scrolling.Height(350))
 )
