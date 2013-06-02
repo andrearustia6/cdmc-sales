@@ -5,6 +5,25 @@
 @{ViewBag.Title = "客户数据导入";}
 @Html.Partial("contenttitle", "客户数据导入")
 @{List<Project> allData = CH.GetAllData<Project>();}
+<script type="text/javascript">
+    function importVerification() {
+        var $checkedRecords = $("input[name='checkedRecords']");
+        for (var i = 0; i < $checkedRecords.length; i++) {
+            var cr = $checkedRecords[i];
+            if (cr.checked) {
+                if (confirm('是否导入到' + $("#importID").find("option:selected").text())) {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
+        }
+        alert('请选择导入源！');
+        return false;
+    }
+
+</script>
 <div style="margin: 5px">
     <label>
         公司名称：</label>
@@ -51,7 +70,8 @@
     <label>
         选择要导入的项目名：</label>
     @Html.DropDownList("importID", new SelectList(allData, "ID", "Name"))
-    <button value="export" id="export" type="submit" name="action" onclick="return confirm('是否导入所选项目？');">
+    @* <button value="export" id="export" type="submit" name="action" onclick="return confirm('是否导入所选项目？');">*@
+    <button value="export" id="export" type="submit" name="action" onclick="return importVerification();">
         导入</button>
 </div>
 @{ Html.EndForm(); }
