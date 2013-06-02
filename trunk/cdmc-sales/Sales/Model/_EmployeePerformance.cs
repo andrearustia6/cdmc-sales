@@ -46,7 +46,7 @@ namespace Sales.Model
             get; set;
         }
 
-        [Display(Name = "CheckIn分数")]
+        [Display(Name = "入账分数")]
         public int CheckinScore
         {
             get
@@ -56,7 +56,7 @@ namespace Sales.Model
             }
         }
 
-        [Display(Name = "调研Lead分数")]
+        [Display(Name = "调研分数")]
         public int AddLeadScore
         {
             get
@@ -65,7 +65,7 @@ namespace Sales.Model
             }
         }
 
-        [Display(Name = "通话时间/FaxOut分数")]
+        [Display(Name = "FaxOut分数")]
         public int FaxCallScore
         {
             get
@@ -88,9 +88,13 @@ namespace Sales.Model
 
         [Display(Name = "主观评分")]
         public double? AssignedScore { get; set; }
+        [Display(Name = "员工")]
         public string Name { get; set; }
+         [Display(Name = "月目标")]
         public decimal? Target { get; set; }
+         [Display(Name = "月入账额")]
         public decimal? CheckIn { get; set; }
+         [Display(Name = "入账目标完成百分比")]
         public double? CompletePercent { get {
             if (Target == null || Target == 0 || CheckIn==null||CheckIn==0) return 0;
 
@@ -99,6 +103,7 @@ namespace Sales.Model
         }
         public IEnumerable<_TeamLeadPerformanceInWeek> TeamLeadPerformanceInWeeks { private get; set; }
 
+        [Display(Name = "Faxout详细")]
         public string FaxOutCountString
         {
             get
@@ -107,7 +112,7 @@ namespace Sales.Model
                 return string.Join(",", counts);
             }
         }
-
+         [Display(Name = "调研详细")]
         public string LeadAddCountString
         {
             get
@@ -208,7 +213,7 @@ namespace Sales.Model
             set;
         }
 
-        [Display(Name = "CheckIn分数")]
+        [Display(Name = "入账分数")]
         public int CheckinScore
         {
             get
@@ -218,7 +223,7 @@ namespace Sales.Model
             }
         }
 
-        [Display(Name = "调研Lead分数")]
+        [Display(Name = "调研分数")]
         public int AddLeadScore
         {
             get
@@ -227,7 +232,7 @@ namespace Sales.Model
             }
         }
 
-        [Display(Name = "通话时间/FaxOut分数")]
+        [Display(Name = "FaxOut分数")]
         public int FaxCallScore
         {
             get
@@ -250,9 +255,14 @@ namespace Sales.Model
 
         [Display(Name = "主观评分")]
         public double? AssignedScore { get; set; }
+        [Display(Name = "员工")]
         public string Name { get; set; }
+        [Display(Name = "月目标")]
         public decimal? Target { get; set; }
+        [Display(Name = "月入账额")]
         public decimal? CheckIn { get; set; }
+
+        [Display(Name = "入账目标完成百分比")]
         public double? CompletePercent
         {
             get
@@ -264,6 +274,7 @@ namespace Sales.Model
         }
         public IEnumerable<_SalesPerformanceInWeek> SalesPerformanceInWeeks { private get; set; }
 
+         [Display(Name = "Faxout详细")]
         public string FaxOutCountString
         {
             get
@@ -273,6 +284,7 @@ namespace Sales.Model
             }
         }
 
+        [Display(Name = "调研详细")]
         public string LeadAddCountString
         {
             get

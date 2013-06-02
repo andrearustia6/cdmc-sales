@@ -8,14 +8,17 @@
     @{
         using (Html.BeginForm())
         {
-            var m = ViewBag.SelectedMonth as int?;
+            var m = ViewBag.Month as int?;
             m = m == null ? DateTime.Now.Month : m;
-        @Html.DropDownList("selectedmonth", new SelectList(new List<int>() { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 }, m), new { onchange = "this.form.submit();" })
+        @Html.DropDownList("month", new SelectList(new List<int>() { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 }, m), new { onchange = "this.form.submit();" })
         }
     }
 </fieldset>
 @{
 var month = ViewBag.Month as int?;
+
+<fieldset>
+<legend>销售经理考核</legend>
 @(Html.Telerik().Grid<_TeamLeadPerformance>().Name("lead")
     .DataBinding(dataBinding =>
     {
@@ -23,27 +26,33 @@ var month = ViewBag.Month as int?;
 })
 .Columns(columns => {
     columns.Bound(p => p.Name);
-    columns.Bound(p => p.CompletePercent);
-    columns.Bound(p => p.CheckinScore);
-    columns.Bound(p => p.LeadNotQualifiedWeeksCount);
-    columns.Bound(p => p.AddLeadScore);
-    columns.Bound(p => p.HoursOrFaxNotQualifiedWeeksCount);
-    columns.Bound(p => p.FaxCallScore);
-    columns.Bound(p => p.AssignedScore);
-    columns.Bound(p => p.Rate);
-    columns.Bound(p => p.Score);
-    columns.Bound(p => p.FaxOutCountString);
-    columns.Bound(p => p.LeadAddCountString);
-  }) .Pageable(p=>p.Style(GridPagerStyles.Status)
-       .PageOnScroll(true).PageSize(35)).Scrollable(scrolling => scrolling.Height(450)).Sortable().Filterable()
-)
+    columns.Bound(p => p.CompletePercent).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
+    columns.Bound(p => p.CheckinScore).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
+    columns.Bound(p => p.LeadNotQualifiedWeeksCount).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
+    columns.Bound(p => p.AddLeadScore).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
+    columns.Bound(p => p.HoursOrFaxNotQualifiedWeeksCount).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
+    columns.Bound(p => p.FaxCallScore).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
+    columns.Bound(p => p.AssignedScore).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
+    columns.Bound(p => p.Rate).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
+    columns.Bound(p => p.Score).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
+    columns.Bound(p => p.FaxOutCountString).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
+    columns.Bound(p => p.LeadAddCountString).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
+  })
 
+  .Pageable(p=>p.Style(GridPagerStyles.Status)
+       .PageOnScroll(true).PageSize(35)).Scrollable(scrolling => scrolling.Height(450)).Sortable().Filterable().Resizable(r=>r.Columns(true))
+)
+</fieldset>
+    
+ <fieldset>
+<legend>销售考核</legend>   
 @(Html.Telerik().Grid<_TeamLeadPerformance>().Name("sales")
     .DataBinding(dataBinding =>
     {
         dataBinding.Ajax().Select("_SelectSalesIndex", "Performance", new { month = month });
-})
-.Columns(columns => {
+    })
+.Columns(columns =>
+{
     columns.Bound(p => p.Name);
     columns.Bound(p => p.CompletePercent);
     columns.Bound(p => p.CheckinScore);
@@ -56,9 +65,10 @@ var month = ViewBag.Month as int?;
     columns.Bound(p => p.Score);
     columns.Bound(p => p.FaxOutCountString);
     columns.Bound(p => p.LeadAddCountString);
-  }) .Pageable(p=>p.Style(GridPagerStyles.Status)
+}).Pageable(p => p.Style(GridPagerStyles.Status)
        .PageOnScroll(true).PageSize(35)).Scrollable(scrolling => scrolling.Height(450)).Sortable().Filterable()
 )
+</fieldset>
 }
 <fieldset>
     <legend>考核标准</legend>
