@@ -203,6 +203,7 @@ namespace Sales.Controllers
             if (Employee.CurrentRole.Level == 4)//财务填写income
             {
                 var ds = from d in CRM_Logical.GetDeals()
+                         where d.IsConfirm == true
                          // modified on 2013/05/30 解决财务填写确认和会务部确认后单据不显示问题
                          //where d.IsConfirm == true && (d.Income == 0 || d.ActualPaymentDate == null)
                          select new AjaxViewDeal
@@ -273,6 +274,7 @@ namespace Sales.Controllers
             if (Employee.CurrentRole.Level == 4)//财务填写income
             {
                 var ds = from d in CRM_Logical.GetDeals(false,null,null,filter)
+                         where d.IsConfirm == true
                          // modified on 2013/05/30 解决财务填写确认和会务部确认后单据不显示问题
                          //where d.IsConfirm == true && (d.Income == 0 || d.ActualPaymentDate == null)
                          select new AjaxViewDeal
@@ -357,15 +359,6 @@ namespace Sales.Controllers
             ViewBag.ProjectID = item.CompanyRelationship.ProjectID;
             ViewBag.CompanyRelationshipID = item.CompanyRelationshipID;
             return View(item);
-        }
-
-        [HttpPost]
-        public ActionResult _GetFilter()
-        {
-            return new JsonResult
-            {
-                Data = Utl.SelectHelper.FilterSelectList()
-            };
         }
 
     }

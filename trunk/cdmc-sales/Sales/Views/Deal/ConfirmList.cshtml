@@ -6,16 +6,12 @@
 <div id="filter-container" style="height: 30px;">
     <span>
         <label style="margin:5px;float: left;">筛选:</label>
-     @(Html.Telerik().ComboBox()
+     @(Html.Telerik().DropDownList()
         .Name("Filters")
         .BindTo(Utl.SelectHelper.FilterSelectList())
-        .AutoFill(true)
-        .Filterable(filtering =>
-        {
-            filtering.FilterMode(AutoCompleteFilterMode.StartsWith);
-        })
-        .HtmlAttributes(new { style = "width: 300px; margin:5px; float: left;" })
-        .ClientEvents(events => events.OnChange("filterChange").OnLoad("onComboBoxLoad"))
+        .HtmlAttributes(new { style = "width: 200px; margin:5px; float: left;" })
+        .SelectedIndex(0)
+        .ClientEvents(events => events.OnChange("filterChange").OnLoad("onDropDownListLoad"))
     )
     </span>
 </div>
@@ -52,11 +48,12 @@
         c.Command(commands =>
         {
             commands.Edit().ButtonType(GridButtonType.Image);
-
         }).Title("确认");
     }
+    c.Bound(item => item.IsConfirm).Hidden(true);
+
 })
-.ClientEvents(events => events.OnDataBinding("dataBinding"))
+.ClientEvents(events => events.OnDataBinding("dataBinding").OnEdit("onEdit").OnRowDataBound("onRowDataBound"))
 .DataBinding(dataBinding =>
 {
     dataBinding.Ajax()
@@ -72,23 +69,35 @@
         $("#Grid").data("tGrid").rebind();
     }
     function dataBinding(e) {
-        var filter = $("#Filters").data("tComboBox").value();
+        var filter = $("#Filters").data("tDropDownList").value();
         e.data = $.extend(e.data, { filterId: filter });
-
-        //alert(JSON.stringify($("#Grid").data("tGrid")));
-//        var gird = $(this).data('tGrid');
-//        alert(JSON.stringify(gird));
-//        alert(JSON.stringify(e));
-//        e.data = $.extend(e.data, { filter: filter });
-//        alert(JSON.stringify(e));
-//        alert(filter);
     }
 
     function selectedFilter() {
-        return $("#Filters").data("tComboBox").value();
+        return $("#Filters").data("tDropDownList").value();
     }
-    function onComboBoxLoad() {
-        $(this).data("tComboBox").fill();
+    function onDropDownListLoad() {
+        $(this).data("tDropDownList").fill();
     }
+    function onEdit(e) {
+        var title ='@{
+            if (Utl.Employee.CurrentRole.Level == 4)
+            { <text>请您填写入账额</text> }
+            else
+            { <text>请您确认</text> }
+        }';
+        $(e.form).closest(".t-window-content").width(850).height(780);
+        var popup = $("#" + e.currentTarget.id + "PopUp");
+        popup.find(".t-window-title").html(title);
+        var popupDataWin = popup.data("tWindow");
+        var l = ($(window).width() / 2 - $(popup).width() / 2);
+        popup.css({ "left": l + "px", "margin-left": "0", "width": $(popup).width(), "height": $(popup).height()});
+        //alert(JSON.stringify(popup));
+    }
+    function onRowDataBound(e) {
+        if (e.dataItem.IsConfirm == "是") {
+          $(e.row).find('a.t-grid-edit').remove(); //remove Edit button
+    }}
+
 
 </script>

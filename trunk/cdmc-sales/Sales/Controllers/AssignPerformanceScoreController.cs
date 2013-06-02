@@ -43,7 +43,22 @@ namespace Sales.Controllers
             var item = CH.GetDataById<AssignPerformanceScore>(id);
             if (TryUpdateModel(item))
             {
-                CH.Edit<AssignPerformanceScore>(item);
+                var data = CH.GetAllData<AssignPerformanceScore>(
+                          aps => aps.TargetName == item.TargetName
+                                 && aps.ID != item.ID
+                                 && aps.Year == item.Year
+                                 && aps.Month == item.Month);
+                if (data == null || data.Count() == 0)
+                {
+                    if (ModelState.IsValid)
+                    {
+                        CH.Edit<AssignPerformanceScore>(item);
+                    }
+                }
+                else
+                {
+                    ModelState.AddModelError("TargetName", "您选择的被考核人当月已经有被打分的记录.");
+                }
             }
             List<AssignPerformanceScore> list;
             if (Employee.CurrentRole.Level < 1000)
@@ -58,10 +73,24 @@ namespace Sales.Controllers
         public ActionResult _InsertAjaxEditing()
         {
             var item = new AssignPerformanceScore();
-
+           
             if (TryUpdateModel(item))
             {
-                CH.Create<AssignPerformanceScore>(item);
+                var data = CH.GetAllData<AssignPerformanceScore>(
+                           aps => aps.TargetName == item.TargetName 
+                                  && aps.Year == item.Year
+                                  && aps.Month == item.Month);
+                if (data == null || data.Count() == 0)
+                {
+                    if (ModelState.IsValid)
+                    {
+                        CH.Create<AssignPerformanceScore>(item);
+                    }
+                }
+                else
+                {
+                    ModelState.AddModelError("TargetName", "您选择的被考核人当月已经有被打分的记录.");
+                }
             }
             //Rebind the grid       
             List<AssignPerformanceScore> list;
@@ -84,6 +113,7 @@ namespace Sales.Controllers
                 list = CH.GetAllData<AssignPerformanceScore>();
             return View(new GridModel(list));
         }
+       
 
     }
 }

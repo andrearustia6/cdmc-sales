@@ -222,6 +222,10 @@ namespace MvcGlobalAuthorize.Controllers
         [ManagerRequired]
         public ActionResult Register(UserInfoModel model)
         {
+            if (model.UserName.Trim().Contains(" "))
+            {
+                ModelState.AddModelError("UserName", "帐号中间不可以有空格.");
+            }
             if (ModelState.IsValid)
             {
                 // Attempt to register the user
