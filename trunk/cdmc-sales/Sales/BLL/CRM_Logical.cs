@@ -26,13 +26,14 @@ namespace BLL
                 var calls = from l in CH.DB.LeadCalls.Where(w => w.LeadCallTypeID != null && w.LeadCallType.Code >= 40) select l;
                 // calls =from c in calls group c by c.LeadID into g select g.FirstOrDefault();//分组并选择第一个
                 var leadadds = from l in CH.DB.Leads select l;
-                var rates = from r in CH.DB.AssignPerformanceRates.Where(w => w.Month == month && w.Year == DateTime.Now.Year) select r;
-                var scores = from r in CH.DB.AssignPerformanceScores.Where(w => w.Month == month && w.Year == DateTime.Now.Year) select r;
+                var year =  DateTime.Now.Year;
+                var rates = from r in CH.DB.AssignPerformanceRates.Where(w => w.Month == month && w.Year == year) select r;
+                var scores = from r in CH.DB.AssignPerformanceScores.Where(w => w.Month == month && w.Year == year) select r;
                 var wd = MonthDuration.GetMonthInstance(month).WeekDurations.Select(s => s.StartDate);
                 var lps = from l in leads
                           select new _TeamLeadPerformance()
                           {
-                              Target = CH.DB.TargetOfMonths.Where(t => t.Project.TeamLeader == l&&t.Project.IsActived==true&&t.Month==month).Sum(s => s.CheckIn),
+                              Target = CH.DB.TargetOfMonths.Where(t => t.Project.TeamLeader == l && t.Project.IsActived == true && t.StartDate.Month==month).Sum(s => s.CheckIn),
                               CheckIn = deals.Where(d => d.Project.TeamLeader == l).Sum(s => s.Income),
                               Name = l,
                               Rate = rates.Where(w => w.TargetName == l).Average(s => s.Rate),
@@ -66,14 +67,14 @@ namespace BLL
                 var scores = from r in CH.DB.AssignPerformanceScores.Where(w => w.Month == month && w.Year == DateTime.Now.Year) select r;
                 var wd = MonthDuration.GetMonthInstance(month).WeekDurations.Select(s => s.StartDate);
                 var lps = from l in sales
-                          select new _TeamLeadPerformance()
+                          select new _SalesPerformance()
                           {
-                              Target = CH.DB.TargetOfMonthForMembers.Where(t => t.Member.Name== l && t.Month==month && t.Project.IsActived==true).Sum(s => s.CheckIn),
+                              Target = CH.DB.TargetOfMonthForMembers.Where(t => t.Member.Name== l && t.StartDate.Month==month && t.Project.IsActived==true).Sum(s => s.CheckIn),
                               CheckIn = deals.Where(d => d.Project.TeamLeader == l).Sum(s => s.Income),
                               Name = l,
                               Rate = rates.Where(w => w.TargetName == l).Average(s => s.Rate),
                               AssignedScore = scores.Where(w => w.TargetName == l).Average(s => s.Score),
-                              TeamLeadPerformanceInWeeks = wd.Select(s => new _TeamLeadPerformanceInWeek
+                              SalesPerformanceInWeeks = wd.Select(s => new _SalesPerformanceInWeek
                               {
                                   //FaxOutCount = calls.Where(c => c.Member != null && c.Member.Name == l).GroupBy(c=>c.LeadID).Select(g=>g.FirstOrDefault()).Count(c=>c.CreatedDate >= s && c.CreatedDate < EntityFunctions.AddDays(s, 7)),
                                   FaxOutCount = calls.Where(w => w.Member != null && w.Member.Name == l).OrderBy(o => o.CallDate).GroupBy(c => c.LeadID).Select(ss => ss.FirstOrDefault()).Count(c => c.CreatedDate >= s && c.CreatedDate < EntityFunctions.AddDays(s, 7)),

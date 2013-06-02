@@ -14,12 +14,12 @@
         }
     }
 </fieldset>
-<fieldset>
-
+@{
+var month = ViewBag.Month as int?;
 @(Html.Telerik().Grid<_TeamLeadPerformance>().Name("lead")
     .DataBinding(dataBinding =>
     {
-        dataBinding.Ajax().Select("_SelectLeadIndex", "Performance", new { month=ViewBag.Month as int?});
+        dataBinding.Ajax().Select("_SelectLeadIndex", "Performance", new { month = month });
 })
 .Columns(columns => {
     columns.Bound(p => p.Name);
@@ -41,7 +41,7 @@
 @(Html.Telerik().Grid<_TeamLeadPerformance>().Name("sales")
     .DataBinding(dataBinding =>
     {
-        dataBinding.Ajax().Select("_SelectSalesIndex", "Performance", new { month = ViewBag.Month as int? });
+        dataBinding.Ajax().Select("_SelectSalesIndex", "Performance", new { month = month });
 })
 .Columns(columns => {
     columns.Bound(p => p.Name);
@@ -59,6 +59,7 @@
   }) .Pageable(p=>p.Style(GridPagerStyles.Status)
        .PageOnScroll(true).PageSize(35)).Scrollable(scrolling => scrolling.Height(450)).Sortable().Filterable()
 )
+}
 <fieldset>
     <legend>考核标准</legend>
     <table width="100%">

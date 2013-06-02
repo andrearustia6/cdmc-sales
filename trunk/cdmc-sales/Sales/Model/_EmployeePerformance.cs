@@ -187,7 +187,7 @@ namespace Sales.Model
         {
             get
             {
-                return TeamLeadPerformanceInWeeks.Count(c => c.IsLeadAddedQualified == false);
+                return SalesPerformanceInWeeks.Count(c => c.IsLeadAddedQualified == false);
             }
         }
 
@@ -196,7 +196,7 @@ namespace Sales.Model
         {
             get
             {
-                return TeamLeadPerformanceInWeeks.Count(c => c.IsFaxOutOrCallHoursQualified == false);
+                return SalesPerformanceInWeeks.Count(c => c.IsFaxOutOrCallHoursQualified == false);
             }
         }
 
@@ -262,13 +262,13 @@ namespace Sales.Model
                 return Utl.Utl.GetPercent((double)CheckIn, (double)Target);
             }
         }
-        public IEnumerable<_TeamLeadPerformanceInWeek> TeamLeadPerformanceInWeeks { private get; set; }
+        public IEnumerable<_SalesPerformanceInWeek> SalesPerformanceInWeeks { private get; set; }
 
         public string FaxOutCountString
         {
             get
             {
-                var counts = TeamLeadPerformanceInWeeks.Select(s => s.FaxOutCount);
+                var counts = SalesPerformanceInWeeks.Select(s => s.FaxOutCount);
                 return string.Join(",", counts);
             }
         }
@@ -277,7 +277,7 @@ namespace Sales.Model
         {
             get
             {
-                var counts = TeamLeadPerformanceInWeeks.Select(s => s.LeadsCount);
+                var counts = SalesPerformanceInWeeks.Select(s => s.LeadsCount);
                 return string.Join(",", counts);
             }
         }
