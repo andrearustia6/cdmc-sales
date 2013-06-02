@@ -28,10 +28,21 @@ namespace Sales.Model
             d.MonthEndDate = d.MonthStartDate.EndOfMonth();
 
             d.StartDate1 = d.MonthStartDate;
-            while (d.StartDate1.DayOfWeek != DayOfWeek.Monday)
+            if (d.StartDate1.DayOfWeek == DayOfWeek.Saturday || d.StartDate1.DayOfWeek == DayOfWeek.Sunday)
             {
-                d.StartDate1 = d.StartDate1.AddDays(-1);
+                while (d.StartDate1.DayOfWeek != DayOfWeek.Monday)
+                {
+                    d.StartDate1 = d.StartDate1.AddDays(1);
+                }
             }
+            else
+            {
+                while (d.StartDate1.DayOfWeek != DayOfWeek.Monday)
+                {
+                    d.StartDate1 = d.StartDate1.AddDays(-1);
+                }
+            }
+           
             d.EndDate1 = d.StartDate1.AddDays(7);
             d.DurationStrings.Add(d.StartDate1.ToShortMonthString() + "~" + d.EndDate1.ToShortMonthString());
             d.WeekDurations.Add(new WeekDuration() { StartDate = d.StartDate1, EndDate=d.EndDate1,order=1});
@@ -51,7 +62,7 @@ namespace Sales.Model
             d.EndDate4 = d.StartDate4.AddDays(7);
             d.DurationStrings.Add(d.StartDate4.ToShortMonthString() + "~" + d.EndDate4.ToShortMonthString());
             d.WeekDurations.Add(new WeekDuration() { StartDate = d.StartDate4, EndDate = d.EndDate4, order = 4 });
-            if (d.EndDate4.AddDays(7).Month == month)//存在第5周
+            if (d.EndDate4.AddDays(5).Month == month)//存在第5周
             {
                 d.StartDate5 = d.EndDate4;
                 d.EndDate5 = d.StartDate5.Value.AddDays(7);

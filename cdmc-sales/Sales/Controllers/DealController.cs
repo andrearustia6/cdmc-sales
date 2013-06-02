@@ -10,6 +10,7 @@ using Utl;
 using BLL;
 using Model;
 using Telerik.Web.Mvc;
+using System.Data.Objects;
 
 namespace Sales.Controllers
 {
@@ -308,6 +309,7 @@ namespace Sales.Controllers
             {
                 var user = Employee.CurrentUserName;
                 // modified on 2013/05/30 解决会务部接口人多选问题
+         
                 var ds = from d in CRM_Logical.GetDeals(false, null, null, filter).Where(w => w.Project.Conference.Contains(user))
                          // modified on 2013/05/30 解决财务填写确认和会务部确认后单据不显示问题
                          // where d.IsConfirm == null || d.IsConfirm == false
