@@ -10,10 +10,24 @@
 <center><h2>我的主页</h2></center>
 @Html.Partial("personinfo", Employee.CurrentUserName)
 
-<fieldset>
-<legend>月目标概览</legend>
+@{  
+    using (Html.BeginForm())
+    {
+        var month = ViewBag.SelectedMonth as int?;
+        month = month == null ? DateTime.Now.Month : month;
 
-</fieldset>
+        if (Employee.CurrentRole.Level == 10)
+        {
+            var single = CRM_Logical._EmployeePerformance.GetSingleSalesPerformance(month.Value);
+        <text>@Html.Partial("SalesDashboard", single, new ViewDataDictionary {{ "month", month }});</text>
+        }
+        else
+        {
+            var single = CRM_Logical._EmployeePerformance.GetSingleTemaLeadsPerformance(month.Value);
+        <text>@Html.Partial("TeamLeaderDashboard", single, new ViewDataDictionary {{ "month", month }});</text>
+        }
+    }
+}
 
 <fieldset>
 <legend>待打电话安排列表</legend>
@@ -30,20 +44,20 @@
 
         members.ForEach(m =>
         {
-            if(m!=null)
+            if (m != null)
             {
-            var cs = m.GetMemberToCallList(DateTime.Now.AddDays(-7));
-            //var temp = m.GetMemberToCallList(DateTime.Now.AddHours(-DateTime.Now.Hour), null);
-            calls.AddRange(cs);
+                var cs = m.GetMemberToCallList(DateTime.Now.AddDays(-7));
+                //var temp = m.GetMemberToCallList(DateTime.Now.AddHours(-DateTime.Now.Hour), null);
+                calls.AddRange(cs);
             }
         });
 
         if (calls.Count > 0)
         {
             @(Html.Telerik().Grid(calls).Name("ToCall").DataKeys(keys =>
-            {
-                keys.Add(s => s.ID);
-            })
+        {
+            keys.Add(s => s.ID);
+        })
             .Columns(c =>
             {
                 c.Bound(item => item.Lead.Name).Title("客户姓名").Width(100);
@@ -108,11 +122,11 @@
                 c.Bound(item => item.CompanyRelationship.Company.Name).Title("客户名称").Width(150);
                 c.Bound(item => item.Package.Name).Title("Package名称").Width(150);
                 c.Bound(item => item.Payment).Width(100).Format("{0:c}").Aggregate(aggregates => aggregates.Sum()).FooterTemplate(@<text>@if (item.Sum != null)
-                                                                                                                                            {<p>应收款: @item.Sum.Format("{0:c}")</p>}</text>).GroupFooterTemplate(@<text>@if (item.Sum != null)
+                                                                                                                                         {<p>应收款: @item.Sum.Format("{0:c}")</p>}</text>).GroupFooterTemplate(@<text>@if (item.Sum != null)
                                                                                                                                                                                                                     {<p>应收款: @item.Sum.Format("{0:c}")</p>}</text>).Width(100);
                 c.Bound(item => item.Income).Width(90).Format("{0:c}").Aggregate(aggregates => aggregates.Sum()).FooterTemplate(@<text>@if (item.Sum != null)
-                                                                                                                                        {<p>实收款: @item.Sum.Format("{0:c}")</p>}</text>).GroupFooterTemplate(@<text>@if (item.Sum != null)
-                                                                                                                                                                                                                    {<p>实收款: @item.Sum.Format("{0:c}")</p>}</text>).Width(100); ;
+                                                                                                                                       {<p>实收款: @item.Sum.Format("{0:c}")</p>}</text>).GroupFooterTemplate(@<text>@if (item.Sum != null)
+                                                                                                                                                                                                                  {<p>实收款: @item.Sum.Format("{0:c}")</p>}</text>).Width(100); ;
                 c.Bound(item => item.ExpectedPaymentDate).Format("{0:d}").Width(90);
                 c.Bound(item => item.Committer);
                 c.Bound(item => item.CommitterContect);
@@ -155,23 +169,23 @@
         var pv = p.GetProjectMemberLeadCalls(pcs, DateTime.Now.AddHours(-12), DateTime.Now);
 
         @(Html.Telerik().Grid(pv).Name("projectv" + p.ID).DataKeys(keys =>
-         {
-             keys.Add(s => s.Member.ID);
-         }).Columns(c =>
-         {
-             c.Bound(item => item.Member.Name).Width(60);
+    {
+        keys.Add(s => s.Member.ID);
+    }).Columns(c =>
+    {
+        c.Bound(item => item.Member.Name).Width(60);
              @*c.Bound(item => item.Member.SalesType.Name).Width(80);
              c.Bound(item => item.Duration).Title("通话时间").Width(80);
              c.Bound(item => item.Cold_Calls).Width(90).Aggregate(item => item.Sum()).FooterTemplate(@<text>@item.Sum</text>);*@
-             c.Bound(item => item.DMs).Width(50);
-             c.Bound(item => item.New_DMs).Width(70);
-             c.Bound(item => item.Pitched).Width(55);
-             c.Bound(item => item.Full_Pitched).Width(90);
-             c.Bound(item => item.Call_Backed).Width(90);
-             c.Bound(item => item.Waiting_For_Approval);
-             c.Bound(item => item.Qualified_Decision);
-             c.Bound(item => item.Closed).Width(70);
-         }).Resizable(resizing => resizing.Columns(true))
+        c.Bound(item => item.DMs).Width(50);
+        c.Bound(item => item.New_DMs).Width(70);
+        c.Bound(item => item.Pitched).Width(55);
+        c.Bound(item => item.Full_Pitched).Width(90);
+        c.Bound(item => item.Call_Backed).Width(90);
+        c.Bound(item => item.Waiting_For_Approval);
+        c.Bound(item => item.Qualified_Decision);
+        c.Bound(item => item.Closed).Width(70);
+    }).Resizable(resizing => resizing.Columns(true))
         .Scrollable(scrolling => scrolling.Height(250))
         )
     }
