@@ -19,22 +19,30 @@ namespace BLL
             {
                 var user = Employee.CurrentUserName;
                 var rolelvl = Employee.CurrentRole.Level;
-                if (rolelvl >= 500)
+                if (rolelvl >= 100)
                 {
-
                     var leads = CH.DB.Projects.Where(w => w.IsActived == true && !string.IsNullOrEmpty(w.TeamLeader)).Select(s => s.TeamLeader).Distinct();
-                    if (rolelvl == 500)//版块负责人只能看到自己项目所属的lead
+                  
+
+                     if (Utl.Utl.DebugModel() != true)
+                    {
+                        var debugmembers = CH.DB.Members.Where(w => w.Test == true).Select(s=>s.Name).Distinct();
+                        leads = leads.Where(w => debugmembers.Any(a=>a==w)==false);
+                    }
+
+
+                     if (rolelvl == 500)//版块负责人只能看到自己项目所属的lead
                     {
                         var leadinsameprojects = from p in CH.DB.Projects.Where(w => w.Manager == user) select p.TeamLeader;
                         leads = leads.Where(w => leadinsameprojects.Any(a => a == w));
                     }
-                    
-                    
-                    if (Utl.Utl.DebugModel() != true)
+                    else if (rolelvl == 100)
                     {
-                       // leads = leads.Where(w => w != "sean");
+                        leads = leads.Where(w => w == user);
                     }
-                    var deals = CRM_Logical.GetDeals();
+                    
+                   
+                    var deals = CRM_Logical.GetDeals().Where(w => w.ActualPaymentDate.Value != null && w.ActualPaymentDate.Value.Month==month);
                     var calls = from l in CH.DB.LeadCalls.Where(w => w.LeadCallTypeID != null && w.LeadCallType.Code >= 40) select l;
                     // calls =from c in calls group c by c.LeadID into g select g.FirstOrDefault();//分组并选择第一个
                     var leadadds = from l in CH.DB.Leads select l;
@@ -64,7 +72,7 @@ namespace BLL
                               };
                     return lps;
                 }
-                return null;
+                return new List<_TeamLeadPerformance>();
             }
 
             public static IEnumerable<_SalesPerformance> GetSalesPerformances(int month)
@@ -91,20 +99,20 @@ namespace BLL
 
                     if (sales != null)
                     {
+                       
+
                         var leads = CH.DB.Projects.Where(w => w.IsActived == true && !string.IsNullOrEmpty(w.TeamLeader)).Select(s => s.TeamLeader).Distinct();
-                        if (Utl.Utl.DebugModel() != true)
-                        {
-                           // leads = leads.Where(w => w != "sean");
-                        }
 
                         if (Utl.Utl.DebugModel() != true)
                         {
-                            //sales = sales.Where(w => w != "john");
+                            var debugmembers = CH.DB.Members.Where(w => w.Test == true).Select(s => s.Name).Distinct();
+                            sales = sales.Where(w => !debugmembers.Any(a => a == w));
                         }
+                       
 
                         sales = sales.Where(w => !leads.Any(a => a == w));//排除sales中的lead
 
-                        var deals = CRM_Logical.GetDeals();
+                        var deals = CRM_Logical.GetDeals().Where(w => w.ActualPaymentDate.Value != null && w.ActualPaymentDate.Value.Month == month);
                         var calls = from l in CH.DB.LeadCalls.Where(w => w.LeadCallTypeID != null && w.LeadCallType.Code >= 40) select l;
                         // calls =from c in calls group c by c.LeadID into g select g.FirstOrDefault();//分组并选择第一个
                         var leadadds = from l in CH.DB.Leads select l;
@@ -135,7 +143,7 @@ namespace BLL
                     }
                 }
 
-                return null;
+                return new List<_SalesPerformance>();
                 
             }
 

@@ -215,10 +215,9 @@ namespace Sales.Controllers
 
         public List<AjaxTargetOfMonthForMember> getData()
         {
-            var project = CH.GetAllData<Project>(s => s.TeamLeader == Employee.CurrentUserName);
+            var pids = CH.GetAllData<Project>(s => s.TeamLeader == Employee.CurrentUserName).Select(s=>s.ID);
             var data = from db in CH.DB.TargetOfMonthForMembers
-                       from p in CH.DB.Projects
-                       where p.ID == db.Project.ID && (db.IsConfirm == null || db.IsConfirm == false)
+                       where pids.Any(a=>a==db.ProjectID) && (db.IsConfirm == null || db.IsConfirm == false)
                        select new AjaxTargetOfMonthForMember
                        {
                            ID = db.ID,
