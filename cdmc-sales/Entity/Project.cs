@@ -531,6 +531,12 @@ namespace Entity
 
         [Display(Name = "导入Lead数")]
         public int ImportLeadCount { get; set; }
+
+        [Display(Name = "导入目标项目")]
+        public string ImportTargetProject { get; set; }
+
+        [Display(Name = "导入项目源")]
+        public string ImportSourceProject { get; set; }
     }
 }
 

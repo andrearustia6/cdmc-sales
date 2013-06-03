@@ -14,7 +14,8 @@
                     c.Bound(item => item.ImportDate);
                     c.Bound(item => item.ImportCompanyCount);
                     c.Bound(item => item.ImportLeadCount);
-
+                    c.Bound(item => item.ImportTargetProject);
+                    c.Bound(item => item.ImportSourceProject);
                 })
 
                 .Resizable(resizing => resizing.Columns(true))
