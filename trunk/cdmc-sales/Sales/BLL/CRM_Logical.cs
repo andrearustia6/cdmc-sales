@@ -36,7 +36,7 @@ namespace BLL
                               Target = CH.DB.TargetOfMonths.Where(t => t.Project.TeamLeader == l && t.Project.IsActived == true && t.StartDate.Month == month).Sum(s => s.CheckIn),
                               CheckIn = deals.Where(d => d.Project.TeamLeader == l).Sum(s => s.Income),
                               Name = l,
-                              Rate = rates.Where(w => w.TargetName == l).Average(s => s.Rate)==null?1: scores.Where(w => w.TargetName == l).Average(s => s.Score),
+                              Rate = rates.Where(w => w.TargetName == l).Average(s => s.Rate) == null ? 1 : scores.Where(w => w.TargetName == l).Average(s => s.Score),
                               AssignedScore = scores.Where(w => w.TargetName == l).Average(s => s.Score) == null ? 0 : scores.Where(w => w.TargetName == l).Average(s => s.Score),
                               TeamLeadPerformanceInWeeks = wd.Select(s => new _TeamLeadPerformanceInWeek
                               {
@@ -279,6 +279,18 @@ namespace BLL
                                                join l in CH.GetAllData<Lead>()
                                               on i.CompanyID equals l.CompanyID
                                                select l).Count();
+                    newdata.ImportTargetProject = CH.GetDataById<Project>(targetprojectid).Name;
+
+                    var data = from s in CH.GetAllData<Project>()
+                               from i in sourceprojectids
+                               where s.ID == i
+                               select new
+                               {
+                                   s.Name
+                               };
+
+                    newdata.ImportSourceProject = string.Join(",", data.Select(s => s.Name).ToArray());
+
                     CH.Create<ImportCompanyTrace>(newdata);
 
                     p.CompanyRelationships.AddRange(importCrms);
