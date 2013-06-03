@@ -6,7 +6,7 @@
       {
         <legend>请填写实际付款日期和实际入账金额</legend>
         <div style="padding: 0px 3px 0px 3px; margin: 3px">
-            <table>
+            <table style="width:100%">
                 <tr>
                     <td style="width:50px;">
                         <div class="editor-label">
@@ -98,12 +98,12 @@
                 <tr>
                     <td style="width:50px;">
                         <div class="editor-label">
-                            @Html.LabelFor(model => model.TicketDescription)
+                            @Html.LabelFor(model => model.ExpectedPaymentDate)
                         </div>
                     </td>
                     <td>
                         <div class="editor-field">
-                            @Html.TextAreaFor(model => model.TicketDescription, new { @readOnly = "true", style = "width:300px" })
+                            @Html.Telerik().DatePickerFor(model => model.ExpectedPaymentDate).Enable(false)
                         </div>
                     </td>
                     <td style="width:50px;">
@@ -118,16 +118,17 @@
                     </td>
                 </tr>
                 <tr>
-                    <td style="width:50px;">
+                 <td style="width:50px;">
                         <div class="editor-label">
-                            @Html.LabelFor(model => model.ExpectedPaymentDate)
+                            @Html.LabelFor(model => model.TicketDescription)
                         </div>
                     </td>
                     <td>
                         <div class="editor-field">
-                            @Html.Telerik().DatePickerFor(model => model.ExpectedPaymentDate).Enable(false)
+                            @Html.TextAreaFor(model => model.TicketDescription, new { @readOnly = "true", style = "width:300px" })
                         </div>
                     </td>
+                   
                     <td style="width:50px;">
                         <div class="editor-label">
                             @Html.LabelFor(model => model.PaymentDetail)
@@ -258,16 +259,17 @@
                     </td>
                 </tr>
                 <tr>
-                    <td style="width:50px;">
+                     <td style="width:50px;">
                         <div class="editor-label">
-                            @Html.LabelFor(model => model.TicketDescription)
+                            @Html.LabelFor(model => model.ExpectedPaymentDate)
                         </div>
                     </td>
                     <td>
                         <div class="editor-field">
-                            @Html.TextAreaFor(model => model.TicketDescription, new { @readOnly = "true", style = "width:180px" })
+                            @Html.Telerik().DatePickerFor(model => model.ExpectedPaymentDate).Enable(false)
                         </div>
                     </td>
+
                     <td style="width:50px;">
                         <div class="editor-label">
                             @Html.LabelFor(model => model.Payment)
@@ -280,16 +282,19 @@
                     </td>
                 </tr>
                 <tr>
-                    <td style="width:50px;">
+              
+                   <td style="width:50px;">
                         <div class="editor-label">
-                            @Html.LabelFor(model => model.ExpectedPaymentDate)
+                            @Html.LabelFor(model => model.TicketDescription)
                         </div>
                     </td>
                     <td>
                         <div class="editor-field">
-                            @Html.Telerik().DatePickerFor(model => model.ExpectedPaymentDate).Enable(false)
+                            @Html.TextAreaFor(model => model.TicketDescription, new { @readOnly = "true", style = "width:180px" })
                         </div>
                     </td>
+
+                  
                     <td style="width:50px;">
                         <div class="editor-label">
                             @Html.LabelFor(model => model.PaymentDetail)
