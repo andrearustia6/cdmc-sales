@@ -326,8 +326,6 @@ namespace BLL
                     newdata.ImportDate = DateTime.Now;
                     newdata.ImportUserName = user;
                     newdata.ImportCompanyCount = importCrms.Count();
-
-
                     newdata.ImportLeadCount = CH.GetAllData<Lead>().Where(s => importCrms.Any(i => i.CompanyID == s.CompanyID)).Count();
                     newdata.ImportTargetProject = CH.GetDataById<Project>(targetprojectid).Name;
                     var data = CH.GetAllData<Project>().Where(s => sourceprojectids.Any(a => a == s.ID)).Select(s => s.Name).ToArray();
