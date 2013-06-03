@@ -33,7 +33,7 @@
     //c.Bound(item => item.IsClosed).Width(70);
     //c.Bound(item => item.CommitterContect).Width(100);
     //c.Bound(item => item.Abandoned).Width(70);
-    //c.Bound(item => item.IsConfirm).Width(100);
+    c.Bound(item => item.IsConfirm).Width(100);
 
     if (Utl.Employee.CurrentRole.Level == 4)//财务
     {
@@ -86,7 +86,7 @@
             else
             { <text>请您确认</text> }
         }';
-        $(e.form).closest(".t-window-content").width(650).height(550);
+        $(e.form).closest(".t-window-content").width(750).height(550);
         var popup = $("#" + e.currentTarget.id + "PopUp");
         popup.find(".t-window-title").html(title);
         var popupDataWin = popup.data("tWindow");

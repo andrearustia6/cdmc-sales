@@ -40,7 +40,7 @@ var month = ViewBag.Month as int?;
   })
 
   .Pageable(p=>p.Style(GridPagerStyles.Status)
-       .PageOnScroll(true).PageSize(35)).Scrollable(scrolling => scrolling.Height(450)).Sortable().Filterable().Resizable(r=>r.Columns(true))
+       .PageOnScroll(true).PageSize(25)).Scrollable(scrolling => scrolling.Height(350)).Sortable().Filterable().Resizable(r=>r.Columns(true))
 )
 </fieldset>
     
@@ -66,7 +66,7 @@ var month = ViewBag.Month as int?;
     columns.Bound(p => p.FaxOutCountString);
     columns.Bound(p => p.LeadAddCountString);
 }).Pageable(p => p.Style(GridPagerStyles.Status)
-       .PageOnScroll(true).PageSize(35)).Scrollable(scrolling => scrolling.Height(450)).Sortable().Filterable()
+       .PageOnScroll(true).PageSize(35)).Scrollable(scrolling => scrolling.Height(350)).Sortable().Filterable()
 )
 </fieldset>
 }

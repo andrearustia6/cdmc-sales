@@ -236,10 +236,21 @@ namespace Sales.Controllers
             else//会务确定出单
             {
                 var user = Employee.CurrentUserName;
-                string userDeal = user + ";";
-                var ds = from d in CRM_Logical.GetDeals(false, null, null, filter)
-                             .Where(w => w.Project.Conference.Contains(userDeal))
-                         // where d.IsConfirm == null || d.IsConfirm == false
+                var pids = new List<int>();
+                foreach (var c in CH.DB.Projects.Where(w=>w.IsActived))
+                {
+                    if (!string.IsNullOrEmpty(c.Conference))
+                    {
+                        var names = c.Conference.Split(new string[]{";","；"},  StringSplitOptions.RemoveEmptyEntries);
+                        if (names.Any(n=>n == user))
+                        {
+                            pids.Add(c.ID);
+                        }
+                    }
+                }
+
+                var deals = CRM_Logical.GetDeals(false, null, null, filter).Where(w => pids.Any(a => a == w.ProjectID));
+                var ds = from d in deals
                          select new AjaxViewDeal
                          {
                              CompanyNameEN = d.CompanyRelationship.Company.Name_EN,
