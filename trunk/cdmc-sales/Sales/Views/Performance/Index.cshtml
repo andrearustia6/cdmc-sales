@@ -25,8 +25,8 @@ var month = ViewBag.Month as int?;
         dataBinding.Ajax().Select("_SelectLeadIndex", "Performance", new { month = month });
 })
 .Columns(columns => {
-    columns.Bound(p => p.Name);
-    columns.Bound(p => p.CompletePercent).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
+    columns.Bound(p => p.Name).Width(50);
+    columns.Bound(p => p.CompletePercent).Width(150).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
     columns.Bound(p => p.CheckinScore).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
     columns.Bound(p => p.LeadNotQualifiedWeeksCount).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
     columns.Bound(p => p.AddLeadScore).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });

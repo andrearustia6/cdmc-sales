@@ -87,7 +87,6 @@
                                item.Add().Text("销售类型").Url("~/Salestype/index");
                                item.Add().Text("Call List").Url("~/LeadCallType/index");
                                item.Add().Text("区号管理").Url("~/DistrictNumber/index");
-                               //item.Add().Text("角色管理").Url("~/Role/index");
                                item.Add().Text("成熟度").Url("~/progress/index");
                                item.Add().Text("登陆图片").Url("~/loginpageimage/index");
                                item.Add().Text("权限类型").Url("~/accessright/index");
@@ -97,6 +96,10 @@
 
                        menu.Add().Text("查看").ImageUrl("~/Content/Common/Icons/mvc.png").Items(item =>
                        {
+                           if (score >= SalesRequired.LVL)
+                           {
+                               item.Add().Url("~/Performance/Index").Text("考核表 2.0");
+                           }
                            if (score >= DirectorRequired.LVL)
                            {
                                item.Add().Url("~/Project/ImportCompany").Text("客户数据导入");
@@ -105,8 +108,8 @@
                            if (score > LeaderRequired.LVL)
                            {
                                item.Add().Url("~/ProgressReport/ProjectProgress").Text("项目进展表");
-                               item.Add().Url("~/Report/PerformanceIndex").Text("考核表");
-                               item.Add().Url("~/Performance/Index").Text("考核表 2.0");
+                               //item.Add().Url("~/Report/PerformanceIndex").Text("考核表");
+                              
 
                            }
                            if (score > SalesRequired.LVL)
