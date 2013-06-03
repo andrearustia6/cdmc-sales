@@ -243,7 +243,8 @@ namespace BLL
                                ProjectID = p.ID,
                                Project = p,
                                Creator = user,
-                               CreatedDate = DateTime.Now
+                               CreatedDate = DateTime.Now,
+                               MarkForDelete = false
                            };
                 // Company.IsCompanyExist();
 
@@ -275,8 +276,8 @@ namespace BLL
                     newdata.ImportUserName = user;
                     newdata.ImportCompanyCount = importCrms.Count();
                     newdata.ImportLeadCount = (from i in importCrms
-                                               from l in CH.GetAllData<Lead>()
-                                               where l.CompanyID == i.ID
+                                               join l in CH.GetAllData<Lead>()
+                                              on i.CompanyID equals l.CompanyID
                                                select l).Count();
                     CH.Create<ImportCompanyTrace>(newdata);
 
