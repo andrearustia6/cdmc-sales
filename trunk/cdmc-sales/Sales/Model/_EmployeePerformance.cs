@@ -112,7 +112,7 @@ namespace Sales.Model
                 return string.Join(",", counts);
             }
         }
-         [Display(Name = "调研详细")]
+        [Display(Name = "调研详细")]
         public string LeadAddCountString
         {
             get
@@ -122,6 +122,14 @@ namespace Sales.Model
             }
         }
 
+        public string DealsCountString
+        {
+            get
+            {
+                var counts = TeamLeadPerformanceInWeeks.Select(s => s.DealsCount);
+                return string.Join(",", counts);
+            }
+        }
     }
 
     //Lead当周的考核
@@ -274,7 +282,7 @@ namespace Sales.Model
         }
         public IEnumerable<_SalesPerformanceInWeek> SalesPerformanceInWeeks { private get; set; }
 
-         [Display(Name = "Faxout详细")]
+        [Display(Name = "Faxout详细")]
         public string FaxOutCountString
         {
             get
@@ -291,6 +299,15 @@ namespace Sales.Model
             {
                 var counts = SalesPerformanceInWeeks.Select(s => s.LeadsCount);
                 return string.Join(",", counts);
+            }
+        }
+
+        public string DealsCountString
+        {
+            get 
+            {
+                var counts = SalesPerformanceInWeeks.Select(s => s.DealsCount);
+                return string.Join(",",counts);
             }
         }
 

@@ -5,14 +5,8 @@
 @Html.Partial("contenttitle", "出单到账确认")
 <div id="filter-container" style="height: 30px;">
     <span>
-        <label style="margin:5px;float: left;">筛选:</label>
-     @(Html.Telerik().DropDownList()
-        .Name("Filters")
-        .BindTo(Utl.SelectHelper.FilterSelectList())
-        .HtmlAttributes(new { style = "width: 200px; margin:5px; float: left;" })
-        .SelectedIndex(0)
-        .ClientEvents(events => events.OnChange("filterChange").OnLoad("onDropDownListLoad"))
-    )
+    <label style="margin:7px;float: left;">筛选:</label>
+    @Html.DropDownList("Filters", Utl.SelectHelper.FilterSelectList(), new { style = "margin:5px;float: left;", onchange = "filterChange();" })
     </span>
 </div>
 @(Html.Telerik().Grid<Model.AjaxViewDeal>().Name("Grid")
@@ -69,16 +63,16 @@
         $("#Grid").data("tGrid").rebind();
     }
     function dataBinding(e) {
-        var filter = $("#Filters").data("tDropDownList").value();
+        //var filter = $("#Filters").data("tDropDownList").value();
+        var filter = $("#Filters").val();
         e.data = $.extend(e.data, { filterId: filter });
     }
 
     function selectedFilter() {
-        return $("#Filters").data("tDropDownList").value();
+        //return $("#Filters").data("tDropDownList").value();
+        return $("#Filters").val();
     }
-    function onDropDownListLoad() {
-        $(this).data("tDropDownList").fill();
-    }
+
     function onEdit(e) {
         var title ='@{
             if (Utl.Employee.CurrentRole.Level == 4)

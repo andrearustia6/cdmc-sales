@@ -1684,6 +1684,8 @@
     <Content Include="Views\Shared\EditorTemplates\AjaxViewDeal.cshtml" />
     <Content Include="Views\TargetOfMonth\ConfirmList.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\AjaxTargetOfMonth.cshtml" />
+    <Content Include="Views\Sales\TeamLeaderDashboard.cshtml" />
+    <Content Include="Views\Sales\SalesDashboard.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\TargetOfMonthForMember\Confirm.cshtml" />

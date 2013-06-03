@@ -12,13 +12,13 @@ using System.IO;
 using Telerik.Web.Mvc.Extensions;
 using System.Text;
 using Telerik.Web.Mvc;
+using Sales.Model;
 
 namespace Sales.Controllers
 {
     [SalesRequired]
     public class SalesController : Controller
     {
-
 
         protected override void Dispose(bool disposing)
         {
@@ -1211,8 +1211,10 @@ namespace Sales.Controllers
 
         #endregion
 
-        public ViewResult MyPage()
+        public ViewResult MyPage(int? month)
         {
+            ViewBag.SelectedMonth = month;
+
             var ps = CRM_Logical.GetSalesInvolveProject();
             return View(ps);
         }
@@ -1662,10 +1664,22 @@ namespace Sales.Controllers
 
             return Content("");
         }
-
-        public ActionResult SalesDashboard()
+        
+        public ActionResult SalesDashboard(int? month)
         {
-            return View();
+            if (month == null) month = DateTime.Now.Month;
+            var single = CRM_Logical._EmployeePerformance.GetSingleSalesPerformance(month.Value);
+
+            return PartialView(single);
         }
+
+        public ActionResult TeamLeaderDashboard(int? month)
+        {
+            if (month == null) month = DateTime.Now.Month;
+            var single = CRM_Logical._EmployeePerformance.GetSingleTemaLeadsPerformance(month.Value);
+
+            return PartialView(single);
+        }
+
     }
 }

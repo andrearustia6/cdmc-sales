@@ -24,7 +24,7 @@ namespace BLL
                     var leads = CH.DB.Projects.Where(w => w.IsActived == true && !string.IsNullOrEmpty(w.TeamLeader)).Select(s => s.TeamLeader).Distinct();
                   
 
-                     if (Utl.Utl.DebugModel() != true)
+                    if (Utl.Utl.DebugModel() != true)
                     {
                         var debugmembers = CH.DB.Members.Where(w => w.Test == true).Select(s=>s.Name).Distinct();
                         leads = leads.Where(w => debugmembers.Any(a=>a==w)==false);
@@ -189,7 +189,6 @@ namespace BLL
             }
             #endregion
 
-
             public static int GetCheckInScore(double? completePercent)
             {
                 if (completePercent >= 140) return 70;
@@ -216,6 +215,81 @@ namespace BLL
                 else if (hoursOrFaxNotQualifiedWeeksCount == 2) return 10;
                 else if (hoursOrFaxNotQualifiedWeeksCount == 3) return 5;
                 return 0;
+            }
+
+            public static _TeamLeadPerformance GetSingleTemaLeadsPerformance(int month)
+            {
+                var user = Employee.CurrentUserName;
+                var rolelvl = Employee.CurrentRole.Level;
+                
+                var leads = CH.DB.Projects.Where(w => w.IsActived == true && !string.IsNullOrEmpty(w.TeamLeader)).Select(s => s.TeamLeader).Distinct();
+
+                leads = leads.Where(w => w == user);
+
+                var deals = CRM_Logical.GetDeals().Where(w => w.ActualPaymentDate.Value != null && w.ActualPaymentDate.Value.Month == month);
+                var calls = from l in CH.DB.LeadCalls.Where(w => w.LeadCallTypeID != null && w.LeadCallType.Code >= 40) select l;
+                var leadadds = from l in CH.DB.Leads select l;
+                var year = DateTime.Now.Year;
+                var rates = from r in CH.DB.AssignPerformanceRates.Where(w => w.Month == month && w.Year == year) select r;
+                var scores = from r in CH.DB.AssignPerformanceScores.Where(w => w.Month == month && w.Year == year) select r;
+                var wd = MonthDuration.GetMonthInstance(month).WeekDurations.Select(s => s.StartDate);
+                var lps = from l in leads
+                            select new _TeamLeadPerformance()
+
+                            {
+                                Target = CH.DB.TargetOfMonths.Where(t => t.Project.TeamLeader == l && t.Project.IsActived == true && t.StartDate.Month == month).Sum(s => s.CheckIn),
+                                CheckIn = deals.Where(d => d.Project.TeamLeader == l).Sum(s => s.Income),
+                                Name = l,
+                                Rate = rates.Where(w => w.TargetName == l).Average(s => s.Rate) == null ? 1 : scores.Where(w => w.TargetName == l).Average(s => s.Score),
+                                AssignedScore = scores.Where(w => w.TargetName == l).Average(s => s.Score) == null ? 0 : scores.Where(w => w.TargetName == l).Average(s => s.Score),
+                                TeamLeadPerformanceInWeeks = wd.Select(s => new _TeamLeadPerformanceInWeek
+                                {
+                                    //FaxOutCount = calls.Where(c => c.Member != null && c.Member.Name == l).GroupBy(c=>c.LeadID).Select(g=>g.FirstOrDefault()).Count(c=>c.CreatedDate >= s && c.CreatedDate < EntityFunctions.AddDays(s, 7)),
+                                    FaxOutCount = calls.Where(w => w.Member != null && w.Member.Name == l).OrderBy(o => o.CallDate).GroupBy(c => c.LeadID).Select(ss => ss.FirstOrDefault()).Count(c => c.CreatedDate >= s && c.CreatedDate < EntityFunctions.AddDays(s, 7)),
+                                    DealsCount = deals.Count(c => c.SignDate >= s && c.SignDate < EntityFunctions.AddDays(s, 7)),
+                                    StartDate = s,
+                                    EndDate = EntityFunctions.AddDays(s, 7).Value,
+                                    LeadsCount = leadadds.Count(c => c.Creator == l && c.CreatedDate >= s && c.CreatedDate < EntityFunctions.AddDays(s, 7))
+                                })
+
+                            };
+                return lps.FirstOrDefault();
+                
+            }
+
+            public static _SalesPerformance GetSingleSalesPerformance(int month)
+            {
+                var user = Employee.CurrentUserName;
+                var rolelvl = Employee.CurrentRole.Level;
+                IQueryable<string> sales = null;
+                sales = CH.DB.Members.Where(w => w.IsActivated == true && w.Project.IsActived == true && w.Name == user).Select(s => s.Name).Distinct();
+
+                var deals = CRM_Logical.GetDeals().Where(w => w.ActualPaymentDate.Value != null && w.ActualPaymentDate.Value.Month == month);
+                var calls = from l in CH.DB.LeadCalls.Where(w => w.LeadCallTypeID != null && w.LeadCallType.Code >= 40) select l;
+                var leadadds = from l in CH.DB.Leads select l;
+                var rates = from r in CH.DB.AssignPerformanceRates.Where(w => w.Month == month && w.Year == DateTime.Now.Year) select r;
+                var scores = from r in CH.DB.AssignPerformanceScores.Where(w => w.Month == month && w.Year == DateTime.Now.Year) select r;
+                var wd = MonthDuration.GetMonthInstance(month).WeekDurations.Select(s => s.StartDate);
+                var lps = from l in sales
+                          select new _SalesPerformance()
+                          {
+                              Target = CH.DB.TargetOfMonthForMembers.Where(t => t.Member.Name == l && t.StartDate.Month == month && t.Project.IsActived == true).Sum(s => s.CheckIn),
+                              CheckIn = deals.Where(d => d.Project.TeamLeader == l).Sum(s => s.Income),
+                              Name = l,
+                              Rate = rates.Where(w => w.TargetName == l).Average(s => s.Rate) == null ? 1 : scores.Where(w => w.TargetName == l).Average(s => s.Score),
+                              AssignedScore = scores.Where(w => w.TargetName == l).Average(s => s.Score) == null ? 0 : scores.Where(w => w.TargetName == l).Average(s => s.Score),
+                              SalesPerformanceInWeeks = wd.Select(s => new _SalesPerformanceInWeek
+                              {
+                                  //FaxOutCount = calls.Where(c => c.Member != null && c.Member.Name == l).GroupBy(c=>c.LeadID).Select(g=>g.FirstOrDefault()).Count(c=>c.CreatedDate >= s && c.CreatedDate < EntityFunctions.AddDays(s, 7)),
+                                  FaxOutCount = calls.Where(w => w.Member != null && w.Member.Name == l).OrderBy(o => o.CallDate).GroupBy(c => c.LeadID).Select(ss => ss.FirstOrDefault()).Count(c => c.CreatedDate >= s && c.CreatedDate < EntityFunctions.AddDays(s, 7)),
+                                  DealsCount = deals.Count(c => c.SignDate >= s && c.SignDate < EntityFunctions.AddDays(s, 7)),
+                                  StartDate = s,
+                                  EndDate = EntityFunctions.AddDays(s, 7).Value,
+                                  LeadsCount = leadadds.Count(c => c.Creator == l && c.CreatedDate >= s && c.CreatedDate < EntityFunctions.AddDays(s, 7))
+                              })
+
+                          };
+                return lps.FirstOrDefault();
             }
         }
 
