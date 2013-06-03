@@ -307,14 +307,13 @@ namespace BLL
                 var importCrms = crms.Where(c => (string.IsNullOrEmpty(c.Company.Name_CH) || existscompanynames.Any(a => a.namech == c.Company.Name_CH) == false)
                      && (string.IsNullOrEmpty(c.Company.Name_EN) || existscompanynames.Any(a => a.nameen == c.Company.Name_EN) == false));
                 //获取冲突公司
-                var conflictCrms = crms.Except(importCrms);
+                //var conflictCrms = crms.Except(importCrms);
+                var conflictCrms = CH.GetAllData<CompanyRelationship>().Where(c => c.ProjectID == targetprojectid && comapnytoexport.Any(i => i.ID == c.CompanyID));
+
 
                 if (conflictCrms.Count() > 0)
                 {
-                    conflictCompany = (from s in CH.GetAllData<Company>()
-                                       from c in conflictCrms
-                                       where s.ID == c.CompanyID
-                                       select s).Distinct().ToList();
+                    conflictCompany = CH.GetAllData<Company>().Where(c => conflictCrms.Any(s => s.CompanyID == c.ID)).ToList();
                 }
                 else
                 {
@@ -327,21 +326,13 @@ namespace BLL
                     newdata.ImportDate = DateTime.Now;
                     newdata.ImportUserName = user;
                     newdata.ImportCompanyCount = importCrms.Count();
-                    newdata.ImportLeadCount = (from i in importCrms
-                                               join l in CH.GetAllData<Lead>()
-                                              on i.CompanyID equals l.CompanyID
-                                               select l).Count();
+
+
+                    newdata.ImportLeadCount = CH.GetAllData<Lead>().Where(s => importCrms.Any(i => i.CompanyID == s.CompanyID)).Count();
                     newdata.ImportTargetProject = CH.GetDataById<Project>(targetprojectid).Name;
+                    var data = CH.GetAllData<Project>().Where(s => sourceprojectids.Any(a => a == s.ID)).Select(s => s.Name).ToArray();
 
-                    var data = from s in CH.GetAllData<Project>()
-                               from i in sourceprojectids
-                               where s.ID == i
-                               select new
-                               {
-                                   s.Name
-                               };
-
-                    newdata.ImportSourceProject = string.Join(",", data.Select(s => s.Name).ToArray());
+                    newdata.ImportSourceProject = string.Join(",", data);
 
                     CH.Create<ImportCompanyTrace>(newdata);
 
