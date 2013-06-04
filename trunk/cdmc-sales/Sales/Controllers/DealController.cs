@@ -235,14 +235,14 @@ namespace Sales.Controllers
             }
             else//会务确定出单
             {
-                var user = Employee.CurrentUserName;
+                var user = Employee.CurrentUserName.Trim();
                 var pids = new List<int>();
                 foreach (var c in CH.DB.Projects.Where(w=>w.IsActived))
                 {
                     if (!string.IsNullOrEmpty(c.Conference))
                     {
-                        var names = c.Conference.Split(new string[]{";","；"},  StringSplitOptions.RemoveEmptyEntries);
-                        if (names.Any(n=>n == user))
+                        var names = c.Conference.Trim().Split(new string[]{";","；"},  StringSplitOptions.RemoveEmptyEntries);
+                        if (names.Contains(user))
                         {
                             pids.Add(c.ID);
                         }
