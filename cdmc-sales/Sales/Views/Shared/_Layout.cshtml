@@ -100,16 +100,12 @@
                            {
                                item.Add().Url("~/Performance/Index").Text("考核表 2.0");
                            }
-                           if (score >= DirectorRequired.LVL)
-                           {
-                               item.Add().Url("~/Project/ImportCompany").Text("客户数据导入");
-                               item.Add().Url("~/Project/ImportTrace").Text("历史导入操作");
-                           }
+
                            if (score > LeaderRequired.LVL)
                            {
                                item.Add().Url("~/ProgressReport/ProjectProgress").Text("项目进展表");
                                //item.Add().Url("~/Report/PerformanceIndex").Text("考核表");
-                              
+
 
                            }
                            if (score > SalesRequired.LVL)
@@ -147,6 +143,11 @@
                                {
                                    item.Add().Url("~/teamleader/breakdownindex").Text("周目标");
                                    item.Add().Url("~/TargetOfMonth/TargetIndex").Text("月目标");
+                               }
+                               if (Employee.LoginUserIsAdmin())
+                               {
+                                   item.Add().Url("~/Project/ImportCompany").Text("客户数据导入");
+                                   item.Add().Url("~/Project/ImportTrace").Text("历史导入操作");
                                }
                            });
 
