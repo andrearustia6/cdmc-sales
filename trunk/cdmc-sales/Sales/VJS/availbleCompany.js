@@ -155,11 +155,7 @@ var currentCompanyNameEN = undefined;
             $gender.addClass('fieldError');
              haserror = true;
          }
-         $department = $('.dialogue-editlead form #Department');
-         if ($department.val().length == 0) {
-             $department.addClass('fieldError');
-             haserror = true;
-         }
+      
          $title = $('.dialogue-editlead form #Title');
          if ($title.val().length == 0) {
              $title.addClass('fieldError');
@@ -349,11 +345,7 @@ var currentCompanyNameEN = undefined;
                 $gender.addClass('fieldError');
                 haserror = true;
             }
-            $department = $('.dialogue-addlead form #Department');
-            if ($department.val().length == 0) {
-                $department.addClass('fieldError');
-                haserror = true;
-            }
+          
             $title = $('.dialogue-addlead form #Title');
             if ($title.val().length == 0) {
                 $title.addClass('fieldError');
