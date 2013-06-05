@@ -53,7 +53,7 @@
 
                            });
                        }
-
+                      
                        if (score == FinancialInterfaceRequired.LVL)
                        {
                            menu.Add().Text("日常工作").ImageUrl("~/Content/Common/Icons/editor.png").Items(item =>
@@ -97,6 +97,12 @@
 
                        menu.Add().Text("查看").ImageUrl("~/Content/Common/Icons/mvc.png").Items(item =>
                        {
+                           if (score >= DirectorRequired.LVL)
+                           {
+                               item.Add().Url("~/DirectorReport/DealGroupByProject").Text("报表");
+                           }
+
+                           
                            if (score >= SalesRequired.LVL)
                            {
                                item.Add().Url("~/Performance/Index").Text("考核表 2.0");
