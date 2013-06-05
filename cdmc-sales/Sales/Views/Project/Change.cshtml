@@ -18,6 +18,14 @@
         @Html.EditorFor(model => model.Name_EN)
         @Html.ValidationMessageFor(model => model.Name_EN)
     </div>
+     <div class="editor-label">
+        @Html.LabelFor(model => model.ProjectTypeID)：项目的类型
+    </div>
+    <div class="editor-field">
+        @Html.DropDownListFor(model => model.ProjectTypeID, new SelectList(CH.GetAllData<ProjectType>(),"ID","Name"),"-请选择-")
+        @Html.ValidationMessageFor(model => model.Name_EN)
+    </div>
+
     <div class="editor-label">
         @Html.LabelFor(model => model.Location)：项目举办地点
     </div>

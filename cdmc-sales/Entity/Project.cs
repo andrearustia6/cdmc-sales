@@ -83,11 +83,21 @@ namespace Entity
         public String Name { get; set; }
     }
 
+    public class ProjectType : EntityBase
+    {
+        [Display(Name = "项目类型"), Required]
+        public String Name { get; set; }
+    }
+
     /// <summary>
     /// 项目
     /// </summary>
     public class Project : NameEntity
     {
+        [Display(Name = "项目类型")]
+        public virtual ProjectType ProjectType { get; set; }
+        [Display(Name = "项目类型")]
+        public int?  ProjectTypeID { get; set; }
         [Display(Name = "测试数据")]
         public bool? Test { get; set; }
 

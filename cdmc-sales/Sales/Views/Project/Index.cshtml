@@ -12,6 +12,7 @@
         {
             c.Bound(item => item.Name);
             c.Bound(item => item.ProjectCode).Width(120);
+            c.Bound(item => item .ProjectType.Name).Width(120);
             c.Bound(item => item.StartDate).Format("{0:d}").Width(100);
             c.Bound(item => item.EndDate).Format("{0:d}").Width(100);
             c.Bound(item => item.EndDate).Template(@<text>

@@ -275,6 +275,7 @@
     <Compile Include="Controllers\Type\SalesTypeController.cs" />
     <Compile Include="Controllers\Type\TemplateTypeController.cs" />
     <Compile Include="Controllers\UserFavorsCrmGroupController.cs" />
+    <Compile Include="Controllers\ProjectTypeController.cs" />
     <Compile Include="DB.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -1678,6 +1679,7 @@
     <Content Include="Views\Project\ImportCompany.cshtml" />
     <Content Include="Views\Project\ConfliceCompany.cshtml" />
     <Content Include="Views\Project\ImportTrace.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\ProjectType.cshtml" />
     <None Include="Views\SalesEx\EditCompany.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\SimulatorConfig.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\AjaxTargetOfMonthForMember.cshtml" />
@@ -1686,6 +1688,7 @@
     <Content Include="Views\Shared\EditorTemplates\AjaxTargetOfMonth.cshtml" />
     <Content Include="Views\Sales\TeamLeaderDashboard.cshtml" />
     <Content Include="Views\Sales\SalesDashboard.cshtml" />
+    <Content Include="Views\ProjectType\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\TargetOfMonthForMember\Confirm.cshtml" />
