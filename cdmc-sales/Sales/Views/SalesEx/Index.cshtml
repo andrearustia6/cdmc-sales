@@ -55,13 +55,15 @@
                 </tr>
                 <tr>
                     <td colspan="7">
-                        <span>寻找匹配的名称,邮件,电话: @Html.TextBox("f-fuzzy", "", new { style = "width:260px;line-height:22px" })
+                        <span>寻找匹配的名称,邮件,电话: @Html.TextBox("f-fuzzy", "", new { style = "width:225px;line-height:22px" })
                             <input id="search" style="border: none; width: 67px; height: 21px; background-image: url('../images/chazhao.jpg');"
                                 type="button" />
                             <input type="button" style="border: none; width: 67px; height: 21px; background-image: url('../images/chongzhi.jpg');"
                                 onclick="resetquery()" />
                             <input type="button" style="border: none; width: 67px; height: 21px; background-image: url('../images/tianjia_4.jpg');"
                                 onclick="GetAddCompany()" />
+                            <input type="button" style="border: none; width: 67px; height: 21px; background-image: url('../images/quick_entry.jpg');"
+                                onclick="GetQuickEntry()" />
                         </span><span>最后通话状态:</span> <span style="color: red">NotCall</span> <span style="color: #0000C6">
                             Call-Backed</span> <span style="color: #000000">Blowed</span> <span style="color: #336666">
                                 Pitched</span> <span style="color: #009393">Closed</span> <span style="color: #9F35FF">
@@ -160,9 +162,26 @@
         </div>
     </div></text>)
         .Width(1000)
-            .Height(520)
+        .Height(520).Title("添加公司")
         .Modal(true).Visible(false).Draggable(true)
     )
+
+@(Html.Telerik().Window()
+    .Name("QuickEntry")
+    .Content(@<text>
+    <div class="dialogue-addcompany" style="margin-top:0 20px 0 20px;">
+        <div class="quickEntry-wrapper">
+        </div>
+        <div class="dialogue-buttons">
+            <input type="button" class="btn-queding" onclick="QuickEntry()" />
+            <input type="button" class="btn-quxiao" onclick="CancelQuickEntry()" />
+        </div>
+    </div></text>)
+        .Width(1000)
+        .Height(630).Title("快捷录入")
+        .Modal(true).Visible(false).Draggable(true)
+    )
+
 <script type="text/javascript">
 
     $(document).ready(function () {

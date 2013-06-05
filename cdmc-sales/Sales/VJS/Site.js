@@ -230,20 +230,20 @@ function stopEvent(evt) {
 function IsTelephone(obj)// 正则判断
 { 
 
-var i,strlengh,tempchar; 
-   str=obj; 
-   if(str=="") return false; 
-   strlength=str.length; 
-   for(i=0;i<strlength;i++) 
-   { 
+    var i,strlengh,tempchar; 
+    str=obj; 
+    if(str=="") return false; 
+    strlength = str.length; 
+    for(i=0;i<strlength;i++) 
+    { 
         tempchar=str.substring(i,i+1); 
         if(!(tempchar==0||tempchar==1||tempchar==2||tempchar==3||tempchar==4||tempchar==5||tempchar==6||tempchar==7||tempchar==8||tempchar==9||tempchar=='-'||tempchar==' ')) 
         { 
-        alert("电话号码只能输入数字,空格或中划线 "); 
-        return(false); 
+            alert("电话号码只能输入数字,空格或中划线 "); 
+            return(false); 
         }    
-   } 
-   return(true); 
+    } 
+    return(true); 
 
 //var pattern=((\d{11})|^((\d{7,8})|(\d{4}|\d{3})-(\d{7,8})|(\d{4}|\d{3})-(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1})|(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1}))$)
 

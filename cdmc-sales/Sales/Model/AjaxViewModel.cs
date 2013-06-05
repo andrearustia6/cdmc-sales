@@ -362,6 +362,118 @@ namespace Model
         public DateTime? CallBackDate { get; set; }
     }
 
+
+    public class QuickEntry
+    {
+        #region Company 
+
+        [Display(Name = "项目")]
+        public int? ProjectId { get; set; }
+
+        public int? CompanRelationshipId { get; set; }
+
+        [Display(Name = "ID")]
+        public int? CompanyId { get; set; }
+
+        [Required(ErrorMessage = "必填")]
+        [Display(Name = "中文名字")]
+        public string Name_CN { get; set; }
+
+        [Required(ErrorMessage = "必填")]
+        [Display(Name = "英文名字")]
+        public string Name_EN { get; set; }
+
+        [Required(ErrorMessage = "必填")]
+        [Display(Name = "所属行业")]
+        public int? IndustryId { get; set; }
+        [Display(Name = "所属行业")]
+        public string IndustryString { get; set; }
+
+        [Required(ErrorMessage = "必填")]
+        [Display(Name = "公司性质")]
+        public int? TypeId { get; set; }
+        [Display(Name = "公司性质")]
+        public string TypeString { get; set; }
+
+        [Required(ErrorMessage = "必填")]
+        [Display(Name = "成熟度")]
+        public int ProgressId { get; set; }
+        [Display(Name = "成熟度")]
+        public string ProgressString { get; set; }
+
+        [Required(ErrorMessage = " ")]
+        [Display(Name = "区号/时差")]
+        public int? DistrictNumberId { get; set; }
+
+        [Display(Name = "区号/时差")]
+        public string DistrictNumberString { get; set; }
+
+        [Display(Name = "公司总机")]
+        public string Phone { get; set; }
+
+        [Display(Name = "细分行业")]
+        public List<int> Categories { get; set; }
+        [Display(Name = "细分行业")]
+        public string CategoryString { get; set; }
+
+        #endregion End Company
+
+        #region Lead
+
+        public int LeadId { get; set; }
+
+        [Required(ErrorMessage = "必填")]
+        [Display(Name = "中文名称")]
+        public string LeadName_CN { get; set; }
+
+        [Display(Name = "英文名称")]
+        public string LeadName_EN { get; set; }
+
+        [Display(Name = "性别")]
+        [Required(ErrorMessage = "必填")]
+        public string Gender { get; set; }
+
+        [Display(Name = "客户职位")]
+        public string Title { get; set; }
+        [Required(ErrorMessage = "必填")]
+
+        [Display(Name = "部门")]
+        public string Department { get; set; }
+
+        [Display(Name = "客户直线")]
+        public string Telephone { get; set; }
+
+        [Display(Name = "移动电话")]
+        public string CellPhone { get; set; }
+
+        #endregion End Lead
+
+        #region LeadCall 
+        
+        public int CallId { get; set; }
+
+        [Required(ErrorMessage = "必填")]
+        [Display(Name = "致电时间")]
+        public DateTime CallDate { get; set; }
+
+        [Display(Name = "回打时间")]
+        public DateTime? CallBackDate { get; set; }
+
+        [Required(ErrorMessage = "必填")]
+        [Display(Name = "致电类型")]
+        public int CallTypeId { get; set; }
+
+        [Display(Name = "致电类型")]
+        public string CallTypeString { get; set; }
+
+        [Display(Name = "致电结果")]
+        public string Result { get; set; }
+
+        #endregion End LeadCall
+
+    }
+
+
     public class AjaxViewSaleCompany
     {
         [Display(Name = "项目")]
@@ -395,7 +507,7 @@ namespace Model
         public string WebSite { get; set; }
         [Display(Name = "公司地址")]
         public string Address { get; set; }
-        //[Required(ErrorMessage = " ")]
+        [Required(ErrorMessage = " ")]
         [Display(Name = "区号/时差")]
         public int? DistrictNumberId { get; set; }
         [Display(Name = "区号/时差")]
@@ -460,7 +572,7 @@ namespace Model
         public string Name_EN { get; set; }
         [Display(Name = "客户职位")]
         public string Title { get; set; }
-        [Required(ErrorMessage = "必填")]
+        //[Required(ErrorMessage = "必填")]
         [Display(Name = "部门")]
         public string Department { get; set; }
         [Display(Name = "客户直线")]
@@ -539,12 +651,11 @@ namespace Model
         [Display(Name = "回打时间")]
         public DateTime? CallBackDate { get; set; }
 
-
         [Required(ErrorMessage = "必填")]
-        [Display(Name = "Call类型")]
+        [Display(Name = "致电类型")]
         public int CallTypeId { get; set; }
 
-        [Display(Name = "Call类型")]
+        [Display(Name = "致电类型")]
         public string CallTypeString { get; set; }
         [Display(Name = "致电结果")]
         public string Result { get; set; }

@@ -113,7 +113,7 @@
         </table>
 
         <fieldset id="categories">
-            <legend>Categories <span id="categoriesError">必须选择一项</span></legend>
+            <legend>细分行业 <span id="categoriesError">必须选择一项</span></legend>
             @foreach (Category category in CH.GetAllData<Category>(c => c.ProjectID == Model.ProjectId))
             { 
                     
