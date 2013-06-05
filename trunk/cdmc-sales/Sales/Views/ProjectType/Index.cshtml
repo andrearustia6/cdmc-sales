@@ -1,0 +1,22 @@
+﻿@using Entity
+
+@Html.Partial("contenttitle", "项目类型")           
+@(Html.Telerik().Grid<ProjectType>().Name("Grid")
+.DataKeys(keys => { keys.Add(p => p.ID); })
+.ToolBar(commands => commands.Insert().ImageHtmlAttributes(new { style = "margin-left:0" }))
+.DataBinding(dataBinding => { dataBinding.Ajax()
+    .Select("_SelectIndex", "ProjectType")
+    .Insert("_InsertAjaxEditing", "ProjectType")
+    .Update("_SaveAjaxEditing", "ProjectType")
+    .Delete("_DeleteAjaxEditing", "ProjectType");
+})
+.Columns(columns => {
+    columns.Bound(p => p.Name);
+   columns.Command(commands => { 
+       commands.Edit();
+       commands.Delete();
+   }).Width(220).Title("操作"); })
+   .Editable(editing => editing.Mode( GridEditMode.PopUp))
+   .Pageable(p=>p.Style(GridPagerStyles.Status)
+       .PageOnScroll(true)).Scrollable().Sortable().Filterable().Groupable()
+)
