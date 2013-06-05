@@ -393,7 +393,7 @@ var currentCompanyNameEN = undefined;
             if ($namecn.val().length == 0 && $nameen.val().length == 0) {
                 $namecn.addClass('fieldError');
                 $nameen.addClass('fieldError');
-                alert('Lead中英文名必需至少填一个');
+                alert('客户中英文名必需至少填一个');
                 haserror = true;
             }
 
@@ -748,10 +748,10 @@ var currentCompanyNameEN = undefined;
             fax.addClass('fieldError');
             hasError = true;
         }
-        //            if ($('.dialogue-addcompany form #Fax').val().isEmpty()) {
-        //                $('.dialogue-addcompany form #Fax').addClass('fieldError');
-        //                hasError = true;
-        //            }
+//            if ($('.dialogue-addcompany form #Fax').val().isEmpty()) {
+//                $('.dialogue-addcompany form #Fax').addClass('fieldError');
+//                hasError = true;
+//            }
 //        if ($('.dialogue-addcompany form #WebSite').val().isEmpty()) {
 //            $('.dialogue-addcompany form #WebSite').addClass('fieldError');
 //            hasError = true;
@@ -811,5 +811,147 @@ var currentCompanyNameEN = undefined;
 
     function CancelAddcompany() {
         var window = $('#AddCompany').data('tWindow');
+        window.close();
+    }
+
+    function GetQuickEntry() {
+        var currentProjectId = $('#CurrentProjectId').val();
+        $.post('GetQuickEntry', { projectId: currentProjectId }, function (result) {
+            $('.quickEntry-wrapper').html(result);
+            var window = $('#QuickEntry').data('tWindow');
+            window.center().open();
+        });
+    }
+
+    function QuickEntry() {
+        var hasError = false;
+        $('.dialogue-addcompany form input').removeClass('fieldError');
+        $('.dialogue-addcompany form select').removeClass('fieldError');
+
+        String.prototype.isEmpty = function () { return /^\s*$/.test(this); }
+
+        // validation for company
+        if ($('.dialogue-addcompany form #DistrictNumberId option:selected').val().isEmpty()) {
+            if ($('.dialogue-addcompany form #Name_CN').val().isEmpty()) {
+                $('.dialogue-addcompany form #Name_CN').addClass('fieldError');
+                hasError = true;
+            }
+        }
+        else {
+            if ($('.dialogue-addcompany form #Name_EN').val().isEmpty()) {
+                $('.dialogue-addcompany form #Name_EN').addClass('fieldError');
+                hasError = true;
+            }
+        }
+
+        var telephone = $('.dialogue-addcompany form #Phone');
+        if (telephone.val().isEmpty() || !IsTelephone(telephone.val())) {
+            telephone.addClass('fieldError');
+            hasError = true;
+        }
+
+        if ($('.dialogue-addcompany form #IndustryId').val().isEmpty()) {
+            $('.dialogue-addcompany form #IndustryId').addClass('fieldError');
+            hasError = true;
+        }
+        if ($('.dialogue-addcompany form #TypeId').val().isEmpty()) {
+            $('.dialogue-addcompany form #TypeId').addClass('fieldError');
+            hasError = true;
+        }
+        if ($('.dialogue-addcompany form #ProgressId').val().isEmpty()) {
+            $('.dialogue-addcompany form #ProgressId').addClass('fieldError');
+            hasError = true;
+        }
+
+        if ($('.dialogue-addcompany form input[type=checkbox][name=Categories]:checked').length == 0) {
+            $('fieldset#categories').addClass('fieldError');
+            hasError = true;
+        } else {
+            $('fieldset#categories').removeClass('fieldError');
+        }
+        // end validation for company
+
+        // validation for lead
+        var $namecn = $('.dialogue-addcompany form #LeadName_CN');
+        var $nameen = $('.dialogue-addcompany form #LeadName_EN');
+        if ($namecn.val().length == 0 && $nameen.val().length == 0) {
+            $namecn.addClass('fieldError');
+            $nameen.addClass('fieldError');
+            alert('客户信息中客户中英文名必需至少填一个');
+            haserror = true;
+        }
+
+        $gender = $('.dialogue-addcompany form #Gender');
+        if ($gender.val().length == 0) {
+            $gender.addClass('fieldError');
+            haserror = true;
+        }
+
+        //$department = $('.dialogue-addcompany form #Department');
+        //if ($department.val().length == 0) {
+        //    $department.addClass('fieldError');
+        //    haserror = true;
+        //}
+
+        $title = $('.dialogue-addcompany form #Title');
+        if ($title.val().length == 0) {
+            $title.addClass('fieldError');
+            haserror = true;
+        }
+
+        var telephone = $('.dialogue-addcompany form #Telephone');
+        var cellPhone = $('.dialogue-addcompany form #CellPhone');
+        if ((cellPhone.val().length == 0) && (telephone.val().length == 0)) {
+            alert('客户信息中客户直线移动电话必需至少填一个');
+            telephone.addClass('fieldError');
+            cellPhone.addClass('fieldError');
+            haserror = true;
+        } else {
+            if (telephone.val().length != 0 && !IsTelephone(telephone.val())) {
+                telephone.addClass('fieldError');
+                haserror = true;
+            }
+            if (cellPhone.val().length != 0 && !IsTelephone(cellPhone.val())) {
+                cellPhone.addClass('fieldError');
+                haserror = true;
+            }
+        }
+        // end validation for lead
+
+        // validation for leadcall
+        var $calltype = $('.dialogue-addcompany form #CallTypeId');
+        if ($calltype.val().length == 0) {
+            $calltype.addClass('fieldError');
+            haserror = true;
+        }
+        // end validation for leadcall  
+
+        if (hasError) {
+            return;
+        }
+        var projectid = $('#CurrentProjectId').val();
+        var companyNameCN = $('.dialogue-addcompany #Name_CN').val();
+        var companyNameEN = $('.dialogue-addcompany form #Name_EN').val();
+        $.post('CheckCompanyExist', { projectid: projectid, beforeUpdateCN: null, afterUpdateCN: companyNameCN, beforeUpdateEN: null, afterUpdateEN: companyNameEN }, function (result) {
+            if (result.length > 0) {
+                alert(result);
+            } else {
+                var query = $('.dialogue-addcompany form').serializeArray();
+                $.post('QuickEntry', query, function (result) {
+                    if ((result.companyRelationshipId != null) && (result.leadId != null) && (result.leadCallId != null)) {
+                        $('#QuickEntry').data('tWindow').close();
+                        RefreshCrmList(result.companyRelationshipId);
+                        onCompanyChanging(result.companyRelationshipId);
+                    } else {
+                        alert('快捷录入失败');
+                    }
+                });
+            }
+        });
+    }
+
+
+    function CancelQuickEntry() {
+        var window = $('#QuickEntry').data('tWindow');
         window.close();
     }

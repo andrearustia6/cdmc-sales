@@ -472,6 +472,95 @@ namespace Sales.Controllers
             return PartialView("AddCompany", ajaxViewSaleCompany);
         }
 
+        public ActionResult GetQuickEntry(int? projectId)
+        {
+            QuickEntry quickEntry = new QuickEntry() { ProjectId = projectId, Categories = new List<int>() { }, ProgressId = 11, CallDate = DateTime.Now };
+            return PartialView("QuickEntry", quickEntry);
+        }
+
+        [ValidateInput(false)]
+        public ActionResult QuickEntry(QuickEntry quickEntry)
+        {
+            CompanyRelationship companyRelationship = new CompanyRelationship();
+            companyRelationship.Company = new Company();
+            companyRelationship.Company.AreaID = quickEntry.IndustryId;
+            companyRelationship.Company.CompanyTypeID = quickEntry.TypeId;
+            companyRelationship.Company.Contact = quickEntry.Phone;
+            companyRelationship.Company.DistrictNumberID = quickEntry.DistrictNumberId;
+            companyRelationship.Company.Name_CH = quickEntry.Name_CN;
+            companyRelationship.Company.Name_EN = quickEntry.Name_EN;
+            companyRelationship.Company.CreatedDate = DateTime.Now;
+            companyRelationship.Company.Creator = Employee.CurrentUserName;
+            companyRelationship.Company.ModifiedDate = DateTime.Now;
+            companyRelationship.Company.ModifiedUser = Employee.CurrentUserName;
+            companyRelationship.ProgressID = quickEntry.ProgressId;
+            companyRelationship.Members = new List<Member>() { };
+            companyRelationship.Members.Add(CH.DB.Members.FirstOrDefault(c => c.Name == Employee.CurrentUserName));
+            companyRelationship.ProjectID = quickEntry.ProjectId;
+            companyRelationship.MarkForDelete = false;
+            companyRelationship.CreatedDate = DateTime.Now;
+            companyRelationship.ModifiedDate = DateTime.Now;
+            if (quickEntry.Categories != null)
+            {
+                companyRelationship.Categorys = CH.GetAllData<Category>(c => quickEntry.Categories.Contains(c.ID)).ToList();
+            }
+            string categorystring = string.Empty;
+            companyRelationship.Categorys.ForEach(l =>
+            {
+                if (string.IsNullOrEmpty(categorystring))
+                    categorystring = l.Name;
+                else
+                    categorystring += "," + l.Name;
+            });
+            companyRelationship.CategoryString = categorystring;
+            CH.Create<CompanyRelationship>(companyRelationship);
+
+            Lead lead = null;
+            LeadCall leadCall = null;
+
+            if (companyRelationship.ID > 0)
+            {
+                lead = new Lead()
+                {
+                    Name_CH = quickEntry.LeadName_CN,
+                    Name_EN = quickEntry.LeadName_EN,
+                    Title = quickEntry.Title,
+                    CompanyID = companyRelationship.CompanyID,
+                    Contact = quickEntry.Telephone,
+                    Department = quickEntry.Department,
+                    Gender = quickEntry.Gender,
+                    Mobile = quickEntry.CellPhone,
+                    MarkForDelete = false,
+                    CreatedDate = DateTime.Now,
+                    ModifiedDate = DateTime.Now,
+                };
+
+                CH.Create<Lead>(lead);
+
+                if (lead.ID > 0)
+                {
+                    
+                    var c = CH.GetDataById<CompanyRelationship>(companyRelationship.ID);
+                    var mem = c.Members.FirstOrDefault(m => m.Name == Employee.CurrentUserName);
+                    leadCall = new LeadCall()
+                    {
+                        CallBackDate = quickEntry.CallBackDate,
+                        CallDate = quickEntry.CallDate,
+                        CompanyRelationshipID = companyRelationship.ID,
+                        LeadCallTypeID = quickEntry.CallTypeId,
+                        LeadID = lead.ID,
+                        MemberID = mem.ID,
+                        ProjectID = quickEntry.ProjectId,
+                        Result = quickEntry.Result,
+                        MarkForDelete = false
+                    };
+                    CH.Create<LeadCall>(leadCall);
+                }
+            }
+
+            return Json(new { companyRelationshipId = companyRelationship.ID, companyId = companyRelationship.CompanyID, leadId = lead.ID, leadCallId = leadCall.ID, projectId = companyRelationship.ProjectID });
+        }
+
         [ValidateInput(false)]
         public ActionResult AddCompany(AjaxViewSaleCompany ajaxViewSaleCompany)
         {

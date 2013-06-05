@@ -148,21 +148,6 @@
                      }
                      }
                     </table>
-                   @* @(Html.Telerik().Grid<AjaxCall>(lead.AjaxCalls.OrderByDescending(o => o.CallDate)).Name("lead" + lead.LeadID)
-                    .Columns(columns =>
-                    {
-                        columns.Bound(o => o.CallType).Template(@<text><span id="@(item.LeadCallID)_CallType">@item.CallType</span></text>).Width(80);
-                        columns.Bound(o => o.CallBackDate).Template(@<text><span id="@(item.LeadCallID)_CallBackDate">@item.CallBackDate</span></text>).Width(100);
-                        columns.Bound(o => o.CallDate).Template(@<text><span id="@(item.LeadCallID)_CallDate">@item.CallDate</span></text>).Width(100);
-                        columns.Bound(o => o.Caller).Template(@<text><span id="@(item.LeadCallID)_Caller">@item.Caller</span></text>).Width(80);
-                        columns.Bound(o => o.Result).Template(@<text><span id="@(item.LeadCallID)_Result">@item.Result</span></text>);
-                        if (Employee.LoginUserIsAdmin())
-                        {
-                            columns.Bound(o => o.LeadCallID).Width(120).Template(@<text><input onclick='EditLeadCall(@item.LeadCallID)' type='button' class="salebtn" style=" background-image:url('../images/gengxin.jpg');" /></text>);
-                        }
-                    }).Pageable(paging => paging.Enabled(false)).Resizable(resizing => resizing.Columns(true)).Sortable().Scrollable(scrolling => scrolling.Enabled(false))
-                      )*@
-                  
                
             }
         </div>
@@ -217,7 +202,7 @@
             .Height(540).Draggable(true)
     .Modal(true).Visible(false)
 )
-@(Html.Telerik().Window().Title("新增lead")
+@(Html.Telerik().Window().Title("新增客户")
     .Name("AddLead")
     .Content(@<text><div class="dialogue-addlead">
         <div class="leadadd-wrapper">
@@ -231,7 +216,7 @@
         .Height(340).Draggable(true)
     .Modal(true).Visible(false)
 )
-@(Html.Telerik().Window().Title("更新Lead")
+@(Html.Telerik().Window().Title("更新客户")
     .Name("EditLead")
     .Content(@<text><div class="dialogue-editlead">
         <div class="leadedit-wrapper">
@@ -245,7 +230,7 @@
         .Height(340).Draggable(true)
     .Modal(true).Visible(false)
 )
-@(Html.Telerik().Window().Title("更新LeadCall")
+@(Html.Telerik().Window().Title("更新通话结果")
     .Name("EditCall")
     .Content(@<text><div class="dialogue-editcall">
         <div class="calledit-wrapper">
@@ -259,7 +244,7 @@
         .Height(200).Draggable(true)
     .Modal(true).Visible(false)
 )
-@(Html.Telerik().Window().Title("新增LeadCall")
+@(Html.Telerik().Window().Title("添加通话结果")
     .Name("AddCall")
     .Content(@<text><div class="dialogue-addcall">
         <div class="calladd-wrapper">
