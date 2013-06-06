@@ -330,7 +330,7 @@ namespace BLL
                                TwoMonthBeforeChickIn = deals.Where(w => w.Project.ID == grp.Key.ID && w.ActualPaymentDate >= twomonthbeforestart && w.ActualPaymentDate < onemonthbeforestart).Sum(s => s.Income),
                                ThreeMonthBeforeChickIn = deals.Where(w => w.Project.ID == grp.Key.ID && w.ActualPaymentDate >= threemonthbeforestart && w.ActualPaymentDate < twomonthbeforestart).Sum(s => s.Income),
                                FourthMonthBeforeChickIn = deals.Where(w => w.Project.ID == grp.Key.ID && w.ActualPaymentDate >= fourmonthbeforestart && w.ActualPaymentDate < threemonthbeforestart).Sum(s => s.Income),
-                               FifthMonthBeforeChickIn = deals.Where(w => w.Project.ID == grp.Key.ID).Sum(s => s.Income),
+                               FifthMonthBeforeChickIn = deals.Where(w => w.Project.ID == grp.Key.ID && w.ActualPaymentDate >= fifthmonthbeforestart && w.ActualPaymentDate < fourmonthbeforestart).Sum(s => s.Income),
                                CurrentMonthBeforeTarget = targets.Where(w => w.Project.ID == grp.Key.ID).Sum(s => s.CheckIn),
                                OneMonthBeforeTarget = targets.Where(w => w.Project.ID == grp.Key.ID).Sum(s => s.CheckIn),
                                TwoMonthBeforeTarget = targets.Where(w => w.Project.ID == grp.Key.ID).Sum(s => s.CheckIn),
