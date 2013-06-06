@@ -6,71 +6,72 @@
 @Html.Partial("contenttitle", "我的出单")
 @Html.Partial("projectselector")
 @(Html.Telerik().Grid<Deal>(Model).Name("Deal").ToolBar(commands => commands.Custom().Text("添加出单").Action("AddDeal", "Sales", new { projectid = ViewBag.ProjectID as int? }))
-                .DataKeys(keys =>
-                {
-                    keys.Add(s => s.ID);
-                })
-                .Columns(c =>
-                {
-                    c.Bound(item => item.CompanyRelationship.Company.Name).Title("客户名称").Width(200);
-                    c.Bound(item => item.DealCode).Title("出单号").Width(100);
-                    c.Bound(item => item.Package.Name).Title("Package名称").Width(200);
-
-                    c.Bound(item => item.Payment).Title("销售总额").Width(100).Format("{0:c}").Aggregate(aggregates => aggregates.Sum()).FooterTemplate(@<text>@if (item.Sum != null)
-                                                                                                                                             {<p>
-                                                                                                                                                 销售总额: @item.Sum.Format("{0:c}")</p>}</text>).GroupFooterTemplate(@<text>@if (item.Sum != null)
-                                                                                                                                                                                                                        {<p>
-                                                                                                                                                                                                                            销售总额: @item.Sum.Format("{0:c}")</p>}</text>).Width(100);
-                    c.Bound(item => item.Income).Title("入账总额").Width(90).Format("{0:c}").Aggregate(aggregates => aggregates.Sum()).FooterTemplate(@<text>@if (item.Sum != null)
-                                                                                                                                           {<p>
-                                                                                                                                               入账总额: @item.Sum.Format("{0:c}")</p>}</text>).GroupFooterTemplate(@<text>@if (item.Sum != null)
-                                                                                                                                                                                                                      {<p>
-                                                                                                                                                                                                                          入账总额: @item.Sum.Format("{0:c}")</p>}</text>).Width(100); ;
-                    c.Bound(item => item.IsClosed).Width(70);
-                    c.Bound(item => item.Committer).Width(100);
-                    c.Bound(item => item.CommitterContect).Width(100);
-                    c.Bound(item => item.Abandoned).Width(70);
-                    c.Bound(item => item.TicketDescription).Width(200);
-                    c.Bound(item => item.SignDate).Format("{0:d}").Width(90);
-                    c.Bound(item => item.ExpectedPaymentDate).Format("{0:d}").Width(90);
-                    c.Bound(item => item.ActualPaymentDate).Format("{0:d}").Width(100);
-                    c.Template(item => item.IsConfirm == true ? "是" : "否").Width(100).Title("是否确认");
-
-                    c.Bound(item => item.ID).Title("操作").Width(160).Template(
-                        @<span> <a href=@Url.Content("~/sales/DisplayDeal/?id=" + item.ID + "&projectid=" + item.ProjectID)>
-                            详细</a> | <a href=@Url.Content("~/sales/ModifyParticipant/?dealid=" + item.ID + "&projectid=" + item.ProjectID + "&crmid=" + item.CompanyRelationshipID) >
-                                参会客户编辑</a>
-                            @{if (item.IsConfirm != true)
-                              {
-                                <span>| </span> <a href=@Url.Content("~/sales/EditDeal/?id=" + item.ID + "&projectid=" + item.ProjectID) >
-                                    编辑</a> 
-                              }}
-                        </span>);
-                }).DetailView(e => e.Template(
-                        @<text>
-                            @RenderGrid(item)
-                        </text>
-                   ))
-                    .Resizable(resizing => resizing.Columns(true))
-                    .Filterable().Sortable().Groupable()
-                    .Pageable(p => p.PageSize(20))
-                    .Scrollable(scrolling => scrolling.Height(350))
+        .DataKeys(keys =>
+        {
+            keys.Add(s => s.ID);
+        })
+        .Columns(c =>
+        {
+            c.Bound(item => item.CompanyRelationship.Company.Name).Title("客户名称").Width(200);
+            c.Bound(item => item.DealCode).Title("出单号").Width(100);
+            c.Bound(item => item.Package.Name).Title("Package名称").Width(200);
+            c.Bound(item => item.Payment).Title("销售总额").Width(100).Format("{0:c}").Aggregate(aggregates => aggregates.Sum()).FooterTemplate(@<text>@if (item.Sum != null)
+                                                                                                                                        {<p>
+                                                                                                                                            销售总额: @item.Sum.Format("{0:c}")</p>}</text>).GroupFooterTemplate(@<text>@if (item.Sum != null)
+                                                                                                                                                                                                                {<p>
+                                                                                                                                                                                                                    销售总额: @item.Sum.Format("{0:c}")</p>}</text>).Width(100);
+            c.Bound(item => item.Income).Title("入账总额").Width(90).Format("{0:c}").Aggregate(aggregates => aggregates.Sum()).FooterTemplate(@<text>@if (item.Sum != null)
+                                                                                                                                    {<p>
+                                                                                                                                        入账总额: @item.Sum.Format("{0:c}")</p>}</text>).GroupFooterTemplate(@<text>@if (item.Sum != null)
+                                                                                                                                                                                                                {<p>
+                                                                                                                                                                                                                    入账总额: @item.Sum.Format("{0:c}")</p>}</text>).Width(100); ;
+            c.Bound(item => item.IsClosed).Width(70);
+            c.Bound(item => item.Committer).Width(100);
+            c.Bound(item => item.CommitterContect).Width(100);
+            c.Bound(item => item.Abandoned).Width(70);
+            c.Bound(item => item.TicketDescription).Width(200);
+            c.Bound(item => item.SignDate).Format("{0:d}").Width(90);
+            c.Bound(item => item.ExpectedPaymentDate).Format("{0:d}").Width(90);
+            c.Bound(item => item.ActualPaymentDate).Format("{0:d}").Width(100);
+            c.Template(item => item.IsConfirm == true ? "是" : "否").Width(100).Title("是否确认");
+            c.Bound(item => item.ID).Title("操作").Width(160).Template(
+                @<span> <a href=@Url.Content("~/sales/DisplayDeal/?id=" + item.ID + "&projectid=" + item.ProjectID)>
+                    详细</a> | <a href=@Url.Content("~/sales/ModifyParticipant/?dealid=" + item.ID + "&projectid=" + item.ProjectID + "&crmid=" + item.CompanyRelationshipID) >
+                        参会客户编辑</a>
+                    @{if (item.IsConfirm != true)
+                        {
+                        <span>| </span> <a href=@Url.Content("~/sales/EditDeal/?id=" + item.ID + "&projectid=" + item.ProjectID) >
+                            编辑</a> 
+                        }}
+                </span>);
+        })
+        .DetailView(e => e.Template(
+            @<text>
+                @RenderGrid(item)
+            </text>
+        ))
+        .Resizable(resizing => resizing.Columns(true))
+        .Filterable().Sortable().Groupable()
+        .Pageable(p => p.PageSize(20))
+        .Scrollable(scrolling => scrolling.Height(350))
 
 )
 @helper RenderGrid(Deal deal)
-    {
-    @(Html.Telerik().Grid(deal.Participants).Name("Participants" + deal.ID)
-                            .Columns(c =>
-                            {
-                                c.Bound(o => o.Name);
-                                c.Bound(o => o.Email);
-                                c.Bound(o => o.Contact);
-                                c.Bound(o => o.Mobile);
-                                c.Bound(o => o.Title);
-                                c.Bound(o => o.ParticipantType.Name).Title("参会类型");
+{
+    @(Html.Telerik()
+        .Grid(deal.Participants).Name("Participants" + deal.ID)
+        .Columns(c =>
+        {
+            c.Bound(o => o.Name);
+            c.Bound(o => o.Email);
+            c.Bound(o => o.Contact);
+            c.Bound(o => o.Mobile);
+            c.Bound(o => o.Title);
+            c.Bound(o => o.ParticipantType.Name).Title("参会类型");
 
-                            })
-                                               .Resizable(resizing => resizing.Columns(true))
-                                               .Pageable(p => p.PageSize(20))
-                                               .Sortable())
+        })
+        .Resizable(resizing => resizing.Columns(true))
+        .Pageable(p => p.PageSize(20))
+        .Sortable()
+    )
 }

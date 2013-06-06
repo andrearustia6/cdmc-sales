@@ -6,7 +6,7 @@
   <div class="fenge">
         <div class="fenge_2">
             <span id="currentCompanyName" style="font-weight:bold">@Model.CompanyDisplayName</span>
-            <input class="salebtn" style=" background-image:url('../images/tianjia_3.jpg');" type="button" onclick="onLeadAdd(@(Model.CompanyID))" />
+            <input class="salebtn" style=" background-image:url('../images/chudan.jpg');" type="button" onclick="onQuickAddDeal(@(Model.ProjectID))" />
             <input class="salebtn" style=" background-image:url('../images/tianjia_3.jpg');" type="button" onclick="onLeadAdd(@(Model.CompanyID))" />
             <input type="button" class="salebtn"  style="background-image:url('../images/gengxin.jpg');"  onclick="onCompanyEdit(@(Model.CompanyID))" />
             <input type="button"class="salebtn"  style="background-image:url('../images/gaikuo.jpg'); " onclick="onCompanyDetail(@(Model.CompanyID))" />
@@ -122,41 +122,32 @@
             @if (lead.AjaxCalls != null && lead.AjaxCalls.Count() > 0)
             {
                 var orders = lead.AjaxCalls.OrderByDescending(o => o.CallDate);
-                     <table style="width:98%; margin:10px;">
-                     <tr><th width="80px">致电类型</th><th width="100px">回打时间</th><th width="80px">致电人</th><th width="80px">致电时间</th><th>结果</th>@if (Employee.LoginUserIsAdmin())
-                                                                                                                                            {
-                                                                                                                                                <th>操作</th>
-                                                                                                                   }</tr>
-
-                     @{bool colorSignal = true;
-                     foreach (var call in orders)
-                     {
-                         string classname = string.Empty;
-                         if(colorSignal)
-                         {
-                             classname = "calllistone";
-                         }
-                         else
-                         {
-                             classname = "calllisttwo";
-                         }
-                         
-                         <tr class=@classname><td>@call.CallType</td><td>@call.CallBackDate</td><td>@call.Caller</td><td>@call.CallDate</td><td>@call.Result</td>@if (Employee.LoginUserIsAdmin())
-                                                                                                                                                {
-                                                                                                                             <td><input onclick='EditLeadCall(@call.LeadCallID)' type='button' class="salebtn" style=" background-image:url('../images/gengxin.jpg');" /></td>
-                                                                                                                                                }</tr>
-                         colorSignal = !colorSignal;
-                     }
-                     }
-                    </table>
-               
+                <table style="width:98%; margin:10px;">
+                <tr><th width="80px">致电类型</th><th width="100px">回打时间</th><th width="80px">致电人</th><th width="80px">致电时间</th><th>结果</th>@if (Employee.LoginUserIsAdmin()){<th>操作</th>}</tr>
+                @{bool colorSignal = true;
+                foreach (var call in orders)
+                {
+                    string classname = string.Empty;
+                    if(colorSignal)
+                    {
+                        classname = "calllistone";
+                    }
+                    else
+                    {
+                        classname = "calllisttwo";
+                    }
+                    <tr class=@classname><td>@call.CallType</td><td>@call.CallBackDate</td><td>@call.Caller</td><td>@call.CallDate</td><td>@call.Result</td>@if (Employee.LoginUserIsAdmin())
+                                                                                                                                        {<td><input onclick='EditLeadCall(@call.LeadCallID)' type='button' class="salebtn" style=" background-image:url('../images/gengxin.jpg');" /></td>}</tr>
+                    colorSignal = !colorSignal;
+                }
+                }
+            </table>
             }
         </div>
     </div>     
        }
    }
-      
-      </div>
+</div>
 
 @helper CompanyInfo()
     {}
@@ -171,9 +162,7 @@
             <input type="button" class="btn-queding" onclick="Javescript:$('#DetailCompany').data('tWindow').close();" />
         </div>
     </div></text>)
-    .Width(800)
-        .Height(300).Draggable(true)
-    .Modal(true).Visible(false)
+    .Width(800).Height(300).Draggable(true).Modal(true).Visible(false)
 )
 @(Html.Telerik().Window().Title("更新公司")
     .Name("EditCompany")
@@ -185,9 +174,7 @@
             <input type="button" class="btn-quxiao" onclick="CancelEditcompany()" />
         </div>
     </div></text>)
-        .Width(1000)
-            .Height(540).Draggable(true)
-    .Modal(true).Visible(false)
+    .Width(1000).Height(540).Draggable(true).Modal(true).Visible(false)
 )
 @(Html.Telerik().Window().Title("新增客户")
     .Name("AddLead")
@@ -199,10 +186,22 @@
             <input type="button" class="btn-quxiao" onclick="CancelAddLead()" />
         </div>
     </div></text>)
-        .Width(1000)
-        .Height(340).Draggable(true)
-    .Modal(true).Visible(false)
+    .Width(1000).Height(340).Draggable(true).Modal(true).Visible(false)
 )
+
+@(Html.Telerik().Window().Title("出单")
+    .Name("QuickAddDeal")
+    .Content(@<text><div class="dialogue-quickdeal">
+        <div class="quickdeal-wrapper">
+        </div>
+        <div class="dialogue-buttons">
+            <input type="button" class="btn-queding" onclick="QuickDeal()" />
+            <input type="button" class="btn-quxiao" onclick="CancelQuickDeal()" />
+        </div>
+    </div></text>)
+    .Width(1000).Height(740).Draggable(true).Modal(true).Visible(false)
+)
+
 @(Html.Telerik().Window().Title("更新客户")
     .Name("EditLead")
     .Content(@<text><div class="dialogue-editlead">
@@ -213,9 +212,7 @@
             <input type="button" class="btn-quxiao" onclick="javascript:$('#EditLead').data('tWindow').close();" />
         </div>
     </div></text>)
-    .Width(1000)
-        .Height(340).Draggable(true)
-    .Modal(true).Visible(false)
+    .Width(1000).Height(340).Draggable(true).Modal(true).Visible(false)
 )
 @(Html.Telerik().Window().Title("更新通话结果")
     .Name("EditCall")
@@ -227,9 +224,7 @@
             <input type="button" class="btn-quxiao" onclick="CancelEditCall()" />
         </div>
     </div></text>)
-    .Width(750)
-        .Height(200).Draggable(true)
-    .Modal(true).Visible(false)
+    .Width(750).Height(200).Draggable(true).Modal(true).Visible(false)
 )
 @(Html.Telerik().Window().Title("添加通话结果")
     .Name("AddCall")
@@ -241,13 +236,8 @@
             <input type="button" class="btn-quxiao" onclick="CancelAddCall()" />
         </div>
     </div></text>)
-    .Width(750)
-    .Height(250).Draggable(true)
-    .Modal(true).Visible(false)
+    .Width(750).Height(250).Draggable(true).Modal(true).Visible(false)
 )
-
-
-
 
 <style>
     .fieldblock
@@ -264,9 +254,6 @@
         margin: 0 5px;
         cursor: pointer;
     }
-    
-  
-    
     .fieldname
     {
     }
@@ -323,7 +310,6 @@
         padding: 2px;
         width: 99.2%;
     }
-    
     .calllisttwo
     {
         background-color:rgb(247, 247, 247);
