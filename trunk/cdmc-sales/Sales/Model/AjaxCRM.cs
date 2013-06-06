@@ -27,6 +27,69 @@ namespace Model
      {
          public string Name { get; set; }
      }
+     public class AjaxProjectPerformanceInProjectByMonth
+     {
+         public int ProjectID { get; set; }
+         public string ProjectName { get; set; }
+         public decimal? CurrentMonthBeforeChickIn { get; set; }
+         public decimal? OneMonthBeforeChickIn { get; set; }
+         public decimal? TwoMonthBeforeChickIn { get; set; }
+         public decimal? ThreeMonthBeforeChickIn { get; set; }
+         public decimal? FourthMonthBeforeChickIn { get; set; }
+         public decimal? FifthMonthBeforeChickIn { get; set; }
+         public decimal? SixMonthBeforeChickIn { get; set; }
+
+         public decimal? CurrentMonthBeforeTarget { get; set; }
+         public decimal? OneMonthBeforeTarget { get; set; }
+         public decimal? TwoMonthBeforeTarget { get; set; }
+         public decimal? ThreeMonthBeforeTarget { get; set; }
+         public decimal? FourthMonthBeforeTarget { get; set; }
+         public decimal? FifthMonthBeforeTarget { get; set; }
+         public decimal? SixMonthBeforeTarget { get; set; }
+
+         public decimal? CurrentMonthBeforePercent { get; set; }
+         public decimal? OneMonthBeforePercent { get; set; }
+         public decimal? TwoMonthBeforePercent { get; set; }
+         public decimal? ThreeMonthBeforePercent { get; set; }
+         public decimal? FourthMonthBeforePercent { get; set; }
+         public decimal? FifthMonthBeforePercent { get; set; }
+         public decimal? SixMonthBeforePercent { get; set; }
+     }
+     public class AjaxProjectPerformanceInMonthByProjectType
+     {
+         [Display(Name = "考察入账")]
+         public decimal? KaoChaCheckIn { get; set; }
+         [Display(Name = "Events入账")]
+         public decimal? EventsCheckIn { get; set; }
+         [Display(Name = "杂志入账")]
+         public decimal? MagazineCheckIn { get; set; }
+          [Display(Name = "青岛分公司入账")]
+         public decimal? QingDaoSubComanyCheckIn { get; set; }
+         [Display(Name = "考察入账目标")]
+         public decimal? KaoChaTarget { get; set; }
+         [Display(Name = "Events入账目标")]
+         public decimal? EventsTarget { get; set; }
+          [Display(Name = "杂志入账目标")]
+         public decimal? MagazineTarget { get; set; }
+         [Display(Name = "青岛分公司入账目标")]
+         public decimal? QingDaoSubComanyTarget { get; set; }
+
+         [Display(Name="考察入账完成百分比")]
+         public decimal? KaoChaPercent { get; set; }
+         [Display(Name = "Events入账完成百分比")]
+         public decimal? EventsPercent { get; set; }
+         [Display(Name = "杂志入账完成百分比")]
+         public decimal? MagazinePercent { get; set; }
+         [Display(Name = "青岛分公司入账完成百分比")]
+         public decimal? QingDaoSubComanyPercent { get; set; }
+         
+        // public double Percent { get; set; }
+         public DateTime Range { get { return new DateTime(Year, Month, 1); } }
+         public int Year { get; set; }
+         public int Month { get; set; }
+     }
+
+
      public class AjaxProjectPerformanceInMonth
      {
          public decimal? TotalTarget { get; set; }
