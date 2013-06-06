@@ -1689,6 +1689,7 @@
     <Content Include="Views\Sales\TeamLeaderDashboard.cshtml" />
     <Content Include="Views\Sales\SalesDashboard.cshtml" />
     <Content Include="Views\ProjectType\Index.cshtml" />
+    <Content Include="Views\SalesEx\QuickEntry.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\TargetOfMonthForMember\Confirm.cshtml" />
