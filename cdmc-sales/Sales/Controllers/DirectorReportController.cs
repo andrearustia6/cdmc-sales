@@ -8,6 +8,7 @@ using Sales.Model;
 using Entity;
 using BLL;
 using System.Web.UI.WebControls;
+using Telerik.Web.Mvc;
 
 namespace Sales.Controllers
 {
@@ -45,9 +46,18 @@ namespace Sales.Controllers
     
         }
 
+        [GridAction]
+        public ActionResult _SelectProjectsPerformanceInProjectType()
+        {
+            List<AssignPerformanceRate> list;
+            list = CH.GetAllData<AssignPerformanceRate>();
+            return View(new GridModel(list));
+        }
+
         public ActionResult DealGroupByProject()
         {
-            return View(CRM_Logical._Project.GetAllProjectPerformance());
+            return View();
+            //return View(CRM_Logical._Project.GetAllProjectPerformance());
         }
 
         //public ActionResult DealGroupByProject(int? year, int? month)

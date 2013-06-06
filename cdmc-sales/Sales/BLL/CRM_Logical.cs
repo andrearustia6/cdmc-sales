@@ -296,6 +296,73 @@ namespace BLL
 
         public static class _Project
         {
+            public static IQueryable<AjaxProjectPerformanceInProjectByMonth> GetProjectsPerformanceInProjectByMonth()
+            {
+                var pid = CRM_Logical.GetUserInvolveProject().Select(s => s.ID);
+                var targets = CH.DB.TargetOfMonths.Where(w=>w.Project.IsActived==true);
+                var currentmonthstart = DateTime.Now.StartOfMonth();
+                var currentmonthend = DateTime.Now.EndOfMonth().AddDays(1);
+
+                var onemonthbeforeend= currentmonthstart.AddDays(-1);
+                var onemonthbeforestart= currentmonthstart.StartOfMonth();
+
+                var twomonthbeforeend= onemonthbeforeend.AddDays(-1);
+                var twomonthbeforestart= onemonthbeforeend.StartOfMonth();
+
+                var threemonthbeforeend= twomonthbeforeend.AddDays(-1);
+                var threemonthbeforestart= twomonthbeforeend.StartOfMonth();
+
+                var fourmonthbeforeend= threemonthbeforeend.AddDays(-1);
+                var fourmonthbeforestart= threemonthbeforestart.StartOfMonth();
+
+                var fifthmonthbeforeend= fourmonthbeforeend.AddDays(-1);
+                var fifthmonthbeforestart= fourmonthbeforeend.StartOfMonth();
+
+                var deals = CRM_Logical.GetDeals(true);
+                var list = from d in deals
+                           group d by new { d.Project.ID,d.Project.Name_CH } into grp
+                           select new AjaxProjectPerformanceInProjectByMonth
+                           {
+                               ProjectName = grp.Key.Name_CH,
+                               ProjectID = grp.Key.ID,
+                               CurrentMonthBeforeChickIn = deals.Where(w => w.Project.ID == grp.Key.ID && w.ActualPaymentDate >= currentmonthstart && w.ActualPaymentDate< currentmonthend).Sum(s => s.Income),
+                               OneMonthBeforeChickIn = deals.Where(w => w.Project.ID == grp.Key.ID && w.ActualPaymentDate >= onemonthbeforestart && w.ActualPaymentDate < currentmonthstart).Sum(s => s.Income),
+                               TwoMonthBeforeChickIn = deals.Where(w => w.Project.ID == grp.Key.ID && w.ActualPaymentDate >= twomonthbeforestart && w.ActualPaymentDate < onemonthbeforestart).Sum(s => s.Income),
+                               ThreeMonthBeforeChickIn = deals.Where(w => w.Project.ID == grp.Key.ID && w.ActualPaymentDate >= threemonthbeforestart && w.ActualPaymentDate < twomonthbeforestart).Sum(s => s.Income),
+                               FourthMonthBeforeChickIn = deals.Where(w => w.Project.ID == grp.Key.ID && w.ActualPaymentDate >= fourmonthbeforestart && w.ActualPaymentDate < threemonthbeforestart).Sum(s => s.Income),
+                               FifthMonthBeforeChickIn = deals.Where(w => w.Project.ID == grp.Key.ID).Sum(s => s.Income),
+                               CurrentMonthBeforeTarget = targets.Where(w => w.Project.ID == grp.Key.ID).Sum(s => s.CheckIn),
+                               OneMonthBeforeTarget = targets.Where(w => w.Project.ID == grp.Key.ID).Sum(s => s.CheckIn),
+                               TwoMonthBeforeTarget = targets.Where(w => w.Project.ID == grp.Key.ID).Sum(s => s.CheckIn),
+                               ThreeMonthBeforeTarget = targets.Where(w => w.Project.ID == grp.Key.ID).Sum(s => s.CheckIn),
+                               FourthMonthBeforeTarget = targets.Where(w => w.Project.ID == grp.Key.ID).Sum(s => s.CheckIn),
+                               FifthMonthBeforeTarget = targets.Where(w => w.Project.ID == grp.Key.ID).Sum(s => s.CheckIn)
+                           };
+
+                return list;
+            }
+            public static  IQueryable<AjaxProjectPerformanceInMonthByProjectType> GetProjectsPerformanceInProjectType()
+            {
+                var pid = CRM_Logical.GetUserInvolveProject().Select(s => s.ID);
+                var targets = CH.DB.TargetOfMonths.Where(w => w.Project.IsActived == true);
+                var deals = CRM_Logical.GetDeals(true);
+                var list = from d in deals
+                           group d by new { d.ActualPaymentDate.Value.Month, d.ActualPaymentDate.Value.Year } into grp
+                           select new AjaxProjectPerformanceInMonthByProjectType
+                           {
+                               Year = grp.Key.Year,
+                               Month = grp.Key.Month,
+                               EventsCheckIn = deals.Where(w => w.Project.ProjectTypeID == 1).Sum(s => s.Income),//1为events
+                               KaoChaCheckIn = deals.Where(w => w.Project.ProjectTypeID == 2).Sum(s => s.Income),//2为考察
+                               MagazineCheckIn = deals.Where(w => w.Project.ProjectTypeID == 3).Sum(s => s.Income),//3为杂志
+                               QingDaoSubComanyCheckIn = deals.Where(w => w.Project.ProjectTypeID == 3).Sum(s => s.Income),//4为青岛分公司
+                               EventsTarget = targets.Where(w => w.Project.ProjectTypeID == 1).Sum(s => s.CheckIn),
+                               KaoChaTarget = targets.Where(w => w.Project.ProjectTypeID == 2).Sum(s => s.CheckIn),
+                               MagazineTarget = targets.Where(w => w.Project.ProjectTypeID == 3).Sum(s => s.CheckIn),
+                               QingDaoSubComanyTarget = targets.Where(w => w.Project.ProjectTypeID == 4).Sum(s => s.CheckIn),
+                           };
+                return list;
+            }
             public static List<AjaxProjectPerformance> GetAllProjectPerformance()
             {
                 var pid = CRM_Logical.GetUserInvolveProject().Select(s => s.ID);
@@ -307,6 +374,7 @@ namespace BLL
                 }
                 return list;
             }
+  
             public static AjaxProjectPerformance GetAjaxProjectPerformance(int? projectid)
             {
                 var p = CH.GetDataById<Project>(projectid);
