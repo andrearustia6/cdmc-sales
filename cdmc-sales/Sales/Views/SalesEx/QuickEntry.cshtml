@@ -10,6 +10,9 @@
         <legend>快捷录入信息</legend>
         <table>
             <tr>
+                <td colspan="4"><span id="Msg" style="color:Red;"></span></td>
+            </tr>
+            <tr>
                 <td colspan="2">
                     @Html.LabelFor(model => model.Name_CN)
                     @Html.TextBoxFor(model => model.Name_CN, new { @style = "width:350px" })

@@ -5,7 +5,10 @@
 @using (Html.BeginForm("AddLead", "SalesEx"))
 {
     @Html.HiddenFor(model => model.CompanyId)
-  <table  class="leadinput">
+    <table class="leadinput">
+        <tr>
+            <td colspan="4"><span id="Msg" style="color:Red;"></span></td>
+        </tr>
         <tr>
             <td>@Html.LabelFor(model => model.Name_CN)
                 @Html.TextBoxFor(model => model.Name_CN)
@@ -55,8 +58,6 @@
                 @Html.LabelFor(model => model.Fax)
                 @Html.TextBoxFor(model => model.Fax)
             </td>
-
-          
             <td>
                 @Html.LabelFor(model => model.PersonelEmail)
                 @Html.TextBoxFor(model => model.PersonelEmail)

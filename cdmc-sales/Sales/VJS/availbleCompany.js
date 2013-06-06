@@ -150,6 +150,19 @@ var currentCompanyNameEN = undefined;
         $('.dialogue-editlead form input').removeClass('fieldError');
         $('.dialogue-editlead form select').removeClass('fieldError');
 
+        $('.dialogue-editlead form #Msg').html('');
+        var msg = '';
+
+        var $namecn = $('.dialogue-editlead form #Name_CN');
+        var $nameen = $('.dialogue-editlead form #Name_EN');
+        if ($namecn.val().length == 0 && $nameen.val().length == 0) {
+            $namecn.addClass('fieldError');
+            $nameen.addClass('fieldError');
+            msg += '客户中英文名必需至少填一个.';
+            haserror = true;
+        }
+
+
         $gender = $('.dialogue-editlead form #Gender');
         if ($gender.val().length == 0) {
             $gender.addClass('fieldError');
@@ -163,15 +176,21 @@ var currentCompanyNameEN = undefined;
          }
 
          var telephone = $('.dialogue-editlead form #Telephone');
-         if (telephone.val().length != 0 && !IsTelephone(telephone.val())) {
-             telephone.addClass('fieldError');
-             haserror = true;
-         }
-
          var cellPhone = $('.dialogue-editlead form #CellPhone');
-         if (cellPhone.val().length != 0 && !IsTelephone(cellPhone.val())) {
+         if ((cellPhone.val().length == 0) && (telephone.val().length == 0)) {
+             telephone.addClass('fieldError');
              cellPhone.addClass('fieldError');
+             msg += '<br />客户直线移动电话必需至少填一个.';
              haserror = true;
+         } else {
+             if (telephone.val().length != 0 && !IsTelephone(telephone.val())) {
+                 telephone.addClass('fieldError');
+                 haserror = true;
+             }
+             if (cellPhone.val().length != 0 && !IsTelephone(cellPhone.val())) {
+                 cellPhone.addClass('fieldError');
+                 haserror = true;
+             }
          }
 
          var personalPhone = $('.dialogue-editlead form #PersonalPhone ');
@@ -198,19 +217,11 @@ var currentCompanyNameEN = undefined;
              haserror = true;
          }
 
-         var $namecn = $('.dialogue-editlead form #Name_CN');
-         var $nameen = $('.dialogue-editlead form #Name_EN');
-
-         if ($namecn.val().length == 0 && $nameen.val().length == 0) {
-             $namecn.addClass('fieldError');
-             $nameen.addClass('fieldError');
-             alert('Lead中英文名必需至少填一个');
-             haserror = true;
-         }
-
          if (haserror) {
-               return;
-           }
+             if (msg != '')
+                 $('.dialogue-editlead form #Msg').html(msg);
+             return;
+         }
 
         var query = $('.dialogue-editlead form').serializeArray();
         $.post('EditLead' , query, function (result) {
@@ -339,6 +350,17 @@ var currentCompanyNameEN = undefined;
 
             $('.dialogue-addlead form input').removeClass('fieldError');
             $('.dialogue-addlead form select').removeClass('fieldError');
+            $('.dialogue-addlead form #Msg').html('');
+            var msg = '';
+
+            var $namecn = $('.dialogue-addlead form #Name_CN');
+            var $nameen = $('.dialogue-addlead form #Name_EN');
+            if ($namecn.val().length == 0 && $nameen.val().length == 0) {
+                $namecn.addClass('fieldError');
+                $nameen.addClass('fieldError');
+                msg += '客户中英文名必需至少填一个.';
+                haserror = true;
+            }
 
             $gender = $('.dialogue-addlead form #Gender');
             if ($gender.val().length == 0) {
@@ -351,17 +373,23 @@ var currentCompanyNameEN = undefined;
                 $title.addClass('fieldError');
                 haserror = true;
             }
-             
-            var telephone=$('.dialogue-addlead form #Telephone');
-            if (telephone.val().length!=0 && !IsTelephone(telephone.val())) {
-                telephone.addClass('fieldError');
-                haserror = true;
-            }
 
+            var telephone = $('.dialogue-addlead form #Telephone');
             var cellPhone = $('.dialogue-addlead form #CellPhone');
-            if (cellPhone.val().length != 0 && !IsTelephone(cellPhone.val())) {
+            if ((cellPhone.val().length == 0) && (telephone.val().length == 0)) {
+                telephone.addClass('fieldError');
                 cellPhone.addClass('fieldError');
+                msg += '<br />客户直线移动电话必需至少填一个.';
                 haserror = true;
+            } else {
+                if (telephone.val().length != 0 && !IsTelephone(telephone.val())) {
+                    telephone.addClass('fieldError');
+                    haserror = true;
+                }
+                if (cellPhone.val().length != 0 && !IsTelephone(cellPhone.val())) {
+                    cellPhone.addClass('fieldError');
+                    haserror = true;
+                }
             }
 
             var personalPhone = $('.dialogue-addlead form #PersonalPhone ');
@@ -388,16 +416,9 @@ var currentCompanyNameEN = undefined;
                 haserror = true;
             }
 
-            var $namecn = $('.dialogue-addlead form #Name_CN');
-            var $nameen = $('.dialogue-addlead form #Name_EN');
-            if ($namecn.val().length == 0 && $nameen.val().length == 0) {
-                $namecn.addClass('fieldError');
-                $nameen.addClass('fieldError');
-                alert('客户中英文名必需至少填一个');
-                haserror = true;
-            }
-
             if (haserror) {
+                if (msg != '')
+                    $('.dialogue-addlead form #Msg').html(msg);
                 return;
             }
                    
@@ -827,8 +848,11 @@ var currentCompanyNameEN = undefined;
         var hasError = false;
         $('.dialogue-addcompany form input').removeClass('fieldError');
         $('.dialogue-addcompany form select').removeClass('fieldError');
+        $('.dialogue-addcompany form #Msg').html('');
 
         String.prototype.isEmpty = function () { return /^\s*$/.test(this); }
+
+        var msg = '';
 
         // validation for company
         if ($('.dialogue-addcompany form #DistrictNumberId option:selected').val().isEmpty()) {
@@ -877,7 +901,7 @@ var currentCompanyNameEN = undefined;
         if ($namecn.val().length == 0 && $nameen.val().length == 0) {
             $namecn.addClass('fieldError');
             $nameen.addClass('fieldError');
-            alert('客户信息中客户中英文名必需至少填一个');
+            msg += '客户信息中客户中英文名必需至少填一个.';
             haserror = true;
         }
 
@@ -886,12 +910,6 @@ var currentCompanyNameEN = undefined;
             $gender.addClass('fieldError');
             haserror = true;
         }
-
-        //$department = $('.dialogue-addcompany form #Department');
-        //if ($department.val().length == 0) {
-        //    $department.addClass('fieldError');
-        //    haserror = true;
-        //}
 
         $title = $('.dialogue-addcompany form #Title');
         if ($title.val().length == 0) {
@@ -902,9 +920,10 @@ var currentCompanyNameEN = undefined;
         var telephone = $('.dialogue-addcompany form #Telephone');
         var cellPhone = $('.dialogue-addcompany form #CellPhone');
         if ((cellPhone.val().length == 0) && (telephone.val().length == 0)) {
-            alert('客户信息中客户直线移动电话必需至少填一个');
+            //alert('客户信息中客户直线移动电话必需至少填一个');
             telephone.addClass('fieldError');
             cellPhone.addClass('fieldError');
+            msg += '<br />客户信息中客户直线移动电话必需至少填一个.';
             haserror = true;
         } else {
             if (telephone.val().length != 0 && !IsTelephone(telephone.val())) {
@@ -927,6 +946,8 @@ var currentCompanyNameEN = undefined;
         // end validation for leadcall  
 
         if (hasError) {
+            if (msg != '')
+                $('.dialogue-addcompany form #Msg').html(msg);
             return;
         }
         var projectid = $('#CurrentProjectId').val();
