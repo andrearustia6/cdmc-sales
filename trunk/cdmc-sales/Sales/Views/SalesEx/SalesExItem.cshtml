@@ -7,6 +7,7 @@
         <div class="fenge_2">
             <span id="currentCompanyName" style="font-weight:bold">@Model.CompanyDisplayName</span>
             <input class="salebtn" style=" background-image:url('../images/tianjia_3.jpg');" type="button" onclick="onLeadAdd(@(Model.CompanyID))" />
+            <input class="salebtn" style=" background-image:url('../images/tianjia_3.jpg');" type="button" onclick="onLeadAdd(@(Model.CompanyID))" />
             <input type="button" class="salebtn"  style="background-image:url('../images/gengxin.jpg');"  onclick="onCompanyEdit(@(Model.CompanyID))" />
             <input type="button"class="salebtn"  style="background-image:url('../images/gaikuo.jpg'); " onclick="onCompanyDetail(@(Model.CompanyID))" />
         </div>
@@ -156,25 +157,11 @@
    }
       
       </div>
-@*@if (Model != null)
-{
-    Html.Telerik().Splitter().Name("sp2").HtmlAttributes(new { style = "height: 790px;" })
-               .Orientation(SplitterOrientation.Vertical).Panes(panes =>
-               {
-                   panes.Add().Size("20%").Content(@<text>@CompanyInfo()</text>);
-                   panes.Add().Content(@<text>@LeadsInfo()</text>);
-               }).Render();
-}*@
-@helper CompanyInfo()
-    {
-   
-}
-@helper LeadsInfo()
-    {     
-        
-     
 
-}
+@helper CompanyInfo()
+    {}
+@helper LeadsInfo()
+    {}
 @(Html.Telerik().Window().Title("公司概况")
     .Name("DetailCompany")
     .Content(@<text><div class="dialogue-detailcompany">

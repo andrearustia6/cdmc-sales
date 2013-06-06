@@ -6,107 +6,116 @@
 {
     @Html.HiddenFor(model => model.ProjectId)
     @Html.HiddenFor(model => model.CompanyId)
-    <fieldset>
+    <fieldset style="margin:0px 0px 0px 0px;">
         <legend>快捷录入信息</legend>
-        <fieldset>
-            <legend>公司信息</legend>
-            <table>
-                <tr>
-                    <td colspan="2">
-                        @Html.LabelFor(model => model.Name_CN)
-                        @Html.TextBoxFor(model => model.Name_CN, new { @style = "width:350px" })
-                    </td>
-                    <td colspan="2">
-                        @Html.LabelFor(model => model.Name_EN)
-                        @Html.TextBoxFor(model => model.Name_EN, new { @style = "width:350px" })
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        @Html.LabelFor(model => model.Phone)
-                        @Html.TextBoxFor(model => model.Phone)
-                    </td>
-                    <td>
-                        @Html.LabelFor(model => model.DistrictNumberId)
-                        @Html.DropDownListFor(model => model.DistrictNumberId, SelectHelper.DistinctNumberSelectList(null), "中国(默认)", new { })
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        @Html.LabelFor(model => model.IndustryId)
-                        @Html.DropDownListFor(model => model.IndustryId, SelectHelper.CompanyIndustrySelectList(null), "请选择", new { @style = "width:350px" })
-                    </td>
-                    <td>
-                        @Html.LabelFor(model => model.TypeId)
-                        @Html.DropDownListFor(model => model.TypeId, SelectHelper.CompanyTypeSelectList(null), "请选择", new { })
-                    </td>
-                    <td>
-                        @Html.LabelFor(model => model.ProgressId)
-                        @Html.DropDownListFor(model => model.ProgressId, SelectHelper.ProgressSelectList(null), "请选择", new { })
-                    </td>
-                </tr>
-            </table>
-            <fieldset id="categories">
-            <legend>细分行业 <span id="categoriesError">必须选择一项</span></legend>
-            @foreach (Category category in CH.GetAllData<Category>(c => c.ProjectID == Model.ProjectId))
-            { 
+        <table>
+            <tr>
+                <td colspan="2">
+                    @Html.LabelFor(model => model.Name_CN)
+                    @Html.TextBoxFor(model => model.Name_CN, new { @style = "width:350px" })
+                </td>
+                <td colspan="2">
+                    @Html.LabelFor(model => model.Name_EN)
+                    @Html.TextBoxFor(model => model.Name_EN, new { @style = "width:350px" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.Phone)
+                    @Html.TextBoxFor(model => model.Phone)
+                </td>
+                <td>
+                    @Html.LabelFor(model => model.DistrictNumberId)
+                    @Html.DropDownListFor(model => model.DistrictNumberId, SelectHelper.DistinctNumberSelectList(null), "中国(默认)", new { })
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    @Html.LabelFor(model => model.IndustryId)
+                    @Html.DropDownListFor(model => model.IndustryId, SelectHelper.CompanyIndustrySelectList(null), "请选择", new { @style = "width:350px" })
+                </td>
+                <td>
+                    @Html.LabelFor(model => model.TypeId)
+                    @Html.DropDownListFor(model => model.TypeId, SelectHelper.CompanyTypeSelectList(null), "请选择", new { })
+                </td>
+                <td>
+                    @Html.LabelFor(model => model.ProgressId)
+                    @Html.DropDownListFor(model => model.ProgressId, SelectHelper.ProgressSelectList(null), "请选择", new { })
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4">
+                    <fieldset id="categories" style="margin:0px 0px 0px 0px;">
+                        <legend>细分行业 <span id="categoriesError">必须选择一项</span></legend>
+                        @foreach (Category category in CH.GetAllData<Category>(c => c.ProjectID == Model.ProjectId))
+                        { 
                 
-                <label class="company-category"> <input  name="Categories" type="checkbox" value="@category.ID" /> @category.Name </label>
+                            <label class="company-category"> <input  name="Categories" type="checkbox" value="@category.ID" /> @category.Name </label>
                
-            }
-        </fieldset>
-        </fieldset>
-        <fieldset>
-            <legend>客户信息</legend>
-            <table>
-                <tr>
-                    <td>@Html.LabelFor(model => model.LeadName_CN)
-                        @Html.TextBoxFor(model => model.LeadName_CN)
-                    </td>
-                    <td>@Html.LabelFor(model => model.LeadName_EN)
-                        @Html.TextBoxFor(model => model.LeadName_EN)
-                    </td>
-                    <td>
-                        @Html.LabelFor(model => model.Gender)
-                        @Html.DropDownListFor(model => model.Gender, SelectHelper.GenderSelectList(null), "-请选择-")
-                    </td>
-                    <td>
-                        @Html.LabelFor(model => model.Title)
-                        @Html.TextBoxFor(model => model.Title)
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        @Html.LabelFor(model => model.Telephone)
-                        @Html.TextBoxFor(model => model.Telephone)
-                    </td>
-                    <td>
-                        @Html.LabelFor(model => model.CellPhone)
-                        @Html.TextBoxFor(model => model.CellPhone)
-                    </td>
-                    <td>
-                        @Html.LabelFor(model => model.Department)
-                        @Html.TextBoxFor(model => model.Department)
-                    </td>
-                </tr>
-            </table>
-        </fieldset>
-        <fieldset>
-            <legend>通话信息</legend>
-            <ul>
-                <li><span class="addcall-left">@Html.LabelFor(model => model.CallDate) @Html.Telerik().DateTimePickerFor(model => model.CallDate)
-                    @Html.ValidationMessageFor(model => model.CallDate)</span> <span class="addcall-right">
-                        @Html.LabelFor(model => model.CallBackDate) @Html.Telerik().DateTimePickerFor(model => model.CallBackDate)
-                        @Html.ValidationMessageFor(model => model.CallBackDate)
-                    </span></li>
-                <li><span class="addcall-left">@Html.LabelFor(model => model.CallTypeId) @Html.DropDownListFor(model => model.CallTypeId, SelectHelper.CallTypeSelectList(Model.CallTypeId), "-请选择-")
-                    @Html.ValidationMessageFor(model => model.CallTypeId)</span> 
-                </li>
-                <li><span >@Html.LabelFor(model => model.Result) @Html.TextAreaFor(model => model.Result)
-                    @Html.ValidationMessageFor(model => model.Result)</span>
-                  </li>      
-            </ul>
-        </fieldset>
+                        }
+                    </fieldset>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4">
+                    <fieldset style="margin:0px 0px 0px 0px;">
+                        <legend>客户信息</legend>
+                        <table>
+                            <tr>
+                                <td>@Html.LabelFor(model => model.LeadName_CN)
+                                    @Html.TextBoxFor(model => model.LeadName_CN)
+                                </td>
+                                <td>@Html.LabelFor(model => model.LeadName_EN)
+                                    @Html.TextBoxFor(model => model.LeadName_EN)
+                                </td>
+                                <td>
+                                    @Html.LabelFor(model => model.Gender)
+                                    @Html.DropDownListFor(model => model.Gender, SelectHelper.GenderSelectList(null), "-请选择-")
+                                </td>
+                                <td>
+                                    @Html.LabelFor(model => model.Title)
+                                    @Html.TextBoxFor(model => model.Title)
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    @Html.LabelFor(model => model.Telephone)
+                                    @Html.TextBoxFor(model => model.Telephone)
+                                </td>
+                                <td>
+                                    @Html.LabelFor(model => model.CellPhone)
+                                    @Html.TextBoxFor(model => model.CellPhone)
+                                </td>
+                                <td>
+                                    @Html.LabelFor(model => model.Department)
+                                    @Html.TextBoxFor(model => model.Department)
+                                </td>
+                            </tr>
+                        </table>
+                    </fieldset>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4">
+                    <fieldset style="margin:0px 0px 0px 0px;">
+                        <legend>通话信息</legend>
+                        <ul>
+                            <li><span class="addcall-left">@Html.LabelFor(model => model.CallDate) @Html.Telerik().DateTimePickerFor(model => model.CallDate)
+                                @Html.ValidationMessageFor(model => model.CallDate)</span> <span class="addcall-right">
+                                    @Html.LabelFor(model => model.CallBackDate) @Html.Telerik().DateTimePickerFor(model => model.CallBackDate)
+                                    @Html.ValidationMessageFor(model => model.CallBackDate)
+                                </span></li>
+                            <li><span class="addcall-left">@Html.LabelFor(model => model.CallTypeId) @Html.DropDownListFor(model => model.CallTypeId, SelectHelper.CallTypeSelectList(Model.CallTypeId), "-请选择-")
+                                @Html.ValidationMessageFor(model => model.CallTypeId)</span> 
+                            </li>
+                            <li><span >@Html.LabelFor(model => model.Result) @Html.TextAreaFor(model => model.Result)
+                                @Html.ValidationMessageFor(model => model.Result)</span>
+                                </li>      
+                        </ul>
+                    </fieldset>
+                </td>
+            </tr>
+        </table>
     </fieldset>
 }
 <style>
