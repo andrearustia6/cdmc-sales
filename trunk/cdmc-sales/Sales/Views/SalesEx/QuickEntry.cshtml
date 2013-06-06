@@ -53,7 +53,7 @@
                         @foreach (Category category in CH.GetAllData<Category>(c => c.ProjectID == Model.ProjectId))
                         { 
                 
-                            <label class="company-category"> <input  name="Categories" type="checkbox" value="@category.ID" /> @category.Name </label>
+                            <label class="company-category" style="width: auto;"> <input  name="Categories" type="checkbox" value="@category.ID" /> @category.Name </label>
                
                         }
                     </fieldset>

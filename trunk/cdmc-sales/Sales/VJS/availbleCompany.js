@@ -4,8 +4,6 @@ var tempCRMID = undefined;
 
 var currentCompanyNameCN = undefined;
 var currentCompanyNameEN = undefined;
-
-
     function onCompanyEdit(currentCompanyId) {
         currentCompanyNameCN = $('#currentCompanyNameCN').html().replace(/(^\s*)|(\s*$)/g, '');
         currentCompanyNameEN = $('#currentCompanyNameEN').html().replace(/(^\s*)|(\s*$)/g, '');        
@@ -31,7 +29,6 @@ var currentCompanyNameEN = undefined;
             }
         });
     }
-
 
     function Editcompany() {
 
@@ -920,10 +917,9 @@ var currentCompanyNameEN = undefined;
         var telephone = $('.dialogue-addcompany form #Telephone');
         var cellPhone = $('.dialogue-addcompany form #CellPhone');
         if ((cellPhone.val().length == 0) && (telephone.val().length == 0)) {
-            //alert('客户信息中客户直线移动电话必需至少填一个');
+            msg += '<br />客户信息中客户直线移动电话必需至少填一个.';
             telephone.addClass('fieldError');
             cellPhone.addClass('fieldError');
-            msg += '<br />客户信息中客户直线移动电话必需至少填一个.';
             haserror = true;
         } else {
             if (telephone.val().length != 0 && !IsTelephone(telephone.val())) {
@@ -938,11 +934,24 @@ var currentCompanyNameEN = undefined;
         // end validation for lead
 
         // validation for leadcall
+
+        var callFirst = $('.dialogue-addcompany form #CallDate');
+        var callBack = $('.dialogue-addcompany form #CallBackDate');
+        if (callBack.val().length != 0 && callFirst.val().length != 0) {
+            if (Date.parse(callFirst.val()) >= Date.parse(callBack.val())) {
+                msg += '<br />通话信息中回打时间不能早于致电时间.';
+                callFirst.addClass('fieldError');
+                callBack.addClass('fieldError');
+                haserror = true;
+            }
+        }
+
         var $calltype = $('.dialogue-addcompany form #CallTypeId');
         if ($calltype.val().length == 0) {
             $calltype.addClass('fieldError');
             haserror = true;
         }
+
         // end validation for leadcall  
 
         if (hasError) {
@@ -951,7 +960,7 @@ var currentCompanyNameEN = undefined;
             return;
         }
         var projectid = $('#CurrentProjectId').val();
-        var companyNameCN = $('.dialogue-addcompany #Name_CN').val();
+        var companyNameCN = $('.dialogue-addcompany form #Name_CN').val();
         var companyNameEN = $('.dialogue-addcompany form #Name_EN').val();
         $.post('CheckCompanyExist', { projectid: projectid, beforeUpdateCN: null, afterUpdateCN: companyNameCN, beforeUpdateEN: null, afterUpdateEN: companyNameEN }, function (result) {
             if (result.length > 0) {
@@ -971,8 +980,38 @@ var currentCompanyNameEN = undefined;
         });
     }
 
-
     function CancelQuickEntry() {
         var window = $('#QuickEntry').data('tWindow');
+        window.close();
+    }
+
+    function onQuickAddDeal(currentProjectId) {
+        $.post('GetQuickAddDeal', { projectId: currentProjectId }, function (result) {
+            $('.quickdeal-wrapper').html(result);
+            var window = $('#QuickAddDeal').data('tWindow');
+            window.center().open();
+        });
+    }
+
+    function QuickDeal() {
+        if ($('.calledit-wrapper form').valid()) {
+            var query = $('.calledit-wrapper form').serializeArray();
+            $.post('EditLeadCall', query, function (result) {
+                if (result.length > 0) {
+                    alert(result);
+                } else {
+                    $('#' + currentLeadCallID + '_CallType').html($('.dialogue-editcall form #CallTypeId option:selected').first().text());
+                    $('#' + currentLeadCallID + '_CallBackDate').html($('.dialogue-editcall form #CallBackDate').val());
+                    $('#' + currentLeadCallID + '_CallDate').html($('.dialogue-editcall form #CallDate').val());
+                    $('#' + currentLeadCallID + '_Result').html($('.dialogue-editcall form #Result').val());
+                    $('#EditCall').data('tWindow').close();
+                    alert('LeadCall更新成功');
+                }
+            });
+        }
+    }
+
+    function CancelQuickDeal() {
+        var window = $('#QuickAddDeal').data('tWindow');
         window.close();
     }

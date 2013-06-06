@@ -557,7 +557,6 @@ namespace Sales.Controllers
                     CH.Create<LeadCall>(leadCall);
                 }
             }
-
             return Json(new { companyRelationshipId = companyRelationship.ID, companyId = companyRelationship.CompanyID, leadId = lead.ID, leadCallId = leadCall.ID, projectId = companyRelationship.ProjectID });
         }
 
@@ -768,6 +767,40 @@ namespace Sales.Controllers
         {
             List<Category> categoriylist = CH.GetAllData<Category>(o => o.ProjectID == currentProjectId).ToList();
             return Json(categoriylist.Select(c => new { value = c.ID, text = c.Name }), JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult GetQuickAddDeal(int? projectId)
+        {
+            projectId = this.TrySetProjectIDForUser(projectId);
+            ViewBag.ProjectID = projectId;
+            this.AddErrorStateIfSalesNoAccessRightToTheProject(projectId);
+            return PartialView("QuickAddDeal");
+        }
+
+        [HttpPost]
+        public ActionResult QuickAddDeal(Deal item, int? projectid)
+        {
+            ViewBag.ProjectID = projectid;
+            ViewBag.CompanyRelationshipID = item.CompanyRelationshipID;
+
+            if (ModelState.IsValid)
+            {
+                item.Sales = Employee.CurrentUserName;
+                string prefix = CH.GetDataById<Project>(projectid).ProjectCode + DateTime.Now.Year.ToString();
+                var records = CH.GetAllData<Deal>().Where(s => s.DealCode != null && s.DealCode.StartsWith(prefix));
+                if (records != null && records.Count() > 0)
+                {
+                    item.DealCode = prefix + string.Format("{0:D3}", Convert.ToInt32(records.OrderByDescending(s => s.DealCode).First().DealCode.Substring(prefix.Length)) + 1);
+                }
+                else
+                {
+                    item.DealCode = prefix + "001";
+                }
+
+                CH.Create<Deal>(item);
+                return RedirectToAction("MyDealIndex", "Sales", new { projectid = projectid });
+            }
+            return View(item);
         }
     }
 }
