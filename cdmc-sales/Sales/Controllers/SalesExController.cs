@@ -466,13 +466,17 @@ namespace Sales.Controllers
 
         public ActionResult GetAddCompany(int? projectId)
         {
-            AjaxViewSaleCompany ajaxViewSaleCompany = new AjaxViewSaleCompany() { ProjectId = projectId, Categories = new List<int>() { }, ProgressId = 11 };
+            var progress = CH.GetAllData<Progress>().Where(p => p.Code == 10).FirstOrDefault();
+
+            AjaxViewSaleCompany ajaxViewSaleCompany = new AjaxViewSaleCompany() { ProjectId = projectId, Categories = new List<int>() { }, ProgressId = progress.ID };
             return PartialView("AddCompany", ajaxViewSaleCompany);
         }
 
         public ActionResult GetQuickEntry(int? projectId)
         {
-            QuickEntry quickEntry = new QuickEntry() { ProjectId = projectId, Categories = new List<int>() { }, ProgressId = 11, CallDate = DateTime.Now };
+            var progress = CH.GetAllData<Progress>().Where(p => p.Code == 10).FirstOrDefault();
+
+            QuickEntry quickEntry = new QuickEntry() { ProjectId = projectId, Categories = new List<int>() { }, ProgressId = progress.ID, CallDate = DateTime.Now };
             return PartialView("QuickEntry", quickEntry);
         }
 
