@@ -1039,10 +1039,10 @@ var currentCompanyNameEN = undefined;
         if ($('.quickdeal-wrapper form').valid()) {
             var query = $('.quickdeal-wrapper form').serializeArray();
             $.post('QuickAddDeal', query, function (result) {
-                if (result.length > 0) {
-                    alert(result);
+                if ((result.dealId != null) && (result.participantId != null)) {
+                    $('#QuickAddDeal').data('tWindow').close();
                 } else {
-                    alert('no error msg')
+                    alert('快捷出单失败')
                 }
             });
         }
