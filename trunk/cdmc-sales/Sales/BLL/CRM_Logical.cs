@@ -235,7 +235,6 @@ namespace BLL
                 var wd = MonthDuration.GetMonthInstance(month).WeekDurations.Select(s => s.StartDate);
                 var lps = from l in leads
                             select new _TeamLeadPerformance()
-
                             {
                                 Target = CH.DB.TargetOfMonths.Where(t => t.Project.TeamLeader == l && t.Project.IsActived == true && t.StartDate.Month == month).Sum(s => s.CheckIn),
                                 CheckIn = deals.Where(d => d.Project.TeamLeader == l).Sum(s => s.Income),

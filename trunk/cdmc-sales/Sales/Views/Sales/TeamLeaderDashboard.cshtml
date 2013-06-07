@@ -16,7 +16,7 @@
 
 <table class="info">
     <tr>
-        <td><span>当月目标：@{ if(Model.Target != null){<text>@Model.Target</text>}}</span></td>
+        <td><span>当月目标：@{ if(Model.Target != null){<text>@Model.Target</text>} else {<text><span style=" color:Red;">本月您的项目目标尚未设置，请尽快设置</span></text>}}</span></td>
         <td><span>当月入账总额：@Model.CheckIn</span></td>
         <td><span>目标完成百分比：@Model.CompletePercent</span></td>
     </tr>
