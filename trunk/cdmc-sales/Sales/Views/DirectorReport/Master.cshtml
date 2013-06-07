@@ -4,10 +4,11 @@
 }
 
 <div>
-  <div style="width:82%; float:right; ">
+  <div style="width:88%; float:right; ">
         	@RenderBody()
         </div>
-		 <div style="width:15%; float:left; position:fixed;  margin-left:35px; margin-top:200px; ">
+     
+		 <div style="width:15%; float:left; position:fixed;  margin-left:0px; margin-top:200px; ">
          @(Html.Telerik().Menu().Name("Menudirector").HtmlAttributes(new { style = "width:150px;" })
          .Orientation(MenuOrientation.Vertical).Items(menu =>
      {
@@ -28,5 +29,5 @@
          });
      }))
         </div>
-
+     
         </div>

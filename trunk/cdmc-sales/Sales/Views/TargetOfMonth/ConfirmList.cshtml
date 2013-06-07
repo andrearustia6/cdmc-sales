@@ -28,7 +28,6 @@
                     }).Title("确认");
                 })
                .Editable(editing => editing.Mode(GridEditMode.PopUp))
-        .Pageable(p => p.PageSize(20))
-                .Scrollable(scrolling => scrolling.Height(350)).Filterable()
-                .Sortable()
+             .Pageable(p => p.Style(GridPagerStyles.Status).PageSize(50)
+               .PageOnScroll(true)).Scrollable(s => s.Height(350)).Sortable().Filterable().Groupable()
     )
