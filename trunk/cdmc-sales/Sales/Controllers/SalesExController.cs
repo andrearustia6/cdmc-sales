@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Utl;
+using BLL;
 using Model;
 using Telerik.Web.Mvc;
 using Entity;
@@ -43,7 +44,7 @@ namespace Sales.Controllers
                     leadid = int.Parse(ids[1]);
                     c.Company.Leads = c.Company.Leads.Where(l => l.ID == leadid).ToList();
                 }
-
+                var deals = CRM_Logical.GetDeals(true);
                 if (c != null)
                 {
                     var data = new AjaxCRM()
@@ -58,6 +59,7 @@ namespace Sales.Controllers
                         CompanyCategories = c.Categorys,
                         CompanyDistinct = c.Company.DistrictNumber,
                         CompanyCreateDate = c.Company.CreatedDate,
+                        CompanyPayment = CRM_Logical.GetTotalPayment(true,c.ID),
                         CRMID = c.ID,
                         DistrictNumberID = c.Company.DistrictNumberID,
                         ProgressID = c.ProgressID,
@@ -113,10 +115,6 @@ namespace Sales.Controllers
 
                 //if (data == null)
                 //    data = d.CustomCrmGroups.SelectMany(s => s.GroupedCRMs).FirstOrDefault(f => f.CRMID == crmid);
-
-
-
-               
             }
 
             return PartialView(@"~\views\salesex\salesexitem.cshtml", new AjaxCRM());
@@ -778,7 +776,7 @@ namespace Sales.Controllers
         }
 
         [HttpPost]
-        public ActionResult QuickAddDeal(Deal item, int? projectid)
+        public ActionResult QuickAddDeal(Deal item, Participant p, int? projectid)
         {
             ViewBag.ProjectID = projectid;
             ViewBag.CompanyRelationshipID = item.CompanyRelationshipID;
@@ -798,9 +796,28 @@ namespace Sales.Controllers
                 }
 
                 CH.Create<Deal>(item);
-                return RedirectToAction("MyDealIndex", "Sales", new { projectid = projectid });
+                if (item.ID > 0)
+                {
+                    p.ProjectID = item.ProjectID;
+                    p.DealID = item.ID;
+                    //p = new Participant()
+                    //{
+                    //    DealID = item.ID,
+                    //    ProjectID = item.ProjectID,
+                    //    Name=item.Name,
+                    //    Title = item.Title,
+                    //    Gender = item.Gender,
+                    //    Contact = item.Contact,
+                    //    Mobile = item.Mobile,
+                    //    Email = item.Email,
+                    //    ParticipantTypeID = item.ParticipantTypeID
+                    //};
+                    if (p.ID == 0)
+                    CH.Create<Participant>(p);
+                }
+                //return RedirectToAction("MyDealIndex", "Sales", new { projectid = projectid });
             }
-            return View(item);
+            return Json(new { dealId = item.ID, participantId = p.ID });
         }
     }
 }
