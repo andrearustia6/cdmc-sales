@@ -1676,7 +1676,7 @@
     <Content Include="Views\SimulatorConfig\Index.cshtml" />
     <Content Include="Views\DirectorReport\Master.cshtml" />
     <Content Include="Views\DirectorReport\DealGroupBySales.cshtml" />
-    <Content Include="Views\DirectorReport\DealGroupByProject.cshtml" />
+    <Content Include="Views\DirectorReport\ProjectsPerformanceInProjectByMonth.cshtml" />
     <Content Include="Views\Performance\Index.cshtml" />
     <Content Include="Views\Project\ImportCompany.cshtml" />
     <Content Include="Views\Project\ConfliceCompany.cshtml" />

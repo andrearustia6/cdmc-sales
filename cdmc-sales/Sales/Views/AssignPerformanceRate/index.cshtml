@@ -17,6 +17,6 @@ columns.Bound(p => p.Rate);
     columns.Bound(p => p.Year);
    columns.Command(commands => { commands.Edit(); commands.Delete(); }).Width(220).Title("操作"); })
    .Editable(editing => editing.Mode( GridEditMode.PopUp))
-   .Pageable(p=>p.Style(GridPagerStyles.Status)
-       .PageOnScroll(true)).Scrollable().Sortable().Filterable().Groupable()
+       .Pageable(p => p.Style(GridPagerStyles.Status).PageSize(50)
+           .PageOnScroll(true)).Scrollable(s => s.Height(350)).Sortable().Filterable().Groupable()
 )

@@ -47,17 +47,28 @@ namespace Sales.Controllers
         }
 
         [GridAction]
+        public ActionResult _SelectAjaxProjectPerformanceInProjectByMonth()
+        {
+            var list = CRM_Logical._Reports.GetProjectsPerformanceInProjectByMonth();
+            return View(new GridModel(list.OrderByDescending(o=>o.CurrentMonthChickIn)));
+        }
+
+        
+        [GridAction]
         public ActionResult _SelectProjectsPerformanceInProjectType()
         {
-            List<AssignPerformanceRate> list;
-            list = CH.GetAllData<AssignPerformanceRate>();
+            var list = CRM_Logical._Reports.GetProjectsPerformanceInProjectType();
             return View(new GridModel(list));
         }
 
-        public ActionResult DealGroupByProject()
+        /// <summary>
+        /// 项目 列为项目 
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult ProjectsPerformanceInProjectByMonth()
         {
-            return View();
-            //return View(CRM_Logical._Project.GetAllProjectPerformance());
+            var list = CRM_Logical._Reports.GetProjectsPerformanceInProjectByMonth();
+            return View(list.ToList());
         }
 
         //public ActionResult DealGroupByProject(int? year, int? month)

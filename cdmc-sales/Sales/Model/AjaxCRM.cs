@@ -29,17 +29,20 @@ namespace Model
      }
      public class AjaxProjectPerformanceInProjectByMonth
      {
+         [Key]
          public int ProjectID { get; set; }
          public string ProjectName { get; set; }
-         public decimal? CurrentMonthBeforeChickIn { get; set; }
+         public string Manager { get; set; }
+         public decimal? CurrentMonthChickIn { get; set; }
          public decimal? OneMonthBeforeChickIn { get; set; }
+
          public decimal? TwoMonthBeforeChickIn { get; set; }
          public decimal? ThreeMonthBeforeChickIn { get; set; }
          public decimal? FourthMonthBeforeChickIn { get; set; }
          public decimal? FifthMonthBeforeChickIn { get; set; }
          public decimal? SixMonthBeforeChickIn { get; set; }
 
-         public decimal? CurrentMonthBeforeTarget { get; set; }
+         public decimal? CurrentMonthTarget { get; set; }
          public decimal? OneMonthBeforeTarget { get; set; }
          public decimal? TwoMonthBeforeTarget { get; set; }
          public decimal? ThreeMonthBeforeTarget { get; set; }
@@ -47,13 +50,65 @@ namespace Model
          public decimal? FifthMonthBeforeTarget { get; set; }
          public decimal? SixMonthBeforeTarget { get; set; }
 
-         public decimal? CurrentMonthBeforePercent { get; set; }
-         public decimal? OneMonthBeforePercent { get; set; }
-         public decimal? TwoMonthBeforePercent { get; set; }
-         public decimal? ThreeMonthBeforePercent { get; set; }
-         public decimal? FourthMonthBeforePercent { get; set; }
-         public decimal? FifthMonthBeforePercent { get; set; }
-         public decimal? SixMonthBeforePercent { get; set; }
+         public double? CurrentMonthBeforePercent
+         {
+             get
+             {
+                 if (CurrentMonthTarget == null || CurrentMonthTarget == 0) return 0;
+                 return Utl.Utl.GetPercent(CurrentMonthChickIn, CurrentMonthTarget);
+             }
+         }
+         public double? OneMonthBeforePercent
+         {
+             get
+             {
+                 if (OneMonthBeforeTarget == null || OneMonthBeforeTarget == 0) return 0;
+                 return Utl.Utl.GetPercent(OneMonthBeforeChickIn, OneMonthBeforeTarget);
+             }
+         }
+         public double? TwoMonthBeforePercent
+         {
+             get
+             {
+                 if (TwoMonthBeforeTarget == null || TwoMonthBeforeTarget == 0) return 0;
+                 return Utl.Utl.GetPercent(TwoMonthBeforeChickIn, TwoMonthBeforeTarget);
+             }
+         }
+         public double? ThreeMonthBeforePercent
+         {
+             get
+             {
+                 if (ThreeMonthBeforeTarget == null || ThreeMonthBeforeTarget == 0) return 0;
+                 return Utl.Utl.GetPercent(ThreeMonthBeforeChickIn, ThreeMonthBeforeTarget);
+             }
+         }
+         public double? FourthMonthBeforePercent
+         {
+             get
+             {
+                 if (FourthMonthBeforeTarget == null || FourthMonthBeforeTarget == 0) return 0;
+                 return Utl.Utl.GetPercent(FourthMonthBeforeChickIn, FourthMonthBeforeTarget);
+             }
+         }
+         public double? FifthMonthBeforePercent
+         {
+             get
+             {
+                 if (FifthMonthBeforeTarget == null || FifthMonthBeforeTarget == 0) return 0;
+                 return Utl.Utl.GetPercent(FifthMonthBeforeChickIn, FifthMonthBeforeTarget);
+             }
+         }
+         public double? SixMonthBeforePercent
+         {
+             get
+             {
+                 if (SixMonthBeforeTarget == null || SixMonthBeforeTarget == 0) return 0;
+                 return Utl.Utl.GetPercent(SixMonthBeforeChickIn, SixMonthBeforeTarget);
+             }
+         }
+
+
+
      }
      public class AjaxProjectPerformanceInMonthByProjectType
      {
