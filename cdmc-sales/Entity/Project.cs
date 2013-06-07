@@ -517,7 +517,6 @@ namespace Entity
         public string Confirmor { get; set; }
     }
 
-
     public class Progress : EntityBase
     {
         [Display(Name = "成熟度")]

@@ -487,12 +487,14 @@ namespace BLL
             {
                 if (projectid != null)
                 {
+                    //var deals = CRM_Logical.GetDeals();
                     var crms = CH.DB.CompanyRelationships.Where(c => c.ProjectID == projectid);
                     var ajaxcrms = from c in crms
                                    select new AjaxCRM()
                                    {
                                        CrmCreateDate = c.CreatedDate,
                                        CRMID = c.ID,
+                                       //CompanyPayment = deals.Where(d => d.CompanyRelationshipID == c.ID).Sum(s => s.Payment),
                                        CompanyCategories = c.Categorys,
                                        Members = c.Members,
                                        CompanyNameEN = c.Company.Name_EN,
@@ -569,6 +571,14 @@ namespace BLL
             }
             return deals;
 
+        }
+
+        public static decimal? GetTotalPayment(bool? acitivatedprojectonly = false, int? crId = null)
+        {
+            var total = (from deal in CH.DB.Deals                                  
+            where deal.Abandoned == false  && deal.Project.IsActived == acitivatedprojectonly && deal.CompanyRelationshipID == crId 
+            select (decimal?)deal.Payment).Sum() ?? 0 ;
+            return total;
         }
 
         #region Project Management

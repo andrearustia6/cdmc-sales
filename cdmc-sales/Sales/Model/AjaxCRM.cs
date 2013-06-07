@@ -219,6 +219,7 @@ namespace Model
 
         private IQueryable<AjaxGroupedCRM> GetCustomCrmGroupDataQuery()
         {
+            var deals = from deal in CH.DB.Deals.Where(d => d.Abandoned == false && d.Project.IsActived == true) select deal;
             var user = Employee.CurrentUserName;
             var filteredcrm = GetFilteredCRM();
             var data = from f in CH.DB.UserFavorsCrmGroups
@@ -231,15 +232,14 @@ namespace Model
                            GroupedCRMs = (
                                          
                                           from c in filteredcrm
-                                          where 
-                                          //c.ID == u.CompanyRelationshipID.Value
-                                           f.UserFavorsCRMs.Select(s => s.CompanyRelationshipID).Contains(c.ID)
+                                          where f.UserFavorsCRMs.Select(s => s.CompanyRelationshipID).Contains(c.ID)
                                           orderby c.CreatedDate descending
                                           select new AjaxCRM
                                           {
                                               CompanyID = c.CompanyID,
                                               CompanyNameEN = c.Company.Name_EN,
                                               CompanyNameCH = c.Company.Name_CH,
+                                              CompanyPayment = deals.Where(d => d.CompanyRelationshipID == c.ID).Sum(s => s.Payment),
                                               CRMID = c.ID,
                                               AjaxLeads = (from l in c.Company.Leads
                                                            select new AjaxLead
@@ -267,7 +267,6 @@ namespace Model
             return data;
         }
 
-
         /// <summary>
         /// 
         /// </summary>
@@ -275,10 +274,11 @@ namespace Model
         /// <returns></returns>
         IQueryable<AjaxCRM> GetCrmDataQuery(bool? alldata = false)
         {
-
+            var deals = from deal in CH.DB.Deals.Where(d => d.Abandoned == false && d.Project.IsActived == true) select deal;
+           
             var user = Employee.CurrentUserName;
             var custom = from cg in CH.DB.UserFavorsCRMs.Where(w => w.UserFavorsCrmGroup.UserName == user) select cg;
-             var filteredcrm = GetFilteredCRM();
+            var filteredcrm = GetFilteredCRM();
             var data = from c in filteredcrm
                        where  (!custom.Select(s => s.CompanyRelationshipID).Contains(c.ID))
                        orderby c.CreatedDate descending
@@ -288,6 +288,7 @@ namespace Model
                            CompanyID = c.CompanyID,
                            CompanyNameEN = c.Company.Name_EN,
                            CompanyNameCH = c.Company.Name_CH,
+                           CompanyPayment = deals.Where(d => d.CompanyRelationshipID == c.ID).Sum(s => s.Payment),
                            CRMID = c.ID,
                            ProgressID = c.ProgressID,
                            AreaID = c.Company.AreaID,
@@ -363,7 +364,6 @@ namespace Model
         public string ProjectName { get; set; }
         public int? ProjectID { get; set; }
         #endregion
-
         
         #region crm
         public Progress Progress { private get; set; }
@@ -423,7 +423,6 @@ namespace Model
         public string CompanyContact { get; set; }
         [Display(Name = "公司传真")]
         public string CompanyFax { get; set; }
-        //public IEnumerable<String> LeadsName { get; set; }
         public DateTime? CompanyCreateDate { get; set; }
         public string CompanyDistrictNumberString
         {
@@ -433,15 +432,18 @@ namespace Model
             }
         }
         public DistrictNumber CompanyDistinct { set; private get; }
+
+        public string CompanyPaymentString
+        {
+            get
+            {
+                return CompanyPayment == 0 ? string.Empty : CompanyPayment.ToString();
+            }
+        }
+        public decimal? CompanyPayment { set; private get; }
+
         #endregion
 
-        // public string Status
-        //{
-        //    get
-        //    {
-        //        var status = string.Empty;
-        //        var contactedlead = AjaxLeads.Where(w=>w.AjaxCalls.)
-        //    }
         public string DisplayText
         {
             get
@@ -464,7 +466,6 @@ namespace Model
         
         //Added for Company Edit.
        
-
         [Display(Name = "区号/时差")]
         public int? DistrictNumberID { get; set; }
         [Required(ErrorMessage = " ")]
@@ -505,16 +506,9 @@ namespace Model
         {
             get
             {
-
-
                 return Utl.Utl.GetFullString(" ", Gender, LeadNameCH, LeadNameEN, LeadTitle);
             }
         }
-
-
-
-
-
 
         public string LeadNameCH { get; set; }
         public string LeadNameEN { get; set; }
@@ -580,9 +574,6 @@ namespace Model
                 //{
                 //    status += "此客户尚未联系";
                 //}
-
-
-
                 return status;
             }
         }

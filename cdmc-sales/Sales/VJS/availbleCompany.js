@@ -994,18 +994,54 @@ var currentCompanyNameEN = undefined;
     }
 
     function QuickDeal() {
-        if ($('.calledit-wrapper form').valid()) {
-            var query = $('.calledit-wrapper form').serializeArray();
-            $.post('EditLeadCall', query, function (result) {
+
+        var hasError = false;
+        $('.dialogue-quickdeal form input').removeClass('fieldError');
+        $('.dialogue-quickdeal form select').removeClass('fieldError');
+
+        String.prototype.isEmpty = function () { return /^\s*$/.test(this); }
+
+        // validation for deal
+        if ($('.dialogue-quickdeal form #PackageID').val().isEmpty()) {
+            $('.dialogue-quickdeal form #PackageID').addClass('fieldError');
+            hasError = true;
+        }
+        if ($('.dialogue-quickdeal form #CompanyRelationshipID').val().isEmpty()) {
+            $('.dialogue-quickdeal form #CompanyRelationshipID').addClass('fieldError');
+            hasError = true;
+        }
+        if ($('.dialogue-quickdeal form #Committer').val().isEmpty()) {
+            $('.dialogue-quickdeal form #Committer').addClass('fieldError');
+            hasError = true;
+        }
+        if ($('.dialogue-quickdeal form #PaymentDetail').val().isEmpty()) {
+            $('.dialogue-quickdeal form #PaymentDetail').addClass('fieldError');
+            hasError = true;
+        }
+        // end validation for deal
+
+        // validation for participant
+        if ($('.dialogue-quickdeal form #Name').val().isEmpty()) {
+            $('.dialogue-quickdeal form #Name').addClass('fieldError');
+            hasError = true;
+        }
+        if ($('.dialogue-quickdeal form #ParticipantTypeID').val().isEmpty()) {
+            $('.dialogue-quickdeal form #ParticipantTypeID').addClass('fieldError');
+            hasError = true;
+        }
+        // end validation for participant
+
+        if (hasError) {
+            return;
+        }
+
+        if ($('.quickdeal-wrapper form').valid()) {
+            var query = $('.quickdeal-wrapper form').serializeArray();
+            $.post('QuickAddDeal', query, function (result) {
                 if (result.length > 0) {
                     alert(result);
                 } else {
-                    $('#' + currentLeadCallID + '_CallType').html($('.dialogue-editcall form #CallTypeId option:selected').first().text());
-                    $('#' + currentLeadCallID + '_CallBackDate').html($('.dialogue-editcall form #CallBackDate').val());
-                    $('#' + currentLeadCallID + '_CallDate').html($('.dialogue-editcall form #CallDate').val());
-                    $('#' + currentLeadCallID + '_Result').html($('.dialogue-editcall form #Result').val());
-                    $('#EditCall').data('tWindow').close();
-                    alert('LeadCall更新成功');
+                    alert('no error msg')
                 }
             });
         }

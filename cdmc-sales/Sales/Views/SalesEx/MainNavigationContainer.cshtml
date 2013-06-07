@@ -16,21 +16,21 @@
                 .BindTo(Model.AllCRMs, mappings =>
         {
             mappings.For<AjaxCRM>(binding => binding
-                    .ItemDataBound((item, ajaxCRM) =>
-                    {                                 
-                        item.Text = ajaxCRM.DisplayText;
-                        item.Value = ajaxCRM.CRMID.ToString();
-                        item.Selected = item.Value == ViewBag.selectedVal;
-                    })
-                    .Children(company => company.AjaxLeads));
+            .ItemDataBound((item, ajaxCRM) =>
+            {                                 
+                item.Text = ajaxCRM.DisplayText;
+                item.Value = ajaxCRM.CRMID.ToString();
+                item.Selected = item.Value == ViewBag.selectedVal;
+            })
+            .Children(company => company.AjaxLeads));
 
             mappings.For<AjaxLead>(binding => binding
-                    .ItemDataBound((item, Lead) =>
-                    {                            
-                        item.Text = Lead.DisplayText;
-                        item.Value = Lead.CRMID.ToString() + "," + Lead.LeadID.ToString();
-                        item.Selected = item.Value == ViewBag.selectedVal;
-                    }));
+            .ItemDataBound((item, Lead) =>
+            {                            
+                item.Text = Lead.DisplayText;
+                item.Value = Lead.CRMID.ToString() + "," + Lead.LeadID.ToString();
+                item.Selected = item.Value == ViewBag.selectedVal;
+            }));
         })
 ) 
 </div>
