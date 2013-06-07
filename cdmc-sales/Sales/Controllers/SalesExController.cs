@@ -481,6 +481,7 @@ namespace Sales.Controllers
         }
 
         [ValidateInput(false)]
+        [HttpPost]
         public ActionResult QuickEntry(QuickEntry quickEntry)
         {
             CompanyRelationship companyRelationship = new CompanyRelationship();

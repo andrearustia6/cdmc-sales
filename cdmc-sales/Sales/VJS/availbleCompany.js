@@ -899,19 +899,19 @@ var currentCompanyNameEN = undefined;
             $namecn.addClass('fieldError');
             $nameen.addClass('fieldError');
             msg += '客户信息中客户中英文名必需至少填一个.';
-            haserror = true;
+            hasError = true;
         }
 
         $gender = $('.dialogue-addcompany form #Gender');
         if ($gender.val().length == 0) {
             $gender.addClass('fieldError');
-            haserror = true;
+            hasError = true;
         }
 
         $title = $('.dialogue-addcompany form #Title');
         if ($title.val().length == 0) {
             $title.addClass('fieldError');
-            haserror = true;
+            hasError = true;
         }
 
         var telephone = $('.dialogue-addcompany form #Telephone');
@@ -920,15 +920,15 @@ var currentCompanyNameEN = undefined;
             msg += '<br />客户信息中客户直线移动电话必需至少填一个.';
             telephone.addClass('fieldError');
             cellPhone.addClass('fieldError');
-            haserror = true;
+            hasError = true;
         } else {
             if (telephone.val().length != 0 && !IsTelephone(telephone.val())) {
                 telephone.addClass('fieldError');
-                haserror = true;
+                hasError = true;
             }
             if (cellPhone.val().length != 0 && !IsTelephone(cellPhone.val())) {
                 cellPhone.addClass('fieldError');
-                haserror = true;
+                hasError = true;
             }
         }
         // end validation for lead
@@ -942,42 +942,43 @@ var currentCompanyNameEN = undefined;
                 msg += '<br />通话信息中回打时间不能早于致电时间.';
                 callFirst.addClass('fieldError');
                 callBack.addClass('fieldError');
-                haserror = true;
+                hasError = true;
             }
         }
 
         var $calltype = $('.dialogue-addcompany form #CallTypeId');
         if ($calltype.val().length == 0) {
             $calltype.addClass('fieldError');
-            haserror = true;
+            hasError = true;
         }
 
-        // end validation for leadcall  
+        // end validation for leadcall
 
         if (hasError) {
             if (msg != '')
                 $('.dialogue-addcompany form #Msg').html(msg);
             return;
+        } else {
+            var projectid = $('#CurrentProjectId').val();
+            var companyNameCN = $('.dialogue-addcompany form #Name_CN').val();
+            var companyNameEN = $('.dialogue-addcompany form #Name_EN').val();
+            $.post('CheckCompanyExist', { projectid: projectid, beforeUpdateCN: null, afterUpdateCN: companyNameCN, beforeUpdateEN: null, afterUpdateEN: companyNameEN }, function (result) {
+                if (result.length > 0) {
+                    alert(result);
+                } else {
+                    var query = $('.dialogue-addcompany form').serializeArray();
+                    $.post('QuickEntry', query, function (result) {
+                        if ((result.companyRelationshipId != null) && (result.leadId != null) && (result.leadCallId != null)) {
+                            $('#QuickEntry').data('tWindow').close();
+                            RefreshCrmList(result.companyRelationshipId);
+                            onCompanyChanging(result.companyRelationshipId);
+                        } else {
+                            alert('快捷录入失败');
+                        }
+                    });
+                }
+            });
         }
-        var projectid = $('#CurrentProjectId').val();
-        var companyNameCN = $('.dialogue-addcompany form #Name_CN').val();
-        var companyNameEN = $('.dialogue-addcompany form #Name_EN').val();
-        $.post('CheckCompanyExist', { projectid: projectid, beforeUpdateCN: null, afterUpdateCN: companyNameCN, beforeUpdateEN: null, afterUpdateEN: companyNameEN }, function (result) {
-            if (result.length > 0) {
-                alert(result);
-            } else {
-                var query = $('.dialogue-addcompany form').serializeArray();
-                $.post('QuickEntry', query, function (result) {
-                    if ((result.companyRelationshipId != null) && (result.leadId != null) && (result.leadCallId != null)) {
-                        $('#QuickEntry').data('tWindow').close();
-                        RefreshCrmList(result.companyRelationshipId);
-                        onCompanyChanging(result.companyRelationshipId);
-                    } else {
-                        alert('快捷录入失败');
-                    }
-                });
-            }
-        });
     }
 
     function CancelQuickEntry() {
