@@ -8,7 +8,7 @@
 @{
    var incometitle ="月入账额";
    var targettitle = "月目标";
-   var percenttitle = "目标完成百分比";
+   var percenttitle = "目标完成百分比(%)";
    var currentmonth = DateTime.Now.Month;
    var onemonth = DateTime.Now.StartOfMonth().AddDays(-1) ;
    var twomonth = onemonth.StartOfMonth().AddDays(-1);
@@ -25,8 +25,8 @@
 .DataKeys(keys => { keys.Add(p => p.ProjectID); })
 .Columns(columns =>
 {
-    columns.Bound(p => p.ProjectName).Width(150).Title("项目名").HtmlAttributes(new { style = "text-align:center" });
-    columns.Bound(p => p.Manager).Title("负责人").HtmlAttributes(new { style = "text-align:center" });
+    columns.Bound(p => p.ProjectName).Width(150).Title("项目名").HtmlAttributes(new { style = "text-align:left" });
+    columns.Bound(p => p.Manager).Title("负责人").HtmlAttributes(new { style = "text-align:left" });
     columns.Bound(p => p.CurrentMonthTarget).Title(currentmonthstring + targettitle).HtmlAttributes(new { style = "text-align:right" });
     columns.Bound(p => p.CurrentMonthChickIn).Title(currentmonthstring + incometitle).HtmlAttributes(new { style = "text-align:right" });
     columns.Bound(p => p.OneMonthBeforeTarget).Title(onemonthstring + targettitle).HtmlAttributes(new { style = "text-align:right" });
@@ -122,8 +122,8 @@
 .DataKeys(keys => { keys.Add(p => p.ProjectID); })
 .Columns(columns =>
 {
-    columns.Bound(p => p.ProjectName).Width(150).Title("项目名").HtmlAttributes(new { style = "text-align:center" });
-    columns.Bound(p => p.Manager).Title("负责人").HtmlAttributes(new { style = "text-align:center" });
+    columns.Bound(p => p.ProjectName).Width(150).Title("项目名").HtmlAttributes(new { style = "text-align:left" });
+    columns.Bound(p => p.Manager).Title("负责人").HtmlAttributes(new { style = "text-align:left" });
     columns.Bound(p => p.CurrentMonthBeforePercent).Title(currentmonthstring + percenttitle).HtmlAttributes(new { style = "text-align:right" });
     columns.Bound(p => p.OneMonthBeforePercent).Title(onemonthstring + percenttitle).HtmlAttributes(new { style = "text-align:right" });
     columns.Bound(p => p.TwoMonthBeforePercent).Title(twomonthstring + percenttitle).HtmlAttributes(new { style = "text-align:right" });
