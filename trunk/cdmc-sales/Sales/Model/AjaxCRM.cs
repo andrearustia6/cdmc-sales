@@ -107,9 +107,10 @@ namespace Model
              }
          }
 
-
-
+         public IEnumerable<AjaxProjectPerformanceInMonth> ProjectLines { get; set; }
      }
+
+
      public class AjaxProjectPerformanceInMonthByProjectType
      {
          [Display(Name = "考察入账")]
