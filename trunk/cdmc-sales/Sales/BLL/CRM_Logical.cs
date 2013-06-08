@@ -296,6 +296,8 @@ namespace BLL
         {
             public static IQueryable<AjaxProjectPerformanceInProjectByMonth> GetProjectsPerformanceInProjectByMonth()
             {
+                     var yeaerstart = new DateTime(DateTime.Now.Year,1,1);
+
                 var ps = CRM_Logical.GetUserInvolveProject();
                 var pid = ps.Select(s => s.ID);
                 var targets = CH.DB.TargetOfMonths.Where(w => w.Project.IsActived == true);
@@ -337,12 +339,13 @@ namespace BLL
                                ThreeMonthBeforeTarget = targets.Where(w => w.Project.ID == grp.Key.ID && w.StartDate.Month == threemonthbeforestart.Month).Sum(s => s.CheckIn),
                                FourthMonthBeforeTarget = targets.Where(w => w.Project.ID == grp.Key.ID && w.StartDate.Month == fourmonthbeforestart.Month).Sum(s => s.CheckIn),
                                FifthMonthBeforeTarget = targets.Where(w => w.Project.ID == grp.Key.ID && w.StartDate.Month == fifthmonthbeforestart.Month).Sum(s => s.CheckIn),
-                               ProjectLines = (from ds in deals.Where(w => w.ProjectID == grp.Key.ID)
+                               ProjectLines = (from ds in deals.Where(w => w.ProjectID == grp.Key.ID && w.ActualPaymentDate != null && w.ActualPaymentDate>yeaerstart)
                                                group ds by new { ds.ActualPaymentDate.Value.Month } into grps
-                                               select new AjaxProjectPerformanceInMonth() { 
-                                                    Month= grps.Key.Month,
-                                                    CheckIn = grps.Sum(s=>(decimal?)s.Income),
-                                                    CheckinTarget = targets.Where(w => w.StartDate.Month == grps.Key.Month && w.ProjectID == grp.Key.ID).Sum(s => (decimal?)s.CheckIn)
+                                               select new AjaxProjectPerformanceInMonth()
+                                               {
+                                                   Month = grps.Key.Month,
+                                                   CheckIn = grps.Sum(s => (decimal?)s.Income),
+                                                   CheckinTarget = targets.Where(w => w.StartDate.Month == grps.Key.Month && w.ProjectID == grp.Key.ID).Sum(s => (decimal?)s.CheckIn)
                                                })
 
                            };
@@ -389,6 +392,7 @@ namespace BLL
   
             public static AjaxProjectPerformance GetAjaxProjectPerformance(int? projectid)
             {
+           
                 var p = CH.GetDataById<Project>(projectid);
                 var pdeals = CH.DB.Deals.Where(w => w.ProjectID == projectid && w.Abandoned == false && w.Income > 0 && w.ActualPaymentDate != null);
                 var pt = CH.DB.TargetOfMonths.Where(w => w.ProjectID == projectid);

@@ -1685,6 +1685,7 @@
     <Content Include="Views\Deal\QuickChange.cshtml">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="Views\DirectorReport\ProjectsPerformanceInProjectByMonthLines.cshtml" />
     <None Include="Views\SalesEx\EditCompany.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\SimulatorConfig.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\AjaxTargetOfMonthForMember.cshtml" />
