@@ -53,7 +53,7 @@
 
                            });
                        }
-                      
+
                        if (score == FinancialInterfaceRequired.LVL)
                        {
                            menu.Add().Text("日常工作").ImageUrl("~/Content/Common/Icons/editor.png").Items(item =>
@@ -100,9 +100,13 @@
                            if (score >= DirectorRequired.LVL)
                            {
                                item.Add().Url("~/DirectorReport/ProjectsCheckInByMonth").Text("报表");
+                               if (score == DirectorRequired.LVL)
+                               {
+                                   item.Add().Url("~/Project/ImportTrace").Text("历史导入操作");
+                               }
                            }
 
-                           
+
                            if (score >= SalesRequired.LVL)
                            {
                                item.Add().Url("~/Performance/Index").Text("考核表 2.0");
@@ -182,7 +186,7 @@
                                //item.Add().Url("~/Sales/AvailableCompanys").Text("可打公司 V2.0");
                                item.Add().Url("~/SalesEx/index").Text("可打公司 V2.0");
                                item.Add().Url("~/Sales/ContectedLeads").Text("Call List");
-                               
+
                                item.Add().Url("~/Sales/MyDealIndex").Text("我的出单");
                                item.Add().Url("~/Sales/PhoneSaleSupport").Text("话术支持");
                                item.Add().Url("~/Sales/MyMessageIndex").Text("留言求助");
@@ -194,7 +198,7 @@
                                    //item.Add().Url("~/TargetOfMonthForMember/Index").Text("月目标");
                                    item.Add().Url("~/AssignPerformanceScore/index").Text("打分");
                                    item.Add().Url("~/TargetOfMonthForMember/ConfirmList").Text("月目标确认");
-                                   
+
 
                                }
                                //item.Add().Url("~/Sales/MyWeeklyReport").Text("我的周报").ImageUrl("~/Content/Common/Icons/Docking.gif");
