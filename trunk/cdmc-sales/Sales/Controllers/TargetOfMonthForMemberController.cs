@@ -144,40 +144,21 @@ namespace Sales.Controllers
             return View(item);
         }
 
-        public ActionResult Delete(int id)
-        {
-            return View(CH.GetDataById<TargetOfMonthForMember>(id));
-        }
+        //public ActionResult Delete(int id)
+        //{
+        //return View(CH.GetDataById<TargetOfMonthForMember>(id));
+        //}
 
-        [HttpPost, ActionName("Delete")]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            var item = CH.GetDataById<TargetOfMonthForMember>(id);
-            CH.Delete<TargetOfMonthForMember>(id);
-            return RedirectToAction("MyTargetIndex", new { projectid = item.ProjectID });
-        }
+        //[HttpPost, ActionName("Delete")]
+        //public ActionResult DeleteConfirmed(int id)
+        //{
+        //    var item = CH.GetDataById<TargetOfMonthForMember>(id);
+        //    CH.Delete<TargetOfMonthForMember>(id);
+        //    return RedirectToAction("MyTargetIndex", new { projectid = item.ProjectID });
+        //}
 
         public ActionResult ConfirmList(int? projectid)
         {
-            //var list = CH.DB.ChangeTracker.Entries<TargetOfMonthForMember>().ToList();
-            //projectid = this.TrySetProjectIDForUser(projectid);
-            //ViewBag.ProjectID = projectid;
-            //if (projectid != null)
-            //{
-            //    list = CH.DB.ChangeTracker.Entries<TargetOfMonthForMember>().ToList();
-            //    var data = from t in CH.DB.TargetOfMonthForMembers.AsNoTracking()
-            //               where t.ProjectID == projectid
-            //               select t;
-
-            //    var td = data.OrderByDescending(o => o.EndDate).ToList().Where(s => s.IsConfirm != true);
-
-            //    list = CH.DB.ChangeTracker.Entries<TargetOfMonthForMember>().ToList();
-            //    if (list.Count > 0)
-            //    {
-            //        var id = list.First().Entity.ID;
-            //    }
-            //    return View(td.ToList());
-            //}
             return View();
         }
 
@@ -215,9 +196,9 @@ namespace Sales.Controllers
 
         public List<AjaxTargetOfMonthForMember> getData()
         {
-            var pids = CH.GetAllData<Project>(s => s.TeamLeader == Employee.CurrentUserName).Select(s=>s.ID);
+            var pids = CH.GetAllData<Project>(s => s.TeamLeader == Employee.CurrentUserName).Select(s => s.ID);
             var data = from db in CH.DB.TargetOfMonthForMembers
-                       where pids.Any(a=>a==db.ProjectID) && (db.IsConfirm == null || db.IsConfirm == false)
+                       where pids.Any(a => a == db.ProjectID) && (db.IsConfirm == null || db.IsConfirm == false)
                        select new AjaxTargetOfMonthForMember
                        {
                            ID = db.ID,
@@ -231,6 +212,114 @@ namespace Sales.Controllers
                            StartDate = db.StartDate
                        };
             return data.OrderByDescending(s => s.EndDate).ToList();
+        }
+
+        public ViewResult MyTargetIndexEx(int? projectid)
+        {
+            var list = CH.DB.ChangeTracker.Entries<TargetOfMonthForMember>().ToList();
+            projectid = this.TrySetProjectIDForUser(projectid);
+            ViewBag.ProjectID = projectid;
+            ViewBag.MenberID = CH.GetAllData<Member>().Where(s => s.Name == Employee.CurrentUserName).First().ID;
+            string name = Employee.CurrentUserName;
+            if (projectid != null)
+            {
+                list = CH.DB.ChangeTracker.Entries<TargetOfMonthForMember>().ToList();
+                //var data = CH.GetAllData<TargetOfMonthForMember>(t => t.ProjectID == projectid && t.Member.Name == Employee.CurrentUserName);
+
+                //return View(data);
+                var data = from t in CH.DB.TargetOfMonthForMembers.AsNoTracking()
+                           where t.ProjectID == projectid && t.Member.Name == name
+                           select t;
+
+                var td = data.OrderByDescending(o => o.EndDate).ToList();
+
+                list = CH.DB.ChangeTracker.Entries<TargetOfMonthForMember>().ToList();
+                if (list.Count > 0)
+                {
+                    var id = list.First().Entity.ID;
+                }
+
+                return View(td);
+            }
+            return View();
+
+        }
+
+        List<TargetOfMonthForMember> getData(int? projectid)
+        {
+            var list = CH.DB.ChangeTracker.Entries<TargetOfMonthForMember>().ToList();
+            projectid = this.TrySetProjectIDForUser(projectid);
+            ViewBag.ProjectID = projectid;
+            string name = Employee.CurrentUserName;
+            if (projectid != null)
+            {
+                list = CH.DB.ChangeTracker.Entries<TargetOfMonthForMember>().ToList();
+                //var data = CH.GetAllData<TargetOfMonthForMember>(t => t.ProjectID == projectid && t.Member.Name == Employee.CurrentUserName);
+
+                //return View(data);
+                var data = from t in CH.DB.TargetOfMonthForMembers.AsNoTracking()
+                           where t.ProjectID == projectid && t.Member.Name == name
+                           select t;
+
+                var td = data.OrderByDescending(o => o.EndDate).ToList();
+
+                list = CH.DB.ChangeTracker.Entries<TargetOfMonthForMember>().ToList();
+                if (list.Count > 0)
+                {
+                    var id = list.First().Entity.ID;
+                }
+
+                return td;
+            }
+            return null;
+        }
+
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult Insert(TargetOfMonthForMember item)
+        {
+            this.AddErrorStateIfTargetOfMonthNoValid(item);
+            if (ModelState.IsValid)
+            {
+                CH.Create<TargetOfMonthForMember>(item);
+                return RedirectToAction("MyTargetIndexEx", new { projectid = item.ProjectID });
+            }
+            ViewBag.ProjectID = item.ProjectID;
+
+            return View("MyTargetIndexEx", getData(item.ProjectID));
+
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult Save(TargetOfMonthForMember item)
+        {
+            this.EditErrorStateIfTargetOfMonthNoValid(item);
+            CH.DB.SaveChanges();
+
+            CH.DB.ChangeTracker.DetectChanges();
+            var list = CH.DB.ChangeTracker.Entries<TargetOfMonthForMember>().ToList();
+            if (list.Count > 0)
+            {
+                var attacth = list.First().Entity;
+                CH.DB.Detach(attacth);
+            }
+
+            list = CH.DB.ChangeTracker.Entries<TargetOfMonthForMember>().ToList();
+            if (ModelState.IsValid)
+            {
+
+                CH.Edit<TargetOfMonthForMember>(item);
+                return RedirectToAction("MyTargetIndexEx", new { projectid = item.ProjectID });
+            }
+            ViewBag.ProjectID = item.ProjectID;
+            return View("MyTargetIndexEx", getData(item.ProjectID));
+        }
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult Deleted(int id)
+        {
+            var item = CH.GetDataById<TargetOfMonthForMember>(id);
+            CH.Delete<TargetOfMonthForMember>(id);
+            return RedirectToAction("MyTargetIndexEx", new { projectid = item.ProjectID });
         }
     }
 }
