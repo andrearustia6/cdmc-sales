@@ -292,6 +292,7 @@
     <Compile Include="Model\_Deal.cs" />
     <Compile Include="Model\_EmployeePerformance.cs" />
     <Compile Include="Model\_MonthDuration.cs" />
+    <Compile Include="Model\_Reports.cs" />
     <Compile Include="Model\_Research.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utl\Attributes.cs" />
@@ -1676,7 +1677,7 @@
     <Content Include="Views\SimulatorConfig\Index.cshtml" />
     <Content Include="Views\DirectorReport\Master.cshtml" />
     <Content Include="Views\DirectorReport\DealGroupBySales.cshtml" />
-    <Content Include="Views\DirectorReport\ProjectsPerformanceInProjectByMonth.cshtml" />
+    <Content Include="Views\DirectorReport\ProjectsCheckInByMonth.cshtml" />
     <Content Include="Views\Performance\Index.cshtml" />
     <Content Include="Views\Project\ImportCompany.cshtml" />
     <Content Include="Views\Project\ConfliceCompany.cshtml" />
@@ -1687,7 +1688,7 @@
     <Content Include="Views\Deal\QuickChange.cshtml">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="Views\DirectorReport\ProjectsPerformanceInProjectByMonthLines.cshtml" />
+    <Content Include="Views\DirectorReport\ProjectsCheckInByMonthLines.cshtml" />
     <None Include="Views\SalesEx\EditCompany.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\SimulatorConfig.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\AjaxTargetOfMonthForMember.cshtml" />
