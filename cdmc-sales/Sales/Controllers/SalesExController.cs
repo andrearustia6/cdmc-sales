@@ -879,7 +879,7 @@ namespace Sales.Controllers
             {
                 foreach (var p in deletedP)
                 {
-                    pList.Remove(p);
+                    bool delete = pList.Remove(p);
                 }
             }
             return View(new GridModel(pList));

@@ -271,6 +271,7 @@
                 c.Bound(p => p.Contact).Title("客户直线");
                 c.Bound(p => p.Email).Title("电子邮箱");
                 c.Bound(p => p.ParticipantTypeID).Title("参会类型");
+                c.Command(commands => commands.Delete()).Title("删除");
             })
             .DataBinding(dataBinding =>
             {
