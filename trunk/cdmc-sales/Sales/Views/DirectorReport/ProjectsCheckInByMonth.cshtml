@@ -31,95 +31,95 @@
 {
     columns.Bound(p => p.ProjectName).Width(150).Title("项目名").HtmlAttributes(new { style = "text-align:left" });
     columns.Bound(p => p.Manager).Title("负责人").HtmlAttributes(new { style = "text-align:left" });
-    columns.Bound(p => p.CurrentMonthTarget).Title(currentmonthstring + targettitle).HtmlAttributes(new { style = "text-align:right" });
-    columns.Bound(p => p.CurrentMonthChickIn).Title(currentmonthstring + incometitle).HtmlAttributes(new { style = "text-align:right" });
-    columns.Bound(p => p.OneMonthBeforeTarget).Title(onemonthstring + targettitle).HtmlAttributes(new { style = "text-align:right" });
-    columns.Bound(p => p.OneMonthBeforeChickIn).Title(onemonthstring + incometitle).HtmlAttributes(new { style = "text-align:right" });
-    columns.Bound(p => p.TwoMonthBeforeTarget).Title(twomonthstring + targettitle).HtmlAttributes(new { style = "text-align:right" });
+    columns.Bound(p => p.CurrentMonthTarget).Title(currentmonthstring + targettitle).HtmlAttributes(new { style = "text-align:right" }).Format("{0:c}").Aggregate(aggregates => aggregates.Average()).FooterTemplate(@<text>项目平均月目标: @item.Average.Format("{0:c}")</text>); ;
+    columns.Bound(p => p.CurrentMonthChickIn).Title(currentmonthstring + incometitle).HtmlAttributes(new { style = "text-align:right" }).Format("{0:c}").Aggregate(aggregates => aggregates.Average()).FooterTemplate(@<text>目平均入账: @item.Average.Format("{0:c}")</text>); ;
+    columns.Bound(p => p.OneMonthBeforeTarget).Title(onemonthstring + targettitle).HtmlAttributes(new { style = "text-align:right" }).Format("{0:c}");
+    columns.Bound(p => p.OneMonthBeforeChickIn).Title(onemonthstring + incometitle).HtmlAttributes(new { style = "text-align:right" }).Format("{0:c}");
+    columns.Bound(p => p.TwoMonthBeforeTarget).Title(twomonthstring + targettitle).HtmlAttributes(new { style = "text-align:right" }).Format("{0:c}");
     columns.Bound(p => p.TwoMonthBeforeChickIn).Title(twomonthstring + incometitle).HtmlAttributes(new { style = "text-align:right" });
-    columns.Bound(p => p.ThreeMonthBeforeTarget).Title(threemonthstring + targettitle).HtmlAttributes(new { style = "text-align:right" });
-    columns.Bound(p => p.ThreeMonthBeforeChickIn).Title(threemonthstring + incometitle).HtmlAttributes(new { style = "text-align:right" });
-    columns.Bound(p => p.FourthMonthBeforeTarget).Title(fourthmonthstring + targettitle).HtmlAttributes(new { style = "text-align:right" });
-    columns.Bound(p => p.FourthMonthBeforeChickIn).Title(fourthmonthstring + incometitle).HtmlAttributes(new { style = "text-align:right" });
-    columns.Bound(p => p.FifthMonthBeforeTarget).Title(fifthhmonthstring + incometitle).HtmlAttributes(new { style = "text-align:right" });
-    columns.Bound(p => p.FifthMonthBeforeChickIn).Title(fifthhmonthstring + incometitle).HtmlAttributes(new { style = "text-align:right" });
+    columns.Bound(p => p.ThreeMonthBeforeTarget).Title(threemonthstring + targettitle).HtmlAttributes(new { style = "text-align:right" }).Format("{0:c}");
+    columns.Bound(p => p.ThreeMonthBeforeChickIn).Title(threemonthstring + incometitle).HtmlAttributes(new { style = "text-align:right" }).Format("{0:c}");
+    columns.Bound(p => p.FourthMonthBeforeTarget).Title(fourthmonthstring + targettitle).HtmlAttributes(new { style = "text-align:right" }).Format("{0:c}");
+    columns.Bound(p => p.FourthMonthBeforeChickIn).Title(fourthmonthstring + incometitle).HtmlAttributes(new { style = "text-align:right" }).Format("{0:c}");
+    //columns.Bound(p => p.FifthMonthBeforeTarget).Title(fifthhmonthstring + incometitle).HtmlAttributes(new { style = "text-align:right" }).Format("{0:c}");
+    //columns.Bound(p => p.FifthMonthBeforeChickIn).Title(fifthhmonthstring + incometitle).HtmlAttributes(new { style = "text-align:right" }).Format("{0:c}");
 })
- .CellAction(cell =>
- {
-     if (cell.Column.Member == "CurrentMonthChickIn")
-     {
-         AjaxProjectCheckInByMonth data = cell.DataItem;
-         if (data.CurrentMonthChickIn < data.CurrentMonthTarget)
-         {
-             cell.HtmlAttributes["style"] = "font-weight: bold; color:red;text-align:right";
-         }
-         else if (data.CurrentMonthTarget != null && data.CurrentMonthTarget != 0 && Utl.GetPercent(data.CurrentMonthChickIn, data.CurrentMonthTarget) >= 140)
-         {
-             cell.HtmlAttributes["style"] = "font-weight: bold; color:green;text-align:right";
-         }
-     }
-     if (cell.Column.Member == "OneMonthBeforeChickIn")
-     {
-         AjaxProjectCheckInByMonth data = cell.DataItem;
-         if (data.OneMonthBeforeChickIn < data.OneMonthBeforeTarget)
-         {
-             cell.HtmlAttributes["style"] = "font-weight: bold; color:red;text-align:right";
-         }
-         else if (data.OneMonthBeforeTarget != null && data.OneMonthBeforeTarget != 0 && Utl.GetPercent(data.OneMonthBeforeChickIn, data.OneMonthBeforeTarget) >= 140)
-         {
-             cell.HtmlAttributes["style"] = "font-weight: bold; color:green;text-align:right";
-         }
-     }
-     if (cell.Column.Member == "TwoMonthBeforeChickIn")
-     {
-         AjaxProjectCheckInByMonth data = cell.DataItem;
-         if (data.TwoMonthBeforeChickIn < data.TwoMonthBeforeTarget)
-         {
-             cell.HtmlAttributes["style"] = "font-weight: bold; color:red;text-align:right";
-         }
-         else if (data.TwoMonthBeforeTarget != null && data.TwoMonthBeforeTarget != 0 && Utl.GetPercent(data.TwoMonthBeforeChickIn, data.TwoMonthBeforeTarget) >= 140)
-         {
-             cell.HtmlAttributes["style"] = "font-weight: bold; color:green;text-align:right";
-         }
-     }
-     if (cell.Column.Member == "ThreeMonthBeforeChickIn")
-     {
-         AjaxProjectCheckInByMonth data = cell.DataItem;
-         if (data.ThreeMonthBeforeChickIn < data.ThreeMonthBeforeTarget)
-         {
-             cell.HtmlAttributes["style"] = "font-weight: bold; color:red;text-align:right";
-         }
-         else if (data.ThreeMonthBeforeTarget != null && data.ThreeMonthBeforeTarget != 0 && Utl.GetPercent(data.ThreeMonthBeforeChickIn, data.ThreeMonthBeforeTarget) >= 140)
-         {
-             cell.HtmlAttributes["style"] = "font-weight: bold; color:green;text-align:right";
-         }
-     }
-     if (cell.Column.Member == "FourthMonthBeforeChickIn")
-     {
-         AjaxProjectCheckInByMonth data = cell.DataItem;
-         if (data.FourthMonthBeforeChickIn < data.FourthMonthBeforeTarget)
-         {
-             cell.HtmlAttributes["style"] = "font-weight: bold; color:red;text-align:right";
-         }
-         else if (data.FourthMonthBeforeTarget != null && data.FourthMonthBeforeTarget != 0 && Utl.GetPercent(data.FourthMonthBeforeChickIn, data.FourthMonthBeforeTarget) >= 140)
-         {
-             cell.HtmlAttributes["style"] = "font-weight: bold; color:green;text-align:right";
-         }
-     }
-     if (cell.Column.Member == "FifthMonthBeforeChickIn")
-     {
-         AjaxProjectCheckInByMonth data = cell.DataItem;
-         if (data.FifthMonthBeforeChickIn < data.FifthMonthBeforeTarget)
-         {
-             cell.HtmlAttributes["style"] = "font-weight: bold; color:red;text-align:right";
-         }
-         else if (data.FifthMonthBeforeTarget != null && data.FifthMonthBeforeTarget != 0 && Utl.GetPercent(data.FifthMonthBeforeChickIn, data.FifthMonthBeforeTarget) >= 140)
-         {
-             cell.HtmlAttributes["style"] = "font-weight: bold; color:green;text-align:right";
-         }
-     }
- }).Scrollable(s=>s.Height(550)).Sortable().Resizable(s => s.Columns(true))
-)
+                 .CellAction(cell =>
+                 {
+                     if (cell.Column.Member == "CurrentMonthChickIn")
+                     {
+                         AjaxProjectCheckInByMonth data = cell.DataItem;
+                         if (data.CurrentMonthChickIn < data.CurrentMonthTarget)
+                         {
+                             cell.HtmlAttributes["style"] = "font-weight: bold; color:red;text-align:right";
+                         }
+                         else if (data.CurrentMonthTarget != null && data.CurrentMonthTarget != 0 && Utl.GetPercent(data.CurrentMonthChickIn, data.CurrentMonthTarget) >= 140)
+                         {
+                             cell.HtmlAttributes["style"] = "font-weight: bold; color:green;text-align:right";
+                         }
+                     }
+                     if (cell.Column.Member == "OneMonthBeforeChickIn")
+                     {
+                         AjaxProjectCheckInByMonth data = cell.DataItem;
+                         if (data.OneMonthBeforeChickIn < data.OneMonthBeforeTarget)
+                         {
+                             cell.HtmlAttributes["style"] = "font-weight: bold; color:red;text-align:right";
+                         }
+                         else if (data.OneMonthBeforeTarget != null && data.OneMonthBeforeTarget != 0 && Utl.GetPercent(data.OneMonthBeforeChickIn, data.OneMonthBeforeTarget) >= 140)
+                         {
+                             cell.HtmlAttributes["style"] = "font-weight: bold; color:green;text-align:right";
+                         }
+                     }
+                     if (cell.Column.Member == "TwoMonthBeforeChickIn")
+                     {
+                         AjaxProjectCheckInByMonth data = cell.DataItem;
+                         if (data.TwoMonthBeforeChickIn < data.TwoMonthBeforeTarget)
+                         {
+                             cell.HtmlAttributes["style"] = "font-weight: bold; color:red;text-align:right";
+                         }
+                         else if (data.TwoMonthBeforeTarget != null && data.TwoMonthBeforeTarget != 0 && Utl.GetPercent(data.TwoMonthBeforeChickIn, data.TwoMonthBeforeTarget) >= 140)
+                         {
+                             cell.HtmlAttributes["style"] = "font-weight: bold; color:green;text-align:right";
+                         }
+                     }
+                     if (cell.Column.Member == "ThreeMonthBeforeChickIn")
+                     {
+                         AjaxProjectCheckInByMonth data = cell.DataItem;
+                         if (data.ThreeMonthBeforeChickIn < data.ThreeMonthBeforeTarget)
+                         {
+                             cell.HtmlAttributes["style"] = "font-weight: bold; color:red;text-align:right";
+                         }
+                         else if (data.ThreeMonthBeforeTarget != null && data.ThreeMonthBeforeTarget != 0 && Utl.GetPercent(data.ThreeMonthBeforeChickIn, data.ThreeMonthBeforeTarget) >= 140)
+                         {
+                             cell.HtmlAttributes["style"] = "font-weight: bold; color:green;text-align:right";
+                         }
+                     }
+                     if (cell.Column.Member == "FourthMonthBeforeChickIn")
+                     {
+                         AjaxProjectCheckInByMonth data = cell.DataItem;
+                         if (data.FourthMonthBeforeChickIn < data.FourthMonthBeforeTarget)
+                         {
+                             cell.HtmlAttributes["style"] = "font-weight: bold; color:red;text-align:right";
+                         }
+                         else if (data.FourthMonthBeforeTarget != null && data.FourthMonthBeforeTarget != 0 && Utl.GetPercent(data.FourthMonthBeforeChickIn, data.FourthMonthBeforeTarget) >= 140)
+                         {
+                             cell.HtmlAttributes["style"] = "font-weight: bold; color:green;text-align:right";
+                         }
+                     }
+                     if (cell.Column.Member == "FifthMonthBeforeChickIn")
+                     {
+                         AjaxProjectCheckInByMonth data = cell.DataItem;
+                         if (data.FifthMonthBeforeChickIn < data.FifthMonthBeforeTarget)
+                         {
+                             cell.HtmlAttributes["style"] = "font-weight: bold; color:red;text-align:right";
+                         }
+                         else if (data.FifthMonthBeforeTarget != null && data.FifthMonthBeforeTarget != 0 && Utl.GetPercent(data.FifthMonthBeforeChickIn, data.FifthMonthBeforeTarget) >= 140)
+                         {
+                             cell.HtmlAttributes["style"] = "font-weight: bold; color:green;text-align:right";
+                         }
+                     }
+                 }).Scrollable(s => s.Height(550)).Sortable().Resizable(s => s.Columns(true))
+                )
 </fieldset>    
     
     <fieldset>

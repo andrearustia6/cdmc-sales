@@ -294,6 +294,10 @@ namespace BLL
 
         public static class _Reports
         {
+            //public static IQueryable<AjaxEmployeeCheckInDistribution> GetAjaxEmployeeCheckInDistribution(IQueryable<AjaxEmployeeCheckInByMonth> data)
+            //{
+            //    var list =   from i in data  group i by new { i>=500,}
+            //}
             public static IQueryable<AjaxProjectCheckInByMonth> GetProjectsCheckInByMonth()
             {
                      var yeaerstart = new DateTime(DateTime.Now.Year,1,1);
@@ -402,6 +406,7 @@ namespace BLL
                 var fifthmonthbeforeend = fourmonthbeforestart.AddDays(-1);
                 var fifthmonthbeforestart = fifthmonthbeforeend.StartOfMonth();
 
+                var alivemembers = CH.DB.Members.Where(w => w.IsActivated == true).Select(s => s.Name).Distinct();
                 var deals = CRM_Logical.GetDeals(true);
                 var list = from d in deals
                            group d by new { d.Sales } into grp
@@ -422,7 +427,7 @@ namespace BLL
                                FifthMonthBeforeTarget = targets.Where(w => w.Member.Name == grp.Key.Sales && w.StartDate.Month == fifthmonthbeforestart.Month).Sum(s => s.CheckIn),
                            };
                
-                return list;
+                return list.Where(w=>alivemembers.Any(a=>a==w.Name));
             }
         }
         public static class _Project
@@ -811,7 +816,7 @@ namespace BLL
                 ps = GetManagerInvolveProject();
             }
             ps = ps.Where(w => w.Test !=true ).ToList();//不反回测试项目
-            return new List<Project>();
+            return  ps;
         }
         /// <summary>
         /// 取得sales正在参与的，已经激活，并且当前时间在项目周期内的项目

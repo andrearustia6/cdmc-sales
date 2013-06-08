@@ -7,6 +7,15 @@ using Sales.Model;
 
 namespace Model
 {
+    public class AjaxEmployeeCheckInDistribution
+    {
+        [Key]
+        [Display(Name = "范围")]
+        public string Range { get; set; }
+        [Display(Name = "数量")]
+        public int? Count { get; set; }
+    }
+
     public class AjaxEmployeeCheckInByMonth
     {
         [Key]
