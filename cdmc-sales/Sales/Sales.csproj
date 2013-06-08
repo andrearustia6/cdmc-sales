@@ -1689,6 +1689,7 @@
       <SubType>Code</SubType>
     </Content>
     <Content Include="Views\DirectorReport\ProjectsCheckInByMonthLines.cshtml" />
+    <Content Include="Views\DirectorReport\EmployeeCheckInByMonth.cshtml" />
     <None Include="Views\SalesEx\EditCompany.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\SimulatorConfig.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\AjaxTargetOfMonthForMember.cshtml" />

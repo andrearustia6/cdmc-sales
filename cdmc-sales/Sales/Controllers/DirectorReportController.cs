@@ -62,30 +62,30 @@ namespace Sales.Controllers
         //}
 
         /// <summary>
-        /// 项目 列为项目 
+        ///项目入账 
         /// </summary>
         /// <returns></returns>
-        public ActionResult ProjectsCheckInProjectByMonth()
+        public ActionResult ProjectsCheckInByMonth()
         {
             var list = CRM_Logical._Reports.GetProjectsCheckInByMonth();
             return View(list.ToList());
         }
 
         /// <summary>
-        /// 项目出单趋势图
+        /// 项目入账趋势图
         /// </summary>
         /// <returns></returns>
-        public ActionResult ProjectsCheckInProjectByMonthLines()
+        public ActionResult ProjectsCheckInByMonthLines()
         {
             var list = CRM_Logical._Reports.GetProjectsCheckInByMonth();
             return View(list.ToList());
         }
 
          /// <summary>
-        /// 项目出单趋势图
+        /// 个人入账
         /// </summary>
         /// <returns></returns>
-        public ActionResult AjaxEmployeePerformanceByMonth()
+        public ActionResult EmployeeCheckInByMonth()
         {
             var list = CRM_Logical._Reports.GetEmployeesCheckInByMonth();
             return View(list.ToList());
