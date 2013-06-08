@@ -1683,8 +1683,8 @@
     <Content Include="Views\Project\ImportTrace.cshtml" />
     <Content Include="Views\Project\TargetOfMonthForProject.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\ProjectType.cshtml" />
-    <Content Include="Views\Deal\QuickChange.cshtml">
     <Content Include="Views\Project\ParticipantIndex.cshtml" />
+    <Content Include="Views\Deal\QuickChange.cshtml">
       <SubType>Code</SubType>
     </Content>
     <Content Include="Views\DirectorReport\ProjectsPerformanceInProjectByMonthLines.cshtml" />
