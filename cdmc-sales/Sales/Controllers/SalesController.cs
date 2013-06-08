@@ -227,7 +227,6 @@ namespace Sales.Controllers
 
             this.AddErrorStateIfSalesNoAccessRightToTheProject(projectid);
 
-
             if (ModelState.IsValid)
                 return View();
             else

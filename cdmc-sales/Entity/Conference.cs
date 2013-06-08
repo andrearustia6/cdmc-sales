@@ -144,4 +144,37 @@ namespace Entity
         public virtual Project Project { get; set; }
         public int? ProjectID { get; set; }
     }
+
+    public class AjaxParticipant : EntityBase
+    {
+        public virtual Deal Deal { get; set; }
+        [Display(Name = "关联出单")]
+        public int? DealID { get; set; }
+
+        [Display(Name = "参会人名称"), Required]
+        public string Name { get; set; }
+
+        [Display(Name = "职位")]
+        public string Title { get; set; }
+
+        [UIHint("ClientGender"), Display(Name = "性别")]
+        public string Gender { get; set; }
+
+        [Display(Name = "直线电话")]
+        public string Contact { get; set; }
+
+        [Display(Name = "移动电话")]
+        public string Mobile { get; set; }
+
+        [Display(Name = "工作邮箱")]
+        public string Email { get; set; }
+
+        public virtual ParticipantType ParticipantType { get; set; }
+
+        [UIHint("ClientParticipantTypeID"), Display(Name = "参会类型"), Required]
+        public int? ParticipantTypeID { get; set; }
+
+        public virtual Project Project { get; set; }
+        public int? ProjectID { get; set; }
+    }
 }

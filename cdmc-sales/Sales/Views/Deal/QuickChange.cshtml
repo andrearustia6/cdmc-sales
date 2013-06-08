@@ -192,7 +192,10 @@
                 @Html.Hidden("ProjectID", (int)ViewBag.ProjectID)
             </td>
         </tr>
-        <tr>
+
+        
+
+        @*<tr>
             <td>
                 <div class="editor-label">客户名称</div>
             </td>
@@ -243,7 +246,53 @@
                     @Html.DropDownList("ParticipantTypeID", new SelectList(CH.GetAllData<ParticipantType>(), "ID", "Name"), "-请选择-")
                 </div>
             </td>
-        </tr>
-    </table> 
+        </tr>*@
+    </table>
+    @{
+        //if(ViewData["pList"] != null)
+        //List<Participant> pList = new List<Participant>();
+    }
+    @(Html.Telerik().Grid<AjaxParticipant>().Name("pList").BindTo(ViewData["pList"] as IEnumerable<AjaxParticipant>)
+            .DataKeys(keys =>
+            {
+                keys.Add(s => s.ID);
+            })
+            .ToolBar(commands =>
+            {
+                commands.Insert();
+                commands.SubmitChanges();
+            })
+            .Columns(c => 
+            { 
+                c.Bound(p => p.Name).Title("客户名称");
+                c.Bound(p => p.Title).Title("客户职位");
+                c.Bound(p => p.Gender).Title("客户性别");
+                c.Bound(p => p.Mobile).Title("移动电话");
+                c.Bound(p => p.Contact).Title("客户直线");
+                c.Bound(p => p.Email).Title("电子邮箱");
+                c.Bound(p => p.ParticipantTypeID).Title("参会类型");
+            })
+            .DataBinding(dataBinding =>
+            {
+                dataBinding.Ajax()
+                    .Select("_SelectAjaxParticipant", "SalesEx")
+                    .Update("_UpdateAjaxParticipant", "SalesEx");
+            })
+            .Editable(editing => editing.Mode(GridEditMode.InCell).DefaultDataItem(new AjaxParticipant
+            { }))
+            .ClientEvents(events => events.OnEdit("onEdit"))
+    ) 
+
 </fieldset>
+
+    <script type="text/javascript">
+        function onEdit(e) {
+            $(e.form).find('#Gender').data('tDropDownList').select(function (dataItem) {
+                return dataItem.Text == e.dataItem['Gender'];
+            });
+            $(e.form).find('#ParticipantTypeID').data('tDropDownList').select(function (dataItem) {
+                return dataItem.Text == e.dataItem['ParticipantTypeID'].val();
+            });
+        }
+    </script>
 
