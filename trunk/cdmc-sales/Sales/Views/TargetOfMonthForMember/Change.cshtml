@@ -2,8 +2,7 @@
 @using Utl
 @using Entity
 <fieldset>
-    <legend>@SR.Form</legend>
-       @* @Html.Hidden("ProjectID")
+    <legend>@SR.Form</legend>@* @Html.Hidden("ProjectID")
 
          <div class="editor-label">
         @Html.LabelFor(model => model.Month)
@@ -15,8 +14,8 @@
     <div class="editor-label">
         @Html.LabelFor(model => model.StartDate)
     </div>
-     <div class="editor-field">
-        @Html.Telerik().DatePickerFor(model => model.StartDate).Value(Model == null?DateTime.Now.StartOfMonth():Model.StartDate)
+    <div class="editor-field">
+        @Html.Telerik().DatePickerFor(model => model.StartDate).Value(Model == null ? DateTime.Now.StartOfMonth() : Model.StartDate)
         @Html.ValidationMessageFor(model => model.StartDate)
     </div>
     <div class="editor-label">
@@ -50,26 +49,25 @@
     <div class="editor-label">
         @Html.LabelFor(model => model.MemberID, "项目名称")
     </div>
-
-       <div class="editor-field">
-          @Html.DropDownListFor(m => m.ProjectID, new SelectList(BLL.CRM_Logical.GetUserInvolveProject(), "ID", "Name"), "-请选择-")
-           @Html.ValidationMessageFor(model => model.ProjectID)
+    <div class="editor-field">
+        @Html.DropDownListFor(m => m.ProjectID, new SelectList(BLL.CRM_Logical.GetUserInvolveProject(), "ID", "Name"), "-请选择-")
+        @Html.ValidationMessageFor(model => model.ProjectID)
     </div>
     <div class="editor-label">
         @Html.LabelFor(model => model.MemberID, "目标制定人")
     </div>
     <div class="editor-field">
-    @{
-        var pid = Model == null ? ViewBag.ProjectID as int? : Model.ProjectID;
-        
-        var user = Employee.CurrentUserName;
-        var membernames = CH.GetAllData<Member>(mem => mem.Project.ID == pid).ToList();
+        @{
+            var pid = Model == null ? ViewBag.ProjectID as int? : Model.ProjectID;
+
+            var user = Employee.CurrentUserName;
+            var membernames = CH.GetAllData<Member>(mem => mem.Project.ID == pid).ToList();
 
          
-          @Html.DropDownListFor(m => m.MemberID, new SelectList(membernames, "ID", "Name", membernames.Find(f=>f.Name==user)), "-请选择-")
+            @Html.DropDownListFor(m => m.MemberID, new SelectList(membernames, "ID", "Name", membernames.Find(f => f.Name == user)), "-请选择-")
          
        
-       }
-         @Html.ValidationMessageFor(model => model.MemberID)
+        }
+        @Html.ValidationMessageFor(model => model.MemberID)
     </div>
 </fieldset>
