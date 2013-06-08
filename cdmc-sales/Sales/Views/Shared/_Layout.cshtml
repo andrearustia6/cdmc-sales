@@ -69,6 +69,7 @@
                            menu.Add().Text("日常工作").ImageUrl("~/Content/Common/Icons/editor.png").Items(item =>
                            {
                                item.Add().Url("~/Deal/ConfirmList").Text("出单确认");
+                               item.Add().Url("~/Project/ParticipantIndex").Text("参会人导出");
                            });
                        }
 
@@ -184,7 +185,7 @@
                                //item.Add().Url("~/Sales/AvailableCompanys").Text("可打公司 V2.0");
                                item.Add().Url("~/SalesEx/index").Text("可打公司 V2.0");
                                item.Add().Url("~/Sales/ContectedLeads").Text("Call List");
-                               item.Add().Url("~/TargetOfMonthForMember/MyTargetIndex").Text("我的月目标");
+                               item.Add().Url("~/TargetOfMonthForMember/MyTargetIndexEx").Text("我的月目标");
                                item.Add().Url("~/Sales/MyDealIndex").Text("我的出单");
                                item.Add().Url("~/Sales/PhoneSaleSupport").Text("话术支持");
                                item.Add().Url("~/Sales/MyMessageIndex").Text("留言求助");
@@ -194,6 +195,8 @@
                                    //item.Add().Url("~/TargetOfMonthForMember/Index").Text("月目标");
                                    item.Add().Url("~/AssignPerformanceScore/index").Text("打分");
                                    item.Add().Url("~/TargetOfMonthForMember/ConfirmList").Text("月目标确认");
+                                   item.Add().Url("~/Project/TargetOfMonthForProject").Text("项目月目标");
+
                                }
                                //item.Add().Url("~/Sales/MyWeeklyReport").Text("我的周报").ImageUrl("~/Content/Common/Icons/Docking.gif");
                            });
