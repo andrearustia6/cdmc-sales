@@ -626,6 +626,9 @@ namespace BLL
                     case "3":
                         deals = deals.Where(w => w.IsConfirm == true && (w.Income == 0 || w.ActualPaymentDate == null));
                         break;
+                    case "4":
+                        deals = deals.Where(w => w.IsConfirm == true && w.Income != 0 && w.ActualPaymentDate != null);
+                        break;
                 }
             }
             return deals;

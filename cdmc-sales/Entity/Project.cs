@@ -470,7 +470,7 @@ namespace Entity
         [Display(Name = "签单人联系方式")]
         public string CommitterContect { get; set; }
 
-        [Display(Name = "签单人邮箱")]
+        [Display(Name = "签单人邮箱"), Required]
         public string CommitterEmail { get; set; }
 
         [Display(Name = "权益描述"), MaxLength(2000)]

@@ -14,8 +14,6 @@ using System.Data.Objects;
 
 namespace Sales.Controllers
 {
-
-
     //[LeaderRequired]
     public class DealController : Controller
     {
@@ -187,7 +185,14 @@ namespace Sales.Controllers
                 var item = CH.GetDataById<Deal>(id);
                 item.Income = newData.Income;
                 item.ActualPaymentDate = newData.ActualPaymentDate;
-                CH.Edit<Deal>(item);
+                if (item.Income > 0 && item.ActualPaymentDate != null)
+                {
+                    CH.Edit<Deal>(item);
+                }
+                else
+                {
+                    ModelState.AddModelError("Income","实际入账需大于零.");
+                }
             }
             else
             {

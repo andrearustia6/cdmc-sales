@@ -225,7 +225,6 @@ namespace Sales.Controllers
             projectid = this.TrySetProjectIDForUser(projectid);
             ViewBag.ProjectID = projectid;
 
-
             this.AddErrorStateIfSalesNoAccessRightToTheProject(projectid);
 
 
