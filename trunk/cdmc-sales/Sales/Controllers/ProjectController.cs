@@ -680,5 +680,86 @@ namespace Sales.Controllers
             return View(CH.GetAllData<ImportCompanyTrace>().OrderByDescending(s => s.ImportDate).ToList());
         }
 
+        public ActionResult TargetOfMonthForProject()
+        {
+            return View(CH.GetAllData<TargetOfMonth>().Where(s => s.Project.TeamLeader == Employee.GetLoginUserName()).OrderByDescending(s => s.EndDate).ToList());
+        }
+
+        public ActionResult ParticipantIndex(int? projectid)
+        {
+            if (projectid == null)
+            {
+                return View(CH.GetAllData<Participant>().Where(s => s.Project.Conference == Employee.GetLoginUserName() && s.Project.IsActived).ToList());
+                //projectid = CH.GetAllData<Project>().Where(s => s.Conference == Employee.GetLoginUserName() && s.IsActived).First().ID;
+            }
+            ViewBag.projectid = projectid;
+            return View(CH.GetAllData<Participant>().Where(s => s.ProjectID == projectid).ToList());
+
+
+        }
+
+        public ActionResult ExportParticipant(int? projectid)
+        {
+            IEnumerable<Participant> export;
+            if (projectid == null)
+            {
+                export = CH.GetAllData<Participant>().Where(s => s.Project.Conference == Employee.GetLoginUserName());
+            }
+            else
+            {
+                export = CH.GetAllData<Participant>().Where(s => s.ProjectID == projectid);
+            }
+            if (export.Count() == 0)
+            {
+                return RedirectToAction("ParticipantIndex", new { projectid = projectid });
+            }
+            MemoryStream output = new MemoryStream();
+            StreamWriter writer = new StreamWriter(output, System.Text.Encoding.UTF8);
+
+            writer.Write("项目名称,");
+            writer.Write("参会人名称,");
+            writer.Write("参会类型,");
+            writer.Write("职位,");
+            writer.Write("性别,");
+            writer.Write("直线电话,");
+            writer.Write("移动电话,");
+            writer.Write("工作邮箱");
+            writer.WriteLine();
+
+            foreach (var item in export)
+            {
+                writer.Write(item.Project.Name);
+                writer.Write(",");
+                writer.Write("\"");
+                writer.Write(item.Name);
+                writer.Write("\"");
+                writer.Write(",");
+                writer.Write("\"");
+                writer.Write(item.ParticipantType.Name);
+                writer.Write("\"");
+                writer.Write(",");
+                writer.Write("\"");
+                writer.Write(item.Title);
+                writer.Write("\"");
+                writer.Write(",");
+                writer.Write("\"");
+                writer.Write(item.Gender);
+                writer.Write("\"");
+                writer.Write(",");
+                writer.Write("\"");
+                writer.Write(item.Contact);
+                writer.Write("\"");
+                writer.Write(",");
+                writer.Write("\"");
+                writer.Write(item.Mobile);
+                writer.Write("\"");
+                writer.Write(",");
+                writer.Write(item.Email);
+                writer.WriteLine();
+            }
+            writer.Flush();
+            output.Position = 0;
+            return File(output, "text/comma-separated-values", "Participant.csv");
+        }
     }
 }
