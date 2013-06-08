@@ -8,7 +8,7 @@ using BLL;
 
 namespace System.Web.Mvc
 {
-   
+
     public static class TargetOfMonthForMemberControllerExtension
     {
         public static void AddErrorStateIfTargetOfMonthNoValid(this Controller item, TargetOfMonthForMember t)
@@ -24,8 +24,6 @@ namespace System.Web.Mvc
             if (t.BaseDeal > t.Deal)
                 item.ModelState.AddModelError("", "保底目标不能大于Deal");
 
-    
-
             if (t.StartDate.Month != t.EndDate.Month)
                 item.ModelState.AddModelError("", "开始时间和结束时间不在同一个月内");
 
@@ -33,14 +31,12 @@ namespace System.Web.Mvc
                      where et.MemberID == t.MemberID && et.StartDate == t.StartDate && t.ProjectID == et.ProjectID
                      select et;
 
-            if(ts.Count()>0)
+            if (ts.Count() > 0)
                 item.ModelState.AddModelError("", "该月的目标已经添加，不能再次添加");
+
         }
 
-    }
-    public static class TargetOfMonthControllerExtension
-    {
-        public static void AddErrorStateIfTargetOfMonthNoValid(this Controller item, TargetOfMonth t) 
+        public static void EditErrorStateIfTargetOfMonthNoValid(this Controller item, TargetOfMonthForMember t)
         {
             item.AddErrorStateIfStartDateLaterThanEndDate(t.StartDate, t.EndDate);
 
@@ -53,13 +49,36 @@ namespace System.Web.Mvc
             if (t.BaseDeal > t.Deal)
                 item.ModelState.AddModelError("", "保底目标不能大于Deal");
 
-       
+            if (t.IsConfirm == true)
+                item.ModelState.AddModelError("", "已确认月目标无法修改");
+
+            if (t.StartDate.Month != t.EndDate.Month)
+                item.ModelState.AddModelError("", "开始时间和结束时间不在同一个月内");
+        }
+
+    }
+    public static class TargetOfMonthControllerExtension
+    {
+        public static void AddErrorStateIfTargetOfMonthNoValid(this Controller item, TargetOfMonth t)
+        {
+            item.AddErrorStateIfStartDateLaterThanEndDate(t.StartDate, t.EndDate);
+
+            if (t.StartDate.StartOfMonth() != t.StartDate)
+                item.ModelState.AddModelError("", "开始时间必须是每个月的一号");
+
+            if (t.EndDate.EndOfMonth() != t.EndDate)
+                item.ModelState.AddModelError("", "结束时间必须是每个月的最后一天");
+
+            if (t.BaseDeal > t.Deal)
+                item.ModelState.AddModelError("", "保底目标不能大于Deal");
+
+
 
             if (t.StartDate.Month != t.EndDate.Month)
                 item.ModelState.AddModelError("", "开始时间和结束时间不在同一个月内");
 
             var ts = from et in CH.DB.TargetOfMonths
-                     where  et.StartDate == t.StartDate && t.ProjectID == et.ProjectID && et.ID!= t.ID
+                     where et.StartDate == t.StartDate && t.ProjectID == et.ProjectID && et.ID != t.ID
                      select et;
 
             if (ts.Count() > 0)
@@ -76,7 +95,7 @@ namespace System.Web.Mvc
 
         public static void AddErrorStateIfStartDateAndEndDateEmpty(this Controller item, DateTime? startdate, DateTime? enddate)
         {
-            if (startdate == null || enddate==null)
+            if (startdate == null || enddate == null)
             {
                 item.ModelState.AddModelError("", "开始时间或者结束时间为空");
             }
@@ -92,7 +111,7 @@ namespace System.Web.Mvc
 
     public static class ReportControllerExtension
     {
-        public static List<Project> GetProjectByAccount(this Controller item,bool activate=true) 
+        public static List<Project> GetProjectByAccount(this Controller item, bool activate = true)
         {
             List<Project> list = new List<Project>();
             Role role = Employee.CurrentRole;
@@ -126,7 +145,7 @@ namespace System.Web.Mvc
 
     public static class MemberControllerExtension
     {
-        public static void AddErrorStateIfMemberExist(this Controller item, int? projectid, string name=null)
+        public static void AddErrorStateIfMemberExist(this Controller item, int? projectid, string name = null)
         {
             if (string.IsNullOrEmpty(name))
             {
@@ -135,7 +154,7 @@ namespace System.Web.Mvc
 
             var p = CH.GetDataById<Project>(projectid);
 
-            if (p.Members.Any(m=>m.Name==name))
+            if (p.Members.Any(m => m.Name == name))
             {
                 item.ModelState.AddModelError("", "项目已经包含该销售，销售名为：" + name);
             }
@@ -192,7 +211,7 @@ namespace System.Web.Mvc
 
         public static void AddErrorStateIfCreatorIsNotTheLoginUser(this Controller item, EntityBase target)
         {
-            if(!target.CreatorIsTheLoginUser())
+            if (!target.CreatorIsTheLoginUser())
                 item.ModelState.AddModelError("", "登陆用户不是此数据的创建人， 不允许进行操作");
         }
 
@@ -202,27 +221,27 @@ namespace System.Web.Mvc
                 item.ModelState.AddModelError("", "登陆用户不是致电人， 不允许进行操作");
         }
 
-        public static void AddErrorStateIfFieldExist<T>(this Controller item,EntityBase target,string fieldname) where T:EntityBase
+        public static void AddErrorStateIfFieldExist<T>(this Controller item, EntityBase target, string fieldname) where T : EntityBase
         {
             if (target.SameFieldValueExist<T>("Name"))
             {
-               item.ModelState.AddModelError("","已经存在相同的字段，字段名为："+fieldname);
+                item.ModelState.AddModelError("", "已经存在相同的字段，字段名为：" + fieldname);
             }
         }
 
         /// <summary>
         /// 记录中存在相同的中文名或者英文名
         /// </summary>
-        public static void AddAddErrorStateIfOneOfNameExist<T>(this Controller item, string enname, string chname) where T:NameEntity
+        public static void AddAddErrorStateIfOneOfNameExist<T>(this Controller item, string enname, string chname) where T : NameEntity
         {
-            var exists = CH.GetAllData<T>(i => (i.Name_EN == enname &&  !string.IsNullOrEmpty(enname)) || (!string.IsNullOrEmpty(chname) && i.Name_CH == chname));
-            if(exists.Count>0)
+            var exists = CH.GetAllData<T>(i => (i.Name_EN == enname && !string.IsNullOrEmpty(enname)) || (!string.IsNullOrEmpty(chname) && i.Name_CH == chname));
+            if (exists.Count > 0)
                 item.ModelState.AddModelError("", "系统数据库中已经存在相同的公司英文名或中文名的数据");
         }
 
-        public static void AddErrorStateIfStartDateLaterThanEndDate(this Controller item, DateTime? startdate, DateTime? enddate) 
+        public static void AddErrorStateIfStartDateLaterThanEndDate(this Controller item, DateTime? startdate, DateTime? enddate)
         {
-            if (startdate!=null && enddate!=null && startdate.Value>=enddate.Value)
+            if (startdate != null && enddate != null && startdate.Value >= enddate.Value)
             {
                 item.ModelState.AddModelError("", "开始时间不能大于结束时间");
             }
@@ -244,7 +263,7 @@ namespace System.Web.Mvc
             }
         }
 
-        public static void AddErrorStateIfSalesNoAccessRightToTheCRM(this Controller item, int? crid) 
+        public static void AddErrorStateIfSalesNoAccessRightToTheCRM(this Controller item, int? crid)
         {
             var cr = CH.GetDataById<CompanyRelationship>(crid);
             var role = cr.Project.RoleInProject();
@@ -289,23 +308,23 @@ namespace System.Web.Mvc
                 int n = 0;
                 Int32.TryParse(number, out n);
                 n = n + 1;
-                item.FlowNumber = last.Project.ProjectCode +"_"+ n.ToString();
+                item.FlowNumber = last.Project.ProjectCode + "_" + n.ToString();
             }
 
             return item;
         }
     }
 
-    public static class ProjectExtension 
+    public static class ProjectExtension
     {
         public static List<Project> GetProjectByRole(this Controller item)
         {
             var role = Employee.CurrentRole;
             if (role.Level >= 500 && role.Level < 1000)
-                return CH.GetAllData<Project>(p => p.RoleInProject() == RoleInProject.Manager && p.IsActived==true );
+                return CH.GetAllData<Project>(p => p.RoleInProject() == RoleInProject.Manager && p.IsActived == true);
             else if (role.Level == 1000)
                 return CH.GetAllData<Project>(p => p.RoleInProject() == RoleInProject.Director && p.IsActived == true);
-            else if(role.Level ==99999)
+            else if (role.Level == 99999)
                 return CH.GetAllData<Project>();
             else
                 return new List<Project>();
