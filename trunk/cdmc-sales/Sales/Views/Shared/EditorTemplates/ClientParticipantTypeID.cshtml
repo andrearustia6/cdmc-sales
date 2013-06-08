@@ -1,0 +1,7 @@
+    @using Entity
+    @using Utl
+
+    @(Html.Telerik().DropDownList()
+            .Name("ParticipantTypeID")
+            .BindTo(new SelectList(CH.GetAllData<ParticipantType>(), "ID", "Name"))
+    ) 

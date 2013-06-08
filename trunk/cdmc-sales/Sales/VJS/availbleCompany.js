@@ -1026,14 +1026,14 @@ var currentCompanyNameEN = undefined;
         // end validation for deal
 
         // validation for participant
-        if ($('.dialogue-quickdeal form #Name').val().isEmpty()) {
-            $('.dialogue-quickdeal form #Name').addClass('fieldError');
-            hasError = true;
-        }
-        if ($('.dialogue-quickdeal form #ParticipantTypeID').val().isEmpty()) {
-            $('.dialogue-quickdeal form #ParticipantTypeID').addClass('fieldError');
-            hasError = true;
-        }
+        //if ($('.dialogue-quickdeal form #Name').val().isEmpty()) {
+        //    $('.dialogue-quickdeal form #Name').addClass('fieldError');
+        //    hasError = true;
+        //}
+        //if ($('.dialogue-quickdeal form #ParticipantTypeID').val().isEmpty()) {
+        //    $('.dialogue-quickdeal form #ParticipantTypeID').addClass('fieldError');
+        //    hasError = true;
+        //}
         // end validation for participant
 
         if (hasError) {

@@ -776,16 +776,22 @@ namespace Sales.Controllers
         {
             projectId = this.TrySetProjectIDForUser(projectId);
             ViewBag.ProjectID = projectId;
+            List<AjaxParticipant> pList = new List<AjaxParticipant>();
+            Session["pList"] = pList;
+
+            ViewBag.pList = pList;
+
             this.AddErrorStateIfSalesNoAccessRightToTheProject(projectId);
             return PartialView("QuickAddDeal");
         }
 
         [HttpPost]
-        public ActionResult QuickAddDeal(Deal item, Participant p, int? projectid)
+        //public ActionResult QuickAddDeal(Deal item, List<Participant> pList, int? projectid)
+        public ActionResult QuickAddDeal(Deal item, int? projectid)
         {
             ViewBag.ProjectID = projectid;
             ViewBag.CompanyRelationshipID = item.CompanyRelationshipID;
-
+            Participant p = null;
             if (ModelState.IsValid)
             {
                 item.Sales = Employee.CurrentUserName;
@@ -803,13 +809,80 @@ namespace Sales.Controllers
                 CH.Create<Deal>(item);
                 if (item.ID > 0)
                 {
-                    p.ProjectID = item.ProjectID;
-                    p.DealID = item.ID;
-                    if (p.ID == 0)
-                    CH.Create<Participant>(p);
+                    List<AjaxParticipant> pList = new List<AjaxParticipant>();
+                    if (Session["pList"] != null)
+                    {
+                        pList = Session["pList"] as List<AjaxParticipant>;
+                    }
+                    if (pList != null && pList.Count > 0)
+                    {
+                        foreach (var ajaxp in pList)
+                        {
+                            p = new Participant();
+                            p.Name = ajaxp.Name;
+                            p.Title = ajaxp.Title;
+                            p.Gender = ajaxp.Gender;
+                            p.Mobile = ajaxp.Mobile;
+                            p.Contact = ajaxp.Contact;
+                            p.Email = ajaxp.Email;
+                            p.ParticipantTypeID = ajaxp.ParticipantTypeID;
+                            p.ProjectID = item.ProjectID;
+                            p.DealID = item.ID;
+                            p.Creator = Employee.CurrentUser.UserName;
+                            p.CreatedDate = DateTime.Now;
+                            p.ModifiedUser = Employee.CurrentUser.UserName;
+                            p.ModifiedDate = DateTime.Now;
+                            if (p.ID == 0)
+                                CH.Create<Participant>(p);
+                        }
+                    }
                 }
             }
             return Json(new { dealId = item.ID, participantId = p.ID });
+        }
+
+        [GridAction]
+        public ActionResult _SelectAjaxParticipant()
+        {
+            List<AjaxParticipant> pList = new List<AjaxParticipant>();
+            if (Session["pList"] != null)
+            {
+                 pList = Session["pList"] as List<AjaxParticipant>;
+            }
+            return View(new GridModel(pList));
+        }
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        [GridAction]
+        public ActionResult _UpdateAjaxParticipant([Bind(Prefix = "inserted")]IEnumerable<AjaxParticipant> insertedP,
+            [Bind(Prefix = "updated")]IEnumerable<AjaxParticipant> updatedP,
+            [Bind(Prefix = "deleted")]IEnumerable<AjaxParticipant> deletedP)
+        {
+            List<AjaxParticipant> pList = new List<AjaxParticipant>();
+            if (Session["pList"] != null)
+            {
+                pList = Session["pList"] as List<AjaxParticipant>;
+            }
+
+            if (insertedP != null)
+            {
+                foreach (var p in insertedP)
+                {
+                    if (p.Name != "" && p.ParticipantTypeID != null)
+                    {
+                        pList.Add(p);
+                    }
+                }
+            }
+            
+            if (deletedP != null)
+            {
+                foreach (var p in deletedP)
+                {
+                    pList.Remove(p);
+                }
+            }
+            return View(new GridModel(pList));
         }
     }
 }
