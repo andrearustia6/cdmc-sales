@@ -1,0 +1,49 @@
+﻿@{
+    ViewBag.Title = "项目入账情况统计";
+    Layout = "~/Views/DirectorReport/Master.cshtml";
+}
+@using Model
+@model List<AjaxProjectPerformanceInProjectByMonth>
+@using Utl;
+@{
+   var incometitle ="月入账额";
+   var targettitle = "月目标";
+   var percenttitle = "目标完成百分比(%)";
+   var currentmonth = DateTime.Now.Month;
+   var onemonth = DateTime.Now.StartOfMonth().AddDays(-1) ;
+   var twomonth = onemonth.StartOfMonth().AddDays(-1);
+   var threemonth = twomonth.StartOfMonth().AddDays(-1);
+   var fourthmonth = threemonth.StartOfMonth().AddDays(-1);
+   var fifthmonth = fourthmonth.StartOfMonth().AddDays(-1);
+   var currentmonthstring = DateTime.Now.Month.ToString();
+   var onemonthstring = onemonth.Month.ToString();
+   var twomonthstring = twomonth.Month.ToString();
+   var threemonthstring = threemonth.Month.ToString();
+   var fourthmonthstring = fourthmonth.Month.ToString();
+   var fifthhmonthstring = fifthmonth.Month.ToString();
+   
+   
+    if(Model!=null)
+    {
+        foreach(var p in Model.OrderByDescending(o=>o.CurrentMonthChickIn) )
+        {
+            if(p.ProjectLines.Count()>=3)
+            {
+                <fieldset style="width:30%;float:left;margin-left:10px;">
+                <legend>@p.ProjectName.ToString()</legend>
+            @(Html.Telerik().Chart(p.ProjectLines.OrderByDescending(o => o.Month)).Name(p.ProjectID.ToString()).Series(series =>
+        {
+            series.Line(s => s.CheckIn).Name("入账").Labels(true);
+            series.Line(s => s.CheckinTarget).Name("入账目标").Labels(true);
+        }
+        ).CategoryAxis(axis => axis.Categories(s => s.Month))
+        .ValueAxis(axis => axis.Numeric())
+        .Tooltip(tooltip => tooltip.Visible(true))
+        .Legend(legend => legend.Position(ChartLegendPosition.Top).Visible(true))
+          )
+          </fieldset>
+        }
+        } 
+    }
+    
+}

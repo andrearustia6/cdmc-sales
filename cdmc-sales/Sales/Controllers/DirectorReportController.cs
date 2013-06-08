@@ -71,6 +71,16 @@ namespace Sales.Controllers
             return View(list.ToList());
         }
 
+        /// <summary>
+        /// 项目出单趋势图
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult ProjectsPerformanceInProjectByMonthLines()
+        {
+            var list = CRM_Logical._Reports.GetProjectsPerformanceInProjectByMonth();
+            return View(list.ToList());
+        }
+
         //public ActionResult DealGroupByProject(int? year, int? month)
         //{
         //    _DealByProjectData data = new _DealByProjectData();

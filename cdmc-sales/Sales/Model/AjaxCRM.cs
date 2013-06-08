@@ -153,9 +153,9 @@ namespace Model
          public decimal? CheckIn { get; set; }
          public decimal CallCount { get; set; }
          public double Percent { get; set; }
-         public DateTime Range { get { return new DateTime(Year, Month, 1); } }
+         public DateTime Range { get { return new DateTime(Year, Month.Value, 1); } }
          public int Year { get; set; }
-         public int Month { get; set; }
+         public int? Month { get; set; }
      }
     public class AjaxProjectPerformance
     {

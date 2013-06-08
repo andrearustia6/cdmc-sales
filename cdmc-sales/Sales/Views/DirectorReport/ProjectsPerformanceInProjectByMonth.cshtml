@@ -21,6 +21,10 @@
    var threemonthstring = threemonth.Month.ToString();
    var fourthmonthstring = fourthmonth.Month.ToString();
    var fifthhmonthstring = fifthmonth.Month.ToString();
+   
+   
+   <fieldset>
+   <legend>项目月度目标/入账情况</legend>
 @(Html.Telerik().Grid<AjaxProjectPerformanceInProjectByMonth>(Model).Name("AjaxProjectPerformanceInProjectByMonth")
 .DataKeys(keys => { keys.Add(p => p.ProjectID); })
 .Columns(columns =>
@@ -116,8 +120,10 @@
      }
  }).Scrollable(s=>s.Height(550)).Sortable().Resizable(s => s.Columns(true))
 )
+</fieldset>    
     
-    
+    <fieldset>
+    <legend>项目月度目标完成百分比</legend>
 @(Html.Telerik().Grid<AjaxProjectPerformanceInProjectByMonth>(Model).Name("AjaxProjectPerformanceInProjectByMonthPercent")
 .DataKeys(keys => { keys.Add(p => p.ProjectID); })
 .Columns(columns =>
@@ -207,22 +213,5 @@
      }
  }).Scrollable(s => s.Height(550)).Sortable().Resizable(s => s.Columns(true))
 )
-   
-    if(Model!=null)
-    {
-        foreach(var p in Model )
-        {
-            @(Html.Telerik().Chart(p.ProjectLines.OrderByDescending(o=>o.Month)).Name(p.ProjectName).Series(series =>
-        {
-            series.Bar(s => s.CheckIn).Name("入账").Labels(true);
-            series.Bar(s => s.CheckinTarget).Name("入账目标").Labels(true);
-        }
-        ).CategoryAxis(axis => axis.Categories(s => s.Month))
-        .ValueAxis(axis => axis.Numeric())
-        .Tooltip(tooltip => tooltip.Visible(true))
-        .Legend(legend => legend.Position(ChartLegendPosition.Top).Visible(true))
-          )
-        } 
-    }
-    
+   </fieldset>
 }
