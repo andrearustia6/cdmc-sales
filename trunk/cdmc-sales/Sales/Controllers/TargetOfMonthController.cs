@@ -199,9 +199,9 @@ namespace Sales.Controllers
         }
 
         [GridAction]
-        public ActionResult _SelectIndex()
+        public ActionResult _SelectIndex(string filterId)
         {
-            return View(new GridModel(getData()));
+            return View(new GridModel(getData(filterId)));
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
@@ -215,10 +215,18 @@ namespace Sales.Controllers
             return View(new GridModel(getData()));
         }
 
-        public List<AjaxTargetOfMonth> getData()
+        public List<AjaxTargetOfMonth> getData(string filter = "")
         {
-            var data = from db in CH.DB.TargetOfMonths
-                       where db.IsConfirm == null || db.IsConfirm == false
+            var targets = from odb in CH.DB.TargetOfMonths select odb;
+            if (filter == "1")
+            {
+                targets = targets.Where(t => t.IsConfirm == true);
+            }
+            else if (filter == "2")
+            {
+                targets = targets.Where(t => t.IsConfirm == false || t.IsConfirm == null);
+            }
+            var data = from db in targets
                        select new AjaxTargetOfMonth
                        {
                            ID = db.ID,

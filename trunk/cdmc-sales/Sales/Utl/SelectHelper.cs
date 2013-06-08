@@ -93,8 +93,12 @@ namespace Utl
             selectList.Add(new SelectListItem() { Text = "一周内出单", Value = "7" });
             selectList.Add(new SelectListItem() { Text = "两周内出单", Value = "14" });
             selectList.Add(new SelectListItem() { Text = "一月内出单", Value = "30" });
-            selectList.Add(new SelectListItem() { Text = "未确认出单", Value = "2" });
+            if (Employee.CurrentRole.Level != 4)
+            {
+                selectList.Add(new SelectListItem() { Text = "未确认出单", Value = "2" });
+            }
             selectList.Add(new SelectListItem() { Text = "未付款出单", Value = "3" });
+            selectList.Add(new SelectListItem() { Text = "已付款出单", Value = "4" });
 
             return selectList;
         }
@@ -313,6 +317,15 @@ namespace Utl
                 SelectListItem selectListItem = new SelectListItem() { Text = annualSale, Value = annualSale, Selected = annualSale == selectVal };
                 selectList.Add(selectListItem);
             }
+            return selectList;
+        }
+
+        public static IEnumerable<SelectListItem> TargetOfMonthSelectList()
+        {
+            List<SelectListItem> selectList = new List<SelectListItem>();
+            selectList.Add(new SelectListItem() { Text = "请选择", Value = "" });
+            selectList.Add(new SelectListItem() { Text = "已确认", Value = "1" });
+            selectList.Add(new SelectListItem() { Text = "未确认", Value = "2" });
             return selectList;
         }
     }

@@ -805,22 +805,9 @@ namespace Sales.Controllers
                 {
                     p.ProjectID = item.ProjectID;
                     p.DealID = item.ID;
-                    //p = new Participant()
-                    //{
-                    //    DealID = item.ID,
-                    //    ProjectID = item.ProjectID,
-                    //    Name=item.Name,
-                    //    Title = item.Title,
-                    //    Gender = item.Gender,
-                    //    Contact = item.Contact,
-                    //    Mobile = item.Mobile,
-                    //    Email = item.Email,
-                    //    ParticipantTypeID = item.ParticipantTypeID
-                    //};
                     if (p.ID == 0)
                     CH.Create<Participant>(p);
                 }
-                //return RedirectToAction("MyDealIndex", "Sales", new { projectid = projectid });
             }
             return Json(new { dealId = item.ID, participantId = p.ID });
         }

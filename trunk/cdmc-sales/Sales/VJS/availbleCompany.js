@@ -1015,6 +1015,10 @@ var currentCompanyNameEN = undefined;
             $('.dialogue-quickdeal form #Committer').addClass('fieldError');
             hasError = true;
         }
+        if ($('.dialogue-quickdeal form #CommitterEmail').val().isEmpty()) {
+            $('.dialogue-quickdeal form #CommitterEmail').addClass('fieldError');
+            hasError = true;
+        }
         if ($('.dialogue-quickdeal form #PaymentDetail').val().isEmpty()) {
             $('.dialogue-quickdeal form #PaymentDetail').addClass('fieldError');
             hasError = true;

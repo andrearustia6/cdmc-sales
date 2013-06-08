@@ -166,7 +166,7 @@ namespace Model
         [Display(Name = "合约付款日期")]
         public DateTime ExpectedPaymentDate { get; set; }
 
-        [Display(Name = "实际付款日期")]
+        [Display(Name = "实际付款日期"),Required]
         public DateTime? ActualPaymentDate { get; set; }
 
         [Display(Name = "签约日期")]
@@ -175,7 +175,8 @@ namespace Model
         [Display(Name = "是否付款")]
         public bool IsClosed { get; set; }
 
-        [Display(Name = "实际入账")]
+        [Display(Name = "实际入账"), Required]
+        [Range(0.0, (double)int.MaxValue, ErrorMessage = "实际入账需大于零.")]
         public decimal Income { get; set; }
 
         [Display(Name = "出单人")]
