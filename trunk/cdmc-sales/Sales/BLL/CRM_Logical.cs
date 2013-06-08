@@ -294,7 +294,7 @@ namespace BLL
 
         public static class _Reports
         {
-            public static IQueryable<AjaxProjectPerformanceInProjectByMonth> GetProjectsPerformanceInProjectByMonth()
+            public static IQueryable<AjaxProjectCheckInByMonth> GetProjectsCheckInByMonth()
             {
                      var yeaerstart = new DateTime(DateTime.Now.Year,1,1);
 
@@ -322,8 +322,9 @@ namespace BLL
                 var deals = CRM_Logical.GetDeals(true);
                 var list = from d in deals
                            group d by new { d.Project.ID, d.Project.Name_CH, d.Project.Manager } into grp
-                           select new AjaxProjectPerformanceInProjectByMonth
+                           select new AjaxProjectCheckInByMonth
                            {
+                               
                                ProjectName = grp.Key.Name_CH,
                                ProjectID = grp.Key.ID,
                                Manager = grp.Key.Manager,
@@ -352,14 +353,14 @@ namespace BLL
 
                 return list;
             }
-            public static IQueryable<AjaxProjectPerformanceInMonthByProjectType> GetProjectsPerformanceInProjectType()
+            public static IQueryable<AjaxProjectCheckInMonthByProjectType> GetProjectsPerformanceInProjectType()
             {
                 var pid = CRM_Logical.GetUserInvolveProject().Select(s => s.ID);
                 var targets = CH.DB.TargetOfMonths.Where(w => w.Project.IsActived == true);
                 var deals = CRM_Logical.GetDeals(true);
                 var list = from d in deals
                            group d by new { d.ActualPaymentDate.Value.Month, d.ActualPaymentDate.Value.Year } into grp
-                           select new AjaxProjectPerformanceInMonthByProjectType
+                           select new AjaxProjectCheckInMonthByProjectType
                            {
                                Year = grp.Key.Year,
                                Month = grp.Key.Month,
@@ -372,6 +373,55 @@ namespace BLL
                                MagazineTarget = targets.Where(w => w.Project.ProjectTypeID == 3).Sum(s => s.CheckIn),
                                QingDaoSubComanyTarget = targets.Where(w => w.Project.ProjectTypeID == 4).Sum(s => s.CheckIn),
                            };
+                return list;
+            }
+
+            public static IQueryable<AjaxEmployeeCheckInByMonth> GetEmployeesCheckInByMonth()
+            {
+                var yeaerstart = new DateTime(DateTime.Now.Year, 1, 1);
+
+                var ps = CRM_Logical.GetUserInvolveProject();
+                var pid = ps.Select(s => s.ID);
+                var targets = CH.DB.TargetOfMonths.Where(w => w.Project.IsActived == true);
+                var currentmonthstart = DateTime.Now.StartOfMonth();
+                var currentmonthend = DateTime.Now.EndOfMonth().AddDays(1);
+
+                var onemonthbeforeend = currentmonthstart.AddDays(-1);
+                var onemonthbeforestart = onemonthbeforeend.StartOfMonth();
+
+                var twomonthbeforeend = onemonthbeforestart.AddDays(-1);
+                var twomonthbeforestart = twomonthbeforeend.StartOfMonth();
+
+                var threemonthbeforeend = twomonthbeforestart.AddDays(-1);
+                var threemonthbeforestart = threemonthbeforeend.StartOfMonth();
+
+                var fourmonthbeforeend = threemonthbeforestart.AddDays(-1);
+                var fourmonthbeforestart = fourmonthbeforeend.StartOfMonth();
+
+                var fifthmonthbeforeend = fourmonthbeforestart.AddDays(-1);
+                var fifthmonthbeforestart = fifthmonthbeforeend.StartOfMonth();
+
+                var deals = CRM_Logical.GetDeals(true);
+                var list = from d in deals
+                           group d by new { d.Sales } into grp
+                           select new AjaxEmployeeCheckInByMonth
+                           {
+
+                               //Name = grp.Key.Sales,
+                               //CurrentMonthChickIn = deals.Where(w => w.Project.ID == grp.Key.ID && w.ActualPaymentDate >= currentmonthstart && w.ActualPaymentDate < currentmonthend).Sum(s => s.Income),
+                               //OneMonthBeforeChickIn = deals.Where(w => w.Project.ID == grp.Key.ID && w.ActualPaymentDate >= onemonthbeforestart && w.ActualPaymentDate < currentmonthstart).Sum(s => s.Income),
+                               //TwoMonthBeforeChickIn = deals.Where(w => w.Project.ID == grp.Key.ID && w.ActualPaymentDate >= twomonthbeforestart && w.ActualPaymentDate < onemonthbeforestart).Sum(s => s.Income),
+                               //ThreeMonthBeforeChickIn = deals.Where(w => w.Project.ID == grp.Key.ID && w.ActualPaymentDate >= threemonthbeforestart && w.ActualPaymentDate < twomonthbeforestart).Sum(s => s.Income),
+                               //FourthMonthBeforeChickIn = deals.Where(w => w.Project.ID == grp.Key.ID && w.ActualPaymentDate >= fourmonthbeforestart && w.ActualPaymentDate < threemonthbeforestart).Sum(s => s.Income),
+                               //FifthMonthBeforeChickIn = deals.Where(w => w.Project.ID == grp.Key.ID && w.ActualPaymentDate >= fifthmonthbeforestart && w.ActualPaymentDate < fourmonthbeforestart).Sum(s => s.Income),
+                               //CurrentMonthTarget = targets.Where(w => w.Project.ID == grp.Key.ID && w.StartDate.Month == currentmonthstart.Month).Sum(s => s.CheckIn),
+                               //OneMonthBeforeTarget = targets.Where(w => w.Project.ID == grp.Key.ID && w.StartDate.Month == onemonthbeforestart.Month).Sum(s => s.CheckIn),
+                               //TwoMonthBeforeTarget = targets.Where(w => w.Project.ID == grp.Key.ID && w.StartDate.Month == twomonthbeforestart.Month).Sum(s => s.CheckIn),
+                               //ThreeMonthBeforeTarget = targets.Where(w => w.Project.ID == grp.Key.ID && w.StartDate.Month == threemonthbeforestart.Month).Sum(s => s.CheckIn),
+                               //FourthMonthBeforeTarget = targets.Where(w => w.Project.ID == grp.Key.ID && w.StartDate.Month == fourmonthbeforestart.Month).Sum(s => s.CheckIn),
+                               //FifthMonthBeforeTarget = targets.Where(w => w.Project.ID == grp.Key.ID && w.StartDate.Month == fifthmonthbeforestart.Month).Sum(s => s.CheckIn),
+                           };
+
                 return list;
             }
         }

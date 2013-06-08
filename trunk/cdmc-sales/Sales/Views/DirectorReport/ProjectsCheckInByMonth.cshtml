@@ -3,7 +3,7 @@
     Layout = "~/Views/DirectorReport/Master.cshtml";
 }
 @using Model
-@model List<AjaxProjectPerformanceInProjectByMonth>
+@model List<AjaxProjectCheckInByMonth>
 @using Utl;
 @{
    var incometitle ="月入账额";
@@ -25,7 +25,7 @@
    
    <fieldset>
    <legend>项目月度目标/入账情况</legend>
-@(Html.Telerik().Grid<AjaxProjectPerformanceInProjectByMonth>(Model).Name("AjaxProjectPerformanceInProjectByMonth")
+@(Html.Telerik().Grid<AjaxProjectCheckInByMonth>(Model).Name("AjaxProjectPerformanceInProjectByMonth")
 .DataKeys(keys => { keys.Add(p => p.ProjectID); })
 .Columns(columns =>
 {
@@ -48,7 +48,7 @@
  {
      if (cell.Column.Member == "CurrentMonthChickIn")
      {
-         AjaxProjectPerformanceInProjectByMonth data = cell.DataItem;
+         AjaxProjectCheckInByMonth data = cell.DataItem;
          if (data.CurrentMonthChickIn < data.CurrentMonthTarget)
          {
              cell.HtmlAttributes["style"] = "font-weight: bold; color:red;text-align:right";
@@ -60,7 +60,7 @@
      }
      if (cell.Column.Member == "OneMonthBeforeChickIn")
      {
-         AjaxProjectPerformanceInProjectByMonth data = cell.DataItem;
+         AjaxProjectCheckInByMonth data = cell.DataItem;
          if (data.OneMonthBeforeChickIn < data.OneMonthBeforeTarget)
          {
              cell.HtmlAttributes["style"] = "font-weight: bold; color:red;text-align:right";
@@ -72,7 +72,7 @@
      }
      if (cell.Column.Member == "TwoMonthBeforeChickIn")
      {
-         AjaxProjectPerformanceInProjectByMonth data = cell.DataItem;
+         AjaxProjectCheckInByMonth data = cell.DataItem;
          if (data.TwoMonthBeforeChickIn < data.TwoMonthBeforeTarget)
          {
              cell.HtmlAttributes["style"] = "font-weight: bold; color:red;text-align:right";
@@ -84,7 +84,7 @@
      }
      if (cell.Column.Member == "ThreeMonthBeforeChickIn")
      {
-         AjaxProjectPerformanceInProjectByMonth data = cell.DataItem;
+         AjaxProjectCheckInByMonth data = cell.DataItem;
          if (data.ThreeMonthBeforeChickIn < data.ThreeMonthBeforeTarget)
          {
              cell.HtmlAttributes["style"] = "font-weight: bold; color:red;text-align:right";
@@ -96,7 +96,7 @@
      }
      if (cell.Column.Member == "FourthMonthBeforeChickIn")
      {
-         AjaxProjectPerformanceInProjectByMonth data = cell.DataItem;
+         AjaxProjectCheckInByMonth data = cell.DataItem;
          if (data.FourthMonthBeforeChickIn < data.FourthMonthBeforeTarget)
          {
              cell.HtmlAttributes["style"] = "font-weight: bold; color:red;text-align:right";
@@ -108,7 +108,7 @@
      }
      if (cell.Column.Member == "FifthMonthBeforeChickIn")
      {
-         AjaxProjectPerformanceInProjectByMonth data = cell.DataItem;
+         AjaxProjectCheckInByMonth data = cell.DataItem;
          if (data.FifthMonthBeforeChickIn < data.FifthMonthBeforeTarget)
          {
              cell.HtmlAttributes["style"] = "font-weight: bold; color:red;text-align:right";
@@ -124,7 +124,7 @@
     
     <fieldset>
     <legend>项目月度目标完成百分比</legend>
-@(Html.Telerik().Grid<AjaxProjectPerformanceInProjectByMonth>(Model).Name("AjaxProjectPerformanceInProjectByMonthPercent")
+@(Html.Telerik().Grid<AjaxProjectCheckInByMonth>(Model).Name("AjaxProjectPerformanceInProjectByMonthPercent")
 .DataKeys(keys => { keys.Add(p => p.ProjectID); })
 .Columns(columns =>
 {
@@ -141,7 +141,7 @@
  {
      if (cell.Column.Member == "CurrentMonthBeforePercent")
      {
-         AjaxProjectPerformanceInProjectByMonth data = cell.DataItem;
+         AjaxProjectCheckInByMonth data = cell.DataItem;
          if (data.CurrentMonthChickIn < data.CurrentMonthTarget)
          {
              cell.HtmlAttributes["style"] = "font-weight: bold; color:red;text-align:right";
@@ -153,7 +153,7 @@
      }
      if (cell.Column.Member == "OneMonthBeforePercent")
      {
-         AjaxProjectPerformanceInProjectByMonth data = cell.DataItem;
+         AjaxProjectCheckInByMonth data = cell.DataItem;
          if (data.OneMonthBeforeChickIn < data.OneMonthBeforeTarget)
          {
              cell.HtmlAttributes["style"] = "font-weight: bold; color:red;text-align:right";
@@ -165,7 +165,7 @@
      }
      if (cell.Column.Member == "TwoMonthBeforePercent")
      {
-         AjaxProjectPerformanceInProjectByMonth data = cell.DataItem;
+         AjaxProjectCheckInByMonth data = cell.DataItem;
          if (data.TwoMonthBeforeChickIn < data.TwoMonthBeforeTarget)
          {
              cell.HtmlAttributes["style"] = "font-weight: bold; color:red;text-align:right";
@@ -177,7 +177,7 @@
      }
      if (cell.Column.Member == "ThreeMonthBeforePercent")
      {
-         AjaxProjectPerformanceInProjectByMonth data = cell.DataItem;
+         AjaxProjectCheckInByMonth data = cell.DataItem;
          if (data.ThreeMonthBeforeChickIn < data.ThreeMonthBeforeTarget)
          {
              cell.HtmlAttributes["style"] = "font-weight: bold; color:red;text-align:right";
@@ -189,7 +189,7 @@
      }
      if (cell.Column.Member == "FourthMonthBeforePercent")
      {
-         AjaxProjectPerformanceInProjectByMonth data = cell.DataItem;
+         AjaxProjectCheckInByMonth data = cell.DataItem;
          if (data.FourthMonthBeforeChickIn < data.FourthMonthBeforeTarget)
          {
              cell.HtmlAttributes["style"] = "font-weight: bold; color:red;text-align:right";
@@ -201,7 +201,7 @@
      }
      if (cell.Column.Member == "FifthMonthBeforePercent")
      {
-         AjaxProjectPerformanceInProjectByMonth data = cell.DataItem;
+         AjaxProjectCheckInByMonth data = cell.DataItem;
          if (data.FifthMonthBeforeChickIn < data.FifthMonthBeforeTarget)
          {
              cell.HtmlAttributes["style"] = "font-weight: bold; color:red;text-align:right";

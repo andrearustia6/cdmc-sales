@@ -46,28 +46,28 @@ namespace Sales.Controllers
     
         }
 
-        [GridAction]
-        public ActionResult _SelectAjaxProjectPerformanceInProjectByMonth()
-        {
-            var list = CRM_Logical._Reports.GetProjectsPerformanceInProjectByMonth();
-            return View(new GridModel(list.OrderByDescending(o=>o.CurrentMonthChickIn)));
-        }
+        //[GridAction]
+        //public ActionResult _SelectAjaxProjectPerformanceInProjectByMonth()
+        //{
+        //    var list = CRM_Logical._Reports.GetProjectsPerformanceInProjectByMonth();
+        //    return View(new GridModel(list.OrderByDescending(o=>o.CurrentMonthChickIn)));
+        //}
 
         
-        [GridAction]
-        public ActionResult _SelectProjectsPerformanceInProjectType()
-        {
-            var list = CRM_Logical._Reports.GetProjectsPerformanceInProjectType();
-            return View(new GridModel(list));
-        }
+        //[GridAction]
+        //public ActionResult _SelectProjectsPerformanceInProjectType()
+        //{
+        //    var list = CRM_Logical._Reports.GetProjectsPerformanceInProjectType();
+        //    return View(new GridModel(list));
+        //}
 
         /// <summary>
         /// 项目 列为项目 
         /// </summary>
         /// <returns></returns>
-        public ActionResult ProjectsPerformanceInProjectByMonth()
+        public ActionResult ProjectsCheckInProjectByMonth()
         {
-            var list = CRM_Logical._Reports.GetProjectsPerformanceInProjectByMonth();
+            var list = CRM_Logical._Reports.GetProjectsCheckInByMonth();
             return View(list.ToList());
         }
 
@@ -75,12 +75,22 @@ namespace Sales.Controllers
         /// 项目出单趋势图
         /// </summary>
         /// <returns></returns>
-        public ActionResult ProjectsPerformanceInProjectByMonthLines()
+        public ActionResult ProjectsCheckInProjectByMonthLines()
         {
-            var list = CRM_Logical._Reports.GetProjectsPerformanceInProjectByMonth();
+            var list = CRM_Logical._Reports.GetProjectsCheckInByMonth();
             return View(list.ToList());
         }
 
+         /// <summary>
+        /// 项目出单趋势图
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult AjaxEmployeePerformanceByMonth()
+        {
+            var list = CRM_Logical._Reports.GetEmployeesCheckInByMonth();
+            return View(list.ToList());
+        }
+        
         //public ActionResult DealGroupByProject(int? year, int? month)
         //{
         //    _DealByProjectData data = new _DealByProjectData();
