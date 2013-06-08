@@ -63,8 +63,8 @@ namespace Sales.Controllers
 
                     }
                 }
-
-                return RedirectToAction("management", "project", new { id = projectid, tabindex = 2 });
+                return RedirectToAction("TargetOfMonthForProject", "Project");
+                //return RedirectToAction("management", "project", new { id = projectid, tabindex = 2 });
             }
 
             return View("Breakdown", CH.GetAllData<Member>(m => m.ProjectID == projectid && m.IsActivated == true));
@@ -171,7 +171,8 @@ namespace Sales.Controllers
             if (ModelState.IsValid)
             {
                 CH.Edit<TargetOfMonth>(item);
-                return RedirectToAction("Management", "Project", new { id = item.ProjectID, tabindex = 2 });
+                //return RedirectToAction("Management", "Project", new { id = item.ProjectID, tabindex = 2 });
+                return RedirectToAction("TargetOfMonthForProject", "Project");
             }
             return View(item);
         }
@@ -187,8 +188,8 @@ namespace Sales.Controllers
             var item = CH.GetDataById<TargetOfMonth>(id);
             var pid = item.ProjectID;
             CH.Delete<TargetOfMonth>(id);
-
-            return RedirectToAction("Management", "Project", new { id = pid, tabindex = 2 });
+            return RedirectToAction("TargetOfMonthForProject", "Project");
+            //return RedirectToAction("Management", "Project", new { id = pid, tabindex = 2 });
         }
 
 
@@ -231,6 +232,23 @@ namespace Sales.Controllers
                            StartDate = db.StartDate
                        };
             return data.OrderByDescending(s => s.EndDate).ToList();
+        }
+
+        public ActionResult CreateEx()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult CreateEx(TargetOfMonth item)
+        {
+            this.AddErrorStateIfTargetOfMonthNoValid(item);
+            if (ModelState.IsValid)
+            {
+                CH.Create<TargetOfMonth>(item);
+                return RedirectToAction("TargetOfMonthForProject", "Project");
+            }
+            return View(item);
         }
     }
 }
