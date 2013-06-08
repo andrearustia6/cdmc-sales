@@ -353,6 +353,7 @@ namespace BLL
 
                 return list;
             }
+
             public static IQueryable<AjaxProjectCheckInMonthByProjectType> GetProjectsPerformanceInProjectType()
             {
                 var pid = CRM_Logical.GetUserInvolveProject().Select(s => s.ID);
@@ -382,7 +383,7 @@ namespace BLL
 
                 var ps = CRM_Logical.GetUserInvolveProject();
                 var pid = ps.Select(s => s.ID);
-                var targets = CH.DB.TargetOfMonths.Where(w => w.Project.IsActived == true);
+                var targets = CH.DB.TargetOfMonthForMembers.Where(w => w.Project.IsActived == true);
                 var currentmonthstart = DateTime.Now.StartOfMonth();
                 var currentmonthend = DateTime.Now.EndOfMonth().AddDays(1);
 
@@ -406,22 +407,21 @@ namespace BLL
                            group d by new { d.Sales } into grp
                            select new AjaxEmployeeCheckInByMonth
                            {
-
-                               //Name = grp.Key.Sales,
-                               //CurrentMonthChickIn = deals.Where(w => w.Project.ID == grp.Key.ID && w.ActualPaymentDate >= currentmonthstart && w.ActualPaymentDate < currentmonthend).Sum(s => s.Income),
-                               //OneMonthBeforeChickIn = deals.Where(w => w.Project.ID == grp.Key.ID && w.ActualPaymentDate >= onemonthbeforestart && w.ActualPaymentDate < currentmonthstart).Sum(s => s.Income),
-                               //TwoMonthBeforeChickIn = deals.Where(w => w.Project.ID == grp.Key.ID && w.ActualPaymentDate >= twomonthbeforestart && w.ActualPaymentDate < onemonthbeforestart).Sum(s => s.Income),
-                               //ThreeMonthBeforeChickIn = deals.Where(w => w.Project.ID == grp.Key.ID && w.ActualPaymentDate >= threemonthbeforestart && w.ActualPaymentDate < twomonthbeforestart).Sum(s => s.Income),
-                               //FourthMonthBeforeChickIn = deals.Where(w => w.Project.ID == grp.Key.ID && w.ActualPaymentDate >= fourmonthbeforestart && w.ActualPaymentDate < threemonthbeforestart).Sum(s => s.Income),
-                               //FifthMonthBeforeChickIn = deals.Where(w => w.Project.ID == grp.Key.ID && w.ActualPaymentDate >= fifthmonthbeforestart && w.ActualPaymentDate < fourmonthbeforestart).Sum(s => s.Income),
-                               //CurrentMonthTarget = targets.Where(w => w.Project.ID == grp.Key.ID && w.StartDate.Month == currentmonthstart.Month).Sum(s => s.CheckIn),
-                               //OneMonthBeforeTarget = targets.Where(w => w.Project.ID == grp.Key.ID && w.StartDate.Month == onemonthbeforestart.Month).Sum(s => s.CheckIn),
-                               //TwoMonthBeforeTarget = targets.Where(w => w.Project.ID == grp.Key.ID && w.StartDate.Month == twomonthbeforestart.Month).Sum(s => s.CheckIn),
-                               //ThreeMonthBeforeTarget = targets.Where(w => w.Project.ID == grp.Key.ID && w.StartDate.Month == threemonthbeforestart.Month).Sum(s => s.CheckIn),
-                               //FourthMonthBeforeTarget = targets.Where(w => w.Project.ID == grp.Key.ID && w.StartDate.Month == fourmonthbeforestart.Month).Sum(s => s.CheckIn),
-                               //FifthMonthBeforeTarget = targets.Where(w => w.Project.ID == grp.Key.ID && w.StartDate.Month == fifthmonthbeforestart.Month).Sum(s => s.CheckIn),
+                               Name = grp.Key.Sales,
+                               CurrentMonthChickIn = deals.Where(w => w.Sales == grp.Key.Sales && w.ActualPaymentDate >= currentmonthstart && w.ActualPaymentDate < currentmonthend).Sum(s => s.Income),
+                               OneMonthBeforeChickIn = deals.Where(w => w.Sales == grp.Key.Sales && w.ActualPaymentDate >= onemonthbeforestart && w.ActualPaymentDate < currentmonthstart).Sum(s => s.Income),
+                               TwoMonthBeforeChickIn = deals.Where(w => w.Sales == grp.Key.Sales && w.ActualPaymentDate >= twomonthbeforestart && w.ActualPaymentDate < onemonthbeforestart).Sum(s => s.Income),
+                               ThreeMonthBeforeChickIn = deals.Where(w => w.Sales == grp.Key.Sales && w.ActualPaymentDate >= threemonthbeforestart && w.ActualPaymentDate < twomonthbeforestart).Sum(s => s.Income),
+                               FourthMonthBeforeChickIn = deals.Where(w => w.Sales == grp.Key.Sales && w.ActualPaymentDate >= fourmonthbeforestart && w.ActualPaymentDate < threemonthbeforestart).Sum(s => s.Income),
+                               FifthMonthBeforeChickIn = deals.Where(w => w.Sales == grp.Key.Sales && w.ActualPaymentDate >= fifthmonthbeforestart && w.ActualPaymentDate < fourmonthbeforestart).Sum(s => s.Income),
+                               CurrentMonthTarget = targets.Where(w => w.Member.Name == grp.Key.Sales && w.StartDate.Month == currentmonthstart.Month).Sum(s => s.CheckIn),
+                               OneMonthBeforeTarget = targets.Where(w => w.Member.Name == grp.Key.Sales && w.StartDate.Month == onemonthbeforestart.Month).Sum(s => s.CheckIn),
+                               TwoMonthBeforeTarget = targets.Where(w => w.Member.Name == grp.Key.Sales && w.StartDate.Month == twomonthbeforestart.Month).Sum(s => s.CheckIn),
+                               ThreeMonthBeforeTarget = targets.Where(w => w.Member.Name == grp.Key.Sales && w.StartDate.Month == threemonthbeforestart.Month).Sum(s => s.CheckIn),
+                               FourthMonthBeforeTarget = targets.Where(w => w.Member.Name == grp.Key.Sales && w.StartDate.Month == fourmonthbeforestart.Month).Sum(s => s.CheckIn),
+                               FifthMonthBeforeTarget = targets.Where(w => w.Member.Name == grp.Key.Sales && w.StartDate.Month == fifthmonthbeforestart.Month).Sum(s => s.CheckIn),
                            };
-
+               
                 return list;
             }
         }
@@ -578,20 +578,13 @@ namespace BLL
 
         public static IQueryable<Deal> GetDeals(bool? acitivatedprojectonly = false, int? projectid = null, string sales = null, string filter = null)
         {
-            IQueryable<Deal> deals;
-            if (Utl.Utl.DebugModel() == false)
+            IQueryable<Deal> deals = from deal in CH.DB.Deals.Where(d => d.Abandoned == false) select deal;
+     
+            if (Utl.Utl.DebugModel() != true)
             {
-                //var debugmembers = from m in CH.DB.Members.Where(w => w.Test == true) select m;
-                //var names = debugmembers.Select(s => s.Name);
-                //deals = from deal in CH.DB.Deals.Where(d => names.Any(a => a == d.Sales) == false && d.Abandoned == false) select deal;
-
-                deals = from deal in CH.DB.Deals.Where(d => d.Abandoned == false) select deal;
+                deals = deals.Where(w => w.Sales != "sean" && w.Sales != "john");
             }
-            else
-            {
-                deals = from deal in CH.DB.Deals.Where(d => d.Abandoned == false) select deal;
-            }
-
+           
             if (acitivatedprojectonly == true)//只取激活的项目的deals
             {
                 deals = deals.Where(w => w.Project.IsActived == true);

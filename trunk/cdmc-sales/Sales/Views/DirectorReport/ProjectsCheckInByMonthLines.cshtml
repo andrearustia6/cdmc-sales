@@ -39,7 +39,7 @@
         ).CategoryAxis(axis => axis.Categories(s => s.Month))
         .ValueAxis(axis => axis.Numeric())
         .Tooltip(tooltip => tooltip.Visible(true))
-        .Legend(legend => legend.Position(ChartLegendPosition.Top).Visible(true))
+                .Legend(legend => legend.Position(ChartLegendPosition.Top).Visible(true)).HtmlAttributes(new { style = " height:300px;" })
           )
           </fieldset>
         }

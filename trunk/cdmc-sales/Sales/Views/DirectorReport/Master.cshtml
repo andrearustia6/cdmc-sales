@@ -14,8 +14,9 @@
      {
          menu.Add().Text("出单入账").Items(item =>
          {
-             item.Add().Text("项目入账/目标总表").Url("~/DirectorReport/ProjectsPerformanceInProjectByMonth");
-             item.Add().Text("项目目标完成趋势图").Url("~/DirectorReport/ProjectsPerformanceInProjectByMonthLines");
+             item.Add().Text("项目入账/目标总表").Url("~/DirectorReport/ProjectsCheckInByMonth");
+             item.Add().Text("项目目标完成趋势图").Url("~/DirectorReport/ProjectsCheckInByMonthLines");
+             item.Add().Text("员工入账/目标总表").Url("~/DirectorReport/EmployeeCheckInByMonth");
          });
          menu.Add().Text("通话情况").Items(item =>
          {
