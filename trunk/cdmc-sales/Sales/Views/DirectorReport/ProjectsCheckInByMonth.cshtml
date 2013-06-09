@@ -31,8 +31,8 @@
 {
     columns.Bound(p => p.ProjectName).Width(150).Title("项目名").HtmlAttributes(new { style = "text-align:left" });
     columns.Bound(p => p.Manager).Title("负责人").HtmlAttributes(new { style = "text-align:left" });
-    columns.Bound(p => p.CurrentMonthTarget).Title(currentmonthstring + targettitle).HtmlAttributes(new { style = "text-align:right" }).Format("{0:c}").Aggregate(aggregates => aggregates.Average()).FooterTemplate(@<text>项目平均月目标: @item.Average.Format("{0:c}")</text>); ;
-    columns.Bound(p => p.CurrentMonthChickIn).Title(currentmonthstring + incometitle).HtmlAttributes(new { style = "text-align:right" }).Format("{0:c}").Aggregate(aggregates => aggregates.Average()).FooterTemplate(@<text>目平均入账: @item.Average.Format("{0:c}")</text>); ;
+    columns.Bound(p => p.CurrentMonthTarget).Title(currentmonthstring + targettitle).HtmlAttributes(new { style = "text-align:right" }).Format("{0:c}").Aggregate(aggregates => aggregates.Average()).FooterTemplate(@<text>平均目标: @item.Average.Format("{0:c}")</text>); ;
+    columns.Bound(p => p.CurrentMonthChickIn).Title(currentmonthstring + incometitle).HtmlAttributes(new { style = "text-align:right" }).Format("{0:c}").Aggregate(aggregates => aggregates.Average()).FooterTemplate(@<text>平均入账: @item.Average.Format("{0:c}")</text>); ;
     columns.Bound(p => p.OneMonthBeforeTarget).Title(onemonthstring + targettitle).HtmlAttributes(new { style = "text-align:right" }).Format("{0:c}");
     columns.Bound(p => p.OneMonthBeforeChickIn).Title(onemonthstring + incometitle).HtmlAttributes(new { style = "text-align:right" }).Format("{0:c}");
     columns.Bound(p => p.TwoMonthBeforeTarget).Title(twomonthstring + targettitle).HtmlAttributes(new { style = "text-align:right" }).Format("{0:c}");

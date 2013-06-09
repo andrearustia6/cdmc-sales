@@ -12,16 +12,16 @@
          @(Html.Telerik().Menu().Name("Menudirector").HtmlAttributes(new { style = "width:150px;" })
          .Orientation(MenuOrientation.Vertical).Items(menu =>
      {
-         menu.Add().Text("出单入账").Items(item =>
+         menu.Add().Text("月出单入账").Items(item =>
          {
              item.Add().Text("项目入账/目标总表").Url("~/DirectorReport/ProjectsCheckInByMonth");
              item.Add().Text("项目目标完成趋势图").Url("~/DirectorReport/ProjectsCheckInByMonthLines");
              item.Add().Text("员工入账/目标总表").Url("~/DirectorReport/EmployeeCheckInByMonth");
          });
-         menu.Add().Text("通话情况").Items(item =>
+         menu.Add().Text("本月各周出单入账").Items(item =>
          {
-             item.Add().Text("销售");
-             item.Add().Text("项目");
+             item.Add().Text("项目周入账趋势");
+             item.Add().Text("员工周入账图");
          });
          menu.Add().Text("公司客户").Items(item =>
          {

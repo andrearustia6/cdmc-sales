@@ -254,16 +254,6 @@ namespace Sales.Controllers
                 return Content("同名英文公司名字已存在！");
             }
 
-
-            //if (CH.GetAllData<CompanyRelationship>(c => c.Company.Name_CH == afterUpdateCN && c.Company.Name_CH != beforeUpdateCN).Count > 0)
-            //{
-            //    return Content("同名中文公司名字已存在！");
-            //}
-            //if (CH.GetAllData<CompanyRelationship>(c => c.Company.Name_EN == afterUpdateEN && c.Company.Name_EN != beforeUpdateEN).Count > 0)
-            //{
-            //    return Content("同名英文公司名字已存在！");
-            //}
-
             return Content("");
         }
 
@@ -786,7 +776,6 @@ namespace Sales.Controllers
         }
 
         [HttpPost]
-        //public ActionResult QuickAddDeal(Deal item, List<Participant> pList, int? projectid)
         public ActionResult QuickAddDeal(Deal item, int? projectid)
         {
             ViewBag.ProjectID = projectid;
