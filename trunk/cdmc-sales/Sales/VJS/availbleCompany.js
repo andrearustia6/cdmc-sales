@@ -995,7 +995,6 @@ var currentCompanyNameEN = undefined;
     }
 
     function QuickDeal() {
-
         var hasError = false;
         $('.dialogue-quickdeal form input').removeClass('fieldError');
         $('.dialogue-quickdeal form select').removeClass('fieldError');
@@ -1035,20 +1034,43 @@ var currentCompanyNameEN = undefined;
         //    hasError = true;
         //}
         // end validation for participant
-
+        
         if (hasError) {
             return;
         }
 
         if ($('.quickdeal-wrapper form').valid()) {
             var query = $('.quickdeal-wrapper form').serializeArray();
-            $.post('QuickAddDeal', query, function (result) {
-                if ((result.dealId != null) && (result.participantId != null)) {
-                    $('#QuickAddDeal').data('tWindow').close();
+
+            var grid = $('.quickdeal-wrapper form #pList').data('tGrid');
+            var data = grid.data;
+            if (data.length <= 0) {
+                if (confirm("您尚未填写参会人信息，请确认是否要提交？")) {
+                    $.post('QuickAddDeal', query, function (result) {
+                        if ((result.dealId != null) && (result.companyRelationshipId != null) && (result.dealCode != null)) {
+                            alert("您已经顺利提交出单，出单号为:" + result.dealCode)
+                            $('#QuickAddDeal').data('tWindow').close();
+                            RefreshCrmList(result.companyRelationshipId);
+                            onCompanyChanging(result.companyRelationshipId);
+                        } else {
+                            alert('快捷出单失败')
+                        }
+                    });
                 } else {
-                    alert('快捷出单失败')
+                    return;
                 }
-            });
+            } else {
+                $.post('QuickAddDeal', query, function (result) {
+                    if ((result.dealId != null) && (result.participantId != null) && (result.dealCode != null)) {
+                        alert("您已经顺利提交出单，出单号为:" + result.dealCode)
+                        $('#QuickAddDeal').data('tWindow').close();
+                        RefreshCrmList(result.companyRelationshipId);
+                        onCompanyChanging(result.companyRelationshipId);
+                    } else {
+                        alert('快捷出单失败')
+                    }
+                });
+            }
         }
     }
 
