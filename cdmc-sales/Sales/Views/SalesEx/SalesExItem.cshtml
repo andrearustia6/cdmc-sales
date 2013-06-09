@@ -5,8 +5,8 @@
 <div>
   <div class="fenge">
         <div class="fenge_2">
-            <span id="currentCompanyName" style="font-weight:bold">@Model.CompanyDisplayName ( 出单金额 : @Model.CompanyPaymentString)</span>
-            <input class="salebtn" style=" background-image:url('../images/chudan.jpg');" type="button" onclick="onQuickAddDeal(@(Model.ProjectID),@(Model.CRMID))" />
+            <span id="currentCompanyName" style="font-weight:bold">@Model.CompanyDisplayName @{if (Model.CompanyPaymentString != "" ){<text> ( 出单金额 : @Model.CompanyPaymentString)</text>}}</span>
+            <input class="salebtn" style=" background-image:url('../images/chudan.jpg');" type="button" onclick="onQuickAddDeal(@(Model.ProjectID),@(Model.CRMID));" />
             <input class="salebtn" style=" background-image:url('../images/tianjia_3.jpg');" type="button" onclick="onLeadAdd(@(Model.CompanyID))" />
             <input type="button" class="salebtn"  style="background-image:url('../images/gengxin.jpg');"  onclick="onCompanyEdit(@(Model.CompanyID))" />
             <input type="button"class="salebtn"  style="background-image:url('../images/gaikuo.jpg'); " onclick="onCompanyDetail(@(Model.CompanyID))" />

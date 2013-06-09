@@ -827,7 +827,7 @@ namespace Sales.Controllers
                     }
                 }
             }
-            return Json(new { dealId = item.ID, participantId = p.ID });
+            return Json(new { dealId = item.ID, dealCode = item.DealCode, companyRelationshipId = item.CompanyRelationshipID });
         }
 
         [GridAction]

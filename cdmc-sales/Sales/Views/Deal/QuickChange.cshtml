@@ -26,7 +26,7 @@
             </td>
             <td>
                 <div class="editor-field">
-                    @Html.DropDownListFor(m => m.PackageID, new SelectList(CH.GetAllData<Package>(), "ID", "Name"), "-请选择-")
+                    @Html.DropDownListFor(m => m.PackageID, new SelectList(CH.GetAllData<Package>(), "ID", "Name"), "-请选择-", new { style = "width:300px;" })
                     @Html.ValidationMessageFor(model => model.PackageID)
                 </div>
             </td>
@@ -40,23 +40,10 @@
             <td>
                  <div class="editor-field">
                     @{
-                        //int CRMId = ViewBag.CRMId;
                         var CRM =  CH.GetDataById<CompanyRelationship>((int)ViewBag.CRMId);
                     }
                     @Html.TextBox("CompanyRelationshipName", CRM.CompanyName, new { @readOnly = "true", style = "width:300px;border-style: none" })
-                    @Html.HiddenFor(m => m.CompanyRelationshipID)
-                    @*@{
-                        List<CompanyRelationship> data = null;
-                        var lvl = Employee.CurrentRole.Level;
-                        int? projectid = Model == null ? ViewBag.ProjectID as int? : Model.ProjectID;
-                        if (lvl <= 100 && lvl >= 10)
-                        {
-                            data = CRM_Logical.GetUserCallingCRM(projectid).ToList();
-
-                        }
-                        @Html.DropDownListFor(m => m.CompanyRelationshipID, new SelectList(data.OrderBy(o => o.Company.Name).ToList(), "ID", "CompanyName"), "-请选择-")<br />
-                        @Html.ValidationMessageFor(model => model.CompanyRelationshipID)
-                    }*@
+                    @Html.Hidden("CompanyRelationshipID", (int)ViewBag.CRMId);
                 </div>
             </td>
             <td>
