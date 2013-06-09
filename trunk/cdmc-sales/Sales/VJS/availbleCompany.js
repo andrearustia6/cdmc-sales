@@ -680,7 +680,7 @@ var currentCompanyNameEN = undefined;
     //公司选择 
     function onIndexSelect(e) {
         var indexs = nv().getItemValue(e.item);
-        if (e.item.innerText.indexOf("分组") < 0) {
+        if (e.item.innerHTML.indexOf("分组") < 0) {
             $.post('_SelectedList', { indexs: indexs, filters: GetFilters() }, function (result) {
                 $('#crmdetailscontainer').html(result);
                 //count++;
