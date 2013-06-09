@@ -94,6 +94,12 @@ namespace Entity
     /// </summary>
     public class Project : NameEntity
     {
+        //唯一名称和唯一编号都是在项目报表统计使用的
+        [Display(Name = "项目唯一名称"),Required]
+        public string  ProjectUnitName { get; set; }
+        [Display(Name = "项目唯一编号"), Required]
+        public string  ProjectUnitCode { get; set; }
+
         [Display(Name = "项目类型")]
         public virtual ProjectType ProjectType { get; set; }
         [Display(Name = "项目类型")]

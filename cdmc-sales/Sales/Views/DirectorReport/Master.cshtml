@@ -20,13 +20,12 @@
          });
          menu.Add().Text("本月各周出单入账").Items(item =>
          {
-             item.Add().Text("项目周入账趋势");
+             item.Add().Text("项目周入账趋势").Url("~/DirectorReport/ProjectsCheckInByWeek"); 
              item.Add().Text("员工周入账图");
          });
-         menu.Add().Text("公司客户").Items(item =>
+         menu.Add().Text("通话").Items(item =>
          {
-             item.Add().Text("公司");
-             item.Add().Text("客户");
+             item.Add().Text("入账/通话时间");
          });
      }))
         </div>

@@ -47,6 +47,20 @@
         @Html.EditorFor(model => model.ProjectCode)
         @Html.ValidationMessageFor(model => model.ProjectCode)
     </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.ProjectUnitCode)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.ProjectUnitCode)
+        @Html.ValidationMessageFor(model => model.ProjectUnitCode)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.ProjectUnitName )
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.ProjectUnitName)
+        @Html.ValidationMessageFor(model => model.ProjectUnitName)
+    </div>
     
     <div class="editor-label">
         @Html.LabelFor(model => model.StartDate)

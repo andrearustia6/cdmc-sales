@@ -204,6 +204,7 @@ namespace Model
         public decimal? ThirdWeekCheckIn { get; set; }
         public decimal? FourWeekCheckIn { get; set; }
         public decimal? FifthWeekCheckIn { get; set; }
+        public decimal? TotalCheckIn { get; set; }
     }
 
     public class AjaxProjectCheckInMonthByProjectType

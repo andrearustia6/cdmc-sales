@@ -1,0 +1,49 @@
+﻿@{
+    ViewBag.Title = "项目入账情况统计";
+    Layout = "~/Views/DirectorReport/Master.cshtml";
+}
+@using Model
+@model List<AjaxProjectCheckInByWeek>
+@using Utl;
+@{
+   var incometitle ="月入账额";
+   var targettitle = "月目标";
+   var percenttitle = "目标完成百分比(%)";
+   var currentmonth = DateTime.Now.Month;
+   var onemonth = DateTime.Now.StartOfMonth().AddDays(-1) ;
+   var twomonth = onemonth.StartOfMonth().AddDays(-1);
+   var threemonth = twomonth.StartOfMonth().AddDays(-1);
+   var fourthmonth = threemonth.StartOfMonth().AddDays(-1);
+   var fifthmonth = fourthmonth.StartOfMonth().AddDays(-1);
+   var currentmonthstring = DateTime.Now.Month.ToString();
+   var onemonthstring = onemonth.Month.ToString();
+   var twomonthstring = twomonth.Month.ToString();
+   var threemonthstring = threemonth.Month.ToString();
+   var fourthmonthstring = fourthmonth.Month.ToString();
+   var fifthhmonthstring = fifthmonth.Month.ToString();
+   
+   
+   
+        
+           
+        <fieldset>
+        <legend></legend>
+       @(Html.Telerik().Chart(Model.OrderByDescending(o=>o.TotalCheckIn)).Name("AjaxProjectCheckInByWeek").Series(series =>
+        {
+            series.Bar(s => s.FirstWeekCheckIn).Name("第一周").Stack(true);
+            series.Bar(s => s.SencondWeekCheckIn).Name("第二周").Stack(true);
+            series.Bar(s => s.ThirdWeekCheckIn).Name("第三周").Stack(true);
+            series.Bar(s => s.FourWeekCheckIn).Name("第四周").Stack(true);
+            series.Bar(s => s.FifthWeekCheckIn).Name("第五周").Stack(true);
+        }
+        ).CategoryAxis(axis => axis.Categories(s => s.ProjectName))
+        .ValueAxis(axis => axis.Numeric())
+        .Tooltip(tooltip => tooltip.Visible(true))
+                .Legend(legend => legend.Position(ChartLegendPosition.Top).Visible(true)).HtmlAttributes(new { style="height:700px;"})
+          )
+          </fieldset>
+      
+       
+   
+    
+}
