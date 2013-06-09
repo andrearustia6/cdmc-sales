@@ -113,7 +113,7 @@ namespace Model
     public class AjaxProjectCheckInByMonth
     {
         [Key]
-        public int ProjectID { get; set; }
+        public string ProjectCode { get; set; }
         public string ProjectName { get; set; }
         public string Manager { get; set; }
         public decimal? CurrentMonthChickIn { get; set; }
@@ -196,7 +196,7 @@ namespace Model
     public class AjaxProjectCheckInByWeek
     {
         [Key]
-        public int ProjectID { get; set; }
+        public string ProjectCode { get; set; }
         public string ProjectName { get; set; }
         public string Manager { get; set; }
         public decimal? FirstWeekCheckIn { get; set; }

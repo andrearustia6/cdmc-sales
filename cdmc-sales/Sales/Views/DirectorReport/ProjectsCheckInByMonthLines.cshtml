@@ -31,7 +31,7 @@
             {
                 <fieldset style="width:30%;float:left;margin-left:10px;">
                 <legend>@p.ProjectName.ToString()</legend>
-            @(Html.Telerik().Chart(p.ProjectLines.OrderByDescending(o => o.Month)).Name(p.ProjectID.ToString()).Series(series =>
+            @(Html.Telerik().Chart(p.ProjectLines.OrderByDescending(o => o.Month)).Name(p.ProjectCode).Series(series =>
         {
             series.Line(s => s.CheckIn).Name("入账").Labels(true);
             series.Line(s => s.CheckinTarget).Name("入账目标").Labels(true);

@@ -321,37 +321,36 @@ namespace BLL
 
                 var deals = CRM_Logical.GetDeals(true);
                 var list = from d in deals
-                           group d by new { d.Project.ID, d.Project.Name_CH, d.Project.Manager } into grp
+                           group d by new { d.Project.ProjectUnitCode, d.Project.ProjectUnitName } into grp
                            select new AjaxProjectCheckInByMonth
                            {
 
-                               ProjectName = grp.Key.Name_CH,
-                               ProjectID = grp.Key.ID,
-                               Manager = grp.Key.Manager,
-                               CurrentMonthChickIn = deals.Where(w => w.Project.ID == grp.Key.ID && w.ActualPaymentDate >= currentmonthstart && w.ActualPaymentDate < currentmonthend).Sum(s => s.Income),
-                               OneMonthBeforeChickIn = deals.Where(w => w.Project.ID == grp.Key.ID && w.ActualPaymentDate >= onemonthbeforestart && w.ActualPaymentDate < currentmonthstart).Sum(s => s.Income),
-                               TwoMonthBeforeChickIn = deals.Where(w => w.Project.ID == grp.Key.ID && w.ActualPaymentDate >= twomonthbeforestart && w.ActualPaymentDate < onemonthbeforestart).Sum(s => s.Income),
-                               ThreeMonthBeforeChickIn = deals.Where(w => w.Project.ID == grp.Key.ID && w.ActualPaymentDate >= threemonthbeforestart && w.ActualPaymentDate < twomonthbeforestart).Sum(s => s.Income),
-                               FourthMonthBeforeChickIn = deals.Where(w => w.Project.ID == grp.Key.ID && w.ActualPaymentDate >= fourmonthbeforestart && w.ActualPaymentDate < threemonthbeforestart).Sum(s => s.Income),
-                               FifthMonthBeforeChickIn = deals.Where(w => w.Project.ID == grp.Key.ID && w.ActualPaymentDate >= fifthmonthbeforestart && w.ActualPaymentDate < fourmonthbeforestart).Sum(s => s.Income),
-                               CurrentMonthTarget = targets.Where(w => w.Project.ID == grp.Key.ID && w.StartDate.Month == currentmonthstart.Month).Sum(s => s.CheckIn),
-                               OneMonthBeforeTarget = targets.Where(w => w.Project.ID == grp.Key.ID && w.StartDate.Month == onemonthbeforestart.Month).Sum(s => s.CheckIn),
-                               TwoMonthBeforeTarget = targets.Where(w => w.Project.ID == grp.Key.ID && w.StartDate.Month == twomonthbeforestart.Month).Sum(s => s.CheckIn),
-                               ThreeMonthBeforeTarget = targets.Where(w => w.Project.ID == grp.Key.ID && w.StartDate.Month == threemonthbeforestart.Month).Sum(s => s.CheckIn),
-                               FourthMonthBeforeTarget = targets.Where(w => w.Project.ID == grp.Key.ID && w.StartDate.Month == fourmonthbeforestart.Month).Sum(s => s.CheckIn),
-                               FifthMonthBeforeTarget = targets.Where(w => w.Project.ID == grp.Key.ID && w.StartDate.Month == fifthmonthbeforestart.Month).Sum(s => s.CheckIn),
-                               ProjectLines = (from ds in deals.Where(w => w.ProjectID == grp.Key.ID && w.ActualPaymentDate != null && w.ActualPaymentDate > yeaerstart)
+                               ProjectName = grp.Key.ProjectUnitName,
+                               ProjectCode = grp.Key.ProjectUnitCode,
+                               CurrentMonthChickIn = deals.Where(w => w.Project.ProjectUnitCode == grp.Key.ProjectUnitCode && w.ActualPaymentDate >= currentmonthstart && w.ActualPaymentDate < currentmonthend).Sum(s => s.Income),
+                               OneMonthBeforeChickIn = deals.Where(w => w.Project.ProjectUnitCode == grp.Key.ProjectUnitCode && w.ActualPaymentDate >= onemonthbeforestart && w.ActualPaymentDate < currentmonthstart).Sum(s => s.Income),
+                               TwoMonthBeforeChickIn = deals.Where(w => w.Project.ProjectUnitCode == grp.Key.ProjectUnitCode && w.ActualPaymentDate >= twomonthbeforestart && w.ActualPaymentDate < onemonthbeforestart).Sum(s => s.Income),
+                               ThreeMonthBeforeChickIn = deals.Where(w => w.Project.ProjectUnitCode == grp.Key.ProjectUnitCode && w.ActualPaymentDate >= threemonthbeforestart && w.ActualPaymentDate < twomonthbeforestart).Sum(s => s.Income),
+                               FourthMonthBeforeChickIn = deals.Where(w => w.Project.ProjectUnitCode == grp.Key.ProjectUnitCode && w.ActualPaymentDate >= fourmonthbeforestart && w.ActualPaymentDate < threemonthbeforestart).Sum(s => s.Income),
+                               FifthMonthBeforeChickIn = deals.Where(w => w.Project.ProjectUnitCode == grp.Key.ProjectUnitCode && w.ActualPaymentDate >= fifthmonthbeforestart && w.ActualPaymentDate < fourmonthbeforestart).Sum(s => s.Income),
+                               CurrentMonthTarget = targets.Where(w => w.Project.ProjectUnitCode == grp.Key.ProjectUnitCode && w.StartDate.Month == currentmonthstart.Month).Sum(s => s.CheckIn),
+                               OneMonthBeforeTarget = targets.Where(w => w.Project.ProjectUnitCode == grp.Key.ProjectUnitCode && w.StartDate.Month == onemonthbeforestart.Month).Sum(s => s.CheckIn),
+                               TwoMonthBeforeTarget = targets.Where(w => w.Project.ProjectUnitCode == grp.Key.ProjectUnitCode && w.StartDate.Month == twomonthbeforestart.Month).Sum(s => s.CheckIn),
+                               ThreeMonthBeforeTarget = targets.Where(w => w.Project.ProjectUnitCode == grp.Key.ProjectUnitCode && w.StartDate.Month == threemonthbeforestart.Month).Sum(s => s.CheckIn),
+                               FourthMonthBeforeTarget = targets.Where(w => w.Project.ProjectUnitCode == grp.Key.ProjectUnitCode && w.StartDate.Month == fourmonthbeforestart.Month).Sum(s => s.CheckIn),
+                               FifthMonthBeforeTarget = targets.Where(w => w.Project.ProjectUnitCode == grp.Key.ProjectUnitCode && w.StartDate.Month == fifthmonthbeforestart.Month).Sum(s => s.CheckIn),
+                               ProjectLines = (from ds in deals.Where(w => w.Project.ProjectUnitCode == grp.Key.ProjectUnitCode && w.ActualPaymentDate != null && w.ActualPaymentDate > yeaerstart)
                                                group ds by new { ds.ActualPaymentDate.Value.Month } into grps
                                                select new AjaxProjectPerformanceInMonth()
                                                {
                                                    Month = grps.Key.Month,
                                                    CheckIn = grps.Sum(s => (decimal?)s.Income),
-                                                   CheckinTarget = targets.Where(w => w.StartDate.Month == grps.Key.Month && w.ProjectID == grp.Key.ID).Sum(s => (decimal?)s.CheckIn)
+                                                   CheckinTarget = targets.Where(w => w.StartDate.Month == grps.Key.Month && w.Project.ProjectUnitCode == grp.Key.ProjectUnitCode).Sum(s => (decimal?)s.CheckIn)
                                                })
 
                            };
 
-                return list;
+                return  list.Where(w => !string.IsNullOrEmpty(w.ProjectName) || !string.IsNullOrEmpty(w.ProjectCode));
             }
 
             public static IQueryable<AjaxProjectCheckInMonthByProjectType> GetProjectsPerformanceInProjectType()
@@ -456,21 +455,20 @@ namespace BLL
                 }
                 IQueryable<Deal> deals = from deal in CH.DB.Deals.Where(d => d.Abandoned == false).Where(w => w.ActualPaymentDate >= monthstart && w.ActualPaymentDate < monthend) select deal;
                 var list = from d in deals
-                           group d by new { d.Project.ID, d.Project.Name_CH,d.Project.Manager } into grp
+                           group d by new {  d.Project.ProjectUnitName,d.Project.ProjectUnitCode } into grp
                            select new AjaxProjectCheckInByWeek()
                            {
-                               FirstWeekCheckIn = deals.Where(w =>w.ProjectID == grp.Key.ID && w.ActualPaymentDate >= firstweekstart && w.ActualPaymentDate < firstweekend).Sum(s => s.Income),
-                               SencondWeekCheckIn = deals.Where(w => w.ProjectID == grp.Key.ID && w.ActualPaymentDate >= secondweekstart && w.ActualPaymentDate < secondweekend).Sum(s => s.Income),
-                               ThirdWeekCheckIn = deals.Where(w => w.ProjectID == grp.Key.ID && w.ActualPaymentDate >= thirdweekstart && w.ActualPaymentDate < thirdweekend).Sum(s => s.Income),
-                               FourWeekCheckIn = deals.Where(w => w.ProjectID == grp.Key.ID && w.ActualPaymentDate >= fourthweekstart && w.ActualPaymentDate < fourthweekend).Sum(s => s.Income),
-                               FifthWeekCheckIn = deals.Where(w => w.ProjectID == grp.Key.ID && w.ActualPaymentDate >= fifthweekstart && w.ActualPaymentDate < fifthweekend).Sum(s => s.Income),
-                               TotalCheckIn = deals.Where(w => w.ProjectID == grp.Key.ID ).Sum(s => s.Income),
-                               Manager = grp.Key.Manager,
-                               ProjectID = grp.Key.ID,
-                               ProjectName = grp.Key.Name_CH
+                               FirstWeekCheckIn = deals.Where(w => w.Project.ProjectUnitCode == grp.Key.ProjectUnitCode && w.ActualPaymentDate >= firstweekstart && w.ActualPaymentDate < firstweekend).Sum(s => s.Income),
+                               SencondWeekCheckIn = deals.Where(w => w.Project.ProjectUnitCode == grp.Key.ProjectUnitCode && w.ActualPaymentDate >= secondweekstart && w.ActualPaymentDate < secondweekend).Sum(s => s.Income),
+                               ThirdWeekCheckIn = deals.Where(w => w.Project.ProjectUnitCode == grp.Key.ProjectUnitCode && w.ActualPaymentDate >= thirdweekstart && w.ActualPaymentDate < thirdweekend).Sum(s => s.Income),
+                               FourWeekCheckIn = deals.Where(w => w.Project.ProjectUnitCode == grp.Key.ProjectUnitCode && w.ActualPaymentDate >= fourthweekstart && w.ActualPaymentDate < fourthweekend).Sum(s => s.Income),
+                               FifthWeekCheckIn = deals.Where(w => w.Project.ProjectUnitCode == grp.Key.ProjectUnitCode && w.ActualPaymentDate >= fifthweekstart && w.ActualPaymentDate < fifthweekend).Sum(s => s.Income),
+                               TotalCheckIn = deals.Where(w => w.Project.ProjectUnitCode == grp.Key.ProjectUnitCode).Sum(s => s.Income),
+                               ProjectName = grp.Key.ProjectUnitName,
+                               ProjectCode = grp.Key.ProjectUnitCode
                            };
 
-                return list;
+                return list.Where(w => !string.IsNullOrEmpty(w.ProjectName) || !string.IsNullOrEmpty(w.ProjectCode));
             }
         }
         public static class _Project
