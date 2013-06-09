@@ -193,6 +193,18 @@ namespace Model
         public IEnumerable<AjaxProjectPerformanceInMonth> ProjectLines { get; set; }
     }
 
+    public class AjaxProjectCheckInByWeek
+    {
+        [Key]
+        public int ProjectID { get; set; }
+        public string ProjectName { get; set; }
+        public string Manager { get; set; }
+        public decimal? FirstWeekChickIn { get; set; }
+        public decimal? SencondWeekChickIn { get; set; }
+        public decimal? ThirdWeekChickIn { get; set; }
+        public decimal? FourWeekChickIn { get; set; }
+        public decimal? FifthWeekChickIn { get; set; }
+    }
 
     public class AjaxProjectCheckInMonthByProjectType
     {
