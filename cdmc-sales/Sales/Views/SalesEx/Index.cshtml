@@ -26,7 +26,7 @@
             <table>
                 <tr>
                     <td>
-                        <span>项目选择:@Html.DropDownListFor(model => model.CurrentProjectId, projectList)</span>
+                        <span>项目选择:@Html.DropDownListFor(model => model.CurrentProjectId, projectList, new { onchange = "seachBind();" })</span>
                         <td>
                             <span>最近通话: @Html.DropDownList("callprogress", SelectHelper.CallConditionSelectList(), "不指定")</span>
                         </td>
@@ -195,7 +195,10 @@
         });
     });
 
-  
+    function seachBind() {
+        RefreshCrmList(null);
+        $('#crmdetailscontainer').html('');
+    }
 
 </script>
 <style>
