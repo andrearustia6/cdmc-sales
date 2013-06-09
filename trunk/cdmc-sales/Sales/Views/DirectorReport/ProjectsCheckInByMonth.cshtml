@@ -29,7 +29,7 @@
 .Columns(columns =>
 {
     columns.Bound(p => p.ProjectName).Width(150).Title("项目名").HtmlAttributes(new { style = "text-align:left" });
-    columns.Bound(p => p.ProjectCode).Width(100).Title("项目编号").HtmlAttributes(new { style = "text-align:left" });
+    columns.Bound(p => p.ProjectCode).Width(85).Title("项目编号").HtmlAttributes(new { style = "text-align:left" });
     columns.Bound(p => p.CurrentMonthTarget).Title(currentmonthstring + targettitle).HtmlAttributes(new { style = "text-align:right" }).Format("{0:c}").Aggregate(aggregates => aggregates.Average()).FooterTemplate(@<text>平均目标: @item.Average.Format("{0:c}")</text>); ;
     columns.Bound(p => p.CurrentMonthChickIn).Title(currentmonthstring + incometitle).HtmlAttributes(new { style = "text-align:right" }).Format("{0:c}").Aggregate(aggregates => aggregates.Average()).FooterTemplate(@<text>平均入账: @item.Average.Format("{0:c}")</text>); ;
     columns.Bound(p => p.OneMonthBeforeTarget).Title(onemonthstring + targettitle).HtmlAttributes(new { style = "text-align:right" }).Format("{0:c}");
@@ -127,7 +127,7 @@
 .Columns(columns =>
 {
     columns.Bound(p => p.ProjectName).Width(150).Title("项目名").HtmlAttributes(new { style = "text-align:left" });
-    columns.Bound(p => p.ProjectCode).Width(100).Title("项目编号").HtmlAttributes(new { style = "text-align:left" });
+    columns.Bound(p => p.ProjectCode).Width(85).Title("项目编号").HtmlAttributes(new { style = "text-align:left" });
     columns.Bound(p => p.CurrentMonthBeforePercent).Title(currentmonthstring + percenttitle).HtmlAttributes(new { style = "text-align:right" });
     columns.Bound(p => p.OneMonthBeforePercent).Title(onemonthstring + percenttitle).HtmlAttributes(new { style = "text-align:right" });
     columns.Bound(p => p.TwoMonthBeforePercent).Title(twomonthstring + percenttitle).HtmlAttributes(new { style = "text-align:right" });
