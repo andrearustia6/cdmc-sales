@@ -1,8 +1,9 @@
 ﻿@using Entity
 @model List<TargetOfMonth>
 @Html.Partial("contenttitle", "月目标列表")
+@Html.Partial("projectselector")
 @(Html.Telerik().Grid(Model).Name("TargetOfMonths")
-        .ToolBar(commands => commands.Custom().Text("创建月目标").Action("CreateEx", "TargetOfMonth"))
+            .ToolBar(commands => commands.Custom().Text("创建月目标").Action("CreateEx", "TargetOfMonth", new { projectid = (int?)ViewBag.ProjectID }))
                 .DataKeys(keys =>
                 {
                     keys.Add(s => s.ID);
