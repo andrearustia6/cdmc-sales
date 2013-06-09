@@ -300,7 +300,7 @@ namespace BLL
             //}
             public static IQueryable<AjaxProjectCheckInByMonth> GetProjectsCheckInByMonth()
             {
-                     var yeaerstart = new DateTime(DateTime.Now.Year,1,1);
+                var yeaerstart = new DateTime(DateTime.Now.Year, 1, 1);
 
                 var ps = CRM_Logical.GetUserInvolveProject();
                 var pid = ps.Select(s => s.ID);
@@ -328,7 +328,7 @@ namespace BLL
                            group d by new { d.Project.ID, d.Project.Name_CH, d.Project.Manager } into grp
                            select new AjaxProjectCheckInByMonth
                            {
-                               
+
                                ProjectName = grp.Key.Name_CH,
                                ProjectID = grp.Key.ID,
                                Manager = grp.Key.Manager,
@@ -344,7 +344,7 @@ namespace BLL
                                ThreeMonthBeforeTarget = targets.Where(w => w.Project.ID == grp.Key.ID && w.StartDate.Month == threemonthbeforestart.Month).Sum(s => s.CheckIn),
                                FourthMonthBeforeTarget = targets.Where(w => w.Project.ID == grp.Key.ID && w.StartDate.Month == fourmonthbeforestart.Month).Sum(s => s.CheckIn),
                                FifthMonthBeforeTarget = targets.Where(w => w.Project.ID == grp.Key.ID && w.StartDate.Month == fifthmonthbeforestart.Month).Sum(s => s.CheckIn),
-                               ProjectLines = (from ds in deals.Where(w => w.ProjectID == grp.Key.ID && w.ActualPaymentDate != null && w.ActualPaymentDate>yeaerstart)
+                               ProjectLines = (from ds in deals.Where(w => w.ProjectID == grp.Key.ID && w.ActualPaymentDate != null && w.ActualPaymentDate > yeaerstart)
                                                group ds by new { ds.ActualPaymentDate.Value.Month } into grps
                                                select new AjaxProjectPerformanceInMonth()
                                                {
@@ -426,15 +426,49 @@ namespace BLL
                                FourthMonthBeforeTarget = targets.Where(w => w.Member.Name == grp.Key.Sales && w.StartDate.Month == fourmonthbeforestart.Month).Sum(s => s.CheckIn),
                                FifthMonthBeforeTarget = targets.Where(w => w.Member.Name == grp.Key.Sales && w.StartDate.Month == fifthmonthbeforestart.Month).Sum(s => s.CheckIn),
                            };
-               
-                return list.Where(w=>alivemembers.Any(a=>a==w.Name));
+
+                return list.Where(w => alivemembers.Any(a => a == w.Name));
             }
 
-            //public  static IQueryable<AjaxProjectCheckInByWeek> GetProjectsCheckInByWeek()
-            //{
-            //    var 
-            //}
-           
+            public static IQueryable<AjaxProjectCheckInByWeek> GetProjectsCheckInByWeek()
+            {
+                var ps = CRM_Logical.GetUserInvolveProject();
+                var monthstart = DateTime.Now.StartOfMonth();
+                var monthend = DateTime.Now.EndOfMonth();
+                var firstweekstart = monthstart;
+                while (firstweekstart.DayOfWeek == DayOfWeek.Thursday && firstweekstart.DayOfWeek == DayOfWeek.Sunday)
+                {
+                    firstweekstart = firstweekstart.AddDays(1);
+                }
+                var firstweekend = firstweekstart.AddDays(7);
+                var secondweekstart = firstweekend;
+                var secondweekend = secondweekstart.AddDays(7);
+                var thirdweekstart = secondweekstart;
+                var thirdweekend = thirdweekstart.AddDays(7);
+                var fourthweekstart = thirdweekend;
+                var fourthweekend = fourthweekstart.AddDays(7);
+                var fifthweekstart = fourthweekend;
+                var fifthweekend = fifthweekstart.AddDays(7);
+                while (firstweekend > monthend)
+                {
+                    firstweekend.AddDays(-1);
+                }
+                IQueryable<Deal> deals = from deal in CH.DB.Deals.Where(d => d.Abandoned == false).Where(w => w.ActualPaymentDate >= monthstart && w.ActualPaymentDate < monthend) select deal;
+                var list = from d in deals
+                           group d by new { d.Project.ID, d.Project.Name_CH } into grp
+                           select new AjaxProjectCheckInByWeek()
+                           {
+                               FirstWeekCheckIn = deals.Where(w => w.ActualPaymentDate >= firstweekstart && w.ActualPaymentDate >= firstweekend).Sum(s => s.Income),
+                               SencondWeekCheckIn = deals.Where(w => w.ActualPaymentDate >= secondweekstart && w.ActualPaymentDate >= secondweekstart).Sum(s => s.Income),
+                               ThirdWeekCheckIn = deals.Where(w => w.ActualPaymentDate >= thirdweekstart && w.ActualPaymentDate >= thirdweekend).Sum(s => s.Income),
+                               FourWeekCheckIn = deals.Where(w => w.ActualPaymentDate >= fourthweekstart && w.ActualPaymentDate >= fourthweekend).Sum(s => s.Income),
+                               FifthWeekCheckIn = deals.Where(w => w.ActualPaymentDate >= fifthweekstart && w.ActualPaymentDate >= fifthweekend).Sum(s => s.Income),
+
+                               // Manager = 
+                           };
+
+                return list;
+            }
         }
         public static class _Project
         {

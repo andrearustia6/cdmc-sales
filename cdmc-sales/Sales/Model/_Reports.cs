@@ -199,11 +199,11 @@ namespace Model
         public int ProjectID { get; set; }
         public string ProjectName { get; set; }
         public string Manager { get; set; }
-        public decimal? FirstWeekChickIn { get; set; }
-        public decimal? SencondWeekChickIn { get; set; }
-        public decimal? ThirdWeekChickIn { get; set; }
-        public decimal? FourWeekChickIn { get; set; }
-        public decimal? FifthWeekChickIn { get; set; }
+        public decimal? FirstWeekCheckIn { get; set; }
+        public decimal? SencondWeekCheckIn { get; set; }
+        public decimal? ThirdWeekCheckIn { get; set; }
+        public decimal? FourWeekCheckIn { get; set; }
+        public decimal? FifthWeekCheckIn { get; set; }
     }
 
     public class AjaxProjectCheckInMonthByProjectType
