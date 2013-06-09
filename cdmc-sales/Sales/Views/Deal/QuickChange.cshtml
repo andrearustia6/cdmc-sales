@@ -248,10 +248,7 @@
             </td>
         </tr>*@
     </table>
-    @{
-        //if(ViewData["pList"] != null)
-        //List<Participant> pList = new List<Participant>();
-    }
+
     @(Html.Telerik().Grid<AjaxParticipant>().Name("pList").BindTo(ViewData["pList"] as IEnumerable<AjaxParticipant>)
             .DataKeys(keys =>
             {
