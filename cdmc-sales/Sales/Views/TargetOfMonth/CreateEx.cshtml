@@ -1,5 +1,6 @@
 ﻿@model Entity.TargetOfMonth
 @using Utl
+@using BLL
 @Html.ValidationSummary(true)
 @using (Html.BeginForm())
 {
@@ -9,7 +10,7 @@
             @Html.LabelFor(model => model.ProjectID)
         </div>
         <div class="editor-field">
-            @Html.DropDownListFor(model => model.ProjectID, new SelectList(CH.GetAllData<Entity.Project>().Where(s => s.TeamLeader == Employee.GetLoginUserName()), "ID", "ProjectCode"))
+            @Html.DropDownListFor(model => model.ProjectID, new SelectList(CRM_Logical.GetUserInvolveProject(), "ID", "ProjectCode"))
             @Html.ValidationMessageFor(model => model.ProjectID)
         </div>
         <div class="editor-label">
