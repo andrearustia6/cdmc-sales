@@ -429,6 +429,12 @@ namespace BLL
                
                 return list.Where(w=>alivemembers.Any(a=>a==w.Name));
             }
+
+            //public  static IQueryable<AjaxProjectCheckInByWeek> GetProjectsCheckInByWeek()
+            //{
+            //    var 
+            //}
+           
         }
         public static class _Project
         {

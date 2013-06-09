@@ -46,19 +46,10 @@ namespace Sales.Controllers
     
         }
 
-        //[GridAction]
-        //public ActionResult _SelectAjaxProjectPerformanceInProjectByMonth()
+        //public ActionResult AjaxProjectCheckInByWeek()
         //{
-        //    var list = CRM_Logical._Reports.GetProjectsPerformanceInProjectByMonth();
-        //    return View(new GridModel(list.OrderByDescending(o=>o.CurrentMonthChickIn)));
-        //}
-
-        
-        //[GridAction]
-        //public ActionResult _SelectProjectsPerformanceInProjectType()
-        //{
-        //    var list = CRM_Logical._Reports.GetProjectsPerformanceInProjectType();
-        //    return View(new GridModel(list));
+        //    var list = CRM_Logical._Reports.GetProjectsCheckInByWeek();
+        //    return View(list.ToList());
         //}
 
         /// <summary>
