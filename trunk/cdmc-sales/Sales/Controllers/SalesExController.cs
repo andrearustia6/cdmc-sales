@@ -879,7 +879,12 @@ namespace Sales.Controllers
             {
                 foreach (var p in deletedP)
                 {
-                    bool delete = pList.Remove(p);
+                    //int index = pList.IndexOf(p);
+                    int index = pList.FindIndex(ap => ap.Name == p.Name && ap.ParticipantTypeID == p.ParticipantTypeID);
+                    if (index != -1)
+                    {
+                        pList.RemoveAt(index);
+                    }
                 }
             }
             return View(new GridModel(pList));
