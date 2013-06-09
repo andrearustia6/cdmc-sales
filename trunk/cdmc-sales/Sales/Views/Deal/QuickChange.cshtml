@@ -40,6 +40,12 @@
             <td>
                  <div class="editor-field">
                     @{
+                        //int CRMId = ViewBag.CRMId;
+                        var CRM =  CH.GetDataById<CompanyRelationship>((int)ViewBag.CRMId);
+                    }
+                    @Html.TextBox("CompanyRelationshipName", CRM.CompanyName, new { @readOnly = "true", style = "width:300px;border-style: none" })
+                    @Html.HiddenFor(m => m.CompanyRelationshipID)
+                    @*@{
                         List<CompanyRelationship> data = null;
                         var lvl = Employee.CurrentRole.Level;
                         int? projectid = Model == null ? ViewBag.ProjectID as int? : Model.ProjectID;
@@ -50,7 +56,7 @@
                         }
                         @Html.DropDownListFor(m => m.CompanyRelationshipID, new SelectList(data.OrderBy(o => o.Company.Name).ToList(), "ID", "CompanyName"), "-请选择-")<br />
                         @Html.ValidationMessageFor(model => model.CompanyRelationshipID)
-                    }
+                    }*@
                 </div>
             </td>
             <td>
@@ -192,63 +198,7 @@
                 @Html.Hidden("ProjectID", (int)ViewBag.ProjectID)
             </td>
         </tr>
-
-        
-
-        @*<tr>
-            <td>
-                <div class="editor-label">客户名称</div>
-            </td>
-            <td>
-                <div class="editor-field">@Html.Editor("Name")</div>
-            </td>
-            <td>
-                <div class="editor-label">客户职位</div>
-            </td>
-            <td>
-                <div class="editor-field">@Html.Editor("Title")</div>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <div class="editor-label">客户性别</div>
-            </td>
-            <td>
-                <div class="editor-field">@Html.DropDownList("Gender", new SelectList(new List<string>() { "Mr", "Mrs" }, "-请选择-"))</div>
-            </td>
-            <td>
-                <div class="editor-label">移动电话</div>
-            </td>
-            <td>
-                <div class="editor-field">@Html.Editor("Mobile")</div>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <div class="editor-label">客户直线</div>
-            </td>
-            <td>
-                <div class="editor-field">@Html.Editor("Contact")</div>
-            </td>
-            <td>
-                <div class="editor-label">电子邮箱</div>
-            </td>
-            <td>
-                <div class="editor-field">@Html.Editor("Email")</div>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <div class="editor-label">参会类型</div>
-            </td>
-            <td>
-                <div class="editor-field">
-                    @Html.DropDownList("ParticipantTypeID", new SelectList(CH.GetAllData<ParticipantType>(), "ID", "Name"), "-请选择-")
-                </div>
-            </td>
-        </tr>*@
     </table>
-
     @(Html.Telerik().Grid<AjaxParticipant>().Name("pList").BindTo(ViewData["pList"] as IEnumerable<AjaxParticipant>)
             .DataKeys(keys =>
             {

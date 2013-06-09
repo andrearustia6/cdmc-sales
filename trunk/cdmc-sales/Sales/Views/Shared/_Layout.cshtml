@@ -131,8 +131,10 @@
                            {
                                item.Add().Url("~/Report/PerformanceIndex").Text("考核结果");
                            }
-                           item.Add().Url("~/ProtectedCompanys/CompanyIndex").Text("被保护的公司");
-                           item.Add().Url("~/salesReport/MemberLeadCallsChart").Text("已打Lead比较");
+                           if (score != 3 && score != 4){
+                               item.Add().Url("~/ProtectedCompanys/CompanyIndex").Text("被保护的公司");
+                               item.Add().Url("~/salesReport/MemberLeadCallsChart").Text("已打Lead比较");
+                           }
                            item.Add().Url("~/Package/index").Text("Package");
                        });
 

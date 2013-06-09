@@ -22,8 +22,6 @@ namespace Sales.Controllers
             return View(ajaxCrmTypedList);
         }
 
-
-
         /// <summary>
         /// 导航选中的公司或者lead
         /// </summary>
@@ -762,10 +760,12 @@ namespace Sales.Controllers
             return Json(categoriylist.Select(c => new { value = c.ID, text = c.Name }), JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult GetQuickAddDeal(int? projectId)
+        public ActionResult GetQuickAddDeal(int? projectId, int? CRMId)
         {
             projectId = this.TrySetProjectIDForUser(projectId);
             ViewBag.ProjectID = projectId;
+            ViewBag.CRMId = CRMId;
+
             List<AjaxParticipant> pList = new List<AjaxParticipant>();
             Session["pList"] = pList;
 

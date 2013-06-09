@@ -986,8 +986,8 @@ var currentCompanyNameEN = undefined;
         window.close();
     }
 
-    function onQuickAddDeal(currentProjectId) {
-        $.post('GetQuickAddDeal', { projectId: currentProjectId }, function (result) {
+    function onQuickAddDeal(currentProjectId, currentCRMId) {
+        $.post('GetQuickAddDeal', { projectId: currentProjectId, CRMId: currentCRMId }, function (result) {
             $('.quickdeal-wrapper').html(result);
             var window = $('#QuickAddDeal').data('tWindow');
             window.center().open();
