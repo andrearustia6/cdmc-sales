@@ -242,8 +242,9 @@ namespace Sales.Controllers
             return data.OrderByDescending(s => s.EndDate).ToList();
         }
 
-        public ActionResult CreateEx()
+        public ActionResult CreateEx(int? projectid)
         {
+            ViewBag.ProjectID = projectid;
             return View();
         }
 
@@ -254,7 +255,7 @@ namespace Sales.Controllers
             if (ModelState.IsValid)
             {
                 CH.Create<TargetOfMonth>(item);
-                return RedirectToAction("TargetOfMonthForProject", "Project");
+                return RedirectToAction("TargetOfMonthForProject", "Project", new { projectid = item.ProjectID });
             }
             return View(item);
         }
