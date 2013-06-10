@@ -1010,6 +1010,14 @@ var currentCompanyNameEN = undefined;
             $('.dialogue-quickdeal form #CompanyRelationshipID').addClass('fieldError');
             hasError = true;
         }
+        if ($('.dialogue-quickdeal form #ExpectedPaymentDate').val().isEmpty()) {
+            $('.dialogue-quickdeal form #ExpectedPaymentDate').addClass('fieldError');
+            hasError = true;
+        }
+        if ($('.dialogue-quickdeal form #Payment').val().isEmpty() || $('.dialogue-quickdeal form #Payment').val() <= 0) {
+            $('.dialogue-quickdeal form #Payment').addClass('fieldError');
+            hasError = true;
+        }
         if ($('.dialogue-quickdeal form #Committer').val().isEmpty()) {
             $('.dialogue-quickdeal form #Committer').addClass('fieldError');
             hasError = true;

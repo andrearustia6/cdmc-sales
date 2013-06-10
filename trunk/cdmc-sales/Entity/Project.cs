@@ -511,6 +511,7 @@ namespace Entity
         public string Sales { get; set; }
 
         [Display(Name = "应付款"), Required]
+        [Range(1.0, 100000000.0, ErrorMessage = "应付款必须大于零")]
         public decimal Payment { get; set; }
 
         [Display(Name = "出单描述"), MaxLength(2000), Required]

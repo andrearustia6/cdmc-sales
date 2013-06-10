@@ -764,7 +764,7 @@ namespace Sales.Controllers
         {
             projectId = this.TrySetProjectIDForUser(projectId);
             ViewBag.ProjectID = projectId;
-            ViewBag.CRMId = CRMId;
+            ViewBag.CompanyRelationshipID = CRMId;
 
             List<AjaxParticipant> pList = new List<AjaxParticipant>();
             Session["pList"] = pList;
@@ -868,7 +868,6 @@ namespace Sales.Controllers
             {
                 foreach (var p in deletedP)
                 {
-                    //int index = pList.IndexOf(p);
                     int index = pList.FindIndex(ap => ap.Name == p.Name && ap.ParticipantTypeID == p.ParticipantTypeID);
                     if (index != -1)
                     {
@@ -878,6 +877,8 @@ namespace Sales.Controllers
             }
             return View(new GridModel(pList));
         }
+
+
     }
 }
 
