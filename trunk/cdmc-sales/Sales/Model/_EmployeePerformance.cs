@@ -20,7 +20,6 @@ namespace Sales.Model
     //Lead当月的考核
     public class _TeamLeadPerformance
     {
-
         [Display(Name = "调研不达标周数")]
         public int LeadNotQualifiedWeeksCount
         {
@@ -38,7 +37,6 @@ namespace Sales.Model
                 return TeamLeadPerformanceInWeeks.Count(c => c.IsFaxOutOrCallHoursQualified == false);
             }
         }
-
 
         [Display(Name = "考核系数")]
         public double? Rate
@@ -88,19 +86,26 @@ namespace Sales.Model
 
         [Display(Name = "主观评分")]
         public double? AssignedScore { get; set; }
+
         [Display(Name = "员工")]
         public string Name { get; set; }
-         [Display(Name = "月目标")]
+
+        [Display(Name = "月目标")]
         public decimal? Target { get; set; }
-         [Display(Name = "月入账额")]
+
+        public string TargetUnSetProjects { get; set; }
+
+        [Display(Name = "月入账额")]
         public decimal? CheckIn { get; set; }
-         [Display(Name = "入账目标完成百分比")]
+        
+        [Display(Name = "入账目标完成百分比")]
         public double? CompletePercent { get {
             if (Target == null || Target == 0 || CheckIn==null||CheckIn==0) return 0;
 
             return Utl.Utl.GetPercent((double)CheckIn, (double)Target);
         }
         }
+
         public IEnumerable<_TeamLeadPerformanceInWeek> TeamLeadPerformanceInWeeks { private get; set; }
 
         [Display(Name = "Faxout详细")]
@@ -112,6 +117,7 @@ namespace Sales.Model
                 return string.Join(",", counts);
             }
         }
+
         [Display(Name = "调研详细")]
         public string LeadAddCountString
         {
