@@ -55,9 +55,9 @@ namespace MvcGlobalAuthorize.Controllers
                         //if (Employee.EqualToLeader() || Employee.EqualToSales())
                         //    return RedirectToAction("mypage", "sales");
                         //else
-                        if(Employee.CurrentRole.Level==DirectorRequired.LVL)
-                            return RedirectToAction("ProjectsCheckInByMonth", "DirectorReport");
-                        else
+                        //if(Employee.CurrentRole.Level==DirectorRequired.LVL)
+                        //    return RedirectToAction("ProjectsCheckInByMonth", "DirectorReport");
+                        //else
                             return RedirectToAction("Index", "account");
                     }
                 }
