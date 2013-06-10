@@ -626,9 +626,14 @@ namespace BLL
         {
             IQueryable<Deal> deals = from deal in CH.DB.Deals.Where(d => d.Abandoned == false) select deal;
      
+            //if (Utl.Utl.DebugModel() != true)
+            //{
+            //    deals = deals.Where(w => w.Sales != "sean" && w.Sales != "john");
+            //}
+
             if (Utl.Utl.DebugModel() != true)
             {
-                deals = deals.Where(w => w.Sales != "sean" && w.Sales != "john");
+                deals = deals.Where(w => w.Sales != "test");
             }
            
             if (acitivatedprojectonly == true)//只取激活的项目的deals
