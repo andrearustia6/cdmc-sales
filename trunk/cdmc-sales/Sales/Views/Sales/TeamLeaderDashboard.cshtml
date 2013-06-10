@@ -25,7 +25,7 @@
                             }  
                             if (!string.IsNullOrEmpty(Model.TargetUnSetProjects))
                             {  
-                                <text>
+                                <text><br />
                                     <span style="color:Red;">本月您的以下项目月目标尚未设置，请尽快设置:
                                         @{
                                             foreach (var pid in Model.TargetUnSetProjects.Split(','))
