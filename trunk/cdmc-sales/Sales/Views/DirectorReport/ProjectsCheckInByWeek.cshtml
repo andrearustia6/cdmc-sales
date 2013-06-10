@@ -30,16 +30,19 @@
         <legend></legend>
        @(Html.Telerik().Chart(Model.OrderByDescending(o=>o.TotalCheckIn)).Name("AjaxProjectCheckInByWeek").Series(series =>
         {
-            series.Bar(s => s.FirstWeekCheckIn).Name("第一周").Stack(true);
-            series.Bar(s => s.SencondWeekCheckIn).Name("第二周").Stack(true).Labels(l=>l.Format("{0:c}"));
-            series.Bar(s => s.ThirdWeekCheckIn).Name("第三周").Stack(true);
-            series.Bar(s => s.FourWeekCheckIn).Name("第四周").Stack(true);
-            series.Bar(s => s.FifthWeekCheckIn).Name("第五周").Stack(true);
+            series.Bar(s => s.FirstWeekCheckIn).Name("第一周").Stack(true).Labels(l => l.Format("{0:c}"));
+            series.Bar(s => s.SencondWeekCheckIn).Name("第二周").Stack(true).Labels(l => l.Format("{0:c}"));
+            series.Bar(s => s.ThirdWeekCheckIn).Name("第三周").Stack(true).Labels(l => l.Format("{0:c}"));
+            series.Bar(s => s.FourWeekCheckIn).Name("第四周").Stack(true).Labels(l => l.Format("{0:c}"));
+            series.Bar(s => s.FifthWeekCheckIn).Name("第五周").Stack(true).Labels(l => l.Format("{0:c}"));
         }
-        ).CategoryAxis(axis => axis.Categories(s => s.ProjectName))
-        .ValueAxis(axis => axis.Numeric())
-        .Tooltip(tooltip => tooltip.Visible(true))
-                .Legend(legend => legend.Position(ChartLegendPosition.Top).Visible(true)).HtmlAttributes(new { style="height:700px;"})
+                ).CategoryAxis(axis => axis.Categories(s => s.ProjectName))
+                        .ValueAxis(axis => axis.Numeric().Labels(l => l.Format("{0:c}")).Labels(true))
+                .Tooltip(tooltip => tooltip
+                .Visible(true)
+                        .Format("{0:c}")
+            )
+                .Legend(legend => legend.Position(ChartLegendPosition.Top).Visible(true)).HtmlAttributes(new { style="height:400px;width:48%"})
           )
           </fieldset>
       

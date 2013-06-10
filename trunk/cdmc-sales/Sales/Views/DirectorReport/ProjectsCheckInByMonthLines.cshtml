@@ -33,12 +33,12 @@
                 <legend>@p.ProjectName.ToString()</legend>
             @(Html.Telerik().Chart(p.ProjectLines.OrderByDescending(o => o.Month)).Name(p.ProjectCode).Series(series =>
         {
-            series.Line(s => s.CheckIn).Name("入账").Labels(true);
-            series.Line(s => s.CheckinTarget).Name("入账目标").Labels(true);
+            series.Line(s => s.CheckIn).Name("入账").Labels(l=>l.Format("{0:c}").Visible(true));
+            series.Line(s => s.CheckinTarget).Name("入账目标").Labels(l => l.Format("{0:c}").Visible(true));
         }
-        ).CategoryAxis(axis => axis.Categories(s => s.Month))
-        .ValueAxis(axis => axis.Numeric())
-        .Tooltip(tooltip => tooltip.Visible(true))
+        ).CategoryAxis(axis => axis.Categories(s => s.MonthString))
+                .ValueAxis(axis => axis.Numeric().Labels(l => l.Format("{0:c}")).Labels(true))
+               .Tooltip(tooltip => tooltip .Visible(true) .Format("{0:c}") )
                 .Legend(legend => legend.Position(ChartLegendPosition.Top).Visible(true)).HtmlAttributes(new { style = " height:300px;" })
           )
           </fieldset>

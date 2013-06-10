@@ -252,6 +252,7 @@ namespace Model
         public DateTime Range { get { return new DateTime(Year, Month.Value, 1); } }
         public int Year { get; set; }
         public int? Month { get; set; }
+        public string MonthString { get { return Month.ToString() + "月"; } }
     }
 
     public class AjaxMember
