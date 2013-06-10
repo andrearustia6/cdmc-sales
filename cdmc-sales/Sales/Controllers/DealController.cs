@@ -145,33 +145,19 @@ namespace Sales.Controllers
             return RedirectToAction("index", new { id = projectid });
         }
 
-        public ViewResult ConfirmList(int? projectid)
+        [HttpGet]
+        public ViewResult ConfirmList(int? projectId)
         {
+            ViewBag.selectVal = projectId;
 
-            //if (Employee.CurrentRole.Level == 500)
-            //{
-            //    projectid = this.TrySetProjectIDForUser(projectid);
-            //    ViewBag.ProjectID = projectid;
-            //    var data = CH.GetAllData<Deal>();
-            //    ViewBag.ProjectID = projectid;
-            //    return View(data.FindAll(d => d.CompanyRelationship.ProjectID == projectid).OrderByDescending(m => m.CreatedDate).ToList());
-            //}
-            //else if (Employee.CurrentRole.Level == 4)
-            //{
-            //    return View(CH.DB.Deals.Where(s => s.IsConfirm == true).OrderByDescending(s => s.CreatedDate).ToList());
-            //}
-            //else
-            //{
-            //    return View();
-            //}
             return View();
         }
 
         [GridAction]
-        public ActionResult _SelectIndex(string filterId)
+        public ActionResult _SelectIndex(string filterId, int? projectId)
         {
             List<AjaxViewDeal> deals;
-            deals = string.IsNullOrEmpty(filterId) ? getData("") : getData(filterId);
+            deals = getData(filterId, projectId);
             return View(new GridModel(deals));
         }
 
@@ -202,14 +188,14 @@ namespace Sales.Controllers
                 item.Confirmor = Employee.CurrentUserName;
                 CH.Edit<Deal>(item);
             }
-            return View(new GridModel(getData("")));
+            return View(new GridModel(getData()));
         }
 
-        private List<AjaxViewDeal> getData(string filter="")
+        private List<AjaxViewDeal> getData(string filter="", int? projectId=null)
         {
             if (Employee.CurrentRole.Level == 4)//财务填写income
             {
-                var ds = from d in CRM_Logical.GetDeals(false,null,null,filter)
+                var ds = from d in CRM_Logical.GetDeals(false, projectId, null, filter)
                          where d.IsConfirm == true
                          //where d.IsConfirm == true && (d.Income == 0 || d.ActualPaymentDate == null)
                          select new AjaxViewDeal
@@ -255,7 +241,7 @@ namespace Sales.Controllers
                     }
                 }
 
-                var deals = CRM_Logical.GetDeals(false, null, null, filter).Where(w => pids.Any(a => a == w.ProjectID));
+                var deals = CRM_Logical.GetDeals(false, projectId, null, filter).Where(w => pids.Any(a => a == w.ProjectID));
                 var ds = from d in deals
                          select new AjaxViewDeal
                          {

@@ -3,11 +3,14 @@
     ViewBag.Title = "出单到账确认";
 }
 @Html.Partial("contenttitle", "出单到账确认")
-@Html.Partial("multipleprojectselector")
 <div id="filter-container" style="height: 30px;">
     <span>
-    <label style="margin:7px;float: left;">筛选:</label>
-    @Html.DropDownList("Filters", Utl.SelectHelper.FilterSelectList(), new { style = "margin:5px;float: left;", onchange = "filterChange();" })
+        <label style="margin:7px;float: left;">筛选:</label>
+        @Html.DropDownList("Filters", Utl.SelectHelper.FilterSelectList(), new { style = "margin:5px;float: left;", onchange = "filterChange();" })
+    </span>
+    <span>
+        <label style="margin:7px; float: left;">项目:</label>
+        @Html.DropDownList("Projects", Utl.SelectHelper.ProjectSelectList(Utl.Employee.CurrentUserName, (int?)ViewBag.selectVal), new { style = "margin:5px;float: left;", onchange = "filterChange();" })
     </span>
 </div>
 @(Html.Telerik().Grid<Model.AjaxViewDeal>().Name("Grid")
@@ -66,11 +69,8 @@
     }
     function dataBinding(e) {
         var filter = $("#Filters").val();
-        e.data = $.extend(e.data, { filterId: filter });
-    }
-
-    function selectedFilter() {
-        return $("#Filters").val();
+        var project  = $("#Projects").val();
+        e.data = $.extend(e.data, { filterId: filter, projectId: project });
     }
 
     function onEdit(e) {

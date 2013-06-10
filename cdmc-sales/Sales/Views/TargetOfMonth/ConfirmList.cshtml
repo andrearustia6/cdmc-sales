@@ -3,8 +3,12 @@
 @Html.Partial("contenttitle", "项目月目标列表")
 <div id="filter-container" style="height: 30px;">
     <span>
-    <label style="margin:7px;float: left;">筛选:</label>
-    @Html.DropDownList("Filter", SelectHelper.TargetOfMonthSelectList(), new { style = "margin:5px;float: left;", onchange = "onChange();" })
+        <label style="margin:7px;float: left;">筛选:</label>
+        @Html.DropDownList("Filter", SelectHelper.TargetOfMonthSelectList(), new { style = "margin:5px;float: left;", onchange = "onChange();" })
+    </span>
+    <span>
+        <label style="margin:7px; float: left;">项目:</label>
+        @Html.DropDownList("Projects", SelectHelper.ProjectSelectList(Employee.CurrentUserName, (int?)ViewBag.selectVal), new { style = "margin:5px;float: left;", onchange = "onChange();" })
     </span>
 </div>
 
@@ -44,7 +48,8 @@
     }
     function dataBinding(e) {
         var filter = $("#Filter").val();
-        e.data = $.extend(e.data, { filterId: filter });
+        var project = $("#Projects").val();
+        e.data = $.extend(e.data, { filterId: filter, projectId: project });
     }
     function rowDataBound(e) {
         if ((e.dataItem.IsConfirm == "是")) {

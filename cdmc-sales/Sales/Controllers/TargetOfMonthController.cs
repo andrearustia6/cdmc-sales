@@ -193,15 +193,17 @@ namespace Sales.Controllers
         }
 
 
-        public ActionResult ConfirmList()
+        public ActionResult ConfirmList(int? projectId)
         {
+            ViewBag.selectVal = projectId;
+
             return View();
         }
 
         [GridAction]
-        public ActionResult _SelectIndex(string filterId)
+        public ActionResult _SelectIndex(string filterId, int? projectId)
         {
-            return View(new GridModel(getData(filterId)));
+            return View(new GridModel(getData(filterId, projectId)));
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
@@ -215,7 +217,7 @@ namespace Sales.Controllers
             return View(new GridModel(getData()));
         }
 
-        public List<AjaxTargetOfMonth> getData(string filter = "")
+        public List<AjaxTargetOfMonth> getData(string filter = null, int? projectId = null)
         {
             var targets = from odb in CH.DB.TargetOfMonths select odb;
             if (filter == "1")
@@ -225,6 +227,10 @@ namespace Sales.Controllers
             else if (filter == "2")
             {
                 targets = targets.Where(t => t.IsConfirm == false || t.IsConfirm == null);
+            }
+            if (projectId != null)
+            {
+                targets = targets.Where(t => t.ProjectID == projectId);
             }
             var data = from db in targets
                        select new AjaxTargetOfMonth
