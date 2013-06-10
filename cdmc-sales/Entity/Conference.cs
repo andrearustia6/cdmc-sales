@@ -157,7 +157,7 @@ namespace Entity
         [Display(Name = "职位")]
         public string Title { get; set; }
 
-        [UIHint("ClientGender"), Display(Name = "性别")]
+        [UIHint("Gender"), Display(Name = "性别")]
         public string Gender { get; set; }
 
         [Display(Name = "直线电话")]
@@ -171,7 +171,7 @@ namespace Entity
 
         public virtual ParticipantType ParticipantType { get; set; }
 
-        [UIHint("ClientParticipantTypeID"), Display(Name = "参会类型"), Required]
+        [UIHint("ParticipantTypeID"), Display(Name = "参会类型"), Required]
         public int? ParticipantTypeID { get; set; }
 
         public virtual Project Project { get; set; }

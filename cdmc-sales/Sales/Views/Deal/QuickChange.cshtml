@@ -40,10 +40,10 @@
             <td>
                  <div class="editor-field">
                     @{
-                        var CRM =  CH.GetDataById<CompanyRelationship>((int)ViewBag.CRMId);
+                        var CRM = CH.GetDataById<CompanyRelationship>((int)ViewBag.CompanyRelationshipID);
                     }
                     @Html.TextBox("CompanyRelationshipName", CRM.CompanyName, new { @readOnly = "true", style = "width:300px;border-style: none" })
-                    @Html.Hidden("CompanyRelationshipID", (int)ViewBag.CRMId);
+                    @Html.Hidden("CompanyRelationshipID", (int)ViewBag.CompanyRelationshipID)
                 </div>
             </td>
             <td>
@@ -213,8 +213,7 @@
                     .Select("_SelectAjaxParticipant", "SalesEx")
                     .Update("_UpdateAjaxParticipant", "SalesEx");
             })
-            .Editable(editing => editing.Mode(GridEditMode.InCell).DefaultDataItem(new AjaxParticipant
-            { }))
+            .Editable(editing => editing.Mode(GridEditMode.InCell).DefaultDataItem(new AjaxParticipant{}))
             .ClientEvents(events => events.OnEdit("onEdit"))
     ) 
 
@@ -225,8 +224,9 @@
             $(e.form).find('#Gender').data('tDropDownList').select(function (dataItem) {
                 return dataItem.Text == e.dataItem['Gender'];
             });
+
             $(e.form).find('#ParticipantTypeID').data('tDropDownList').select(function (dataItem) {
-                return dataItem.Text == e.dataItem['ParticipantTypeID'].val();
+                return dataItem.Text == e.dataItem['ParticipantTypeID'].Text;
             });
         }
     </script>

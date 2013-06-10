@@ -147,6 +147,7 @@ namespace Sales.Controllers
 
         public ViewResult ConfirmList(int? projectid)
         {
+
             //if (Employee.CurrentRole.Level == 500)
             //{
             //    projectid = this.TrySetProjectIDForUser(projectid);

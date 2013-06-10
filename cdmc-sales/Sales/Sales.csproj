@@ -1706,8 +1706,8 @@
     <Content Include="Views\TargetOfMonthForMember\MyTargetIndexEx.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\TargetOfMonthForMember.cshtml" />
     <Content Include="Views\TargetOfMonth\CreateEx.cshtml" />
-    <Content Include="Views\Shared\EditorTemplates\ClientGender.cshtml" />
-    <Content Include="Views\Shared\EditorTemplates\ClientParticipantTypeID.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\Gender.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\ParticipantTypeID.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\TargetOfMonthForMember\Confirm.cshtml" />
