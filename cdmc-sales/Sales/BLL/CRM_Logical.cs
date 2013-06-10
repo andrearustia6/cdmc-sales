@@ -223,7 +223,6 @@ namespace BLL
                 var rolelvl = Employee.CurrentRole.Level;
                 
                 var leads = CH.DB.Projects.Where(w => w.IsActived == true && !string.IsNullOrEmpty(w.TeamLeader)).Select(s => s.TeamLeader).Distinct();
-
                 leads = leads.Where(w => w == user);
 
                 var deals = CRM_Logical.GetDeals().Where(w => w.ActualPaymentDate.Value != null && w.ActualPaymentDate.Value.Month == month);
@@ -233,10 +232,24 @@ namespace BLL
                 var rates = from r in CH.DB.AssignPerformanceRates.Where(w => w.Month == month && w.Year == year) select r;
                 var scores = from r in CH.DB.AssignPerformanceScores.Where(w => w.Month == month && w.Year == year) select r;
                 var wd = MonthDuration.GetMonthInstance(month).WeekDurations.Select(s => s.StartDate);
+                
+                var pids = new List<int>();
+                var ptids = new List<int>();
+                foreach (var c in CH.DB.Projects.Where(w => w.IsActived && w.TeamLeader == user))
+                {
+                    pids.Add(c.ID);
+                }
+                foreach (var target in CH.DB.TargetOfMonths.Where(t => t.Project.TeamLeader == user && t.Project.IsActived == true && t.StartDate.Month == month))
+                {
+                    ptids.Add(target.Project.ID);
+                }
+                var unptids = String.Join(",",pids.Except<int>(ptids));
+
                 var lps = from l in leads
                             select new _TeamLeadPerformance()
                             {
                                 Target = CH.DB.TargetOfMonths.Where(t => t.Project.TeamLeader == l && t.Project.IsActived == true && t.StartDate.Month == month).Sum(s => s.CheckIn),
+                                TargetUnSetProjects = unptids,
                                 CheckIn = deals.Where(d => d.Project.TeamLeader == l).Sum(s => s.Income),
                                 Name = l,
                                 Rate = rates.Where(w => w.TargetName == l).Average(s => s.Rate) == null ? 1 : scores.Where(w => w.TargetName == l).Average(s => s.Score),

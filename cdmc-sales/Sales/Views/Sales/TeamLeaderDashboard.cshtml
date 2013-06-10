@@ -1,4 +1,6 @@
 ﻿@model Sales.Model._TeamLeadPerformance
+@using Utl
+@using Entity
 @{
     Layout = null;
 }
@@ -16,7 +18,30 @@
 
 <table class="info">
     <tr>
-        <td><span>当月目标：@{ if(Model.Target != null){<text>@Model.Target</text>} else {<text><span style=" color:Red;">本月您的项目目标尚未设置，请尽快设置</span></text>}}</span></td>
+        <td>当月目标：@{      
+                            if (Model.Target != null)
+                            {       
+                                <text>@Model.Target</text>
+                            }  
+                            if (!string.IsNullOrEmpty(Model.TargetUnSetProjects))
+                            {  
+                                <text>
+                                    <span style="color:Red;">本月您的以下项目月目标尚未设置，请尽快设置:
+                                        @{
+                                            foreach (var pid in Model.TargetUnSetProjects.Split(','))
+                                            {
+                                                if (!string.IsNullOrEmpty(pid))
+                                                {
+                                                    var project = CH.GetDataById<Project>(int.Parse(pid));
+                                                     <text>@Html.ActionLink(project.ProjectCode, "CreateEx", "TargetOfMonth", new { projectid = project.ID })&nbsp;</text>
+                                                }
+                                            }   
+                                        }
+                                    </span>
+                                </text>
+                            }
+                        }
+        </td>
         <td><span>当月入账总额：@Model.CheckIn</span></td>
         <td><span>目标完成百分比：@Model.CompletePercent</span></td>
     </tr>
