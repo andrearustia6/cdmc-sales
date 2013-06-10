@@ -849,6 +849,15 @@ namespace BLL
                 ps = GetProductInvolveProject();
             }
 
+            if (lvl == 3)
+            {
+                ps = GetConferenceInvolveProject();
+            }
+            if (lvl == 4)
+            {
+                ps = GetFinanceInvolveProject();
+            }
+
             if (lvl >= 10 && lvl <= 100)
             {
                 ps = GetSalesInvolveProject();
@@ -916,5 +925,37 @@ namespace BLL
             var data = projects.FindAll(p => p.Market == name && p.IsActived == true);
             return data;
         }
+
+        public static List<Project> GetConferenceInvolveProject()
+        {
+            var name = Employee.CurrentUserName;
+            var projects = CH.GetAllData<Project>();
+            
+            List<Project> data = new List<Project>();
+            foreach (var c in projects.FindAll(p => p.IsActived == true))
+            {
+                if (!string.IsNullOrEmpty(c.Conference))
+                {
+                    var names = c.Conference.Trim().Split(new string[] { ";", "；" }, StringSplitOptions.RemoveEmptyEntries);
+                    if (names.Contains(name))
+                    {
+                        data.Add(c);
+                    }
+                }
+            }
+            return data;
+        }
+
+        public static List<Project> GetFinanceInvolveProject()
+        {
+            var name = Employee.CurrentUserName;
+            var now = DateTime.Now;
+            var projects = CH.GetAllData<Project>();
+
+            var data = projects.FindAll(p => p.IsActived == true);
+            return data;
+        }
+
+
     }
 }

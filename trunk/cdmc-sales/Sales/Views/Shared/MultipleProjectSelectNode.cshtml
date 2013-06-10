@@ -40,15 +40,15 @@
                     <li style="float: left; width: 23%; margin: 2px;"><span style="line-height: 11px;
                         height: 11px; vertical-align: middle">
                         <input type="checkbox"  name="selectedprojects" class="selectedprojects" 
-         @{
+                @{
                     if (selectall == true || (selectedlist != null && selectedlist.Any(sid => sid == p.ID)))
                     {
              
-              <text>checked="checked" </text>
+                        <text>checked="checked" </text>
                     }
                
-           }
-         value=@p.ID />
+                }
+                    value=@p.ID />
                         @p.Name_CH</span> </li>
                 }
             </ul>
