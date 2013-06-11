@@ -17,14 +17,14 @@
             <div class="inputmessageaddparticipant">
                 @Html.Partial("PageMessage", string.Empty)
             </div>
-            <div class="addParticipant">
-                <table>
+            <div class="addParticipant" style="margin: 0px 0px 0px 0px;">
+                <table style="width:100%;">
                     <tr>
                         <td>
-                            客户名称：@Html.Editor("Name")<font style="color: Red">*</font>
+                            客户名称：@Html.TextBox("Name")<font style="color: Red">*</font>
                         </td>
                         <td>
-                            客户职位：@Html.Editor("Title")
+                            客户职位：@Html.TextBox("Title")
                         </td>
                         <td>
                             客户性别：@Html.DropDownList("Gender", new SelectList(new List<string>() { "Mr", "Mrs" }, "-请选择-"))
@@ -32,13 +32,13 @@
                     </tr>
                     <tr>
                         <td>
-                            移动电话：@Html.Editor("Mobile")
+                            移动电话：@Html.TextBox("Mobile")
                         </td>
                         <td>
-                            客户直线：@Html.Editor("Contact")
+                            客户直线：@Html.TextBox("Contact")
                         </td>
                         <td>
-                            电子邮箱：@Html.Editor("Email")
+                            电子邮箱：@Html.TextBox("Email")
                         </td>
                     </tr>
                     <tr>
