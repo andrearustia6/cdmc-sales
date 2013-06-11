@@ -853,7 +853,7 @@ namespace Model
         [Display(Name = "入账目标"), Required, DisplayFormat(DataFormatString = "{0:c}")]
         public decimal CheckIn { get; set; }
 
-        [Display(Name = "是否确认")]
+        [Display(Name = "是否财务确认")]
         public string IsConfirm { get; set; }
 
         [Display(Name = "是否板块确认")]
