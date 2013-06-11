@@ -214,20 +214,20 @@
                     .Update("_UpdateAjaxParticipant", "SalesEx");
             })
             .Editable(editing => editing.Mode(GridEditMode.InCell).DefaultDataItem(new AjaxParticipant{}))
-            .ClientEvents(events => events.OnEdit("onEdit"))
+            //.ClientEvents(events => events.OnEdit("onEdit"))
     ) 
 
 </fieldset>
 
     <script type="text/javascript">
         function onEdit(e) {
-            $(e.form).find('#Gender').data('tDropDownList').select(function (dataItem) {
-                return dataItem.Text == e.dataItem['Gender'];
-            });
+//            $(e.form).find('#Gender').data('tDropDownList').select(function (dataItem) {
+//                return dataItem.Text == e.dataItem['Gender'];
+//            });
 
-            $(e.form).find('#ParticipantTypeID').data('tDropDownList').select(function (dataItem) {
-                return dataItem.Text == e.dataItem['ParticipantTypeID'].Text;
-            });
+//            $(e.form).find('#ParticipantTypeID').data('tDropDownList').select(function (dataItem) {
+//                return dataItem.Text == e.dataItem['ParticipantTypeID'].Text;
+//            });
         }
     </script>
 
