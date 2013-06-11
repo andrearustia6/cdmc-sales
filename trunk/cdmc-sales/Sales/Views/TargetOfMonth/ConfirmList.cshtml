@@ -3,15 +3,15 @@
 @Html.Partial("contenttitle", "项目月目标列表")
 <div id="filter-container" style="height: 30px;">
     <span>
-        <label style="margin:7px;float: left;">筛选:</label>
+        <label style="margin: 7px; float: left;">
+            筛选:</label>
         @Html.DropDownList("Filter", SelectHelper.TargetOfMonthSelectList(), new { style = "margin:5px;float: left;", onchange = "onChange();" })
-    </span>
-    <span>
-        <label style="margin:7px; float: left;">项目:</label>
+    </span><span>
+        <label style="margin: 7px; float: left;">
+            项目:</label>
         @Html.DropDownList("Projects", SelectHelper.ProjectSelectList(Employee.CurrentUserName, (int?)ViewBag.selectVal), new { style = "margin:5px;float: left;", onchange = "onChange();" })
     </span>
 </div>
-
 @(Html.Telerik().Grid<Model.AjaxTargetOfMonth>().Name("TargetOfMonth")
         .DataKeys(keys =>
         {
@@ -24,7 +24,9 @@
             c.Bound(item => item.CheckIn);
             c.Bound(item => item.StartDate);
             c.Bound(item => item.EndDate);
+            c.Bound(item => item.IsAdminConfirm);
             c.Bound(item => item.IsConfirm);
+
             c.Command(commands =>
             {
                 commands.Edit().ButtonType(GridButtonType.Image);
@@ -42,7 +44,7 @@
         .Pageable(p => p.Style(GridPagerStyles.Status).PageSize(50)
         .PageOnScroll(true)).Scrollable(s => s.Height(350)).Sortable().Filterable().Groupable()
         )
-      <script type="text/javascript">
+<script type="text/javascript">
     function onChange() {
         $("#TargetOfMonth").data("tGrid").rebind();
     }
@@ -52,8 +54,8 @@
         e.data = $.extend(e.data, { filterId: filter, projectId: project });
     }
     function rowDataBound(e) {
-        if ((e.dataItem.IsConfirm == "是")) {
-            $(e.row).find('a.t-grid-edit').remove(); 
+        if ((e.dataItem.IsConfirm == "是" || e.dataItem.IsAdminConfirm == "否")) {
+            $(e.row).find('a.t-grid-edit').remove();
         }
     }
 </script>

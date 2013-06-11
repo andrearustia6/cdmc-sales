@@ -31,7 +31,7 @@ public sealed class LogonRequired : AuthorizeAttribute
 {
     public override void OnAuthorization(AuthorizationContext filterContext)
     {
-       
+
         bool skipAuthorization = filterContext.ActionDescriptor.IsDefined(typeof(AllowAnonymousAttribute), true);
 
         if (Utl.Utl.DebugModel())
@@ -316,8 +316,21 @@ public sealed class ImportingInterfaceRequired : RoleRequired
     }
 }
 
+/// <summary>
+/// 1500
+/// </summary>
+public sealed class SuperManagerRequired : RoleRequired
+{
+    public const int LVL = 1500;
+    public override int Level
+    {
+        get { return LVL; }
+    }
+}
+
 public class RoleLevel
 {
+    public static int SuperManager = 1500;
     public static int Director = 1000;
     public static int Manager = 500;
     public static int Leader = 100;

@@ -130,7 +130,8 @@
                            {
                                item.Add().Url("~/Report/PerformanceIndex").Text("考核结果");
                            }
-                           if (score != 3 && score != 4){
+                           if (score != 3 && score != 4)
+                           {
                                item.Add().Url("~/ProtectedCompanys/CompanyIndex").Text("被保护的公司");
                                item.Add().Url("~/salesReport/MemberLeadCallsChart").Text("已打Lead比较");
                            }
@@ -158,6 +159,14 @@
                                {
                                    item.Add().Url("~/Project/ImportCompany").Text("客户数据导入");
                                    item.Add().Url("~/Project/ImportTrace").Text("历史导入操作");
+                               }
+                               if (score == SuperManagerRequired.LVL)
+                               {
+                                   item.Add().Url("~/TargetOfMonth/AdminConfirmList").Text("项目月目标确认");
+                               }
+                               if (score == ManagerRequired.LVL)
+                               {
+                                   item.Add().Url("~/Project/TargetOfMonthForProject").Text("项目月目标");
                                }
                            });
 
@@ -194,12 +203,12 @@
                                item.Add().Url("~/TargetOfMonthForMember/MyTargetIndexEx").Text("我的月目标");
                                if (score == LeaderRequired.LVL)
                                {
-                                   item.Add().Url("~/Project/TargetOfMonthForProject").Text("项目月目标");
+
                                    item.Add().Url("~/TargetOfMonthForMember/ConfirmList").Text("月目标确认");
                                    //item.Add().Url("~/teamleader/breakdownindex").Text("周目标");
                                    //item.Add().Url("~/TargetOfMonthForMember/Index").Text("月目标");
                                    item.Add().Url("~/AssignPerformanceScore/index").Text("打分");
-                                   
+
 
 
                                }
