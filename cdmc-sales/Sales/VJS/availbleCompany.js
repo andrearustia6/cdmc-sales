@@ -1069,7 +1069,7 @@ var currentCompanyNameEN = undefined;
                 }
             } else {
                 $.post('QuickAddDeal', query, function (result) {
-                    if ((result.dealId != null) && (result.participantId != null) && (result.dealCode != null)) {
+                    if ((result.dealId != null) && (result.companyRelationshipId != null) && (result.dealCode != null)) {
                         alert("您已经顺利提交出单，出单号为:" + result.dealCode)
                         $('#QuickAddDeal').data('tWindow').close();
                         RefreshCrmList(result.companyRelationshipId);
