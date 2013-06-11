@@ -35,9 +35,36 @@
             @Html.ValidationMessageFor(model => model.CheckIn)
         </div>
         <div class="editor-field">
-            @Html.DisplayFor(model => model.Project.Name)
-            @Html.ValidationMessageFor(model => model.ProjectID)
+            第一周周目标
         </div>
+        <div class="editor-field">
+            @Html.Telerik().CurrencyTextBoxFor(model => model.TargetOfWeeks[0].Deal)
+        </div>
+        <div class="editor-field">
+            第二周周目标
+        </div>
+        <div class="editor-field">
+            @Html.Telerik().CurrencyTextBoxFor(model => model.TargetOfWeeks[1].Deal)
+        </div>
+        <div class="editor-field">
+            第三周周目标
+        </div>
+        <div class="editor-field">
+            @Html.Telerik().CurrencyTextBoxFor(model => model.TargetOfWeeks[2].Deal)
+        </div>
+        <div class="editor-field">
+            第四周周目标
+        </div>
+        <div class="editor-field">
+            @Html.Telerik().CurrencyTextBoxFor(model => model.TargetOfWeeks[3].Deal)
+        </div>
+        <div class="editor-field">
+            第五周周目标
+        </div>
+        <div class="editor-field">
+            @Html.Telerik().CurrencyTextBoxFor(model => model.TargetOfWeeks[4].Deal)
+        </div>
+        @Html.HiddenFor(model => model.ProjectID)
     </fieldset>
     @Html.Partial("editcommon", Model)
     <div>

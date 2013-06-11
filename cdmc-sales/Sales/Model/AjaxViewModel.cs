@@ -166,7 +166,7 @@ namespace Model
         [Display(Name = "合约付款日期")]
         public DateTime ExpectedPaymentDate { get; set; }
 
-        [Display(Name = "实际付款日期"),Required]
+        [Display(Name = "实际付款日期"), Required]
         public DateTime? ActualPaymentDate { get; set; }
 
         [Display(Name = "签约日期")]
@@ -366,7 +366,7 @@ namespace Model
 
     public class QuickEntry
     {
-        #region Company 
+        #region Company
 
         [Display(Name = "项目")]
         public int? ProjectId { get; set; }
@@ -449,8 +449,8 @@ namespace Model
 
         #endregion End Lead
 
-        #region LeadCall 
-        
+        #region LeadCall
+
         public int CallId { get; set; }
 
         [Required(ErrorMessage = "必填")]
@@ -855,5 +855,8 @@ namespace Model
 
         [Display(Name = "是否确认")]
         public string IsConfirm { get; set; }
+
+        [Display(Name = "是否板块确认")]
+        public string IsAdminConfirm { get; set; }
     }
 }

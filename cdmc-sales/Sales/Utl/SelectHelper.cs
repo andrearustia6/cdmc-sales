@@ -324,8 +324,9 @@ namespace Utl
         {
             List<SelectListItem> selectList = new List<SelectListItem>();
             selectList.Add(new SelectListItem() { Text = "请选择", Value = "" });
-            selectList.Add(new SelectListItem() { Text = "已确认", Value = "1" });
-            selectList.Add(new SelectListItem() { Text = "未确认", Value = "2" });
+            selectList.Add(new SelectListItem() { Text = "财务已确认", Value = "1" });
+            selectList.Add(new SelectListItem() { Text = "板块已确认", Value = "2" });
+            selectList.Add(new SelectListItem() { Text = "未确认", Value = "3" });
             return selectList;
         }
     }

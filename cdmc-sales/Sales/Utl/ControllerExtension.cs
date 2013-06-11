@@ -72,8 +72,6 @@ namespace System.Web.Mvc
             if (t.BaseDeal > t.Deal)
                 item.ModelState.AddModelError("", "保底目标不能大于Deal");
 
-
-
             if (t.StartDate.Month != t.EndDate.Month)
                 item.ModelState.AddModelError("", "开始时间和结束时间不在同一个月内");
 
@@ -83,6 +81,9 @@ namespace System.Web.Mvc
 
             if (ts.Count() > 0)
                 item.ModelState.AddModelError("", "该月的目标已经添加，不能再次添加");
+
+            if (t.TargetOfWeeks.Sum(s => s.Deal) < t.Deal)
+                item.ModelState.AddModelError("", "周目标总和必须大于等于月目标");
         }
 
         public static void AddErrorStateIfNotFromMondayToFriday(this Controller item, DateTime startdate, DateTime enddate)

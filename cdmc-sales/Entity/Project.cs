@@ -47,6 +47,7 @@ namespace Entity
     /// </summary>
     public class Role : EntityBase
     {
+        public const int LVL_SuperManager = 1500;
         public const int LVL_Director = 1000;
         public const int LVL_Manager = 500;
         public const int LVL_TeamLeader = 100;
@@ -55,6 +56,7 @@ namespace Entity
         public const int LVL_ProductInterface = 5;
         public const int LVL_FinancialInterface = 4;
         public const int LVL_ConferenceInterface = 3;
+        public const int LVL_PoliticsInterface = 2;
         public const int LVL_MarketInterface = 1;
 
 
@@ -95,15 +97,15 @@ namespace Entity
     public class Project : NameEntity
     {
         //唯一名称和唯一编号都是在项目报表统计使用的
-        [Display(Name = "项目唯一名称"),Required]
-        public string  ProjectUnitName { get; set; }
+        [Display(Name = "项目唯一名称"), Required]
+        public string ProjectUnitName { get; set; }
         [Display(Name = "项目唯一编号"), Required]
-        public string  ProjectUnitCode { get; set; }
+        public string ProjectUnitCode { get; set; }
 
         [Display(Name = "项目类型")]
         public virtual ProjectType ProjectType { get; set; }
         [Display(Name = "项目类型")]
-        public int?  ProjectTypeID { get; set; }
+        public int? ProjectTypeID { get; set; }
         [Display(Name = "测试数据")]
         public bool? Test { get; set; }
 
@@ -323,6 +325,15 @@ namespace Entity
 
         [Display(Name = "确认人")]
         public string Confirmor { get; set; }
+
+        [Display(Name = "是否板块确认")]
+        public bool? IsAdminConfirm { get; set; }
+
+        [Display(Name = "板块确认人")]
+        public string AdminConfirmor { get; set; }
+
+        [Display(Name = "周目标")]
+        public virtual List<TargetOfWeek> TargetOfWeeks { get; set; }
     }
 
     /// <summary>
@@ -386,7 +397,7 @@ namespace Entity
     public class TargetOfWeek : EntityBase
     {
         public virtual Project Project { get; set; }
-        [Display(Name = "项目名称"), Required]
+        [Display(Name = "项目名称")]//, Required]
         public int? ProjectID { get; set; }
 
         [Display(Name = "开始日期"), Required, DisplayFormat(DataFormatString = "{0:d}")]
@@ -404,7 +415,7 @@ namespace Entity
 
         public string Member { get; set; }
 
-        [Display(Name = "关联的月目标"), Required]
+        [Display(Name = "关联的月目标")]//, Required]
         public int? TargetOfMonthID { get; set; }
 
 

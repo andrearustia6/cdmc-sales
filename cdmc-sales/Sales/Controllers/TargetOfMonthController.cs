@@ -196,7 +196,6 @@ namespace Sales.Controllers
         public ActionResult ConfirmList(int? projectId)
         {
             ViewBag.selectVal = projectId;
-
             return View();
         }
 
@@ -217,22 +216,29 @@ namespace Sales.Controllers
             return View(new GridModel(getData()));
         }
 
-        public List<AjaxTargetOfMonth> getData(string filter = null, int? projectId = null)
+        public List<AjaxTargetOfMonth> getData(string filter = "", int? projectId = null)
         {
             var targets = from odb in CH.DB.TargetOfMonths select odb;
-            if (filter == "1")
+            if (filter == "1")//超级板块确认&财务确认
             {
                 targets = targets.Where(t => t.IsConfirm == true);
             }
-            else if (filter == "2")
+            else if (filter == "2")//超级板块确认&会务未确认
             {
-                targets = targets.Where(t => t.IsConfirm == false || t.IsConfirm == null);
+                targets = targets.Where(t => t.IsAdminConfirm == true && (t.IsConfirm == false || t.IsConfirm == null));
             }
+            else if (filter == "3")//超级板块未确认&会务未确认
+            {
+                targets = targets.Where(t => (t.IsAdminConfirm == false || t.IsAdminConfirm == null) && (t.IsConfirm == false || t.IsConfirm == null));
+            }
+
             if (projectId != null)
             {
                 targets = targets.Where(t => t.ProjectID == projectId);
             }
+
             var data = from db in targets
+
                        select new AjaxTargetOfMonth
                        {
                            ID = db.ID,
@@ -243,7 +249,8 @@ namespace Sales.Controllers
                            BaseDeal = db.BaseDeal,
                            CheckIn = db.CheckIn,
                            EndDate = db.EndDate,
-                           StartDate = db.StartDate
+                           StartDate = db.StartDate,
+                           IsAdminConfirm = db.IsAdminConfirm == true ? "是" : "否"
                        };
             return data.OrderByDescending(s => s.EndDate).ToList();
         }
@@ -258,12 +265,112 @@ namespace Sales.Controllers
         public ActionResult CreateEx(TargetOfMonth item)
         {
             this.AddErrorStateIfTargetOfMonthNoValid(item);
+
             if (ModelState.IsValid)
             {
+                for (int i = 0; i < 5; i++)
+                {
+                    item.TargetOfWeeks[i].ProjectID = item.ProjectID;
+                    item.TargetOfWeeks[i].TargetOfMonthID = item.ID;
+                    item.TargetOfWeeks[i].Member = Employee.GetLoginUserName();
+                }
+
+                //选择月第一天为周一
+                if (item.StartDate.DayOfWeek == DayOfWeek.Monday)
+                {
+                    item.TargetOfWeeks[0].StartDate = item.StartDate;
+                    item.TargetOfWeeks[0].EndDate = item.StartDate.AddDays(4);
+                    item.TargetOfWeeks[1].StartDate = item.StartDate.AddDays(7);
+                    item.TargetOfWeeks[1].EndDate = item.StartDate.AddDays(11);
+                    item.TargetOfWeeks[2].StartDate = item.StartDate.AddDays(14);
+                    item.TargetOfWeeks[2].EndDate = item.StartDate.AddDays(18);
+                    item.TargetOfWeeks[3].StartDate = item.StartDate.AddDays(21);
+                    item.TargetOfWeeks[3].EndDate = item.StartDate.AddDays(25);
+                    if (item.StartDate.AddDays(28) > item.EndDate)
+                    {
+                        item.TargetOfWeeks[4].StartDate = item.EndDate;
+                        item.TargetOfWeeks[4].EndDate = item.EndDate;
+                    }
+                    else
+                    {
+                        item.TargetOfWeeks[4].StartDate = item.StartDate.AddDays(28);
+                        item.TargetOfWeeks[4].EndDate = item.EndDate;
+                    }
+                }
+                else if (item.StartDate.DayOfWeek == DayOfWeek.Saturday || item.StartDate.DayOfWeek == DayOfWeek.Sunday)//选择月第一天为周末
+                {
+                    DateTime firstMondayOfMonth = item.StartDate.AddDays(8 - (int)item.StartDate.DayOfWeek);
+                    item.TargetOfWeeks[0].StartDate = firstMondayOfMonth;
+                    item.TargetOfWeeks[0].EndDate = firstMondayOfMonth.AddDays(4);
+                    item.TargetOfWeeks[1].StartDate = firstMondayOfMonth.AddDays(7);
+                    item.TargetOfWeeks[1].EndDate = firstMondayOfMonth.AddDays(11);
+                    item.TargetOfWeeks[2].StartDate = firstMondayOfMonth.AddDays(14);
+                    item.TargetOfWeeks[2].EndDate = firstMondayOfMonth.AddDays(18);
+                    item.TargetOfWeeks[3].StartDate = firstMondayOfMonth.AddDays(21);
+                    item.TargetOfWeeks[3].EndDate = firstMondayOfMonth.AddDays(25);
+                    if (item.StartDate.AddDays(28) > item.EndDate)
+                    {
+                        item.TargetOfWeeks[4].StartDate = item.EndDate;
+                        item.TargetOfWeeks[4].EndDate = item.EndDate;
+                    }
+                    else
+                    {
+                        item.TargetOfWeeks[4].StartDate = item.StartDate.AddDays(28);
+                        item.TargetOfWeeks[4].EndDate = item.EndDate;
+                    }
+                }
+                else//
+                {
+                    DateTime firstFridayOfMonth = item.StartDate.AddDays(5 - (int)item.StartDate.DayOfWeek);
+                    item.TargetOfWeeks[0].StartDate = item.StartDate;
+                    item.TargetOfWeeks[0].EndDate = firstFridayOfMonth;
+                    item.TargetOfWeeks[1].StartDate = firstFridayOfMonth.AddDays(4);
+                    item.TargetOfWeeks[1].EndDate = firstFridayOfMonth.AddDays(7);
+                    item.TargetOfWeeks[2].StartDate = firstFridayOfMonth.AddDays(11);
+                    item.TargetOfWeeks[2].EndDate = firstFridayOfMonth.AddDays(14);
+                    item.TargetOfWeeks[3].StartDate = firstFridayOfMonth.AddDays(18);
+                    item.TargetOfWeeks[3].EndDate = firstFridayOfMonth.AddDays(21);
+                    if (item.StartDate.AddDays(24) > item.EndDate)
+                    {
+                        item.TargetOfWeeks[4].StartDate = item.EndDate;
+                        item.TargetOfWeeks[4].EndDate = item.EndDate;
+                    }
+                    else
+                    {
+                        item.TargetOfWeeks[4].StartDate = item.StartDate.AddDays(24);
+                        item.TargetOfWeeks[4].EndDate = item.EndDate;
+                    }
+                }
                 CH.Create<TargetOfMonth>(item);
                 return RedirectToAction("TargetOfMonthForProject", "Project", new { projectid = item.ProjectID });
             }
             return View(item);
         }
+
+        public ActionResult AdminConfirmList(int? projectId)
+        {
+            ViewBag.selectVal = projectId;
+            return View();
+        }
+
+        [GridAction]
+        public ActionResult _AdminSelectIndex(string filterId, int? projectid)
+        {
+            return View(new GridModel(getData(filterId, projectid)));
+        }
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        [GridAction]
+        public ActionResult _AdminSaveAjaxEditing(int id)
+        {
+            var item = CH.GetDataById<TargetOfMonth>(id);
+            item.AdminConfirmor = Employee.GetLoginUserName();
+            item.IsAdminConfirm = true;
+            CH.Edit<TargetOfMonth>(item);
+            return View(new GridModel(getData()));
+        }
+
+
+
     }
 }

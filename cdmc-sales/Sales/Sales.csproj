@@ -1708,6 +1708,7 @@
     <Content Include="Views\TargetOfMonth\CreateEx.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Gender.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\ParticipantTypeID.cshtml" />
+    <Content Include="Views\TargetOfMonth\AdminConfirmList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\TargetOfMonthForMember\Confirm.cshtml" />
