@@ -33,7 +33,7 @@
                                                 if (!string.IsNullOrEmpty(pid))
                                                 {
                                                     var project = CH.GetDataById<Project>(int.Parse(pid));
-                                                     <text>@Html.ActionLink(project.ProjectCode, "CreateEx", "TargetOfMonth", new { projectid = project.ID })&nbsp;</text>
+                                                     <text>@Html.ActionLink(project.ProjectCode, "CreateEx", "TargetOfMonth", new { projectid = project.ID }, new { style="color: red;"})&nbsp;</text>
                                                 }
                                             }   
                                         }
