@@ -1,0 +1,71 @@
+﻿@model Entity.TargetOfMonth
+@using Utl
+@{
+    ViewBag.Title = SR.Details;
+}
+@Html.Partial("contenttitle", "项目月目标明细")
+<fieldset>
+    <legend>@SR.Form</legend>
+    <div class="display-label">
+        项目名称</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Project.Name)
+    </div>
+    <div class="display-label">
+        开始时间</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.StartDate)
+    </div>
+    <div class="display-label">
+        结束时间</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.EndDate)
+    </div>
+    <div class="display-label">
+        出单目标</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Deal)
+    </div>
+    <div class="display-label">
+        入账目标</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.CheckIn)
+    </div>
+    <div class="display-field">
+        第一周周目标
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.TargetOfWeeks[0].Deal)
+    </div>
+    <div class="display-field">
+        第二周周目标
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.TargetOfWeeks[1].Deal)
+    </div>
+    <div class="display-field">
+        第三周周目标
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.TargetOfWeeks[2].Deal)
+    </div>
+    <div class="display-field">
+        第四周周目标
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.TargetOfWeeks[3].Deal)
+    </div>
+    <div class="display-field">
+        第五周周目标
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.TargetOfWeeks[4].Deal)
+    </div>
+    @Html.HiddenFor(m => m.ProjectID)
+</fieldset>
+@Html.Partial("displaycommon", Model)
+<center>
+    <p>
+        @Html.ActionLink(SR.Edit, "EditEx", new { id = Model.ID })
+    </p>
+</center>
