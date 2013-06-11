@@ -320,10 +320,10 @@ namespace Entity
         [Display(Name = "入账目标"), Required, DisplayFormat(DataFormatString = "{0:c}")]
         public decimal CheckIn { get; set; }
 
-        [Display(Name = "是否确认")]
+        [Display(Name = "是否财务确认")]
         public bool? IsConfirm { get; set; }
 
-        [Display(Name = "确认人")]
+        [Display(Name = "财务确认人")]
         public string Confirmor { get; set; }
 
         [Display(Name = "是否板块确认")]

@@ -129,7 +129,7 @@ namespace Utl
             selectList.Add(selectListItemNone);
             selectList.Add(selectListItemAll);
 
-            foreach (Member m in CH.GetAllData<Member>(c => c.ProjectID == projectID && c.IsActivated==true))
+            foreach (Member m in CH.GetAllData<Member>(c => c.ProjectID == projectID && c.IsActivated == true))
             {
                 SelectListItem selectListItem = new SelectListItem { Text = m.Name, Value = m.ID.ToString() };
                 if (m.ID.ToString() == selectVal)
@@ -326,7 +326,7 @@ namespace Utl
             selectList.Add(new SelectListItem() { Text = "请选择", Value = "" });
             selectList.Add(new SelectListItem() { Text = "财务已确认", Value = "1" });
             selectList.Add(new SelectListItem() { Text = "板块已确认", Value = "2" });
-            selectList.Add(new SelectListItem() { Text = "未确认", Value = "3" });
+            selectList.Add(new SelectListItem() { Text = "均未确认", Value = "3" });
             return selectList;
         }
     }
