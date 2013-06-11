@@ -805,8 +805,11 @@ namespace Sales.Controllers
                     }
                     if (pList != null && pList.Count > 0)
                     {
+                       
                         foreach (var ajaxp in pList)
                         {
+                            var partType = CH.GetAllData<ParticipantType>().Where(pt => pt.Name == ajaxp.ParticipantTypeName).FirstOrDefault();
+
                             p = new Participant();
                             p.Name = ajaxp.Name;
                             p.Title = ajaxp.Title;
@@ -814,7 +817,7 @@ namespace Sales.Controllers
                             p.Mobile = ajaxp.Mobile;
                             p.Contact = ajaxp.Contact;
                             p.Email = ajaxp.Email;
-                            p.ParticipantTypeID = ajaxp.ParticipantTypeID;
+                            p.ParticipantTypeID = partType.ID;
                             p.ProjectID = item.ProjectID;
                             p.DealID = item.ID;
                             p.Creator = Employee.CurrentUser.UserName;
@@ -857,7 +860,7 @@ namespace Sales.Controllers
             {
                 foreach (var p in insertedP)
                 {
-                    if (p.Name != "" && p.ParticipantTypeID != null)
+                    if (p.Name != "" && p.ParticipantTypeName != null)
                     {
                         pList.Add(p);
                     }
@@ -868,7 +871,7 @@ namespace Sales.Controllers
             {
                 foreach (var p in deletedP)
                 {
-                    int index = pList.FindIndex(ap => ap.Name == p.Name && ap.ParticipantTypeID == p.ParticipantTypeID);
+                    int index = pList.FindIndex(ap => ap.Name == p.Name && ap.ParticipantTypeName == p.ParticipantTypeName);
                     if (index != -1)
                     {
                         pList.RemoveAt(index);

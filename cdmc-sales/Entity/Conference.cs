@@ -171,8 +171,10 @@ namespace Entity
 
         public virtual ParticipantType ParticipantType { get; set; }
 
-        [UIHint("ParticipantTypeID"), Display(Name = "参会类型"), Required]
         public int? ParticipantTypeID { get; set; }
+
+        [UIHint("ParticipantTypeName"), Display(Name = "参会类型"), Required]
+        public string ParticipantTypeName { get; set; }
 
         public virtual Project Project { get; set; }
         public int? ProjectID { get; set; }

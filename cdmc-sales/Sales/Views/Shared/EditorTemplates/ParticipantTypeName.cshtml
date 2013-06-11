@@ -1,0 +1,13 @@
+    @using Entity
+    @using Utl
+    @{
+        List<string> pNameList = new List<string>();
+        foreach (var pt in CH.GetAllData <ParticipantType>())    
+        {
+            pNameList.Add(pt.Name);
+        }
+    }
+    @(Html.Telerik().DropDownList()
+                    .Name("ParticipantTypeName")
+                    .BindTo(new SelectList(pNameList))
+    ) 
