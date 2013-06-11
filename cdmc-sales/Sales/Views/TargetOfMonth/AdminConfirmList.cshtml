@@ -1,0 +1,61 @@
+﻿@using Entity
+@using Utl
+@Html.Partial("contenttitle", "项目月目标列表")
+<div id="filter-container" style="height: 30px;">
+    <span>
+        <label style="margin: 7px; float: left;">
+            筛选:</label>
+        @Html.DropDownList("Filter", SelectHelper.TargetOfMonthSelectList(), new { style = "margin:5px;float: left;", onchange = "onChange();" })
+    </span><span>
+        <label style="margin: 7px; float: left;">
+            项目:</label>
+        @Html.DropDownList("Projects", SelectHelper.ProjectSelectList(Employee.CurrentUserName, (int?)ViewBag.selectVal), new { style = "margin:5px;float: left;", onchange = "onChange();" })
+    </span>
+</div>
+@(Html.Telerik().Grid<Model.AjaxTargetOfMonth>().Name("TargetOfMonth")
+        .DataKeys(keys =>
+        {
+            keys.Add(s => s.ID);
+        })
+        .Columns(c =>
+        {
+            c.Bound(item => item.ProjectName);
+            c.Bound(item => item.Deal);
+            c.Bound(item => item.CheckIn);
+            c.Bound(item => item.StartDate);
+            c.Bound(item => item.EndDate);
+            c.Bound(item => item.IsAdminConfirm);
+            c.Bound(item => item.IsConfirm);
+
+            c.Command(commands =>
+            {
+                commands.Edit().ButtonType(GridButtonType.Image);
+
+            }).Title("确认");
+        })
+        .ClientEvents(events => events.OnDataBinding("dataBinding").OnRowDataBound("rowDataBound"))
+        .DataBinding(dataBinding =>
+        {
+            dataBinding.Ajax()
+                .Select("_AdminSelectIndex", "TargetOfMonth")
+                .Update("_AdminSaveAjaxEditing", "TargetOfMonth");
+        })
+        .Editable(editing => editing.Mode(GridEditMode.PopUp))
+        .Pageable(p => p.Style(GridPagerStyles.Status).PageSize(50)
+        .PageOnScroll(true)).Scrollable(s => s.Height(350)).Sortable().Filterable().Groupable()
+        )
+<script type="text/javascript">
+    function onChange() {
+        $("#TargetOfMonth").data("tGrid").rebind();
+    }
+    function dataBinding(e) {
+        var filter = $("#Filter").val();
+        var project = $("#Projects").val();
+        e.data = $.extend(e.data, { filterId: filter, projectId: project });
+    }
+    function rowDataBound(e) {
+        if ((e.dataItem.IsAdminConfirm == "是")) {
+            $(e.row).find('a.t-grid-edit').remove();
+        }
+    }
+</script>
