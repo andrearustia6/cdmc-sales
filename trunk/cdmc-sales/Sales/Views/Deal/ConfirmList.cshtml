@@ -1,8 +1,27 @@
 ﻿@using Entity
 @{
-    ViewBag.Title = "出单到账确认";
+    if (Utl.Employee.CurrentRole.Level == 4)
+    {
+        ViewBag.Title = "出单到账确认";
+    }
+    else
+    {
+        ViewBag.Title = "会务出单确认";
+    }
 }
-@Html.Partial("contenttitle", "出单到账确认")
+
+@{
+    if (Utl.Employee.CurrentRole.Level == 4)
+    {
+        <text>
+            @Html.Partial("contenttitle", "出单到账确认")
+        </text>
+    }
+    else
+    {
+        <text> @Html.Partial("contenttitle", "会务出单确认")</text>
+    }
+}
 <div id="filter-container" style="height: 30px;">
     <span>
         <label style="margin:7px;float: left;">筛选:</label>
@@ -60,8 +79,8 @@
 })
 .Editable(editing => editing.Mode(GridEditMode.PopUp))
 .Resizable(resizing => resizing.Columns(true)).Filterable().Sortable().Groupable()
-   .Pageable(p=>p.Style(GridPagerStyles.Status).PageSize(50)
-           .PageOnScroll(true)).Scrollable(s=>s.Height(350)).Sortable().Filterable().Groupable()
+   .Pageable(p => p.Style(GridPagerStyles.Status).PageSize(50)
+           .PageOnScroll(true)).Scrollable(s => s.Height(350)).Sortable().Filterable().Groupable()
 )
 <script type="text/javascript">
     function filterChange() {
@@ -89,9 +108,11 @@
     }
     function onRowDataBound(e) {
         @{
-            if(Utl.Employee.CurrentRole.Level == 4)
+            if (Utl.Employee.CurrentRole.Level == 4)
             {
-            }else{
+            }
+            else
+            {
                 <text>
                 if ((e.dataItem.IsConfirm == "是")) {
                     $(e.row).find('a.t-grid-edit').remove(); //remove Edit button
