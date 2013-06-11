@@ -2,7 +2,7 @@
 @using Utl
 @using BLL
 @Html.ValidationSummary(true)
-@Html.Partial("contenttitle", "创建项目月目标")
+@Html.Partial("contenttitle", "项目月目标编辑")
 @using (Html.BeginForm())
 {
     <fieldset>
@@ -39,30 +39,45 @@
             第一周周目标
         </div>
         <div class="editor-field">
+            @Html.HiddenFor(model => model.TargetOfWeeks[0].ID)
+            @Html.HiddenFor(model => model.TargetOfWeeks[0].TargetOfMonthID)
+            @Html.HiddenFor(model => model.TargetOfWeeks[0].ProjectID)
             @Html.Telerik().CurrencyTextBoxFor(model => model.TargetOfWeeks[0].Deal)
         </div>
         <div class="editor-field">
             第二周周目标
         </div>
         <div class="editor-field">
+            @Html.HiddenFor(model => model.TargetOfWeeks[1].ID)
+            @Html.HiddenFor(model => model.TargetOfWeeks[1].TargetOfMonthID)
+            @Html.HiddenFor(model => model.TargetOfWeeks[1].ProjectID)
             @Html.Telerik().CurrencyTextBoxFor(model => model.TargetOfWeeks[1].Deal)
         </div>
         <div class="editor-field">
             第三周周目标
         </div>
         <div class="editor-field">
+            @Html.HiddenFor(model => model.TargetOfWeeks[2].ID)
+            @Html.HiddenFor(model => model.TargetOfWeeks[2].TargetOfMonthID)
+            @Html.HiddenFor(model => model.TargetOfWeeks[2].ProjectID)
             @Html.Telerik().CurrencyTextBoxFor(model => model.TargetOfWeeks[2].Deal)
         </div>
         <div class="editor-field">
             第四周周目标
         </div>
         <div class="editor-field">
+            @Html.HiddenFor(model => model.TargetOfWeeks[3].ID)
+            @Html.HiddenFor(model => model.TargetOfWeeks[3].TargetOfMonthID)
+            @Html.HiddenFor(model => model.TargetOfWeeks[3].ProjectID)
             @Html.Telerik().CurrencyTextBoxFor(model => model.TargetOfWeeks[3].Deal)
         </div>
         <div class="editor-field">
             第五周周目标
         </div>
         <div class="editor-field">
+            @Html.HiddenFor(model => model.TargetOfWeeks[4].ID)
+            @Html.HiddenFor(model => model.TargetOfWeeks[4].TargetOfMonthID)
+            @Html.HiddenFor(model => model.TargetOfWeeks[4].ProjectID)
             @Html.Telerik().CurrencyTextBoxFor(model => model.TargetOfWeeks[4].Deal)
         </div>
         @Html.HiddenFor(model => model.ProjectID)
