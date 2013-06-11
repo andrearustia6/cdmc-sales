@@ -8,13 +8,13 @@
     </div>
     <div>
         <center>
-            <table>
+            <table style="width:100%;">
                 <tr>
                     <td>
-                        客户名称：@Html.EditorFor(m => m.Name)<font style="color: Red">*</font>
+                        客户名称：@Html.TextBoxFor(m => m.Name)<font style="color: Red">*</font>
                     </td>
                     <td>
-                        客户职位：@Html.EditorFor(m => m.Title)
+                        客户职位：@Html.TextBoxFor(m => m.Title)
                     </td>
                     <td>
                         客户性别：@Html.DropDownListFor(m => m.Gender, new SelectList(new List<string>() { "Mr", "Mrs" }, "-请选择-"))
@@ -22,13 +22,13 @@
                 </tr>
                 <tr>
                     <td>
-                        移动电话：@Html.EditorFor(m => m.Mobile)
+                        移动电话：@Html.TextBoxFor(m => m.Mobile)
                     </td>
                     <td>
-                        电子邮箱：@Html.EditorFor(m => m.Email)
+                        电子邮箱：@Html.TextBoxFor(m => m.Email)
                     </td>
                     <td>
-                        客户直线：@Html.EditorFor(m => m.Contact)
+                        客户直线：@Html.TextBoxFor(m => m.Contact)
                     </td>
                 </tr>
                 <tr>
