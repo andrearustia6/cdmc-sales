@@ -1,7 +1,11 @@
-﻿@{
+﻿@using Sales.Model
+@using Entity
+@model List<ManagerScore>
+           
+@{
     ViewBag.Title = "Index";
 }
-@using Sales.Model;
+
 
 <fieldset>
     <legend>月份</legend>
@@ -16,15 +20,52 @@
 </fieldset>
 @{
 var month = ViewBag.Month as int?;
-
+<fieldset>
+<legend>版块负责人考核</legend>
+@(Html.Telerik().Grid<_ManagerScore>().Name("manager")
+    .DataKeys(keys =>
+    {
+        keys.Add(o => o.ID);
+    })
+    .DataBinding(dataBinding =>
+    {
+        dataBinding.Ajax().Select("_SelectManagerIndex", "Performance", new { month = month })
+            .Update("_UpdateManagerScore", "Performance", new { month = month }); 
+    })
+.Columns(columns =>
+{
+    columns.Bound(p => p.TargetName).Width(80);
+    columns.Bound(p => p.Assigner).Width(80);
+    columns.Bound(p => p.Item1Score).Width(80);
+    columns.Bound(p => p.Item2Score).Width(80);
+    columns.Bound(p => p.Item3Score).Width(80);
+    columns.Bound(p => p.Item4Score).Width(80);
+    columns.Bound(p => p.Item5Score).Width(80);
+    columns.Bound(p => p.Item6Score).Width(80);
+    columns.Bound(p => p.Item7Score).Width(80);
+    columns.Bound(p => p.Item8Score).Width(80);
+    columns.Bound(p => p.Item9Score).Width(80);
+    columns.Bound(p => p.Item10Score).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" }).Width(80);
+    columns.Bound(p => p.Item11Score).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" }).Width(80);
+    columns.Bound(p => p.Item12Score).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" }).Width(80);
+    //columns.Bound(p => p.Month).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
+    //columns.Bound(p => p.Year).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
+    columns.Command(commands => commands.Edit()).Title("编辑").Width(80);
+})
+ .ClientEvents(events=>events.OnEdit("onEdit"))
+  .Pageable(p => p.Style(GridPagerStyles.Status)
+       .PageOnScroll(true).PageSize(25)).Scrollable(scrolling => scrolling.Height(350)).Sortable().Filterable().Resizable(r => r.Columns(true))
+)
+</fieldset>
 <fieldset>
 <legend>销售经理考核</legend>
 @(Html.Telerik().Grid<_TeamLeadPerformance>().Name("lead")
     .DataBinding(dataBinding =>
     {
         dataBinding.Ajax().Select("_SelectLeadIndex", "Performance", new { month = month });
-})
-.Columns(columns => {
+    })
+.Columns(columns =>
+{
     columns.Bound(p => p.Name).Width(50);
     columns.Bound(p => p.CompletePercent).Width(150).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
     columns.Bound(p => p.CheckinScore).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
@@ -37,10 +78,10 @@ var month = ViewBag.Month as int?;
     columns.Bound(p => p.Score).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
     columns.Bound(p => p.FaxOutCountString).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
     columns.Bound(p => p.LeadAddCountString).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
-  })
+})
 
-  .Pageable(p=>p.Style(GridPagerStyles.Status)
-       .PageOnScroll(true).PageSize(25)).Scrollable(scrolling => scrolling.Height(350)).Sortable().Filterable().Resizable(r=>r.Columns(true))
+  .Pageable(p => p.Style(GridPagerStyles.Status)
+       .PageOnScroll(true).PageSize(25)).Scrollable(scrolling => scrolling.Height(350)).Sortable().Filterable().Resizable(r => r.Columns(true))
 )
 </fieldset>
     
@@ -159,3 +200,17 @@ var month = ViewBag.Month as int?;
     </table>
     
 </fieldset>
+<script type="text/javascript">
+    function onEdit(e) {
+        $(e.form).find('#Item1ScoreString').data('tDropDownList').select(function (dataItem) {
+            return dataItem.Text == e.dataItem['Item1s'];
+        });
+//        var $combo = $(e.cell).find('#Item1Score');
+//        if ($combo.length > 0) {
+//            var combo = $combo.data('tComboBox');
+//            combo.fill(function () {
+//                combo.value(e.dataItem['Item1Score'].ID)
+//            });
+//        }
+    }
+</script>

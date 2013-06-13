@@ -60,7 +60,7 @@ namespace Utl
         public DbSet<UserFavorsCRM> UserFavorsCRMs { get; set; }
 
         public DbSet<ImportCompanyTrace> ImportCompanyTrace { get; set; }
-
+        public DbSet<ManagerScore> ManagerScores { get; set; }
         public DB(string connection = null)
         {
 
