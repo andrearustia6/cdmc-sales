@@ -50,7 +50,7 @@ var month = ViewBag.Month as int?;
     columns.Bound(p => p.Item12Score).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" }).Width(80);
     //columns.Bound(p => p.Month).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
     //columns.Bound(p => p.Year).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
-    columns.Command(commands => commands.Edit()).Title("编辑").Width(80);
+    columns.Command(commands => commands.Edit()).Title("打分").Width(80);
 })
  .ClientEvents(events=>events.OnEdit("onEdit"))
   .Pageable(p => p.Style(GridPagerStyles.Status)
