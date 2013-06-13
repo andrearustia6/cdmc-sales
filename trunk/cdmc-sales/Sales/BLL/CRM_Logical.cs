@@ -24,7 +24,7 @@ namespace BLL
             {
                 var user = Employee.CurrentUserName;
                 var rolelvl = Employee.CurrentRole.Level;
-                if (rolelvl >= 500)
+                if (rolelvl >= 1000)
                 {
                     var md = MonthDuration.GetMonthInstance(month);
                     var leads = CH.DB.Projects.Where(w => w.IsActived == true && !string.IsNullOrEmpty(w.Manager)).Select(s => s.Manager).Distinct();
@@ -1047,6 +1047,10 @@ namespace BLL
             var data = projects.FindAll(p => p.IsActived == true);
             return data;
         }
+        /// <summary>
+        /// 板块负责人月度考核项目：责任心与积极性（带队加班情况）
+        /// </summary>
+        /// <returns></returns>
         public static List<_Item> GetItem1()
         {
             List<_Item> itemList = new List<_Item>();
@@ -1065,6 +1069,10 @@ namespace BLL
             itemList.Add(item);
             return itemList;
         }
+        /// <summary>
+        /// 板块负责人月度考核项目：纪律性（请假，迟到情况）
+        /// </summary>
+        /// <returns></returns>
         public static List<_Item> GetItem2()
         {
             List<_Item> itemList = new List<_Item>();
@@ -1083,6 +1091,10 @@ namespace BLL
             itemList.Add(item);
             return itemList;
         }
+        /// <summary>
+        /// 板块负责人月度考核项目：执行能力
+        /// </summary>
+        /// <returns></returns>
         public static List<_Item> GetItem3()
         {
             List<_Item> itemList = new List<_Item>();
