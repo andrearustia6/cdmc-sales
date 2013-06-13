@@ -15,6 +15,77 @@ namespace BLL
     {
         public static class _EmployeePerformance
         {
+            /// <summary>
+            /// 获取manager的考核成绩
+            /// </summary>
+            /// <param name="month"></param>
+            /// <returns></returns>
+            public static IEnumerable<_ManagerScore> GetManagerLeadsPerformances(int month)
+            {
+                var user = Employee.CurrentUserName;
+                var rolelvl = Employee.CurrentRole.Level;
+                if (rolelvl >= 500)
+                {
+                    var md = MonthDuration.GetMonthInstance(month);
+                    var leads = CH.DB.Projects.Where(w => w.IsActived == true && !string.IsNullOrEmpty(w.Manager)).Select(s => s.Manager).Distinct();
+                    //每个成员的call，也就是所有leader和sales的call
+                    var memberscall = from p in CH.DB.Projects.Where(w => w.IsActived == true && !string.IsNullOrEmpty(w.Manager))
+                                      join l in leads on p.Manager equals l
+                                      join c in CH.DB.LeadCalls.Where(w => w.LeadCallTypeID != null && w.LeadCallType.Code >= 40 && w.CreatedDate>=md.MonthStartDate && w.CreatedDate<=md.MonthEndDate) on p.ID equals c.ProjectID
+                                      select new
+                                      {
+                                          Manager=p.Manager,
+                                          ProjectID = p.ID,
+                                          member = c.Member.Name,
+                                          salestypeid=c.Member.SalesTypeID
+                                      };
+                    //每个成员的lead，也就是所有leader和sales的lead
+                    var memberslead = from l in CH.DB.Leads.Where(w=> w.CreatedDate>=md.MonthStartDate && w.CreatedDate<=md.MonthEndDate )
+                                      join m in CH.DB.Members on l.Creator equals m.Name
+                                      join p in CH.DB.Projects.Where(w => w.IsActived == true && !string.IsNullOrEmpty(w.Manager))
+                                        on m.ProjectID equals p.ID
+                                      select new
+                                      {
+                                          manager=p.Manager,
+                                          name=l.Creator,
+                                          salestypeid=m.SalesTypeID
+                                      };
+                    var deals = CRM_Logical.GetDeals().Where(w => w.ActualPaymentDate.Value != null && w.ActualPaymentDate.Value.Month == month);
+                    var year = DateTime.Now.Year;
+                    //获取登录者（考核人）打分的记录
+                    var scores = from r in CH.DB.ManagerScores.Where(w => w.Month == month && w.Year == year && w.Assigner==user) select r;
+                    var lps = from l in leads
+                              join sc in scores on l equals sc.TargetName into Joinedscores
+                              from aa in Joinedscores.DefaultIfEmpty()
+                               select new _ManagerScore()
+                               {
+                                   ID = aa != null ? aa.ID : 0,//aa.ID,
+                                   TargetName = l,
+                                   Assigner = aa != null ? aa.Assigner : user,//aa.Assigner,
+                                   Item1Score = aa != null ? aa.Item1Score : 5,//aa.Item1Score.HasValue == false ? 5 : aa.Item1Score,//scores.Where(w => w.TargetName == l).Select(s => s.Item1Score).FirstOrDefault().Value,
+                                   Item2Score = aa != null ? aa.Item2Score : 5,//aa.Item2Score.HasValue == false ? 5 : aa.Item2Score,
+                                   Item3Score = aa != null ? aa.Item3Score : 5,//aa.Item3Score.HasValue == false ? 5 : aa.Item3Score,
+                                   Item4Score = aa != null ? aa.Item4Score : 5,//aa.Item4Score.HasValue == false ? 5 : aa.Item4Score,
+                                   Item5Score = aa != null ? aa.Item5Score : 5,//aa.Item5Score.HasValue == false ? 5 : aa.Item5Score,
+                                   Item6Score = aa != null ? aa.Item6Score : 5,//aa.Item6Score.HasValue == false ? 5 : aa.Item6Score,
+                                   Item7Score = aa != null ? aa.Item7Score : 5,//aa.Item7Score.HasValue == false ? 5 : aa.Item7Score,
+                                   Item8Score = aa != null ? aa.Item8Score : 5,//aa.Item8Score.HasValue == false ? 5 : aa.Item8Score,
+                                   Item9Score = aa != null ? aa.Item9Score : 10,//aa.Item9Score.HasValue == false ? 10 : aa.Item9Score,
+                                   leadcallcount = memberscall.Where(c => c.Manager == l).Count(c => c.salestypeid == 2),
+                                   salescallcount = memberscall.Where(c => c.Manager == l).Count(c => c.salestypeid == 1),
+                                   leadscount = memberscall.Where(c => c.Manager == l).GroupBy(c => c.salestypeid).Select(c => c.FirstOrDefault()).Count(c => c.salestypeid == 2),
+                                   salescount = memberscall.Where(c => c.Manager == l).GroupBy(c => c.salestypeid).Select(c => c.FirstOrDefault()).Count(c => c.salestypeid == 1),
+                                   leadnewlead = memberslead.Where(c => c.manager == l).Count(c => c.salestypeid == 2),
+                                   salesnewlead = memberslead.Where(c => c.manager == l).Count(c => c.salestypeid == 1),
+                                   target = CH.DB.TargetOfMonths.Where(t => t.Project.TeamLeader == l && t.Project.IsActived == true && t.StartDate.Month == month).Sum(s => s.CheckIn),
+                                   checkin = deals.Where(d => d.Project.Manager == l).Sum(s => s.Income)
+                               };
+                              
+                    return lps;
+                }
+                return new List<_ManagerScore>();
+            }
+
             public static IEnumerable<_TeamLeadPerformance> GetTeamLeadsPerformances(int month)
             {
                 var user = Employee.CurrentUserName;
@@ -146,6 +217,14 @@ namespace BLL
                 return new List<_SalesPerformance>();
                 
             }
+            #region manager考核的业务逻辑
+            public static int CalcItem10Score(int faxcount)
+            {
+                int result;
+                result = 1;
+                return result;
+            }
+            #endregion
 
             #region lead考核的业务逻辑
             /// <summary>
@@ -967,6 +1046,168 @@ namespace BLL
 
             var data = projects.FindAll(p => p.IsActived == true);
             return data;
+        }
+        public static List<_Item> GetItem1()
+        {
+            List<_Item> itemList = new List<_Item>();
+            _Item item = new _Item();
+            item.ID = 1;
+            item.Name = "1'-对工作基本上没有热情，消极被动，只安于现状，缺乏工作责任心，经常推卸责任，几乎没有加班";
+            itemList.Add(item);
+            item = new _Item();
+            item.ID = 3;
+            item.Name = "3'-对工作有一定责任心和积极性，但专注度尚不够，其程度有时受个人偏好影响，偶尔会带队加班加点，产生的效果、作用一般";
+            itemList.Add(item);
+
+            item = new _Item();
+            item.ID = 5;
+            item.Name = "5'-有很强的工作责任心和积极性，对待工作认真扎实，精益求精，经常主动地带队加班，并且产生明显的效果、作用";
+            itemList.Add(item);
+            return itemList;
+        }
+        public static List<_Item> GetItem2()
+        {
+            List<_Item> itemList = new List<_Item>();
+            _Item item = new _Item();
+            item.ID = 1;
+            item.Name = "1'-基本不能遵守工作规定、制度和考勤要求，迟到或早退超过五次，或有缺勤，或工作中有其他违规情况发生";
+            itemList.Add(item);
+            item = new _Item();
+            item.ID = 3;
+            item.Name = "3'-行为规范上对自己有一定的要求，能够基本遵守各项规章制度，偶尔有请假，迟到或早退现象发生";
+            itemList.Add(item);
+
+            item = new _Item();
+            item.ID = 5;
+            item.Name = "5'-行为规范上严于律己，能起到表率作用,没有请假，迟到或早退现象发生";
+            itemList.Add(item);
+            return itemList;
+        }
+        public static List<_Item> GetItem3()
+        {
+            List<_Item> itemList = new List<_Item>();
+            _Item item = new _Item();
+            item.ID = 1;
+            item.Name = "1'-对上级下达的招聘，培训等任务比较消极，工作结果不尽人意";
+            itemList.Add(item);
+            item = new _Item();
+            item.ID = 3;
+            item.Name = "3'-尚能按时完成上级下达的招聘，培训等任务，基本达到上级要求";
+            itemList.Add(item);
+
+            item = new _Item();
+            item.ID = 5;
+            item.Name = "5'-以积极认真的态度，及时认真完成上级下达的招聘，培训等任务且成效令人满意";
+            itemList.Add(item);
+            return itemList;
+        }
+        public static List<_Item> GetItem4()
+        {
+            List<_Item> itemList = new List<_Item>();
+            _Item item = new _Item();
+            item.ID = 1;
+            item.Name = "1'-计划缺失，对目标的认识不够充分，团队目标不明确，不能够充分利用目标进行团队激励";
+            itemList.Add(item);
+            item = new _Item();
+            item.ID = 3;
+            item.Name = "3'-制定一般可操作的工作计划，明确团队目标，并且使用目标进行激励";
+            itemList.Add(item);
+
+            item = new _Item();
+            item.ID = 5;
+            item.Name = "5'-能够设定科学合理的工作计划与目标，逐层分解目标，并利用目标有效激励成员，结合工作计划阶段性分解实现";
+            itemList.Add(item);
+            return itemList;
+        }
+        public static List<_Item> GetItem5()
+        {
+            List<_Item> itemList = new List<_Item>();
+            _Item item = new _Item();
+            item.ID = 1;
+            item.Name = "1'-随机检查，提醒就做，不提醒就不做";
+            itemList.Add(item);
+            item = new _Item();
+            item.ID = 3;
+            item.Name = "3'-有计划的不定时检查";
+            itemList.Add(item);
+
+            item = new _Item();
+            item.ID = 5;
+            item.Name = "5'-按时检查无遗漏";
+            itemList.Add(item);
+            return itemList;
+        }
+        public static List<_Item> GetItem6()
+        {
+            List<_Item> itemList = new List<_Item>();
+            _Item item = new _Item();
+            item.ID = 1;
+            item.Name = "1'-协调缺失，项目进度受影响";
+            itemList.Add(item);
+            item = new _Item();
+            item.ID = 3;
+            item.Name = "3'-协调滞后，效果一般";
+            itemList.Add(item);
+
+            item = new _Item();
+            item.ID = 5;
+            item.Name = "5'-协调及时，效果较好";
+            itemList.Add(item);
+            return itemList;
+        }
+        public static List<_Item> GetItem7()
+        {
+            List<_Item> itemList = new List<_Item>();
+            _Item item = new _Item();
+            item.ID = 1;
+            item.Name = "1'-内容几乎没有更新，效果较差";
+            itemList.Add(item);
+            item = new _Item();
+            item.ID = 3;
+            item.Name = "3'-内容更新滞后，效果一般";
+            itemList.Add(item);
+
+            item = new _Item();
+            item.ID = 5;
+            item.Name = "5'-内容更新及时，效果较好";
+            itemList.Add(item);
+            return itemList;
+        }
+        public static List<_Item> GetItem8()
+        {
+            List<_Item> itemList = new List<_Item>();
+            _Item item = new _Item();
+            item.ID = 1;
+            item.Name = "1'-每周销售例会准备不成分，组织随意，效果较差";
+            itemList.Add(item);
+            item = new _Item();
+            item.ID = 3;
+            item.Name = "3'-每周销售例会有准备，组织尚可，内容实用";
+            itemList.Add(item);
+
+            item = new _Item();
+            item.ID = 5;
+            item.Name = "5'-每周销售例会准备充分，组织高效，作用明显";
+            itemList.Add(item);
+            return itemList;
+        }
+        public static List<_Item> GetItem9()
+        {
+            List<_Item> itemList = new List<_Item>();
+            _Item item = new _Item();
+            item.ID = 2;
+            item.Name = "2'-每周销售例会准备不成分，组织随意，效果较差";
+            itemList.Add(item);
+            item = new _Item();
+            item.ID = 6;
+            item.Name = "6'-每月通话到达4-6小时";
+            itemList.Add(item);
+
+            item = new _Item();
+            item.ID = 10;
+            item.Name = "10'-每月通话到达6小时以上";
+            itemList.Add(item);
+            return itemList;
         }
 
 
