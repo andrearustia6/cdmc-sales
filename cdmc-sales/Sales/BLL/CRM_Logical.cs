@@ -1049,6 +1049,7 @@ namespace BLL
         }
         /// <summary>
         /// 板块负责人月度考核项目：责任心与积极性（带队加班情况）
+        /// 参照《销售部月度考核（2013准事业部负责人版）2月新版.xls》
         /// </summary>
         /// <returns></returns>
         public static List<_Item> GetItem1()
@@ -1071,6 +1072,7 @@ namespace BLL
         }
         /// <summary>
         /// 板块负责人月度考核项目：纪律性（请假，迟到情况）
+        /// 参照《销售部月度考核（2013准事业部负责人版）2月新版.xls》
         /// </summary>
         /// <returns></returns>
         public static List<_Item> GetItem2()
@@ -1093,6 +1095,7 @@ namespace BLL
         }
         /// <summary>
         /// 板块负责人月度考核项目：执行能力
+        /// 参照《销售部月度考核（2013准事业部负责人版）2月新版.xls》
         /// </summary>
         /// <returns></returns>
         public static List<_Item> GetItem3()
@@ -1113,6 +1116,11 @@ namespace BLL
             itemList.Add(item);
             return itemList;
         }
+        /// <summary>
+        /// 板块负责人月度考核项目：目标意识
+        /// 参照《销售部月度考核（2013准事业部负责人版）2月新版.xls》
+        /// </summary>
+        /// <returns></returns>
         public static List<_Item> GetItem4()
         {
             List<_Item> itemList = new List<_Item>();
@@ -1131,6 +1139,11 @@ namespace BLL
             itemList.Add(item);
             return itemList;
         }
+        /// <summary>
+        /// 板块负责人月度考核项目：每天检查团队成员research,   call list,on phone时间
+        /// 参照《销售部月度考核（2013准事业部负责人版）2月新版.xls》
+        /// </summary>
+        /// <returns></returns>
         public static List<_Item> GetItem5()
         {
             List<_Item> itemList = new List<_Item>();
@@ -1149,6 +1162,11 @@ namespace BLL
             itemList.Add(item);
             return itemList;
         }
+        /// <summary>
+        /// 板块负责人月度考核项目：每周与研发人员的项目进度协调
+        /// 参照《销售部月度考核（2013准事业部负责人版）2月新版.xls》
+        /// </summary>
+        /// <returns></returns>
         public static List<_Item> GetItem6()
         {
             List<_Item> itemList = new List<_Item>();
@@ -1167,6 +1185,11 @@ namespace BLL
             itemList.Add(item);
             return itemList;
         }
+        /// <summary>
+        /// 板块负责人月度考核项目：每周更新Pitch paper/Email cover/ EB内容，帮助组员找到针对不同客户的Pitch点 
+        /// 参照《销售部月度考核（2013准事业部负责人版）2月新版.xls》
+        /// </summary>
+        /// <returns></returns>
         public static List<_Item> GetItem7()
         {
             List<_Item> itemList = new List<_Item>();
@@ -1185,6 +1208,11 @@ namespace BLL
             itemList.Add(item);
             return itemList;
         }
+        /// <summary>
+        /// 板块负责人月度考核项目：每周销售例会
+        /// 参照《销售部月度考核（2013准事业部负责人版）2月新版.xls》
+        /// </summary>
+        /// <returns></returns>
         public static List<_Item> GetItem8()
         {
             List<_Item> itemList = new List<_Item>();
@@ -1203,6 +1231,11 @@ namespace BLL
             itemList.Add(item);
             return itemList;
         }
+        /// <summary>
+        /// 板块负责人月度考核项目：每月通话时间
+        /// 参照《销售部月度考核（2013准事业部负责人版）2月新版.xls》
+        /// </summary>
+        /// <returns></returns>
         public static List<_Item> GetItem9()
         {
             List<_Item> itemList = new List<_Item>();
