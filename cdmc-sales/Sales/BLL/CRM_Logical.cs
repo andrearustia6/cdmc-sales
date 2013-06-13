@@ -562,7 +562,50 @@ namespace BLL
 
                 return list.Where(w => !string.IsNullOrEmpty(w.ProjectName) || !string.IsNullOrEmpty(w.ProjectCode));
             }
-        }
+
+            public static IEnumerable<AjaxProjectProcess> GetProjectsProgress()
+            {
+                var ps = CRM_Logical.GetUserInvolveProject();
+                var targets = CH.DB.TargetOfMonths.Where(w => w.Project.IsActived == true);
+                var deals = CRM_Logical.GetDeals(true);
+                var currentmonthstart = DateTime.Now.StartOfMonth();
+                var currentmonthend = DateTime.Now.EndOfMonth();
+                var currentweekstart = DateTime.Now.StartOfWeek();
+                var currentweekend = DateTime.Now.EndOfWeek();
+                var currentdaystart = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
+                var currentdayend = currentdaystart.AddDays(1);
+                var list = from p in ps
+                           group p by new { p.ProjectUnitCode, p.ProjectUnitName, p.StartDate, p.EndDate } into grp
+                           select new
+                           {
+                               Name = grp.Key.ProjectUnitName,
+                               Code = grp.Key.ProjectUnitCode,
+                               StartDate = grp.Key.StartDate,
+                               EndDate = grp.Key.EndDate,
+                               LeftDay = (grp.Key.EndDate - DateTime.Now).Days,
+                               PassDay = (DateTime.Now -grp.Key.EndDate).Days,
+                               Target = grp.Sum(s=>s.Target)
+                           };
+
+                var data  = from l in list
+                        select new AjaxProjectProcess
+                        {
+                            ProjectUnitName = l.Name,
+                            ProjectUnitCode = l.Code,
+                            LeftedDay = l.LeftDay,
+                            PassedDay = l.PassDay,
+                            CurrentMonthCheckInTarget = targets.Where(w => w.Project.ProjectUnitCode == l.Code && w.StartDate.Month == currentmonthstart.Month).Sum(s => (decimal?)s.CheckIn),
+                            CurrentMonthCheckIn = deals.Where(w => w.Project.ProjectUnitCode == l.Code && w.ActualPaymentDate >= currentmonthstart && w.ActualPaymentDate < currentmonthend).Sum(s => (decimal?)s.Income),
+                            CurrentWeekCheckIn = deals.Where(w => w.Project.ProjectUnitCode == l.Code && w.ActualPaymentDate >= currentweekstart && w.ActualPaymentDate < currentweekend).Sum(s => (decimal?)s.Income),
+                            CurrentDayDealIn = deals.Where(w => w.Project.ProjectUnitCode == l.Code && w.SignDate >= currentdaystart && w.ActualPaymentDate < currentdayend).Sum(s => (decimal?)s.Income),
+                            TotalCheckIn = deals.Where(w => w.Project.ProjectUnitCode == l.Code).Sum(s => (decimal?)s.Income),
+                            TotalCheckInTarget = (decimal?)l.Target
+                        };
+
+                return data;
+            }
+       }
+
         public static class _Project
         {
            

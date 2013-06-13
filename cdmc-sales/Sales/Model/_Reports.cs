@@ -110,6 +110,46 @@ namespace Model
         public int? Month { get; set; }
     }
 
+    public class AjaxProjectProcess
+    {
+        public string Manager { get; set; }
+        public string Lead { get; set; }
+        public string CurrentSales { get; set; }
+        public string ProjectUnitName { get; set; }
+        public string ProjectUnitCode { get; set; }
+        public decimal? CurrentMonthCheckIn { get; set; }
+        public decimal? CurrentMonthCheckInTarget { get; set; }
+        public double MonthPercent
+        {
+            get
+            {
+                return Utl.Utl.GetPercent(CurrentMonthCheckIn, CurrentMonthCheckInTarget);
+            }
+        }
+        public decimal? CurrentDayDealIn { get; set; }
+        public decimal? CurrentWeekCheckIn { get; set; }
+        public decimal? CurrentWeekTarget{ get; set; }
+        public double WeekPercent
+        {
+            get
+            {
+                return Utl.Utl.GetPercent(CurrentWeekCheckIn, CurrentWeekTarget);
+            }
+        }
+        public int PassedDay { get; set; }
+        public int LeftedDay { get; set; }
+
+        public decimal? TotalCheckInTarget { get; set; }
+        public decimal? TotalCheckIn { get; set; }
+        public double TotalCheckInPercent
+        {
+            get
+            {
+                return Utl.Utl.GetPercent(TotalCheckIn, TotalCheckInTarget);
+            }
+        }
+
+    }
     public class AjaxProjectCheckInByMonth
     {
         [Key]

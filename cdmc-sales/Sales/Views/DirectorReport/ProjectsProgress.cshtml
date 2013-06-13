@@ -1,0 +1,111 @@
+﻿@{
+    ViewBag.Title = "项目入账情况统计";
+    Layout = "~/Views/DirectorReport/Master.cshtml";
+}
+@using Model
+@model List<AjaxProjectProcess>
+@using Utl;
+@{
+
+   <fieldset>
+   <legend>项目月度目标/入账情况</legend>
+@(Html.Telerik().Grid<AjaxProjectProcess>(Model).Name("AjaxProjectProcess")
+.Columns(columns =>
+{
+    columns.Bound(p => p.ProjectUnitName).Width(90).Title("项目名").HtmlAttributes(new { style = "text-align:left" });
+    columns.Bound(p => p.ProjectUnitCode).Width(85).Title("项目编号").HtmlAttributes(new { style = "text-align:left" });
+    columns.Bound(p => p.LeftedDay).Title("剩余时间").HtmlAttributes(new { style = "text-align:left" });
+    columns.Bound(p => p.PassedDay).Title("进行时间").HtmlAttributes(new { style = "text-align:left" });
+    columns.Bound(p => p.TotalCheckIn).Title("项目入账总额").HtmlAttributes(new { style = "text-align:right" }).Format("{0:c}");
+    columns.Bound(p => p.TotalCheckInTarget).Title("项目入账目标").HtmlAttributes(new { style = "text-align:right" }).Format("{0:c}");
+    columns.Bound(p => p.TotalCheckInTarget).Title("总百分比").HtmlAttributes(new { style = "text-align:right" }).Format("{0:c}");
+    columns.Bound(p => p.CurrentSales).Title("项目人数").HtmlAttributes(new { style = "text-align:right" }).Format("{0:c}");
+    columns.Bound(p => p.CurrentMonthCheckIn).Title("本月入账").HtmlAttributes(new { style = "text-align:right" }).Format("{0:c}").HtmlAttributes(new { style = "text-align:right" }).Format("{0:c}").Aggregate(aggregates => aggregates.Sum()).FooterTemplate(@<text>本月目标总和: @item.Sum.Format("{0:c}")</text>); ;
+    columns.Bound(p => p.CurrentMonthCheckInTarget).Title("本月目标").HtmlAttributes(new { style = "text-align:right" }).HtmlAttributes(new { style = "text-align:right" }).Format("{0:c}").Aggregate(aggregates => aggregates.Sum()).FooterTemplate(@<text>本月入账总和: @item.Sum.Format("{0:c}")</text>); ;
+    columns.Bound(p => p.TotalCheckInTarget).Title("月百分比").HtmlAttributes(new { style = "text-align:right" }).Format("{0:c}");
+    columns.Bound(p => p.CurrentWeekCheckIn).Title("本周入账").HtmlAttributes(new { style = "text-align:right" }).Format("{0:c}");
+    columns.Bound(p => p.CurrentWeekTarget).Title("本周目标").HtmlAttributes(new { style = "text-align:right" }).Format("{0:c}");
+    columns.Bound(p => p.TotalCheckInTarget).Title("周百分比").HtmlAttributes(new { style = "text-align:right" }).Format("{0:c}");
+    columns.Bound(p => p.CurrentDayDealIn).Title("本日出单").HtmlAttributes(new { style = "text-align:right" }).Format("{0:c}");
+   
+})
+                 //.CellAction(cell =>
+                 //{
+                 //    if (cell.Column.Member == "CurrentMonthChickIn")
+                 //    {
+                 //        AjaxProjectCheckInByMonth data = cell.DataItem;
+                 //        if (data.CurrentMonthChickIn < data.CurrentMonthTarget)
+                 //        {
+                 //            cell.HtmlAttributes["style"] = "font-weight: bold; color:red;text-align:right";
+                 //        }
+                 //        else if (data.CurrentMonthTarget != null && data.CurrentMonthTarget != 0 && Utl.GetPercent(data.CurrentMonthChickIn, data.CurrentMonthTarget) >= 140)
+                 //        {
+                 //            cell.HtmlAttributes["style"] = "font-weight: bold; color:green;text-align:right";
+                 //        }
+                 //    }
+                 //    if (cell.Column.Member == "OneMonthBeforeChickIn")
+                 //    {
+                 //        AjaxProjectCheckInByMonth data = cell.DataItem;
+                 //        if (data.OneMonthBeforeChickIn < data.OneMonthBeforeTarget)
+                 //        {
+                 //            cell.HtmlAttributes["style"] = "font-weight: bold; color:red;text-align:right";
+                 //        }
+                 //        else if (data.OneMonthBeforeTarget != null && data.OneMonthBeforeTarget != 0 && Utl.GetPercent(data.OneMonthBeforeChickIn, data.OneMonthBeforeTarget) >= 140)
+                 //        {
+                 //            cell.HtmlAttributes["style"] = "font-weight: bold; color:green;text-align:right";
+                 //        }
+                 //    }
+                 //    if (cell.Column.Member == "TwoMonthBeforeChickIn")
+                 //    {
+                 //        AjaxProjectCheckInByMonth data = cell.DataItem;
+                 //        if (data.TwoMonthBeforeChickIn < data.TwoMonthBeforeTarget)
+                 //        {
+                 //            cell.HtmlAttributes["style"] = "font-weight: bold; color:red;text-align:right";
+                 //        }
+                 //        else if (data.TwoMonthBeforeTarget != null && data.TwoMonthBeforeTarget != 0 && Utl.GetPercent(data.TwoMonthBeforeChickIn, data.TwoMonthBeforeTarget) >= 140)
+                 //        {
+                 //            cell.HtmlAttributes["style"] = "font-weight: bold; color:green;text-align:right";
+                 //        }
+                 //    }
+                 //    if (cell.Column.Member == "ThreeMonthBeforeChickIn")
+                 //    {
+                 //        AjaxProjectCheckInByMonth data = cell.DataItem;
+                 //        if (data.ThreeMonthBeforeChickIn < data.ThreeMonthBeforeTarget)
+                 //        {
+                 //            cell.HtmlAttributes["style"] = "font-weight: bold; color:red;text-align:right";
+                 //        }
+                 //        else if (data.ThreeMonthBeforeTarget != null && data.ThreeMonthBeforeTarget != 0 && Utl.GetPercent(data.ThreeMonthBeforeChickIn, data.ThreeMonthBeforeTarget) >= 140)
+                 //        {
+                 //            cell.HtmlAttributes["style"] = "font-weight: bold; color:green;text-align:right";
+                 //        }
+                 //    }
+                 //    if (cell.Column.Member == "FourthMonthBeforeChickIn")
+                 //    {
+                 //        AjaxProjectCheckInByMonth data = cell.DataItem;
+                 //        if (data.FourthMonthBeforeChickIn < data.FourthMonthBeforeTarget)
+                 //        {
+                 //            cell.HtmlAttributes["style"] = "font-weight: bold; color:red;text-align:right";
+                 //        }
+                 //        else if (data.FourthMonthBeforeTarget != null && data.FourthMonthBeforeTarget != 0 && Utl.GetPercent(data.FourthMonthBeforeChickIn, data.FourthMonthBeforeTarget) >= 140)
+                 //        {
+                 //            cell.HtmlAttributes["style"] = "font-weight: bold; color:green;text-align:right";
+                 //        }
+                 //    }
+                 //    if (cell.Column.Member == "FifthMonthBeforeChickIn")
+                 //    {
+                 //        AjaxProjectCheckInByMonth data = cell.DataItem;
+                 //        if (data.FifthMonthBeforeChickIn < data.FifthMonthBeforeTarget)
+                 //        {
+                 //            cell.HtmlAttributes["style"] = "font-weight: bold; color:red;text-align:right";
+                 //        }
+                 //        else if (data.FifthMonthBeforeTarget != null && data.FifthMonthBeforeTarget != 0 && Utl.GetPercent(data.FifthMonthBeforeChickIn, data.FifthMonthBeforeTarget) >= 140)
+                 //        {
+                 //            cell.HtmlAttributes["style"] = "font-weight: bold; color:green;text-align:right";
+                 //        }
+                 //    }
+                 //})
+                 .Scrollable(s => s.Height(550)).Sortable().Resizable(s => s.Columns(true))
+                )
+</fieldset>    
+  
+}

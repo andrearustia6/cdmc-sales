@@ -46,6 +46,12 @@ namespace Sales.Controllers
     
         }
 
+        public ActionResult ProjectsProgress()
+        {
+            var list = CRM_Logical._Reports.GetProjectsProgress();
+            return View(list.ToList());
+        }
+
         public ActionResult ProjectsCheckInByWeek()
         {
             var list = CRM_Logical._Reports.GetProjectsCheckInByWeek();
@@ -81,8 +87,6 @@ namespace Sales.Controllers
             var list = CRM_Logical._Reports.GetEmployeesCheckInByMonth();
             return View(list.ToList());
         }
-        
-      
 
         public ActionResult DealGroupBySales(int? year, int? month)
         {
