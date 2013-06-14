@@ -54,9 +54,7 @@ namespace Sales.Controllers
                     newmodel.Item7Score = model.Item7Score;
                     newmodel.Item8Score = model.Item8Score;
                     newmodel.Item9Score = model.Item9Score;
-                    newmodel.Item10Score = model.Item10Score;
-                    newmodel.Item11Score = model.Item11Score;
-                    newmodel.Item12Score = model.Item12Score;
+                    
                     newmodel.Month = month;
                     newmodel.Year = DateTime.Now.Year;
                     
@@ -85,9 +83,7 @@ namespace Sales.Controllers
                     newmodel.Item7Score = model.Item7Score;
                     newmodel.Item8Score = model.Item8Score;
                     newmodel.Item9Score = model.Item9Score;
-                    newmodel.Item10Score = model.Item10Score;
-                    newmodel.Item11Score = model.Item11Score;
-                    newmodel.Item12Score = model.Item12Score;
+                    
                     newmodel.Month = month;
                     newmodel.Year = DateTime.Now.Year;
                     CH.Create<ManagerScore>(newmodel);

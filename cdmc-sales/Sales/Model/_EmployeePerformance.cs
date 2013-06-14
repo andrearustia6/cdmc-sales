@@ -6,6 +6,7 @@ using Entity;
 using System.ComponentModel.DataAnnotations;
 using BLL;
 using System.ComponentModel;
+using System.Web.Mvc;
 
 namespace Sales.Model
 {
@@ -385,52 +386,49 @@ namespace Sales.Model
     public class _ManagerScore
     {
         [ReadOnly(true)]
+        [ScaffoldColumn(false)]
         public int ID { get; set; }
         //被考核人
         //[ReadOnly(true)]
         [Display(Name = "员工")]
+        //[HiddenInput(DisplayValue = false)] //Hide from Edit
         public string TargetName { get; set; }
+
         [Display(Name = "评分人")]
+        //[HiddenInput(DisplayValue = false)] //Hide from Edit
         public string Assigner { get; set; }
         
         [Display(Name = "责任心与积极性")]
-        [UIHint("ClientItem1"), Required]
+        //[UIHint("ClientItem1"), Required]
         public int? Item1Score { get; set; }
         
         [Display(Name = "纪律性")]
-        [UIHint("ClientItem2"), Required]
         public int? Item2Score { get; set; }
 
         [Display(Name = "执行能力")]
-        [UIHint("ClientItem3"), Required]
         public int? Item3Score { get; set; }
 
 
         [Display(Name = "目标意识")]
-        [UIHint("ClientItem4"), Required]
         public int? Item4Score { get; set; }
 
         [Display(Name = "每天检查团队成员")]
-        [UIHint("ClientItem5"), Required]
         public int? Item5Score { get; set; }
 
         [Display(Name = "每周与研发人员的项目进度协调")]
-        [UIHint("ClientItem6"), Required]
         public int? Item6Score { get; set; }
 
         [Display(Name = "每周更新Pitch paper/Email cover/ EB")]
-        [UIHint("ClientItem7"), Required]
         public int? Item7Score { get; set; }
 
         [Display(Name = "每周销售例会")]
-        [UIHint("ClientItem8"), Required]
         public int? Item8Score { get; set; }
 
         [Display(Name = "每月通话时间")]
-        [UIHint("ClientItem9"), Required]
         public int? Item9Score { get; set; }
 
         [Display(Name = "团队Call List")]
+        [HiddenInput(DisplayValue = false)] //Hide from Edit
         //团队Call List月人均平均数标准：销售专员200/人；销售经理140/人
         public int? Item10Score//{ get; set; }
         {
@@ -452,29 +450,36 @@ namespace Sales.Model
         /// <summary>
         /// 销售经理的call个数
         /// </summary>
+        [ScaffoldColumn(false)]
         public int leadcallcount { get; set; }
+        [ScaffoldColumn(false)]
         /// <summary>
         /// 销售专员的call个数
         /// </summary>
         public int salescallcount { get; set; }
+        [ScaffoldColumn(false)]
         /// <summary>
         /// 考核人下销售经理人数
         /// </summary>
         public int leadscount { get; set; }
+        [ScaffoldColumn(false)]
         /// <summary>
         /// 考核人下销售专员人数
         /// </summary>
         public int salescount { get; set; }
+        [ScaffoldColumn(false)]
         /// <summary>
         /// 销售专员新增lead数量
         /// </summary>
         public int salesnewlead { get; set; }
+        [ScaffoldColumn(false)]
         /// <summary>
         /// 销售经理新增lead数量
         /// </summary>
         public int leadnewlead { get; set; }
 
         [Display(Name = "团队新增Leads")]
+        [HiddenInput(DisplayValue = false)] //Hide from Edit
         //团队新增Leads月人均平均数标准：销售专员420/人；销售经理280/人
         public int? Item11Score //{ get; set; }
         {
@@ -492,16 +497,19 @@ namespace Sales.Model
                     return 0;
             }
         }
+        [ScaffoldColumn(false)]
         /// <summary>
         /// 带领的团队完成当月到账目标
         /// </summary>
         public decimal? target { get; set; }
+        [ScaffoldColumn(false)]
         /// <summary>
         /// 带领的团队完成当月到账实际
         /// </summary>
         public decimal? checkin { get; set; }
 
         [Display(Name = "团队业绩表现")]
+        [HiddenInput(DisplayValue = false)] //Hide from Edit
         public double? Item12Score //{ get; set; }
         {
             get
@@ -523,7 +531,9 @@ namespace Sales.Model
             }
         }
         [Display(Name = "月")]
+        [ScaffoldColumn(false)]
         public int? Month { get; set; }
+        [ScaffoldColumn(false)]
         [Display(Name = "年")]
         public int? Year { get; set; }
 
