@@ -23,8 +23,6 @@ namespace Model
         public string selectedVal { get; set; }
     }
 
-   
-
     public class AjaxCrmTypedList
     {
         public bool ExpandAll
@@ -353,7 +351,6 @@ namespace Model
             get
             {
                 List<string> v = new List<string>();
-              
                 var nocontactleadcount = AjaxLeads.Count(c => c.AjaxCalls.Count() == 0);
                 if (nocontactleadcount > 0)
                 {
@@ -361,9 +358,9 @@ namespace Model
                 }
                 else
                 {
-                var name = string.IsNullOrEmpty(CompanyName) ? "未填" : CompanyName;
-                return name;
-              }
+                    var name = string.IsNullOrEmpty(CompanyName) ? "未填" : CompanyName;
+                    return name;
+                }
             }
         }
         public IEnumerable<AjaxLead> AjaxLeads { get; set; }
