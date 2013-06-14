@@ -1,0 +1,25 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+@using Entity
+@Html.Partial("contenttitle", "角色表")           
+@*@(Html.Telerik().Grid<EmployeeRole>().Name("Grid")
+.DataKeys(keys => { keys.Add(p => p.ID); })
+.ToolBar(commands => commands.Insert().ImageHtmlAttributes(new { style = "margin-left:0" }))
+.DataBinding(dataBinding => { dataBinding.Ajax()
+    .Select("_SelectIndex", "EmployeeRole")
+    .Insert("_InsertAjaxEditing", "EmployeeRole")
+    .Update("_SaveAjaxEditing", "EmployeeRole")
+    .Delete("_DeleteAjaxEditing", "EmployeeRole");
+})
+.Columns(columns => {
+    columns.Bound(p => p.TargetName);
+columns.Bound(p => p.Rate);
+    columns.Bound(p => p.Month);
+    columns.Bound(p => p.Year);
+   columns.Command(commands => { commands.Edit(); commands.Delete(); }).Width(220).Title("操作"); })
+   .Editable(editing => editing.Mode( GridEditMode.PopUp))
+       .Pageable(p => p.Style(GridPagerStyles.Status).PageSize(50)
+           .PageOnScroll(true)).Scrollable(s => s.Height(350)).Sortable().Filterable().Groupable()
+)
+*@

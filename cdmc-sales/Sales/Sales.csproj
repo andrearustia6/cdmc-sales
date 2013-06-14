@@ -225,6 +225,7 @@
     <Compile Include="Controllers\AssignPerformanceScoreController.cs" />
     <Compile Include="Controllers\CompanyRelationshipController.cs" />
     <Compile Include="Controllers\DirectorReportController.cs" />
+    <Compile Include="Controllers\EmployeeRoleController.cs" />
     <Compile Include="Controllers\PerformanceController.cs" />
     <Compile Include="Controllers\SimulatorConfigController.cs" />
     <Compile Include="Controllers\DealController.cs" />
@@ -1692,6 +1693,7 @@
     <Content Include="Views\DirectorReport\EmployeeCheckInByMonth.cshtml" />
     <Content Include="Views\DirectorReport\ProjectsCheckInByWeek.cshtml" />
     <Content Include="Views\DirectorReport\ProjectsProgress.cshtml" />
+    <Content Include="Views\EmployeeRole\Index.cshtml" />
     <None Include="Views\SalesEx\EditCompany.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\SimulatorConfig.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\AjaxTargetOfMonthForMember.cshtml" />
