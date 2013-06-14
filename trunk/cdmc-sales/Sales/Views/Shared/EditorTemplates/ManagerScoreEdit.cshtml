@@ -1,28 +1,36 @@
 @model Sales.Model._ManagerScore
 @using Entity
 @using Utl
+@{
+    ViewBag.Title = "Customer Orders";
+}
 <style type="text/css">
    
     
     /* in-form editing */
     .t-edit-form-container
     {
-        width: 600px;
+        width: 550px;
+        height:250px;
         margin: 1em;
+        text-align: right;
     }
-   
+   td
+   {
+       text-align:left;
+   }
 </style>
-<div > 
+<div style=" padding-bottom:40px;width:100%"> 
     @Html.TextBoxFor(model => model.TargetName,new { @style="display:none"})
     @Html.TextBoxFor(model => model.Assigner,new { @style="display:none"})
-    <table >
+    <table style="width:100%" >
         <tr>
-            <th>@Html.LabelFor(model => model.Responsibility)</th>
-            <th>@Html.LabelFor(model => model.Discipline)</th>
-            <th>@Html.LabelFor(model => model.Excution)</th>
+            <th style="width:30%">@Html.LabelFor(model => model.Responsibility)</th>
+            <th style="width:30%">@Html.LabelFor(model => model.Discipline)</th>
+            <th style="width:30%">@Html.LabelFor(model => model.Excution)</th>
         </tr>
         <tr>
-            <td>@Html.Telerik().DropDownListFor(model => model.Responsibility).BindTo(new SelectList(BLL.CRM_Logical.GetItem1(), "ID", "Name")).DropDownHtmlAttributes(new { style = string.Format("width:{0}px", 200) })</td>
+            <td align="left">@Html.Telerik().DropDownListFor(model => model.Responsibility).BindTo(new SelectList(BLL.CRM_Logical.GetItem1(), "ID", "Name")).DropDownHtmlAttributes(new { style = string.Format("width:{0}px", 200) })</td>
             <td>@Html.Telerik().DropDownListFor(model => model.Discipline).BindTo(new SelectList(BLL.CRM_Logical.GetItem2(), "ID", "Name")).DropDownHtmlAttributes(new { style = string.Format("width:{0}px", 200) })</td>
             <td>@Html.Telerik().DropDownListFor(model => model.Excution).BindTo(new SelectList(BLL.CRM_Logical.GetItem3(), "ID", "Name")).DropDownHtmlAttributes(new { style = string.Format("width:{0}px", 200) })</td>
         </tr>
@@ -48,5 +56,5 @@
         </tr>
     </table>
 </div>    
-    @*@Html.Partial("editcommon", Model)*@
+    
 

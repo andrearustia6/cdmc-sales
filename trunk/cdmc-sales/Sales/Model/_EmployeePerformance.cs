@@ -398,7 +398,7 @@ namespace Sales.Model
         //[HiddenInput(DisplayValue = false)] //Hide from Edit
         public string Assigner { get; set; }
         
-        [Display(Name = "责任心与积极性")]
+        [Display(Name = "责任心积极性")]
         //[UIHint("ClientItem1"), Required]
         public int? Responsibility { get; set; }
         
@@ -415,10 +415,10 @@ namespace Sales.Model
         [Display(Name = "每天检查团队成员")]
         public int? Searching { get; set; }
 
-        [Display(Name = "每周与研发人员的项目进度协调")]
+        [Display(Name = "每周研发项目协调")]
         public int? Production { get; set; }
 
-        [Display(Name = "每周更新Pitch paper/Email cover/ EB")]
+        [Display(Name = "每周更新PitchPaper")]
         public int? PitchPaper { get; set; }
 
         [Display(Name = "每周销售例会")]
