@@ -1713,7 +1713,12 @@
     <Content Include="Views\TargetOfMonth\EditEx.cshtml" />
     <Content Include="Views\TargetOfMonth\DetailsEx.cshtml" />
     <Content Include="Views\TargetOfMonth\DeleteEx.cshtml" />
+
+    <Content Include="Views\Shared\EditorTemplates\TargetOfMonth.cshtml" />
+    <Content Include="Views\TargetOfMonth\TargetOfMonthForProject.cshtml" />
+
     <Content Include="Views\Shared\EditorTemplates\ManagerScoreEdit.cshtml" />
+
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\TargetOfMonthForMember\Confirm.cshtml" />
