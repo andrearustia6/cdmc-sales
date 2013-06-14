@@ -62,15 +62,15 @@ namespace BLL
                                    ID = aa != null ? aa.ID : 0,//aa.ID,
                                    TargetName = l,
                                    Assigner = aa != null ? aa.Assigner : user,//aa.Assigner,
-                                   Item1Score = aa != null ? aa.Item1Score : 5,//aa.Item1Score.HasValue == false ? 5 : aa.Item1Score,//scores.Where(w => w.TargetName == l).Select(s => s.Item1Score).FirstOrDefault().Value,
-                                   Item2Score = aa != null ? aa.Item2Score : 5,//aa.Item2Score.HasValue == false ? 5 : aa.Item2Score,
-                                   Item3Score = aa != null ? aa.Item3Score : 5,//aa.Item3Score.HasValue == false ? 5 : aa.Item3Score,
-                                   Item4Score = aa != null ? aa.Item4Score : 5,//aa.Item4Score.HasValue == false ? 5 : aa.Item4Score,
-                                   Item5Score = aa != null ? aa.Item5Score : 5,//aa.Item5Score.HasValue == false ? 5 : aa.Item5Score,
-                                   Item6Score = aa != null ? aa.Item6Score : 5,//aa.Item6Score.HasValue == false ? 5 : aa.Item6Score,
-                                   Item7Score = aa != null ? aa.Item7Score : 5,//aa.Item7Score.HasValue == false ? 5 : aa.Item7Score,
-                                   Item8Score = aa != null ? aa.Item8Score : 5,//aa.Item8Score.HasValue == false ? 5 : aa.Item8Score,
-                                   Item9Score = aa != null ? aa.Item9Score : 10,//aa.Item9Score.HasValue == false ? 10 : aa.Item9Score,
+                                   Responsibility = aa != null ? aa.Responsibility : 5,//aa.Item1Score.HasValue == false ? 5 : aa.Item1Score,//scores.Where(w => w.TargetName == l).Select(s => s.Item1Score).FirstOrDefault().Value,
+                                   Discipline = aa != null ? aa.Discipline : 5,//aa.Item2Score.HasValue == false ? 5 : aa.Item2Score,
+                                   Excution = aa != null ? aa.Excution : 5,//aa.Item3Score.HasValue == false ? 5 : aa.Item3Score,
+                                   Targeting = aa != null ? aa.Targeting : 5,//aa.Item4Score.HasValue == false ? 5 : aa.Item4Score,
+                                   Searching = aa != null ? aa.Searching : 5,//aa.Item5Score.HasValue == false ? 5 : aa.Item5Score,
+                                   Production = aa != null ? aa.Production : 5,//aa.Item6Score.HasValue == false ? 5 : aa.Item6Score,
+                                   PitchPaper = aa != null ? aa.PitchPaper : 5,//aa.Item7Score.HasValue == false ? 5 : aa.Item7Score,
+                                   WeeklyMeeting = aa != null ? aa.WeeklyMeeting : 5,//aa.Item8Score.HasValue == false ? 5 : aa.Item8Score,
+                                   MonthlyMeeting = aa != null ? aa.MonthlyMeeting : 10,//aa.Item9Score.HasValue == false ? 10 : aa.Item9Score,
                                    leadcallcount = memberscall.Where(c => c.Manager == l).Count(c => c.salestypeid == 2),
                                    salescallcount = memberscall.Where(c => c.Manager == l).Count(c => c.salestypeid == 1),
                                    leadscount = memberscall.Where(c => c.Manager == l).GroupBy(c => c.salestypeid).Select(c => c.FirstOrDefault()).Count(c => c.salestypeid == 2),
@@ -78,7 +78,7 @@ namespace BLL
                                    leadnewlead = memberslead.Where(c => c.manager == l).Count(c => c.salestypeid == 2),
                                    salesnewlead = memberslead.Where(c => c.manager == l).Count(c => c.salestypeid == 1),
                                    target = CH.DB.TargetOfMonths.Where(t => t.Project.TeamLeader == l && t.Project.IsActived == true && t.StartDate.Month == month).Sum(s => s.CheckIn),
-                                   checkin = deals.Where(d => d.Project.Manager == l).Sum(s => s.Income)
+                                   checkinreal = deals.Where(d => d.Project.Manager == l).Sum(s => s.Income)
                                };
                               
                     return lps;
