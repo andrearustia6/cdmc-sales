@@ -1,4 +1,5 @@
-﻿@using Sales.Model
+﻿
+@using Sales.Model
 @using Entity
 @model List<ManagerScore>
            
@@ -20,6 +21,7 @@
 </fieldset>
 @{
 var month = ViewBag.Month as int?;
+}
 <fieldset>
 <legend>版块负责人考核</legend>
 @(Html.Telerik().Grid<_ManagerScore>().Name("manager")
@@ -34,28 +36,31 @@ var month = ViewBag.Month as int?;
     })
 .Columns(columns =>
 {
-    columns.Bound(p => p.TargetName).Width(80);
+    columns.Bound(p => p.TargetName).Width(100);
     columns.Bound(p => p.Assigner).Width(80);
-    columns.Bound(p => p.Item1Score).Width(80);
-    columns.Bound(p => p.Item2Score).Width(80);
-    columns.Bound(p => p.Item3Score).Width(80);
-    columns.Bound(p => p.Item4Score).Width(80);
-    columns.Bound(p => p.Item5Score).Width(80);
+    columns.Bound(p => p.Item1Score).Width(100);
+    columns.Bound(p => p.Item2Score).Width(50);
+    columns.Bound(p => p.Item3Score).Width(60);
+    columns.Bound(p => p.Item4Score).Width(60);
+    columns.Bound(p => p.Item5Score).Width(100);
     columns.Bound(p => p.Item6Score).Width(80);
     columns.Bound(p => p.Item7Score).Width(80);
     columns.Bound(p => p.Item8Score).Width(80);
     columns.Bound(p => p.Item9Score).Width(80);
-    columns.Bound(p => p.Item10Score).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" }).Width(80);
-    columns.Bound(p => p.Item11Score).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" }).Width(80);
-    columns.Bound(p => p.Item12Score).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" }).Width(80);
+    columns.Bound(p => p.Item10Score).Width(80);
+    columns.Bound(p => p.Item11Score).Width(90);
+    columns.Bound(p => p.Item12Score).Width(90);
     //columns.Bound(p => p.Month).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
     //columns.Bound(p => p.Year).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
     columns.Command(commands => commands.Edit()).Title("打分").Width(80);
-})
+}).Editable(editing => editing
+                        .Mode(GridEditMode.PopUp).TemplateName("ManagerScoreEdit"))
  .ClientEvents(events=>events.OnEdit("onEdit"))
   .Pageable(p => p.Style(GridPagerStyles.Status)
-       .PageOnScroll(true).PageSize(25)).Scrollable(scrolling => scrolling.Height(350)).Sortable().Filterable().Resizable(r => r.Columns(true))
-)
+       .PageOnScroll(true).PageSize(25)).Scrollable(scrolling => scrolling.Height(350)).Sortable().Resizable(r => r.Columns(true))
+       )
+
+
 </fieldset>
 <fieldset>
 <legend>销售经理考核</legend>
@@ -81,7 +86,7 @@ var month = ViewBag.Month as int?;
 })
 
   .Pageable(p => p.Style(GridPagerStyles.Status)
-       .PageOnScroll(true).PageSize(25)).Scrollable(scrolling => scrolling.Height(350)).Sortable().Filterable().Resizable(r => r.Columns(true))
+       .PageOnScroll(true).PageSize(25)).Scrollable(scrolling => scrolling.Height(350)).Sortable().Resizable(r => r.Columns(true))
 )
 </fieldset>
     
@@ -107,10 +112,9 @@ var month = ViewBag.Month as int?;
     columns.Bound(p => p.FaxOutCountString);
     columns.Bound(p => p.LeadAddCountString);
 }).Pageable(p => p.Style(GridPagerStyles.Status)
-       .PageOnScroll(true).PageSize(35)).Scrollable(scrolling => scrolling.Height(350)).Sortable().Filterable()
+       .PageOnScroll(true).PageSize(35)).Scrollable(scrolling => scrolling.Height(350)).Sortable()
 )
 </fieldset>
-}
 <fieldset>
     <legend>考核标准</legend>
     <table width="100%">

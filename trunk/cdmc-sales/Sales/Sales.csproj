@@ -616,15 +616,6 @@
     <Content Include="Views\Deal\ConfirmList.cshtml">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="Views\Performance\EditorTemplates\ClientItem1.ascx" />
-    <Content Include="Views\Performance\EditorTemplates\ClientItem2.ascx" />
-    <Content Include="Views\Performance\EditorTemplates\ClientItem3.ascx" />
-    <Content Include="Views\Performance\EditorTemplates\ClientItem4.ascx" />
-    <Content Include="Views\Performance\EditorTemplates\ClientItem5.ascx" />
-    <Content Include="Views\Performance\EditorTemplates\ClientItem6.ascx" />
-    <Content Include="Views\Performance\EditorTemplates\ClientItem7.ascx" />
-    <Content Include="Views\Performance\EditorTemplates\ClientItem8.ascx" />
-    <Content Include="Views\Performance\EditorTemplates\ClientItem9.ascx" />
     <Content Include="VJS\alextre.peopleFinder.js" />
     <Content Include="VJS\alextre.tableDesigner.js" />
     <Content Include="VJS\availbleCompany.js" />
@@ -1722,6 +1713,7 @@
     <Content Include="Views\TargetOfMonth\EditEx.cshtml" />
     <Content Include="Views\TargetOfMonth\DetailsEx.cshtml" />
     <Content Include="Views\TargetOfMonth\DeleteEx.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\ManagerScoreEdit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\TargetOfMonthForMember\Confirm.cshtml" />
