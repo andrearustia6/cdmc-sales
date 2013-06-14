@@ -161,12 +161,15 @@ namespace Entity
         public string Gender { get; set; }
 
         [Display(Name = "直线电话")]
+        [RegularExpression(@"[\d\s-]*", ErrorMessage = "请输入的有效的直线电话")]
         public string Contact { get; set; }
 
         [Display(Name = "移动电话")]
+        [RegularExpression(@"[\d\s-]*", ErrorMessage = "请输入的有效的移动电话")]
         public string Mobile { get; set; }
 
         [Display(Name = "工作邮箱")]
+        [RegularExpression(@"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}", ErrorMessage = "请输入的有效的工作邮箱")]
         public string Email { get; set; }
 
         public virtual ParticipantType ParticipantType { get; set; }

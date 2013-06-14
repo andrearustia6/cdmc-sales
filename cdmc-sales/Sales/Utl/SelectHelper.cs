@@ -329,5 +329,20 @@ namespace Utl
             selectList.Add(new SelectListItem() { Text = "均未确认", Value = "3" });
             return selectList;
         }
+
+        public static bool IsTelephone(string val)
+        {
+            string tempchar = "";
+            if (string.IsNullOrEmpty(val)) return false;
+            for (int i = 0; i < val.Length; i++)
+            {
+                tempchar = val.Substring(i, i + 1);
+                if (!(tempchar == "0" || tempchar == "1" || tempchar == "2" || tempchar == "3" || tempchar == "4" || tempchar == "5" || tempchar == "6" || tempchar == "7" || tempchar == "8" || tempchar == "9" || tempchar == "-" || tempchar == " "))
+                {
+                    return false;
+                }
+            }
+            return true; 
+        }
     }
 }

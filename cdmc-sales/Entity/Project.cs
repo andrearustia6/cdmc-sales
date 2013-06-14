@@ -487,7 +487,9 @@ namespace Entity
         [Display(Name = "签单人联系方式")]
         public string CommitterContect { get; set; }
 
-        [Display(Name = "签单人邮箱"), Required]
+        [Required]
+        [Display(Name = "签单人邮箱")]
+        [RegularExpression(@"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}", ErrorMessage = "请输入的有效的签单人邮箱")]
         public string CommitterEmail { get; set; }
 
         [Display(Name = "权益描述"), MaxLength(2000)]

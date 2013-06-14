@@ -163,7 +163,14 @@ namespace Sales.Controllers
             {
                 return PartialView(@"~\views\shared\PageMessage.cshtml", "名字不能为空");
             }
-
+            if (!string.IsNullOrEmpty(p.Contact) && !SelectHelper.IsTelephone(p.Contact))
+            {
+                return PartialView(@"~\views\shared\PageMessage.cshtml", "电话号码只能输入数字,空格或中划线.");
+            }
+            if (!string.IsNullOrEmpty(p.Mobile) && !SelectHelper.IsTelephone(p.Mobile))
+            {
+                return PartialView(@"~\views\shared\PageMessage.cshtml", "电话号码只能输入数字,空格或中划线.");
+            }
             if (p.ParticipantTypeID == null)
             {
                 return PartialView(@"~\views\shared\PageMessage.cshtml", "参会类型不能为空");
