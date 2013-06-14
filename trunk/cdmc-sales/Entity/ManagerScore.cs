@@ -12,30 +12,24 @@ namespace Entity
         public string TargetName { get; set; }
         [Display(Name = "评分人")]
         public string Assigner { get; set; }
-        [Display(Name = "责任心与积极性")]//Responsibility,code=10
+        [Display(Name = "责任心与积极性")]
         public int? Responsibility { get; set; }
-        [Display(Name = "纪律性")]//Discipline,code=20
+        [Display(Name = "纪律性")]
         public int? Discipline { get; set; }
-        [Display(Name = "执行能力")]//Excution,code=30
+        [Display(Name = "执行能力")]
         public int? Excution { get; set; }
-        [Display(Name = "目标意识")]//Targeting,code=40
+        [Display(Name = "目标意识")]
         public int? Targeting { get; set; }
-        [Display(Name = "每天检查团队成员research,call list,on phone时间")]//Searching,code=50
+        [Display(Name = "每天检查团队成员research,call list,on phone时间")]
         public int? Searching { get; set; }
-        [Display(Name = "每周与研发人员的项目进度协调")]//Production,code=60
+        [Display(Name = "每周与研发人员的项目进度协调")]
         public int? Production { get; set; }
-        [Display(Name = "每周更新Pitch paper/Email cover/EB内容，帮助组员找到针对不同客户的Pitch点")]//PitchPaper,code=70
+        [Display(Name = "每周更新Pitch paper/Email cover/EB内容，帮助组员找到针对不同客户的Pitch点")]
         public int? PitchPaper { get; set; }
-        [Display(Name = "每周销售例会")]//WeeklyMeeting,code=80
+        [Display(Name = "每周销售例会")]
         public int? WeeklyMeeting { get; set; }
-        [Display(Name = "每月通话时间")]//MonthlyMeeting,code=90
+        [Display(Name = "每月通话时间")]
         public int? MonthlyMeeting { get; set; }
-        //[Display(Name = "团队Call List")]//Calllist,code=100
-        //public int? Calllist { get; set; }
-        //[Display(Name = "团队新增Leads")]//AddLeads,code=110
-        //public int? AddLeads { get; set; }
-        //[Display(Name = "团队业绩表现")]//CheckIn,code=120
-        //public double? CheckIn { get; set; }
        
         [Display(Name = "月")]
         public int? Month { get; set; }
