@@ -9,6 +9,7 @@ using Entity;
 using Sales;
 using Utl;
 using BLL;
+using Telerik.Web.Mvc;
 using System.IO;
 using System.Data.Entity.Infrastructure;
 
@@ -600,13 +601,52 @@ namespace Sales.Controllers
             {
                 project = CRM_Logical.GetUserInvolveProject().FirstOrDefault();
             }
+            ViewBag.ProjectID = project.ID;
+            ViewBag.MemberFilterForCompany = memberFilterForCompany;
+            //var p = CRM_Logical._Project.GetAjaxProject(project.ID);
+            //if (memberFilterForCompany.HasValue)
+            //{
+            //    //int memberId = memberFilterForCompany.Value;
+            //    //ViewBag.MemberFilterForCompany = memberFilterForCompany.ToString();
+
+            //    //if (memberId == -1)//未分配公司
+            //    //{
+            //    //    p.CRMs = p.CRMs.Where(c => string.IsNullOrEmpty(c.MembersString)).ToList();
+            //    //}
+            //    //else if (memberId == -2)//已分配公司
+            //    //{
+            //    //    p.CRMs = p.CRMs.Where(c => !string.IsNullOrEmpty(c.MembersString)).ToList();
+            //    //}
+            //    //else//指定公司
+            //    //{
+            //    //    p.CRMs = p.CRMs.Where(c => c.MembersIds.Any(m => m == memberId)).ToList();
+            //    //}
+            //}
+            //else
+            //{
+            //    ViewBag.MemberId = "";
+            //}
+            //p.CRMs = p.CRMs.ToList();
+            return View();
+        }
+        
+        [GridAction]
+        public ActionResult _AjaxAssignCompany(int? projectId, int? memberFilterForCompany)
+        {
+            Project project = null;
+            if (projectId.HasValue)
+            {
+                project = CH.GetDataById<Project>(projectId);
+            }
+            else
+            {
+                project = CRM_Logical.GetUserInvolveProject().FirstOrDefault();
+            }
 
             var p = CRM_Logical._Project.GetAjaxProject(project.ID);
             if (memberFilterForCompany.HasValue)
             {
                 int memberId = memberFilterForCompany.Value;
-                ViewBag.MemberFilterForCompany = memberFilterForCompany.ToString();
-
                 if (memberId == -1)//未分配公司
                 {
                     p.CRMs = p.CRMs.Where(c => string.IsNullOrEmpty(c.MembersString)).ToList();
@@ -620,12 +660,7 @@ namespace Sales.Controllers
                     p.CRMs = p.CRMs.Where(c => c.MembersIds.Any(m => m == memberId)).ToList();
                 }
             }
-            else
-            {
-                ViewBag.MemberId = "";
-            }
-            p.CRMs = p.CRMs.ToList();
-            return View(p);
+            return View(new GridModel(p.CRMs.ToList()));
         }
 
         public string selectedCRMs { get; set; }

@@ -734,20 +734,36 @@ namespace BLL
             {
                 if (projectid != null)
                 {
-                    //var deals = CRM_Logical.GetDeals();
                     var crms = CH.DB.CompanyRelationships.Where(c => c.ProjectID == projectid);
                     var ajaxcrms = from c in crms
                                    select new AjaxCRM()
                                    {
                                        CrmCreateDate = c.CreatedDate,
                                        CRMID = c.ID,
-                                       //CompanyPayment = deals.Where(d => d.CompanyRelationshipID == c.ID).Sum(s => s.Payment),
                                        CompanyCategories = c.Categorys,
                                        Members = c.Members,
                                        CompanyNameEN = c.Company.Name_EN,
                                        CompanyNameCH = c.Company.Name_CH,
                                        CrmCreator = c.Creator,
                                        CompanyType = c.Company.CompanyType.Name,
+                                       AjaxLeads = (from l in c.Company.Leads
+                                                    select new AjaxLead
+                                                    {
+                                                        LeadNameCH = l.Name_CH,
+                                                        LeadNameEN = l.Name_EN,
+                                                        LeadTitle = l.Title,
+                                                        CRMID = c.ID,
+                                                        LeadID = l.ID,
+                                                        AjaxCalls = (from call in c.LeadCalls.Where(w => w.LeadID == l.ID)
+                                                                     select new AjaxCall
+                                                                     {
+                                                                         CallDate = call.CallDate,
+                                                                         CallBackDate = call.CallBackDate,
+                                                                         CallType = call.LeadCallType.Name,
+                                                                         Caller = call.Member.Name,
+                                                                         LeadCallTypeCode = call.LeadCallType.Code
+                                                                     })
+                                                    })
                                    };
                     return ajaxcrms;
                 }

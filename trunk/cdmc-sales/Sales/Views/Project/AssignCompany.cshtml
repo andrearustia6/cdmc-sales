@@ -4,22 +4,23 @@
 @using Entity
 @using Utl
 @using BLL
-@model Model.AjaxProject         
+@using Model
+@*@model Model.AjaxProject *@        
 <div id="filter-container" style="height: 30px;">
     <span>
         <label style="margin:5px;">
-            项目:</label>@Html.DropDownListFor(model => model.ProjectID, SelectHelper.ProjectSelectList(EditRight.DealsEdit.ToString(), Model.ProjectID), new { id = "projectFilter" })</span>
+            项目:</label>@Html.DropDownList("projectFilter", SelectHelper.ProjectSelectList(EditRight.DealsEdit.ToString(), (int?)ViewBag.ProjectID))</span>
     <span>
         <label style="margin:5px;">
             销售:</label>
-        @Html.DropDownList("companyFilter", SelectHelper.MemberSelectListForProject(Model.ProjectID , (string)ViewBag.MemberFilterForCompany), "所有公司")</span>
+        @Html.DropDownList("companyFilter", SelectHelper.MemberSelectListForProject((int)ViewBag.ProjectID, (string)ViewBag.MemberFilterForCompany), "所有公司")</span>
     <button id="UnsignCompanies" onclick="UnsignCompanies()">
         取消分配</button>
 </div>
 <fieldset>
     <legend>可分配销售 </legend>
     <div class="assignableMembers">
-        @foreach (SelectListItem selectListItem in SelectHelper.MemberSelectListForProject(Model.ProjectID))
+        @foreach (SelectListItem selectListItem in SelectHelper.MemberSelectListForProject((int)ViewBag.ProjectID))
         {
             if (selectListItem.Value != (string)ViewBag.MemberFilterForCompany && selectListItem.Value != "-1" && selectListItem.Value != "" && selectListItem.Value != "-2")
             {
@@ -34,14 +35,16 @@
 </fieldset>
 @{
 
-@(Html.Telerik().Grid(Model.CRMs).Name("Company").DataKeys(keys =>
+@(Html.Telerik().Grid<AjaxCRM>().Name("Company")
+                .DataKeys(keys =>
                 {
                     keys.Add(s => s.CRMID);
                 })
+                .DataBinding(dataBinding => dataBinding.Ajax().Select("_AjaxAssignCompany", "Project"))
                 .Columns(c =>
                 {
-                    c.Template(@<text><input name="checkedRecords" class="companybox" type="checkbox" value="@item.CRMID " title="checkedRecords"  />
-</text>).Title("<input type='checkbox' id='allCompanyBox' />").Width(30).HtmlAttributes(new { style = "text-align:center" });
+                    c.Bound(item => item.CRMID).ClientTemplate("<input name='checkedRecords' class='companybox' type='checkbox' value='<#= CRMID #>' title='checkedRecords'/>")
+                    .Title("<input type='checkbox' id='allCompanyBox' />").Filterable(false).Width(30).HtmlAttributes(new { style = "text-align:center" });
                     c.Bound(item => item.CompanyName).Title("公司名").Width(300);
                     c.Bound(item => item.MembersString).Title("销售").Width(70);
                     //c.Bound(item => item.Importancy).Width(80);
@@ -50,10 +53,14 @@
                     c.Bound(item => item.CrmCreateDate).Title("添加时间").Width(200);
                     c.Bound(item => item.CrmCreator).Title("添加人").Width(100);
 
-                }).Resizable(resizing => resizing.Columns(true)).Pageable(page => page.Enabled(false).PageSize(10)).Sortable().Filterable().Scrollable(scrolling => scrolling.Height(550))
-
- )
-}
+                })
+                .ClientEvents(events => events.OnDataBinding("dataBinding"))
+                .Resizable(resizing => resizing.Columns(true))
+                .Pageable(paging => paging.PageSize(40).Style(GridPagerStyles.Status).PageOnScroll(true))
+                .Sortable()
+                .Filterable()
+                .Scrollable(scrolling => scrolling.Height(400))
+)}
 
 <script type="text/javascript">
     $(
@@ -101,7 +108,7 @@
             alert('请选择相应的销售');
             return;
         }
-        $("#AssignCompanies").attr("disabled", "disabled"); 
+        //$("#AssignCompanies").attr("disabled", "disabled"); 
         $.post('AssignCompanies', { selectedCompanies: selectedCompanies, selectedMembers: selectedMembers }, function (result) {
             alert(result);
             freshPage();
@@ -110,24 +117,8 @@
 
     function UnsignCompanies() {
         var selectedCompanyFilter = $('#companyFilter').val();
-//        if (selectedCompanyFilter == '-1' || selectedCompanyFilter == '') {
-//            return;
-        //        }
-
 
         var selectedCompanies = "";
-
-
-//        if (selectedCompanyFilter == '-2') {
-//            selectedCompanies = "all" + $('#projectid').val();
-//        }
-//        else {
-//            $('.t-grid tbody input[type=checkbox]:checked').each(
-//            function () {
-//                selectedCompanies += $(this).val() + ",";
-//            });
-//        }
-
         $('.t-grid tbody input[type=checkbox]:checked').each(
             function () {
                 selectedCompanies += $(this).val() + ",";
@@ -139,19 +130,21 @@
             alert('请选择相应的公司');
             return;
         }
-        $("#UnsignCompanies").attr("disabled", "disabled"); 
-        $.post('UnsignCompanies', { selectedCompanyFilter: selectedCompanyFilter, selectedCompanies: selectedCompanies }, function (result) {
-            alert(result);
-            freshPage();
-        });
+        $.post('UnsignCompanies',{ selectedCompanyFilter: selectedCompanyFilter, selectedCompanies: selectedCompanies },function (result) {
+                alert(result);
+                freshPage();
+            }
+        );
     }
 
-    function freshPage() {
+    function dataBinding(e) {
         var projectFilterId = $('#projectFilter').val();
-        var assignCompanyId = $('#companyFilter').val();       
-        var myurl = new SF.URL(window.location.href);
-        myurl.set('projectId', projectFilterId);
-        myurl.set('memberFilterForCompany', assignCompanyId);
-        window.location = myurl.url();
+        var assignCompanyId = $('#companyFilter').val();
+        e.data = $.extend(e.data, { projectId: projectFilterId, memberFilterForCompany: assignCompanyId });
+    }
+
+
+    function freshPage() {
+        $("#Company").data("tGrid").rebind();
     }
 </script>
