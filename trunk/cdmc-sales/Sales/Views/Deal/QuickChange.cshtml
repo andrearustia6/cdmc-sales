@@ -7,181 +7,123 @@
 @using BLL
 <fieldset>
     <legend>@SR.Form</legend>
-    <table>
+    <table cellpadding="0" cellspacing="0">
         <tr>
             <td>
-                <div class="display-field">
-                    @Html.LabelFor(model => model.DealCode)
-                </div>
+                @Html.LabelFor(model => model.DealCode)
             </td>
             <td>
-                <div class="display-field">
-                    @Html.TextBox("DealCode", Model == null ? "出单后自动生成" : Model.DealCode, new { READONLY = "readonly" })
-                </div>
+                @Html.TextBox("DealCode", Model == null ? "出单后自动生成" : Model.DealCode, new { READONLY = "readonly" })
             </td>
             <td>
-                <div class="editor-label">
-                    @Html.LabelFor(model => model.PackageID, "Package")
-                </div>
+                @Html.LabelFor(model => model.PackageID, "Package")
             </td>
             <td>
-                <div class="editor-field">
-                    @Html.DropDownListFor(m => m.PackageID, new SelectList(CH.GetAllData<Package>(), "ID", "Name"), "-请选择-", new { style = "width:300px;" })
-                    @Html.ValidationMessageFor(model => model.PackageID)
-                </div>
+                @Html.DropDownListFor(m => m.PackageID, new SelectList(CH.GetAllData<Package>(), "ID", "Name"), "-请选择-", new { style = "width:300px;" })
+                @Html.ValidationMessageFor(model => model.PackageID)
             </td>
         </tr>
         <tr>
             <td>
-                <div class="editor-label">
-                    @Html.LabelFor(model => model.CompanyRelationshipID, "公司")
-                </div>
+                @Html.LabelFor(model => model.CompanyRelationshipID, "公司")
             </td>
             <td>
-                 <div class="editor-field">
-                    @{
-                        var CRM = CH.GetDataById<CompanyRelationship>((int)ViewBag.CompanyRelationshipID);
-                    }
-                    @Html.TextBox("CompanyRelationshipName", CRM.CompanyName, new { @readOnly = "true", style = "width:300px;border-style: none" })
-                    @Html.Hidden("CompanyRelationshipID", (int)ViewBag.CompanyRelationshipID)
-                </div>
+                @{
+                    var CRM = CH.GetDataById<CompanyRelationship>((int)ViewBag.CompanyRelationshipID);
+                }
+                @Html.TextBox("CompanyRelationshipName", CRM.CompanyName, new { @readOnly = "true", style = "width:300px;border-style: none" })
+                @Html.Hidden("CompanyRelationshipID", (int)ViewBag.CompanyRelationshipID)
             </td>
             <td>
-                <div class="editor-label">
-                    @Html.LabelFor(model => model.ExpectedPaymentDate)
-                </div>
+                @Html.LabelFor(model => model.ExpectedPaymentDate)
             </td>
             <td>
-                <div class="editor-field">
-                    @Html.Telerik().DatePickerFor(model => model.ExpectedPaymentDate)
-                    @Html.ValidationMessageFor(model => model.ExpectedPaymentDate)
-                </div>
+                @Html.Telerik().DatePickerFor(model => model.ExpectedPaymentDate)
+                @Html.ValidationMessageFor(model => model.ExpectedPaymentDate)
             </td>
         </tr>
         <tr>
             <td>
-                <div class="editor-label">
-                    @Html.LabelFor(model => model.SignDate)
-                </div>
+                @Html.LabelFor(model => model.SignDate)
             </td>
             <td>
-                <div class="editor-field">
-                    @Html.Telerik().DatePicker().Name("SignDate").Value(Model == null ? DateTime.Now : Model.SignDate)
-                    @Html.ValidationMessageFor(model => model.SignDate)
-                </div>
+                @Html.Telerik().DatePicker().Name("SignDate").Value(Model == null ? DateTime.Now : Model.SignDate)
+                @Html.ValidationMessageFor(model => model.SignDate)
             </td>
             <td>
-                <div class="editor-label">
-                    @Html.LabelFor(model => model.Payment)
-                </div>
+                @Html.LabelFor(model => model.Payment)
             </td>
             <td>
-                <div class="editor-field">
-                    @Html.Telerik().CurrencyTextBoxFor(model => model.Payment)
-                    @Html.ValidationMessageFor(model => model.Payment)
-                </div>
+                @Html.Telerik().CurrencyTextBoxFor(model => model.Payment)
+                @Html.ValidationMessageFor(model => model.Payment)
             </td>
         </tr>
         <tr>
             <td>
-                <div class="editor-label">
-                    @Html.LabelFor(model => model.Committer)
-                </div>
+                @Html.LabelFor(model => model.Committer)
             </td>
             <td>
-                <div class="editor-field">
-                    @Html.EditorFor(model => model.Committer)<br />
-                    @Html.ValidationMessageFor(model => model.Committer)
-                </div>
+                @Html.EditorFor(model => model.Committer)<br />
+                @Html.ValidationMessageFor(model => model.Committer)
             </td>
             <td>
-                <div class="editor-label">
-                    @Html.LabelFor(model => model.CommitterContect)
-                </div>
+                @Html.LabelFor(model => model.CommitterContect)
             </td>
             <td>
-                <div class="editor-field">
-                    @Html.EditorFor(model => model.CommitterContect)
-                    @Html.ValidationMessageFor(model => model.CommitterContect)
-                </div>
+                @Html.EditorFor(model => model.CommitterContect)
+                @Html.ValidationMessageFor(model => model.CommitterContect)
             </td>
         </tr>
         <tr>
             <td>
-                <div class="editor-label">
-                    @Html.LabelFor(model => model.CommitterEmail)
-                </div>
+                @Html.LabelFor(model => model.CommitterEmail)
             </td>
             <td>
-                <div class="editor-field">
-                    @Html.EditorFor(model => model.CommitterEmail)
-                    @Html.ValidationMessageFor(model => model.CommitterEmail)
-                </div>
+                @Html.EditorFor(model => model.CommitterEmail)
+                @Html.ValidationMessageFor(model => model.CommitterEmail)
             </td>
             <td>
-                <div class="editor-label">
-                    @Html.LabelFor(model => model.Sales)
-                </div>            
+                @Html.LabelFor(model => model.Sales)
             </td>
             <td>
-                <div class="editor-field">
-                    @{
-                        var name = Model == null ? Employee.CurrentUserName : Model.Sales;
-                        <input name ="Sales" value="@name" />
-                    }
-                    @Html.ValidationMessageFor(model => model.Sales)
-                </div>
+                @{
+                    var name = Model == null ? Employee.CurrentUserName : Model.Sales;
+                    <input name ="Sales" value="@name" />
+                }
+                @Html.ValidationMessageFor(model => model.Sales)
             </td>
         </tr>
         <tr>
             <td>
-                <div class="editor-label">
-                    @Html.LabelFor(model => model.PaymentDetail)
-                </div>
+                @Html.LabelFor(model => model.PaymentDetail)
             </td>
             <td>
-                <div class="editor-field">
-                    @Html.TextAreaFor(model => model.PaymentDetail)
-                    @Html.ValidationMessageFor(model => model.PaymentDetail)
-                </div>            
+                @Html.TextAreaFor(model => model.PaymentDetail)
+                @Html.ValidationMessageFor(model => model.PaymentDetail)
             </td>
             <td>
-                <div class="editor-label">
-                    @Html.LabelFor(model => model.TicketDescription)
-                </div>
+                @Html.LabelFor(model => model.TicketDescription)
             </td>
             <td>
-                <div class="editor-field">
-                    @Html.TextAreaFor(model => model.TicketDescription)
-                    @Html.ValidationMessageFor(model => model.TicketDescription)
-                </div>
+                @Html.TextAreaFor(model => model.TicketDescription)
+                @Html.ValidationMessageFor(model => model.TicketDescription)
             </td>
         </tr>
         <tr>
             <td>
-                <div class="editor-label">
-                    @Html.LabelFor(model => model.Abandoned, "是否坏账")
-                </div>
+                @Html.LabelFor(model => model.Abandoned, "是否坏账")
             </td>
             <td>
-                <div class="editor-field">
-                    @Html.EditorFor(m => m.Abandoned)
-                    @Html.ValidationMessageFor(model => model.Abandoned)
-                </div>
+                @Html.EditorFor(m => m.Abandoned)
+                @Html.ValidationMessageFor(model => model.Abandoned)
             </td>
             <td>
-                <div class="editor-label">
-                    @Html.LabelFor(model => model.AbandonReason, "坏账原因")
-                </div>
+                @Html.LabelFor(model => model.AbandonReason, "坏账原因")
             </td>
             <td>
-                <div class="editor-field">
-                    @Html.TextAreaFor(m => m.AbandonReason)
-                    @Html.ValidationMessageFor(model => model.AbandonReason)
-                </div>
-                <div class="editor-field">
-                    @Html.HiddenFor(m => m.IsConfirm)
-                </div>
+                @Html.TextAreaFor(m => m.AbandonReason)
+                @Html.ValidationMessageFor(model => model.AbandonReason)
+                @Html.HiddenFor(m => m.IsConfirm)
                 @Html.Hidden("ProjectID", (int)ViewBag.ProjectID)
             </td>
         </tr>
@@ -196,8 +138,8 @@
                 commands.Insert();
                 commands.SubmitChanges();
             })
-            .Columns(c => 
-            { 
+            .Columns(c =>
+            {
                 c.Bound(p => p.Name).Title("客户名称");
                 c.Bound(p => p.Title).Title("客户职位");
                 c.Bound(p => p.Gender).Title("客户性别");
@@ -213,24 +155,8 @@
                     .Select("_SelectAjaxParticipant", "SalesEx")
                     .Update("_UpdateAjaxParticipant", "SalesEx");
             })
-            .Editable(editing => editing.Mode(GridEditMode.InCell).DefaultDataItem(new AjaxParticipant{}))
-            .ClientEvents(events => events.OnLoad("onLoad"))
+            .Editable(editing => editing.Mode(GridEditMode.InCell).DefaultDataItem(new AjaxParticipant { }))
     ) 
 
 </fieldset>
-
-    <script type="text/javascript">
-        function onLoad(e) {
-            //alert(e);
-        }
-        function onEdit(e) {
-//            $(e.form).find('#Gender').data('tDropDownList').select(function (dataItem) {
-//                return dataItem.Text == e.dataItem['Gender'];
-//            });
-
-//            $(e.form).find('#ParticipantTypeID').data('tDropDownList').select(function (dataItem) {
-//                return dataItem.Text == e.dataItem['ParticipantTypeID'].Text;
-//            });
-        }
-    </script>
 

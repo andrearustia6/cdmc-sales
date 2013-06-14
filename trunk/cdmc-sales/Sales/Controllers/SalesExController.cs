@@ -521,6 +521,7 @@ namespace Sales.Controllers
                     Department = quickEntry.Department,
                     Gender = quickEntry.Gender,
                     Mobile = quickEntry.CellPhone,
+                    EMail = quickEntry.WorkingEmail,
                     MarkForDelete = false,
                     CreatedDate = DateTime.Now,
                     ModifiedDate = DateTime.Now,
