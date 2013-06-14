@@ -15,7 +15,6 @@ namespace Sales.Controllers
         public ActionResult Index(int? month)
         {
             ViewBag.Month = month;
-            PopulateItems();
             return View();
         }
         [GridAction]
@@ -23,11 +22,8 @@ namespace Sales.Controllers
         {
             if (month == null) month = DateTime.Now.Month;
             // if (month == null) month = 5;
-            PopulateItems();
             var list = CRM_Logical._EmployeePerformance.GetManagerLeadsPerformances(month.Value);
             var data = list.ToList();
-
-
             return View(new GridModel(data));
         }
         [AcceptVerbs(HttpVerbs.Post)]
@@ -39,21 +35,20 @@ namespace Sales.Controllers
             ManagerScore newmodel = new ManagerScore();
             if (id > 0)
             {
-
                 if (TryUpdateModel(model))
                 {
                     newmodel.ID = id;
                     newmodel.TargetName = model.TargetName;
                     newmodel.Assigner = model.Assigner;
-                    newmodel.Item1Score = model.Item1Score;
-                    newmodel.Item2Score = model.Item2Score;
-                    newmodel.Item3Score = model.Item3Score;
-                    newmodel.Item4Score = model.Item4Score;
-                    newmodel.Item5Score = model.Item5Score;
-                    newmodel.Item6Score = model.Item6Score;
-                    newmodel.Item7Score = model.Item7Score;
-                    newmodel.Item8Score = model.Item8Score;
-                    newmodel.Item9Score = model.Item9Score;
+                    newmodel.Responsibility = model.Responsibility;
+                    newmodel.Discipline = model.Discipline;
+                    newmodel.Excution = model.Excution;
+                    newmodel.Targeting = model.Targeting;
+                    newmodel.Searching = model.Searching;
+                    newmodel.Production = model.Production;
+                    newmodel.PitchPaper = model.PitchPaper;
+                    newmodel.WeeklyMeeting = model.WeeklyMeeting;
+                    newmodel.MonthlyMeeting = model.MonthlyMeeting;
                     
                     newmodel.Month = month;
                     newmodel.Year = DateTime.Now.Year;
@@ -69,20 +64,17 @@ namespace Sales.Controllers
                 
                 if (TryUpdateModel(model))
                 {
-                    //ManagerScore newmodel = new ManagerScore();
-                    //newmodel.Item1Score = clientmodel.Item1Score;
-                    //newmodel.ID = model.ID;
                     newmodel.TargetName = model.TargetName;
                     newmodel.Assigner = model.Assigner;
-                    newmodel.Item1Score = model.Item1Score;
-                    newmodel.Item2Score = model.Item2Score;
-                    newmodel.Item3Score = model.Item3Score;
-                    newmodel.Item4Score = model.Item4Score;
-                    newmodel.Item5Score = model.Item5Score;
-                    newmodel.Item6Score = model.Item6Score;
-                    newmodel.Item7Score = model.Item7Score;
-                    newmodel.Item8Score = model.Item8Score;
-                    newmodel.Item9Score = model.Item9Score;
+                    newmodel.Responsibility = model.Responsibility;
+                    newmodel.Discipline = model.Discipline;
+                    newmodel.Excution = model.Excution;
+                    newmodel.Targeting = model.Targeting;
+                    newmodel.Searching = model.Searching;
+                    newmodel.Production = model.Production;
+                    newmodel.PitchPaper = model.PitchPaper;
+                    newmodel.WeeklyMeeting = model.WeeklyMeeting;
+                    newmodel.MonthlyMeeting = model.MonthlyMeeting;
                     
                     newmodel.Month = month;
                     newmodel.Year = DateTime.Now.Year;
@@ -90,7 +82,6 @@ namespace Sales.Controllers
                 }
             }
 
-            PopulateItems();
             var list = CRM_Logical._EmployeePerformance.GetManagerLeadsPerformances(month.Value);
             var data = list.ToList();
 
@@ -98,28 +89,7 @@ namespace Sales.Controllers
             return View(new GridModel(data));
 
         }
-        private void PopulateItems()
-        {
-            ViewData["Item1s"] = from m in CRM_Logical.GetItem1()
-                                 select m;
-            ViewData["Item2s"] = from m in CRM_Logical.GetItem2()
-                                 select m;
-
-            ViewData["Item3s"] = from m in CRM_Logical.GetItem3()
-                                 select m;
-            ViewData["Item4s"] = from m in CRM_Logical.GetItem4()
-                                 select m;
-            ViewData["Item5s"] = from m in CRM_Logical.GetItem5()
-                                 select m;
-            ViewData["Item6s"] = from m in CRM_Logical.GetItem6()
-                                 select m;
-            ViewData["Item7s"] = from m in CRM_Logical.GetItem7()
-                                 select m;
-            ViewData["Item8s"] = from m in CRM_Logical.GetItem8()
-                                 select m;
-            ViewData["Item9s"] = from m in CRM_Logical.GetItem9()
-                                 select m;
-        }
+        
         [GridAction]
         public ActionResult _SelectLeadIndex(int? month)
         {

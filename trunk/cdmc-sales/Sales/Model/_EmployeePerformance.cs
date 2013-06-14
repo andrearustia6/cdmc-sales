@@ -400,37 +400,37 @@ namespace Sales.Model
         
         [Display(Name = "责任心与积极性")]
         //[UIHint("ClientItem1"), Required]
-        public int? Item1Score { get; set; }
+        public int? Responsibility { get; set; }
         
         [Display(Name = "纪律性")]
-        public int? Item2Score { get; set; }
+        public int? Discipline { get; set; }
 
         [Display(Name = "执行能力")]
-        public int? Item3Score { get; set; }
+        public int? Excution { get; set; }
 
 
         [Display(Name = "目标意识")]
-        public int? Item4Score { get; set; }
+        public int? Targeting { get; set; }
 
         [Display(Name = "每天检查团队成员")]
-        public int? Item5Score { get; set; }
+        public int? Searching { get; set; }
 
         [Display(Name = "每周与研发人员的项目进度协调")]
-        public int? Item6Score { get; set; }
+        public int? Production { get; set; }
 
         [Display(Name = "每周更新Pitch paper/Email cover/ EB")]
-        public int? Item7Score { get; set; }
+        public int? PitchPaper { get; set; }
 
         [Display(Name = "每周销售例会")]
-        public int? Item8Score { get; set; }
+        public int? WeeklyMeeting { get; set; }
 
         [Display(Name = "每月通话时间")]
-        public int? Item9Score { get; set; }
+        public int? MonthlyMeeting { get; set; }
 
         [Display(Name = "团队Call List")]
         [HiddenInput(DisplayValue = false)] //Hide from Edit
         //团队Call List月人均平均数标准：销售专员200/人；销售经理140/人
-        public int? Item10Score//{ get; set; }
+        public int? Calllist//{ get; set; }
         {
             get
             {
@@ -481,7 +481,7 @@ namespace Sales.Model
         [Display(Name = "团队新增Leads")]
         [HiddenInput(DisplayValue = false)] //Hide from Edit
         //团队新增Leads月人均平均数标准：销售专员420/人；销售经理280/人
-        public int? Item11Score //{ get; set; }
+        public int? AddLeads //{ get; set; }
         {
             get
             {
@@ -506,25 +506,25 @@ namespace Sales.Model
         /// <summary>
         /// 带领的团队完成当月到账实际
         /// </summary>
-        public decimal? checkin { get; set; }
+        public decimal? checkinreal { get; set; }
 
         [Display(Name = "团队业绩表现")]
         [HiddenInput(DisplayValue = false)] //Hide from Edit
-        public double? Item12Score //{ get; set; }
+        public double? CheckIn //{ get; set; }
         {
             get
             {
                 if (target == 0 )
                     return 0;
-                else if (checkin/target >=(decimal)1.4)
+                else if (checkinreal / target >= (decimal)1.4)
                     return 30;
-                else if (checkin / target >= (decimal)1.2)
+                else if (checkinreal / target >= (decimal)1.2)
                     return 25;
-                else if (checkin / target >= (decimal)1)
+                else if (checkinreal / target >= (decimal)1)
                     return 20;
-                else if (checkin / target >= (decimal)0.8)
+                else if (checkinreal / target >= (decimal)0.8)
                     return 15;
-                else if (checkin / target >= (decimal)0.6)
+                else if (checkinreal / target >= (decimal)0.6)
                     return 10;
                 else
                     return 0;
