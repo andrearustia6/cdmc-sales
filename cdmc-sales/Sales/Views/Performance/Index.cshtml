@@ -52,16 +52,19 @@ var month = ViewBag.Month as int?;
     columns.Bound(p => p.CheckIn).Width(90);
     //columns.Bound(p => p.Month).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
     //columns.Bound(p => p.Year).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
-    columns.Command(commands => commands.Edit()).Title("打分").Width(80);
+    columns.Command(commands => { commands.Edit().ButtonType(GridButtonType.Text);
+        
+    }).Title("打分").Width(80);
 }).Editable(editing => editing
                         .Mode(GridEditMode.PopUp).TemplateName("ManagerScoreEdit"))
- .ClientEvents(events=>events.OnEdit("onEdit"))
+  .ClientEvents(e => e.OnRowDataBound("changeText"))
+  .ClientEvents(events => events.OnEdit("Grid_onEdit"))
   .Pageable(p => p.Style(GridPagerStyles.Status)
        .PageOnScroll(true).PageSize(25)).Scrollable(scrolling => scrolling.Height(350)).Sortable().Resizable(r => r.Columns(true))
-       )
+           )
 
 
-</fieldset>
+    </fieldset>
 <fieldset>
 <legend>销售经理考核</legend>
 @(Html.Telerik().Grid<_TeamLeadPerformance>().Name("lead")
@@ -204,17 +207,17 @@ var month = ViewBag.Month as int?;
     </table>
     
 </fieldset>
-<script type="text/javascript">
-    function onEdit(e) {
-        $(e.form).find('#Item1ScoreString').data('tDropDownList').select(function (dataItem) {
-            return dataItem.Text == e.dataItem['Item1s'];
-        });
-//        var $combo = $(e.cell).find('#Item1Score');
-//        if ($combo.length > 0) {
-//            var combo = $combo.data('tComboBox');
-//            combo.fill(function () {
-//                combo.value(e.dataItem['Item1Score'].ID)
-//            });
-//        }
+<script>
+    function changeText(e) {
+        var $row = $(e.row);
+        var rowButton = $row.find(".t-grid-edit");
+        rowButton[0].innerText = "打分";
+    }
+    function Grid_onEdit(e) {
+        var popup = $("#" + e.currentTarget.id + "PopUp");
+        var popupDataWin = popup.data("tWindow");
+        var l = ($(window).width() / 2 - $(popup).width() / 2);
+        popup.css({ "left": l + "px", "margin-left": "0", "width": $(popup).width() });
+        popupDataWin.title("打分");
     }
 </script>
