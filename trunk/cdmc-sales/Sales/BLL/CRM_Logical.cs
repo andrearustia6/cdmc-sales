@@ -742,7 +742,7 @@ namespace BLL
                                        CRMID = c.ID,
                                        CompanyCategories = c.Categorys,
                                        Members = c.Members,
-                                       CompanyNameEN = c.Company.Name_EN,
+                                       CompanyNameEN = string.IsNullOrEmpty(c.Company.Name_EN)?"":c.Company.Name_EN,
                                        CompanyNameCH = c.Company.Name_CH,
                                        CrmCreator = c.Creator,
                                        CompanyType = c.Company.CompanyType.Name,

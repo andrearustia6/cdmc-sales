@@ -330,6 +330,21 @@ namespace Utl
             return selectList;
         }
 
+        public static IEnumerable<SelectListItem> PrefixFilterSelectList(string selectVal)
+        {
+            List<SelectListItem> selectList = new List<SelectListItem>();
+            string[] prefixLetters = new string[] { "请选择","A", "B", "C", "D", "E", "F", "G", 
+                                                  "H", "I", "J", "K", "L", "M", "M",
+                                                  "O", "P", "Q", "R", "S", "T", "U", 
+                                                  "V", "W", "X", "Y", "Z" };
+            foreach (string prefixLetter in prefixLetters)
+            {
+                SelectListItem selectListItem = new SelectListItem() { Text = prefixLetter, Value = (prefixLetter == "请选择" ? "" : prefixLetter), Selected = prefixLetter == selectVal };
+                selectList.Add(selectListItem);
+            }
+            return selectList;
+        }
+
         public static bool IsTelephone(string val)
         {
             string tempchar = "";
