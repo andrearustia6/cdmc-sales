@@ -30,12 +30,12 @@ namespace Entity
         public int? Item8Score { get; set; }
         [Display(Name = "每月通话时间")]//MonthlyMeeting,code=90
         public int? Item9Score { get; set; }
-        //[Display(Name = "团队Call List")]//Calllist,code=100
-        //public int? Item10Score { get; set; }
-        //[Display(Name = "团队新增Leads")]//AddLeads,code=110
-        //public double? Item11Score { get; set; }
-        //[Display(Name = "团队业绩表现")]//CheckIn,code=120
-        //public double? Item12Score { get; set; }
+        [Display(Name = "团队Call List")]//Calllist,code=100
+        public int? Item10Score { get; set; }
+        [Display(Name = "团队新增Leads")]//AddLeads,code=110
+        public double? Item11Score { get; set; }
+        [Display(Name = "团队业绩表现")]//CheckIn,code=120
+        public double? Item12Score { get; set; }
        
         [Display(Name = "月")]
         public int? Month { get; set; }
