@@ -82,7 +82,7 @@ namespace System.Web.Mvc
             if (ts.Count() > 0)
                 item.ModelState.AddModelError("", "该月的目标已经添加，不能再次添加");
 
-            if (t.TargetOfWeeks.Sum(s => s.Deal) < t.Deal)
+            if ((t.TargetOf1stWeek + t.TargetOf2ndWeek + t.TargetOf3rdWeek + t.TargetOf4thWeek + t.TargetOf5thWeek) < t.Deal)
                 item.ModelState.AddModelError("", "周目标总和必须大于等于月目标");
         }
 

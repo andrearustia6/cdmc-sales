@@ -321,5 +321,7 @@ namespace Sales.Controllers
             CH.Delete<TargetOfMonthForMember>(id);
             return RedirectToAction("MyTargetIndexEx", new { projectid = item.ProjectID });
         }
+
+  
     }
 }
