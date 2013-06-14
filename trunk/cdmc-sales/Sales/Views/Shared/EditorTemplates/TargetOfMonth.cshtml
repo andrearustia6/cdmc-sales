@@ -1,0 +1,101 @@
+﻿@model Entity.TargetOfMonth
+@using Utl
+@using BLL
+@Html.ValidationSummary(true)
+@using (Html.BeginForm())
+{
+    <fieldset>
+        @{if (Model.ID != 0)
+          {
+            <legend>编辑项目月目标</legend>
+          }
+          else
+          {
+            <legend>新增项目月目标</legend>
+          }
+        }
+        <table style="padding: 10px; margin: 10px">
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.ProjectID, "项目名称")
+                </td>
+                <td>
+                    @Html.DropDownListFor(m => m.ProjectID, new SelectList(BLL.CRM_Logical.GetUserInvolveProject(), "ID", "Name"), new { style = "width:135px" })
+                    @Html.ValidationMessageFor(model => model.ProjectID)
+                </td>
+                <td>
+                    @Html.LabelFor(model => model.TargetOf1stWeek)
+                </td>
+                <td>
+                    @Html.Telerik().CurrencyTextBoxFor(model => model.TargetOf1stWeek).Value(Model.TargetOf1stWeek == null ? 0 : Model.TargetOf1stWeek)
+                    @Html.ValidationMessageFor(model => model.TargetOf1stWeek)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.StartDate)
+                </td>
+                <td>
+                    @Html.Telerik().DatePickerFor(model => model.StartDate).Value(Model.ID == 0 ? DateTime.Now.StartOfMonth() : Model.StartDate)
+                    @Html.ValidationMessageFor(model => model.StartDate)
+                </td>
+                <td>
+                    @Html.LabelFor(model => model.TargetOf2ndWeek)
+                </td>
+                <td>
+                    @Html.Telerik().CurrencyTextBoxFor(model => model.TargetOf2ndWeek).Value(Model.TargetOf2ndWeek == null ? 0 : Model.TargetOf2ndWeek)
+                    @Html.ValidationMessageFor(model => model.TargetOf2ndWeek)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.EndDate)
+                </td>
+                <td>
+                    @Html.Telerik().DatePickerFor(model => model.EndDate).Value(Model.ID == 0 ? DateTime.Now.EndOfMonth() : Model.EndDate)
+                    @Html.ValidationMessageFor(model => model.EndDate)
+                </td>
+                <td>
+                    @Html.LabelFor(model => model.TargetOf3rdWeek)
+                </td>
+                <td>
+                    @Html.Telerik().CurrencyTextBoxFor(model => model.TargetOf3rdWeek).Value(Model.TargetOf3rdWeek == null ? 0 : Model.TargetOf3rdWeek)
+                    @Html.ValidationMessageFor(model => model.TargetOf3rdWeek)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.Deal)
+                </td>
+                <td>
+                    @Html.Telerik().CurrencyTextBoxFor(model => model.Deal)
+                    @Html.ValidationMessageFor(model => model.Deal)
+                </td>
+                <td>
+                    @Html.LabelFor(model => model.TargetOf4thWeek)
+                </td>
+                <td>
+                    @Html.Telerik().CurrencyTextBoxFor(model => model.TargetOf4thWeek).Value(Model.TargetOf4thWeek == null ? 0 : Model.TargetOf4thWeek)
+                    @Html.ValidationMessageFor(model => model.TargetOf4thWeek)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.CheckIn)
+                </td>
+                <td>
+                    @Html.Telerik().CurrencyTextBoxFor(model => model.CheckIn)
+                    @Html.ValidationMessageFor(model => model.CheckIn)
+                </td>
+                <td>
+                    @Html.LabelFor(model => model.TargetOf5thWeek)
+                </td>
+                <td>
+                    @Html.Telerik().CurrencyTextBoxFor(model => model.TargetOf5thWeek).Value(Model.TargetOf5thWeek == null ? 0 : Model.TargetOf5thWeek)
+                    @Html.ValidationMessageFor(model => model.TargetOf5thWeek)
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+   
+}
