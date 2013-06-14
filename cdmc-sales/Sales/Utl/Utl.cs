@@ -654,19 +654,19 @@ namespace Utl
         public static double GetPercent(double child, double father)
         {
             if(father==0) return 0;
-            return Math.Round((child * 100 / father), 2);
+            return Math.Round((child  / father), 2);
         }
 
         public static double GetPercent(int child, int father)
         {
             if (father == 0 || child == 0 ) return 0;
-            return Math.Round(((double)child * 100 /(double)father), 2);
+            return Math.Round(((double)child  /(double)father), 2);
         }
 
         public static double GetPercent(decimal? child, decimal? father)
         {
             if (father == 0 || child == 0 || father == null || child == null) return 0;
-            return (double)Math.Round((child.Value * 100 / father.Value), 2);
+            return (double)Math.Round((child.Value  / father.Value), 2);
         }
 
         public static void GetMonthActualStartdateAndEnddate(int? month, out DateTime startdate, out DateTime enddate)

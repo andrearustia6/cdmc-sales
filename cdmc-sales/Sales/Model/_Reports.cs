@@ -113,8 +113,43 @@ namespace Model
     public class AjaxProjectProcess
     {
         public string Manager { get; set; }
+      
+        public string DisplayProjectCheckIn
+        {
+            get
+            {
+                var target = TotalCheckInTarget == null ? "目标未设置" : TotalCheckInTarget.ToString();
+                var checkin = TotalCheckIn == null ? "0" : TotalCheckIn.ToString();
+                var percent = TotalCheckInPercent.ToString();
+                return checkin + "/" + target + ":" + percent;
+
+            }
+        }
+        public string DisplayMonthCheckIn
+        {
+            get
+            {
+                var target = CurrentMonthCheckInTarget == null ? "目标未设置" : CurrentMonthCheckInTarget.ToString();
+                var checkin = CurrentMonthCheckIn == null ? "0" : CurrentMonthCheckIn.ToString();
+                var percent = MonthPercent.ToString();
+                return checkin + "/" + target + ":" + percent;
+
+            }
+        }
+        public string DisplayWeekCheckIn
+        {
+            get
+            {
+                var target = CurrentWeekTarget == null ? "目标未设置" : CurrentWeekTarget.ToString();
+                var checkin = CurrentWeekCheckIn == null ? "0" : CurrentWeekCheckIn.ToString();
+                var percent = WeekPercent.ToString();
+                return checkin + "/" + target + ":" + percent;
+
+            }
+        }
+
         public string Lead { get; set; }
-        public string CurrentSales { get; set; }
+        public int CurrentSales { get; set; }
         public string ProjectUnitName { get; set; }
         public string ProjectUnitCode { get; set; }
         public decimal? CurrentMonthCheckIn { get; set; }
