@@ -156,7 +156,7 @@
     .Content(@<text><div class="dialogue-addcompany">
         <div class="companyAdd-wrapper">
         </div>
-        <div class="dialogue-buttons">
+        <div class="dialogue-buttons" style="float:right;">
             <input type="button" class="btn-queding" onclick="Addcompany()" />
             <input type="button" class="btn-quxiao" onclick="CancelAddcompany()" />
         </div>
@@ -172,13 +172,13 @@
     <div class="dialogue-addcompany" style="margin-top:0 20px 0 20px;">
         <div class="quickEntry-wrapper">
         </div>
-        <div class="dialogue-buttons">
+        <div class="dialogue-buttons" style="float:right;">
             <input type="button" class="btn-queding" onclick="QuickEntry()" />
             <input type="button" class="btn-quxiao" onclick="CancelQuickEntry()" />
         </div>
     </div></text>)
     .Width(1000)
-    .Height(700).Title("快捷录入")
+    .Height(650).Title("快捷录入")
     .Modal(true).Visible(false).Draggable(true)
     )
 
