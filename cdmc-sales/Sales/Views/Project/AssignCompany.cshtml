@@ -41,7 +41,7 @@
                         <div style="float: left;">
                             <span>
                                 <label style="margin:5px 20px;"> 字头筛选:</label>
-                                @Html.DropDownList("Figsdflters", SelectHelper.FilterSelectList())
+                                @Html.DropDownList("prefixFilter", SelectHelper.PrefixFilterSelectList((string)ViewBag.selectVal))
                             </span>
                         </div>
                     </div>
@@ -78,6 +78,11 @@
                 freshPage();
             });
             $('#companyFilter').change(
+                function () {
+                    freshPage();
+                }
+            );
+            $('#prefixFilter').change(
                 function () {
                     freshPage();
                 }
@@ -148,7 +153,8 @@
     function dataBinding(e) {
         var projectFilterId = $('#projectFilter').val();
         var assignCompanyId = $('#companyFilter').val();
-        e.data = $.extend(e.data, { projectId: projectFilterId, memberFilterForCompany: assignCompanyId });
+        var prefixLetter = $('#prefixFilter').val();
+        e.data = $.extend(e.data, { projectId: projectFilterId, memberFilterForCompany: assignCompanyId, prefixFilter: prefixLetter });
     }
 
 

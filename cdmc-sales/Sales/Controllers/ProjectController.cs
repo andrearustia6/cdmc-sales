@@ -590,7 +590,7 @@ namespace Sales.Controllers
         }
 
         [HttpGet]
-        public ActionResult AssignCompany(int? projectId, int? memberFilterForCompany)
+        public ActionResult AssignCompany(int? projectId, int? memberFilterForCompany, string prefixFilter="")
         {
             Project project = null;
             if (projectId.HasValue)
@@ -603,35 +603,13 @@ namespace Sales.Controllers
             }
             ViewBag.ProjectID = project.ID;
             ViewBag.MemberFilterForCompany = memberFilterForCompany;
-            //var p = CRM_Logical._Project.GetAjaxProject(project.ID);
-            //if (memberFilterForCompany.HasValue)
-            //{
-            //    //int memberId = memberFilterForCompany.Value;
-            //    //ViewBag.MemberFilterForCompany = memberFilterForCompany.ToString();
+            ViewBag.selectVal = prefixFilter;
 
-            //    //if (memberId == -1)//未分配公司
-            //    //{
-            //    //    p.CRMs = p.CRMs.Where(c => string.IsNullOrEmpty(c.MembersString)).ToList();
-            //    //}
-            //    //else if (memberId == -2)//已分配公司
-            //    //{
-            //    //    p.CRMs = p.CRMs.Where(c => !string.IsNullOrEmpty(c.MembersString)).ToList();
-            //    //}
-            //    //else//指定公司
-            //    //{
-            //    //    p.CRMs = p.CRMs.Where(c => c.MembersIds.Any(m => m == memberId)).ToList();
-            //    //}
-            //}
-            //else
-            //{
-            //    ViewBag.MemberId = "";
-            //}
-            //p.CRMs = p.CRMs.ToList();
             return View();
         }
         
         [GridAction]
-        public ActionResult _AjaxAssignCompany(int? projectId, int? memberFilterForCompany)
+        public ActionResult _AjaxAssignCompany(int? projectId, int? memberFilterForCompany, string prefixFilter = "")
         {
             Project project = null;
             if (projectId.HasValue)
@@ -659,6 +637,10 @@ namespace Sales.Controllers
                 {
                     p.CRMs = p.CRMs.Where(c => c.MembersIds.Any(m => m == memberId)).ToList();
                 }
+            }
+            if (!String.IsNullOrEmpty(prefixFilter))
+            {
+                p.CRMs = p.CRMs.Where(c => c.CompanyNameEN.StartsWith(prefixFilter.ToLower()));
             }
             return View(new GridModel(p.CRMs.ToList()));
         }
