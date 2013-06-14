@@ -25,4 +25,11 @@ namespace Entity
         public virtual UserFavorsCrmGroup UserFavorsCrmGroup { get; set; }
         public int? UserFavorsCrmGroupID { get; set; }
     }
+
+    public class EmployeeRole : EntityBase
+    {
+        public virtual Role Role { get; set; }
+        public int? RoleID { get; set; }
+        public string AccountName { get; set; }
+    }
 }

@@ -38,7 +38,7 @@
         {
             dataBinding.Ajax()
                 .Select("_AdminSelectIndex", "TargetOfMonth")
-                .Update("_AdminSaveAjaxEditing", "TargetOfMonth");
+                .Update("_AdminSaveAjaxEditing", "TargetOfMonth", new { projectid = 26});
         })
         .Editable(editing => editing.Mode(GridEditMode.PopUp))
         .Pageable(p => p.Style(GridPagerStyles.Status).PageSize(50)

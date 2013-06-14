@@ -266,18 +266,19 @@ namespace Sales.Controllers
         [GridAction]
         public ActionResult _AdminSelectIndex(string filterId, int? projectid)
         {
+            ViewBag.selectVal = projectid;
             return View(new GridModel(getData(filterId, projectid)));
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
         [GridAction]
-        public ActionResult _AdminSaveAjaxEditing(int id)
+        public ActionResult _AdminSaveAjaxEditing(int id, int? projectid)
         {
             var item = CH.GetDataById<TargetOfMonth>(id);
             item.AdminConfirmor = Employee.GetLoginUserName();
             item.IsAdminConfirm = true;
             CH.Edit<TargetOfMonth>(item);
-            return View(new GridModel(getData()));
+            return View(new GridModel(getData("", projectid)));
         }
 
         public ActionResult EditEx(int id)

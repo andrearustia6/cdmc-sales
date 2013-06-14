@@ -600,7 +600,6 @@ namespace BLL
                             TotalCheckIn = deals.Where(w => w.Project.ProjectUnitCode == l.Code).Sum(s => (decimal?)s.Income),
                             TotalCheckInTarget = (decimal?)l.Target,
                             CurrentSales = l.MemberCount
-                           
                         };
 
                 return data;
