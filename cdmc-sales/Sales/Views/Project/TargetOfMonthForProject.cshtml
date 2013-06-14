@@ -3,11 +3,9 @@
 @Html.Partial("contenttitle", "月目标列表")
 @Html.Partial("projectselector")
 @(Html.Telerik().Grid(Model).Name("TargetOfMonths")
-            .ToolBar(commands => commands.Custom().Text("创建月目标").Action("CreateEx", "TargetOfMonth", new { projectid = (int?)ViewBag.ProjectID }))
-            .DataKeys(keys =>
-            {
-                keys.Add(s => s.ID);
-            })
+.ToolBar(commands => commands.Insert().ImageHtmlAttributes(new { style = "margin-left:0" }))
+.DataKeys(keys => { keys.Add(s => s.ID); }).DataBinding(dataBinding => dataBinding.Server()
+                        .Select("TargetOfMonthForProject", "Project").Insert("CreateEx", "TargetOfMonth").Update("EditEx", "TargetOfMonth").Delete("DeleteEx", "TargetOfMonth"))
             .Columns(c =>
             {
                 c.Bound(item => item.Project.Name);
@@ -15,11 +13,13 @@
                 c.Bound(item => item.CheckIn).Format("{0:c}").Width(100);
                 c.Bound(item => item.StartDate).Format("{0:d}").Width(100);
                 c.Bound(item => item.EndDate).Format("{0:d}").Width(100);
-                c.Bound(item => item.ID).Title("操作").Width(200).Template(@<span> <a href=@Url.Content("~/TargetOfMonth/EditEx/" + item.ID) >
-                    编辑</a> | <a href=@Url.Content("~/TargetOfMonth/DetailsEx/" + item.ID)>详细</a> | <a href=@Url.Content("~/TargetOfMonth/AddBreakdown/?projectid=" + item.ProjectID + "&targetofmonthid=" + item.ID) >
-                        划分创建</a> | <a href=@Url.Content("~/TargetOfMonth/DeleteEx/" + item.ID) >删除</a>
-                </span>);
+                c.Bound(item => item.TargetOf1stWeek).Format("{0:c}").Width(100);
+                c.Bound(item => item.TargetOf2ndWeek).Format("{0:c}").Width(100);
+                c.Bound(item => item.TargetOf3rdWeek).Format("{0:c}").Width(100);
+                c.Bound(item => item.TargetOf4thWeek).Format("{0:c}").Width(100);
+                c.Bound(item => item.TargetOf5thWeek).Format("{0:c}").Width(100);
+                c.Command(commands => { commands.Edit(); commands.Delete(); }).Title("操作").Width(200);
             })
-            .Resizable(resizing => resizing.Columns(true))
+            .Resizable(resizing => resizing.Columns(true)).Editable(editing => editing.Mode(GridEditMode.PopUp))
             .Scrollable(scrolling => scrolling.Height(350))
                                                                                                                 )

@@ -715,14 +715,7 @@ namespace Sales.Controllers
             return View(CH.GetAllData<ImportCompanyTrace>().OrderByDescending(s => s.ImportDate).ToList());
         }
 
-        public ActionResult TargetOfMonthForProject(int? projectid)
-        {
-            projectid = this.TrySetProjectIDForUser(projectid);
-            ViewBag.ProjectID = projectid;
-            //return View(CH.GetAllData<TargetOfMonth>().Where(s => s.Project.TeamLeader == Employee.GetLoginUserName()).OrderByDescending(s => s.EndDate).ToList());
-            return View(CH.GetAllData<TargetOfMonth>().Where(s => s.ProjectID == projectid).OrderByDescending(s => s.EndDate).ToList());
-
-        }
+       
 
         public ActionResult ParticipantIndex(int? projectid)
         {

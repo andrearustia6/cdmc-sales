@@ -332,8 +332,20 @@ namespace Entity
         [Display(Name = "板块确认人")]
         public string AdminConfirmor { get; set; }
 
-        [Display(Name = "周目标")]
-        public virtual List<TargetOfWeek> TargetOfWeeks { get; set; }
+        [Display(Name = "第一周目标"), Required, DisplayFormat(DataFormatString = "{0:c}")]
+        public decimal? TargetOf1stWeek { get; set; }
+
+        [Display(Name = "第二周目标"), Required, DisplayFormat(DataFormatString = "{0:c}")]
+        public decimal? TargetOf2ndWeek { get; set; }
+
+        [Display(Name = "第三周目标"), Required, DisplayFormat(DataFormatString = "{0:c}")]
+        public decimal? TargetOf3rdWeek { get; set; }
+
+        [Display(Name = "第四周目标"), Required, DisplayFormat(DataFormatString = "{0:c}")]
+        public decimal? TargetOf4thWeek { get; set; }
+
+        [Display(Name = "第五周目标"), Required, DisplayFormat(DataFormatString = "{0:c}")]
+        public decimal? TargetOf5thWeek { get; set; }
     }
 
     /// <summary>

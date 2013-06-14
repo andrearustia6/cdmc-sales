@@ -63,8 +63,8 @@ namespace Sales.Controllers
 
                     }
                 }
-                return RedirectToAction("TargetOfMonthForProject", "Project");
-                //return RedirectToAction("management", "project", new { id = projectid, tabindex = 2 });
+                //return RedirectToAction("TargetOfMonthForProject", "Project");
+                return RedirectToAction("management", "project", new { id = projectid, tabindex = 2 });
             }
 
             return View("Breakdown", CH.GetAllData<Member>(m => m.ProjectID == projectid && m.IsActivated == true));
@@ -255,97 +255,7 @@ namespace Sales.Controllers
             return data.OrderByDescending(s => s.EndDate).ToList();
         }
 
-        public ActionResult CreateEx(int? projectid)
-        {
-            ViewBag.ProjectID = projectid;
-            return View();
-        }
 
-        [HttpPost]
-        public ActionResult CreateEx(TargetOfMonth item)
-        {
-            this.AddErrorStateIfTargetOfMonthNoValid(item);
-
-            if (ModelState.IsValid)
-            {
-                for (int i = 0; i < 5; i++)
-                {
-                    item.TargetOfWeeks[i].ProjectID = item.ProjectID;
-                    item.TargetOfWeeks[i].TargetOfMonthID = item.ID;
-                    item.TargetOfWeeks[i].Member = Employee.GetLoginUserName();
-                }
-
-                //选择月第一天为周一
-                if (item.StartDate.DayOfWeek == DayOfWeek.Monday)
-                {
-                    item.TargetOfWeeks[0].StartDate = item.StartDate;
-                    item.TargetOfWeeks[0].EndDate = item.StartDate.AddDays(4);
-                    item.TargetOfWeeks[1].StartDate = item.StartDate.AddDays(7);
-                    item.TargetOfWeeks[1].EndDate = item.StartDate.AddDays(11);
-                    item.TargetOfWeeks[2].StartDate = item.StartDate.AddDays(14);
-                    item.TargetOfWeeks[2].EndDate = item.StartDate.AddDays(18);
-                    item.TargetOfWeeks[3].StartDate = item.StartDate.AddDays(21);
-                    item.TargetOfWeeks[3].EndDate = item.StartDate.AddDays(25);
-                    if (item.StartDate.AddDays(28) > item.EndDate)
-                    {
-                        item.TargetOfWeeks[4].StartDate = item.EndDate;
-                        item.TargetOfWeeks[4].EndDate = item.EndDate;
-                    }
-                    else
-                    {
-                        item.TargetOfWeeks[4].StartDate = item.StartDate.AddDays(28);
-                        item.TargetOfWeeks[4].EndDate = item.EndDate;
-                    }
-                }
-                else if (item.StartDate.DayOfWeek == DayOfWeek.Saturday || item.StartDate.DayOfWeek == DayOfWeek.Sunday)//选择月第一天为周末
-                {
-                    DateTime firstMondayOfMonth = item.StartDate.AddDays(8 - (int)item.StartDate.DayOfWeek);
-                    item.TargetOfWeeks[0].StartDate = firstMondayOfMonth;
-                    item.TargetOfWeeks[0].EndDate = firstMondayOfMonth.AddDays(4);
-                    item.TargetOfWeeks[1].StartDate = firstMondayOfMonth.AddDays(7);
-                    item.TargetOfWeeks[1].EndDate = firstMondayOfMonth.AddDays(11);
-                    item.TargetOfWeeks[2].StartDate = firstMondayOfMonth.AddDays(14);
-                    item.TargetOfWeeks[2].EndDate = firstMondayOfMonth.AddDays(18);
-                    item.TargetOfWeeks[3].StartDate = firstMondayOfMonth.AddDays(21);
-                    item.TargetOfWeeks[3].EndDate = firstMondayOfMonth.AddDays(25);
-                    if (item.StartDate.AddDays(28) > item.EndDate)
-                    {
-                        item.TargetOfWeeks[4].StartDate = item.EndDate;
-                        item.TargetOfWeeks[4].EndDate = item.EndDate;
-                    }
-                    else
-                    {
-                        item.TargetOfWeeks[4].StartDate = item.StartDate.AddDays(28);
-                        item.TargetOfWeeks[4].EndDate = item.EndDate;
-                    }
-                }
-                else//
-                {
-                    DateTime firstFridayOfMonth = item.StartDate.AddDays(5 - (int)item.StartDate.DayOfWeek);
-                    item.TargetOfWeeks[0].StartDate = item.StartDate;
-                    item.TargetOfWeeks[0].EndDate = firstFridayOfMonth;
-                    item.TargetOfWeeks[1].StartDate = firstFridayOfMonth.AddDays(4);
-                    item.TargetOfWeeks[1].EndDate = firstFridayOfMonth.AddDays(7);
-                    item.TargetOfWeeks[2].StartDate = firstFridayOfMonth.AddDays(11);
-                    item.TargetOfWeeks[2].EndDate = firstFridayOfMonth.AddDays(14);
-                    item.TargetOfWeeks[3].StartDate = firstFridayOfMonth.AddDays(18);
-                    item.TargetOfWeeks[3].EndDate = firstFridayOfMonth.AddDays(21);
-                    if (item.StartDate.AddDays(24) > item.EndDate)
-                    {
-                        item.TargetOfWeeks[4].StartDate = item.EndDate;
-                        item.TargetOfWeeks[4].EndDate = item.EndDate;
-                    }
-                    else
-                    {
-                        item.TargetOfWeeks[4].StartDate = item.StartDate.AddDays(24);
-                        item.TargetOfWeeks[4].EndDate = item.EndDate;
-                    }
-                }
-                CH.Create<TargetOfMonth>(item);
-                return RedirectToAction("TargetOfMonthForProject", "Project", new { projectid = item.ProjectID });
-            }
-            return View(item);
-        }
 
         public ActionResult AdminConfirmList(int? projectId)
         {
@@ -375,88 +285,16 @@ namespace Sales.Controllers
             return View(CH.GetDataById<TargetOfMonth>(id));
         }
 
-        [HttpPost]
+        [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult EditEx(TargetOfMonth item)
         {
             this.AddErrorStateIfTargetOfMonthNoValid(item);
             if (ModelState.IsValid)
             {
-                //选择月第一天为周一
-                if (item.StartDate.DayOfWeek == DayOfWeek.Monday)
-                {
-                    item.TargetOfWeeks[0].StartDate = item.StartDate;
-                    item.TargetOfWeeks[0].EndDate = item.StartDate.AddDays(4);
-                    item.TargetOfWeeks[1].StartDate = item.StartDate.AddDays(7);
-                    item.TargetOfWeeks[1].EndDate = item.StartDate.AddDays(11);
-                    item.TargetOfWeeks[2].StartDate = item.StartDate.AddDays(14);
-                    item.TargetOfWeeks[2].EndDate = item.StartDate.AddDays(18);
-                    item.TargetOfWeeks[3].StartDate = item.StartDate.AddDays(21);
-                    item.TargetOfWeeks[3].EndDate = item.StartDate.AddDays(25);
-                    if (item.StartDate.AddDays(28) > item.EndDate)
-                    {
-                        item.TargetOfWeeks[4].StartDate = item.EndDate;
-                        item.TargetOfWeeks[4].EndDate = item.EndDate;
-                    }
-                    else
-                    {
-                        item.TargetOfWeeks[4].StartDate = item.StartDate.AddDays(28);
-                        item.TargetOfWeeks[4].EndDate = item.EndDate;
-                    }
-                }
-                else if (item.StartDate.DayOfWeek == DayOfWeek.Saturday || item.StartDate.DayOfWeek == DayOfWeek.Sunday)//选择月第一天为周末
-                {
-                    DateTime firstMondayOfMonth = item.StartDate.AddDays(8 - (int)item.StartDate.DayOfWeek);
-                    item.TargetOfWeeks[0].StartDate = firstMondayOfMonth;
-                    item.TargetOfWeeks[0].EndDate = firstMondayOfMonth.AddDays(4);
-                    item.TargetOfWeeks[1].StartDate = firstMondayOfMonth.AddDays(7);
-                    item.TargetOfWeeks[1].EndDate = firstMondayOfMonth.AddDays(11);
-                    item.TargetOfWeeks[2].StartDate = firstMondayOfMonth.AddDays(14);
-                    item.TargetOfWeeks[2].EndDate = firstMondayOfMonth.AddDays(18);
-                    item.TargetOfWeeks[3].StartDate = firstMondayOfMonth.AddDays(21);
-                    item.TargetOfWeeks[3].EndDate = firstMondayOfMonth.AddDays(25);
-                    if (item.StartDate.AddDays(28) > item.EndDate)
-                    {
-                        item.TargetOfWeeks[4].StartDate = item.EndDate;
-                        item.TargetOfWeeks[4].EndDate = item.EndDate;
-                    }
-                    else
-                    {
-                        item.TargetOfWeeks[4].StartDate = item.StartDate.AddDays(28);
-                        item.TargetOfWeeks[4].EndDate = item.EndDate;
-                    }
-                }
-                else//
-                {
-                    DateTime firstFridayOfMonth = item.StartDate.AddDays(5 - (int)item.StartDate.DayOfWeek);
-                    item.TargetOfWeeks[0].StartDate = item.StartDate;
-                    item.TargetOfWeeks[0].EndDate = firstFridayOfMonth;
-                    item.TargetOfWeeks[1].StartDate = firstFridayOfMonth.AddDays(4);
-                    item.TargetOfWeeks[1].EndDate = firstFridayOfMonth.AddDays(7);
-                    item.TargetOfWeeks[2].StartDate = firstFridayOfMonth.AddDays(11);
-                    item.TargetOfWeeks[2].EndDate = firstFridayOfMonth.AddDays(14);
-                    item.TargetOfWeeks[3].StartDate = firstFridayOfMonth.AddDays(18);
-                    item.TargetOfWeeks[3].EndDate = firstFridayOfMonth.AddDays(21);
-                    if (item.StartDate.AddDays(24) > item.EndDate)
-                    {
-                        item.TargetOfWeeks[4].StartDate = item.EndDate;
-                        item.TargetOfWeeks[4].EndDate = item.EndDate;
-                    }
-                    else
-                    {
-                        item.TargetOfWeeks[4].StartDate = item.StartDate.AddDays(24);
-                        item.TargetOfWeeks[4].EndDate = item.EndDate;
-                    }
-                }
-
                 CH.Edit<TargetOfMonth>(item);
-                for (int i = 0; i < 5; i++)
-                {
-                    CH.Edit<TargetOfWeek>(item.TargetOfWeeks[i]);
-                }
-
-                return RedirectToAction("TargetOfMonthForProject", "Project");
+                return RedirectToAction("TargetOfMonthForProject", "TargetOfMonth");
             }
-            return View(item);
+            return View("TargetOfMonthForProject", "TargetOfMonth", CH.GetAllData<TargetOfMonth>().Where(s => s.ProjectID == item.ProjectID).OrderByDescending(s => s.EndDate).ToList());
         }
 
         public ViewResult DetailsEx(int id)
@@ -469,7 +307,7 @@ namespace Sales.Controllers
             return View(CH.GetDataById<TargetOfMonth>(id));
         }
 
-        [HttpPost, ActionName("DeleteEx")]
+        [AcceptVerbs(HttpVerbs.Post), ActionName("DeleteEx")]
         public ActionResult DeleteExConfirmed(int id)
         {
             var item = CH.GetDataById<TargetOfMonth>(id);
@@ -480,8 +318,35 @@ namespace Sales.Controllers
             {
                 CH.DeleteRange<TargetOfWeek>(del.ToList());
             }
-            return RedirectToAction("TargetOfMonthForProject", "Project");
-            //return RedirectToAction("Management", "Project", new { id = pid, tabindex = 2 });
+            return RedirectToAction("TargetOfMonthForProject", "TargetOfMonth");
+        }
+
+        public ActionResult CreateEx(int? projectid)
+        {
+            ViewBag.ProjectID = projectid;
+            return View();
+        }
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult CreateEx(TargetOfMonth item)
+        {
+            this.AddErrorStateIfTargetOfMonthNoValid(item);
+
+            if (ModelState.IsValid)
+            {
+                CH.Create<TargetOfMonth>(item);
+                return RedirectToAction("TargetOfMonthForProject", "TargetOfMonth", new { projectid = item.ProjectID });
+            }
+            return View("TargetOfMonthForProject", CH.GetAllData<TargetOfMonth>().Where(s => s.ProjectID == item.ProjectID).OrderByDescending(s => s.EndDate).ToList());
+        }
+
+        public ActionResult TargetOfMonthForProject(int? projectid)
+        {
+            projectid = this.TrySetProjectIDForUser(projectid);
+            ViewBag.ProjectID = projectid;
+            //return View(CH.GetAllData<TargetOfMonth>().Where(s => s.Project.TeamLeader == Employee.GetLoginUserName()).OrderByDescending(s => s.EndDate).ToList());
+            return View(CH.GetAllData<TargetOfMonth>().Where(s => s.ProjectID == projectid).OrderByDescending(s => s.EndDate).ToList());
+
         }
 
     }
