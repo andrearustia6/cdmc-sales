@@ -447,6 +447,9 @@ namespace Model
         [Display(Name = "移动电话")]
         public string CellPhone { get; set; }
 
+        [Display(Name = "工作邮箱")]
+        public string WorkingEmail { get; set; }
+
         #endregion End Lead
 
         #region LeadCall

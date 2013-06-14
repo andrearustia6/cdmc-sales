@@ -5,41 +5,49 @@
 @using Utl
 @using BLL
 @using Model
-@*@model Model.AjaxProject *@        
-<div id="filter-container" style="height: 30px;">
-    <span>
-        <label style="margin:5px;">
-            项目:</label>@Html.DropDownList("projectFilter", SelectHelper.ProjectSelectList(EditRight.DealsEdit.ToString(), (int?)ViewBag.ProjectID))</span>
-    <span>
-        <label style="margin:5px;">
-            销售:</label>
-        @Html.DropDownList("companyFilter", SelectHelper.MemberSelectListForProject((int)ViewBag.ProjectID, (string)ViewBag.MemberFilterForCompany), "所有公司")</span>
-    <button id="UnsignCompanies" onclick="UnsignCompanies()">
-        取消分配</button>
-</div>
-<fieldset>
-    <legend>可分配销售 </legend>
-    <div class="assignableMembers">
-        @foreach (SelectListItem selectListItem in SelectHelper.MemberSelectListForProject((int)ViewBag.ProjectID))
-        {
-            if (selectListItem.Value != (string)ViewBag.MemberFilterForCompany && selectListItem.Value != "-1" && selectListItem.Value != "" && selectListItem.Value != "-2")
-            {
-            <span style="display: inline-block; width: 100px">@Html.CheckBox(selectListItem.Value, new { value = selectListItem.Value })
-                <label>@selectListItem.Text</label></span>
-            }
-        }
-    </div>
-    <div style="text-align: left;">
-        <button id="AssignCompanies" onclick="AssignCompanies()">
-            分配</button></div>
-</fieldset>
-@{
 
+@{
 @(Html.Telerik().Grid<AjaxCRM>().Name("Company")
                 .DataKeys(keys =>
                 {
                     keys.Add(s => s.CRMID);
                 })
+                .ToolBar(toolBar => toolBar.Template(
+                    @<text>
+                    <div id="filter-container" style="height: 40px; margin-top:5px;">
+                        <div style=" float: left;">
+                            <span>
+                                <label style="margin:5px;">项目:</label>@Html.DropDownList("projectFilter", SelectHelper.ProjectSelectList(EditRight.DealsEdit.ToString(), (int?)ViewBag.ProjectID))</span>
+                            <span>
+                                <label style="margin:5px;">销售:</label>
+                                @Html.DropDownList("companyFilter", SelectHelper.MemberSelectListForProject((int)ViewBag.ProjectID, (string)ViewBag.MemberFilterForCompany), "所有公司")</span>
+                            <button id="UnsignCompanies" onclick="UnsignCompanies()">取消分配</button>
+                        </div>
+                        <div class="assignableMembers" style="float: left;">
+                            <span>
+                            <label style="margin:5px 20px;">  可分配销售:</label>
+                                @foreach (SelectListItem selectListItem in SelectHelper.MemberSelectListForProject((int)ViewBag.ProjectID))
+                                {
+                                    if (selectListItem.Value != (string)ViewBag.MemberFilterForCompany && selectListItem.Value != "-1" && selectListItem.Value != "" && selectListItem.Value != "-2")
+                                    {
+                                    <span style="display: inline-block; width: 50px;">@Html.CheckBox(selectListItem.Value, new { value = selectListItem.Value })
+                                        <label>@selectListItem.Text</label></span>
+                                    }
+                                }
+                            </span>
+                            <button id="AssignCompanies" onclick="AssignCompanies()">分配</button>
+                        </div>
+
+                        <div style="float: left;">
+                            <span>
+                                <label style="margin:5px 20px;"> 字头筛选:</label>
+                                @Html.DropDownList("Figsdflters", SelectHelper.FilterSelectList())
+                            </span>
+                        </div>
+                    </div>
+
+                    </text>
+                ))
                 .DataBinding(dataBinding => dataBinding.Ajax().Select("_AjaxAssignCompany", "Project"))
                 .Columns(c =>
                 {
