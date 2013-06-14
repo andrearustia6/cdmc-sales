@@ -855,26 +855,28 @@ namespace Sales.Controllers
             {
                 pList = Session["pList"] as List<AjaxParticipant>;
             }
-
-            if (insertedP != null)
+            if (ModelState.IsValid)
             {
-                foreach (var p in insertedP)
+                if (insertedP != null)
                 {
-                    if (p.Name != "" && p.ParticipantTypeName != null)
+                    foreach (var p in insertedP)
                     {
-                        pList.Add(p);
+                        if (p.Name != "" && p.ParticipantTypeName != null)
+                        {
+                            pList.Add(p);
+                        }
                     }
                 }
-            }
-            
-            if (deletedP != null)
-            {
-                foreach (var p in deletedP)
+
+                if (deletedP != null)
                 {
-                    int index = pList.FindIndex(ap => ap.Name == p.Name && ap.ParticipantTypeName == p.ParticipantTypeName);
-                    if (index != -1)
+                    foreach (var p in deletedP)
                     {
-                        pList.RemoveAt(index);
+                        int index = pList.FindIndex(ap => ap.Name == p.Name && ap.ParticipantTypeName == p.ParticipantTypeName);
+                        if (index != -1)
+                        {
+                            pList.RemoveAt(index);
+                        }
                     }
                 }
             }

@@ -1022,9 +1022,20 @@ var currentCompanyNameEN = undefined;
             $('.dialogue-quickdeal form #Committer').addClass('fieldError');
             hasError = true;
         }
-        if ($('.dialogue-quickdeal form #CommitterEmail').val().isEmpty()) {
-            $('.dialogue-quickdeal form #CommitterEmail').addClass('fieldError');
+        var contact = $('.dialogue-quickdeal form #CommitterContect');
+        if (contact.val().length != 0 && !IsTelephone(contact.val())) {
+            contact.addClass('fieldError');
             hasError = true;
+        }
+        var commiterEmail = $('.dialogue-quickdeal form #CommitterEmail');
+        if (commiterEmail.val().isEmpty()) {
+            commiterEmail.addClass('fieldError');
+            hasError = true;
+        } else {
+            if (!validateEmail(commiterEmail.val())) {
+                commiterEmail.addClass('fieldError');
+                hasError = true;
+            }
         }
         if ($('.dialogue-quickdeal form #PaymentDetail').val().isEmpty()) {
             $('.dialogue-quickdeal form #PaymentDetail').addClass('fieldError');

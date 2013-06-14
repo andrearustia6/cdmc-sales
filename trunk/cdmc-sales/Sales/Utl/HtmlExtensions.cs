@@ -4,7 +4,6 @@ using System.Web;
 
 namespace Utl
 {
-
     public static class HtmlExtensions
     {
         public static HtmlString GetHtmlString(string s)
