@@ -49,7 +49,11 @@
                                item.Add().Text("职级").Url("~/explevel/index");
                                item.Add().Text("权限配置").Url("~/accessright/index");
                                item.Add().Text("项目权限").Url("~/projectright/index");
+                               item.Add().Url("~/Project/ImportCompany").Text("客户数据导入");
+                               item.Add().Url("~/Project/ImportTrace").Text("历史导入操作");
                                item.Add().Text("模拟人配置").Url("~/SimulatorConfig/index");
+                               
+
 
                            });
                        }
@@ -155,11 +159,7 @@
                                    item.Add().Url("~/teamleader/breakdownindex").Text("周目标");
                                    item.Add().Url("~/TargetOfMonth/TargetIndex").Text("月目标");
                                }
-                               if (Employee.LoginUserIsAdmin())
-                               {
-                                   item.Add().Url("~/Project/ImportCompany").Text("客户数据导入");
-                                   item.Add().Url("~/Project/ImportTrace").Text("历史导入操作");
-                               }
+                             
                                if (score == SuperManagerRequired.LVL)
                                {
                                    item.Add().Url("~/TargetOfMonth/AdminConfirmList").Text("项目月目标确认");
