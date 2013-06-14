@@ -29,22 +29,37 @@
 
             c.Command(commands =>
             {
+                //commands.Custom("comfirm").Text("确认").Ajax(true).Action.HtmlAttributes(new { style = "text-align: center" });
                 commands.Edit().ButtonType(GridButtonType.Image);
 
             }).Title("确认");
         })
-        .ClientEvents(events => events.OnDataBinding("dataBinding").OnRowDataBound("rowDataBound"))
+            .ClientEvents(events => events.OnDataBinding("dataBinding").OnRowDataBound("rowDataBound").OnComplete("onComplete"))
         .DataBinding(dataBinding =>
         {
-            dataBinding.Ajax()
-                .Select("_AdminSelectIndex", "TargetOfMonth")
-                .Update("_AdminSaveAjaxEditing", "TargetOfMonth", new { projectid = 26});
+            dataBinding.Ajax().Select("_AdminSelectIndex", "TargetOfMonth")
+                .Update("_AdminSaveAjaxEditing", "TargetOfMonth", new { projectid = (int?)ViewBag.selectVal });
         })
         .Editable(editing => editing.Mode(GridEditMode.PopUp))
         .Pageable(p => p.Style(GridPagerStyles.Status).PageSize(50)
         .PageOnScroll(true)).Scrollable(s => s.Height(350)).Sortable().Filterable().Groupable()
         )
+
+
+
+@(Html.Telerik().Window().Name("Details").Visible(false).Title("确认").Modal(true).Width(500).Height(200)
+.Content(@<text> 
+<div id="confirm-details"> 
+    @Html.Partial(@"/views/shared/EditorTemplates/AjaxTargetOfMonth.cshtml")
+ </div>      
+   </text>))
 <script type="text/javascript">
+    function onComplete(e) {
+        if (e.name == "comfirm") {
+            var detailWindow = $("#Details").data("tWindow");
+            detailWindow.center().open();
+        }
+    }
     function onChange() {
         $("#TargetOfMonth").data("tGrid").rebind();
     }
