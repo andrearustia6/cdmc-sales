@@ -591,7 +591,7 @@ namespace Sales.Controllers
         }
 
         [HttpGet]
-        public ActionResult AssignCompany(int? projectId, int? memberFilterForCompany, string prefixFilter="")
+        public ActionResult AssignCompany(int? projectId, int? memberFilterForCompany, string prefixFilter = "", string fuzzyInput = "")
         {
             Project project = null;
             if (projectId.HasValue)
@@ -606,14 +606,14 @@ namespace Sales.Controllers
             {
                 ViewBag.ProjectID = project.ID;
                 ViewBag.MemberFilterForCompany = memberFilterForCompany;
-                ViewBag.selectVal = prefixFilter;
             }
-
+            ViewBag.selectVal = prefixFilter;
+            ViewBag.fuzzyInput = fuzzyInput;
             return View();
         }
         
         [GridAction]
-        public ActionResult _AjaxAssignCompany(int? projectId, int? memberFilterForCompany, string prefixFilter = "")
+        public ActionResult _AjaxAssignCompany(int? projectId, int? memberFilterForCompany, string prefixFilter = "", string fuzzyInput = "")
         {
             Project project = null;
             if (projectId.HasValue)
@@ -645,6 +645,20 @@ namespace Sales.Controllers
             if (!String.IsNullOrEmpty(prefixFilter))
             {
                 p.CRMs = p.CRMs.Where(c => c.CompanyNameEN.Trim().ToLower().StartsWith(prefixFilter.Trim().ToLower()));
+            }
+            if (!String.IsNullOrEmpty(fuzzyInput))
+            {
+                fuzzyInput = fuzzyInput.Trim();
+                p.CRMs = p.CRMs.Where(c => c.CompanyNameCH.Contains(fuzzyInput) 
+                                           || c.CompanyNameEN.Contains(fuzzyInput) 
+                                           || c.CompanyContact.Contains(fuzzyInput) 
+                                           || c.AjaxLeads.Any(l => l.LeadNameCH.Contains(fuzzyInput) 
+                                                              || l.LeadNameEN.Contains(fuzzyInput) 
+                                                              || l.LeadEmail.Contains(fuzzyInput) 
+                                                              || l.LeadPersonalEmail.Contains(fuzzyInput)
+                                                             )
+                                           //|| c.CompanyFilterCategories.Any(ct => ct.Name.Contains(fuzzyInput))
+                                        );
             }
             return View(new GridModel(p.CRMs.ToList()));
         }
