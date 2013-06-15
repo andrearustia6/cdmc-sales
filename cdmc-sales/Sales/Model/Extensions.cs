@@ -594,7 +594,7 @@ namespace Entity
                 return Entity.RoleInProject.ProductInterface;
             else if (p.Market == name)
                 return Entity.RoleInProject.MarketInterface;
-            else if (p.Members.Any(m => m.Name == name))
+            else if (p.Members!=null && p.Members.Any(m => m.Name == name))
                 return Entity.RoleInProject.Member;
             else
                 return Entity.RoleInProject.NotIn;

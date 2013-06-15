@@ -1694,6 +1694,7 @@
     <Content Include="Views\DirectorReport\ProjectsCheckInByWeek.cshtml" />
     <Content Include="Views\DirectorReport\ProjectsProgress.cshtml" />
     <Content Include="Views\EmployeeRole\Index.cshtml" />
+    <None Include="ClassDiagram1.cd" />
     <None Include="Views\SalesEx\EditCompany.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\SimulatorConfig.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\AjaxTargetOfMonthForMember.cshtml" />
@@ -1715,12 +1716,9 @@
     <Content Include="Views\TargetOfMonth\EditEx.cshtml" />
     <Content Include="Views\TargetOfMonth\DetailsEx.cshtml" />
     <Content Include="Views\TargetOfMonth\DeleteEx.cshtml" />
-
     <Content Include="Views\Shared\EditorTemplates\TargetOfMonth.cshtml" />
     <Content Include="Views\TargetOfMonth\TargetOfMonthForProject.cshtml" />
-
     <Content Include="Views\Shared\EditorTemplates\ManagerScoreEdit.cshtml" />
-
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\TargetOfMonthForMember\Confirm.cshtml" />

@@ -1021,7 +1021,7 @@ namespace BLL
             {
                 ps = GetManagerInvolveProject();
             }
-            ps = ps.Where(w => w.Test !=true ).ToList();//不反回测试项目
+            ps = ps.Where(w => w.Test ==null || w.Test==false ).ToList();//不反回测试项目
             return  ps;
         }
         /// <summary>
