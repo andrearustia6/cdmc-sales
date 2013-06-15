@@ -9,26 +9,26 @@
         ViewBag.Title = "会务出单确认";
     }
 }
-
 @{
     if (Utl.Employee.CurrentRole.Level == 4)
     {
-        <text>
-            @Html.Partial("contenttitle", "出单到账确认")
-        </text>
+    <text>
+    @Html.Partial("contenttitle", "出单到账确认")
+    </text>
     }
     else
     {
-        <text> @Html.Partial("contenttitle", "会务出单确认")</text>
+    <text> @Html.Partial("contenttitle", "会务出单确认")</text>
     }
 }
 <div id="filter-container" style="height: 30px;">
     <span>
-        <label style="margin:7px;float: left;">筛选:</label>
+        <label style="margin: 7px; float: left;">
+            筛选:</label>
         @Html.DropDownList("Filters", Utl.SelectHelper.FilterSelectList(), new { style = "margin:5px;float: left;", onchange = "filterChange();" })
-    </span>
-    <span>
-        <label style="margin:7px; float: left;">项目:</label>
+    </span><span>
+        <label style="margin: 7px; float: left;">
+            项目:</label>
         @Html.DropDownList("Projects", Utl.SelectHelper.ProjectSelectList(Utl.Employee.CurrentUserName, (int?)ViewBag.selectVal), new { style = "margin:5px;float: left;", onchange = "filterChange();" })
     </span>
 </div>
@@ -70,7 +70,7 @@
     c.Bound(item => item.IsConfirm).Hidden(true);
 
 })
-.ClientEvents(events => events.OnDataBinding("dataBinding").OnEdit("onEdit").OnRowDataBound("onRowDataBound"))
+    .ClientEvents(events => events.OnDataBinding("dataBinding").OnEdit("onEdit").OnRowDataBound("onRowDataBound").OnComplete("onComplete"))
 .DataBinding(dataBinding =>
 {
     dataBinding.Ajax()
@@ -83,6 +83,11 @@
 .PageOnScroll(true)).Scrollable(s => s.Height(350)).Sortable().Filterable().Groupable()
 )
 <script type="text/javascript">
+    function onComplete(e) {
+        if (e.name == "update") {
+            $("#TargetOfMonth").data("tGrid").rebind();
+        }
+    }
     function filterChange() {
         $("#Grid").data("tGrid").rebind();
     }
