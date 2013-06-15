@@ -399,12 +399,28 @@ namespace Utl
 
         public static Role GetRole(string name)
         {
-            var roleid = GetProfile("RoleLevelID", name).ToString();
-            int id;
-            int.TryParse(roleid, out id);
-            var role = CH.GetDataById<Role>(id);
-           
-            return role;
+            var roles = from e in CH.DB.EmployeeRoles 
+                        from r in CH.DB.Roles
+                        where e.AccountName == name && e.RoleID == r.ID
+                        
+                        select r;
+            if (roles.FirstOrDefault() != null)
+                return roles.FirstOrDefault();
+            else
+            {
+
+                var roleid = GetProfile("RoleLevelID", name).ToString();
+                int id;
+                int.TryParse(roleid, out id);
+                var role = CH.GetDataById<Role>(id);
+                if (role != null)
+                {
+                    var emp = new EmployeeRole() { RoleID = role.ID, AccountName = name, CreatedDate = DateTime.Now };
+                    CH.DB.Set<EmployeeRole>().Add(emp);
+                    CH.DB.SaveChanges();
+                }
+                return role;
+            }
         }
 
         static Role GetCurrentRole()
