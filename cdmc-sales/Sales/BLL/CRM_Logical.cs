@@ -1017,7 +1017,7 @@ namespace BLL
             {
                 ps = GetDirectorInvolveProject();
             }
-            if (lvl >= 500 && lvl <= 500)
+            if (lvl >= 500 && lvl <= 1000)
             {
                 ps = GetManagerInvolveProject();
             }
