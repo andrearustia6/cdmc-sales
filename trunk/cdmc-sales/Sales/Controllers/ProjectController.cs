@@ -16,7 +16,7 @@ using System.Data.Entity.Infrastructure;
 namespace Sales.Controllers
 {
 
-    //[ManagerRequired]
+    //
     public class ProjectController : Controller
     {
         protected override void Dispose(bool disposing)
@@ -24,9 +24,10 @@ namespace Sales.Controllers
             CH.DB.Dispose();
             base.Dispose(disposing);
         }
+        [ManagerRequired]
         public ViewResult Index()
         {
-            var data = this.GetProjectByRole();
+            var data = CRM_Logical.GetUserInvolveProject();
             return View(data);
         }
 
@@ -601,9 +602,12 @@ namespace Sales.Controllers
             {
                 project = CRM_Logical.GetUserInvolveProject().FirstOrDefault();
             }
-            ViewBag.ProjectID = project.ID;
-            ViewBag.MemberFilterForCompany = memberFilterForCompany;
-            ViewBag.selectVal = prefixFilter;
+            if (project != null)
+            {
+                ViewBag.ProjectID = project.ID;
+                ViewBag.MemberFilterForCompany = memberFilterForCompany;
+                ViewBag.selectVal = prefixFilter;
+            }
 
             return View();
         }
