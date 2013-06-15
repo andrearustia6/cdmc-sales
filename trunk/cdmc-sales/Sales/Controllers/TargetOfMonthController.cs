@@ -295,7 +295,7 @@ namespace Sales.Controllers
                 CH.Edit<TargetOfMonth>(item);
                 return RedirectToAction("TargetOfMonthForProject", "TargetOfMonth");
             }
-            return View("TargetOfMonthForProject", "TargetOfMonth", CH.GetAllData<TargetOfMonth>().Where(s => s.ProjectID == item.ProjectID).OrderByDescending(s => s.EndDate).ToList());
+            return View("TargetOfMonthForProject", CH.GetAllData<TargetOfMonth>().Where(s => s.ProjectID == item.ProjectID).OrderByDescending(s => s.EndDate).ToList());
         }
 
         public ViewResult DetailsEx(int id)
