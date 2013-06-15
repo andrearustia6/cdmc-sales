@@ -640,7 +640,7 @@ namespace Sales.Controllers
             }
             if (!String.IsNullOrEmpty(prefixFilter))
             {
-                p.CRMs = p.CRMs.Where(c => c.CompanyNameEN.StartsWith(prefixFilter.ToLower()));
+                p.CRMs = p.CRMs.Where(c => c.CompanyNameEN.Trim().ToLower().StartsWith(prefixFilter.Trim().ToLower()));
             }
             return View(new GridModel(p.CRMs.ToList()));
         }
