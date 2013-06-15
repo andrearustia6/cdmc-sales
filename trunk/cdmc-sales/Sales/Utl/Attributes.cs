@@ -321,7 +321,7 @@ public sealed class ImportingInterfaceRequired : RoleRequired
 /// </summary>
 public sealed class SuperManagerRequired : RoleRequired
 {
-    public const int LVL = 1500;
+    public const int LVL = 800;
     public override int Level
     {
         get { return LVL; }
