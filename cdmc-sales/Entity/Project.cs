@@ -47,7 +47,7 @@ namespace Entity
     /// </summary>
     public class Role : EntityBase
     {
-        public const int LVL_SuperManager = 1500;
+        public const int LVL_SuperManager = 800;
         public const int LVL_Director = 1000;
         public const int LVL_Manager = 500;
         public const int LVL_TeamLeader = 100;

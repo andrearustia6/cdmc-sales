@@ -33,18 +33,20 @@
 
             }).Title("确认");
         })
-        .ClientEvents(events => events.OnDataBinding("dataBinding").OnRowDataBound("rowDataBound"))
-        .DataBinding(dataBinding =>
-        {
-            dataBinding.Ajax()
-                .Select("_SelectIndex", "TargetOfMonth")
-                .Update("_SaveAjaxEditing", "TargetOfMonth");
-        })
-        .Editable(editing => editing.Mode(GridEditMode.PopUp))
-        .Pageable(p => p.Style(GridPagerStyles.Status).PageSize(50)
-        .PageOnScroll(true)).Scrollable(s => s.Height(350)).Sortable().Filterable().Groupable()
-        )
+            .ClientEvents(events => events.OnDataBinding("dataBinding").OnRowDataBound("rowDataBound").OnComplete("onComplete"))
+.DataBinding(dataBinding =>
+{
+    dataBinding.Ajax().Select("_SelectIndex", "TargetOfMonth")
+        .Update("_SaveAjaxEditing", "TargetOfMonth");
+}).Editable(editing => editing.Mode(GridEditMode.PopUp))
+.Pageable(p => p.Style(GridPagerStyles.Status).PageSize(50).PageOnScroll(true)).Scrollable(s
+=> s.Height(350)).Sortable().Filterable().Groupable())
 <script type="text/javascript">
+    function onComplete(e) {
+        if (e.name == "update") {
+            $("#TargetOfMonth").data("tGrid").rebind();
+        }
+    }
     function onChange() {
         $("#TargetOfMonth").data("tGrid").rebind();
     }

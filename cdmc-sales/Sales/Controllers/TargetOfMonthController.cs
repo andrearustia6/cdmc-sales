@@ -255,8 +255,6 @@ namespace Sales.Controllers
             return data.OrderByDescending(s => s.EndDate).ToList();
         }
 
-
-
         public ActionResult AdminConfirmList(int? projectId)
         {
             ViewBag.selectVal = projectId;
@@ -286,18 +284,6 @@ namespace Sales.Controllers
             return View(CH.GetDataById<TargetOfMonth>(id));
         }
 
-        [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult EditEx(TargetOfMonth item)
-        {
-            this.AddErrorStateIfTargetOfMonthNoValid(item);
-            if (ModelState.IsValid)
-            {
-                CH.Edit<TargetOfMonth>(item);
-                return RedirectToAction("TargetOfMonthForProject", "TargetOfMonth", new { projectid = item.ProjectID });
-            }
-            return View("TargetOfMonthForProject", CH.GetAllData<TargetOfMonth>().Where(s => s.ProjectID == item.ProjectID).OrderByDescending(s => s.EndDate).ToList());
-        }
-
         public ViewResult DetailsEx(int id)
         {
             return View(CH.GetDataById<TargetOfMonth>(id));
@@ -306,6 +292,36 @@ namespace Sales.Controllers
         public ActionResult DeleteEx(int id)
         {
             return View(CH.GetDataById<TargetOfMonth>(id));
+        }
+
+        public ActionResult CreateEx(int? projectid)
+        {
+            ViewBag.ProjectID = projectid;
+            return View();
+        }
+
+        #region 板块编辑项目月目标
+
+        public ActionResult TargetOfMonthForProject(int? projectid)
+        {
+            projectid = this.TrySetProjectIDForUser(projectid);
+            ViewBag.ProjectID = projectid;
+            //return View(CH.GetAllData<TargetOfMonth>().Where(s => s.Project.TeamLeader == Employee.GetLoginUserName()).OrderByDescending(s => s.EndDate).ToList());
+            return View(CH.GetAllData<TargetOfMonth>().Where(s => s.ProjectID == projectid).OrderByDescending(s => s.EndDate).ToList());
+
+        }
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult CreateEx(TargetOfMonth item)
+        {
+            this.AddErrorStateIfTargetOfMonthNoValid(item);
+
+            if (ModelState.IsValid)
+            {
+                CH.Create<TargetOfMonth>(item);
+                return RedirectToAction("TargetOfMonthForProject", "TargetOfMonth", new { projectid = item.ProjectID });
+            }
+            return View("TargetOfMonthForProject", CH.GetAllData<TargetOfMonth>().Where(s => s.ProjectID == item.ProjectID).OrderByDescending(s => s.EndDate).ToList());
         }
 
         [AcceptVerbs(HttpVerbs.Post), ActionName("DeleteEx")]
@@ -322,33 +338,17 @@ namespace Sales.Controllers
             return RedirectToAction("TargetOfMonthForProject", "TargetOfMonth");
         }
 
-        public ActionResult CreateEx(int? projectid)
-        {
-            ViewBag.ProjectID = projectid;
-            return View();
-        }
-
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult CreateEx(TargetOfMonth item)
+        public ActionResult EditEx(TargetOfMonth item)
         {
             this.AddErrorStateIfTargetOfMonthNoValid(item);
-
             if (ModelState.IsValid)
             {
-                CH.Create<TargetOfMonth>(item);
+                CH.Edit<TargetOfMonth>(item);
                 return RedirectToAction("TargetOfMonthForProject", "TargetOfMonth", new { projectid = item.ProjectID });
             }
             return View("TargetOfMonthForProject", CH.GetAllData<TargetOfMonth>().Where(s => s.ProjectID == item.ProjectID).OrderByDescending(s => s.EndDate).ToList());
         }
-
-        public ActionResult TargetOfMonthForProject(int? projectid)
-        {
-            projectid = this.TrySetProjectIDForUser(projectid);
-            ViewBag.ProjectID = projectid;
-            //return View(CH.GetAllData<TargetOfMonth>().Where(s => s.Project.TeamLeader == Employee.GetLoginUserName()).OrderByDescending(s => s.EndDate).ToList());
-            return View(CH.GetAllData<TargetOfMonth>().Where(s => s.ProjectID == projectid).OrderByDescending(s => s.EndDate).ToList());
-
-        }
-
+        #endregion
     }
 }
