@@ -334,7 +334,7 @@ namespace Utl
         {
             List<SelectListItem> selectList = new List<SelectListItem>();
             string[] prefixLetters = new string[] { "请选择","A", "B", "C", "D", "E", "F", "G", 
-                                                  "H", "I", "J", "K", "L", "M", "M",
+                                                  "H", "I", "J", "K", "L", "M", "N",
                                                   "O", "P", "Q", "R", "S", "T", "U", 
                                                   "V", "W", "X", "Y", "Z" };
             foreach (string prefixLetter in prefixLetters)

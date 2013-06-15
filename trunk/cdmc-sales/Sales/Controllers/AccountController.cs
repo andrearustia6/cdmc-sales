@@ -452,22 +452,23 @@ namespace MvcGlobalAuthorize.Controllers
 
             var role = Employee.CurrentRole;
             var list = new List<MembershipUser>() ;
-            if (role.Level < 500)
+            if (role != null)
             {
-                list.Add(Membership.GetUser(Employee.CurrentUserName));
-            }
-            else
-            {
-                list = Membership.GetAllUsers().Cast<MembershipUser>().ToList<MembershipUser>();
-                if (role.Level == 500)
+                if (role.Level < 500)
                 {
-                    var mems = CH.GetAllData<Member>(m => m.Project.Manager == Employee.CurrentUserName).Select(s => s.Name).Distinct();
-                    list = list.FindAll(f => mems.Contains(f.UserName) || f.UserName== Employee.CurrentUserName );
+                    list.Add(Membership.GetUser(Employee.CurrentUserName));
+                }
+                else
+                {
+                    list = Membership.GetAllUsers().Cast<MembershipUser>().ToList<MembershipUser>();
+                    if (role.Level == 500)
+                    {
+                        var mems = CH.GetAllData<Member>(m => m.Project.Manager == Employee.CurrentUserName).Select(s => s.Name).Distinct();
+                        list = list.FindAll(f => mems.Contains(f.UserName) || f.UserName == Employee.CurrentUserName);
+                    }
                 }
             }
            
-
-          
 
             //var level = (int)Employee.GetCurrentProfile("RoleLevelID");
             //var role = CH.GetDataById<Role>(level);
@@ -509,9 +510,6 @@ namespace MvcGlobalAuthorize.Controllers
             //    }
             //    list.Add(listClone.Find(s => s.UserName == Employee.CurrentUserName));
             //}
-
-
-
 
             List<Model.AjaxViewAccount> users = new List<Model.AjaxViewAccount>();
             foreach (var item in list)
