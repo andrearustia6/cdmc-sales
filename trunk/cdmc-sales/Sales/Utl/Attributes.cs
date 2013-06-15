@@ -317,7 +317,7 @@ public sealed class ImportingInterfaceRequired : RoleRequired
 }
 
 /// <summary>
-/// 1500
+/// 800
 /// </summary>
 public sealed class SuperManagerRequired : RoleRequired
 {
@@ -330,7 +330,7 @@ public sealed class SuperManagerRequired : RoleRequired
 
 public class RoleLevel
 {
-    public static int SuperManager = 1500;
+    public static int SuperManager = 800;
     public static int Director = 1000;
     public static int Manager = 500;
     public static int Leader = 100;
