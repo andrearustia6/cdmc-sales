@@ -244,7 +244,7 @@ namespace Sales.Controllers
                            ID = db.ID,
                            IsConfirm = db.IsConfirm == true ? "是" : "否",
                            ProjectID = db.ProjectID,
-                           ProjectName = db.Project.Name_CH + " | " + db.Project.Name_EN,
+                           ProjectName = (db.Project.Name_CH ?? string.Empty) + " | " + (db.Project.Name_EN ?? string.Empty),
                            Deal = db.Deal,
                            BaseDeal = db.BaseDeal,
                            CheckIn = db.CheckIn,
