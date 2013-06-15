@@ -244,7 +244,7 @@ namespace Sales.Controllers
                            ID = db.ID,
                            IsConfirm = db.IsConfirm == true ? "是" : "否",
                            ProjectID = db.ProjectID,
-                           ProjectName = db.Project.Name_CH,
+                           ProjectName = db.Project.Name_CH + " | " + db.Project.Name_EN,
                            Deal = db.Deal,
                            BaseDeal = db.BaseDeal,
                            CheckIn = db.CheckIn,
@@ -254,6 +254,9 @@ namespace Sales.Controllers
                        };
             return data.OrderByDescending(s => s.EndDate).ToList();
         }
+
+
+
 
         public ActionResult AdminConfirmList(int? projectId)
         {
