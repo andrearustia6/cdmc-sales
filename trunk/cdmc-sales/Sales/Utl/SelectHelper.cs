@@ -357,7 +357,23 @@ namespace Utl
                     return false;
                 }
             }
-            return true; 
+            return true;
+        }
+
+        public static IEnumerable<SelectListItem> SuperManagerProjectSelectList(int? selectVal)
+        {
+            List<SelectListItem> selectList = new List<SelectListItem>();
+            var projects = CH.GetAllData<Project>().FindAll(p => p.IsActived == true);
+            foreach (Project project in projects)
+            {
+                SelectListItem selectListItem = new SelectListItem() { Text = project.ProjectCode, Value = project.ID.ToString() };
+                if (selectVal.HasValue && project.ID == selectVal.Value)
+                {
+                    selectListItem.Selected = true;
+                }
+                selectList.Add(selectListItem);
+            }
+            return selectList;
         }
     }
 }

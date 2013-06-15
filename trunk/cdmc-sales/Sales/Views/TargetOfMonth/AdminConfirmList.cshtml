@@ -9,7 +9,7 @@
     </span><span>
         <label style="margin: 7px; float: left;">
             项目:</label>
-        @Html.DropDownList("Projects", SelectHelper.ProjectSelectList(Employee.CurrentUserName, (int?)ViewBag.selectVal), new { style = "margin:5px;float: left;", onchange = "onChange();" })
+        @Html.DropDownList("Projects", SelectHelper.SuperManagerProjectSelectList((int?)ViewBag.selectVal), new { style = "margin:5px;float: left;", onchange = "onChange();" })
     </span>
 </div>
 @(Html.Telerik().Grid<Model.AjaxTargetOfMonth>().Name("TargetOfMonth")
@@ -43,15 +43,12 @@
         .Pageable(p => p.Style(GridPagerStyles.Status).PageSize(50)
         .PageOnScroll(true)).Scrollable(s => s.Height(350)).Sortable().Filterable().Groupable()
         )
-
-
-
 @(Html.Telerik().Window().Name("Details").Visible(false).Title("确认").Modal(true).Width(500).Height(200)
-.Content(@<text> 
-<div id="confirm-details"> 
+.Content(@<text>
+<div id="confirm-details">
     @Html.Partial(@"/views/shared/EditorTemplates/AjaxTargetOfMonth.cshtml")
- </div>      
-   </text>))
+</div>
+</text>))
 <script type="text/javascript">
     function onComplete(e) {
         if (e.name == "update") {
