@@ -25,9 +25,9 @@
     @Html.TextBoxFor(model => model.Assigner,new { @style="display:none"})
     <table style="width:100%" >
         <tr>
-            <th style="width:30%">@Html.LabelFor(model => model.Responsibility)</th>
-            <th style="width:30%">@Html.LabelFor(model => model.Discipline)</th>
-            <th style="width:30%">@Html.LabelFor(model => model.Excution)</th>
+            <td style="width:30%">@Html.LabelFor(model => model.Responsibility)</td>
+            <td style="width:30%">@Html.LabelFor(model => model.Discipline)</td>
+            <td style="width:30%">@Html.LabelFor(model => model.Excution)</td>
         </tr>
         <tr>
             <td align="left">@Html.Telerik().DropDownListFor(model => model.Responsibility).BindTo(new SelectList(BLL.CRM_Logical.GetItem1(), "ID", "Name")).DropDownHtmlAttributes(new { style = string.Format("width:{0}px", 200) })</td>
@@ -35,9 +35,9 @@
             <td>@Html.Telerik().DropDownListFor(model => model.Excution).BindTo(new SelectList(BLL.CRM_Logical.GetItem3(), "ID", "Name")).DropDownHtmlAttributes(new { style = string.Format("width:{0}px", 200) })</td>
         </tr>
         <tr>
-            <th>@Html.LabelFor(model => model.Targeting)</th>
-            <th>@Html.LabelFor(model => model.Searching)</th>
-            <th>@Html.LabelFor(model => model.Production)</th>
+            <td>@Html.LabelFor(model => model.Targeting)</td>
+            <td>@Html.LabelFor(model => model.Searching)</td>
+            <td>@Html.LabelFor(model => model.Production)</td>
         </tr>
         <tr>
             <td>@Html.Telerik().DropDownListFor(model => model.Targeting).BindTo(new SelectList(BLL.CRM_Logical.GetItem4(), "ID", "Name")).DropDownHtmlAttributes(new { style = string.Format("width:{0}px", 200) })</td>
@@ -45,9 +45,9 @@
             <td>@Html.Telerik().DropDownListFor(model => model.Production).BindTo(new SelectList(BLL.CRM_Logical.GetItem6(), "ID", "Name")).DropDownHtmlAttributes(new { style = string.Format("width:{0}px", 200) })</td>
         </tr>
         <tr>
-            <th>@Html.LabelFor(model => model.PitchPaper)</th>
-            <th>@Html.LabelFor(model => model.WeeklyMeeting)</th>
-            <th>@Html.LabelFor(model => model.MonthlyMeeting)</th>
+            <td>@Html.LabelFor(model => model.PitchPaper)</td>
+            <td>@Html.LabelFor(model => model.WeeklyMeeting)</td>
+            <td>@Html.LabelFor(model => model.MonthlyMeeting)</td>
         </tr>
         <tr>
             <td>@Html.Telerik().DropDownListFor(model => model.PitchPaper).BindTo(new SelectList(BLL.CRM_Logical.GetItem7(), "ID", "Name")).DropDownHtmlAttributes(new { style = string.Format("width:{0}px", 200) })</td>
