@@ -8,14 +8,20 @@
     </div>
     <div class="editor-field">
         @{
-            List<string> list = new List<string>();
-
-            list = Membership.GetAllUsers().Cast<MembershipUser>().ToList<MembershipUser>()
-                .Where(user => Employee.GetRoleLevel(user.UserName) < AdministratorRequired.LVL)
-                .Select(user => user.UserName).ToList();
-            list.Add(Employee.GetLoginUserName());
             
-            @Html.DropDownListFor(model => model.SimulatorName, new SelectList(list), "-«Î—°‘Ò-")
+            var names  = Membership.GetAllUsers().Cast<MembershipUser>().Select(s=>s.UserName);
+ 
+                
+            
+            
+            //List<string> list = new List<string>();
+
+            //list = Membership.GetAllUsers().Cast<MembershipUser>().ToList<MembershipUser>()
+            //    .Where(user => Employee.GetRoleLevel(user.UserName) < AdministratorRequired.LVL)
+            //    .Select(user => user.UserName).ToList();
+            //list.Add(Employee.GetLoginUserName());
+            
+            @Html.DropDownListFor(model => model.SimulatorName, new SelectList(names), "-«Î—°‘Ò-")
             @Html.ValidationMessageFor(model => model.SimulatorName)
         }
     </div>
