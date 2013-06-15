@@ -615,17 +615,12 @@ namespace Sales.Controllers
         [GridAction]
         public ActionResult _AjaxAssignCompany(int? projectId, int? memberFilterForCompany, string prefixFilter = "", string fuzzyInput = "")
         {
-            Project project = null;
-            if (projectId.HasValue)
-            {
-                project = CH.GetDataById<Project>(projectId);
-            }
-            else
-            {
-                project = CRM_Logical.GetUserInvolveProject().FirstOrDefault();
-            }
+            ViewBag.ProjectID = projectId;
+            ViewBag.MemberFilterForCompany = memberFilterForCompany;
+            ViewBag.selectVal = prefixFilter;
+            ViewBag.fuzzyInput = fuzzyInput;
 
-            var p = CRM_Logical._Project.GetAjaxProject(project.ID);
+            var p = CRM_Logical._Project.GetAjaxProject(projectId);
             if (memberFilterForCompany.HasValue)
             {
                 int memberId = memberFilterForCompany.Value;
