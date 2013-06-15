@@ -9,13 +9,13 @@
     <legend>@SR.Form</legend>
     <table cellpadding="0" cellspacing="0">
         <tr>
-            <td style=" width:95px;">
+            <td style="width:95px;">
                 @Html.LabelFor(model => model.DealCode)
             </td>
             <td>
                 @Html.TextBox("DealCode", Model == null ? "出单后自动生成" : Model.DealCode, new { READONLY = "readonly" })
             </td>
-            <td style=" width:95px;">
+            <td style="width:95px;">
                 @Html.LabelFor(model => model.PackageID, "Package")
             </td>
             <td>
