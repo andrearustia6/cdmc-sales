@@ -795,12 +795,12 @@ namespace Sales.Controllers
                 {
                     item.DealCode = prefix + "001";
                 }
-                item.Committer = item.Committer.Trim();
-                item.CommitterContect = item.CommitterContect.Trim();
-                item.CommitterEmail = item.CommitterEmail.Trim();
-                item.TicketDescription = item.TicketDescription.Trim();
-                item.AbandonReason = item.AbandonReason.Trim();
-                item.PaymentDetail = item.PaymentDetail.Trim();
+                item.Committer = string.IsNullOrEmpty(item.Committer) ? "" : item.Committer.Trim();
+                item.CommitterContect = string.IsNullOrEmpty(item.CommitterContect) ? "" : item.CommitterContect.Trim();
+                item.CommitterEmail = string.IsNullOrEmpty(item.CommitterEmail) ? "" : item.CommitterEmail.Trim();
+                item.TicketDescription = string.IsNullOrEmpty(item.TicketDescription) ? "" : item.TicketDescription.Trim();
+                item.AbandonReason = string.IsNullOrEmpty(item.AbandonReason) ? "" : item.AbandonReason.Trim();
+                item.PaymentDetail = string.IsNullOrEmpty(item.PaymentDetail) ? "" : item.PaymentDetail.Trim();
                 item.Sales = item.Sales.Trim();
                 CH.Create<Deal>(item);
                 if (item.ID > 0)
@@ -812,18 +812,18 @@ namespace Sales.Controllers
                     }
                     if (pList != null && pList.Count > 0)
                     {
-                       
+
                         foreach (var ajaxp in pList)
                         {
                             var partType = CH.GetAllData<ParticipantType>().Where(pt => pt.Name == ajaxp.ParticipantTypeName).FirstOrDefault();
 
                             p = new Participant();
-                            p.Name = ajaxp.Name.Trim();
-                            p.Title = ajaxp.Title.Trim();
-                            p.Gender = ajaxp.Gender.Trim();
-                            p.Mobile = ajaxp.Mobile.Trim();
-                            p.Contact = ajaxp.Contact.Trim();
-                            p.Email = ajaxp.Email.Trim();
+                            p.Name = string.IsNullOrEmpty(ajaxp.Name) ? "" : ajaxp.Name.Trim();
+                            p.Title = string.IsNullOrEmpty(ajaxp.Title) ? "" : ajaxp.Title.Trim();
+                            p.Gender = string.IsNullOrEmpty(ajaxp.Gender) ? "" : ajaxp.Gender.Trim();
+                            p.Mobile = string.IsNullOrEmpty(ajaxp.Mobile) ? "" : ajaxp.Mobile.Trim();
+                            p.Contact = string.IsNullOrEmpty(ajaxp.Contact) ? "" : ajaxp.Contact.Trim();
+                            p.Email = string.IsNullOrEmpty(ajaxp.Email) ? "" : ajaxp.Email.Trim();
                             p.ParticipantTypeID = partType.ID;
                             p.ProjectID = item.ProjectID;
                             p.DealID = item.ID;

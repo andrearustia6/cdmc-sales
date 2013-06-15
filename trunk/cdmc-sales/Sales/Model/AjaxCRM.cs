@@ -291,11 +291,15 @@ namespace Model
         [Display(Name = "添加人")]
         public string CrmCreator{ get; set; }
 
-        public string MembersString { get {
-            if (Members == null) return string.Empty;
+        public string MembersString
+        {
+            get
+            {
+                if (Members == null) return string.Empty;
 
-            return string.Join(",",Members.Select(s => s.Name));
-        } }
+                return string.Join(",", Members.Select(s => s.Name));
+            }
+        }
 
         public  IEnumerable<int> MembersIds
         {
