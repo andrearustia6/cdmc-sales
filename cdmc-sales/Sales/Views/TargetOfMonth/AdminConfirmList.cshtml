@@ -29,7 +29,6 @@
 
             c.Command(commands =>
             {
-                //commands.Custom("comfirm").Text("确认").Ajax(true).Action.HtmlAttributes(new { style = "text-align: center" });
                 commands.Edit().ButtonType(GridButtonType.Image);
 
             }).Title("确认");
@@ -38,7 +37,7 @@
         .DataBinding(dataBinding =>
         {
             dataBinding.Ajax().Select("_AdminSelectIndex", "TargetOfMonth")
-                .Update("_AdminSaveAjaxEditing", "TargetOfMonth", new { projectid = (int?)ViewBag.selectVal });
+                .Update("_AdminSaveAjaxEditing", "TargetOfMonth");
         })
         .Editable(editing => editing.Mode(GridEditMode.PopUp))
         .Pageable(p => p.Style(GridPagerStyles.Status).PageSize(50)
@@ -55,9 +54,8 @@
    </text>))
 <script type="text/javascript">
     function onComplete(e) {
-        if (e.name == "comfirm") {
-            var detailWindow = $("#Details").data("tWindow");
-            detailWindow.center().open();
+        if (e.name == "update") {
+            $("#TargetOfMonth").data("tGrid").rebind();
         }
     }
     function onChange() {
