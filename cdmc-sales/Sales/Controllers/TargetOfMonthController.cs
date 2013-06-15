@@ -293,7 +293,7 @@ namespace Sales.Controllers
             if (ModelState.IsValid)
             {
                 CH.Edit<TargetOfMonth>(item);
-                return RedirectToAction("TargetOfMonthForProject", "TargetOfMonth");
+                return RedirectToAction("TargetOfMonthForProject", "TargetOfMonth", new { projectid = item.ProjectID });
             }
             return View("TargetOfMonthForProject", CH.GetAllData<TargetOfMonth>().Where(s => s.ProjectID == item.ProjectID).OrderByDescending(s => s.EndDate).ToList());
         }
