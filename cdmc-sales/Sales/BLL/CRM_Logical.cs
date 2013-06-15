@@ -742,15 +742,18 @@ namespace BLL
                                        CRMID = c.ID,
                                        CompanyCategories = c.Categorys,
                                        Members = c.Members,
-                                       CompanyNameEN = string.IsNullOrEmpty(c.Company.Name_EN)?"":c.Company.Name_EN,
-                                       CompanyNameCH = c.Company.Name_CH,
+                                       CompanyNameEN = string.IsNullOrEmpty(c.Company.Name_EN) ? "" : c.Company.Name_EN,
+                                       CompanyNameCH = string.IsNullOrEmpty(c.Company.Name_CH) ? "" : c.Company.Name_CH,
+                                       CompanyContact = string.IsNullOrEmpty(c.Company.Contact) ? "" : c.Company.Contact,
                                        CrmCreator = c.Creator,
                                        CompanyType = c.Company.CompanyType.Name,
                                        AjaxLeads = (from l in c.Company.Leads
                                                     select new AjaxLead
                                                     {
-                                                        LeadNameCH = l.Name_CH,
-                                                        LeadNameEN = l.Name_EN,
+                                                        LeadNameCH = string.IsNullOrEmpty(l.Name_CH) ? "" : l.Name_CH,
+                                                        LeadNameEN = string.IsNullOrEmpty(l.Name_EN) ? "" : l.Name_EN,
+                                                        LeadEmail = string.IsNullOrEmpty(l.EMail) ? "" : l.EMail,
+                                                        LeadPersonalEmail = string.IsNullOrEmpty(l.PersonalEmailAddress) ? "" : l.PersonalEmailAddress,
                                                         LeadTitle = l.Title,
                                                         CRMID = c.ID,
                                                         LeadID = l.ID,

@@ -50,9 +50,13 @@
                             </span>
                         </div>
 
-                        @*<div style="float: left;">
-                            
-                        </div>*@
+                        <div style="float: left;">
+                            <span>
+                                <label style="margin:8px 0px 0px 20px;">寻找匹配的名称,邮件,电话: </label>
+                                @Html.TextBox("fuzzyInput", (string)ViewBag.fuzzyInput, new { style = "width:225px;line-height:22px" })
+                            </span>
+                            <button id="fuzzySearch" onclick="freshPage()">查找</button>
+                        </div>
                         
                     </div>
                     </text>
@@ -163,7 +167,8 @@
         var projectFilterId = $('#projectFilter').val();
         var assignCompanyId = $('#companyFilter').val();
         var prefixLetter = $('#prefixFilter').val();
-        e.data = $.extend(e.data, { projectId: projectFilterId, memberFilterForCompany: assignCompanyId, prefixFilter: prefixLetter });
+        var fuzzyValue = $('#fuzzyInput').val();
+        e.data = $.extend(e.data, { projectId: projectFilterId, memberFilterForCompany: assignCompanyId, prefixFilter: prefixLetter, fuzzyInput: fuzzyValue });
     }
 
 
