@@ -14,18 +14,11 @@
                 })
                 .ToolBar(toolBar => toolBar.Template(
                     @<text>
-                    <div id="filter-container" style="height: 40px; margin-top:5px;">
-                        <div style=" float: left;">
+                    <div id="filter-container" style="height: 60px; margin-top:5px;">
+                    
+                        <div class="assignableMembers">
                             <span>
-                                <label style="margin:5px;">项目:</label>@Html.DropDownList("projectFilter", SelectHelper.ProjectSelectList(EditRight.DealsEdit.ToString(), (int?)ViewBag.ProjectID))</span>
-                            <span>
-                                <label style="margin:5px;">销售:</label>
-                                @Html.DropDownList("companyFilter", SelectHelper.MemberSelectListForProject((int)ViewBag.ProjectID, (string)ViewBag.MemberFilterForCompany), "所有公司")</span>
-                            <button id="UnsignCompanies" onclick="UnsignCompanies()">取消分配</button>
-                        </div>
-                        <div class="assignableMembers" style="float: left;">
-                            <span>
-                            <label style="margin:5px 20px;">  可分配销售:</label>
+                            <label style="margin:5px">  可分配销售:</label>
                                 @foreach (SelectListItem selectListItem in SelectHelper.MemberSelectListForProject((int)ViewBag.ProjectID))
                                 {
                                     if (selectListItem.Value != (string)ViewBag.MemberFilterForCompany && selectListItem.Value != "-1" && selectListItem.Value != "" && selectListItem.Value != "-2")
@@ -38,21 +31,37 @@
                             <button id="AssignCompanies" onclick="AssignCompanies()">分配</button>
                         </div>
 
+                        <div style=" float: left;">
+                            <span>
+                                <label style="margin:8px 0px 0px 5px;">项目:</label>
+                                @Html.DropDownList("projectFilter", SelectHelper.ProjectSelectList(EditRight.DealsEdit.ToString(), (int?)ViewBag.ProjectID))
+                            </span>
+                            <span>
+                                <label style="margin:8px 0px 0px 5px;">销售:</label>
+                                @Html.DropDownList("companyFilter", SelectHelper.MemberSelectListForProject((int)ViewBag.ProjectID, (string)ViewBag.MemberFilterForCompany), "所有公司")
+                            </span>
+                            <button id="UnsignCompanies" onclick="UnsignCompanies()">取消分配</button>
+                        </div>
+
                         <div style="float: left;">
                             <span>
-                                <label style="margin:5px 20px;"> 字头筛选:</label>
+                                <label style="margin:8px 0px 0px 20px;"> 字头筛选:</label>
                                 @Html.DropDownList("prefixFilter", SelectHelper.PrefixFilterSelectList((string)ViewBag.selectVal))
                             </span>
                         </div>
-                    </div>
 
+                        @*<div style="float: left;">
+                            
+                        </div>*@
+                        
+                    </div>
                     </text>
                 ))
                 .DataBinding(dataBinding => dataBinding.Ajax().Select("_AjaxAssignCompany", "Project"))
                 .Columns(c =>
                 {
                     c.Bound(item => item.CRMID).ClientTemplate("<input name='checkedRecords' class='companybox' type='checkbox' value='<#= CRMID #>' title='checkedRecords'/>")
-                    .Title("<input type='checkbox' id='allCompanyBox' />").Filterable(false).Width(30).HtmlAttributes(new { style = "text-align:center" });
+                    .Title("<input type='checkbox' id='allCompanyBox' />").Filterable(false).Sortable(false).Width(30).HtmlAttributes(new { style = "text-align:center" });
                     c.Bound(item => item.CompanyName).Title("公司名").Width(300);
                     c.Bound(item => item.MembersString).Title("销售").Width(70);
                     //c.Bound(item => item.Importancy).Width(80);

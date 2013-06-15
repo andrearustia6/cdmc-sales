@@ -106,19 +106,33 @@
                 <td colspan="4">
                     <fieldset style="margin:0px 0px 0px 0px;">
                         <legend>通话信息</legend>
-                        <ul>
-                            <li><span class="addcall-left">@Html.LabelFor(model => model.CallDate) @Html.Telerik().DateTimePickerFor(model => model.CallDate)
-                                @Html.ValidationMessageFor(model => model.CallDate)</span> <span class="addcall-right">
-                                    @Html.LabelFor(model => model.CallBackDate) @Html.Telerik().DateTimePickerFor(model => model.CallBackDate)
+                        <table cellpadding="0" cellspacing="0" border="0" >
+                            <tr>
+                                <td>
+                                    @Html.LabelFor(model => model.CallDate) 
+                                    @Html.Telerik().DateTimePickerFor(model => model.CallDate)
+                                    @Html.ValidationMessageFor(model => model.CallDate)
+                                </td>
+                                <td>
+                                    @Html.LabelFor(model => model.CallBackDate) 
+                                    @Html.Telerik().DateTimePickerFor(model => model.CallBackDate)
                                     @Html.ValidationMessageFor(model => model.CallBackDate)
-                                </span></li>
-                            <li><span class="addcall-left">@Html.LabelFor(model => model.CallTypeId) @Html.DropDownListFor(model => model.CallTypeId, SelectHelper.CallTypeSelectList(Model.CallTypeId), "-请选择-")
-                                @Html.ValidationMessageFor(model => model.CallTypeId)</span> 
-                            </li>
-                            <li><span >@Html.LabelFor(model => model.Result) @Html.TextAreaFor(model => model.Result)
-                                @Html.ValidationMessageFor(model => model.Result)</span>
-                                </li>      
-                        </ul>
+                                </td>
+                                <td>
+                                    @Html.LabelFor(model => model.CallTypeId) 
+                                    @Html.DropDownListFor(model => model.CallTypeId, SelectHelper.CallTypeSelectList(Model.CallTypeId), "-请选择-")
+                                    @Html.ValidationMessageFor(model => model.CallTypeId)
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td colspan="4">
+                                    @Html.LabelFor(model => model.Result) 
+                                    @Html.TextAreaFor(model => model.Result)
+                                    @Html.ValidationMessageFor(model => model.Result)
+                                </td>
+                            </tr>
+                        </table>
                     </fieldset>
                 </td>
             </tr>

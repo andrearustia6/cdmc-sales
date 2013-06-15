@@ -351,37 +351,37 @@ namespace Sales.Controllers
         {
             Lead lead = new Lead()
             {
-                Name_CH = ajaxViewLead.Name_CN,
-                Name_EN = ajaxViewLead.Name_EN,
-                Title = ajaxViewLead.Title,
+                Name_CH = string.IsNullOrEmpty(ajaxViewLead.Name_CN) ? "" : ajaxViewLead.Name_CN.Trim(),
+                Name_EN = string.IsNullOrEmpty(ajaxViewLead.Name_EN) ? "" : ajaxViewLead.Name_EN.Trim(),
+                Title = string.IsNullOrEmpty(ajaxViewLead.Title) ? "" : ajaxViewLead.Title.Trim(),
                 CompanyID = ajaxViewLead.CompanyId,
-                Address = ajaxViewLead.Address,
+                Address = string.IsNullOrEmpty(ajaxViewLead.Address) ? "" : ajaxViewLead.Address.Trim(),
                 Birthday = ajaxViewLead.Birthday,
-                Contact = ajaxViewLead.Telephone,
-                Department = ajaxViewLead.Department,
-                Description = ajaxViewLead.Desc,
-                EMail = ajaxViewLead.WorkingEmail,
-                Fax = ajaxViewLead.Fax,
-                Gender = ajaxViewLead.Gender,
-                Mobile = ajaxViewLead.CellPhone,
-                WeiBo = ajaxViewLead.WeiBo,
-                WeiXin = ajaxViewLead.WeiXin,
-                LinkIn = ajaxViewLead.LinkIn,
-                FaceBook = ajaxViewLead.FaceBook,
-                Blog = ajaxViewLead.Blog,
+                Contact = string.IsNullOrEmpty(ajaxViewLead.Telephone) ? "" : ajaxViewLead.Telephone.Trim(),
+                Department = string.IsNullOrEmpty(ajaxViewLead.Department) ? "" : ajaxViewLead.Department.Trim(),
+                Description = string.IsNullOrEmpty(ajaxViewLead.Desc) ? "" : ajaxViewLead.Desc.Trim(),
+                EMail = string.IsNullOrEmpty(ajaxViewLead.WorkingEmail) ? "" : ajaxViewLead.WorkingEmail.Trim(),
+                Fax = string.IsNullOrEmpty(ajaxViewLead.Fax) ? "" : ajaxViewLead.Fax.Trim(),
+                Gender = string.IsNullOrEmpty(ajaxViewLead.Gender) ? "" : ajaxViewLead.Gender.Trim(),
+                Mobile = string.IsNullOrEmpty(ajaxViewLead.CellPhone) ? "" : ajaxViewLead.CellPhone.Trim(),
+                WeiBo = string.IsNullOrEmpty(ajaxViewLead.WeiBo) ? "" : ajaxViewLead.WeiBo.Trim(),
+                WeiXin = string.IsNullOrEmpty(ajaxViewLead.WeiXin) ? "" : ajaxViewLead.WeiXin.Trim(),
+                LinkIn = string.IsNullOrEmpty(ajaxViewLead.LinkIn) ? "" : ajaxViewLead.LinkIn.Trim(),
+                FaceBook = string.IsNullOrEmpty(ajaxViewLead.FaceBook) ? "" : ajaxViewLead.FaceBook.Trim(),
+                Blog = string.IsNullOrEmpty(ajaxViewLead.Blog) ? "" : ajaxViewLead.Blog.Trim(),
                 MarkForDelete = false,
                 DistrictNumberID = ajaxViewLead.DistrictNumberId,
-                PersonalEmailAddress = ajaxViewLead.PersonelEmail,
+                PersonalEmailAddress = string.IsNullOrEmpty(ajaxViewLead.PersonelEmail) ? "" : ajaxViewLead.PersonelEmail.Trim(),
                 CreatedDate = DateTime.Now,
                 ModifiedDate = DateTime.Now,
-                PersonalPhone = ajaxViewLead.PersonalPhone,
-                PersonalCellPhone = ajaxViewLead.PersonalCellPhone,
-                PersonalFax = ajaxViewLead.PersonalFax,
-                Comment = ajaxViewLead.Comment,              
-                QQ = ajaxViewLead.QQ,
-                Twitter = ajaxViewLead.Twitter,
-                Branch = ajaxViewLead.Branch,
-                ZIP = ajaxViewLead.Zip
+                PersonalPhone = string.IsNullOrEmpty(ajaxViewLead.PersonalPhone) ? "" : ajaxViewLead.PersonalPhone.Trim(),
+                PersonalCellPhone = string.IsNullOrEmpty(ajaxViewLead.PersonalCellPhone) ? "" : ajaxViewLead.PersonalCellPhone.Trim(),
+                PersonalFax = string.IsNullOrEmpty(ajaxViewLead.PersonalFax) ? "" : ajaxViewLead.PersonalFax.Trim(),
+                Comment = string.IsNullOrEmpty(ajaxViewLead.Comment) ? "" : ajaxViewLead.Comment.Trim(),
+                QQ = string.IsNullOrEmpty(ajaxViewLead.QQ) ? "" : ajaxViewLead.QQ.Trim(),
+                Twitter = string.IsNullOrEmpty(ajaxViewLead.Twitter) ? "" : ajaxViewLead.Twitter.Trim(),
+                Branch = string.IsNullOrEmpty(ajaxViewLead.Branch) ? "" : ajaxViewLead.Branch.Trim(),
+                ZIP = string.IsNullOrEmpty(ajaxViewLead.Zip) ? "" : ajaxViewLead.Zip.Trim()
             };
             if (leadRole != null)
             {
@@ -476,10 +476,10 @@ namespace Sales.Controllers
             companyRelationship.Company = new Company();
             companyRelationship.Company.AreaID = quickEntry.IndustryId;
             companyRelationship.Company.CompanyTypeID = quickEntry.TypeId;
-            companyRelationship.Company.Contact = quickEntry.Phone;
+            companyRelationship.Company.Contact = string.IsNullOrEmpty(quickEntry.Phone)?"":quickEntry.Phone.Trim();
             companyRelationship.Company.DistrictNumberID = quickEntry.DistrictNumberId;
-            companyRelationship.Company.Name_CH = quickEntry.Name_CN;
-            companyRelationship.Company.Name_EN = quickEntry.Name_EN;
+            companyRelationship.Company.Name_CH = string.IsNullOrEmpty(quickEntry.Name_CN) ? "" : quickEntry.Name_CN.Trim();
+            companyRelationship.Company.Name_EN = string.IsNullOrEmpty(quickEntry.Name_EN) ? "" : quickEntry.Name_EN.Trim();
             companyRelationship.Company.CreatedDate = DateTime.Now;
             companyRelationship.Company.Creator = Employee.CurrentUserName;
             companyRelationship.Company.ModifiedDate = DateTime.Now;
@@ -513,15 +513,15 @@ namespace Sales.Controllers
             {
                 lead = new Lead()
                 {
-                    Name_CH = quickEntry.LeadName_CN,
-                    Name_EN = quickEntry.LeadName_EN,
-                    Title = quickEntry.Title,
+                    Name_CH = string.IsNullOrEmpty(quickEntry.LeadName_CN) ? "" : quickEntry.LeadName_CN.Trim(),
+                    Name_EN = string.IsNullOrEmpty(quickEntry.LeadName_EN) ? "" : quickEntry.LeadName_EN.Trim(),
+                    Title = string.IsNullOrEmpty(quickEntry.Title) ? "" : quickEntry.Title.Trim(),
                     CompanyID = companyRelationship.CompanyID,
-                    Contact = quickEntry.Telephone,
-                    Department = quickEntry.Department,
-                    Gender = quickEntry.Gender,
-                    Mobile = quickEntry.CellPhone,
-                    EMail = quickEntry.WorkingEmail,
+                    Contact = string.IsNullOrEmpty(quickEntry.Telephone) ? "" : quickEntry.Telephone.Trim(),
+                    Department = string.IsNullOrEmpty(quickEntry.Department) ? "" : quickEntry.Department.Trim(),
+                    Gender = string.IsNullOrEmpty(quickEntry.Gender) ? "" : quickEntry.Gender.Trim(),
+                    Mobile = string.IsNullOrEmpty(quickEntry.CellPhone) ? "" : quickEntry.CellPhone.Trim(),
+                    EMail = string.IsNullOrEmpty(quickEntry.WorkingEmail) ? "" : quickEntry.WorkingEmail.Trim(),
                     MarkForDelete = false,
                     CreatedDate = DateTime.Now,
                     ModifiedDate = DateTime.Now,
@@ -543,7 +543,7 @@ namespace Sales.Controllers
                         LeadID = lead.ID,
                         MemberID = mem.ID,
                         ProjectID = quickEntry.ProjectId,
-                        Result = quickEntry.Result,
+                        Result = string.IsNullOrEmpty(quickEntry.Result) ? "" : quickEntry.Result.Trim(),
                         MarkForDelete = false
                     };
                     CH.Create<LeadCall>(leadCall);
@@ -557,30 +557,30 @@ namespace Sales.Controllers
         {
             CompanyRelationship companyRelationship = new CompanyRelationship();
             companyRelationship.Company = new Company();
-            companyRelationship.Company.Address = ajaxViewSaleCompany.Address;
+            companyRelationship.Company.Address = string.IsNullOrEmpty(ajaxViewSaleCompany.Address) ? "" : ajaxViewSaleCompany.Address.Trim();
             companyRelationship.Company.AreaID = ajaxViewSaleCompany.IndustryId;
-            companyRelationship.Company.Business = ajaxViewSaleCompany.Business;
+            companyRelationship.Company.Business = string.IsNullOrEmpty(ajaxViewSaleCompany.Business) ? "" : ajaxViewSaleCompany.Business.Trim();
             companyRelationship.Company.CompanyTypeID = ajaxViewSaleCompany.TypeId;
-            companyRelationship.Company.Contact = ajaxViewSaleCompany.Phone;
-            companyRelationship.Company.Description = ajaxViewSaleCompany.Desc;
+            companyRelationship.Company.Contact = string.IsNullOrEmpty(ajaxViewSaleCompany.Phone) ? "" : ajaxViewSaleCompany.Phone.Trim();
+            companyRelationship.Company.Description =  string.IsNullOrEmpty(ajaxViewSaleCompany.Desc) ? "" : ajaxViewSaleCompany.Desc.Trim();
             companyRelationship.Company.DistrictNumberID = ajaxViewSaleCompany.DistrictNumberId;
-            companyRelationship.Company.Fax = ajaxViewSaleCompany.Fax;
-            companyRelationship.Company.Name_CH = ajaxViewSaleCompany.Name_CN;
-            companyRelationship.Company.Name_EN = ajaxViewSaleCompany.Name_EN;
-            companyRelationship.Company.WebSite = ajaxViewSaleCompany.WebSite;
-            companyRelationship.Company.ZIP = ajaxViewSaleCompany.ZipCode;
+            companyRelationship.Company.Fax =  string.IsNullOrEmpty(ajaxViewSaleCompany.Fax) ? "" : ajaxViewSaleCompany.Fax.Trim();
+            companyRelationship.Company.Name_CH =  string.IsNullOrEmpty(ajaxViewSaleCompany.Name_CN) ? "" : ajaxViewSaleCompany.Name_CN.Trim();
+            companyRelationship.Company.Name_EN =  string.IsNullOrEmpty(ajaxViewSaleCompany.Name_EN) ? "" : ajaxViewSaleCompany.Name_EN.Trim();
+            companyRelationship.Company.WebSite =  string.IsNullOrEmpty(ajaxViewSaleCompany.WebSite) ? "" : ajaxViewSaleCompany.WebSite.Trim();
+            companyRelationship.Company.ZIP =  string.IsNullOrEmpty(ajaxViewSaleCompany.ZipCode) ? "" : ajaxViewSaleCompany.ZipCode.Trim();
             companyRelationship.Company.CreatedDate = DateTime.Now;
             companyRelationship.Company.Creator = Employee.CurrentUserName;
             companyRelationship.Company.ModifiedDate = DateTime.Now;
             companyRelationship.Company.ModifiedUser = Employee.CurrentUserName;
-            companyRelationship.Company.Address_EN = ajaxViewSaleCompany.Address_EN;
-            companyRelationship.Company.Province = ajaxViewSaleCompany.Province;
-            companyRelationship.Company.City = ajaxViewSaleCompany.City;
-            companyRelationship.Company.Scale = ajaxViewSaleCompany.Scale;
-            companyRelationship.Company.AnnualSales = ajaxViewSaleCompany.AnnualSales;
-            companyRelationship.Company.MainProduct = ajaxViewSaleCompany.MainProduct;
-            companyRelationship.Company.MainClient = ajaxViewSaleCompany.MainClient;
-            companyRelationship.Description = ajaxViewSaleCompany.Desc;
+            companyRelationship.Company.Address_EN =  string.IsNullOrEmpty(ajaxViewSaleCompany.Address_EN) ? "" : ajaxViewSaleCompany.Address_EN.Trim();
+            companyRelationship.Company.Province = string.IsNullOrEmpty(ajaxViewSaleCompany.Province) ? "" :  ajaxViewSaleCompany.Province.Trim();
+            companyRelationship.Company.City =  string.IsNullOrEmpty(ajaxViewSaleCompany.City) ? "" : ajaxViewSaleCompany.City.Trim();
+            companyRelationship.Company.Scale = string.IsNullOrEmpty(ajaxViewSaleCompany.Scale) ? "" :  ajaxViewSaleCompany.Scale.Trim();
+            companyRelationship.Company.AnnualSales =  string.IsNullOrEmpty(ajaxViewSaleCompany.AnnualSales) ? "" : ajaxViewSaleCompany.AnnualSales.Trim();
+            companyRelationship.Company.MainProduct =  string.IsNullOrEmpty(ajaxViewSaleCompany.MainProduct) ? "" : ajaxViewSaleCompany.MainProduct.Trim();
+            companyRelationship.Company.MainClient =  string.IsNullOrEmpty(ajaxViewSaleCompany.MainClient) ? "" : ajaxViewSaleCompany.MainClient.Trim();
+            companyRelationship.Description =  string.IsNullOrEmpty(ajaxViewSaleCompany.Desc) ? "" : ajaxViewSaleCompany.Desc.Trim();
             companyRelationship.ProgressID = ajaxViewSaleCompany.ProgressId;
             companyRelationship.Members = new List<Member>() { };
             companyRelationship.Members.Add(CH.DB.Members.FirstOrDefault(c => c.Name == Employee.CurrentUserName));
@@ -795,7 +795,13 @@ namespace Sales.Controllers
                 {
                     item.DealCode = prefix + "001";
                 }
-
+                item.Committer = item.Committer.Trim();
+                item.CommitterContect = item.CommitterContect.Trim();
+                item.CommitterEmail = item.CommitterEmail.Trim();
+                item.TicketDescription = item.TicketDescription.Trim();
+                item.AbandonReason = item.AbandonReason.Trim();
+                item.PaymentDetail = item.PaymentDetail.Trim();
+                item.Sales = item.Sales.Trim();
                 CH.Create<Deal>(item);
                 if (item.ID > 0)
                 {
@@ -812,12 +818,12 @@ namespace Sales.Controllers
                             var partType = CH.GetAllData<ParticipantType>().Where(pt => pt.Name == ajaxp.ParticipantTypeName).FirstOrDefault();
 
                             p = new Participant();
-                            p.Name = ajaxp.Name;
-                            p.Title = ajaxp.Title;
-                            p.Gender = ajaxp.Gender;
-                            p.Mobile = ajaxp.Mobile;
-                            p.Contact = ajaxp.Contact;
-                            p.Email = ajaxp.Email;
+                            p.Name = ajaxp.Name.Trim();
+                            p.Title = ajaxp.Title.Trim();
+                            p.Gender = ajaxp.Gender.Trim();
+                            p.Mobile = ajaxp.Mobile.Trim();
+                            p.Contact = ajaxp.Contact.Trim();
+                            p.Email = ajaxp.Email.Trim();
                             p.ParticipantTypeID = partType.ID;
                             p.ProjectID = item.ProjectID;
                             p.DealID = item.ID;
