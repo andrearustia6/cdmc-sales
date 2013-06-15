@@ -18,7 +18,7 @@
                     
                         <div class="assignableMembers">
                             <span>
-                            <label style="margin:5px">  可分配销售:</label>
+                            <label style="margin:5px">可分配销售:</label>
                                 @foreach (SelectListItem selectListItem in SelectHelper.MemberSelectListForProject((int)ViewBag.ProjectID))
                                 {
                                     if (selectListItem.Value != (string)ViewBag.MemberFilterForCompany && selectListItem.Value != "-1" && selectListItem.Value != "" && selectListItem.Value != "-2")
@@ -89,6 +89,7 @@
             $('#projectFilter').change(function () {
                 $('#companyFilter option').eq(0).prop('selected', true);
                 freshPage();
+                freshProjectSales();
             });
             $('#companyFilter').change(
                 function () {
@@ -174,5 +175,14 @@
 
     function freshPage() {
         $("#Company").data("tGrid").rebind();
+    }
+
+    function freshProjectSales() {
+        var projectFilterId = $('#projectFilter').val();
+        var assignCompanyId = $('#companyFilter').val();
+        var myurl = new SF.URL(window.location.href);
+        myurl.set('projectId', projectFilterId);
+        myurl.set('memberFilterForCompany', assignCompanyId);
+        window.location = myurl.url();
     }
 </script>
