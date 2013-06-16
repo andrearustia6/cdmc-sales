@@ -591,7 +591,7 @@ namespace Sales.Controllers
         }
 
         [HttpGet]
-        public ActionResult AssignCompany(int? projectId, int? memberFilterForCompany, string prefixFilter = "", string fuzzyInput = "")
+        public ActionResult AssignCompany(int? projectId, string memberFilterForCompany="", string prefixFilter = "", string fuzzyInput = "")
         {
             Project project = null;
             if (projectId.HasValue)
@@ -605,8 +605,8 @@ namespace Sales.Controllers
             if (project != null)
             {
                 ViewBag.ProjectID = project.ID;
-                ViewBag.MemberFilterForCompany = memberFilterForCompany;
             }
+            ViewBag.MemberFilterForCompany = memberFilterForCompany;
             ViewBag.selectVal = prefixFilter;
             ViewBag.fuzzyInput = fuzzyInput;
             return View();
