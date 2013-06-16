@@ -140,14 +140,14 @@
             })
             .Columns(c =>
             {
-                c.Bound(p => p.Name).Title("客户名称");
-                c.Bound(p => p.Title).Title("客户职位");
-                c.Bound(p => p.Gender).Title("客户性别");
-                c.Bound(p => p.Mobile).Title("移动电话");
-                c.Bound(p => p.Contact).Title("客户直线");
-                c.Bound(p => p.Email).Title("电子邮箱");
-                c.Bound(p => p.ParticipantTypeName).Title("参会类型");
-                c.Command(commands => commands.Delete()).Title("删除");
+                c.Bound(p => p.Name).Title("客户名称").Width(100);
+                c.Bound(p => p.Title).Title("客户职位").Width(100);
+                c.Bound(p => p.Gender).Title("客户性别").Width(100);
+                c.Bound(p => p.Mobile).Title("移动电话").Width(100);
+                c.Bound(p => p.Contact).Title("客户直线").Width(100);
+                c.Bound(p => p.Email).Title("电子邮箱").Width(120);
+                c.Bound(p => p.ParticipantTypeName).Title("参会类型").Width(100);
+                c.Command(commands => commands.Delete()).Title("删除").Width(100);
             })
             .DataBinding(dataBinding =>
             {
@@ -177,7 +177,7 @@
         width: 85px;
         padding-right: 5px;
     }
-    #quickTable tr td input[type=text], table tr td select
+    #quickTable tr td input[type=text] .text-box, table tr td select
     {
         width: 140px;
     }
