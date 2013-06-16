@@ -203,13 +203,14 @@ namespace Sales.Controllers
                        {
                            ID = db.ID,
                            IsConfirm = db.IsConfirm == true ? "是" : "否",
-                           SalesBriefName = db.Project.SalesBriefName,
+                           ProjectName = (db.Project.Name_EN ?? string.Empty) + " | " + (db.Project.Name_CH ?? string.Empty),
                            Deal = db.Deal,
                            BaseDeal = db.BaseDeal,
                            CheckIn = db.CheckIn,
+                           StartDate = db.StartDate,
                            EndDate = db.EndDate,
-                           MemberName = db.Member.Name,
-                           StartDate = db.StartDate
+                           MemberName = db.Member.Name
+
                        };
             return data.OrderByDescending(s => s.EndDate).ToList();
         }
@@ -322,6 +323,6 @@ namespace Sales.Controllers
             return RedirectToAction("MyTargetIndexEx", new { projectid = item.ProjectID });
         }
 
-  
+
     }
 }
