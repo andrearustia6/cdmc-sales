@@ -7,18 +7,16 @@
 @using BLL
 <fieldset>
     <legend>@SR.Form</legend>
-    <table cellpadding="0" cellspacing="0">
+    <table cellpadding="0" cellspacing="0" align="center" style=" width:100%;">
         <tr>
-            <td style="width:95px;">
-                @*@Html.LabelFor(model => model.DealCode)*@
-                <span>出单号</span>
+            <td style="width:85px;">
+                @Html.LabelFor(model => model.DealCode)
             </td>
             <td>
                 @Html.TextBox("DealCode", Model == null ? "出单后自动生成" : Model.DealCode, new { READONLY = "readonly" })
             </td>
-            <td style="width:95px;">
-                @*@Html.LabelFor(model => model.PackageID, "Package")*@
-                <span>Package</span>
+            <td style="width:85px;">
+                @Html.LabelFor(model => model.PackageID, "Package")
             </td>
             <td>
                 @Html.DropDownListFor(m => m.PackageID, new SelectList(CH.GetAllData<Package>(), "ID", "Name"), "-请选择-", new { style = "width:300px;" })
@@ -26,20 +24,18 @@
             </td>
         </tr>
         <tr>
-            <td>
-                @*@Html.LabelFor(model => model.CompanyRelationshipID, "公司")*@
-                <span>公司</span>
+            <td style="width:85px;">
+                @Html.LabelFor(model => model.CompanyRelationshipID, "公司")
             </td>
             <td>
                 @{
                     var CRM = CH.GetDataById<CompanyRelationship>((int)ViewBag.CompanyRelationshipID);
                 }
-                @Html.TextBox("CompanyRelationshipName", CRM.CompanyName, new { @readOnly = "true", style = "width:300px;border-style: none" })
+                @Html.TextBox("CompanyRelationshipName", CRM.CompanyName, new { @readOnly = "true", style = "width:200px;border-style: none" })
                 @Html.Hidden("CompanyRelationshipID", (int)ViewBag.CompanyRelationshipID)
             </td>
-            <td>
-               @* @Html.LabelFor(model => model.ExpectedPaymentDate)*@
-                <span>合约付款日期</span>
+            <td style="width:85px;">
+                @Html.LabelFor(model => model.ExpectedPaymentDate)
             </td>
             <td>
                 @Html.Telerik().DatePickerFor(model => model.ExpectedPaymentDate)
@@ -47,17 +43,15 @@
             </td>
         </tr>
         <tr>
-            <td>
-                @*@Html.LabelFor(model => model.SignDate)*@
-                <span>签约日期</span>
+            <td style="width:85px;">
+                @Html.LabelFor(model => model.SignDate)
             </td>
             <td>
                 @Html.Telerik().DatePicker().Name("SignDate").Value(Model == null ? DateTime.Now : Model.SignDate)
                 @Html.ValidationMessageFor(model => model.SignDate)
             </td>
-            <td>
-                @*@Html.LabelFor(model => model.Payment)*@
-                <span>应付款</span>
+            <td style="width:85px;">
+                @Html.LabelFor(model => model.Payment)
             </td>
             <td>
                 @Html.Telerik().CurrencyTextBoxFor(model => model.Payment)
@@ -65,17 +59,15 @@
             </td>
         </tr>
         <tr>
-            <td>
-                @*@Html.LabelFor(model => model.Committer)*@
-                <span>客户签单人</span>
+            <td style="width:85px;">
+                @Html.LabelFor(model => model.Committer)
             </td>
             <td>
                 @Html.EditorFor(model => model.Committer)<br />
                 @Html.ValidationMessageFor(model => model.Committer)
             </td>
-            <td>
-                @*@Html.LabelFor(model => model.CommitterContect)*@
-                <span>签单人联系方式</span>
+            <td style="width:85px;">
+                @Html.LabelFor(model => model.CommitterContect)
             </td>
             <td>
                 @Html.EditorFor(model => model.CommitterContect)
@@ -83,17 +75,15 @@
             </td>
         </tr>
         <tr>
-            <td>
-                @*@Html.LabelFor(model => model.CommitterEmail)*@
-                <span>签单人邮箱</span>
+            <td style="width:85px;">
+                @Html.LabelFor(model => model.CommitterEmail)
             </td>
             <td>
                 @Html.EditorFor(model => model.CommitterEmail)
                 @Html.ValidationMessageFor(model => model.CommitterEmail)
             </td>
-            <td>
-                @*@Html.LabelFor(model => model.Sales)*@
-                <span>出单人</span>
+            <td style="width:85px;">
+                @Html.LabelFor(model => model.Sales)
             </td>
             <td>
                 @{
@@ -104,17 +94,15 @@
             </td>
         </tr>
         <tr>
-            <td>
-                @*@Html.LabelFor(model => model.PaymentDetail)*@
-                <span>出单描述</span>
+            <td style="width:85px;">
+                @Html.LabelFor(model => model.PaymentDetail)
             </td>
             <td>
                 @Html.TextAreaFor(model => model.PaymentDetail)
                 @Html.ValidationMessageFor(model => model.PaymentDetail)
             </td>
-            <td>
-                @*@Html.LabelFor(model => model.TicketDescription)*@
-                <span>权益描述</span>
+            <td style="width:85px;">
+                @Html.LabelFor(model => model.TicketDescription)
             </td>
             <td>
                 @Html.TextAreaFor(model => model.TicketDescription)
@@ -122,17 +110,15 @@
             </td>
         </tr>
         <tr>
-            <td>
-                @*@Html.LabelFor(model => model.Abandoned, "是否坏账")*@
-                <span>是否坏账</span>
+            <td style="width:85px;">
+                @Html.LabelFor(model => model.Abandoned, "是否坏账")
             </td>
             <td>
                 @Html.EditorFor(m => m.Abandoned)
                 @Html.ValidationMessageFor(model => model.Abandoned)
             </td>
-            <td>
-                @*@Html.LabelFor(model => model.AbandonReason, "坏账原因")*@
-                <span>坏账原因</span>
+            <td style="width:85px;">
+                @Html.LabelFor(model => model.AbandonReason, "坏账原因")
             </td>
             <td>
                 @Html.TextAreaFor(m => m.AbandonReason, new { style = "height: 10px;" })
@@ -175,3 +161,37 @@
 
 </fieldset>
 
+<style>
+    table
+    {
+        border:none;
+     }
+    table tr td
+    {
+        width: 300px;
+        border:none;
+    }
+    table tr td label
+    {
+        display: inline-block;
+        width: 85px;
+        padding-right: 5px;
+    }
+    table tr td input[type=text], table tr td select
+    {
+        width: 140px;
+    }
+    table tr td textarea
+    {
+        height: 100px;
+    }
+    #categoriesError
+    {
+        display: none;
+    }
+    fieldset.fieldError span
+    {
+        display: inline-block !important;
+        color: Red;
+    }
+</style>
