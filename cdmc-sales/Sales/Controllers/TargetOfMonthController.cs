@@ -192,30 +192,6 @@ namespace Sales.Controllers
             return RedirectToAction("Management", "Project", new { id = pid, tabindex = 2 });
         }
 
-
-        public ActionResult ConfirmList(int? projectId)
-        {
-            ViewBag.selectVal = projectId;
-            return View();
-        }
-
-        [GridAction]
-        public ActionResult _SelectIndex(string filterId, int? projectId)
-        {
-            return View(new GridModel(getData(filterId, projectId)));
-        }
-
-        [AcceptVerbs(HttpVerbs.Post)]
-        [GridAction]
-        public ActionResult _SaveAjaxEditing(int id)
-        {
-            var item = CH.GetDataById<TargetOfMonth>(id);
-            item.Confirmor = Employee.CurrentUserName;
-            item.IsConfirm = true;
-            CH.Edit<TargetOfMonth>(item);
-            return View(new GridModel(getData()));
-        }
-
         public List<AjaxTargetOfMonth> getData(string filter = "", int? projectId = null)
         {
             var targets = from odb in CH.DB.TargetOfMonths select odb;
@@ -223,11 +199,11 @@ namespace Sales.Controllers
             {
                 targets = targets.Where(t => t.IsConfirm == true);
             }
-            else if (filter == "2")//超级板块确认&会务未确认
+            else if (filter == "2")//超级板块确认&财务未确认
             {
                 targets = targets.Where(t => t.IsAdminConfirm == true && (t.IsConfirm == false || t.IsConfirm == null));
             }
-            else if (filter == "3")//超级板块未确认&会务未确认
+            else if (filter == "3")//超级板块未确认&财务未确认
             {
                 targets = targets.Where(t => (t.IsAdminConfirm == false || t.IsAdminConfirm == null) && (t.IsConfirm == false || t.IsConfirm == null));
             }
@@ -252,11 +228,59 @@ namespace Sales.Controllers
                            StartDate = db.StartDate,
                            IsAdminConfirm = db.IsAdminConfirm == true ? "是" : "否"
                        };
+
             return data.OrderByDescending(s => s.EndDate).ToList();
         }
 
+        public ActionResult EditEx(int id)
+        {
+            return View(CH.GetDataById<TargetOfMonth>(id));
+        }
 
+        public ViewResult DetailsEx(int id)
+        {
+            return View(CH.GetDataById<TargetOfMonth>(id));
+        }
 
+        public ActionResult DeleteEx(int id)
+        {
+            return View(CH.GetDataById<TargetOfMonth>(id));
+        }
+
+        public ActionResult CreateEx(int? projectid)
+        {
+            ViewBag.ProjectID = projectid;
+            return View();
+        }
+
+        #region 财务确认项目月目标
+
+        public ActionResult ConfirmList(int? projectId)
+        {
+            ViewBag.selectVal = projectId;
+            return View();
+        }
+
+        [GridAction]
+        public ActionResult _SelectIndex(string filterId, int? projectId)
+        {
+            return View(new GridModel(getData(filterId, projectId)));
+        }
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        [GridAction]
+        public ActionResult _SaveAjaxEditing(int id)
+        {
+            var item = CH.GetDataById<TargetOfMonth>(id);
+            item.Confirmor = Employee.CurrentUserName;
+            item.IsConfirm = true;
+            CH.Edit<TargetOfMonth>(item);
+            return View(new GridModel(getData()));
+        }
+
+        #endregion
+
+        #region 超版确认项目月目标
 
         public ActionResult AdminConfirmList(int? projectId)
         {
@@ -282,26 +306,7 @@ namespace Sales.Controllers
             return View(new GridModel(getData("", projectid)));
         }
 
-        public ActionResult EditEx(int id)
-        {
-            return View(CH.GetDataById<TargetOfMonth>(id));
-        }
-
-        public ViewResult DetailsEx(int id)
-        {
-            return View(CH.GetDataById<TargetOfMonth>(id));
-        }
-
-        public ActionResult DeleteEx(int id)
-        {
-            return View(CH.GetDataById<TargetOfMonth>(id));
-        }
-
-        public ActionResult CreateEx(int? projectid)
-        {
-            ViewBag.ProjectID = projectid;
-            return View();
-        }
+        #endregion
 
         #region 板块编辑项目月目标
 

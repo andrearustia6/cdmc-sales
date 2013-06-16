@@ -69,8 +69,13 @@ namespace System.Web.Mvc
             if (t.EndDate.EndOfMonth() != t.EndDate)
                 item.ModelState.AddModelError("", "结束时间必须是每个月的最后一天");
 
-            if (t.BaseDeal > t.Deal)
-                item.ModelState.AddModelError("", "保底目标不能大于Deal");
+            //if (t.BaseDeal > t.Deal)
+            //    item.ModelState.AddModelError("", "保底目标不能大于Deal");
+
+            if (t.Deal <= 0 || t.CheckIn <= 0)
+            {
+                item.ModelState.AddModelError("", "销售目标和入账目标必须大于0");
+            }
 
             if (t.StartDate.Month != t.EndDate.Month)
                 item.ModelState.AddModelError("", "开始时间和结束时间不在同一个月内");
