@@ -806,7 +806,7 @@ namespace Model
         public int Month { get { return StartDate.Month; } }
 
         [Display(Name = "项目名称"), Required]
-        public string SalesBriefName { get; set; }
+        public string ProjectName { get; set; }
 
         [Display(Name = "开始日期"), DisplayFormat(DataFormatString = "{0:d}")]
         public DateTime StartDate { get; set; }
@@ -855,6 +855,21 @@ namespace Model
 
         [Display(Name = "入账目标"), Required, DisplayFormat(DataFormatString = "{0:c}")]
         public decimal CheckIn { get; set; }
+
+        [Display(Name = "第一周目标"), Required, DisplayFormat(DataFormatString = "{0:c}")]
+        public decimal? TargetOf1stWeek { get; set; }
+
+        [Display(Name = "第二周目标"), Required, DisplayFormat(DataFormatString = "{0:c}")]
+        public decimal? TargetOf2ndWeek { get; set; }
+
+        [Display(Name = "第三周目标"), Required, DisplayFormat(DataFormatString = "{0:c}")]
+        public decimal? TargetOf3rdWeek { get; set; }
+
+        [Display(Name = "第四周目标"), Required, DisplayFormat(DataFormatString = "{0:c}")]
+        public decimal? TargetOf4thWeek { get; set; }
+
+        [Display(Name = "第五周目标"), Required, DisplayFormat(DataFormatString = "{0:c}")]
+        public decimal? TargetOf5thWeek { get; set; }
 
         [Display(Name = "是否财务确认")]
         public string IsConfirm { get; set; }

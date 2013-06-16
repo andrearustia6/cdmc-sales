@@ -229,7 +229,6 @@ namespace Sales.Controllers
                        select new AjaxTargetOfMonth
                        {
                            ID = db.ID,
-                           IsConfirm = db.IsConfirm == true ? "是" : "否",
                            ProjectID = db.ProjectID,
                            ProjectName = (db.Project.Name_EN ?? string.Empty) + " | " + (db.Project.Name_CH ?? string.Empty),
                            Deal = db.Deal,
@@ -237,7 +236,13 @@ namespace Sales.Controllers
                            CheckIn = db.CheckIn,
                            EndDate = db.EndDate,
                            StartDate = db.StartDate,
-                           IsAdminConfirm = db.IsAdminConfirm == true ? "是" : "否"
+                           IsConfirm = db.IsConfirm == true ? "是" : "否",
+                           IsAdminConfirm = db.IsAdminConfirm == true ? "是" : "否",
+                           TargetOf1stWeek = db.TargetOf1stWeek,
+                           TargetOf2ndWeek = db.TargetOf2ndWeek,
+                           TargetOf3rdWeek = db.TargetOf3rdWeek,
+                           TargetOf4thWeek = db.TargetOf4thWeek,
+                           TargetOf5thWeek = db.TargetOf5thWeek
                        };
 
             return data.OrderByDescending(s => s.EndDate).ToList();

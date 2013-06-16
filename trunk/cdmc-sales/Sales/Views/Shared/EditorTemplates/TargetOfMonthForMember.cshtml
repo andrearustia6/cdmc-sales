@@ -13,55 +13,72 @@
 @using (Html.BeginForm())
 {
     <fieldset>
-        <legend>@SR.Form</legend>
-        <div class="editor-label">
-            @Html.LabelFor(model => model.StartDate)
-        </div>
-        <div class="editor-field">
-            @Html.Telerik().DatePickerFor(model => model.StartDate).Value(Model == null ? DateTime.Now.StartOfMonth() : Model.StartDate)
-            @Html.ValidationMessageFor(model => model.StartDate)
-        </div>
-        <div class="editor-label">
-            @Html.LabelFor(model => model.EndDate)
-        </div>
-        <div class="editor-field">
-            @Html.Telerik().DatePickerFor(model => model.EndDate).Value(Model == null ? DateTime.Now.EndOfMonth() : Model.EndDate)
-            @Html.ValidationMessageFor(model => model.EndDate)
-        </div>
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Deal)
-        </div>
-        <div class="editor-field">
-            @Html.Telerik().CurrencyTextBoxFor(model => model.Deal)
-            @Html.ValidationMessageFor(model => model.Deal)
-        </div>
-        <div class="editor-label">
-            @Html.LabelFor(model => model.CheckIn)
-        </div>
-        <div class="editor-field">
-            @Html.Telerik().CurrencyTextBoxFor(model => model.CheckIn)
-            @Html.ValidationMessageFor(model => model.CheckIn)
-        </div>
-        <div class="editor-label">
-            @Html.LabelFor(model => model.MemberID, "项目名称")
-        </div>
-        <div class="editor-field">
-            @Html.DropDownListFor(m => m.ProjectID, new SelectList(BLL.CRM_Logical.GetUserInvolveProject(), "ID", "Name"), "-请选择-")
-            @Html.ValidationMessageFor(model => model.ProjectID)
-        </div>
-        <div class="editor-label">
-            @Html.LabelFor(model => model.MemberID, "目标制定人")
-        </div>
-        <div class="editor-field">
-            @{
-    var pid = Model.ProjectID == null ? ViewBag.ProjectID as int? : Model.ProjectID;
-    var user = Employee.CurrentUserName;
-    var membernames = CH.GetAllData<Member>(mem => mem.Project.ID == pid).ToList();
-                @Html.DropDownListFor(m => m.MemberID, new SelectList(membernames, "ID", "Name", membernames.Find(f => f.Name == user)), "-请选择-");
-            }
-            @Html.ValidationMessageFor(model => model.MemberID)
-        </div>
+        @{if (Model.ID != 0)
+          {
+            <legend>编辑月目标</legend>
+          }
+          else
+          {
+            <legend>新增月目标</legend>
+          }
+        }
+        <table style="padding: 10px; margin: 10px">
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.MemberID, "目标制定人")
+                </td>
+                <td colspan="3">
+                    @{
+          var pid = Model.ProjectID == null ? ViewBag.ProjectID as int? : Model.ProjectID;
+          var user = Employee.CurrentUserName;
+          var membernames = CH.GetAllData<Member>(mem => mem.Project.ID == pid).ToList();
+                        @Html.DropDownListFor(m => m.MemberID, new SelectList(membernames, "ID", "Name", membernames.Find(f => f.Name == user)), "-请选择-", new { style = "width:200px" });
+                    }
+                    @Html.ValidationMessageFor(model => model.MemberID)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.ProjectID, "项目名称")
+                </td>
+                <td colspan="3">
+                    @Html.DropDownListFor(m => m.ProjectID, new SelectList(BLL.CRM_Logical.GetUserInvolveProject(), "ID", "Name"), "-请选择-", new { style = "width:200px" })
+                    @Html.ValidationMessageFor(model => model.ProjectID)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.StartDate)
+                </td>
+                <td>
+                    @Html.Telerik().DatePickerFor(model => model.StartDate).Value(Model.ID == 0 ? DateTime.Now.StartOfMonth() : Model.StartDate)
+                    @Html.ValidationMessageFor(model => model.StartDate)
+                </td>
+                <td>
+                    @Html.LabelFor(model => model.EndDate)
+                </td>
+                <td>
+                    @Html.Telerik().DatePickerFor(model => model.EndDate).Value(Model.ID == 0 ? DateTime.Now.EndOfMonth() : Model.EndDate)
+                    @Html.ValidationMessageFor(model => model.EndDate)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.Deal)
+                </td>
+                <td>
+                    @Html.Telerik().CurrencyTextBoxFor(model => model.Deal)
+                    @Html.ValidationMessageFor(model => model.Deal)
+                </td>
+                <td>
+                    @Html.LabelFor(model => model.CheckIn)
+                </td>
+                <td>
+                    @Html.Telerik().CurrencyTextBoxFor(model => model.CheckIn)
+                    @Html.ValidationMessageFor(model => model.CheckIn)
+                </td>
+        </table>
         @Html.HiddenFor(model => model.IsConfirm)
     </fieldset>
-    @Html.Partial("editcommon", Model)
+@* @Html.Partial("editcommon", Model)*@
 }

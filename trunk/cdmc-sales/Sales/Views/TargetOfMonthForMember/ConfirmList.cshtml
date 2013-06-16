@@ -10,14 +10,14 @@
 })
 .Columns(c =>
 {
-    c.Bound(item => item.BaseDeal);
-    c.Bound(item => item.Deal);
-    c.Bound(item => item.CheckIn);
-    c.Bound(item => item.StartDate);
-    c.Bound(item => item.EndDate);
-    c.Bound(item => item.MemberName);
-    c.Bound(item => item.SalesBriefName);
-    c.Bound(item => item.IsConfirm);
+    c.Bound(item => item.ProjectName);
+    c.Bound(item => item.BaseDeal).Width(100);
+    c.Bound(item => item.Deal).Width(100);
+    c.Bound(item => item.CheckIn).Width(100);
+    c.Bound(item => item.StartDate).Width(100);
+    c.Bound(item => item.EndDate).Width(100);
+    c.Bound(item => item.MemberName).Width(150);
+    c.Bound(item => item.IsConfirm).Width(100);
 
     c.Command(commands =>
     {

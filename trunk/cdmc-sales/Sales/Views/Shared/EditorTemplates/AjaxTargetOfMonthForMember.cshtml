@@ -3,7 +3,53 @@
 @model Model.AjaxTargetOfMonthForMember
 <fieldset>
     <legend>请确认以下月目标</legend>
-    <div style="padding: 5px 20px 10px 20px; margin: 5px">
+    <table style="padding: 10px; margin: 10px">
+        <tr>
+            <td>
+                @Html.LabelFor(model => model.MemberName)
+            </td>
+            <td colspan="3">
+                @Html.TextBoxFor(model => model.MemberName, new { @readOnly = "true", style = "border-style: none" })
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(model => model.ProjectName)
+            </td>
+            <td colspan="3">
+                @Html.TextBoxFor(m => m.ProjectName, new { @readOnly = "true", style = "border-style: none" })
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(model => model.StartDate)
+            </td>
+            <td>
+                @Html.TextBoxFor(model => model.StartDate, new { @readOnly = "true", style = "border-style: none" })
+            </td>
+            <td>
+                @Html.LabelFor(model => model.EndDate)
+            </td>
+            <td>
+                @Html.TextBoxFor(model => model.EndDate, new { @readOnly = "true", style = "border-style: none" })
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(model => model.Deal)
+            </td>
+            <td>
+                @Html.Telerik().CurrencyTextBoxFor(model => model.Deal).Enable(false)
+            </td>
+            <td>
+                @Html.LabelFor(model => model.CheckIn)
+            </td>
+            <td>
+                @Html.Telerik().CurrencyTextBoxFor(m => m.CheckIn).Enable(false)
+            </td>
+        </tr>
+    </table>
+    @*  <div style="padding: 5px 20px 10px 20px; margin: 5px">
         <div class="editor-label">
             @Html.LabelFor(model => model.MemberName)
         </div>
@@ -11,10 +57,10 @@
             @Html.TextBoxFor(model => model.MemberName, new { @readOnly = "true", style = "border-style: none" })
         </div>
         <div class="editor-label">
-            @Html.LabelFor(model => model.SalesBriefName)
+            @Html.LabelFor(model => model.ProjectName)
         </div>
         <div class="editor-field">
-            @Html.TextBoxFor(m => m.SalesBriefName, new { @readOnly = "true", style = "border-style: none" })
+            @Html.TextBoxFor(m => m.ProjectName, new { @readOnly = "true", style = "border-style: none" })
         </div>
         <div class="editor-label">
             @Html.LabelFor(model => model.StartDate)
@@ -46,5 +92,5 @@
         <div class="editor-field">
             @Html.Telerik().CurrencyTextBoxFor(m => m.CheckIn).Enable(false)
         </div>
-    </div>
+    </div>*@
 </fieldset>

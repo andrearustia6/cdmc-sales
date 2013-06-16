@@ -3,7 +3,79 @@
 @model Model.AjaxTargetOfMonth
 <fieldset>
     <legend>请确认以下项目月目标</legend>
-    <div style="padding: 5px 20px 10px 20px; margin: 5px">
+    <table style="padding: 10px; margin: 10px">
+        <tr>
+            <td>
+                @Html.LabelFor(model => model.ProjectName)
+            </td>
+            <td>
+                @Html.TextBoxFor(model => model.ProjectName, new { @readOnly = "true", style = "border-style: none" })
+            </td>
+            <td>
+                @Html.LabelFor(model => model.TargetOf1stWeek)
+            </td>
+            <td>
+                @Html.Telerik().CurrencyTextBoxFor(model => model.TargetOf1stWeek).Enable(false)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(model => model.StartDate)
+            </td>
+            <td>
+                @Html.Telerik().DatePickerFor(model => model.StartDate).Enable(false)
+            </td>
+            <td>
+                @Html.LabelFor(model => model.TargetOf2ndWeek)
+            </td>
+            <td>
+                @Html.Telerik().CurrencyTextBoxFor(model => model.TargetOf2ndWeek).Enable(false)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(model => model.EndDate)
+            </td>
+            <td>
+                @Html.Telerik().DatePickerFor(model => model.EndDate).Enable(false)
+            </td>
+            <td>
+                @Html.LabelFor(model => model.TargetOf3rdWeek)
+            </td>
+            <td>
+                @Html.Telerik().CurrencyTextBoxFor(model => model.TargetOf3rdWeek).Enable(false)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(model => model.Deal)
+            </td>
+            <td>
+                @Html.Telerik().CurrencyTextBoxFor(model => model.Deal).Enable(false)
+            </td>
+            <td>
+                @Html.LabelFor(model => model.TargetOf4thWeek)
+            </td>
+            <td>
+                @Html.Telerik().CurrencyTextBoxFor(model => model.TargetOf4thWeek).Enable(false)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(model => model.CheckIn)
+            </td>
+            <td>
+                @Html.Telerik().CurrencyTextBoxFor(model => model.CheckIn).Enable(false)
+            </td>
+            <td>
+                @Html.LabelFor(model => model.TargetOf5thWeek)
+            </td>
+            <td>
+                @Html.Telerik().CurrencyTextBoxFor(model => model.TargetOf5thWeek).Enable(false)
+            </td>
+        </tr>
+    </table>
+    @*  <div style="padding: 5px 20px 10px 20px; margin: 5px">
         <div class="editor-label">
             @Html.LabelFor(model => model.ProjectName)
         </div>
@@ -22,12 +94,6 @@
         <div class="editor-field">
             @Html.TextBoxFor(model => model.EndDate, new { @readOnly = "true", style = "border-style: none" })
         </div>
-        @*<div class="editor-label">
-            @Html.LabelFor(model => model.BaseDeal)
-        </div>
-        <div class="editor-field">
-            @Html.Telerik().CurrencyTextBoxFor(model => model.BaseDeal).Enable(false)
-        </div>*@
         <div class="editor-label">
             @Html.LabelFor(model => model.Deal)
         </div>
@@ -40,5 +106,5 @@
         <div class="editor-field">
             @Html.Telerik().CurrencyTextBoxFor(m => m.CheckIn).Enable(false)
         </div>
-    </div>
+    </div>*@
 </fieldset>
