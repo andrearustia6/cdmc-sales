@@ -9,7 +9,7 @@
     </span><span>
         <label style="margin: 7px; float: left;">
             项目:</label>
-        @Html.DropDownList("Projects", SelectHelper.SuperManagerProjectSelectList((int?)ViewBag.selectVal), new { style = "margin:5px;float: left;", onchange = "onChange();" })
+        @Html.DropDownList("Projects", SelectHelper.SuperManagerProjectSelectList((int?)ViewBag.selectVal), "所有项目", new { style = "margin:5px;float: left;", onchange = "onChange();" })
     </span>
 </div>
 @(Html.Telerik().Grid<Model.AjaxTargetOfMonth>().Name("TargetOfMonth")
