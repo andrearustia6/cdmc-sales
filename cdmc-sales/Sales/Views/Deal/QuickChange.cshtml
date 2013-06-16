@@ -7,7 +7,7 @@
 @using BLL
 <fieldset>
     <legend>@SR.Form</legend>
-    <table cellpadding="0" cellspacing="0" align="center" style=" width:100%;">
+    <table id="quickTable" cellpadding="0" cellspacing="0" align="center" style=" width:100%;">
         <tr>
             <td style="width:85px;">
                 @Html.LabelFor(model => model.DealCode)
@@ -162,26 +162,26 @@
 </fieldset>
 
 <style>
-    table
+    #quickTable
     {
         border:none;
      }
-    table tr td
+    #quickTable tr td
     {
         width: 300px;
         border:none;
     }
-    table tr td label
+    #quickTable tr td label
     {
         display: inline-block;
         width: 85px;
         padding-right: 5px;
     }
-    table tr td input[type=text], table tr td select
+    #quickTable tr td input[type=text], table tr td select
     {
         width: 140px;
     }
-    table tr td textarea
+    #quickTable tr td textarea
     {
         height: 100px;
     }
