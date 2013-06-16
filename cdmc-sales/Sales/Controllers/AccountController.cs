@@ -281,6 +281,8 @@ namespace MvcGlobalAuthorize.Controllers
                 um.Gender = objProfile.GetPropertyValue("Gender") as string;
                 um.DisplayName = objProfile.GetPropertyValue("DisplayName") as string;
                 um.DepartmentID = objProfile.GetPropertyValue("DepartmentID") as int?;
+
+
                 int roleid;
                 data = objProfile.GetPropertyValue("RoleLevelID");
                 Int32.TryParse(data.ToString(), out roleid);
@@ -330,11 +332,22 @@ namespace MvcGlobalAuthorize.Controllers
             um.UserName = name;
 
             ProfileBase objProfile = ProfileBase.Create(name);
-            object data = null;
-            int roleid;
-            data = objProfile.GetPropertyValue("RoleLevelID");
-            Int32.TryParse(data.ToString(), out roleid);
-            um.RoleID = roleid;
+           
+
+              var targetemp = from e in CH.DB.EmployeeRoles where e.AccountName == name select e;
+              if (targetemp != null && targetemp.Count() > 0)
+              {
+                  var emp = targetemp.FirstOrDefault();
+                  um.RoleID = emp.RoleID.Value;
+              }
+              else
+              {
+                  object data = null;
+                  int roleid;
+                  data = objProfile.GetPropertyValue("RoleLevelID");
+                  Int32.TryParse(data.ToString(), out roleid);
+                  um.RoleID = roleid;
+              }
 
             object StartDate;
             DateTime startdate;
@@ -376,11 +389,28 @@ namespace MvcGlobalAuthorize.Controllers
                     Membership.UpdateUser(user);
 
                     ProfileBase objProfile = ProfileBase.Create(model.UserName);
-                    objProfile.SetPropertyValue("RoleLevelID", model.RoleID);
+                    //objProfile.SetPropertyValue("RoleLevelID", model.RoleID);
                     objProfile.SetPropertyValue("ExpLevelID", model.ExpLevelID);
                     objProfile.SetPropertyValue("IsActivated", model.IsActivated);
                     objProfile.SetPropertyValue("StartDate", model.StartDate.Value.ToShortDateString());
                     objProfile.Save();
+
+                    var targetemp = from e in CH.DB.EmployeeRoles where e.AccountName == model.UserName select e;
+                    if (targetemp != null && targetemp.Count() > 0)
+                    {
+                        var emp = targetemp.FirstOrDefault();
+                        emp.RoleID = model.RoleID;
+                        var data = CH.DB.Entry<EmployeeRole>(emp);
+                        data.State = System.Data.EntityState.Modified;
+                        
+                    }
+                    else
+                    {
+                        var emprole = new EmployeeRole() { RoleID = model.RoleID, AccountName = model.UserName };
+                        CH.DB.Set<EmployeeRole>().Add(emprole);
+          
+                    }
+                    CH.DB.SaveChanges();
                     return RedirectToAction("Index");
                 }
             }
