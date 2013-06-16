@@ -207,9 +207,20 @@ namespace Sales.Controllers
             {
                 targets = targets.Where(t => (t.IsAdminConfirm == false || t.IsAdminConfirm == null) && (t.IsConfirm == false || t.IsConfirm == null));
             }
+            else if (filter == "4")
+            {
+                DateTime currentMonth = Convert.ToDateTime(DateTime.Today.ToString("yyyy-MM-01") + " 0:00:00");
+                targets = targets.Where(t => t.StartDate == currentMonth);
+            }
+            else if (filter == "5")
+            {
+                DateTime previousMonth = Convert.ToDateTime(DateTime.Today.AddMonths(-1).ToString("yyyy-MM-01") + " 0:00:00");
+                targets = targets.Where(t => t.StartDate == previousMonth);
+            }
 
             if (projectId != null)
             {
+
                 targets = targets.Where(t => t.ProjectID == projectId);
             }
 

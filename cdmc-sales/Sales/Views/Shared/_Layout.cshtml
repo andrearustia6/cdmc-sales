@@ -52,7 +52,7 @@
                                item.Add().Url("~/Project/ImportCompany").Text("客户数据导入");
                                item.Add().Url("~/Project/ImportTrace").Text("历史导入操作");
                                item.Add().Text("模拟人配置").Url("~/SimulatorConfig/index");
-                               
+
 
 
                            });
@@ -72,7 +72,7 @@
                            menu.Add().Text("日常工作").ImageUrl("~/Content/Common/Icons/editor.png").Items(item =>
                            {
                                item.Add().Url("~/Deal/ConfirmList").Text("出单确认");
-                               item.Add().Url("~/Project/ParticipantIndex").Text("参会人导出");
+                               //item.Add().Url("~/Project/ParticipantIndex").Text("参会人导出");
                            });
                        }
 
@@ -154,7 +154,7 @@
                                    //item.Add().Url("~/teamleader/breakdownindex").Text("周目标");
                                    item.Add().Url("~/TargetOfMonth/TargetIndex").Text("月目标");
                                }
-                             
+
                                if (score == SuperManagerRequired.LVL)
                                {
                                    item.Add().Url("~/TargetOfMonth/AdminConfirmList").Text("项目月目标确认");
