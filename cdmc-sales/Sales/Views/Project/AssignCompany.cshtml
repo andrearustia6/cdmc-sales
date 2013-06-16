@@ -161,6 +161,7 @@
         $.post('UnsignCompanies',{ selectedCompanyFilter: selectedCompanyFilter, selectedCompanies: selectedCompanies },function (result) {
                 alert(result);
                 freshPage();
+                freshProjectSales();
             }
         );
     }
