@@ -799,7 +799,7 @@ namespace Sales.Controllers
                 item.CommitterContect = string.IsNullOrEmpty(item.CommitterContect) ? "" : item.CommitterContect.Trim();
                 item.CommitterEmail = string.IsNullOrEmpty(item.CommitterEmail) ? "" : item.CommitterEmail.Trim();
                 item.TicketDescription = string.IsNullOrEmpty(item.TicketDescription) ? "" : item.TicketDescription.Trim();
-                item.AbandonReason = string.IsNullOrEmpty(item.AbandonReason) ? "" : item.AbandonReason.Trim();
+                //item.AbandonReason = string.IsNullOrEmpty(item.AbandonReason) ? "" : item.AbandonReason.Trim();
                 item.PaymentDetail = string.IsNullOrEmpty(item.PaymentDetail) ? "" : item.PaymentDetail.Trim();
                 item.Sales = item.Sales.Trim();
                 CH.Create<Deal>(item);
