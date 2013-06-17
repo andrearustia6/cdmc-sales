@@ -6,7 +6,7 @@
 @using Utl
 @using BLL
 <fieldset>
-    <legend>@SR.Form</legend>
+    <legend>请填入出单信息</legend>
     <table id="quickTable" cellpadding="0" cellspacing="0" align="center" style=" width:100%;">
         <tr>
             <td style="width:85px;">
@@ -109,25 +109,9 @@
                 @Html.ValidationMessageFor(model => model.TicketDescription)
             </td>
         </tr>
-        @*<tr>
-            <td style="width:85px;">
-                @Html.LabelFor(model => model.Abandoned, "是否坏账")
-            </td>
-            <td>
-                @Html.EditorFor(m => m.Abandoned)
-                @Html.ValidationMessageFor(model => model.Abandoned)
-            </td>
-            <td style="width:85px;">
-                @Html.LabelFor(model => model.AbandonReason, "坏账原因")
-            </td>
-            <td>
-                @Html.TextAreaFor(m => m.AbandonReason, new { style = "height: 10px;" })
-                @Html.ValidationMessageFor(model => model.AbandonReason)
-                @Html.HiddenFor(m => m.IsConfirm)
-                @Html.Hidden("ProjectID", (int)ViewBag.ProjectID)
-            </td>
-        </tr>*@
     </table>
+    <fieldset style=" margin:5px 0px 0px 0px;">
+    <legend>请填入参会人信息</legend>
     @(Html.Telerik().Grid<AjaxParticipant>().Name("pList").BindTo(ViewData["pList"] as IEnumerable<AjaxParticipant>)
             .DataKeys(keys =>
             {
@@ -156,9 +140,9 @@
                     .Update("_UpdateAjaxParticipant", "SalesEx");
             })
             .Editable(editing => editing.Mode(GridEditMode.InCell).DefaultDataItem(new AjaxParticipant { }))
-            .Scrollable(scrolling => scrolling.Height(160))
+            .Scrollable(scrolling => scrolling.Height(90))
     ) 
-
+    </fieldset>
 </fieldset>
 
 <style>
