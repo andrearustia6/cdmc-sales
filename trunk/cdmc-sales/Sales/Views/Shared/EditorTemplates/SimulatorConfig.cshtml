@@ -9,7 +9,7 @@
     <div class="editor-field">
         @{
             
-            var names  = Membership.GetAllUsers().Cast<MembershipUser>().Select(s=>s.UserName);
+            var names = Membership.GetAllUsers().Cast<MembershipUser>().Where(s => s.IsLockedOut == false).Select(s => s.UserName);
  
                 
             
