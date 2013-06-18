@@ -229,52 +229,59 @@ namespace Utl
         /// 取得所有 基本的对象
         /// </summary>
         /// <returns></returns>
-        public static List<MembershipUser> GetEmplyeeByLVL(params int[] lvl)
+        public static IQueryable<string> GetEmplyeeByLVL(params int[] lvl)
         {
-            var list = Membership.GetAllUsers().Cast<MembershipUser>().ToList<MembershipUser>();
-            var data = new List<MembershipUser>();
-            list.ForEach(l =>
-            {
-                if (lvl.Contains(GetRoleLevel(l.UserName)))
-                    data.Add(l);
-            });
+            var names  = Membership.GetAllUsers().Cast<MembershipUser>().Where(s=>s.IsLockedOut==false).Select(s=>s.UserName).ToList();
+            var emps = from e in CH.DB.EmployeeRoles.Where(w => names.Contains(w.AccountName)) select e;
+
+            var data = from r in CH.DB.Roles
+                       from e in emps
+                       where lvl.Any(a => a == r.Level && r.ID == e.RoleID)
+                       select e.AccountName;
+
+            //var data = new List<MembershipUser>();
+            //list.ForEach(l =>
+            //{
+            //    if (lvl.Contains(GetRoleLevel(l.UserName)))
+            //        data.Add(l);
+            //});
             return data;
         }
 
-        /// <summary>
-        /// 取得所有 基本的对象 for autocomplete multiple
-        /// </summary>
-        /// <returns></returns>
-        public static List<string> GetEmplyeeNameByLVL(params int[] lvl)
-        {
-            var list = Membership.GetAllUsers().Cast<MembershipUser>().ToList<MembershipUser>();
-            var data = new List<string>();
-            list.ForEach(l =>
-            {
-                if (lvl.Contains(GetRoleLevel(l.UserName)))
-                    data.Add(l.UserName);
-            });
-            return data;
-        }
+        ///// <summary>
+        ///// 取得所有 基本的对象 for autocomplete multiple
+        ///// </summary>
+        ///// <returns></returns>
+        //public static List<string> GetEmplyeeNameByLVL(params int[] lvl)
+        //{
+        //    var list = Membership.GetAllUsers().Cast<MembershipUser>().ToList<MembershipUser>();
+        //    var data = new List<string>();
+        //    list.ForEach(l =>
+        //    {
+        //        if (lvl.Contains(GetRoleLevel(l.UserName)))
+        //            data.Add(l.UserName);
+        //    });
+        //    return data;
+        //}
 
         /// <summary>
         /// 添加成员
         /// </summary>
         /// <returns></returns>
-        public static List<MembershipUser> GetAvailbleSales(int? projectid, params string[] ms)
+        public static IQueryable<string> GetAvailbleSales(int? projectid, params string[] ms)
         {
             var list = GetEmplyeeByLVL(SalesRequired.LVL, LeaderRequired.LVL);
             var p = CH.GetDataById<Project>(projectid);
-            list = list.FindAll(l => p.Members.Exists(m => m.Name == l.UserName) == false);
+            list = list.Where(l => p.Members.Exists(m => m.Name == l) == false);
 
-            if (ms != null)
-            {
-                ms.ToList().ForEach(m =>
-                {
-                    if (!string.IsNullOrEmpty(m))
-                        list.Add(Membership.GetUser(m));
-                });
-            }
+            //if (ms != null)
+            //{
+            //    ms.ToList().ForEach(m =>
+            //    {
+            //        if (!string.IsNullOrEmpty(m))
+            //            list.Add(Membership.GetUser(m));
+            //    });
+            //}
 
             return list;
         }

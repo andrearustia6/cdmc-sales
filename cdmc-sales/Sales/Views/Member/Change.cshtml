@@ -10,7 +10,7 @@
         @Html.LabelFor(model => model.Name)
     </div>
     <div class="editor-field">
-        @Html.Telerik().ComboBoxFor(model => model.Name).BindTo(new SelectList(Employee.GetAvailbleSales(ViewBag.ProjectID == null ? Model.ProjectID : (int)ViewBag.ProjectID, Model == null ? null : Model.Name), "UserName", "UserName")).Value(Model == null ? null : Model.Name)
+        @Html.Telerik().ComboBoxFor(model => model.Name).BindTo(new SelectList(Employee.GetAvailbleSales(ViewBag.ProjectID == null ? Model.ProjectID : (int)ViewBag.ProjectID, Model == null ? null : Model.Name))).Value(Model == null ? null : Model.Name)
         @Html.ValidationMessageFor(model => model.Name)
     </div>
     <div class="editor-label">
