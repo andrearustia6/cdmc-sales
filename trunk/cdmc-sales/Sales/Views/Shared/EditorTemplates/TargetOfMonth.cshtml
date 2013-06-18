@@ -23,8 +23,10 @@
                     @Html.DropDownListFor(m => m.ProjectID, new SelectList(BLL.CRM_Logical.GetUserInvolveProject(), "ID", "Name"), new { style = "width:135px" })
                     @Html.ValidationMessageFor(model => model.ProjectID)
                 </td>
-                <td>
-                    @Html.LabelFor(model => model.TargetOf1stWeek)
+                <td style="width: 75px">
+                    <label id="1stWeek">
+                        第一周目标</label>
+                    @*@Html.LabelFor(model => model.TargetOf1stWeek)*@
                 </td>
                 <td>
                     @Html.Telerik().CurrencyTextBoxFor(model => model.TargetOf1stWeek).Value(Model.TargetOf1stWeek == null ? 0 : Model.TargetOf1stWeek)
@@ -36,11 +38,13 @@
                     @Html.LabelFor(model => model.StartDate)
                 </td>
                 <td>
-                    @Html.Telerik().DatePickerFor(model => model.StartDate).Value(Model.ID == 0 ? DateTime.Now.StartOfMonth() : Model.StartDate)
+                    @Html.Telerik().DatePickerFor(model => model.StartDate).Value(Model.ID == 0 ? DateTime.Now.StartOfMonth() : Model.StartDate).ClientEvents(e => e.OnChange("OnChange").OnLoad("OnChange"))
                     @Html.ValidationMessageFor(model => model.StartDate)
                 </td>
                 <td>
-                    @Html.LabelFor(model => model.TargetOf2ndWeek)
+                    <label id="2ndWeek">
+                        第二周目标</label>
+                    @*@Html.LabelFor(model => model.TargetOf2ndWeek)*@
                 </td>
                 <td>
                     @Html.Telerik().CurrencyTextBoxFor(model => model.TargetOf2ndWeek).Value(Model.TargetOf2ndWeek == null ? 0 : Model.TargetOf2ndWeek)
@@ -56,7 +60,9 @@
                     @Html.ValidationMessageFor(model => model.EndDate)
                 </td>
                 <td>
-                    @Html.LabelFor(model => model.TargetOf3rdWeek)
+                    <label id="3rdWeek">
+                        第三周目标</label>
+                    @*@Html.LabelFor(model => model.TargetOf3rdWeek)*@
                 </td>
                 <td>
                     @Html.Telerik().CurrencyTextBoxFor(model => model.TargetOf3rdWeek).Value(Model.TargetOf3rdWeek == null ? 0 : Model.TargetOf3rdWeek)
@@ -72,7 +78,9 @@
                     @Html.ValidationMessageFor(model => model.Deal)
                 </td>
                 <td>
-                    @Html.LabelFor(model => model.TargetOf4thWeek)
+                    <label id="4thWeek">
+                        第四周目标</label>
+                    @*@Html.LabelFor(model => model.TargetOf4thWeek)*@
                 </td>
                 <td>
                     @Html.Telerik().CurrencyTextBoxFor(model => model.TargetOf4thWeek).Value(Model.TargetOf4thWeek == null ? 0 : Model.TargetOf4thWeek)
@@ -87,10 +95,12 @@
                     @Html.Telerik().CurrencyTextBoxFor(model => model.CheckIn)
                     @Html.ValidationMessageFor(model => model.CheckIn)
                 </td>
-                <td>
-                    @Html.LabelFor(model => model.TargetOf5thWeek)
+                <td id="hidenTd1">
+                    <label id="5thWeek">
+                        第五周目标</label>
+                    @*@Html.LabelFor(model => model.TargetOf5thWeek)*@
                 </td>
-                <td>
+                <td id="hidenTd2">
                     @Html.Telerik().CurrencyTextBoxFor(model => model.TargetOf5thWeek).Value(Model.TargetOf5thWeek == null ? 0 : Model.TargetOf5thWeek)
                     @Html.ValidationMessageFor(model => model.TargetOf5thWeek)
                 </td>
@@ -99,3 +109,50 @@
     </fieldset>
    
 }
+<script type="text/javascript">
+    function OnChange(e) {
+        $("#hidenTd1").show();
+        $("#hidenTd2").show();
+        if (e.value == null) {
+            var firstDate = new Date(e.currentTarget.defaultValue);
+        }
+        else {
+            var firstDate = e.value;
+        }
+
+        firstDate.setDate(1);
+        var endDate = new Date(firstDate);
+        endDate.setMonth(firstDate.getMonth() + 1);
+        endDate.setDate(0);
+        var month = firstDate.getMonth() + 1;
+        var ofTheWeek = firstDate.getDay();
+        var lastDay = endDate.getDate();
+        if (ofTheWeek == 1) {
+            $("#1stWeek").text(month + "-1～" + month + "-7");
+            $("#2ndWeek").text(month + "-8～" + month + "-14");
+            $("#3rdWeek").text(month + "-15～" + month + "-21");
+            $("#4thWeek").text(month + "-22～" + month + "-28");
+            if (lastDay > 28) {
+                $("#5thWeek").text(month + "-29～" + month + "-" + lastDay);
+            }
+            else {
+                var item = $("#TargetOf5thWeek").data("tTextBox");
+                if (item != null) {
+                    item.value(0);
+                }
+                $("#hidenTd1").hide();
+                $("#hidenTd2").hide();
+            }
+        }
+        else {
+            if (ofTheWeek == 0) {
+                ofTheWeek = 7;
+            }
+            $("#1stWeek").text(month + "-1～" + month + "-" + (8 - ofTheWeek));
+            $("#2ndWeek").text(month + "-" + (9 - ofTheWeek) + "～" + month + "-" + (15 - ofTheWeek));
+            $("#3rdWeek").text(month + "-" + (16 - ofTheWeek) + "～" + month + "-" + (22 - ofTheWeek));
+            $("#4thWeek").text(month + "-" + (23 - ofTheWeek) + "～" + month + "-" + (29 - ofTheWeek));
+            $("#5thWeek").text(month + "-" + (30 - ofTheWeek) + "～" + month + "-" + lastDay);
+        }
+    }
+</script>
