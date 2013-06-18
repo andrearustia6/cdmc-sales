@@ -12,10 +12,11 @@
                 @Html.TextBoxFor(model => model.ProjectName, new { @readOnly = "true", style = "border-style: none" })
             </td>
             <td>
-                @Html.LabelFor(model => model.TargetOf1stWeek)
+                <label id="1stWeek">
+                    第一周目标</label>
             </td>
             <td>
-                @Html.Telerik().CurrencyTextBoxFor(model => model.TargetOf1stWeek).Enable(false)
+                @Html.TextBoxFor(model => model.TargetOf1stWeek, new { @readOnly = "true", style = "border-style: none" })
             </td>
         </tr>
         <tr>
@@ -23,13 +24,14 @@
                 @Html.LabelFor(model => model.StartDate)
             </td>
             <td>
-                @Html.Telerik().DatePickerFor(model => model.StartDate).Enable(false)
+                @Html.TextBoxFor(model => model.StartDate, new { @readOnly = "true", style = "border-style: none" })
             </td>
             <td>
-                @Html.LabelFor(model => model.TargetOf2ndWeek)
+                <label id="2ndWeek">
+                    第二周目标</label>
             </td>
             <td>
-                @Html.Telerik().CurrencyTextBoxFor(model => model.TargetOf2ndWeek).Enable(false)
+                @Html.TextBoxFor(model => model.TargetOf2ndWeek, new { @readOnly = "true", style = "border-style: none" })
             </td>
         </tr>
         <tr>
@@ -37,13 +39,14 @@
                 @Html.LabelFor(model => model.EndDate)
             </td>
             <td>
-                @Html.Telerik().DatePickerFor(model => model.EndDate).Enable(false)
+                @Html.TextBoxFor(model => model.EndDate, new { @readOnly = "true", style = "border-style: none" })
             </td>
             <td>
-                @Html.LabelFor(model => model.TargetOf3rdWeek)
+                <label id="3rdWeek">
+                    第三周目标</label>
             </td>
             <td>
-                @Html.Telerik().CurrencyTextBoxFor(model => model.TargetOf3rdWeek).Enable(false)
+                @Html.TextBoxFor(model => model.TargetOf3rdWeek, new { @readOnly = "true", style = "border-style: none" })
             </td>
         </tr>
         <tr>
@@ -51,13 +54,14 @@
                 @Html.LabelFor(model => model.Deal)
             </td>
             <td>
-                @Html.Telerik().CurrencyTextBoxFor(model => model.Deal).Enable(false)
+                @Html.TextBoxFor(model => model.Deal, new { @readOnly = "true", style = "border-style: none" })
             </td>
             <td>
-                @Html.LabelFor(model => model.TargetOf4thWeek)
+                <label id="4thWeek">
+                    第四周目标</label>
             </td>
             <td>
-                @Html.Telerik().CurrencyTextBoxFor(model => model.TargetOf4thWeek).Enable(false)
+                @Html.TextBoxFor(model => model.TargetOf4thWeek, new { @readOnly = "true", style = "border-style: none" })
             </td>
         </tr>
         <tr>
@@ -65,46 +69,15 @@
                 @Html.LabelFor(model => model.CheckIn)
             </td>
             <td>
-                @Html.Telerik().CurrencyTextBoxFor(model => model.CheckIn).Enable(false)
+                @Html.TextBoxFor(model => model.CheckIn, new { @readOnly = "true", style = "border-style: none" })
             </td>
-            <td>
-                @Html.LabelFor(model => model.TargetOf5thWeek)
+            <td id="hidenTd1">
+                <label id="5thWeek">
+                    第五周目标</label>
             </td>
-            <td>
-                @Html.Telerik().CurrencyTextBoxFor(model => model.TargetOf5thWeek).Enable(false)
+            <td id="hidenTd2">
+                @Html.TextBoxFor(model => model.TargetOf5thWeek, new { @readOnly = "true", style = "border-style: none" })
             </td>
         </tr>
     </table>
-    @*  <div style="padding: 5px 20px 10px 20px; margin: 5px">
-        <div class="editor-label">
-            @Html.LabelFor(model => model.ProjectName)
-        </div>
-        <div class="editor-field">
-            @Html.TextBoxFor(model => model.ProjectName, new { @readOnly = "true", style = "border-style: none" })
-        </div>
-        <div class="editor-label">
-            @Html.LabelFor(model => model.StartDate)
-        </div>
-        <div class="editor-field">
-            @Html.TextBoxFor(model => model.StartDate, new { @readOnly = "true", style = "border-style: none" })
-        </div>
-        <div class="editor-label">
-            @Html.LabelFor(model => model.EndDate)
-        </div>
-        <div class="editor-field">
-            @Html.TextBoxFor(model => model.EndDate, new { @readOnly = "true", style = "border-style: none" })
-        </div>
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Deal)
-        </div>
-        <div class="editor-field">
-            @Html.Telerik().CurrencyTextBoxFor(model => model.Deal).Enable(false)
-        </div>
-        <div class="editor-label">
-            @Html.LabelFor(model => model.CheckIn)
-        </div>
-        <div class="editor-field">
-            @Html.Telerik().CurrencyTextBoxFor(m => m.CheckIn).Enable(false)
-        </div>
-    </div>*@
 </fieldset>
