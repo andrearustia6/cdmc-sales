@@ -245,7 +245,7 @@ namespace Utl
             //    if (lvl.Contains(GetRoleLevel(l.UserName)))
             //        data.Add(l);
             //});
-            return data;
+            return data.OrderBy(o=>o);
         }
 
         ///// <summary>
@@ -271,8 +271,8 @@ namespace Utl
         public static IQueryable<string> GetAvailbleSales(int? projectid, params string[] ms)
         {
             var list = GetEmplyeeByLVL(SalesRequired.LVL, LeaderRequired.LVL);
-            var p = CH.GetDataById<Project>(projectid);
-            list = list.Where(l => p.Members.Exists(m => m.Name == l) == false);
+            var currentmembers = from m in CH.DB.Members where m.ProjectID == projectid select m.Name;
+            var sales = from s in list.Where(w => currentmembers.Any(a => a == w) == false) select s; 
 
             //if (ms != null)
             //{
@@ -283,7 +283,7 @@ namespace Utl
             //    });
             //}
 
-            return list;
+            return list.OrderBy(o=>o);
         }
 
         public static object GetCurrentProfile(string propertyName)
