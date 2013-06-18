@@ -30,7 +30,7 @@
             <td style="width:30%">@Html.LabelFor(model => model.Excution)</td>
         </tr>
         <tr>
-            <td align="left">@Html.Telerik().DropDownListFor(model => model.Responsibility).BindTo(new SelectList(BLL.CRM_Logical.GetItem1(), "ID", "Name")).DropDownHtmlAttributes(new { style = string.Format("width:{0}px", 200) })</td>
+            <td>@Html.Telerik().DropDownListFor(model => model.Responsibility).BindTo(new SelectList(BLL.CRM_Logical.GetItem1(), "ID", "Name")).DropDownHtmlAttributes(new { style = string.Format("width:{0}px", 200) })</td>
             <td>@Html.Telerik().DropDownListFor(model => model.Discipline).BindTo(new SelectList(BLL.CRM_Logical.GetItem2(), "ID", "Name")).DropDownHtmlAttributes(new { style = string.Format("width:{0}px", 200) })</td>
             <td>@Html.Telerik().DropDownListFor(model => model.Excution).BindTo(new SelectList(BLL.CRM_Logical.GetItem3(), "ID", "Name")).DropDownHtmlAttributes(new { style = string.Format("width:{0}px", 200) })</td>
         </tr>
