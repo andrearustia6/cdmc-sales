@@ -24,7 +24,7 @@ namespace BLL
             {
                 var user = Employee.CurrentUserName;
                 var rolelvl = Employee.CurrentRole.Level;
-                if (rolelvl >= 1000)
+                if (rolelvl == 1000)
                 {
                     var md = MonthDuration.GetMonthInstance(month);
                     var leads = CH.DB.Projects.Where(w => w.IsActived == true && !string.IsNullOrEmpty(w.Manager)).Select(s => s.Manager).Distinct();
@@ -90,7 +90,7 @@ namespace BLL
             {
                 var user = Employee.CurrentUserName;
                 var rolelvl = Employee.CurrentRole.Level;
-                if (rolelvl >= 100)
+                if (rolelvl == 500)
                 {
                     var leads = CH.DB.Projects.Where(w => w.IsActived == true && !string.IsNullOrEmpty(w.TeamLeader)).Select(s => s.TeamLeader).Distinct();
                   
@@ -107,10 +107,10 @@ namespace BLL
                         var leadinsameprojects = from p in CH.DB.Projects.Where(w => w.Manager == user) select p.TeamLeader;
                         leads = leads.Where(w => leadinsameprojects.Any(a => a == w));
                     }
-                    else if (rolelvl == 100)
-                    {
-                        leads = leads.Where(w => w == user);
-                    }
+                    //else if (rolelvl == 100)
+                    //{
+                    //    leads = leads.Where(w => w == user);
+                    //}
                     
                    
                     var deals = CRM_Logical.GetDeals().Where(w => w.ActualPaymentDate.Value != null && w.ActualPaymentDate.Value.Month==month);
@@ -149,24 +149,25 @@ namespace BLL
             public static IEnumerable<_SalesPerformance> GetSalesPerformances(int month)
             {
                 var rolelvl = Employee.CurrentRole.Level;
-                if (rolelvl >= 10)
+                if (rolelvl == 100)
                 {
                     IQueryable<string> sales = null;
                     var user = Employee.CurrentUserName;
-                    if (rolelvl == 100 || rolelvl == 500)//版块或者lead查看
-                    {
+                    sales = CH.DB.Members.Where(w => w.IsActivated == true && w.Project.IsActived == true && w.Project.Manager == user || w.Project.TeamLeader == user).Select(s => s.Name).Distinct();
+                    //if (rolelvl == 100 || rolelvl == 500)//版块或者lead查看
+                    //{
 
-                        sales = CH.DB.Members.Where(w => w.IsActivated == true && w.Project.IsActived == true && w.Project.Manager == user || w.Project.TeamLeader == user).Select(s => s.Name).Distinct();
+                    //    sales = CH.DB.Members.Where(w => w.IsActivated == true && w.Project.IsActived == true && w.Project.Manager == user || w.Project.TeamLeader == user).Select(s => s.Name).Distinct();
 
-                    }
-                    else if (rolelvl == 10)//销售查看
-                    {
-                        sales = CH.DB.Members.Where(w => w.IsActivated == true && w.Project.IsActived == true && w.Name == user).Select(s => s.Name).Distinct();
-                    }
-                    else if (rolelvl > 500)
-                    {
-                        sales = CH.DB.Members.Where(w => w.IsActivated == true && w.Project.IsActived == true).Select(s => s.Name).Distinct();
-                    }
+                    //}
+                    //else if (rolelvl == 10)//销售查看
+                    //{
+                    //    sales = CH.DB.Members.Where(w => w.IsActivated == true && w.Project.IsActived == true && w.Name == user).Select(s => s.Name).Distinct();
+                    //}
+                    //else if (rolelvl > 500)
+                    //{
+                    //    sales = CH.DB.Members.Where(w => w.IsActivated == true && w.Project.IsActived == true).Select(s => s.Name).Distinct();
+                    //}
 
                     if (sales != null)
                     {
