@@ -59,6 +59,12 @@ namespace Sales.Controllers
             return View(list.ToList());
         }
 
+        public ActionResult ProjectsCheckInLastWeek()
+        {
+            var list = CRM_Logical._Reports.GetProjectSingleWeekCheckIn(DateTime.Now);
+            return View(list);
+        }
+
         /// <summary>
         ///项目入账 
         /// </summary>

@@ -11,24 +11,25 @@
 		 <div style="width:15%; float:left; position:fixed;  margin-left:0px; margin-top:200px; ">
          @(Html.Telerik().Menu().Name("Menudirector").HtmlAttributes(new { style = "width:150px;" })
          .Orientation(MenuOrientation.Vertical).Items(menu =>
-     {
-         menu.Add().Text("月出单入账").Items(item =>
          {
-             item.Add().Text("项目进度总表").Url("~/DirectorReport/ProjectsProgress");
-             item.Add().Text("项目入账/目标总表").Url("~/DirectorReport/ProjectsCheckInByMonth");
-             item.Add().Text("项目目标完成趋势图").Url("~/DirectorReport/ProjectsCheckInByMonthLines");
-             item.Add().Text("员工入账/目标总表").Url("~/DirectorReport/EmployeeCheckInByMonth");
-         });
-         menu.Add().Text("本月各周出单入账").Items(item =>
-         {
-             item.Add().Text("项目周入账趋势").Url("~/DirectorReport/ProjectsCheckInByWeek"); 
-             item.Add().Text("员工周入账图");
-         });
-         menu.Add().Text("通话").Items(item =>
-         {
-             item.Add().Text("入账/通话时间");
-         });
-     }))
+             menu.Add().Text("月出单入账").Items(item =>
+             {
+                 item.Add().Text("项目进度总表").Url("~/DirectorReport/ProjectsProgress");
+                 item.Add().Text("项目入账/目标总表").Url("~/DirectorReport/ProjectsCheckInByMonth");
+                 item.Add().Text("项目目标完成趋势图").Url("~/DirectorReport/ProjectsCheckInByMonthLines");
+                 item.Add().Text("员工入账/目标总表").Url("~/DirectorReport/EmployeeCheckInByMonth");
+             });
+             menu.Add().Text("本月各周出单入账").Items(item =>
+             {
+                 item.Add().Text("项目周入账趋势").Url("~/DirectorReport/ProjectsCheckInByWeek");
+                 item.Add().Text("项目上周入账统计").Url("~/DirectorReport/ProjectsCheckInLastWeek"); 
+                 item.Add().Text("员工周入账图");
+             });
+             menu.Add().Text("通话").Items(item =>
+             {
+                 item.Add().Text("入账/通话时间");
+             });
+         }))
         </div>
      
         </div>

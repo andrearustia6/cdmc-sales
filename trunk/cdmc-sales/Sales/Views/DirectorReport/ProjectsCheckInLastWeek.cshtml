@@ -1,0 +1,26 @@
+﻿@{
+    ViewBag.Title = "项目上周入账统计";
+    Layout = "~/Views/DirectorReport/Master.cshtml";
+}
+@using Model
+@model List<ProjectWeekPerformance>
+<fieldset>
+<legend>项目上周入账统计</legend>
+@(
+    Html.Telerik().Grid<ProjectWeekPerformance>(Model).Name("ProjectWeekPerformance")
+        .Columns(columns =>
+        {
+            columns.Bound(p => p.ProjectName).Width(120).Title("项目名").HtmlAttributes(new { style = "text-align:left" });
+            columns.Bound(p => p.StartDate).Width(85).Title("开始日期").HtmlAttributes(new { style = "text-align:left" });
+            columns.Bound(p => p.EndDate).Width(120).Title("结束日期").HtmlAttributes(new { style = "text-align:left" });
+            columns.Bound(p => p.Income).Width(120).Title("本周入账").HtmlAttributes(new { style = "text-align:right" }).Format("{0:C0}");
+            columns.Bound(p => p.Target).Width(85).Title("本周目标").HtmlAttributes(new { style = "text-align:right" }).Format("{0:C0}");
+            columns.Bound(p => p.percent).Width(85).Title("周百分比").Width(60).HtmlAttributes(new { style = "text-align:right" }).Format("{0:P0}");
+        }
+        )
+        .Scrollable(s => s.Height(550))
+        .Sortable()
+        .Resizable(s => s.Columns(true))
+)
+
+</fieldset>

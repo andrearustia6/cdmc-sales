@@ -10,58 +10,57 @@
    <fieldset>
    <legend>项目月度目标/入账情况</legend>
 @(Html.Telerik().Grid<AjaxProjectProcess>(Model.OrderByDescending(o=>o.MonthPercent)).Name("AjaxProjectProcess")
-.Columns(columns =>
-{
-    columns.Bound(p => p.ProjectUnitName).Width(120).Title("项目名").HtmlAttributes(new { style = "text-align:left" });
-    columns.Bound(p => p.ProjectUnitCode).Width(85).Title("项目编号").HtmlAttributes(new { style = "text-align:left" });
-    columns.Bound(p => p.CurrentSales).Title("人数").Width(35).HtmlAttributes(new { style = "text-align:right" });
-    columns.Bound(p => p.LeftedDay).Title("剩余天数").Width(60).HtmlAttributes(new { style = "text-align:right" });
-    //columns.Bound(p => p.DisplayProjectCheckIn).Title("项目总入账情况").HtmlAttributes(new { style = "text-align:right" });
-    //columns.Bound(p => p.DisplayMonthCheckIn).Title("本月入账情况").HtmlAttributes(new { style = "text-align:right" });
-    //columns.Bound(p => p.DisplayWeekCheckIn).Title("本周入账情况").Width(60).HtmlAttributes(new { style = "text-align:right" });
-    columns.Bound(p => p.TotalCheckIn).Title("项目入账总额").HtmlAttributes(new { style = "text-align:right" }).Format("{0:C0}");
-    columns.Bound(p => p.TotalCheckInTarget).Title("项目入账目标").HtmlAttributes(new { style = "text-align:right" }).Format("{0:C0}");
-    columns.Bound(p => p.TotalCheckInPercent).Title("总百分比").Width(60).HtmlAttributes(new { style = "text-align:right" }).Format("{0:P0}");
-    columns.Bound(p => p.CurrentMonthCheckIn).Title("本月入账").HtmlAttributes(new { style = "text-align:right" }).Format("{0:C0}").HtmlAttributes(new { style = "text-align:right" }).Format("{0:C0}").Aggregate(aggregates => aggregates.Sum()).FooterTemplate(@<text>本月入账总和: @item.Sum.Format("{0:c0}")</text>); ;
-    columns.Bound(p => p.CurrentMonthCheckInTarget).Title("本月目标").HtmlAttributes(new { style = "text-align:right" }).HtmlAttributes(new { style = "text-align:right" }).Format("{0:C0}").Aggregate(aggregates => aggregates.Sum()).FooterTemplate(@<text>本月目标总和: @item.Sum.Format("{0:c0}")</text>); ;
-    columns.Bound(p => p.MonthPercent).Title("月百分比").Width(60).HtmlAttributes(new { style = "text-align:right" }).Format("{0:P0}");
-    columns.Bound(p => p.CurrentWeekCheckIn).Title("本周入账").HtmlAttributes(new { style = "text-align:right" }).Format("{0:C0}");
-    columns.Bound(p => p.CurrentWeekTarget).Title("本周目标").HtmlAttributes(new { style = "text-align:right" }).Format("{0:C0}");
-    columns.Bound(p => p.WeekPercent).Title("周百分比").Width(60).HtmlAttributes(new { style = "text-align:right" }).Format("{0:P0}");
-    columns.Bound(p => p.CurrentDayDealIn).Title("本日出单").HtmlAttributes(new { style = "text-align:right" }).Format("{0:C0}");
-   
-})
-                        .CellAction(cell =>
-                        {
-                            if (cell.Column.Member == "MonthPercent")
-                            {
-                                AjaxProjectProcess data = cell.DataItem;
-                                if (data.MonthPercent < 0.8)
-                                {
-                                    cell.HtmlAttributes["style"] = "font-weight: bold; color:red;text-align:right";
-                                }
-                                else if (data.MonthPercent < 1.2)
-                                {
-                                    cell.HtmlAttributes["style"] = "font-weight: bold; color:green;text-align:right";
-                                }
-                            }
+    .Columns(columns =>
+    {
+        columns.Bound(p => p.ProjectUnitName).Width(120).Title("项目名").HtmlAttributes(new { style = "text-align:left" });
+        columns.Bound(p => p.ProjectUnitCode).Width(85).Title("项目编号").HtmlAttributes(new { style = "text-align:left" });
+        columns.Bound(p => p.CurrentSales).Title("人数").Width(35).HtmlAttributes(new { style = "text-align:right" });
+        columns.Bound(p => p.LeftedDay).Title("剩余天数").Width(60).HtmlAttributes(new { style = "text-align:right" });
+        //columns.Bound(p => p.DisplayProjectCheckIn).Title("项目总入账情况").HtmlAttributes(new { style = "text-align:right" });
+        //columns.Bound(p => p.DisplayMonthCheckIn).Title("本月入账情况").HtmlAttributes(new { style = "text-align:right" });
+        //columns.Bound(p => p.DisplayWeekCheckIn).Title("本周入账情况").Width(60).HtmlAttributes(new { style = "text-align:right" });
+        columns.Bound(p => p.TotalCheckIn).Title("项目入账总额").HtmlAttributes(new { style = "text-align:right" }).Format("{0:C0}");
+        columns.Bound(p => p.TotalCheckInTarget).Title("项目入账目标").HtmlAttributes(new { style = "text-align:right" }).Format("{0:C0}");
+        columns.Bound(p => p.TotalCheckInPercent).Title("总百分比").Width(60).HtmlAttributes(new { style = "text-align:right" }).Format("{0:P0}");
+        columns.Bound(p => p.CurrentMonthCheckIn).Title("本月入账").HtmlAttributes(new { style = "text-align:right" }).Format("{0:C0}").HtmlAttributes(new { style = "text-align:right" }).Format("{0:C0}").Aggregate(aggregates => aggregates.Sum()).FooterTemplate(@<text>本月入账总和: @item.Sum.Format("{0:c0}")</text>); ;
+        columns.Bound(p => p.CurrentMonthCheckInTarget).Title("本月目标").HtmlAttributes(new { style = "text-align:right" }).HtmlAttributes(new { style = "text-align:right" }).Format("{0:C0}").Aggregate(aggregates => aggregates.Sum()).FooterTemplate(@<text>本月目标总和: @item.Sum.Format("{0:c0}")</text>); ;
+        columns.Bound(p => p.MonthPercent).Title("月百分比").Width(60).HtmlAttributes(new { style = "text-align:right" }).Format("{0:P0}");
+        columns.Bound(p => p.CurrentWeekCheckIn).Title("本周入账").HtmlAttributes(new { style = "text-align:right" }).Format("{0:C0}");
+        columns.Bound(p => p.CurrentWeekTarget).Title("本周目标").HtmlAttributes(new { style = "text-align:right" }).Format("{0:C0}");
+        columns.Bound(p => p.WeekPercent).Title("周百分比").Width(60).HtmlAttributes(new { style = "text-align:right" }).Format("{0:P0}");
+        columns.Bound(p => p.CurrentDayDealIn).Title("本日出单").HtmlAttributes(new { style = "text-align:right" }).Format("{0:C0}");
+    })
+    .CellAction(cell =>
+    {
+        if (cell.Column.Member == "MonthPercent")
+        {
+            AjaxProjectProcess data = cell.DataItem;
+            if (data.MonthPercent < 0.8)
+            {
+                cell.HtmlAttributes["style"] = "font-weight: bold; color:red;text-align:right";
+            }
+            else if (data.MonthPercent < 1.2)
+            {
+                cell.HtmlAttributes["style"] = "font-weight: bold; color:green;text-align:right";
+            }
+        }
 
-                            if (cell.Column.Member == "WeekPercent")
-                            {
-                                AjaxProjectProcess data = cell.DataItem;
-                                if (data.WeekPercent < 0.8)
-                                {
-                                    cell.HtmlAttributes["style"] = "font-weight: bold; color:red;text-align:right";
-                                }
-                                else if (data.WeekPercent > 1.4)
-                                {
-                                    cell.HtmlAttributes["style"] = "font-weight: bold; color:green;text-align:right";
-                                }
-                            }
+        if (cell.Column.Member == "WeekPercent")
+        {
+            AjaxProjectProcess data = cell.DataItem;
+            if (data.WeekPercent < 0.8)
+            {
+                cell.HtmlAttributes["style"] = "font-weight: bold; color:red;text-align:right";
+            }
+            else if (data.WeekPercent > 1.4)
+            {
+                cell.HtmlAttributes["style"] = "font-weight: bold; color:green;text-align:right";
+            }
+        }
                             
-                        })
-                 .Scrollable(s => s.Height(550)).Sortable().Resizable(s => s.Columns(true))
-                )
+    })
+    .Scrollable(s => s.Height(550)).Sortable().Resizable(s => s.Columns(true))
+)
 </fieldset>    
   
 }
