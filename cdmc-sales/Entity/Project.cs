@@ -326,10 +326,10 @@ namespace Entity
         [Display(Name = "财务确认人")]
         public string Confirmor { get; set; }
 
-        [Display(Name = "是否板块确认")]
+        [Display(Name = "是否版块确认")]
         public bool? IsAdminConfirm { get; set; }
 
-        [Display(Name = "板块确认人")]
+        [Display(Name = "版块确认人")]
         public string AdminConfirmor { get; set; }
 
         [Display(Name = "第一周目标"), Required, DisplayFormat(DataFormatString = "{0:c}")]

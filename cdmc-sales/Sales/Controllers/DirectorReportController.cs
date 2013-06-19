@@ -15,6 +15,7 @@ namespace Sales.Controllers
     [DirectorRequired]
     public class DirectorReportController : Controller
     {
+      
         public JsonResult _GetIncomebyProjectInMonth()
         {
              var totaldeals = CRM_Logical.GetDeals(true);

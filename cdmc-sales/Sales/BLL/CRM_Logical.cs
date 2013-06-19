@@ -29,6 +29,11 @@ namespace BLL
                     var md = MonthDuration.GetMonthInstance(month);
                     var leads = CH.DB.Projects.Where(w => w.IsActived == true && !string.IsNullOrEmpty(w.Manager)).Select(s => s.Manager).Distinct();
                     //每个成员的call，也就是所有leader和sales的call
+                    var callgroupbymanger = from l in CH.DB.LeadCalls group l by new {l.Project.Manager}
+                                            into grp
+                                            select new{};
+
+
                     var memberscall = from p in CH.DB.Projects.Where(w => w.IsActived == true && !string.IsNullOrEmpty(w.Manager))
                                       join l in leads on p.Manager equals l
                                       join c in CH.DB.LeadCalls.Where(w => w.LeadCallTypeID != null && w.LeadCallType.Code >= 40 && w.CreatedDate>=md.MonthStartDate && w.CreatedDate<=md.MonthEndDate) on p.ID equals c.ProjectID
@@ -396,6 +401,52 @@ namespace BLL
 
         public static class _Reports
         {
+
+            public static List<ProjectWeekPerformance> GetProjectSingleWeekCheckIn(DateTime? day)
+            { 
+                if(day==null)
+                   day = DateTime.Now;
+                var weekstart = day.Value.StartOfWeek();
+                var weekend = day.Value.EndOfWeek().AddDays(1);
+                var deals = from d in GetDeals().Where(w=>w.ActualPaymentDate >= weekstart && w.ActualPaymentDate< weekend) select d;
+
+                //和周目标相关的月
+                var targets = from t in GetProjectMonthTargets().Where(w => (w.EndDate >= weekstart && w.EndDate < weekend)
+                                  || (w.StartDate >= weekstart && w.StartDate < weekend) || (w.StartDate>=weekstart && w.EndDate>weekend))
+                              select t;
+                var data = from d in deals
+                           group d by new { d.ProjectID, d.Project.Name_CH } into grp
+                           select new ProjectWeekPerformance() { 
+                               StartDate = weekstart,
+                               EndDate = weekend ,
+                               Income = deals.Where(w=>w.ProjectID == grp.Key.ProjectID).Sum(s=>s.Income),
+                               ProjectName = grp.Key.Name_CH,
+                               ProjectID = grp.Key.ProjectID
+                           };
+                var list = data.ToList();
+                foreach(var l in list)
+                {
+                    targets = targets.Where(w => w.ProjectID == l.ProjectID);
+                    decimal t=0;
+                    foreach (var f in targets)
+                    {
+                        t = t + GetWeekTarget(f, weekstart, weekend).Value;
+                    }
+                }
+
+                return list;     
+            }
+
+            static private decimal? GetWeekTarget(TargetOfMonth f, DateTime weekstart, DateTime weekend)
+            {
+                int week = (weekstart - f.StartDate).Days;
+                if (week == 0) return f.TargetOf1stWeek;
+                if (week == 1) return f.TargetOf2ndWeek;
+                if (week == 2) return f.TargetOf3rdWeek;
+                if (week == 3) return f.TargetOf4thWeek;
+                else return f.TargetOf5thWeek;
+            }
+
             public static IQueryable<AjaxProjectCheckInByMonth> GetProjectsCheckInByMonth()
             {
                 var yeaerstart = new DateTime(DateTime.Now.Year, 1, 1);
@@ -785,19 +836,17 @@ namespace BLL
             }
 
         }
-
+        public static IQueryable<TargetOfMonth> GetProjectMonthTargets()
+        {
+            return from t in CH.DB.TargetOfMonths.Where(w => w.Project.IsActived == true && w.Project.Test != null && w.Project.Test != true) select t;
+        }
         public static IQueryable<Deal> GetDeals(bool? acitivatedprojectonly = false, int? projectid = null, string sales = null, string filter = null)
         {
             IQueryable<Deal> deals = from deal in CH.DB.Deals.Where(d => d.Abandoned == false) select deal;
-     
-            //if (Utl.Utl.DebugModel() != true)
-            //{
-            //    deals = deals.Where(w => w.Sales != "sean" && w.Sales != "john");
-            //}
 
             if (Utl.Utl.DebugModel() != true)
             {
-                deals = deals.Where(w => w.Sales != "test");
+                deals = deals.Where(w => w.Project.Test != null && w.Project.Test != true);
             }
            
             if (acitivatedprojectonly == true)//只取激活的项目的deals
@@ -1120,7 +1169,7 @@ namespace BLL
             return data;
         }
         /// <summary>
-        /// 板块负责人月度考核项目：责任心与积极性（带队加班情况）
+        /// 版块负责人月度考核项目：责任心与积极性（带队加班情况）
         /// 参照《销售部月度考核（2013准事业部负责人版）2月新版.xls》
         /// </summary>
         /// <returns></returns>
@@ -1143,7 +1192,7 @@ namespace BLL
             return itemList;
         }
         /// <summary>
-        /// 板块负责人月度考核项目：纪律性（请假，迟到情况）
+        /// 版块负责人月度考核项目：纪律性（请假，迟到情况）
         /// 参照《销售部月度考核（2013准事业部负责人版）2月新版.xls》
         /// </summary>
         /// <returns></returns>
@@ -1166,7 +1215,7 @@ namespace BLL
             return itemList;
         }
         /// <summary>
-        /// 板块负责人月度考核项目：执行能力
+        /// 版块负责人月度考核项目：执行能力
         /// 参照《销售部月度考核（2013准事业部负责人版）2月新版.xls》
         /// </summary>
         /// <returns></returns>
@@ -1189,7 +1238,7 @@ namespace BLL
             return itemList;
         }
         /// <summary>
-        /// 板块负责人月度考核项目：目标意识
+        /// 版块负责人月度考核项目：目标意识
         /// 参照《销售部月度考核（2013准事业部负责人版）2月新版.xls》
         /// </summary>
         /// <returns></returns>
@@ -1212,7 +1261,7 @@ namespace BLL
             return itemList;
         }
         /// <summary>
-        /// 板块负责人月度考核项目：每天检查团队成员research,   call list,on phone时间
+        /// 版块负责人月度考核项目：每天检查团队成员research,   call list,on phone时间
         /// 参照《销售部月度考核（2013准事业部负责人版）2月新版.xls》
         /// </summary>
         /// <returns></returns>
@@ -1235,7 +1284,7 @@ namespace BLL
             return itemList;
         }
         /// <summary>
-        /// 板块负责人月度考核项目：每周与研发人员的项目进度协调
+        /// 版块负责人月度考核项目：每周与研发人员的项目进度协调
         /// 参照《销售部月度考核（2013准事业部负责人版）2月新版.xls》
         /// </summary>
         /// <returns></returns>
@@ -1258,7 +1307,7 @@ namespace BLL
             return itemList;
         }
         /// <summary>
-        /// 板块负责人月度考核项目：每周更新Pitch paper/Email cover/ EB内容，帮助组员找到针对不同客户的Pitch点 
+        /// 版块负责人月度考核项目：每周更新Pitch paper/Email cover/ EB内容，帮助组员找到针对不同客户的Pitch点 
         /// 参照《销售部月度考核（2013准事业部负责人版）2月新版.xls》
         /// </summary>
         /// <returns></returns>
@@ -1281,7 +1330,7 @@ namespace BLL
             return itemList;
         }
         /// <summary>
-        /// 板块负责人月度考核项目：每周销售例会
+        /// 版块负责人月度考核项目：每周销售例会
         /// 参照《销售部月度考核（2013准事业部负责人版）2月新版.xls》
         /// </summary>
         /// <returns></returns>
@@ -1304,7 +1353,7 @@ namespace BLL
             return itemList;
         }
         /// <summary>
-        /// 板块负责人月度考核项目：每月通话时间
+        /// 版块负责人月度考核项目：每月通话时间
         /// 参照《销售部月度考核（2013准事业部负责人版）2月新版.xls》
         /// </summary>
         /// <returns></returns>

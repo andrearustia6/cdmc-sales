@@ -874,7 +874,7 @@ namespace Model
         [Display(Name = "是否财务确认")]
         public string IsConfirm { get; set; }
 
-        [Display(Name = "是否板块确认")]
+        [Display(Name = "是否版块确认")]
         public string IsAdminConfirm { get; set; }
     }
 }

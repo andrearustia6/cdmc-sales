@@ -313,7 +313,7 @@ namespace Utl
         public static int GetCurrentRoleLevel()
         {
 
-            if (!string.IsNullOrEmpty(Employee.CurrentUserName))
+            if (Employee.CurrentRole!= null && !string.IsNullOrEmpty(Employee.CurrentUserName))
                 return Employee.CurrentRole.Level;
             else
                 return -100;
