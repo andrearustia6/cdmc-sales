@@ -20,7 +20,7 @@
 </style>
 <div style=" padding-bottom:40px;width:100%"> 
     @Html.TextBoxFor(model => model.Name,new { @style="display:none"})
-    @*@Html.TextBoxFor(model => model.Assigner,new { @style="display:none"})*@
+    @Html.TextBoxFor(model => model.RateAssigner, new { @style = "display:none" })
     <table style="width:100%" >
         <tr>
             <td style="width:50%">@Html.LabelFor(model => model.Rate)</td>
