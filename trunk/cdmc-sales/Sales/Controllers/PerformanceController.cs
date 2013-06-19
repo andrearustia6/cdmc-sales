@@ -99,7 +99,51 @@ namespace Sales.Controllers
             var data = list.ToList();
             return View(new GridModel(data));
         }
+        [AcceptVerbs(HttpVerbs.Post)]
+        [GridAction]
+        public ActionResult _UpdateTeamLeadPerformance(int id, int? month)
+        {
+            if (month == null) month = DateTime.Now.Month;
+            _TeamLeadPerformance model = new _TeamLeadPerformance();
+            AssignPerformanceScore newmodel = new AssignPerformanceScore();
+            if (id > 0)
+            {
+                if (TryUpdateModel(model))
+                {
+                    newmodel.ID = id;
+                    newmodel.TargetName = model.Name;
+                    //newmodel.Assigner = model.Assigner;
+                    newmodel.Rate = model.Rate;
+                    newmodel.Score = model.Score;
+                    newmodel.Month = month;
+                    newmodel.Year = DateTime.Now.Year;
 
+                    CH.Edit<AssignPerformanceScore>(newmodel);
+                }
+                //var model = CH.GetDataById<ManagerScore>(id);
+                //model.Item1Score = Item1ScoreString;
+                //CH.Edit<ManagerScore>(model);
+            }
+            else
+            {
+
+                if (TryUpdateModel(model))
+                {
+                    newmodel.TargetName = model.Name;
+                    //newmodel.Assigner = model.Assigner;
+                    newmodel.Rate = model.Rate;
+                    newmodel.Score = model.Score;
+                    newmodel.Month = month;
+                    newmodel.Year = DateTime.Now.Year;
+                    CH.Create<AssignPerformanceScore>(newmodel);
+                }
+            }
+
+            var list = CRM_Logical._EmployeePerformance.GetTeamLeadsPerformances(month.Value);
+            var data = list.ToList();
+            return View(new GridModel(data));
+
+        }
         [GridAction]
         public ActionResult _SelectSalesIndex(int? month)
         {
@@ -109,7 +153,49 @@ namespace Sales.Controllers
             var data = list.ToList();
             return View(new GridModel(data));
         }
+        [AcceptVerbs(HttpVerbs.Post)]
+        [GridAction]
+        public ActionResult _UpdateSalesPerformance(int id, int? month)
+        {
+            if (month == null) month = DateTime.Now.Month;
+            _SalesPerformance model = new _SalesPerformance();
+            AssignPerformanceScore newmodel = new AssignPerformanceScore();
+            if (id > 0)
+            {
+                if (TryUpdateModel(model))
+                {
+                    newmodel.ID = id;
+                    newmodel.TargetName = model.Name;
+                    newmodel.Rate = model.Rate;
+                    newmodel.Score = model.Score;
+                    newmodel.Month = month;
+                    newmodel.Year = DateTime.Now.Year;
 
+                    CH.Edit<AssignPerformanceScore>(newmodel);
+                }
+                //var model = CH.GetDataById<ManagerScore>(id);
+                //model.Item1Score = Item1ScoreString;
+                //CH.Edit<ManagerScore>(model);
+            }
+            else
+            {
+
+                if (TryUpdateModel(model))
+                {
+                    newmodel.TargetName = model.Name;
+                    newmodel.Rate = model.Rate;
+                    newmodel.Score = model.Score;
+                    newmodel.Month = month;
+                    newmodel.Year = DateTime.Now.Year;
+                    CH.Create<AssignPerformanceScore>(newmodel);
+                }
+            }
+
+            var list = CRM_Logical._EmployeePerformance.GetSalesPerformances(month.Value);
+            var data = list.ToList();
+            return View(new GridModel(data));
+
+        }
        
 
     }
