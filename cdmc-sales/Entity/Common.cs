@@ -15,6 +15,8 @@ namespace Entity
         public string TargetName { get; set; }
         [Display(Name = "主管"), Required]
         public string Assigner { get; set; }
+        [Display(Name = "考核系数设置者"), Required]
+        public string RateAssigner { get; set; }
         [Display(Name = "月"), Required]
         public  int? Month{get;set;}
         [Display(Name = "年"), Required]

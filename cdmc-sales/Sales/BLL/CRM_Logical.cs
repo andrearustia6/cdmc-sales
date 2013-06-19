@@ -132,6 +132,7 @@ namespace BLL
                                   Target = CH.DB.TargetOfMonths.Where(t => t.Project.TeamLeader == l && t.Project.IsActived == true && t.StartDate.Month == month).Sum(s => s.CheckIn),
                                   CheckIn = deals.Where(d => d.Project.TeamLeader == l).Sum(s => s.Income),
                                   Name = l,
+                                  RateAssigner=user,
                                   //Assigner = scores.Where(w => w.TargetName == l).Select(s => s.Assigner).FirstOrDefault() == null ? user : scores.Where(w => w.TargetName == l).Select(s => s.Assigner).FirstOrDefault(),
                                   Rate = scores.Where(w => w.TargetName == l).Count() == 0  ? 1 : scores.Where(w => w.TargetName == l).Select(s => s.Rate).FirstOrDefault(), //rates.Where(w => w.TargetName == l).Average(s => s.Rate) == null ? 1 : scores.Where(w => w.TargetName == l).Average(s => s.Score),
                                   AssignedScore =scores.Where(w => w.TargetName == l).Average(s => s.Score) == null ? 0 : scores.Where(w => w.TargetName == l).Average(s => s.Score),
@@ -204,6 +205,7 @@ namespace BLL
                                       Target = CH.DB.TargetOfMonthForMembers.Where(t => t.Member.Name == l && t.StartDate.Month == month && t.Project.IsActived == true).Sum(s => s.CheckIn),
                                       CheckIn = deals.Where(d => d.Project.TeamLeader == l).Sum(s => s.Income),
                                       Name = l,
+                                      RateAssigner=user,
                                       Rate = scores.Where(w => w.TargetName == l).Count() == 0 ? 1 : scores.Where(w => w.TargetName == l).Select(s => s.Rate).FirstOrDefault(), //rates.Where(w => w.TargetName == l).Average(s => s.Rate) == null ? 1 : scores.Where(w => w.TargetName == l).Average(s => s.Score),
                                       AssignedScore = scores.Where(w => w.TargetName == l).Average(s => s.Score) == null ? 0 : scores.Where(w => w.TargetName == l).Average(s => s.Score),
                                       SalesPerformanceInWeeks = wd.Select(s => new _SalesPerformanceInWeek

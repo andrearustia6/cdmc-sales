@@ -106,6 +106,10 @@ namespace Sales.Model
         [Display(Name = "评分人")]
         public string Assigner { get; set; }
 
+        [Display(Name = "考核系数设置者")]
+        [ScaffoldColumn(false)]
+        public string RateAssigner { get; set; }
+
         [Display(Name = "月目标")]
         public decimal? Target { get; set; }
 
@@ -315,7 +319,9 @@ namespace Sales.Model
         public double? AssignedScore { get; set; }
         [Display(Name = "员工")]
         public string Name { get; set; }
-        
+        [Display(Name = "考核系数设置者")]
+        [ScaffoldColumn(false)]
+        public string RateAssigner { get; set; }
         [Display(Name = "月目标")]
         public decimal? Target { get; set; }
         [Display(Name = "月入账额")]

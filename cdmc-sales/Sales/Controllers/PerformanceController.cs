@@ -112,7 +112,7 @@ namespace Sales.Controllers
                 {
                     newmodel.ID = id;
                     newmodel.TargetName = model.Name;
-                    //newmodel.Assigner = model.Assigner;
+                    newmodel.RateAssigner = model.RateAssigner;
                     newmodel.Rate = model.Rate;
                     newmodel.Score = model.Score;
                     newmodel.Month = month;
@@ -130,7 +130,7 @@ namespace Sales.Controllers
                 if (TryUpdateModel(model))
                 {
                     newmodel.TargetName = model.Name;
-                    //newmodel.Assigner = model.Assigner;
+                    newmodel.RateAssigner = model.RateAssigner;
                     newmodel.Rate = model.Rate;
                     newmodel.Score = model.Score;
                     newmodel.Month = month;
@@ -166,6 +166,7 @@ namespace Sales.Controllers
                 {
                     newmodel.ID = id;
                     newmodel.TargetName = model.Name;
+                    newmodel.RateAssigner = model.RateAssigner;
                     newmodel.Rate = model.Rate;
                     newmodel.Score = model.Score;
                     newmodel.Month = month;
@@ -184,6 +185,7 @@ namespace Sales.Controllers
                 {
                     newmodel.TargetName = model.Name;
                     newmodel.Rate = model.Rate;
+                    newmodel.RateAssigner = model.RateAssigner;
                     newmodel.Score = model.Score;
                     newmodel.Month = month;
                     newmodel.Year = DateTime.Now.Year;
