@@ -19,6 +19,7 @@ namespace Sales.Model
         public string ProjectString { get { return string.Join(",", Projects.Select(s => s.ProjectCode)); } }
 
     }
+
     //Lead当月的考核
     public class _TeamLeadPerformance
     {

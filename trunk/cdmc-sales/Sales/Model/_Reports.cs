@@ -7,6 +7,17 @@ using Sales.Model;
 
 namespace Model
 {
+    public class ProjectWeekPerformance
+    {
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
+        public decimal? Target { get; set; }
+        public string ProjectName { get; set; }
+        public int? ProjectID { get; set; }
+        public decimal? Income { get; set; }
+        public double percent { get { return Utl.Utl.GetPercent(Income, Target); } }
+    }
+
     public class AjaxEmployeeCheckInDistribution
     {
         [Key]
@@ -14,6 +25,7 @@ namespace Model
         public string Range { get; set; }
         [Display(Name = "数量")]
         public int? Count { get; set; }
+
     }
 
     public class AjaxEmployeeCheckInByMonth

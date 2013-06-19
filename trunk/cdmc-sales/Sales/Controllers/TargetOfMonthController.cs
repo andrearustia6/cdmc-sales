@@ -195,15 +195,15 @@ namespace Sales.Controllers
         public List<AjaxTargetOfMonth> getData(string filter = "", int? projectId = null)
         {
             var targets = from odb in CH.DB.TargetOfMonths select odb;
-            if (filter == "1")//超级板块确认&财务确认
+            if (filter == "1")//超级版块确认&财务确认
             {
                 targets = targets.Where(t => t.IsConfirm == true);
             }
-            else if (filter == "2")//超级板块确认&财务未确认
+            else if (filter == "2")//超级版块确认&财务未确认
             {
                 targets = targets.Where(t => t.IsAdminConfirm == true && (t.IsConfirm == false || t.IsConfirm == null));
             }
-            else if (filter == "3")//超级板块未确认&财务未确认
+            else if (filter == "3")//超级版块未确认&财务未确认
             {
                 targets = targets.Where(t => (t.IsAdminConfirm == false || t.IsAdminConfirm == null) && (t.IsConfirm == false || t.IsConfirm == null));
             }
@@ -324,7 +324,7 @@ namespace Sales.Controllers
 
         #endregion
 
-        #region 板块编辑项目月目标
+        #region 版块编辑项目月目标
 
         public ActionResult TargetOfMonthForProject(int? projectid)
         {
