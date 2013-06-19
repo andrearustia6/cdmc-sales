@@ -1719,6 +1719,8 @@
     <Content Include="Views\Shared\EditorTemplates\TargetOfMonth.cshtml" />
     <Content Include="Views\TargetOfMonth\TargetOfMonthForProject.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\ManagerScoreEdit.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\TeamLeadPerformanceEdit.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\SalesPerformanceEdit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\TargetOfMonthForMember\Confirm.cshtml" />

@@ -22,12 +22,20 @@ namespace Sales.Model
     //Lead当月的考核
     public class _TeamLeadPerformance
     {
+        [ReadOnly(true)]
+        [ScaffoldColumn(false)]
+        public int ID { get; set; }
+        [ScaffoldColumn(false)]
+        public int RoleLevel { get; set; }
         [Display(Name = "调研不达标周数")]
         public int LeadNotQualifiedWeeksCount
         {
             get
             {
-               return TeamLeadPerformanceInWeeks.Count(c=>c.IsLeadAddedQualified==false);
+                if (TeamLeadPerformanceInWeeks != null)
+                    return TeamLeadPerformanceInWeeks.Count(c => c.IsLeadAddedQualified == false);
+                else
+                    return 0;
             }
         }
 
@@ -36,12 +44,15 @@ namespace Sales.Model
         {
             get
             {
-                return TeamLeadPerformanceInWeeks.Count(c => c.IsFaxOutOrCallHoursQualified == false);
+                if (TeamLeadPerformanceInWeeks != null)
+                    return TeamLeadPerformanceInWeeks.Count(c => c.IsFaxOutOrCallHoursQualified == false);
+                else
+                    return 0;
             }
         }
 
         [Display(Name = "考核系数")]
-        public double? Rate
+        public double Rate
         {
             get; set;
         }
@@ -92,6 +103,9 @@ namespace Sales.Model
         [Display(Name = "员工")]
         public string Name { get; set; }
 
+        [Display(Name = "评分人")]
+        public string Assigner { get; set; }
+
         [Display(Name = "月目标")]
         public decimal? Target { get; set; }
 
@@ -115,8 +129,16 @@ namespace Sales.Model
         {
             get
             {
-                var counts = TeamLeadPerformanceInWeeks.Select(s => s.FaxOutCount);
-                return string.Join(",", counts);
+                if (TeamLeadPerformanceInWeeks != null)
+                {
+                    var counts = TeamLeadPerformanceInWeeks.Select(s => s.FaxOutCount);
+                    return string.Join(",", counts);
+                }
+                else
+                {
+                    return string.Join(",", "0");
+                }
+
             }
         }
 
@@ -125,8 +147,13 @@ namespace Sales.Model
         {
             get
             {
-                var counts = TeamLeadPerformanceInWeeks.Select(s => s.LeadsCount);
-                return string.Join(",", counts);
+                if (TeamLeadPerformanceInWeeks != null)
+                {
+                    var counts = TeamLeadPerformanceInWeeks.Select(s => s.LeadsCount);
+                    return string.Join(",", counts);
+                }
+                else
+                    return string.Join(",", 0);
             }
         }
 
@@ -134,8 +161,13 @@ namespace Sales.Model
         {
             get
             {
-                var counts = TeamLeadPerformanceInWeeks.Select(s => s.DealsCount);
-                return string.Join(",", counts);
+                if (TeamLeadPerformanceInWeeks != null)
+                {
+                    var counts = TeamLeadPerformanceInWeeks.Select(s => s.DealsCount);
+                    return string.Join(",", counts);
+                }
+                else
+                    return string.Join(",", 0);
             }
         }
     }
@@ -202,13 +234,20 @@ namespace Sales.Model
     //Sales当月的考核
     public class _SalesPerformance
     {
-
+        [ReadOnly(true)]
+        [ScaffoldColumn(false)]
+        public int ID { get; set; }
+        [ScaffoldColumn(false)]
+        public int RoleLevel { get; set; }
         [Display(Name = "调研不达标周数")]
         public int LeadNotQualifiedWeeksCount
         {
             get
             {
-                return SalesPerformanceInWeeks.Count(c => c.IsLeadAddedQualified == false);
+                if (SalesPerformanceInWeeks != null)
+                    return SalesPerformanceInWeeks.Count(c => c.IsLeadAddedQualified == false);
+                else
+                    return 0;
             }
         }
 
@@ -217,13 +256,16 @@ namespace Sales.Model
         {
             get
             {
-                return SalesPerformanceInWeeks.Count(c => c.IsFaxOutOrCallHoursQualified == false);
+                if (SalesPerformanceInWeeks != null)
+                    return SalesPerformanceInWeeks.Count(c => c.IsFaxOutOrCallHoursQualified == false);
+                else
+                    return 0;
             }
         }
 
 
         [Display(Name = "考核系数")]
-        public double? Rate
+        public double Rate
         {
             get;
             set;
@@ -273,6 +315,7 @@ namespace Sales.Model
         public double? AssignedScore { get; set; }
         [Display(Name = "员工")]
         public string Name { get; set; }
+        
         [Display(Name = "月目标")]
         public decimal? Target { get; set; }
         [Display(Name = "月入账额")]
@@ -295,8 +338,13 @@ namespace Sales.Model
         {
             get
             {
-                var counts = SalesPerformanceInWeeks.Select(s => s.FaxOutCount);
-                return string.Join(",", counts);
+                if (SalesPerformanceInWeeks != null)
+                {
+                    var counts = SalesPerformanceInWeeks.Select(s => s.FaxOutCount);
+                    return string.Join(",", counts);
+                }
+                else
+                    return string.Join(",", "0");
             }
         }
 
@@ -305,8 +353,13 @@ namespace Sales.Model
         {
             get
             {
-                var counts = SalesPerformanceInWeeks.Select(s => s.LeadsCount);
-                return string.Join(",", counts);
+                if (SalesPerformanceInWeeks != null)
+                {
+                    var counts = SalesPerformanceInWeeks.Select(s => s.LeadsCount);
+                    return string.Join(",", counts);
+                }
+                else
+                    return string.Join(",", "0");
             }
         }
 
@@ -314,8 +367,13 @@ namespace Sales.Model
         {
             get 
             {
-                var counts = SalesPerformanceInWeeks.Select(s => s.DealsCount);
-                return string.Join(",",counts);
+                if (SalesPerformanceInWeeks != null)
+                {
+                    var counts = SalesPerformanceInWeeks.Select(s => s.DealsCount);
+                    return string.Join(",", counts);
+                }
+                else
+                    return string.Join(",", "0");
             }
         }
 
@@ -388,6 +446,9 @@ namespace Sales.Model
         [ReadOnly(true)]
         [ScaffoldColumn(false)]
         public int ID { get; set; }
+
+        [ScaffoldColumn(false)]
+        public int RoleLevel { get; set; }
         //被考核人
         //[ReadOnly(true)]
         [Display(Name = "员工")]

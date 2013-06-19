@@ -57,8 +57,8 @@ var month = ViewBag.Month as int?;
     }).Title("打分").Width(80);
 }).Editable(editing => editing
                         .Mode(GridEditMode.PopUp).TemplateName("ManagerScoreEdit"))
-  .ClientEvents(e => e.OnRowDataBound("changeText"))
-  .ClientEvents(events => events.OnEdit("Grid_onEdit"))
+      .ClientEvents(e => e.OnRowDataBound("ChangeButtonTextForManager"))
+      .ClientEvents(events => events.OnEdit("ChangeWinTitleForManager"))
   .Pageable(p => p.Style(GridPagerStyles.Status)
        .PageOnScroll(true).PageSize(25)).Scrollable(scrolling => scrolling.Height(350)).Sortable().Resizable(r => r.Columns(true))
            )
@@ -68,13 +68,19 @@ var month = ViewBag.Month as int?;
 <fieldset>
 <legend>销售经理考核</legend>
 @(Html.Telerik().Grid<_TeamLeadPerformance>().Name("lead")
+     .DataKeys(keys =>
+     {
+         keys.Add(o => o.ID);
+     })
     .DataBinding(dataBinding =>
     {
-        dataBinding.Ajax().Select("_SelectLeadIndex", "Performance", new { month = month });
+        dataBinding.Ajax().Select("_SelectLeadIndex", "Performance", new { month = month })
+            .Update("_UpdateTeamLeadPerformance", "Performance", new { month = month }); 
     })
 .Columns(columns =>
 {
     columns.Bound(p => p.Name).Width(50);
+    
     columns.Bound(p => p.CompletePercent).Width(150).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
     columns.Bound(p => p.CheckinScore).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
     columns.Bound(p => p.LeadNotQualifiedWeeksCount).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
@@ -86,8 +92,17 @@ var month = ViewBag.Month as int?;
     columns.Bound(p => p.Score).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
     columns.Bound(p => p.FaxOutCountString).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
     columns.Bound(p => p.LeadAddCountString).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
-})
+    columns.Command(commands =>
+    {
+        commands.Edit().ButtonType(GridButtonType.Text);
 
+    }).Title("修改系数").Width(80);
+    
+})
+    .Editable(editing => editing
+                                .Mode(GridEditMode.PopUp).TemplateName("TeamLeadPerformanceEdit"))
+          .ClientEvents(e => e.OnRowDataBound("ChangeButtonTextForLead"))
+          .ClientEvents(events => events.OnEdit("ChangeWinTitleForLead"))
   .Pageable(p => p.Style(GridPagerStyles.Status)
        .PageOnScroll(true).PageSize(25)).Scrollable(scrolling => scrolling.Height(350)).Sortable().Resizable(r => r.Columns(true))
 )
@@ -95,14 +110,20 @@ var month = ViewBag.Month as int?;
     
  <fieldset>
 <legend>销售考核</legend>   
-@(Html.Telerik().Grid<_TeamLeadPerformance>().Name("sales")
+@(Html.Telerik().Grid<_SalesPerformance>().Name("sales")
+     .DataKeys(keys =>
+     {
+         keys.Add(o => o.ID);
+     })
     .DataBinding(dataBinding =>
     {
-        dataBinding.Ajax().Select("_SelectSalesIndex", "Performance", new { month = month });
+        dataBinding.Ajax().Select("_SelectSalesIndex", "Performance", new { month = month })
+            .Update("_UpdateSalesPerformance", "Performance", new { month = month });
     })
 .Columns(columns =>
 {
     columns.Bound(p => p.Name);
+   
     columns.Bound(p => p.CompletePercent);
     columns.Bound(p => p.CheckinScore);
     columns.Bound(p => p.LeadNotQualifiedWeeksCount);
@@ -114,8 +135,17 @@ var month = ViewBag.Month as int?;
     columns.Bound(p => p.Score);
     columns.Bound(p => p.FaxOutCountString);
     columns.Bound(p => p.LeadAddCountString);
-}).Pageable(p => p.Style(GridPagerStyles.Status)
-       .PageOnScroll(true).PageSize(35)).Scrollable(scrolling => scrolling.Height(350)).Sortable()
+    columns.Command(commands =>
+    {
+        commands.Edit().ButtonType(GridButtonType.Text);
+
+    }).Title("修改系数").Width(80);
+}) .Editable(editing => editing
+                                .Mode(GridEditMode.PopUp).TemplateName("SalesPerformanceEdit"))
+          .ClientEvents(e => e.OnRowDataBound("ChangeButtonTextForSales"))
+          .ClientEvents(events => events.OnEdit("ChangeWinTitleForSales"))
+.Pageable(p => p.Style(GridPagerStyles.Status)
+       .PageOnScroll(true).PageSize(35)).Scrollable(scrolling => scrolling.Height(350))
 )
 </fieldset>
 <fieldset>
@@ -208,16 +238,56 @@ var month = ViewBag.Month as int?;
     
 </fieldset>
 <script>
-    function changeText(e) {
+
+    function ChangeButtonTextForManager(e) {
         var $row = $(e.row);
         var rowButton = $row.find(".t-grid-edit");
+
+        if ((e.dataItem.RoleLevel != "1000")) {
+            rowButton.remove();
+            return;
+        }
         rowButton[0].innerText = "打分";
     }
-    function Grid_onEdit(e) {
+    function ChangeWinTitleForManager(e) {
         var popup = $("#" + e.currentTarget.id + "PopUp");
         var popupDataWin = popup.data("tWindow");
         var l = ($(window).width() / 2 - $(popup).width() / 2);
         popup.css({ "left": l + "px", "margin-left": "0", "width": $(popup).width() });
         popupDataWin.title("打分");
+    }
+
+    function ChangeButtonTextForLead(e) {
+        var $row = $(e.row);
+        var rowButton = $row.find(".t-grid-edit");
+        if ((e.dataItem.RoleLevel != "1000")) {
+            rowButton.remove();
+            return;
+        }
+        rowButton[0].innerText = "修改系数";
+    }
+    function ChangeWinTitleForLead(e) {
+        var popup = $("#" + e.currentTarget.id + "PopUp");
+        var popupDataWin = popup.data("tWindow");
+        var l = ($(window).width() / 2 - $(popup).width() / 2);
+        popup.css({ "left": l + "px", "margin-left": "0", "width": $(popup).width() });
+        popupDataWin.title("修改系数");
+    }
+
+    function ChangeButtonTextForSales(e) {
+        var $row = $(e.row);
+        var rowButton = $row.find(".t-grid-edit");
+        if ((e.dataItem.RoleLevel != "1000")) {
+            rowButton.remove();
+            return;
+        }
+        rowButton[0].innerText = "修改系数";
+    }
+    function ChangeWinTitleForSales(e) {
+        var popup = $("#" + e.currentTarget.id + "PopUp");
+        var popupDataWin = popup.data("tWindow");
+        var l = ($(window).width() / 2 - $(popup).width() / 2);
+        popup.css({ "left": l + "px", "margin-left": "0", "width": $(popup).width() });
+        popupDataWin.title("修改系数");
     }
 </script>
