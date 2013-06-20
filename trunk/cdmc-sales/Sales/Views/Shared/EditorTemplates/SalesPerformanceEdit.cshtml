@@ -8,7 +8,7 @@
     /* in-form editing */
     .t-edit-form-container
     {
-        width: 200px;
+        width: 250px;
         height:120px;
         margin: 1em;
         text-align: right;
@@ -19,17 +19,29 @@
    }
 </style>
 <div style=" padding-bottom:40px;width:100%"> 
-    @Html.TextBoxFor(model => model.Name,new { @style="display:none"})
-    @Html.TextBoxFor(model => model.RateAssigner,new { @style="display:none"})
+    @Html.TextBoxFor(model => model.Name, new { @style = "display:none" })
+    @Html.TextBoxFor(model => model.RateAssigner, new { @style = "display:none" })
     <table style="width:100%" >
-        <tr>
-            <td style="width:50%">@Html.LabelFor(model => model.Rate)</td>
-            <td style="width:50%">@Html.DropDownListFor(model => model.Rate, new SelectList(new List<double>() { 0, 1, 1.2 }), "-«Î—°‘Ò-")</td>
-            
-        </tr>
-        
+    @{ 
+        if (ViewBag.RoleLevel >= 1000)
+        {
+            <tr>
+                <td style="width:50%">@Html.LabelFor(model => model.Rate)</td>
+                <td style="width:50%">@Html.DropDownListFor(model => model.Rate, new SelectList(new List<double>() { 0, 1, 1.2 }), "-«Î—°‘Ò-")</td>
+                @Html.TextBoxFor(model => model.AssignedScore, new { @style = "display:none" })
+            </tr>
+        }
+        else
+        {
+            <tr>
+                <td style="width:50%">@Html.LabelFor(model => model.AssignedScore)</td>
+                <td style="width:50%">@Html.TextBoxFor(model => model.AssignedScore)</td>
+                @Html.TextBoxFor(model => model.Rate, new { @style = "display:none" })
+            </tr>
+        }
+    }
     </table>
      
 </div>    
-    
+
 

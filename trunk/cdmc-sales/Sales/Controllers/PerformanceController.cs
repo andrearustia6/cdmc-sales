@@ -15,6 +15,7 @@ namespace Sales.Controllers
         public ActionResult Index(int? month)
         {
             ViewBag.Month = month;
+            ViewBag.RoleLevel = Employee.CurrentRole.Level;
             return View();
         }
         [GridAction]
@@ -114,7 +115,7 @@ namespace Sales.Controllers
                     newmodel.TargetName = model.Name;
                     newmodel.RateAssigner = model.RateAssigner;
                     newmodel.Rate = model.Rate;
-                    newmodel.Score = model.Score;
+                    newmodel.Score = (int)model.AssignedScore;
                     newmodel.Month = month;
                     newmodel.Year = DateTime.Now.Year;
 
@@ -132,7 +133,7 @@ namespace Sales.Controllers
                     newmodel.TargetName = model.Name;
                     newmodel.RateAssigner = model.RateAssigner;
                     newmodel.Rate = model.Rate;
-                    newmodel.Score = model.Score;
+                    newmodel.Score = (int)model.AssignedScore;
                     newmodel.Month = month;
                     newmodel.Year = DateTime.Now.Year;
                     CH.Create<AssignPerformanceScore>(newmodel);
@@ -168,7 +169,8 @@ namespace Sales.Controllers
                     newmodel.TargetName = model.Name;
                     newmodel.RateAssigner = model.RateAssigner;
                     newmodel.Rate = model.Rate;
-                    newmodel.Score = model.Score;
+
+                    newmodel.Score = (int)model.AssignedScore;
                     newmodel.Month = month;
                     newmodel.Year = DateTime.Now.Year;
 
@@ -186,7 +188,7 @@ namespace Sales.Controllers
                     newmodel.TargetName = model.Name;
                     newmodel.Rate = model.Rate;
                     newmodel.RateAssigner = model.RateAssigner;
-                    newmodel.Score = model.Score;
+                    newmodel.Score = (int)model.AssignedScore;
                     newmodel.Month = month;
                     newmodel.Year = DateTime.Now.Year;
                     CH.Create<AssignPerformanceScore>(newmodel);

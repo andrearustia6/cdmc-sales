@@ -96,7 +96,7 @@ var month = ViewBag.Month as int?;
     {
         commands.Edit().ButtonType(GridButtonType.Text);
 
-    }).Title("修改系数").Width(80);
+    }).Title("编辑").Width(80);
     
 })
     .Editable(editing => editing
@@ -123,7 +123,7 @@ var month = ViewBag.Month as int?;
 .Columns(columns =>
 {
     columns.Bound(p => p.Name);
-   
+    columns.Bound(p => p.RoleLevel);
     columns.Bound(p => p.CompletePercent);
     columns.Bound(p => p.CheckinScore);
     columns.Bound(p => p.LeadNotQualifiedWeeksCount);
@@ -139,7 +139,7 @@ var month = ViewBag.Month as int?;
     {
         commands.Edit().ButtonType(GridButtonType.Text);
 
-    }).Title("修改系数").Width(80);
+    }).Title("编辑").Width(80);
 }) .Editable(editing => editing
                                 .Mode(GridEditMode.PopUp).TemplateName("SalesPerformanceEdit"))
           .ClientEvents(e => e.OnRowDataBound("ChangeButtonTextForSales"))
@@ -260,34 +260,54 @@ var month = ViewBag.Month as int?;
     function ChangeButtonTextForLead(e) {
         var $row = $(e.row);
         var rowButton = $row.find(".t-grid-edit");
-        if ((e.dataItem.RoleLevel != "1000")) {
-            rowButton.remove();
+        if ((e.dataItem.RoleLevel == "1000")) {
+            rowButton[0].innerText = "修改系数";
             return;
         }
-        rowButton[0].innerText = "修改系数";
+        else if ((e.dataItem.RoleLevel == "500")) {
+            rowButton[0].innerText = "打分";
+            return;
+        }
+        else {
+            rowButton.remove();
+        }
     }
     function ChangeWinTitleForLead(e) {
         var popup = $("#" + e.currentTarget.id + "PopUp");
         var popupDataWin = popup.data("tWindow");
         var l = ($(window).width() / 2 - $(popup).width() / 2);
         popup.css({ "left": l + "px", "margin-left": "0", "width": $(popup).width() });
-        popupDataWin.title("修改系数");
+        if ((e.dataItem.RoleLevel == "1000")) {
+            popupDataWin.title("修改系数");
+        }
+        else
+            popupDataWin.title("打分");
     }
 
     function ChangeButtonTextForSales(e) {
         var $row = $(e.row);
         var rowButton = $row.find(".t-grid-edit");
-        if ((e.dataItem.RoleLevel != "1000")) {
-            rowButton.remove();
+        if ((e.dataItem.RoleLevel == "1000")) {
+            rowButton[0].innerText = "修改系数";
             return;
         }
-        rowButton[0].innerText = "修改系数";
+        else if ((e.dataItem.RoleLevel == "100")) {
+            rowButton[0].innerText = "打分";
+            return;
+        }
+        else {
+            rowButton.remove();
+        }
     }
     function ChangeWinTitleForSales(e) {
         var popup = $("#" + e.currentTarget.id + "PopUp");
         var popupDataWin = popup.data("tWindow");
         var l = ($(window).width() / 2 - $(popup).width() / 2);
         popup.css({ "left": l + "px", "margin-left": "0", "width": $(popup).width() });
-        popupDataWin.title("修改系数");
+        if ((e.dataItem.RoleLevel == "1000")) {
+            popupDataWin.title("修改系数");
+        }
+        else
+            popupDataWin.title("打分");
     }
 </script>

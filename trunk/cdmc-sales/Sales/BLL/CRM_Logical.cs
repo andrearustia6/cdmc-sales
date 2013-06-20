@@ -24,10 +24,11 @@ namespace BLL
             {
                 var user = Employee.CurrentUserName;
                 var rolelvl = Employee.CurrentRole.Level;
-                if (rolelvl == 1000)
+
+                if (Employee.AsDirector())
                 {
                     var md = MonthDuration.GetMonthInstance(month);
-                    var leads = CH.DB.Projects.Where(w => w.IsActived == true && !string.IsNullOrEmpty(w.Manager)).Select(s => s.Manager).Distinct();
+                    var managers = CH.DB.Projects.Where(w => w.IsActived == true && !string.IsNullOrEmpty(w.Manager)).Select(s => s.Manager).Distinct();
                     //每个成员的call，也就是所有leader和sales的call
                     var callgroupbymanger = from l in CH.DB.LeadCalls group l by new {l.Project.Manager}
                                             into grp
@@ -35,7 +36,7 @@ namespace BLL
 
 
                     var memberscall = from p in CH.DB.Projects.Where(w => w.IsActived == true && !string.IsNullOrEmpty(w.Manager))
-                                      join l in leads on p.Manager equals l
+                                      join l in managers on p.Manager equals l
                                       join c in CH.DB.LeadCalls.Where(w => w.LeadCallTypeID != null && w.LeadCallType.Code >= 40 && w.CreatedDate>=md.MonthStartDate && w.CreatedDate<=md.MonthEndDate) on p.ID equals c.ProjectID
                                       select new
                                       {
@@ -44,7 +45,16 @@ namespace BLL
                                           member = c.Member.Name,
                                           salestypeid=c.Member.SalesTypeID
                                       };
-                    //每个成员的lead，也就是所有leader和sales的lead
+                    //var callgroupbymanger = from l in CH.DB.LeadCalls
+                    //                        group l by new { l.Project.Manager, l.Project.ID } into grp
+                    //                        select new
+                    //                        {
+                    //                            Manager = grp.Select(g => g.Project.Manager),
+                    //                            ProjectID = grp.Select(g => g.ProjectID),
+                    //                            member = grp.Select(g => g.Member.Name),
+                    //                            salestypeid = grp.Select(g => g.Member.SalesTypeID)
+                    //                        };
+                    //每个成员的lead，也就是所有leader和sales的表lead中的数据
                     var memberslead = from l in CH.DB.Leads.Where(w=> w.CreatedDate>=md.MonthStartDate && w.CreatedDate<=md.MonthEndDate )
                                       join m in CH.DB.Members on l.Creator equals m.Name
                                       join p in CH.DB.Projects.Where(w => w.IsActived == true && !string.IsNullOrEmpty(w.Manager))
@@ -59,7 +69,7 @@ namespace BLL
                     var year = DateTime.Now.Year;
                     //获取登录者（考核人）打分的记录
                     var scores = from r in CH.DB.ManagerScores.Where(w => w.Month == month && w.Year == year && w.Assigner==user) select r;
-                    var lps = from l in leads
+                    var lps = from l in managers
                               join sc in scores on l equals sc.TargetName into Joinedscores
                               from aa in Joinedscores.DefaultIfEmpty()
                                select new _ManagerScore()
@@ -68,15 +78,15 @@ namespace BLL
                                    ID = aa != null ? aa.ID : 0,//aa.ID,
                                    TargetName = l,
                                    Assigner = aa != null ? aa.Assigner : user,//aa.Assigner,
-                                   Responsibility = aa != null ? aa.Responsibility : 5,//aa.Item1Score.HasValue == false ? 5 : aa.Item1Score,//scores.Where(w => w.TargetName == l).Select(s => s.Item1Score).FirstOrDefault().Value,
-                                   Discipline = aa != null ? aa.Discipline : 5,//aa.Item2Score.HasValue == false ? 5 : aa.Item2Score,
-                                   Excution = aa != null ? aa.Excution : 5,//aa.Item3Score.HasValue == false ? 5 : aa.Item3Score,
-                                   Targeting = aa != null ? aa.Targeting : 5,//aa.Item4Score.HasValue == false ? 5 : aa.Item4Score,
-                                   Searching = aa != null ? aa.Searching : 5,//aa.Item5Score.HasValue == false ? 5 : aa.Item5Score,
-                                   Production = aa != null ? aa.Production : 5,//aa.Item6Score.HasValue == false ? 5 : aa.Item6Score,
-                                   PitchPaper = aa != null ? aa.PitchPaper : 5,//aa.Item7Score.HasValue == false ? 5 : aa.Item7Score,
-                                   WeeklyMeeting = aa != null ? aa.WeeklyMeeting : 5,//aa.Item8Score.HasValue == false ? 5 : aa.Item8Score,
-                                   MonthlyMeeting = aa != null ? aa.MonthlyMeeting : 10,//aa.Item9Score.HasValue == false ? 10 : aa.Item9Score,
+                                   Responsibility = aa != null ? aa.Responsibility : 0,//aa.Item1Score.HasValue == false ? 5 : aa.Item1Score,//scores.Where(w => w.TargetName == l).Select(s => s.Item1Score).FirstOrDefault().Value,
+                                   Discipline = aa != null ? aa.Discipline : 0,//aa.Item2Score.HasValue == false ? 5 : aa.Item2Score,
+                                   Excution = aa != null ? aa.Excution : 0,//aa.Item3Score.HasValue == false ? 5 : aa.Item3Score,
+                                   Targeting = aa != null ? aa.Targeting : 0,//aa.Item4Score.HasValue == false ? 5 : aa.Item4Score,
+                                   Searching = aa != null ? aa.Searching : 0,//aa.Item5Score.HasValue == false ? 5 : aa.Item5Score,
+                                   Production = aa != null ? aa.Production : 0,//aa.Item6Score.HasValue == false ? 5 : aa.Item6Score,
+                                   PitchPaper = aa != null ? aa.PitchPaper : 0,//aa.Item7Score.HasValue == false ? 5 : aa.Item7Score,
+                                   WeeklyMeeting = aa != null ? aa.WeeklyMeeting : 0,//aa.Item8Score.HasValue == false ? 5 : aa.Item8Score,
+                                   MonthlyMeeting = aa != null ? aa.MonthlyMeeting : 2,//aa.Item9Score.HasValue == false ? 10 : aa.Item9Score,
                                    leadcallcount = memberscall.Where(c => c.Manager == l).Count(c => c.salestypeid == 2),
                                    salescallcount = memberscall.Where(c => c.Manager == l).Count(c => c.salestypeid == 1),
                                    leadscount = memberscall.Where(c => c.Manager == l).GroupBy(c => c.salestypeid).Select(c => c.FirstOrDefault()).Count(c => c.salestypeid == 2),
@@ -96,7 +106,7 @@ namespace BLL
             {
                 var user = Employee.CurrentUserName;
                 var rolelvl = Employee.CurrentRole.Level;
-                if (rolelvl >= 500)
+                if (Employee.AsLeader())
                 {
                     var leads = CH.DB.Projects.Where(w => w.IsActived == true && !string.IsNullOrEmpty(w.TeamLeader)).Select(s => s.TeamLeader).Distinct();
                   
@@ -108,7 +118,7 @@ namespace BLL
                     }
 
 
-                     if (rolelvl == 500)//版块负责人只能看到自己项目所属的lead
+                    if (Employee.EqualToManager())//版块负责人只能看到自己项目所属的lead
                     {
                         var leadinsameprojects = from p in CH.DB.Projects.Where(w => w.Manager == user) select p.TeamLeader;
                         leads = leads.Where(w => leadinsameprojects.Any(a => a == w));
@@ -140,7 +150,7 @@ namespace BLL
                                   RateAssigner=user,
                                   //Assigner = scores.Where(w => w.TargetName == l).Select(s => s.Assigner).FirstOrDefault() == null ? user : scores.Where(w => w.TargetName == l).Select(s => s.Assigner).FirstOrDefault(),
                                   Rate = scores.Where(w => w.TargetName == l).Count() == 0  ? 1 : scores.Where(w => w.TargetName == l).Select(s => s.Rate).FirstOrDefault(), //rates.Where(w => w.TargetName == l).Average(s => s.Rate) == null ? 1 : scores.Where(w => w.TargetName == l).Average(s => s.Score),
-                                  AssignedScore =scores.Where(w => w.TargetName == l).Average(s => s.Score) == null ? 0 : scores.Where(w => w.TargetName == l).Average(s => s.Score),
+                                  AssignedScore = scores.Where(w => w.TargetName == l).Count() == 0 ? 1 : scores.Where(w => w.TargetName == l).Select(s => s.Score).FirstOrDefault(),//scores.Where(w => w.TargetName == l).Average(s => s.Score) == null ? 0 : scores.Where(w => w.TargetName == l).Average(s => s.Score),
                                   TeamLeadPerformanceInWeeks = wd.Select(s => new _TeamLeadPerformanceInWeek
                                   {
                                       //FaxOutCount = calls.Where(c => c.Member != null && c.Member.Name == l).GroupBy(c=>c.LeadID).Select(g=>g.FirstOrDefault()).Count(c=>c.CreatedDate >= s && c.CreatedDate < EntityFunctions.AddDays(s, 7)),
@@ -160,22 +170,22 @@ namespace BLL
             public static IEnumerable<_SalesPerformance> GetSalesPerformances(int month)
             {
                 var rolelvl = Employee.CurrentRole.Level;
-                if (rolelvl >= 100)
+                if (Employee.AsSales())
                 {
                     IQueryable<string> sales = null;
                     var user = Employee.CurrentUserName;
                     sales = CH.DB.Members.Where(w => w.IsActivated == true && w.Project.IsActived == true && w.Project.Manager == user || w.Project.TeamLeader == user).Select(s => s.Name).Distinct();
-                    if (rolelvl == 100 || rolelvl == 500)//版块或者lead查看
+                    if (Employee.EqualToLeader() || Employee.EqualToManager())//版块或者lead查看
                     {
 
                         sales = CH.DB.Members.Where(w => w.IsActivated == true && w.Project.IsActived == true && w.Project.Manager == user || w.Project.TeamLeader == user).Select(s => s.Name).Distinct();
 
                     }
-                    else if (rolelvl == 10)//销售查看
+                    else if (Employee.EqualToSales())//销售查看
                     {
                         sales = CH.DB.Members.Where(w => w.IsActivated == true && w.Project.IsActived == true && w.Name == user).Select(s => s.Name).Distinct();
                     }
-                    else if (rolelvl > 500)
+                    else if (Employee.AsLeader())
                     {
                         sales = CH.DB.Members.Where(w => w.IsActivated == true && w.Project.IsActived == true).Select(s => s.Name).Distinct();
                     }
@@ -212,7 +222,7 @@ namespace BLL
                                       Name = l,
                                       RateAssigner=user,
                                       Rate = scores.Where(w => w.TargetName == l).Count() == 0 ? 1 : scores.Where(w => w.TargetName == l).Select(s => s.Rate).FirstOrDefault(), //rates.Where(w => w.TargetName == l).Average(s => s.Rate) == null ? 1 : scores.Where(w => w.TargetName == l).Average(s => s.Score),
-                                      AssignedScore = scores.Where(w => w.TargetName == l).Average(s => s.Score) == null ? 0 : scores.Where(w => w.TargetName == l).Average(s => s.Score),
+                                      AssignedScore = scores.Where(w => w.TargetName == l).Count() == 0 ? 0 : scores.Where(w => w.TargetName == l).Select(s => s.Score).FirstOrDefault(),//scores.Where(w => w.TargetName == l).Average(s => s.Score) == null ? 0 : scores.Where(w => w.TargetName == l).Average(s => s.Score),
                                       SalesPerformanceInWeeks = wd.Select(s => new _SalesPerformanceInWeek
                                       {
                                           //FaxOutCount = calls.Where(c => c.Member != null && c.Member.Name == l).GroupBy(c=>c.LeadID).Select(g=>g.FirstOrDefault()).Count(c=>c.CreatedDate >= s && c.CreatedDate < EntityFunctions.AddDays(s, 7)),
