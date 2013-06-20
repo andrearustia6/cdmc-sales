@@ -91,12 +91,14 @@
         @Html.Telerik().DatePickerFor(model => model.ConferenceEndDate)
         @Html.ValidationMessageFor(model => model.ConferenceEndDate)
     </div>
-
+    @{
+      
     <div class="editor-label">
         @Html.LabelFor(model => model.Manager)
     </div>
     <div class="editor-field">
-         @Html.Telerik().ComboBoxFor(model => model.Manager).BindTo(new SelectList(Employee.GetEmplyeeByLVL(ManagerRequired.LVL)))
+
+         @Html.Telerik().ComboBoxFor(model => model.Manager).BindTo(new SelectList(Employee.GetEmplyeeByLVL(ManagerRequired.LVL,SuperManagerRequired.LVL)))
         @Html.ValidationMessageFor(model => model.Manager)
     </div>
     <div class="editor-label">
@@ -176,4 +178,5 @@
         @Html.TextAreaFor(model => model.Others)
         @Html.ValidationMessageFor(model => model.Others)
     </div>
+        }
 </fieldset>
