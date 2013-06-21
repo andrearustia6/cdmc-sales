@@ -210,9 +210,9 @@
 @helper Members(Project p)
     { 
 
-    @(Html.Telerik().Grid<Member>(p.Members).Name("members").ToolBar(commands =>
-                    commands.Custom().Text("添加成员").Action("Create", "Member", new { projectid = Model.ID }))
-                            .ToolBar(commands => commands.Custom().Text("分配字头").Action("Distribution", "Project", new { projectid = Model.ID }))
+    @(Html.Telerik().Grid<Member>(p.Members).Name("members")
+                .ToolBar(commands => commands.Custom().Text("添加成员").Action("Create", "Member", new { projectid = Model.ID }))
+                .ToolBar(commands => commands.Custom().Text("分配字头").Action("Distribution", "Project", new { projectid = Model.ID }))
                 .DataKeys(keys =>
                 {
                     keys.Add(s => s.ID);
