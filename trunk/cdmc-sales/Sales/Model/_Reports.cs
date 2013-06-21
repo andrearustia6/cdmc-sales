@@ -203,9 +203,9 @@ namespace Model
         public string ProjectCode { get; set; }
         public string ProjectName { get; set; }
         public string Manager { get; set; }
+
         public decimal? CurrentMonthChickIn { get; set; }
         public decimal? OneMonthBeforeChickIn { get; set; }
-
         public decimal? TwoMonthBeforeChickIn { get; set; }
         public decimal? ThreeMonthBeforeChickIn { get; set; }
         public decimal? FourthMonthBeforeChickIn { get; set; }

@@ -82,31 +82,37 @@ namespace Sales.Controllers
         }
 
         [GridAction]
-        public ActionResult _UserResearchList(string name, string type, int? duration) 
+        public ActionResult _UserResearchList(string name, string type, int? duration, string sale="") 
         {
             IQueryable<_UserResearchDetail> details=null;
             if (type == "project")
             {
                 int id = int.Parse(name);
-               
-                details = from c in CH.DB.CompanyRelationships.Where(w => w.Project.ID == id)
-                          from l in  c.Company.Leads
-                              select new _UserResearchDetail()
-                              {
-                                  LeadNameEN = l.Name_EN,
-                                  LeadNameCH = l.Name_CH,
-                                  CompanyNameCH = l.Company.Name_EN,
-                                  CompanyNameEN = l.Company.Name_CH,
-                                  CompanyContact = l.Company.Contact,
-                                  CompanyDesicription = l.Company.Description,
-                                  Email = l.EMail,
-                                  LeadContact = l.Contact,
-                                  LeadMobile = l.Mobile,
-                                  LeadTitle = l.Title,
-                                  Creator = l.Creator,
-                                  CreateDate = l.CreatedDate,
-                                  Categoris = c.CategoryString
-                              };
+                
+                var temp = from tc in CH.DB.CompanyRelationships.Where(w => w.Project.ID == id) select tc;
+                if (!string.IsNullOrEmpty(sale))
+                {
+                    int saleVal = int.Parse(sale);
+                    temp = temp.Where(c => c.Members.Any(m => m.ID == saleVal));
+                }
+                details = from c in temp
+                          from l in c.Company.Leads
+                          select new _UserResearchDetail()
+                          {
+                              LeadNameEN = l.Name_EN,
+                              LeadNameCH = l.Name_CH,
+                              CompanyNameCH = l.Company.Name_EN,
+                              CompanyNameEN = l.Company.Name_CH,
+                              CompanyContact = l.Company.Contact,
+                              CompanyDesicription = l.Company.Description,
+                              Email = l.EMail,
+                              LeadContact = l.Contact,
+                              LeadMobile = l.Mobile,
+                              LeadTitle = l.Title,
+                              Creator = l.Creator,
+                              CreateDate = l.CreatedDate,
+                              Categoris = c.CategoryString
+                          };
             }
             if (type == "user")
             {
@@ -137,10 +143,9 @@ namespace Sales.Controllers
                 {
                     duration = 1;
                 }
-                    DateTime startdate = DateTime.Now;
-                    startdate = startdate.AddDays(-duration.Value);
-                    details = details.Where(d => d.CreateDate >= startdate && d.CreateDate <= DateTime.Now);
-              
+                DateTime startdate = DateTime.Now;
+                startdate = startdate.AddDays(-duration.Value);
+                details = details.Where(d => d.CreateDate >= startdate && d.CreateDate <= DateTime.Now);
 
                 //权限控制
                 Detailslist = details.OrderByDescending(o=>o.CreateDate).ToList();

@@ -377,5 +377,27 @@ namespace Utl
             }
             return selectList;
         }
+
+        public static IEnumerable<SelectListItem> MemberSelectListInProject(int projectID, string selectVal = "")
+        {
+            List<SelectListItem> selectList = new List<SelectListItem>();
+            SelectListItem selectListItemNone = new SelectListItem() { Text = "请选择", Value = "" };
+            if (selectVal == "")
+            {
+                selectListItemNone.Selected = true;
+            }
+            selectList.Add(selectListItemNone);
+
+            foreach (Member m in CH.GetAllData<Member>(c => c.ProjectID == projectID && c.IsActivated == true))
+            {
+                SelectListItem selectListItem = new SelectListItem { Text = m.Name, Value = m.ID.ToString() };
+                if (m.ID.ToString() == selectVal)
+                {
+                    selectListItem.Selected = true;
+                }
+                selectList.Add(selectListItem);
+            }
+            return selectList;
+        }
     }
 }
