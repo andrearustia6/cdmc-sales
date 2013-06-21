@@ -88,7 +88,9 @@ namespace Sales.Controllers
             if (type == "project")
             {
                 int id = int.Parse(name);
-                
+
+                ViewBag.ProjectId = id;
+
                 var temp = from tc in CH.DB.CompanyRelationships.Where(w => w.Project.ID == id) select tc;
                 if (!string.IsNullOrEmpty(sale))
                 {
@@ -150,7 +152,6 @@ namespace Sales.Controllers
                 //权限控制
                 Detailslist = details.OrderByDescending(o=>o.CreateDate).ToList();
             }
-
             return View(new GridModel(Detailslist));
         }
         
@@ -173,20 +174,9 @@ namespace Sales.Controllers
                   ThirdWeekCompanyCount = p.CompanyRelationships.Count(w=>w.CreatedDate >= md.StartDate3 && w.CreatedDate<md.EndDate3),
                   FourthWeekCompanyCount = p.CompanyRelationships.Count(w => w.CreatedDate >= md.StartDate4 && w.CreatedDate < md.EndDate4),
                   FivethWeekCompanyCount = p.CompanyRelationships.Count(w => w.CreatedDate >= md.StartDate5 && w.CreatedDate < md.EndDate5),
-                 // CompanyAverage = p.CompanyRelationships.Count(w =>w.CreatedDate>=md.StartDate1 && w.CreatedDate <md.EndDate5)/p.Members.Count,
-
-                  //FirstWeekLeadCount = p.CompanyRelationships.Select(s => s.Company).SelectMany(s => s.Leads).Count(w => w.CreatedDate >= md.StartDate1 && w.CreatedDate < md.EndDate1),
-                  //SecondWeekLeadCount = p.CompanyRelationships.Select(s => s.Company).SelectMany(s => s.Leads).Count(w => w.CreatedDate >= md.StartDate2 && w.CreatedDate < md.EndDate2),
-                  //ThirdWeekLeadCount = p.CompanyRelationships.Select(s => s.Company).SelectMany(s => s.Leads).Count(w => w.CreatedDate >= md.StartDate3 && w.CreatedDate < md.EndDate3),
-                  //FourthWeekLeadCount = p.CompanyRelationships.Select(s => s.Company).SelectMany(s => s.Leads).Count(w => w.CreatedDate >= md.StartDate4 && w.CreatedDate < md.EndDate4),
-                  //FivethWeekLeadCount = p.CompanyRelationships.Select(s => s.Company).SelectMany(s => s.Leads).Count(w => w.CreatedDate >= md.StartDate5 && w.CreatedDate < md.EndDate5),
-                 // LeadAverage = p.CompanyRelationships.Select(s => s.Company).SelectMany(s => s.Leads).Count(w => w.CreatedDate >= md.StartDate1 && w.CreatedDate < md.EndDate5) / p.Members.Count
             };
-            //foreach (var p in prs)
-            //{
-            //    p.CompanyAverage = Math.Round(p.CompanyAverage, 1);
-            //    p.LeadAverage = Math.Round(p.LeadAverage, 1);
-            //}
+            ViewBag.ProjectId = prs.FirstOrDefault().ProjectID;
+
             return View(new GridModel(prs));
         }
 
@@ -305,6 +295,24 @@ namespace Sales.Controllers
         {
             CH.Delete<Research>(id);
             return RedirectToAction("MyIndex");
+        }
+
+        [HttpPost]
+        public JsonResult MemberInPorject(int? projectId)
+        {
+            List<SelectListItem> selectList = new List<SelectListItem>();
+            SelectListItem selectListItemNone = new SelectListItem() { Text = "请选择", Value = "" };
+            selectList.Add(selectListItemNone);
+            if (projectId != null)
+            {
+                foreach (Member m in CH.GetAllData<Member>(c => c.ProjectID == projectId && c.IsActivated == true))
+                {
+                    SelectListItem selectListItem = new SelectListItem { Text = m.Name, Value = m.ID.ToString() };
+                    selectList.Add(selectListItem);
+                }
+            }
+            //return String.Join(",", mpids);
+            return this.Json(selectList);
         }
     }
 }

@@ -34,7 +34,7 @@
     {
         columns.Bound(p => p.FivethWeekCompanyCount).Title(Model.DurationStrings[4]);
     }
-    columns.Command(command => command.Custom("viewprojectDetails").Text("调研查看").DataRouteValues(route => route.Add(o => o.ProjectID).RouteKey("UserName")).Ajax(true)).HtmlAttributes(new { style = "text-align: center" }).Width(150).Title("操作");
+    columns.Command(command => command.Custom("viewprojectDetails").Text("调研查看").DataRouteValues(route => route.Add(o => o.ProjectID).RouteKey("UserName")).Ajax(true)).HtmlAttributes(new {style = "text-align: center" }).Width(150).Title("操作");
 
 })
 .Pageable(p => p.Style(GridPagerStyles.Status).PageSize(50)
@@ -42,7 +42,6 @@
 .ClientEvents(events => events.OnCommand("onProjectDetails"))
 )
 </fieldset> 
-
 <fieldset> 
 <legend>@Model.Month 月员工调研情况</legend>       
 @(Html.Telerik().Grid<_UserResearch>().Name("_UserResearch")
@@ -66,7 +65,7 @@
     {
         columns.Bound(p => p.FirstWeekLeadCount).Title(Model.DurationStrings[4]);
     }
-    
+
     columns.Command(command => command.Custom("viewUserDetails").Text("调研查看").DataRouteValues(route => route.Add(o => o.UserName).RouteKey("UserName")).Ajax(true)).HtmlAttributes(new { style = "text-align: center" }).Width(150).Title("操作");
    
 })
@@ -76,10 +75,8 @@
 )
 </fieldset> 
 
-
-
 @(Html.Telerik().Window().Name("DetailsWindow").Visible(false).Title("调研列表").Modal(true).Width(900).Height(610).Content(@<text> 
-       @DetailList()       
+     @DetailList()  
  </text>).Resizable().Draggable(true)
 )
 
@@ -93,8 +90,10 @@
         .ToolBar(toolBar => toolBar.Template(
                 @<text><label > 时间筛选: </label>
                 @Html.DropDownList("durationselect", Utl.SelectHelper.DurationSelectList())
+                <span id="salecontainer"></span>
                 <label > 销售筛选: </label>
-                @Html.DropDownList("saleselect", Utl.SelectHelper.MemberSelectListInProject(26))
+                <select id="saleselect" name="saleselect" onchange="sdlOnChange()">
+                </select>
                 </text>)
         )
         .Columns(columns =>
@@ -138,38 +137,37 @@
      }
 
      function onDetailLoad(e) {
-
          if ($(e.row).children().first().text() != currentuser) {
              $(e.row).children().last().find('a').hide();
          }
         
      }
-var currentuser;
+    var currentuser;
      $(document).ready(function () {
 
          currentuser = $('#username').val();
 
          ddl().bind('change', function () {
              var duration = ddl().val();
-             var d = dg();
-
-             var type = $("#detailtype").val();
-             var name = $("#detailname").val();
-             dg().ajaxRequest({ name: name, type: type, duration: duration });
-
-         });
-
-         sdl().bind('change', function () {
              var saleVal = sdl().val();
-             var duration = ddl().val();
              var d = dg();
 
              var type = $("#detailtype").val();
              var name = $("#detailname").val();
-             dg().ajaxRequest({ name: name, type: type, duration: duration , sale: saleVal});
+             dg().ajaxRequest({ name: name, type: type, duration: duration, sale: saleVal });
 
          });
      });
+
+     function sdlOnChange() {
+         var saleVal = sdl().val();
+         var duration = ddl().val();
+         var d = dg();
+
+         var type = $("#detailtype").val();
+         var name = $("#detailname").val();
+         dg().ajaxRequest({ name: name, type: type, duration: duration, sale: saleVal });
+     }
 
      function onUserDetails(e) {
          resetddl();
@@ -187,6 +185,17 @@ var currentuser;
          resetsdl();
          var id = e.dataItem.ProjectID;
          var d = dg();
+
+         $.post('MemberInPorject', { projectId: id }, function (result) {
+             $("#saleselect").each(function () {
+                 var dropdownList = this;
+                 $.each(result, function (key, item) {
+                     var option = new Option(item.Text, item.Value);
+                     dropdownList.add(option);
+                 });
+             });
+         }, 'json');
+
          setdetailselections(id, 'project');
 
          dg().ajax.selectUrl = "/Research/_UserResearchList/?name="+id+"&type=project";
