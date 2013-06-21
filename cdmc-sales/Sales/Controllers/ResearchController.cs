@@ -311,7 +311,6 @@ namespace Sales.Controllers
                     selectList.Add(selectListItem);
                 }
             }
-            //return String.Join(",", mpids);
             return this.Json(selectList);
         }
     }

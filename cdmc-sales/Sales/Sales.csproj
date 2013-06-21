@@ -1696,7 +1696,6 @@
     <Content Include="Views\EmployeeRole\Index.cshtml" />
     <None Include="ClassDiagram1.cd" />
     <Content Include="Views\DirectorReport\ProjectsCheckInLastWeek.cshtml" />
-    <Content Include="Views\Research\ProjectDetails.cshtml" />
     <None Include="Views\SalesEx\EditCompany.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\SimulatorConfig.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\AjaxTargetOfMonthForMember.cshtml" />
