@@ -465,7 +465,7 @@ namespace Sales.Model
         [Display(Name = "员工")]
         //[HiddenInput(DisplayValue = false)] //Hide from Edit
         public string TargetName { get; set; }
-
+        [ScaffoldColumn(false)]
         [Display(Name = "评分人")]
         //[HiddenInput(DisplayValue = false)] //Hide from Edit
         public string Assigner { get; set; }

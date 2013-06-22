@@ -25,7 +25,7 @@ namespace BLL
                 var user = Employee.CurrentUserName;
                 var rolelvl = Employee.CurrentRole.Level;
 
-                if (Employee.AsDirector())
+                if (rolelvl==SuperManagerRequired.LVL || user=="ray")
                 {
                     var md = MonthDuration.GetMonthInstance(month);
                     var managers = CH.DB.Projects.Where(w => w.IsActived == true && !string.IsNullOrEmpty(w.Manager)).Select(s => s.Manager).Distinct();
