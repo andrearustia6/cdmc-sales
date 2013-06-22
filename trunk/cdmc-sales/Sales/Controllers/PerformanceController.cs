@@ -38,6 +38,7 @@ namespace Sales.Controllers
             {
                 if (TryUpdateModel(model))
                 {
+                    newmodel = CH.GetDataById<ManagerScore>(id);
                     newmodel.ID = id;
                     newmodel.TargetName = model.TargetName;
                     newmodel.Assigner = model.Assigner;
@@ -76,7 +77,7 @@ namespace Sales.Controllers
                     newmodel.PitchPaper = model.PitchPaper;
                     newmodel.WeeklyMeeting = model.WeeklyMeeting;
                     newmodel.MonthlyMeeting = model.MonthlyMeeting;
-                    
+                    newmodel.Confirmed = false;
                     newmodel.Month = month;
                     newmodel.Year = DateTime.Now.Year;
                     CH.Create<ManagerScore>(newmodel);
@@ -90,7 +91,24 @@ namespace Sales.Controllers
             return View(new GridModel(data));
 
         }
-        
+        [AcceptVerbs(HttpVerbs.Post)]
+        [GridAction]
+        public ActionResult _ConfirmManagerScore(int id, int? month)
+        {
+            if (month == null) month = DateTime.Now.Month;
+            if (id > 0)
+            {
+                ManagerScore model = CH.GetDataById<ManagerScore>(id);
+                model.Confirmed = true;
+                CH.Edit<ManagerScore>(model);
+            }
+            var list = CRM_Logical._EmployeePerformance.GetManagerLeadsPerformances(month.Value);
+            var data = list.ToList();
+
+
+            return View(new GridModel(data));
+
+        }
         [GridAction]
         public ActionResult _SelectLeadIndex(int? month)
         {
@@ -111,9 +129,13 @@ namespace Sales.Controllers
             {
                 if (TryUpdateModel(model))
                 {
-                    newmodel.ID = id;
+                    newmodel = CH.GetDataById<AssignPerformanceScore>(id);
+                    
                     newmodel.TargetName = model.Name;
-                    newmodel.RateAssigner = model.RateAssigner;
+                    if (model.RoleLevel == 1000)
+                        newmodel.RateAssigner = model.User;
+                    else
+                        newmodel.Assigner = model.User;
                     newmodel.Rate = model.Rate;
                     newmodel.Score = (int)model.AssignedScore;
                     newmodel.Month = month;
@@ -130,8 +152,12 @@ namespace Sales.Controllers
 
                 if (TryUpdateModel(model))
                 {
+                    
                     newmodel.TargetName = model.Name;
-                    newmodel.RateAssigner = model.RateAssigner;
+                    if (model.RoleLevel == 1000)
+                        newmodel.RateAssigner = model.User;
+                    else
+                        newmodel.Assigner = model.User;
                     newmodel.Rate = model.Rate;
                     newmodel.Score = (int)model.AssignedScore;
                     newmodel.Month = month;
@@ -146,11 +172,12 @@ namespace Sales.Controllers
 
         }
         [GridAction]
-        public ActionResult _SelectSalesIndex(int? month)
+        public ActionResult _SelectSalesIndex(int? month, string fuzzyInput="")
         {
+            ViewBag.fuzzyInput = fuzzyInput;
            if (month == null) month = DateTime.Now.Month;
            // if (month == null) month = 5;
-            var list = CRM_Logical._EmployeePerformance.GetSalesPerformances(month.Value);
+           var list = CRM_Logical._EmployeePerformance.GetSalesPerformances(month.Value, fuzzyInput);
             var data = list.ToList();
             return View(new GridModel(data));
         }
@@ -165,9 +192,13 @@ namespace Sales.Controllers
             {
                 if (TryUpdateModel(model))
                 {
-                    newmodel.ID = id;
+
+                    newmodel = CH.GetDataById<AssignPerformanceScore>(id);
                     newmodel.TargetName = model.Name;
-                    newmodel.RateAssigner = model.RateAssigner;
+                    if (model.RoleLevel == 1000)
+                        newmodel.RateAssigner = model.User;
+                    else
+                        newmodel.Assigner = model.User;
                     newmodel.Rate = model.Rate;
 
                     newmodel.Score = (int)model.AssignedScore;
@@ -187,7 +218,10 @@ namespace Sales.Controllers
                 {
                     newmodel.TargetName = model.Name;
                     newmodel.Rate = model.Rate;
-                    newmodel.RateAssigner = model.RateAssigner;
+                    if (model.RoleLevel == 1000)
+                        newmodel.RateAssigner = model.User;
+                    else
+                        newmodel.Assigner = model.User;
                     newmodel.Score = (int)model.AssignedScore;
                     newmodel.Month = month;
                     newmodel.Year = DateTime.Now.Year;
@@ -195,7 +229,7 @@ namespace Sales.Controllers
                 }
             }
 
-            var list = CRM_Logical._EmployeePerformance.GetSalesPerformances(month.Value);
+            var list = CRM_Logical._EmployeePerformance.GetSalesPerformances(month.Value, "");
             var data = list.ToList();
             return View(new GridModel(data));
 

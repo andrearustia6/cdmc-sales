@@ -35,6 +35,9 @@ namespace Entity
         public int? Month { get; set; }
         [Display(Name = "年")]
         public int? Year { get; set; }
+
+        [Display(Name = "是否确认")]
+        public bool? Confirmed { get; set; }
      
     }
 
