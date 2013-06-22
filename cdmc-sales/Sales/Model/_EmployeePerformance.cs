@@ -28,6 +28,8 @@ namespace Sales.Model
         public int ID { get; set; }
         [ScaffoldColumn(false)]
         public int RoleLevel { get; set; }
+        [ScaffoldColumn(false)]
+        public string User { get; set; }
         [Display(Name = "调研不达标周数")]
         public int LeadNotQualifiedWeeksCount
         {
@@ -242,6 +244,8 @@ namespace Sales.Model
         [ReadOnly(true)]
         [ScaffoldColumn(false)]
         public int ID { get; set; }
+        [ScaffoldColumn(false)]
+        public string User { get; set; }
         [ScaffoldColumn(false)]
         public int RoleLevel { get; set; }
         [Display(Name = "调研不达标周数")]
@@ -465,7 +469,10 @@ namespace Sales.Model
         [Display(Name = "评分人")]
         //[HiddenInput(DisplayValue = false)] //Hide from Edit
         public string Assigner { get; set; }
-        
+
+        [ScaffoldColumn(false)]
+        public string User { get; set; }
+
         [Display(Name = "责任心积极性")]
         //[UIHint("ClientItem1"), Required]
         public int? Responsibility { get; set; }
@@ -604,6 +611,9 @@ namespace Sales.Model
         [ScaffoldColumn(false)]
         [Display(Name = "年")]
         public int? Year { get; set; }
+
+        [Display(Name = "是否确认")]
+        public string Confirmed { get; set; }
 
     }
     /// <summary>

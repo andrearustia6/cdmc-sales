@@ -21,6 +21,9 @@
 <div style=" padding-bottom:40px;width:100%"> 
     @Html.TextBoxFor(model => model.Name, new { @style = "display:none" })
     @Html.TextBoxFor(model => model.RateAssigner, new { @style = "display:none" })
+     @Html.TextBoxFor(model => model.RoleLevel, new { @style = "display:none" })
+    @Html.TextBoxFor(model => model.User, new { @style = "display:none" })
+
     <table style="width:100%" >
     @{ 
         if (ViewBag.RoleLevel >= 1000)

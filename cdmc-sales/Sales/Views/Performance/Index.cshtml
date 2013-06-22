@@ -21,10 +21,12 @@
 </fieldset>
 @{
 var month = ViewBag.Month as int?;
+var query = ViewBag.fuzzyInput as string;
 }
 <fieldset>
 <legend>版块负责人考核</legend>
 @(Html.Telerik().Grid<_ManagerScore>().Name("manager")
+
     .DataKeys(keys =>
     {
         keys.Add(o => o.ID);
@@ -36,9 +38,9 @@ var month = ViewBag.Month as int?;
     })
 .Columns(columns =>
 {
-    columns.Bound(p => p.TargetName).Width(100);
-    columns.Bound(p => p.Assigner).Width(80);
-    columns.Bound(p => p.Responsibility).Width(100);
+    columns.Bound(p => p.TargetName).Width(70);
+    columns.Bound(p => p.Assigner).Width(70);
+    columns.Bound(p => p.Responsibility).Width(80);
     columns.Bound(p => p.Discipline).Width(50);
     columns.Bound(p => p.Excution).Width(60);
     columns.Bound(p => p.Targeting).Width(60);
@@ -50,15 +52,26 @@ var month = ViewBag.Month as int?;
     columns.Bound(p => p.Calllist).Width(80);
     columns.Bound(p => p.AddLeads).Width(90);
     columns.Bound(p => p.CheckIn).Width(90);
+    columns.Bound(p => p.Confirmed).Width(60);
     //columns.Bound(p => p.Month).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
     //columns.Bound(p => p.Year).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
     columns.Command(commands => { commands.Edit().ButtonType(GridButtonType.Text);
-        
-    }).Title("打分").Width(80);
+                                  commands.Custom("Confirm")
+                                   .Text("确认")
+                                    .DataRouteValues(route => route.Add(o => o.ID)
+                                                            .RouteKey("id")
+                                                        )
+                                   
+                                   .Ajax(true)
+                                   
+                                   .Action("_ConfirmManagerScore", "Performance",new {month=month});
+    }).Title("打分").Width(60);
 }).Editable(editing => editing
                         .Mode(GridEditMode.PopUp).TemplateName("ManagerScoreEdit"))
       .ClientEvents(e => e.OnRowDataBound("ChangeButtonTextForManager"))
       .ClientEvents(events => events.OnEdit("ChangeWinTitleForManager"))
+      .ClientEvents(events => events.OnComplete("onManagerComplete"))
+      .ClientEvents(events => events.OnCommand("onManagerCommand"))
   .Pageable(p => p.Style(GridPagerStyles.Status)
        .PageOnScroll(true).PageSize(25)).Scrollable(scrolling => scrolling.Height(350)).Sortable().Resizable(r => r.Columns(true))
            )
@@ -80,7 +93,8 @@ var month = ViewBag.Month as int?;
 .Columns(columns =>
 {
     columns.Bound(p => p.Name).Width(50);
-    
+    columns.Bound(p => p.User).Width(50);
+    columns.Bound(p => p.RoleLevel).Width(50);
     columns.Bound(p => p.CompletePercent).Width(150).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
     columns.Bound(p => p.CheckinScore).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
     columns.Bound(p => p.LeadNotQualifiedWeeksCount).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
@@ -118,11 +132,12 @@ var month = ViewBag.Month as int?;
     .DataBinding(dataBinding =>
     {
         dataBinding.Ajax().Select("_SelectSalesIndex", "Performance", new { month = month })
-            .Update("_UpdateSalesPerformance", "Performance", new { month = month });
+            .Update("_UpdateSalesPerformance", "Performance", new { month = month});
     })
 .Columns(columns =>
 {
     columns.Bound(p => p.Name);
+    columns.Bound(p => p.User).Width(50);
     columns.Bound(p => p.RoleLevel);
     columns.Bound(p => p.CompletePercent);
     columns.Bound(p => p.CheckinScore);
@@ -144,8 +159,17 @@ var month = ViewBag.Month as int?;
                                 .Mode(GridEditMode.PopUp).TemplateName("SalesPerformanceEdit"))
           .ClientEvents(e => e.OnRowDataBound("ChangeButtonTextForSales"))
           .ClientEvents(events => events.OnEdit("ChangeWinTitleForSales"))
+              .ClientEvents(events => events.OnDataBinding("dataBinding"))
+                  
 .Pageable(p => p.Style(GridPagerStyles.Status)
        .PageOnScroll(true).PageSize(35)).Scrollable(scrolling => scrolling.Height(350))
+.ToolBar(factory => factory
+      .Template(@<text>
+         <div>
+             员工: @Html.TextBox("fuzzyInput", (string)ViewBag.fuzzyInput)
+             <a class="t-grid-action t-button t-state-default" onclick="refreshGrid();">查找</a>
+         </div>
+     </text>))
 )
 </fieldset>
 <fieldset>
@@ -242,12 +266,28 @@ var month = ViewBag.Month as int?;
     function ChangeButtonTextForManager(e) {
         var $row = $(e.row);
         var rowButton = $row.find(".t-grid-edit");
-
-        if ((e.dataItem.RoleLevel != "1000")) {
+        var rowConfirmButton = $row.find(".t-grid-Confirm");
+        rowButton[0].innerText = "打分";
+        if ((e.dataItem.User == "theresa")) {
+            if ((e.dataItem.Confirmed == "是")) {
+                rowButton.remove();
+                rowConfirmButton.remove();
+                return;
+            }
+            else {
+                rowConfirmButton.remove();
+                return;
+            }
+        }
+        else if ((e.dataItem.User == "ray")) {
             rowButton.remove();
             return;
         }
-        rowButton[0].innerText = "打分";
+        else {
+            rowConfirmButton.remove();
+            rowButton.remove();
+        }
+        
     }
     function ChangeWinTitleForManager(e) {
         var popup = $("#" + e.currentTarget.id + "PopUp");
@@ -256,11 +296,19 @@ var month = ViewBag.Month as int?;
         popup.css({ "left": l + "px", "margin-left": "0", "width": $(popup).width() });
         popupDataWin.title("打分");
     }
-
+    function onManagerCommand(e) {
+        //if the custom command is triggered
+        if (e.name == 'Confirm') {
+            if (!confirm("确实要确认吗?")) {
+                // prevent the request        
+                e.preventDefault();
+            }
+        }
+    }
     function ChangeButtonTextForLead(e) {
         var $row = $(e.row);
         var rowButton = $row.find(".t-grid-edit");
-        if ((e.dataItem.RoleLevel == "1000")) {
+        if ((e.dataItem.User == "karen")) {
             rowButton[0].innerText = "修改系数";
             return;
         }
@@ -277,7 +325,7 @@ var month = ViewBag.Month as int?;
         var popupDataWin = popup.data("tWindow");
         var l = ($(window).width() / 2 - $(popup).width() / 2);
         popup.css({ "left": l + "px", "margin-left": "0", "width": $(popup).width() });
-        if ((e.dataItem.RoleLevel == "1000")) {
+        if ((e.dataItem.User == "karen")) {
             popupDataWin.title("修改系数");
         }
         else
@@ -287,7 +335,7 @@ var month = ViewBag.Month as int?;
     function ChangeButtonTextForSales(e) {
         var $row = $(e.row);
         var rowButton = $row.find(".t-grid-edit");
-        if ((e.dataItem.RoleLevel == "1000")) {
+        if ((e.dataItem.User == "karen")) {
             rowButton[0].innerText = "修改系数";
             return;
         }
@@ -304,10 +352,28 @@ var month = ViewBag.Month as int?;
         var popupDataWin = popup.data("tWindow");
         var l = ($(window).width() / 2 - $(popup).width() / 2);
         popup.css({ "left": l + "px", "margin-left": "0", "width": $(popup).width() });
-        if ((e.dataItem.RoleLevel == "1000")) {
+        if ((e.dataItem.User == "karen")) {
             popupDataWin.title("修改系数");
         }
         else
             popupDataWin.title("打分");
     }
+    function onManagerComplete(e) {
+        if (e.name == "Confirm") {
+            var $grid = $("#manager").data("tGrid");
+            $grid.rebind();
+        }
+    }
 </script>
+<script>
+    function dataBinding(e) {
+      
+        var fuzzyValue = $('#fuzzyInput').val();
+        e.data = $.extend(e.data, {fuzzyInput: fuzzyValue });
+    }
+    function refreshGrid() {
+        $("#sales").data("tGrid").rebind();
+
+    }
+
+</script> 
