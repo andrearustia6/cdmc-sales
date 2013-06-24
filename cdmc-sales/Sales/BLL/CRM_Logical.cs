@@ -419,26 +419,47 @@ namespace BLL
             public static List<ProjectWeekPerformance> GetProjectSingleWeekCheckIn(DateTime? day)
             {
                 if (day == null)
-                    day = DateTime.Now;
+                    day = DateTime.Now; ;
+                day = day.Value.AddDays(-7);
                 var weekstart = day.Value.StartOfWeek();
                 var weekend = day.Value.EndOfWeek().AddDays(1);
-                var deals = from d in GetDeals().Where(w => w.ActualPaymentDate >= weekstart && w.ActualPaymentDate < weekend) select d;
-
+                var dealins = from d in GetDeals().Where(w => w.SignDate >= weekstart && w.SignDate < weekend) select d;
+                var checkins = from d in GetDeals().Where(w => w.ActualPaymentDate >= weekstart && w.ActualPaymentDate < weekend) select d;
+                var alldeals = GetDeals();
                 //和周目标相关的月
                 var targets = from t in GetProjectMonthTargets().Where(w => (w.EndDate >= weekstart && w.EndDate < weekend)
                                   || (w.StartDate >= weekstart && w.StartDate < weekend) || (w.StartDate >= weekstart && w.EndDate > weekend))
                               select t;
-                var data = from d in deals
-                           group d by new { d.ProjectID, d.Project.Name_CH } into grp
-                           select new ProjectWeekPerformance()
-                           {
-                               StartDate = weekstart,
-                               EndDate = weekend,
-                               Income = deals.Where(w => w.ProjectID == grp.Key.ProjectID).Sum(s => s.Income),
-                               ProjectName = grp.Key.Name_CH,
-                               ProjectID = grp.Key.ProjectID
-                           };
-                var list = data.ToList();
+                //var ds = from d in dealins
+                //           group d by new { d.ProjectID, d.Project.Name_CH } into grp
+                //           select new ProjectWeekPerformance()
+                //           {
+                //               StartDate = weekstart,
+                //               EndDate = weekend,
+                //               Income = dealins.Where(w => w.ProjectID == grp.Key.ProjectID).Sum(s => s.Payment),
+                //               ProjectName = grp.Key.Name_CH,
+                //               ProjectID = grp.Key.ProjectID
+                //           };
+                var cs = 
+                         //from d in checkins
+                         //group d by new { d.ProjectID } into grp
+                         from p in CH.DB.Projects where p.IsActived==true && (p.Test ==null)
+                         select new ProjectWeekPerformance()
+                         {
+                             StartDate = weekstart,
+                             EndDate = weekend,
+                             Income = checkins.Where(w => w.ProjectID == p.ID).Sum(s => s.Income),
+                             Payment = dealins.Where(w => w.ProjectID == p.ID).Sum(s => s.Payment),
+                             ProjectName = p.Name_CH,
+                             ProjectID = p.ID,
+                             Manager = p.Manager,
+                             Leader = p.TeamLeader,
+                             LeftDay = EntityFunctions.DiffDays(DateTime.Now,p.ConferenceStartDate).Value ,
+                             TotalTarget = p.Target,
+                             TotalCheckIn = alldeals.Where(w=>w.ProjectID==p.ID).Sum(s=>s.Income)
+                         };
+
+                var list = cs.ToList();
                 foreach (var l in list)
                 {
                     targets = targets.Where(w => w.ProjectID == l.ProjectID);

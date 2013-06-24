@@ -11,11 +11,18 @@ namespace Model
     {
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
+        public decimal? TotalTarget { get; set; }
+        public decimal? TotalCheckIn{ get; set; }
+        public double TotalPercent { get { return Utl.Utl.GetPercent(TotalCheckIn, TotalTarget); } }
+        public int LeftDay { get; set; } 
         public decimal? Target { get; set; }
         public string ProjectName { get; set; }
         public int? ProjectID { get; set; }
         public decimal? Income { get; set; }
+        public decimal? Payment { get; set; }
         public double percent { get { return Utl.Utl.GetPercent(Income, Target); } }
+        public string Manager { get; set; }
+        public string Leader { get; set; }
     }
 
     public class AjaxEmployeeCheckInDistribution
