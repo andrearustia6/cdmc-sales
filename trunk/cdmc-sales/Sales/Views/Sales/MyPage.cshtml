@@ -34,27 +34,8 @@
 @{
     if (Model != null)
     {
-        //取得该员工的所有成员实例
-        var members = new List<Member>();
-        Model.ForEach(p =>
-        {
-            members.Add(p.Members.FirstOrDefault(m => m.Name == Employee.CurrentUserName));
-        });
-        var calls = new List<LeadCall>();
-
-        members.ForEach(m =>
-        {
-            if (m != null)
-            {
-                var cs = m.GetMemberToCallList(DateTime.Now.AddDays(-7));
-                //var temp = m.GetMemberToCallList(DateTime.Now.AddHours(-DateTime.Now.Hour), null);
-                calls.AddRange(cs);
-            }
-        });
-
-        if (calls.Count > 0)
-        {
-            @(Html.Telerik().Grid(calls).Name("ToCall").DataKeys(keys =>
+        
+        @(Html.Telerik().Grid(BLL.CRM_Logical._LeadCall.GetUserCallBackSince7DayBefore()).Name("ToCall").DataKeys(keys =>
         {
             keys.Add(s => s.ID);
         })
@@ -93,26 +74,19 @@
             .Filterable().Sortable().Groupable()
             .Pageable(p => p.PageSize(20))
             .Scrollable(scrolling => scrolling.Height(300)))
-            @* <table class="calltable" >
-                <tr><th>客户名称</th><th>职位</th><th>所属公司</th><th>联系方式</th><th>手机</th><th>拨打时间</th><th>所属项目</th><th>Call List</th></tr>
-                @foreach (var c in calls)
-                {
-                    <tr><td>@c.LeadName</td><td>@c.LeadTitle</td><td>@c.Companyname</td><td>@c.Contact</td><td>@c.Mobile</td><td>@c.CallDateTime</td><td>@c.ProjectCode</td><td><a  target="_blank" href=@Url.Content("~/Sales/LeadCallsIndex/?crid=" + c.LeadCall.CompanyRelationshipID + "&leadid=" + c.LeadCall.LeadID) >Call List</a></td></tr>
-                }
-            </table>*@
-        }
+        
     }
   }
 </fieldset>
 <fieldset>
 <legend>未付款出单列表</legend>
 @{
-    var user = Employee.CurrentUserName;
-    var projects = CRM_Logical.GetSalesInvolveProject();
-    var deals = CH.GetAllData<Deal>(d => projects.Any(p => p.ID == d.CompanyRelationship.ProjectID));
-    deals = deals.FindAll(d => d.Sales == user && d.IsClosed == false && d.Abandoned == false);
+    //var user = Employee.CurrentUserName;
+    //var projects = CRM_Logical.GetSalesInvolveProject();
+    //var deals = CH.GetAllData<Deal>(d => projects.Any(p => p.ID == d.CompanyRelationship.ProjectID));
+    //deals = deals.FindAll(d => d.Sales == user && d.IsClosed == false && d.Abandoned == false);
     
-    @(Html.Telerik().Grid<Deal>(deals).Name("Deal")
+    @(Html.Telerik().Grid<Deal>(CRM_Logical._Deal.GetUserUnClosedDeal()).Name("Deal")
             .DataKeys(keys =>
             {
                 keys.Add(s => s.ID);
@@ -144,7 +118,7 @@
 )
 }
 </fieldset>
-<fieldset>
+@*<fieldset>
 <legend>24小时内Call List统计</legend>
 <div>
 @{
@@ -174,9 +148,6 @@
     }).Columns(c =>
     {
         c.Bound(item => item.Member.Name).Width(60);
-             @*c.Bound(item => item.Member.SalesType.Name).Width(80);
-             c.Bound(item => item.Duration).Title("通话时间").Width(80);
-             c.Bound(item => item.Cold_Calls).Width(90).Aggregate(item => item.Sum()).FooterTemplate(@<text>@item.Sum</text>);*@
         c.Bound(item => item.DMs).Width(50);
         c.Bound(item => item.New_DMs).Width(70);
         c.Bound(item => item.Pitched).Width(55);
@@ -191,7 +162,9 @@
     }
 
 </div>
-</fieldset>
+</fieldset>*@
+
+
 <fieldset>
 <legend>所在项目</legend>
 <div>

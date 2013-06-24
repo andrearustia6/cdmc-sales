@@ -742,6 +742,38 @@ namespace BLL
             }
         }
 
+        public static class _LeadCall
+        {
+            public static IQueryable<LeadCall> GetUserCallBackSince7DayBefore()
+            {
+                //取得该员工的所有成员实例
+
+                var sevendaybefore = DateTime.Now.AddDays(-7);
+                      var user = Employee.CurrentUserName;
+                      var calls = from c in CH.DB.LeadCalls
+                                  where c.Member.Name == user && c.CallBackDate >= sevendaybefore
+                                  select c;
+
+                      return calls;
+            }
+        }
+
+        public static class _Deal
+        {
+            public static IQueryable<Deal> GetUserUnClosedDeal()
+            {
+                //取得该员工的所有成员实例
+
+              
+                var user = Employee.CurrentUserName;
+                var deals = from d in CH.DB.Deals
+                            where d.Sales == user && d.Income==0
+                            select d;
+
+                return deals;
+            }
+        }
+
         public static class _CRM
         {
             //导入公司
