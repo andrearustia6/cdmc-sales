@@ -12,7 +12,7 @@
 @(Html.Telerik().Grid<AjaxProjectProcess>(Model.OrderByDescending(o=>o.MonthPercent)).Name("AjaxProjectProcess")
     .Columns(columns =>
     {
-        columns.Bound(p => p.ProjectUnitName).Width(120).Title("项目名").HtmlAttributes(new { style = "text-align:left" });
+        columns.Bound(p => p.ProjectUnitName).Width(220).Title("项目名").HtmlAttributes(new { style = "text-align:left" });
         columns.Bound(p => p.ProjectUnitCode).Width(85).Title("项目编号").HtmlAttributes(new { style = "text-align:left" });
         columns.Bound(p => p.CurrentSales).Title("人数").Width(35).HtmlAttributes(new { style = "text-align:right" });
         columns.Bound(p => p.LeftedDay).Title("剩余天数").Width(60).HtmlAttributes(new { style = "text-align:right" });
@@ -25,10 +25,8 @@
         columns.Bound(p => p.CurrentMonthCheckIn).Title("本月入账").HtmlAttributes(new { style = "text-align:right" }).Format("{0:C0}").HtmlAttributes(new { style = "text-align:right" }).Format("{0:C0}").Aggregate(aggregates => aggregates.Sum()).FooterTemplate(@<text>本月入账总和: @item.Sum.Format("{0:c0}")</text>); ;
         columns.Bound(p => p.CurrentMonthCheckInTarget).Title("本月目标").HtmlAttributes(new { style = "text-align:right" }).HtmlAttributes(new { style = "text-align:right" }).Format("{0:C0}").Aggregate(aggregates => aggregates.Sum()).FooterTemplate(@<text>本月目标总和: @item.Sum.Format("{0:c0}")</text>); ;
         columns.Bound(p => p.MonthPercent).Title("月百分比").Width(60).HtmlAttributes(new { style = "text-align:right" }).Format("{0:P0}");
-        columns.Bound(p => p.CurrentWeekCheckIn).Title("本周入账").HtmlAttributes(new { style = "text-align:right" }).Format("{0:C0}");
-        columns.Bound(p => p.CurrentWeekTarget).Title("本周目标").HtmlAttributes(new { style = "text-align:right" }).Format("{0:C0}");
-        columns.Bound(p => p.WeekPercent).Title("周百分比").Width(60).HtmlAttributes(new { style = "text-align:right" }).Format("{0:P0}");
-        columns.Bound(p => p.CurrentDayDealIn).Title("本日出单").HtmlAttributes(new { style = "text-align:right" }).Format("{0:C0}");
+        //columns.Bound(p => p.WeekPercent).Title("周百分比").Width(60).HtmlAttributes(new { style = "text-align:right" }).Format("{0:P0}");
+        //columns.Bound(p => p.CurrentDayDealIn).Title("本日出单").HtmlAttributes(new { style = "text-align:right" }).Format("{0:C0}");
     })
     .CellAction(cell =>
     {

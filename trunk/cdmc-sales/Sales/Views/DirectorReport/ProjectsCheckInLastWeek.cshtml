@@ -5,17 +5,22 @@
 @using Model
 @model List<ProjectWeekPerformance>
 <fieldset>
-<legend>项目上周入账统计</legend>
+<legend>在运行项目上周统计</legend>
 @(
-    Html.Telerik().Grid<ProjectWeekPerformance>(Model).Name("ProjectWeekPerformance")
+    Html.Telerik().Grid<ProjectWeekPerformance>(Model.OrderByDescending(o=>o.TotalCheckIn)).Name("ProjectWeekPerformance")
         .Columns(columns =>
         {
-            columns.Bound(p => p.ProjectName).Width(120).Title("项目名").HtmlAttributes(new { style = "text-align:left" });
-            columns.Bound(p => p.StartDate).Width(85).Title("开始日期").HtmlAttributes(new { style = "text-align:left" });
-            columns.Bound(p => p.EndDate).Width(120).Title("结束日期").HtmlAttributes(new { style = "text-align:left" });
-            columns.Bound(p => p.Income).Width(120).Title("本周入账").HtmlAttributes(new { style = "text-align:right" }).Format("{0:C0}");
-            columns.Bound(p => p.Target).Width(85).Title("本周目标").HtmlAttributes(new { style = "text-align:right" }).Format("{0:C0}");
-            columns.Bound(p => p.percent).Width(85).Title("周百分比").Width(60).HtmlAttributes(new { style = "text-align:right" }).Format("{0:P0}");
+            columns.Bound(p => p.ProjectName).Width(220).Title("项目名").HtmlAttributes(new { style = "text-align:left" });
+            columns.Bound(p => p.Manager).Title("负责人").HtmlAttributes(new { style = "text-align:left" });
+            columns.Bound(p => p.Leader).Title("销售经理").HtmlAttributes(new { style = "text-align:left" });
+            columns.Bound(p => p.TotalCheckIn).Width(120).Title("总入账").HtmlAttributes(new { style = "text-align:right" }).Aggregate(a => a.Sum()).FooterTemplate(@<text>项目总入账额: @item.Sum.Format("{0:c0}")</text>).Format("{0:C0}");
+            columns.Bound(p => p.TotalTarget).Width(120).Title("总目标").HtmlAttributes(new { style = "text-align:right" }).Aggregate(a => a.Sum()).FooterTemplate(@<text>项目总目标: @item.Sum.Format("{0:c0}")</text>).Format("{0:C0}");
+            columns.Bound(p => p.TotalPercent).Title("总目标完成比").HtmlAttributes(new { style = "text-align:right" }).Format("{0:P0}");
+            columns.Bound(p => p.LeftDay).Title("所剩天数").HtmlAttributes(new { style = "text-align:right" });
+            columns.Bound(p => p.Target).Title("上周入账目标").HtmlAttributes(new { style = "text-align:left" });
+            columns.Bound(p => p.Income).Title("上周入账").HtmlAttributes(new { style = "text-align:right" }).Format("{0:C0}").Aggregate(a => a.Sum()).FooterTemplate(@<text>上周入账总额: @item.Sum.Format("{0:c0}")</text>).Format("{0:C0}"); ;
+            columns.Bound(p => p.percent).Title("周百分比").Width(60).HtmlAttributes(new { style = "text-align:right" }).Format("{0:P0}");
+            columns.Bound(p => p.Payment).Title("上周出单").HtmlAttributes(new { style = "text-align:right" }).Format("{0:C0}").Aggregate(a => a.Sum()).FooterTemplate(@<text>上周出单账额: @item.Sum.Format("{0:c0}")</text>).Format("{0:C0}"); ;
         }
         )
         .Scrollable(s => s.Height(550))

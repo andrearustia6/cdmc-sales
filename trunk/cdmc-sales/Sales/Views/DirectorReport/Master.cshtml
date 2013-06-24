@@ -12,9 +12,13 @@
          @(Html.Telerik().Menu().Name("Menudirector").HtmlAttributes(new { style = "width:150px;" })
          .Orientation(MenuOrientation.Vertical).Items(menu =>
          {
+             menu.Add().Text("上周进度分析表").Items(item =>
+            {
+                item.Add().Text("本月项目进度统计表").Url("~/DirectorReport/ProjectsProgress");
+                item.Add().Text("上周项目进度统计表").Url("~/DirectorReport/ProjectsCheckInLastWeek");
+            });
              menu.Add().Text("月出单入账").Items(item =>
              {
-                 item.Add().Text("项目进度总表").Url("~/DirectorReport/ProjectsProgress");
                  item.Add().Text("项目入账/目标总表").Url("~/DirectorReport/ProjectsCheckInByMonth");
                  item.Add().Text("项目目标完成趋势图").Url("~/DirectorReport/ProjectsCheckInByMonthLines");
                  item.Add().Text("员工入账/目标总表").Url("~/DirectorReport/EmployeeCheckInByMonth");
