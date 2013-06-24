@@ -110,11 +110,16 @@
    
 }
 <script type="text/javascript">
+
+  
+
+
     function OnChange(e) {
         $("#hidenTd1").show();
         $("#hidenTd2").show();
         if (e.value == null) {
-            var firstDate = new Date(e.currentTarget.defaultValue);
+            var ds = e.currentTarget.defaultValue.replace(new RegExp(/(-)/g), ',');
+            var firstDate = new Date(ds);
         }
         else {
             var firstDate = e.value;
