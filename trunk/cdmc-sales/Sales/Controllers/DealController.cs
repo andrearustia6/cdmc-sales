@@ -154,10 +154,10 @@ namespace Sales.Controllers
         }
 
         [GridAction]
-        public ActionResult _SelectIndex(string filterId, int? projectId)
+        public ActionResult _SelectIndex(string filterId, int? projectId, string CompanyDealCodeLike, int? PaymentID, int? ParticipantsID)
         {
             List<AjaxViewDeal> deals;
-            deals = getData(filterId, projectId);
+            deals = getData(filterId, projectId, CompanyDealCodeLike, PaymentID, ParticipantsID);
             return View(new GridModel(deals));
         }
 
@@ -172,13 +172,15 @@ namespace Sales.Controllers
                 var item = CH.GetDataById<Deal>(id);
                 item.Income = newData.Income;
                 item.ActualPaymentDate = newData.ActualPaymentDate;
+                item.Abandoned = newData.Abandoned;
+                item.AbandonReason = newData.AbandonReason;
                 if (item.Income > 0 && item.ActualPaymentDate != null)
                 {
                     CH.Edit<Deal>(item);
                 }
                 else
                 {
-                    ModelState.AddModelError("Income","实际入账需大于零.");
+                    ModelState.AddModelError("Income", "实际入账需大于零.");
                 }
             }
             else
@@ -191,11 +193,56 @@ namespace Sales.Controllers
             return View(new GridModel(getData()));
         }
 
-        private List<AjaxViewDeal> getData(string filter="", int? projectId=null)
+        private List<AjaxViewDeal> getData(string filter = "", int? projectId = null, string CompanyDealCodeLike = "", int? PaymentID = null, int? ParticipantsID = null)
         {
+            var deals = CRM_Logical.GetDeals(false, projectId, null, filter);
+            if (!string.IsNullOrWhiteSpace(CompanyDealCodeLike))
+            {
+                deals = deals.Where(w => w.CompanyRelationship.Company.Name_EN.Contains(CompanyDealCodeLike.Trim()) || w.CompanyRelationship.Company.Name_CH.Contains(CompanyDealCodeLike.Trim()) || w.DealCode.Contains(CompanyDealCodeLike.Trim()));
+            }
+
+            if (PaymentID != null)
+            {
+                switch (PaymentID)
+                {
+                    case 1:
+                        deals = deals.Where(s => s.Payment > 0 && s.Payment <= 3000);
+                        break;
+                    case 2:
+                        deals = deals.Where(s => s.Payment > 3000 && s.Payment <= 5000);
+                        break;
+                    case 3:
+                        deals = deals.Where(s => s.Payment > 5000 && s.Payment <= 8000);
+                        break;
+                    case 4:
+                        deals = deals.Where(s => s.Payment > 8000 && s.Payment <= 10000);
+                        break;
+                    case 5:
+                        deals = deals.Where(s => s.Payment > 10000 && s.Payment <= 15000);
+                        break;
+                    case 6:
+                        deals = deals.Where(s => s.Payment > 15000);
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            if (ParticipantsID != null)
+            {
+                if (ParticipantsID == 1)
+                {
+                    deals = deals.Where(s => s.Participants.Any());
+                }
+                else
+                {
+                    deals = deals.Where(s => !s.Participants.Any());
+                }
+            }
+
             if (Employee.CurrentRole.Level == 4)//财务填写income
             {
-                var ds = from d in CRM_Logical.GetDeals(false, projectId, null, filter)
+                var ds = from d in deals
                          where d.IsConfirm == true
                          //where d.IsConfirm == true && (d.Income == 0 || d.ActualPaymentDate == null)
                          select new AjaxViewDeal
@@ -221,7 +268,8 @@ namespace Sales.Controllers
                              ProjectCode = d.Project.ProjectCode,
                              SignDate = d.SignDate,
                              TicketDescription = d.TicketDescription,
-                             IsConfirm = (d.IsConfirm == true ? "是" : "否")
+                             IsConfirm = (d.IsConfirm == true ? "是" : "否"),
+                             ModifiedDate = d.ModifiedDate,
                          };
                 return ds.OrderByDescending(o => o.SignDate).ToList();
             }
@@ -229,11 +277,11 @@ namespace Sales.Controllers
             {
                 var user = Employee.CurrentUserName.Trim();
                 var pids = new List<int>();
-                foreach (var c in CH.DB.Projects.Where(w=>w.IsActived))
+                foreach (var c in CH.DB.Projects.Where(w => w.IsActived))
                 {
                     if (!string.IsNullOrEmpty(c.Conference))
                     {
-                        var names = c.Conference.Trim().Split(new string[]{";","；"},  StringSplitOptions.RemoveEmptyEntries);
+                        var names = c.Conference.Trim().Split(new string[] { ";", "；" }, StringSplitOptions.RemoveEmptyEntries);
                         if (names.Contains(user))
                         {
                             pids.Add(c.ID);
@@ -241,7 +289,7 @@ namespace Sales.Controllers
                     }
                 }
 
-                var deals = CRM_Logical.GetDeals(false, projectId, null, filter).Where(w => pids.Any(a => a == w.ProjectID));
+                deals = deals.Where(w => pids.Any(a => a == w.ProjectID));
                 var ds = from d in deals
                          select new AjaxViewDeal
                          {
@@ -266,12 +314,13 @@ namespace Sales.Controllers
                              ProjectCode = d.Project.ProjectCode,
                              SignDate = d.SignDate,
                              TicketDescription = d.TicketDescription,
-                             IsConfirm = (d.IsConfirm == true ? "是" : "否")
+                             IsConfirm = (d.IsConfirm == true ? "是" : "否"),
+                             ModifiedDate = d.ModifiedDate,
                          };
                 return ds.OrderByDescending(o => o.SignDate).ToList();
             }
         }
-        
+
         [HttpPost]
         public ActionResult ConfirmTemp(Deal item, int? projectid)
         {
@@ -293,5 +342,180 @@ namespace Sales.Controllers
             return View(item);
         }
 
+        [GridAction]
+        public ActionResult _SelectAjaxParticipant(int? id)
+        {
+            List<AjaxParticipant> pList = new List<AjaxParticipant>();
+            if (id != null)
+            {
+                pList = (from s in CH.GetAllData<Participant>()
+                         where s.DealID == id
+                         select new AjaxParticipant
+                         {
+                             ID = s.ID,
+                             Name = s.Name,
+                             Title = s.Title,
+                             Gender = s.Gender,
+                             Mobile = s.Mobile,
+                             Contact = s.Contact,
+                             Email = s.Email,
+                             ParticipantTypeName = s.ParticipantType.Name,
+                             ParticipantTypeID = s.ParticipantTypeID,
+                             DealID = s.DealID,
+                             ProjectID = s.ProjectID
+                         }).ToList();
+            }
+            Session["pList"] = pList;
+            return View(new GridModel(pList));
+        }
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        [GridAction]
+        public ActionResult _UpdateAjaxParticipant([Bind(Prefix = "inserted")]IEnumerable<AjaxParticipant> insertedP,
+            [Bind(Prefix = "updated")]IEnumerable<AjaxParticipant> updatedP,
+            [Bind(Prefix = "deleted")]IEnumerable<AjaxParticipant> deletedP)
+        {
+            List<AjaxParticipant> pList = new List<AjaxParticipant>();
+            if (Session["pList"] != null)
+            {
+                pList = Session["pList"] as List<AjaxParticipant>;
+            }
+            if (ModelState.IsValid)
+            {
+                if (insertedP != null)
+                {
+                    foreach (var p in insertedP)
+                    {
+                        if (p.Name != "" && p.ParticipantTypeName != null)
+                        {
+                            var partType = CH.GetAllData<ParticipantType>().Where(pt => pt.Name == p.ParticipantTypeName).FirstOrDefault();
+
+                            pList.Add(p);
+
+                            Participant s = new Participant();
+                            s.Name = string.IsNullOrEmpty(p.Name) ? "" : p.Name.Trim();
+                            s.Title = string.IsNullOrEmpty(p.Title) ? "" : p.Title.Trim();
+                            s.Gender = string.IsNullOrEmpty(p.Gender) ? "" : p.Gender.Trim();
+                            s.Mobile = string.IsNullOrEmpty(p.Mobile) ? "" : p.Mobile.Trim();
+                            s.Contact = string.IsNullOrEmpty(p.Contact) ? "" : p.Contact.Trim();
+                            s.Email = string.IsNullOrEmpty(p.Email) ? "" : p.Email.Trim();
+                            s.ParticipantTypeID = partType.ID;
+
+                            s.ProjectID = Convert.ToInt32(Session["ProjectID"].ToString());
+                            s.DealID = Convert.ToInt32(Session["DealID"].ToString());
+                           
+
+                            //s.ProjectID = p.ProjectID;
+                            //s.DealID = p.DealID;
+                            if (s.ID == 0)
+                            {
+                                CH.Create<Participant>(s);
+                            }
+                        }
+                    }
+                }
+
+                if (deletedP != null)
+                {
+                    foreach (var p in deletedP)
+                    {
+                        int index = pList.FindIndex(ap => ap.Name == p.Name && ap.ParticipantTypeName == p.ParticipantTypeName);
+                        if (index != -1)
+                        {
+                            pList.RemoveAt(index);
+                            CH.Delete<Participant>(p.ID);
+                        }
+                    }
+                }
+
+                if (updatedP != null)
+                {
+                    foreach (var p in updatedP)
+                    {
+                        var partType = CH.GetAllData<ParticipantType>().Where(pt => pt.Name == p.ParticipantTypeName).FirstOrDefault();
+                        AjaxParticipant a = pList.Find(s => s.ID == p.ID);
+                        a.Name = string.IsNullOrEmpty(p.Name) ? "" : p.Name.Trim();
+                        a.Title = string.IsNullOrEmpty(p.Title) ? "" : p.Title.Trim();
+                        a.Gender = string.IsNullOrEmpty(p.Gender) ? "" : p.Gender.Trim();
+                        a.Mobile = string.IsNullOrEmpty(p.Mobile) ? "" : p.Mobile.Trim();
+                        a.Contact = string.IsNullOrEmpty(p.Contact) ? "" : p.Contact.Trim();
+                        a.Email = string.IsNullOrEmpty(p.Email) ? "" : p.Email.Trim();
+                        a.ParticipantTypeName = p.ParticipantTypeName;
+                        a.ParticipantTypeID = p.ParticipantTypeID;
+                        a.ProjectID = p.ProjectID;
+                        a.DealID = p.DealID;
+
+                        Participant sp = CH.GetDataById<Participant>(p.ID);
+                        sp.Name = string.IsNullOrEmpty(p.Name) ? "" : p.Name.Trim();
+                        sp.Title = string.IsNullOrEmpty(p.Title) ? "" : p.Title.Trim();
+                        sp.Gender = string.IsNullOrEmpty(p.Gender) ? "" : p.Gender.Trim();
+                        sp.Mobile = string.IsNullOrEmpty(p.Mobile) ? "" : p.Mobile.Trim();
+                        sp.Contact = string.IsNullOrEmpty(p.Contact) ? "" : p.Contact.Trim();
+                        sp.Email = string.IsNullOrEmpty(p.Email) ? "" : p.Email.Trim();
+                        sp.ParticipantTypeID = partType.ID;
+                        sp.ProjectID = p.ProjectID;
+                        sp.DealID = p.DealID;
+                        CH.Edit<Participant>(sp);
+                    }
+                }
+            }
+            return View(new GridModel(pList));
+        }
+
+
+        public ActionResult PostID(int? id)
+        {
+            Deal d = CH.GetDataById<Deal>(id);
+            Session["DealID"] = d.ID;
+            Session["ProjectID"] = d.ProjectID;
+            return PartialView("Confirm", new AjaxViewDeal()
+            {
+                CompanyNameEN = d.CompanyRelationship.Company.Name_EN,
+                CompanyNameCH = d.CompanyRelationship.Company.Name_CH,
+                DealCode = d.DealCode,
+                Abandoned = d.Abandoned,
+                AbandonReason = d.AbandonReason,
+                ActualPaymentDate = d.ActualPaymentDate,
+                Committer = d.Committer,
+                CommitterContect = d.Committer,
+                CommitterEmail = d.CommitterEmail,
+                ExpectedPaymentDate = d.ExpectedPaymentDate,
+                ID = d.ID,
+                Income = d.Income,
+                IsClosed = d.IsClosed,
+                PackageNameCH = d.Package.Name_CH,
+                PackageNameEN = d.Package.Name_EN,
+                Payment = d.Payment,
+                PaymentDetail = d.PaymentDetail,
+                Sales = d.Sales,
+                ProjectCode = d.Project.ProjectCode,
+                SignDate = d.SignDate,
+                TicketDescription = d.TicketDescription,
+                IsConfirm = (d.IsConfirm == true ? "是" : "否"),
+                ModifiedDate = d.ModifiedDate,
+            });
+        }
+
+        [HttpPost]
+        public ActionResult SaveAjaxConfirm(AjaxViewDeal newData)
+        {
+            if (Employee.CurrentRole.Level == 4)
+            {
+                var item = CH.GetDataById<Deal>(newData.ID);
+                item.Income = newData.Income;
+                item.ActualPaymentDate = newData.ActualPaymentDate;
+                item.Abandoned = newData.Abandoned;
+                item.AbandonReason = newData.AbandonReason;
+                CH.Edit<Deal>(item);
+            }
+            else
+            {
+                var item = CH.GetDataById<Deal>(newData.ID);
+                item.IsConfirm = true;
+                item.Confirmor = Employee.CurrentUserName;
+                CH.Edit<Deal>(item);
+            }
+            return Json(new { dealName = newData.DealCode });
+        }
     }
 }

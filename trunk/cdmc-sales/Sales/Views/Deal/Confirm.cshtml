@@ -1,52 +1,274 @@
-﻿@model Entity.Deal
-@{
-    ViewBag.Title = "出单确认";
-}
+﻿@using Utl
 @using Entity
-@using Utl
-@using BLL
-@{
-    List<SelectListItem> convert = new List<SelectListItem>() { new SelectListItem() { Text = "是", Value = "true" }, new SelectListItem() { Text = "否", Value = "false" } };
-}
-<fieldset>
-    <legend>@SR.Form</legend>
-    <div class="display-field">
-        @Html.HiddenFor(model => model.DealCode)
-        @Html.HiddenFor(model => model.PackageID)
-        @Html.HiddenFor(model => model.CompanyRelationshipID)
-        @Html.HiddenFor(model => model.ExpectedPaymentDate)
-        @Html.HiddenFor(model => model.SignDate)
-        @Html.HiddenFor(model => model.Payment)
-        @Html.HiddenFor(model => model.IsClosed)
-        @Html.HiddenFor(model => model.Committer)
-        @Html.HiddenFor(model => model.CommitterContect)
-        @Html.HiddenFor(model => model.CommitterEmail)
-        @Html.HiddenFor(model => model.ActualPaymentDate)
-        @Html.HiddenFor(model => model.Sales)
-        @Html.HiddenFor(model => model.PaymentDetail)
-        @Html.HiddenFor(model => model.TicketDescription)
-        @Html.HiddenFor(model => model.Abandoned)
-        @Html.HiddenFor(model => model.AbandonReason)
-        @Html.Hidden("ProjectID", (int)ViewBag.ProjectID)
-    </div>
-    <div class="editor-label">
-        @Html.LabelFor(model => model.Income)
-    </div>
-    <div class="editor-field">
-        @Html.Telerik().CurrencyTextBoxFor(model => model.Income)
-        @Html.ValidationMessageFor(model => model.Income)
-    </div>
-    <div class="editor-label">
-        @Html.LabelFor(model => model.IsConfirm, "是否确认")
-    </div>
-    <div class="editor-field">
-        @Html.DropDownListFor(m => m.IsConfirm, convert, "请选择")
-        @Html.ValidationMessageFor(model => model.IsConfirm)
-    </div>
-</fieldset>
-@{
-    if (Model != null)
+@model Model.AjaxViewDeal
+@using (Html.BeginForm())
+{
+    @Html.HiddenFor(model => model.ID)
+    if (Employee.CurrentRole.Level == 4)
     {
-        Html.Partial("Participants", Model.Participants == null ? new List<Participant>() : Model.Participants);
+    <fieldset>
+        <legend>出单信息列表</legend>
+        <table style="width: 100%">
+            <tr>
+                <td style="width: 10%;">
+                    @Html.LabelFor(model => model.CompanyName)
+                </td>
+                <td style="width: 15%;">
+                    @Html.DisplayFor(model => model.CompanyName)
+                </td>
+                <td style="width: 10%;">
+                    @Html.LabelFor(model => model.ProjectCode)
+                </td>
+                <td style="width: 15%;">
+                    @Html.DisplayFor(model => model.ProjectCode)
+                </td>
+                <td style="width: 10%;">
+                    @Html.LabelFor(model => model.DealCode)
+                </td>
+                <td style="width: 15%;">
+                    @Html.DisplayFor(model => model.DealCode)
+                </td>
+                <td style="width: 10%;">
+                    @Html.LabelFor(model => model.IsConfirm)
+                </td>
+                <td style="width: 15%;">
+                    @Html.DisplayFor(model => model.IsConfirm)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.Committer)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.Committer)
+                </td>
+                <td>
+                    @Html.LabelFor(model => model.CommitterEmail)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.CommitterEmail)
+                </td>
+                <td>
+                    @Html.LabelFor(model => model.ExpectedPaymentDate)
+                </td>
+                <td>
+                    @Html.Telerik().DatePickerFor(model => model.ExpectedPaymentDate).Enable(false).InputHtmlAttributes(new { style = "width:100px" })
+                </td>
+                <td>
+                    @Html.LabelFor(model => model.Payment)
+                </td>
+                <td>
+                    @Html.Telerik().CurrencyTextBoxFor(model => model.Payment).Enable(false).InputHtmlAttributes(new { style = "width:100px" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.CommitterContect)
+                </td>
+                <td colspan="3">
+                    @Html.DisplayFor(model => model.CommitterContect)
+                </td>
+                <td>
+                    @Html.LabelFor(model => model.PackageName)
+                </td>
+                <td colspan="3">
+                    @Html.DisplayFor(model => model.PackageName)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.TicketDescription)
+                </td>
+                <td colspan="3">
+                    @Html.DisplayFor(model => model.TicketDescription)
+                </td>
+                <td>
+                    @Html.LabelFor(model => model.PaymentDetail)
+                </td>
+                <td colspan="3">
+                    @Html.DisplayFor(model => model.PaymentDetail)
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+    <fieldset>
+        <legend>参会人信息列表</legend>
+        @(Html.Telerik().Grid<AjaxParticipant>().Name("pList").BindTo(ViewData["pList"] as IEnumerable<AjaxParticipant>)
+            .DataKeys(keys =>
+            {
+                keys.Add(s => s.ID);
+            })
+            .Columns(c =>
+            {
+                c.Bound(p => p.Name).Title("客户名称").Width(100);
+                c.Bound(p => p.Title).Title("客户职位").Width(100);
+                c.Bound(p => p.Gender).Title("客户性别").Width(100);
+                c.Bound(p => p.Mobile).Title("移动电话").Width(100);
+                c.Bound(p => p.Contact).Title("客户直线").Width(100);
+                c.Bound(p => p.Email).Title("电子邮箱").Width(120);
+                c.Bound(p => p.ParticipantTypeName).Title("参会类型").Width(100);
+            })
+            .DataBinding(dataBinding =>
+            {
+                dataBinding.Ajax()
+                    .Select("_SelectAjaxParticipant", "Deal", new { id = Model.ID });
+            }).Scrollable(scrolling => scrolling.Height(90)))
+    </fieldset>
+    <fieldset>
+        <legend>财务确认付款信息和坏账信息</legend>
+        <table style="width: 100%">
+            <tr>
+                <td style="width: 10%">
+                    @Html.LabelFor(model => model.ActualPaymentDate)
+                </td>
+                <td style="width: 23%">
+                    @Html.Telerik().DatePickerFor(model => model.ActualPaymentDate).Value(DateTime.Now)
+                    @Html.ValidationMessageFor(model => model.ActualPaymentDate)
+                </td>
+                <td style="width: 10%">
+                    @Html.LabelFor(model => model.Income)
+                </td>
+                <td style="width: 23%">
+                    @Html.Telerik().CurrencyTextBoxFor(model => model.Income)
+                    @Html.ValidationMessageFor(model => model.Income)
+                </td>
+                <td style="width: 10%">
+                    @Html.LabelFor(model => model.Abandoned)
+                </td>
+                <td style="width: 23%">
+                    @Html.EditorFor(model => model.Abandoned)
+                    @Html.ValidationMessageFor(model => model.Abandoned)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.AbandonReason)
+                </td>
+                <td colspan="5">
+                    @Html.TextAreaFor(model => model.AbandonReason, new { style = "width:600px" })
+                    @Html.ValidationMessageFor(model => model.AbandonReason)
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+    }
+    else
+    {
+    <fieldset>
+        <legend>出单信息列表</legend>
+        <table style="width: 100%">
+            <tr>
+                <td style="width: 10%;">
+                    @Html.LabelFor(model => model.CompanyName)
+                </td>
+                <td style="width: 15%;">
+                    @Html.DisplayFor(model => model.CompanyName)
+                </td>
+                <td style="width: 10%;">
+                    @Html.LabelFor(model => model.ProjectCode)
+                </td>
+                <td style="width: 15%;">
+                    @Html.DisplayFor(model => model.ProjectCode)
+                </td>
+                <td style="width: 10%;">
+                    @Html.LabelFor(model => model.DealCode)
+                </td>
+                <td style="width: 15%;">
+                    @Html.DisplayFor(model => model.DealCode)
+                </td>
+                <td style="width: 10%;">
+                    @Html.LabelFor(model => model.IsConfirm)
+                </td>
+                <td style="width: 15%;">
+                    @Html.DisplayFor(model => model.IsConfirm)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.Committer)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.Committer)
+                </td>
+                <td>
+                    @Html.LabelFor(model => model.CommitterEmail)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.CommitterEmail)
+                </td>
+                <td>
+                    @Html.LabelFor(model => model.ExpectedPaymentDate)
+                </td>
+                <td>
+                    @Html.Telerik().DatePickerFor(model => model.ExpectedPaymentDate).Enable(false).InputHtmlAttributes(new { style = "width:100px" })
+                </td>
+                <td>
+                    @Html.LabelFor(model => model.Payment)
+                </td>
+                <td>
+                    @Html.Telerik().CurrencyTextBoxFor(model => model.Payment).Enable(false).InputHtmlAttributes(new { style = "width:100px" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.CommitterContect)
+                </td>
+                <td colspan="3">
+                    @Html.DisplayFor(model => model.CommitterContect)
+                </td>
+                <td>
+                    @Html.LabelFor(model => model.PackageName)
+                </td>
+                <td colspan="3">
+                    @Html.DisplayFor(model => model.PackageName)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.TicketDescription)
+                </td>
+                <td colspan="3">
+                    @Html.DisplayFor(model => model.TicketDescription)
+                </td>
+                <td>
+                    @Html.LabelFor(model => model.PaymentDetail)
+                </td>
+                <td colspan="3">
+                    @Html.DisplayFor(model => model.PaymentDetail)
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+    <fieldset>
+        <legend>参会人信息列表</legend>
+        @(Html.Telerik().Grid<AjaxParticipant>().Name("pList").BindTo(ViewData["pList"] as IEnumerable<AjaxParticipant>)
+            .DataKeys(keys =>
+            {
+                keys.Add(s => s.ID);
+            })
+            .ToolBar(commands =>
+            {
+                commands.Insert();
+                commands.SubmitChanges();
+            })
+            .Columns(c =>
+            {
+                c.Bound(p => p.Name).Title("客户名称").Width(100);
+                c.Bound(p => p.Title).Title("客户职位").Width(100);
+                c.Bound(p => p.Gender).Title("客户性别").Width(80);
+                c.Bound(p => p.Mobile).Title("移动电话").Width(100);
+                c.Bound(p => p.Contact).Title("客户直线").Width(100);
+                c.Bound(p => p.Email).Title("电子邮箱").Width(120);
+                c.Bound(p => p.ParticipantTypeName).Title("参会类型").Width(100);
+                c.Command(commands => commands.Delete()).Title("删除").Width(80);
+            })
+            .DataBinding(dataBinding =>
+            {
+                dataBinding.Ajax()
+                    .Select("_SelectAjaxParticipant", "Deal", new { id = Model.ID })
+                    .Update("_UpdateAjaxParticipant", "Deal");
+            })
+            .Editable(editing => editing.Mode(GridEditMode.InCell).DefaultDataItem(new AjaxParticipant { })).Scrollable(scrolling => scrolling.Height(90)))
+    </fieldset>
     }
 }
