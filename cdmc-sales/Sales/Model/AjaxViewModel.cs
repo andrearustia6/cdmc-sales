@@ -142,7 +142,7 @@ namespace Model
         [Display(Name = "客户签单人")]
         public string Committer { get; set; }
 
-        [Display(Name = "签单人联系方式")]
+        [Display(Name = "联系方式")]
         public string CommitterContect { get; set; }
 
         [Display(Name = "签单人邮箱")]
@@ -157,7 +157,7 @@ namespace Model
         public string PackageNameCH { get; set; }
         public string PackageNameEN { get; set; }
 
-        [Display(Name = "坏账")]
+        [Display(Name = "是否坏账")]
         public bool Abandoned { get; set; }
 
         [Display(Name = "坏账原因")]
@@ -190,6 +190,9 @@ namespace Model
 
         [Display(Name = "是否确认")]
         public string IsConfirm { get; set; }
+
+        [Display(Name = "最新更改时间")]
+        public DateTime? ModifiedDate { get; set; }
     }
 
     public class AjaxViewPercentage

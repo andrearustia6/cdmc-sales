@@ -13,7 +13,7 @@
     if (Utl.Employee.CurrentRole.Level == 4)
     {
     <text>
-    @Html.Partial("contenttitle", "出单到账确认")
+    @Html.Partial("contenttitle", "财务到账确认")
     </text>
     }
     else
@@ -24,12 +24,27 @@
 <div id="filter-container" style="height: 30px;">
     <span>
         <label style="margin: 7px; float: left;">
-            筛选:</label>
-        @Html.DropDownList("Filters", Utl.SelectHelper.FilterSelectList(), new { style = "margin:5px;float: left;", onchange = "filterChange();" })
+            出单日期:</label>
+        @Html.DropDownList("Filters", Utl.SelectHelper.FilterSelectList(), new { style = "margin:5px;float: left;" })
     </span><span>
         <label style="margin: 7px; float: left;">
             项目:</label>
-        @Html.DropDownList("Projects", Utl.SelectHelper.ProjectSelectList(Utl.Employee.CurrentUserName, (int?)ViewBag.selectVal), new { style = "margin:5px;float: left;", onchange = "filterChange();" })
+        @Html.DropDownList("Projects", Utl.SelectHelper.ProjectSelectList(Utl.Employee.CurrentUserName, (int?)ViewBag.selectVal), "全部项目", new { style = "margin:5px;float: left;" })
+    </span><span>
+        <label style="margin: 7px; float: left;">
+            公司名/出单号:</label>
+        @Html.TextBox("CompanyDealCodes", string.Empty, new { style = "margin:5px;float: left; width: 80px;" })
+    </span><span>
+        <label style="margin: 7px; float: left;">
+            应付款金额:</label>
+        @Html.DropDownList("Payments", Utl.SelectHelper.DealPaymentSelectList(), new { style = "margin:5px;float: left;" })
+    </span><span>
+        <label style="margin: 7px; float: left;">
+            是否有参会人:</label>
+        @Html.DropDownList("Participants", Utl.SelectHelper.DealParticipantSelectList(), new { style = "margin:5px;float: left;" })
+    </span><span>
+        <button type="submit" onclick="filterChange()" style="margin: 2px 2px 2px 15px; float: left;">
+            筛选</button>
     </span>
 </div>
 @(Html.Telerik().Grid<Model.AjaxViewDeal>().Name("Grid")
@@ -43,10 +58,11 @@
     c.Bound(item => item.Committer);//客户签单人
     c.Bound(item => item.Sales);//权益描述
     c.Bound(item => item.SignDate).Format("{0:d}");//签约日期
-    c.Bound(item => item.ExpectedPaymentDate).Format("{0:d}");//合约付款日期
-    c.Bound(item => item.Payment).Format("{0:c}");//应付款
+    c.Bound(item => item.ExpectedPaymentDate).Format("{0:d}").ClientFooterTemplate("应付款总数:");//合约付款日期
+    c.Bound(item => item.Payment).Format("{0:c}").Aggregate(a => a.Sum()).ClientFooterTemplate("<#= $.telerik.formatString('{0:c}', Sum) #>");//应付款
     c.Bound(item => item.ActualPaymentDate).Format("{0:d}");//实际付款日期
     c.Bound(item => item.Income).Format("{0:c}");//实际入账
+    c.Bound(item => item.ModifiedDate);
     //c.Bound(item => item.IsClosed).Width(70);
     //c.Bound(item => item.CommitterContect).Width(100);
     //c.Bound(item => item.Abandoned).Width(70);
@@ -54,23 +70,20 @@
 
     if (Utl.Employee.CurrentRole.Level == 4)//财务
     {
-        c.Command(commands =>
-        {
-            commands.Edit().ButtonType(GridButtonType.Image);
-
-        }).Title("出单到账操作");
+        c.Bound(item => item.ID).Title("出单到账操作").ClientTemplate("<span><button name='confirm' onclick='onConfirm(<#= ID #>)'>确认</button></span>");
     }
     else//会务
     {
-        c.Command(commands =>
-        {
-            commands.Edit().ButtonType(GridButtonType.Image);
-        }).Title("确认");
+        c.Bound(item => item.ID).Title("出单确认操作").ClientTemplate("<span><button name='confirm' onclick='onConfirm(<#= ID #>)'>确认</button></span>");
+        //c.Command(commands =>
+        //{
+        //    commands.Edit().ButtonType(GridButtonType.Image);
+        //}).Title("确认");
     }
     c.Bound(item => item.IsConfirm).Hidden(true);
 
 })
-    .ClientEvents(events => events.OnDataBinding("dataBinding").OnEdit("onEdit").OnRowDataBound("onRowDataBound").OnComplete("onComplete"))
+    .ClientEvents(events => events.OnDataBinding("dataBinding").OnRowDataBound("onRowDataBound").OnComplete("onComplete"))
 .DataBinding(dataBinding =>
 {
     dataBinding.Ajax()
@@ -82,6 +95,37 @@
 .Pageable(p => p.Style(GridPagerStyles.Status).PageSize(50)
 .PageOnScroll(true)).Scrollable(s => s.Height(350)).Sortable().Filterable().Groupable()
 )
+@{if (Utl.Employee.CurrentRole.Level == 4)
+  {
+    @(Html.Telerik().Window().Title("财务出单到账")
+        .Name("confirmDeal")
+    .Content(@<text><div class="dialogue-confirmDeal">
+        <div class="confirmDeal-wrapper">
+        </div>
+        <div class="dialogue-buttons" style="float: right;">
+            <input type="button" class="btn-queding" onclick="OkConfirm()" />
+            <input type="button" class="btn-quxiao" onclick="CancelConfirm()" />
+        </div>
+    </div></text>)
+    .Width(1000).Height(550).Draggable(true).Modal(true).Visible(false)
+)
+  }
+  else
+  {
+    @(Html.Telerik().Window().Title("会务出单确认")
+        .Name("confirmDeal")
+    .Content(@<text><div class="dialogue-quickdeal">
+        <div class="confirmDeal-wrapper">
+        </div>
+        <div class="dialogue-buttons" style="float: right;">
+            <input type="button" class="btn-queding" onclick="OkConfirm()" />
+            <input type="button" class="btn-quxiao" onclick="CancelConfirm()" />
+        </div>
+    </div></text>)
+    .Width(1000).Height(420).Draggable(true).Modal(true).Visible(false)
+)
+  }
+}
 <script type="text/javascript">
     function onComplete(e) {
         if (e.name == "update") {
@@ -94,23 +138,13 @@
     function dataBinding(e) {
         var filter = $("#Filters").val();
         var project  = $("#Projects").val();
-        e.data = $.extend(e.data, { filterId: filter, projectId: project });
+        var CompanyDealCode= $("#CompanyDealCodes").val();
+      
+        var Payment = $("#Payments").val();
+        var Participant = $("#Participants").val();
+        e.data = $.extend(e.data, { filterId: filter, projectId: project, CompanyDealCodeLike: CompanyDealCode,  PaymentID: Payment, ParticipantsID: Participant });
     }
 
-    function onEdit(e) {
-        var title ='@{
-            if (Utl.Employee.CurrentRole.Level == 4)
-            { <text>请您填写入账额</text> }
-            else
-            { <text>请您确认</text> }
-        }';
-        $(e.form).closest(".t-window-content").width(650).height(550);
-        var popup = $("#" + e.currentTarget.id + "PopUp");
-        popup.find(".t-window-title").html(title);
-        var popupDataWin = popup.data("tWindow");
-        var l = ($(window).width() / 2 - $(popup).width() / 2);
-        popup.css({ "left": l + "px", "margin-left": "0", "width": $(popup).width(), "height": $(popup).height()});
-    }
     function onRowDataBound(e) {
         @{
             if (Utl.Employee.CurrentRole.Level == 4)
@@ -119,12 +153,33 @@
             {
                 <text>
                 if ((e.dataItem.IsConfirm == "是")) {
-                    $(e.row).find('a.t-grid-edit').remove(); //remove Edit button
+                    $(e.row).find("button[name='confirm']").remove(); //remove Edit button
                 }
                 </text>
             }
         }
     }
 
+    function onConfirm(dealID) {
+        $.post('PostID', { id: dealID }, function (result) {
+            $('.confirmDeal-wrapper').html(result);
+            var window = $('#confirmDeal').data('tWindow');
+            window.center().open();
+        });
+    }
 
+    function CancelConfirm() {
+        var window = $('#confirmDeal').data('tWindow');
+        window.close();
+    }
+
+    function OkConfirm() {
+        if ($('.confirmDeal-wrapper form').valid()) {
+            var query = $('.confirmDeal-wrapper form').serializeArray();
+            $.post('SaveAjaxConfirm', query, function (result) {
+                $('#confirmDeal').data('tWindow').close();
+                $("#Grid").data("tGrid").rebind();
+            });
+        }
+    }
 </script>
