@@ -88,11 +88,11 @@ namespace Utl
         {
             List<SelectListItem> selectList = new List<SelectListItem>();
             selectList.Add(new SelectListItem() { Text = "请选择", Value = "" });
-            selectList.Add(new SelectListItem() { Text = "所有出单", Value = "0" });
-            selectList.Add(new SelectListItem() { Text = "24小时内出单", Value = "1" });
-            selectList.Add(new SelectListItem() { Text = "一周内出单", Value = "7" });
-            selectList.Add(new SelectListItem() { Text = "两周内出单", Value = "14" });
-            selectList.Add(new SelectListItem() { Text = "一月内出单", Value = "30" });
+            //selectList.Add(new SelectListItem() { Text = "所有出单", Value = "0" });
+            //selectList.Add(new SelectListItem() { Text = "24小时内出单", Value = "1" });
+            //selectList.Add(new SelectListItem() { Text = "一周内出单", Value = "7" });
+            //selectList.Add(new SelectListItem() { Text = "两周内出单", Value = "14" });
+            //selectList.Add(new SelectListItem() { Text = "一月内出单", Value = "30" });
             if (Employee.CurrentRole.Level != 4)
             {
                 selectList.Add(new SelectListItem() { Text = "未确认出单", Value = "2" });
@@ -375,6 +375,29 @@ namespace Utl
                 }
                 selectList.Add(selectListItem);
             }
+            return selectList;
+        }
+
+        public static IEnumerable<SelectListItem> DealPaymentSelectList()
+        {
+            List<SelectListItem> selectList = new List<SelectListItem>();
+            selectList.Add(new SelectListItem() { Text = "请选择", Value = "" });
+            selectList.Add(new SelectListItem() { Text = "0~3000", Value = "1" });
+            selectList.Add(new SelectListItem() { Text = "3000~5000", Value = "2" });
+            selectList.Add(new SelectListItem() { Text = "5000~8000", Value = "3" });
+            selectList.Add(new SelectListItem() { Text = "8000~10000", Value = "4" });
+            selectList.Add(new SelectListItem() { Text = "10000~15000", Value = "5" });
+            selectList.Add(new SelectListItem() { Text = "15000以上", Value = "6" });
+            return selectList;
+        }
+
+        public static IEnumerable<SelectListItem> DealParticipantSelectList()
+        {
+            List<SelectListItem> selectList = new List<SelectListItem>();
+            selectList.Add(new SelectListItem() { Text = "请选择", Value = "" });
+            selectList.Add(new SelectListItem() { Text = "无", Value = "0" });
+            selectList.Add(new SelectListItem() { Text = "有", Value = "1" });
+
             return selectList;
         }
 
