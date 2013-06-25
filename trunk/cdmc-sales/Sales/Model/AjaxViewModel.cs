@@ -148,7 +148,7 @@ namespace Model
         [Display(Name = "签单人邮箱")]
         public string CommitterEmail { get; set; }
 
-        [Display(Name = "权益描述")]
+        [Display(Name = "会务须知权益描述")]
         public string TicketDescription { get; set; }
 
         [Display(Name = "Package名称")]
@@ -185,7 +185,7 @@ namespace Model
         [Display(Name = "应付款")]
         public decimal Payment { get; set; }
 
-        [Display(Name = "出单描述")]
+        [Display(Name = "出单经验分享")]
         public string PaymentDetail { get; set; }
 
         [Display(Name = "是否确认")]
