@@ -511,6 +511,7 @@ namespace Entity
         [Display(Name = "销售Package"), Required]
         public int? PackageID { get; set; }
 
+
         [Display(Name = "坏账")]
         public bool Abandoned { get; set; }
 
@@ -539,6 +540,10 @@ namespace Entity
         [Range(1000.0, 100000000.0, ErrorMessage = "应付款必须大于等于1000")]
         public decimal Payment { get; set; }
 
+        public virtual CurrencyType Currencytype { get; set; }
+        [Display(Name = "币种"), Required]
+        public int CurrencyTypeID { get; set; }
+
         [Display(Name = "出单描述"), MaxLength(2000), Required]
         public string PaymentDetail { get; set; }
 
@@ -547,6 +552,11 @@ namespace Entity
 
         [Display(Name = "确认人")]
         public string Confirmor { get; set; }
+
+        [Display(Name = "票数")]
+        public int Poll { get; set; }
+
+
     }
 
     public class Progress : EntityBase

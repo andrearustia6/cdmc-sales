@@ -21,6 +21,7 @@
             <td>
                 @Html.DropDownListFor(m => m.PackageID, new SelectList(CH.GetAllData<Package>(), "ID", "Name"), "-请选择-", new { style = "width:300px;" })
                 @Html.ValidationMessageFor(model => model.PackageID)
+                <div id="Polldiv" style="display:none"> 票数:@Html.Telerik().IntegerTextBoxFor(model => model.Poll).HtmlAttributes("width:50px;")</div>
             </td>
         </tr>
         <tr>
@@ -55,7 +56,10 @@
             </td>
             <td>
                 @Html.Telerik().CurrencyTextBoxFor(model => model.Payment)
+                
+                 @Html.DropDownListFor(m => m.CurrencyTypeID, new SelectList(CH.GetAllData<CurrencyType>(), "ID", "Name", CH.GetAllData<CurrencyType>().FirstOrDefault().ID), "-请选择-", new { style = "width:80px;" })
                 @Html.ValidationMessageFor(model => model.Payment)
+                 @Html.ValidationMessageFor(model => model.CurrencyTypeID)
             </td>
         </tr>
         <tr>
@@ -131,6 +135,7 @@
                 c.Bound(p => p.Contact).Title("客户直线").Width(100);
                 c.Bound(p => p.Email).Title("电子邮箱").Width(120);
                 c.Bound(p => p.ParticipantTypeName).Title("参会类型").Width(100);
+                
                 c.Command(commands => commands.Delete()).Title("删除").Width(100);
             })
             .DataBinding(dataBinding =>
@@ -179,3 +184,15 @@
         color: Red;
     }
 </style>
+<script type="text/javascript">
+    $(function () {
+        $("#PackageID").change(function () {
+            var packagetext = $("#PackageID").find("option:selected").text();
+            if (packagetext == "DELEGATE BAGS SPONSOR | 与会随行物赞助商")
+                $("#Polldiv").show();
+            else
+                $("#Polldiv").hide();
+            
+        });
+    });
+</script>
