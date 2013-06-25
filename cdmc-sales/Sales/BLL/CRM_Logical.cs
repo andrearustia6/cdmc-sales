@@ -25,7 +25,7 @@ namespace BLL
                 var user = Employee.CurrentUserName;
                 var rolelvl = Employee.CurrentRole.Level;
 
-                if (rolelvl==SuperManagerRequired.LVL || user=="ray")
+                if (rolelvl == SuperManagerRequired.LVL || user == "ray")
                 {
                     var md = MonthDuration.GetMonthInstance(month);
                     var managers = CH.DB.Projects.Where(w => w.IsActived == true && !string.IsNullOrEmpty(w.Manager)).Select(s => s.Manager).Distinct();
@@ -69,7 +69,7 @@ namespace BLL
                     var deals = CRM_Logical.GetDeals().Where(w => w.ActualPaymentDate.Value != null && w.ActualPaymentDate.Value.Month == month);
                     var year = DateTime.Now.Year;
                     //获取登录者（考核人）打分的记录
-                    var scores = from r in CH.DB.ManagerScores.Where(w => w.Month == month && w.Year == year && w.Assigner=="theresa") select r;
+                    var scores = from r in CH.DB.ManagerScores.Where(w => w.Month == month && w.Year == year && w.Assigner == "theresa") select r;
                     var lps = from l in managers
                               join sc in scores on l equals sc.TargetName into Joinedscores
                               from aa in Joinedscores.DefaultIfEmpty()
@@ -97,7 +97,7 @@ namespace BLL
                                   salesnewlead = memberslead.Where(c => c.manager == l).Count(c => c.salestypeid == 1),
                                   target = CH.DB.TargetOfMonths.Where(t => t.Project.TeamLeader == l && t.Project.IsActived == true && t.StartDate.Month == month).Sum(s => s.CheckIn),
                                   checkinreal = deals.Where(d => d.Project.Manager == l).Sum(s => s.Income),
-                                  Confirmed = aa != null ? aa.Confirmed==true?"是":"否" : "否"
+                                  Confirmed = aa != null ? aa.Confirmed == true ? "是" : "否" : "否"
 
                               };
 
@@ -151,7 +151,7 @@ namespace BLL
                                   Target = CH.DB.TargetOfMonths.Where(t => t.Project.TeamLeader == l && t.Project.IsActived == true && t.StartDate.Month == month).Sum(s => s.CheckIn),
                                   CheckIn = deals.Where(d => d.Project.TeamLeader == l).Sum(s => s.Income),
                                   Name = l,
-                                  User=user,
+                                  User = user,
                                   //Assigner = scores.Where(w => w.TargetName == l).Select(s => s.Assigner).FirstOrDefault() == null ? user : scores.Where(w => w.TargetName == l).Select(s => s.Assigner).FirstOrDefault(),
                                   Rate = scores.Where(w => w.TargetName == l).Count() == 0 ? 1 : scores.Where(w => w.TargetName == l).Select(s => s.Rate).FirstOrDefault(), //rates.Where(w => w.TargetName == l).Average(s => s.Rate) == null ? 1 : scores.Where(w => w.TargetName == l).Average(s => s.Score),
                                   AssignedScore = scores.Where(w => w.TargetName == l).Count() == 0 ? 1 : scores.Where(w => w.TargetName == l).Select(s => s.Score).FirstOrDefault(),//scores.Where(w => w.TargetName == l).Average(s => s.Score) == null ? 0 : scores.Where(w => w.TargetName == l).Average(s => s.Score),
@@ -171,7 +171,7 @@ namespace BLL
                 return new List<_TeamLeadPerformance>();
             }
 
-            public static IEnumerable<_SalesPerformance> GetSalesPerformances(int month, string fuzzyInput="")
+            public static IEnumerable<_SalesPerformance> GetSalesPerformances(int month, string fuzzyInput = "")
             {
                 var rolelvl = Employee.CurrentRole.Level;
                 if (Employee.AsSales())
@@ -224,7 +224,7 @@ namespace BLL
                                       Target = CH.DB.TargetOfMonthForMembers.Where(t => t.Member.Name == l && t.StartDate.Month == month && t.Project.IsActived == true).Sum(s => s.CheckIn),
                                       CheckIn = deals.Where(d => d.Project.TeamLeader == l).Sum(s => s.Income),
                                       Name = l,
-                                      User=user,
+                                      User = user,
                                       Rate = scores.Where(w => w.TargetName == l).Count() == 0 ? 1 : scores.Where(w => w.TargetName == l).Select(s => s.Rate).FirstOrDefault(), //rates.Where(w => w.TargetName == l).Average(s => s.Rate) == null ? 1 : scores.Where(w => w.TargetName == l).Average(s => s.Score),
                                       AssignedScore = scores.Where(w => w.TargetName == l).Count() == 0 ? 0 : scores.Where(w => w.TargetName == l).Select(s => s.Score).FirstOrDefault(),//scores.Where(w => w.TargetName == l).Average(s => s.Score) == null ? 0 : scores.Where(w => w.TargetName == l).Average(s => s.Score),
                                       SalesPerformanceInWeeks = wd.Select(s => new _SalesPerformanceInWeek
@@ -440,10 +440,11 @@ namespace BLL
                 //               ProjectName = grp.Key.Name_CH,
                 //               ProjectID = grp.Key.ProjectID
                 //           };
-                var cs = 
-                         //from d in checkins
-                         //group d by new { d.ProjectID } into grp
-                         from p in CH.DB.Projects where p.IsActived==true && (p.Test ==null)
+                var cs =
+                    //from d in checkins
+                    //group d by new { d.ProjectID } into grp
+                         from p in CH.DB.Projects
+                         where p.IsActived == true && (p.Test == null)
                          select new ProjectWeekPerformance()
                          {
                              StartDate = weekstart,
@@ -454,9 +455,9 @@ namespace BLL
                              ProjectID = p.ID,
                              Manager = p.Manager,
                              Leader = p.TeamLeader,
-                             LeftDay = EntityFunctions.DiffDays(DateTime.Now,p.ConferenceStartDate).Value ,
+                             LeftDay = EntityFunctions.DiffDays(DateTime.Now, p.ConferenceStartDate).Value,
                              TotalTarget = p.Target,
-                             TotalCheckIn = alldeals.Where(w=>w.ProjectID==p.ID).Sum(s=>s.Income)
+                             TotalCheckIn = alldeals.Where(w => w.ProjectID == p.ID).Sum(s => s.Income)
                          };
 
                 var list = cs.ToList();
@@ -770,12 +771,12 @@ namespace BLL
                 //取得该员工的所有成员实例
 
                 var sevendaybefore = DateTime.Now.AddDays(-7);
-                      var user = Employee.CurrentUserName;
-                      var calls = from c in CH.DB.LeadCalls
-                                  where c.Member.Name == user && c.CallBackDate >= sevendaybefore
-                                  select c;
+                var user = Employee.CurrentUserName;
+                var calls = from c in CH.DB.LeadCalls
+                            where c.Member.Name == user && c.CallBackDate >= sevendaybefore
+                            select c;
 
-                      return calls;
+                return calls;
             }
         }
 
@@ -785,10 +786,10 @@ namespace BLL
             {
                 //取得该员工的所有成员实例
 
-              
+
                 var user = Employee.CurrentUserName;
                 var deals = from d in CH.DB.Deals
-                            where d.Sales == user && d.Income==0
+                            where d.Sales == user && d.Income == 0
                             select d;
 
                 return deals;
@@ -1143,13 +1144,17 @@ namespace BLL
             {
                 ps = GetSalesInvolveProject();
             }
-            if (lvl >= 1000)
+            if (lvl >= 1000 && lvl < 99999)
             {
                 ps = GetDirectorInvolveProject();
             }
             if (lvl >= 500 && lvl < 1000)
             {
                 ps = GetManagerInvolveProject();
+            }
+            if (lvl == 99999)
+            {
+                ps = GetAdminInvolveProject();
             }
             ps = ps.Where(w => w.Test == null || w.Test == false).ToList();//不反回测试项目
             return ps;
@@ -1236,6 +1241,13 @@ namespace BLL
             var data = projects.FindAll(p => p.IsActived == true);
             return data;
         }
+
+        public static List<Project> GetAdminInvolveProject()
+        {
+            var data = CH.GetAllData<Project>();
+            return data;
+        }
+
         /// <summary>
         /// 版块负责人月度考核项目：责任心与积极性（带队加班情况）
         /// 参照《销售部月度考核（2013准事业部负责人版）2月新版.xls》
