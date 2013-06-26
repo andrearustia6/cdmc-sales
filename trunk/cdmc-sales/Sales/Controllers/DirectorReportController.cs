@@ -12,7 +12,7 @@ using Telerik.Web.Mvc;
 
 namespace Sales.Controllers
 {
-    [DirectorRequired]
+    [SuperManagerRequired]
     public class DirectorReportController : Controller
     {
       
@@ -45,6 +45,12 @@ namespace Sales.Controllers
             //                        group d by new { d.ActualPaymentDate.Value.Month, d.ActualPaymentDate.Value.Year,d.Project.Name_CH }
             return Json(ps);
     
+        }
+
+        public ActionResult TargetOfMonthStatus()
+        {
+            var list = CRM_Logical._TargetOfMonth.GetCurrentMonthProjectTagetStatus();
+            return View(list.ToList());
         }
 
         public ActionResult ProjectsProgress()

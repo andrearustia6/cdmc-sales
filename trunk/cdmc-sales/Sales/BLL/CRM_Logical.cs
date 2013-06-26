@@ -415,9 +415,26 @@ namespace BLL
 
         public static class _TargetOfMonth
         {
- public static IQueryable<> GetCurrentMonthProjectTagetStatus()
- {
- }
+            public static IQueryable<_TargetOfMonthStatus> GetCurrentMonthProjectTagetStatus()
+            {
+                var month = DateTime.Now.Month;
+                var year = DateTime.Now.Year;
+                var ps = from p in CH.DB.Projects.Where(w=>w.IsActived==true && w.Test==null && DateTime.Now < w.ConferenceStartDate) select p;
+                var tagets = from t in CH.DB.TargetOfMonths.Where(w=>w.Project.IsActived==true) select t;
+                var data = from p in ps
+                           select new _TargetOfMonthStatus()
+                           {
+                                  ProjectName = p.Name_CH,
+                                   ProjectCode = p.ProjectCode,
+                                   Mangager = p.Manager,
+                                  HasTargetOfMonth = tagets.Count(w => w.StartDate.Month == month && w.StartDate.Year == year && w.ProjectID == p.ID)>0,
+                                  HasTargetOfWeek = tagets.Count(w => w.StartDate.Month == month && w.StartDate.Year == year && w.ProjectID == p.ID &&
+                                      (w.TargetOf1stWeek > 0 || w.TargetOf2ndWeek > 0 || w.TargetOf3rdWeek > 0 
+                                      || w.TargetOf4thWeek > 0 || w.TargetOf5thWeek > 0)) > 0
+
+                           };
+                return data;
+            }
         }
 
         public static class _Reports

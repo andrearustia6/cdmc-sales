@@ -233,6 +233,7 @@ namespace Sales.Controllers
                            Creator = db.Creator,
                            ProjectName = (db.Project.Name_EN ?? string.Empty) + " | " + (db.Project.Name_CH ?? string.Empty),
                            Deal = db.Deal,
+                           Manger = db.Project.Manager,
                            BaseDeal = db.BaseDeal,
                            CheckIn = db.CheckIn,
                            EndDate = db.EndDate,

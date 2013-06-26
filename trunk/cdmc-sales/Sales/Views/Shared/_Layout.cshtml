@@ -101,7 +101,7 @@
 
                        menu.Add().Text("查看").ImageUrl("~/Content/Common/Icons/mvc.png").Items(item =>
                        {
-                           if (score >= DirectorRequired.LVL)
+                           if (score >= SuperManagerRequired.LVL)
                            {
                                item.Add().Url("~/DirectorReport/ProjectsProgress").Text("报表");
                                //if (score == DirectorRequired.LVL)
