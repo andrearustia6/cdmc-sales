@@ -230,6 +230,7 @@ namespace Sales.Controllers
                        {
                            ID = db.ID,
                            ProjectID = db.ProjectID,
+                           Creator = db.Creator,
                            ProjectName = (db.Project.Name_EN ?? string.Empty) + " | " + (db.Project.Name_CH ?? string.Empty),
                            Deal = db.Deal,
                            BaseDeal = db.BaseDeal,

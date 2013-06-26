@@ -879,5 +879,11 @@ namespace Model
 
         [Display(Name = "是否版块确认")]
         public string IsAdminConfirm { get; set; }
+
+        [Display(Name = "创建用户")]
+        public string Creator { get; set; }
+
+        [Display(Name = "创建时间")]
+        public DateTime? CreatedDate { get; set; }
     }
 }

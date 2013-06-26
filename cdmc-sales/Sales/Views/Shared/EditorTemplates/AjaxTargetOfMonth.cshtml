@@ -8,8 +8,16 @@
             <td>
                 @Html.LabelFor(model => model.ProjectName)
             </td>
-            <td>
+            <td colspan="3">
                 @Html.TextBoxFor(model => model.ProjectName, new { @readOnly = "true", style = "border-style: none" })
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(model => model.Creator)
+            </td>
+            <td>
+                @Html.TextBoxFor(model => model.Creator, new { @readOnly = "true", style = "border-style: none" })
             </td>
             <td>
                 <label id="1stWeek">
