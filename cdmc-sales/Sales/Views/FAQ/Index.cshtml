@@ -10,7 +10,7 @@
                     c.Bound(item => item.Name).Width(200);
                     c.Bound(item => item.Question).Width(300);
                     c.Bound(item => item.Code).Width(100);
-                    c.Bound(item => item.ID).Title("操作").Template(@<span> <a href=@Url.Content("~/FAQ/Edit/" + item.ID) >
+                    c.Bound(item => item.ID).Title("操作").Width(150).Template(@<span> <a href=@Url.Content("~/FAQ/Edit/" + item.ID) >
                         编辑</a> | <a href=@Url.Content("~/FAQ/Details/" + item.ID)>详细</a> | <a href=@Url.Content("~/FAQ/delete/" + item.ID) >
                             删除</a> </span>);
                 })
