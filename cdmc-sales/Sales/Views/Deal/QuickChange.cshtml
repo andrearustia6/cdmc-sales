@@ -19,9 +19,23 @@
                 @Html.LabelFor(model => model.PackageID, "Package")
             </td>
             <td>
+            
                 @Html.DropDownListFor(m => m.PackageID, new SelectList(CH.GetAllData<Package>(), "ID", "Name"), "-请选择-", new { style = "width:300px;" })
                 @Html.ValidationMessageFor(model => model.PackageID)
-                <div id="Polldiv" style="display:none"> 票数:@Html.Telerik().IntegerTextBoxFor(model => model.Poll).HtmlAttributes("width:50px;")</div>
+            </td>
+        </tr>
+        <tr>
+            <td style="width:85px;">
+                
+            </td>
+            <td>
+                
+            </td>
+            <td style="width:85px;">
+                <div id="Polldivlabel" style="display:none">@Html.LabelFor(model => model.Poll)</div>
+            </td>
+            <td>
+                <div id="Polldiv" style="display:none"> @Html.Telerik().IntegerTextBoxFor(model => model.Poll).HtmlAttributes("width:50px;")</div>
             </td>
         </tr>
         <tr>
@@ -56,10 +70,13 @@
             </td>
             <td>
                 @Html.Telerik().CurrencyTextBoxFor(model => model.Payment)
-                
-                 @Html.DropDownListFor(m => m.CurrencyTypeID, new SelectList(CH.GetAllData<CurrencyType>(), "ID", "Name", CH.GetAllData<CurrencyType>().FirstOrDefault().ID), "-请选择-", new { style = "width:80px;" })
                 @Html.ValidationMessageFor(model => model.Payment)
-                 @Html.ValidationMessageFor(model => model.CurrencyTypeID)
+                @foreach (var p in CH.GetAllData<CurrencyType>())
+                {
+                    @Html.RadioButton("currencytyperb", p.ID, p.Name == "RMB" ? true : false, new { onchange = "setcurrencytypeid("+p.ID+")" })
+                    @p.Name
+                }
+                @Html.TextBoxFor(model => model.CurrencyTypeID, new { @style = "display:none" })
             </td>
         </tr>
         <tr>
@@ -185,14 +202,34 @@
     }
 </style>
 <script type="text/javascript">
+    //页面加载后设置币种的默认值
+    $("#CurrencyTypeID").val($("#currencytyperb").val());
     $(function () {
         $("#PackageID").change(function () {
-            var packagetext = $("#PackageID").find("option:selected").text();
-            if (packagetext == "DELEGATE BAGS SPONSOR | 与会随行物赞助商")
-                $("#Polldiv").show();
-            else
-                $("#Polldiv").hide();
-            
+            var packageid = $("#PackageID").find("option:selected").val();
+            $.ajax({
+                url: "/Package/GetParticipantTypeName",
+                type: "post",
+                dataType: "json",
+                data: { id: packageid },
+                error: function (a, b, c) {
+                    alert("获取参会类型失败，请重试。");
+                },
+                success: function (result) {
+                    if (result == "Sponsor") {
+                        $("#Polldiv").show();
+                        $("#Polldivlabel").show();
+                    }
+                    else {
+                        $("#Polldiv").hide();
+                        $("#Polldivlabel").hide();
+                    }
+                }
+            });
         });
     });
+    //点击radiobutton后给CurrencyTypeID赋值
+    function setcurrencytypeid(currencytypeid) {
+        $("#CurrencyTypeID").val(currencytypeid);
+    }
 </script>
