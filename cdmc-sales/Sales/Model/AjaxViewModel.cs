@@ -837,6 +837,8 @@ namespace Model
     {
         public int ID { set; get; }
 
+        public string Manger { get; set; }
+
         public int Month { get { return EndDate.Month; } }
 
         public int? ProjectID { get; set; }
