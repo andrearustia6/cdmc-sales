@@ -295,6 +295,7 @@
     <Compile Include="Model\_MonthDuration.cs" />
     <Compile Include="Model\_Reports.cs" />
     <Compile Include="Model\_Research.cs" />
+    <Compile Include="Model\_Target.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utl\Attributes.cs" />
     <Compile Include="Utl\CH.cs" />

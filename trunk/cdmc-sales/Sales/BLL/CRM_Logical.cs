@@ -413,6 +413,13 @@ namespace BLL
             }
         }
 
+        public static class _TargetOfMonth
+        {
+ public static IQueryable<> GetCurrentMonthProjectTagetStatus()
+ {
+ }
+        }
+
         public static class _Reports
         {
 
