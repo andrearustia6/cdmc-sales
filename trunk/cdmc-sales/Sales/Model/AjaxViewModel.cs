@@ -837,6 +837,7 @@ namespace Model
     {
         public int ID { set; get; }
 
+         [Display(Name = "版块负责人")]
         public string Manger { get; set; }
 
         public int Month { get { return EndDate.Month; } }
