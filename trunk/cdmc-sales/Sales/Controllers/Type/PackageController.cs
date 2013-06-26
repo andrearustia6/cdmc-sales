@@ -97,5 +97,11 @@ namespace Sales.Controllers
             CH.Delete<Package>(id);
             return RedirectToAction("Index");
         }
+
+         public ActionResult GetParticipantTypeName(int id)
+         {
+             return Json(CH.GetDataById<Package>(id).ParticipantType.Name);
+             
+         }
     }
 }
