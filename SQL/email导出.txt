@@ -1,0 +1,7 @@
+emailµ¼³ö
+SELECT EMail,Creator FROM Lead where companyid  in 
+(select id from company where id in (select CompanyID from CompanyRelationship where ProjectID=38))
+
+--select * from Project where Name_CH like '%½à¾»Ãº%'
+
+select * from Member where ProjectID=38
