@@ -58,7 +58,8 @@
     <div class="display-label">
         出单价格</div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.Payment)
+        @String.Format("{0:#,##0}",Model.Payment)
+        @Html.DisplayFor(model => model.Currencytype.Name)
     </div>
     <div class="display-label">
         Sales</div>

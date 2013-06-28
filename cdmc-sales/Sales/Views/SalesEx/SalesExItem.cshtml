@@ -5,7 +5,19 @@
 <div>
   <div class="fenge">
         <div class="fenge_2">
-            <span id="currentCompanyName" style="font-weight:bold">@Model.CompanyDisplayName @{if (Model.CompanyPaymentString != "" ){<text> ( 出单金额 : ¥@Model.CompanyPaymentString )</text>}}</span>
+            <span id="currentCompanyName" style="font-weight:bold">@Model.CompanyDisplayName </span>
+            @{if (Model.AjaxPayments.Count() > 0)
+              {
+                  <span id="currentCompanyName" style="font-weight:bold">出单金额:</span>
+                  foreach (var p in Model.AjaxPayments)
+                  { 
+                   @p.CompanyPaymentString
+                   @p.Currency
+                   <span id="currentCompanyName" style="font-weight:bold">   </span>
+                  }
+
+              }
+              }
             <input class="salebtn" style=" background-image:url('../images/chudan.jpg');" type="button" onclick="onQuickAddDeal(@(Model.ProjectID),@(Model.CRMID));" />
             <input class="salebtn" style=" background-image:url('../images/tianjia_3.jpg');" type="button" onclick="onLeadAdd(@(Model.CompanyID))" />
             <input type="button" class="salebtn"  style="background-image:url('../images/gengxin.jpg');"  onclick="onCompanyEdit(@(Model.CompanyID))" />
@@ -123,23 +135,24 @@
             {
                 var orders = lead.AjaxCalls.OrderByDescending(o => o.CallDate);
                 <table style="width:98%; margin:10px;">
-                <tr><th width="80px">致电类型</th><th width="100px">回打时间</th><th width="80px">致电人</th><th width="80px">致电时间</th><th>结果</th>@if (Employee.LoginUserIsAdmin()){<th>操作</th>}</tr>
+                <tr><th width="80px">致电类型</th><th width="100px">回打时间</th><th width="80px">致电人</th><th width="80px">致电时间</th><th>结果</th>@if (Employee.LoginUserIsAdmin())
+                                                                                                                                       {<th>操作</th>}</tr>
                 @{bool colorSignal = true;
-                foreach (var call in orders)
-                {
-                    string classname = string.Empty;
-                    if(colorSignal)
-                    {
-                        classname = "calllistone";
-                    }
-                    else
-                    {
-                        classname = "calllisttwo";
-                    }
+                  foreach (var call in orders)
+                  {
+                      string classname = string.Empty;
+                      if (colorSignal)
+                      {
+                          classname = "calllistone";
+                      }
+                      else
+                      {
+                          classname = "calllisttwo";
+                      }
                     <tr class=@classname><td>@call.CallType</td><td>@call.CallBackDate</td><td>@call.Caller</td><td>@call.CallDate</td><td>@call.Result</td>@if (Employee.LoginUserIsAdmin())
-                                                                                                                                        {<td><input onclick='EditLeadCall(@call.LeadCallID)' type='button' class="salebtn" style=" background-image:url('../images/gengxin.jpg');" /></td>}</tr>
-                    colorSignal = !colorSignal;
-                }
+                                                                                                                                                            {<td><input onclick='EditLeadCall(@call.LeadCallID)' type='button' class="salebtn" style=" background-image:url('../images/gengxin.jpg');" /></td>}</tr>
+                                                                                                                                                            colorSignal = !colorSignal;
+                  }
                 }
             </table>
             }
