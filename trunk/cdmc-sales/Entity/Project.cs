@@ -504,7 +504,7 @@ namespace Entity
         [RegularExpression(@"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}", ErrorMessage = "请输入的有效的签单人邮箱")]
         public string CommitterEmail { get; set; }
 
-        [Display(Name = "权益描述"), MaxLength(2000)]
+        [Display(Name = "会务须知权益描述"), MaxLength(2000)]
         public string TicketDescription { get; set; }
 
         public virtual Package Package { get; set; }
@@ -570,7 +570,7 @@ namespace Entity
             }
         }
 
-        [Display(Name = "出单描述"), MaxLength(2000), Required]
+        [Display(Name = "出单经验分享"), MaxLength(2000), Required]
         public string PaymentDetail { get; set; }
 
         [Display(Name = "是否确认")]
