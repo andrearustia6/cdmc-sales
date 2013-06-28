@@ -6,18 +6,24 @@
   <div class="fenge">
         <div class="fenge_2">
             <span id="currentCompanyName" style="font-weight:bold">@Model.CompanyDisplayName </span>
-            @{if (Model.AjaxPayments.Count() > 0)
-              {
-                  <span id="currentCompanyName" style="font-weight:bold">出单金额:</span>
-                  foreach (var p in Model.AjaxPayments)
-                  { 
-                   @p.CompanyPaymentString
-                   @p.Currency
-                   <span id="currentCompanyName" style="font-weight:bold">   </span>
-                  }
-
-              }
-              }
+            <span id="currentCompanyName" style="font-weight:bold">RMB出单金额:</span>
+            @if (@Model.RMBCompanyPayment == null)
+            {
+            <span id="currentCompanyName" style="font-weight:bold">0</span>
+            }
+            else
+            {
+                <span id="currentCompanyName" style="font-weight:bold">$@String.Format("{0:N0}", @Model.RMBCompanyPayment)</span>
+            }
+            <span id="currentCompanyName" style="font-weight:bold">USD出单金额:</span>
+            @if (@Model.RMBCompanyPayment == null)
+            {
+            <span id="currentCompanyName" style="font-weight:bold">0</span>
+            }
+            else
+            {
+                <span id="currentCompanyName" style="font-weight:bold">$@String.Format("{0:N0}", @Model.USDCompanyPayment)</span>
+            }
             <input class="salebtn" style=" background-image:url('../images/chudan.jpg');" type="button" onclick="onQuickAddDeal(@(Model.ProjectID),@(Model.CRMID));" />
             <input class="salebtn" style=" background-image:url('../images/tianjia_3.jpg');" type="button" onclick="onLeadAdd(@(Model.CompanyID))" />
             <input type="button" class="salebtn"  style="background-image:url('../images/gengxin.jpg');"  onclick="onCompanyEdit(@(Model.CompanyID))" />

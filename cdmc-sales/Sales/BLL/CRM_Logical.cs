@@ -120,17 +120,15 @@ namespace BLL
                         var debugmembers = CH.DB.Members.Where(w => w.Test == true).Select(s => s.Name).Distinct();
                         leads = leads.Where(w => debugmembers.Any(a => a == w) == false);
                     }
-
-
                     if (Employee.EqualToManager())//版块负责人只能看到自己项目所属的lead
                     {
                         var leadinsameprojects = from p in CH.DB.Projects.Where(w => w.Manager == user) select p.TeamLeader;
                         leads = leads.Where(w => leadinsameprojects.Any(a => a == w));
                     }
-                    //else if (rolelvl == 100)
-                    //{
-                    //    leads = leads.Where(w => w == user);
-                    //}
+                    else if (rolelvl == 100)
+                    {
+                        leads = leads.Where(w => w == user);
+                    }
 
 
                     var deals = CRM_Logical.GetDeals().Where(w => w.ActualPaymentDate.Value != null && w.ActualPaymentDate.Value.Month == month);
