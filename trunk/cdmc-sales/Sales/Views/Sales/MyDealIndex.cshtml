@@ -15,16 +15,23 @@
             c.Bound(item => item.CompanyRelationship.Company.Name).Title("客户名称").Width(200);
             c.Bound(item => item.DealCode).Title("出单号").Width(100);
             c.Bound(item => item.Package.Name).Title("Package名称").Width(200);
-            c.Bound(item => item.Payment).Title("销售总额").Width(100).Format("{0:c}").Aggregate(aggregates => aggregates.Sum()).FooterTemplate(@<text>@if (item.Sum != null)
+
+            c.Bound(item => item.RMBPayment).Title("RMB出单总额").Width(100).Format("{0:￥#,##0}").Aggregate(aggregates => aggregates.Sum()).FooterTemplate(@<text>@if (item.Sum != null)
+                                                                                                                                                          {<p>
+                                                                                                                                            RMB出单总额: @item.Sum.Format("{0:￥#,##0}")</p>}</text>).GroupFooterTemplate(@<text>@if (item.Sum != null)
+                                                                                                                                                                                                                       {<p>
+                                                                                                                                                                                                                    RMB出单总额: @item.Sum.Format("{0:￥#,##0}")</p>}</text>).Width(100);
+            c.Bound(item => item.USDPayment).Title("USD出单总额").Width(100).Format("{0:$#,##0}").Aggregate(aggregates => aggregates.Sum()).FooterTemplate(@<text>@if (item.Sum != null)
                                                                                                                                         {<p>
-                                                                                                                                            销售总额: @item.Sum.Format("{0:c}")</p>}</text>).GroupFooterTemplate(@<text>@if (item.Sum != null)
+                                                                                                                                            USD出单总额: @item.Sum.Format("{0:$#,##0}")</p>}</text>).GroupFooterTemplate(@<text>@if (item.Sum != null)
+                                                                                                                                                                                                                    {<p>
+                                                                                                                                                                                                                    USD出单总额: @item.Sum.Format("{0:$#,##0}")</p>}</text>).Width(100);
+
+            c.Bound(item => item.Income).Title("入账总额").Width(90).Format("{0:￥#,##0}").Aggregate(aggregates => aggregates.Sum()).FooterTemplate(@<text>@if (item.Sum != null)
+                                                                                                                                                 {<p>
+                                                                                                                                        入账总额: @item.Sum.Format("{0:￥#,##0}")</p>}</text>).GroupFooterTemplate(@<text>@if (item.Sum != null)
                                                                                                                                                                                                                 {<p>
-                                                                                                                                                                                                                    销售总额: @item.Sum.Format("{0:c}")</p>}</text>).Width(100);
-            c.Bound(item => item.Income).Title("入账总额").Width(90).Format("{0:c}").Aggregate(aggregates => aggregates.Sum()).FooterTemplate(@<text>@if (item.Sum != null)
-                                                                                                                                    {<p>
-                                                                                                                                        入账总额: @item.Sum.Format("{0:c}")</p>}</text>).GroupFooterTemplate(@<text>@if (item.Sum != null)
-                                                                                                                                                                                                                {<p>
-                                                                                                                                                                                                                    入账总额: @item.Sum.Format("{0:c}")</p>}</text>).Width(100); ;
+                                                                                                                                                                                                                    入账总额: @item.Sum.Format("{0:￥#,##0}")</p>}</text>).Width(100); ;
             c.Bound(item => item.IsClosed).Width(70);
             c.Bound(item => item.Committer).Width(100);
             c.Bound(item => item.CommitterContect).Width(100);
@@ -39,10 +46,10 @@
                     详细</a> | <a href=@Url.Content("~/sales/ModifyParticipant/?dealid=" + item.ID + "&projectid=" + item.ProjectID + "&crmid=" + item.CompanyRelationshipID) >
                         参会客户编辑</a>
                     @{if (item.IsConfirm != true)
-                        {
+                      {
                         <span>| </span> <a href=@Url.Content("~/sales/EditDeal/?id=" + item.ID + "&projectid=" + item.ProjectID) >
                             编辑</a> 
-                        }}
+                      }}
                 </span>);
         })
         .DetailView(e => e.Template(
@@ -57,7 +64,7 @@
 
 )
 @helper RenderGrid(Deal deal)
-{
+    {
     @(Html.Telerik()
         .Grid(deal.Participants).Name("Participants" + deal.ID)
         .Columns(c =>

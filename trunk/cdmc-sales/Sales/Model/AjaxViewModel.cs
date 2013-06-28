@@ -184,6 +184,30 @@ namespace Model
 
         [Display(Name = "应付款")]
         public decimal Payment { get; set; }
+        [Display(Name = "币种")]
+       
+        public string Currency { get; set; }
+        [Display(Name = "RMB应付款")]
+        public decimal RMBPayment {
+            get
+            {
+                if (Currency == "RMB")
+                    return Payment;
+                else
+                    return 0;
+            }
+        }
+
+        [Display(Name = "USD应付款")]
+        public decimal USDPayment {
+            get
+            {
+                if (Currency == "USD")
+                    return Payment;
+                else
+                    return 0;
+            }
+        }
 
         [Display(Name = "出单经验分享")]
         public string PaymentDetail { get; set; }

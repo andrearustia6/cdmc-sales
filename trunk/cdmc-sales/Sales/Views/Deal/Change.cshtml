@@ -20,6 +20,14 @@
         @Html.DropDownListFor(m => m.PackageID, new SelectList(CH.GetAllData<Package>(), "ID", "Name"), "-请选择-")
         @Html.ValidationMessageFor(model => model.PackageID)
     </div>
+    <div id="Polldivlabel" class="editor-label" style="display:none">
+        @Html.LabelFor(model => model.Poll)
+    </div>
+    <div id="Polldiv" class="editor-field" style="display:none"> 
+        @Html.TextBoxFor(model => model.Poll)
+        @Html.ValidationMessageFor(model => model.Poll)
+    </div>
+    
     <div class="editor-label">
         @Html.LabelFor(model => model.CompanyRelationshipID, "公司")
     </div>
@@ -58,8 +66,47 @@
         @Html.LabelFor(model => model.Payment)
     </div>
     <div class="editor-field">
-        @Html.Telerik().CurrencyTextBoxFor(model => model.Payment)
+        @Html.Telerik().NumericTextBoxFor(model => model.Payment).DecimalDigits(0)
+        @if (Model == null)
+        {
+            foreach (var p in CH.GetAllData<CurrencyType>())
+            {
+                @Html.RadioButton("currencytyperb", p.ID, p.Name == "RMB" ? true : false, new { onchange = "setcurrencytypeid(" + p.ID + ")" })
+               if (p.Name == "RMB")
+               {
+                        @Html.TextBox("currencytypeDefault", p.ID, new { @style = "display:none" })
+               }
+               @p.Name
+            }
+        }
+        else
+        {
+            foreach (var p in CH.GetAllData<CurrencyType>())
+            {
+                if (Model.CurrencyTypeID == null)
+                {
+                    @Html.RadioButton("currencytyperb", p.Name == "RMB" ? true : false, new { onchange = "setcurrencytypeid(" + p.ID + ")" })
+                }
+                else
+                {
+                    if(Model.CurrencyTypeID==p.ID)
+                    {
+                        @Html.RadioButton("currencytyperb", true , new { onchange = "setcurrencytypeid(" + p.ID + ")",@checked=true })
+                    }
+                    else
+                    {
+                        @Html.RadioButton("currencytyperb",false, new { onchange = "setcurrencytypeid(" + p.ID + ")" })
+                    }
+                    
+                }
+                @p.Name
+            }
+            @Html.TextBox("currencytypeDefault", Model.CurrencyTypeID, new { @style = "display:none" })
+        }
+        
+        @Html.TextBoxFor(model => model.CurrencyTypeID, new { @style = "display:none" })
         @Html.ValidationMessageFor(model => model.Payment)
+        @Html.ValidationMessageFor(model => model.CurrencyTypeID)
     </div>
     @*<div class="editor-label">
         @Html.LabelFor(model => model.IsClosed)
@@ -152,3 +199,48 @@
         Html.Partial("Participants", Model.Participants == null ? new List<Participant>() : Model.Participants);
     }
 }
+<script type="text/javascript">
+    //页面加载后设置币种的默认值
+    $("#CurrencyTypeID").val($("#currencytypeDefault").val());
+    setpollcount();
+    $(function () {
+        $("#PackageID").change(function () {
+            setpollcount();
+        });
+    });
+    //点击radiobutton后给CurrencyTypeID赋值
+    function setcurrencytypeid(currencytypeid) {
+        $("#CurrencyTypeID").val(currencytypeid);
+    }
+    function setpollcount() {
+        var packageid = $("#PackageID").find("option:selected").val();
+        if (packageid == "") {
+            $("#Polldiv").hide();
+            $("#Polldivlabel").hide();
+            $("#Poll").val("0");
+            return;
+        }
+        $.ajax({
+            url: "/Package/GetParticipantTypeName",
+            type: "post",
+            dataType: "json",
+            data: { id: packageid },
+            error: function (a, b, c) {
+                alert("获取参会类型失败，请重试。");
+            },
+            success: function (result) {
+                if (result == "Sponsor") {
+                    $("#Polldiv").show();
+                    $("#Polldivlabel").show();
+                    if($("#Poll").val()=="")
+                    $("#Poll").attr("value", ''); //填充内容
+                }
+                else {
+                    $("#Polldiv").hide();
+                    $("#Polldivlabel").hide();
+                    $("#Poll").val("0");
+                }
+            }
+        });
+    }
+</script>

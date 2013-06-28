@@ -212,7 +212,14 @@ namespace Model
                                                                                 Caller = call.Member.Name,
                                                                                 LeadCallTypeCode = call.LeadCallType.Code
                                                                             })
-                                        })
+                                        }),
+                            AjaxPayments=(from p in deals.Where(d => d.CompanyRelationshipID == c.ID).GroupBy(d=>d.CurrencyTypeID)
+                                          select new AjaxPaymentCurrency
+                                          {
+                                              CompanyPayment=p.Sum(d=>d.Payment),
+                                              Currency=p.Select(d=>d.Currencytype.Name).FirstOrDefault()
+                                          })
+
 
                        };
             string v = data.ToString();
@@ -348,6 +355,7 @@ namespace Model
         }
         public decimal? CompanyPayment { set; private get; }
 
+        public IEnumerable<AjaxPaymentCurrency> AjaxPayments { get; set; }
         #endregion
 
         public string DisplayText
@@ -540,6 +548,21 @@ namespace Model
         [Display(Name = "致电人")]
         public string Caller { get; set; }
         public bool Editable { get; set; }
+
+    }
+    public class AjaxPaymentCurrency
+    {
+
+        public string CompanyPaymentString
+        {
+            get
+            {
+                return CompanyPayment == 0 ? string.Empty : ((Decimal)CompanyPayment).ToString("####");
+            }
+        }
+        public decimal? CompanyPayment { set; private get; }
+
+        public string Currency { get; set; }
 
     }
 }

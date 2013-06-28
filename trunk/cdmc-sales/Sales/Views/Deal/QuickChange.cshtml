@@ -35,7 +35,8 @@
                 <div id="Polldivlabel" style="display:none">@Html.LabelFor(model => model.Poll)</div>
             </td>
             <td>
-                <div id="Polldiv" style="display:none"> @Html.Telerik().IntegerTextBoxFor(model => model.Poll).HtmlAttributes("width:50px;")</div>
+                <div id="Polldiv" style="display:none"> @Html.TextBoxFor(model => model.Poll)</div>
+                @Html.ValidationMessageFor(model => model.Poll)
             </td>
         </tr>
         <tr>
@@ -69,7 +70,7 @@
                 @Html.LabelFor(model => model.Payment)
             </td>
             <td>
-                @Html.Telerik().CurrencyTextBoxFor(model => model.Payment)
+                @Html.Telerik().NumericTextBoxFor(model => model.Payment)
                 @Html.ValidationMessageFor(model => model.Payment)
                 @foreach (var p in CH.GetAllData<CurrencyType>())
                 {
@@ -77,6 +78,7 @@
                     @p.Name
                 }
                 @Html.TextBoxFor(model => model.CurrencyTypeID, new { @style = "display:none" })
+                
             </td>
         </tr>
         <tr>
@@ -207,6 +209,12 @@
     $(function () {
         $("#PackageID").change(function () {
             var packageid = $("#PackageID").find("option:selected").val();
+            if (packageid == "") {
+                $("#Polldiv").hide();
+                $("#Polldivlabel").hide();
+                $("#Poll").val("0");
+                return;
+            }
             $.ajax({
                 url: "/Package/GetParticipantTypeName",
                 type: "post",
@@ -219,10 +227,12 @@
                     if (result == "Sponsor") {
                         $("#Polldiv").show();
                         $("#Polldivlabel").show();
+                        $("#Poll").attr("value", ''); //填充内容
                     }
                     else {
                         $("#Polldiv").hide();
                         $("#Polldivlabel").hide();
+                        $("#Poll").val("0");
                     }
                 }
             });

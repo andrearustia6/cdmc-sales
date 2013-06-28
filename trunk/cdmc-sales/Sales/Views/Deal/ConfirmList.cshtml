@@ -58,10 +58,12 @@
     c.Bound(item => item.Committer);//客户签单人
     c.Bound(item => item.Sales);//权益描述
     c.Bound(item => item.SignDate).Format("{0:d}");//签约日期
-    c.Bound(item => item.ExpectedPaymentDate).Format("{0:d}").ClientFooterTemplate("应付款总数:");//合约付款日期
-    c.Bound(item => item.Payment).Format("{0:c}").Aggregate(a => a.Sum()).ClientFooterTemplate("<#= $.telerik.formatString('{0:c}', Sum) #>");//应付款
+    c.Bound(item => item.ExpectedPaymentDate).Format("{0:d}");//合约付款日期
+    //c.Bound(item => item.Payment).Format("{0:c}").Aggregate(a => a.Sum()).ClientFooterTemplate("<#= $.telerik.formatString('{0:c}', Sum) #>");//应付款
+    c.Bound(item => item.RMBPayment).Title("RMB应付款").Width(100).Format("{0:￥#,##0}").Aggregate(aggregates => aggregates.Sum()).ClientFooterTemplate("<p>RMB应付款: ￥<#= $.telerik.formatString('{0:n0}', Sum) #></p>").ClientGroupFooterTemplate("<p>RMB应付款: ￥<#= $.telerik.formatString('{0:n0}', Sum) #></p>");
+    c.Bound(item => item.USDPayment).Title("USD应付款").Width(100).Format("{0:$#,##0}").Aggregate(aggregates => aggregates.Sum()).ClientFooterTemplate("<p>USD应付款: $<#= $.telerik.formatString('{0:n0}', Sum) #></p>").ClientGroupFooterTemplate("<p>USD应付款: $<#= $.telerik.formatString('{0:n0}', Sum) #></p>");
     c.Bound(item => item.ActualPaymentDate).Format("{0:d}");//实际付款日期
-    c.Bound(item => item.Income).Format("{0:c}");//实际入账
+    c.Bound(item => item.Income).Format("{0:c0}");//实际入账
     c.Bound(item => item.ModifiedDate);
     //c.Bound(item => item.IsClosed).Width(70);
     //c.Bound(item => item.CommitterContect).Width(100);

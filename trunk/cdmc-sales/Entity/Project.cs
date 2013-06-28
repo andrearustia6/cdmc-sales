@@ -541,8 +541,34 @@ namespace Entity
         public decimal Payment { get; set; }
 
         public virtual CurrencyType Currencytype { get; set; }
-        [Display(Name = "币种"), Required]
+        [Display(Name = "币种")]
+        [Required(ErrorMessage="必须选择币种")]
         public int CurrencyTypeID { get; set; }
+
+        [Display(Name = "RMB应付款"), Required]
+        public decimal RMBPayment { 
+            get{
+                if (Currencytype == null)
+                    return 0;
+                if (Currencytype.Name == "RMB")
+                    return Payment;
+                else
+                    return 0;
+            }
+        }
+        [Display(Name = "USD应付款"), Required]
+        public decimal USDPayment
+        {
+            get
+            {
+                if (Currencytype == null)
+                    return 0;
+                if (Currencytype.Name == "USD")
+                    return Payment;
+                else
+                    return 0;
+            }
+        }
 
         [Display(Name = "出单描述"), MaxLength(2000), Required]
         public string PaymentDetail { get; set; }
@@ -553,7 +579,8 @@ namespace Entity
         [Display(Name = "确认人")]
         public string Confirmor { get; set; }
 
-        [Display(Name = "票数")]
+        
+        [Display(Name = "票数"),Required]
         public int Poll { get; set; }
 
 

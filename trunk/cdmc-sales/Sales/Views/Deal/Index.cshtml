@@ -25,8 +25,10 @@
                     c.Bound(item => item.DealCode).Title("出单号").Width(100);
                     c.Bound(item => item.Sales).Width(70);
                     c.Bound(item => item.PackageName).Title("Package").Width(150);
-                    c.Bound(item => item.Payment).Title("销售总额").Width(100).Format("{0:c}").Aggregate(aggregates => aggregates.Sum()).ClientFooterTemplate("<p>销售总额: <#= Sum #></p>");
-                    c.Bound(item => item.Income).Title("入账总额").Width(100).Format("{0:c}").Aggregate(aggregates => aggregates.Sum()).ClientFooterTemplate("<p>入账总额: <#= Sum #></p>");
+
+                    c.Bound(item => item.RMBPayment).Title("RMB出单总额").Width(100).Format("{0:￥#,##0}").Aggregate(aggregates => aggregates.Sum()).ClientFooterTemplate("<p>RMB出单总额: ￥<#= $.telerik.formatString('{0:n0}', Sum) #></p>").ClientGroupFooterTemplate("<p>RMB出单总额: ￥<#= $.telerik.formatString('{0:n0}', Sum) #></p>");
+                    c.Bound(item => item.USDPayment).Title("USD出单总额").Width(100).Format("{0:$#,##0}").Aggregate(aggregates => aggregates.Sum()).ClientFooterTemplate("<p>USD出单总额: $<#= $.telerik.formatString('{0:n0}', Sum) #></p>").ClientGroupFooterTemplate("<p>USD出单总额: $<#= $.telerik.formatString('{0:n0}', Sum) #></p>");
+                    c.Bound(item => item.Income).Title("入账总额").Width(100).Format("{0:￥#,##0}").Aggregate(aggregates => aggregates.Sum()).ClientFooterTemplate("<p>入账总额: ￥<#= $.telerik.formatString('{0:n0}', Sum) #></p>").ClientGroupFooterTemplate("<p>入账总额: ￥<#= $.telerik.formatString('{0:n0}', Sum) #></p>");
                     c.Bound(item => item.IsClosed).Width(70);
                     c.Bound(item => item.Abandoned).Width(70);
                     c.Bound(item => item.TicketDescription);
@@ -40,29 +42,29 @@
                         c.Bound(item => item.ID).Title("操作").ClientTemplate("<span><a href=" + Url.Content("~/Deal/Edit/") + "<#= ID #> >编辑</a> | <a href=" + Url.Content("~/Deal/Details/" + "<#= ID #>>详细</a>  | <a href=" + Url.Content("~/Deal/delete/") + "<#= ID #> >删除</a></span>"));
                     }
                 }
-                ).DataBinding(b => b.Ajax().Select("_Index", "Deal", new { sp = sid }))
-                .DetailView(d => d.ClientTemplate(
-                Html.Telerik().Grid<AjaxViewParticipant>().Name("mastersheet<#= ID #>").DataKeys(keys =>
-            {
-                keys.Add(s => s.ID);
-            }).DataBinding(dataBinding => dataBinding.Ajax().Select("_ParticipantsInDeal", "Deal", new { dealID = "<#= ID #>" }))
-                .Columns(c =>
-                {
-                    c.Bound(o => o.Name);
-                    c.Bound(o => o.Title);
-                    c.Bound(o => o.Gender);
-                    c.Bound(o => o.ParticipantTypeName).Title("参会类型");
+                                                                                                                                                                                                                ).DataBinding(b => b.Ajax().Select("_Index", "Deal", new { sp = sid }))
+                                                                                                                                                                                                                .DetailView(d => d.ClientTemplate(
+                                                                                                                                                                                                                Html.Telerik().Grid<AjaxViewParticipant>().Name("mastersheet<#= ID #>").DataKeys(keys =>
+                                                                                                                                                                                                                {
+                                                                                                                                                                                                                    keys.Add(s => s.ID);
+                                                                                                                                                                                                                }).DataBinding(dataBinding => dataBinding.Ajax().Select("_ParticipantsInDeal", "Deal", new { dealID = "<#= ID #>" }))
+                                                                                                                                                                                                                .Columns(c =>
+                                                                                                                                                                                                                {
+                                                                                                                                                                                                                    c.Bound(o => o.Name);
+                                                                                                                                                                                                                    c.Bound(o => o.Title);
+                                                                                                                                                                                                                    c.Bound(o => o.Gender);
+                                                                                                                                                                                                                    c.Bound(o => o.ParticipantTypeName).Title("参会类型");
 
-                }).Resizable(resizing => resizing.Columns(true))
-                                        .Filterable().Sortable().Groupable()
-                                                                .Pageable(p => p.Style(GridPagerStyles.Status).PageOnScroll(true).PageSize(100))
-                                        .Scrollable(scrolling => scrolling.Height(150)
-                                       ).ToHtmlString()))
-                                                                .Resizable(resizing => resizing.Columns(true))
-                                                                .Filterable().Sortable().Groupable()
-                                                                                        .Pageable(p => p.Style(GridPagerStyles.Status).PageOnScroll(true).PageSize(100))
-                                                                .Scrollable(scrolling => scrolling.Height(350))
+                                                                                                                                                                                                                }).Resizable(resizing => resizing.Columns(true))
+                                                                                                                                                                                                                                        .Filterable().Sortable().Groupable()
+                                                                                                                                                                                                                                                                .Pageable(p => p.Style(GridPagerStyles.Status).PageOnScroll(true).PageSize(100))
+                                                                                                                                                                                                                                        .Scrollable(scrolling => scrolling.Height(150)
+                                                                                                                                                                                                                                       ).ToHtmlString()))
+                                                                                                                                                                                                                                                                .Resizable(resizing => resizing.Columns(true))
+                                                                                                                                                                                                                                                                .Filterable().Sortable().Groupable()
+                                                                                                                                                                                                                                                                                        .Pageable(p => p.Style(GridPagerStyles.Status).PageOnScroll(true).PageSize(100))
+                                                                                                                                                                                                                                                                .Scrollable(scrolling => scrolling.Height(350))
 
-                                            )
+                                                                                                                                                                                                                                            )
 
 }

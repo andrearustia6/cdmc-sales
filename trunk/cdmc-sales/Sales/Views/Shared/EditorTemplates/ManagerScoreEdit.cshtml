@@ -28,9 +28,9 @@
             <td style="width:30%">@Html.LabelFor(model => model.Excution)</td>
         </tr>
         <tr>
-            <td>@Html.Telerik().DropDownListFor(model => model.Responsibility).BindTo(new SelectList(BLL.CRM_Logical.GetItem1(), "ID", "Name")).DropDownHtmlAttributes(new { style = string.Format("width:{0}px", 200) })</td>
-            <td>@Html.Telerik().DropDownListFor(model => model.Discipline).BindTo(new SelectList(BLL.CRM_Logical.GetItem2(), "ID", "Name")).DropDownHtmlAttributes(new { style = string.Format("width:{0}px", 200) })</td>
-            <td>@Html.Telerik().DropDownListFor(model => model.Excution).BindTo(new SelectList(BLL.CRM_Logical.GetItem3(), "ID", "Name")).DropDownHtmlAttributes(new { style = string.Format("width:{0}px", 200) })</td>
+            <td>@Html.Telerik().DropDownListFor(model => model.Responsibility).BindTo(new SelectList(BLL.CRM_Logical.GetResponsibilityItems(), "ID", "Name", "«Î—°‘Ò")).DropDownHtmlAttributes(new { style = string.Format("width:{0}px", 200) })</td>
+            <td>@Html.Telerik().DropDownListFor(model => model.Discipline).BindTo(new SelectList(BLL.CRM_Logical.GetDisciplineItems(), "ID", "Name")).DropDownHtmlAttributes(new { style = string.Format("width:{0}px", 200) })</td>
+            <td>@Html.Telerik().DropDownListFor(model => model.Excution).BindTo(new SelectList(BLL.CRM_Logical.GetExcutionItems(), "ID", "Name")).DropDownHtmlAttributes(new { style = string.Format("width:{0}px", 200) })</td>
         </tr>
         <tr>
             <td>@Html.LabelFor(model => model.Targeting)</td>
@@ -38,9 +38,9 @@
             <td>@Html.LabelFor(model => model.Production)</td>
         </tr>
         <tr>
-            <td>@Html.Telerik().DropDownListFor(model => model.Targeting).BindTo(new SelectList(BLL.CRM_Logical.GetItem4(), "ID", "Name")).DropDownHtmlAttributes(new { style = string.Format("width:{0}px", 200) })</td>
-            <td>@Html.Telerik().DropDownListFor(model => model.Searching).BindTo(new SelectList(BLL.CRM_Logical.GetItem5(), "ID", "Name")).DropDownHtmlAttributes(new { style = string.Format("width:{0}px", 200) })</td>
-            <td>@Html.Telerik().DropDownListFor(model => model.Production).BindTo(new SelectList(BLL.CRM_Logical.GetItem6(), "ID", "Name")).DropDownHtmlAttributes(new { style = string.Format("width:{0}px", 200) })</td>
+            <td>@Html.Telerik().DropDownListFor(model => model.Targeting).BindTo(new SelectList(BLL.CRM_Logical.GetTargetingItems(), "ID", "Name")).DropDownHtmlAttributes(new { style = string.Format("width:{0}px", 200) })</td>
+            <td>@Html.Telerik().DropDownListFor(model => model.Searching).BindTo(new SelectList(BLL.CRM_Logical.GetSearchingItems(), "ID", "Name")).DropDownHtmlAttributes(new { style = string.Format("width:{0}px", 200) })</td>
+            <td>@Html.Telerik().DropDownListFor(model => model.Production).BindTo(new SelectList(BLL.CRM_Logical.GetProductionItems(), "ID", "Name")).DropDownHtmlAttributes(new { style = string.Format("width:{0}px", 200) })</td>
         </tr>
         <tr>
             <td>@Html.LabelFor(model => model.PitchPaper)</td>
@@ -48,9 +48,9 @@
             <td>@Html.LabelFor(model => model.MonthlyMeeting)</td>
         </tr>
         <tr>
-            <td>@Html.Telerik().DropDownListFor(model => model.PitchPaper).BindTo(new SelectList(BLL.CRM_Logical.GetItem7(), "ID", "Name")).DropDownHtmlAttributes(new { style = string.Format("width:{0}px", 200) })</td>
-            <td>@Html.Telerik().DropDownListFor(model => model.WeeklyMeeting).BindTo(new SelectList(BLL.CRM_Logical.GetItem8(), "ID", "Name")).DropDownHtmlAttributes(new { style = string.Format("width:{0}px", 200) })</td>
-            <td>@Html.Telerik().DropDownListFor(model => model.MonthlyMeeting).BindTo(new SelectList(BLL.CRM_Logical.GetItem9(), "ID", "Name")).DropDownHtmlAttributes(new { style = string.Format("width:{0}px", 200) })</td>
+            <td>@Html.Telerik().DropDownListFor(model => model.PitchPaper).BindTo(new SelectList(BLL.CRM_Logical.GetPitchPaperItems(), "ID", "Name")).DropDownHtmlAttributes(new { style = string.Format("width:{0}px", 200) })</td>
+            <td>@Html.Telerik().DropDownListFor(model => model.WeeklyMeeting).BindTo(new SelectList(BLL.CRM_Logical.GetWeeklyMeetingItems(), "ID", "Name")).DropDownHtmlAttributes(new { style = string.Format("width:{0}px", 200) })</td>
+            <td>@Html.Telerik().DropDownListFor(model => model.MonthlyMeeting).BindTo(new SelectList(BLL.CRM_Logical.GetMonthlyMeetingItems(), "ID", "Name")).DropDownHtmlAttributes(new { style = string.Format("width:{0}px", 200) })</td>
         </tr>
     </table>
 </div>    

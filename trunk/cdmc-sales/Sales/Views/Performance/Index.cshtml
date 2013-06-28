@@ -23,62 +23,72 @@
 var month = ViewBag.Month as int?;
 var query = ViewBag.fuzzyInput as string;
 }
-<fieldset>
-<legend>版块负责人考核</legend>
-@(Html.Telerik().Grid<_ManagerScore>().Name("manager")
 
-    .DataKeys(keys =>
+
+@{ 
+    if (ViewBag.RoleLevel == SuperManagerRequired.LVL || Utl.Employee.CurrentUserName=="ray")
+    { 
+        <fieldset>
+        <legend>版块负责人考核</legend>
+            @(Html.Telerik().Grid<_ManagerScore>().Name("manager")
+
+            .DataKeys(keys =>
+            {
+                keys.Add(o => o.ID);
+            })
+            .DataBinding(dataBinding =>
+            {
+                dataBinding.Ajax().Select("_SelectManagerIndex", "Performance", new { month = month })
+                    .Update("_UpdateManagerScore", "Performance", new { month = month });
+            })
+        .Columns(columns =>
+        {
+            columns.Bound(p => p.TargetName).Width(70);
+            columns.Bound(p => p.Assigner).Width(70);
+            columns.Bound(p => p.Responsibility).Width(80);
+            columns.Bound(p => p.Discipline).Width(50);
+            columns.Bound(p => p.Excution).Width(60);
+            columns.Bound(p => p.Targeting).Width(60);
+            columns.Bound(p => p.Searching).Width(100);
+            columns.Bound(p => p.Production).Width(80);
+            columns.Bound(p => p.PitchPaper).Width(80);
+            columns.Bound(p => p.WeeklyMeeting).Width(80);
+            columns.Bound(p => p.MonthlyMeeting).Width(80);
+            columns.Bound(p => p.Calllist).Width(80);
+            columns.Bound(p => p.AddLeads).Width(90);
+            columns.Bound(p => p.CheckIn).Width(90);
+            columns.Bound(p => p.Confirmed).Width(60);
+            //columns.Bound(p => p.Month).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
+            //columns.Bound(p => p.Year).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
+            columns.Command(commands =>
+            {
+                commands.Edit().ButtonType(GridButtonType.Text);
+                commands.Custom("Confirm")
+                 .Text("确认")
+                  .DataRouteValues(route => route.Add(o => o.ID)
+                                          .RouteKey("id")
+                                      )
+
+                 .Ajax(true)
+
+                 .Action("_ConfirmManagerScore", "Performance", new { month = month });
+            }).Title("打分").Width(60);
+        }).Editable(editing => editing
+                                .Mode(GridEditMode.PopUp).TemplateName("ManagerScoreEdit"))
+              .ClientEvents(e => e.OnRowDataBound("ChangeButtonTextForManager"))
+              .ClientEvents(events => events.OnEdit("ChangeWinTitleForManager"))
+              .ClientEvents(events => events.OnComplete("onManagerComplete"))
+              .ClientEvents(events => events.OnCommand("onManagerCommand"))
+          .Pageable(p => p.Style(GridPagerStyles.Status)
+               .PageOnScroll(true).PageSize(25)).Scrollable(scrolling => scrolling.Height(350)).Sortable().Resizable(r => r.Columns(true))
+                   )
+            </fieldset>
+    }
+}
+@{ 
+    if (Utl.Employee.AsLeader())
     {
-        keys.Add(o => o.ID);
-    })
-    .DataBinding(dataBinding =>
-    {
-        dataBinding.Ajax().Select("_SelectManagerIndex", "Performance", new { month = month })
-            .Update("_UpdateManagerScore", "Performance", new { month = month }); 
-    })
-.Columns(columns =>
-{
-    columns.Bound(p => p.TargetName).Width(70);
-    columns.Bound(p => p.Assigner).Width(70);
-    columns.Bound(p => p.Responsibility).Width(80);
-    columns.Bound(p => p.Discipline).Width(50);
-    columns.Bound(p => p.Excution).Width(60);
-    columns.Bound(p => p.Targeting).Width(60);
-    columns.Bound(p => p.Searching).Width(100);
-    columns.Bound(p => p.Production).Width(80);
-    columns.Bound(p => p.PitchPaper).Width(80);
-    columns.Bound(p => p.WeeklyMeeting).Width(80);
-    columns.Bound(p => p.MonthlyMeeting).Width(80);
-    columns.Bound(p => p.Calllist).Width(80);
-    columns.Bound(p => p.AddLeads).Width(90);
-    columns.Bound(p => p.CheckIn).Width(90);
-    columns.Bound(p => p.Confirmed).Width(60);
-    //columns.Bound(p => p.Month).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
-    //columns.Bound(p => p.Year).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
-    columns.Command(commands => { commands.Edit().ButtonType(GridButtonType.Text);
-                                  commands.Custom("Confirm")
-                                   .Text("确认")
-                                    .DataRouteValues(route => route.Add(o => o.ID)
-                                                            .RouteKey("id")
-                                                        )
-                                   
-                                   .Ajax(true)
-                                   
-                                   .Action("_ConfirmManagerScore", "Performance",new {month=month});
-    }).Title("打分").Width(60);
-}).Editable(editing => editing
-                        .Mode(GridEditMode.PopUp).TemplateName("ManagerScoreEdit"))
-      .ClientEvents(e => e.OnRowDataBound("ChangeButtonTextForManager"))
-      .ClientEvents(events => events.OnEdit("ChangeWinTitleForManager"))
-      .ClientEvents(events => events.OnComplete("onManagerComplete"))
-      .ClientEvents(events => events.OnCommand("onManagerCommand"))
-  .Pageable(p => p.Style(GridPagerStyles.Status)
-       .PageOnScroll(true).PageSize(25)).Scrollable(scrolling => scrolling.Height(350)).Sortable().Resizable(r => r.Columns(true))
-           )
-
-
-    </fieldset>
-<fieldset>
+        <fieldset>
 <legend>销售经理考核</legend>
 @(Html.Telerik().Grid<_TeamLeadPerformance>().Name("lead")
      .DataKeys(keys =>
@@ -88,7 +98,7 @@ var query = ViewBag.fuzzyInput as string;
     .DataBinding(dataBinding =>
     {
         dataBinding.Ajax().Select("_SelectLeadIndex", "Performance", new { month = month })
-            .Update("_UpdateTeamLeadPerformance", "Performance", new { month = month }); 
+            .Update("_UpdateTeamLeadPerformance", "Performance", new { month = month });
     })
 .Columns(columns =>
 {
@@ -111,7 +121,7 @@ var query = ViewBag.fuzzyInput as string;
         commands.Edit().ButtonType(GridButtonType.Text);
 
     }).Title("编辑").Width(80);
-    
+
 })
     .Editable(editing => editing
                                 .Mode(GridEditMode.PopUp).TemplateName("TeamLeadPerformanceEdit"))
@@ -121,8 +131,13 @@ var query = ViewBag.fuzzyInput as string;
        .PageOnScroll(true).PageSize(25)).Scrollable(scrolling => scrolling.Height(350)).Sortable().Resizable(r => r.Columns(true))
 )
 </fieldset>
-    
- <fieldset>
+    }
+}    
+
+@{ 
+    if (Utl.Employee.AsSales())
+    {
+        <fieldset>
 <legend>销售考核</legend>   
 @(Html.Telerik().Grid<_SalesPerformance>().Name("sales")
      .DataKeys(keys =>
@@ -132,7 +147,7 @@ var query = ViewBag.fuzzyInput as string;
     .DataBinding(dataBinding =>
     {
         dataBinding.Ajax().Select("_SelectSalesIndex", "Performance", new { month = month })
-            .Update("_UpdateSalesPerformance", "Performance", new { month = month});
+            .Update("_UpdateSalesPerformance", "Performance", new { month = month });
     })
 .Columns(columns =>
 {
@@ -155,12 +170,12 @@ var query = ViewBag.fuzzyInput as string;
         commands.Edit().ButtonType(GridButtonType.Text);
 
     }).Title("编辑").Width(80);
-}) .Editable(editing => editing
+}).Editable(editing => editing
                                 .Mode(GridEditMode.PopUp).TemplateName("SalesPerformanceEdit"))
           .ClientEvents(e => e.OnRowDataBound("ChangeButtonTextForSales"))
           .ClientEvents(events => events.OnEdit("ChangeWinTitleForSales"))
               .ClientEvents(events => events.OnDataBinding("dataBinding"))
-                  
+
 .Pageable(p => p.Style(GridPagerStyles.Status)
        .PageOnScroll(true).PageSize(35)).Scrollable(scrolling => scrolling.Height(350))
 .ToolBar(factory => factory
@@ -172,6 +187,9 @@ var query = ViewBag.fuzzyInput as string;
      </text>))
 )
 </fieldset>
+    }
+}    
+ 
 <fieldset>
     <legend>考核标准</legend>
     <table width="100%">
@@ -268,7 +286,7 @@ var query = ViewBag.fuzzyInput as string;
         var rowButton = $row.find(".t-grid-edit");
         var rowConfirmButton = $row.find(".t-grid-Confirm");
         rowButton[0].innerText = "打分";
-        if ((e.dataItem.User == "theresa")) {
+        if ((e.dataItem.RoleLevel == "800")) {
             if ((e.dataItem.Confirmed == "是")) {
                 rowButton.remove();
                 rowConfirmButton.remove();

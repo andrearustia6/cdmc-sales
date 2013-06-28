@@ -58,7 +58,8 @@
                     @Html.LabelFor(model => model.Payment)
                 </td>
                 <td>
-                    @Html.Telerik().CurrencyTextBoxFor(model => model.Payment).Enable(false).InputHtmlAttributes(new { style = "width:100px" })
+                   @Html.Telerik().NumericTextBoxFor(model => model.Payment).DecimalDigits(0).Enable(false).Spinners(false).InputHtmlAttributes(new { style = "width:60px" })
+                    @Html.DisplayFor(model => model.Currency)
                 </td>
             </tr>
             <tr>
@@ -206,7 +207,8 @@
                     @Html.LabelFor(model => model.Payment)
                 </td>
                 <td>
-                    @Html.Telerik().CurrencyTextBoxFor(model => model.Payment).Enable(false).InputHtmlAttributes(new { style = "width:100px" })
+                    @Html.Telerik().NumericTextBoxFor(model => model.Payment).DecimalDigits(0).Enable(false).Spinners(false).InputHtmlAttributes(new { style = "width:60px" })
+                    @Html.DisplayFor(model => model.Currency)
                 </td>
             </tr>
             <tr>
