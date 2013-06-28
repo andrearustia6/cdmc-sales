@@ -38,7 +38,7 @@
                     @Html.LabelFor(model => model.StartDate)
                 </td>
                 <td>
-                    @Html.Telerik().DatePickerFor(model => model.StartDate).Value(Model.ID == 0 ? DateTime.Now.StartOfMonth() : Model.StartDate).ClientEvents(e => e.OnChange("OnChange").OnLoad("OnChange"))
+                    @Html.Telerik().DatePickerFor(model => model.StartDate).Value(Model.ID == 0 ? DateTime.Now.StartOfMonth() : Model.StartDate).Format("yyyy/M/d").ClientEvents(e => e.OnChange("OnChange").OnLoad("OnChange"))
                     @Html.ValidationMessageFor(model => model.StartDate)
                 </td>
                 <td>
@@ -56,7 +56,7 @@
                     @Html.LabelFor(model => model.EndDate)
                 </td>
                 <td>
-                    @Html.Telerik().DatePickerFor(model => model.EndDate).Value(Model.ID == 0 ? DateTime.Now.EndOfMonth() : Model.EndDate)
+                    @Html.Telerik().DatePickerFor(model => model.EndDate).Value(Model.ID == 0 ? DateTime.Now.EndOfMonth() : Model.EndDate).Format("yyyy/M/d")
                     @Html.ValidationMessageFor(model => model.EndDate)
                 </td>
                 <td>
@@ -111,19 +111,15 @@
 }
 <script type="text/javascript">
 
-  
+
 
 
     function OnChange(e) {
         $("#hidenTd1").show();
         $("#hidenTd2").show();
-        if (e.value == null) {
-            var ds = e.currentTarget.defaultValue.replace(new RegExp(/(-)/g), ',');
-            var firstDate = new Date(ds);
-        }
-        else {
-            var firstDate = e.value;
-        }
+
+        var ds = e.currentTarget.value;
+        var firstDate = new Date(ds);
 
         firstDate.setDate(1);
         var endDate = new Date(firstDate);
@@ -132,7 +128,7 @@
         var month = firstDate.getMonth() + 1;
         var ofTheWeek = firstDate.getDay();
         var lastDay = endDate.getDate();
-        if (ofTheWeek == 1) {
+        if (ofTheWeek == 5) {
             $("#1stWeek").text(month + "-1～" + month + "-7");
             $("#2ndWeek").text(month + "-8～" + month + "-14");
             $("#3rdWeek").text(month + "-15～" + month + "-21");
@@ -150,14 +146,14 @@
             }
         }
         else {
-            if (ofTheWeek == 0) {
-                ofTheWeek = 7;
+            if (ofTheWeek > 0 && ofTheWeek < 5) {
+                ofTheWeek += 7;
             }
-            $("#1stWeek").text(month + "-1～" + month + "-" + (8 - ofTheWeek));
-            $("#2ndWeek").text(month + "-" + (9 - ofTheWeek) + "～" + month + "-" + (15 - ofTheWeek));
-            $("#3rdWeek").text(month + "-" + (16 - ofTheWeek) + "～" + month + "-" + (22 - ofTheWeek));
-            $("#4thWeek").text(month + "-" + (23 - ofTheWeek) + "～" + month + "-" + (29 - ofTheWeek));
-            $("#5thWeek").text(month + "-" + (30 - ofTheWeek) + "～" + month + "-" + lastDay);
+            $("#1stWeek").text(month + "-1～" + month + "-" + (12 - ofTheWeek));
+            $("#2ndWeek").text(month + "-" + (13 - ofTheWeek) + "～" + month + "-" + (19 - ofTheWeek));
+            $("#3rdWeek").text(month + "-" + (20 - ofTheWeek) + "～" + month + "-" + (26 - ofTheWeek));
+            $("#4thWeek").text(month + "-" + (27 - ofTheWeek) + "～" + month + "-" + (33 - ofTheWeek));
+            $("#5thWeek").text(month + "-" + (34 - ofTheWeek) + "～" + month + "-" + lastDay);
         }
     }
 </script>
