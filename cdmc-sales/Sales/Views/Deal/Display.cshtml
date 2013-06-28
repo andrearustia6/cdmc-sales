@@ -19,6 +19,13 @@
         Package</div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Package.Name)
+        @Html.TextBoxFor(model => model.PackageID, new { @style = "display:none" })
+    </div>
+    <div id="Polldivlabel" class="display-label" style="display:none">
+        @Html.LabelFor(model => model.Poll)
+    </div>
+    <div id="Polldiv" class="display-field" style="display:none"> 
+        @Html.DisplayFor(model => model.Poll)
     </div>
     <div class="display-label">
         合约付款日期</div>
@@ -58,7 +65,7 @@
     <div class="display-label">
         出单价格</div>
     <div class="display-field">
-        @String.Format("{0:#,##0}",Model.Payment)
+        @String.Format("{0:#,##0}", Model.Payment)
         @Html.DisplayFor(model => model.Currencytype.Name)
     </div>
     <div class="display-label">
@@ -78,3 +85,37 @@
     </div>
     @Html.HiddenFor(model => model.IsConfirm)
 </fieldset>
+<script type="text/javascript">
+    setpollcount();
+    function setpollcount() {
+        var packageid = $("#PackageID").val();
+        if (packageid == "") {
+            $("#Polldiv").hide();
+            $("#Polldivlabel").hide();
+            $("#Poll").val("0");
+            return;
+        }
+        $.ajax({
+            url: "/Package/GetParticipantTypeName",
+            type: "post",
+            dataType: "json",
+            data: { id: packageid },
+            error: function (a, b, c) {
+                alert("获取参会类型失败，请重试。");
+            },
+            success: function (result) {
+                if (result == "Delegate") {
+                    $("#Polldiv").show();
+                    $("#Polldivlabel").show();
+                    if ($("#Poll").val() == "")
+                        $("#Poll").attr("value", ''); //填充内容
+                }
+                else {
+                    $("#Polldiv").hide();
+                    $("#Polldivlabel").hide();
+                    $("#Poll").val("0");
+                }
+            }
+        });
+    }
+</script>
