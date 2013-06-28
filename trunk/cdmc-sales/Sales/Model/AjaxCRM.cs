@@ -190,7 +190,7 @@ namespace Model
                            CompanyID = c.CompanyID,
                            CompanyNameEN = c.Company.Name_EN,
                            CompanyNameCH = c.Company.Name_CH,
-                           CompanyPayment = deals.Where(d => d.CompanyRelationshipID == c.ID).Sum(s => s.Payment),
+                           CompanyPayment = deals.Where(d => d.CompanyRelationshipID == c.ID ).Sum(s => s.Payment),
                            CRMID = c.ID,
                            ProgressID = c.ProgressID,
                            AreaID = c.Company.AreaID,
@@ -213,12 +213,8 @@ namespace Model
                                                                                 LeadCallTypeCode = call.LeadCallType.Code
                                                                             })
                                         }),
-                            AjaxPayments=(from p in deals.Where(d => d.CompanyRelationshipID == c.ID).GroupBy(d=>d.CurrencyTypeID)
-                                          select new AjaxPaymentCurrency
-                                          {
-                                              CompanyPayment=p.Sum(d=>d.Payment),
-                                              Currency=p.Select(d=>d.Currencytype.Name).FirstOrDefault()
-                                          })
+                           RMBCompanyPayment = deals.Where(d => d.CompanyRelationshipID == c.ID && d.Currencytype.Name == "RMB").Sum(s => s.Payment) == null ? 0 : deals.Where(d => d.CompanyRelationshipID == c.ID && d.Currencytype.Name == "RMB").Sum(s => s.Payment),
+                           USDCompanyPayment = deals.Where(d => d.CompanyRelationshipID == c.ID && d.Currencytype.Name == "USD").Sum(s => s.Payment) == null ? 0 : deals.Where(d => d.CompanyRelationshipID == c.ID && d.Currencytype.Name == "USD").Sum(s => s.Payment)
 
 
                        };
@@ -354,8 +350,8 @@ namespace Model
             }
         }
         public decimal? CompanyPayment { set; private get; }
-
-        public IEnumerable<AjaxPaymentCurrency> AjaxPayments { get; set; }
+        public decimal RMBCompanyPayment { set;  get; }
+        public decimal USDCompanyPayment { set;  get; }
         #endregion
 
         public string DisplayText
@@ -550,19 +546,5 @@ namespace Model
         public bool Editable { get; set; }
 
     }
-    public class AjaxPaymentCurrency
-    {
-
-        public string CompanyPaymentString
-        {
-            get
-            {
-                return CompanyPayment == 0 ? string.Empty : ((Decimal)CompanyPayment).ToString("####");
-            }
-        }
-        public decimal? CompanyPayment { set; private get; }
-
-        public string Currency { get; set; }
-
-    }
+    
 }
