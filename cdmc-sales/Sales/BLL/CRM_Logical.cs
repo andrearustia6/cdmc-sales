@@ -69,7 +69,7 @@ namespace BLL
                     var deals = CRM_Logical.GetDeals().Where(w => w.ActualPaymentDate.Value != null && w.ActualPaymentDate.Value.Month == month);
                     var year = DateTime.Now.Year;
                     //获取登录者（考核人）打分的记录
-                    var scores = from r in CH.DB.ManagerScores.Where(w => w.Month == month && w.Year == year && w.Assigner == "theresa") select r;
+                    var scores = from r in CH.DB.ManagerScores.Where(w => w.Month == month && w.Year == year) select r;
                     var lps = from l in managers
                               join sc in scores on l equals sc.TargetName into Joinedscores
                               from aa in Joinedscores.DefaultIfEmpty()
@@ -1277,10 +1277,15 @@ namespace BLL
         /// 参照《销售部月度考核（2013准事业部负责人版）2月新版.xls》
         /// </summary>
         /// <returns></returns>
-        public static List<_Item> GetItem1()
+        public static List<_Item> GetResponsibilityItems()
         {
             List<_Item> itemList = new List<_Item>();
             _Item item = new _Item();
+            item.ID = 0;
+            item.Name = "请选择";
+            itemList.Add(item);
+
+            item = new _Item();
             item.ID = 1;
             item.Name = "1'-对工作基本上没有热情，消极被动，只安于现状，缺乏工作责任心，经常推卸责任，几乎没有加班";
             itemList.Add(item);
@@ -1300,10 +1305,15 @@ namespace BLL
         /// 参照《销售部月度考核（2013准事业部负责人版）2月新版.xls》
         /// </summary>
         /// <returns></returns>
-        public static List<_Item> GetItem2()
+        public static List<_Item> GetDisciplineItems()
         {
             List<_Item> itemList = new List<_Item>();
             _Item item = new _Item();
+            item.ID = 0;
+            item.Name = "请选择";
+            itemList.Add(item);
+
+            item = new _Item();
             item.ID = 1;
             item.Name = "1'-基本不能遵守工作规定、制度和考勤要求，迟到或早退超过五次，或有缺勤，或工作中有其他违规情况发生";
             itemList.Add(item);
@@ -1323,10 +1333,15 @@ namespace BLL
         /// 参照《销售部月度考核（2013准事业部负责人版）2月新版.xls》
         /// </summary>
         /// <returns></returns>
-        public static List<_Item> GetItem3()
+        public static List<_Item> GetExcutionItems()
         {
             List<_Item> itemList = new List<_Item>();
             _Item item = new _Item();
+            item.ID = 0;
+            item.Name = "请选择";
+            itemList.Add(item);
+
+            item = new _Item();
             item.ID = 1;
             item.Name = "1'-对上级下达的招聘，培训等任务比较消极，工作结果不尽人意";
             itemList.Add(item);
@@ -1346,10 +1361,15 @@ namespace BLL
         /// 参照《销售部月度考核（2013准事业部负责人版）2月新版.xls》
         /// </summary>
         /// <returns></returns>
-        public static List<_Item> GetItem4()
+        public static List<_Item> GetTargetingItems()
         {
             List<_Item> itemList = new List<_Item>();
             _Item item = new _Item();
+            item.ID = 0;
+            item.Name = "请选择";
+            itemList.Add(item);
+
+            item = new _Item();
             item.ID = 1;
             item.Name = "1'-计划缺失，对目标的认识不够充分，团队目标不明确，不能够充分利用目标进行团队激励";
             itemList.Add(item);
@@ -1369,10 +1389,15 @@ namespace BLL
         /// 参照《销售部月度考核（2013准事业部负责人版）2月新版.xls》
         /// </summary>
         /// <returns></returns>
-        public static List<_Item> GetItem5()
+        public static List<_Item> GetSearchingItems()
         {
             List<_Item> itemList = new List<_Item>();
             _Item item = new _Item();
+            item.ID = 0;
+            item.Name = "请选择";
+            itemList.Add(item);
+
+            item = new _Item();
             item.ID = 1;
             item.Name = "1'-随机检查，提醒就做，不提醒就不做";
             itemList.Add(item);
@@ -1392,10 +1417,15 @@ namespace BLL
         /// 参照《销售部月度考核（2013准事业部负责人版）2月新版.xls》
         /// </summary>
         /// <returns></returns>
-        public static List<_Item> GetItem6()
+        public static List<_Item> GetProductionItems()
         {
             List<_Item> itemList = new List<_Item>();
             _Item item = new _Item();
+            item.ID = 0;
+            item.Name = "请选择";
+            itemList.Add(item);
+
+            item = new _Item();
             item.ID = 1;
             item.Name = "1'-协调缺失，项目进度受影响";
             itemList.Add(item);
@@ -1415,10 +1445,15 @@ namespace BLL
         /// 参照《销售部月度考核（2013准事业部负责人版）2月新版.xls》
         /// </summary>
         /// <returns></returns>
-        public static List<_Item> GetItem7()
+        public static List<_Item> GetPitchPaperItems()
         {
             List<_Item> itemList = new List<_Item>();
             _Item item = new _Item();
+            item.ID = 0;
+            item.Name = "请选择";
+            itemList.Add(item);
+
+            item = new _Item();
             item.ID = 1;
             item.Name = "1'-内容几乎没有更新，效果较差";
             itemList.Add(item);
@@ -1438,10 +1473,15 @@ namespace BLL
         /// 参照《销售部月度考核（2013准事业部负责人版）2月新版.xls》
         /// </summary>
         /// <returns></returns>
-        public static List<_Item> GetItem8()
+        public static List<_Item> GetWeeklyMeetingItems()
         {
             List<_Item> itemList = new List<_Item>();
             _Item item = new _Item();
+            item.ID = 0;
+            item.Name = "请选择";
+            itemList.Add(item);
+
+            item = new _Item();
             item.ID = 1;
             item.Name = "1'-每周销售例会准备不成分，组织随意，效果较差";
             itemList.Add(item);
@@ -1461,10 +1501,15 @@ namespace BLL
         /// 参照《销售部月度考核（2013准事业部负责人版）2月新版.xls》
         /// </summary>
         /// <returns></returns>
-        public static List<_Item> GetItem9()
+        public static List<_Item> GetMonthlyMeetingItems()
         {
             List<_Item> itemList = new List<_Item>();
             _Item item = new _Item();
+            item.ID = 0;
+            item.Name = "请选择";
+            itemList.Add(item);
+
+            item = new _Item();
             item.ID = 2;
             item.Name = "2'-每周销售例会准备不成分，组织随意，效果较差";
             itemList.Add(item);
