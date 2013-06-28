@@ -174,7 +174,7 @@
         @Html.TextAreaFor(model => model.TicketDescription)
         @Html.ValidationMessageFor(model => model.TicketDescription)
     </div>
-    <div class="editor-label">
+   @* <div class="editor-label">
         @Html.LabelFor(model => model.Abandoned, "是否坏账")
     </div>
     <div class="editor-field">
@@ -187,7 +187,7 @@
     <div class="editor-field">
         @Html.TextAreaFor(m => m.AbandonReason)
         @Html.ValidationMessageFor(model => model.AbandonReason)
-    </div>
+    </div>*@
     <div class="editor-field">
         @Html.HiddenFor(m => m.IsConfirm)
     </div>
