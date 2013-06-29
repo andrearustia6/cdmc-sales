@@ -8,7 +8,6 @@
 <script type="text/javascript" src=@Url.Content(@"/scripts/jquery-1.6.4.min.js")></script>@*确保在页面能引用到jquery*@
 <script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
 <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
-
 @using (Html.BeginForm())
 {
     @Html.ValidationSummary(true)
@@ -25,24 +24,23 @@
             @Html.Label("员工岗位")
         </div>
         <div class="editor-field">
-        @{
+            @{
           
-            List<Role> data;
-            var lvl = Employee.CurrentRole.Level;
-            if (lvl == 99999)
-            {
-                data = CH.GetAllData<Entity.Role>(); 
+    List<Role> data;
+    var lvl = Employee.CurrentRole.Level;
+    if (lvl == 99999)
+    {
+        data = CH.GetAllData<Entity.Role>();
+    }
+    else
+    {
+        data = CH.GetAllData<Entity.Role>(r => r.Level <= 10000);
+    }
+                @Html.DropDownListFor(m => m.RoleID, new SelectList(data, "ID", "Name"), "-请选择-")
             }
-            else
-            {
-                data = CH.GetAllData<Entity.Role>(r=>r.Level<=10000); 
-            }
-             @Html.DropDownListFor(m => m.RoleID, new SelectList(data, "ID", "Name"), "-请选择-")
-       }
-           
             @Html.ValidationMessageFor(m => m.RoleID)
         </div>
-         <div class="editor-label">
+        <div class="editor-label">
             @Html.Label("是否激活")
         </div>
         <div class="editor-field">
@@ -56,14 +54,15 @@
             @Html.Telerik().DatePickerFor(m => m.StartDate)
             @Html.ValidationMessageFor(m => m.StartDate)
         </div>
-
         <div class="editor-label">
             @Html.Label("设置职级")
         </div>
         <div class="editor-field">
-            @Html.DropDownListFor(m => m.ExpLevelID, new SelectList(CH.GetAllData<ExpLevel>(),"ID","Name"),"-请选择-")
+            @Html.DropDownListFor(m => m.ExpLevelID, new SelectList(CH.GetAllData<ExpLevel>(), "ID", "Name"), "-请选择-")
             @Html.ValidationMessageFor(m => m.ExpLevelID)
         </div>
+        @Html.HiddenFor(m => m.Email)
+        @Html.HiddenFor(m => m.DepartmentID);
     </fieldset>
     
     <div>

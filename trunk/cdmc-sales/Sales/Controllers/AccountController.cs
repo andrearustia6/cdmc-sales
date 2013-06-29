@@ -58,7 +58,7 @@ namespace MvcGlobalAuthorize.Controllers
                         //if(Employee.CurrentRole.Level==DirectorRequired.LVL)
                         //    return RedirectToAction("ProjectsCheckInByMonth", "DirectorReport");
                         //else
-                            return RedirectToAction("Index", "account");
+                        return RedirectToAction("Index", "account");
                     }
                 }
                 else
@@ -242,6 +242,14 @@ namespace MvcGlobalAuthorize.Controllers
                     objProfile.SetPropertyValue("RoleLevelID", 0);
                     objProfile.SetPropertyValue("IsActivated", false);
                     //FormsAuthentication.SetAuthCookie(model.UserName, false /* createPersistentCookie */);
+
+                    var emprole = new EmployeeRole()
+                    {
+                        AccountName = model.UserName,
+                        Email = model.Email
+                    };
+                    CH.Create<EmployeeRole>(emprole);
+
                     return RedirectToAction("Index", "Account");
                 }
                 else
@@ -308,6 +316,19 @@ namespace MvcGlobalAuthorize.Controllers
                     user.Email = model.Email;
                     Membership.UpdateUser(user);
 
+                    var targetemp = from e in CH.DB.EmployeeRoles where e.AccountName == model.UserName select e;
+                    if (targetemp != null && targetemp.Count() > 0)
+                    {
+                        var emp = targetemp.FirstOrDefault();
+
+                        emp.Email = model.Email;
+                        emp.DepartmentID = model.DepartmentID;
+
+                        var data = CH.DB.Entry<EmployeeRole>(emp);
+                        data.State = System.Data.EntityState.Modified;
+
+                    }
+
                     ProfileBase objProfile = ProfileBase.Create(model.UserName);
 
                     objProfile.SetPropertyValue("Contact", model.Contact);
@@ -332,22 +353,27 @@ namespace MvcGlobalAuthorize.Controllers
             um.UserName = name;
 
             ProfileBase objProfile = ProfileBase.Create(name);
-           
 
-              var targetemp = from e in CH.DB.EmployeeRoles where e.AccountName == name select e;
-              if (targetemp != null && targetemp.Count() > 0)
-              {
-                  var emp = targetemp.FirstOrDefault();
-                  um.RoleID = emp.RoleID.Value;
-              }
-              else
-              {
-                  object data = null;
-                  int roleid;
-                  data = objProfile.GetPropertyValue("RoleLevelID");
-                  Int32.TryParse(data.ToString(), out roleid);
-                  um.RoleID = roleid;
-              }
+
+            var targetemp = from e in CH.DB.EmployeeRoles where e.AccountName == name select e;
+            if (targetemp != null && targetemp.Count() > 0)
+            {
+                var emp = targetemp.FirstOrDefault();
+                if (emp.RoleID != null)
+                {
+                    um.RoleID = emp.RoleID.Value;
+                }
+                um.DepartmentID = emp.DepartmentID;
+                um.Email = emp.Email;
+            }
+            else
+            {
+                object data = null;
+                int roleid;
+                data = objProfile.GetPropertyValue("RoleLevelID");
+                Int32.TryParse(data.ToString(), out roleid);
+                um.RoleID = roleid;
+            }
 
             object StartDate;
             DateTime startdate;
@@ -368,10 +394,11 @@ namespace MvcGlobalAuthorize.Controllers
             Int32.TryParse(explevel.ToString(), out explevelid);
             um.ExpLevelID = explevelid;
 
+
             return View(um);
         }
 
-      
+
 
         [HttpPost]
         [DirectorRequired]
@@ -402,15 +429,29 @@ namespace MvcGlobalAuthorize.Controllers
                     {
                         var emp = targetemp.FirstOrDefault();
                         emp.RoleID = model.RoleID;
+
+                        emp.ExpLevelID = model.ExpLevelID;
+                        emp.StartDate = model.StartDate;
+                        emp.DepartmentID = model.DepartmentID;
+
+
                         var data = CH.DB.Entry<EmployeeRole>(emp);
                         data.State = System.Data.EntityState.Modified;
-                        
+
                     }
                     else
                     {
-                        var emprole = new EmployeeRole() { RoleID = model.RoleID, AccountName = model.UserName };
+                        var emprole = new EmployeeRole()
+                        {
+                            RoleID = model.RoleID,
+                            AccountName = model.UserName,
+                            ExpLevelID = model.ExpLevelID,
+                            StartDate = model.StartDate,
+                            DepartmentID = model.DepartmentID,
+
+                        };
                         CH.DB.Set<EmployeeRole>().Add(emprole);
-          
+
                     }
                     CH.DB.SaveChanges();
                     return RedirectToAction("Index");
@@ -483,7 +524,7 @@ namespace MvcGlobalAuthorize.Controllers
         {
 
             var role = Employee.CurrentRole;
-            var list = new List<MembershipUser>() ;
+            var list = new List<MembershipUser>();
             if (role != null)
             {
                 if (role.Level < 500)
@@ -502,7 +543,7 @@ namespace MvcGlobalAuthorize.Controllers
             }
 
             //Membership.GetUser("vicky").UnlockUser();
-          
+
 
             List<Model.AjaxViewAccount> users = new List<Model.AjaxViewAccount>();
             foreach (var item in list)

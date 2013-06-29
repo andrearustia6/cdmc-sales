@@ -861,7 +861,7 @@ namespace Model
     {
         public int ID { set; get; }
 
-         [Display(Name = "版块负责人")]
+        [Display(Name = "版块负责人")]
         public string Manger { get; set; }
 
         public int Month { get { return EndDate.Month; } }
@@ -912,5 +912,36 @@ namespace Model
 
         [Display(Name = "创建时间")]
         public DateTime? CreatedDate { get; set; }
+    }
+
+    public class AjaxEmployee
+    {
+        public int ID { set; get; }
+
+        [Display(Name = "用户名称")]
+        public string AccountName { get; set; }
+
+        [Display(Name = "职级名称")]
+        public string RoleName { get; set; }
+        public int? RoleID { get; set; }
+
+        [Display(Name = "部门名称")]
+        public string DepartmentName { get; set; }
+        public int? DepartmentID { get; set; }
+
+        [Display(Name = "级别")]
+        public string ExpLevelName { get; set; }
+        public int? ExpLevelID { get; set; }
+
+        [Display(Name = "入职时间")]
+        public DateTime? StartDate { get; set; }
+
+        [Display(Name = "邮件地址")]
+        [RegularExpression(@"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}", ErrorMessage = "请输入的有效的工作邮箱")]
+        public string Email { get; set; }
+
+
+
+
     }
 }
