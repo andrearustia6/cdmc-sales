@@ -1,0 +1,49 @@
+﻿@model Model.AjaxEmployee
+@using Entity
+@using Utl
+<fieldset style="padding: 10px; margin: 10px">
+    <legend>帐号</legend>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.AccountName)
+    </div>
+    <div class="editor-field">
+        @Html.TextBoxFor(model => model.AccountName, new { style = "width:150px" })<br />
+        @Html.ValidationMessageFor(model => model.AccountName)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.RoleName)
+    </div>
+    <div class="editor-field">
+        @Html.DropDownListFor(model => model.RoleID, new SelectList(CH.GetAllData<Role>(), "ID", "Name"), "-请选择-", new { style = "width:150px" })<br />
+        @Html.ValidationMessageFor(model => model.RoleID)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.DepartmentName)
+    </div>
+    <div class="editor-field">
+        @Html.DropDownListFor(model => model.DepartmentID, new SelectList(CH.GetAllData<Department>(), "ID", "Name"), "-请选择-", new { style = "width:150px" })<br />
+        @Html.ValidationMessageFor(model => model.DepartmentID)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.ExpLevelName)
+    </div>
+    <div class="editor-field">
+        @Html.DropDownListFor(model => model.ExpLevelID, new SelectList(CH.GetAllData<ExpLevel>(), "ID", "Name"), "-请选择-", new { style = "width:150px" })<br />
+        @Html.ValidationMessageFor(model => model.ExpLevelID)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.StartDate)
+    </div>
+    <div class="editor-field">
+        @Html.Telerik().DatePickerFor(model => model.StartDate).HtmlAttributes(new { style = "width:150px" })<br />
+        @Html.ValidationMessageFor(model => model.StartDate)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.Email)
+    </div>
+    <div class="editor-field">
+        @Html.TextBoxFor(model => model.Email, new { style = "width:150px" })<br />
+        @Html.ValidationMessageFor(model => model.Email)
+    </div>
+    @Html.HiddenFor(model => model.ID)
+</fieldset>

@@ -1723,6 +1723,7 @@
     <Content Include="Views\Shared\EditorTemplates\ManagerScoreEdit.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\TeamLeadPerformanceEdit.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\SalesPerformanceEdit.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\AjaxEmployee.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\TargetOfMonthForMember\Confirm.cshtml" />
