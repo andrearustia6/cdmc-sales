@@ -14,14 +14,27 @@
             <legend>新增项目月目标</legend>
           }
         }
+        @Html.HiddenFor(m => m.IsConfirm)
+        @Html.HiddenFor(m => m.IsAdminConfirm)
+        @Html.HiddenFor(m => m.Confirmor)
+        @Html.HiddenFor(m => m.AdminConfirmor)
         <table style="padding: 10px; margin: 10px">
             <tr>
                 <td>
                     @Html.LabelFor(model => model.ProjectID, "项目名称")
                 </td>
                 <td>
-                    @Html.DropDownListFor(m => m.ProjectID, new SelectList(BLL.CRM_Logical.GetUserInvolveProject(), "ID", "Name"), new { style = "width:135px" })
-                    @Html.ValidationMessageFor(model => model.ProjectID)
+                    @{if (Model.IsAdminConfirm == true)
+                      {
+                        @Html.DropDownListFor(m => m.ProjectID, new SelectList(BLL.CRM_Logical.GetUserInvolveProject(), "ID", "Name"), new { disabled = "disabled", style = "width:135px" })
+                        @Html.HiddenFor(model => model.ProjectID)
+                      }
+                      else
+                      {
+                        @Html.DropDownListFor(m => m.ProjectID, new SelectList(BLL.CRM_Logical.GetUserInvolveProject(), "ID", "Name"), new { style = "width:135px" })
+                        @Html.ValidationMessageFor(model => model.ProjectID)
+                      }
+                    }
                 </td>
                 <td style="width: 75px">
                     <label id="1stWeek">
@@ -38,8 +51,17 @@
                     @Html.LabelFor(model => model.StartDate)
                 </td>
                 <td>
-                    @Html.Telerik().DatePickerFor(model => model.StartDate).Value(Model.ID == 0 ? DateTime.Now.StartOfMonth() : Model.StartDate).Format("yyyy/M/d").ClientEvents(e => e.OnChange("OnChange").OnLoad("OnChange"))
-                    @Html.ValidationMessageFor(model => model.StartDate)
+                    @{if (Model.IsAdminConfirm == true)
+                      {
+                        @Html.Telerik().DatePickerFor(model => model.StartDate).Value(Model.ID == 0 ? DateTime.Now.StartOfMonth() : Model.StartDate).Format("yyyy/M/d").ClientEvents(e => e.OnChange("OnChange").OnLoad("OnChange")).Enable(false)
+                        @Html.HiddenFor(model => model.StartDate)
+                      }
+                      else
+                      {
+                        @Html.Telerik().DatePickerFor(model => model.StartDate).Value(Model.ID == 0 ? DateTime.Now.StartOfMonth() : Model.StartDate).Format("yyyy/M/d").ClientEvents(e => e.OnChange("OnChange").OnLoad("OnChange"))
+                        @Html.ValidationMessageFor(model => model.StartDate)
+                      }
+                    }
                 </td>
                 <td>
                     <label id="2ndWeek">
@@ -56,8 +78,17 @@
                     @Html.LabelFor(model => model.EndDate)
                 </td>
                 <td>
-                    @Html.Telerik().DatePickerFor(model => model.EndDate).Value(Model.ID == 0 ? DateTime.Now.EndOfMonth() : Model.EndDate).Format("yyyy/M/d")
-                    @Html.ValidationMessageFor(model => model.EndDate)
+                    @{if (Model.IsAdminConfirm == true)
+                      {
+                        @Html.Telerik().DatePickerFor(model => model.EndDate).Value(Model.ID == 0 ? DateTime.Now.EndOfMonth() : Model.EndDate).Format("yyyy/M/d").Enable(false)
+                        @Html.HiddenFor(model => model.EndDate)
+                      }
+                      else
+                      {
+                        @Html.Telerik().DatePickerFor(model => model.EndDate).Value(Model.ID == 0 ? DateTime.Now.EndOfMonth() : Model.EndDate).Format("yyyy/M/d")
+                        @Html.ValidationMessageFor(model => model.EndDate)
+                      }
+                    }
                 </td>
                 <td>
                     <label id="3rdWeek">
@@ -74,8 +105,17 @@
                     @Html.LabelFor(model => model.Deal)
                 </td>
                 <td>
-                    @Html.Telerik().CurrencyTextBoxFor(model => model.Deal)
-                    @Html.ValidationMessageFor(model => model.Deal)
+                    @{if (Model.IsAdminConfirm == true)
+                      {
+                        @Html.Telerik().CurrencyTextBoxFor(model => model.Deal).Enable(false)
+                        @Html.HiddenFor(model => model.Deal)
+                      }
+                      else
+                      {
+                        @Html.Telerik().CurrencyTextBoxFor(model => model.Deal)
+                        @Html.ValidationMessageFor(model => model.Deal)
+                      }
+                    }
                 </td>
                 <td>
                     <label id="4thWeek">
@@ -92,8 +132,17 @@
                     @Html.LabelFor(model => model.CheckIn)
                 </td>
                 <td>
-                    @Html.Telerik().CurrencyTextBoxFor(model => model.CheckIn)
-                    @Html.ValidationMessageFor(model => model.CheckIn)
+                    @{if (Model.IsAdminConfirm == true)
+                      {
+                        @Html.Telerik().CurrencyTextBoxFor(model => model.CheckIn).Enable(false)
+                        @Html.HiddenFor(model => model.CheckIn)
+                      }
+                      else
+                      {
+                        @Html.Telerik().CurrencyTextBoxFor(model => model.CheckIn)
+                        @Html.ValidationMessageFor(model => model.CheckIn)
+                      }
+                    }
                 </td>
                 <td id="hidenTd1">
                     <label id="5thWeek">
