@@ -43,6 +43,8 @@ namespace Sales.Controllers
                     c.Company.Leads = c.Company.Leads.Where(l => l.ID == leadid).ToList();
                 }
                 var deals = CRM_Logical.GetDeals(true);
+                decimal rmb= deals.Where(d => d.CompanyRelationshipID == c.ID && d.Currencytype.Name == "RMB").Count() ==0 ? 0 : deals.Where(d => d.CompanyRelationshipID == c.ID && d.Currencytype.Name == "RMB").Sum(s => s.Payment);
+                decimal usd = deals.Where(d => d.CompanyRelationshipID == c.ID && d.Currencytype.Name == "USD").Count()==0 ? 0 : deals.Where(d => d.CompanyRelationshipID == c.ID && d.Currencytype.Name == "USD").Sum(s => s.Payment);
                 if (c != null)
                 {
                     var data = new AjaxCRM()
@@ -103,7 +105,9 @@ namespace Sales.Controllers
                                                           LeadCallID = call.ID,
                                                           Result = call.Result
                                                       })
-                                     })
+                                     }),
+                        RMBCompanyPayment = rmb,
+                        USDCompanyPayment = usd
                     };
                     return PartialView(@"~\views\salesex\salesexitem.cshtml", data);
                 }
