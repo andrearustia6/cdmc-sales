@@ -326,7 +326,7 @@ namespace MvcGlobalAuthorize.Controllers
 
                         var data = CH.DB.Entry<EmployeeRole>(emp);
                         data.State = System.Data.EntityState.Modified;
-
+                        CH.DB.SaveChanges();
                     }
 
                     ProfileBase objProfile = ProfileBase.Create(model.UserName);
