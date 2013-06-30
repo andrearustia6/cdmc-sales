@@ -6,23 +6,21 @@
   <div class="fenge">
         <div class="fenge_2">
             <span id="currentCompanyName" style="font-weight:bold">@Model.CompanyDisplayName </span>
-            <span id="currentCompanyName" style="font-weight:bold">RMB出单金额:</span>
-            @if (@Model.RMBCompanyPayment == null)
+            
+            @if (@Model.RMBCompanyPayment != 0)
             {
-            <span id="currentCompanyName" style="font-weight:bold">0</span>
+                <span id="currentCompanyName" style="font-weight:bold">，RMB出单金额:</span>
+                <span id="currentCompanyName" style="font-weight:bold">￥@String.Format("{0:N0}", @Model.RMBCompanyPayment)</span>
             }
-            else
+            
+            @if (@Model.USDCompanyPayment != 0)
             {
-                <span id="currentCompanyName" style="font-weight:bold">$@String.Format("{0:N0}", @Model.RMBCompanyPayment)</span>
-            }
-            <span id="currentCompanyName" style="font-weight:bold">USD出单金额:</span>
-            @if (@Model.RMBCompanyPayment == null)
-            {
-            <span id="currentCompanyName" style="font-weight:bold">0</span>
-            }
-            else
-            {
+                <span id="currentCompanyName" style="font-weight:bold">，USD出单金额:</span>
                 <span id="currentCompanyName" style="font-weight:bold">$@String.Format("{0:N0}", @Model.USDCompanyPayment)</span>
+            }
+            @if (@Model.USDCompanyPayment == 0 && @Model.RMBCompanyPayment == 0)
+            {
+                <span id="currentCompanyName" style="font-weight:bold">，出单金额:0</span>
             }
             <input class="salebtn" style=" background-image:url('../images/chudan.jpg');" type="button" onclick="onQuickAddDeal(@(Model.ProjectID),@(Model.CRMID));" />
             <input class="salebtn" style=" background-image:url('../images/tianjia_3.jpg');" type="button" onclick="onLeadAdd(@(Model.CompanyID))" />
