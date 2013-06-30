@@ -220,7 +220,7 @@ namespace BLL
                                       RoleLevel = rolelvl,
                                       ID = scores.Where(w => w.TargetName == l).Count() == 0 ? 0 : scores.Where(w => w.TargetName == l).Select(s => s.ID).FirstOrDefault(),
                                       Target = CH.DB.TargetOfMonthForMembers.Where(t => t.Member.Name == l && t.StartDate.Month == month && t.Project.IsActived == true).Sum(s => s.CheckIn),
-                                      CheckIn = deals.Where(d => d.Project.TeamLeader == l).Sum(s => s.Income),
+                                      CheckIn = deals.Where(d => d.Sales == l).Sum(s => s.Income),
                                       Name = l,
                                       User = user,
                                       Rate = scores.Where(w => w.TargetName == l).Count() == 0 ? 1 : scores.Where(w => w.TargetName == l).Select(s => s.Rate).FirstOrDefault(), //rates.Where(w => w.TargetName == l).Average(s => s.Rate) == null ? 1 : scores.Where(w => w.TargetName == l).Average(s => s.Score),
