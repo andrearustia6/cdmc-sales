@@ -830,8 +830,6 @@ namespace BLL
                 //取得要导入的公司
                 var comapnytoexport = CH.GetAllData<CompanyRelationship>(c => c.ProjectID != null && sourceprojectids.Contains(c.ProjectID.Value)).Select(s => s.Company);
 
-                //var crtoexport = CH.GetAllData<CompanyRelationship>(c => c.ProjectID != null && sourceprojectids.Contains(c.ProjectID.Value));
-
                 var crms = from c in comapnytoexport
                            select new CompanyRelationship()
                            {
@@ -841,8 +839,7 @@ namespace BLL
                                Project = p,
                                Creator = user,
                                CreatedDate = DateTime.Now,
-                               MarkForDelete = false //,
-                               //LeadCalls = c.LeadCalls
+                               MarkForDelete = false 
                            };
                 // Company.IsCompanyExist();
 
@@ -887,25 +884,24 @@ namespace BLL
 
                     p.CompanyRelationships.AddRange(importCrms);
                     CH.Edit<Project>(p);
-
-                    if (importLeadCalls != null && importLeadCalls.Count() > 0)
-                    {
-                        for (int i = 0; i < importLeadCalls.Count();i++ )
-                        {
-                            if (importLeadCalls.ElementAt(i) != null && importLeadCalls.ElementAt(i).Count() > 0)
-                            {
-                                for (int j = 0; j < importLeadCalls.ElementAt(i).Count(); j++)
-                                {
-                                    var leadcall = importLeadCalls.ElementAt(i).ElementAt(j);
-                                    var crmid = p.CompanyRelationships.Where(crs =>
-                                                crs.CompanyID == leadcall.CompanyID).FirstOrDefault().ID;
-                                    leadcall.CompanyRelationshipID = crmid;
-                                    leadcall.IsImport = true;
-                                    CH.Create<LeadCall>(leadcall);
-                                }
-                            }
-                        }
-                    }
+                    //if (importLeadCalls != null && importLeadCalls.Count() > 0)
+                    //{
+                    //    for (int i = 0; i < importLeadCalls.Count();i++ )
+                    //    {
+                    //        if (importLeadCalls.ElementAt(i) != null && importLeadCalls.ElementAt(i).Count() > 0)
+                    //        {
+                    //            for (int j = 0; j < importLeadCalls.ElementAt(i).Count(); j++)
+                    //            {
+                    //                var leadcall = importLeadCalls.ElementAt(i).ElementAt(j);
+                    //                var crmid = p.CompanyRelationships.Where(crs =>
+                    //                            crs.CompanyID == leadcall.CompanyID).FirstOrDefault().ID;
+                    //                leadcall.CompanyRelationshipID = crmid;
+                    //                leadcall.IsImport = true;
+                    //                CH.Create<LeadCall>(leadcall);
+                    //            }
+                    //        }
+                    //    }
+                    //}
                 }
             }
 

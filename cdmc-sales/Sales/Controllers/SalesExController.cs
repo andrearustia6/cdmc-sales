@@ -94,7 +94,7 @@ namespace Sales.Controllers
                                          CRMID = c.ID,
                                          LeadID = l.ID,
                                          LeadCreateDate = l.CreatedDate,
-                                         AjaxCalls = (from call in c.LeadCalls.Where(w => w.LeadID == l.ID && w.IsImport != true )
+                                         AjaxCalls = (from call in c.LeadCalls.Where(w => w.LeadID == l.ID)
                                                       select new AjaxCall
                                                       {
                                                           CallDate = call.CallDate,
@@ -105,7 +105,7 @@ namespace Sales.Controllers
                                                           LeadCallID = call.ID,
                                                           Result = call.Result
                                                       }),
-                                         AjaxHistoryCalls = (from hcall in c.LeadCalls.Where(w => w.LeadID == l.ID && w.IsImport == true)
+                                         AjaxHistoryCalls = (from hcall in c.LeadCalls.Where(w => w.LeadID == l.ID && w.ProjectID == c.ProjectID)
                                                       select new AjaxCall
                                                       {
                                                           CallDate = hcall.CallDate,
@@ -460,7 +460,6 @@ namespace Sales.Controllers
             var c = CH.GetDataById<CompanyRelationship>(ajaxViewLeadCall.CompanyRelationshipId);
             var mem = c.Members.FirstOrDefault(m => m.Name == Employee.CurrentUserName);
             leadCall.MemberID = mem.ID;
-            leadCall.CompanyID = c.CompanyID;
             //leadCall.Member = CH.DB.Members.FirstOrDefault(c => c.Name == Employee.CurrentUserName);
             leadCall.ProjectID = ajaxViewLeadCall.ProjectId;
             leadCall.Result = ajaxViewLeadCall.Result;
@@ -560,7 +559,6 @@ namespace Sales.Controllers
                         LeadCallTypeID = quickEntry.CallTypeId,
                         LeadID = lead.ID,
                         MemberID = mem.ID,
-                        CompanyID = companyRelationship.CompanyID,
                         ProjectID = quickEntry.ProjectId,
                         Result = string.IsNullOrEmpty(quickEntry.Result) ? "" : quickEntry.Result.Trim(),
                         MarkForDelete = false
