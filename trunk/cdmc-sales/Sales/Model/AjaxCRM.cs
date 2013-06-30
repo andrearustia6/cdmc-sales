@@ -204,14 +204,14 @@ namespace Model
                                             CRMID = c.ID,
                                             LeadID = l.ID,
                                             AjaxCalls = (from call in c.LeadCalls.Where(w => w.LeadID == l.ID)
-                                                                            select new AjaxCall
-                                                                            {
-                                                                                CallDate = call.CallDate,
-                                                                                CallBackDate = call.CallBackDate,
-                                                                                CallType = call.LeadCallType.Name,
-                                                                                Caller = call.Member.Name,
-                                                                                LeadCallTypeCode = call.LeadCallType.Code
-                                                                            })
+                                                        select new AjaxCall
+                                                        {
+                                                            CallDate = call.CallDate,
+                                                            CallBackDate = call.CallBackDate,
+                                                            CallType = call.LeadCallType.Name,
+                                                            Caller = call.Member.Name,
+                                                            LeadCallTypeCode = call.LeadCallType.Code
+                                                        })
                                         }),
                            RMBCompanyPayment = deals.Where(d => d.CompanyRelationshipID == c.ID && d.Currencytype.Name == "RMB").Sum(s => s.Payment) == null ? 0 : deals.Where(d => d.CompanyRelationshipID == c.ID && d.Currencytype.Name == "RMB").Sum(s => s.Payment),
                            USDCompanyPayment = deals.Where(d => d.CompanyRelationshipID == c.ID && d.Currencytype.Name == "USD").Sum(s => s.Payment) == null ? 0 : deals.Where(d => d.CompanyRelationshipID == c.ID && d.Currencytype.Name == "USD").Sum(s => s.Payment)
@@ -519,8 +519,7 @@ namespace Model
         #region calls
         //public int AjaxCallsCount { get{return AjaxCalls.Count();}}
         public IEnumerable<AjaxCall> AjaxCalls { get; set; }
-
-
+        public IEnumerable<AjaxCall> AjaxHistoryCalls { get; set; }
         #endregion
 
         #endregion

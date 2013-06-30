@@ -826,8 +826,12 @@ namespace BLL
                 //导入的目标
                 var p = CH.GetDataById<Project>(targetprojectid);
                 user = "系统导入:" + user;
+
                 //取得要导入的公司
                 var comapnytoexport = CH.GetAllData<CompanyRelationship>(c => c.ProjectID != null && sourceprojectids.Contains(c.ProjectID.Value)).Select(s => s.Company);
+
+                //var crtoexport = CH.GetAllData<CompanyRelationship>(c => c.ProjectID != null && sourceprojectids.Contains(c.ProjectID.Value));
+
                 var crms = from c in comapnytoexport
                            select new CompanyRelationship()
                            {
@@ -837,7 +841,8 @@ namespace BLL
                                Project = p,
                                Creator = user,
                                CreatedDate = DateTime.Now,
-                               MarkForDelete = false
+                               MarkForDelete = false //,
+                               //LeadCalls = c.LeadCalls
                            };
                 // Company.IsCompanyExist();
 
@@ -847,10 +852,15 @@ namespace BLL
                 //获取导入公司
                 var importCrms = crms.Where(c => (string.IsNullOrEmpty(c.Company.Name_CH) || existscompanynames.Any(a => a.namech == c.Company.Name_CH) == false)
                      && (string.IsNullOrEmpty(c.Company.Name_EN) || existscompanynames.Any(a => a.nameen == c.Company.Name_EN) == false));
+
+
+                //获取导入公司的Lead Calls
+                var crtoexport = CH.GetAllData<CompanyRelationship>(c => c.ProjectID != null && sourceprojectids.Contains(c.ProjectID.Value)).Select(s => s.LeadCalls);
+                var importLeadCalls = from tc in crtoexport select tc;
+                
                 //获取冲突公司
                 //var conflictCrms = crms.Except(importCrms);
                 var conflictCrms = CH.GetAllData<CompanyRelationship>().Where(c => c.ProjectID == targetprojectid && comapnytoexport.Any(i => i.ID == c.CompanyID));
-
 
                 if (conflictCrms.Count() > 0)
                 {
@@ -877,10 +887,27 @@ namespace BLL
 
                     p.CompanyRelationships.AddRange(importCrms);
                     CH.Edit<Project>(p);
+
+                    if (importLeadCalls != null && importLeadCalls.Count() > 0)
+                    {
+                        for (int i = 0; i < importLeadCalls.Count();i++ )
+                        {
+                            if (importLeadCalls.ElementAt(i) != null && importLeadCalls.ElementAt(i).Count() > 0)
+                            {
+                                for (int j = 0; j < importLeadCalls.ElementAt(i).Count(); j++)
+                                {
+                                    var leadcall = importLeadCalls.ElementAt(i).ElementAt(j);
+                                    var crmid = p.CompanyRelationships.Where(crs =>
+                                                crs.CompanyID == leadcall.CompanyID).FirstOrDefault().ID;
+                                    leadcall.CompanyRelationshipID = crmid;
+                                    leadcall.IsImport = true;
+                                    CH.Create<LeadCall>(leadcall);
+                                }
+                            }
+                        }
+                    }
                 }
             }
-
-
 
             public static IEnumerable<AjaxCRM> GetCrmByProjectId(int? projectid)
             {

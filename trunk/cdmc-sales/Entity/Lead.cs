@@ -320,5 +320,8 @@ namespace Entity
         [Display(Name = "逻辑删除")]
         public bool? MarkForDelete { get; set; }
 
+        public int? CompanyID { get; set; }
+
+        public bool? IsImport { get; set; }
     }
 }

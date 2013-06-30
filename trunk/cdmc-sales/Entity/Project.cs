@@ -267,6 +267,8 @@ namespace Entity
 
         public virtual List<LeadCall> LeadCalls { get; set; }
 
+        //public virtual List<Lead> Leads { get; set; }
+
         public virtual List<Member> Members { get; set; }
 
         [Display(Name = "可打销售")]
