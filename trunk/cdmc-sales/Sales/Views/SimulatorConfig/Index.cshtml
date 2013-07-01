@@ -16,7 +16,22 @@
         commands.Edit();
     }).Width(220).Title("操作");
 })
+              .ClientEvents(events => events.OnDataBound("onDataBound").OnSave("onSave"))
    .Editable(editing => editing.Mode(GridEditMode.PopUp))
    .Pageable(p => p.Style(GridPagerStyles.Status)
        .PageOnScroll(true)).Scrollable().Sortable().Filterable().Groupable()
-)
+    )
+<script type="text/javascript">
+    var isflash = false;
+    function onDataBound(e) {
+        if (isflash) {
+            location.reload();
+        }
+    }
+
+    function onSave(e) {
+        isflash = true;
+    } 
+
+
+</script>
