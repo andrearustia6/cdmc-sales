@@ -7,40 +7,38 @@
 @using BLL
 <fieldset>
     <legend>请填入出单信息</legend>
-    <table id="quickTable" cellpadding="0" cellspacing="0" align="center" style=" width:100%;">
+    <table id="quickTable" cellpadding="0" cellspacing="0" align="center" style="width: 100%;">
         <tr>
-            <td style="width:85px;">
+            <td style="width: 85px;">
                 @Html.LabelFor(model => model.DealCode)
             </td>
             <td>
                 @Html.TextBox("DealCode", Model == null ? "出单后自动生成" : Model.DealCode, new { READONLY = "readonly" })
             </td>
-            <td style="width:85px;">
+            <td style="width: 85px;">
                 @Html.LabelFor(model => model.PackageID, "Package")
             </td>
             <td>
-            
-                @Html.DropDownListFor(m => m.PackageID, new SelectList(CH.GetAllData<Package>(), "ID", "Name"), "-请选择-", new { style = "width:300px;" })
+                @Html.DropDownListFor(m => m.PackageID, new SelectList(CH.GetAllData<Package>().OrderBy(s => s.Name), "ID", "Name"), "-请选择-", new { style = "width:300px;" })
                 @Html.ValidationMessageFor(model => model.PackageID)
             </td>
         </tr>
         <tr>
-            <td style="width:85px;">
-                
+            <td style="width: 85px;">
             </td>
             <td>
-                
             </td>
-            <td style="width:85px;">
-                <div id="Polldivlabel" style="display:none">@Html.LabelFor(model => model.Poll)</div>
+            <td style="width: 85px;">
+                <div id="Polldivlabel" style="display: none">@Html.LabelFor(model => model.Poll)</div>
             </td>
             <td>
-                <div id="Polldiv" style="display:none"> @Html.TextBoxFor(model => model.Poll)</div>
+                <div id="Polldiv" style="display: none">
+                    @Html.TextBoxFor(model => model.Poll)</div>
                 @Html.ValidationMessageFor(model => model.Poll)
             </td>
         </tr>
         <tr>
-            <td style="width:85px;">
+            <td style="width: 85px;">
                 @Html.LabelFor(model => model.CompanyRelationshipID, "公司")
             </td>
             <td>
@@ -50,7 +48,7 @@
                 @Html.TextBox("CompanyRelationshipName", CRM.CompanyName, new { @readOnly = "true", style = "width:200px;border-style: none" })
                 @Html.Hidden("CompanyRelationshipID", (int)ViewBag.CompanyRelationshipID)
             </td>
-            <td style="width:85px;">
+            <td style="width: 85px;">
                 @Html.LabelFor(model => model.ExpectedPaymentDate)
             </td>
             <td>
@@ -59,14 +57,14 @@
             </td>
         </tr>
         <tr>
-            <td style="width:85px;">
+            <td style="width: 85px;">
                 @Html.LabelFor(model => model.SignDate)
             </td>
             <td>
                 @Html.Telerik().DatePicker().Name("SignDate").Value(Model == null ? DateTime.Now : Model.SignDate)
                 @Html.ValidationMessageFor(model => model.SignDate)
             </td>
-            <td style="width:85px;">
+            <td style="width: 85px;">
                 @Html.LabelFor(model => model.Payment)
             </td>
             <td>
@@ -74,22 +72,21 @@
                 @Html.ValidationMessageFor(model => model.Payment)
                 @foreach (var p in CH.GetAllData<CurrencyType>())
                 {
-                    @Html.RadioButton("currencytyperb", p.ID, p.Name == "RMB" ? true : false, new { onchange = "setcurrencytypeid("+p.ID+")" })
+                    @Html.RadioButton("currencytyperb", p.ID, p.Name == "RMB" ? true : false, new { onchange = "setcurrencytypeid(" + p.ID + ")" })
                     @p.Name
                 }
                 @Html.TextBoxFor(model => model.CurrencyTypeID, new { @style = "display:none" })
-                
             </td>
         </tr>
         <tr>
-            <td style="width:85px;">
+            <td style="width: 85px;">
                 @Html.LabelFor(model => model.Committer)
             </td>
             <td>
                 @Html.EditorFor(model => model.Committer)<br />
                 @Html.ValidationMessageFor(model => model.Committer)
             </td>
-            <td style="width:85px;">
+            <td style="width: 85px;">
                 @Html.LabelFor(model => model.CommitterContect)
             </td>
             <td>
@@ -98,14 +95,14 @@
             </td>
         </tr>
         <tr>
-            <td style="width:85px;">
+            <td style="width: 85px;">
                 @Html.LabelFor(model => model.CommitterEmail)
             </td>
             <td>
                 @Html.EditorFor(model => model.CommitterEmail)
                 @Html.ValidationMessageFor(model => model.CommitterEmail)
             </td>
-            <td style="width:85px;">
+            <td style="width: 85px;">
                 @Html.LabelFor(model => model.Sales)
             </td>
             <td>
@@ -117,14 +114,14 @@
             </td>
         </tr>
         <tr>
-            <td style="width:85px;">
+            <td style="width: 85px;">
                 @Html.LabelFor(model => model.PaymentDetail)
             </td>
             <td>
                 @Html.TextAreaFor(model => model.PaymentDetail)
                 @Html.ValidationMessageFor(model => model.PaymentDetail)
             </td>
-            <td style="width:85px;">
+            <td style="width: 85px;">
                 @Html.LabelFor(model => model.TicketDescription)
             </td>
             <td>
@@ -133,9 +130,9 @@
             </td>
         </tr>
     </table>
-    <fieldset style=" margin:5px 0px 0px 0px;">
-    <legend>请填入参会人信息</legend>
-    @(Html.Telerik().Grid<AjaxParticipant>().Name("pList").BindTo(ViewData["pList"] as IEnumerable<AjaxParticipant>)
+    <fieldset style="margin: 5px 0px 0px 0px;">
+        <legend>请填入参会人信息</legend>
+        @(Html.Telerik().Grid<AjaxParticipant>().Name("pList").BindTo(ViewData["pList"] as IEnumerable<AjaxParticipant>)
             .DataKeys(keys =>
             {
                 keys.Add(s => s.ID);
@@ -154,7 +151,7 @@
                 c.Bound(p => p.Contact).Title("客户直线").Width(100);
                 c.Bound(p => p.Email).Title("电子邮箱").Width(120);
                 c.Bound(p => p.ParticipantTypeName).Title("参会类型").Width(100);
-                
+
                 c.Command(commands => commands.Delete()).Title("删除").Width(100);
             })
             .DataBinding(dataBinding =>
@@ -165,19 +162,18 @@
             })
             .Editable(editing => editing.Mode(GridEditMode.InCell).DefaultDataItem(new AjaxParticipant { }))
             .Scrollable(scrolling => scrolling.Height(90))
-    ) 
+    )
     </fieldset>
 </fieldset>
-
 <style>
     #quickTable
     {
-        border:none;
-     }
+        border: none;
+    }
     #quickTable tr td
     {
         width: 300px;
-        border:none;
+        border: none;
     }
     #quickTable tr td label
     {
