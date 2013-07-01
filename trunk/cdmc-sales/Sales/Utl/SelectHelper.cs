@@ -293,7 +293,7 @@ namespace Utl
                 }
                 selectList.Add(selectListItem);
             }
-            return selectList;
+            return selectList.OrderBy(s => s.Text);
         }
 
         public static IEnumerable<SelectListItem> CompanyScaleSelectList(string selectVal)
