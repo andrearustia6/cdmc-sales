@@ -20,7 +20,7 @@
             }
             @if (@Model.USDCompanyPayment == 0 && @Model.RMBCompanyPayment == 0)
             {
-                <span id="currentCompanyName" style="font-weight:bold">，出单金额:0</span>
+                <span id="currentCompanyName" style="font-weight:bold"></span>
             }
             <input class="salebtn" style=" background-image:url('../images/chudan.jpg');" type="button" onclick="onQuickAddDeal(@(Model.ProjectID),@(Model.CRMID));" />
             <input class="salebtn" style=" background-image:url('../images/tianjia_3.jpg');" type="button" onclick="onLeadAdd(@(Model.CompanyID))" />
