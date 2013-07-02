@@ -59,7 +59,7 @@ var rolelvl = ViewBag.RoleLevel as int?;
             columns.Bound(p => p.AddLeads).Width(90).HtmlAttributes(new { style = "text-align:right" }).Format("{0:p0}");
             columns.Bound(p => p.CheckIn).Width(80).HtmlAttributes(new { style = "text-align:right" }).Format("{0:p0}");
             columns.Bound(p => p.Rate).Width(60).HtmlAttributes(new { style = "text-align:right" });
-            columns.Bound(p => p.Score).Width(60).HtmlAttributes(new { style = "text-align:right" });
+            columns.Bound(p => p.Score).Width(60).HtmlAttributes(new { style = "text-align:right" }).ClientTemplate("<p><#= $.telerik.formatString('{0:p0}', Score/100) #></p>");
             columns.Bound(p => p.Confirmed).Width(60);
             //columns.Bound(p => p.Month).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
             //columns.Bound(p => p.Year).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
