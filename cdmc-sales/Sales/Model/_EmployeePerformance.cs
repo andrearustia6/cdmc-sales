@@ -477,116 +477,125 @@ namespace Sales.Model
         //[UIHint("ClientItem1"), Required]
         public int? Responsibility { get; set; }
 
-        //[Display(Name = "责任心")]
-        ////[UIHint("ClientItem1"), Required]
-        //public double ResponsibilityDisp {
-        //    get
-        //    {
-        //        if (Responsibility == null)
-        //            Responsibility = 0;
-        //        return (double)Responsibility / 100;
-        //    }
-        //}
+        [Display(Name = "责任心")]
+        //[UIHint("ClientItem1"), Required]
+        public double ResponsibilityDisp
+        {
+            get
+            {
+                if (Responsibility == null)
+                    Responsibility = 0;
+                return (double)Responsibility / 100;
+            }
+        }
         
         [Display(Name = "纪律性")]
         public int? Discipline { get; set; }
 
-        //[Display(Name = "纪律性")]
-        //public double? DisciplineDisp {
-        //    get
-        //    {
-        //        if (Discipline == null)
-        //            Discipline = 0;
-        //        return (double)Discipline / 100;
-        //    }
-        //}
+        [Display(Name = "纪律性")]
+        public double? DisciplineDisp
+        {
+            get
+            {
+                if (Discipline == null)
+                    Discipline = 0;
+                return (double)Discipline / 100;
+            }
+        }
 
         [Display(Name = "执行能力")]
         public int? Excution { get; set; }
 
-        //[Display(Name = "执行能力")]
-        //public double? ExcutionDisp {
-        //    get
-        //    {
-        //        if (Excution == null)
-        //            Excution = 0;
-        //        return (double)Excution / 100;
-        //    }
-        //}
+        [Display(Name = "执行能力")]
+        public double? ExcutionDisp
+        {
+            get
+            {
+                if (Excution == null)
+                    Excution = 0;
+                return (double)Excution / 100;
+            }
+        }
 
         [Display(Name = "目标意识")]
         public int? Targeting { get; set; }
-        //[Display(Name = "目标意识")]
-        //public double? TargetingDisp {
-        //    get
-        //    {
-        //        if (Targeting == null)
-        //            Targeting = 0;
-        //        return (double)Targeting / 100;
-        //    }
-        //}
+        [Display(Name = "目标意识")]
+        public double? TargetingDisp
+        {
+            get
+            {
+                if (Targeting == null)
+                    Targeting = 0;
+                return (double)Targeting / 100;
+            }
+        }
 
 
         [Display(Name = "检查工作状态")]
         public int? Searching { get; set; }
-        //[Display(Name = "检查工作状态")]
-        //public double? SearchingDisp {
-        //    get
-        //    {
-        //        if (Searching == null)
-        //            Searching = 0;
-        //        return (double)Searching / 100;
-        //    }
-        //}
+        [Display(Name = "检查工作状态")]
+        public double? SearchingDisp
+        {
+            get
+            {
+                if (Searching == null)
+                    Searching = 0;
+                return (double)Searching / 100;
+            }
+        }
 
 
         [Display(Name = "每周项目协调")]
         public int? Production { get; set; }
-        //[Display(Name = "每周项目协调")]
-        //public double? ProductionDisp {
-        //    get
-        //    {
-        //        if (Production == null)
-        //            Production = 0;
-        //        return (double)Production / 100;
-        //    }
-        //}
+        [Display(Name = "每周项目协调")]
+        public double? ProductionDisp
+        {
+            get
+            {
+                if (Production == null)
+                    Production = 0;
+                return (double)Production / 100;
+            }
+        }
 
         [Display(Name = "每周PitchPaper")]
         public int? PitchPaper { get; set; }
-        //[Display(Name = "每周PitchPaper")]
-        //public double? PitchPaperDisp {
-        //    get
-        //    {
-        //        if (PitchPaper == null)
-        //            PitchPaper = 0;
-        //        return (double)PitchPaper / 100;
-        //    }
-        //}
+        [Display(Name = "每周PitchPaper")]
+        public double? PitchPaperDisp
+        {
+            get
+            {
+                if (PitchPaper == null)
+                    PitchPaper = 0;
+                return (double)PitchPaper / 100;
+            }
+        }
 
         [Display(Name = "每周例会")]
         public int? WeeklyMeeting { get; set; }
-        //[Display(Name = "每周例会")]
-        //public double? WeeklyMeetingDisp {
-        //    get
-        //    {
-        //        if (WeeklyMeeting == null)
-        //            WeeklyMeeting = 0;
-        //        return (double)WeeklyMeeting / 100;
-        //    }
-        //}
+        [Display(Name = "每周例会")]
+        public double? WeeklyMeetingDisp
+        {
+            get
+            {
+                if (WeeklyMeeting == null)
+                    WeeklyMeeting = 0;
+                return (double)WeeklyMeeting / 100;
+            }
+        }
 
         [Display(Name = "每月通话时间")]
         public int? MonthlyMeeting { get; set; }
-        //[Display(Name = "每月通话时间")]
-        //public double? MonthlyMeetingDisp {
-        //    get
-        //    {
-        //        if (MonthlyMeeting == null)
-        //            MonthlyMeeting = 0;
-        //        return (double)MonthlyMeeting / 100;
-        //    }
-        //}
+        [Display(Name = "每月通话时间")]
+        public double? MonthlyMeetingDisp
+        {
+            get
+            {
+                if (MonthlyMeeting == null)
+                    MonthlyMeeting = 0;
+                return (double)MonthlyMeeting / 100;
+            }
+        }
 
         [Display(Name = "团队CallList")]
         [HiddenInput(DisplayValue = false)] //Hide from Edit
