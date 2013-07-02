@@ -202,20 +202,19 @@ namespace BLL
                 {
                     IQueryable<string> sales = null;
                     var user = Employee.CurrentUserName;
-                    sales = CH.DB.Members.Where(w => w.IsActivated == true && w.Project.IsActived == true && (w.Project.Manager == user || w.Project.TeamLeader == user) && w.IsActivated==true).Select(s => s.Name).Distinct();
+                    var mems  = CH.DB.Members.Where(w => w.IsActivated == true && w.Project.IsActived == true);
                     if (Employee.EqualToLeader() || Employee.EqualToManager())//版块或者lead查看
                     {
-
-                        sales = CH.DB.Members.Where(w => w.IsActivated == true && w.Project.IsActived == true && (w.Project.Manager == user || w.Project.TeamLeader == user) && w.IsActivated == true).Select(s => s.Name).Distinct();
+                        sales =mems.Where(w=>w.Project.Manager == user || w.Project.TeamLeader == user).Select(s => s.Name).Distinct();
 
                     }
                     else if (Employee.EqualToSales())//销售查看
                     {
-                        sales = CH.DB.Members.Where(w => w.IsActivated == true && w.Project.IsActived == true && w.Name == user && w.IsActivated == true).Select(s => s.Name).Distinct();
+                        sales = mems.Where(w => w.Name == user).Select(s => s.Name).Distinct();
                     }
                     else if (rolelvl>=SuperManagerRequired.LVL)
                     {
-                        sales = CH.DB.Members.Where(w => w.IsActivated == true && w.Project.IsActived == true && w.IsActivated == true).Select(s => s.Name).Distinct();
+                        sales = mems.Select(s => s.Name).Distinct();
                     }
 
                     if (sales != null)
@@ -234,7 +233,7 @@ namespace BLL
                         sales = sales.Where(w => !leads.Any(a => a == w) && w.Contains(fuzzyInput));//排除sales中的lead
 
                         var deals = CRM_Logical.GetDeals().Where(w => w.ActualPaymentDate.Value != null && w.ActualPaymentDate.Value.Month == month && w.ActualPaymentDate.Value.Year==DateTime.Now.Year);
-                        var calls = from l in CH.DB.LeadCalls.Where(w => w.LeadCallTypeID != null && w.LeadCallType.Code >= 40) select l;
+                        var calls = from l in CH.DB.LeadCalls.Where(w => w.LeadCallTypeID != null && w.LeadCallType.Code >= 40 && w.Project.IsActived==true) select l;
                         // calls =from c in calls group c by c.LeadID into g select g.FirstOrDefault();//分组并选择第一个
                         var leadadds = from l in CH.DB.Leads select l;
                         var rates = from r in CH.DB.AssignPerformanceRates.Where(w => w.Month == month && w.Year == DateTime.Now.Year) select r;
@@ -254,7 +253,9 @@ namespace BLL
                                       SalesPerformanceInWeeks = wd.Select(s => new _SalesPerformanceInWeek
                                       {
                                           //FaxOutCount = calls.Where(c => c.Member != null && c.Member.Name == l).GroupBy(c=>c.LeadID).Select(g=>g.FirstOrDefault()).Count(c=>c.CreatedDate >= s && c.CreatedDate < EntityFunctions.AddDays(s, 7)),
-                                          FaxOutCount = calls.Where(w => w.Member != null && w.Member.Name == l).OrderBy(o => o.CallDate).GroupBy(c => c.LeadID).Select(ss => ss.FirstOrDefault()).Count(c => c.CreatedDate >= s && c.CreatedDate < EntityFunctions.AddDays(s, 7)),
+                                          FaxOutCount = calls.Where(w => w.Member != null && w.Member.Name == l)
+                                          //.OrderBy(o => o.CallDate)
+                                          .GroupBy(c => c.LeadID).Select(ss => ss.FirstOrDefault()).Count(c => c.CreatedDate >= s && c.CreatedDate < EntityFunctions.AddDays(s, 7)),
                                           DealsCount = deals.Count(c => c.SignDate >= s && c.SignDate < EntityFunctions.AddDays(s, 7)),
                                           StartDate = s,
                                           EndDate = EntityFunctions.AddDays(s, 7).Value,

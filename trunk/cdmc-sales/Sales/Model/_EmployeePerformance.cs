@@ -55,7 +55,7 @@ namespace Sales.Model
         }
 
         [Display(Name = "考核系数")]
-        public double Rate
+        public double? Rate
         {
             get; set;
         }
@@ -274,7 +274,7 @@ namespace Sales.Model
 
 
         [Display(Name = "考核系数")]
-        public double Rate
+        public double? Rate
         {
             get;
             set;
@@ -703,7 +703,7 @@ namespace Sales.Model
         public string Confirmed { get; set; }
 
         [Display(Name = "考核系数")]
-        public double Rate { get; set; }
+        public double? Rate { get; set; }
 
         [Display(Name = "考核总分")]
         public int Score
@@ -728,7 +728,8 @@ namespace Sales.Model
                     WeeklyMeeting = 0;
                 if (MonthlyMeeting == null)
                     MonthlyMeeting = 0;
-               
+                if (Rate == null)
+                    Rate = 1;
                 return (int)(Rate * (Responsibility.Value + Discipline.Value + Excution.Value + Targeting.Value + Searching.Value + 
                     Production.Value + PitchPaper.Value + WeeklyMeeting.Value + MonthlyMeeting.Value + Calllist.Value + AddLeads.Value + CheckIn.Value));
             }
