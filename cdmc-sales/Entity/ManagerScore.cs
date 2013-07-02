@@ -40,7 +40,7 @@ namespace Entity
         public bool? Confirmed { get; set; }
 
         [Display(Name = "考核系数")]
-        public double Rate { get; set; }
+        public double? Rate { get; set; }
     }
 
     

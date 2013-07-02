@@ -8,9 +8,9 @@ namespace Entity
 {
     public class AssignPerformanceScore:EntityBase{
         [Display(Name = "考核系数"), Required]
-        public double Rate { get; set; }
+        public double? Rate { get; set; }
         [Display(Name = "主观打分"), Required]
-        public int Score { get; set; }
+        public int? Score { get; set; }
         [Display(Name = "被考核人"), Required]
         public string TargetName { get; set; }
         [Display(Name = "主管"), Required]
