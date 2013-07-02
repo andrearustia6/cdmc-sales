@@ -118,7 +118,7 @@ var rolelvl = ViewBag.RoleLevel as int?;
     columns.Bound(p => p.FaxCallScore).Width(90).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
     columns.Bound(p => p.AssignedScore).Width(80).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
     columns.Bound(p => p.Rate).Width(80).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
-    columns.Bound(p => p.Score).Width(90).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
+    columns.Bound(p => p.Score).Width(90).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" }).ClientTemplate("<p><#= $.telerik.formatString('{0:p0}', Score/100) #></p>"); ;
     columns.Bound(p => p.FaxOutCountString).Width(90).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
     columns.Bound(p => p.LeadAddCountString).Width(90).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
     if (ViewBag.RoleLevel == ManagerRequired.LVL || Utl.Employee.CurrentUserName == "karen")
@@ -170,7 +170,7 @@ var rolelvl = ViewBag.RoleLevel as int?;
     columns.Bound(p => p.FaxCallScore).Width(80).HtmlAttributes(new { style = "text-align:right" });
     columns.Bound(p => p.AssignedScore).Width(80).HtmlAttributes(new { style = "text-align:right" });
     columns.Bound(p => p.Rate).Width(80).HtmlAttributes(new { style = "text-align:right" });
-    columns.Bound(p => p.Score).Width(80).HtmlAttributes(new { style = "text-align:right" });
+    columns.Bound(p => p.Score).Width(80).HtmlAttributes(new { style = "text-align:right" }).ClientTemplate("<p><#= $.telerik.formatString('{0:p0}', Score/100) #></p>");
     columns.Bound(p => p.FaxOutCountString).Width(80).HtmlAttributes(new { style = "text-align:right" });
     columns.Bound(p => p.LeadAddCountString).Width(80).HtmlAttributes(new { style = "text-align:right" });
     if (ViewBag.RoleLevel == LeaderRequired.LVL || Utl.Employee.CurrentUserName == "karen")
