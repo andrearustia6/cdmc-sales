@@ -109,7 +109,7 @@ var rolelvl = ViewBag.RoleLevel as int?;
     columns.Bound(p => p.Name).Width(50).HtmlAttributes(new { style = "text-align:left" });
     columns.Bound(p => p.User).Width(50).HtmlAttributes(new { style = "text-align:left" });
     columns.Bound(p => p.RoleLevel).Width(50);
-    columns.Bound(p => p.CompletePercent).Width(120).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
+    columns.Bound(p => p.CompletePercent).Width(120).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" }).Format("{0:#,##0%}");
     columns.Bound(p => p.CheckinScore).Width(80).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
     columns.Bound(p => p.LeadNotQualifiedWeeksCount).Width(100).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
     columns.Bound(p => p.AddLeadScore).Width(80).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });

@@ -101,6 +101,7 @@ namespace Sales.Controllers
         [GridAction]
         public ActionResult _ConfirmManagerScore(int id, int? month)
         {
+            
             if (month == null) month = DateTime.Now.Month;
             if (id > 0)
             {
