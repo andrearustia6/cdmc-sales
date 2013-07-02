@@ -250,15 +250,13 @@ namespace BLL
                         var scores = from r in CH.DB.AssignPerformanceScores.Where(w => w.Month == month && w.Year == year) select r;
                         var durations = MonthDuration.GetMonthInstance(month).WeekDurations;
                         var wd = durations.Select(s => s.StartDate);
-
-                       
                         var lps = from l in sales
                                   select new _SalesPerformance()
                                   {
                                       RoleLevel = rolelvl,
                                       ID = scores.Where(w => w.TargetName == l).Count() == 0 ? 0 : scores.Where(w => w.TargetName == l).Select(s => s.ID).FirstOrDefault(),
-                                      Rate = rates.Where(w=>w.TargetName==l).Select(s=>s.Rate).FirstOrDefault(),
-                                      AssignedScore = scores.Where(w => w.TargetName == l).Select(s=>s.Rate).FirstOrDefault(),//scores.Where(w => w.TargetName == l).Average(s => s.Score) == null ? 0 : scores.Where(w => w.TargetName == l).Average(s => s.Score),
+                                      Rate = scores.Where(w => w.TargetName == l).Count() == 0 ? 1 : scores.Where(w => w.TargetName == l).Select(s => s.Rate).FirstOrDefault(),//scores.Where(w => w.TargetName == l).Select(s => s.Rate).FirstOrDefault()==null?1:scores.Where(w => w.TargetName == l).Select(s => s.Rate).FirstOrDefault(),
+                                      AssignedScore = scores.Where(w => w.TargetName == l).Count() == 0 ? 10 : scores.Where(w => w.TargetName == l).Select(s => s.Score).FirstOrDefault(),//scores.Where(w => w.TargetName == l).Select(s => s.Score).FirstOrDefault(),//scores.Where(w => w.TargetName == l).Average(s => s.Score) == null ? 0 : scores.Where(w => w.TargetName == l).Average(s => s.Score),
                                       Target = targets.Where(t => t.Member.Name == l && t.StartDate.Month == month).Sum(s => (decimal?)s.CheckIn),
                                       CheckIn = deals.Where(d => d.Sales == l).Sum(s => (decimal?)s.Income),
                                       Name = l,
@@ -273,7 +271,7 @@ namespace BLL
                                           LeadsCount = leadadds.Count(c => c.Creator == l && c.CreatedDate >= s && c.CreatedDate < EntityFunctions.AddDays(s, 7))
                                       })
                                   };
-                        return lps;
+                        return lps.OrderBy(l=>l.Name);
 
                     }
                 }
