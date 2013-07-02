@@ -54,7 +54,7 @@
     c.Bound(item => item.Result).Width(300);
     c.Bound(item => item.CallBackDate);
     c.Bound(item => item.Member);
-    c.Bound(item => item.CallDate);
+    c.Bound(item => item.CallDate).Width(200);
 }).DataBinding(dataBinding => dataBinding.Ajax().Select("_MemberLeadCalls", "Report", new { projectid = p.ID, startdate = startdate, enddate = enddate, types = types }))
              .Pageable(paging => paging.Style(GridPagerStyles.Status).PageOnScroll(true).PageSize(100)).Resizable(resizing => resizing.Columns(true))
                      .Filterable()

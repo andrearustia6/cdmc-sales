@@ -94,7 +94,7 @@ namespace Sales.Controllers
                                          CRMID = c.ID,
                                          LeadID = l.ID,
                                          LeadCreateDate = l.CreatedDate,
-                                         AjaxCalls = (from call in c.LeadCalls.Where(w => w.LeadID == l.ID)
+                                         AjaxCalls = (from call in c.LeadCalls.Where(w => w.LeadID == l.ID && w.ProjectID == c.ProjectID)
                                                       select new AjaxCall
                                                       {
                                                           CallDate = call.CallDate,
@@ -105,7 +105,7 @@ namespace Sales.Controllers
                                                           LeadCallID = call.ID,
                                                           Result = call.Result
                                                       }),
-                                         AjaxHistoryCalls = (from hcall in c.LeadCalls.Where(w => w.LeadID == l.ID && w.ProjectID == c.ProjectID)
+                                         AjaxHistoryCalls = (from hcall in c.LeadCalls.Where(w => w.LeadID == l.ID && w.ProjectID != c.ProjectID)
                                                       select new AjaxCall
                                                       {
                                                           CallDate = hcall.CallDate,
