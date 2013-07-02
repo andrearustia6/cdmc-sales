@@ -26,7 +26,7 @@ var query = ViewBag.fuzzyInput as string;
 
 
 @{ 
-    if (ViewBag.RoleLevel == SuperManagerRequired.LVL || Utl.Employee.CurrentUserName=="ray")
+    if (ViewBag.RoleLevel >= SuperManagerRequired.LVL)
     { 
         <fieldset>
         <legend>版块负责人考核</legend>
@@ -43,36 +43,39 @@ var query = ViewBag.fuzzyInput as string;
             })
         .Columns(columns =>
         {
-            columns.Bound(p => p.TargetName).Width(70);
-            columns.Bound(p => p.Assigner).Width(70);
-            columns.Bound(p => p.Responsibility).Width(80);
-            columns.Bound(p => p.Discipline).Width(50);
-            columns.Bound(p => p.Excution).Width(60);
-            columns.Bound(p => p.Targeting).Width(60);
-            columns.Bound(p => p.Searching).Width(100);
-            columns.Bound(p => p.Production).Width(80);
-            columns.Bound(p => p.PitchPaper).Width(80);
-            columns.Bound(p => p.WeeklyMeeting).Width(80);
-            columns.Bound(p => p.MonthlyMeeting).Width(80);
-            columns.Bound(p => p.Calllist).Width(80);
-            columns.Bound(p => p.AddLeads).Width(90);
-            columns.Bound(p => p.CheckIn).Width(90);
+            columns.Bound(p => p.TargetName).Width(80).HtmlAttributes(new { style = "text-align:left" });
+            columns.Bound(p => p.Assigner).Width(60).HtmlAttributes(new { style = "text-align:left" });
+            columns.Bound(p => p.ResponsibilityDisp).Width(50).HtmlAttributes(new { style = "text-align:right" }).Format("{0:p0}");
+            columns.Bound(p => p.DisciplineDisp).Width(50).HtmlAttributes(new { style = "text-align:right" }).Format("{0:p0}");
+            columns.Bound(p => p.ExcutionDisp).Width(60).HtmlAttributes(new { style = "text-align:right" }).Format("{0:p0}");
+            columns.Bound(p => p.TargetingDisp).Width(60).HtmlAttributes(new { style = "text-align:right" }).Format("{0:p0}");
+            columns.Bound(p => p.SearchingDisp).Width(130).HtmlAttributes(new { style = "text-align:right" }).Format("{0:p0}");
+            columns.Bound(p => p.ProductionDisp).Width(80).HtmlAttributes(new { style = "text-align:right" }).Format("{0:p0}");
+            columns.Bound(p => p.PitchPaperDisp).Width(90).HtmlAttributes(new { style = "text-align:right" }).Format("{0:p0}");
+            columns.Bound(p => p.WeeklyMeetingDisp).Width(60).HtmlAttributes(new { style = "text-align:right" }).Format("{0:p0}");
+            columns.Bound(p => p.MonthlyMeetingDisp).Width(80).HtmlAttributes(new { style = "text-align:right" }).Format("{0:p0}");
+            columns.Bound(p => p.Calllist).Width(80).HtmlAttributes(new { style = "text-align:right" }).Format("{0:p0}");
+            columns.Bound(p => p.AddLeads).Width(90).HtmlAttributes(new { style = "text-align:right" }).Format("{0:p0}");
+            columns.Bound(p => p.CheckIn).Width(80).HtmlAttributes(new { style = "text-align:right" }).Format("{0:p0}");
+            columns.Bound(p => p.Rate).Width(60).HtmlAttributes(new { style = "text-align:right" });
+            columns.Bound(p => p.Score).Width(60).HtmlAttributes(new { style = "text-align:right" });
             columns.Bound(p => p.Confirmed).Width(60);
             //columns.Bound(p => p.Month).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
             //columns.Bound(p => p.Year).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
-            columns.Command(commands =>
+            if (ViewBag.RoleLevel == SuperManagerRequired.LVL || Utl.Employee.CurrentUserName == "ray" || Utl.Employee.CurrentUserName == "karen")
             {
-                commands.Edit().ButtonType(GridButtonType.Text);
-                commands.Custom("Confirm")
-                 .Text("确认")
-                  .DataRouteValues(route => route.Add(o => o.ID)
-                                          .RouteKey("id")
-                                      )
-
-                 .Ajax(true)
-
-                 .Action("_ConfirmManagerScore", "Performance", new { month = month });
-            }).Title("打分").Width(60);
+                columns.Command(commands =>
+                {
+                    commands.Edit().ButtonType(GridButtonType.Text);
+                    commands.Custom("Confirm")
+                     .Text("确认")
+                      .DataRouteValues(route => route.Add(o => o.ID)
+                                              .RouteKey("id")
+                                          )
+                     .Ajax(true)
+                     .Action("_ConfirmManagerScore", "Performance", new { month = month });
+                }).Title("编辑").Width(100);
+            }
         }).Editable(editing => editing
                                 .Mode(GridEditMode.PopUp).TemplateName("ManagerScoreEdit"))
               .ClientEvents(e => e.OnRowDataBound("ChangeButtonTextForManager"))
@@ -102,25 +105,28 @@ var query = ViewBag.fuzzyInput as string;
     })
 .Columns(columns =>
 {
-    columns.Bound(p => p.Name).Width(50);
-    columns.Bound(p => p.User).Width(50);
+    columns.Bound(p => p.Name).Width(50).HtmlAttributes(new { style = "text-align:left" });
+    columns.Bound(p => p.User).Width(50).HtmlAttributes(new { style = "text-align:left" });
     columns.Bound(p => p.RoleLevel).Width(50);
-    columns.Bound(p => p.CompletePercent).Width(150).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
-    columns.Bound(p => p.CheckinScore).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
-    columns.Bound(p => p.LeadNotQualifiedWeeksCount).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
-    columns.Bound(p => p.AddLeadScore).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
-    columns.Bound(p => p.HoursOrFaxNotQualifiedWeeksCount).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
-    columns.Bound(p => p.FaxCallScore).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
-    columns.Bound(p => p.AssignedScore).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
-    columns.Bound(p => p.Rate).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
-    columns.Bound(p => p.Score).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
-    columns.Bound(p => p.FaxOutCountString).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
-    columns.Bound(p => p.LeadAddCountString).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
-    columns.Command(commands =>
+    columns.Bound(p => p.CompletePercent).Width(120).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
+    columns.Bound(p => p.CheckinScore).Width(80).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
+    columns.Bound(p => p.LeadNotQualifiedWeeksCount).Width(100).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
+    columns.Bound(p => p.AddLeadScore).Width(80).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
+    columns.Bound(p => p.HoursOrFaxNotQualifiedWeeksCount).Width(130).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
+    columns.Bound(p => p.FaxCallScore).Width(90).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
+    columns.Bound(p => p.AssignedScore).Width(80).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
+    columns.Bound(p => p.Rate).Width(80).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
+    columns.Bound(p => p.Score).Width(90).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
+    columns.Bound(p => p.FaxOutCountString).Width(90).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
+    columns.Bound(p => p.LeadAddCountString).Width(90).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
+    if (ViewBag.RoleLevel == ManagerRequired.LVL || Utl.Employee.CurrentUserName == "karen")
     {
-        commands.Edit().ButtonType(GridButtonType.Text);
+        columns.Command(commands =>
+        {
+            commands.Edit().ButtonType(GridButtonType.Text);
 
-    }).Title("编辑").Width(80);
+        }).Title("编辑").Width(100);
+    }
 
 })
     .Editable(editing => editing
@@ -151,25 +157,28 @@ var query = ViewBag.fuzzyInput as string;
     })
 .Columns(columns =>
 {
-    columns.Bound(p => p.Name);
-    columns.Bound(p => p.User).Width(50);
-    columns.Bound(p => p.RoleLevel);
-    columns.Bound(p => p.CompletePercent);
-    columns.Bound(p => p.CheckinScore);
-    columns.Bound(p => p.LeadNotQualifiedWeeksCount);
-    columns.Bound(p => p.AddLeadScore);
-    columns.Bound(p => p.HoursOrFaxNotQualifiedWeeksCount);
-    columns.Bound(p => p.FaxCallScore);
-    columns.Bound(p => p.AssignedScore);
-    columns.Bound(p => p.Rate);
-    columns.Bound(p => p.Score);
-    columns.Bound(p => p.FaxOutCountString);
-    columns.Bound(p => p.LeadAddCountString);
-    columns.Command(commands =>
+    columns.Bound(p => p.Name).Width(80).HtmlAttributes(new { style = "text-align:left" });
+    columns.Bound(p => p.User).Width(50).HtmlAttributes(new { style = "text-align:left" });
+    columns.Bound(p => p.RoleLevel).Width(80).HtmlAttributes(new { style = "text-align:right" });
+    columns.Bound(p => p.CompletePercent).Width(120).HtmlAttributes(new { style = "text-align:right" }).Format("{0:#,##0%}");
+    columns.Bound(p => p.CheckinScore).Width(80).HtmlAttributes(new { style = "text-align:right" });
+    columns.Bound(p => p.LeadNotQualifiedWeeksCount).Width(100).HtmlAttributes(new { style = "text-align:right" });
+    columns.Bound(p => p.AddLeadScore).Width(80).HtmlAttributes(new { style = "text-align:right" });
+    columns.Bound(p => p.HoursOrFaxNotQualifiedWeeksCount).Width(130).HtmlAttributes(new { style = "text-align:right" });
+    columns.Bound(p => p.FaxCallScore).Width(80).HtmlAttributes(new { style = "text-align:right" });
+    columns.Bound(p => p.AssignedScore).Width(80).HtmlAttributes(new { style = "text-align:right" });
+    columns.Bound(p => p.Rate).Width(80).HtmlAttributes(new { style = "text-align:right" });
+    columns.Bound(p => p.Score).Width(80).HtmlAttributes(new { style = "text-align:right" });
+    columns.Bound(p => p.FaxOutCountString).Width(80).HtmlAttributes(new { style = "text-align:right" });
+    columns.Bound(p => p.LeadAddCountString).Width(80).HtmlAttributes(new { style = "text-align:right" });
+    if (ViewBag.RoleLevel == LeaderRequired.LVL || Utl.Employee.CurrentUserName == "karen")
     {
-        commands.Edit().ButtonType(GridButtonType.Text);
+        columns.Command(commands =>
+        {
+            commands.Edit().ButtonType(GridButtonType.Text);
 
-    }).Title("编辑").Width(80);
+        }).Title("编辑").Width(100);
+    }
 }).Editable(editing => editing
                                 .Mode(GridEditMode.PopUp).TemplateName("SalesPerformanceEdit"))
           .ClientEvents(e => e.OnRowDataBound("ChangeButtonTextForSales"))
@@ -177,7 +186,7 @@ var query = ViewBag.fuzzyInput as string;
               .ClientEvents(events => events.OnDataBinding("dataBinding"))
 
 .Pageable(p => p.Style(GridPagerStyles.Status)
-       .PageOnScroll(true).PageSize(35)).Scrollable(scrolling => scrolling.Height(350))
+               .PageOnScroll(true).PageSize(35)).Scrollable(scrolling => scrolling.Height(350)).Resizable(r => r.Columns(true))
 .ToolBar(factory => factory
       .Template(@<text>
          <div>
@@ -191,7 +200,7 @@ var query = ViewBag.fuzzyInput as string;
 }    
  
 <fieldset>
-    <legend>考核标准</legend>
+    <legend>销售和销售经理考核标准</legend>
     <table width="100%">
         <tr>
             <td>
@@ -216,6 +225,11 @@ var query = ViewBag.fuzzyInput as string;
                 R<60%,0%
             </td>
         </tr>
+        <tr>
+        
+        <td colspan="7"> 说明：销售经理月目标为团队月目标，入账额为团队入账额，销售月目标为个人目标，入账额为个人入账额 </td>
+        </tr>
+    
         <tr>
             <td>
                 调研每周达标
@@ -285,37 +299,50 @@ var query = ViewBag.fuzzyInput as string;
         var $row = $(e.row);
         var rowButton = $row.find(".t-grid-edit");
         var rowConfirmButton = $row.find(".t-grid-Confirm");
-        rowButton[0].innerText = "打分";
-        if ((e.dataItem.RoleLevel == "800")) {
-            if ((e.dataItem.Confirmed == "是")) {
-                rowButton.remove();
-                rowConfirmButton.remove();
-                return;
-            }
-            else {
-                rowConfirmButton.remove();
-                return;
-            }
+        if (rowButton[0] == null)
+            return;
+        if ((e.dataItem.Confirmed == "是")) {
+            rowButton.remove();
+            rowConfirmButton.remove();
+            return;
+        }
+        if ((e.dataItem.User == "karen")) {
+            rowButton[0].innerText = "修改系数";
+            rowConfirmButton.remove();
+            return;
+        }
+        else if ((e.dataItem.User == "theresa")) {
+            rowButton[0].innerText = "打分";
+            rowConfirmButton.remove();
         }
         else if ((e.dataItem.User == "ray")) {
             rowButton.remove();
             return;
         }
         else {
-            rowConfirmButton.remove();
+            
             rowButton.remove();
         }
         
     }
     function ChangeWinTitleForManager(e) {
+        
         var popup = $("#" + e.currentTarget.id + "PopUp");
         var popupDataWin = popup.data("tWindow");
         var l = ($(window).width() / 2 - $(popup).width() / 2);
         popup.css({ "left": l + "px", "margin-left": "0", "width": $(popup).width() });
-        popupDataWin.title("打分");
+        if ((e.dataItem.User == "karen")) {
+            popupDataWin.title("修改系数");
+        }
+        else
+            popupDataWin.title("打分");
     }
     function onManagerCommand(e) {
         //if the custom command is triggered
+        if ((e.dataItem.ID == "0" && e.dataItem.User == "ray")) {
+            alert("还没有打分，不能确认。")
+            return;
+        }
         if (e.name == 'Confirm') {
             if (!confirm("确实要确认吗?")) {
                 // prevent the request        
@@ -326,6 +353,8 @@ var query = ViewBag.fuzzyInput as string;
     function ChangeButtonTextForLead(e) {
         var $row = $(e.row);
         var rowButton = $row.find(".t-grid-edit");
+        if (rowButton[0] == null)
+            return;
         if ((e.dataItem.User == "karen")) {
             rowButton[0].innerText = "修改系数";
             return;
@@ -353,6 +382,8 @@ var query = ViewBag.fuzzyInput as string;
     function ChangeButtonTextForSales(e) {
         var $row = $(e.row);
         var rowButton = $row.find(".t-grid-edit");
+        if (rowButton[0] == null)
+            return;
         if ((e.dataItem.User == "karen")) {
             rowButton[0].innerText = "修改系数";
             return;
@@ -379,7 +410,8 @@ var query = ViewBag.fuzzyInput as string;
     function onManagerComplete(e) {
         if (e.name == "Confirm") {
             var $grid = $("#manager").data("tGrid");
-            $grid.rebind();
+            //$grid.rebind();
+            //alert('');
         }
     }
 </script>

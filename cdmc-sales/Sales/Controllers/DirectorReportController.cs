@@ -71,6 +71,11 @@ namespace Sales.Controllers
             return View(list);
         }
 
+        public ActionResult ProjectsReportLastWeek()
+        {
+            var list = CRM_Logical._Reports.GetProjectsReportLastweek(DateTime.Now);
+            return View(list);
+        }
         /// <summary>
         ///项目入账 
         /// </summary>

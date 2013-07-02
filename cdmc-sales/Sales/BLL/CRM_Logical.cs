@@ -25,7 +25,7 @@ namespace BLL
                 var user = Employee.CurrentUserName;
                 var rolelvl = Employee.CurrentRole.Level;
 
-                if (rolelvl == SuperManagerRequired.LVL || user == "ray")
+                if (rolelvl >= SuperManagerRequired.LVL || user == "ray")
                 {
                     var md = MonthDuration.GetMonthInstance(month);
                     var managers = CH.DB.Projects.Where(w => w.IsActived == true && !string.IsNullOrEmpty(w.Manager)).Select(s => s.Manager).Distinct();
@@ -66,7 +66,7 @@ namespace BLL
                                           name = l.Creator,
                                           salestypeid = m.SalesTypeID
                                       };
-                    var deals = CRM_Logical.GetDeals().Where(w => w.ActualPaymentDate.Value != null && w.ActualPaymentDate.Value.Month == month);
+                    var deals = CRM_Logical.GetDeals().Where(w => w.ActualPaymentDate.Value != null && w.ActualPaymentDate.Value.Month == month && w.ActualPaymentDate.Value.Year == DateTime.Now.Year);
                     var year = DateTime.Now.Year;
                     //获取登录者（考核人）打分的记录
                     var scores = from r in CH.DB.ManagerScores.Where(w => w.Month == month && w.Year == year) select r;
@@ -80,15 +80,15 @@ namespace BLL
                                   TargetName = l,
                                   User = user,
                                   Assigner = aa != null ? aa.Assigner : user,//aa.Assigner,
-                                  Responsibility = aa != null ? aa.Responsibility : 0,//aa.Item1Score.HasValue == false ? 5 : aa.Item1Score,//scores.Where(w => w.TargetName == l).Select(s => s.Item1Score).FirstOrDefault().Value,
-                                  Discipline = aa != null ? aa.Discipline : 0,//aa.Item2Score.HasValue == false ? 5 : aa.Item2Score,
-                                  Excution = aa != null ? aa.Excution : 0,//aa.Item3Score.HasValue == false ? 5 : aa.Item3Score,
-                                  Targeting = aa != null ? aa.Targeting : 0,//aa.Item4Score.HasValue == false ? 5 : aa.Item4Score,
-                                  Searching = aa != null ? aa.Searching : 0,//aa.Item5Score.HasValue == false ? 5 : aa.Item5Score,
-                                  Production = aa != null ? aa.Production : 0,//aa.Item6Score.HasValue == false ? 5 : aa.Item6Score,
-                                  PitchPaper = aa != null ? aa.PitchPaper : 0,//aa.Item7Score.HasValue == false ? 5 : aa.Item7Score,
-                                  WeeklyMeeting = aa != null ? aa.WeeklyMeeting : 0,//aa.Item8Score.HasValue == false ? 5 : aa.Item8Score,
-                                  MonthlyMeeting = aa != null ? aa.MonthlyMeeting : 2,//aa.Item9Score.HasValue == false ? 10 : aa.Item9Score,
+                                  Responsibility = aa != null ? aa.Responsibility: 5,//aa.Item1Score.HasValue == false ? 5 : aa.Item1Score,//scores.Where(w => w.TargetName == l).Select(s => s.Item1Score).FirstOrDefault().Value,
+                                  Discipline = aa != null ? aa.Discipline : 5,//aa.Item2Score.HasValue == false ? 5 : aa.Item2Score,
+                                  Excution = aa != null ? aa.Excution : 5,//aa.Item3Score.HasValue == false ? 5 : aa.Item3Score,
+                                  Targeting = aa != null ? aa.Targeting : 5,//aa.Item4Score.HasValue == false ? 5 : aa.Item4Score,
+                                  Searching = aa != null ? aa.Searching : 5,//aa.Item5Score.HasValue == false ? 5 : aa.Item5Score,
+                                  Production = aa != null ? aa.Production : 5,//aa.Item6Score.HasValue == false ? 5 : aa.Item6Score,
+                                  PitchPaper = aa != null ? aa.PitchPaper : 5,//aa.Item7Score.HasValue == false ? 5 : aa.Item7Score,
+                                  WeeklyMeeting = aa != null ? aa.WeeklyMeeting : 5,//aa.Item8Score.HasValue == false ? 5 : aa.Item8Score,
+                                  MonthlyMeeting = aa != null ? aa.MonthlyMeeting : 10,//aa.Item9Score.HasValue == false ? 10 : aa.Item9Score,
                                   leadcallcount = memberscall.Where(c => c.Manager == l).Count(c => c.salestypeid == 2),
                                   salescallcount = memberscall.Where(c => c.Manager == l).Count(c => c.salestypeid == 1),
                                   leadscount = memberscall.Where(c => c.Manager == l).GroupBy(c => c.salestypeid).Select(c => c.FirstOrDefault()).Count(c => c.salestypeid == 2),
@@ -97,8 +97,8 @@ namespace BLL
                                   salesnewlead = memberslead.Where(c => c.manager == l).Count(c => c.salestypeid == 1),
                                   target = CH.DB.TargetOfMonths.Where(t => t.Project.TeamLeader == l && t.Project.IsActived == true && t.StartDate.Month == month).Sum(s => s.CheckIn),
                                   checkinreal = deals.Where(d => d.Project.Manager == l).Sum(s => s.Income),
-                                  Confirmed = aa != null ? aa.Confirmed == true ? "是" : "否" : "否"
-
+                                  Confirmed = aa != null ? aa.Confirmed == true ? "是" : "否" : "否",
+                                  Rate = aa != null ? aa.Rate:1
                               };
 
                     return lps;
@@ -131,7 +131,7 @@ namespace BLL
                     }
 
 
-                    var deals = CRM_Logical.GetDeals().Where(w => w.ActualPaymentDate.Value != null && w.ActualPaymentDate.Value.Month == month);
+                    var deals = CRM_Logical.GetDeals().Where(w => w.ActualPaymentDate.Value != null && w.ActualPaymentDate.Value.Month == month && w.ActualPaymentDate.Value.Year == DateTime.Now.Year);
                     var calls = from l in CH.DB.LeadCalls.Where(w => w.LeadCallTypeID != null && w.LeadCallType.Code >= 40) select l;
                     // calls =from c in calls group c by c.LeadID into g select g.FirstOrDefault();//分组并选择第一个
                     var leadadds = from l in CH.DB.Leads select l;
@@ -152,7 +152,7 @@ namespace BLL
                                   User = user,
                                   //Assigner = scores.Where(w => w.TargetName == l).Select(s => s.Assigner).FirstOrDefault() == null ? user : scores.Where(w => w.TargetName == l).Select(s => s.Assigner).FirstOrDefault(),
                                   Rate = scores.Where(w => w.TargetName == l).Count() == 0 ? 1 : scores.Where(w => w.TargetName == l).Select(s => s.Rate).FirstOrDefault(), //rates.Where(w => w.TargetName == l).Average(s => s.Rate) == null ? 1 : scores.Where(w => w.TargetName == l).Average(s => s.Score),
-                                  AssignedScore = scores.Where(w => w.TargetName == l).Count() == 0 ? 1 : scores.Where(w => w.TargetName == l).Select(s => s.Score).FirstOrDefault(),//scores.Where(w => w.TargetName == l).Average(s => s.Score) == null ? 0 : scores.Where(w => w.TargetName == l).Average(s => s.Score),
+                                  AssignedScore = scores.Where(w => w.TargetName == l).Count() == 0 ? 10 : scores.Where(w => w.TargetName == l).Select(s => s.Score).FirstOrDefault(),//scores.Where(w => w.TargetName == l).Average(s => s.Score) == null ? 0 : scores.Where(w => w.TargetName == l).Average(s => s.Score),
                                   TeamLeadPerformanceInWeeks = wd.Select(s => new _TeamLeadPerformanceInWeek
                                   {
                                       //FaxOutCount = calls.Where(c => c.Member != null && c.Member.Name == l).GroupBy(c=>c.LeadID).Select(g=>g.FirstOrDefault()).Count(c=>c.CreatedDate >= s && c.CreatedDate < EntityFunctions.AddDays(s, 7)),
@@ -176,20 +176,20 @@ namespace BLL
                 {
                     IQueryable<string> sales = null;
                     var user = Employee.CurrentUserName;
-                    sales = CH.DB.Members.Where(w => w.IsActivated == true && w.Project.IsActived == true && w.Project.Manager == user || w.Project.TeamLeader == user).Select(s => s.Name).Distinct();
+                    sales = CH.DB.Members.Where(w => w.IsActivated == true && w.Project.IsActived == true && (w.Project.Manager == user || w.Project.TeamLeader == user) && w.IsActivated==true).Select(s => s.Name).Distinct();
                     if (Employee.EqualToLeader() || Employee.EqualToManager())//版块或者lead查看
                     {
 
-                        sales = CH.DB.Members.Where(w => w.IsActivated == true && w.Project.IsActived == true && w.Project.Manager == user || w.Project.TeamLeader == user).Select(s => s.Name).Distinct();
+                        sales = CH.DB.Members.Where(w => w.IsActivated == true && w.Project.IsActived == true && (w.Project.Manager == user || w.Project.TeamLeader == user) && w.IsActivated == true).Select(s => s.Name).Distinct();
 
                     }
                     else if (Employee.EqualToSales())//销售查看
                     {
-                        sales = CH.DB.Members.Where(w => w.IsActivated == true && w.Project.IsActived == true && w.Name == user).Select(s => s.Name).Distinct();
+                        sales = CH.DB.Members.Where(w => w.IsActivated == true && w.Project.IsActived == true && w.Name == user && w.IsActivated == true).Select(s => s.Name).Distinct();
                     }
                     else if (Employee.AsLeader())
                     {
-                        sales = CH.DB.Members.Where(w => w.IsActivated == true && w.Project.IsActived == true).Select(s => s.Name).Distinct();
+                        sales = CH.DB.Members.Where(w => w.IsActivated == true && w.Project.IsActived == true && w.IsActivated == true).Select(s => s.Name).Distinct();
                     }
 
                     if (sales != null)
@@ -200,14 +200,14 @@ namespace BLL
 
                         if (Utl.Utl.DebugModel() != true)
                         {
-                            var debugmembers = CH.DB.Members.Where(w => w.Test == true).Select(s => s.Name).Distinct();
+                            var debugmembers = CH.DB.Members.Where(w => w.Test == true && w.IsActivated==true).Select(s => s.Name).Distinct();
                             sales = sales.Where(w => !debugmembers.Any(a => a == w));
                         }
 
 
                         sales = sales.Where(w => !leads.Any(a => a == w) && w.Contains(fuzzyInput));//排除sales中的lead
 
-                        var deals = CRM_Logical.GetDeals().Where(w => w.ActualPaymentDate.Value != null && w.ActualPaymentDate.Value.Month == month);
+                        var deals = CRM_Logical.GetDeals().Where(w => w.ActualPaymentDate.Value != null && w.ActualPaymentDate.Value.Month == month && w.ActualPaymentDate.Value.Year==DateTime.Now.Year);
                         var calls = from l in CH.DB.LeadCalls.Where(w => w.LeadCallTypeID != null && w.LeadCallType.Code >= 40) select l;
                         // calls =from c in calls group c by c.LeadID into g select g.FirstOrDefault();//分组并选择第一个
                         var leadadds = from l in CH.DB.Leads select l;
@@ -224,7 +224,7 @@ namespace BLL
                                       Name = l,
                                       User = user,
                                       Rate = scores.Where(w => w.TargetName == l).Count() == 0 ? 1 : scores.Where(w => w.TargetName == l).Select(s => s.Rate).FirstOrDefault(), //rates.Where(w => w.TargetName == l).Average(s => s.Rate) == null ? 1 : scores.Where(w => w.TargetName == l).Average(s => s.Score),
-                                      AssignedScore = scores.Where(w => w.TargetName == l).Count() == 0 ? 0 : scores.Where(w => w.TargetName == l).Select(s => s.Score).FirstOrDefault(),//scores.Where(w => w.TargetName == l).Average(s => s.Score) == null ? 0 : scores.Where(w => w.TargetName == l).Average(s => s.Score),
+                                      AssignedScore = scores.Where(w => w.TargetName == l).Count() == 0 ? 10 : scores.Where(w => w.TargetName == l).Select(s => s.Score).FirstOrDefault(),//scores.Where(w => w.TargetName == l).Average(s => s.Score) == null ? 0 : scores.Where(w => w.TargetName == l).Average(s => s.Score),
                                       SalesPerformanceInWeeks = wd.Select(s => new _SalesPerformanceInWeek
                                       {
                                           //FaxOutCount = calls.Where(c => c.Member != null && c.Member.Name == l).GroupBy(c=>c.LeadID).Select(g=>g.FirstOrDefault()).Count(c=>c.CreatedDate >= s && c.CreatedDate < EntityFunctions.AddDays(s, 7)),
@@ -234,7 +234,6 @@ namespace BLL
                                           EndDate = EntityFunctions.AddDays(s, 7).Value,
                                           LeadsCount = leadadds.Count(c => c.Creator == l && c.CreatedDate >= s && c.CreatedDate < EntityFunctions.AddDays(s, 7))
                                       })
-
                                   };
                         return lps;
 
@@ -505,7 +504,54 @@ namespace BLL
                 if (week == 3) return f.TargetOf4thWeek;
                 else return f.TargetOf5thWeek;
             }
+            public static List<ProjectWeekPerformance> GetProjectsReportLastweek(DateTime? day)
+            {
+                if (day == null)
+                    day = DateTime.Now; ;
+                day = day.Value.AddDays(-7);
+                var weekstart = day.Value.StartOfWeek();
+                var weekend = day.Value.EndOfWeek().AddDays(1);
+                var dealins = from d in GetDeals().Where(w => w.SignDate >= weekstart && w.SignDate < weekend) select d;
+                var checkins = from d in GetDeals().Where(w => w.ActualPaymentDate >= weekstart && w.ActualPaymentDate < weekend) select d;
+                var alldeals = GetDeals();
+                //和周目标相关的月
+                var targets = from t in GetProjectMonthTargets().Where(w => (w.EndDate >= weekstart && w.EndDate < weekend)
+                                  || (w.StartDate >= weekstart && w.StartDate < weekend) || (w.StartDate >= weekstart && w.EndDate > weekend))
+                              select t;
+                //var ds = from d in dealins
+                //           group d by new { d.ProjectID, d.Project.Name_CH } into grp
+                //           select new ProjectWeekPerformance()
+                //           {
+                //               StartDate = weekstart,
+                //               EndDate = weekend,
+                //               Income = dealins.Where(w => w.ProjectID == grp.Key.ProjectID).Sum(s => s.Payment),
+                //               ProjectName = grp.Key.Name_CH,
+                //               ProjectID = grp.Key.ProjectID
+                //           };
+                var cs =
+                    //from d in checkins
+                    //group d by new { d.ProjectID } into grp
+                         from p in CH.DB.Projects
+                         where p.IsActived == true && (p.Test == null)
+                         select new ProjectWeekPerformance()
+                         {
+                             StartDate = weekstart,
+                             EndDate = weekend,
+                             Target = p.Target,
+                             Income = checkins.Where(w => w.ProjectID == p.ID).Sum(s => s.Income),
+                             Payment = dealins.Where(w => w.ProjectID == p.ID).Sum(s => s.Payment),
+                             RMBPayment = dealins.Where(w => w.ProjectID == p.ID && w.Currencytype.Name=="RMB").Sum(s => s.Payment),
+                             USDPayment = dealins.Where(w => w.ProjectID == p.ID && w.Currencytype.Name == "USD").Sum(s => s.Payment),
+                             ProjectName = p.Name_CH,
+                             ProjectID = p.ID,
+                             Manager = p.Manager,
+                             Leader = p.TeamLeader,
+                             MemberCount = p.Members.Count
+                         };
 
+                var list = cs.ToList();
+                return list;
+            }
             public static IQueryable<AjaxProjectCheckInByMonth> GetProjectsCheckInByMonth()
             {
                 var yeaerstart = new DateTime(DateTime.Now.Year, 1, 1);
@@ -1302,22 +1348,22 @@ namespace BLL
         {
             List<_Item> itemList = new List<_Item>();
             _Item item = new _Item();
-            item.ID = 0;
-            item.Name = "请选择";
-            itemList.Add(item);
+            //item.ID = 0;
+            //item.Name = "请选择";
+            //itemList.Add(item);
 
-            item = new _Item();
+            //item = new _Item();
             item.ID = 1;
-            item.Name = "1'-对工作基本上没有热情，消极被动，只安于现状，缺乏工作责任心，经常推卸责任，几乎没有加班";
+            item.Name = "1%-对工作基本上没有热情，消极被动，只安于现状，缺乏工作责任心，经常推卸责任，几乎没有加班";
             itemList.Add(item);
             item = new _Item();
             item.ID = 3;
-            item.Name = "3'-对工作有一定责任心和积极性，但专注度尚不够，其程度有时受个人偏好影响，偶尔会带队加班加点，产生的效果、作用一般";
+            item.Name = "3%-对工作有一定责任心和积极性，但专注度尚不够，其程度有时受个人偏好影响，偶尔会带队加班加点，产生的效果、作用一般";
             itemList.Add(item);
 
             item = new _Item();
             item.ID = 5;
-            item.Name = "5'-有很强的工作责任心和积极性，对待工作认真扎实，精益求精，经常主动地带队加班，并且产生明显的效果、作用";
+            item.Name = "5%-有很强的工作责任心和积极性，对待工作认真扎实，精益求精，经常主动地带队加班，并且产生明显的效果、作用";
             itemList.Add(item);
             return itemList;
         }
@@ -1330,22 +1376,22 @@ namespace BLL
         {
             List<_Item> itemList = new List<_Item>();
             _Item item = new _Item();
-            item.ID = 0;
-            item.Name = "请选择";
-            itemList.Add(item);
+            //item.ID = 0;
+            //item.Name = "请选择";
+            //itemList.Add(item);
 
-            item = new _Item();
+            //item = new _Item();
             item.ID = 1;
-            item.Name = "1'-基本不能遵守工作规定、制度和考勤要求，迟到或早退超过五次，或有缺勤，或工作中有其他违规情况发生";
+            item.Name = "1%-基本不能遵守工作规定、制度和考勤要求，迟到或早退超过五次，或有缺勤，或工作中有其他违规情况发生";
             itemList.Add(item);
             item = new _Item();
             item.ID = 3;
-            item.Name = "3'-行为规范上对自己有一定的要求，能够基本遵守各项规章制度，偶尔有请假，迟到或早退现象发生";
+            item.Name = "3%-行为规范上对自己有一定的要求，能够基本遵守各项规章制度，偶尔有请假，迟到或早退现象发生";
             itemList.Add(item);
 
             item = new _Item();
             item.ID = 5;
-            item.Name = "5'-行为规范上严于律己，能起到表率作用,没有请假，迟到或早退现象发生";
+            item.Name = "5%-行为规范上严于律己，能起到表率作用,没有请假，迟到或早退现象发生";
             itemList.Add(item);
             return itemList;
         }
@@ -1358,22 +1404,22 @@ namespace BLL
         {
             List<_Item> itemList = new List<_Item>();
             _Item item = new _Item();
-            item.ID = 0;
-            item.Name = "请选择";
-            itemList.Add(item);
+            //item.ID = 0;
+            //item.Name = "请选择";
+            //itemList.Add(item);
 
-            item = new _Item();
+            //item = new _Item();
             item.ID = 1;
-            item.Name = "1'-对上级下达的招聘，培训等任务比较消极，工作结果不尽人意";
+            item.Name = "1%-对上级下达的招聘，培训等任务比较消极，工作结果不尽人意";
             itemList.Add(item);
             item = new _Item();
             item.ID = 3;
-            item.Name = "3'-尚能按时完成上级下达的招聘，培训等任务，基本达到上级要求";
+            item.Name = "3%-尚能按时完成上级下达的招聘，培训等任务，基本达到上级要求";
             itemList.Add(item);
 
             item = new _Item();
             item.ID = 5;
-            item.Name = "5'-以积极认真的态度，及时认真完成上级下达的招聘，培训等任务且成效令人满意";
+            item.Name = "5%-以积极认真的态度，及时认真完成上级下达的招聘，培训等任务且成效令人满意";
             itemList.Add(item);
             return itemList;
         }
@@ -1386,22 +1432,22 @@ namespace BLL
         {
             List<_Item> itemList = new List<_Item>();
             _Item item = new _Item();
-            item.ID = 0;
-            item.Name = "请选择";
-            itemList.Add(item);
+            //item.ID = 0;
+            //item.Name = "请选择";
+            //itemList.Add(item);
 
-            item = new _Item();
+            //item = new _Item();
             item.ID = 1;
-            item.Name = "1'-计划缺失，对目标的认识不够充分，团队目标不明确，不能够充分利用目标进行团队激励";
+            item.Name = "1%-计划缺失，对目标的认识不够充分，团队目标不明确，不能够充分利用目标进行团队激励";
             itemList.Add(item);
             item = new _Item();
             item.ID = 3;
-            item.Name = "3'-制定一般可操作的工作计划，明确团队目标，并且使用目标进行激励";
+            item.Name = "3%-制定一般可操作的工作计划，明确团队目标，并且使用目标进行激励";
             itemList.Add(item);
 
             item = new _Item();
             item.ID = 5;
-            item.Name = "5'-能够设定科学合理的工作计划与目标，逐层分解目标，并利用目标有效激励成员，结合工作计划阶段性分解实现";
+            item.Name = "5%-能够设定科学合理的工作计划与目标，逐层分解目标，并利用目标有效激励成员，结合工作计划阶段性分解实现";
             itemList.Add(item);
             return itemList;
         }
@@ -1414,22 +1460,22 @@ namespace BLL
         {
             List<_Item> itemList = new List<_Item>();
             _Item item = new _Item();
-            item.ID = 0;
-            item.Name = "请选择";
-            itemList.Add(item);
+            //item.ID = 0;
+            //item.Name = "请选择";
+            //itemList.Add(item);
 
-            item = new _Item();
+            //item = new _Item();
             item.ID = 1;
-            item.Name = "1'-随机检查，提醒就做，不提醒就不做";
+            item.Name = "1%-随机检查，提醒就做，不提醒就不做";
             itemList.Add(item);
             item = new _Item();
             item.ID = 3;
-            item.Name = "3'-有计划的不定时检查";
+            item.Name = "3%-有计划的不定时检查";
             itemList.Add(item);
 
             item = new _Item();
             item.ID = 5;
-            item.Name = "5'-按时检查无遗漏";
+            item.Name = "5%-按时检查无遗漏";
             itemList.Add(item);
             return itemList;
         }
@@ -1442,22 +1488,22 @@ namespace BLL
         {
             List<_Item> itemList = new List<_Item>();
             _Item item = new _Item();
-            item.ID = 0;
-            item.Name = "请选择";
-            itemList.Add(item);
+            //item.ID = 0;
+            //item.Name = "请选择";
+            //itemList.Add(item);
 
-            item = new _Item();
+            //item = new _Item();
             item.ID = 1;
-            item.Name = "1'-协调缺失，项目进度受影响";
+            item.Name = "1%-协调缺失，项目进度受影响";
             itemList.Add(item);
             item = new _Item();
             item.ID = 3;
-            item.Name = "3'-协调滞后，效果一般";
+            item.Name = "3%-协调滞后，效果一般";
             itemList.Add(item);
 
             item = new _Item();
             item.ID = 5;
-            item.Name = "5'-协调及时，效果较好";
+            item.Name = "5%-协调及时，效果较好";
             itemList.Add(item);
             return itemList;
         }
@@ -1470,22 +1516,22 @@ namespace BLL
         {
             List<_Item> itemList = new List<_Item>();
             _Item item = new _Item();
-            item.ID = 0;
-            item.Name = "请选择";
-            itemList.Add(item);
+            //item.ID = 0;
+            //item.Name = "请选择";
+            //itemList.Add(item);
 
-            item = new _Item();
+            //item = new _Item();
             item.ID = 1;
-            item.Name = "1'-内容几乎没有更新，效果较差";
+            item.Name = "1%-内容几乎没有更新，效果较差";
             itemList.Add(item);
             item = new _Item();
             item.ID = 3;
-            item.Name = "3'-内容更新滞后，效果一般";
+            item.Name = "3%-内容更新滞后，效果一般";
             itemList.Add(item);
 
             item = new _Item();
             item.ID = 5;
-            item.Name = "5'-内容更新及时，效果较好";
+            item.Name = "5%-内容更新及时，效果较好";
             itemList.Add(item);
             return itemList;
         }
@@ -1498,22 +1544,22 @@ namespace BLL
         {
             List<_Item> itemList = new List<_Item>();
             _Item item = new _Item();
-            item.ID = 0;
-            item.Name = "请选择";
-            itemList.Add(item);
+            //item.ID = 0;
+            //item.Name = "请选择";
+            //itemList.Add(item);
 
-            item = new _Item();
+            //item = new _Item();
             item.ID = 1;
-            item.Name = "1'-每周销售例会准备不成分，组织随意，效果较差";
+            item.Name = "1%-每周销售例会准备不成分，组织随意，效果较差";
             itemList.Add(item);
             item = new _Item();
             item.ID = 3;
-            item.Name = "3'-每周销售例会有准备，组织尚可，内容实用";
+            item.Name = "3%-每周销售例会有准备，组织尚可，内容实用";
             itemList.Add(item);
 
             item = new _Item();
             item.ID = 5;
-            item.Name = "5'-每周销售例会准备充分，组织高效，作用明显";
+            item.Name = "5%-每周销售例会准备充分，组织高效，作用明显";
             itemList.Add(item);
             return itemList;
         }
@@ -1526,22 +1572,22 @@ namespace BLL
         {
             List<_Item> itemList = new List<_Item>();
             _Item item = new _Item();
-            item.ID = 0;
-            item.Name = "请选择";
-            itemList.Add(item);
+            //item.ID = 0;
+            //item.Name = "请选择";
+            //itemList.Add(item);
 
-            item = new _Item();
+            //item = new _Item();
             item.ID = 2;
-            item.Name = "2'-每周销售例会准备不成分，组织随意，效果较差";
+            item.Name = "2%-每月通话到达4小时以下";
             itemList.Add(item);
             item = new _Item();
             item.ID = 6;
-            item.Name = "6'-每月通话到达4-6小时";
+            item.Name = "6%-每月通话到达4-6小时";
             itemList.Add(item);
 
             item = new _Item();
             item.ID = 10;
-            item.Name = "10'-每月通话到达6小时以上";
+            item.Name = "10%-每月通话到达6小时以上";
             itemList.Add(item);
             return itemList;
         }

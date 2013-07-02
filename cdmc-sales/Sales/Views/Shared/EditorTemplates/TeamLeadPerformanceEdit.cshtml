@@ -29,7 +29,7 @@
         {
             <tr>
                 <td style="width:50%">@Html.LabelFor(model => model.Rate)</td>
-                <td style="width:50%">@Html.DropDownListFor(model => model.Rate, new SelectList(new List<double>() { 0, 1, 1.2 }), "-«Î—°‘Ò-")</td>
+                <td style="width:50%">@Html.DropDownListFor(model => model.Rate, new SelectList(new List<double>() { 0, 1, 1.2 }), new { @style = "width:100px" })</td>
                 @Html.TextBoxFor(model => model.AssignedScore, new { @style = "display:none" })
             </tr>
         }
@@ -37,7 +37,7 @@
         {
             <tr>
                 <td style="width:50%">@Html.LabelFor(model => model.AssignedScore)</td>
-                <td style="width:50%">@Html.TextBoxFor(model => model.AssignedScore)</td>
+                <td style="width:50%">@Html.DropDownListFor(model => model.AssignedScore, new SelectList(new List<double>() { 0, 5, 10 }), new { @style = "width:100px" })</td>
                 @Html.TextBoxFor(model => model.Rate, new { @style = "display:none" })
             </tr>
         }

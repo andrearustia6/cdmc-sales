@@ -42,7 +42,7 @@ namespace Sales.Controllers
                     newmodel.ID = id;
                     newmodel.TargetName = model.TargetName;
                     newmodel.Assigner = model.Assigner;
-                    newmodel.Responsibility = model.Responsibility;
+                    newmodel.Responsibility = (int)model.Responsibility;
                     newmodel.Discipline = model.Discipline;
                     newmodel.Excution = model.Excution;
                     newmodel.Targeting = model.Targeting;
@@ -51,7 +51,7 @@ namespace Sales.Controllers
                     newmodel.PitchPaper = model.PitchPaper;
                     newmodel.WeeklyMeeting = model.WeeklyMeeting;
                     newmodel.MonthlyMeeting = model.MonthlyMeeting;
-                    
+                    newmodel.Rate = model.Rate;
                     newmodel.Month = month;
                     newmodel.Year = DateTime.Now.Year;
                     
@@ -68,7 +68,7 @@ namespace Sales.Controllers
                 {
                     newmodel.TargetName = model.TargetName;
                     newmodel.Assigner = model.Assigner;
-                    newmodel.Responsibility = model.Responsibility;
+                    newmodel.Responsibility = (int)model.Responsibility;
                     newmodel.Discipline = model.Discipline;
                     newmodel.Excution = model.Excution;
                     newmodel.Targeting = model.Targeting;
@@ -77,6 +77,7 @@ namespace Sales.Controllers
                     newmodel.PitchPaper = model.PitchPaper;
                     newmodel.WeeklyMeeting = model.WeeklyMeeting;
                     newmodel.MonthlyMeeting = model.MonthlyMeeting;
+                    newmodel.Rate = model.Rate;
                     newmodel.Confirmed = false;
                     newmodel.Month = month;
                     newmodel.Year = DateTime.Now.Year;
@@ -91,7 +92,7 @@ namespace Sales.Controllers
             return View(new GridModel(data));
 
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        //[AcceptVerbs(HttpVerbs.Post)]
         [GridAction]
         public ActionResult _ConfirmManagerScore(int id, int? month)
         {
@@ -101,10 +102,10 @@ namespace Sales.Controllers
                 ManagerScore model = CH.GetDataById<ManagerScore>(id);
                 model.Confirmed = true;
                 CH.Edit<ManagerScore>(model);
+                //return View(model);
             }
             var list = CRM_Logical._EmployeePerformance.GetManagerLeadsPerformances(month.Value);
             var data = list.ToList();
-
 
             return View(new GridModel(data));
 

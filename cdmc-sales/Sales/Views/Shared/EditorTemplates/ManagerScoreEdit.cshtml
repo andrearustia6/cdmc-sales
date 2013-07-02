@@ -1,8 +1,49 @@
 @model Sales.Model._ManagerScore
 @using Entity
-@using Utl
 
-<style type="text/css">
+
+
+@Html.TextBoxFor(model => model.TargetName, new { @style = "display:none" })
+    @Html.TextBoxFor(model => model.Assigner, new { @style = "display:none" })
+@if (Utl.Employee.CurrentUserName == "karen")
+{
+    <style type="text/css">
+   
+    
+    /* in-form editing */
+    .t-edit-form-container
+    {
+         width: 250px;
+        height:120px;
+        margin: 1em;
+        text-align: right;
+    }
+   td
+   {
+       text-align:left;
+   }
+</style>
+    <div style=" padding-bottom:40px;width:100%"> 
+    <table style="width:100%" >
+     <tr>
+        <td style="width:50%">@Html.LabelFor(model => model.Rate)</td>
+        <td style="width:50%">@Html.DropDownListFor(model => model.Rate, new SelectList(new List<double>() { 0, 1, 1.2 }), new { @style = "width:100px" })</td>
+        @Html.TextBoxFor(model => model.Responsibility, new { @style = "display:none" })
+        @Html.TextBoxFor(model => model.Discipline, new { @style = "display:none" })
+        @Html.TextBoxFor(model => model.Excution, new { @style = "display:none" })
+        @Html.TextBoxFor(model => model.Targeting, new { @style = "display:none" })
+        @Html.TextBoxFor(model => model.Searching, new { @style = "display:none" })
+        @Html.TextBoxFor(model => model.Production, new { @style = "display:none" })
+        @Html.TextBoxFor(model => model.PitchPaper, new { @style = "display:none" })
+        @Html.TextBoxFor(model => model.WeeklyMeeting, new { @style = "display:none" })
+        @Html.TextBoxFor(model => model.MonthlyMeeting, new { @style = "display:none" })
+     </tr>
+     </table>
+    </div>
+}
+else
+{
+    <style type="text/css">
    
     
     /* in-form editing */
@@ -19,8 +60,7 @@
    }
 </style>
 <div style=" padding-bottom:40px;width:100%"> 
-    @Html.TextBoxFor(model => model.TargetName,new { @style="display:none"})
-    @Html.TextBoxFor(model => model.Assigner,new { @style="display:none"})
+    @Html.TextBoxFor(model => model.Rate, new { @style = "display:none" })
     <table style="width:100%" >
         <tr>
             <td style="width:30%">@Html.LabelFor(model => model.Responsibility)</td>
@@ -54,5 +94,5 @@
         </tr>
     </table>
 </div>    
-    
+}
 
