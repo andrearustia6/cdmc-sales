@@ -729,7 +729,7 @@ namespace Sales.Model
                 if (MonthlyMeeting == null)
                     MonthlyMeeting = 0;
                
-                return (int)(Rate * (Responsibility + Discipline.Value + Excution.Value + Targeting.Value + Searching.Value + 
+                return (int)(Rate * (Responsibility.Value + Discipline.Value + Excution.Value + Targeting.Value + Searching.Value + 
                     Production.Value + PitchPaper.Value + WeeklyMeeting.Value + MonthlyMeeting.Value + Calllist.Value + AddLeads.Value + CheckIn.Value));
             }
         }
