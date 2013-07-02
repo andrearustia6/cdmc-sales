@@ -107,7 +107,7 @@
     })
 .Columns(columns =>
 {
-    columns.Bound(p => p.Name).Width(50).HtmlAttributes(new { style = "text-align:left" });
+    columns.Bound(p => p.Name).Width(80).HtmlAttributes(new { style = "text-align:left" });
     columns.Bound(p => p.User).Width(50).HtmlAttributes(new { style = "text-align:left" });
     columns.Bound(p => p.RoleLevel).Width(50);
     columns.Bound(p => p.CompletePercent).Width(120).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" }).Format("{0:#,##0%}");
@@ -121,7 +121,7 @@
     columns.Bound(p => p.Score).Width(90).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" }).ClientTemplate("<p><#= $.telerik.formatString('{0:p0}', Score/100) #></p>"); ;
     columns.Bound(p => p.FaxOutCountString).Width(90).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
     columns.Bound(p => p.LeadAddCountString).Width(90).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
-    if (ViewBag.RoleLevel == ManagerRequired.LVL || Utl.Employee.CurrentUserName == "karen")
+    if (Utl.Employee.CurrentRole.Level == ManagerRequired.LVL || Utl.Employee.CurrentUserName == "karen")
     {
         columns.Command(commands =>
         {

@@ -453,6 +453,7 @@ namespace Sales.Controllers
             if (month == null) month = DateTime.Now.Month;
             // if (month == null) month = 5;
             var list = CRM_Logical._EmployeePerformance.GetSalesPerformances(month.Value, fuzzyInput);
+            list = list.OrderBy(p => p.Name);
            return View(new GridModel(list));
             //var data = list.ToList();
             //return View(new GridModel(data));
@@ -506,7 +507,7 @@ namespace Sales.Controllers
             }
 
             var list = CRM_Logical._EmployeePerformance.GetSalesPerformances(month.Value, "");
-            var data = list.ToList();
+            var data = list.OrderBy(p=>p.Name).ToList();
             return View(new GridModel(data));
 
         }
