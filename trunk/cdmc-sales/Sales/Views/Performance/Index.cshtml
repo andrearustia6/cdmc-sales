@@ -31,7 +31,7 @@ var rolelvl = ViewBag.RoleLevel as int?;
     { 
         <fieldset>
         <legend>版块负责人考核</legend>
-            @(Html.Telerik().Grid<_ManagerScore>().Name("manager")
+            @*@(Html.Telerik().Grid<_ManagerScore>().Name("manager")
 
             .DataKeys(keys =>
             {
@@ -58,6 +58,61 @@ var rolelvl = ViewBag.RoleLevel as int?;
             columns.Bound(p => p.Calllist).Width(80).HtmlAttributes(new { style = "text-align:right" }).Format("{0:p0}");
             columns.Bound(p => p.AddLeads).Width(90).HtmlAttributes(new { style = "text-align:right" }).Format("{0:p0}");
             columns.Bound(p => p.CheckIn).Width(80).HtmlAttributes(new { style = "text-align:right" }).Format("{0:p0}");
+            columns.Bound(p => p.Rate).Width(60).HtmlAttributes(new { style = "text-align:right" });
+            columns.Bound(p => p.Score).Width(60).HtmlAttributes(new { style = "text-align:right" });
+            columns.Bound(p => p.Confirmed).Width(60);
+            //columns.Bound(p => p.Month).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
+            //columns.Bound(p => p.Year).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
+            if (ViewBag.RoleLevel == SuperManagerRequired.LVL || Utl.Employee.CurrentUserName == "ray" || Utl.Employee.CurrentUserName == "karen")
+            {
+                columns.Command(commands =>
+                {
+                    commands.Edit().ButtonType(GridButtonType.Text);
+                    commands.Custom("Confirm")
+                     .Text("确认")
+                      .DataRouteValues(route => route.Add(o => o.ID)
+                                              .RouteKey("id")
+                                          )
+                     .Ajax(true)
+                     .Action("_ConfirmManagerScore", "Performance", new { month = month });
+                }).Title("编辑").Width(100);
+            }
+        }).Editable(editing => editing
+                                .Mode(GridEditMode.PopUp).TemplateName("ManagerScoreEdit"))
+              .ClientEvents(e => e.OnRowDataBound("ChangeButtonTextForManager"))
+              .ClientEvents(events => events.OnEdit("ChangeWinTitleForManager"))
+              .ClientEvents(events => events.OnComplete("onManagerComplete"))
+              .ClientEvents(events => events.OnCommand("onManagerCommand"))
+          .Pageable(p => p.Style(GridPagerStyles.Status)
+               .PageOnScroll(true).PageSize(25)).Scrollable(scrolling => scrolling.Height(350)).Sortable().Resizable(r => r.Columns(true))
+                   )*@
+            @(Html.Telerik().Grid<_ManagerScore>().Name("manager")
+
+            .DataKeys(keys =>
+            {
+                keys.Add(o => o.ID);
+            })
+            .DataBinding(dataBinding =>
+            {
+                dataBinding.Ajax().Select("_SelectManagerIndex", "Performance", new { month = month })
+                    .Update("_UpdateManagerScore", "Performance", new { month = month });
+            })
+        .Columns(columns =>
+        {
+            columns.Bound(p => p.TargetName).Width(80).HtmlAttributes(new { style = "text-align:left" });
+            columns.Bound(p => p.Assigner).Width(60).HtmlAttributes(new { style = "text-align:left" });
+            columns.Bound(p => p.Responsibility).Width(50).HtmlAttributes(new { style = "text-align:right" });
+            columns.Bound(p => p.Discipline).Width(50).HtmlAttributes(new { style = "text-align:right" });
+            columns.Bound(p => p.Excution).Width(60).HtmlAttributes(new { style = "text-align:right" });
+            columns.Bound(p => p.Targeting).Width(60).HtmlAttributes(new { style = "text-align:right" });
+            columns.Bound(p => p.Searching).Width(100).HtmlAttributes(new { style = "text-align:right" });
+            columns.Bound(p => p.Production).Width(80).HtmlAttributes(new { style = "text-align:right" });
+            columns.Bound(p => p.PitchPaper).Width(90).HtmlAttributes(new { style = "text-align:right" });
+            columns.Bound(p => p.WeeklyMeeting).Width(60).HtmlAttributes(new { style = "text-align:right" });
+            columns.Bound(p => p.MonthlyMeeting).Width(80).HtmlAttributes(new { style = "text-align:right" });
+            columns.Bound(p => p.Calllist).Width(80).HtmlAttributes(new { style = "text-align:right" });
+            columns.Bound(p => p.AddLeads).Width(90).HtmlAttributes(new { style = "text-align:right" });
+            columns.Bound(p => p.CheckIn).Width(80).HtmlAttributes(new { style = "text-align:right" });
             columns.Bound(p => p.Rate).Width(60).HtmlAttributes(new { style = "text-align:right" });
             columns.Bound(p => p.Score).Width(60).HtmlAttributes(new { style = "text-align:right" });
             columns.Bound(p => p.Confirmed).Width(60);

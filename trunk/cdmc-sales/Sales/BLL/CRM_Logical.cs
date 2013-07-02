@@ -105,16 +105,16 @@ namespace BLL
                                   PitchPaper = aa != null ? aa.PitchPaper : 5,//aa.Item7Score.HasValue == false ? 5 : aa.Item7Score,
                                   WeeklyMeeting = aa != null ? aa.WeeklyMeeting : 5,//aa.Item8Score.HasValue == false ? 5 : aa.Item8Score,
                                   MonthlyMeeting = aa != null ? aa.MonthlyMeeting : 10,//aa.Item9Score.HasValue == false ? 10 : aa.Item9Score,
-                                  leadcallcount = memberscall.Where(c => c.Manager == l).Count(c => c.salestypeid == 2),
-                                  salescallcount = memberscall.Where(c => c.Manager == l).Count(c => c.salestypeid == 1),
-                                  leadscount = memberscall.Where(c => c.Manager == l).GroupBy(c => c.salestypeid).Select(c => c.FirstOrDefault()).Count(c => c.salestypeid == 2),
-                                  salescount = memberscall.Where(c => c.Manager == l).GroupBy(c => c.salestypeid).Select(c => c.FirstOrDefault()).Count(c => c.salestypeid == 1),
-                                  leadnewlead = memberslead.Where(c => c.manager == l).Count(c => c.salestypeid == 2),
-                                  salesnewlead = memberslead.Where(c => c.manager == l).Count(c => c.salestypeid == 1),
+                                  leadcallcount = memberscall.Where(c => c.Manager == l).Count(c => c.salestypeid == 2) == null ? 0 : memberscall.Where(c => c.Manager == l).Count(c => c.salestypeid == 2),
+                                  salescallcount = memberscall.Where(c => c.Manager == l).Count(c => c.salestypeid == 1) == null ? 0 : memberscall.Where(c => c.Manager == l).Count(c => c.salestypeid == 1),
+                                  leadscount = memberscall.Where(c => c.Manager == l).GroupBy(c => c.salestypeid).Select(c => c.FirstOrDefault()).Count(c => c.salestypeid == 2) == null ? 0 : memberscall.Where(c => c.Manager == l).GroupBy(c => c.salestypeid).Select(c => c.FirstOrDefault()).Count(c => c.salestypeid == 2),
+                                  salescount = memberscall.Where(c => c.Manager == l).GroupBy(c => c.salestypeid).Select(c => c.FirstOrDefault()).Count(c => c.salestypeid == 1) == null ? 0 : memberscall.Where(c => c.Manager == l).GroupBy(c => c.salestypeid).Select(c => c.FirstOrDefault()).Count(c => c.salestypeid == 1),
+                                  leadnewlead = memberslead.Where(c => c.manager == l).Count(c => c.salestypeid == 2) == null ? 0 : memberslead.Where(c => c.manager == l).Count(c => c.salestypeid == 2),
+                                  salesnewlead = memberslead.Where(c => c.manager == l).Count(c => c.salestypeid == 1) == null ? 0 : memberslead.Where(c => c.manager == l).Count(c => c.salestypeid == 1),
                                   target = CH.DB.TargetOfMonths.Where(t => t.Project.TeamLeader == l && t.Project.IsActived == true && t.StartDate.Month == month).Sum(s => s.CheckIn),
                                   checkinreal = deals.Where(d => d.Project.Manager == l).Sum(s => s.Income),
                                   Confirmed = aa != null ? aa.Confirmed == true ? "是" : "否" : "否",
-                                  Rate = aa != null ? aa.Rate:1
+                                  Rate = aa != null ? aa.Rate==null?0:aa.Rate:1
                               };
 
                     return lps;
