@@ -220,7 +220,7 @@
                     alert("获取参会类型失败，请重试。");
                 },
                 success: function (result) {
-                    if (result == "Delegate") {
+                    if (result.indexOf("Delegate") >= 0){
                         $("#Polldiv").show();
                         $("#Polldivlabel").show();
                         $("#Poll").attr("value", ''); //填充内容
