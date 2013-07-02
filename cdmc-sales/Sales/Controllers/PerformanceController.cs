@@ -21,6 +21,10 @@ namespace Sales.Controllers
             {
                 rolelvl = DirectorRequired.LVL;
             }
+            if (rolelvl == ManagerRequired.LVL)
+            {
+                rolelvl = DirectorRequired.LVL;
+            }
             ViewBag.RoleLevel = rolelvl;
 
             if (btnExport == "export")
