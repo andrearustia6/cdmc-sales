@@ -449,8 +449,9 @@ namespace Sales.Controllers
             if (month == null) month = DateTime.Now.Month;
             // if (month == null) month = 5;
             var list = CRM_Logical._EmployeePerformance.GetSalesPerformances(month.Value, fuzzyInput);
-            var data = list.ToList();
-            return View(new GridModel(data));
+           return View(new GridModel(list));
+            //var data = list.ToList();
+            //return View(new GridModel(data));
         }
         [AcceptVerbs(HttpVerbs.Post)]
         [GridAction]
