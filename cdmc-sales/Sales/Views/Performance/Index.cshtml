@@ -1,13 +1,9 @@
-﻿
-@using Sales.Model
+﻿@using Sales.Model
 @using Entity
 @model List<ManagerScore>
-           
 @{
     ViewBag.Title = "Index";
 }
-
-
 <fieldset>
     <legend>月份</legend>
     @{
@@ -16,22 +12,22 @@
             var m = ViewBag.Month as int?;
             m = m == null ? DateTime.Now.Month : m;
         @Html.DropDownList("month", new SelectList(new List<int>() { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 }, m), new { onchange = "this.form.submit();" })
+        <button value="export" id="export" type="submit" name="btnExport" onclick="this.form.submit();" style="margin-left: 20px">
+            导出</button>
         }
     }
 </fieldset>
 @{
-var month = ViewBag.Month as int?;
-var query = ViewBag.fuzzyInput as string;
-var rolelvl = ViewBag.RoleLevel as int?;
+    var month = ViewBag.Month as int?;
+    var query = ViewBag.fuzzyInput as string;
+    var rolelvl = ViewBag.RoleLevel as int?;
 }
-
-
 @{ 
     if (rolelvl >= SuperManagerRequired.LVL)
     { 
-        <fieldset>
+    <fieldset>
         <legend>版块负责人考核</legend>
-            @(Html.Telerik().Grid<_ManagerScore>().Name("manager")
+        @(Html.Telerik().Grid<_ManagerScore>().Name("manager")
 
             .DataKeys(keys =>
             {
@@ -86,16 +82,15 @@ var rolelvl = ViewBag.RoleLevel as int?;
           .Pageable(p => p.Style(GridPagerStyles.Status)
                .PageOnScroll(true).PageSize(25)).Scrollable(scrolling => scrolling.Height(350)).Sortable().Resizable(r => r.Columns(true))
                    )
-            
-            </fieldset>
+    </fieldset>
     }
 }
 @{ 
-    if (rolelvl>= LeaderRequired.LVL)
+    if (rolelvl >= LeaderRequired.LVL)
     {
-        <fieldset>
-<legend>销售经理考核</legend>
-@(Html.Telerik().Grid<_TeamLeadPerformance>().Name("lead")
+    <fieldset>
+        <legend>销售经理考核</legend>
+        @(Html.Telerik().Grid<_TeamLeadPerformance>().Name("lead")
      .DataKeys(keys =>
      {
          keys.Add(o => o.ID);
@@ -138,16 +133,15 @@ var rolelvl = ViewBag.RoleLevel as int?;
   .Pageable(p => p.Style(GridPagerStyles.Status)
        .PageOnScroll(true).PageSize(25)).Scrollable(scrolling => scrolling.Height(350)).Sortable().Resizable(r => r.Columns(true))
 )
-</fieldset>
+    </fieldset>
     }
-}    
-
+}
 @{ 
-    if ( rolelvl >= SalesRequired.LVL)
+    if (rolelvl >= SalesRequired.LVL)
     {
-        <fieldset>
-<legend>销售考核</legend>   
-@(Html.Telerik().Grid<_SalesPerformance>().Name("sales")
+    <fieldset>
+        <legend>销售考核</legend>
+        @(Html.Telerik().Grid<_SalesPerformance>().Name("sales")
      .DataKeys(keys =>
      {
          keys.Add(o => o.ID);
@@ -191,16 +185,15 @@ var rolelvl = ViewBag.RoleLevel as int?;
                .PageOnScroll(true).PageSize(35)).Scrollable(scrolling => scrolling.Height(350)).Resizable(r => r.Columns(true))
 .ToolBar(factory => factory
       .Template(@<text>
-         <div>
-             员工: @Html.TextBox("fuzzyInput", (string)ViewBag.fuzzyInput)
-             <a class="t-grid-action t-button t-state-default" onclick="refreshGrid();">查找</a>
-         </div>
-     </text>))
+        <div>
+            员工: @Html.TextBox("fuzzyInput", (string)ViewBag.fuzzyInput)
+            <a class="t-grid-action t-button t-state-default" onclick="refreshGrid();">查找</a>
+        </div>
+        </text>))
 )
-</fieldset>
+    </fieldset>
     }
-}    
- 
+}
 <fieldset>
     <legend>销售和销售经理考核标准</legend>
     <table width="100%">
@@ -228,10 +221,10 @@ var rolelvl = ViewBag.RoleLevel as int?;
             </td>
         </tr>
         <tr>
-        
-        <td colspan="7"> 说明：销售经理月目标为团队月目标，入账额为团队入账额，销售月目标为个人目标，入账额为个人入账额 </td>
+            <td colspan="7">
+                说明：销售经理月目标为团队月目标，入账额为团队入账额，销售月目标为个人目标，入账额为个人入账额
+            </td>
         </tr>
-    
         <tr>
             <td>
                 调研每周达标
@@ -251,7 +244,6 @@ var rolelvl = ViewBag.RoleLevel as int?;
             <td colspan="2">
                 四周及以上不达标,0%
             </td>
-          
         </tr>
         <tr>
             <td>
@@ -288,12 +280,14 @@ var rolelvl = ViewBag.RoleLevel as int?;
             </td>
         </tr>
         <tr>
-        <td>
+            <td>
                 考核系数
             </td>
-        <td colspan="6"> 销售系统使用情况 本人或组员未按公司要求使用系统,0 本人及组员系统使用情况良好,1.2 （Karen打分, 系统默认考核系数为1）</td></tr>
+            <td colspan="6">
+                销售系统使用情况 本人或组员未按公司要求使用系统,0 本人及组员系统使用情况良好,1.2 （Karen打分, 系统默认考核系数为1）
+            </td>
+        </tr>
     </table>
-    
 </fieldset>
 <script>
 
@@ -322,13 +316,13 @@ var rolelvl = ViewBag.RoleLevel as int?;
             return;
         }
         else {
-            
+
             rowButton.remove();
         }
-        
+
     }
     function ChangeWinTitleForManager(e) {
-        
+
         var popup = $("#" + e.currentTarget.id + "PopUp");
         var popupDataWin = popup.data("tWindow");
         var l = ($(window).width() / 2 - $(popup).width() / 2);
@@ -418,13 +412,13 @@ var rolelvl = ViewBag.RoleLevel as int?;
 </script>
 <script>
     function dataBinding(e) {
-      
+
         var fuzzyValue = $('#fuzzyInput').val();
-        e.data = $.extend(e.data, {fuzzyInput: fuzzyValue });
+        e.data = $.extend(e.data, { fuzzyInput: fuzzyValue });
     }
     function refreshGrid() {
         $("#sales").data("tGrid").rebind();
 
     }
 
-</script> 
+</script>
