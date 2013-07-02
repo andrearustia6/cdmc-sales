@@ -658,11 +658,11 @@ namespace Sales.Model
                 if (leadscount == 0 || salescount == 0)
                     return 0;
                 else if ((salesnewlead / leadscount + salesnewlead / salescount) >= (420 + 280))
-                    return 15.0;
+                    return 0.15;
                 else if ((salesnewlead / leadscount + salesnewlead / salescount) >= (420 + 280 - 50))
-                    return 10.0;
+                    return 0.10;
                 else if ((salesnewlead / leadscount + salesnewlead / salescount) >= (420 + 280 - 100))
-                    return 5.0;
+                    return 0.05;
                 else
                     return 0;
             }
