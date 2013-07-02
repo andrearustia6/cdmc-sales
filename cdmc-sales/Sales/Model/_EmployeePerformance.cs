@@ -527,9 +527,9 @@ namespace Sales.Model
         }
 
 
-        [Display(Name = "每天检查成员工作状态")]
+        [Display(Name = "检查工作状态")]
         public int? Searching { get; set; }
-        [Display(Name = "每天检查团队成员工作状态")]
+        [Display(Name = "检查工作状态")]
         public double? SearchingDisp {
             get
             {

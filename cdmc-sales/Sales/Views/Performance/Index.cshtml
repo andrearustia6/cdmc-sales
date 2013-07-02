@@ -49,7 +49,7 @@ var query = ViewBag.fuzzyInput as string;
             columns.Bound(p => p.DisciplineDisp).Width(50).HtmlAttributes(new { style = "text-align:right" }).Format("{0:p0}");
             columns.Bound(p => p.ExcutionDisp).Width(60).HtmlAttributes(new { style = "text-align:right" }).Format("{0:p0}");
             columns.Bound(p => p.TargetingDisp).Width(60).HtmlAttributes(new { style = "text-align:right" }).Format("{0:p0}");
-            columns.Bound(p => p.SearchingDisp).Width(130).HtmlAttributes(new { style = "text-align:right" }).Format("{0:p0}");
+            columns.Bound(p => p.SearchingDisp).Width(100).HtmlAttributes(new { style = "text-align:right" }).Format("{0:p0}");
             columns.Bound(p => p.ProductionDisp).Width(80).HtmlAttributes(new { style = "text-align:right" }).Format("{0:p0}");
             columns.Bound(p => p.PitchPaperDisp).Width(90).HtmlAttributes(new { style = "text-align:right" }).Format("{0:p0}");
             columns.Bound(p => p.WeeklyMeetingDisp).Width(60).HtmlAttributes(new { style = "text-align:right" }).Format("{0:p0}");
@@ -410,8 +410,7 @@ var query = ViewBag.fuzzyInput as string;
     function onManagerComplete(e) {
         if (e.name == "Confirm") {
             var $grid = $("#manager").data("tGrid");
-            //$grid.rebind();
-            //alert('');
+            $grid.dataBind(e.response.data);
         }
     }
 </script>
