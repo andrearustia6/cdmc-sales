@@ -15,7 +15,12 @@ namespace Sales.Controllers
         public ActionResult Index(int? month)
         {
             ViewBag.Month = month;
-            ViewBag.RoleLevel = Employee.CurrentRole.Level;
+            var rolelvl = Employee.CurrentRole.Level;
+            if (rolelvl == PoliticsInterfaceRequired.LVL)
+            {
+                rolelvl = DirectorRequired.LVL;
+            }
+            ViewBag.RoleLevel = rolelvl;
             return View();
         }
         [GridAction]

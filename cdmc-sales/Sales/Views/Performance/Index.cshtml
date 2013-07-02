@@ -22,11 +22,12 @@
 @{
 var month = ViewBag.Month as int?;
 var query = ViewBag.fuzzyInput as string;
+var rolelvl = ViewBag.RoleLevel as int?;
 }
 
 
 @{ 
-    if (ViewBag.RoleLevel >= SuperManagerRequired.LVL)
+    if (rolelvl >= SuperManagerRequired.LVL)
     { 
         <fieldset>
         <legend>版块负责人考核</legend>
@@ -89,7 +90,7 @@ var query = ViewBag.fuzzyInput as string;
     }
 }
 @{ 
-    if (Utl.Employee.AsLeader())
+    if (rolelvl>= LeaderRequired.LVL)
     {
         <fieldset>
 <legend>销售经理考核</legend>
@@ -141,7 +142,7 @@ var query = ViewBag.fuzzyInput as string;
 }    
 
 @{ 
-    if (Utl.Employee.AsSales())
+    if ( rolelvl >= SalesRequired.LVL)
     {
         <fieldset>
 <legend>销售考核</legend>   
