@@ -51,17 +51,28 @@ namespace BLL
                                           member = c.Member.Name,
                                           salestypeid = c.Member.SalesTypeID
                                       };
-                    //var callgroupbymanger = from l in CH.DB.LeadCalls
-                    //                        group l by new { l.Project.Manager, l.Project.ID } into grp
+                    //var memberscall = from l in CH.DB.LeadCalls.Where(w => w.LeadCallTypeID != null && w.LeadCallType.Code >= 40 && w.CreatedDate >= md.MonthStartDate && w.CreatedDate <= md.MonthEndDate && w.Project.IsActived == true)
+                    //                        join m in managers on l.Project.Manager equals m
+                    //                        group l by new { l.Project.Manager, l.Project.ID,l.Member.Name,l.Member.SalesTypeID } into grp
                     //                        select new
                     //                        {
-                    //                            Manager = grp.Select(g => g.Project.Manager),
-                    //                            ProjectID = grp.Select(g => g.ProjectID),
-                    //                            member = grp.Select(g => g.Member.Name),
-                    //                            salestypeid = grp.Select(g => g.Member.SalesTypeID)
-                    //                        };
+                    //                            Manager = grp.Key.Manager,
+                    //                            ProjectID = grp.Key.ID,
+                    //                            member = grp.Key.Name,
+                    //                            salestypeid = grp.Key.SalesTypeID
+                                            //};
                     //每个成员的lead，也就是所有leader和sales的表lead中的数据
                     var memberslead = from l in CH.DB.Leads.Where(w => w.CreatedDate >= md.MonthStartDate && w.CreatedDate <= md.MonthEndDate)
+                                      join m in CH.DB.Members on l.Creator equals m.Name
+                                      join p in CH.DB.Projects.Where(w => w.IsActived == true && !string.IsNullOrEmpty(w.Manager))
+                                        on m.ProjectID equals p.ID
+                                      select new
+                                      {
+                                          manager = p.Manager,
+                                          name = l.Creator,
+                                          salestypeid = m.SalesTypeID
+                                      };
+                    var leadgroupbymanager = from l in CH.DB.Leads.Where(w => w.CreatedDate >= md.MonthStartDate && w.CreatedDate <= md.MonthEndDate)
                                       join m in CH.DB.Members on l.Creator equals m.Name
                                       join p in CH.DB.Projects.Where(w => w.IsActived == true && !string.IsNullOrEmpty(w.Manager))
                                         on m.ProjectID equals p.ID
