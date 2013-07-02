@@ -51,14 +51,6 @@ namespace BLL
                                           member = c.Member.Name,
                                           salestypeid = c.Member.SalesTypeID
                                       };
-                    //memberscall = from m in memberscall.GroupBy(c => c.Manager,)
-                    //              select new
-                    //              {
-                    //                  leadcallcount = m.Where(c => c.Manager == l).Count(c => c.salestypeid == 2),
-                    //                  salescallcount = m.Where(c => c.Manager == l).Count(c => c.salestypeid == 1),
-                    //                  leadscount = m.Where(c => c.Manager == l).GroupBy(c => c.salestypeid).Select(c => c.FirstOrDefault()).Count(c => c.salestypeid == 2),
-                    //                  salescount = m.Where(c => c.Manager == l).GroupBy(c => c.salestypeid).Select(c => c.FirstOrDefault()).Count(c => c.salestypeid == 1)
-                    //              };
                     //var memberscall = from l in CH.DB.LeadCalls.Where(w => w.LeadCallTypeID != null && w.LeadCallType.Code >= 40 && w.CreatedDate >= md.MonthStartDate && w.CreatedDate <= md.MonthEndDate && w.Project.IsActived == true)
                     //                        join m in managers on l.Project.Manager equals m
                     //                        group l by new { l.Project.Manager, l.Project.ID,l.Member.Name,l.Member.SalesTypeID } into grp
@@ -80,17 +72,16 @@ namespace BLL
                                           name = l.Creator,
                                           salestypeid = m.SalesTypeID
                                       };
-                    
-                    //var leadgroupbymanager = from l in CH.DB.Leads.Where(w => w.CreatedDate >= md.MonthStartDate && w.CreatedDate <= md.MonthEndDate)
-                    //                  join m in CH.DB.Members on l.Creator equals m.Name
-                    //                  join p in CH.DB.Projects.Where(w => w.IsActived == true && !string.IsNullOrEmpty(w.Manager))
-                    //                    on m.ProjectID equals p.ID
-                    //                  select new
-                    //                  {
-                    //                      manager = p.Manager,
-                    //                      name = l.Creator,
-                    //                      salestypeid = m.SalesTypeID
-                    //                  };
+                    var leadgroupbymanager = from l in CH.DB.Leads.Where(w => w.CreatedDate >= md.MonthStartDate && w.CreatedDate <= md.MonthEndDate)
+                                      join m in CH.DB.Members on l.Creator equals m.Name
+                                      join p in CH.DB.Projects.Where(w => w.IsActived == true && !string.IsNullOrEmpty(w.Manager))
+                                        on m.ProjectID equals p.ID
+                                      select new
+                                      {
+                                          manager = p.Manager,
+                                          name = l.Creator,
+                                          salestypeid = m.SalesTypeID
+                                      };
                     var deals = CRM_Logical.GetDeals().Where(w => w.ActualPaymentDate.Value != null && w.ActualPaymentDate.Value.Month == month && w.ActualPaymentDate.Value.Year == DateTime.Now.Year);
                     var year = DateTime.Now.Year;
                     //获取登录者（考核人）打分的记录
@@ -125,38 +116,7 @@ namespace BLL
                                   Confirmed = aa != null ? aa.Confirmed == true ? "是" : "否" : "否",
                                   Rate = aa != null ? aa.Rate==null?0:aa.Rate:1
                               };
-                    //var lps = from l in managers
-                    //          join sc in scores on l equals sc.TargetName into Joinedscores
-                    //          join m in memberscall on l equals m.Manager 
-                    //          join n in memberslead on l equals n.manager 
-                    //          from aa in Joinedscores.DefaultIfEmpty()
-                    //          select new _ManagerScore()
-                    //          {
-                    //              RoleLevel = rolelvl,
-                    //              ID = aa != null ? aa.ID : 0,//aa.ID,
-                    //              TargetName = l,
-                    //              User = user,
-                    //              Assigner = aa != null ? aa.Assigner : user,//aa.Assigner,
-                    //              Responsibility = aa != null ? aa.Responsibility : 5,//aa.Item1Score.HasValue == false ? 5 : aa.Item1Score,//scores.Where(w => w.TargetName == l).Select(s => s.Item1Score).FirstOrDefault().Value,
-                    //              Discipline = aa != null ? aa.Discipline : 5,//aa.Item2Score.HasValue == false ? 5 : aa.Item2Score,
-                    //              Excution = aa != null ? aa.Excution : 5,//aa.Item3Score.HasValue == false ? 5 : aa.Item3Score,
-                    //              Targeting = aa != null ? aa.Targeting : 5,//aa.Item4Score.HasValue == false ? 5 : aa.Item4Score,
-                    //              Searching = aa != null ? aa.Searching : 5,//aa.Item5Score.HasValue == false ? 5 : aa.Item5Score,
-                    //              Production = aa != null ? aa.Production : 5,//aa.Item6Score.HasValue == false ? 5 : aa.Item6Score,
-                    //              PitchPaper = aa != null ? aa.PitchPaper : 5,//aa.Item7Score.HasValue == false ? 5 : aa.Item7Score,
-                    //              WeeklyMeeting = aa != null ? aa.WeeklyMeeting : 5,//aa.Item8Score.HasValue == false ? 5 : aa.Item8Score,
-                    //              MonthlyMeeting = aa != null ? aa.MonthlyMeeting : 10,//aa.Item9Score.HasValue == false ? 10 : aa.Item9Score,
-                    //              leadcallcount = m.,
-                    //              salescallcount = memberscall.Where(c => c.Manager == l).Count(c => c.salestypeid == 1),
-                    //              leadscount = memberscall.Where(c => c.Manager == l).GroupBy(c => c.salestypeid).Select(c => c.FirstOrDefault()).Count(c => c.salestypeid == 2),
-                    //              salescount = memberscall.Where(c => c.Manager == l).GroupBy(c => c.salestypeid).Select(c => c.FirstOrDefault()).Count(c => c.salestypeid == 1),
-                    //              leadnewlead = memberslead.Where(c => c.manager == l).Count(c => c.salestypeid == 2),
-                    //              salesnewlead = memberslead.Where(c => c.manager == l).Count(c => c.salestypeid == 1),
-                    //              target = CH.DB.TargetOfMonths.Where(t => t.Project.TeamLeader == l && t.Project.IsActived == true && t.StartDate.Month == month).Sum(s => s.CheckIn),
-                    //              checkinreal = deals.Where(d => d.Project.Manager == l).Sum(s => s.Income),
-                    //              Confirmed = aa != null ? aa.Confirmed == true ? "是" : "否" : "否",
-                    //              Rate = aa != null ? aa.Rate == null ? 0 : aa.Rate : 1
-                    //          };
+
                     return lps;
                 }
                 return new List<_ManagerScore>();
@@ -271,31 +231,34 @@ namespace BLL
 
 
                         sales = sales.Where(w => !leads.Any(a => a == w) && w.Contains(fuzzyInput));//排除sales中的lead
-
-                        var deals = CRM_Logical.GetDeals().Where(w => w.ActualPaymentDate.Value != null && w.ActualPaymentDate.Value.Month == month && w.ActualPaymentDate.Value.Year==DateTime.Now.Year);
+                        var year = DateTime.Now.Year;
+                        var deals = CRM_Logical.GetDeals().Where(w => w.ActualPaymentDate.Value != null && w.ActualPaymentDate.Value.Month == month && w.ActualPaymentDate.Value.Year==year);
                         var calls = from l in CH.DB.LeadCalls.Where(w => w.LeadCallTypeID != null && w.LeadCallType.Code >= 40 && w.Project.IsActived==true) select l;
-                        // calls =from c in calls group c by c.LeadID into g select g.FirstOrDefault();//分组并选择第一个
+                           // calls =from c in calls group c by c.LeadID into g select g.FirstOrDefault();//分组并选择第一个
+                       
                         var leadadds = from l in CH.DB.Leads select l;
-                        var rates = from r in CH.DB.AssignPerformanceRates.Where(w => w.Month == month && w.Year == DateTime.Now.Year) select r;
-                        var scores = from r in CH.DB.AssignPerformanceScores.Where(w => w.Month == month && w.Year == DateTime.Now.Year) select r;
-                        var wd = MonthDuration.GetMonthInstance(month).WeekDurations.Select(s => s.StartDate);
+                        var targets = from t in CH.DB.TargetOfMonthForMembers.Where(w=>w.Project.IsActived==true) select t;
+                        var rates = from r in CH.DB.AssignPerformanceRates.Where(w => w.Month == month && w.Year == year) select r;
+                        var scores = from r in CH.DB.AssignPerformanceScores.Where(w => w.Month == month && w.Year == year) select r;
+                        var durations = MonthDuration.GetMonthInstance(month).WeekDurations;
+                        var wd = durations.Select(s => s.StartDate);
+
+                       
                         var lps = from l in sales
                                   select new _SalesPerformance()
                                   {
                                       RoleLevel = rolelvl,
                                       ID = scores.Where(w => w.TargetName == l).Count() == 0 ? 0 : scores.Where(w => w.TargetName == l).Select(s => s.ID).FirstOrDefault(),
-                                      Target = CH.DB.TargetOfMonthForMembers.Where(t => t.Member.Name == l && t.StartDate.Month == month && t.Project.IsActived == true).Sum(s => s.CheckIn),
-                                      CheckIn = deals.Where(d => d.Sales == l).Sum(s => s.Income),
+                                      Rate = rates.Where(w=>w.TargetName==l).Select(s=>s.Rate).FirstOrDefault(),
+                                      AssignedScore = scores.Where(w => w.TargetName == l).Select(s=>s.Rate).FirstOrDefault(),//scores.Where(w => w.TargetName == l).Average(s => s.Score) == null ? 0 : scores.Where(w => w.TargetName == l).Average(s => s.Score),
+                                      Target = targets.Where(t => t.Member.Name == l && t.StartDate.Month == month).Sum(s => (decimal?)s.CheckIn),
+                                      CheckIn = deals.Where(d => d.Sales == l).Sum(s => (decimal?)s.Income),
                                       Name = l,
                                       User = user,
-                                      Rate = scores.Where(w => w.TargetName == l).Count() == 0 ? 1 : scores.Where(w => w.TargetName == l).Select(s => s.Rate).FirstOrDefault(), //rates.Where(w => w.TargetName == l).Average(s => s.Rate) == null ? 1 : scores.Where(w => w.TargetName == l).Average(s => s.Score),
-                                      AssignedScore = scores.Where(w => w.TargetName == l).Count() == 0 ? 10 : scores.Where(w => w.TargetName == l).Select(s => s.Score).FirstOrDefault(),//scores.Where(w => w.TargetName == l).Average(s => s.Score) == null ? 0 : scores.Where(w => w.TargetName == l).Average(s => s.Score),
                                       SalesPerformanceInWeeks = wd.Select(s => new _SalesPerformanceInWeek
                                       {
-                                          //FaxOutCount = calls.Where(c => c.Member != null && c.Member.Name == l).GroupBy(c=>c.LeadID).Select(g=>g.FirstOrDefault()).Count(c=>c.CreatedDate >= s && c.CreatedDate < EntityFunctions.AddDays(s, 7)),
-                                          FaxOutCount = calls.Where(w => w.Member != null && w.Member.Name == l)
-                                          //.OrderBy(o => o.CallDate)
-                                          .GroupBy(c => c.LeadID).Select(ss => ss.FirstOrDefault()).Count(c => c.CreatedDate >= s && c.CreatedDate < EntityFunctions.AddDays(s, 7)),
+                                          FaxOutCount = calls.Where(w => w.Member != null && w.Member.Name == l &&  w.CreatedDate >= s && w.CreatedDate < EntityFunctions.AddDays(s, 7)
+                                          && calls.Any(a=>a.CallDate<w.CallDate && a.LeadID==w.LeadID && a.Member.Name== l)==false).GroupBy(g=>g.LeadID).Count(),
                                           DealsCount = deals.Count(c => c.SignDate >= s && c.SignDate < EntityFunctions.AddDays(s, 7)),
                                           StartDate = s,
                                           EndDate = EntityFunctions.AddDays(s, 7).Value,
