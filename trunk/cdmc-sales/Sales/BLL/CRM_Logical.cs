@@ -25,6 +25,11 @@ namespace BLL
                 var user = Employee.CurrentUserName;
                 var rolelvl = Employee.CurrentRole.Level;
 
+                if (rolelvl == PoliticsInterfaceRequired.LVL)
+                {
+                    rolelvl = DirectorRequired.LVL;
+                }
+
                 if (rolelvl >= SuperManagerRequired.LVL || user == "ray")
                 {
                     var md = MonthDuration.GetMonthInstance(month);
@@ -110,7 +115,12 @@ namespace BLL
             {
                 var user = Employee.CurrentUserName;
                 var rolelvl = Employee.CurrentRole.Level;
-                if (Employee.AsLeader())
+
+                if (rolelvl == PoliticsInterfaceRequired.LVL)
+                {
+                    rolelvl = DirectorRequired.LVL;
+                }
+                if (rolelvl >= LeaderRequired.LVL)
                 {
                     var leads = CH.DB.Projects.Where(w => w.IsActived == true && !string.IsNullOrEmpty(w.TeamLeader)).Select(s => s.TeamLeader).Distinct();
 
@@ -172,7 +182,12 @@ namespace BLL
             public static IEnumerable<_SalesPerformance> GetSalesPerformances(int month, string fuzzyInput = "")
             {
                 var rolelvl = Employee.CurrentRole.Level;
-                if (Employee.AsSales())
+
+                if (rolelvl == PoliticsInterfaceRequired.LVL)
+                {
+                    rolelvl = DirectorRequired.LVL;
+                }
+                if (rolelvl >= SalesRequired.LVL)
                 {
                     IQueryable<string> sales = null;
                     var user = Employee.CurrentUserName;
@@ -187,7 +202,7 @@ namespace BLL
                     {
                         sales = CH.DB.Members.Where(w => w.IsActivated == true && w.Project.IsActived == true && w.Name == user && w.IsActivated == true).Select(s => s.Name).Distinct();
                     }
-                    else if (Employee.AsLeader())
+                    else if (rolelvl>=SuperManagerRequired.LVL)
                     {
                         sales = CH.DB.Members.Where(w => w.IsActivated == true && w.Project.IsActived == true && w.IsActivated == true).Select(s => s.Name).Distinct();
                     }
