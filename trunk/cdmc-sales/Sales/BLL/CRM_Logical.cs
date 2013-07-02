@@ -29,11 +29,19 @@ namespace BLL
                 {
                     rolelvl = DirectorRequired.LVL;
                 }
+                if (rolelvl == ManagerRequired.LVL)
+                {
+                    rolelvl = DirectorRequired.LVL;
+                }
 
                 if (rolelvl >= SuperManagerRequired.LVL || user == "ray")
                 {
                     var md = MonthDuration.GetMonthInstance(month);
                     var managers = CH.DB.Projects.Where(w => w.IsActived == true && !string.IsNullOrEmpty(w.Manager)).Select(s => s.Manager).Distinct();
+                    if (Employee.CurrentRole.Level == ManagerRequired.LVL)
+                    {
+                        managers = CH.DB.Projects.Where(w => w.IsActived == true && !string.IsNullOrEmpty(w.Manager) && w.Manager==user).Select(s => s.Manager).Distinct();
+                    }
                     //每个成员的call，也就是所有leader和sales的call
                     //var callgroupbymanger = from l in CH.DB.LeadCalls
                     //                        group l by new { l.Project.Manager }
