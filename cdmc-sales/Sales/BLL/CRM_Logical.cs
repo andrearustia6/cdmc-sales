@@ -311,11 +311,11 @@ namespace BLL
 
             public static int GetCheckInScore(double? completePercent)
             {
-                if (completePercent >= 140) return 70;
-                else if (completePercent >= 120) return 60;
-                else if (completePercent >= 100) return 50;
-                else if (completePercent >= 80) return 40;
-                else if (completePercent >= 60) return 30;
+                if (completePercent >= 1.4) return 70;
+                else if (completePercent >= 1.2) return 60;
+                else if (completePercent >= 1) return 50;
+                else if (completePercent >= 0.8) return 40;
+                else if (completePercent >= 0.6) return 30;
                 return 0;
             }
 
