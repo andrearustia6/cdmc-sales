@@ -20,9 +20,15 @@ namespace Model
         public int? ProjectID { get; set; }
         public decimal? Income { get; set; }
         public decimal? Payment { get; set; }
+        public decimal? RMBPayment { get; set; }
+        public decimal? USDPayment { get; set; }
         public double percent { get { return Utl.Utl.GetPercent(Income, Target); } }
         public string Manager { get; set; }
         public string Leader { get; set; }
+        /// <summary>
+        /// 项目人数
+        /// </summary>
+        public int? MemberCount { get; set; }
     }
 
     public class AjaxEmployeeCheckInDistribution

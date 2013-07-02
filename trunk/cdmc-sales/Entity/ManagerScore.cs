@@ -13,7 +13,7 @@ namespace Entity
         [Display(Name = "评分人")]
         public string Assigner { get; set; }
         [Display(Name = "责任心与积极性")]
-        public int? Responsibility { get; set; }
+        public int Responsibility { get; set; }
         [Display(Name = "纪律性")]
         public int? Discipline { get; set; }
         [Display(Name = "执行能力")]
@@ -38,7 +38,9 @@ namespace Entity
 
         [Display(Name = "是否确认")]
         public bool? Confirmed { get; set; }
-     
+
+        [Display(Name = "考核系数")]
+        public double Rate { get; set; }
     }
 
     

@@ -473,50 +473,136 @@ namespace Sales.Model
         [ScaffoldColumn(false)]
         public string User { get; set; }
 
-        [Display(Name = "责任心积极性")]
+        [Display(Name = "责任心")]
         //[UIHint("ClientItem1"), Required]
         public int? Responsibility { get; set; }
+
+        [Display(Name = "责任心")]
+        //[UIHint("ClientItem1"), Required]
+        public double ResponsibilityDisp {
+            get
+            {
+                if (Responsibility == null)
+                    Responsibility = 0;
+                return (double)Responsibility / 100;
+            }
+        }
         
         [Display(Name = "纪律性")]
         public int? Discipline { get; set; }
 
+        [Display(Name = "纪律性")]
+        public double? DisciplineDisp {
+            get
+            {
+                if (Discipline == null)
+                    Discipline = 0;
+                return (double)Discipline / 100;
+            }
+        }
+
         [Display(Name = "执行能力")]
         public int? Excution { get; set; }
 
+        [Display(Name = "执行能力")]
+        public double? ExcutionDisp {
+            get
+            {
+                if (Excution == null)
+                    Excution = 0;
+                return (double)Excution / 100;
+            }
+        }
 
         [Display(Name = "目标意识")]
         public int? Targeting { get; set; }
+        [Display(Name = "目标意识")]
+        public double? TargetingDisp {
+            get
+            {
+                if (Targeting == null)
+                    Targeting = 0;
+                return (double)Targeting / 100;
+            }
+        }
 
-        [Display(Name = "每天检查团队成员")]
+
+        [Display(Name = "每天检查成员工作状态")]
         public int? Searching { get; set; }
+        [Display(Name = "每天检查团队成员工作状态")]
+        public double? SearchingDisp {
+            get
+            {
+                if (Searching == null)
+                    Searching = 0;
+                return (double)Searching / 100;
+            }
+        }
 
-        [Display(Name = "每周研发项目协调")]
+
+        [Display(Name = "每周项目协调")]
         public int? Production { get; set; }
+        [Display(Name = "每周项目协调")]
+        public double? ProductionDisp {
+            get
+            {
+                if (Production == null)
+                    Production = 0;
+                return (double)Production / 100;
+            }
+        }
 
-        [Display(Name = "每周更新PitchPaper")]
+        [Display(Name = "每周PitchPaper")]
         public int? PitchPaper { get; set; }
+        [Display(Name = "每周PitchPaper")]
+        public double? PitchPaperDisp {
+            get
+            {
+                if (PitchPaper == null)
+                    PitchPaper = 0;
+                return (double)PitchPaper / 100;
+            }
+        }
 
-        [Display(Name = "每周销售例会")]
+        [Display(Name = "每周例会")]
         public int? WeeklyMeeting { get; set; }
+        [Display(Name = "每周例会")]
+        public double? WeeklyMeetingDisp {
+            get
+            {
+                if (WeeklyMeeting == null)
+                    WeeklyMeeting = 0;
+                return (double)WeeklyMeeting / 100;
+            }
+        }
 
         [Display(Name = "每月通话时间")]
         public int? MonthlyMeeting { get; set; }
+        [Display(Name = "每月通话时间")]
+        public double? MonthlyMeetingDisp {
+            get
+            {
+                if (MonthlyMeeting == null)
+                    MonthlyMeeting = 0;
+                return (double)MonthlyMeeting / 100;
+            }
+        }
 
-        [Display(Name = "团队Call List")]
+        [Display(Name = "团队CallList")]
         [HiddenInput(DisplayValue = false)] //Hide from Edit
         //团队Call List月人均平均数标准：销售专员200/人；销售经理140/人
-        public int? Calllist//{ get; set; }
+        public double? Calllist//{ get; set; }
         {
             get
             {
                 if (leadscount == 0 || salescount == 0)
                     return 0;
                 else if ((leadcallcount/leadscount+salescallcount/salescount)>=(200+140))
-                    return 15;
+                    return 0.15;
                 else if ((leadcallcount/leadscount+salescallcount/salescount)>=(200+140 - 30))
-                    return 10;
+                    return 0.10;
                 else if ((leadcallcount/leadscount+salescallcount/salescount)>=(200+140 - 50))
-                    return 5;
+                    return 0.05;
                 else
                     return 0;
             }
@@ -556,21 +642,22 @@ namespace Sales.Model
         [Display(Name = "团队新增Leads")]
         [HiddenInput(DisplayValue = false)] //Hide from Edit
         //团队新增Leads月人均平均数标准：销售专员420/人；销售经理280/人
-        public int? AddLeads //{ get; set; }
+        public double? AddLeads //{ get; set; }
         {
             get
             {
                 if (leadscount == 0 || salescount == 0)
                     return 0;
                 else if ((salesnewlead / leadscount + salesnewlead / salescount) >= (420 + 280))
-                    return 15;
+                    return 15.0;
                 else if ((salesnewlead / leadscount + salesnewlead / salescount) >= (420 + 280 - 50))
-                    return 10;
+                    return 10.0;
                 else if ((salesnewlead / leadscount + salesnewlead / salescount) >= (420 + 280 - 100))
-                    return 5;
+                    return 5.0;
                 else
                     return 0;
             }
+            
         }
         [ScaffoldColumn(false)]
         /// <summary>
@@ -615,6 +702,37 @@ namespace Sales.Model
         [Display(Name = "是否确认")]
         public string Confirmed { get; set; }
 
+        [Display(Name = "考核系数")]
+        public double Rate { get; set; }
+
+        [Display(Name = "考核总分")]
+        public int Score
+        {
+            get
+            {
+                if (Responsibility == null)
+                    Responsibility = 0;
+                if (Discipline == null)
+                    Discipline = 0;
+                if (Excution == null)
+                    Excution = 0;
+                if (Targeting == null)
+                    Targeting = 0;
+                if (Searching == null)
+                    Searching = 0;
+                if (Production == null)
+                    Production = 0;
+                if (PitchPaper == null)
+                    PitchPaper = 0;
+                if (WeeklyMeeting == null)
+                    WeeklyMeeting = 0;
+                if (MonthlyMeeting == null)
+                    MonthlyMeeting = 0;
+               
+                return (int)(Rate * (Responsibility + Discipline.Value + Excution.Value + Targeting.Value + Searching.Value + 
+                    Production.Value + PitchPaper.Value + WeeklyMeeting.Value + MonthlyMeeting.Value + Calllist.Value + AddLeads.Value + CheckIn.Value));
+            }
+        }
     }
     /// <summary>
     /// 用于考核人打分的下拉框
