@@ -312,6 +312,9 @@ namespace BLL
             #endregion
 
             #region sales考核业务逻辑
+            /// <summary>
+            /// 当周出单三次或以上，sales 40个faxout达标，否则50个faxout达标
+            /// </summary>
             internal static int GetSalesFaxoutStandard(int dealscount)
             {
                 if (dealscount >= 3)
@@ -319,7 +322,9 @@ namespace BLL
                 else
                     return 50;
             }
-
+            /// <summary>
+            /// 当周出单三次或以上，sales 80个lead达标，否则105个lead达标
+            /// </summary>
             internal static int GetSalesAddStandard(int dealscount)
             {
                 if (dealscount >= 3)
