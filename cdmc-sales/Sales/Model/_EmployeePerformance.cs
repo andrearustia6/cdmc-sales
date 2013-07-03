@@ -688,15 +688,15 @@ namespace Sales.Model
                 if (target == 0 )
                     return 0;
                 else if (checkinreal / target >= (decimal)1.4)
-                    return 30;
+                    return 0.30;
                 else if (checkinreal / target >= (decimal)1.2)
-                    return 25;
+                    return 0.25;
                 else if (checkinreal / target >= (decimal)1)
-                    return 20;
+                    return 0.20;
                 else if (checkinreal / target >= (decimal)0.8)
-                    return 15;
+                    return 0.15;
                 else if (checkinreal / target >= (decimal)0.6)
-                    return 10;
+                    return 0.10;
                 else
                     return 0;
             }
