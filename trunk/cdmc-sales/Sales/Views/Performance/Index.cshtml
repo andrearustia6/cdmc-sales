@@ -88,7 +88,7 @@
                .PageOnScroll(true).PageSize(25)).Scrollable(scrolling => scrolling.Height(350)).Sortable().Resizable(r => r.Columns(true))
                    )
 
-            @{Html.Telerik().PanelBar()
+            @*@{Html.Telerik().PanelBar()
             .Name("PanelBar")
             .HtmlAttributes(new { style = "width: 100%" })
             .Items(parent => {
@@ -268,7 +268,44 @@
                     .Expanded(false);
             })
             .Render();
-            }
+            }*@
+    <fieldset>
+    <legend>版块考核标准说明</legend>
+    <table width="100%" cellpadding="0" cellspacing="0">
+      <tr>
+        <td width="10%">主观打分</td>
+        <td colspan="6">50%</td>
+      </tr>
+      <tr>
+        <td width="10%">团队Call    List<br />
+        </td>
+        <td width="15%">月人均平均数标准：销售专员200/人；销售经理140/人</td>
+        <td>平均Email/fax out数达标 15%</td>
+        <td width="16%">平均Email/fax out数少1-30条 10%</td>
+        <td width="15%">平均Email/fax out数少31-50条 5%</td>
+        <td colspan="2">平均Email/fax out数少50条以上 0%</td>
+      </tr>
+      <tr>
+        <td width="10%">团队新增Leads<br />
+        </td>
+        <td width="15%">月人均平均数标准：销售专员420/人；销售经理280/人</td>
+        <td width="14%">平均添加Lead数达标 15%</td>
+        <td width="16%">平均添加Lead数少1-50条 10%</td>
+        <td width="15%">平均添加Lead数少51-100条 5%</td>
+        <td colspan="2">平均添加Lead数少100条以上 0%</td>
+      </tr>
+      <tr>
+        <td>团队业绩表现</td>
+        <td width="15%">30'-带领的团队完成当月到账目标≥140%</td>
+        <td width="14%">25'-带领的团队完成当月到账目标≥120%</td>
+        <td width="16%">20'-带领的团队完成当月到账目标≥100%</td>
+        <td width="15%">15'-带领的团队完成当月到账目标≥80%</td>
+        <td width="13%">10'-带领的团队完成当月到账目标≥60%</td>
+        <td width="17%">0'-带领的团队完成当月到账目标&lt;60%</td>
+      </tr>
+    </table>
+    </fieldset>
+            
     </fieldset>
     }
 }
