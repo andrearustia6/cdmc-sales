@@ -297,7 +297,7 @@ namespace Sales.Controllers
             if (month == null) month = DateTime.Now.Month;
             // if (month == null) month = 5;
             var list = CRM_Logical._EmployeePerformance.GetManagerLeadsPerformances(month.Value);
-            var data = list.ToList();
+            var data = list.OrderBy(p => p.TargetName).ToList();
             return View(new GridModel(data));
         }
         [AcceptVerbs(HttpVerbs.Post)]
@@ -359,9 +359,7 @@ namespace Sales.Controllers
             }
 
             var list = CRM_Logical._EmployeePerformance.GetManagerLeadsPerformances(month.Value);
-            var data = list.ToList();
-
-
+            var data = list.OrderBy(p => p.TargetName).ToList();
             return View(new GridModel(data));
 
         }
@@ -379,7 +377,7 @@ namespace Sales.Controllers
                 //return View(model);
             }
             var list = CRM_Logical._EmployeePerformance.GetManagerLeadsPerformances(month.Value);
-            var data = list.ToList();
+            var data = list.OrderBy(p => p.TargetName).ToList();
 
             return View(new GridModel(data));
 
@@ -390,7 +388,7 @@ namespace Sales.Controllers
             if (month == null) month = DateTime.Now.Month;
             // if (month == null) month = 5;
             var list = CRM_Logical._EmployeePerformance.GetTeamLeadsPerformances(month.Value);
-            var data = list.ToList();
+            var data = list.OrderBy(p => p.Name).ToList();
             return View(new GridModel(data));
         }
         [AcceptVerbs(HttpVerbs.Post)]
@@ -442,7 +440,7 @@ namespace Sales.Controllers
             }
 
             var list = CRM_Logical._EmployeePerformance.GetTeamLeadsPerformances(month.Value);
-            var data = list.ToList();
+            var data = list.OrderBy(p => p.Name).ToList();
             return View(new GridModel(data));
 
         }

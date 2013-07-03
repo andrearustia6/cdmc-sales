@@ -498,7 +498,7 @@ namespace Entity
         [Display(Name = "参会客户")]
         public virtual List<Participant> Participants { get; set; }
 
-        [Display(Name = "签单人联系方式")]
+        [Display(Name = "签单人联系方式"), Required]
         public string CommitterContect { get; set; }
 
         [Required]
