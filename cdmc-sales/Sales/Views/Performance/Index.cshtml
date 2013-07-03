@@ -84,6 +84,7 @@
               .ClientEvents(events => events.OnEdit("ChangeWinTitleForManager"))
               .ClientEvents(events => events.OnComplete("onManagerComplete"))
               .ClientEvents(events => events.OnCommand("onManagerCommand"))
+              .ClientEvents(events => events.OnSave("onManagerSave"))
           .Pageable(p => p.Style(GridPagerStyles.Status)
                .PageOnScroll(true).PageSize(25)).Scrollable(scrolling => scrolling.Height(350)).Sortable().Resizable(r => r.Columns(true))
                    )
@@ -269,42 +270,7 @@
             })
             .Render();
             }*@
-    <fieldset>
-    <legend>版块考核标准说明</legend>
-    <table width="100%" cellpadding="0" cellspacing="0">
-      <tr>
-        <td width="10%">主观打分</td>
-        <td colspan="6">50%</td>
-      </tr>
-      <tr>
-        <td width="10%">团队Call    List<br />
-        </td>
-        <td width="15%">月人均平均数标准：销售专员200/人；销售经理140/人</td>
-        <td>平均Email/fax out数达标 15%</td>
-        <td width="16%">平均Email/fax out数少1-30条 10%</td>
-        <td width="15%">平均Email/fax out数少31-50条 5%</td>
-        <td colspan="2">平均Email/fax out数少50条以上 0%</td>
-      </tr>
-      <tr>
-        <td width="10%">团队新增Leads<br />
-        </td>
-        <td width="15%">月人均平均数标准：销售专员420/人；销售经理280/人</td>
-        <td width="14%">平均添加Lead数达标 15%</td>
-        <td width="16%">平均添加Lead数少1-50条 10%</td>
-        <td width="15%">平均添加Lead数少51-100条 5%</td>
-        <td colspan="2">平均添加Lead数少100条以上 0%</td>
-      </tr>
-      <tr>
-        <td>团队业绩表现</td>
-        <td width="15%">30'-带领的团队完成当月到账目标≥140%</td>
-        <td width="14%">25'-带领的团队完成当月到账目标≥120%</td>
-        <td width="16%">20'-带领的团队完成当月到账目标≥100%</td>
-        <td width="15%">15'-带领的团队完成当月到账目标≥80%</td>
-        <td width="13%">10'-带领的团队完成当月到账目标≥60%</td>
-        <td width="17%">0'-带领的团队完成当月到账目标&lt;60%</td>
-      </tr>
-    </table>
-    </fieldset>
+    
             
     </fieldset>
     }
@@ -354,6 +320,7 @@
                                 .Mode(GridEditMode.PopUp).TemplateName("TeamLeadPerformanceEdit"))
           .ClientEvents(e => e.OnRowDataBound("ChangeButtonTextForLead"))
           .ClientEvents(events => events.OnEdit("ChangeWinTitleForLead"))
+          .ClientEvents(events => events.OnSave("onLeaderSave"))
   .Pageable(p => p.Style(GridPagerStyles.Status)
        .PageOnScroll(true).PageSize(25)).Scrollable(scrolling => scrolling.Height(350)).Sortable().Resizable(r => r.Columns(true))
 )
@@ -403,8 +370,8 @@
                                 .Mode(GridEditMode.PopUp).TemplateName("SalesPerformanceEdit"))
           .ClientEvents(e => e.OnRowDataBound("ChangeButtonTextForSales"))
           .ClientEvents(events => events.OnEdit("ChangeWinTitleForSales"))
-              .ClientEvents(events => events.OnDataBinding("dataBinding"))
-
+          .ClientEvents(events => events.OnDataBinding("dataBinding"))
+          .ClientEvents(events => events.OnSave("onSalesSave"))
 .Pageable(p => p.Style(GridPagerStyles.Status)
                .PageOnScroll(true).PageSize(35)).Scrollable(scrolling => scrolling.Height(350)).Resizable(r => r.Columns(true))
 .ToolBar(factory => factory
@@ -418,6 +385,42 @@
     </fieldset>
     }
 }
+<fieldset>
+    <legend>版块考核标准说明</legend>
+    <table width="100%" cellpadding="0" cellspacing="0">
+      <tr>
+        <td width="10%">主观打分</td>
+        <td colspan="6">50%</td>
+      </tr>
+      <tr>
+        <td width="10%">团队Call    List<br />
+        </td>
+        <td width="15%">月人均平均数标准：销售专员200/人；销售经理140/人</td>
+        <td>平均Email/fax out数达标 15%</td>
+        <td width="16%">平均Email/fax out数少1-30条 10%</td>
+        <td width="15%">平均Email/fax out数少31-50条 5%</td>
+        <td colspan="2">平均Email/fax out数少50条以上 0%</td>
+      </tr>
+      <tr>
+        <td width="10%">团队新增Leads<br />
+        </td>
+        <td width="15%">月人均平均数标准：销售专员420/人；销售经理280/人</td>
+        <td width="14%">平均添加Lead数达标 15%</td>
+        <td width="16%">平均添加Lead数少1-50条 10%</td>
+        <td width="15%">平均添加Lead数少51-100条 5%</td>
+        <td colspan="2">平均添加Lead数少100条以上 0%</td>
+      </tr>
+      <tr>
+        <td>团队业绩表现</td>
+        <td width="15%">30'-带领的团队完成当月到账目标≥140%</td>
+        <td width="14%">25'-带领的团队完成当月到账目标≥120%</td>
+        <td width="16%">20'-带领的团队完成当月到账目标≥100%</td>
+        <td width="15%">15'-带领的团队完成当月到账目标≥80%</td>
+        <td width="13%">10'-带领的团队完成当月到账目标≥60%</td>
+        <td width="17%">0'-带领的团队完成当月到账目标&lt;60%</td>
+      </tr>
+    </table>
+    </fieldset>
 <fieldset>
     <legend>销售和销售经理考核标准</legend>
     <table width="100%">
@@ -514,7 +517,7 @@
     </table>
 </fieldset>
 <script>
-
+   
     function ChangeButtonTextForManager(e) {
         var $row = $(e.row);
         var rowButton = $row.find(".t-grid-edit");
@@ -570,6 +573,14 @@
             }
         }
     }
+    //防止多次点击
+    function onManagerSave(e) {
+        if ($(".t-button.t-grid-update").attr("disabled") == "disabled") {
+            e.preventDefault();
+        }
+        $(".t-button.t-grid-update").attr("disabled", "disabled");
+    }
+    
     function ChangeButtonTextForLead(e) {
         var $row = $(e.row);
         var rowButton = $row.find(".t-grid-edit");
@@ -598,7 +609,12 @@
         else
             popupDataWin.title("打分");
     }
-
+    function onLeaderSave(e) {
+        if ($(".t-button.t-grid-update").attr("disabled") == "disabled") {
+            e.preventDefault();
+        }
+        $(".t-button.t-grid-update").attr("disabled", "disabled");
+    }
     function ChangeButtonTextForSales(e) {
         var $row = $(e.row);
         var rowButton = $row.find(".t-grid-edit");
@@ -627,6 +643,13 @@
         else
             popupDataWin.title("打分");
     }
+    //防止多次点击
+    function onSalesSave(e) {
+        if ($(".t-button.t-grid-update").attr("disabled") == "disabled") {
+            e.preventDefault();
+        }
+        $(".t-button.t-grid-update").attr("disabled", "disabled");
+    }
     function onManagerComplete(e) {
         if (e.name == "Confirm") {
             var $grid = $("#manager").data("tGrid");
@@ -644,5 +667,5 @@
         $("#sales").data("tGrid").rebind();
 
     }
-
+    
 </script>
