@@ -30,7 +30,7 @@ namespace Sales.Controllers
             if (btnExport == "export")
             {
                 MemoryStream output = new MemoryStream();
-                StreamWriter writer = new StreamWriter(output, System.Text.Encoding.UTF8);
+                StreamWriter writer = new StreamWriter(output, System.Text.Encoding.Default);
 
                 if (month == null) month = DateTime.Now.Month;
 
