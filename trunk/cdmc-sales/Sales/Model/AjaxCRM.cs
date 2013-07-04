@@ -141,7 +141,16 @@ namespace Model
                                               CompanyID = c.CompanyID,
                                               CompanyNameEN = c.Company.Name_EN,
                                               CompanyNameCH = c.Company.Name_CH,
+
+                                              CompanyContact = c.Company.Contact,
+                                              Progress = c.Progress,
+                                              CompanyFax = c.Company.Fax,
+                                              //CompanyCategories = c.Categorys,
+                                              CompanyDistinct = c.Company.DistrictNumber,
+                                              CompanyCreateDate = c.Company.CreatedDate,
+
                                               CompanyPayment = deals.Where(d => d.CompanyRelationshipID == c.ID).Sum(s => s.Payment),
+
                                               CRMID = c.ID,
                                               AjaxLeads = (from l in c.Company.Leads
                                                            select new AjaxLead
@@ -190,7 +199,18 @@ namespace Model
                            CompanyID = c.CompanyID,
                            CompanyNameEN = c.Company.Name_EN,
                            CompanyNameCH = c.Company.Name_CH,
-                           CompanyPayment = deals.Where(d => d.CompanyRelationshipID == c.ID ).Sum(s => s.Payment),
+
+
+                           CompanyContact = c.Company.Contact,
+                           Progress = c.Progress,
+                           CompanyFax = c.Company.Fax,
+                           //CompanyCategories = c.Categorys,
+                           CompanyDistinct = c.Company.DistrictNumber,
+                           CompanyCreateDate = c.Company.CreatedDate,
+
+                           CompanyPayment = deals.Where(d => d.CompanyRelationshipID == c.ID).Sum(s => s.Payment),
+
+
                            CRMID = c.ID,
                            ProgressID = c.ProgressID,
                            AreaID = c.Company.AreaID,
@@ -279,6 +299,16 @@ namespace Model
                 return Progress == null ? string.Empty : Progress.Name;
             }
         }
+
+        //public List<Category> CompanyCategories { private get; set; }
+        //public string CompanyCategoryStrings
+        //{
+        //    get
+        //    {
+        //        return String.Join(", ", CompanyCategories.Select(s => s.Name).ToArray());
+        //    }
+        //}
+
         public List<Category> CompanyCategories { private get; set; }
         public string CompanyCategoryStrings
         {
@@ -288,6 +318,7 @@ namespace Model
                 return String.Join(", ", CompanyCategories.Select(s => s.Name).ToArray());
             }
         }
+
         public int CRMID { get; set; }
         [Display(Name = "录入时间")]
         public DateTime? CrmCreateDate { get; set; }
