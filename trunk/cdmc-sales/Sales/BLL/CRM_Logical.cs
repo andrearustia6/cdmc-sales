@@ -547,49 +547,91 @@ namespace BLL
             public static List<ProjectWeekPerformance> GetProjectsReportLastweek(DateTime? day)
             {
                 if (day == null)
-                    day = DateTime.Now; ;
-                day = day.Value.AddDays(-7);
-                var weekstart = day.Value.StartOfWeek();
-                var weekend = day.Value.EndOfWeek().AddDays(1);
+                    day = DateTime.Now.AddDays(1); ;
+                day = day.Value.AddDays(25);
+                //day = day.Value.AddDays(-7);
+                var weekend = day.Value;
+                if (day.Value.DayOfWeek == DayOfWeek.Sunday)
+                    weekend = day.Value.AddDays(-3);
+                else if (day.Value.DayOfWeek == DayOfWeek.Saturday)
+                    weekend = day.Value.AddDays(-2);
+                else if (day.Value.DayOfWeek == DayOfWeek.Friday)
+                    weekend = day.Value.AddDays(-1);
+                else if (day.Value.DayOfWeek == DayOfWeek.Thursday)
+                    weekend = day.Value.AddDays(-7);
+                else if (day.Value.DayOfWeek == DayOfWeek.Wednesday)
+                    weekend = day.Value.AddDays(-6);
+                else if (day.Value.DayOfWeek == DayOfWeek.Tuesday)
+                    weekend = day.Value.AddDays(-5);
+                else if (day.Value.DayOfWeek == DayOfWeek.Monday)
+                    weekend = day.Value.AddDays(-4);
+                //var weekend = day.Value.AddDays(0 - (day.Value.DayOfWeek + 3));//3天表示周五周六周日三天。
+                var weekstart = weekend.AddDays(-6);
                 var dealins = from d in GetDeals().Where(w => w.SignDate >= weekstart && w.SignDate < weekend) select d;
                 var checkins = from d in GetDeals().Where(w => w.ActualPaymentDate >= weekstart && w.ActualPaymentDate < weekend) select d;
                 var alldeals = GetDeals();
-                //和周目标相关的月
-                var targets = from t in GetProjectMonthTargets().Where(w => (w.EndDate >= weekstart && w.EndDate < weekend)
-                                  || (w.StartDate >= weekstart && w.StartDate < weekend) || (w.StartDate >= weekstart && w.EndDate > weekend))
+                //月目标
+                var targets = from t in CH.DB.TargetOfMonths
                               select t;
-                //var ds = from d in dealins
-                //           group d by new { d.ProjectID, d.Project.Name_CH } into grp
-                //           select new ProjectWeekPerformance()
-                //           {
-                //               StartDate = weekstart,
-                //               EndDate = weekend,
-                //               Income = dealins.Where(w => w.ProjectID == grp.Key.ProjectID).Sum(s => s.Payment),
-                //               ProjectName = grp.Key.Name_CH,
-                //               ProjectID = grp.Key.ProjectID
-                //           };
                 var cs =
-                    //from d in checkins
-                    //group d by new { d.ProjectID } into grp
-                         from p in CH.DB.Projects
-                         where p.IsActived == true && (p.Test == null)
-                         select new ProjectWeekPerformance()
-                         {
-                             StartDate = weekstart,
-                             EndDate = weekend,
-                             Target = p.Target,
-                             Income = checkins.Where(w => w.ProjectID == p.ID).Sum(s => s.Income),
-                             Payment = dealins.Where(w => w.ProjectID == p.ID).Sum(s => s.Payment),
-                             RMBPayment = dealins.Where(w => w.ProjectID == p.ID && w.Currencytype.Name=="RMB").Sum(s => s.Payment),
-                             USDPayment = dealins.Where(w => w.ProjectID == p.ID && w.Currencytype.Name == "USD").Sum(s => s.Payment),
-                             ProjectName = p.Name_CH,
-                             ProjectID = p.ID,
-                             Manager = p.Manager,
-                             Leader = p.TeamLeader,
-                             MemberCount = p.Members.Count
-                         };
+                        from p in CH.DB.Projects
+                        where p.IsActived == true && (p.Test == null)
+                        select new ProjectWeekPerformance()
+                        {
+                            StartDate = weekstart,
+                            EndDate = weekend,
+                            Target = 0,
+                            Income = checkins.Where(w => w.ProjectID == p.ID).Sum(s => s.Income),
+                            Payment = dealins.Where(w => w.ProjectID == p.ID).Sum(s => s.Payment),
+                            RMBPayment = dealins.Where(w => w.ProjectID == p.ID && w.Currencytype.Name=="RMB").Sum(s => s.Payment),
+                            USDPayment = dealins.Where(w => w.ProjectID == p.ID && w.Currencytype.Name == "USD").Sum(s => s.Payment),
+                            ProjectName = p.Name_CH,
+                            ProjectID = p.ID,
+                            Manager = p.Manager,
+                            Leader = p.TeamLeader,
+                            MemberCount = p.Members.Count
+                        };
 
                 var list = cs.ToList();
+                foreach (var l in list)
+                {
+                    targets = targets.Where(w => w.ProjectID == l.ProjectID);
+                    decimal? target ;
+                    if (weekend.Month != weekstart.Month)//跨月
+                    {
+                        DateTime matchdate = DateTime.Parse(weekstart.Year.ToString() + "-" + weekstart.Month.ToString() + "-" + "1");
+                        //上月最后一周
+
+                        target = targets.Where(t => t.StartDate == matchdate).Select(t => t.TargetOf5thWeek).FirstOrDefault();
+                        matchdate=DateTime.Parse(weekend.Year.ToString() + "-" + weekend.Month.ToString() + "-" + "1");
+                        //本月第一周
+                        target = target + targets.Where(t => t.StartDate == matchdate).Select(t => t.TargetOf1stWeek).FirstOrDefault();
+                        l.Target = target;
+                    }
+                    else
+                    {
+                        int i = weekend.Day ;
+                        int weekindex = 0;
+                        while (i > 0)
+                        {
+                            if (DateTime.Parse(weekend.Year.ToString() + "-" + weekend.Month.ToString()+"-"+i.ToString()).DayOfWeek == DayOfWeek.Thursday)
+                                weekindex++;
+                            i--;
+                        }
+                        DateTime matchdate=DateTime.Parse(weekend.Year.ToString() + "-" + weekend.Month.ToString() + "-" + "1");
+                        if(weekindex==1)
+                            l.Target = targets.Where(t => t.StartDate == matchdate).Select(t => t.TargetOf1stWeek).FirstOrDefault();
+                        else if(weekindex==2)
+                            l.Target = targets.Where(t => t.StartDate == matchdate).Select(t => t.TargetOf2ndWeek).FirstOrDefault();
+                        else if(weekindex==3)
+                            l.Target = targets.Where(t => t.StartDate == matchdate).Select(t => t.TargetOf3rdWeek).FirstOrDefault();
+                        else if(weekindex==4)
+                            l.Target = targets.Where(t => t.StartDate == matchdate).Select(t => t.TargetOf4thWeek).FirstOrDefault();
+                        else if(weekindex==5)
+                            l.Target = targets.Where(t => t.StartDate == matchdate).Select(t => t.TargetOf5thWeek).FirstOrDefault();
+
+                    }
+                }
                 return list;
             }
             public static IQueryable<AjaxProjectCheckInByMonth> GetProjectsCheckInByMonth()
