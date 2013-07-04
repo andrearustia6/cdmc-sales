@@ -548,7 +548,7 @@ namespace BLL
             {
                 if (day == null)
                     day = DateTime.Now.AddDays(1); ;
-                day = day.Value.AddDays(25);
+                //day = day.Value.AddDays(25);
                 //day = day.Value.AddDays(-7);
                 var weekend = day.Value;
                 if (day.Value.DayOfWeek == DayOfWeek.Sunday)
