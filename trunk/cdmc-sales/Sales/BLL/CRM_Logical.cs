@@ -94,6 +94,9 @@ namespace BLL
                     var year = DateTime.Now.Year;
                     //获取登录者（考核人）打分的记录
                     var scores = from r in CH.DB.ManagerScores.Where(w => w.Month == month && w.Year == year) select r;
+                    managers = from m in managers
+                                      where !(new String[] { "Doris", "Michael","Theresa","Dorothy", "Eric", "Olivia"}).Contains(m)
+                                      select m;
                     var lps = from l in managers
                               join sc in scores on l equals sc.TargetName into Joinedscores
                               from aa in Joinedscores.DefaultIfEmpty()
@@ -124,7 +127,7 @@ namespace BLL
                                   Confirmed = aa != null ? aa.Confirmed == true ? "是" : "否" : "否",
                                   Rate = aa != null ? aa.Rate==null?0:aa.Rate:1
                               };
-
+                    
                     return lps;
                 }
                 return new List<_ManagerScore>();
