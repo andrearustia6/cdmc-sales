@@ -320,7 +320,8 @@ namespace Sales.Controllers
         {
             var item = CH.GetDataById<TargetOfMonthForMember>(id);
             CH.Delete<TargetOfMonthForMember>(id);
-            return RedirectToAction("MyTargetIndexEx", new { projectid = item.ProjectID });
+            //return View("MyTargetIndexEx", getData(item.ProjectID));
+            return RedirectToAction("MyTargetIndexEx", new { projectid = id });
         }
 
 

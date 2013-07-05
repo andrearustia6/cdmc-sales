@@ -22,11 +22,11 @@
             }
         </span>
     </div>
-
-    @(Html.Telerik().Grid<TargetOfMonthForMember>(Model).Name("TargetOfMonthForMember")
+}
+@(Html.Telerik().Grid<TargetOfMonthForMember>(Model).Name("TargetOfMonthForMember")
     .ToolBar(commands => commands.Insert().ImageHtmlAttributes(new { style = "margin-left:0" }))
     .DataKeys(keys => { keys.Add(s => s.ID); }).DataBinding(dataBinding => dataBinding.Server()
-        .Select("MyTargetIndexEx", "TargetOfMonthForMember", new { projectid = (int?)ViewBag.ProjectID })
+        .Select("MyTargetIndexEx", "TargetOfMonthForMember", new { projectid = ViewBag.ProjectID })
         .Insert("Insert", "TargetOfMonthForMember")
         .Update("Save", "TargetOfMonthForMember")
                 .Delete("Deleted", "TargetOfMonthForMember")).Columns(c =>
@@ -43,4 +43,3 @@
 .Resizable(resizing => resizing.Columns(true)).Editable(editing => editing.Mode(GridEditMode.PopUp))
 .Filterable().Sortable().Groupable().Pageable(p => p.PageSize(20)).Scrollable(scrolling
 => scrolling.Height(350)))
-}
