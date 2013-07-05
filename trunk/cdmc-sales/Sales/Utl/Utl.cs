@@ -171,8 +171,9 @@ namespace Utl
         {
 
             ProfileBase objProfile = ProfileBase.Create(username);
+           
             var email = Membership.GetUser(username).Email;
-            var roleid = (int)objProfile.GetPropertyValue("RoleLevelID");
+            var roleid = CH.GetAllData<EmployeeRole>(w=>w.AccountName==username).Select(s=>s.RoleID).FirstOrDefault();
             var gender = objProfile.GetPropertyValue("Gender") as string;
             var displayName = objProfile.GetPropertyValue("DisplayName") as string;
             var mobile = objProfile.GetPropertyValue("Mobile") as string;
@@ -185,7 +186,7 @@ namespace Utl
             DateTime.TryParse(startDate, out date);
             var userinfo = new UserInfoModel()
             {
-                RoleID = roleid,
+                RoleID = roleid.Value,
                 Email = email,
                 Contact = contact,
                 StartDate = date,
