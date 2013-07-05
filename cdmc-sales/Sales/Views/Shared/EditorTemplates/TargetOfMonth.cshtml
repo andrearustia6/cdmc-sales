@@ -36,7 +36,7 @@
                       }
                     }
                 </td>
-                <td style="width: 75px">
+                <td style="width: 140px; text-align: right;">
                     <label id="1stWeek">
                         第一周目标</label>
                     @*@Html.LabelFor(model => model.TargetOf1stWeek)*@
@@ -63,7 +63,7 @@
                       }
                     }
                 </td>
-                <td>
+                <td style="width: 140px; text-align: right;">
                     <label id="2ndWeek">
                         第二周目标</label>
                     @*@Html.LabelFor(model => model.TargetOf2ndWeek)*@
@@ -90,7 +90,7 @@
                       }
                     }
                 </td>
-                <td>
+                <td style="width: 140px; text-align: right;">
                     <label id="3rdWeek">
                         第三周目标</label>
                     @*@Html.LabelFor(model => model.TargetOf3rdWeek)*@
@@ -117,7 +117,7 @@
                       }
                     }
                 </td>
-                <td>
+                <td style="width: 140px; text-align: right;">
                     <label id="4thWeek">
                         第四周目标</label>
                     @*@Html.LabelFor(model => model.TargetOf4thWeek)*@
@@ -144,7 +144,7 @@
                       }
                     }
                 </td>
-                <td id="hidenTd1">
+                <td id="hidenTd1" style="width: 140px; text-align: right;">
                     <label id="5thWeek">
                         第五周目标</label>
                     @*@Html.LabelFor(model => model.TargetOf5thWeek)*@
@@ -178,12 +178,12 @@
         var ofTheWeek = firstDate.getDay();
         var lastDay = endDate.getDate();
         if (ofTheWeek == 5) {
-            $("#1stWeek").text(month + "-1～" + month + "-7");
-            $("#2ndWeek").text(month + "-8～" + month + "-14");
-            $("#3rdWeek").text(month + "-15～" + month + "-21");
-            $("#4thWeek").text(month + "-22～" + month + "-28");
+            $("#1stWeek").text(month + "-1～" + month + "-7周出单目标");
+            $("#2ndWeek").text(month + "-8～" + month + "-14周出单目标");
+            $("#3rdWeek").text(month + "-15～" + month + "-21周出单目标");
+            $("#4thWeek").text(month + "-22～" + month + "-28周出单目标");
             if (lastDay > 28) {
-                $("#5thWeek").text(month + "-29～" + month + "-" + lastDay);
+                $("#5thWeek").text(month + "-29～" + month + "-" + lastDay + "周出单目标");
             }
             else {
                 var item = $("#TargetOf5thWeek").data("tTextBox");
@@ -198,11 +198,11 @@
             if (ofTheWeek > 0 && ofTheWeek < 5) {
                 ofTheWeek += 7;
             }
-            $("#1stWeek").text(month + "-1～" + month + "-" + (12 - ofTheWeek));
-            $("#2ndWeek").text(month + "-" + (13 - ofTheWeek) + "～" + month + "-" + (19 - ofTheWeek));
-            $("#3rdWeek").text(month + "-" + (20 - ofTheWeek) + "～" + month + "-" + (26 - ofTheWeek));
-            $("#4thWeek").text(month + "-" + (27 - ofTheWeek) + "～" + month + "-" + (33 - ofTheWeek));
-            $("#5thWeek").text(month + "-" + (34 - ofTheWeek) + "～" + month + "-" + lastDay);
+            $("#1stWeek").text(month + "-1～" + month + "-" + (12 - ofTheWeek) + "周出单目标");
+            $("#2ndWeek").text(month + "-" + (13 - ofTheWeek) + "～" + month + "-" + (19 - ofTheWeek) + "周出单目标");
+            $("#3rdWeek").text(month + "-" + (20 - ofTheWeek) + "～" + month + "-" + (26 - ofTheWeek) + "周出单目标");
+            $("#4thWeek").text(month + "-" + (27 - ofTheWeek) + "～" + month + "-" + (33 - ofTheWeek) + "周出单目标");
+            $("#5thWeek").text(month + "-" + (34 - ofTheWeek) + "～" + month + "-" + lastDay + "周出单目标");
         }
     }
 </script>

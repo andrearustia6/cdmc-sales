@@ -19,7 +19,7 @@
     {
         ps = CRM_Logical.GetUserInvolveProject();
     }
-    var selected = ps.Count == 0 ? 0 : ps.FirstOrDefault().ID;
+    var selected = ViewBag.ProjectID ?? 0;
                 @Html.DropDownList("ProjectID", new SelectList(ps, "ID", "ProjectCode", selected), "所有项目", new { onchange = "this.form.submit();" })
             }
         </span>
@@ -28,7 +28,10 @@
 @(Html.Telerik().Grid(Model).Name("TargetOfMonths")
 .ToolBar(commands => commands.Insert().ImageHtmlAttributes(new { style = "margin-left:0" }))
 .DataKeys(keys => { keys.Add(s => s.ID); }).DataBinding(dataBinding => dataBinding.Server()
-                            .Select("TargetOfMonthForProject", "TargetOfMonth").Insert("CreateEx", "TargetOfMonth").Update("EditEx", "TargetOfMonth").Delete("DeleteEx", "TargetOfMonth"))
+                            .Select("TargetOfMonthForProject", "TargetOfMonth", new { projectid = ViewBag.ProjectID })
+                            .Insert("CreateEx", "TargetOfMonth")
+                            .Update("EditEx", "TargetOfMonth")
+                            .Delete("DeleteEx", "TargetOfMonth"))
             .Columns(c =>
             {
                 c.Bound(item => item.Project.Name).Width(300);
