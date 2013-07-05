@@ -1,11 +1,32 @@
 ﻿@using Entity
 @model List<TargetOfMonthForMember>
 @Html.Partial("contenttitle", "个人月目标")
-@Html.Partial("projectselector")
-@(Html.Telerik().Grid<TargetOfMonthForMember>(Model).Name("TargetOfMonthForMember")
+@using (Html.BeginForm())
+{
+    <div style="margin: 10px; margin-left: 0px;">
+        <span><b>目标项目：</b>
+            @{
+    var accessright = ViewBag.Right as string;
+    List<Project> ps;
+
+    if (!string.IsNullOrEmpty(accessright))
+    {
+        ps = BLL.CRM_Logical.GetUserProjectRight(accessright);
+    }
+    else
+    {
+        ps = BLL.CRM_Logical.GetUserInvolveProject();
+    }
+    var selected = ViewBag.ProjectID ?? 0;
+                @Html.DropDownList("projectid", new SelectList(ps, "ID", "ProjectCode", (int)selected), new { onchange = "this.form.submit();" })
+            }
+        </span>
+    </div>
+
+    @(Html.Telerik().Grid<TargetOfMonthForMember>(Model).Name("TargetOfMonthForMember")
     .ToolBar(commands => commands.Insert().ImageHtmlAttributes(new { style = "margin-left:0" }))
     .DataKeys(keys => { keys.Add(s => s.ID); }).DataBinding(dataBinding => dataBinding.Server()
-        .Select("MyTargetIndexEx", "TargetOfMonthForMember")
+        .Select("MyTargetIndexEx", "TargetOfMonthForMember", new { projectid = (int?)ViewBag.ProjectID })
         .Insert("Insert", "TargetOfMonthForMember")
         .Update("Save", "TargetOfMonthForMember")
                 .Delete("Deleted", "TargetOfMonthForMember")).Columns(c =>
@@ -22,3 +43,4 @@
 .Resizable(resizing => resizing.Columns(true)).Editable(editing => editing.Mode(GridEditMode.PopUp))
 .Filterable().Sortable().Groupable().Pageable(p => p.PageSize(20)).Scrollable(scrolling
 => scrolling.Height(350)))
+}
