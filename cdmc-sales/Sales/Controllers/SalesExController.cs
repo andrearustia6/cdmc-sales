@@ -35,7 +35,7 @@ namespace Sales.Controllers
                 var crmid = int.Parse(ids[0]);
 
                 var c = CH.GetDataById<CompanyRelationship>(crmid);
-
+                
                 var leadid = 0;
                 if (ids.Count() > 1)
                 {
@@ -43,6 +43,7 @@ namespace Sales.Controllers
                     c.Company.Leads = c.Company.Leads.Where(l => l.ID == leadid).ToList();
                 }
                 var deals = CRM_Logical.GetDeals(true);
+                //c.LeadCalls = CH.DB.LeadCalls.Where(l=>l.ProjectID==c.ProjectID).ToList();
                 decimal rmb= deals.Where(d => d.CompanyRelationshipID == c.ID && d.Currencytype.Name == "RMB").Count() ==0 ? 0 : deals.Where(d => d.CompanyRelationshipID == c.ID && d.Currencytype.Name == "RMB").Sum(s => s.Payment);
                 decimal usd = deals.Where(d => d.CompanyRelationshipID == c.ID && d.Currencytype.Name == "USD").Count()==0 ? 0 : deals.Where(d => d.CompanyRelationshipID == c.ID && d.Currencytype.Name == "USD").Sum(s => s.Payment);
                 if (c != null)
