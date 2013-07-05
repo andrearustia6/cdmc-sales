@@ -10,6 +10,7 @@ using Sales;
 using Utl;
 using Telerik.Web.Mvc;
 using Model;
+using BLL;
 
 namespace Sales.Controllers
 {
@@ -330,10 +331,18 @@ namespace Sales.Controllers
 
         public ActionResult TargetOfMonthForProject(int? projectid)
         {
-            projectid = this.TrySetProjectIDForUser(projectid);
+            //projectid = this.TrySetProjectIDForUser(projectid);
+
             ViewBag.ProjectID = projectid;
             //return View(CH.GetAllData<TargetOfMonth>().Where(s => s.Project.TeamLeader == Employee.GetLoginUserName()).OrderByDescending(s => s.EndDate).ToList());
-            return View(CH.GetAllData<TargetOfMonth>().Where(s => s.ProjectID == projectid).OrderByDescending(s => s.EndDate).ToList());
+            if (projectid == null)
+            {
+                return View(CH.GetAllData<TargetOfMonth>().Where(s => CRM_Logical.GetUserInvolveProject().Any(m => m.ID == s.ProjectID)).OrderByDescending(s => s.EndDate).ToList());
+            }
+            else
+            {
+                return View(CH.GetAllData<TargetOfMonth>().Where(s => s.ProjectID == projectid).OrderByDescending(s => s.EndDate).ToList());
+            }
 
         }
 
@@ -351,7 +360,7 @@ namespace Sales.Controllers
         }
 
         [AcceptVerbs(HttpVerbs.Post), ActionName("DeleteEx")]
-        public ActionResult DeleteExConfirmed(int id)
+        public ActionResult DeleteExConfirmed(int id, int? projectid)
         {
             var item = CH.GetDataById<TargetOfMonth>(id);
             var pid = item.ProjectID;
@@ -361,7 +370,7 @@ namespace Sales.Controllers
             {
                 CH.DeleteRange<TargetOfWeek>(del.ToList());
             }
-            return RedirectToAction("TargetOfMonthForProject", "TargetOfMonth");
+            return RedirectToAction("TargetOfMonthForProject", "TargetOfMonth", new { projectid = pid });
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
