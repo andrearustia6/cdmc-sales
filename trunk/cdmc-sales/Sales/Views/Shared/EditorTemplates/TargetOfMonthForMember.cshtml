@@ -28,15 +28,8 @@
                     @Html.LabelFor(model => model.MemberID, "目标制定人")
                 </td>
                 <td colspan="3">
-                    @*   @{
-          var pid = Model.ProjectID == null ? ViewBag.ProjectID as int? : Model.ProjectID;
-          var user = Employee.CurrentUserName;
-          var membernames = CH.GetAllData<Member>(mem => mem.Project.ID == pid).ToList();
-                        @Html.DropDownListFor(m => m.MemberID, new SelectList(membernames, "ID", "Name", membernames.Find(f => f.Name == user)), "-请选择-", new { style = "width:200px" });
-                    }
-                    @Html.ValidationMessageFor(model => model.MemberID)*@
-                    @Html.DropDownListFor(m => m.MemberID, new SelectList(CH.GetAllData<Member>().Where(s => s.ProjectID == ViewBag.ProjectID && s.Name == Employee.CurrentUserName), "ID", "Name"), new { style = "width:200px" });
-                    @Html.HiddenFor(m => m.MemberID)
+                    @Html.DropDownListFor(m => m.MemberID, new SelectList(CH.GetAllData<Member>().Where(s => s.ProjectID == ViewBag.ProjectID && s.Name == Employee.CurrentUserName), "ID", "Name"), new { style = "width:200px" })
+                   @* @Html.ValidationMessageFor(m => m.MemberID)*@
                 </td>
             </tr>
             <tr>
@@ -45,7 +38,7 @@
                 </td>
                 <td colspan="3">
                     @Html.DropDownListFor(m => m.ProjectID, new SelectList(CH.GetAllData<Project>().Where(s => s.ID == ViewBag.ProjectID), "ID", "Name"), new { style = "width:200px" })
-                    @Html.ValidationMessageFor(model => model.ProjectID)
+                   @* @Html.ValidationMessageFor(model => model.ProjectID)*@
                 </td>
             </tr>
             <tr>
@@ -80,6 +73,7 @@
                     @Html.ValidationMessageFor(model => model.CheckIn)
                 </td>
         </table>
+        @Html.HiddenFor(model => model.BaseDeal)
         @Html.HiddenFor(model => model.IsConfirm)
     </fieldset>
 @* @Html.Partial("editcommon", Model)*@
