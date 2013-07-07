@@ -1097,3 +1097,137 @@ var currentCompanyNameEN = undefined;
         var window = $('#QuickAddDeal').data('tWindow');
         window.close();
     }
+
+    function GetBulkEntry() {
+        var currentProjectId = $('#CurrentProjectId').val();
+        $.post('GetBulkEntry', { projectId: currentProjectId }, function (result) {
+            $('.bulkEntry-wrapper').html(result);
+            var window = $('#BulkEntry').data('tWindow');
+            window.center().open();
+        });
+    }
+
+    function BulkEntry() {
+        var hasError = false;
+        $('.dialogue-addcompany form input').removeClass('fieldError');
+        $('.dialogue-addcompany form select').removeClass('fieldError');
+        $('.dialogue-addcompany form #Msg').html('');
+
+        String.prototype.isEmpty = function () { return /^\s*$/.test(this); }
+
+        var msg = '';
+
+        // validation for company
+        if ($('.dialogue-addcompany form #DistrictNumberId option:selected').val().isEmpty()) {
+            if ($('.dialogue-addcompany form #Name_CN').val().isEmpty()) {
+                $('.dialogue-addcompany form #Name_CN').addClass('fieldError');
+                hasError = true;
+            }
+        }
+        else {
+            if ($('.dialogue-addcompany form #Name_EN').val().isEmpty()) {
+                $('.dialogue-addcompany form #Name_EN').addClass('fieldError');
+                hasError = true;
+            }
+        }
+
+        var telephone = $('.dialogue-addcompany form #Phone');
+        if (telephone.val().isEmpty() || !IsTelephone(telephone.val())) {
+            telephone.addClass('fieldError');
+            hasError = true;
+        }
+
+        if ($('.dialogue-addcompany form #IndustryId').val().isEmpty()) {
+            $('.dialogue-addcompany form #IndustryId').addClass('fieldError');
+            hasError = true;
+        }
+        if ($('.dialogue-addcompany form #TypeId').val().isEmpty()) {
+            $('.dialogue-addcompany form #TypeId').addClass('fieldError');
+            hasError = true;
+        }
+        if ($('.dialogue-addcompany form #ProgressId').val().isEmpty()) {
+            $('.dialogue-addcompany form #ProgressId').addClass('fieldError');
+            hasError = true;
+        }
+
+        if ($('.dialogue-addcompany form input[type=checkbox][name=Categories]:checked').length == 0) {
+            $('fieldset#categories').addClass('fieldError');
+            hasError = true;
+        } else {
+            $('fieldset#categories').removeClass('fieldError');
+        }
+        // end validation for company
+        for (var i = 0; i < 10; i++) {
+            $(".leadsTable tbody tr#row_" + i).each(function () {
+                var namecn = $(this).find("input[name='LeadName_CN']");
+                var nameen = $(this).find("input[name='LeadName_EN']")
+                var gender = $(this).find("select[name='Gender']");
+                var title = $(this).find("input[name='Title']");
+                var telephone = $(this).find("input[name='Telephone']");
+                var cellPhone = $(this).find("input[name='CellPhone']");
+                
+                if ((namecn.val().length == 0) && (namecn.val().length == 0)
+                    && (gender.val().length == 0) && (title.val().length == 0)
+                    && (telephone.val().length == 0) && (cellPhone.val().length == 0)) {
+                } else {
+                    if (namecn.val().length == 0 && nameen.val().length == 0) {
+                        namecn.addClass('fieldError');
+                        nameen.addClass('fieldError');
+                        hasError = true;
+                    }
+                    if (gender.val().length == 0) {
+                        gender.addClass('fieldError');
+                        hasError = true;
+                    }
+                    if (title.val().length == 0) {
+                        title.addClass('fieldError');
+                        hasError = true;
+                    }
+                    if ((cellPhone.val().length == 0) && (telephone.val().length == 0)) {
+                        telephone.addClass('fieldError');
+                        cellPhone.addClass('fieldError');
+                        hasError = true;
+                    } else {
+                        if (telephone.val().length != 0 && !IsTelephone(telephone.val())) {
+                            telephone.addClass('fieldError');
+                            hasError = true;
+                        }
+                        if (cellPhone.val().length != 0 && !IsTelephone(cellPhone.val())) {
+                            cellPhone.addClass('fieldError');
+                            hasError = true;
+                        }
+                    } 
+                }
+            });
+        }
+        if (hasError) {
+            if (msg != '')
+                $('.dialogue-addcompany form #Msg').html(msg);
+            return;
+        } else {
+            var projectid = $('#CurrentProjectId').val();
+            var companyNameCN = $('.dialogue-addcompany form #Name_CN').val();
+            var companyNameEN = $('.dialogue-addcompany form #Name_EN').val();
+            $.post('CheckCompanyExist', { projectid: projectid, beforeUpdateCN: null, afterUpdateCN: companyNameCN, beforeUpdateEN: null, afterUpdateEN: companyNameEN }, function (result) {
+                if (result.length > 0) {
+                    alert(result);
+                } else {
+                    var query = $('.dialogue-addcompany form').serializeArray();
+                    $.post('BulkEntry', query, function (result) {
+                        if ((result.companyRelationshipId != null) && (result.leadId != null)) {
+                            $('#BulkEntry').data('tWindow').close();
+                            RefreshCrmList(result.companyRelationshipId);
+                            onCompanyChanging(result.companyRelationshipId);
+                        } else {
+                            alert('批量录入失败');
+                        }
+                    });
+                }
+            });
+        }
+    }
+
+    function CancelBulkEntry() {
+        var window = $('#BulkEntry').data('tWindow');
+        window.close();
+    }
