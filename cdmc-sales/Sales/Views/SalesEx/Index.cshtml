@@ -64,6 +64,8 @@
                                 onclick="GetAddCompany()" />
                             <input type="button" style="border: none; width: 67px; height: 21px; background-image: url('../images/quick_entry.jpg');"
                                 onclick="GetQuickEntry()" />
+                            <input type="button" style="border: none; width: 67px; height: 21px; background-image: url('../images/quick_entry.jpg');"
+                                onclick="GetBulkEntry()" />
                         </span><span>最后通话状态:</span> <span style="color: red">NotCall</span> <span style="color: #0000C6">
                             Call-Backed</span> <span style="color: #000000">Blowed</span> <span style="color: #336666">
                                 Pitched</span> <span style="color: #009393">Closed</span> <span style="color: #9F35FF">
@@ -179,6 +181,21 @@
     </div></text>)
     .Width(1000)
     .Height(650).Title("快捷录入")
+    .Modal(true).Visible(false).Draggable(true)
+    )
+
+@(Html.Telerik().Window()
+    .Name("BulkEntry")
+    .Content(@<text>
+    <div class="dialogue-addcompany" style="margin: 0px;">
+        <div class="bulkEntry-wrapper">
+        </div>
+        <div class="dialogue-buttons" style="float:right;">
+            <input type="button" class="btn-queding" onclick="BulkEntry()" />
+            <input type="button" class="btn-quxiao" onclick="CancelBulkEntry()" />
+        </div>
+    </div></text>)
+    .Title("批量录入")
     .Modal(true).Visible(false).Draggable(true)
     )
 

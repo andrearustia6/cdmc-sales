@@ -1,0 +1,132 @@
+﻿@using Entity
+@using Utl
+@model Model.BulkEntry
+
+@using (Html.BeginForm("AddSaleCompany", "SalesEx"))
+{
+    @Html.HiddenFor(model => model.ProjectId)
+    <table>
+        <tr>
+            <td colspan="4"><span id="Msg" style="color:Red;"></span></td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(model => model.Name_CN)
+                @Html.TextBoxFor(model => model.Name_CN)
+            </td>
+            <td>
+                @Html.LabelFor(model => model.Name_EN)
+                @Html.TextBoxFor(model => model.Name_EN)
+            </td>
+            <td>
+                @Html.LabelFor(model => model.Phone)
+                @Html.TextBoxFor(model => model.Phone)
+            </td>
+            <td>
+                @Html.LabelFor(model => model.DistrictNumberId)
+                @Html.DropDownListFor(model => model.DistrictNumberId, SelectHelper.DistinctNumberSelectList(null), "中国(默认)")
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(model => model.IndustryId)
+                @Html.DropDownListFor(model => model.IndustryId, SelectHelper.CompanyIndustrySelectList(null), "请选择")
+            </td>
+            <td>
+                @Html.LabelFor(model => model.TypeId)
+                @Html.DropDownListFor(model => model.TypeId, SelectHelper.CompanyTypeSelectList(null), "请选择")
+            </td>
+            <td>
+                @Html.LabelFor(model => model.ProgressId)
+                @Html.DropDownListFor(model => model.ProgressId, SelectHelper.ProgressSelectList(null), "请选择")
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4">
+                <fieldset id="categories" style="margin:0px 0px 0px 0px;">
+                    <legend>细分行业 <span id="categoriesError">必须选择一项</span></legend>
+                    @foreach (Category category in CH.GetAllData<Category>(c => c.ProjectID == Model.ProjectId))
+                    { 
+                
+                        <label class="company-category" style="width: auto;"> <input  name="Categories" type="checkbox" value="@category.ID" /> @category.Name </label>
+               
+                    }
+                </fieldset>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4">
+                <table class="leadsTable">
+                    <tr>
+                        <th>中文名称</th><th>英文名称</th><th>性别</th><th>客户职位</th><th>客户直线</th><th>移动电话</th>
+                    </tr>
+                    @for (int i = 0; i < 10; i++)
+                    {
+                        <tr id="row_@{@i}">
+                            <td>
+                                @Html.TextBoxFor(model => model.Leads.ElementAt(i).LeadName_CN, new { name = "NameCN" + i })
+                                @Html.ValidationMessageFor(model => model.Leads.ElementAt(i).LeadName_CN)
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(model => model.Leads.ElementAt(i).LeadName_EN, new { name = "NameEN" + i })
+                                @Html.ValidationMessageFor(model => model.Leads.ElementAt(i).LeadName_EN)
+                            </td>
+                            <td>
+                                @Html.DropDownListFor(model => model.Leads.ElementAt(i).Gender, SelectHelper.GenderSelectList(null), "-请选择-", new { name = "Gender" + i })
+                                @Html.ValidationMessageFor(model => model.Leads.ElementAt(i).Gender)
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(model => model.Leads.ElementAt(i).Title, new { name = "Title" + i })
+                                @Html.ValidationMessageFor(model => model.Leads.ElementAt(i).Title)
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(model => model.Leads.ElementAt(i).Telephone, new { name = "Telephone" + i })
+                                @Html.ValidationMessageFor(model => model.Leads.ElementAt(i).Telephone)
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(model => model.Leads.ElementAt(i).CellPhone, new { name = "CellPhone" + i })
+                                @Html.ValidationMessageFor(model => model.Leads.ElementAt(i).CellPhone)
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </td>
+        </tr>
+    </table>
+}
+<style>
+    table
+    {
+        border:none;
+        padding:0px;
+        margin:0px;
+     }
+    table tr td
+    {
+        width: 240px;
+        border:none;
+    }
+    table tr td label
+    {
+        display: inline-block;
+        width: 55px;
+        padding-right: 5px;
+    }
+    table tr td input[type=text], table tr td select
+    {
+        width: 140px;
+    }
+    table tr td textarea
+    {
+        height: 100px;
+    }
+    #categoriesError
+    {
+        display: none;
+    }
+    fieldset.fieldError span
+    {
+        display: inline-block !important;
+        color: Red;
+    }
+</style>

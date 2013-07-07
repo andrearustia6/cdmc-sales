@@ -504,7 +504,101 @@ namespace Model
 
     }
 
+    public class BulkEntry
+    {
+        public BulkEntry()
+        {
+            Leads = new List<LeadBulk>();
+        }
 
+        #region Company
+
+        [Display(Name = "项目")]
+        public int? ProjectId { get; set; }
+
+        public int? CompanRelationshipId { get; set; }
+
+        [Display(Name = "ID")]
+        public int? CompanyId { get; set; }
+
+        [Required(ErrorMessage = "必填")]
+        [Display(Name = "中文名字")]
+        public string Name_CN { get; set; }
+
+        [Required(ErrorMessage = "必填")]
+        [Display(Name = "英文名字")]
+        public string Name_EN { get; set; }
+
+        [Required(ErrorMessage = "必填")]
+        [Display(Name = "所属行业")]
+        public int? IndustryId { get; set; }
+        [Display(Name = "所属行业")]
+        public string IndustryString { get; set; }
+
+        [Required(ErrorMessage = "必填")]
+        [Display(Name = "公司性质")]
+        public int? TypeId { get; set; }
+        [Display(Name = "公司性质")]
+        public string TypeString { get; set; }
+
+        [Required(ErrorMessage = "必填")]
+        [Display(Name = "成熟度")]
+        public int ProgressId { get; set; }
+        [Display(Name = "成熟度")]
+        public string ProgressString { get; set; }
+
+        [Required(ErrorMessage = " ")]
+        [Display(Name = "区号/时差")]
+        public int? DistrictNumberId { get; set; }
+
+        [Display(Name = "区号/时差")]
+        public string DistrictNumberString { get; set; }
+
+        [Display(Name = "公司总机")]
+        public string Phone { get; set; }
+
+        [Display(Name = "细分行业")]
+        public List<int> Categories { get; set; }
+        [Display(Name = "细分行业")]
+        public string CategoryString { get; set; }
+
+        #endregion End Company
+
+        public virtual List<LeadBulk> Leads { get; set; }
+    }
+
+    public class LeadBulk
+    {
+        public int LeadId { get; set; }
+
+        [Required(ErrorMessage = "必填")]
+        [Display(Name = "中文名称")]
+        public string LeadName_CN { get; set; }
+
+        [Display(Name = "英文名称")]
+        public string LeadName_EN { get; set; }
+
+        [Display(Name = "性别")]
+        [Required(ErrorMessage = "必填")]
+        public string Gender { get; set; }
+
+        [Display(Name = "客户职位")]
+        public string Title { get; set; }
+
+        [Required(ErrorMessage = "必填")]
+        [Display(Name = "部门")]
+        public string Department { get; set; }
+
+        [Display(Name = "客户直线")]
+        public string Telephone { get; set; }
+
+        [Display(Name = "移动电话")]
+        public string CellPhone { get; set; }
+
+        [Display(Name = "工作邮箱")]
+        public string WorkingEmail { get; set; }
+    }
+        
     public class AjaxViewSaleCompany
     {
         [Display(Name = "项目")]

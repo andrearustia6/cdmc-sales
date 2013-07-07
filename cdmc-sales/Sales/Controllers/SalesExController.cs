@@ -909,7 +909,111 @@ namespace Sales.Controllers
         }
 
 
-         
+        public ActionResult GetBulkEntry(int? projectId)
+        {
+            var progress = CH.GetAllData<Progress>().Where(p => p.Code == 10).FirstOrDefault();
+
+            BulkEntry bulkEntry = new BulkEntry() { ProjectId = projectId, Categories = new List<int>() { }, ProgressId = progress.ID };
+            LeadBulk lead = new LeadBulk();
+            for (int i = 0; i < 10; i++)
+            {
+                bulkEntry.Leads.Add(lead);
+            }
+            return PartialView("BulkEntry", bulkEntry);
+        }
+
+        [ValidateInput(false)]
+        [HttpPost]
+        public ActionResult BulkEntry(BulkEntry bulkEntry, FormCollection collection)
+        {
+            CompanyRelationship companyRelationship = new CompanyRelationship();
+            companyRelationship.Company = new Company();
+            companyRelationship.Company.AreaID = bulkEntry.IndustryId;
+            companyRelationship.Company.CompanyTypeID = bulkEntry.TypeId;
+            companyRelationship.Company.Contact = string.IsNullOrEmpty(bulkEntry.Phone) ? "" : bulkEntry.Phone.Trim();
+            companyRelationship.Company.DistrictNumberID = bulkEntry.DistrictNumberId;
+            companyRelationship.Company.Name_CH = string.IsNullOrEmpty(bulkEntry.Name_CN) ? "" : bulkEntry.Name_CN.Trim();
+            companyRelationship.Company.Name_EN = string.IsNullOrEmpty(bulkEntry.Name_EN) ? "" : bulkEntry.Name_EN.Trim();
+            companyRelationship.Company.CreatedDate = DateTime.Now;
+            companyRelationship.Company.Creator = Employee.CurrentUserName;
+            companyRelationship.Company.ModifiedDate = DateTime.Now;
+            companyRelationship.Company.ModifiedUser = Employee.CurrentUserName;
+            companyRelationship.ProgressID = bulkEntry.ProgressId;
+            companyRelationship.Members = new List<Member>() { };
+            companyRelationship.Members.Add(CH.DB.Members.FirstOrDefault(c => c.Name == Employee.CurrentUserName));
+            companyRelationship.ProjectID = bulkEntry.ProjectId;
+            companyRelationship.MarkForDelete = false;
+            companyRelationship.CreatedDate = DateTime.Now;
+            companyRelationship.ModifiedDate = DateTime.Now;
+            if (bulkEntry.Categories != null)
+            {
+                companyRelationship.Categorys = CH.GetAllData<Category>(c => bulkEntry.Categories.Contains(c.ID)).ToList();
+            }
+            string categorystring = string.Empty;
+            companyRelationship.Categorys.ForEach(l =>
+            {
+                if (string.IsNullOrEmpty(categorystring))
+                    categorystring = l.Name;
+                else
+                    categorystring += "," + l.Name;
+            });
+            companyRelationship.CategoryString = categorystring;
+            CH.Create<CompanyRelationship>(companyRelationship);
+
+            Lead lead = null;
+            
+            if (companyRelationship.ID > 0)
+            {
+                string namecnstr = (collection["LeadName_CN"] != null) ? collection["LeadName_CN"].Trim() : "";
+                string nameenstr = (collection["LeadName_EN"] != null) ? collection["LeadName_EN"].Trim() : "";
+                string genderstr = (collection["Gender"] != null) ? collection["Gender"].Trim() : "";
+                string titlestr = (collection["Title"] != null) ? collection["Title"].Trim() : "";
+                string telstr = (collection["Telephone"] != null) ? collection["Telephone"].Trim() : "";
+                string cellstr = (collection["CellPhone"] != null) ? collection["CellPhone"].Trim() : "";
+                if (!(string.IsNullOrEmpty(namecnstr) && string.IsNullOrEmpty(nameenstr)) && !string.IsNullOrEmpty(genderstr)
+                        && !string.IsNullOrEmpty(titlestr) && !(string.IsNullOrEmpty(telstr) && string.IsNullOrEmpty(cellstr)))
+                {
+                    List<string> arrNameCN = namecnstr.Split(',').ToList();
+                    List<string> arrNameEN = nameenstr.Split(',').ToList();
+                    List<string> arrGender = genderstr.Split(',').ToList();
+                    List<string> arrTitle = titlestr.Split(',').ToList();
+                    List<string> arrTel = telstr.Split(',').ToList();
+                    List<string> arrCell = cellstr.Split(',').ToList();
+
+                    string namecn = ""; string nameen = ""; string gender = "";
+                    string title = ""; string tel = ""; string cell = "";
+
+                    for (int i = 0; i < 10; i++)
+                    {
+                        namecn = arrNameCN[i];
+                        nameen = arrNameEN[i];
+                        gender = arrGender[i];
+                        title = arrTitle[i];
+                        tel = arrTel[i];
+                        cell = arrCell[i];
+                        if (!(string.IsNullOrEmpty(namecn) && string.IsNullOrEmpty(nameen)) && !string.IsNullOrEmpty(gender)
+                            && !string.IsNullOrEmpty(title) && !(string.IsNullOrEmpty(tel) && string.IsNullOrEmpty(cell)))
+                        {
+                            lead = new Lead()
+                            {
+                                Name_CH = string.IsNullOrEmpty(arrNameCN[i]) ? "" : arrNameCN[i].Trim(),
+                                Name_EN = string.IsNullOrEmpty(arrNameEN[i]) ? "" : arrNameEN[i].Trim(),
+                                Title = string.IsNullOrEmpty(arrTitle[i]) ? "" : arrTitle[i].Trim(),
+                                CompanyID = companyRelationship.CompanyID,
+                                Contact = string.IsNullOrEmpty(arrTel[i]) ? "" : arrTel[i].Trim(),
+                                Gender = string.IsNullOrEmpty(arrGender[i]) ? "" : arrGender[i].Trim(),
+                                Mobile = string.IsNullOrEmpty(arrCell[i]) ? "" : arrCell[i].Trim(),
+                                MarkForDelete = false,
+                                CreatedDate = DateTime.Now,
+                                ModifiedDate = DateTime.Now,
+                            };
+                            CH.Create<Lead>(lead);
+                        }
+                    }
+                }
+            }
+            return Json(new { companyRelationshipId = companyRelationship.ID, companyId = companyRelationship.CompanyID, leadId = lead.ID, projectId = companyRelationship.ProjectID });
+        }
 
     }
 }
