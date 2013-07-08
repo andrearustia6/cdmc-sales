@@ -64,27 +64,27 @@
                     {
                         <tr id="row_@{@i}">
                             <td>
-                                @Html.TextBoxFor(model => model.Leads.ElementAt(i).LeadName_CN, new { name = "NameCN" + i })
+                                @Html.TextBoxFor(model => model.Leads.ElementAt(i).LeadName_CN)
                                 @Html.ValidationMessageFor(model => model.Leads.ElementAt(i).LeadName_CN)
                             </td>
                             <td>
-                                @Html.TextBoxFor(model => model.Leads.ElementAt(i).LeadName_EN, new { name = "NameEN" + i })
+                                @Html.TextBoxFor(model => model.Leads.ElementAt(i).LeadName_EN)
                                 @Html.ValidationMessageFor(model => model.Leads.ElementAt(i).LeadName_EN)
                             </td>
                             <td>
-                                @Html.DropDownListFor(model => model.Leads.ElementAt(i).Gender, SelectHelper.GenderSelectList(null), "-请选择-", new { name = "Gender" + i })
+                                @Html.DropDownListFor(model => model.Leads.ElementAt(i).Gender, SelectHelper.GenderSelectList(null))
                                 @Html.ValidationMessageFor(model => model.Leads.ElementAt(i).Gender)
                             </td>
                             <td>
-                                @Html.TextBoxFor(model => model.Leads.ElementAt(i).Title, new { name = "Title" + i })
+                                @Html.TextBoxFor(model => model.Leads.ElementAt(i).Title)
                                 @Html.ValidationMessageFor(model => model.Leads.ElementAt(i).Title)
                             </td>
                             <td>
-                                @Html.TextBoxFor(model => model.Leads.ElementAt(i).Telephone, new { name = "Telephone" + i })
+                                @Html.TextBoxFor(model => model.Leads.ElementAt(i).Telephone)
                                 @Html.ValidationMessageFor(model => model.Leads.ElementAt(i).Telephone)
                             </td>
                             <td>
-                                @Html.TextBoxFor(model => model.Leads.ElementAt(i).CellPhone, new { name = "CellPhone" + i })
+                                @Html.TextBoxFor(model => model.Leads.ElementAt(i).CellPhone)
                                 @Html.ValidationMessageFor(model => model.Leads.ElementAt(i).CellPhone)
                             </td>
                         </tr>
