@@ -19,11 +19,13 @@
         if (Employee.CurrentRole.Level == 10)
         {
             var single = CRM_Logical._EmployeePerformance.GetSingleSalesPerformance(month.Value);
+            if (single == null){ single = new Sales.Model._SalesPerformance();}
         <text>@Html.Partial("SalesDashboard", single, new ViewDataDictionary {{ "month", month }});</text>
         }
         else
         {
             var single = CRM_Logical._EmployeePerformance.GetSingleTemaLeadsPerformance(month.Value);
+            if (single == null) {single = new Sales.Model._TeamLeadPerformance();}
         <text>@Html.Partial("TeamLeaderDashboard", single, new ViewDataDictionary {{ "month", month }});</text>
         }
     }
