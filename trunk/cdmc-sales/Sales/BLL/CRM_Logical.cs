@@ -6,8 +6,8 @@ using Entity;
 using Utl;
 using System.Web.Security;
 using Model;
-using Sales.Model;
 using System.Data.Objects;
+using Sales.Model;
 
 namespace BLL
 {
