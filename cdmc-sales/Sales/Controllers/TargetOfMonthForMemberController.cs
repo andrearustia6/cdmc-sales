@@ -220,7 +220,7 @@ namespace Sales.Controllers
             var list = CH.DB.ChangeTracker.Entries<TargetOfMonthForMember>().ToList();
             projectid = this.TrySetProjectIDForUser(projectid);
             ViewBag.ProjectID = projectid;
-            ViewBag.MenberID = CH.GetAllData<Member>().Where(s => s.Name == Employee.CurrentUserName).First().ID;
+            ViewBag.MenberID = CH.GetAllData<Member>().Where(s => s.Name == Employee.CurrentUserName).Select(s=>s.ID).FirstOrDefault();
             string name = Employee.CurrentUserName;
             if (projectid != null)
             {

@@ -6,7 +6,7 @@ using Entity;
 using System.ComponentModel.DataAnnotations;
 using Utl;
 
-namespace Model
+namespace Sales.Model
 {
     public class CompanyFilters
     {

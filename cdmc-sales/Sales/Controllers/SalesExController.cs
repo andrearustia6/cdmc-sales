@@ -8,6 +8,7 @@ using BLL;
 using Model;
 using Telerik.Web.Mvc;
 using Entity;
+using Sales.Model;
 
 namespace Sales.Controllers
 {
@@ -43,7 +44,7 @@ namespace Sales.Controllers
                     c.Company.Leads = c.Company.Leads.Where(l => l.ID == leadid).ToList();
                 }
                 var deals = CRM_Logical.GetDeals(true);
-                //c.LeadCalls = CH.DB.LeadCalls.Where(l=>l.ProjectID==c.ProjectID).ToList();
+                 var calls = from call in CH.DB.LeadCalls select call;
                 decimal rmb= deals.Where(d => d.CompanyRelationshipID == c.ID && d.Currencytype.Name == "RMB").Count() ==0 ? 0 : deals.Where(d => d.CompanyRelationshipID == c.ID && d.Currencytype.Name == "RMB").Sum(s => s.Payment);
                 decimal usd = deals.Where(d => d.CompanyRelationshipID == c.ID && d.Currencytype.Name == "USD").Count()==0 ? 0 : deals.Where(d => d.CompanyRelationshipID == c.ID && d.Currencytype.Name == "USD").Sum(s => s.Payment);
                 if (c != null)
@@ -95,29 +96,28 @@ namespace Sales.Controllers
                                          CRMID = c.ID,
                                          LeadID = l.ID,
                                          LeadCreateDate = l.CreatedDate,
-                                         //AjaxCalls = AjaxCalls1,
-                                         //AjaxCalls = (from call in CH.DB.LeadCalls.Where(w => w.LeadID == l.ID && w.ProjectID == c.ProjectID)
-                                         //             select new AjaxCall
-                                         //             {
-                                         //                 CallDate = call.CallDate,
-                                         //                 CallBackDate = call.CallBackDate,
-                                         //                 CallType = call.LeadCallType.Name,
-                                         //                 Caller = call.Member.Name,
-                                         //                 LeadCallTypeCode = call.LeadCallType.Code,
-                                         //                 LeadCallID = call.ID,
-                                         //                 Result = call.Result
-                                         //             }),
-                                         //AjaxHistoryCalls = (from hcall in c.LeadCalls.Where(w => w.LeadID == l.ID && w.ProjectID != c.ProjectID)
-                                         //             select new AjaxCall
-                                         //             {
-                                         //                 CallDate = hcall.CallDate,
-                                         //                 CallBackDate = hcall.CallBackDate,
-                                         //                 CallType = hcall.LeadCallType.Name,
-                                         //                 Caller = hcall.Member.Name,
-                                         //                 LeadCallTypeCode = hcall.LeadCallType.Code,
-                                         //                 LeadCallID = hcall.ID,
-                                         //                 Result = hcall.Result
-                                         //             }),
+                                         AjaxCalls = (from call in calls.Where(w => w.LeadID == l.ID && w.ProjectID == c.ProjectID)
+                                                      select new AjaxCall
+                                                      {
+                                                          CallDate = call.CallDate,
+                                                          CallBackDate = call.CallBackDate,
+                                                          CallType = call.LeadCallType.Name,
+                                                          Caller = call.Member.Name,
+                                                          LeadCallTypeCode = call.LeadCallType.Code,
+                                                          LeadCallID = call.ID,
+                                                          Result = call.Result
+                                                      }),
+                                         AjaxHistoryCalls = (from hcall in calls.Where(w => w.LeadID == l.ID && w.ProjectID != c.ProjectID)
+                                                      select new AjaxCall
+                                                      {
+                                                          CallDate = hcall.CallDate,
+                                                          CallBackDate = hcall.CallBackDate,
+                                                          CallType = hcall.LeadCallType.Name,
+                                                          Caller = hcall.Member.Name,
+                                                          LeadCallTypeCode = hcall.LeadCallType.Code,
+                                                          LeadCallID = hcall.ID,
+                                                          Result = hcall.Result
+                                                      }),
 
 
                                      }),

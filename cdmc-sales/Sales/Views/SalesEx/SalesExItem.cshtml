@@ -1,4 +1,4 @@
-﻿@using Model
+﻿@using Sales.Model
 @using Utl
 @using Entity
 @model AjaxCRM
@@ -139,7 +139,7 @@
             <div class="fenge" id="calllist@(lead.LeadID)"></div>
             <div class="fenge" id="calllisthisotry@(lead.LeadID)"></div>
                        
-             <script>
+          @*   <script>
                 function ConvertJSONDateToJSDateObject(JSONDateString) {
                     if(JSONDateString==null)
                     return "";
@@ -242,13 +242,12 @@
                          //alert(result.rows[0].Order.OrderID); 
                      }
                  });
-             </script>
-            @*@if (lead.AjaxCalls != null && lead.AjaxCalls.Count() > 0)
+             </script>*@
+            @if (lead.AjaxCalls != null && lead.AjaxCalls.Count() > 0)
             {
                 var orders = lead.AjaxCalls.OrderByDescending(o => o.CallDate);
                 <table style="width:98%; margin:10px;">
-                <tr><th width="80px">致电类型</th><th width="100px">回打时间</th><th width="80px">致电人</th><th width="80px">致电时间</th><th>结果</th>@if (Employee.LoginUserIsAdmin())
-                                                                                                                                       {<th>操作</th>}</tr>
+                <tr><th width="80px">致电类型</th><th width="100px">回打时间</th><th width="80px">致电人</th><th width="80px">致电时间</th><th>结果</th></tr>
                 @{bool colorSignal = true;
                   foreach (var call in orders)
                   {
@@ -261,9 +260,9 @@
                       {
                           classname = "calllisttwo";
                       }
-                    <tr class=@classname><td>@call.CallType</td><td>@call.CallBackDate</td><td>@call.Caller</td><td>@call.CallDate</td><td>@call.Result</td>@if (Employee.LoginUserIsAdmin())
-                                                                                                                                                            {<td><input onclick='EditLeadCall(@call.LeadCallID)' type='button' class="salebtn" style=" background-image:url('../images/gengxin.jpg');" /></td>}</tr>
-                                                                                                                                                            colorSignal = !colorSignal;
+                    <tr class=@classname><td>@call.CallType</td><td>@call.CallBackDate</td><td>@call.Caller</td><td>@call.CallDate</td><td>@call.Result</td>
+                    </tr>
+                    colorSignal = !colorSignal;
                   }
                 }
             </table>
@@ -274,8 +273,7 @@
                <div style="float:left ; margin-left:15px;"><h4>历史致电列表</h4></div>
                 var orders = lead.AjaxHistoryCalls.OrderByDescending(o => o.CallDate);
                 <table style="width:98%; margin:10px;">
-                <tr><th width="80px">致电类型</th><th width="100px">回打时间</th><th width="80px">致电人</th><th width="80px">致电时间</th><th>结果</th>@if (Employee.LoginUserIsAdmin())
-                                                                                                                                       {<th>操作</th>}</tr>
+                <tr><th width="80px">致电类型</th><th width="100px">回打时间</th><th width="80px">致电人</th><th width="80px">致电时间</th><th>结果</th></tr>
                 @{bool colorSignal = true;
                   foreach (var call in orders)
                   {
@@ -294,12 +292,12 @@
                         <td>@call.Caller</td>
                         <td>@call.CallDate</td>
                         <td>@call.Result</td>
-                        <td></td>
+                     
                     </tr>    colorSignal = !colorSignal;
                   }
                 }
             </table>
-            }*@
+            }
         </div>
     </div>     
        }

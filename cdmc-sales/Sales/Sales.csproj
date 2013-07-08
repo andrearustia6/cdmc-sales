@@ -1695,7 +1695,6 @@
     <Content Include="Views\DirectorReport\ProjectsCheckInByWeek.cshtml" />
     <Content Include="Views\DirectorReport\ProjectsProgress.cshtml" />
     <Content Include="Views\EmployeeRole\Index.cshtml" />
-    <None Include="ClassDiagram1.cd" />
     <Content Include="Views\DirectorReport\ProjectsCheckInLastWeek.cshtml" />
     <Content Include="Views\DirectorReport\ProjectsReportLastWeek.cshtml" />
     <Content Include="Views\SalesEx\BulkEntry.cshtml" />
