@@ -95,34 +95,36 @@ namespace Sales.Controllers
                                          CRMID = c.ID,
                                          LeadID = l.ID,
                                          LeadCreateDate = l.CreatedDate,
-                                         AjaxCalls = (from call in c.LeadCalls.Where(w => w.LeadID == l.ID && w.ProjectID == c.ProjectID)
-                                                      select new AjaxCall
-                                                      {
-                                                          CallDate = call.CallDate,
-                                                          CallBackDate = call.CallBackDate,
-                                                          CallType = call.LeadCallType.Name,
-                                                          Caller = call.Member.Name,
-                                                          LeadCallTypeCode = call.LeadCallType.Code,
-                                                          LeadCallID = call.ID,
-                                                          Result = call.Result
-                                                      }),
-                                         AjaxHistoryCalls = (from hcall in c.LeadCalls.Where(w => w.LeadID == l.ID && w.ProjectID != c.ProjectID)
-                                                      select new AjaxCall
-                                                      {
-                                                          CallDate = hcall.CallDate,
-                                                          CallBackDate = hcall.CallBackDate,
-                                                          CallType = hcall.LeadCallType.Name,
-                                                          Caller = hcall.Member.Name,
-                                                          LeadCallTypeCode = hcall.LeadCallType.Code,
-                                                          LeadCallID = hcall.ID,
-                                                          Result = hcall.Result
-                                                      }),
+                                         //AjaxCalls = AjaxCalls1,
+                                         //AjaxCalls = (from call in CH.DB.LeadCalls.Where(w => w.LeadID == l.ID && w.ProjectID == c.ProjectID)
+                                         //             select new AjaxCall
+                                         //             {
+                                         //                 CallDate = call.CallDate,
+                                         //                 CallBackDate = call.CallBackDate,
+                                         //                 CallType = call.LeadCallType.Name,
+                                         //                 Caller = call.Member.Name,
+                                         //                 LeadCallTypeCode = call.LeadCallType.Code,
+                                         //                 LeadCallID = call.ID,
+                                         //                 Result = call.Result
+                                         //             }),
+                                         //AjaxHistoryCalls = (from hcall in c.LeadCalls.Where(w => w.LeadID == l.ID && w.ProjectID != c.ProjectID)
+                                         //             select new AjaxCall
+                                         //             {
+                                         //                 CallDate = hcall.CallDate,
+                                         //                 CallBackDate = hcall.CallBackDate,
+                                         //                 CallType = hcall.LeadCallType.Name,
+                                         //                 Caller = hcall.Member.Name,
+                                         //                 LeadCallTypeCode = hcall.LeadCallType.Code,
+                                         //                 LeadCallID = hcall.ID,
+                                         //                 Result = hcall.Result
+                                         //             }),
 
 
                                      }),
                         RMBCompanyPayment = rmb,
                         USDCompanyPayment = usd
                     };
+                    
                     return PartialView(@"~\views\salesex\salesexitem.cshtml", data);
                 }
                 //var d = GetNavigationBar(filters);
@@ -135,7 +137,37 @@ namespace Sales.Controllers
 
             return PartialView(@"~\views\salesex\salesexitem.cshtml", new AjaxCRM());
         }
-
+        public ActionResult GetAjaxLeadCalls(int leadId, int projectid)
+        {
+            var leadcalls = CH.DB.LeadCalls.Where(l=>l.LeadID==leadId && l.ProjectID==projectid);
+            var ajaxcalls = from call in leadcalls
+                                 select new{
+                                     CallDate = call.CallDate,
+                                     CallBackDate = call.CallBackDate,
+                                     CallType = call.LeadCallType.Name,
+                                     Caller = call.Member.Name,
+                                     LeadCallTypeCode = call.LeadCallType.Code,
+                                     LeadCallID = call.ID,
+                                     Result = call.Result==null?"":call.Result
+                                 };
+            return Json(ajaxcalls);
+        }
+        public ActionResult GetAjaxHistoryLeadCalls(int leadId, int projectid)
+        {
+            var leadcalls = CH.DB.LeadCalls.Where(l => l.LeadID == leadId && l.ProjectID != projectid);
+            var ajaxcalls = from call in leadcalls
+                            select new
+                            {
+                                CallDate = call.CallDate,
+                                CallBackDate = call.CallBackDate,
+                                CallType = call.LeadCallType.Name,
+                                Caller = call.Member.Name,
+                                LeadCallTypeCode = call.LeadCallType.Code,
+                                LeadCallID = call.ID,
+                                Result = call.Result == null ? "" : call.Result
+                            };
+            return Json(ajaxcalls);
+        }
         /// <summary>
         /// 放弃可打公司，只把member从companyrelationship中移除，不删除客户信息
         /// </summary>

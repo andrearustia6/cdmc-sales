@@ -819,7 +819,8 @@ namespace BLL
                 var ps = CRM_Logical.GetUserInvolveProject();
                 var targets = CH.DB.TargetOfMonths.Where(w => w.Project.IsActived == true);
                 var deals = CRM_Logical.GetDeals(true);
-                var date = new DateTime(2013, 5, 1);
+                //var date = new DateTime(2013, 5, 1);
+                var date =  DateTime.Now;
                 var currentmonthstart = date.StartOfMonth();
                 var currentmonthend = date.EndOfMonth();
                 var currentweekstart = date.StartOfWeek();
