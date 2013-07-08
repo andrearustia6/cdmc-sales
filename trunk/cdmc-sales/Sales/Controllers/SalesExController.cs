@@ -1044,7 +1044,7 @@ namespace Sales.Controllers
                     }
                 }
             }
-            return Json(new { companyRelationshipId = companyRelationship.ID, companyId = companyRelationship.CompanyID, leadId = lead.ID, projectId = companyRelationship.ProjectID });
+            return Json(new { companyRelationshipId = companyRelationship.ID, companyId = companyRelationship.CompanyID, projectId = companyRelationship.ProjectID });
         }
 
     }
