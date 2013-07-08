@@ -30,6 +30,7 @@
         <div class="fenge_3">
             @Html.HiddenFor(model => model.ProjectID)
             @Html.HiddenFor(model => model.CRMID)
+            @Html.Hidden("isadmin", Employee.LoginUserIsAdmin())
             <span style="display: none" id="currentCompanyNameCN">@Model.CompanyNameCH</span>
             <span style="display: none" id="currentCompanyNameEN">@Model.CompanyNameEN</span>
             <dl class="fieldname">
@@ -135,7 +136,134 @@
                     <li><font>地址：</font><span class="address datainfo">@lead.LeadAddress</span> </li>
                 }
             </ul>
-            @if (lead.AjaxCalls != null && lead.AjaxCalls.Count() > 0)
+            <div class="fenge" id="calllist@(lead.LeadID)"></div>
+            <div class="fenge" id="calllisthisotry@(lead.LeadID)"></div>
+            @*<table style="width:98%; margin:10px;">
+                <tr>
+                    <th width="80px">致电类型</th>
+                    <th width="100px">回打时间</th>
+                    <th width="80px">致电人</th>
+                    <th width="80px">致电时间</th>
+                    <th>结果</th>
+                    @if (Employee.LoginUserIsAdmin())
+                    {<th>操作</th>}
+                </tr> 
+                <tr >
+                    <td>1</td>
+                    <td>2</td>
+                    <td>3</td>
+                    <td>4</td>
+                    <td>5</td>
+                    @if (Employee.LoginUserIsAdmin())
+                    {<td><input onclick='EditLeadCall(1)' type='button' class="salebtn" style=" background-image:url('../images/gengxin.jpg');" /></td>}
+                </tr>
+            </table>*@
+            
+             <script>
+                function ConvertJSONDateToJSDateObject(JSONDateString) {
+                    if(JSONDateString==null)
+                    return "";
+                    var date = new Date(parseInt(JSONDateString.replace("/Date(", "").replace(")/", ""), 10));
+                    return date.toLocaleDateString();
+                }
+                  var isadmin=$('#isadmin').val();
+                 var projectid = $("#ProjectID").val();
+                 $.ajax({
+                     url: "/SalesEx/GetAjaxLeadCalls",
+                     type: "post",
+                     dataType: "json",
+                     data: { leadId: @(lead.LeadID),projectid:projectid },
+                     error: function (a, b, c) {
+                         alert("获取数据失败，请重试。");
+                     },
+                     success: function (result) {
+                        var data=eval(result);
+                        if(data.length>0)
+                        {
+                            var calllistdiv = $('#calllist@(lead.LeadID)');
+                            
+                            var htmlstring="项目出单<br/><table style=\"width:98%; margin:10px;\">"+
+                                            "<tr>"+
+                                                "<th width=\"80px\">致电类型</th>"+
+                                                "<th width=\"100px\">回打时间</th>"+
+                                                "<th width=\"80px\">致电人</th>"+
+                                                "<th width=\"100px\">致电时间</th>"+
+                                                "<th>结果</th>";
+                            if(isadmin=="True")
+                            {
+                                htmlstring+= "<th>操作</th>"
+                            }
+                            htmlstring+="</tr> ";
+                            for(var i=0;i<data.length;i++)
+                            {
+                                htmlstring=htmlstring+"<tr >"+
+                                "<td>"+data[i].CallType+"</td>"+
+                                "<td>"+ConvertJSONDateToJSDateObject(data[i].CallBackDate)+"</td>"+
+                                "<td>"+data[i].Caller+"</td>"+
+                                "<td>"+ConvertJSONDateToJSDateObject(data[i].CallDate) +"</td>"+
+                                "<td>"+data[i].Result+"</td>";
+                                if(isadmin=="True")
+                                {
+                                    htmlstring+="<td><input onclick='EditLeadCall("+data[i].LeadCallID+")' type='button' class=\"salebtn\" style=\" background-image:url('../images/gengxin.jpg');\" /></td>";
+                                }
+                                "</tr>";
+                            }
+                            htmlstring=htmlstring+"</table>";
+                            calllistdiv.html(htmlstring);
+                        }
+                        //alert(data.length);  
+                         //alert(result.rows[0].Order.OrderID); 
+                     }
+                 });
+                 $.ajax({
+                     url: "/SalesEx/GetAjaxHistoryLeadCalls",
+                     type: "post",
+                     dataType: "json",
+                     data: { leadId: @(lead.LeadID),projectid:projectid },
+                     error: function (a, b, c) {
+                         alert("获取数据失败，请重试。");
+                     },
+                     success: function (result) {
+                        var data=eval(result);
+                        if(data.length>0)
+                        {
+                            var calllisthistorydiv = $('#calllisthisotry@(lead.LeadID)');
+                            var htmlstring="其他项目出单<br/><table style=\"width:98%; margin:10px;\">"+
+                                            "<tr>"+
+                                                "<th width=\"80px\">致电类型</th>"+
+                                                "<th width=\"100px\">回打时间</th>"+
+                                                "<th width=\"80px\">致电人</th>"+
+                                                "<th width=\"100px\">致电时间</th>"+
+                                                "<th>结果</th>";
+                            if(isadmin=="True")
+                            {
+                                htmlstring+= "<th>操作</th>"
+                            }
+                            htmlstring+="</tr> ";
+                            for(var i=0;i<data.length;i++)
+                            {
+                                htmlstring=htmlstring+"<tr >"+
+                                "<td>"+data[i].CallType+"</td>"+
+                                "<td>"+ConvertJSONDateToJSDateObject(data[i].CallBackDate)+"</td>"+
+                                "<td>"+data[i].Caller+"</td>"+
+                                "<td>"+ConvertJSONDateToJSDateObject(data[i].CallDate) +"</td>"+
+                                "<td>"+data[i].Result+"</td>";
+                                 if(isadmin=="True")
+                                {
+                                    htmlstring+="<td><input onclick='EditLeadCall("+data[i].LeadCallID+")' type='button' class=\"salebtn\" style=\" background-image:url('../images/gengxin.jpg');\" /></td>";
+                                }
+                                "</tr>";
+                                //alert(data[i].Caller);  
+                            }
+                            htmlstring=htmlstring+"</table>";
+                            calllisthistorydiv.html(htmlstring);
+                        }
+                        //alert(data.length);  
+                         //alert(result.rows[0].Order.OrderID); 
+                     }
+                 });
+             </script>
+            @*@if (lead.AjaxCalls != null && lead.AjaxCalls.Count() > 0)
             {
                 var orders = lead.AjaxCalls.OrderByDescending(o => o.CallDate);
                 <table style="width:98%; margin:10px;">
@@ -191,7 +319,7 @@
                   }
                 }
             </table>
-            }
+            }*@
         </div>
     </div>     
        }

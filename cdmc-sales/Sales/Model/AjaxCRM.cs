@@ -561,6 +561,7 @@ namespace Model
 
         public int LeadCallTypeCode { get; set; }
         public int LeadCallID { get; set; }
+        public virtual AjaxLead AjaxLead { get; set; }
         public int LeadID { get; set; }
         public int CompanyID { get; set; }
         [Display(Name = "致电结果")]
