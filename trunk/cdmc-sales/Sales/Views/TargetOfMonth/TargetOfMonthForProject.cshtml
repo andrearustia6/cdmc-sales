@@ -34,7 +34,7 @@
                             .Delete("DeleteEx", "TargetOfMonth"))
             .Columns(c =>
             {
-                c.Bound(item => item.Project.Name).Width(300);
+                c.Bound(item => item.Project.Name_CH).Width(300);
                 c.Bound(item => item.Deal).Width(100).Format("{0:c}").Width(100);
                 c.Bound(item => item.CheckIn).Width(100).Aggregate(aggregates => aggregates.Sum()).Format("{0:c}").FooterTemplate(@<text>入账目标合计:
 @item.Sum</text>);
