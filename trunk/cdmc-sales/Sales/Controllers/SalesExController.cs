@@ -116,11 +116,25 @@ namespace Sales.Controllers
                                                           Caller = hcall.Member.Name,
                                                           LeadCallTypeCode = hcall.LeadCallType.Code,
                                                           LeadCallID = hcall.ID,
-                                                          Result = hcall.Result
+                                                          Result = hcall.Result,
+                                                          EndDate = hcall.Project.EndDate,
+                                                          ProjectID=hcall.ProjectID,
+                                                          ProjectName=hcall.Project.Name_CH
                                                       }),
-
+                                        
 
                                      }),
+                        AjaxDeals = (from deal in CH.DB.Deals.Where(d => d.CompanyRelationship.CompanyID == c.CompanyID && d.ProjectID != c.ProjectID)
+                                        select new AjaxDeal
+                                        {
+                                            Sales=deal.Sales,
+                                            PackageName = deal.Package.Name_CH,
+                                            Payment=deal.Payment,
+                                            Currencytype=deal.Currencytype,
+                                            Income=deal.Income,
+                                            ProjectName=deal.Project.Name_CH
+                                            
+                                        }),
                         RMBCompanyPayment = rmb,
                         USDCompanyPayment = usd
                     };
