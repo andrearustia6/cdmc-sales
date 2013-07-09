@@ -27,31 +27,31 @@
                 <tr>
                     <td>
                         <span>项目选择:@Html.DropDownListFor(model => model.CurrentProjectId, projectList, new { onchange = "seachBind();" })</span>
-                        <td>
-                            <span>最近通话: @Html.DropDownList("callprogress", SelectHelper.CallConditionSelectList(), "不指定")</span>
-                        </td>
-                        <td>
-                            <span>通话状态: @Html.DropDownList("leadprogress", SelectHelper.LeadConditionSelectList(), "不指定")</span>
-                        </td>
-                        @*  <td>
+                    <td>
+                        <span>最近通话: @Html.DropDownList("callprogress", SelectHelper.CallConditionSelectList(), "不指定")</span>
+                    </td>
+                    <td>
+                        <span>通话状态: @Html.DropDownList("leadprogress", SelectHelper.LeadConditionSelectList(), "不指定")</span>
+                    </td>
+                    @*  <td>
                 <span>分配时间: @Html.DropDownList("companyassigndate", SelectHelper.DurationSelectList(), "不指定")</span>
             </td>*@
-                        <td>
-                            <span>成熟程度: @Html.DropDownList("companyprogress", SelectHelper.CrmProgessSelectList(), "不指定")</span>
-                        </td>
-                        <td>
-                            <span>出单状态: @Html.DropDownList("dealprogress", SelectHelper.DealConditionSelectList(), "不指定")</span>
-                        </td>
-                        <td>
-                            <span>细分行业: @Html.DropDownList("f-category", SelectHelper.CategoresSelectList(Model.CurrentProjectId), "不指定")</span>
-                        </td>
-                        <td>
-                            <span>是否展开:<select style="width: 200px;" id="unfoldCompany"><option value=''>不指定</option>
-                                <option value='true'>展开公司/lead</option>
-                                <option value='false'>展开公司</option>
-                            </select>
-                            </span>
-                        </td>
+                    <td>
+                        <span>成熟程度: @Html.DropDownList("companyprogress", SelectHelper.CrmProgessSelectList(), "不指定")</span>
+                    </td>
+                    <td>
+                        <span>出单状态: @Html.DropDownList("dealprogress", SelectHelper.DealConditionSelectList(), "不指定")</span>
+                    </td>
+                    <td>
+                        <span>细分行业: @Html.DropDownList("f-category", SelectHelper.CategoresSelectList(Model.CurrentProjectId), "不指定")</span>
+                    </td>
+                    <td>
+                        <span>是否展开:<select style="width: 200px;" id="unfoldCompany"><option value=''>不指定</option>
+                            <option value='true'>展开公司/lead</option>
+                            <option value='false'>展开公司</option>
+                        </select>
+                        </span>
+                    </td>
                 </tr>
                 <tr>
                     <td colspan="7">
@@ -158,7 +158,7 @@
     .Content(@<text><div class="dialogue-addcompany">
         <div class="companyAdd-wrapper">
         </div>
-        <div class="dialogue-buttons" style="float:right;">
+        <div class="dialogue-buttons" style="float: right;">
             <input type="button" class="btn-queding" onclick="Addcompany()" />
             <input type="button" class="btn-quxiao" onclick="CancelAddcompany()" />
         </div>
@@ -167,38 +167,35 @@
         .Height(520).Title("添加公司")
         .Modal(true).Visible(false).Draggable(true)
     )
-
 @(Html.Telerik().Window()
     .Name("QuickEntry")
     .Content(@<text>
-    <div class="dialogue-addcompany" style="margin-top:0 20px 0 20px;">
-        <div class="quickEntry-wrapper">
-        </div>
-        <div class="dialogue-buttons" style="float:right;">
-            <input type="button" class="btn-queding" onclick="QuickEntry()" />
-            <input type="button" class="btn-quxiao" onclick="CancelQuickEntry()" />
-        </div>
-    </div></text>)
+<div class="dialogue-addcompany" style="margin-top: 0 20px 0 20px;">
+    <div class="quickEntry-wrapper">
+    </div>
+    <div class="dialogue-buttons" style="float: right;">
+        <input type="button" class="btn-queding" onclick="QuickEntry()" />
+        <input type="button" class="btn-quxiao" onclick="CancelQuickEntry()" />
+    </div>
+</div></text>)
     .Width(1000)
     .Height(650).Title("快捷录入")
     .Modal(true).Visible(false).Draggable(true)
     )
-
 @(Html.Telerik().Window()
     .Name("BulkEntry")
     .Content(@<text>
-    <div class="dialogue-addcompany" style="margin: 0px;">
-        <div class="bulkEntry-wrapper">
-        </div>
-        <div class="dialogue-buttons" style="float:right;">
-            <input type="button" class="btn-queding" onclick="BulkEntry()" />
-            <input type="button" class="btn-quxiao" onclick="CancelBulkEntry()" />
-        </div>
-    </div></text>)
+<div class="dialogue-addcompany" style="margin: 0px;">
+    <div class="bulkEntry-wrapper">
+    </div>
+    <div class="dialogue-buttons" style="float: right;">
+        <input type="button" class="btn-queding" onclick="BulkEntry()" />
+        <input type="button" class="btn-quxiao" onclick="CancelBulkEntry()" />
+    </div>
+</div></text>)
     .Title("批量录入")
     .Modal(true).Visible(false).Draggable(true)
     )
-
 <script type="text/javascript">
 
     $(document).ready(function () {
@@ -206,15 +203,17 @@
         $('#CurrentProjectId').change(function () {
             CurrentProjectChange($('#CurrentProjectId').val());
         });
-        $('#search').unbind('click').bind('click', function () {
-            RefreshCrmList(null);
-            $('#crmdetailscontainer').html('');
-        });
+        RefreshCrmList(null);
+        $('#crmdetailscontainer').html('');
+        //        $('#search').unbind('click').bind('click', function () {
+        //            RefreshCrmList(null);
+        //            $('#crmdetailscontainer').html('');
+        //        });
     });
 
     function seachBind() {
         initial();
-        
+
         RefreshCrmList(null);
         $('#crmdetailscontainer').html('');
     }
