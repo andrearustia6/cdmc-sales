@@ -54,8 +54,9 @@
                     <dd>
                         <font>细分行业：</font><span id="currentCompanyCategoryStrings" class="datainfo">@Model.CompanyCategoryStrings</span>
                     </dd>
+                    
                 }
-             
+                  
                 @if (!string.IsNullOrWhiteSpace(Model.Address))
                 {
                     <dd>
@@ -69,6 +70,32 @@
                     </dd>
                  }
             </dl>
+            @if (Model.AjaxDeals != null && Model.AjaxDeals.Count()>0)
+                  {
+                    <br />
+                    <div style="width:98%;float:left ; margin-left:15px;"><h4>历史出单列表</h4></div>
+                    <table style="width:98%; margin:10px;">
+                    <tr>
+                    <th width="120px">Sales</th>
+                    <th width="120px">Package名称</th>
+                    <th width="80px">RMB出单金额</th>
+                    <th width="120px">USD出单金额</th>
+                    <th width="120px">实际入账</th>
+                    </tr>
+                    
+                      @{foreach (var deal in Model.AjaxDeals)
+                        {
+                            <tr >
+                            <td>@deal.Sales</td>
+                            <td>@deal.PackageName</td>
+                            <td>￥@deal.RMBPayment.ToString("#,##0")</td>
+                            <td>$@deal.USDPayment.ToString("#,##0")</td>
+                            <td>￥@deal.Income</td>
+                            </tr>
+                        }
+                        }
+                        </table>
+                  }
         </div>
     </div>   
    @if (Model.AjaxLeads != null)
@@ -246,6 +273,7 @@
             @if (lead.AjaxCalls != null && lead.AjaxCalls.Count() > 0)
             {
                 <div style="float:left ; margin-left:15px;"><h4>致电列表</h4></div>
+                
                 var orders = lead.AjaxCalls.OrderByDescending(o => o.CallDate);
                 <table style="width:98%; margin:10px;">
                 <tr><th width="80px">致电类型</th><th width="120px">回打时间</th><th width="80px">致电人</th><th width="120px">致电时间</th><th>结果</th></tr>
@@ -268,7 +296,7 @@
                     <td>@call.CallDate</td>
                     <td>@call.Result</td>
                     </tr>
-                                                                                                                                      colorSignal = !colorSignal;
+                   colorSignal = !colorSignal;
                   }
                 }
             </table>
@@ -277,31 +305,53 @@
            {
                <div style="clear:both;"></div>
                <div style="float:left ; margin-left:15px;"><h4>历史致电列表</h4></div>
+               var grps = from p in lead.AjaxHistoryCalls.OrderByDescending(o => o.EndDate)
+                          group p by new { p.ProjectName, p.ProjectID } into g
+                          select new
+                          {
+                              ProjectName = g.Key.ProjectName,
+                              ProjectID = g.Key.ProjectID
+                          };
                var orders = lead.AjaxHistoryCalls.OrderByDescending(o => o.CallDate);
                 <table style="width:98%; margin:10px;">
-                <tr><th width="80px">致电类型</th><th width="120px">回打时间</th><th width="80px">致电人</th><th width="120px">致电时间</th><th>结果</th></tr>
-                @{bool colorSignal = true;
-                  foreach (var call in orders)
-                  {
-                      string classname = string.Empty;
-                      if (colorSignal)
-                      {
-                          classname = "calllistone";
-                      }
-                      else
-                      {
-                          classname = "calllisttwo";
-                      }
-                    <tr class=@classname>
-                        <td>@call.CallType</td>
-                        <td>@call.CallBackDate</td>
-                        <td>@call.Caller</td>
-                        <td>@call.CallDate</td>
-                        <td>@call.Result</td>
+                @{
+               foreach (var grp in grps)
+               {
+                        <tr >
+                        <th>项目名称</th>
+                        <th colspan=4>@grp.ProjectName</th>
+                        </tr>
+                    
+                    <tr><th width="80px">致电类型</th><th width="120px">回打时间</th><th width="80px">致电人</th><th width="120px">致电时间</th><th>结果</th></tr>
+                                 bool colorSignal = true;
+                                 foreach (var call in orders)
+                                 {
+                                     if (grp.ProjectID == call.ProjectID)
+                                     {
+                                         string classname = string.Empty;
+                                         if (colorSignal)
+                                         {
+                                             classname = "calllistone";
+                                         }
+                                         else
+                                         {
+                                             classname = "calllisttwo";
+                                         }
+                                        <tr class=@classname>
+                                            <td>@call.CallType</td>
+                                            <td>@call.CallBackDate</td>
+                                            <td>@call.Caller</td>
+                                            <td>@call.CallDate</td>
+                                            <td>@call.Result</td>
                      
-                    </tr>    colorSignal = !colorSignal;
-                  }
-                }
+                                        </tr>    colorSignal = !colorSignal;
+                                     }
+
+                                 }
+               }
+                    
+                    }
+                
             </table>
            }
         </div>

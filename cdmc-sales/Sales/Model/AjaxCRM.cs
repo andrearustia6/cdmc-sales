@@ -403,7 +403,7 @@ namespace Sales.Model
             }
         }
         public IEnumerable<AjaxLead> AjaxLeads { get; set; }
-        
+        public IEnumerable<AjaxDeal> AjaxDeals { get; set; }
         //Added for Company Edit.
        
         [Display(Name = "区号/时差")]
@@ -575,7 +575,56 @@ namespace Sales.Model
         [Display(Name = "致电人")]
         public string Caller { get; set; }
         public bool Editable { get; set; }
-
+        [Display(Name = "项目结束时间")]
+        public DateTime? EndDate { get; set; }
+        [Display(Name = "项目ID")]
+        public int? ProjectID { get; set; }
+        [Display(Name = "项目名称")]
+        public string ProjectName { get; set; }
     }
-    
+    public class AjaxDeal
+    {
+        [Display(Name = "项目名称")]
+        public string ProjectName { get; set; }
+        [Display(Name = "客户名称")]
+        public string CompanyName { get; set; }
+        [Display(Name = "Package名称")]
+        public string PackageName { get; set; }
+        [Display(Name = "实际入账")]
+        public decimal Income { get; set; }
+        [Display(Name = "出单人")]
+        public string Sales { get; set; }
+        [Display(Name = "应付款")]
+        public decimal Payment { get; set; }
+        public virtual CurrencyType Currencytype { get; set; }
+        [Display(Name = "币种")]
+        [Required(ErrorMessage = "必须选择币种")]
+        public int CurrencyTypeID { get; set; }
+        [Display(Name = "RMB应付款")]
+        public decimal RMBPayment
+        {
+            get
+            {
+                if (Currencytype == null)
+                    return 0;
+                if (Currencytype.Name == "RMB")
+                    return Payment;
+                else
+                    return 0;
+            }
+        }
+        [Display(Name = "USD应付款"), Required]
+        public decimal USDPayment
+        {
+            get
+            {
+                if (Currencytype == null)
+                    return 0;
+                if (Currencytype.Name == "USD")
+                    return Payment;
+                else
+                    return 0;
+            }
+        }
+    }
 }
