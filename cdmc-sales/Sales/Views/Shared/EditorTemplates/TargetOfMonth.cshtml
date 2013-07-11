@@ -195,7 +195,7 @@
             }
         }
         else {
-            if (ofTheWeek > 0 && ofTheWeek < 5) {
+            if (ofTheWeek >= 0 && ofTheWeek < 5) {
                 ofTheWeek += 7;
             }
             $("#1stWeek").text(month + "-1～" + month + "-" + (12 - ofTheWeek) + "周出单目标");
