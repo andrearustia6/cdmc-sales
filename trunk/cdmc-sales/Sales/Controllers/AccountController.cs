@@ -542,7 +542,8 @@ namespace MvcGlobalAuthorize.Controllers
                 }
             }
 
-            //Membership.GetUser("vicky").UnlockUser();
+            //Membership.GetUser("alextre").UnlockUser();
+            //var p = Membership.GetUser("alextre").ResetPassword();
 
 
             List<Model.AjaxViewAccount> users = new List<Model.AjaxViewAccount>();

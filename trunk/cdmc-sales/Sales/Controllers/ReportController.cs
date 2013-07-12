@@ -464,45 +464,60 @@ namespace Sales.Controllers
 
         private List<ViewCallListChart> GetContedtedLeadCategoryChartData(int? projectid, DateTime? startdate, DateTime? enddate)
         {
+            var coms = from c in CH.DB.CompanyRelationships where  c.ProjectID != c.Members.Where(m => m.Name == c.Creator).Select(s => s.ProjectID).FirstOrDefault() select c;
+            coms = coms.Take(1);
+            foreach (var c in coms)
+            {
+                var name = c.Creator;
+                var pmem = c.Project.Members.FirstOrDefault(f=>f.Name==name);
+                var cmen = c.Members.FirstOrDefault(f => f.Name == name);
+                if (pmem != null && cmen != null)
+                {
+                    c.Members.Remove(cmen);
+                    c.Members.Add(pmem);
+                    var e = CH.DB.Entry(c);
+                    e.State = EntityState.Modified;
+
+                   
+                  
+                } 
+            }
+            var re = CH.DB.SaveChanges();
+            
+            
             startdate = startdate == null ? new DateTime(1, 1, 1) : startdate;
             enddate = enddate == null ? new DateTime(9999, 1, 1) : enddate;
 
             var account = Employee.CurrentUser;
 
-            var members = from m in CH.DB.Members where m.ProjectID == projectid select m;
+            var members = from m in CH.DB.Members where m.ProjectID == projectid && m.IsActivated==true select m;
 
-            var memberlist = members.ToList();
+       
 
             var viewCallListCharts = new List<ViewCallListChart>();
 
             //包含category的已打crm
-            var crms = from crm in CH.DB.CompanyRelationships where crm.Categorys.Count > 0 && crm.LeadCalls.Count > 0 && crm.ProjectID == projectid select crm;
+            var crms = from crm in CH.DB.CompanyRelationships where crm.ProjectID == projectid select crm;
 
             var categorys = from c in CH.DB.Categorys where c.ProjectID == projectid select c;
 
-            //打给有category公司的call
-            var allcategoryleadcalls = from l in CH.DB.LeadCalls from crm in crms where l.ProjectID == projectid && l.CompanyRelationshipID == crm.ID && startdate <= l.CallDate && l.CallDate <= enddate select l;
-
-            //有category公司的lead
-            var leads = from l in CH.DB.Leads where allcategoryleadcalls.Any(lc => lc.LeadID == l.ID) select l;
-            foreach (var m in memberlist)
+            foreach (var m in members)
             {
-                var mleadcalls = from l in allcategoryleadcalls where l.MemberID == m.ID select l;
+                //var mleadcalls = from l in allcategoryleadcalls where l.MemberID == m.ID select l;
+                var memcrms = crms.Where(w => w.Members.Any(a => a.ID == m.ID) && w.Categorys.Count>0);
 
+                var memcategorys = memcrms.SelectMany(s => s.Categorys).Distinct();
                 var categorysum = new List<ViewCategoryCallSum>();
 
-                foreach (var c in categorys)
+                foreach (var c in memcategorys)
                 {
-                    var cs = from crm in crms
-                             where crm.Categorys.Any(cate => cate.ID == c.ID) && crm.Members.Any(cm => cm.ID == m.ID)
-                             select crm;
+                    var count = memcrms.Count(crm => crm.LeadCalls.Any(call => call.MemberID == m.ID) && crm.Categorys.Any(a => a.ID == c.ID));
 
-                    if (cs.Count() > 0)
+                    if (count > 0)
                     {
-
-                        categorysum.Add(new ViewCategoryCallSum() { CategoryName = c.Name, CompanyCalledCountNumber = cs.Count() });
+                        categorysum.Add(new ViewCategoryCallSum() { CategoryName = c.Name, CompanyCalledCountNumber = count });
                     }
-                }
+               }
                 viewCallListCharts.Add(new ViewCallListChart() { Member = m, ViewCategoryCallSum = categorysum });
 
             }
