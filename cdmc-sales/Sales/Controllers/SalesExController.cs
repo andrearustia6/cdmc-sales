@@ -505,8 +505,9 @@ namespace Sales.Controllers
             leadCall.LeadCallTypeID = ajaxViewLeadCall.CallTypeId;
             leadCall.LeadID = ajaxViewLeadCall.LeadId;
             var c = CH.GetDataById<CompanyRelationship>(ajaxViewLeadCall.CompanyRelationshipId);
-            var mem = c.Members.FirstOrDefault(m => m.Name == Employee.CurrentUserName);
-            leadCall.MemberID = mem.ID;
+            var name = Employee.CurrentUserName;
+            var memid = CH.DB.Members.Where(w => w.Name == name && w.ProjectID == c.ProjectID).Select(s => s.ID).FirstOrDefault();
+            leadCall.MemberID = memid;
             //leadCall.Member = CH.DB.Members.FirstOrDefault(c => c.Name == Employee.CurrentUserName);
             leadCall.ProjectID = ajaxViewLeadCall.ProjectId;
             leadCall.Result = ajaxViewLeadCall.Result;
@@ -550,7 +551,7 @@ namespace Sales.Controllers
             companyRelationship.Company.ModifiedUser = Employee.CurrentUserName;
             companyRelationship.ProgressID = quickEntry.ProgressId;
             companyRelationship.Members = new List<Member>() { };
-            companyRelationship.Members.Add(CH.DB.Members.FirstOrDefault(c => c.Name == Employee.CurrentUserName));
+            companyRelationship.Members.Add(CH.DB.Members.FirstOrDefault(c => c.Name == Employee.CurrentUserName && c.ProjectID == quickEntry.ProjectId));
             companyRelationship.ProjectID = quickEntry.ProjectId;
             companyRelationship.MarkForDelete = false;
             companyRelationship.CreatedDate = DateTime.Now;
@@ -986,7 +987,7 @@ namespace Sales.Controllers
             companyRelationship.Company.ModifiedUser = Employee.CurrentUserName;
             companyRelationship.ProgressID = bulkEntry.ProgressId;
             companyRelationship.Members = new List<Member>() { };
-            companyRelationship.Members.Add(CH.DB.Members.FirstOrDefault(c => c.Name == Employee.CurrentUserName));
+            companyRelationship.Members.Add(CH.DB.Members.FirstOrDefault(c => c.Name == Employee.CurrentUserName && bulkEntry.ProjectId==c.ProjectID));
             companyRelationship.ProjectID = bulkEntry.ProjectId;
             companyRelationship.MarkForDelete = false;
             companyRelationship.CreatedDate = DateTime.Now;
@@ -1065,50 +1066,3 @@ namespace Sales.Controllers
 }
 
 
-#region bk
-//var query = from l in CH.DB.LeadCalls where l.Member.Name == Employee.CurrentUserName
-//            group l by new { l.LeadID, l.Lead.CompanyID,l.CompanyRelationshipID,l.CompanyRelationship.ProjectID } into grp
-//            from c in CH.DB.Companys where c.ID == grp.Key.CompanyID
-//            from p in CH.DB.Projects where p.ID == grp.Key.ProjectID
-//            from crm in CH.DB.CompanyRelationships where crm.ID == grp.Key.CompanyRelationshipID
-//            from l in CH.DB.Leads where l.ID == grp.Key.LeadID
-//            select new AjaxCRM 
-//            {
-//                ProjectID = grp.Key.ProjectID.Value,
-//                LeadID =  grp.Key.LeadID.Value,
-//                CompanyID = grp.Key.LeadID.Value,
-//                CRMID = grp.Key.CompanyRelationshipID.Value,
-
-//                ProjectName = p.Name_CH,
-
-//                Progress = crm.Progress,
-//                HasBlowed = crm.HasBlowed,
-
-//                CompanyNameCH = c.Name_CH,
-//                CompanyNameEN = c.Name_EN,
-//                CompanyContact = c.Contact,
-//                CompanyFax = c.Fax,
-//                CompanyDistinct = c.DistrictNumber,
-
-//                LeadNameCH = l.Name_CH,
-//                LeadNameEN = l.Name_EN,
-//                LeadContact = l.Contact,
-//                LeadDistinct = l.DistrictNumber,
-//                LeadEmail = l.EMail,
-//                LeadMobile = l.Mobile,
-//                LeadTitle = l.Title,
-//                LeadFax = l.Fax,
-
-
-//                AjaxCalls = (from call in grp select new AjaxCall{
-//                      LeadID = grp.Key.LeadID.Value,
-//                      CompanyID = grp.Key.LeadID.Value,
-//                      LeadCallID = call.ID,
-//                      CallType = call.LeadCallType.Name,
-//                      Result = call.Result,
-//                      CallDate = call.CallDate,
-//                      Caller = call.Member.Name,
-//                      CallBackDate = call.CallBackDate      
-//                })
-//};
-#endregion
