@@ -647,7 +647,7 @@ namespace Sales.Controllers
             companyRelationship.Description =  string.IsNullOrEmpty(ajaxViewSaleCompany.Desc) ? "" : ajaxViewSaleCompany.Desc.Trim();
             companyRelationship.ProgressID = ajaxViewSaleCompany.ProgressId;
             companyRelationship.Members = new List<Member>() { };
-            companyRelationship.Members.Add(CH.DB.Members.FirstOrDefault(c => c.Name == Employee.CurrentUserName));
+            companyRelationship.Members.Add(CH.DB.Members.FirstOrDefault(c => c.Name == Employee.CurrentUserName && ajaxViewSaleCompany.ProjectId == c.ProjectID));
             companyRelationship.ProjectID = ajaxViewSaleCompany.ProjectId;
             companyRelationship.MarkForDelete = false;
             companyRelationship.CreatedDate = DateTime.Now;
