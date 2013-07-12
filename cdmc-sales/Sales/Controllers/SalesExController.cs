@@ -598,7 +598,7 @@ namespace Sales.Controllers
                 {
                     
                     var c = CH.GetDataById<CompanyRelationship>(companyRelationship.ID);
-                    var mem = c.Members.FirstOrDefault(m => m.Name == Employee.CurrentUserName);
+                    var mem = c.Members.FirstOrDefault(m => m.Name == Employee.CurrentUserName && m.ProjectID==c.ProjectID);
                     leadCall = new LeadCall()
                     {
                         CallBackDate = quickEntry.CallBackDate,
