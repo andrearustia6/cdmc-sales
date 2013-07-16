@@ -1,0 +1,70 @@
+﻿@using Entity
+@using Utl;
+@model List<Project>
+@{ Html.BeginForm(); }
+@{ViewBag.Title = "Lead邮箱导出";}
+@Html.Partial("contenttitle", "Lead邮箱导出")
+@{List<Project> allData = CH.GetAllData<Project>();}
+<script type="text/javascript">
+    function exportVerification() {
+        var $checkedRecords = $("input[name='checkedRecords']");
+        for (var i = 0; i < $checkedRecords.length; i++) {
+            var cr = $checkedRecords[i];
+            if (cr.checked) {
+                if (confirm('是否导出所选项目Lead邮箱？')) {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
+        }
+        alert('请选择导出项目！');
+        return false;
+    }
+
+</script>
+<div style="margin: 5px">
+    <label>
+        版块负责人：</label>
+    @Html.DropDownList("manager", new SelectList(allData.Select(m => m.Manager).Distinct()), "--请选择--")
+    <label>
+        项目开始时间范围：</label>
+    @Html.Telerik().DatePicker().Name("startDate")
+    <label>
+        到</label>
+    @Html.Telerik().DatePicker().Name("endDate")
+    <button value="search" type="submit" name="action">
+        筛选</button>
+</div>
+@(Html.Telerik().Grid<Project>(Model).Name("Project")
+                .DataKeys(keys =>
+                {
+                    keys.Add(s => s.ID);
+                })
+                .Columns(c =>
+                {
+                    c.Template(@<text><input name="checkedRecords" type="radio" value="@item.ID " title="选择导入项目"  /></text>).Title("").Width(36).HtmlAttributes(new { style = "text-align:center" });
+                    c.Bound(item => item.Name);
+                    c.Bound(item => item.ProjectCode).Width(120);
+                    c.Bound(item => item.StartDate).Format("{0:d}").Width(100);
+                    c.Bound(item => item.EndDate).Format("{0:d}").Width(100);
+                    c.Bound(item => item.EndDate).Template(@<text>
+@{
+    var span = item.EndDate - DateTime.Now;
+    @Html.Label(span.Days.ToString())
+}</text>).Format("{0:d}").Title("剩余时间").Width(100);
+                    c.Bound(item => item.ConferenceStartDate).Width(100);
+                    c.Bound(item => item.IsActived).Width(100);
+                    c.Bound(item => item.Manager).Width(100);
+                    c.Bound(item => item.TeamLeader).Width(100);
+                    c.Bound(item => item.Target).Width(120).Format("{0:C}");
+                    c.Bound(item => item.ID).Width(80).Title("操作").Template(@<span><a href=@Url.Content("~/Project/Details/" + item.ID)>
+                        详细</a></span>);
+                }).Resizable(resizing => resizing.Columns(true)).Filterable().Sortable().Groupable()
+   .Scrollable(scrolling => scrolling.Height(350)))
+<div style="margin: 5px">
+    <button value="export" id="export" type="submit" name="action" onclick="return exportVerification();">
+        导出</button>
+</div>
+@{ Html.EndForm(); }

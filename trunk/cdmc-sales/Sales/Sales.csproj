@@ -1698,6 +1698,7 @@
     <Content Include="Views\DirectorReport\ProjectsCheckInLastWeek.cshtml" />
     <Content Include="Views\DirectorReport\ProjectsReportLastWeek.cshtml" />
     <Content Include="Views\SalesEx\BulkEntry.cshtml" />
+    <Content Include="Views\Project\ExportEmail.cshtml" />
     <None Include="Views\SalesEx\EditCompany.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\SimulatorConfig.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\AjaxTargetOfMonthForMember.cshtml" />

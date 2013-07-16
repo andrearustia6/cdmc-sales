@@ -591,7 +591,7 @@ namespace Sales.Controllers
         }
 
         [HttpGet]
-        public ActionResult AssignCompany(int? projectId, string memberFilterForCompany="", string prefixFilter = "", string fuzzyInput = "")
+        public ActionResult AssignCompany(int? projectId, string memberFilterForCompany = "", string prefixFilter = "", string fuzzyInput = "")
         {
             Project project = null;
             if (projectId.HasValue)
@@ -611,7 +611,7 @@ namespace Sales.Controllers
             ViewBag.fuzzyInput = fuzzyInput;
             return View();
         }
-        
+
         [GridAction]
         public ActionResult _AjaxAssignCompany(int? projectId, int? memberFilterForCompany, string prefixFilter = "", string fuzzyInput = "")
         {
@@ -644,15 +644,15 @@ namespace Sales.Controllers
             if (!String.IsNullOrEmpty(fuzzyInput))
             {
                 fuzzyInput = fuzzyInput.Trim();
-                p.CRMs = p.CRMs.Where(c => c.CompanyNameCH.Contains(fuzzyInput) 
-                                           || c.CompanyNameEN.Contains(fuzzyInput) 
-                                           || c.CompanyContact.Contains(fuzzyInput) 
-                                           || c.AjaxLeads.Any(l => l.LeadNameCH.Contains(fuzzyInput) 
-                                                              || l.LeadNameEN.Contains(fuzzyInput) 
-                                                              || l.LeadEmail.Contains(fuzzyInput) 
+                p.CRMs = p.CRMs.Where(c => c.CompanyNameCH.Contains(fuzzyInput)
+                                           || c.CompanyNameEN.Contains(fuzzyInput)
+                                           || c.CompanyContact.Contains(fuzzyInput)
+                                           || c.AjaxLeads.Any(l => l.LeadNameCH.Contains(fuzzyInput)
+                                                              || l.LeadNameEN.Contains(fuzzyInput)
+                                                              || l.LeadEmail.Contains(fuzzyInput)
                                                               || l.LeadPersonalEmail.Contains(fuzzyInput)
                                                              )
-                                           //|| c.CompanyFilterCategories.Any(ct => ct.Name.Contains(fuzzyInput))
+                    //|| c.CompanyFilterCategories.Any(ct => ct.Name.Contains(fuzzyInput))
                                         );
             }
             return View(new GridModel(p.CRMs.ToList()));
@@ -710,7 +710,7 @@ namespace Sales.Controllers
             return View(CH.GetAllData<ImportCompanyTrace>().OrderByDescending(s => s.ImportDate).ToList());
         }
 
-       
+
 
         public ActionResult ParticipantIndex(int? projectid)
         {
@@ -787,6 +787,69 @@ namespace Sales.Controllers
             writer.Flush();
             output.Position = 0;
             return File(output, "text/comma-separated-values", "Participant.csv");
+        }
+
+        public ActionResult ExportEmail()
+        {
+            return View(CH.GetAllData<Project>());
+        }
+
+        [HttpPost]
+        public ActionResult ExportEmail(string action, int[] checkedRecords, string manager, DateTime? startDate, DateTime? endDate)
+        {
+            if (action == "search")
+            {
+                var selProject = CH.GetAllData<Project>().AsEnumerable();
+
+                if (!string.IsNullOrWhiteSpace(manager))
+                {
+                    selProject = selProject.Where(s => s.Manager == manager);
+                }
+                if (startDate != null)
+                {
+                    selProject = selProject.Where(s => s.StartDate >= startDate);
+                }
+                if (endDate != null)
+                {
+                    selProject = selProject.Where(s => s.StartDate <= endDate);
+                }
+                return View(selProject.ToList());
+            }
+            else
+            {
+                IEnumerable<Lead> export;
+                Project selproject = CH.GetDataById<Project>(checkedRecords[0]);
+
+                export = CH.GetAllData<Lead>().Where(l => selproject.CompanyRelationships.Any(c => c.CompanyID == l.CompanyID));
+
+                //export = (from selrelationships in selproject.CompanyRelationships
+                //          join sellead in CH.GetAllData<Lead>() on selrelationships.CompanyID equals sellead.CompanyID
+                //          select sellead).Distinct();
+
+                //if (export.Count() == 0)
+                //{
+                //   
+                //}
+                MemoryStream output = new MemoryStream();
+                StreamWriter writer = new StreamWriter(output, System.Text.Encoding.Default);
+
+                writer.Write("Lead邮箱,");
+                writer.WriteLine();
+
+                foreach (var item in export)
+                {
+                    if (string.IsNullOrWhiteSpace(item.EMail))
+                    {
+                        continue;
+                    }
+                    writer.Write(item.EMail);
+                    writer.WriteLine();
+                }
+                writer.Flush();
+                output.Position = 0;
+                string fileName = selproject.Name_CH + selproject.ProjectCode + ".csv";
+                return File(output, "text/comma-separated-values", fileName);
+            }
         }
     }
 }
