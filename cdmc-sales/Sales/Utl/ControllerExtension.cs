@@ -26,7 +26,7 @@ namespace System.Web.Mvc
 
             if (t.Deal <= 0 || t.CheckIn <= 0)
             {
-                item.ModelState.AddModelError("", "销售目标和入账目标必须大于0");
+                item.ModelState.AddModelError("", "出单目标和入账目标必须大于0");
             }
 
             if (t.StartDate.Month != t.EndDate.Month)
@@ -90,7 +90,7 @@ namespace System.Web.Mvc
 
             if (t.Deal <= 0 || t.CheckIn <= 0)
             {
-                item.ModelState.AddModelError("", "销售目标和入账目标必须大于0");
+                item.ModelState.AddModelError("", "出单目标和入账目标必须大于0");
             }
 
             if (t.StartDate.Month != t.EndDate.Month)
