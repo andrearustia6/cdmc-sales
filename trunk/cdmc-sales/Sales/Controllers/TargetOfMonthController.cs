@@ -246,11 +246,11 @@ namespace Sales.Controllers
                            TargetOf3rdWeek = db.TargetOf3rdWeek,
                            TargetOf4thWeek = db.TargetOf4thWeek,
                            TargetOf5thWeek = db.TargetOf5thWeek,
-                           CheckInOf1stWeek=db.CheckInOf1stWeek,
-                           CheckInOf2ndWeek=db.CheckInOf2ndWeek,
-                           CheckInOf3rdWeek=db.CheckInOf3rdWeek,
-                           CheckInOf4thWeek=db.CheckInOf4thWeek,
-                           CheckInOf5thWeek=db.CheckInOf5thWeek
+                           CheckInOf1stWeek = db.CheckInOf1stWeek,
+                           CheckInOf2ndWeek = db.CheckInOf2ndWeek,
+                           CheckInOf3rdWeek = db.CheckInOf3rdWeek,
+                           CheckInOf4thWeek = db.CheckInOf4thWeek,
+                           CheckInOf5thWeek = db.CheckInOf5thWeek
 
                        };
 
@@ -335,40 +335,45 @@ namespace Sales.Controllers
 
         #region 版块编辑项目月目标
 
-        public ActionResult TargetOfMonthForProject(int? projectid)
+        public ActionResult TargetOfMonthForProject(int? ProjectSelect)
         {
-            //projectid = this.TrySetProjectIDForUser(projectid);
-
-            ViewBag.ProjectID = projectid;
-            //return View(CH.GetAllData<TargetOfMonth>().Where(s => s.Project.TeamLeader == Employee.GetLoginUserName()).OrderByDescending(s => s.EndDate).ToList());
-            if (projectid == null)
+            ViewBag.ProjectSelect = ProjectSelect;
+            if (ProjectSelect == null)
             {
                 return View(CH.GetAllData<TargetOfMonth>().Where(s => CRM_Logical.GetUserInvolveProject().Any(m => m.ID == s.ProjectID)).OrderByDescending(s => s.EndDate).ToList());
             }
             else
             {
-                return View(CH.GetAllData<TargetOfMonth>().Where(s => s.ProjectID == projectid).OrderByDescending(s => s.EndDate).ToList());
+                return View(CH.GetAllData<TargetOfMonth>().Where(s => s.ProjectID == ProjectSelect).OrderByDescending(s => s.EndDate).ToList());
             }
 
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult CreateEx(TargetOfMonth item)
+        public ActionResult CreateEx(TargetOfMonth item, int? ProjectSelect)
         {
             this.AddErrorStateIfTargetOfMonthNoValid(item);
-
             if (ModelState.IsValid)
             {
                 CH.Create<TargetOfMonth>(item);
-                return RedirectToAction("TargetOfMonthForProject", "TargetOfMonth", new { projectid = item.ProjectID });
+                return RedirectToAction("TargetOfMonthForProject", "TargetOfMonth", new { ProjectSelect = ProjectSelect });
             }
-            return View("TargetOfMonthForProject", CH.GetAllData<TargetOfMonth>().Where(s => s.ProjectID == item.ProjectID).OrderByDescending(s => s.EndDate).ToList());
+            if (ProjectSelect != null)
+            {
+                ViewBag.ProjectSelect = ProjectSelect;
+                return View("TargetOfMonthForProject", CH.GetAllData<TargetOfMonth>().Where(s => s.ProjectID == ProjectSelect).OrderByDescending(s => s.EndDate).ToList());
+            }
+            else
+            {
+                return View("TargetOfMonthForProject", CH.GetAllData<TargetOfMonth>().OrderByDescending(s => s.EndDate).ToList());
+            }
         }
 
         [AcceptVerbs(HttpVerbs.Post), ActionName("DeleteEx")]
-        public ActionResult DeleteExConfirmed(int id, int? projectid)
+        public ActionResult DeleteExConfirmed(int id, int? ProjectSelect)
         {
             var item = CH.GetDataById<TargetOfMonth>(id);
+            ViewBag.ProjectSelect = ProjectSelect;
             var pid = item.ProjectID;
             CH.Delete<TargetOfMonth>(id);
             var del = CH.GetAllData<TargetOfWeek>().Where(s => s.TargetOfMonthID == item.ID);
@@ -376,19 +381,28 @@ namespace Sales.Controllers
             {
                 CH.DeleteRange<TargetOfWeek>(del.ToList());
             }
-            return RedirectToAction("TargetOfMonthForProject", "TargetOfMonth", new { projectid = pid });
+            return RedirectToAction("TargetOfMonthForProject", "TargetOfMonth", new { ProjectSelect = ProjectSelect });
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult EditEx(TargetOfMonth item)
+        public ActionResult EditEx(TargetOfMonth item, int? ProjectSelect)
         {
             this.AddErrorStateIfTargetOfMonthNoValid(item);
             if (ModelState.IsValid)
             {
                 CH.Edit<TargetOfMonth>(item);
-                return RedirectToAction("TargetOfMonthForProject", "TargetOfMonth", new { projectid = item.ProjectID });
+                return RedirectToAction("TargetOfMonthForProject", "TargetOfMonth", new { ProjectSelect = ProjectSelect });
             }
-            return View("TargetOfMonthForProject", CH.GetAllData<TargetOfMonth>().Where(s => s.ProjectID == item.ProjectID).OrderByDescending(s => s.EndDate).ToList());
+            if (ProjectSelect != null)
+            {
+                ViewBag.ProjectSelect = ProjectSelect;
+                return View("TargetOfMonthForProject", CH.GetAllData<TargetOfMonth>().Where(s => s.ProjectID == ProjectSelect).OrderByDescending(s => s.EndDate).ToList());
+            }
+            else
+            {
+                return View("TargetOfMonthForProject", CH.GetAllData<TargetOfMonth>().OrderByDescending(s => s.EndDate).ToList());
+            }
+
         }
         #endregion
     }

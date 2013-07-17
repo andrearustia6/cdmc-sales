@@ -19,8 +19,16 @@
     {
         ps = CRM_Logical.GetUserInvolveProject();
     }
-    var selected = ViewBag.ProjectID ?? 0;
-                @Html.DropDownList("ProjectID", new SelectList(ps, "ID", "ProjectCode", selected), "所有项目", new { onchange = "this.form.submit();" })
+    if (ViewBag.ProjectSelect == null)
+    {
+                @Html.DropDownList("ProjectSelect", new SelectList(ps, "ID", "ProjectCode"), "所有项目", new { onchange = "this.form.submit();" })
+    }
+    else
+    {
+                @Html.DropDownList("ProjectSelect", new SelectList(ps, "ID", "ProjectCode", ViewBag.ProjectSelect), "所有项目", new { onchange = "this.form.submit();" })
+    }
+    //var selected = ViewBag.ProjectID ?? 0;
+                
             }
         </span>
     </div>
@@ -28,10 +36,10 @@
 @(Html.Telerik().Grid(Model).Name("TargetOfMonths")
 .ToolBar(commands => commands.Insert().ImageHtmlAttributes(new { style = "margin-left:0" }))
 .DataKeys(keys => { keys.Add(s => s.ID); }).DataBinding(dataBinding => dataBinding.Server()
-    .Select("TargetOfMonthForProject", "TargetOfMonth", new { projectid = ViewBag.ProjectID })
+        .Select("TargetOfMonthForProject", "TargetOfMonth", new { ProjectSelect = ViewBag.ProjectSelect })
                             .Insert("CreateEx", "TargetOfMonth")
                             .Update("EditEx", "TargetOfMonth")
-                            .Delete("DeleteEx", "TargetOfMonth"))
+                            .Delete("DeleteEx", "TargetOfMonth", new { ProjectSelect = ViewBag.ProjectSelect }))
             .Columns(c =>
             {
                 c.Bound(item => item.Project.Name_CH).Width(300);
