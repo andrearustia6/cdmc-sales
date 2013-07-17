@@ -313,7 +313,7 @@ namespace Entity
         [Display(Name = "结束日期"), DisplayFormat(DataFormatString = "{0:d}")]
         public DateTime EndDate { get; set; }
 
-        [Display(Name = "销售目标"), Required, DisplayFormat(DataFormatString = "{0:c}")]
+        [Display(Name = "出单目标"), Required, DisplayFormat(DataFormatString = "{0:c}")]
         public decimal Deal { get; set; }
 
         [Display(Name = "保底目标"), Required, DisplayFormat(DataFormatString = "{0:c}")]
@@ -334,20 +334,35 @@ namespace Entity
         [Display(Name = "版块确认人")]
         public string AdminConfirmor { get; set; }
 
-        [Display(Name = "第一周目标"), Required, DisplayFormat(DataFormatString = "{0:c}")]
+        [Display(Name = "第一周出单目标"), Required, DisplayFormat(DataFormatString = "{0:c}")]
         public decimal? TargetOf1stWeek { get; set; }
 
-        [Display(Name = "第二周目标"), Required, DisplayFormat(DataFormatString = "{0:c}")]
+        [Display(Name = "第二周出单目标"), Required, DisplayFormat(DataFormatString = "{0:c}")]
         public decimal? TargetOf2ndWeek { get; set; }
 
-        [Display(Name = "第三周目标"), Required, DisplayFormat(DataFormatString = "{0:c}")]
+        [Display(Name = "第三周出单目标"), Required, DisplayFormat(DataFormatString = "{0:c}")]
         public decimal? TargetOf3rdWeek { get; set; }
 
-        [Display(Name = "第四周目标"), Required, DisplayFormat(DataFormatString = "{0:c}")]
+        [Display(Name = "第四周出单目标"), Required, DisplayFormat(DataFormatString = "{0:c}")]
         public decimal? TargetOf4thWeek { get; set; }
 
-        [Display(Name = "第五周目标"), Required, DisplayFormat(DataFormatString = "{0:c}")]
+        [Display(Name = "第五周出单目标"), Required, DisplayFormat(DataFormatString = "{0:c}")]
         public decimal? TargetOf5thWeek { get; set; }
+
+        [Display(Name = "第一周入账目标"), Required, DisplayFormat(DataFormatString = "{0:c}")]
+        public decimal? CheckInOf1stWeek { get; set; }
+
+        [Display(Name = "第二周入账目标"), Required, DisplayFormat(DataFormatString = "{0:c}")]
+        public decimal? CheckInOf2ndWeek { get; set; }
+
+        [Display(Name = "第三周入账目标"), Required, DisplayFormat(DataFormatString = "{0:c}")]
+        public decimal? CheckInOf3rdWeek { get; set; }
+
+        [Display(Name = "第四周入账目标"), Required, DisplayFormat(DataFormatString = "{0:c}")]
+        public decimal? CheckInOf4thWeek { get; set; }
+
+        [Display(Name = "第五周入账目标"), Required, DisplayFormat(DataFormatString = "{0:c}")]
+        public decimal? CheckInOf5thWeek { get; set; }
     }
 
     /// <summary>
@@ -367,7 +382,7 @@ namespace Entity
         [Display(Name = "结束日期"), DisplayFormat(DataFormatString = "{0:d}")]
         public DateTime EndDate { get; set; }
 
-        [Display(Name = "销售目标"), Required, DisplayFormat(DataFormatString = "{0:c}")]
+        [Display(Name = "出单目标"), Required, DisplayFormat(DataFormatString = "{0:c}")]
         public decimal Deal { get; set; }
 
         [Display(Name = "保底目标"), Required, DisplayFormat(DataFormatString = "{0:c}")]
@@ -383,7 +398,38 @@ namespace Entity
         [Display(Name = "是否确认")]
         public bool? IsConfirm { get; set; }
 
+        [Display(Name = "确认人")]
+        public string Confirmor { get; set; }
 
+        [Display(Name = "第一周出单目标"), Required, DisplayFormat(DataFormatString = "{0:c}")]
+        public decimal? TargetOf1stWeek { get; set; }
+
+        [Display(Name = "第二周出单目标"), Required, DisplayFormat(DataFormatString = "{0:c}")]
+        public decimal? TargetOf2ndWeek { get; set; }
+
+        [Display(Name = "第三周出单目标"), Required, DisplayFormat(DataFormatString = "{0:c}")]
+        public decimal? TargetOf3rdWeek { get; set; }
+
+        [Display(Name = "第四周出单目标"), Required, DisplayFormat(DataFormatString = "{0:c}")]
+        public decimal? TargetOf4thWeek { get; set; }
+
+        [Display(Name = "第五周出单目标"), Required, DisplayFormat(DataFormatString = "{0:c}")]
+        public decimal? TargetOf5thWeek { get; set; }
+
+        [Display(Name = "第一周入账目标"), Required, DisplayFormat(DataFormatString = "{0:c}")]
+        public decimal? CheckInOf1stWeek { get; set; }
+
+        [Display(Name = "第二周入账目标"), Required, DisplayFormat(DataFormatString = "{0:c}")]
+        public decimal? CheckInOf2ndWeek { get; set; }
+
+        [Display(Name = "第三周入账目标"), Required, DisplayFormat(DataFormatString = "{0:c}")]
+        public decimal? CheckInOf3rdWeek { get; set; }
+
+        [Display(Name = "第四周入账目标"), Required, DisplayFormat(DataFormatString = "{0:c}")]
+        public decimal? CheckInOf4thWeek { get; set; }
+
+        [Display(Name = "第五周入账目标"), Required, DisplayFormat(DataFormatString = "{0:c}")]
+        public decimal? CheckInOf5thWeek { get; set; }
     }
 
 

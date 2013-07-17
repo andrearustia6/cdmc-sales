@@ -121,21 +121,22 @@ namespace Sales.Controllers
         [HttpPost]
         public ActionResult Edit(TargetOfMonthForMember item)
         {
-
-            //this.AddErrorStateIfTargetOfMonthNoValid(item);
-            CH.DB.SaveChanges();
-
-            CH.DB.ChangeTracker.DetectChanges();
-            var list = CH.DB.ChangeTracker.Entries<TargetOfMonthForMember>().ToList();
-            if (list.Count > 0)
-            {
-                var attacth = list.First().Entity;
-                CH.DB.Detach(attacth);
-            }
-
-            list = CH.DB.ChangeTracker.Entries<TargetOfMonthForMember>().ToList();
+            this.AddErrorStateIfTargetOfMonthNoValid(item);
             if (ModelState.IsValid)
             {
+                //this.AddErrorStateIfTargetOfMonthNoValid(item);
+                CH.DB.SaveChanges();
+
+                CH.DB.ChangeTracker.DetectChanges();
+                var list = CH.DB.ChangeTracker.Entries<TargetOfMonthForMember>().ToList();
+                if (list.Count > 0)
+                {
+                    var attacth = list.First().Entity;
+                    CH.DB.Detach(attacth);
+                }
+
+                list = CH.DB.ChangeTracker.Entries<TargetOfMonthForMember>().ToList();
+            
 
                 CH.Edit<TargetOfMonthForMember>(item);
                 return RedirectToAction("MyTargetIndex", new { projectid = item.ProjectID });
@@ -209,7 +210,17 @@ namespace Sales.Controllers
                            CheckIn = db.CheckIn,
                            StartDate = db.StartDate,
                            EndDate = db.EndDate,
-                           MemberName = db.Member.Name
+                           MemberName = db.Member.Name,
+                           TargetOf1stWeek=db.TargetOf1stWeek,
+                           TargetOf2ndWeek=db.TargetOf2ndWeek,
+                           TargetOf3rdWeek=db.TargetOf3rdWeek,
+                           TargetOf4thWeek=db.TargetOf4thWeek,
+                           TargetOf5thWeek=db.TargetOf5thWeek,
+                           CheckInOf1stWeek=db.CheckInOf1stWeek,
+                           CheckInOf2ndWeek=db.CheckInOf2ndWeek,
+                           CheckInOf3rdWeek=db.CheckInOf3rdWeek,
+                           CheckInOf4thWeek=db.CheckInOf4thWeek,
+                           CheckInOf5thWeek=db.CheckInOf5thWeek
 
                        };
             return data.OrderByDescending(s => s.EndDate).ToList();
@@ -293,18 +304,18 @@ namespace Sales.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Save(TargetOfMonthForMember item)
         {
-            this.EditErrorStateIfTargetOfMonthNoValid(item);
-            CH.DB.SaveChanges();
+            this.AddErrorStateIfTargetOfMonthNoValid(item);
+            //CH.DB.SaveChanges();
 
-            CH.DB.ChangeTracker.DetectChanges();
-            var list = CH.DB.ChangeTracker.Entries<TargetOfMonthForMember>().ToList();
-            if (list.Count > 0)
-            {
-                var attacth = list.First().Entity;
-                CH.DB.Detach(attacth);
-            }
+            //CH.DB.ChangeTracker.DetectChanges();
+            //var list = CH.DB.ChangeTracker.Entries<TargetOfMonthForMember>().ToList();
+            //if (list.Count > 0)
+            //{
+            //    var attacth = list.First().Entity;
+            //    CH.DB.Detach(attacth);
+            //}
 
-            list = CH.DB.ChangeTracker.Entries<TargetOfMonthForMember>().ToList();
+            //list = CH.DB.ChangeTracker.Entries<TargetOfMonthForMember>().ToList();
             if (ModelState.IsValid)
             {
 

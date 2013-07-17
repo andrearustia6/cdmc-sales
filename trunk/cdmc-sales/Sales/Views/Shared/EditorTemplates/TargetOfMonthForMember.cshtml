@@ -10,34 +10,57 @@
         });  
     </script>
 }*@
+<style type="text/css">
+   
+    
+    .t-edit-form-container
+    {
+        
+        margin: 1em;
+        text-align: right;
+    }
+   td
+   {
+       text-align:left;
+   }
+   .validation-summary-errors
+   {
+       text-align: left;
+   }
+   .t-window-titlebar .t-window-actions
+{
+    display:none;
+}
+</style>
+<script>
+    var popup = $("#TargetOfMonthForMemberPopUp");
+    popup.css({ "top": "20px" });
+</script>
 @using (Html.BeginForm())
 {
     <fieldset>
         @{if (Model.ID != 0)
           {
-            <legend>编辑月目标</legend>
+            <legend  style="text-align:left">编辑月目标</legend>
           }
           else
           {
-            <legend>新增月目标</legend>
+            <legend  style="text-align:left">新增月目标</legend>
           }
         }
         <table style="padding: 10px; margin: 10px">
             <tr>
                 <td>
-                    @Html.LabelFor(model => model.MemberID, "目标制定人")
+                      @Html.LabelFor(model => model.MemberID, "目标制定人")
                 </td>
-                <td colspan="3">
-                    @Html.DropDownListFor(m => m.MemberID, new SelectList(CH.GetAllData<Member>().Where(s => s.ProjectID == ViewBag.ProjectID && s.Name == Employee.CurrentUserName), "ID", "Name"), new { style = "width:200px" })
-                   @* @Html.ValidationMessageFor(m => m.MemberID)*@
+                <td >
+                    @Html.DropDownListFor(m => m.MemberID, new SelectList(CH.GetAllData<Member>().Where(s => s.ProjectID == ViewBag.ProjectID && s.Name == Employee.CurrentUserName), "ID", "Name"), new { style = "width:140px" })
                 </td>
-            </tr>
-            <tr>
-                <td>
+                <td >
                     @Html.LabelFor(model => model.ProjectID, "项目名称")
                 </td>
-                <td colspan="3">
-                    @Html.DropDownListFor(m => m.ProjectID, new SelectList(CH.GetAllData<Project>().Where(s => s.ID == ViewBag.ProjectID), "ID", "Name"), new { style = "width:200px" })
+                <td style="width: 220px; text-align: right;">
+                    @Html.DropDownListFor(m => m.ProjectID, new SelectList(CH.GetAllData<Project>().Where(s => s.ID == ViewBag.ProjectID), "ID", "Name"), new { style = "width:210px" })
                    @* @Html.ValidationMessageFor(model => model.ProjectID)*@
                 </td>
             </tr>
@@ -46,35 +69,265 @@
                     @Html.LabelFor(model => model.StartDate)
                 </td>
                 <td>
-                    @Html.Telerik().DatePickerFor(model => model.StartDate).Value(Model.ID == 0 ? DateTime.Now.StartOfMonth() : Model.StartDate)
+                    @Html.Telerik().DatePickerFor(model => model.StartDate).Value(Model.ID == 0 ? DateTime.Now.StartOfMonth() : Model.StartDate).ClientEvents(e => e.OnChange("OnChange").OnLoad("OnChange")).Format("yyyy/M/d")
                     @Html.ValidationMessageFor(model => model.StartDate)
                 </td>
                 <td>
                     @Html.LabelFor(model => model.EndDate)
                 </td>
                 <td>
-                    @Html.Telerik().DatePickerFor(model => model.EndDate).Value(Model.ID == 0 ? DateTime.Now.EndOfMonth() : Model.EndDate)
+                    @Html.Telerik().DatePickerFor(model => model.EndDate).Value(Model.ID == 0 ? DateTime.Now.EndOfMonth() : Model.EndDate).Format("yyyy/M/d")
                     @Html.ValidationMessageFor(model => model.EndDate)
                 </td>
             </tr>
+        </table>
+        <fieldset>
+         <legend style="text-align:left">出单目标</legend>
+         <table>
             <tr>
-                <td>
-                    @Html.LabelFor(model => model.Deal)
+                <td rowspan="5">
+                   @Html.LabelFor(model => model.Deal)
                 </td>
-                <td>
+                <td rowspan="5">
+                @if (Model.IsConfirm == true)
+                {
+                    @Html.Telerik().CurrencyTextBoxFor(model => model.Deal).Enable(false)
+                    @Html.HiddenFor(model => model.Deal)
+                }
+                else
+                {
                     @Html.Telerik().CurrencyTextBoxFor(model => model.Deal)
                     @Html.ValidationMessageFor(model => model.Deal)
+                }
+                </td>
+                <td style="width: 140px; text-align: right;">
+                <label id="1stWeek">
+                        第一周出单目标</label>
+                    @*@Html.LabelFor(model => model.TargetOf1stWeek)*@
+                    
                 </td>
                 <td>
+                    @Html.Telerik().CurrencyTextBoxFor(model => model.TargetOf1stWeek).Value(Model.TargetOf1stWeek == null ? 0 : Model.TargetOf1stWeek)
+                    @Html.ValidationMessageFor(model => model.TargetOf1stWeek)
+                    
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 140px; text-align: right;">
+                    <label id="2ndWeek">
+                        第二周出单目标</label>
+                    @*@Html.LabelFor(model => model.TargetOf2ndWeek)*@
+                    
+                </td>
+                <td>
+                    @Html.Telerik().CurrencyTextBoxFor(model => model.TargetOf2ndWeek).Value(Model.TargetOf2ndWeek == null ? 0 : Model.TargetOf2ndWeek)
+                    @Html.ValidationMessageFor(model => model.TargetOf2ndWeek)
+                    
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 140px; text-align: right;">
+                    <label id="3rdWeek">
+                        第三周出单目标</label>
+                    @*@Html.LabelFor(model => model.TargetOf3rdWeek)*@
+                    
+                </td>
+                <td>
+                    @Html.Telerik().CurrencyTextBoxFor(model => model.TargetOf3rdWeek).Value(Model.TargetOf3rdWeek == null ? 0 : Model.TargetOf3rdWeek)
+                    @Html.ValidationMessageFor(model => model.TargetOf3rdWeek)
+                    
+                </td>
+            </tr>
+            <tr>
+                <td  style="width: 140px; text-align: right;">
+                    <label id="4thWeek">
+                        第四周出单目标</label>
+                    @*@Html.LabelFor(model => model.TargetOf4thWeek)*@
+                    
+                </td>
+                <td >
+                    @Html.Telerik().CurrencyTextBoxFor(model => model.TargetOf4thWeek).Value(Model.TargetOf4thWeek == null ? 0 : Model.TargetOf4thWeek)
+                    @Html.ValidationMessageFor(model => model.TargetOf4thWeek)
+                   
+                </td>
+            </tr>
+            <tr>
+                
+                <td id="hidenTd1" style="width: 140px; text-align: right;">
+                    
+                    <label id="5thWeek">
+                        第五周出单目标</label>
+                    @*@Html.LabelFor(model => model.TargetOf5thWeek)*@
+                </td>
+                <td id="hidenTd2">
+                    
+                    @Html.Telerik().CurrencyTextBoxFor(model => model.TargetOf5thWeek).Value(Model.TargetOf5thWeek == null ? 0 : Model.TargetOf5thWeek)
+                    @Html.ValidationMessageFor(model => model.TargetOf5thWeek)
+                </td>
+            </tr>
+         </table>
+        </fieldset>
+        <fieldset>
+         <legend style="text-align:left">入账目标</legend>
+         <table>
+            <tr>
+                <td rowspan="5">
                     @Html.LabelFor(model => model.CheckIn)
                 </td>
-                <td>
-                    @Html.Telerik().CurrencyTextBoxFor(model => model.CheckIn)
-                    @Html.ValidationMessageFor(model => model.CheckIn)
+                <td rowspan="5">
+                @if (Model.IsConfirm == true)
+                {
+                    @Html.Telerik().CurrencyTextBoxFor(model => model.CheckIn).Enable(false)
+                    @Html.HiddenFor(model => model.CheckIn)
+                }
+                else
+                {
+                     @Html.Telerik().CurrencyTextBoxFor(model => model.CheckIn)
+                     @Html.ValidationMessageFor(model => model.CheckIn)
+                }
+                       
                 </td>
-        </table>
+                <td style="width: 140px; text-align: right;">
+                <label id="CheckIn1stWeek">
+                        第一周入账目标</label>
+                    @*@Html.LabelFor(model => model.TargetOf1stWeek)*@
+                    
+                </td>
+                <td>
+                    @Html.Telerik().CurrencyTextBoxFor(model => model.CheckInOf1stWeek).Value(Model.CheckInOf1stWeek == null ? 0 : Model.CheckInOf1stWeek)
+                    @Html.ValidationMessageFor(model => model.CheckInOf1stWeek)
+                    
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 140px; text-align: right;">
+                    <label id="CheckIn2ndWeek">
+                        第二周入账目标</label>
+                    @*@Html.LabelFor(model => model.TargetOf2ndWeek)*@
+                    
+                </td>
+                <td>
+                    @Html.Telerik().CurrencyTextBoxFor(model => model.CheckInOf2ndWeek).Value(Model.CheckInOf2ndWeek == null ? 0 : Model.CheckInOf2ndWeek)
+                    @Html.ValidationMessageFor(model => model.CheckInOf2ndWeek)
+                    
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 140px; text-align: right;">
+                    <label id="CheckIn3rdWeek">
+                        第三周入账目标</label>
+                    @*@Html.LabelFor(model => model.TargetOf3rdWeek)*@
+                    
+                </td>
+                <td>
+                    @Html.Telerik().CurrencyTextBoxFor(model => model.CheckInOf3rdWeek).Value(Model.CheckInOf3rdWeek == null ? 0 : Model.CheckInOf3rdWeek)
+                    @Html.ValidationMessageFor(model => model.CheckInOf3rdWeek)
+                    
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 140px; text-align: right;">
+                    <label id="CheckIn4thWeek">
+                        第四周入账目标</label>
+                    @*@Html.LabelFor(model => model.TargetOf4thWeek)*@
+                    
+                </td>
+                <td >
+                    @Html.Telerik().CurrencyTextBoxFor(model => model.CheckInOf4thWeek).Value(Model.CheckInOf4thWeek == null ? 0 : Model.CheckInOf4thWeek)
+                    @Html.ValidationMessageFor(model => model.CheckInOf4thWeek)
+                   
+                </td>
+            </tr>
+            <tr>
+                
+                <td id="CheckInhidenTd1" style="width: 140px; text-align: right;">
+                    
+                    <label id="CheckIn5thWeek">
+                        第五周入账目标</label>
+                    @*@Html.LabelFor(model => model.TargetOf5thWeek)*@
+                </td>
+                <td id="CheckInhidenTd2">
+                    
+                    @Html.Telerik().CurrencyTextBoxFor(model => model.CheckInOf5thWeek).Value(Model.CheckInOf5thWeek == null ? 0 : Model.CheckInOf5thWeek)
+                    @Html.ValidationMessageFor(model => model.CheckInOf5thWeek)
+                </td>
+            </tr>
+         </table>
+         <div id="note" style="width:495px; text-align:left; color:Red">
+   请注意：入账周目标之和要求大于等于月入账目标,出单周目标之和要求大于等于月出单目标.
+   </div>
+   <div id="note" style="width:495px; text-align:left; color:Red ;text-indent:4em;">
+     月目标上级确认后不可以修改，但是周目标在确认后可以继续调整。
+   </div>
+        </fieldset>
         @Html.HiddenFor(model => model.BaseDeal)
         @Html.HiddenFor(model => model.IsConfirm)
     </fieldset>
 @* @Html.Partial("editcommon", Model)*@
 }
+<script type="text/javascript">
+    function OnChange(e) {
+        $("#hidenTd1").show();
+        $("#hidenTd2").show();
+        $("#CheckInhidenTd1").show();
+        $("#CheckInhidenTd2").show();
+
+        var ds = e.currentTarget.value;
+        var firstDate = new Date(ds);
+
+        firstDate.setDate(1);
+        var endDate = new Date(firstDate);
+        endDate.setMonth(firstDate.getMonth() + 1);
+        endDate.setDate(0);
+        var month = firstDate.getMonth() + 1;
+        var ofTheWeek = firstDate.getDay();
+        var lastDay = endDate.getDate();
+        if (ofTheWeek == 5) {
+            $("#1stWeek").text(month + "-1～" + month + "-7周出单目标");
+            $("#2ndWeek").text(month + "-8～" + month + "-14周出单目标");
+            $("#3rdWeek").text(month + "-15～" + month + "-21周出单目标");
+            $("#4thWeek").text(month + "-22～" + month + "-28周出单目标");
+
+            $("#CheckIn1stWeek").text(month + "-1～" + month + "-7周入账目标");
+            $("#CheckIn2ndWeek").text(month + "-8～" + month + "-14周入账目标");
+            $("#CheckIn3rdWeek").text(month + "-15～" + month + "-21周入账目标");
+            $("#CheckIn4thWeek").text(month + "-22～" + month + "-28周入账目标");
+            if (lastDay > 28) {
+                $("#5thWeek").text(month + "-29～" + month + "-" + lastDay + "周出单目标");
+                $("#CheckIn5thWeek").text(month + "-29～" + month + "-" + lastDay + "周入账目标");
+            }
+            else {
+                var item = $("#TargetOf5thWeek").data("tTextBox");
+                if (item != null) {
+                    item.value(0);
+                }
+
+                item = $("#CheckInOf5thWeek").data("tTextBox");
+                if (item != null) {
+                    item.value(0);
+                }
+                $("#hidenTd1").hide();
+                $("#hidenTd2").hide();
+                $("#CheckInhidenTd1").hide();
+                $("#CheckInhidenTd2").hide();
+                
+            }
+        }
+        else {
+            if (ofTheWeek >= 0 && ofTheWeek < 5) {
+                ofTheWeek += 7;
+            }
+            $("#1stWeek").text(month + "-1～" + month + "-" + (12 - ofTheWeek) + "周出单目标");
+            $("#2ndWeek").text(month + "-" + (13 - ofTheWeek) + "～" + month + "-" + (19 - ofTheWeek) + "周出单目标");
+            $("#3rdWeek").text(month + "-" + (20 - ofTheWeek) + "～" + month + "-" + (26 - ofTheWeek) + "周出单目标");
+            $("#4thWeek").text(month + "-" + (27 - ofTheWeek) + "～" + month + "-" + (33 - ofTheWeek) + "周出单目标");
+            $("#5thWeek").text(month + "-" + (34 - ofTheWeek) + "～" + month + "-" + lastDay + "周出单目标");
+
+            $("#CheckIn1stWeek").text(month + "-1～" + month + "-" + (12 - ofTheWeek) + "周入账目标");
+            $("#CheckIn2ndWeek").text(month + "-" + (13 - ofTheWeek) + "～" + month + "-" + (19 - ofTheWeek) + "周入账目标");
+            $("#CheckIn3rdWeek").text(month + "-" + (20 - ofTheWeek) + "～" + month + "-" + (26 - ofTheWeek) + "周入账目标");
+            $("#CheckIn4thWeek").text(month + "-" + (27 - ofTheWeek) + "～" + month + "-" + (33 - ofTheWeek) + "周入账目标");
+            $("#CheckIn5thWeek").text(month + "-" + (34 - ofTheWeek) + "～" + month + "-" + lastDay + "周入账目标");
+        }
+    }
+</script>

@@ -245,7 +245,13 @@ namespace Sales.Controllers
                            TargetOf2ndWeek = db.TargetOf2ndWeek,
                            TargetOf3rdWeek = db.TargetOf3rdWeek,
                            TargetOf4thWeek = db.TargetOf4thWeek,
-                           TargetOf5thWeek = db.TargetOf5thWeek
+                           TargetOf5thWeek = db.TargetOf5thWeek,
+                           CheckInOf1stWeek=db.CheckInOf1stWeek,
+                           CheckInOf2ndWeek=db.CheckInOf2ndWeek,
+                           CheckInOf3rdWeek=db.CheckInOf3rdWeek,
+                           CheckInOf4thWeek=db.CheckInOf4thWeek,
+                           CheckInOf5thWeek=db.CheckInOf5thWeek
+
                        };
 
             return data.OrderByDescending(s => s.EndDate).ToList();

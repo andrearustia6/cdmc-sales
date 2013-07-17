@@ -6,24 +6,35 @@
 @model List<ProjectWeekPerformance>
 <fieldset>
 <legend>上周周报报表</legend>
+@{
+    using (Html.BeginForm())
+    {
+<button value="export" id="export" type="submit" name="btnExport" onclick="this.form.submit();"
+            style="margin-left: 20px">
+            导出</button>
+    }
+    }
 @(
     Html.Telerik().Grid<ProjectWeekPerformance>(Model.OrderByDescending(o=>o.TotalCheckIn)).Name("ProjectWeekPerformance")
         .Columns(columns =>
         {
             columns.Bound(p => p.ProjectName).Width(220).Title("项目名").HtmlAttributes(new { style = "text-align:left" });
-            columns.Bound(p => p.Manager).Title("版块负责人").HtmlAttributes(new { style = "text-align:left" });
-            columns.Bound(p => p.Leader).Title("销售经理").HtmlAttributes(new { style = "text-align:left" });
-            columns.Bound(p => p.MemberCount).Title("项目人数").HtmlAttributes(new { style = "text-align:left" });
-            columns.Bound(p => p.Target).Title("上周入账目标").HtmlAttributes(new { style = "text-align:right" }).Format("{0:C0}").Aggregate(a => a.Sum()).FooterTemplate(@<text>上周入账目标: @item.Sum.Format("{0:c0}")</text>);
-            columns.Bound(p => p.Income).Title("上周入账实际").HtmlAttributes(new { style = "text-align:right" }).Format("{0:C0}").Aggregate(a => a.Sum()).FooterTemplate(@<text>上周入账总额: @item.Sum.Format("{0:c0}")</text>);
-            columns.Bound(p => p.percent).Title("周百分比").Width(60).HtmlAttributes(new { style = "text-align:right" }).Format("{0:P0}");
-            columns.Bound(p => p.RMBPayment).Title("上周出单RMB").HtmlAttributes(new { style = "text-align:right" }).Format("{0:C0}").Aggregate(a => a.Sum()).FooterTemplate(@<text>上周出单RMB: @item.Sum.Format("{0:c0}")</text>);
-            columns.Bound(p => p.USDPayment).Title("上周出单USD").HtmlAttributes(new { style = "text-align:right" }).Format("{0:$#,##0}").Aggregate(a => a.Sum()).FooterTemplate(@<text>上周出单USD: @item.Sum.Format("{0:$#,##0}")</text>); 
+            columns.Bound(p => p.Manager).Width(100).Title("版块负责人").HtmlAttributes(new { style = "text-align:left" });
+            columns.Bound(p => p.Leader).Width(100).Title("销售经理").HtmlAttributes(new { style = "text-align:left" });
+            columns.Bound(p => p.MemberCount).Width(100).Title("项目人数").HtmlAttributes(new { style = "text-align:left" });
+            columns.Bound(p => p.Target).Width(100).Title("上周入账目标").HtmlAttributes(new { style = "text-align:right" }).Format("{0:C0}").Aggregate(a => a.Sum()).FooterTemplate(@<text>上周入账目标: @item.Sum.Format("{0:c0}")</text>);
+            columns.Bound(p => p.Income).Width(100).Title("上周入账实际").HtmlAttributes(new { style = "text-align:right" }).Format("{0:C0}").Aggregate(a => a.Sum()).FooterTemplate(@<text>上周入账总额: @item.Sum.Format("{0:c0}")</text>);
+            columns.Bound(p => p.percent).Width(100).Title("周入账百分比").HtmlAttributes(new { style = "text-align:right" }).Format("{0:P0}");
+            columns.Bound(p => p.RMBPayment).Width(100).Title("上周出单RMB").HtmlAttributes(new { style = "text-align:right" }).Format("{0:C0}").Aggregate(a => a.Sum()).FooterTemplate(@<text>上周出单RMB: @item.Sum.Format("{0:c0}")</text>);
+            columns.Bound(p => p.USDPayment).Width(100).Title("上周出单USD").HtmlAttributes(new { style = "text-align:right" }).Format("{0:$#,##0}").Aggregate(a => a.Sum()).FooterTemplate(@<text>上周出单USD: @item.Sum.Format("{0:$#,##0}")</text>);
+            columns.Bound(p => p.DealTarget).Width(100).Title("上周出单目标").HtmlAttributes(new { style = "text-align:right" }).Format("{0:C0}").Aggregate(a => a.Sum()).FooterTemplate(@<text>上周出单目标总额: @item.Sum.Format("{0:c0}")</text>).Format("{0:C0}"); ;
+            columns.Bound(p => p.dealpercent).Width(100).Title("周出单百分比").HtmlAttributes(new { style = "text-align:right" }).Format("{0:P0}"); ;
         }
         )
         .Scrollable(s => s.Height(550))
         .Sortable()
         .Resizable(s => s.Columns(true))
+        .HtmlAttributes(new { style = "max-width:1100px" })
 )
 
 </fieldset>

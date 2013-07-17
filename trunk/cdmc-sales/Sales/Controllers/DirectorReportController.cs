@@ -9,6 +9,7 @@ using Entity;
 using BLL;
 using System.Web.UI.WebControls;
 using Telerik.Web.Mvc;
+using System.IO;
 
 namespace Sales.Controllers
 {
@@ -71,10 +72,22 @@ namespace Sales.Controllers
             return View(list);
         }
 
-        public ActionResult ProjectsReportLastWeek()
+        public ActionResult ProjectsReportLastWeek(string btnExport)
         {
             var list = CRM_Logical._Reports.GetProjectsReportLastweek(DateTime.Now);
-            return View(list);
+            if (btnExport == "export")
+            {
+                MemoryStream output = new MemoryStream();
+                StreamWriter writer = new StreamWriter(output, System.Text.Encoding.Default);
+
+                writer.Write("sss" + "月");
+                writer.WriteLine();
+                writer.Flush();
+                output.Position = 0;
+                return File(output, "text/comma-separated-values", "ProjectsReportLastWeek.csv");
+            }
+            else
+                return View(list);
         }
         /// <summary>
         ///项目入账 
