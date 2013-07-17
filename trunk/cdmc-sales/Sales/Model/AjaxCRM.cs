@@ -46,7 +46,7 @@ namespace Sales.Model
         IQueryable<CompanyRelationship> GetFilteredCRM()
         {
             string user = Employee.CurrentUserName;
-            var query = from c in CH.DB.CompanyRelationships.Where(w => w.Members.Select(s=>s.Name).Contains(user)) select c;
+            var query = from c in CH.DB.CompanyRelationships.Where(w =>w.Project.IsActived==true && w.Members.Select(s=>s.Name).Contains(user)) select c;
             //模糊搜索
             if (Filters != null && !string.IsNullOrWhiteSpace(Filters.FuzzyQuery))
             {
