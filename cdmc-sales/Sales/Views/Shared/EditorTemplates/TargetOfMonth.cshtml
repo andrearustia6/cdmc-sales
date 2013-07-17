@@ -1,6 +1,7 @@
 ﻿@model Entity.TargetOfMonth
 @using Utl
 @using BLL
+@using Entity
 @Html.ValidationSummary(true)
 <style type="text/css">
     .t-edit-form-container
@@ -41,7 +42,6 @@
         @Html.HiddenFor(m => m.IsAdminConfirm)
         @Html.HiddenFor(m => m.Confirmor)
         @Html.HiddenFor(m => m.AdminConfirmor)
-        @Html.HiddenFor(m => m.ProjectID)
         <table style="padding: 10px; margin: 10px">
             <tr>
                 <td>
@@ -59,7 +59,7 @@
                         @Html.ValidationMessageFor(model => model.ProjectID)
                       }
                     }*@
-                    @{if (ViewBag.ProjectID == null)
+                    @{if (ViewBag.ProjectSelect == null)
                       {
                           if (Model.ID == 0)
                           {
@@ -68,14 +68,25 @@
                           }
                           else
                           {
-                        @Html.DropDownListFor(m => m.ProjectID, new SelectList(BLL.CRM_Logical.GetUserInvolveProject(), "ID", "Name", Model.ProjectID), new { disabled = "disabled", style = "width:135px" })
+                        @Html.DropDownListFor(m => m.ProjectID, new SelectList(CH.GetAllData<Project>().Where(s => s.ID == Model.ProjectID), "ID", "Name", Model.ProjectID), new { style = "width:135px" })
                         @Html.ValidationMessageFor(model => model.ProjectID)
+                        @Html.HiddenFor(model => model.ProjectID)
                           }
                       }
                       else
                       {
-                        @Html.DropDownListFor(m => m.ProjectID, new SelectList(BLL.CRM_Logical.GetUserInvolveProject(), "ID", "Name", (int)ViewBag.ProjectID), new { disabled = "disabled", style = "width:135px" })
+                          if (Model.ID == 0)
+                          {
+                        @Html.DropDownListFor(m => m.ProjectID, new SelectList(CH.GetAllData<Project>().Where(s => s.ID == ViewBag.ProjectSelect), "ID", "Name", (int)ViewBag.ProjectSelect), new { style = "width:135px" })
+                        @Html.ValidationMessageFor(model => model.ProjectID)
+                       
+                          }
+                          else
+                          {
+                        @Html.DropDownListFor(m => m.ProjectID, new SelectList(CH.GetAllData<Project>().Where(s => s.ID == ViewBag.ProjectSelect), "ID", "Name", (int)ViewBag.ProjectSelect), new { style = "width:135px" })
+                        @Html.ValidationMessageFor(model => model.ProjectID)
                         @Html.HiddenFor(model => model.ProjectID)
+                          }
                       }
                     }
                 </td>
