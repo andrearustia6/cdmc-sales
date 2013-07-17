@@ -6,14 +6,14 @@
 @model List<ProjectWeekPerformance>
 <fieldset>
 <legend>上周周报报表</legend>
-@{
+@*@{
     using (Html.BeginForm())
     {
 <button value="export" id="export" type="submit" name="btnExport" onclick="this.form.submit();"
             style="margin-left: 20px">
             导出</button>
     }
-    }
+    }*@
 @(
     Html.Telerik().Grid<ProjectWeekPerformance>(Model.OrderByDescending(o=>o.TotalCheckIn)).Name("ProjectWeekPerformance")
         .Columns(columns =>
