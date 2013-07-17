@@ -465,24 +465,26 @@ namespace Sales.Controllers
         private List<ViewCallListChart> GetContedtedLeadCategoryChartData(int? projectid, DateTime? startdate, DateTime? enddate)
         {
             var coms = from c in CH.DB.CompanyRelationships where  c.ProjectID != c.Members.Where(m => m.Name == c.Creator).Select(s => s.ProjectID).FirstOrDefault() select c;
-            coms = coms.Take(1);
-            foreach (var c in coms)
-            {
-                var name = c.Creator;
-                var pmem = c.Project.Members.FirstOrDefault(f=>f.Name==name);
-                var cmen = c.Members.FirstOrDefault(f => f.Name == name);
-                if (pmem != null && cmen != null)
-                {
-                    c.Members.Remove(cmen);
-                    c.Members.Add(pmem);
-                    var e = CH.DB.Entry(c);
-                    e.State = EntityState.Modified;
+            //coms = coms.Take(1);
+            //foreach (var c in coms)
+            //{
+            //    var name = c.Creator;
+            //    var pmem = c.Project.Members.FirstOrDefault(f=>f.Name==name);
+            //    var cmen = c.Members.FirstOrDefault(f => f.Name == name);
+            //    if (pmem != null && cmen != null)
+            //    {
+            //        c.Members.Remove(cmen);
+            //        c.Members.Add(pmem);
+            //        var e = CH.DB.Entry(c);
+            //        e.State = EntityState.Modified;
 
                    
                   
-                } 
-            }
-            var re = CH.DB.SaveChanges();
+            //    } 
+            //}
+            //var re = CH.DB.SaveChanges();
+
+            var leadcalls = from l in CH.DB.LeadCalls where l.ProjectID != l.Member.ProjectID select l;
             
             
             startdate = startdate == null ? new DateTime(1, 1, 1) : startdate;
