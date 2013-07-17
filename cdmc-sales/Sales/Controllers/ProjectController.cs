@@ -831,7 +831,7 @@ namespace Sales.Controllers
                 //   
                 //}
                 MemoryStream output = new MemoryStream();
-                StreamWriter writer = new StreamWriter(output, System.Text.Encoding.Default);
+                StreamWriter writer = new StreamWriter(output, System.Text.Encoding.UTF8);
 
                 writer.Write("Lead邮箱,");
                 writer.WriteLine();

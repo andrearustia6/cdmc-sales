@@ -28,7 +28,7 @@
 @(Html.Telerik().Grid(Model).Name("TargetOfMonths")
 .ToolBar(commands => commands.Insert().ImageHtmlAttributes(new { style = "margin-left:0" }))
 .DataKeys(keys => { keys.Add(s => s.ID); }).DataBinding(dataBinding => dataBinding.Server()
-                            .Select("TargetOfMonthForProject", "TargetOfMonth", new { projectid = ViewBag.ProjectID })
+    .Select("TargetOfMonthForProject", "TargetOfMonth", new { projectid = ViewBag.ProjectID })
                             .Insert("CreateEx", "TargetOfMonth")
                             .Update("EditEx", "TargetOfMonth")
                             .Delete("DeleteEx", "TargetOfMonth"))
@@ -55,4 +55,3 @@
             })
 .Resizable(resizing => resizing.Columns(true)).Editable(editing => editing.Mode(GridEditMode.PopUp))
 .Scrollable(scrolling => scrolling.Height(350)))
-
