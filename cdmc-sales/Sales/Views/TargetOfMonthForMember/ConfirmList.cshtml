@@ -1,4 +1,7 @@
 ﻿@using Entity
+<script>
+    var glstartdate;
+</script>
 @Html.Partial("contenttitle", "未确认列表")
 @(Html.Telerik().Grid<Model.AjaxTargetOfMonthForMember>().Name("Grid")
 .DataKeys(keys => { keys.Add(p => p.ID); })
@@ -25,7 +28,7 @@
 
     }).Width(100).Title("确认");
 })
-   .Editable(editing => editing.Mode(GridEditMode.PopUp))
+           .Editable(editing => editing.Mode(GridEditMode.PopUp)).ClientEvents(events => events.OnCommand("onedit"))
         .Pageable(p => p.PageSize(20))
                 .Scrollable(scrolling => scrolling.Height(350)).Filterable()
             .Sortable()
@@ -33,3 +36,11 @@
    //.Pageable(p => p.Style(GridPagerStyles.Status)
         //    .PageOnScroll(true)).Scrollable().Sortable().Filterable().Groupable()
 )
+<script>
+
+    function onedit(e) {
+        glstartdate = "";
+        glstartdate = e.dataItem.EndDate;
+        
+    }
+</script>

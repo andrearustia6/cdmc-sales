@@ -26,6 +26,7 @@
 @(Html.Telerik().Grid<TargetOfMonthForMember>(Model).Name("TargetOfMonthForMember")
     .ToolBar(commands => commands.Insert().ImageHtmlAttributes(new { style = "margin-left:0" }))
     .DataKeys(keys => { keys.Add(s => s.ID); }).DataBinding(dataBinding => dataBinding.Server()
+        
         .Select("MyTargetIndexEx", "TargetOfMonthForMember", new { projectid = ViewBag.ProjectID })
         .Insert("Insert", "TargetOfMonthForMember")
         .Update("Save", "TargetOfMonthForMember")
@@ -38,7 +39,10 @@
             c.Bound(item => item.EndDate).Width(100);
             c.Bound(item => item.Member.Name).Width(100);
             c.Template(item => (item.IsConfirm == true) ? "是" : "否").Title("是否确认").Width(100);
-            c.Command(commands => { commands.Edit(); commands.Delete(); }).Title("操作").Width(200);
+            c.Command(commands => { 
+                commands.Edit(); 
+                commands.Delete(); 
+            }).Title("操作").Width(200);
         })
 .Resizable(resizing => resizing.Columns(true)).Editable(editing => editing.Mode(GridEditMode.PopUp))
 .Filterable().Sortable().Groupable().Pageable(p => p.PageSize(20)).Scrollable(scrolling

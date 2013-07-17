@@ -1,30 +1,360 @@
 ﻿@using Utl
 @using Entity
 @model Model.AjaxTargetOfMonth
+<style type="text/css">
+   
+    
+.t-edit-form-container
+{
+        
+margin: 1em;
+text-align: right;
+}
+td
+{
+text-align:left;
+}
+.validation-summary-errors
+{
+text-align: left;
+}
+.t-window-titlebar .t-window-actions
+{
+    display:none;
+}
+</style>
+<script>
+    var popup = $("#TargetOfMonthPopUp");
+    popup.css({ "top": "20px" });
+    $("#hidenTd1").show();
+    $("#hidenTd2").show();
+    $("#CheckInhidenTd1").show();
+    $("#CheckInhidenTd2").show();
+    //var ds = $("#StartDate").val();
+    var firstDate = new Date(glstartdate);
+    
+    firstDate.setDate(1);
+    var endDate = new Date(firstDate);
+    endDate.setMonth(firstDate.getMonth() + 1);
+    endDate.setDate(0);
+    var month = firstDate.getMonth() + 1;
+    var ofTheWeek = firstDate.getDay();
+    var lastDay = endDate.getDate();
+    if (ofTheWeek == 5) {
+        
+        $("#1stWeek").text(month + "-1～" + month + "-7周出单目标");
+        $("#2ndWeek").text(month + "-8～" + month + "-14周出单目标");
+        $("#3rdWeek").text(month + "-15～" + month + "-21周出单目标");
+        $("#4thWeek").text(month + "-22～" + month + "-28周出单目标");
+
+        $("#CheckIn1stWeek").text(month + "-1～" + month + "-7周入账目标");
+        $("#CheckIn2ndWeek").text(month + "-8～" + month + "-14周入账目标");
+        $("#CheckIn3rdWeek").text(month + "-15～" + month + "-21周入账目标");
+        $("#CheckIn4thWeek").text(month + "-22～" + month + "-28周入账目标");
+        if (lastDay > 28) {
+            $("#5thWeek").text(month + "-29～" + month + "-" + lastDay + "周出单目标");
+            $("#CheckIn5thWeek").text(month + "-29～" + month + "-" + lastDay + "周入账目标");
+        }
+        else {
+            var item = $("#TargetOf5thWeek").data("tTextBox");
+            if (item != null) {
+                item.value(0);
+            }
+
+            item = $("#CheckInOf5thWeek").data("tTextBox");
+            if (item != null) {
+                item.value(0);
+            }
+            $("#hidenTd1").hide();
+            $("#hidenTd2").hide();
+            $("#CheckInhidenTd1").hide();
+            $("#CheckInhidenTd2").hide();
+
+        }
+    }
+    else {
+        
+        if (ofTheWeek >= 0 && ofTheWeek < 5) {
+            ofTheWeek += 7;
+        }
+        $("#1stWeek").text(month + "-1～" + month + "-" + (12 - ofTheWeek) + "周出单目标");
+        $("#2ndWeek").text(month + "-" + (13 - ofTheWeek) + "～" + month + "-" + (19 - ofTheWeek) + "周出单目标");
+        $("#3rdWeek").text(month + "-" + (20 - ofTheWeek) + "～" + month + "-" + (26 - ofTheWeek) + "周出单目标");
+        $("#4thWeek").text(month + "-" + (27 - ofTheWeek) + "～" + month + "-" + (33 - ofTheWeek) + "周出单目标");
+        $("#5thWeek").text(month + "-" + (34 - ofTheWeek) + "～" + month + "-" + lastDay + "周出单目标");
+        $("#CheckIn1stWeek").text(month + "-1～" + month + "-" + (12 - ofTheWeek) + "周入账目标");
+        $("#CheckIn2ndWeek").text(month + "-" + (13 - ofTheWeek) + "～" + month + "-" + (19 - ofTheWeek) + "周入账目标");
+        $("#CheckIn3rdWeek").text(month + "-" + (20 - ofTheWeek) + "～" + month + "-" + (26 - ofTheWeek) + "周入账目标");
+        $("#CheckIn4thWeek").text(month + "-" + (27 - ofTheWeek) + "～" + month + "-" + (33 - ofTheWeek) + "周入账目标");
+        $("#CheckIn5thWeek").text(month + "-" + (34 - ofTheWeek) + "～" + month + "-" + lastDay + "周入账目标");
+    }
+        function OnChange(e) {
+
+            $("#hidenTd1").show();
+            $("#hidenTd2").show();
+            $("#CheckInhidenTd1").show();
+            $("#CheckInhidenTd2").show();
+
+            var ds = e.currentTarget.value;
+            alert(ds);
+            var firstDate = new Date(ds);
+
+            firstDate.setDate(1);
+            var endDate = new Date(firstDate);
+            endDate.setMonth(firstDate.getMonth() + 1);
+            endDate.setDate(0);
+            var month = firstDate.getMonth() + 1;
+            var ofTheWeek = firstDate.getDay();
+            var lastDay = endDate.getDate();
+            if (ofTheWeek == 5) {
+                $("#1stWeek").text(month + "-1～" + month + "-7周出单目标");
+                $("#2ndWeek").text(month + "-8～" + month + "-14周出单目标");
+                $("#3rdWeek").text(month + "-15～" + month + "-21周出单目标");
+                $("#4thWeek").text(month + "-22～" + month + "-28周出单目标");
+
+                $("#CheckIn1stWeek").text(month + "-1～" + month + "-7周入账目标");
+                $("#CheckIn2ndWeek").text(month + "-8～" + month + "-14周入账目标");
+                $("#CheckIn3rdWeek").text(month + "-15～" + month + "-21周入账目标");
+                $("#CheckIn4thWeek").text(month + "-22～" + month + "-28周入账目标");
+                if (lastDay > 28) {
+                    $("#5thWeek").text(month + "-29～" + month + "-" + lastDay + "周出单目标");
+                    $("#CheckIn5thWeek").text(month + "-29～" + month + "-" + lastDay + "周入账目标");
+                }
+                else {
+                    var item = $("#TargetOf5thWeek").data("tTextBox");
+                    if (item != null) {
+                        item.value(0);
+                    }
+
+                    item = $("#CheckInOf5thWeek").data("tTextBox");
+                    if (item != null) {
+                        item.value(0);
+                    }
+                    $("#hidenTd1").hide();
+                    $("#hidenTd2").hide();
+                    $("#CheckInhidenTd1").hide();
+                    $("#CheckInhidenTd2").hide();
+
+                }
+            }
+            else {
+                if (ofTheWeek >= 0 && ofTheWeek < 5) {
+                    ofTheWeek += 7;
+                }
+                $("#1stWeek").text(month + "-1～" + month + "-" + (12 - ofTheWeek) + "周出单目标");
+                $("#2ndWeek").text(month + "-" + (13 - ofTheWeek) + "～" + month + "-" + (19 - ofTheWeek) + "周出单目标");
+                $("#3rdWeek").text(month + "-" + (20 - ofTheWeek) + "～" + month + "-" + (26 - ofTheWeek) + "周出单目标");
+                $("#4thWeek").text(month + "-" + (27 - ofTheWeek) + "～" + month + "-" + (33 - ofTheWeek) + "周出单目标");
+                $("#5thWeek").text(month + "-" + (34 - ofTheWeek) + "～" + month + "-" + lastDay + "周出单目标");
+
+                $("#CheckIn1stWeek").text(month + "-1～" + month + "-" + (12 - ofTheWeek) + "周入账目标");
+                $("#CheckIn2ndWeek").text(month + "-" + (13 - ofTheWeek) + "～" + month + "-" + (19 - ofTheWeek) + "周入账目标");
+                $("#CheckIn3rdWeek").text(month + "-" + (20 - ofTheWeek) + "～" + month + "-" + (26 - ofTheWeek) + "周入账目标");
+                $("#CheckIn4thWeek").text(month + "-" + (27 - ofTheWeek) + "～" + month + "-" + (33 - ofTheWeek) + "周入账目标");
+                $("#CheckIn5thWeek").text(month + "-" + (34 - ofTheWeek) + "～" + month + "-" + lastDay + "周入账目标");
+            }
+        }
+    
+</script>
 <fieldset>
-    <legend>请确认以下项目月目标</legend>
+    <legend style="text-align:left">请确认以下月目标</legend>
     <table style="padding: 10px; margin: 10px">
+        <tr>
+            <td>
+                @Html.LabelFor(model => model.Creator)
+            </td>
+            <td >
+                @Html.TextBoxFor(model => model.Creator, new { @readOnly = "true", style = "border-style: none" })
+            </td>
+            <td >
+                @Html.LabelFor(model => model.ProjectName)
+            </td>
+            <td style="width: 220px; text-align: right;">
+                @Html.TextBoxFor(m => m.ProjectName, new { @readOnly = "true", style = "border-style: none;width:100%" })
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(model => model.StartDate)
+            </td>
+            <td>
+                @Html.TextBoxFor(model => model.StartDate, new { @readOnly = "true", style = "border-style: none" })
+                @*@Html.TextBoxFor(model => model.StartDate, new { @readOnly = "true", style = "border-style: none" })*@
+                @*@Html.Telerik().DatePickerFor(model => model.StartDate).Value(Model.ID == 0 ? DateTime.Now.StartOfMonth() : Model.StartDate).ClientEvents(e => e.OnChange("OnChange").OnLoad("OnChange"))*@
+                 @*@Html.Telerik().DatePickerFor(model => model.StartDate).Value(Model.StartDate).ClientEvents(e => e.OnChange("setweek").OnLoad("setweek"))*@
+            </td>
+            <td>
+                @Html.LabelFor(model => model.EndDate)
+            </td>
+            <td>
+            @Html.TextBoxFor(model => model.EndDate, new { @readOnly = "true", style = "border-style: none" })
+            @*@Html.Telerik().DatePickerFor(model => model.EndDate).Format("yyyy/M/d")*@
+                @*@Html.TextBoxFor(model => model.StartDate, new { @readOnly = "true", style = "border-style: none" })*@
+            </td>
+        </tr>
+    </table>
+
+    <fieldset>
+         <legend style="text-align:left">出单目标</legend>
+         <table>
+            <tr>
+                <td rowspan="5">
+                   @Html.LabelFor(model => model.Deal)
+                </td>
+                <td rowspan="5">
+                        @Html.TextBoxFor(model => model.Deal, new { @readOnly = "true", style = "border-style: none" })
+                        
+                </td>
+                <td style="width: 140px; text-align: right;">
+                <label id="1stWeek">
+                        第一周出单目标</label>
+                    @*@Html.LabelFor(model => model.TargetOf1stWeek)*@
+                    
+                </td>
+                <td>
+                    @Html.TextBoxFor(model => model.TargetOf1stWeek, new { @readOnly = "true", style = "border-style: none" })
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 140px; text-align: right;">
+                    <label id="2ndWeek">
+                        第二周出单目标</label>
+                    @*@Html.LabelFor(model => model.TargetOf2ndWeek)*@
+                    
+                </td>
+                <td>
+                    @Html.TextBoxFor(model => model.TargetOf2ndWeek, new { @readOnly = "true", style = "border-style: none" })
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 140px; text-align: right;">
+                    <label id="3rdWeek">
+                        第三周出单目标</label>
+                    @*@Html.LabelFor(model => model.TargetOf3rdWeek)*@
+                    
+                </td>
+                <td>
+                    @Html.TextBoxFor(model => model.TargetOf3rdWeek, new { @readOnly = "true", style = "border-style: none" })
+                </td>
+            </tr>
+            <tr>
+                <td  style="width: 140px; text-align: right;">
+                    <label id="4thWeek">
+                        第四周出单目标</label>
+                    @*@Html.LabelFor(model => model.TargetOf4thWeek)*@
+                    
+                </td>
+                <td >
+                   @Html.TextBoxFor(model => model.TargetOf4thWeek, new { @readOnly = "true", style = "border-style: none" })
+                </td>
+            </tr>
+            <tr>
+                
+                <td id="hidenTd1" style="width: 140px; text-align: right;">
+                    
+                    <label id="5thWeek">
+                        第五周出单目标</label>
+                    @*@Html.LabelFor(model => model.TargetOf5thWeek)*@
+                </td>
+                <td id="hidenTd2">
+                    @Html.TextBoxFor(model => model.TargetOf5thWeek, new { @readOnly = "true", style = "border-style: none" })
+                </td>
+            </tr>
+         </table>
+        </fieldset>
+        <fieldset>
+         <legend style="text-align:left">入账目标</legend>
+         <table>
+            <tr>
+                <td rowspan="5">
+                    @Html.LabelFor(model => model.CheckIn)
+                </td>
+                <td rowspan="5">
+                        @Html.TextBoxFor(model => model.CheckIn, new { @readOnly = "true", style = "border-style: none" })
+                </td>
+                <td style="width: 140px; text-align: right;">
+                <label id="CheckIn1stWeek">
+                        第一周入账目标</label>
+                    @*@Html.LabelFor(model => model.TargetOf1stWeek)*@
+                    
+                </td>
+                <td>
+                    @Html.TextBoxFor(model => model.CheckInOf1stWeek, new { @readOnly = "true", style = "border-style: none" })
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 140px; text-align: right;">
+                    <label id="CheckIn2ndWeek">
+                        第二周入账目标</label>
+                    @*@Html.LabelFor(model => model.TargetOf2ndWeek)*@
+                    
+                </td>
+                <td>
+                    @Html.TextBoxFor(model => model.CheckInOf2ndWeek, new { @readOnly = "true", style = "border-style: none" })
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 140px; text-align: right;">
+                    <label id="CheckIn3rdWeek">
+                        第三周入账目标</label>
+                    @*@Html.LabelFor(model => model.TargetOf3rdWeek)*@
+                    
+                </td>
+                <td>
+                    @Html.TextBoxFor(model => model.CheckInOf3rdWeek, new { @readOnly = "true", style = "border-style: none" })
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 140px; text-align: right;">
+                    <label id="CheckIn4thWeek">
+                        第四周入账目标</label>
+                    @*@Html.LabelFor(model => model.TargetOf4thWeek)*@
+                    
+                </td>
+                <td >
+                   @Html.TextBoxFor(model => model.CheckInOf4thWeek, new { @readOnly = "true", style = "border-style: none" })
+                </td>
+            </tr>
+            <tr>
+                
+                <td id="CheckInhidenTd1" style="width: 140px; text-align: right;">
+                    
+                    <label id="CheckIn5thWeek">
+                        第五周入账目标</label>
+                    @*@Html.LabelFor(model => model.TargetOf5thWeek)*@
+                </td>
+                <td id="CheckInhidenTd2">
+                    @Html.TextBoxFor(model => model.CheckInOf5thWeek, new { @readOnly = "true", style = "border-style: none" })
+                </td>
+            </tr>
+         </table>
+          <div id="note" style="width:495px; text-align:left; color:Red">
+           请注意：入账周目标之和要求大于等于月入账目标，出单周目标之和要求大于等于月出单目标
+           </div>
+           <div id="note" style="width:495px; text-align:left; color:Red ;text-indent:4em;">
+           月目标上级确认后不可以修改，但是周目标在确认后可以继续调整 
+           </div>
+        </fieldset>
+
+
+
+
+
+    @*<table style="padding: 10px; margin: 10px">
+        <tr>
+            <td>
+                @Html.LabelFor(model => model.MemberName)
+            </td>
+            <td colspan="3">
+                @Html.TextBoxFor(model => model.MemberName, new { @readOnly = "true", style = "border-style: none" })
+            </td>
+        </tr>
         <tr>
             <td>
                 @Html.LabelFor(model => model.ProjectName)
             </td>
             <td colspan="3">
-                @Html.TextBoxFor(model => model.ProjectName, new { @readOnly = "true", style = "border-style: none" })
-            </td>
-        </tr>
-        <tr>
-            <td>
-                @Html.LabelFor(model => model.Creator)
-            </td>
-            <td>
-                @Html.TextBoxFor(model => model.Creator, new { @readOnly = "true", style = "border-style: none" })
-            </td>
-            <td>
-                <label id="1stWeek">
-                    第一周目标</label>
-            </td>
-            <td>
-                @Html.TextBoxFor(model => model.TargetOf1stWeek, new { @readOnly = "true", style = "border-style: none" })
+                @Html.TextBoxFor(m => m.ProjectName, new { @readOnly = "true", style = "border-style: none" })
             </td>
         </tr>
         <tr>
@@ -35,26 +365,10 @@
                 @Html.TextBoxFor(model => model.StartDate, new { @readOnly = "true", style = "border-style: none" })
             </td>
             <td>
-                <label id="2ndWeek">
-                    第二周目标</label>
-            </td>
-            <td>
-                @Html.TextBoxFor(model => model.TargetOf2ndWeek, new { @readOnly = "true", style = "border-style: none" })
-            </td>
-        </tr>
-        <tr>
-            <td>
                 @Html.LabelFor(model => model.EndDate)
             </td>
             <td>
                 @Html.TextBoxFor(model => model.EndDate, new { @readOnly = "true", style = "border-style: none" })
-            </td>
-            <td>
-                <label id="3rdWeek">
-                    第三周目标</label>
-            </td>
-            <td>
-                @Html.TextBoxFor(model => model.TargetOf3rdWeek, new { @readOnly = "true", style = "border-style: none" })
             </td>
         </tr>
         <tr>
@@ -62,30 +376,28 @@
                 @Html.LabelFor(model => model.Deal)
             </td>
             <td>
-                @Html.TextBoxFor(model => model.Deal, new { @readOnly = "true", style = "border-style: none" })
+                @Html.Telerik().CurrencyTextBoxFor(model => model.Deal).Enable(false)
             </td>
-            <td>
-                <label id="4thWeek">
-                    第四周目标</label>
-            </td>
-            <td>
-                @Html.TextBoxFor(model => model.TargetOf4thWeek, new { @readOnly = "true", style = "border-style: none" })
-            </td>
-        </tr>
-        <tr>
             <td>
                 @Html.LabelFor(model => model.CheckIn)
             </td>
             <td>
-                @Html.TextBoxFor(model => model.CheckIn, new { @readOnly = "true", style = "border-style: none" })
-            </td>
-            <td id="hidenTd1">
-                <label id="5thWeek">
-                    第五周目标</label>
-            </td>
-            <td id="hidenTd2">
-                @Html.TextBoxFor(model => model.TargetOf5thWeek, new { @readOnly = "true", style = "border-style: none" })
+                @Html.Telerik().CurrencyTextBoxFor(m => m.CheckIn).Enable(false)
             </td>
         </tr>
-    </table>
+    </table>*@
+    
 </fieldset>
+<script type="text/javascript">
+
+
+    //setweek();
+
+    //    function document.onreadystatechange() {
+    ////        if (document.readyState == "complete") {
+    ////            //alert("");
+    ////        }
+    //    }
+
+    
+</script>

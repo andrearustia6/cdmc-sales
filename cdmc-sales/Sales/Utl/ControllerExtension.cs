@@ -33,38 +33,44 @@ namespace System.Web.Mvc
                 item.ModelState.AddModelError("", "开始时间和结束时间不在同一个月内");
 
             var ts = from et in CH.DB.TargetOfMonthForMembers
-                     where et.MemberID == t.MemberID && et.StartDate == t.StartDate && t.ProjectID == et.ProjectID
+                     where et.StartDate == t.StartDate && t.ProjectID == et.ProjectID && et.ID != t.ID && et.MemberID==t.MemberID
                      select et;
 
             if (ts.Count() > 0)
                 item.ModelState.AddModelError("", "该月的目标已经添加，不能再次添加");
 
+            if ((t.TargetOf1stWeek + t.TargetOf2ndWeek + t.TargetOf3rdWeek + t.TargetOf4thWeek + t.TargetOf5thWeek) < t.Deal)
+                item.ModelState.AddModelError("", "周出单目标总和必须大于等于月销售目标");
+
+            if ((t.CheckInOf1stWeek + t.CheckInOf2ndWeek + t.CheckInOf3rdWeek + t.CheckInOf4thWeek + t.CheckInOf5thWeek) < t.CheckIn)
+                item.ModelState.AddModelError("", "入账周目标划分总额要大于等于月入账目标划分总额");
         }
+        
 
-        public static void EditErrorStateIfTargetOfMonthNoValid(this Controller item, TargetOfMonthForMember t)
-        {
-            item.AddErrorStateIfStartDateLaterThanEndDate(t.StartDate, t.EndDate);
+        //public static void EditErrorStateIfTargetOfMonthNoValid(this Controller item, TargetOfMonthForMember t)
+        //{
+        //    item.AddErrorStateIfStartDateLaterThanEndDate(t.StartDate, t.EndDate);
 
-            if (t.StartDate.StartOfMonth() != t.StartDate)
-                item.ModelState.AddModelError("", "开始时间必须是每个月的一号");
+        //    if (t.StartDate.StartOfMonth() != t.StartDate)
+        //        item.ModelState.AddModelError("", "开始时间必须是每个月的一号");
 
-            if (t.EndDate.EndOfMonth() != t.EndDate)
-                item.ModelState.AddModelError("", "结束时间必须是每个月的最后一天");
+        //    if (t.EndDate.EndOfMonth() != t.EndDate)
+        //        item.ModelState.AddModelError("", "结束时间必须是每个月的最后一天");
 
-            //if (t.BaseDeal > t.Deal)
-            //    item.ModelState.AddModelError("", "保底目标不能大于Deal");
+        //    //if (t.BaseDeal > t.Deal)
+        //    //    item.ModelState.AddModelError("", "保底目标不能大于Deal");
 
-            if (t.Deal <= 0 || t.CheckIn <= 0)
-            {
-                item.ModelState.AddModelError("", "销售目标和入账目标必须大于0");
-            }
+        //    if (t.Deal <= 0 || t.CheckIn <= 0)
+        //    {
+        //        item.ModelState.AddModelError("", "销售目标和入账目标必须大于0");
+        //    }
 
-            if (t.IsConfirm == true)
-                item.ModelState.AddModelError("", "已确认月目标无法修改");
+        //    if (t.IsConfirm == true)
+        //        item.ModelState.AddModelError("", "已确认月目标无法修改");
 
-            if (t.StartDate.Month != t.EndDate.Month)
-                item.ModelState.AddModelError("", "开始时间和结束时间不在同一个月内");
-        }
+        //    if (t.StartDate.Month != t.EndDate.Month)
+        //        item.ModelState.AddModelError("", "开始时间和结束时间不在同一个月内");
+        //}
 
     }
     public static class TargetOfMonthControllerExtension
@@ -99,6 +105,9 @@ namespace System.Web.Mvc
 
             if ((t.TargetOf1stWeek + t.TargetOf2ndWeek + t.TargetOf3rdWeek + t.TargetOf4thWeek + t.TargetOf5thWeek) < t.Deal)
                 item.ModelState.AddModelError("", "周出单目标总和必须大于等于月销售目标");
+
+            if ((t.CheckInOf1stWeek + t.CheckInOf2ndWeek + t.CheckInOf3rdWeek + t.CheckInOf4thWeek + t.CheckInOf5thWeek) < t.CheckIn)
+                item.ModelState.AddModelError("", "入账周目标划分总额要大于等于月入账目标划分总额");
         }
 
         public static void AddErrorStateIfNotFromMondayToFriday(this Controller item, DateTime startdate, DateTime enddate)

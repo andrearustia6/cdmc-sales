@@ -949,6 +949,36 @@ namespace Model
 
         [Display(Name = "是否确认")]
         public string IsConfirm { get; set; }
+
+        [Display(Name = "第一周出单目标"), DisplayFormat(DataFormatString = "{0:c}")]
+        public decimal? TargetOf1stWeek { get; set; }
+
+        [Display(Name = "第二周出单目标"),  DisplayFormat(DataFormatString = "{0:c}")]
+        public decimal? TargetOf2ndWeek { get; set; }
+
+        [Display(Name = "第三周出单目标"),  DisplayFormat(DataFormatString = "{0:c}")]
+        public decimal? TargetOf3rdWeek { get; set; }
+
+        [Display(Name = "第四周出单目标"),  DisplayFormat(DataFormatString = "{0:c}")]
+        public decimal? TargetOf4thWeek { get; set; }
+
+        [Display(Name = "第五周出单目标"),  DisplayFormat(DataFormatString = "{0:c}")]
+        public decimal? TargetOf5thWeek { get; set; }
+
+        [Display(Name = "第一周入账目标"),  DisplayFormat(DataFormatString = "{0:c}")]
+        public decimal? CheckInOf1stWeek { get; set; }
+
+        [Display(Name = "第二周入账目标"),  DisplayFormat(DataFormatString = "{0:c}")]
+        public decimal? CheckInOf2ndWeek { get; set; }
+
+        [Display(Name = "第三周入账目标"),  DisplayFormat(DataFormatString = "{0:c}")]
+        public decimal? CheckInOf3rdWeek { get; set; }
+
+        [Display(Name = "第四周入账目标"),  DisplayFormat(DataFormatString = "{0:c}")]
+        public decimal? CheckInOf4thWeek { get; set; }
+
+        [Display(Name = "第五周入账目标"),  DisplayFormat(DataFormatString = "{0:c}")]
+        public decimal? CheckInOf5thWeek { get; set; }
     }
 
     public class AjaxTargetOfMonth
@@ -1006,6 +1036,21 @@ namespace Model
 
         [Display(Name = "创建时间")]
         public DateTime? CreatedDate { get; set; }
+
+        [Display(Name = "第一周入账目标"), DisplayFormat(DataFormatString = "{0:c}")]
+        public decimal? CheckInOf1stWeek { get; set; }
+
+        [Display(Name = "第二周入账目标"), DisplayFormat(DataFormatString = "{0:c}")]
+        public decimal? CheckInOf2ndWeek { get; set; }
+
+        [Display(Name = "第三周入账目标"), DisplayFormat(DataFormatString = "{0:c}")]
+        public decimal? CheckInOf3rdWeek { get; set; }
+
+        [Display(Name = "第四周入账目标"), DisplayFormat(DataFormatString = "{0:c}")]
+        public decimal? CheckInOf4thWeek { get; set; }
+
+        [Display(Name = "第五周入账目标"), DisplayFormat(DataFormatString = "{0:c}")]
+        public decimal? CheckInOf5thWeek { get; set; }
     }
 
     public class AjaxEmployee

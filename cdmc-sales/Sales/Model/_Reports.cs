@@ -13,22 +13,71 @@ namespace Model
         public DateTime EndDate { get; set; }
         public decimal? TotalTarget { get; set; }
         public decimal? TotalCheckIn{ get; set; }
+        /// <summary>
+        /// 总入账目标完成百分比
+        /// </summary>
+        public decimal? TotalCheckInDiffer {
+            get
+            {
+                return TotalCheckIn - TotalTarget;
+            }
+        }
         public double TotalPercent { get { return Utl.Utl.GetPercent(TotalCheckIn, TotalTarget); } }
         public int LeftDay { get; set; } 
+        /// <summary>
+        /// 入账目标
+        /// </summary>
         public decimal? Target { get; set; }
+        /// <summary>
+        /// 出单目标
+        /// </summary>
+        public decimal? DealTarget { get; set; }
         public string ProjectName { get; set; }
         public int? ProjectID { get; set; }
+        /// <summary>
+        /// 入账实际
+        /// </summary>
         public decimal? Income { get; set; }
         public decimal? Payment { get; set; }
+        /// <summary>
+        /// RMB出单金额
+        /// </summary>
         public decimal? RMBPayment { get; set; }
+        /// <summary>
+        /// USD出单金额
+        /// </summary>
         public decimal? USDPayment { get; set; }
+        /// <summary>
+        /// 入账百分比
+        /// </summary>
         public double percent { get { return Utl.Utl.GetPercent(Income, Target); } }
+        /// <summary>
+        /// 出单百分比
+        /// </summary>
+        public double dealpercent { 
+            get 
+            {
+                if (RMBPayment == null)
+                    RMBPayment = 0;
+                if (USDPayment == null)
+                    USDPayment = 0;
+                if (DealTarget == null)
+                    DealTarget = 0;
+                if (rate == null)
+                    rate = 0;
+                return Utl.Utl.GetPercent((double)RMBPayment + (double)USDPayment * rate, (double)DealTarget); 
+            } 
+        }
         public string Manager { get; set; }
         public string Leader { get; set; }
         /// <summary>
         /// 项目人数
         /// </summary>
         public int? MemberCount { get; set; }
+        /// <summary>
+        /// 货币汇率
+        /// </summary>
+        public double rate { get; set; }
     }
 
     public class AjaxEmployeeCheckInDistribution

@@ -35,17 +35,24 @@
             .Columns(c =>
             {
                 c.Bound(item => item.Project.Name_CH).Width(300);
-                c.Bound(item => item.Deal).Width(100).Format("{0:c}").Width(100);
+                c.Bound(item => item.Deal).Width(100).Format("{0:c}").Aggregate(aggregates => aggregates.Sum()).Format("{0:c}").FooterTemplate(@<text>出单目标合计:
+@item.Sum</text>).Width(100);
                 c.Bound(item => item.CheckIn).Width(100).Aggregate(aggregates => aggregates.Sum()).Format("{0:c}").FooterTemplate(@<text>入账目标合计:
 @item.Sum</text>);
                 c.Bound(item => item.StartDate).Format("{0:d}").Width(100);
                 c.Bound(item => item.EndDate).Format("{0:d}").Width(100);
-                c.Bound(item => item.TargetOf1stWeek).Format("{0:c}").Width(100);
-                c.Bound(item => item.TargetOf2ndWeek).Format("{0:c}").Width(100);
-                c.Bound(item => item.TargetOf3rdWeek).Format("{0:c}").Width(100);
-                c.Bound(item => item.TargetOf4thWeek).Format("{0:c}").Width(100);
-                c.Bound(item => item.TargetOf5thWeek).Format("{0:c}").Width(100);
-                c.Command(commands => { commands.Edit(); commands.Delete(); }).Title("操作").Width(200);
+                //c.Bound(item => item.TargetOf1stWeek).Format("{0:c}").Width(100);
+                //c.Bound(item => item.TargetOf2ndWeek).Format("{0:c}").Width(100);
+                //c.Bound(item => item.TargetOf3rdWeek).Format("{0:c}").Width(100);
+                //c.Bound(item => item.TargetOf4thWeek).Format("{0:c}").Width(100);
+                //c.Bound(item => item.TargetOf5thWeek).Format("{0:c}").Width(100);
+                //c.Bound(item => item.CheckInOf1stWeek).Format("{0:c}").Width(100);
+                //c.Bound(item => item.CheckInOf2ndWeek).Format("{0:c}").Width(100);
+                //c.Bound(item => item.CheckInOf3rdWeek).Format("{0:c}").Width(100);
+                //c.Bound(item => item.CheckInOf4thWeek).Format("{0:c}").Width(100);
+                //c.Bound(item => item.CheckInOf5thWeek).Format("{0:c}").Width(100);
+                c.Command(commands => { commands.Edit(); commands.Delete(); }).Title("操作").Width(120);
             })
 .Resizable(resizing => resizing.Columns(true)).Editable(editing => editing.Mode(GridEditMode.PopUp))
 .Scrollable(scrolling => scrolling.Height(350)))
+
