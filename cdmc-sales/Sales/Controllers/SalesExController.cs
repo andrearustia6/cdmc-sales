@@ -482,7 +482,7 @@ namespace Sales.Controllers
             leadCall.CallBackDate = ajaxViewLeadCall.CallBackDate;
             leadCall.CallDate = ajaxViewLeadCall.CallDate;
             leadCall.LeadCallTypeID = ajaxViewLeadCall.CallTypeId;
-            leadCall.Member = CH.DB.Members.FirstOrDefault(c => c.Name == Employee.CurrentUserName);
+            //leadCall.Member = CH.DB.Members.FirstOrDefault(c => c.Name == Employee.CurrentUserName);
             leadCall.Result = ajaxViewLeadCall.Result;
             CH.Edit<LeadCall>(leadCall);
             return null;
