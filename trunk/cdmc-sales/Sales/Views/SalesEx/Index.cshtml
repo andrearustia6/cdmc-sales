@@ -205,10 +205,10 @@
         });
         RefreshCrmList(null);
         $('#crmdetailscontainer').html('');
-        //        $('#search').unbind('click').bind('click', function () {
-        //            RefreshCrmList(null);
-        //            $('#crmdetailscontainer').html('');
-        //        });
+                $('#search').unbind('click').bind('click', function () {
+                    RefreshCrmList(null);
+                    $('#crmdetailscontainer').html('');
+                });
     });
 
     function seachBind() {
