@@ -116,6 +116,8 @@ namespace Sales.Model
             {
                 query = query.Where(q => q.Categorys.Any(c => c.ID == Filters.CategoryId.Value));
             }
+
+          
             return query;
         }
 
@@ -238,7 +240,7 @@ namespace Sales.Model
 
 
                        };
-            string v = data.ToString();
+           // string v = data.ToString();
             return data;
         }
 
