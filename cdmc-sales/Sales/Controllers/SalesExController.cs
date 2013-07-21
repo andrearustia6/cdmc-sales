@@ -31,9 +31,6 @@ namespace Sales.Controllers
                 AjaxCrmTypedList ajaxCrmTypedList = GetNavigationBar();
                 return View(ajaxCrmTypedList);
             }
-
-
-
         }
 
         /// <summary>
@@ -49,7 +46,7 @@ namespace Sales.Controllers
                 var crmid = int.Parse(ids[0]);
 
                 var c = CH.GetDataById<CompanyRelationship>(crmid);
-
+                
                 var leadid = 0;
                 if (ids.Count() > 1)
                 {
@@ -57,9 +54,9 @@ namespace Sales.Controllers
                     c.Company.Leads = c.Company.Leads.Where(l => l.ID == leadid).ToList();
                 }
                 var deals = CRM_Logical.GetDeals(true);
-                var calls = from call in CH.DB.LeadCalls select call;
-                decimal rmb = deals.Where(d => d.CompanyRelationshipID == c.ID && d.Currencytype.Name == "RMB").Count() == 0 ? 0 : deals.Where(d => d.CompanyRelationshipID == c.ID && d.Currencytype.Name == "RMB").Sum(s => s.Payment);
-                decimal usd = deals.Where(d => d.CompanyRelationshipID == c.ID && d.Currencytype.Name == "USD").Count() == 0 ? 0 : deals.Where(d => d.CompanyRelationshipID == c.ID && d.Currencytype.Name == "USD").Sum(s => s.Payment);
+                 var calls = from call in CH.DB.LeadCalls select call;
+                decimal rmb= deals.Where(d => d.CompanyRelationshipID == c.ID && d.Currencytype.Name == "RMB").Count() ==0 ? 0 : deals.Where(d => d.CompanyRelationshipID == c.ID && d.Currencytype.Name == "RMB").Sum(s => s.Payment);
+                decimal usd = deals.Where(d => d.CompanyRelationshipID == c.ID && d.Currencytype.Name == "USD").Count()==0 ? 0 : deals.Where(d => d.CompanyRelationshipID == c.ID && d.Currencytype.Name == "USD").Sum(s => s.Payment);
                 if (c != null)
                 {
                     var data = new AjaxCRM()
@@ -74,7 +71,7 @@ namespace Sales.Controllers
                         CompanyCategories = c.Categorys,
                         CompanyDistinct = c.Company.DistrictNumber,
                         CompanyCreateDate = c.Company.CreatedDate,
-                        CompanyPayment = CRM_Logical.GetTotalPayment(true, c.ID),
+                        CompanyPayment = CRM_Logical.GetTotalPayment(true,c.ID),
                         CRMID = c.ID,
                         DistrictNumberID = c.Company.DistrictNumberID,
                         ProgressID = c.ProgressID,
@@ -121,37 +118,37 @@ namespace Sales.Controllers
                                                           Result = call.Result
                                                       }),
                                          AjaxHistoryCalls = (from hcall in calls.Where(w => w.LeadID == l.ID && w.ProjectID != c.ProjectID)
-                                                             select new AjaxCall
-                                                             {
-                                                                 CallDate = hcall.CallDate,
-                                                                 CallBackDate = hcall.CallBackDate,
-                                                                 CallType = hcall.LeadCallType.Name,
-                                                                 Caller = hcall.Member.Name,
-                                                                 LeadCallTypeCode = hcall.LeadCallType.Code,
-                                                                 LeadCallID = hcall.ID,
-                                                                 Result = hcall.Result,
-                                                                 EndDate = hcall.Project.EndDate,
-                                                                 ProjectID = hcall.ProjectID,
-                                                                 ProjectName = hcall.Project.Name_CH
-                                                             }),
-
+                                                      select new AjaxCall
+                                                      {
+                                                          CallDate = hcall.CallDate,
+                                                          CallBackDate = hcall.CallBackDate,
+                                                          CallType = hcall.LeadCallType.Name,
+                                                          Caller = hcall.Member.Name,
+                                                          LeadCallTypeCode = hcall.LeadCallType.Code,
+                                                          LeadCallID = hcall.ID,
+                                                          Result = hcall.Result,
+                                                          EndDate = hcall.Project.EndDate,
+                                                          ProjectID=hcall.ProjectID,
+                                                          ProjectName=hcall.Project.Name_CH
+                                                      }),
+                                        
 
                                      }),
                         AjaxDeals = (from deal in CH.DB.Deals.Where(d => d.CompanyRelationship.CompanyID == c.CompanyID && d.ProjectID != c.ProjectID)
-                                     select new AjaxDeal
-                                     {
-                                         Sales = deal.Sales,
-                                         PackageName = deal.Package.Name_CH,
-                                         Payment = deal.Payment,
-                                         Currencytype = deal.Currencytype,
-                                         Income = deal.Income,
-                                         ProjectName = deal.Project.Name_CH
-
-                                     }),
+                                        select new AjaxDeal
+                                        {
+                                            Sales=deal.Sales,
+                                            PackageName = deal.Package.Name_CH,
+                                            Payment=deal.Payment,
+                                            Currencytype=deal.Currencytype,
+                                            Income=deal.Income,
+                                            ProjectName=deal.Project.Name_CH
+                                            
+                                        }),
                         RMBCompanyPayment = rmb,
                         USDCompanyPayment = usd
                     };
-
+                    
                     return PartialView(@"~\views\salesex\salesexitem.cshtml", data);
                 }
                 //var d = GetNavigationBar(filters);
@@ -166,18 +163,17 @@ namespace Sales.Controllers
         }
         public ActionResult GetAjaxLeadCalls(int leadId, int projectid)
         {
-            var leadcalls = CH.DB.LeadCalls.Where(l => l.LeadID == leadId && l.ProjectID == projectid);
+            var leadcalls = CH.DB.LeadCalls.Where(l=>l.LeadID==leadId && l.ProjectID==projectid);
             var ajaxcalls = from call in leadcalls
-                            select new
-                            {
-                                CallDate = call.CallDate,
-                                CallBackDate = call.CallBackDate,
-                                CallType = call.LeadCallType.Name,
-                                Caller = call.Member.Name,
-                                LeadCallTypeCode = call.LeadCallType.Code,
-                                LeadCallID = call.ID,
-                                Result = call.Result == null ? "" : call.Result
-                            };
+                                 select new{
+                                     CallDate = call.CallDate,
+                                     CallBackDate = call.CallBackDate,
+                                     CallType = call.LeadCallType.Name,
+                                     Caller = call.Member.Name,
+                                     LeadCallTypeCode = call.LeadCallType.Code,
+                                     LeadCallID = call.ID,
+                                     Result = call.Result==null?"":call.Result
+                                 };
             return Json(ajaxcalls);
         }
         public ActionResult GetAjaxHistoryLeadCalls(int leadId, int projectid)
@@ -315,7 +311,7 @@ namespace Sales.Controllers
 
 
         [ValidateInput(false)]
-        public ActionResult CheckCompanyExist(int? projectid, string beforeUpdateCN, string afterUpdateCN, string beforeUpdateEN, string afterUpdateEN)
+        public ActionResult CheckCompanyExist(int?projectid ,string beforeUpdateCN, string afterUpdateCN, string beforeUpdateEN, string afterUpdateEN)
         {
             var exist = from c in CH.DB.CompanyRelationships.Where(w => w.ProjectID == projectid) select c;
             var chcount = exist.Count((c => !string.IsNullOrEmpty(afterUpdateCN) & c.Company.Name_CH == afterUpdateCN && c.Company.Name_CH != beforeUpdateCN));
@@ -334,8 +330,8 @@ namespace Sales.Controllers
         }
 
         public ActionResult GetEditLead(int leadId)
-        {
-            var lead = CH.DB.Leads.FirstOrDefault(f => f.ID == leadId);
+        {           
+            var lead = CH.DB.Leads.FirstOrDefault(f => f.ID == leadId);  
             AjaxViewLead ajaxViewLead = new AjaxViewLead()
             {
                 CompanyId = lead.CompanyID.Value,
@@ -364,7 +360,7 @@ namespace Sales.Controllers
                 PersonalCellPhone = lead.PersonalCellPhone,
                 PersonalFax = lead.PersonalFax,
                 Comment = lead.Comment,
-                LeadRoles = lead.LeadRoles == null ? string.Empty : lead.LeadRoles,
+                LeadRoles = lead.LeadRoles==null?string.Empty:lead.LeadRoles,
                 QQ = lead.QQ,
                 Twitter = lead.Twitter,
                 Branch = lead.Branch
@@ -376,7 +372,7 @@ namespace Sales.Controllers
         [HttpPost]
         public ActionResult EditLead(AjaxViewLead ajaxViewLead, string[] leadRole)
         {
-            var lead = CH.DB.Leads.FirstOrDefault(c => c.ID == ajaxViewLead.LeadId);
+            var lead = CH.DB.Leads.FirstOrDefault(c => c.ID == ajaxViewLead.LeadId);           
             lead.Name_CH = ajaxViewLead.Name_CN;
             lead.Name_EN = ajaxViewLead.Name_EN;
             lead.CompanyID = ajaxViewLead.CompanyId;
@@ -401,7 +397,7 @@ namespace Sales.Controllers
             lead.PersonalPhone = ajaxViewLead.PersonalPhone;
             lead.PersonalCellPhone = ajaxViewLead.PersonalCellPhone;
             lead.PersonalFax = ajaxViewLead.PersonalFax;
-            lead.Comment = ajaxViewLead.Comment;
+            lead.Comment = ajaxViewLead.Comment;           
             lead.QQ = ajaxViewLead.QQ;
             lead.Twitter = ajaxViewLead.Twitter;
             lead.Branch = ajaxViewLead.Branch;
@@ -475,7 +471,7 @@ namespace Sales.Controllers
 
         public ActionResult GetEditLeadCall(int leadCallId)
         {
-            var leadCall = CH.DB.LeadCalls.FirstOrDefault(c => c.ID == leadCallId);
+            var leadCall = CH.DB.LeadCalls.FirstOrDefault(c => c.ID == leadCallId);           
             AjaxViewLeadCall ajaxViewLeadCall = new AjaxViewLeadCall();
             ajaxViewLeadCall.CallId = leadCallId;
             ajaxViewLeadCall.CallBackDate = leadCall.CallBackDate;
@@ -492,7 +488,7 @@ namespace Sales.Controllers
         [ValidateInput(false)]
         public ActionResult EditLeadCall(AjaxViewLeadCall ajaxViewLeadCall)
         {
-            var leadCall = CH.DB.LeadCalls.FirstOrDefault(c => c.ID == ajaxViewLeadCall.CallId);
+            var leadCall = CH.DB.LeadCalls.FirstOrDefault(c => c.ID == ajaxViewLeadCall.CallId);             
             leadCall.CallBackDate = ajaxViewLeadCall.CallBackDate;
             leadCall.CallDate = ajaxViewLeadCall.CallDate;
             leadCall.LeadCallTypeID = ajaxViewLeadCall.CallTypeId;
@@ -555,7 +551,7 @@ namespace Sales.Controllers
             companyRelationship.Company = new Company();
             companyRelationship.Company.AreaID = quickEntry.IndustryId;
             companyRelationship.Company.CompanyTypeID = quickEntry.TypeId;
-            companyRelationship.Company.Contact = string.IsNullOrEmpty(quickEntry.Phone) ? "" : quickEntry.Phone.Trim();
+            companyRelationship.Company.Contact = string.IsNullOrEmpty(quickEntry.Phone)?"":quickEntry.Phone.Trim();
             companyRelationship.Company.DistrictNumberID = quickEntry.DistrictNumberId;
             companyRelationship.Company.Name_CH = string.IsNullOrEmpty(quickEntry.Name_CN) ? "" : quickEntry.Name_CN.Trim();
             companyRelationship.Company.Name_EN = string.IsNullOrEmpty(quickEntry.Name_EN) ? "" : quickEntry.Name_EN.Trim();
@@ -610,9 +606,9 @@ namespace Sales.Controllers
 
                 if (lead.ID > 0)
                 {
-
+                    
                     var c = CH.GetDataById<CompanyRelationship>(companyRelationship.ID);
-                    var mem = c.Members.FirstOrDefault(m => m.Name == Employee.CurrentUserName && m.ProjectID == c.ProjectID);
+                    var mem = c.Members.FirstOrDefault(m => m.Name == Employee.CurrentUserName && m.ProjectID==c.ProjectID);
                     leadCall = new LeadCall()
                     {
                         CallBackDate = quickEntry.CallBackDate,
@@ -641,25 +637,25 @@ namespace Sales.Controllers
             companyRelationship.Company.Business = string.IsNullOrEmpty(ajaxViewSaleCompany.Business) ? "" : ajaxViewSaleCompany.Business.Trim();
             companyRelationship.Company.CompanyTypeID = ajaxViewSaleCompany.TypeId;
             companyRelationship.Company.Contact = string.IsNullOrEmpty(ajaxViewSaleCompany.Phone) ? "" : ajaxViewSaleCompany.Phone.Trim();
-            companyRelationship.Company.Description = string.IsNullOrEmpty(ajaxViewSaleCompany.Desc) ? "" : ajaxViewSaleCompany.Desc.Trim();
+            companyRelationship.Company.Description =  string.IsNullOrEmpty(ajaxViewSaleCompany.Desc) ? "" : ajaxViewSaleCompany.Desc.Trim();
             companyRelationship.Company.DistrictNumberID = ajaxViewSaleCompany.DistrictNumberId;
-            companyRelationship.Company.Fax = string.IsNullOrEmpty(ajaxViewSaleCompany.Fax) ? "" : ajaxViewSaleCompany.Fax.Trim();
-            companyRelationship.Company.Name_CH = string.IsNullOrEmpty(ajaxViewSaleCompany.Name_CN) ? "" : ajaxViewSaleCompany.Name_CN.Trim();
-            companyRelationship.Company.Name_EN = string.IsNullOrEmpty(ajaxViewSaleCompany.Name_EN) ? "" : ajaxViewSaleCompany.Name_EN.Trim();
-            companyRelationship.Company.WebSite = string.IsNullOrEmpty(ajaxViewSaleCompany.WebSite) ? "" : ajaxViewSaleCompany.WebSite.Trim();
-            companyRelationship.Company.ZIP = string.IsNullOrEmpty(ajaxViewSaleCompany.ZipCode) ? "" : ajaxViewSaleCompany.ZipCode.Trim();
+            companyRelationship.Company.Fax =  string.IsNullOrEmpty(ajaxViewSaleCompany.Fax) ? "" : ajaxViewSaleCompany.Fax.Trim();
+            companyRelationship.Company.Name_CH =  string.IsNullOrEmpty(ajaxViewSaleCompany.Name_CN) ? "" : ajaxViewSaleCompany.Name_CN.Trim();
+            companyRelationship.Company.Name_EN =  string.IsNullOrEmpty(ajaxViewSaleCompany.Name_EN) ? "" : ajaxViewSaleCompany.Name_EN.Trim();
+            companyRelationship.Company.WebSite =  string.IsNullOrEmpty(ajaxViewSaleCompany.WebSite) ? "" : ajaxViewSaleCompany.WebSite.Trim();
+            companyRelationship.Company.ZIP =  string.IsNullOrEmpty(ajaxViewSaleCompany.ZipCode) ? "" : ajaxViewSaleCompany.ZipCode.Trim();
             companyRelationship.Company.CreatedDate = DateTime.Now;
             companyRelationship.Company.Creator = Employee.CurrentUserName;
             companyRelationship.Company.ModifiedDate = DateTime.Now;
             companyRelationship.Company.ModifiedUser = Employee.CurrentUserName;
-            companyRelationship.Company.Address_EN = string.IsNullOrEmpty(ajaxViewSaleCompany.Address_EN) ? "" : ajaxViewSaleCompany.Address_EN.Trim();
-            companyRelationship.Company.Province = string.IsNullOrEmpty(ajaxViewSaleCompany.Province) ? "" : ajaxViewSaleCompany.Province.Trim();
-            companyRelationship.Company.City = string.IsNullOrEmpty(ajaxViewSaleCompany.City) ? "" : ajaxViewSaleCompany.City.Trim();
-            companyRelationship.Company.Scale = string.IsNullOrEmpty(ajaxViewSaleCompany.Scale) ? "" : ajaxViewSaleCompany.Scale.Trim();
-            companyRelationship.Company.AnnualSales = string.IsNullOrEmpty(ajaxViewSaleCompany.AnnualSales) ? "" : ajaxViewSaleCompany.AnnualSales.Trim();
-            companyRelationship.Company.MainProduct = string.IsNullOrEmpty(ajaxViewSaleCompany.MainProduct) ? "" : ajaxViewSaleCompany.MainProduct.Trim();
-            companyRelationship.Company.MainClient = string.IsNullOrEmpty(ajaxViewSaleCompany.MainClient) ? "" : ajaxViewSaleCompany.MainClient.Trim();
-            companyRelationship.Description = string.IsNullOrEmpty(ajaxViewSaleCompany.Desc) ? "" : ajaxViewSaleCompany.Desc.Trim();
+            companyRelationship.Company.Address_EN =  string.IsNullOrEmpty(ajaxViewSaleCompany.Address_EN) ? "" : ajaxViewSaleCompany.Address_EN.Trim();
+            companyRelationship.Company.Province = string.IsNullOrEmpty(ajaxViewSaleCompany.Province) ? "" :  ajaxViewSaleCompany.Province.Trim();
+            companyRelationship.Company.City =  string.IsNullOrEmpty(ajaxViewSaleCompany.City) ? "" : ajaxViewSaleCompany.City.Trim();
+            companyRelationship.Company.Scale = string.IsNullOrEmpty(ajaxViewSaleCompany.Scale) ? "" :  ajaxViewSaleCompany.Scale.Trim();
+            companyRelationship.Company.AnnualSales =  string.IsNullOrEmpty(ajaxViewSaleCompany.AnnualSales) ? "" : ajaxViewSaleCompany.AnnualSales.Trim();
+            companyRelationship.Company.MainProduct =  string.IsNullOrEmpty(ajaxViewSaleCompany.MainProduct) ? "" : ajaxViewSaleCompany.MainProduct.Trim();
+            companyRelationship.Company.MainClient =  string.IsNullOrEmpty(ajaxViewSaleCompany.MainClient) ? "" : ajaxViewSaleCompany.MainClient.Trim();
+            companyRelationship.Description =  string.IsNullOrEmpty(ajaxViewSaleCompany.Desc) ? "" : ajaxViewSaleCompany.Desc.Trim();
             companyRelationship.ProgressID = ajaxViewSaleCompany.ProgressId;
             companyRelationship.Members = new List<Member>() { };
             companyRelationship.Members.Add(CH.DB.Members.FirstOrDefault(c => c.Name == Employee.CurrentUserName && ajaxViewSaleCompany.ProjectId == c.ProjectID));
@@ -686,8 +682,8 @@ namespace Sales.Controllers
         }
 
         public ActionResult GetEditCompany(int companyId)
-        {
-            var companyRelationship = CH.DB.CompanyRelationships.FirstOrDefault(c => c.CompanyID == companyId);
+        {           
+            var companyRelationship = CH.DB.CompanyRelationships.FirstOrDefault(c => c.CompanyID == companyId);  
             AjaxViewSaleCompany ajaxViewSaleCompany = new AjaxViewSaleCompany()
             {
                 CompanRelationshipId = companyRelationship.ID,
@@ -737,8 +733,8 @@ namespace Sales.Controllers
         }
 
         public ActionResult GetDetailCompany(int companyId)
-        {
-            var companyRelationship = CH.DB.CompanyRelationships.FirstOrDefault(c => c.CompanyID == companyId);
+        {            
+            var companyRelationship = CH.DB.CompanyRelationships.FirstOrDefault(c => c.CompanyID == companyId);  
             AjaxViewSaleCompany ajaxViewSaleCompany = new AjaxViewSaleCompany()
             {
                 ProjectId = companyRelationship.ProjectID,
@@ -788,13 +784,13 @@ namespace Sales.Controllers
         [HttpPost]
         [ValidateInput(false)]
         public ActionResult EditCompany(AjaxViewSaleCompany ajaxViewSaleCompany)
-        {
-            var companyRelationship = CH.DB.CompanyRelationships.FirstOrDefault(c => c.CompanyID == ajaxViewSaleCompany.CompanyId);
+        {         
+            var companyRelationship = CH.DB.CompanyRelationships.FirstOrDefault(c => c.CompanyID == ajaxViewSaleCompany.CompanyId);  
             companyRelationship.Company.Address = ajaxViewSaleCompany.Address;
             companyRelationship.Company.AreaID = ajaxViewSaleCompany.IndustryId;
             companyRelationship.Company.Business = ajaxViewSaleCompany.Business;
             companyRelationship.Company.CompanyTypeID = ajaxViewSaleCompany.TypeId;
-            companyRelationship.Company.Contact = ajaxViewSaleCompany.Phone;
+            companyRelationship.Company.Contact = ajaxViewSaleCompany.Phone;          
             companyRelationship.Company.ModifiedDate = DateTime.Now;
             companyRelationship.Company.ModifiedUser = Employee.CurrentUserName;
             companyRelationship.Company.Address_EN = ajaxViewSaleCompany.Address_EN;
@@ -925,7 +921,7 @@ namespace Sales.Controllers
             List<AjaxParticipant> pList = new List<AjaxParticipant>();
             if (Session["pList"] != null)
             {
-                pList = Session["pList"] as List<AjaxParticipant>;
+                 pList = Session["pList"] as List<AjaxParticipant>;
             }
             return View(new GridModel(pList));
         }
@@ -1001,7 +997,7 @@ namespace Sales.Controllers
             companyRelationship.Company.ModifiedUser = Employee.CurrentUserName;
             companyRelationship.ProgressID = bulkEntry.ProgressId;
             companyRelationship.Members = new List<Member>() { };
-            companyRelationship.Members.Add(CH.DB.Members.FirstOrDefault(c => c.Name == Employee.CurrentUserName && bulkEntry.ProjectId == c.ProjectID));
+            companyRelationship.Members.Add(CH.DB.Members.FirstOrDefault(c => c.Name == Employee.CurrentUserName && bulkEntry.ProjectId==c.ProjectID));
             companyRelationship.ProjectID = bulkEntry.ProjectId;
             companyRelationship.MarkForDelete = false;
             companyRelationship.CreatedDate = DateTime.Now;
@@ -1022,7 +1018,7 @@ namespace Sales.Controllers
             CH.Create<CompanyRelationship>(companyRelationship);
 
             Lead lead = null;
-
+            
             if (companyRelationship.ID > 0)
             {
                 string namecnstr = (collection["LeadName_CN"] != null) ? collection["LeadName_CN"].Trim() : "";
