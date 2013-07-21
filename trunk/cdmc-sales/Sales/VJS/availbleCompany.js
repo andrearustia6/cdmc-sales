@@ -828,8 +828,9 @@ function Addcompany() {
 }
 
 function CancelAddcompany() {
+    $('.companyAdd-wrapper').empty();
     var window = $('#AddCompany').data('tWindow');
-    $('.companyAdd-wrapper').html('');
+
     window.close();
 }
 
@@ -983,8 +984,8 @@ function QuickEntry() {
 }
 
 function CancelQuickEntry() {
+    $('.quickEntry-wrapper').empty();
     var window = $('#QuickEntry').data('tWindow');
-    $('.quickEntry-wrapper').html('');
     window.close();
 }
 
@@ -1236,7 +1237,7 @@ function BulkEntry() {
 }
 
 function CancelBulkEntry() {
-    $('.quickEntry-wrapper').html('');
+    $('.bulkEntry-wrapper').empty();
     var window = $('#BulkEntry').data('tWindow');
     window.close();
 
