@@ -187,7 +187,7 @@ namespace Sales.Model
         /// <returns></returns>
         IQueryable<AjaxCRM> GetCrmDataQuery(bool? alldata = false)
         {
-            var deals = from deal in CH.DB.Deals.Where(d => d.Abandoned == false && d.Project.IsActived == true) select deal;
+           // var deals = from deal in CH.DB.Deals.Where(d => d.Abandoned == false && d.Project.IsActived == true) select deal;
            
             var user = Employee.CurrentUserName;
             var custom = from cg in CH.DB.UserFavorsCRMs.Where(w => w.UserFavorsCrmGroup.UserName == user) select cg;
@@ -210,7 +210,7 @@ namespace Sales.Model
                            CompanyDistinct = c.Company.DistrictNumber,
                            CompanyCreateDate = c.Company.CreatedDate,
 
-                           CompanyPayment = deals.Where(d => d.CompanyRelationshipID == c.ID).Sum(s => s.Payment),
+                          // CompanyPayment = deals.Where(d => d.CompanyRelationshipID == c.ID).Sum(s => s.Payment),
 
 
                            CRMID = c.ID,
@@ -235,13 +235,13 @@ namespace Sales.Model
                                                             LeadCallTypeCode = call.LeadCallType.Code
                                                         })
                                         }),
-                           RMBCompanyPayment = deals.Where(d => d.CompanyRelationshipID == c.ID && d.Currencytype.Name == "RMB").Sum(s => s.Payment) == null ? 0 : deals.Where(d => d.CompanyRelationshipID == c.ID && d.Currencytype.Name == "RMB").Sum(s => s.Payment),
-                           USDCompanyPayment = deals.Where(d => d.CompanyRelationshipID == c.ID && d.Currencytype.Name == "USD").Sum(s => s.Payment) == null ? 0 : deals.Where(d => d.CompanyRelationshipID == c.ID && d.Currencytype.Name == "USD").Sum(s => s.Payment)
+                           //RMBCompanyPayment = deals.Where(d => d.CompanyRelationshipID == c.ID && d.Currencytype.Name == "RMB").Sum(s => s.Payment) == null ? 0 : deals.Where(d => d.CompanyRelationshipID == c.ID && d.Currencytype.Name == "RMB").Sum(s => s.Payment),
+                           //USDCompanyPayment = deals.Where(d => d.CompanyRelationshipID == c.ID && d.Currencytype.Name == "USD").Sum(s => s.Payment) == null ? 0 : deals.Where(d => d.CompanyRelationshipID == c.ID && d.Currencytype.Name == "USD").Sum(s => s.Payment)
 
 
                        };
            // string v = data.ToString();
-            return data;
+            return data  ;
         }
 
 
