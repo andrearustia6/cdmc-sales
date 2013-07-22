@@ -72,7 +72,7 @@
                                 @Html.ValidationMessageFor(model => model.Leads.ElementAt(i).LeadName_EN)
                             </td>
                             <td>
-                                @Html.DropDownListFor(model => model.Leads.ElementAt(i).Gender, SelectHelper.GenderSelectList(null))
+                                @Html.DropDownListFor(model => model.Leads.ElementAt(i).Gender, SelectHelper.GenderSelectList("Mr"))
                                 @Html.ValidationMessageFor(model => model.Leads.ElementAt(i).Gender)
                             </td>
                             <td>

@@ -828,7 +828,6 @@ function Addcompany() {
 }
 
 function CancelAddcompany() {
-    $('.companyAdd-wrapper').empty();
     var window = $('#AddCompany').data('tWindow');
 
     window.close();
@@ -984,7 +983,6 @@ function QuickEntry() {
 }
 
 function CancelQuickEntry() {
-    $('.quickEntry-wrapper').empty();
     var window = $('#QuickEntry').data('tWindow');
     window.close();
 }
@@ -1237,7 +1235,6 @@ function BulkEntry() {
 }
 
 function CancelBulkEntry() {
-    $('.bulkEntry-wrapper').empty();
     var window = $('#BulkEntry').data('tWindow');
     window.close();
 
