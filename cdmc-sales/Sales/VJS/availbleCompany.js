@@ -808,16 +808,18 @@ function Addcompany() {
             var query = $('.dialogue-addcompany form').serializeArray();
             $.post('AddCompany', query, function (result) {
                 if (result.companyRelationshipId != null) {
-                    $('#AddCompany').data('tWindow').close();
+
                     if (confirm('公司新增成功,是否要往新增公司里面增加Lead')) {
                         tempProjectId = result.projectId;
                         tempCRMID = result.companyRelationshipId;
 
                         onLeadAdd(result.companyId);
+                        $('#AddCompany').data('tWindow').close();
                     }
                     else {
                         RefreshCrmList(result.companyRelationshipId);
                         onCompanyChanging(result.companyRelationshipId);
+                        $('#AddCompany').data('tWindow').close();
                     }
                 } else {
                     alert('公司新增失败');
