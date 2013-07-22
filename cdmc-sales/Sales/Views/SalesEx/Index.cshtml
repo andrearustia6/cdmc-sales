@@ -210,12 +210,14 @@
             $('#crmdetailscontainer').html('');
         });
 
-        $('.dialogue-addcompany form #Name_EN').blur(function () {
-            if ($(this).val().isEmpty()) {
+        $('.dialogue-addcompany form #Name_EN').live('blur', (function () {
+            $(this).removeClass('fieldError');
+            if ($(this).val() == '' || $(this).val() == null) {
                 $(this).addClass('fieldError');
                 hasError = true;
             }
             else {
+                var projectid = $('#CurrentProjectId').val();
                 var companyNameEN = $(this).val();
                 $.post('CheckCompanyExistEN', { projectid: projectid, afterUpdateEN: companyNameEN }, function (result) {
                     if (result.length > 0) {
@@ -223,14 +225,16 @@
                     }
                 })
             }
-        });
+        }));
 
-        $('.dialogue-addcompany form #Name_CN').blur(function () {
-            if ($(this).val().isEmpty()) {
+        $('.dialogue-addcompany form #Name_CN').live('blur', (function () {
+            $(this).removeClass('fieldError');
+            if ($(this).val() == '' || $(this).val() == null) {
                 $(this).addClass('fieldError');
                 hasError = true;
             }
             else {
+                var projectid = $('#CurrentProjectId').val();
                 var companyNameCN = $(this).val();
                 $.post('CheckCompanyExistCN', { projectid: projectid, afterUpdateCN: companyNameCN }, function (result) {
                     if (result.length > 0) {
@@ -238,7 +242,7 @@
                     }
                 })
             }
-        });
+        }));
 
     });
 
