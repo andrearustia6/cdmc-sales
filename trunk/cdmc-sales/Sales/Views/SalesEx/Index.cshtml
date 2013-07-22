@@ -165,7 +165,7 @@
     </div></text>)
         .Width(1000)
         .Height(520).Title("添加公司")
-        .Modal(true).Visible(false).Draggable(true)
+                .Modal(true).Visible(false).Draggable(true).ClientEvents(c => c.OnClose("AddCompanyOnClose"))
     )
 @(Html.Telerik().Window()
     .Name("QuickEntry")
@@ -180,7 +180,7 @@
 </div></text>)
     .Width(1000)
     .Height(650).Title("快捷录入")
-    .Modal(true).Visible(false).Draggable(true)
+        .Modal(true).Visible(false).Draggable(true).ClientEvents(c => c.OnClose("QuickEntryOnClose"))
     )
 @(Html.Telerik().Window()
     .Name("BulkEntry")
@@ -194,7 +194,7 @@
     </div>
 </div></text>)
     .Title("批量录入")
-    .Modal(true).Visible(false).Draggable(true)
+            .Modal(true).Visible(false).Draggable(true).ClientEvents(c => c.OnClose("BulkEntryOnClose"))
     )
 <script type="text/javascript">
 
@@ -243,8 +243,17 @@
                 })
             }
         }));
-
     });
+
+    function AddCompanyOnClose() {
+        $('.companyAdd-wrapper').empty();
+    }
+    function QuickEntryOnClose() {
+        $('.quickEntry-wrapper').empty();
+    }
+    function BulkEntryOnClose() {
+        $('.bulkEntry-wrapper').empty();
+    }
 
     function seachBind() {
         initial();
