@@ -643,14 +643,14 @@ namespace Sales.Controllers
             }
             if (!String.IsNullOrEmpty(fuzzyInput))
             {
-                fuzzyInput = fuzzyInput.Trim();
-                p.CRMs = p.CRMs.Where(c => c.CompanyNameCH.Contains(fuzzyInput)
-                                           || c.CompanyNameEN.Contains(fuzzyInput)
-                                           || c.CompanyContact.Contains(fuzzyInput)
-                                           || c.AjaxLeads.Any(l => l.LeadNameCH.Contains(fuzzyInput)
-                                                              || l.LeadNameEN.Contains(fuzzyInput)
-                                                              || l.LeadEmail.Contains(fuzzyInput)
-                                                              || l.LeadPersonalEmail.Contains(fuzzyInput)
+                fuzzyInput = fuzzyInput.Trim().ToLower();
+                p.CRMs = p.CRMs.Where(c => c.CompanyNameCH.ToLower().Contains(fuzzyInput)
+                                           || c.CompanyNameEN.ToLower().Contains(fuzzyInput)
+                                           || c.CompanyContact.ToLower().Contains(fuzzyInput)
+                                           || c.AjaxLeads.Any(l => l.LeadNameCH.ToLower().Contains(fuzzyInput)
+                                                              || l.LeadNameEN.ToLower().Contains(fuzzyInput)
+                                                              || l.LeadEmail.ToLower().Contains(fuzzyInput)
+                                                              || l.LeadPersonalEmail.ToLower().Contains(fuzzyInput)
                                                              )
                     //|| c.CompanyFilterCategories.Any(ct => ct.Name.Contains(fuzzyInput))
                                         );
