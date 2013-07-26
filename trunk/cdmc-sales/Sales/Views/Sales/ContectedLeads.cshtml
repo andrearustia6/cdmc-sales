@@ -35,7 +35,7 @@
                     c.Bound(item => item.CallDate).Width(85).Title("致电时间");
                     c.Bound(item => item.CallTypeName).Width(90).Title("状态");
                     c.Bound(item => item.Result).Width(200).Title("结果描述");
-                    c.Bound(item => item.ActionLink).Title("操作").Width(70).ClientTemplate("<span> <a  href='<#= ActionLink #>' >Call List</a></span>");
+                    //c.Bound(item => item.ActionLink).Title("操作").Width(70).ClientTemplate("<span> <a  href='<#= ActionLink #>' >Call List</a></span>");
                 }).DataBinding(dataBinding => dataBinding.Ajax().Select("_ContectedLeads", "Sales", new { projectid = ViewBag.ProjectID, filterId = ViewBag.FilterID, leadCallTypeId = ViewBag.LeadCallTypeId, startdate = ViewBag.StartDate, enddate = ViewBag.EndDate }))
                                             .Resizable(resizing => resizing.Columns(true))
                                             .Filterable().Sortable().Groupable()

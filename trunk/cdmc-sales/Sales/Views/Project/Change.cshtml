@@ -25,7 +25,13 @@
         @Html.DropDownListFor(model => model.ProjectTypeID, new SelectList(CH.GetAllData<ProjectType>(),"ID","Name"),"-请选择-")
         @Html.ValidationMessageFor(model => model.Name_EN)
     </div>
-
+    <div class="editor-label">
+        @Html.LabelFor(model => model.AreaID)：项目的默认行业
+    </div>
+    <div class="editor-field">
+        @Html.DropDownListFor(model => model.AreaID, new SelectList(CH.GetAllData<Area>(), "ID", "Name"), "-请选择-")
+        @Html.ValidationMessageFor(model => model.AreaID)
+    </div>
     <div class="editor-label">
         @Html.LabelFor(model => model.Location)：项目举办地点
     </div>
