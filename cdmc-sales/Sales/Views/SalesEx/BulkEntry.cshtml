@@ -1,13 +1,14 @@
 ﻿@using Entity
 @using Utl
 @model Model.BulkEntry
-
 @using (Html.BeginForm("AddSaleCompany", "SalesEx"))
 {
     @Html.HiddenFor(model => model.ProjectId)
     <table>
         <tr>
-            <td colspan="4"><span id="Msg" style="color:Red;"></span></td>
+            <td colspan="4">
+                <span id="Msg" style="color: Red;"></span>
+            </td>
         </tr>
         <tr>
             <td>
@@ -29,8 +30,47 @@
         </tr>
         <tr>
             <td>
-                @Html.LabelFor(model => model.IndustryId)
-                @Html.DropDownListFor(model => model.IndustryId, SelectHelper.CompanyIndustrySelectList(null), "请选择")
+                @{
+    if (Model.IndustryId != null)
+    {
+        @Html.LabelFor(model => model.IndustryId);
+      
+        @Html.DropDownListFor(model => model.IndustryId, SelectHelper.CompanyIndustrySelectList(null), "请选择")
+    }
+    else
+    {
+        if (CH.GetDataById<Project>(Model.ProjectId).AreaID == null)
+        {
+                        @Html.LabelFor(model => model.IndustryId);
+                        
+                        @Html.DropDownListFor(model => model.IndustryId, SelectHelper.CompanyIndustrySelectList(null), "请选择")
+        }
+        else
+        {
+            int i = 0;
+            List<SelectListItem> lists1 = SelectHelper.CompanyIndustrySelectList(null).ToList();
+            SelectListItem item1 = new SelectListItem();
+            item1.Value = null;
+            item1.Text = "请选择";
+            lists1.Insert(0, item1);
+            foreach (SelectListItem item in lists1)
+            {
+                if (item.Value != null)
+                {
+                    if (CH.GetDataById<Project>(Model.ProjectId).AreaID.ToString() == item.Value)
+                    {
+                        lists1[i].Selected = true;
+                                @Html.LabelFor(model => model.IndustryId);
+                               @Html.DropDownListFor(model => model.IndustryId, lists1 )
+                        break;
+                    }
+                }
+                i++;
+            }
+        }
+    }
+                           
+}
             </td>
             <td>
                 @Html.LabelFor(model => model.TypeId)
@@ -43,22 +83,50 @@
         </tr>
         <tr>
             <td colspan="4">
-                <fieldset id="categories" style="margin:0px 0px 0px 0px;">
+                @Html.LabelFor(model => model.Description)
+                @Html.TextAreaFor(model => model.Description)
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4">
+                <fieldset id="categories" style="margin: 0px 0px 0px 0px;">
                     <legend>细分行业 <span id="categoriesError">必须选择一项</span></legend>
                     @foreach (Category category in CH.GetAllData<Category>(c => c.ProjectID == Model.ProjectId))
                     { 
                 
-                        <label class="company-category" style="width: auto;"> <input  name="Categories" type="checkbox" value="@category.ID" /> @category.Name </label>
+                        <label class="company-category" style="width: auto;">
+                            <input  name="Categories" type="checkbox" value="@category.ID" />
+                            @category.Name
+                        </label>
                
                     }
                 </fieldset>
-            </td>
         </tr>
         <tr>
             <td colspan="4">
                 <table class="leadsTable">
                     <tr>
-                        <th>中文名称</th><th>英文名称</th><th>性别</th><th>客户职位</th><th>客户直线</th><th>移动电话</th>
+                        <th>
+                            中文名称
+                        </th>
+                        <th>
+                            英文名称
+                        </th>
+                        <th>
+                            性别
+                        </th>
+                        <th>
+                            客户职位
+                        </th>
+                        <th>
+                            客户直线
+                        </th>
+                        <th>
+                            移动电话
+                        </th>
+                        <th>
+                            工作邮箱
+                        </th>
                     </tr>
                     @for (int i = 0; i < 10; i++)
                     {
@@ -87,6 +155,10 @@
                                 @Html.TextBoxFor(model => model.Leads.ElementAt(i).CellPhone)
                                 @Html.ValidationMessageFor(model => model.Leads.ElementAt(i).CellPhone)
                             </td>
+                            <td>
+                                @Html.TextBoxFor(model => model.Leads.ElementAt(i).WorkingEmail)
+                                @Html.ValidationMessageFor(model => model.Leads.ElementAt(i).WorkingEmail)
+                            </td>
                         </tr>
                     }
                 </table>
@@ -97,14 +169,14 @@
 <style>
     table
     {
-        border:none;
-        padding:0px;
-        margin:0px;
-     }
+        border: none;
+        padding: 0px;
+        margin: 0px;
+    }
     table tr td
     {
         width: 240px;
-        border:none;
+        border: none;
     }
     table tr td label
     {

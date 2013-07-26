@@ -212,6 +212,11 @@ namespace Entity
         /// 所有项目公司
         /// </summary>
         public virtual List<CompanyRelationship> CompanyRelationships { get; set; }
+
+
+        public virtual Area Area { get; set; }
+        [Display(Name = "默认行业"), Required]
+        public int? AreaID { get; set; }
     }
     [JsonIgnoreAttribute("CompanyRelationships")]
     public class Category : EntityBase

@@ -4,6 +4,7 @@
 
 @using (Html.BeginForm("AddSaleCompany", "SalesEx"))
 {
+    
     @Html.HiddenFor(model => model.ProjectId)
     @Html.HiddenFor(model => model.CompanyId)
     <fieldset>
@@ -35,9 +36,49 @@
                 </td>
             </tr>
                <tr>
-                <td colspan="2">
-                    @Html.LabelFor(model => model.IndustryId)
-                    @Html.DropDownListFor(model => model.IndustryId, SelectHelper.CompanyIndustrySelectList(null), "请选择", new { @style = "width:370px" })
+                
+                    <td colspan="2">
+@{
+    if (Model.IndustryId != null)
+    {
+        @Html.LabelFor(model => model.IndustryId);
+      
+        @Html.DropDownListFor(model => model.IndustryId, SelectHelper.CompanyIndustrySelectList(null), "请选择", new { @style = "width:370px" })
+    }
+    else
+    {
+        if (CH.GetDataById<Project>(Model.ProjectId).AreaID == null)
+        {
+                        @Html.LabelFor(model => model.IndustryId);
+                        
+                        @Html.DropDownListFor(model => model.IndustryId, SelectHelper.CompanyIndustrySelectList(null), "请选择", new { @style = "width:370px" })
+        }
+        else
+        {
+            int i = 0;
+            List<SelectListItem> lists1 = SelectHelper.CompanyIndustrySelectList(null).ToList();
+            SelectListItem item1 = new SelectListItem();
+            item1.Value = null;
+            item1.Text = "请选择";
+            lists1.Insert(0, item1);
+            foreach (SelectListItem item in lists1)
+            {
+                if (item.Value != null)
+                {
+                    if (CH.GetDataById<Project>(Model.ProjectId).AreaID.ToString() == item.Value)
+                    {
+                        lists1[i].Selected = true;
+                                @Html.LabelFor(model => model.IndustryId);
+                               @Html.DropDownListFor(model => model.IndustryId, lists1, new { @style = "width:370px" })
+                        break;
+                    }
+                }
+                i++;
+            }
+        }
+    }
+                           
+}
                 </td>
                 <td>
                     @Html.LabelFor(model => model.TypeId)
@@ -71,7 +112,7 @@
             <tr>
                 <td>
                     @Html.LabelFor(model => model.Scale)
-                    @Html.DropDownListFor(model => model.Scale,SelectHelper.CompanyScaleSelectList(null),"请选择")
+                    @Html.DropDownListFor(model => model.Scale, SelectHelper.CompanyScaleSelectList(null), "请选择")
                 </td>
                 <td>
                     @Html.LabelFor(model => model.AnnualSales)
