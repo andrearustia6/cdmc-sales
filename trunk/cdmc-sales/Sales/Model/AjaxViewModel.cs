@@ -562,6 +562,8 @@ namespace Model
         [Display(Name = "细分行业")]
         public string CategoryString { get; set; }
 
+        [Display(Name = "公司介绍")]
+        public string Description { get; set; }
         #endregion End Company
 
         public virtual List<LeadBulk> Leads { get; set; }
