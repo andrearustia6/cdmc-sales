@@ -135,6 +135,12 @@ namespace Entity
 
         [Display(Name = "主要客户")]
         public string MainClient { get; set; }
+
+        [Display(Name = "是否有效")]
+        public bool? IsValid { get; set; }
+
+        [Display(Name = "公司点评")]
+        public string CompanyReviews { get; set; }
     }
 
     /// <summary>
@@ -244,6 +250,9 @@ namespace Entity
         public int?  ImageID { get; set; }
         [Display(Name = "逻辑删除"), Required]
         public bool? MarkForDelete { get; set; }
+
+        [Display(Name = "是否有效")]
+        public bool? IsValid { get; set; }
     }
 
     /// <summary>
