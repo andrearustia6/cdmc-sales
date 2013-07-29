@@ -91,6 +91,8 @@ namespace BLL
                                           salestypeid = m.SalesTypeID
                                       };
                     var deals = CRM_Logical.GetDeals().Where(w => w.ActualPaymentDate.Value != null && w.ActualPaymentDate.Value.Month == month && w.ActualPaymentDate.Value.Year == DateTime.Now.Year);
+                    //var deals = CH.DB.Deals.Where(w => w.ActualPaymentDate.Value != null && w.ActualPaymentDate.Value.Month == month && w.ActualPaymentDate.Value.Year == DateTime.Now.Year);
+                   
                     var year = DateTime.Now.Year;
                     //获取登录者（考核人）打分的记录
                     var scores = from r in CH.DB.ManagerScores.Where(w => w.Month == month && w.Year == year) select r;
@@ -122,8 +124,8 @@ namespace BLL
                                   salescount = memberscall.Where(c => c.Manager == l).GroupBy(c => c.salestypeid).Select(c => c.FirstOrDefault()).Count(c => c.salestypeid == 1),
                                   leadnewlead = memberslead.Where(c => c.manager == l).Count(c => c.salestypeid == 2),
                                   salesnewlead = memberslead.Where(c => c.manager == l).Count(c => c.salestypeid == 1),
-                                  target = CH.DB.TargetOfMonths.Where(t => t.Project.TeamLeader == l && t.Project.IsActived == true && t.StartDate.Month == month).Sum(s => s.CheckIn),
-                                  checkinreal = deals.Where(d => d.Project.Manager == l).Sum(s => s.Income),
+                                  target = CH.DB.TargetOfMonths.Where(t => t.Project.Manager == l && t.Project.IsActived == true && t.StartDate.Month == month).Sum(s => s.CheckIn),
+                                  checkinreal = deals.Where(d => d.Project.Manager == l && d.Income!=null).Sum(s => s.Income),
                                   Confirmed = aa != null ? aa.Confirmed == true ? "是" : "否" : "否",
                                   Rate = aa != null ? aa.Rate==null?0:aa.Rate:1
                               };
