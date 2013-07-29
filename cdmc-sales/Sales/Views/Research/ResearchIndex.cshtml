@@ -16,19 +16,28 @@
     }
 </fieldset>
 <fieldset>
-    <legend>@Model.Month 月项目添加公司</legend>
+    <legend>公司调研报表</legend>
     @(Html.Telerik().Grid<_CompanyResearchDetail>().Name("GridCompany")
      .ToolBar(toolBar => toolBar.Template(
                 @<text><span><label>
                     项目筛选:
                 </label>
-    @Html.DropDownList("selectProject", Utl.SelectHelper.SaleRelatedProjects(), new { onchange = "selectProjectChange();" ,style="width:150px"})
-    </span><span>
-    <label>
-        销售筛选:
-    </label>
-    @Html.DropDownList("selectSales",new SelectList( Utl.CH.DB.Members.Distinct().Select(s=>s.Name)) , new { onchange = "selectProjectChange();", style = "width:150px" })
-    </span>
+                    @Html.DropDownList("selectProject", Utl.SelectHelper.SaleRelatedProjects(), new { onchange = "selectChange();", style = "width:150px" })
+                </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>
+                    <label>
+                        销售筛选:
+                    </label>
+                    @Html.DropDownList("selectSales", new SelectList(Utl.CH.DB.Members.Distinct().Select(s => s.Name)), new { onchange = "selectChange();", style = "width:150px" })
+                </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>
+                    <label>
+                        状态筛选:
+                    </label>
+                    <select id="selectType" onchange="selectChange();" style="width: 150px">
+                        <option value="0">所有调研</option>
+                        <option value="1">未通过</option>
+                        <option value="2">被点评</option>
+                    </select>
+                </span>
     </text>))
 .DataKeys(keys => { keys.Add(p => p.ID); })
 .DataBinding(dataBinding =>
@@ -50,7 +59,12 @@
 }).ClientEvents(events => events.OnDataBinding("companyDataBinding"))
 
 .DetailView(details => details.ClientTemplate
-    (
+    (Html.Telerik().TabStrip()
+                    .Name("TabStrip_<#= ID #>")
+                    .SelectedIndex(0)
+                    .Items(items =>
+                    {
+                        items.Add().Text("Lead信息").Content(
            Html.Telerik().Grid<_LeadResearchDetail>()
             .Name("Grid<#= ID #>")
                     .DataKeys(keys => { keys.Add(p => p.ID); })
@@ -72,9 +86,16 @@
                               .Update("_LeadIndexEdit", "Research", new { companyid = "<#= ID #>" });
                     })
                               .Editable(editing => editing.Mode(GridEditMode.PopUp))
-            .Pageable(p => p.Style(GridPagerStyles.Status).PageSize(50).PageOnScroll(true)).Scrollable().Sortable().Resizable(r => r.Columns(true)).ToHtmlString())
-)
-          .Editable(editing => editing.Mode(GridEditMode.PopUp))
+            .Pageable(p => p.Style(GridPagerStyles.Status).PageSize(50).PageOnScroll(true)).Scrollable().Sortable().Resizable(r => r.Columns(true)).ToHtmlString());
+                        items.Add().Text("公司简介").Content(
+                             "<div style='height:250px'>" +
+                          "<#= Description #>" +
+                        "</div>"
+                            );
+                    })
+                    .ToHtmlString()
+))
+.Editable(editing => editing.Mode(GridEditMode.PopUp))
 .Pageable(p => p.Style(GridPagerStyles.Status).PageSize(50)
 .PageOnScroll(true)).Scrollable(scrolling => scrolling.Height(400)).Sortable().Resizable(r => r.Columns(true))
 )
@@ -186,14 +207,15 @@
 <input id="detailname" type="hidden" />
 <input id="username" type="hidden" value=@Utl.Employee.CurrentUserName />
 <script type="text/javascript">
-    function selectProjectChange() {
+    function selectChange() {
         $("#GridCompany").data("tGrid").rebind();
     }
 
     function companyDataBinding(e) {
+        var selecttype = $("#selectType").val();
         var selsales = $("#selectSales").val();
         var project = $("#selectProject").val();
-        e.data = $.extend(e.data, { projectid: project,sales:selsales });
+        e.data = $.extend(e.data, { projectid: project, sales: selsales, seltype: selecttype });
     }
 
 

@@ -182,6 +182,9 @@ namespace Sales.Model
 
         [Display(Name = "公司点评")]
         public string CompanyReviews { get; set; }
+
+        [Display(Name = "公司简介")]
+        public string Description { get; set; }
     }
 
     public class _LeadResearchDetail
