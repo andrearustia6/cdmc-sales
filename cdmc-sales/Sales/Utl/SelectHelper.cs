@@ -422,5 +422,21 @@ namespace Utl
             }
             return selectList;
         }
+
+        public static List<string> MemberSelectListInOwnProject()
+        {
+            if (Employee.CurrentRole.Level == Role.LVL_Sales)
+            {
+                return new List<string>() { Employee.CurrentUserName };
+            }
+            else
+            {
+                var selMember = from p in CRM_Logical.GetUserInvolveProject()
+                                from m in CH.DB.Members
+                                where p.IsActived && p.ID == m.ProjectID
+                                select m;
+                return selMember.Select(s => s.Name).Distinct().ToList();
+            }
+        }
     }
 }
