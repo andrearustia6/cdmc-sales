@@ -3,6 +3,7 @@
 }
 @using Sales.Model
 @using Entity
+@using BLL
 @model MonthDuration
 <fieldset>
     <legend>月份</legend>
@@ -22,12 +23,12 @@
                 @<text><span><label>
                     项目筛选:
                 </label>
-                    @Html.DropDownList("selectProject", Utl.SelectHelper.SaleRelatedProjects(), new { onchange = "selectChange();", style = "width:150px" })
+                    @Html.DropDownList("selectProject", Utl.SelectHelper.SaleRelatedProjects(), "所有项目", new { onchange = "selectChange();", style = "width:150px" })
                 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>
                     <label>
                         销售筛选:
                     </label>
-                    @Html.DropDownList("selectSales", new SelectList(Utl.CH.DB.Members.Distinct().Select(s => s.Name)), new { onchange = "selectChange();", style = "width:150px" })
+                    @Html.DropDownList("selectSales", new SelectList(Utl.SelectHelper.MemberSelectListInOwnProject()), "所有销售", new { onchange = "selectChange();", style = "width:150px" })
                 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>
                     <label>
                         状态筛选:
@@ -38,67 +39,49 @@
                         <option value="2">被点评</option>
                     </select>
                 </span>
-    </text>))
-.DataKeys(keys => { keys.Add(p => p.ID); })
-.DataBinding(dataBinding =>
-{
-    dataBinding.Ajax().Select("_CompanyIndex", "Research", new { month = Model.Month })
-      .Update("_CompanyIndexEdit", "Research");
-})
-.Columns(columns =>
-{
-    columns.Bound(p => p.CompanyName);
-    columns.Bound(p => p.CompanyContact);
-    columns.Bound(p => p.CompanyDesicription);
-    columns.Bound(p => p.Creator);
-    columns.Bound(p => p.CreateDate);
-    columns.Bound(p => p.CompanyReviews);
-    columns.Bound(p => p.IsValid);
-    columns.Command(c => c.Edit().ButtonType(GridButtonType.Image)).Title("有效确认").Width(150);
-
-}).ClientEvents(events => events.OnDataBinding("companyDataBinding"))
-
-.DetailView(details => details.ClientTemplate
-    (Html.Telerik().TabStrip()
-                    .Name("TabStrip_<#= ID #>")
-                    .SelectedIndex(0)
-                    .Items(items =>
+    </text>)).DataKeys(keys => { keys.Add(p => p.ID); }).DataBinding(dataBinding =>
+         {
+             dataBinding.Ajax().Select("_CompanyIndex",
+                 "Research", new { month = Model.Month }).Update("_CompanyIndexEdit", "Research");
+         }).Columns(columns =>
+         {
+             columns.Bound(p => p.CompanyName); columns.Bound(p => p.CompanyContact);
+             columns.Bound(p => p.CompanyDesicription); columns.Bound(p => p.Creator); columns.Bound(p
+             => p.CreateDate); columns.Bound(p => p.CompanyReviews); columns.Bound(p => p.IsValid);
+             columns.Command(c => c.Edit().ButtonType(GridButtonType.Image)).Title("有效确认").Width(150);
+         }).ClientEvents(events => events.OnDataBinding("companyDataBinding")).DetailView(details
+                    => details.ClientTemplate(Html.Telerik().TabStrip().Name("TabStrip_<#= ID #>")
+                    .SelectedIndex(0).Items(items =>
                     {
-                        items.Add().Text("Lead信息").Content(
-           Html.Telerik().Grid<_LeadResearchDetail>()
-            .Name("Grid<#= ID #>")
-                    .DataKeys(keys => { keys.Add(p => p.ID); })
-            .Columns(columns =>
-            {
-                columns.Bound(l => l.LeadName);
-                columns.Bound(l => l.LeadTitle);
-                columns.Bound(l => l.LeadContact);
-                columns.Bound(l => l.LeadMobile);
-                columns.Bound(l => l.Email);
-                columns.Bound(l => l.Creator);
-                columns.Bound(l => l.CreateDate);
-                columns.Bound(l => l.IsValid);
-                columns.Command(c => c.Edit().ButtonType(GridButtonType.Image)).Title("有效确认").Width(150);
-            })
-                    .DataBinding(dataBinding =>
-                    {
-                        dataBinding.Ajax().Select("_LeadIndex", "Research", new { companyid = "<#= ID #>" })
-                              .Update("_LeadIndexEdit", "Research", new { companyid = "<#= ID #>" });
-                    })
-                              .Editable(editing => editing.Mode(GridEditMode.PopUp))
-            .Pageable(p => p.Style(GridPagerStyles.Status).PageSize(50).PageOnScroll(true)).Scrollable().Sortable().Resizable(r => r.Columns(true)).ToHtmlString());
+                        items.Add().Text("Lead信息").Content(Html.Telerik().Grid<_LeadResearchDetail>()
+                            .Name("Grid<#= ID #>")
+                            .DataKeys(keys => { keys.Add(p => p.ID); })
+                            .Columns(columns =>
+                            {
+                                columns.Bound(l => l.LeadName);
+                                columns.Bound(l => l.LeadTitle);
+                                columns.Bound(l => l.LeadContact);
+                                columns.Bound(l => l.LeadMobile);
+                                columns.Bound(l => l.Email);
+                                columns.Bound(l => l.Creator);
+                                columns.Bound(l => l.CreateDate);
+                                columns.Bound(l => l.IsValid);
+                                columns.Command(c => c.Edit().ButtonType(GridButtonType.Image)).Title("有效确认").Width(150);
+                            })
+                            .DataBinding(dataBinding =>
+                            {
+                                dataBinding.Ajax().Select("_LeadIndex", "Research", new { companyid = "<#= ID #>" })
+                                      .Update("_LeadIndexEdit", "Research", new { companyid = "<#= ID #>" });
+                            })
+                            .Editable(editing => editing.Mode(GridEditMode.PopUp))
+                            .Pageable(p => p.Style(GridPagerStyles.Status).PageSize(50).PageOnScroll(true)).Scrollable().Sortable().Resizable(r => r.Columns(true)).ToHtmlString());
                         items.Add().Text("公司简介").Content(
                              "<div style='height:250px'>" +
                           "<#= Description #>" +
-                        "</div>"
-                            );
-                    })
-                    .ToHtmlString()
-))
-.Editable(editing => editing.Mode(GridEditMode.PopUp))
-.Pageable(p => p.Style(GridPagerStyles.Status).PageSize(50)
-.PageOnScroll(true)).Scrollable(scrolling => scrolling.Height(400)).Sortable().Resizable(r => r.Columns(true))
-)
+                        "</div>");
+                    }).ToHtmlString())).Editable(editing => editing.Mode(GridEditMode.PopUp))
+    .Pageable(p => p.Style(GridPagerStyles.Status).PageSize(50).PageOnScroll(true)).Scrollable(scrolling
+    => scrolling.Height(400)).Sortable().Resizable(r => r.Columns(true)))
 </fieldset>
 <fieldset>
     <legend>@Model.Month 月项目调研情况</legend>

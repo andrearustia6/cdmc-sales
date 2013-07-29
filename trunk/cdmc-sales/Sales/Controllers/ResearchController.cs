@@ -187,24 +187,33 @@ namespace Sales.Controllers
         [GridAction]
         public ActionResult _CompanyIndex(int? projectid, string sales, int? selType)
         {
-            if (selType != null&&selType!=0)
+            //sales只能看到自己的项目Lead
+            if (Employee.CurrentRole.Level == Role.LVL_Sales)
             {
-                switch (selType)
-                {
-                    case 1:
-                        break;
-                    case 2:
-                        break;
-                    default:
-                        break;
-                }
+                sales = Employee.CurrentUserName;
             }
-         
+            var selCompany = from data in CH.DB.Companys select data;
 
+            if (projectid != null)
+            {
+                selCompany.Where(c => CH.DB.CompanyRelationships.Any(r => r.CompanyID == c.ID && c.ID == projectid));
+            }
+
+            switch (selType)
+            {
+                case 1:
+                    selCompany = selCompany.Where(s => s.IsValid == false);
+                    break;
+                case 2:
+                    selCompany = selCompany.Where(s => !string.IsNullOrWhiteSpace(s.CompanyReviews));
+                    break;
+                default:
+                    break;
+            }
 
             var temp = from tc in CH.DB.CompanyRelationships.Where(w => w.Project.ID == projectid) select tc;
 
-            var selCompany = from c in CH.DB.Companys
+            var selCompanys = from c in CH.DB.Companys
                              from d in temp
                              where d.CompanyID == c.ID && d.Members.Any(s => s.Name == sales)
                              select new _CompanyResearchDetail
@@ -221,10 +230,7 @@ namespace Sales.Controllers
                                  Description = c.Description
                              };
 
-
-
-
-            return View(new GridModel(selCompany));
+            return View(new GridModel(selCompanys));
         }
 
         [GridAction]
