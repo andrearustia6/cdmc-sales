@@ -55,7 +55,7 @@ namespace Sales.Model
         public int ProjectID { get; set; }
         [Display(Name = "项目编码")]
         public string ProjectCode { get; set; }
-        [Display(Name="项目名称")]
+        [Display(Name = "项目名称")]
         public string ProjectName { get; set; }
         [Display(Name = "项目人数")]
         public int MemberCount { get; set; }
@@ -74,7 +74,7 @@ namespace Sales.Model
         public int EmployeeDuration { get; set; }
     }
 
-    public class _UserResearchDetail 
+    public class _UserResearchDetail
     {
         [Display(Name = "姓名")]
         public string UserName { get; set; }
@@ -142,4 +142,96 @@ namespace Sales.Model
         [Display(Name = "公司调研")]
         public string CompanyDesicription { get; set; }
     }
+
+
+    public class _CompanyResearchDetail
+    {
+        public int ID { set; get; }
+
+        [Display(Name = "公司名称")]
+        public string CompanyName
+        {
+            get
+            {
+                return Utl.Utl.GetFullString(",", CompanyNameEN, CompanyNameCH);
+            }
+        }
+        [Display(Name = "添加销售")]
+        public string Creator { get; set; }
+
+        [Display(Name = "添加日期")]
+        public DateTime? CreateDate { get; set; }
+
+        [Display(Name = "公司名称")]
+        public string CompanyNameCH { get; set; }
+
+        [Display(Name = "公司名称")]
+        public string CompanyNameEN { get; set; }
+
+        [Display(Name = "公司总机")]
+        public string CompanyContact { get; set; }
+
+        [Display(Name = "细分行业")]
+        public string Categoris { get; set; }
+
+        [Display(Name = "公司调研")]
+        public string CompanyDesicription { get; set; }
+
+        [Display(Name = "是否有效")]
+        public string IsValid { get; set; }
+
+        [Display(Name = "公司点评")]
+        public string CompanyReviews { get; set; }
+    }
+
+    public class _LeadResearchDetail
+    {
+        public int ID { set; get; }
+
+        [Display(Name = "姓名")]
+        public string UserName { get; set; }
+
+        [Display(Name = "添加销售")]
+        public string Creator { get; set; }
+
+        [Display(Name = "Lead姓名")]
+        public string LeadNameEN { get; set; }
+
+        [Display(Name = "Lead姓名")]
+        public string LeadNameCH { get; set; }
+
+        [Display(Name = "移动电话")]
+        public string LeadMobile { get; set; }
+
+        [Display(Name = "职位")]
+        public string LeadTitle { get; set; }
+
+        [Display(Name = "添加日期")]
+        public DateTime? CreateDate { get; set; }
+
+        [Display(Name = "Lead姓名")]
+        public string LeadName
+        {
+            get
+            {
+                return Utl.Utl.GetFullString(",", LeadNameEN, LeadNameCH);
+            }
+        }
+
+        [Display(Name = "Lead直线")]
+        public string LeadContact { get; set; }
+
+        [Display(Name = "Lead直线")]
+        public string HideLeadContact { get { return Utl.Utl.HidePhoneNumber(LeadContact); } }
+
+        [Display(Name = "移动电话")]
+        public string HideLeadMobile { get { return Utl.Utl.HidePhoneNumber(LeadMobile); } }
+
+        [Display(Name = "Lead邮件")]
+        public string Email { get; set; }
+
+        [Display(Name = "是否有效")]
+        public string IsValid { get; set; }
+    }
+
 }

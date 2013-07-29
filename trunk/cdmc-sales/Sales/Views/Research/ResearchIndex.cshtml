@@ -2,6 +2,7 @@
     ViewBag.Title = "月调研报表";
 }
 @using Sales.Model
+@using Entity
 @model MonthDuration
 <fieldset>
     <legend>月份</legend>
@@ -14,9 +15,73 @@
         }
     }
 </fieldset>
-<fieldset> 
-<legend>@Model.Month 月项目调研情况</legend>       
-@(Html.Telerik().Grid<_ProjectResearch>().Name("Grid")
+<fieldset>
+    <legend>@Model.Month 月项目添加公司</legend>
+    @(Html.Telerik().Grid<_CompanyResearchDetail>().Name("GridCompany")
+     .ToolBar(toolBar => toolBar.Template(
+                @<text><span><label>
+                    项目筛选:
+                </label>
+    @Html.DropDownList("selectProject", Utl.SelectHelper.SaleRelatedProjects(), new { onchange = "selectProjectChange();" ,style="width:150px"})
+    </span><span>
+    <label>
+        销售筛选:
+    </label>
+    @Html.DropDownList("selectSales",new SelectList( Utl.CH.DB.Members.Distinct().Select(s=>s.Name)) , new { onchange = "selectProjectChange();", style = "width:150px" })
+    </span>
+    </text>))
+.DataKeys(keys => { keys.Add(p => p.ID); })
+.DataBinding(dataBinding =>
+{
+    dataBinding.Ajax().Select("_CompanyIndex", "Research", new { month = Model.Month })
+      .Update("_CompanyIndexEdit", "Research");
+})
+.Columns(columns =>
+{
+    columns.Bound(p => p.CompanyName);
+    columns.Bound(p => p.CompanyContact);
+    columns.Bound(p => p.CompanyDesicription);
+    columns.Bound(p => p.Creator);
+    columns.Bound(p => p.CreateDate);
+    columns.Bound(p => p.CompanyReviews);
+    columns.Bound(p => p.IsValid);
+    columns.Command(c => c.Edit().ButtonType(GridButtonType.Image)).Title("有效确认").Width(150);
+
+}).ClientEvents(events => events.OnDataBinding("companyDataBinding"))
+
+.DetailView(details => details.ClientTemplate
+    (
+           Html.Telerik().Grid<_LeadResearchDetail>()
+            .Name("Grid<#= ID #>")
+                    .DataKeys(keys => { keys.Add(p => p.ID); })
+            .Columns(columns =>
+            {
+                columns.Bound(l => l.LeadName);
+                columns.Bound(l => l.LeadTitle);
+                columns.Bound(l => l.LeadContact);
+                columns.Bound(l => l.LeadMobile);
+                columns.Bound(l => l.Email);
+                columns.Bound(l => l.Creator);
+                columns.Bound(l => l.CreateDate);
+                columns.Bound(l => l.IsValid);
+                columns.Command(c => c.Edit().ButtonType(GridButtonType.Image)).Title("有效确认").Width(150);
+            })
+                    .DataBinding(dataBinding =>
+                    {
+                        dataBinding.Ajax().Select("_LeadIndex", "Research", new { companyid = "<#= ID #>" })
+                              .Update("_LeadIndexEdit", "Research", new { companyid = "<#= ID #>" });
+                    })
+                              .Editable(editing => editing.Mode(GridEditMode.PopUp))
+            .Pageable(p => p.Style(GridPagerStyles.Status).PageSize(50).PageOnScroll(true)).Scrollable().Sortable().Resizable(r => r.Columns(true)).ToHtmlString())
+)
+          .Editable(editing => editing.Mode(GridEditMode.PopUp))
+.Pageable(p => p.Style(GridPagerStyles.Status).PageSize(50)
+.PageOnScroll(true)).Scrollable(scrolling => scrolling.Height(400)).Sortable().Resizable(r => r.Columns(true))
+)
+</fieldset>
+<fieldset>
+    <legend>@Model.Month 月项目调研情况</legend>
+    @(Html.Telerik().Grid<_ProjectResearch>().Name("Grid")
 .DataKeys(keys => { keys.Add(p => p.ID); })
 .DataBinding(dataBinding =>
 {
@@ -24,7 +89,7 @@
 })
 .Columns(columns =>
 {
-    columns.Bound(p => p.ProjectName).ClientFooterTemplate("总计"); 
+    columns.Bound(p => p.ProjectName).ClientFooterTemplate("总计");
     columns.Bound(p => p.MemberCount).Width(60);
     columns.Bound(p => p.FirstWeekCompanyCount).Title(Model.DurationStrings[0] + " 公司添加数").Aggregate(a => a.Sum()).ClientFooterTemplate("<#= Sum #>");
     columns.Bound(p => p.SecondWeekCompanyCount).Title(Model.DurationStrings[1] + " 公司添加数").Aggregate(a => a.Sum()).ClientFooterTemplate(" <#= Sum #>");
@@ -34,21 +99,21 @@
     {
         columns.Bound(p => p.FivethWeekCompanyCount).Title(Model.DurationStrings[4]);
     }
-    columns.Command(command => command.Custom("viewprojectDetails").Text("调研查看").DataRouteValues(route => route.Add(o => o.ProjectID).RouteKey("UserName")).Ajax(true)).HtmlAttributes(new {style = "text-align: center" }).Width(150).Title("操作");
+    columns.Command(command => command.Custom("viewprojectDetails").Text("调研查看").DataRouteValues(route => route.Add(o => o.ProjectID).RouteKey("UserName")).Ajax(true)).HtmlAttributes(new { style = "text-align: center" }).Width(150).Title("操作");
 
 })
 .Pageable(p => p.Style(GridPagerStyles.Status).PageSize(50)
-.PageOnScroll(true)).Scrollable().Sortable().Groupable().Resizable(r=>r.Columns(true))
+.PageOnScroll(true)).Scrollable().Sortable().Groupable().Resizable(r => r.Columns(true))
 .ClientEvents(events => events.OnCommand("onProjectDetails"))
 )
-</fieldset> 
-<fieldset> 
-<legend>@Model.Month 月员工调研情况</legend>       
-@(Html.Telerik().Grid<_UserResearch>().Name("_UserResearch")
+</fieldset>
+<fieldset>
+    <legend>@Model.Month 月员工调研情况</legend>
+    @(Html.Telerik().Grid<_UserResearch>().Name("_UserResearch")
 .DataKeys(keys => { keys.Add(p => p.ID); })
 .DataBinding(dataBinding =>
 {
-    dataBinding.Ajax().Select("_UserResearchIndex", "Research", new {month=Model.Month });
+    dataBinding.Ajax().Select("_UserResearchIndex", "Research", new { month = Model.Month });
 })
 .Columns(columns =>
 {
@@ -67,34 +132,36 @@
     }
 
     columns.Command(command => command.Custom("viewUserDetails").Text("调研查看").DataRouteValues(route => route.Add(o => o.UserName).RouteKey("UserName")).Ajax(true)).HtmlAttributes(new { style = "text-align: center" }).Width(150).Title("操作");
-   
+
 })
 .Pageable(p => p.Style(GridPagerStyles.Status).PageSize(50)
-.PageOnScroll(true)).Scrollable().Sortable().Groupable().Resizable(r=>r.Columns(true)).Filterable()
+.PageOnScroll(true)).Scrollable().Sortable().Groupable().Resizable(r => r.Columns(true)).Filterable()
 .ClientEvents(events => events.OnCommand("onUserDetails").OnRowDataBound("onDetailLoad"))
 )
-</fieldset> 
-
-@(Html.Telerik().Window().Name("DetailsWindow").Visible(false).Title("调研列表").Modal(true).Width(900).Height(610).Content(@<text> 
-     @DetailList()  
- </text>).Resizable().Draggable(true)
+</fieldset>
+@(Html.Telerik().Window().Name("DetailsWindow").Visible(false).Title("调研列表").Modal(true).Width(900).Height(610).Content(@<text>
+@DetailList()
+</text>).Resizable().Draggable(true)
 )
-
- @helper DetailList()
- {
-      @(Html.Telerik().Grid<_UserResearchDetail>().Name("DetailsGrid")
+@helper DetailList()
+    {
+    @(Html.Telerik().Grid<_UserResearchDetail>().Name("DetailsGrid")
         .DataBinding(dataBinding =>
         {
             dataBinding.Ajax().Select("_UserResearchList", "Research", new { name = "", type = "" });
         })
         .ToolBar(toolBar => toolBar.Template(
-                @<text><label > 时间筛选: </label>
-                @Html.DropDownList("durationselect", Utl.SelectHelper.DurationSelectList())
-                <span id="salecontainer"></span>
-                <label > 销售筛选: </label>
-                <select id="saleselect" name="saleselect" onchange="sdlOnChange()">
-                </select>
-                </text>)
+                @<text><label>
+                    时间筛选:
+                </label>
+    @Html.DropDownList("durationselect", Utl.SelectHelper.DurationSelectList())
+    <span id="salecontainer"></span>
+    <label>
+        销售筛选:
+    </label>
+    <select id="saleselect" name="saleselect" onchange="sdlOnChange()">
+    </select>
+    </text>)
         )
         .Columns(columns =>
         {
@@ -118,103 +185,113 @@
 <input id="detailtype" type="hidden" />
 <input id="detailname" type="hidden" />
 <input id="username" type="hidden" value=@Utl.Employee.CurrentUserName />
+<script type="text/javascript">
+    function selectProjectChange() {
+        $("#GridCompany").data("tGrid").rebind();
+    }
 
- <script type="text/javascript">
-     function dw() {
-         return $("#DetailsWindow").data("tWindow");
-     }
+    function companyDataBinding(e) {
+        var selsales = $("#selectSales").val();
+        var project = $("#selectProject").val();
+        e.data = $.extend(e.data, { projectid: project,sales:selsales });
+    }
 
-     function dg() {
-         return $('#DetailsGrid').data('tGrid');
-     }
 
-     function ddl() {
-         return $('#durationselect');
-     }
+    function dw() {
+        return $("#DetailsWindow").data("tWindow");
+    }
 
-     function sdl() {
-         return $('#saleselect');
-     }
+    function dg() {
+        return $('#DetailsGrid').data('tGrid');
+    }
 
-     function onDetailLoad(e) {
-         if ($(e.row).children().first().text() != currentuser) {
-             $(e.row).children().last().find('a').hide();
-         }
-        
-     }
+    function ddl() {
+        return $('#durationselect');
+    }
+
+    function sdl() {
+        return $('#saleselect');
+    }
+
+    function onDetailLoad(e) {
+        if ($(e.row).children().first().text() != currentuser) {
+            $(e.row).children().last().find('a').hide();
+        }
+
+    }
     var currentuser;
-     $(document).ready(function () {
+    $(document).ready(function () {
 
-         currentuser = $('#username').val();
+        currentuser = $('#username').val();
 
-         ddl().bind('change', function () {
-             var duration = ddl().val();
-             var saleVal = sdl().val();
-             var d = dg();
+        ddl().bind('change', function () {
+            var duration = ddl().val();
+            var saleVal = sdl().val();
+            var d = dg();
 
-             var type = $("#detailtype").val();
-             var name = $("#detailname").val();
-             dg().ajaxRequest({ name: name, type: type, duration: duration, sale: saleVal });
+            var type = $("#detailtype").val();
+            var name = $("#detailname").val();
+            dg().ajaxRequest({ name: name, type: type, duration: duration, sale: saleVal });
 
-         });
-     });
+        });
+    });
 
-     function sdlOnChange() {
-         var saleVal = sdl().val();
-         var duration = ddl().val();
-         var d = dg();
+    function sdlOnChange() {
+        var saleVal = sdl().val();
+        var duration = ddl().val();
+        var d = dg();
 
-         var type = $("#detailtype").val();
-         var name = $("#detailname").val();
-         dg().ajaxRequest({ name: name, type: type, duration: duration, sale: saleVal });
-     }
+        var type = $("#detailtype").val();
+        var name = $("#detailname").val();
+        dg().ajaxRequest({ name: name, type: type, duration: duration, sale: saleVal });
+    }
 
-     function onUserDetails(e) {
-         resetddl();
-         var user = e.dataItem.UserName;
-         var d = dg();
-         setdetailselections(user, 'user');
-         dg().ajax.selectUrl = "/Research/_UserResearchList/?name=" + user + "&type=user";
-         
-         dg().ajaxRequest({ name: user, type: 'user' });
-         dw().center().open();
-     }
+    function onUserDetails(e) {
+        resetddl();
+        var user = e.dataItem.UserName;
+        var d = dg();
+        setdetailselections(user, 'user');
+        dg().ajax.selectUrl = "/Research/_UserResearchList/?name=" + user + "&type=user";
 
-     function onProjectDetails(e) {
-         resetddl();
-         resetsdl();
-         var id = e.dataItem.ProjectID;
-         var d = dg();
+        dg().ajaxRequest({ name: user, type: 'user' });
+        dw().center().open();
+    }
 
-         $.post('MemberInPorject', { projectId: id }, function (result) {
-             $("#saleselect").each(function () {
-                 var dropdownList = this;
-                 $.each(result, function (key, item) {
-                     var option = new Option(item.Text, item.Value);
-                     dropdownList.add(option);
-                 });
-             });
-         }, 'json');
+    function onProjectDetails(e) {
+        resetddl();
+        resetsdl();
+        var id = e.dataItem.ProjectID;
+        var d = dg();
 
-         setdetailselections(id, 'project');
+        $.post('MemberInPorject', { projectId: id }, function (result) {
+            $("#saleselect").each(function () {
+                var dropdownList = this;
+                $.each(result, function (key, item) {
+                    var option = new Option(item.Text, item.Value);
+                    dropdownList.add(option);
+                });
+            });
+        }, 'json');
 
-         dg().ajax.selectUrl = "/Research/_UserResearchList/?name="+id+"&type=project";
-         dg().ajaxRequest({ name: id, type: 'project' });
-         
-         dw().center().open();
-     }
-     //重设ddl
-     function resetddl() {
-         ddl().val('0');
-     }
-     //重设ddl
-     function resetsdl() {
-         sdl().val('0');
-     }
-     //保存details配置
-     function setdetailselections(name, type) {
-         $('#detailtype').val(type);
-         $('#detailname').val(name);
-     }
+        setdetailselections(id, 'project');
+
+        dg().ajax.selectUrl = "/Research/_UserResearchList/?name=" + id + "&type=project";
+        dg().ajaxRequest({ name: id, type: 'project' });
+
+        dw().center().open();
+    }
+    //重设ddl
+    function resetddl() {
+        ddl().val('0');
+    }
+    //重设ddl
+    function resetsdl() {
+        sdl().val('0');
+    }
+    //保存details配置
+    function setdetailselections(name, type) {
+        $('#detailtype').val(type);
+        $('#detailname').val(name);
+    }
     
-     </script>
+</script>

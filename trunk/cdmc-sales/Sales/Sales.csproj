@@ -1726,6 +1726,8 @@
     <Content Include="Views\Shared\EditorTemplates\TeamLeadPerformanceEdit.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\SalesPerformanceEdit.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\AjaxEmployee.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\_CompanyResearchDetail.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\_LeadResearchDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\TargetOfMonthForMember\Confirm.cshtml" />

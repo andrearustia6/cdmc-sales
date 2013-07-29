@@ -1,0 +1,19 @@
+﻿@model Sales.Model._CompanyResearchDetail
+<fieldset style="padding: 10px; margin: 10px">
+    <legend>确认公司</legend>
+    @Html.HiddenFor(h => h.ID)
+    <div class="editor-label">
+        @Html.LabelFor(model => model.IsValid)
+    </div>
+    <div class="editor-field">
+        @Html.DropDownListFor(model => model.IsValid, new SelectList(new List<string>() { "是", "否" }), new { style = "width:150px" })<br />
+        @Html.ValidationMessageFor(model => model.IsValid)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.CompanyReviews)
+    </div>
+    <div class="editor-field">
+        @Html.TextAreaFor(model => model.CompanyReviews)<br />
+        @Html.ValidationMessageFor(model => model.CompanyReviews)
+    </div>
+</fieldset>
