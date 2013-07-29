@@ -185,8 +185,23 @@ namespace Sales.Controllers
 
 
         [GridAction]
-        public ActionResult _CompanyIndex(int? projectid, string sales)
+        public ActionResult _CompanyIndex(int? projectid, string sales, int? selType)
         {
+            if (selType != null&&selType!=0)
+            {
+                switch (selType)
+                {
+                    case 1:
+                        break;
+                    case 2:
+                        break;
+                    default:
+                        break;
+                }
+            }
+         
+
+
             var temp = from tc in CH.DB.CompanyRelationships.Where(w => w.Project.ID == projectid) select tc;
 
             var selCompany = from c in CH.DB.Companys
@@ -202,8 +217,12 @@ namespace Sales.Controllers
                                  CompanyReviews = c.CompanyReviews,
                                  Creator = c.Creator,
                                  CreateDate = c.CreatedDate,
-                                 IsValid = c.IsValid == false ? "否" : "是"
+                                 IsValid = c.IsValid == false ? "否" : "是",
+                                 Description = c.Description
                              };
+
+
+
 
             return View(new GridModel(selCompany));
         }

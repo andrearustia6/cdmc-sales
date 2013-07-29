@@ -1,6 +1,6 @@
 ﻿@model Sales.Model._CompanyResearchDetail
 <fieldset style="padding: 10px; margin: 10px">
-    <legend>确认公司</legend>
+    <legend>确认公司是否有效</legend>
     @Html.HiddenFor(h => h.ID)
     <div class="editor-label">
         @Html.LabelFor(model => model.IsValid)
@@ -13,7 +13,7 @@
         @Html.LabelFor(model => model.CompanyReviews)
     </div>
     <div class="editor-field">
-        @Html.TextAreaFor(model => model.CompanyReviews)<br />
+        @Html.TextAreaFor(model => model.CompanyReviews, new { style = "width:350px;height:500px" })<br />
         @Html.ValidationMessageFor(model => model.CompanyReviews)
     </div>
 </fieldset>
