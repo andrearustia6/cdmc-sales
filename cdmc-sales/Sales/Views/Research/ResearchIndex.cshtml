@@ -25,17 +25,17 @@
                 @<text><span><label>
                     项目筛选:
                 </label>
-                    @Html.DropDownList("selectProject", Utl.SelectHelper.SaleRelatedProjects(), "所有项目", new { onchange = "selectChange();", style = "width:150px" })
+                    @Html.DropDownList("selectProject", Utl.SelectHelper.SaleRelatedProjects(), "所有项目", new { onchange = "selectChange(true);", style = "width:150px" })
                 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>
                     <label>
                         销售筛选:
                     </label>
-                    @Html.DropDownList("selectSales", new SelectList(Utl.SelectHelper.MemberSelectListInOwnProject()), "所有销售", new { onchange = "selectChange();", style = "width:150px" })
+                    @Html.DropDownList("selectSales", new SelectList(Utl.SelectHelper.MemberSelectListInOwnProject()), "所有销售", new { onchange = "selectChange(false);", style = "width:150px" })
                 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>
                     <label>
                         状态筛选:
                     </label>
-                    <select id="selectType" onchange="selectChange();" style="width: 150px">
+                    <select id="selectType" onchange="selectChange(false);" style="width: 150px">
                         <option value="0">所有调研</option>
                         <option value="1">未通过</option>
                         <option value="2">被点评</option>
@@ -44,7 +44,7 @@
         </text>)).DataKeys(keys => { keys.Add(p => p.ID); }).DataBinding(dataBinding =>
          {
              dataBinding.Ajax().Select("_CompanyIndex",
-                 "Research", new { month = Model.Month }).Update("_CompanyIndexEdit", "Research");
+                 "Research", new { month = Model.Month }).Update("_CompanyIndexEdit", "Research", new { projectid = ViewBag.projectid });
          }).Columns(columns =>
          {
              columns.Bound(p => p.CompanyName);
@@ -52,14 +52,20 @@
              columns.Bound(p => p.CompanyDesicription);
              columns.Bound(p => p.Creator);
              columns.Bound(p => p.CreateDate);
-             columns.Bound(p => p.CompanyReviews);
+             columns.Bound(p => p.LeadCount);
+             columns.Bound(p => p.CompanyReviews).HtmlAttributes(new { name = "CompanyReviews" });
              columns.Bound(p => p.IsValid);
              columns.Command(c => c.Edit().ButtonType(GridButtonType.Image)).Title("有效确认").Width(150);
-         }).ClientEvents(events => events.OnDataBinding("companyDataBinding")).DetailView(details
+         }).ClientEvents(events => events.OnDataBinding("companyDataBinding")
+
+                                                 .OnRowDataBound("rowDataBound").OnComplete("onCompanyComplete")
+         ).DetailView(details
                     => details.ClientTemplate(Html.Telerik().TabStrip().Name("TabStrip_<#= ID #>")
+                    .ClientEvents(events => events
+                        .OnLoad("onLoad"))
                     .SelectedIndex(0).Items(items =>
                     {
-                        items.Add().Text("Lead信息").Content(Html.Telerik().Grid<_LeadResearchDetail>()
+                        items.Add().Text("共<#= LeadCount #>个Lead").Content(Html.Telerik().Grid<_LeadResearchDetail>()
                             .Name("Grid<#= ID #>")
                             .DataKeys(keys => { keys.Add(p => p.ID); })
                             .Columns(columns =>
@@ -79,6 +85,7 @@
                                 dataBinding.Ajax().Select("_LeadIndex", "Research", new { companyid = "<#= ID #>" })
                                       .Update("_LeadIndexEdit", "Research", new { companyid = "<#= ID #>" });
                             })
+
                             .Editable(editing => editing.Mode(GridEditMode.PopUp))
                             .Pageable(p => p.Style(GridPagerStyles.Status).PageSize(50).PageOnScroll(true)).Scrollable().Sortable().Resizable(r => r.Columns(true)).ToHtmlString());
                         items.Add().Text("公司简介").Content(
@@ -197,8 +204,22 @@
 <input id="detailname" type="hidden" />
 <input id="username" type="hidden" value=@Utl.Employee.CurrentUserName />
 <script type="text/javascript">
-    function selectChange() {
+    function selectChange(e) {
+        if (e == true) {
+            $("#selectSales").empty();
+            var id = $("#selectProject").val();
+            $.post('MemberSelectList', { projectId: id }, function (result) {
+                $("#selectSales").each(function () {
+                    var dropdownList = this;
+                    $.each(result, function (key, item) {
+                        var option = new Option(item.Text, item.Value);
+                        dropdownList.add(option);
+                    });
+                });
+            }, 'json');
+        }
         $("#GridCompany").data("tGrid").rebind();
+
     }
 
     function companyDataBinding(e) {
@@ -305,5 +326,24 @@
         $('#detailtype').val(type);
         $('#detailname').val(name);
     }
-    
+
+    function onLoad(e) {
+        if (e.target.lastChild.innerText == "") {
+            var tabstrip = $("#" + e.target.id).data("tTabStrip");
+            var item = $("li", tabstrip.element)[1];
+            tabstrip.disable(item);
+        }
+    }
+
+    function rowDataBound(e) {
+        var data = e.dataItem.CompanyReviews;
+        if ((data != null && data.length >= 10)) {
+            $(e.row).find('[name]').text(data.substring(0, 10) + "...");
+        }
+    }
+    function onCompanyComplete(e) {
+        if (e.name == "update") {
+            $("#GridCompany").data("tGrid").rebind();
+        }
+    }
 </script>

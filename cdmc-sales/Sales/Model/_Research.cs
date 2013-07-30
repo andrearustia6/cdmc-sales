@@ -185,6 +185,15 @@ namespace Sales.Model
 
         [Display(Name = "公司简介")]
         public string Description { get; set; }
+
+        [Display(Name = "Lead数量")]
+        public int LeadCount
+        {
+            get
+            {
+                return CH.DB.Leads.Where(s => s.CompanyID == ID).Count();
+            }
+        }
     }
 
     public class _LeadResearchDetail
