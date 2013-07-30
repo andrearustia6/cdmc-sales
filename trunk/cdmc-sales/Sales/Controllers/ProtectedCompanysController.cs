@@ -20,9 +20,9 @@ namespace Sales.Controllers
             ViewBag.ProjectID = projectid;
             if (projectid != null)
             {
-                //var cs = from c in CH.DB.CompanyRelationships where (c.Deals.Count > 0|| c.Progress.Code>=40) &&  c.ProjectID == projectid select c;
-                //var data = cs.ToList();
-                var cs = from c in CH.DB.CompanyRelationships where c.ProjectID == projectid select c;
+                var cs = from c in CH.DB.CompanyRelationships where (c.Deals.Count > 0 || c.Progress.Code >= 40) && c.ProjectID == projectid select c;
+                var data = cs.ToList();
+                //var cs = from c in CH.DB.CompanyRelationships where c.ProjectID == projectid select c;
 
                 return View(cs);
             }
