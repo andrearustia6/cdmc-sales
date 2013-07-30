@@ -216,7 +216,7 @@ namespace Sales.Controllers
                     selCompany = selCompany.Where(s => s.IsValid == false);
                     break;
                 case 2:
-                    selCompany = selCompany.Where(s => !string.IsNullOrWhiteSpace(s.CompanyReviews));
+                    selCompany = selCompany.Where(s => !string.IsNullOrEmpty(s.CompanyReviews));
                     break;
                 default:
                     break;
