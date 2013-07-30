@@ -196,7 +196,18 @@ namespace Sales.Controllers
 
             if (projectid != null)
             {
-                selCompany.Where(c => CH.DB.CompanyRelationships.Any(r => r.CompanyID == c.ID && c.ID == projectid));
+                selCompany.Where(c => CH.DB.CompanyRelationships.Where(r => r.ProjectID == projectid).Any(r => r.CompanyID == c.ID));
+            }
+            else
+            {
+                var relationship = CH.DB.CompanyRelationships.Where(r => CRM_Logical.GetUserInvolveProject().Any(c => c.ID == r.ProjectID));
+                selCompany.Where(c => relationship.Any(r => r.CompanyID == c.ID));
+            }
+
+            if (sales != string.Empty)
+            {
+                var relationship = CH.DB.CompanyRelationships.Where(r => CH.DB.Members.Where(m => m.Name == sales).Any(m => m.ProjectID == r.ProjectID));
+                selCompany.Where(c => relationship.Any(r => r.CompanyID == c.ID));
             }
 
             switch (selType)
@@ -211,26 +222,22 @@ namespace Sales.Controllers
                     break;
             }
 
-            var temp = from tc in CH.DB.CompanyRelationships.Where(w => w.Project.ID == projectid) select tc;
+            var findata = from c in selCompany
+                          select new _CompanyResearchDetail
+                                       {
+                                           ID = c.ID,
+                                           CompanyNameCH = c.Name_CH,
+                                           CompanyNameEN = c.Name_EN,
+                                           CompanyContact = c.Contact,
+                                           CompanyDesicription = c.Description,
+                                           CompanyReviews = c.CompanyReviews,
+                                           Creator = c.Creator,
+                                           CreateDate = c.CreatedDate,
+                                           IsValid = c.IsValid == false ? "否" : "是",
+                                           Description = c.Description
+                                       };
 
-            var selCompanys = from c in CH.DB.Companys
-                             from d in temp
-                             where d.CompanyID == c.ID && d.Members.Any(s => s.Name == sales)
-                             select new _CompanyResearchDetail
-                             {
-                                 ID = c.ID,
-                                 CompanyNameCH = c.Name_CH,
-                                 CompanyNameEN = c.Name_EN,
-                                 CompanyContact = c.Contact,
-                                 CompanyDesicription = c.Description,
-                                 CompanyReviews = c.CompanyReviews,
-                                 Creator = c.Creator,
-                                 CreateDate = c.CreatedDate,
-                                 IsValid = c.IsValid == false ? "否" : "是",
-                                 Description = c.Description
-                             };
-
-            return View(new GridModel(selCompanys));
+            return View(new GridModel(findata));
         }
 
         [GridAction]
