@@ -196,7 +196,7 @@ namespace Sales.Controllers
             IQueryable<CompanyRelationship> crms;
             if (projectid != null)
             {
-               // selCompany.Where(c => CH.DB.CompanyRelationships.Where(r => r.ProjectID == projectid).Any(r => r.CompanyID == c.ID));
+                // selCompany.Where(c => CH.DB.CompanyRelationships.Where(r => r.ProjectID == projectid).Any(r => r.CompanyID == c.ID));
                 crms = CH.DB.CompanyRelationships.Where(w => w.ProjectID == projectid);
             }
             else
@@ -207,7 +207,7 @@ namespace Sales.Controllers
                 crms = CH.DB.CompanyRelationships.Where(w => pids.Any(a => a == w.ProjectID));
             }
 
-            if (sales != string.Empty)
+            if (sales != string.Empty && sales != "null")
             {
                 //var relationship = CH.DB.CompanyRelationships.Where(r => CH.DB.Members.Where(m => m.Name == sales).Any(m => m.ProjectID == r.ProjectID));
                 //selCompany.Where(c => relationship.Any(r => r.CompanyID == c.ID));
@@ -225,7 +225,6 @@ namespace Sales.Controllers
                 default:
                     break;
             }
-
             var findata = from c in selCompany
                           select new _CompanyResearchDetail
                                        {
@@ -473,6 +472,31 @@ namespace Sales.Controllers
             return this.Json(selectList);
         }
 
+
+        [HttpPost]
+        public JsonResult MemberSelectList(int? projectId)
+        {
+            List<SelectListItem> selectList = new List<SelectListItem>();
+            SelectListItem selectListItemNone = new SelectListItem() { Text = "所有销售", Value = "" };
+            selectList.Add(selectListItemNone);
+            if (projectId != null)
+            {
+                foreach (Member m in CH.GetAllData<Member>(c => c.ProjectID == projectId && c.IsActivated == true))
+                {
+                    SelectListItem selectListItem = new SelectListItem { Text = m.Name, Value = m.Name };
+                    selectList.Add(selectListItem);
+                }
+            }
+            else
+            {
+                foreach (var m in SelectHelper.MemberSelectListInOwnProject())
+                {
+                    SelectListItem selectListItem = new SelectListItem { Text = m, Value = m };
+                    selectList.Add(selectListItem);
+                }
+            }
+            return this.Json(selectList);
+        }
         #endregion
     }
 }
