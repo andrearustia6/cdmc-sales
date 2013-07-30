@@ -193,23 +193,27 @@ namespace Sales.Controllers
                 sales = Employee.CurrentUserName;
             }
             var selCompany = from data in CH.DB.Companys select data;
-
+            IQueryable<CompanyRelationship> crms;
             if (projectid != null)
             {
-                selCompany.Where(c => CH.DB.CompanyRelationships.Where(r => r.ProjectID == projectid).Any(r => r.CompanyID == c.ID));
+               // selCompany.Where(c => CH.DB.CompanyRelationships.Where(r => r.ProjectID == projectid).Any(r => r.CompanyID == c.ID));
+                crms = CH.DB.CompanyRelationships.Where(w => w.ProjectID == projectid);
             }
             else
             {
-                var relationship = CH.DB.CompanyRelationships.Where(r => CRM_Logical.GetUserInvolveProject().Any(c => c.ID == r.ProjectID));
-                selCompany.Where(c => relationship.Any(r => r.CompanyID == c.ID));
+                //var relationship = CH.DB.CompanyRelationships.Where(r => CRM_Logical.GetUserInvolveProject().Any(c => c.ID == r.ProjectID));
+                //selCompany.Where(c => relationship.Any(r => r.CompanyID == c.ID));
+                var pids = CRM_Logical.GetUserInvolveProject().Select(s => s.ID);
+                crms = CH.DB.CompanyRelationships.Where(w => pids.Any(a => a == w.ProjectID));
             }
 
             if (sales != string.Empty)
             {
-                var relationship = CH.DB.CompanyRelationships.Where(r => CH.DB.Members.Where(m => m.Name == sales).Any(m => m.ProjectID == r.ProjectID));
-                selCompany.Where(c => relationship.Any(r => r.CompanyID == c.ID));
+                //var relationship = CH.DB.CompanyRelationships.Where(r => CH.DB.Members.Where(m => m.Name == sales).Any(m => m.ProjectID == r.ProjectID));
+                //selCompany.Where(c => relationship.Any(r => r.CompanyID == c.ID));
+                crms = crms.Where(w => w.Members.Any(a => a.Name == sales));
             }
-
+            selCompany = crms.Select(s => s.Company);
             switch (selType)
             {
                 case 1:
