@@ -16,9 +16,11 @@
         }
     }
 </fieldset>
-<fieldset>
-    <legend>公司调研报表</legend>
-    @(Html.Telerik().Grid<_CompanyResearchDetail>().Name("GridCompany")
+@if (Utl.Employee.CurrentRole.Level >= Role.LVL_Manager)
+{
+    <fieldset>
+        <legend>公司调研报表</legend>
+        @(Html.Telerik().Grid<_CompanyResearchDetail>().Name("GridCompany")
      .ToolBar(toolBar => toolBar.Template(
                 @<text><span><label>
                     项目筛选:
@@ -39,15 +41,19 @@
                         <option value="2">被点评</option>
                     </select>
                 </span>
-    </text>)).DataKeys(keys => { keys.Add(p => p.ID); }).DataBinding(dataBinding =>
+        </text>)).DataKeys(keys => { keys.Add(p => p.ID); }).DataBinding(dataBinding =>
          {
              dataBinding.Ajax().Select("_CompanyIndex",
                  "Research", new { month = Model.Month }).Update("_CompanyIndexEdit", "Research");
          }).Columns(columns =>
          {
-             columns.Bound(p => p.CompanyName); columns.Bound(p => p.CompanyContact);
-             columns.Bound(p => p.CompanyDesicription); columns.Bound(p => p.Creator); columns.Bound(p
-             => p.CreateDate); columns.Bound(p => p.CompanyReviews); columns.Bound(p => p.IsValid);
+             columns.Bound(p => p.CompanyName);
+             columns.Bound(p => p.CompanyContact);
+             columns.Bound(p => p.CompanyDesicription);
+             columns.Bound(p => p.Creator);
+             columns.Bound(p => p.CreateDate);
+             columns.Bound(p => p.CompanyReviews);
+             columns.Bound(p => p.IsValid);
              columns.Command(c => c.Edit().ButtonType(GridButtonType.Image)).Title("有效确认").Width(150);
          }).ClientEvents(events => events.OnDataBinding("companyDataBinding")).DetailView(details
                     => details.ClientTemplate(Html.Telerik().TabStrip().Name("TabStrip_<#= ID #>")
@@ -82,7 +88,8 @@
                     }).ToHtmlString())).Editable(editing => editing.Mode(GridEditMode.PopUp))
     .Pageable(p => p.Style(GridPagerStyles.Status).PageSize(50).PageOnScroll(true)).Scrollable(scrolling
     => scrolling.Height(400)).Sortable().Resizable(r => r.Columns(true)))
-</fieldset>
+    </fieldset>
+}
 <fieldset>
     <legend>@Model.Month 月项目调研情况</legend>
     @(Html.Telerik().Grid<_ProjectResearch>().Name("Grid")
