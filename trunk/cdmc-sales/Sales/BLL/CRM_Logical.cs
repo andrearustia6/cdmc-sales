@@ -8,6 +8,7 @@ using System.Web.Security;
 using Model;
 using System.Data.Objects;
 using Sales.Model;
+using System.Web.Mvc;
 
 namespace BLL
 {
@@ -281,6 +282,55 @@ namespace BLL
                 }
 
                 return new List<_SalesPerformance>();
+
+            }
+            public static IEnumerable<SelectListItem> GetSalesDDL(int month)
+            {
+                var rolelvl = Employee.CurrentRole.Level;
+
+                if (rolelvl == PoliticsInterfaceRequired.LVL)
+                {
+                    rolelvl = DirectorRequired.LVL;
+                }
+                if (rolelvl >= SalesRequired.LVL)
+                {
+                    List<SelectListItem> selectList = new List<SelectListItem>();
+                    IQueryable<string> sales = null;
+                    var user = Employee.CurrentUserName;
+                    var mems = CH.DB.Members.Where(w => w.IsActivated == true && w.Project.IsActived == true);
+                    if (Employee.EqualToLeader() || Employee.EqualToManager())//版块或者lead查看
+                    {
+                        sales = mems.Where(w => w.Project.Manager == user || w.Project.TeamLeader == user).Select(s => s.Name).Distinct();
+
+                    }
+                    else if (Employee.EqualToSales())//销售查看
+                    {
+                        sales = mems.Where(w => w.Name == user).Select(s => s.Name).Distinct();
+                    }
+                    else if (rolelvl >= SuperManagerRequired.LVL)
+                    {
+                        sales = mems.Select(s => s.Name).Distinct();
+                    }
+
+                    if (sales != null)
+                    {
+                        if (Utl.Utl.DebugModel() != true)
+                        {
+                            var debugmembers = CH.DB.Members.Where(w => w.Test == true && w.IsActivated == true).Select(s => s.Name).Distinct();
+                            sales = sales.Where(w => !debugmembers.Any(a => a == w));
+                        }
+                        
+                        foreach (var sale in sales)
+                        {
+                            SelectListItem selectListItem = new SelectListItem() { Text = sale, Value = sale };
+                            selectList.Add(selectListItem);
+                        }
+                        
+                    }
+                    return selectList;
+                }
+
+                return new List<SelectListItem>();
 
             }
             #region manager考核的业务逻辑
