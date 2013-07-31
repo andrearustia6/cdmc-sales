@@ -89,7 +89,7 @@
                             .Editable(editing => editing.Mode(GridEditMode.PopUp))
                             .Pageable(p => p.Style(GridPagerStyles.Status).PageSize(50).PageOnScroll(true)).Scrollable().Sortable().Resizable(r => r.Columns(true)).ToHtmlString());
                         items.Add().Text("公司简介").Content(
-                             "<div style='height:250px'>" +
+                             "<div id=Description_<#= ID #> style='height:250px'>" +
                           "<#= Description #>" +
                         "</div>");
                     }).ToHtmlString())).Editable(editing => editing.Mode(GridEditMode.PopUp))
@@ -328,10 +328,15 @@
     }
 
     function onLoad(e) {
-        if (e.target.lastChild.innerText == "") {
-            var tabstrip = $("#" + e.target.id).data("tTabStrip");
+        //if (e.target.lastChild.innerText == "" || e.target.lastChild.contentText == "") {
+        var id = e.target.id;
+        var b = id.replace(/TabStrip_/, "");
+        if ($("#Description_" + b).text() == "") {
+
+            var tabstrip = $("#" + id).data("tTabStrip");
             var item = $("li", tabstrip.element)[1];
-            tabstrip.disable(item);
+            //tabstrip.disable(item);
+            item.parentNode.removeChild(item);
         }
     }
 
