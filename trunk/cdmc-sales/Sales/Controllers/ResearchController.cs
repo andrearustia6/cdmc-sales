@@ -481,7 +481,7 @@ namespace Sales.Controllers
             selectList.Add(selectListItemNone);
             if (projectId != null)
             {
-                foreach (Member m in CH.GetAllData<Member>(c => c.ProjectID == projectId && c.IsActivated == true))
+                foreach (Member m in CH.GetAllData<Member>(c => c.ProjectID == projectId && c.IsActivated == true).OrderBy(s => s.Name))
                 {
                     SelectListItem selectListItem = new SelectListItem { Text = m.Name, Value = m.Name };
                     selectList.Add(selectListItem);
