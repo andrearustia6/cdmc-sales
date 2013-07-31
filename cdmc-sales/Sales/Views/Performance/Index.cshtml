@@ -377,7 +377,8 @@
 .ToolBar(factory => factory
       .Template(@<text>
         <div>
-            员工: @Html.TextBox("fuzzyInput", (string)ViewBag.fuzzyInput)
+            员工: @*@Html.TextBox("fuzzyInput", (string)ViewBag.fuzzyInput)*@
+            @Html.DropDownList("fuzzyInput", BLL.CRM_Logical._EmployeePerformance.GetSalesDDL(month==null?DateTime.Now.Month:month.Value),"请选择")
             <a class="t-grid-action t-button t-state-default" onclick="refreshGrid();">查找</a>
         </div>
         </text>))
