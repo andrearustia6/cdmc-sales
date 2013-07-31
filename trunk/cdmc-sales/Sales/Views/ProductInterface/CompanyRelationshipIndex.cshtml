@@ -51,7 +51,7 @@
                                 c.Bound(o => o.Name);
                                 c.Bound(o => o.Title);
                                 c.Bound(o => o.Mobile);
-                                c.Bound(o => o).Title("状态").Template(@<text>@item.GetLeadStatus(cr.ProjectID)</text>);
+                              
                                 c.Bound(o => o).Title("致电列表").Template(@<span>  <a  target="_blank" href=@Url.Content("~/LeadCall/LeadIndex/?projectid=" + cr.ProjectID + "&leadid=" + item.ID + "&companyrelationshipid=" + item.CompanyID) >致电查看</a> </span>);
                             })
                                          .Resizable(resizing => resizing.Columns(true))
