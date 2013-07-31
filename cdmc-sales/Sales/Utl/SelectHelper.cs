@@ -431,10 +431,10 @@ namespace Utl
             }
             else
             {
-                var selMember = from p in CRM_Logical.GetUserInvolveProject()
-                                from m in CH.DB.Members
-                                where p.IsActived && p.ID == m.ProjectID
-                                select m;
+                var selMember = (from p in CRM_Logical.GetUserInvolveProject()
+                                 from m in CH.DB.Members
+                                 where p.IsActived && p.ID == m.ProjectID
+                                 select m).OrderBy(s => s.Name);
                 return selMember.Select(s => s.Name).Distinct().ToList();
             }
         }

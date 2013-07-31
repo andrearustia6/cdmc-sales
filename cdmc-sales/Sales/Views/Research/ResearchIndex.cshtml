@@ -49,9 +49,9 @@
          {
              columns.Bound(p => p.CompanyName);
              columns.Bound(p => p.CompanyContact);
-             columns.Bound(p => p.CompanyDesicription);
+             //columns.Bound(p => p.CompanyDesicription);
              columns.Bound(p => p.Creator);
-             columns.Bound(p => p.CreateDate);
+             columns.Bound(p => p.CreateDate).Format("{0:d}");
              columns.Bound(p => p.LeadCount);
              columns.Bound(p => p.CompanyReviews).HtmlAttributes(new { name = "CompanyReviews" });
              columns.Bound(p => p.IsValid);
@@ -76,7 +76,7 @@
                                 columns.Bound(l => l.LeadMobile);
                                 columns.Bound(l => l.Email);
                                 columns.Bound(l => l.Creator);
-                                columns.Bound(l => l.CreateDate);
+                                columns.Bound(l => l.CreateDate).Format("{0:d}");
                                 columns.Bound(l => l.IsValid);
                                 columns.Command(c => c.Edit().ButtonType(GridButtonType.Image)).Title("有效确认").Width(150);
                             })
