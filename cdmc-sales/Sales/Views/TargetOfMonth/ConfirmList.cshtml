@@ -45,6 +45,7 @@
     dataBinding.Ajax().Select("_SelectIndex", "TargetOfMonth")
         .Update("_SaveAjaxEditing", "TargetOfMonth");
 }).Editable(editing => editing.Mode(GridEditMode.PopUp))
+       .ClientEvents(events => events.OnCommand("onedit"))
 .Pageable(p => p.Style(GridPagerStyles.Status).PageSize(50).PageOnScroll(true)).Scrollable(s
 => s.Height(350)).Sortable().Filterable().Groupable())
 <script type="text/javascript">
@@ -65,5 +66,9 @@
         if ((e.dataItem.IsConfirm == "是" || e.dataItem.IsAdminConfirm == "否")) {
             $(e.row).find('a.t-grid-edit').remove();
         }
+    }
+    function onedit(e) {
+        glstartdate = "";
+        glstartdate = e.dataItem.EndDate;
     }
 </script>
