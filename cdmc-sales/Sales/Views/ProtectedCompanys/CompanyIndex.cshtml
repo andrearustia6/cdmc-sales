@@ -2,7 +2,7 @@
     ViewBag.Title = "已保护公司";
 }
 @using Entity
-@model List<CompanyRelationship>
+@model IQueryable<CompanyRelationship>
 @Html.Partial("Projectselector")
 @if (Model != null)
 {
