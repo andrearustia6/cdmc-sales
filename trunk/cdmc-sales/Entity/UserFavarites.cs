@@ -31,7 +31,7 @@ namespace Entity
         public virtual Role Role { get; set; }
         public int? RoleID { get; set; }
 
-        [Display(Name = "用户名")]
+        [Display(Name = "英文名")]
         public string AccountName { get; set; }
 
         [Display(Name = "部门")]
@@ -48,5 +48,11 @@ namespace Entity
         [DataType(DataType.EmailAddress)]
         [Display(Name = "邮件地址")]
         public string Email { get; set; }
+
+        [Display(Name = "中文名"), Required]
+        public string AccountNameCN { get; set; }
+
+        [Display(Name = "座机"), Required]
+        public int? AgentNum { get; set; }
     }
 }

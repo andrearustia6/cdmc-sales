@@ -185,10 +185,11 @@ namespace Model
         [Display(Name = "应付款")]
         public decimal Payment { get; set; }
         [Display(Name = "币种")]
-       
+
         public string Currency { get; set; }
         [Display(Name = "RMB应付款")]
-        public decimal RMBPayment {
+        public decimal RMBPayment
+        {
             get
             {
                 if (Currency == "RMB")
@@ -199,7 +200,8 @@ namespace Model
         }
 
         [Display(Name = "USD应付款")]
-        public decimal USDPayment {
+        public decimal USDPayment
+        {
             get
             {
                 if (Currency == "USD")
@@ -600,7 +602,7 @@ namespace Model
         [Display(Name = "工作邮箱")]
         public string WorkingEmail { get; set; }
     }
-        
+
     public class AjaxViewSaleCompany
     {
         [Display(Name = "项目")]
@@ -955,31 +957,31 @@ namespace Model
         [Display(Name = "第一周出单目标"), DisplayFormat(DataFormatString = "{0:c}")]
         public decimal? TargetOf1stWeek { get; set; }
 
-        [Display(Name = "第二周出单目标"),  DisplayFormat(DataFormatString = "{0:c}")]
+        [Display(Name = "第二周出单目标"), DisplayFormat(DataFormatString = "{0:c}")]
         public decimal? TargetOf2ndWeek { get; set; }
 
-        [Display(Name = "第三周出单目标"),  DisplayFormat(DataFormatString = "{0:c}")]
+        [Display(Name = "第三周出单目标"), DisplayFormat(DataFormatString = "{0:c}")]
         public decimal? TargetOf3rdWeek { get; set; }
 
-        [Display(Name = "第四周出单目标"),  DisplayFormat(DataFormatString = "{0:c}")]
+        [Display(Name = "第四周出单目标"), DisplayFormat(DataFormatString = "{0:c}")]
         public decimal? TargetOf4thWeek { get; set; }
 
-        [Display(Name = "第五周出单目标"),  DisplayFormat(DataFormatString = "{0:c}")]
+        [Display(Name = "第五周出单目标"), DisplayFormat(DataFormatString = "{0:c}")]
         public decimal? TargetOf5thWeek { get; set; }
 
-        [Display(Name = "第一周入账目标"),  DisplayFormat(DataFormatString = "{0:c}")]
+        [Display(Name = "第一周入账目标"), DisplayFormat(DataFormatString = "{0:c}")]
         public decimal? CheckInOf1stWeek { get; set; }
 
-        [Display(Name = "第二周入账目标"),  DisplayFormat(DataFormatString = "{0:c}")]
+        [Display(Name = "第二周入账目标"), DisplayFormat(DataFormatString = "{0:c}")]
         public decimal? CheckInOf2ndWeek { get; set; }
 
-        [Display(Name = "第三周入账目标"),  DisplayFormat(DataFormatString = "{0:c}")]
+        [Display(Name = "第三周入账目标"), DisplayFormat(DataFormatString = "{0:c}")]
         public decimal? CheckInOf3rdWeek { get; set; }
 
-        [Display(Name = "第四周入账目标"),  DisplayFormat(DataFormatString = "{0:c}")]
+        [Display(Name = "第四周入账目标"), DisplayFormat(DataFormatString = "{0:c}")]
         public decimal? CheckInOf4thWeek { get; set; }
 
-        [Display(Name = "第五周入账目标"),  DisplayFormat(DataFormatString = "{0:c}")]
+        [Display(Name = "第五周入账目标"), DisplayFormat(DataFormatString = "{0:c}")]
         public decimal? CheckInOf5thWeek { get; set; }
     }
 
@@ -1080,6 +1082,12 @@ namespace Model
         [Display(Name = "邮件地址")]
         [RegularExpression(@"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}", ErrorMessage = "请输入的有效的工作邮箱")]
         public string Email { get; set; }
+
+        [Display(Name = "中文名"), Required]
+        public string AccountNameCN { get; set; }
+
+        [Display(Name = "座机")]
+        public int? AgentNum { get; set; }
 
 
 
