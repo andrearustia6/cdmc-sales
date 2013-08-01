@@ -73,6 +73,7 @@ namespace Sales.Controllers
 
         private List<AjaxEmployee> getData()
         {
+
             var list = from l in CH.DB.EmployeeRoles
                        select new AjaxEmployee
                        {
@@ -85,9 +86,10 @@ namespace Sales.Controllers
                            StartDate = l.StartDate,
                            DepartmentID = l.DepartmentID,
                            ExpLevelID = l.ExpLevelID,
-                           RoleID = l.RoleID
+                           RoleID = l.RoleID,
+                           AccountNameCN = l.AccountNameCN,
+                           AgentNum = l.AgentNum
                        };
-
 
             var role = Employee.CurrentRole;
 
@@ -95,7 +97,7 @@ namespace Sales.Controllers
             {
                 if (role.Level < 500)
                 {
-                    list.Where(s => s.AccountName == Employee.CurrentUserName);
+                    list = list.Where(s => s.AccountName == Employee.CurrentUserName);
                 }
                 else
                 {
