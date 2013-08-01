@@ -1018,6 +1018,7 @@ namespace Sales.Controllers
             companyRelationship.Company.DistrictNumberID = bulkEntry.DistrictNumberId;
             companyRelationship.Company.Name_CH = string.IsNullOrEmpty(bulkEntry.Name_CN) ? "" : bulkEntry.Name_CN.Trim();
             companyRelationship.Company.Name_EN = string.IsNullOrEmpty(bulkEntry.Name_EN) ? "" : bulkEntry.Name_EN.Trim();
+            companyRelationship.Company.Description = bulkEntry.Description;
             companyRelationship.Company.CreatedDate = DateTime.Now;
             companyRelationship.Company.Creator = Employee.CurrentUserName;
             companyRelationship.Company.ModifiedDate = DateTime.Now;

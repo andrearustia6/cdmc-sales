@@ -85,7 +85,7 @@ namespace Sales.Model
             get
             {
 
-                return CRM_Logical._EmployeePerformance.GetFaxOutScore(LeadNotQualifiedWeeksCount);
+                return CRM_Logical._EmployeePerformance.GetFaxOutScore(HoursOrFaxNotQualifiedWeeksCount);
             }
         }
 
