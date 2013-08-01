@@ -75,10 +75,10 @@ function Editcompany() {
         $('.dialogue-editcompany form #IndustryId').addClass('fieldError');
         hasError = true;
     }
-    if ($('.dialogue-editcompany form #TypeId').val().isEmpty()) {
-        $('.dialogue-editcompany form #TypeId').addClass('fieldError');
-        hasError = true;
-    }
+//    if ($('.dialogue-editcompany form #TypeId').val().isEmpty()) {
+//        $('.dialogue-editcompany form #TypeId').addClass('fieldError');
+//        hasError = true;
+//    }
     if ($('.dialogue-editcompany form #ProgressId').val().isEmpty()) {
         $('.dialogue-editcompany form #ProgressId').addClass('fieldError');
         hasError = true;
@@ -778,10 +778,10 @@ function Addcompany() {
         $('.dialogue-addcompany form #IndustryId').addClass('fieldError');
         hasError = true;
     }
-    if ($('.dialogue-addcompany form #TypeId').val().isEmpty()) {
-        $('.dialogue-addcompany form #TypeId').addClass('fieldError');
-        hasError = true;
-    }
+//    if ($('.dialogue-addcompany form #TypeId').val().isEmpty()) {
+//        $('.dialogue-addcompany form #TypeId').addClass('fieldError');
+//        hasError = true;
+//    }
     if ($('.dialogue-addcompany form #ProgressId').val().isEmpty()) {
         $('.dialogue-addcompany form #ProgressId').addClass('fieldError');
         hasError = true;
@@ -848,6 +848,7 @@ function QuickEntry() {
     var hasError = false;
     $('.dialogue-addcompany form input').removeClass('fieldError');
     $('.dialogue-addcompany form select').removeClass('fieldError');
+    $('.dialogue-addcompany form textarea').removeClass('fieldError');
     $('.dialogue-addcompany form #Msg').html('');
 
     String.prototype.isEmpty = function () { return /^\s*$/.test(this); }
@@ -878,10 +879,15 @@ function QuickEntry() {
         $('.dialogue-addcompany form #IndustryId').addClass('fieldError');
         hasError = true;
     }
-    if ($('.dialogue-addcompany form #TypeId').val().isEmpty()) {
-        $('.dialogue-addcompany form #TypeId').addClass('fieldError');
-        hasError = true;
-    }
+//    if ($('.dialogue-addcompany form #TypeId').val().isEmpty()) {
+//        $('.dialogue-addcompany form #TypeId').addClass('fieldError');
+//        hasError = true;
+    //    }
+        if ($('.dialogue-addcompany form #Result').val().isEmpty()) {
+            $('.dialogue-addcompany form #Result').addClass('fieldError');
+            hasError = true;
+        }
+
     if ($('.dialogue-addcompany form #ProgressId').val().isEmpty()) {
         $('.dialogue-addcompany form #ProgressId').addClass('fieldError');
         hasError = true;
@@ -1147,12 +1153,12 @@ function BulkEntry() {
         $('.dialogue-addcompany form #IndustryId').removeClass('fieldError');
     }
 
-    if ($('.dialogue-addcompany form #TypeId').val().isEmpty()) {
-        $('.dialogue-addcompany form #TypeId').addClass('fieldError');
-        hasError = true;
-    } else {
-        $('.dialogue-addcompany form #TypeId').removeClass('fieldError');
-    }
+//    if ($('.dialogue-addcompany form #TypeId').val().isEmpty()) {
+//        $('.dialogue-addcompany form #TypeId').addClass('fieldError');
+//        hasError = true;
+//    } else {
+//        $('.dialogue-addcompany form #TypeId').removeClass('fieldError');
+//    }
 
     if ($('.dialogue-addcompany form #ProgressId').val().isEmpty()) {
         $('.dialogue-addcompany form #ProgressId').addClass('fieldError');

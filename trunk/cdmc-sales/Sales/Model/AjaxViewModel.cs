@@ -417,7 +417,7 @@ namespace Model
         [Display(Name = "所属行业")]
         public string IndustryString { get; set; }
 
-        [Required(ErrorMessage = "必填")]
+        //[Required(ErrorMessage = "必填")]
         [Display(Name = "公司性质")]
         public int? TypeId { get; set; }
         [Display(Name = "公司性质")]
@@ -535,7 +535,7 @@ namespace Model
         [Display(Name = "所属行业")]
         public string IndustryString { get; set; }
 
-        [Required(ErrorMessage = "必填")]
+        //[Required(ErrorMessage = "必填")]
         [Display(Name = "公司性质")]
         public int? TypeId { get; set; }
         [Display(Name = "公司性质")]
