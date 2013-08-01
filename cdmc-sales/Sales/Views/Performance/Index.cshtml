@@ -602,7 +602,7 @@
             return;
         }
         if (e.name == 'Confirm') {
-            if (!confirm("确实要确认吗?")) {
+            if (!confirm("确实要确认"+$("#month").val()+"份的分数吗?" )) {
                 // prevent the request        
                 e.preventDefault();
             }
