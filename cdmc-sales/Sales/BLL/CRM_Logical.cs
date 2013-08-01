@@ -128,7 +128,8 @@ namespace BLL
                                   target = CH.DB.TargetOfMonths.Where(t => t.Project.Manager == l && t.Project.IsActived == true && t.StartDate.Month == month).Sum(s => s.CheckIn),
                                   checkinreal = deals.Where(d => d.Project.Manager == l && d.Income!=null).Sum(s => s.Income),
                                   Confirmed = aa != null ? aa.Confirmed == true ? "是" : "否" : "否",
-                                  Rate = aa != null ? aa.Rate==null?0:aa.Rate:1
+                                  Rate = aa != null ? aa.Rate==null?0:aa.Rate:1,
+                                  Month = aa != null ? aa.Month :null
                               };
                     
                     return lps;
