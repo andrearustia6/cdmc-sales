@@ -25,6 +25,10 @@
 </style>
     <div style=" padding-bottom:40px;width:100%"> 
     <table style="width:100%" >
+    <tr>
+            <td  colspan=2 style=" color:Red; text-align:center"> 您正在设置 @Html.TextBoxFor(model => model.Month, new { @readonly = "readonly", @style = "border:none;width:10px;color:red" })月的系数</td>
+            
+        </tr>
      <tr>
         <td style="width:50%">@Html.LabelFor(model => model.Rate)</td>
         <td style="width:50%">@Html.DropDownListFor(model => model.Rate, new SelectList(new List<double>() { 0, 1, 1.2 }), new { @style = "width:100px" })</td>
@@ -60,8 +64,14 @@ else
    }
 </style>
 <div style=" padding-bottom:40px;width:100%"> 
+ 
+ 
     @Html.TextBoxFor(model => model.Rate, new { @style = "display:none" })
     <table style="width:100%" >
+        <tr>
+            <td  colspan=3 style=" color:Red; text-align:center"> 您正在给 @Html.TextBoxFor(model => model.Month, new { @readonly = "readonly", @style = "border:none;width:10px;color:red" })月的数据打分</td>
+            
+        </tr>
         <tr>
             <td style="width:30%">@Html.LabelFor(model => model.Responsibility)</td>
             <td style="width:30%">@Html.LabelFor(model => model.Discipline)</td>
