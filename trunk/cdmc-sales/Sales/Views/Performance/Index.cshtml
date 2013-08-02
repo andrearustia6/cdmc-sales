@@ -51,7 +51,7 @@
             columns.Bound(p => p.DisciplineDisp).Width(50).HtmlAttributes(new { style = "text-align:right" }).Format("{0:p0}");
             columns.Bound(p => p.ExcutionDisp).Width(60).HtmlAttributes(new { style = "text-align:right" }).Format("{0:p0}");
             columns.Bound(p => p.TargetingDisp).Width(60).HtmlAttributes(new { style = "text-align:right" }).Format("{0:p0}");
-            columns.Bound(p => p.SearchingDisp).Width(100).HtmlAttributes(new { style = "text-align:right" }).Format("{0:p0}");
+            columns.Bound(p => p.SearchingDisp).Width(80).HtmlAttributes(new { style = "text-align:right" }).Format("{0:p0}");
             columns.Bound(p => p.ProductionDisp).Width(80).HtmlAttributes(new { style = "text-align:right" }).Format("{0:p0}");
             columns.Bound(p => p.PitchPaperDisp).Width(90).HtmlAttributes(new { style = "text-align:right" }).Format("{0:p0}");
             columns.Bound(p => p.WeeklyMeetingDisp).Width(60).HtmlAttributes(new { style = "text-align:right" }).Format("{0:p0}");
@@ -61,7 +61,9 @@
             columns.Bound(p => p.CheckIn).Width(80).HtmlAttributes(new { style = "text-align:right" }).Format("{0:p0}");
             columns.Bound(p => p.Rate).Width(60).HtmlAttributes(new { style = "text-align:right" });
             columns.Bound(p => p.Score).Width(60).HtmlAttributes(new { style = "text-align:right" }).ClientTemplate("<p><#= $.telerik.formatString('{0:p0}', Score/100) #></p>");
-            columns.Bound(p => p.Confirmed).Width(60);
+            columns.Bound(p => p.Graded).Width(35);
+            columns.Bound(p => p.Confirmed).Width(35);
+            
             //columns.Bound(p => p.Month).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
             //columns.Bound(p => p.Year).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
             if (ViewBag.RoleLevel == SuperManagerRequired.LVL || Utl.Employee.CurrentUserName == "ray" || Utl.Employee.CurrentUserName == "karen")
@@ -378,7 +380,7 @@
       .Template(@<text>
         <div>
             员工: @*@Html.TextBox("fuzzyInput", (string)ViewBag.fuzzyInput)*@
-            @Html.DropDownList("fuzzyInput", BLL.CRM_Logical._EmployeePerformance.GetSalesDDL(month==null?DateTime.Now.Month:month.Value),"请选择")
+            @Html.DropDownList("fuzzyInput", BLL.CRM_Logical._EmployeePerformance.GetSalesDDL(month == null ? DateTime.Now.Month : month.Value), "请选择")
             <a class="t-grid-action t-button t-state-default" onclick="refreshGrid();">查找</a>
         </div>
         </text>))
@@ -569,7 +571,7 @@
             rowConfirmButton.remove();
             return;
         }
-        else if ((e.dataItem.User == "theresaz")) {
+        else if ((e.dataItem.RoleLevel == "800")) {
             rowButton[0].innerText = "打分";
             rowConfirmButton.remove();
         }
