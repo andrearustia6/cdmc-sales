@@ -12,7 +12,7 @@
             var m = ViewBag.Month as int?;
             m = m == null ? DateTime.Now.Month : m;
         @Html.DropDownList("month", new SelectList(new List<int>() { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 }, m), new { onchange = "this.form.submit();" })
-            if (Utl.Employee.CurrentRole.Level >= SuperManagerRequired.LVL || Utl.Employee.CurrentRole.Level == PoliticsInterfaceRequired.LVL)
+            if (Utl.Employee.CurrentRole.Level >= SuperManagerRequired.LVL || Utl.Employee.CurrentRole.Level == FinancialInterfaceRequired.LVL)
             {
         <button value="export" id="export" type="submit" name="btnExport" onclick="this.form.submit();"
             style="margin-left: 20px">
@@ -90,8 +90,7 @@
           .Pageable(p => p.Style(GridPagerStyles.Status)
                .PageOnScroll(true).PageSize(25)).Scrollable(scrolling => scrolling.Height(350)).Sortable().Resizable(r => r.Columns(true))
                    )
-
-            @*@{Html.Telerik().PanelBar()
+        @*@{Html.Telerik().PanelBar()
             .Name("PanelBar")
             .HtmlAttributes(new { style = "width: 100%" })
             .Items(parent => {
@@ -272,8 +271,6 @@
             })
             .Render();
             }*@
-    
-            
     </fieldset>
     }
 }
@@ -391,45 +388,84 @@
 @{ 
     if (rolelvl >= SuperManagerRequired.LVL)
     {
-        <fieldset>
-    <legend>版块考核标准说明</legend>
-    <table width="100%" cellpadding="0" cellspacing="0">
-      <tr>
-        <td width="10%">主观打分</td>
-        <td colspan="6">50%</td>
-      </tr>
-      <tr>
-        <td width="10%">团队Call    List<br />
-        </td>
-        <td width="15%">月人均平均数标准：销售专员200/人；销售经理140/人</td>
-        <td>平均Email/fax out数达标 15%</td>
-        <td width="16%">平均Email/fax out数少1-30条 10%</td>
-        <td width="15%">平均Email/fax out数少31-50条 5%</td>
-        <td colspan="2">平均Email/fax out数少50条以上 0%</td>
-      </tr>
-      <tr>
-        <td width="10%">团队新增Leads<br />
-        </td>
-        <td width="15%">月人均平均数标准：销售专员420/人；销售经理280/人</td>
-        <td width="14%">平均添加Lead数达标 15%</td>
-        <td width="16%">平均添加Lead数少1-50条 10%</td>
-        <td width="15%">平均添加Lead数少51-100条 5%</td>
-        <td colspan="2">平均添加Lead数少100条以上 0%</td>
-      </tr>
-      <tr>
-        <td>团队业绩表现</td>
-        <td width="15%">30'-带领的团队完成当月到账目标≥140%</td>
-        <td width="14%">25'-带领的团队完成当月到账目标≥120%</td>
-        <td width="16%">20'-带领的团队完成当月到账目标≥100%</td>
-        <td width="15%">15'-带领的团队完成当月到账目标≥80%</td>
-        <td width="13%">10'-带领的团队完成当月到账目标≥60%</td>
-        <td width="17%">0'-带领的团队完成当月到账目标&lt;60%</td>
-      </tr>
-    </table>
+    <fieldset>
+        <legend>版块考核标准说明</legend>
+        <table width="100%" cellpadding="0" cellspacing="0">
+            <tr>
+                <td width="10%">
+                    主观打分
+                </td>
+                <td colspan="6">
+                    50%
+                </td>
+            </tr>
+            <tr>
+                <td width="10%">
+                    团队Call List<br />
+                </td>
+                <td width="15%">
+                    月人均平均数标准：销售专员200/人；销售经理140/人
+                </td>
+                <td>
+                    平均Email/fax out数达标 15%
+                </td>
+                <td width="16%">
+                    平均Email/fax out数少1-30条 10%
+                </td>
+                <td width="15%">
+                    平均Email/fax out数少31-50条 5%
+                </td>
+                <td colspan="2">
+                    平均Email/fax out数少50条以上 0%
+                </td>
+            </tr>
+            <tr>
+                <td width="10%">
+                    团队新增Leads<br />
+                </td>
+                <td width="15%">
+                    月人均平均数标准：销售专员420/人；销售经理280/人
+                </td>
+                <td width="14%">
+                    平均添加Lead数达标 15%
+                </td>
+                <td width="16%">
+                    平均添加Lead数少1-50条 10%
+                </td>
+                <td width="15%">
+                    平均添加Lead数少51-100条 5%
+                </td>
+                <td colspan="2">
+                    平均添加Lead数少100条以上 0%
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    团队业绩表现
+                </td>
+                <td width="15%">
+                    30'-带领的团队完成当月到账目标≥140%
+                </td>
+                <td width="14%">
+                    25'-带领的团队完成当月到账目标≥120%
+                </td>
+                <td width="16%">
+                    20'-带领的团队完成当月到账目标≥100%
+                </td>
+                <td width="15%">
+                    15'-带领的团队完成当月到账目标≥80%
+                </td>
+                <td width="13%">
+                    10'-带领的团队完成当月到账目标≥60%
+                </td>
+                <td width="17%">
+                    0'-带领的团队完成当月到账目标&lt;60%
+                </td>
+            </tr>
+        </table>
     </fieldset>
     }
-    }
-
+}
 <fieldset>
     <legend>销售和销售经理考核标准</legend>
     <table width="100%">
@@ -503,30 +539,30 @@
         </tr>
         <tr>
             <td>
-            销售Faxout标准
+                销售Faxout标准
             </td>
-             <td colspan="2">
-            当周出单三次或以上，sales 40个faxout达标，否则50个faxout达标
+            <td colspan="2">
+                当周出单三次或以上，sales 40个faxout达标，否则50个faxout达标
             </td>
             <td>
-            销售新增Leads标准
+                销售新增Leads标准
             </td>
-             <td colspan="3">
-             当周出单三次或以上，sales 80个lead达标，否则105个lead达标
+            <td colspan="3">
+                当周出单三次或以上，sales 80个lead达标，否则105个lead达标
             </td>
         </tr>
         <tr>
             <td>
-            销售经理Faxout标准
+                销售经理Faxout标准
             </td>
-             <td colspan="2">
-            当周出单三次或以上，28个faxout达标，否则35个faxout达标
+            <td colspan="2">
+                当周出单三次或以上，28个faxout达标，否则35个faxout达标
             </td>
             <td>
-            销售经理新增Leads标准
+                销售经理新增Leads标准
             </td>
-             <td colspan="3">
-             当周出单三次或以上，60个Lead添加达标，否则70个Lead添加达标
+            <td colspan="3">
+                当周出单三次或以上，60个Lead添加达标，否则70个Lead添加达标
             </td>
         </tr>
         <tr>
@@ -554,7 +590,7 @@
     </table>
 </fieldset>
 <script>
-   
+
     function ChangeButtonTextForManager(e) {
         var $row = $(e.row);
         var rowButton = $row.find(".t-grid-edit");
@@ -604,7 +640,7 @@
             return;
         }
         if (e.name == 'Confirm') {
-            if (!confirm("确实要确认"+$("#month").val()+"份的分数吗?" )) {
+            if (!confirm("确实要确认" + $("#month").val() + "份的分数吗?")) {
                 // prevent the request        
                 e.preventDefault();
             }
@@ -617,7 +653,7 @@
         }
         $(".t-button.t-grid-update").attr("disabled", "disabled");
     }
-    
+
     function ChangeButtonTextForLead(e) {
         var $row = $(e.row);
         var rowButton = $row.find(".t-grid-edit");
