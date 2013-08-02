@@ -447,8 +447,8 @@ namespace Sales.Controllers
         [GridAction]
         public ActionResult _SelectSalesIndex(int? month, string fuzzyInput = "")
         {
-            ViewBag.fuzzyInput = fuzzyInput;
             if (month == null) month = DateTime.Now.Month;
+            ViewBag.fuzzyInput = fuzzyInput;
             // if (month == null) month = 5;
             var list = CRM_Logical._EmployeePerformance.GetSalesPerformances(month.Value, fuzzyInput);
             list = list.OrderBy(p => p.Name);
