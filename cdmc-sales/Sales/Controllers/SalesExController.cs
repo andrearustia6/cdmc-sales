@@ -1055,6 +1055,7 @@ namespace Sales.Controllers
                 string titlestr = (collection["Title"] != null) ? collection["Title"].Trim() : "";
                 string telstr = (collection["Telephone"] != null) ? collection["Telephone"].Trim() : "";
                 string cellstr = (collection["CellPhone"] != null) ? collection["CellPhone"].Trim() : "";
+                string emailstr = (collection["WorkingEmail"] != null) ? collection["WorkingEmail"].Trim() : "";
                 if (!(string.IsNullOrEmpty(namecnstr) && string.IsNullOrEmpty(nameenstr)) && !string.IsNullOrEmpty(genderstr)
                         && !string.IsNullOrEmpty(titlestr) && !(string.IsNullOrEmpty(telstr) && string.IsNullOrEmpty(cellstr)))
                 {
@@ -1064,9 +1065,9 @@ namespace Sales.Controllers
                     List<string> arrTitle = titlestr.Split(',').ToList();
                     List<string> arrTel = telstr.Split(',').ToList();
                     List<string> arrCell = cellstr.Split(',').ToList();
-
+                    List<string> arrEmail = emailstr.Split(',').ToList();
                     string namecn = ""; string nameen = ""; string gender = "";
-                    string title = ""; string tel = ""; string cell = "";
+                    string title = ""; string tel = ""; string cell = ""; string email = "";
 
                     for (int i = 0; i < 10; i++)
                     {
@@ -1076,6 +1077,7 @@ namespace Sales.Controllers
                         title = arrTitle[i];
                         tel = arrTel[i];
                         cell = arrCell[i];
+                        email = arrEmail[i];
                         if (!(string.IsNullOrEmpty(namecn) && string.IsNullOrEmpty(nameen)) && !string.IsNullOrEmpty(gender)
                             && !string.IsNullOrEmpty(title) && !(string.IsNullOrEmpty(tel) && string.IsNullOrEmpty(cell)))
                         {
@@ -1088,6 +1090,7 @@ namespace Sales.Controllers
                                 Contact = string.IsNullOrEmpty(arrTel[i]) ? "" : arrTel[i].Trim(),
                                 Gender = string.IsNullOrEmpty(arrGender[i]) ? "" : arrGender[i].Trim(),
                                 Mobile = string.IsNullOrEmpty(arrCell[i]) ? "" : arrCell[i].Trim(),
+                                EMail = string.IsNullOrEmpty(arrEmail[i]) ? "" : arrEmail[i].Trim(),
                                 MarkForDelete = false,
                                 CreatedDate = DateTime.Now,
                                 ModifiedDate = DateTime.Now,
