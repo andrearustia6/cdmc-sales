@@ -51,6 +51,7 @@
 .DataKeys(keys => { keys.Add(s => s.ID); })
 .Columns(c =>
 {
+    c.Bound(item => item.ID);//客户公司
     c.Bound(item => item.CompanyName);//客户公司
     c.Bound(item => item.ProjectCode);//项目编号
     c.Bound(item => item.DealCode);//出单号
@@ -124,7 +125,7 @@
             <input type="button" class="btn-quxiao" onclick="CancelConfirm()" />
         </div>
     </div></text>)
-    .Width(1000).Height(440).Draggable(true).Modal(true).Visible(false)
+          .Width(1000).Height(600).Draggable(true).Modal(true).Visible(false)
 )
   }
 }
