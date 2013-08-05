@@ -141,6 +141,12 @@ namespace Entity
 
         [Display(Name = "公司点评")]
         public string CompanyReviews { get; set; }
+
+        [Display(Name = "公司客户")]
+        public string Customers { get; set; }
+
+        [Display(Name = "竞争对手")]
+        public string Competitor { get; set; }
     }
 
     /// <summary>
