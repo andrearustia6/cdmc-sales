@@ -65,6 +65,7 @@
     </Compile>
     <Compile Include="Utl\DBSR.cs" />
     <Compile Include="ManagerScore.cs" />
+    <Compile Include="Finance.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram1.cd" />

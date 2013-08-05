@@ -300,6 +300,9 @@ namespace Entity
 
         [Display(Name = "逻辑删除")]
         public bool? MarkForDelete { get; set; }
+
+        [Display(Name = "Pitch点")]
+        public string PitchedPoint { get; set; }
     }
 
     /// <summary>
