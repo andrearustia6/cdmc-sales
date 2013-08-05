@@ -4,8 +4,8 @@
 @using (Html.BeginForm())
 {
     @Html.HiddenFor(model => model.ID)
-    if (Employee.CurrentRole.Level == 4)
-    {
+if (Employee.CurrentRole.Level == 4)
+{
     <fieldset>
         <legend>出单信息列表</legend>
         <table style="width: 100%">
@@ -152,9 +152,10 @@
             </tr>
         </table>
     </fieldset>
-    }
-    else
-    {
+}
+else
+{
+    
     <fieldset>
         <legend>出单信息列表</legend>
         <table style="width: 100%">
@@ -272,5 +273,42 @@
             })
             .Editable(editing => editing.Mode(GridEditMode.InCell).DefaultDataItem(new AjaxParticipant { })).Scrollable(scrolling => scrolling.Height(90)))
     </fieldset>
-    }
+    <fieldset>
+        <legend>确认付款信息和坏账信息</legend>
+        <table style="width: 100%">
+            <tr>
+                <td style="width: 10%">
+                    @Html.LabelFor(model => model.ActualPaymentDate)
+                </td>
+                <td style="width: 23%">
+                    @Html.Telerik().DatePickerFor(model => model.ActualPaymentDate).Value(DateTime.Now)
+                    @Html.ValidationMessageFor(model => model.ActualPaymentDate)
+                </td>
+                <td style="width: 10%">
+                    @Html.LabelFor(model => model.Income)
+                </td>
+                <td style="width: 23%">
+                    @Html.Telerik().CurrencyTextBoxFor(model => model.Income)
+                    @Html.ValidationMessageFor(model => model.Income)
+                </td>
+                <td style="width: 10%">
+                    @Html.LabelFor(model => model.Abandoned)
+                </td>
+                <td style="width: 23%">
+                    @Html.EditorFor(model => model.Abandoned)
+                    @Html.ValidationMessageFor(model => model.Abandoned)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.AbandonReason)
+                </td>
+                <td colspan="5">
+                    @Html.TextAreaFor(model => model.AbandonReason, new { style = "width:100%" })
+                    @Html.ValidationMessageFor(model => model.AbandonReason)
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+}
 }
