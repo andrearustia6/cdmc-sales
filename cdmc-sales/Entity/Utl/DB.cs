@@ -62,7 +62,7 @@ namespace Utl
         public DbSet<ImportCompanyTrace> ImportCompanyTrace { get; set; }
         public DbSet<ManagerScore> ManagerScores { get; set; }
         public DbSet<EmployeeRole> EmployeeRoles { get; set; }
-        
+        public DbSet<PreCommission> PreCommissions { get; set; }
         public DB(string connection = null)
         {
 
