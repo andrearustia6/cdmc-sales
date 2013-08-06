@@ -83,6 +83,9 @@ namespace Sales.Controllers
                         Business = c.Company.Business,
                         Desc = c.Company.Description,
                         Categories = c.Categorys.Select(ca => ca.ID),
+                        Customers = c.Company.Customers,
+                        Competitor = c.Company.Competitor,
+                        PitchedPoint=c.PitchedPoint,
                         AjaxLeads = (from l in c.Company.Leads
                                      select new AjaxLead
                                      {
@@ -586,6 +589,8 @@ namespace Sales.Controllers
             companyRelationship.Company.Creator = Employee.CurrentUserName;
             companyRelationship.Company.ModifiedDate = DateTime.Now;
             companyRelationship.Company.ModifiedUser = Employee.CurrentUserName;
+            companyRelationship.Company.Customers = string.IsNullOrEmpty(quickEntry.Customers) ? "" : quickEntry.Customers.Trim();
+            companyRelationship.Company.Competitor = string.IsNullOrEmpty(quickEntry.Competitor) ? "" : quickEntry.Competitor.Trim();
             companyRelationship.ProgressID = quickEntry.ProgressId;
             companyRelationship.Members = new List<Member>() { };
             companyRelationship.Members.Add(CH.DB.Members.FirstOrDefault(c => c.Name == Employee.CurrentUserName && c.ProjectID == quickEntry.ProjectId));
@@ -593,6 +598,7 @@ namespace Sales.Controllers
             companyRelationship.MarkForDelete = false;
             companyRelationship.CreatedDate = DateTime.Now;
             companyRelationship.ModifiedDate = DateTime.Now;
+            companyRelationship.PitchedPoint = string.IsNullOrEmpty(quickEntry.PitchedPoint) ? "" : quickEntry.PitchedPoint.Trim();
             if (quickEntry.Categories != null)
             {
                 companyRelationship.Categorys = CH.GetAllData<Category>(c => quickEntry.Categories.Contains(c.ID)).ToList();
@@ -682,11 +688,15 @@ namespace Sales.Controllers
             companyRelationship.Company.AnnualSales = string.IsNullOrEmpty(ajaxViewSaleCompany.AnnualSales) ? "" : ajaxViewSaleCompany.AnnualSales.Trim();
             companyRelationship.Company.MainProduct = string.IsNullOrEmpty(ajaxViewSaleCompany.MainProduct) ? "" : ajaxViewSaleCompany.MainProduct.Trim();
             companyRelationship.Company.MainClient = string.IsNullOrEmpty(ajaxViewSaleCompany.MainClient) ? "" : ajaxViewSaleCompany.MainClient.Trim();
+            companyRelationship.Company.Customers = string.IsNullOrEmpty(ajaxViewSaleCompany.Customers) ? "" : ajaxViewSaleCompany.Customers.Trim();
+            companyRelationship.Company.Competitor = string.IsNullOrEmpty(ajaxViewSaleCompany.Competitor) ? "" : ajaxViewSaleCompany.Competitor.Trim();
+
             companyRelationship.Description = string.IsNullOrEmpty(ajaxViewSaleCompany.Desc) ? "" : ajaxViewSaleCompany.Desc.Trim();
             companyRelationship.ProgressID = ajaxViewSaleCompany.ProgressId;
             companyRelationship.Members = new List<Member>() { };
             companyRelationship.Members.Add(CH.DB.Members.FirstOrDefault(c => c.Name == Employee.CurrentUserName && ajaxViewSaleCompany.ProjectId == c.ProjectID));
             companyRelationship.ProjectID = ajaxViewSaleCompany.ProjectId;
+            companyRelationship.PitchedPoint = string.IsNullOrEmpty(ajaxViewSaleCompany.PitchedPoint) ? "" : ajaxViewSaleCompany.PitchedPoint.Trim(); 
             companyRelationship.MarkForDelete = false;
             companyRelationship.CreatedDate = DateTime.Now;
             companyRelationship.ModifiedDate = DateTime.Now;
@@ -737,7 +747,10 @@ namespace Sales.Controllers
                 CreatedDate = companyRelationship.Company.CreatedDate.ToString(),
                 Creator = companyRelationship.Company.Creator,
                 ModifiedDate = companyRelationship.Company.ModifiedDate.ToString(),
-                ModifiedUser = companyRelationship.Company.ModifiedUser
+                ModifiedUser = companyRelationship.Company.ModifiedUser,
+                Customers = companyRelationship.Company.Customers,
+                Competitor = companyRelationship.Company.Competitor,
+                PitchedPoint = companyRelationship.PitchedPoint
             };
 
             if (companyRelationship.Company.Area != null)
@@ -834,9 +847,12 @@ namespace Sales.Controllers
             companyRelationship.Company.Name_EN = ajaxViewSaleCompany.Name_EN;
             companyRelationship.Company.WebSite = ajaxViewSaleCompany.WebSite;
             companyRelationship.Company.ZIP = ajaxViewSaleCompany.ZipCode;
+            companyRelationship.Company.Customers = ajaxViewSaleCompany.Customers;
+            companyRelationship.Company.Competitor = ajaxViewSaleCompany.Competitor;
             companyRelationship.Description = ajaxViewSaleCompany.Desc;
             companyRelationship.ProgressID = ajaxViewSaleCompany.ProgressId;
             companyRelationship.ModifiedDate = DateTime.Now;
+            companyRelationship.PitchedPoint = ajaxViewSaleCompany.PitchedPoint;
             companyRelationship.Categorys.Clear();
             if (ajaxViewSaleCompany.Categories != null)
             {
@@ -1023,6 +1039,8 @@ namespace Sales.Controllers
             companyRelationship.Company.Creator = Employee.CurrentUserName;
             companyRelationship.Company.ModifiedDate = DateTime.Now;
             companyRelationship.Company.ModifiedUser = Employee.CurrentUserName;
+            companyRelationship.Company.Customers = string.IsNullOrEmpty(bulkEntry.Customers) ? "" : bulkEntry.Customers.Trim();
+            companyRelationship.Company.Competitor = string.IsNullOrEmpty(bulkEntry.Competitor) ? "" : bulkEntry.Competitor.Trim();
             companyRelationship.ProgressID = bulkEntry.ProgressId;
             companyRelationship.Members = new List<Member>() { };
             companyRelationship.Members.Add(CH.DB.Members.FirstOrDefault(c => c.Name == Employee.CurrentUserName && bulkEntry.ProjectId == c.ProjectID));
@@ -1030,6 +1048,7 @@ namespace Sales.Controllers
             companyRelationship.MarkForDelete = false;
             companyRelationship.CreatedDate = DateTime.Now;
             companyRelationship.ModifiedDate = DateTime.Now;
+            companyRelationship.PitchedPoint = string.IsNullOrEmpty(bulkEntry.PitchedPoint) ? "" : bulkEntry.PitchedPoint.Trim();
             if (bulkEntry.Categories != null)
             {
                 companyRelationship.Categorys = CH.GetAllData<Category>(c => bulkEntry.Categories.Contains(c.ID)).ToList();

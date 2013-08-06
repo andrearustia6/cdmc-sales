@@ -129,7 +129,9 @@ namespace BLL
                                   checkinreal = deals.Where(d => d.Project.Manager == l && d.Income!=null).Sum(s => s.Income),
                                   Confirmed = aa != null ? aa.Confirmed == true ? "是" : "否" : "否",
                                   Rate = aa != null ? aa.Rate==null?0:aa.Rate:1,
-                                  Month = aa != null ? aa.Month :null
+                                  Month = aa != null ? aa.Month :month,
+                                  Graded = aa != null ? "是" : "否"
+
                               };
                     
                     return lps;
