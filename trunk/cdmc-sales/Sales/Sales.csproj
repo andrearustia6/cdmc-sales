@@ -220,6 +220,7 @@
     <Compile Include="BLL\CompamyRelationshipSelectors.cs" />
     <Compile Include="BLL\CRM_Logical.cs" />
     <Compile Include="BLL\Report.cs" />
+    <Compile Include="BLL\Finance_Logical.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AssignPerformanceRateController.cs" />
     <Compile Include="Controllers\AssignPerformanceScoreController.cs" />
@@ -277,6 +278,7 @@
     <Compile Include="Controllers\Type\TemplateTypeController.cs" />
     <Compile Include="Controllers\UserFavorsCrmGroupController.cs" />
     <Compile Include="Controllers\ProjectTypeController.cs" />
+    <Compile Include="Controllers\FinanceController.cs" />
     <Compile Include="DB.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -1700,6 +1702,7 @@
     <Content Include="Views\DirectorReport\ProjectsReportLastWeek.cshtml" />
     <Content Include="Views\SalesEx\BulkEntry.cshtml" />
     <Content Include="Views\Project\ExportEmail.cshtml" />
+    <Content Include="Views\Finance\Index.cshtml" />
     <None Include="Views\SalesEx\EditCompany.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\SimulatorConfig.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\AjaxTargetOfMonthForMember.cshtml" />
@@ -1728,6 +1731,7 @@
     <Content Include="Views\Shared\EditorTemplates\SalesPerformanceEdit.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\AjaxEmployee.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\_CompanyResearchDetail.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\PreCommissionEdit.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\_LeadResearchDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -1754,6 +1758,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
+          
           <SaveServerSettingsInUserFile>True</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
