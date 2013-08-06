@@ -749,11 +749,10 @@ namespace Sales.Model
 
 
     }
-     //manager的考核
+    
     public class _PreCommission
     {
-        [ReadOnly(true)]
-        [ScaffoldColumn(false)]
+        
         public int ID { get; set; }
         [Display(Name = "提成单号")]
         public string CommID { get; set; }
@@ -773,9 +772,7 @@ namespace Sales.Model
         public DateTime StartDate { get; set; }
         [Display(Name = "结束时间")]
         public DateTime EndDate { get; set; }
-        public virtual ParticipantType ParticipantType { get; set; }
-        [Display(Name = "参会类型"), Required]
-        public int? ParticipantTypeID { get; set; }
+       
         [Display(Name = "小于3000参会人数")]
         public int? DelegateLessCount { get; set; }
         [Display(Name = "小于3000入账金额")]
