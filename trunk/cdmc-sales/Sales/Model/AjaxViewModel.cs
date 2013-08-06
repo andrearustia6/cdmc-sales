@@ -446,6 +446,18 @@ namespace Model
         [Display(Name = "细分行业")]
         public string CategoryString { get; set; }
 
+        [Display(Name = "公司介绍")]
+        public string Desc { get; set; }
+        [Display(Name = "公司主要客户")]
+        public string Customers { get; set; }
+
+        [Display(Name = "主要竞争对手")]
+        public string Competitor { get; set; }
+
+        [Display(Name = "电话pitch点")]
+        public string PitchedPoint { get; set; }
+
+
         #endregion End Company
 
         #region Lead
@@ -566,6 +578,15 @@ namespace Model
 
         [Display(Name = "公司介绍")]
         public string Description { get; set; }
+
+        [Display(Name = "公司客户")]
+        public string Customers { get; set; }
+
+        [Display(Name = "竞争对手")]
+        public string Competitor { get; set; }
+
+        [Display(Name = "Pitch点")]
+        public string PitchedPoint { get; set; }
         #endregion End Company
 
         public virtual List<LeadBulk> Leads { get; set; }
@@ -687,6 +708,15 @@ namespace Model
 
         [Display(Name = "更新人")]
         public string ModifiedUser { get; set; }
+
+        [Display(Name = "公司客户")]
+        public string Customers { get; set; }
+
+        [Display(Name = "竞争对手")]
+        public string Competitor { get; set; }
+
+        [Display(Name = "Pitch点")]
+        public string PitchedPoint { get; set; }
 
     }
 

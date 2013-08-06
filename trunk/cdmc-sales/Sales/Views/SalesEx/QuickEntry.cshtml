@@ -1,6 +1,7 @@
 ﻿@using Entity
 @using Utl
 @model Model.QuickEntry
+ 
 
 @using (Html.BeginForm("AddSaleCompany", "SalesEx"))
 {
@@ -98,6 +99,30 @@
                     </fieldset>
                 </td>
             </tr>
+             @*<tr>
+                <td colspan="4">
+                @{Html.Telerik().PanelBar()
+            .Name("PanelBarQuick")
+            .HtmlAttributes(new { style = "width: 100%" })
+            .Items(parent => {
+                parent.Add()
+                    .Text("更多...")
+                    .Content(@<text>
+                        @Html.LabelFor(model => model.Desc)
+                        @Html.TextAreaFor(model => model.Desc)
+                        公司主要客户
+                        @Html.TextAreaFor(model => model.Customers)
+                        主要竞争对手
+                        @Html.TextAreaFor(model => model.Competitor)
+                        电话pitch点
+                        @Html.TextAreaFor(model => model.PitchedPoint)
+                    </text>)
+                    .Expanded(false);
+            })
+            .Render();
+            }
+                </td>
+            </tr> *@
             <tr>
                 <td colspan="4">
                     <fieldset style="margin:0px 0px 0px 0px;">

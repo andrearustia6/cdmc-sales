@@ -217,6 +217,9 @@ namespace Sales.Model
                            ProgressID = c.ProgressID,
                            AreaID = c.Company.AreaID,
                            CompanyTypeID = c.Company.CompanyTypeID,
+                           PitchedPoint=c.PitchedPoint,
+                           Customers=c.Company.Customers,
+                           Competitor=c.Company.Competitor,
                            AjaxLeads = (from l in c.Company.Leads
                                         select new AjaxLead
                                         {
@@ -346,6 +349,9 @@ namespace Sales.Model
                 return Members.Select(s => s.ID);
             }
         }
+
+        [Display(Name = "Pitch点")]
+        public string PitchedPoint { get; set; }
         #endregion
 
         #region company
@@ -385,6 +391,11 @@ namespace Sales.Model
         public decimal? CompanyPayment { set; private get; }
         public decimal RMBCompanyPayment { set;  get; }
         public decimal USDCompanyPayment { set;  get; }
+
+        [Display(Name = "公司客户")]
+        public string Customers { get; set; }
+        [Display(Name = "竞争对手")]
+        public string Competitor { get; set; }
         #endregion
 
         public string DisplayText

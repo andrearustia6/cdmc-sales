@@ -81,12 +81,32 @@
                 @Html.DropDownListFor(model => model.ProgressId, SelectHelper.ProgressSelectList(null), "请选择")
             </td>
         </tr>
-        <tr>
+        @*<tr>
             <td colspan="4">
-                @Html.LabelFor(model => model.Description)
-                @Html.TextAreaFor(model => model.Description)
+
+                @{Html.Telerik().PanelBar()
+                .Name("PanelBarBulk")
+                .HtmlAttributes(new { style = "width: 100%" })
+                .Items(parent =>
+                {
+                    parent.Add()
+                        .Text("更多...")
+                        .Content(@<text>
+                            @Html.LabelFor(model => model.Description)
+                            @Html.TextAreaFor(model => model.Description)
+                            公司主要客户
+                            @Html.TextAreaFor(model => model.Customers)
+                            主要竞争对手
+                            @Html.TextAreaFor(model => model.Competitor)
+                            电话pitch点
+                            @Html.TextAreaFor(model => model.PitchedPoint)
+                        </text>)
+                        .Expanded(false);
+                })
+                .Render();
+                }
             </td>
-        </tr>
+        </tr>*@
         <tr>
             <td colspan="4">
                 <fieldset id="categories" style="margin: 0px 0px 0px 0px;">

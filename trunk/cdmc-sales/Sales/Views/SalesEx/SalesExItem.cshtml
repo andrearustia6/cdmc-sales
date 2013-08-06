@@ -70,8 +70,53 @@
                     </dd>
                  }
             </dl>
-            @if (Model.AjaxDeals != null && Model.AjaxDeals.Count()>0)
-                  {
+            <br />
+            <br />
+            <dl >
+            @if (!string.IsNullOrWhiteSpace(Model.Desc) || !string.IsNullOrWhiteSpace(Model.Customers) || !string.IsNullOrWhiteSpace(Model.Competitor) || !string.IsNullOrWhiteSpace(Model.PitchedPoint))
+             {
+                {Html.Telerik().PanelBar()
+                .Name("PanelBarIndex")
+                .HtmlAttributes(new { style = "width: 100%" })
+                .Items(parent =>
+                {
+                    parent.Add()
+                        .Text("更多...")
+                        .Content(@<text>
+                    
+                        @if (!string.IsNullOrWhiteSpace(Model.Desc))
+                        {
+                            <dd>
+                            <font>公司介绍：</font><span id="currentDesc" class="datainfo">@Model.Desc</span>
+                            </dd>
+                        }
+                        @*@if (!string.IsNullOrWhiteSpace(Model.Customers))
+                        {
+                            <dd>
+                            <font>公司主要客户：</font><span id="currentCustomers" class="datainfo">@Model.Customers</span>
+                            </dd>
+                        } 
+                        @if (!string.IsNullOrWhiteSpace(Model.Competitor))
+                        {
+                            <dd>
+                            <font>主要竞争对手：</font><span id="currentCompetitor" class="datainfo">@Model.Competitor</span>
+                            </dd>
+                        }     
+                        @if (!string.IsNullOrWhiteSpace(Model.PitchedPoint))
+                        {
+                            <dd>
+                            <font>电话pitch点：</font><span id="currentPitchedPoint" class="datainfo">@Model.PitchedPoint</span>
+                            </dd>
+                        }*@
+                        </text>)
+                        .Expanded(false);
+                })
+                .Render();
+                }
+            }
+            </dl>
+            @if (Model.AjaxDeals != null && Model.AjaxDeals.Count() > 0)
+            {
                     <br />
                     <div style="width:98%;float:left ; margin-left:15px;"><h4>历史出单列表</h4></div>
                     <table style="width:98%; margin:10px;">
@@ -95,7 +140,7 @@
                         }
                         }
                         </table>
-                  }
+            }
         </div>
     </div>   
    @if (Model.AjaxLeads != null)
