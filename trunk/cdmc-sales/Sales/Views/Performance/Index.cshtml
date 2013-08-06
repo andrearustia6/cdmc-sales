@@ -372,7 +372,7 @@
           .ClientEvents(events => events.OnDataBinding("dataBinding"))
           .ClientEvents(events => events.OnSave("onSalesSave"))
 .Pageable(p => p.Style(GridPagerStyles.Status)
-               .PageOnScroll(true).PageSize(35)).Scrollable(scrolling => scrolling.Height(350)).Resizable(r => r.Columns(true))
+               .PageOnScroll(true).PageSize(15)).Scrollable(scrolling => scrolling.Height(350)).Resizable(r => r.Columns(true))
 .ToolBar(factory => factory
       .Template(@<text>
         <div>
