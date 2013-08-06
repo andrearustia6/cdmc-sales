@@ -1,0 +1,77 @@
+﻿@using Sales.Model
+@using Entity
+@model List<_PreCommission>
+@{
+    ViewBag.Title = "Index";
+}
+<fieldset>
+    <legend>月份</legend>
+    @{
+        using (Html.BeginForm())
+        {
+            var m = ViewBag.Month as int?;
+            m = m == null ? DateTime.Now.Month : m;
+        @Html.DropDownList("month", new SelectList(new List<int>() { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 }, m), new { onchange = "this.form.submit();" })
+           @* if (Utl.Employee.CurrentRole.Level >= SuperManagerRequired.LVL || Utl.Employee.CurrentRole.Level == PoliticsInterfaceRequired.LVL)
+            {
+        <button value="export" id="export" type="submit" name="btnExport" onclick="this.form.submit();"
+            style="margin-left: 20px">
+            导出</button>
+            }*@
+
+        }
+    }
+</fieldset>
+@{
+    var month = ViewBag.Month as int?;
+    var query = ViewBag.fuzzyInput as string;
+    var rolelvl = ViewBag.RoleLevel as int?;
+}
+@{ 
+    
+    <fieldset>
+        <legend>销售提成预发表</legend>
+        @(Html.Telerik().Grid<_PreCommission>(Model).Name("PreCommission")
+            .ToolBar(commands => commands.Insert().ImageHtmlAttributes(new { style = "margin-left:0" }))
+            .DataKeys(keys =>
+            {
+                keys.Add(o => o.ID).RouteKey("ID");
+            })
+            .DataBinding(dataBinding =>
+            {
+                dataBinding.Ajax().Select("PrecommissionIndex", "Finance", new { month = month })
+                    .Update("Save", "Finance")
+                    .Insert("Insert", "Finance");
+            })
+        .Columns(columns =>
+        {
+            columns.Bound(p => p.ID).Width(80).HtmlAttributes(new { style = "text-align:left" });
+            columns.Bound(p => p.CommID).Width(80).HtmlAttributes(new { style = "text-align:left" });
+            columns.Bound(p => p.TargetNameEN).Width(80).HtmlAttributes(new { style = "text-align:left" });
+            columns.Bound(p => p.ProjectNames).Width(50).HtmlAttributes(new { style = "text-align:right" });
+            columns.Bound(p => p.Income).Width(50).HtmlAttributes(new { style = "text-align:right" });
+            
+            columns.Command(commands =>
+            {
+                commands.Edit().ButtonType(GridButtonType.Text);
+                
+            }).Title("编辑").Width(100);
+        })
+         .Editable(editing => editing.Mode(GridEditMode.PopUp).TemplateName("PreCommissionEdit"))
+                 .ClientEvents(events => events.OnEdit("ChangePopup"))
+          .Pageable(p => p.Style(GridPagerStyles.Status)
+               .PageSize(25)).Scrollable(scrolling => scrolling.Height(350)).Sortable().Resizable(r => r.Columns(true))
+                   )
+    </fieldset>
+  
+}
+<script>
+    function ChangePopup(e) {
+
+        var popup = $("#" + e.currentTarget.id + "PopUp");
+        var popupDataWin = popup.data("tWindow");
+        var l = ($(window).width() / 2 - $(popup).width() / 2);
+        popup.css({ "left": l + "px", "margin-left": "0", "width": $(popup).width() });
+        
+    }
+</script>
