@@ -257,7 +257,7 @@ namespace BLL
                         var targets = from t in CH.DB.TargetOfMonthForMembers.Where(w=>w.Project.IsActived==true) select t;
                         var rates = from r in CH.DB.AssignPerformanceRates.Where(w => w.Month == month && w.Year == year) select r;
                         var scores = from r in CH.DB.AssignPerformanceScores.Where(w => w.Month == month && w.Year == year) select r;
-                        var durations = MonthDuration.GetMonthInstance(month).WeekDurations;
+                        var durations = MonthDuration.GetMonthInstance(month).WeekDurations.OrderBy(m=>m.StartDate);
                         var wd = durations.Select(s => s.StartDate);
                         var lps = from l in sales
                                   select new _SalesPerformance()
