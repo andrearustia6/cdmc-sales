@@ -351,7 +351,7 @@ namespace Sales.Model
             {
                 if (SalesPerformanceInWeeks != null)
                 {
-                    var counts = SalesPerformanceInWeeks.Select(s => s.FaxOutCount);
+                    var counts = SalesPerformanceInWeeks.OrderBy(o=>o.StartDate).Select(s => s.FaxOutCount);
                     return string.Join(",", counts);
                 }
                 else
@@ -366,7 +366,7 @@ namespace Sales.Model
             {
                 if (SalesPerformanceInWeeks != null)
                 {
-                    var counts = SalesPerformanceInWeeks.Select(s => s.LeadsCount);
+                    var counts = SalesPerformanceInWeeks.OrderBy(o => o.StartDate).Select(s => s.LeadsCount);
                     return string.Join(",", counts);
                 }
                 else
@@ -752,7 +752,7 @@ namespace Sales.Model
     
     public class _PreCommission
     {
-        
+        [Key]
         public int ID { get; set; }
         [Display(Name = "提成单号")]
         public string CommID { get; set; }

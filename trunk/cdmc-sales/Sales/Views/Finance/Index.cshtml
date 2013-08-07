@@ -35,7 +35,7 @@
             .ToolBar(commands => commands.Insert().ImageHtmlAttributes(new { style = "margin-left:0" }))
             .DataKeys(keys =>
             {
-                keys.Add(o => o.ID).RouteKey("ID");
+                keys.Add(o => o.ID);
             })
             .DataBinding(dataBinding =>
             {
@@ -45,7 +45,7 @@
             })
         .Columns(columns =>
         {
-            columns.Bound(p => p.ID).Width(80).HtmlAttributes(new { style = "text-align:left" });
+            //columns.Bound(p => p.ID).Width(80).HtmlAttributes(new { style = "text-align:left" });
             columns.Bound(p => p.CommID).Width(80).HtmlAttributes(new { style = "text-align:left" });
             columns.Bound(p => p.TargetNameEN).Width(80).HtmlAttributes(new { style = "text-align:left" });
             columns.Bound(p => p.ProjectNames).Width(50).HtmlAttributes(new { style = "text-align:right" });
