@@ -278,7 +278,6 @@
     <Compile Include="Controllers\Type\TemplateTypeController.cs" />
     <Compile Include="Controllers\UserFavorsCrmGroupController.cs" />
     <Compile Include="Controllers\ProjectTypeController.cs" />
-    <Compile Include="Controllers\FinanceController.cs" />
     <Compile Include="DB.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -1758,7 +1757,6 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          
           <SaveServerSettingsInUserFile>True</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>

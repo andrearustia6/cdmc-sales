@@ -1191,27 +1191,31 @@ namespace Sales.Controllers
 
         public ActionResult ExportCsv(int? projectid, string orderBy, string filter)
         {
-            IEnumerable leads = GetContedtedLeadData(projectid).AsQueryable().ToGridModel(1, Int32.MaxValue, orderBy, string.Empty, filter).Data;
+            //IEnumerable leads = GetContedtedLeadData(projectid).AsQueryable().ToGridModel(1, Int32.MaxValue, orderBy, string.Empty, filter).Data;
+            
+            string user  = Employee.CurrentUserName;
+             IQueryable<int?> cs= from c in CH.DB.CompanyRelationships
+                             where c.Members.Select(s=>s.Name).Any(a=>a==user) && c.ProjectID == c.ProjectID select c.CompanyID;
+             IQueryable<Lead> leads = from l in CH.DB.Leads where cs.Any(a=>a==l.CompanyID) select l;
+          
             MemoryStream output = new MemoryStream();
             StreamWriter writer = new StreamWriter(output, Encoding.UTF8);
-            writer.Write("姓名,"); writer.Write("职位,");
-            writer.Write("邮件,"); writer.Write("性别");
-            writer.WriteLine();
-            foreach (ViewContactedLead vl in leads)
+            var projectcode = CH.GetDataById<Project>(projectid).ProjectCode;
+            foreach (var vl in leads)
             {
 
-                writer.Write(vl.Lead.Name);
-                writer.Write(","); writer.Write("\"");
-                writer.Write(vl.Lead.Title);
-                writer.Write("\"");
-                writer.Write(",");
-                writer.Write("\"");
-                writer.Write(vl.Lead.EMail);
-                writer.Write("\"");
-                writer.Write(",");
-                writer.Write(vl.Lead.Gender);
+                //writer.Write(vl.Name);
+                //writer.Write(","); writer.Write("\"");
+                //writer.Write(vl.Title);
+                //writer.Write("\"");
+                //writer.Write(",");
+                //writer.Write("\"");
+                writer.Write(vl.EMail);
+                //writer.Write("\"");
+                //writer.Write(",");
+                //writer.Write(vl.Gender);
                 writer.WriteLine();
-            } writer.Flush(); output.Position = 0; return File(output, "text/comma-separated-values", "contected.csv");
+            } writer.Flush(); output.Position = 0; return File(output, "text/comma-separated-values", user + "_" + projectcode + ".csv");
         }
 
         #endregion
