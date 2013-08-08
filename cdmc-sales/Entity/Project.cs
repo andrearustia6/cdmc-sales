@@ -540,16 +540,16 @@ namespace Entity
     public class Deal : CompanyRelationshipChildItem
     {
         decimal? AveragePoll;
-        public decimal? AveragePoll
-        {
-            get
-            {
-                if()
-                if (Poll == 0) return Income;
-                else
-                    return Income / Poll;
-            }
-        }
+        //public decimal? AveragePoll
+        //{
+        //    get
+        //    {
+        //        if()
+        //        if (Poll == 0) return Income;
+        //        else
+        //            return Income / Poll;
+        //    }
+        //}
         public virtual Project Project { get; set; }
         [Display(Name = "项目名称"), Required]
         public int? ProjectID { get; set; }

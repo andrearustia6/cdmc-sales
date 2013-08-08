@@ -32,7 +32,7 @@ namespace BLL
                             TargetNameEN = pre.TargetNameEN,
                             TargetNameCN = pre.TargetNameCN,
                             InOut = pre.InOut,
-                            DelegateLessCount = pre.DelegateLessCount,
+                            //DelegateLessCount = pre.DelegateLessCount,
                             DelegateLessIncome = pre.DelegateLessIncome,
                             DelegateMoreCount = pre.DelegateMoreCount,
                             DelegateMoreIncome = pre.DelegateMoreIncome,
