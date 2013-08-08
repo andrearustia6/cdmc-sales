@@ -26,17 +26,17 @@ namespace Entity
         [Display(Name = "小于3000参会人数")]
         public int? DelegateLessCount { get; set; }
         [Display(Name = "小于3000入账金额")]
-        public double? DelegateLessIncome { get; set; }
+        public decimal? DelegateLessIncome { get; set; }
         [Display(Name = "大于3000参会人数")]
         public int? DelegateMoreCount { get; set; }
         [Display(Name = "大于3000入账金额")]
-        public double? DelegateMoreIncome { get; set; }
+        public decimal? DelegateMoreIncome { get; set; }
         [Display(Name = "Sponsor入账金额")]
-        public double? SponsorIncome { get; set; }
+        public decimal? SponsorIncome { get; set; }
         [Display(Name = "入账总额")]
-        public double? Income { get; set; }
+        public decimal? Income { get; set; }
         [Display(Name = "冲销金额")]
-        public double? ReturnIncome { get; set; }
+        public decimal? ReturnIncome { get; set; }
 
         [Display(Name = "冲销原因")]
         public string ReturnReason { get; set; }
@@ -45,16 +45,16 @@ namespace Entity
         public double? CommissionRate { get; set; }
 
         [Display(Name = "提成额")]
-        public double? Commission { get; set; }
+        public decimal? Commission { get; set; }
 
         [Display(Name = "扣税")]
-        public double? Tax { get; set; }
+        public decimal? Tax { get; set; }
 
         [Display(Name = "扣奖金")]
-        public double? Bonus { get; set; }
+        public decimal? Bonus { get; set; }
 
         [Display(Name = "实际提成")]
-        public double? ActualCommission { get; set; }
+        public decimal? ActualCommission { get; set; }
 
     }
 
