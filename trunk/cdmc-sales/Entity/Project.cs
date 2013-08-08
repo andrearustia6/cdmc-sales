@@ -539,10 +539,12 @@ namespace Entity
     [JsonIgnoreAttribute("CompanyRelationship")]
     public class Deal : CompanyRelationshipChildItem
     {
+        decimal? AveragePoll;
         public decimal? AveragePoll
         {
             get
             {
+                if()
                 if (Poll == 0) return Income;
                 else
                     return Income / Poll;
