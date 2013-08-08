@@ -36,7 +36,7 @@ namespace BLL
                             DelegateLessIncome = pre.DelegateLessIncome,
                             DelegateMoreCount = pre.DelegateMoreCount,
                             DelegateMoreIncome = pre.DelegateMoreIncome,
-                            SponsorIncome = pre.SponsorIncome,
+                            SponsorIncome = pre.SponsorIncome == null ? 0 : pre.SponsorIncome.Value,
                             Commission=pre.Commission,
                             CommissionRate=pre.CommissionRate,
                             Tax=pre.Tax,
