@@ -51,7 +51,7 @@ namespace BLL
             public static _PreCommission GetIncome(int month, string sale = "")
             {
                 var year = DateTime.Now.Year;
-                var deals = from d in CH.DB.Deals.Where(o => o.Abandoned == false &&
+                var deals = from d in CH.DB.Deals.Where(o => o.Abandoned == false && o.Income>0 &&
                     o.ActualPaymentDate.Value.Month == month && o.ActualPaymentDate.Value.Year == year && o.Sales == sale)
                             select d;
                 var username = Employee.CurrentUserName;
@@ -79,9 +79,9 @@ namespace BLL
                                 TargetNameEN = sale,
                                 TargetNameCN = displayname,
                                 InOut = inout,
-                                DelegateLessIncome = deals.Where(w => w.Poll > 0 && w.AveragePoll < standard).Sum(s => (decimal?)s.Income),
-                                DelegateMoreCount = deals.Where(w => w.Poll > 0 && w.AveragePoll > standard).Sum(s => s.Poll),
-                                DelegateMoreIncome = deals.Where(w => w.Poll > 0 && w.AveragePoll >= standard).Sum(s => (decimal?)s.Income),
+                                DelegateLessIncome = deals.Where(w => w.Poll > 0 && w.Income / w.Poll < standard).Sum(s => (decimal?)s.Income),
+                                DelegateMoreCount = deals.Where(w => w.Poll > 0 && w.Income / w.Poll > standard).Sum(s => s.Poll),
+                                DelegateMoreIncome = deals.Where(w => w.Poll > 0 && w.Income / w.Poll >= standard).Sum(s => (decimal?)s.Income),
                     
                                 SponsorIncome = deals.Where(w => w.Poll == 0).Sum(s => (decimal?)s.Income)
                             };
