@@ -4,6 +4,9 @@
 @{
     ViewBag.Title = "Index";
 }
+<script>
+    var TargetNameEN = "";
+</script>
 <fieldset>
     <legend>月份</legend>
     @{
@@ -41,37 +44,60 @@
             {
                 dataBinding.Ajax().Select("PrecommissionIndex", "Finance", new { month = month })
                     .Update("Save", "Finance")
-                    .Insert("Insert", "Finance");
+                    .Insert("Insert", "Finance")
+                    .Delete("Delete","Finance");
             })
         .Columns(columns =>
         {
-            //columns.Bound(p => p.ID).Width(80).HtmlAttributes(new { style = "text-align:left" });
-            columns.Bound(p => p.CommID).Width(80).HtmlAttributes(new { style = "text-align:left" });
-            columns.Bound(p => p.TargetNameEN).Width(80).HtmlAttributes(new { style = "text-align:left" });
+            columns.Bound(p => p.CommID).Width(70).HtmlAttributes(new { style = "text-align:left" });
+            columns.Bound(p => p.TargetNameEN).Width(50).HtmlAttributes(new { style = "text-align:left" });
+            columns.Bound(p => p.TargetNameCN).Width(50).HtmlAttributes(new { style = "text-align:left" });
+            columns.Bound(p => p.StartDate).Width(60).HtmlAttributes(new { style = "text-align:left" }).Format("{0:d}");
+            columns.Bound(p => p.EndDate).Width(60).HtmlAttributes(new { style = "text-align:left" }).Format("{0:d}");
             columns.Bound(p => p.ProjectNames).Width(50).HtmlAttributes(new { style = "text-align:right" });
-            columns.Bound(p => p.Income).Width(50).HtmlAttributes(new { style = "text-align:right" });
-            
+            columns.Bound(p => p.Income).Width(80).HtmlAttributes(new { style = "text-align:right" }).Format("{0:c}");
+            columns.Bound(p => p.CommissionRate).Width(50).HtmlAttributes(new { style = "text-align:right" }).Format("{0:#,###.00}");
+            columns.Bound(p => p.Commission).Width(50).HtmlAttributes(new { style = "text-align:right" }).Format("{0:c}");
+            columns.Bound(p => p.Tax).Width(50).HtmlAttributes(new { style = "text-align:right" }).Format("{0:c}");
+            columns.Bound(p => p.Bonus).Width(50).HtmlAttributes(new { style = "text-align:right" }).Format("{0:c}");
+            columns.Bound(p => p.ActualCommission).Width(60).HtmlAttributes(new { style = "text-align:right" }).Format("{0:c}");
             columns.Command(commands =>
             {
                 commands.Edit().ButtonType(GridButtonType.Text);
-                
+                commands.Delete().ButtonType(GridButtonType.Text);
             }).Title("编辑").Width(100);
         })
          .Editable(editing => editing.Mode(GridEditMode.PopUp).TemplateName("PreCommissionEdit"))
                  .ClientEvents(events => events.OnEdit("ChangePopup"))
-          .Pageable(p => p.Style(GridPagerStyles.Status)
+                                 .ClientEvents(events => events.OnCommand("SetParams").OnComplete("onComplete"))
+                  .Pageable(p => p.Style(GridPagerStyles.Status).PageOnScroll(true)
                .PageSize(25)).Scrollable(scrolling => scrolling.Height(350)).Sortable().Resizable(r => r.Columns(true))
-                   )
+                           )
     </fieldset>
   
 }
 <script>
+    function onComplete(e) {
+        if (e.name == "delete") {
+            $("#PreCommission").data("tGrid").rebind();
+        }
+    }
     function ChangePopup(e) {
-
         var popup = $("#" + e.currentTarget.id + "PopUp");
         var popupDataWin = popup.data("tWindow");
         var l = ($(window).width() / 2 - $(popup).width() / 2);
         popup.css({ "left": l + "px", "margin-left": "0", "width": $(popup).width() });
-        
+
     }
+    function SetParams(e) {
+        if (e.name == "add" || e.name=="cancel")
+            TargetNameEN = "";
+        else if (e.name == "edit")
+            TargetNameEN = e.dataItem.TargetNameEN;
+//        else if (e.name == "delete") {
+//            alert("");
+//            $("#PreCommission").data("tGrid").rebind();
+//        }
+    }
+    
 </script>

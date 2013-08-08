@@ -227,6 +227,7 @@
     <Compile Include="Controllers\CompanyRelationshipController.cs" />
     <Compile Include="Controllers\DirectorReportController.cs" />
     <Compile Include="Controllers\EmployeeRoleController.cs" />
+    <Compile Include="Controllers\FinanceController.cs" />
     <Compile Include="Controllers\PerformanceController.cs" />
     <Compile Include="Controllers\SimulatorConfigController.cs" />
     <Compile Include="Controllers\DealController.cs" />
