@@ -75,7 +75,7 @@ namespace Sales.Controllers
             // if (month == null) month = 5;
             var list = Finance_Logical._PreCommissionBLL.GetIncome(month, sale);
             //var data = list.Where(p => p.TargetNameEN==sale).ToList();
-            return Json(new GridModel(list));
+            return Json(list);
         }
         [HttpPost]
         public ActionResult _InsertPreCommission(PreCommission item)
@@ -100,7 +100,7 @@ namespace Sales.Controllers
             newmodel.TargetNameCN = model.TargetNameCN;
             newmodel.ProjectNames = model.ProjectNames;
             newmodel.InOut = model.InOut;
-            newmodel.DelegateLessCount = model.DelegateLessCount;
+            //newmodel.DelegateLessCount = model.DelegateLessCount;
             newmodel.DelegateLessIncome = model.DelegateLessIncome;
             newmodel.DelegateMoreCount = model.DelegateMoreCount;
             newmodel.DelegateMoreIncome = model.DelegateMoreIncome;
@@ -132,7 +132,7 @@ namespace Sales.Controllers
             newmodel.TargetNameCN = model.TargetNameCN;
             newmodel.ProjectNames = model.ProjectNames;
             newmodel.InOut = model.InOut;
-            newmodel.DelegateLessCount = model.DelegateLessCount;
+            //newmodel.DelegateLessCount = model.DelegateLessCount;
             newmodel.DelegateLessIncome = model.DelegateLessIncome;
             newmodel.DelegateMoreCount = model.DelegateMoreCount;
             newmodel.DelegateMoreIncome = model.DelegateMoreIncome;
