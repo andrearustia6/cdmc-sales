@@ -776,8 +776,7 @@ namespace Sales.Model
         [Display(Name = "结束时间")]
         public DateTime EndDate { get; set; }
        
-        [Display(Name = "小于3000参会人数")]
-        public int? DelegateLessCount { get; set; }
+     
         [Display(Name = "小于3000入账金额")]
         [DisplayFormat(DataFormatString = "{0:#,###.00}", ApplyFormatInEditMode = true)]
         public decimal? DelegateLessIncome { get; set; }

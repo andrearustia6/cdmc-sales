@@ -277,37 +277,36 @@
                     alert("获取数据失败，请重试。");
                 },
                 success: function (result) {
-                    if (result.Data.length > 0) {
-                        $("#ProjectNames").val(result.Data[0].ProjectNames);
-                        $("#TargetNameCN").val(result.Data[0].TargetNameCN);
-                        $("#TargetNameEN").val(result.Data[0].TargetNameEN);
-                        $("#InOut").val(result.Data[0].InOut);
-                        $("#DelegateLessCountStr").val(result.Data[0].DelegateLessCountStr);
-                        $("#DelegateLessIncomeStr").val(result.Data[0].DelegateLessIncomeStr);
-                        $("#DelegateMoreCountStr").val(result.Data[0].DelegateMoreCountStr);
-                        $("#DelegateMoreIncomeStr").val(result.Data[0].DelegateMoreIncomeStr);
-                        $("#SponsorIncomeStr").val(result.Data[0].SponsorIncomeStr);
-                        $("#IncomeStr").val(result.Data[0].IncomeStr);
+                  
+                        $("#ProjectNames").val(result.Data.ProjectNames);
+                        $("#TargetNameCN").val(result.Data.TargetNameCN);
+                        $("#TargetNameEN").val(result.Data.TargetNameEN);
+                        $("#InOut").val(result.Data.InOut);
+                        $("#DelegateLessCountStr").val(result.Data.DelegateLessCountStr);
+                        $("#DelegateLessIncomeStr").val(result.Data.DelegateLessIncomeStr);
+                        $("#DelegateMoreCountStr").val(result.Data.DelegateMoreCountStr);
+                        $("#DelegateMoreIncomeStr").val(result.Data.DelegateMoreIncomeStr);
+                        $("#SponsorIncomeStr").val(result.Data.SponsorIncomeStr);
+                        $("#IncomeStr").val(result.Data.IncomeStr);
 
-                        $("#DelegateLessCount").val(result.Data[0].DelegateLessCount);
-                        $("#DelegateLessIncome").val(result.Data[0].DelegateLessIncome);
-                        $("#DelegateMoreCount").val(result.Data[0].DelegateMoreCount);
-                        $("#DelegateMoreIncome").val(result.Data[0].DelegateMoreIncome);
-                        $("#SponsorIncome").val(result.Data[0].SponsorIncome);
-                        $("#Income").val(result.Data[0].Income);
+                        $("#DelegateLessCount").val(result.Data.DelegateLessCount);
+                        $("#DelegateLessIncome").val(result.Data.DelegateLessIncome);
+                        $("#DelegateMoreCount").val(result.Data.DelegateMoreCount);
+                        $("#DelegateMoreIncome").val(result.Data.DelegateMoreIncome);
+                        $("#SponsorIncome").val(result.Data.SponsorIncome);
+                        $("#Income").val(result.Data.Income);
 
                         if (result.Data[0].InOut == "国内") {
                             //$("#Commission").val((result.Data[0].Income - 3000) * 0.15);
                             $("#CommissionRate").val(5);
-                            $("#Commission").val(result.Data[0].Income * 0.05);
+                            $("#Commission").val(result.Data.Income * 0.05);
                         }
                         else {
                             $("#CommissionRate").val(5);
-                            $("#Commission").val(result.Data[0].Income * 0.05);
+                            $("#Commission").val(result.Data.Income * 0.05);
                         }
-                    }
-                    else
-                        alert("没有入账信息");
+                   
+                  
 
                 }
             });

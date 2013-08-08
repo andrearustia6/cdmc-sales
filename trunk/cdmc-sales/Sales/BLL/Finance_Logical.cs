@@ -48,37 +48,42 @@ namespace BLL
                 return ps;
             }
 
-            public static IEnumerable<_PreCommission> GetIncome(int month, string sale = "")
+            public static _PreCommission GetIncome(int month, string sale = "")
             {
                 var year = DateTime.Now.Year;
-                var deals = from d in CH.DB.Deals.Where(o => o.ActualPaymentDate.Value.Month == month && o.ActualPaymentDate.Value.Year==year && o.Sales==sale)
-                            group d by new
-                            {
-                                d.Sales
-                            }
-                            into g
-                            select new
-                            {
-                                g.Key,
-                                Income = g.Sum(a => a.Income),
-                                g
-                            };
-                var lps = from l in deals
-                          //join p in deals on l.Key.ProjectID equals p.ID
-                            select new _PreCommission()
+                var deals = from d in CH.DB.Deals.Where(o => o.Abandoned == false &&
+                    o.ActualPaymentDate.Value.Month == month && o.ActualPaymentDate.Value.Year == year && o.Sales == sale)
+                            select d;
+                var username = Employee.CurrentUserName;
+                var emps = CH.DB.EmployeeRoles.Where(w => w.AccountName == username);
+                var displayname =emps.Select(s => s.AccountNameCN).FirstOrDefault();
+                var roleid  =emps.Select(s => s.RoleID).FirstOrDefault();
+                var projects = from p in deals
+                               group p by new { p.Project.ProjectCode } into grp
+                               select new { projectcode = grp.Key.ProjectCode };
+                string inout = "海外";
+                if (roleid != null)
+                {
+                    var name =  CH.GetDataById<Role>(roleid).Name;
+                    if (name.Contains("国内"))
+                        inout = "国内";
+
+                }
+                decimal standard = 3000;
+                var lps =  new _PreCommission()
                             {
                                 RoleLevel = 1,
                                 ID = 0,
-                                ProjectNames = "asdfadf;asdfasfd;asdfasdf;adsf",
-                                Income = 33333,
+                                ProjectNames = string.Join(",", projects),
+                                Income = deals.Sum(s=>(decimal?)s.Income),
                                 TargetNameEN = sale,
-                                TargetNameCN="刘勇",
-                                InOut="国内",
-                                DelegateLessCount=10,
-                                DelegateLessIncome=1000,
-                                DelegateMoreCount=9,
-                                DelegateMoreIncome=999,
-                                SponsorIncome=1111
+                                TargetNameCN = displayname,
+                                InOut = inout,
+                                DelegateLessIncome = deals.Where(w => w.Poll > 0 && w.AveragePoll < standard).Sum(s => (decimal?)s.Income),
+                                DelegateMoreCount = deals.Where(w => w.Poll > 0 && w.AveragePoll > standard).Sum(s => s.Poll),
+                                DelegateMoreIncome = deals.Where(w => w.Poll > 0 && w.AveragePoll >= standard).Sum(s => (decimal?)s.Income),
+                    
+                                SponsorIncome = deals.Where(w => w.Poll == 0).Sum(s => (decimal?)s.Income)
                             };
                 return lps;
             }
