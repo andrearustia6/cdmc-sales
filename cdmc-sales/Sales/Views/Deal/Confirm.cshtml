@@ -281,15 +281,15 @@ else
                     @Html.LabelFor(model => model.ActualPaymentDate)
                 </td>
                 <td style="width: 23%">
-                    @Html.Telerik().DatePickerFor(model => model.ActualPaymentDate).Value(DateTime.Now)
-                    @Html.ValidationMessageFor(model => model.ActualPaymentDate)
+                    @Html.DisplayFor(model => model.ActualPaymentDate)
+                  
                 </td>
                 <td style="width: 10%">
                     @Html.LabelFor(model => model.Income)
                 </td>
                 <td style="width: 23%">
-                    @Html.Telerik().CurrencyTextBoxFor(model => model.Income)
-                    @Html.ValidationMessageFor(model => model.Income)
+                    @Html.DisplayFor(model => model.Income)
+                  
                 </td>
                 <td style="width: 10%">
                     @Html.LabelFor(model => model.Abandoned)
