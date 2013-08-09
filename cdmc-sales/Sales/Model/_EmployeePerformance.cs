@@ -775,8 +775,8 @@ namespace Sales.Model
         public DateTime StartDate { get; set; }
         [Display(Name = "结束时间")]
         public DateTime EndDate { get; set; }
-       
-     
+
+
         [Display(Name = "小于3000入账金额")]
         [DisplayFormat(DataFormatString = "{0:#,###.00}", ApplyFormatInEditMode = true)]
         public decimal? DelegateLessIncome { get; set; }
@@ -786,9 +786,16 @@ namespace Sales.Model
             {
                 if (DelegateLessIncome == null)
                     DelegateLessIncome = 0;
-                return DelegateLessIncome.Value.ToString("#,###.00");
+                return DelegateLessIncome.Value.ToString("#,##0.00");
             }
         }
+
+        [Display(Name = "小于3000提成率")]
+        public double? DelegateLessRate { get; set; }
+        [Display(Name = "小于3000提成额")]
+        public decimal? DelegateLessCommission { get; set; }
+
+
         [Display(Name = "大于3000参会人数")]
         public int? DelegateMoreCount { get; set; }
         [Display(Name = "大于3000入账金额")]
@@ -800,9 +807,16 @@ namespace Sales.Model
             {
                 if (DelegateMoreIncome == null)
                     DelegateMoreIncome = 0;
-                return DelegateMoreIncome.Value.ToString("#,###.00");
+                return DelegateMoreIncome.Value.ToString("#,##0.00");
             }
         }
+
+        [Display(Name = "大于3000提成率")]
+        public double? DelegateMoreRate { get; set; }
+        [Display(Name = "大于3000提成额")]
+        public decimal? DelegateMoreCommission { get; set; }
+
+
         [Display(Name = "Sponsor入账金额")]
         [DisplayFormat(DataFormatString = "{0:#,###.00}")]
         public decimal? SponsorIncome { get; set; }
@@ -812,9 +826,17 @@ namespace Sales.Model
             {
                 if (SponsorIncome == null)
                     SponsorIncome = 0;
-                return SponsorIncome.Value.ToString("#,###.00");
+                return SponsorIncome.Value.ToString("#,##0.00");
             }
         }
+
+        [Display(Name = "Sponsor提成率")]
+        public double? SponsorRate { get; set; }
+
+        [Display(Name = "Sponsor提成额")]
+        public decimal? SponsorCommission { get; set; }
+
+
         [Display(Name = "入账总额")]
         [DisplayFormat(DataFormatString = "{0:#,###.00}", ApplyFormatInEditMode = true)]
         public decimal? Income { get; set; }
@@ -824,7 +846,7 @@ namespace Sales.Model
             {
                 if (Income == null)
                     Income = 0;
-                return Income.Value.ToString("#,###.00");
+                return Income.Value.ToString("#,##0.00");
             }
         }
         [Display(Name = "冲销金额")]
@@ -836,7 +858,7 @@ namespace Sales.Model
         [Display(Name = "提成比率")]
         public double? CommissionRate { get; set; }
 
-        [Display(Name = "提成额")]
+        [Display(Name = "提成总额")]
         [DisplayFormat(DataFormatString = "{0:#,###.00}", ApplyFormatInEditMode = true)]
         public decimal? Commission { get; set; }
 
@@ -846,9 +868,11 @@ namespace Sales.Model
         [Display(Name = "扣奖金")]
         public decimal? Bonus { get; set; }
 
-        [Display(Name = "实际提成")]
+        [Display(Name = "冲销后总额")]
         public decimal? ActualCommission { get; set; }
-
+        [Display(Name = "预发总额")]
+        public decimal? TotalCommission { get; set; }
+        
     }
     /// <summary>
     /// 用于考核人打分的下拉框

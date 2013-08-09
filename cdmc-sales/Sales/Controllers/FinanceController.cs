@@ -100,7 +100,6 @@ namespace Sales.Controllers
             newmodel.TargetNameCN = model.TargetNameCN;
             newmodel.ProjectNames = model.ProjectNames;
             newmodel.InOut = model.InOut;
-            //newmodel.DelegateLessCount = model.DelegateLessCount;
             newmodel.DelegateLessIncome = model.DelegateLessIncome;
             newmodel.DelegateMoreCount = model.DelegateMoreCount;
             newmodel.DelegateMoreIncome = model.DelegateMoreIncome;
@@ -113,6 +112,15 @@ namespace Sales.Controllers
             newmodel.ReturnIncome = model.ReturnIncome;
             newmodel.ReturnReason = model.ReturnReason;
             newmodel.ActualCommission = model.ActualCommission;
+
+            newmodel.DelegateLessRate = model.DelegateLessRate;
+            newmodel.DelegateLessCommission = model.DelegateLessCommission;
+            newmodel.DelegateMoreRate = model.DelegateMoreRate;
+            newmodel.DelegateMoreCommission = model.DelegateMoreCommission;
+            newmodel.SponsorRate = model.SponsorRate;
+            newmodel.SponsorCommission = model.SponsorCommission;
+            newmodel.TotalCommission = model.TotalCommission;
+
             newmodel.CommID = model.TargetNameEN + model.StartDate.Year.ToString() + model.StartDate.Month.ToString().PadLeft(2, '0');
             CH.Create<PreCommission>(newmodel);
             var list = Finance_Logical._PreCommissionBLL.GetPreCommission(model.StartDate.Month);
@@ -132,7 +140,6 @@ namespace Sales.Controllers
             newmodel.TargetNameCN = model.TargetNameCN;
             newmodel.ProjectNames = model.ProjectNames;
             newmodel.InOut = model.InOut;
-            //newmodel.DelegateLessCount = model.DelegateLessCount;
             newmodel.DelegateLessIncome = model.DelegateLessIncome;
             newmodel.DelegateMoreCount = model.DelegateMoreCount;
             newmodel.DelegateMoreIncome = model.DelegateMoreIncome;
@@ -145,6 +152,15 @@ namespace Sales.Controllers
             newmodel.ReturnIncome = model.ReturnIncome;
             newmodel.ReturnReason = model.ReturnReason;
             newmodel.ActualCommission = model.ActualCommission;
+
+            newmodel.DelegateLessRate = model.DelegateLessRate;
+            newmodel.DelegateLessCommission = model.DelegateLessCommission;
+            newmodel.DelegateMoreRate = model.DelegateMoreRate;
+            newmodel.DelegateMoreCommission = model.DelegateMoreCommission;
+            newmodel.SponsorRate = model.SponsorRate;
+            newmodel.SponsorCommission = model.SponsorCommission;
+            newmodel.TotalCommission = model.TotalCommission;
+
             CH.Edit<PreCommission>(newmodel);
             var list = Finance_Logical._PreCommissionBLL.GetPreCommission(model.StartDate.Month);
             var data = list.OrderBy(p => p.TargetNameEN).ToList();

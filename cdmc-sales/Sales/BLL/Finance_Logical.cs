@@ -32,7 +32,6 @@ namespace BLL
                             TargetNameEN = pre.TargetNameEN,
                             TargetNameCN = pre.TargetNameCN,
                             InOut = pre.InOut,
-                            //DelegateLessCount = pre.DelegateLessCount,
                             DelegateLessIncome = pre.DelegateLessIncome,
                             DelegateMoreCount = pre.DelegateMoreCount,
                             DelegateMoreIncome = pre.DelegateMoreIncome,
@@ -43,7 +42,14 @@ namespace BLL
                             Bonus=pre.Bonus,
                             ReturnIncome=pre.ReturnIncome,
                             ReturnReason=pre.ReturnReason,
-                            ActualCommission=pre.ActualCommission
+                            ActualCommission=pre.ActualCommission,
+                            DelegateLessRate=pre.DelegateLessRate,
+                            DelegateLessCommission=pre.DelegateLessCommission,
+                            DelegateMoreRate=pre.DelegateMoreRate,
+                            DelegateMoreCommission = pre.DelegateMoreCommission,
+                            SponsorCommission = pre.SponsorCommission,
+                            SponsorRate = pre.SponsorRate,
+                            TotalCommission=pre.TotalCommission
                         };
                 return ps;
             }
@@ -54,13 +60,19 @@ namespace BLL
                 var deals = from d in CH.DB.Deals.Where(o => o.Abandoned == false && o.Income>0 &&
                     o.ActualPaymentDate.Value.Month == month && o.ActualPaymentDate.Value.Year == year && o.Sales == sale)
                             select d;
-                var username = Employee.CurrentUserName;
+                var username = sale;
                 var emps = CH.DB.EmployeeRoles.Where(w => w.AccountName == username);
                 var displayname =emps.Select(s => s.AccountNameCN).FirstOrDefault();
                 var roleid  =emps.Select(s => s.RoleID).FirstOrDefault();
                 var projects = from p in deals
                                group p by new { p.Project.ProjectCode } into grp
                                select new { projectcode = grp.Key.ProjectCode };
+                var proname = "";
+                foreach (var name in projects)
+                {
+                     proname= proname + name.projectcode + ",";
+                }
+                proname = proname.TrimEnd(',');
                 string inout = "海外";
                 if (roleid != null)
                 {
@@ -74,15 +86,14 @@ namespace BLL
                             {
                                 RoleLevel = 1,
                                 ID = 0,
-                                ProjectNames = string.Join(",", projects),
+                                ProjectNames = proname,
                                 Income = deals.Sum(s=>(decimal?)s.Income),
                                 TargetNameEN = sale,
                                 TargetNameCN = displayname,
                                 InOut = inout,
                                 DelegateLessIncome = deals.Where(w => w.Poll > 0 && w.Income / w.Poll < standard).Sum(s => (decimal?)s.Income),
-                                DelegateMoreCount = deals.Where(w => w.Poll > 0 && w.Income / w.Poll > standard).Sum(s => s.Poll),
+                                DelegateMoreCount = deals.Where(w => w.Poll > 0 && w.Income / w.Poll > standard).Sum(s =>(int?) s.Poll),
                                 DelegateMoreIncome = deals.Where(w => w.Poll > 0 && w.Income / w.Poll >= standard).Sum(s => (decimal?)s.Income),
-                    
                                 SponsorIncome = deals.Where(w => w.Poll == 0).Sum(s => (decimal?)s.Income)
                             };
                 return lps;
