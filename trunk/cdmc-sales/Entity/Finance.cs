@@ -23,16 +23,30 @@ namespace Entity
         public string TargetNameCN { get; set; }
         [Display(Name = "国内外")]
         public string InOut { get; set; }
-        [Display(Name = "小于3000参会人数")]
-        public int? DelegateLessCount { get; set; }
         [Display(Name = "小于3000入账金额")]
         public decimal? DelegateLessIncome { get; set; }
+        [Display(Name = "小于3000入账提成比率")]
+        public double? DelegateLessRate { get; set; }
+        [Display(Name = "小于3000入账提成额")]
+        public decimal? DelegateLessCommission { get; set; }
         [Display(Name = "大于3000参会人数")]
         public int? DelegateMoreCount { get; set; }
         [Display(Name = "大于3000入账金额")]
         public decimal? DelegateMoreIncome { get; set; }
+        [Display(Name = "大于3000入账提成率")]
+        public double? DelegateMoreRate { get; set; }
+        [Display(Name = "大于3000入账提成额")]
+        public decimal? DelegateMoreCommission{ get; set; }
+
         [Display(Name = "Sponsor入账金额")]
         public decimal? SponsorIncome { get; set; }
+
+        [Display(Name = "Sponsor入账提成额")]
+        public double? SponsorRate { get; set; }
+
+        [Display(Name = "Sponsor入账提成额")]
+        public decimal? SponsorCommission{ get; set; }
+
         [Display(Name = "入账总额")]
         public decimal? Income { get; set; }
         [Display(Name = "冲销金额")]
@@ -55,6 +69,10 @@ namespace Entity
 
         [Display(Name = "实际提成")]
         public decimal? ActualCommission { get; set; }
+
+        [Display(Name = "应发提成")]
+        public decimal? TotalCommission { get; set; }
+
 
     }
 

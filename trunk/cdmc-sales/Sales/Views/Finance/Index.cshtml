@@ -56,10 +56,11 @@
             columns.Bound(p => p.EndDate).Width(60).HtmlAttributes(new { style = "text-align:left" }).Format("{0:d}");
             columns.Bound(p => p.ProjectNames).Width(50).HtmlAttributes(new { style = "text-align:right" });
             columns.Bound(p => p.Income).Width(80).HtmlAttributes(new { style = "text-align:right" }).Format("{0:c}");
-            columns.Bound(p => p.CommissionRate).Width(50).HtmlAttributes(new { style = "text-align:right" }).Format("{0:#,###.00}");
             columns.Bound(p => p.Commission).Width(50).HtmlAttributes(new { style = "text-align:right" }).Format("{0:c}");
             columns.Bound(p => p.Tax).Width(50).HtmlAttributes(new { style = "text-align:right" }).Format("{0:c}");
             columns.Bound(p => p.Bonus).Width(50).HtmlAttributes(new { style = "text-align:right" }).Format("{0:c}");
+            columns.Bound(p => p.TotalCommission).Width(60).HtmlAttributes(new { style = "text-align:right" }).Format("{0:c}");
+            columns.Bound(p => p.ReturnIncome).Width(60).HtmlAttributes(new { style = "text-align:right" }).Format("{0:c}");
             columns.Bound(p => p.ActualCommission).Width(60).HtmlAttributes(new { style = "text-align:right" }).Format("{0:c}");
             columns.Command(commands =>
             {
@@ -94,10 +95,6 @@
             TargetNameEN = "";
         else if (e.name == "edit")
             TargetNameEN = e.dataItem.TargetNameEN;
-//        else if (e.name == "delete") {
-//            alert("");
-//            $("#PreCommission").data("tGrid").rebind();
-//        }
     }
     
 </script>
