@@ -178,6 +178,10 @@
 
     function OkConfirm() {
         if ($('.confirmDeal-wrapper form').valid()) {
+            if ($("#Abandoned").attr("checked") == "checked" && $("#AbandonReason").val() == "") {
+                alert('确认为坏账时，必须填写坏账原因！');
+                return;
+            }
             var query = $('.confirmDeal-wrapper form').serializeArray();
             $.post('SaveAjaxConfirm', query, function (result) {
                 $('#confirmDeal').data('tWindow').close();
