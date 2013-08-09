@@ -517,8 +517,8 @@ namespace Sales.Controllers
                 var item = CH.GetDataById<Deal>(newData.ID);
                 item.IsConfirm = true;
                 item.Confirmor = Employee.CurrentUserName;
-                item.Income = newData.Income;
-                item.ActualPaymentDate = newData.ActualPaymentDate;
+                //item.Income = newData.Income;
+                //item.ActualPaymentDate = newData.ActualPaymentDate;
                 item.Abandoned = newData.Abandoned;
                 item.AbandonReason = newData.AbandonReason;
                 CH.Edit<Deal>(item);
