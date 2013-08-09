@@ -20,6 +20,7 @@ namespace BLL
             {
                 var lps = CH.DB.PreCommissions.Where(p => p.StartDate.Month == month);
                 var ps = from pre in lps
+                         join p in CH.DB.Projects on pre.ProjectID equals  p.ID
                         select new _PreCommission
                         {
                             CommID=pre.CommID,
@@ -27,7 +28,8 @@ namespace BLL
                             EndDate=pre.EndDate,
 
                             ID = pre.ID,
-                            ProjectNames = pre.ProjectNames,
+                            ProjectID = pre.ProjectID,
+                            ProjectName=p.ProjectCode,
                             Income = pre.Income,
                             TargetNameEN = pre.TargetNameEN,
                             TargetNameCN = pre.TargetNameCN,
@@ -54,99 +56,86 @@ namespace BLL
                 return ps;
             }
 
-            public static _PreCommission GetIncome(int month, string sale = "")
+            public static IEnumerable<_CommissionProjects> GetProjects(int month, string sale = "")
             {
                 var year = DateTime.Now.Year;
                 var deals = from d in CH.DB.Deals.Where(o => o.Abandoned == false && o.Income>0 &&
                     o.ActualPaymentDate.Value.Month == month && o.ActualPaymentDate.Value.Year == year && o.Sales == sale)
                             select d;
+                //var username = sale;
+                //var emps = CH.DB.EmployeeRoles.Where(w => w.AccountName == username);
+                //var displayname =emps.Select(s => s.AccountNameCN).FirstOrDefault();
+                //var roleid  =emps.Select(s => s.RoleID).FirstOrDefault();
+                var projects = from p in deals
+                               group p by new { p.Project.ProjectCode,p.ProjectID } into grp
+                               select new _CommissionProjects 
+                               { ProjectCode = grp.Key.ProjectCode,
+                               ID=grp.Key.ProjectID};
+                //List<proj> strList = new List<string>();
+                //foreach (var p in projects)
+                //{
+                //    strList.Add(p.ProjectCode);
+                //}
+                //strList.Add("test");
+                return projects;
+            }
+            public static _PreCommission GetIncome(int month, string sale,int projectid)
+            {
+                var year = DateTime.Now.Year;
+                var deals = from d in CH.DB.Deals.Where(o =>o.ProjectID==projectid && o.Abandoned == false && o.Income > 0 &&
+                    o.ActualPaymentDate.Value.Month == month && o.ActualPaymentDate.Value.Year == year && o.Sales == sale)
+                            select d;
                 var username = sale;
                 var emps = CH.DB.EmployeeRoles.Where(w => w.AccountName == username);
-                var displayname =emps.Select(s => s.AccountNameCN).FirstOrDefault();
-                var roleid  =emps.Select(s => s.RoleID).FirstOrDefault();
+                var displayname = emps.Select(s => s.AccountNameCN).FirstOrDefault();
+                var roleid = emps.Select(s => s.RoleID).FirstOrDefault();
                 var projects = from p in deals
                                group p by new { p.Project.ProjectCode } into grp
                                select new { projectcode = grp.Key.ProjectCode };
                 var proname = "";
                 foreach (var name in projects)
                 {
-                     proname= proname + name.projectcode + ",";
+                    proname = proname + name.projectcode + ",";
                 }
                 proname = proname.TrimEnd(',');
                 string inout = "海外";
                 if (roleid != null)
                 {
-                    var name =  CH.GetDataById<Role>(roleid).Name;
+                    var name = CH.GetDataById<Role>(roleid).Name;
                     if (name.Contains("国内"))
                         inout = "国内";
 
                 }
                 decimal standard = 3000;
-                var lps =  new _PreCommission()
-                            {
-                                RoleLevel = 1,
-                                ID = 0,
-                                ProjectNames = proname,
-                                Income = deals.Sum(s=>(decimal?)s.Income),
-                                TargetNameEN = sale,
-                                TargetNameCN = displayname,
-                                InOut = inout,
-                                DelegateLessIncome = deals.Where(w => w.Poll > 0 && w.Income / w.Poll < standard).Sum(s => (decimal?)s.Income),
-                                DelegateMoreCount = deals.Where(w => w.Poll > 0 && w.Income / w.Poll > standard).Sum(s =>(int?) s.Poll),
-                                DelegateMoreIncome = deals.Where(w => w.Poll > 0 && w.Income / w.Poll >= standard).Sum(s => (decimal?)s.Income),
-                                SponsorIncome = deals.Where(w => w.Poll == 0).Sum(s => (decimal?)s.Income)
-                            };
+                var lps = new _PreCommission()
+                {
+                    RoleLevel = 1,
+                    ID = 0,
+                    //ProjectNames = proname,
+                    Income = deals.Sum(s => (decimal?)s.Income),
+                    TargetNameEN = sale,
+                    TargetNameCN = displayname,
+                    InOut = inout,
+                    DelegateLessIncome = deals.Where(w => w.Poll > 0 && w.Income / w.Poll < standard).Sum(s => (decimal?)s.Income),
+                    DelegateMoreCount = deals.Where(w => w.Poll > 0 && w.Income / w.Poll > standard).Sum(s => (int?)s.Poll),
+                    DelegateMoreIncome = deals.Where(w => w.Poll > 0 && w.Income / w.Poll >= standard).Sum(s => (decimal?)s.Income),
+                    SponsorIncome = deals.Where(w => w.Poll == 0).Sum(s => (decimal?)s.Income)
+                };
                 return lps;
             }
 
-
-            public static IEnumerable<SelectListItem> GetSalesDDL(int month)
+            public static IEnumerable<_CommissionSales> GetSalesDDL(int month)
             {
-                var rolelvl = Employee.CurrentRole.Level;
-                rolelvl = PoliticsInterfaceRequired.LVL;
-                if (rolelvl == PoliticsInterfaceRequired.LVL)
-                {
-                    rolelvl = DirectorRequired.LVL;
-                }
-                if (rolelvl >= SalesRequired.LVL)
-                {
-                    List<SelectListItem> selectList = new List<SelectListItem>();
-                    IQueryable<string> sales = null;
-                    var user = Employee.CurrentUserName;
-                    var mems = CH.DB.Members.Where(w => w.IsActivated == true && w.Project.IsActived == true);
-                    if (Employee.EqualToLeader() || Employee.EqualToManager())//版块或者lead查看
-                    {
-                        sales = mems.Where(w => w.Project.Manager == user || w.Project.TeamLeader == user).Select(s => s.Name).Distinct();
-
-                    }
-                    else if (Employee.EqualToSales())//销售查看
-                    {
-                        sales = mems.Where(w => w.Name == user).Select(s => s.Name).Distinct();
-                    }
-                    else if (rolelvl >= SuperManagerRequired.LVL)
-                    {
-                        sales = mems.Select(s => s.Name).Distinct();
-                    }
-
-                    if (sales != null)
-                    {
-                        if (Utl.Utl.DebugModel() != true)
-                        {
-                            var debugmembers = CH.DB.Members.Where(w => w.Test == true && w.IsActivated == true).Select(s => s.Name).Distinct();
-                            sales = sales.Where(w => !debugmembers.Any(a => a == w));
-                        }
-
-                        foreach (var sale in sales)
-                        {
-                            SelectListItem selectListItem = new SelectListItem() { Text = sale, Value = sale };
-                            selectList.Add(selectListItem);
-                        }
-
-                    }
-                    return selectList;
-                }
-
-                return new List<SelectListItem>();
+                
+                var mems = CH.DB.Members.Where(w => w.IsActivated == true && w.Project.IsActived == true);
+                var ret = from p in mems
+                            select new _CommissionSales
+                            {
+                                salesid = p.Name,
+                                sales = p.Name
+                            };
+                return ret;
+                
 
             }
         }

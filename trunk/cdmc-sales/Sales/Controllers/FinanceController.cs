@@ -70,13 +70,29 @@ namespace Sales.Controllers
         //    p.ActualCommission = data.ActualCommission;
         //    return View(p);
         //}
-        public ActionResult GetIncome(int month, string sale)
+        public ActionResult GetIncome(int month, string sale,int projectid)
         {
             // if (month == null) month = 5;
-            var list = Finance_Logical._PreCommissionBLL.GetIncome(month, sale);
+            var list = Finance_Logical._PreCommissionBLL.GetIncome(month, sale, projectid);
             //var data = list.Where(p => p.TargetNameEN==sale).ToList();
             return Json(list);
         }
+        public ActionResult GetProjects(int month, string sale)
+        {
+            // if (month == null) month = 5;
+            var list = Finance_Logical._PreCommissionBLL.GetProjects(month, sale);
+            //var data = list.Where(p => p.TargetNameEN==sale).ToList();
+            return Json(list);
+        }
+
+        public ActionResult GetSales(int month)
+        {
+            // if (month == null) month = 5;
+            var list = Finance_Logical._PreCommissionBLL.GetSalesDDL(month);
+            list = list.OrderBy(o=>o.sales);
+            return Json(list);
+        }
+
         [HttpPost]
         public ActionResult _InsertPreCommission(PreCommission item)
         {
@@ -98,7 +114,7 @@ namespace Sales.Controllers
             newmodel.EndDate = model.EndDate;
             newmodel.TargetNameEN = model.TargetNameEN;
             newmodel.TargetNameCN = model.TargetNameCN;
-            newmodel.ProjectNames = model.ProjectNames;
+            newmodel.ProjectID = model.ProjectID;
             newmodel.InOut = model.InOut;
             newmodel.DelegateLessIncome = model.DelegateLessIncome;
             newmodel.DelegateMoreCount = model.DelegateMoreCount;
@@ -138,7 +154,7 @@ namespace Sales.Controllers
             newmodel.EndDate = model.EndDate;
             newmodel.TargetNameEN = model.TargetNameEN;
             newmodel.TargetNameCN = model.TargetNameCN;
-            newmodel.ProjectNames = model.ProjectNames;
+            newmodel.ProjectID = model.ProjectID;
             newmodel.InOut = model.InOut;
             newmodel.DelegateLessIncome = model.DelegateLessIncome;
             newmodel.DelegateMoreCount = model.DelegateMoreCount;
@@ -177,10 +193,10 @@ namespace Sales.Controllers
             return View(new GridModel(data));
 
         }
-        public JsonResult CheckUnique(string TargetNameEN, DateTime StartDate,int ID)
+        public JsonResult CheckUnique(int projectid,DateTime StartDate,int ID,string TargetNameEN)
         {
             bool isValidate = false;
-            int count = CH.DB.PreCommissions.Count(p => p.TargetNameEN == TargetNameEN && p.StartDate == StartDate && p.ID!=ID);
+            int count = CH.DB.PreCommissions.Count(p => p.TargetNameEN == TargetNameEN && p.StartDate == StartDate && p.ID!=ID && p.ProjectID==projectid);
             if (count == 0)
                 isValidate = true;
             return Json(isValidate, JsonRequestBehavior.AllowGet);

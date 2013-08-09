@@ -19,11 +19,18 @@
 <script>
 
     $("#TargetNameEN option[text='" + TargetNameEN + "']").attr("selected", true);
-       
+    if (TargetNameEN != "") {
+        $("#sales").hide();
+        $("#projects").hide();
+        $("#salediv").html(TargetNameEN);
+        $("#projectdiv").html(ProjectName);
+    }
 </script>
 <script type="text/javascript">
 
     function OnChange(e) {
+        if ($("#StartDate").val() == "")
+            return;
         var StartDate = strTodate($("#StartDate").val());
         var DateB = new Date(StartDate.getFullYear(), StartDate.getMonth() + 1, 0); //当月的最后一天
         yy = DateB.getFullYear();
@@ -31,21 +38,26 @@
         dd = DateB.getDate();
         datestr = yy + '-' + mm + '-' + dd;
         $("#EndDate").val(datestr);
-        var sale = $("#TargetNameEN").find("option:selected").val();
-        if (sale == "") {
-           return;
-        }
+       
         var month = StartDate.getMonth() + 1;
         $.ajax({
-            url: "/Finance/GetIncome",
+            url: "/Finance/GetSales",
             type: "post",
             dataType: "json",
-            data: { month: month, sale: sale },
+            data: { month: month},
             error: function (a, b, c) {
                 alert("获取数据失败，请重试。");
             },
             success: function (result) {
-                setvalue(result);
+                if ($("#sales").val() != 0) {
+                    $("#sales option[value!='']").remove();
+                }
+                if ($("#projects").val() != 0) {
+                    $("#projects option[value!='']").remove();
+                }
+                for (var i = 0; i < result.length; i++) {
+                    $("#sales").append("<option value='" + result[i].salesid + "'>" + result[i].sales + "</option>");
+                }
             }
         });
     }
@@ -90,7 +102,6 @@
     }
    function setvalue(result) {
         if (result.TargetNameEN != "") {
-            $("#ProjectNames").val(result.ProjectNames);
             $("#TargetNameCN").val(result.TargetNameCN);
             $("#InOut").val(result.InOut);
 
@@ -150,8 +161,12 @@
             英文名
         </td>
         <td  style="width:5%">
-            @Html.DropDownListFor(model => model.TargetNameEN, BLL.Finance_Logical._PreCommissionBLL.GetSalesDDL(DateTime.Now.Month), "请选择")
+            <select id="sales" name="sales">
+            <option value="">请选择</option>
+            </select>
+            @Html.HiddenFor(model => model.TargetNameEN)
             @Html.ValidationMessageFor(model => model.TargetNameEN)
+            <div id="salediv"></div>
         </td>
         <td  style="width:20%">
             中文名
@@ -162,10 +177,15 @@
     </tr>
     <tr>
         <td>
-            @Html.LabelFor(model => model.ProjectNames)
+            @Html.LabelFor(model => model.ProjectID)
         </td>
         <td colspan="3">
-            @Html.TextBoxFor(model => model.ProjectNames, new { READONLY = "readonly", style = "border:none;width:100%" })
+        <select id="projects" name="projects">
+            <option value="">请选择</option>
+        </select>
+        @Html.HiddenFor(model=>model.ProjectID)
+        @Html.ValidationMessageFor(model => model.ProjectID)
+        <div id="projectdiv"></div>
         </td>
         <td>
             @Html.LabelFor(model => model.InOut)
@@ -327,8 +347,61 @@
 
     //页面加载后设置币种的默认值
     $(function () {
-        $("#TargetNameEN").change(function () {
-            var sale = $("#TargetNameEN").find("option:selected").val();
+        $("#sales").change(function () {
+            var sale = $("#sales").find("option:selected").val();
+            if ($("#StartDate").val() == "") {
+                alert("请选择开始时间");
+                $("#TargetNameEN option[text='请选择']").attr("selected", true);
+                return;
+            }
+            var StartDate = strTodate($("#StartDate").val());
+            var month = StartDate.getMonth() + 1;
+            //            $.ajax({
+            //                url: "/Finance/GetIncome",
+            //                type: "post",
+            //                dataType: "json",
+            //                data: { month: month, sale: sale },
+            //                error: function (a, b, c) {
+            //                    alert("获取数据失败，请重试。");
+            //                },
+            //                success: function (result) {
+            //                    setvalue(result);
+            //                }
+            //            });
+
+            $.ajax({
+                url: "/Finance/GetProjects",
+                type: "post",
+                dataType: "json",
+                data: { month: month, sale: sale },
+                error: function (a, b, c) {
+                    alert("获取数据失败，请重试。");
+                },
+                success: function (result) {
+                    $("#TargetNameEN").val(sale);
+                    if ($("#projects").val() != 0) {
+                        $("#projects option[value!='']").remove();
+                    }
+                    for (var i = 0; i < result.length; i++) {
+                        $("#projects").append("<option value='" + result[i].ID + "'>" + result[i].ProjectCode + "</option>");
+                    }
+                }
+            });
+
+        });
+
+        $("#projects").change(function () {
+            var sale = $("#sales").find("option:selected").val();
+            if (sale == "") {
+                alert("请选择目标");
+                return;
+            }
+            var projectid = $("#projects").find("option:selected").val();
+            if (projectid == "") {
+                alert("请选择项目");
+                return;
+            }
+
             if ($("#StartDate").val() == "") {
                 alert("请选择开始时间");
                 $("#TargetNameEN option[text='请选择']").attr("selected", true);
@@ -340,15 +413,18 @@
                 url: "/Finance/GetIncome",
                 type: "post",
                 dataType: "json",
-                data: { month: month, sale: sale },
+                data: { month: month, sale: sale, projectid: projectid },
                 error: function (a, b, c) {
                     alert("获取数据失败，请重试。");
                 },
                 success: function (result) {
+                    $("#ProjectID").val(projectid);
                     setvalue(result);
                 }
             });
         });
+
+
         $("#DelegateLessRate").change(function () {
             calc();
         });
