@@ -16,7 +16,7 @@ namespace Entity
         public DateTime EndDate { get; set; }
 
         [Display(Name = "项目")]
-        public string ProjectNames { get; set; }
+        public int? ProjectID { get; set; }
         [Display(Name = "目标")]
         public string TargetNameEN { get; set; }
         [Display(Name = "中文名")]

@@ -763,15 +763,18 @@ namespace Sales.Model
         public string TargetNameCN { get; set; }
 
         [Display(Name = "英文名")]
-        [Remote("CheckUnique", "Finance", AdditionalFields = "StartDate,ID", ErrorMessage = "此目标的当月提成已经存在")]//ActionName,Controller,错误信息
         [Required]
         public string TargetNameEN { get; set; }
         [Display(Name = "国内外")]
         public string InOut { get; set; }
         [Display(Name = "项目")]
-        public string ProjectNames { get; set; }
+        [Remote("CheckUnique", "Finance", AdditionalFields = "StartDate,ID,TargetNameEN", ErrorMessage = "当月提成已经存在")]//ActionName,Controller,错误信息
+        public int? ProjectID { get; set; }
+
+        [Display(Name = "项目")]
+        public string ProjectName { get; set; }
+
         [Display(Name = "开始时间")]
-        [Remote("CheckUnique1", "Finance", AdditionalFields = "TargetNameEN,ID", ErrorMessage = "此目标的当月提成已经存在")]//ActionName,Controller,错误信息
         public DateTime StartDate { get; set; }
         [Display(Name = "结束时间")]
         public DateTime EndDate { get; set; }
@@ -873,6 +876,17 @@ namespace Sales.Model
         [Display(Name = "预发总额")]
         public decimal? TotalCommission { get; set; }
         
+    }
+    public class _CommissionProjects
+    {
+        public int? ID { get; set; }
+        public string ProjectCode { get; set; }
+    }
+
+    public class _CommissionSales
+    {
+        public string salesid { get; set; }
+        public string sales { get; set; }
     }
     /// <summary>
     /// 用于考核人打分的下拉框

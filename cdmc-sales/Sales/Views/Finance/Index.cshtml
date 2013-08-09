@@ -6,6 +6,7 @@
 }
 <script>
     var TargetNameEN = "";
+    var ProjectName = "";
 </script>
 <fieldset>
     <legend>月份</legend>
@@ -54,7 +55,7 @@
             columns.Bound(p => p.TargetNameCN).Width(50).HtmlAttributes(new { style = "text-align:left" });
             columns.Bound(p => p.StartDate).Width(60).HtmlAttributes(new { style = "text-align:left" }).Format("{0:d}");
             columns.Bound(p => p.EndDate).Width(60).HtmlAttributes(new { style = "text-align:left" }).Format("{0:d}");
-            columns.Bound(p => p.ProjectNames).Width(50).HtmlAttributes(new { style = "text-align:right" });
+            columns.Bound(p => p.ProjectName).Width(50).HtmlAttributes(new { style = "text-align:right" });
             columns.Bound(p => p.Income).Width(80).HtmlAttributes(new { style = "text-align:right" }).Format("{0:c}");
             columns.Bound(p => p.Commission).Width(50).HtmlAttributes(new { style = "text-align:right" }).Format("{0:c}");
             columns.Bound(p => p.Tax).Width(50).HtmlAttributes(new { style = "text-align:right" }).Format("{0:c}");
@@ -91,10 +92,14 @@
 
     }
     function SetParams(e) {
-        if (e.name == "add" || e.name=="cancel")
-            TargetNameEN = "";
-        else if (e.name == "edit")
+        if (e.name == "edit") {
             TargetNameEN = e.dataItem.TargetNameEN;
+            ProjectName = e.dataItem.ProjectName;
+        }
+        else if (e.name == "add") {
+            TargetNameEN = "";
+            ProjectName = "";
+        }
     }
     
 </script>
