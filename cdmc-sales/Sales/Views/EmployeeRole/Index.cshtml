@@ -5,28 +5,197 @@
 @Html.Partial("contenttitle", "角色表")
 @(Html.Telerik().Grid<Model.AjaxEmployee>().Name("Grid")
 .DataKeys(keys => { keys.Add(p => p.ID); })
-.ToolBar(commands => commands.Insert().ImageHtmlAttributes(new { style = "margin-left:0" }))
-.DataBinding(dataBinding =>
-{
-    dataBinding.Ajax()
-        .Select("_SelectIndex", "EmployeeRole")
-        .Insert("_InsertAjaxEditing", "EmployeeRole")
-        .Update("_SaveAjaxEditing", "EmployeeRole")
-        .Delete("_DeleteAjaxEditing", "EmployeeRole");
-})
-.Columns(columns =>
-{
-    columns.Bound(p => p.AccountName);
-    columns.Bound(p => p.AccountNameCN);
-    columns.Bound(p => p.AgentNum);
-    columns.Bound(p => p.RoleName);
-    columns.Bound(p => p.DepartmentName);
-    columns.Bound(p => p.ExpLevelName);
-    columns.Bound(p => p.StartDate);
-    columns.Bound(p => p.Email);
-    columns.Command(commands => { commands.Edit(); commands.Delete(); }).Width(220).Title("操作");
-})
-   .Editable(editing => editing.Mode(GridEditMode.PopUp))
-       .Pageable(p => p.Style(GridPagerStyles.Status).PageSize(50)
-           .PageOnScroll(true)).Scrollable(s => s.Height(350)).Sortable().Filterable().Groupable()
-)
+           .ToolBar(commands =>
+               {
+                   if (Utl.Employee.AsManager())
+                   {
+                       commands.Template(@<text><span>
+                           <button name='addAccount' onclick='onAddAccount()'>
+                               新增用户</button></span><span>
+                                   <button name='changePassword' onclick='onChangePassword()'>
+                                       修改密码</button></span></text>);
+                   }
+                   else
+                   {
+                       commands.Template(@<text><span>
+                           <button name='changePassword' onclick='onChangePassword()'>
+                               修改密码</button></span></text>);
+                   }
+               })
+        //.ToolBar(commands => commands.Insert())
+        .DataBinding(dataBinding =>
+        {
+            dataBinding.Ajax()
+                .Select("_SelectIndex", "EmployeeRole");
+            //.Insert("_InsertAjaxEditing", "EmployeeRole");
+            //.Update("_SaveAjaxEditing", "EmployeeRole");
+            //.Delete("_DeleteAjaxEditing", "EmployeeRole");
+        })
+        .Columns(columns =>
+        {
+            columns.Bound(p => p.AccountName);
+            columns.Bound(p => p.AccountNameCN);
+            columns.Bound(p => p.AgentNum);
+            columns.Bound(p => p.RoleName);
+            columns.Bound(p => p.DepartmentName);
+            columns.Bound(p => p.ExpLevelName);
+            columns.Bound(p => p.StartDate).Format("{0:d}");
+            columns.Bound(p => p.Email);
+            if (Utl.Employee.AsDirector())
+            {
+                columns.Bound(item => item.ID).Title("个人信息").ClientTemplate("<span><a href='#' onclick='onAccountInfo(<#= ID #>)'>个人信息</a></span> | <span><a href='#' onclick='onSetRole(<#= ID #>)'>设置权限</a></span>");
+            }
+            else
+            {
+                columns.Bound(item => item.ID).Title("个人信息").ClientTemplate("<span><a href='#' onclick='onAccountInfo(<#= ID #>)'>个人信息</a></span>");
+            }
+            //columns.Command(commands => { commands.Edit(); commands.Delete(); }).Width(220).Title("操作");
+        })
+        //.Editable(editing => editing.Mode(GridEditMode.PopUp)) 
+        .Pageable(p => p.Style(GridPagerStyles.Status).PageSize(50)
+.PageOnScroll(true)).Scrollable(s => s.Height(350)).Sortable().Filterable())
+@(Html.Telerik().Window().Title("新增用户")
+            .Name("AddAccount")
+    .Content(@<text><div class="dialogue-AddAccount">
+        <div class="AddAccount-wrapper">
+            @Html.Partial("AddAccountWindow", new Entity.UserInfoModel())
+        </div>
+        <div class="dialogue-buttons" style="float: right;">
+            <input type="button" class="btn-queding" onclick="OkAddAccount()" />
+            <input type="button" class="btn-quxiao" onclick="Cancel(AddAccount)" />
+        </div>
+    </div></text>)
+    .Width(520).Height(250).Draggable(true).Modal(true).Visible(false))
+@(Html.Telerik().Window().Title("个人信息")
+                .Name("AccountInfo")
+    .Content(@<text><div class="dialogue-AccountInfo">
+        <div class="AccountInfo-wrapper">
+        </div>
+        <div class="dialogue-buttons" style="float: right;">
+            <input type="button" class="btn-queding" onclick="OkAccountInfo()" />
+            <input type="button" class="btn-quxiao" onclick="Cancel(AccountInfo)" />
+        </div>
+    </div></text>)
+    .Width(520).Height(250).Draggable(true).Modal(true).Visible(false))
+@(Html.Telerik().Window().Title("设置权限")
+            .Name("SetRole")
+    .Content(@<text><div class="dialogue-SetRole">
+        <div class="SetRole-wrapper">
+        </div>
+        <div class="dialogue-buttons" style="float: right;">
+            <input type="button" class="btn-queding" onclick="OkSetRole()" />
+            <input type="button" class="btn-quxiao" onclick="Cancel(SetRole)" />
+        </div>
+    </div></text>)
+    .Width(520).Height(250).Draggable(true).Modal(true).Visible(false))
+@(Html.Telerik().Window().Title("更换密码")
+                .Name("ChangePassword")
+    .Content(@<text><div class="dialogue-ChangePassword">
+        <div class="ChangePassword-wrapper">
+            @Html.Partial("ChangePasswordWindow", new Entity.ChangePasswordModel())
+        </div>
+        <div class="dialogue-buttons" style="float: right;">
+            <input type="button" class="btn-queding" onclick="OkChangePassword()" />
+            <input type="button" class="btn-quxiao" onclick="Cancel(ChangePassword)" />
+        </div>
+    </div></text>)
+    .Width(520).Height(250).Draggable(true).Modal(true).Visible(false))
+<script type="text/javascript">
+    function onAccountInfo(accountid) {
+        $.post('GetAccountInfo', { id: accountid }, function (result) {
+            $('.AccountInfo-wrapper').html(result);
+            var window = $('#AccountInfo').data('tWindow');
+            window.center().open();
+        });
+    }
+
+    function onSetRole(accountid) {
+        $.post('GetSetRole', { id: accountid }, function (result) {
+            $('.SetRole-wrapper').html(result);
+            var window = $('#SetRole').data('tWindow');
+            window.center().open();
+        });
+    }
+
+    function onChangePassword() {
+        var window = $('#ChangePassword').data('tWindow');
+        window.center().open();
+    }
+
+    function onAddAccount() {
+        var window = $('#AddAccount').data('tWindow');
+        window.center().open();
+    }
+
+    function OkAccountInfo() {
+        if ($('.AccountInfo-wrapper form').valid()) {
+            var query = $('.AccountInfo-wrapper form').serializeArray();
+            $.post('AccountInfo', query, function (result) {
+                if (result == "") {
+                    $('#AccountInfo').data('tWindow').close();
+
+                    $('#errorAccountInfo').text('')
+                    $("#Grid").data("tGrid").rebind();
+                }
+                else {
+                    $('#errorAccountInfo').text(result)
+                }
+            });
+        }
+    }
+
+    function OkSetRole() {
+        if ($('.SetRole-wrapper form').valid()) {
+            var query = $('.SetRole-wrapper form').serializeArray();
+            $.post('SetRole', query, function (result) {
+                if (result == "") {
+                    $('#SetRole').data('tWindow').close();
+                    $('#errorSetRole').text('')
+                    $("#Grid").data("tGrid").rebind();
+                }
+                else {
+                    $('#errorSetRole').text(result)
+                }
+            });
+        }
+    }
+
+    function OkAddAccount() {
+        if ($('.AddAccount-wrapper form').valid()) {
+            var query = $('.AddAccount-wrapper form').serializeArray();
+            $.post('AddAccount', query, function (result) {
+                if (result == "") {
+                    $('#AddAccount').data('tWindow').close();
+                    $('.AddAccount-wrapper input').val('');
+                    $('#errorAddAccount').text('')
+                    $("#Grid").data("tGrid").rebind();
+                }
+                else {
+                    $('#errorAddAccount').text(result)
+                }
+            });
+        }
+    }
+
+    function OkChangePassword() {
+        if ($('.ChangePassword-wrapper form').valid()) {
+            var query = $('.ChangePassword-wrapper form').serializeArray();
+            $.post('ChangePassword', query, function (result) {
+                if (result == "") {
+                    $('#ChangePassword').data('tWindow').close();
+                    $('.ChangePassword-wrapper input').val('');
+                    $('#errorChangePassword').text('')
+                    $("#Grid").data("tGrid").rebind();
+                }
+                else {
+                    $('#errorChangePassword').text('当前密码错误！')
+                }
+            });
+        }
+    }
+
+    function Cancel(e) {
+        var window = $(e).data('tWindow');
+        window.close();
+    }
+</script>

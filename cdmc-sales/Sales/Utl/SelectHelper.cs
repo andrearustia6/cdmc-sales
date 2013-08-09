@@ -438,5 +438,15 @@ namespace Utl
                 return selMember.Select(s => s.Name).Distinct().ToList();
             }
         }
+
+        public static IEnumerable<SelectListItem> TraineeSelectListInEmployee()
+        {
+            List<SelectListItem> selectList = new List<SelectListItem>();
+            selectList.Add(new SelectListItem() { Text = "-请选择-", Value = "" });
+            selectList.Add(new SelectListItem() { Text = "是", Value = "True" });
+            selectList.Add(new SelectListItem() { Text = "否", Value = "False" });
+            return selectList;
+        }
+
     }
 }

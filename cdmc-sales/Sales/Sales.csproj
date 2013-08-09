@@ -1702,8 +1702,10 @@
     <Content Include="Views\DirectorReport\ProjectsReportLastWeek.cshtml" />
     <Content Include="Views\SalesEx\BulkEntry.cshtml" />
     <Content Include="Views\Project\ExportEmail.cshtml" />
-    <Content Include="Views\Finance\Index.cshtml" />
-    <None Include="Views\SalesEx\EditCompany.cshtml" />
+    <Content Include="Views\Finance\Index.cshtml" />    <Content Include="Views\EmployeeRole\AccountInfoWindow.cshtml" />
+    <Content Include="Views\EmployeeRole\SetRoleWindow.cshtml" />
+    <Content Include="Views\EmployeeRole\ChangePasswordWindow.cshtml" />
+    <Content Include="Views\EmployeeRole\AddAccountWindow.cshtml" />    <None Include="Views\SalesEx\EditCompany.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\SimulatorConfig.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\AjaxTargetOfMonthForMember.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\AjaxViewDeal.cshtml" />
@@ -1758,7 +1760,16 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <SaveServerSettingsInUserFile>True</SaveServerSettingsInUserFile>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>8941</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
     </VisualStudio>

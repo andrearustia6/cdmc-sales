@@ -10,15 +10,15 @@
                 @Html.LabelFor(model => model.AccountName)
             </td>
             <td>
-                @Html.TextBoxFor(model => model.AccountName, new { style = "width:150px" })</br>
+                @Html.TextBoxFor(model => model.AccountName, new { style = "width:150px" })<br>
                 @Html.ValidationMessageFor(model => model.AccountName)
             </td>
             <td>
-                @Html.LabelFor(model => model.RoleName)
+                @Html.LabelFor(model => model.Email)
             </td>
             <td>
-                @Html.DropDownListFor(model => model.RoleID, new SelectList(CH.GetAllData<Role>(), "ID", "Name"), "-请选择-", new { style = "width:150px" })</br>
-                @Html.ValidationMessageFor(model => model.RoleID)
+                @Html.TextBoxFor(model => model.Email, new { style = "width:150px" })<br>
+                @Html.ValidationMessageFor(model => model.Email)
             </td>
         </tr>
         <tr>
@@ -26,14 +26,14 @@
                 @Html.LabelFor(model => model.AccountNameCN)
             </td>
             <td>
-                @Html.TextBoxFor(model => model.AccountNameCN, new { style = "width:150px" })</br>
+                @Html.TextBoxFor(model => model.AccountNameCN, new { style = "width:150px" })<br>
                 @Html.ValidationMessageFor(model => model.AccountNameCN)
             </td>
             <td>
                 @Html.LabelFor(model => model.DepartmentName)
             </td>
             <td>
-                @Html.DropDownListFor(model => model.DepartmentID, new SelectList(CH.GetAllData<Department>(), "ID", "Name"), "-请选择-", new { style = "width:150px" })</br>
+                @Html.DropDownListFor(model => model.DepartmentID, new SelectList(CH.GetAllData<Department>(), "ID", "Name"), "-请选择-", new { style = "width:150px" })<br>
                 @Html.ValidationMessageFor(model => model.DepartmentID)
             </td>
         </tr>
@@ -49,74 +49,25 @@
                 @Html.LabelFor(model => model.ExpLevelName)
             </td>
             <td>
-                @Html.DropDownListFor(model => model.ExpLevelID, new SelectList(CH.GetAllData<ExpLevel>(), "ID", "Name"), "-请选择-", new { style = "width:150px" })</br>
+                @Html.DropDownListFor(model => model.ExpLevelID, new SelectList(CH.GetAllData<ExpLevel>(), "ID", "Name"), "-请选择-", new { style = "width:150px" })<br>
                 @Html.ValidationMessageFor(model => model.ExpLevelID)
             </td>
         </tr>
         <tr>
             <td>
-                @Html.LabelFor(model => model.Email)
+                @Html.LabelFor(model => model.RoleName)
             </td>
             <td>
-                @Html.TextBoxFor(model => model.Email, new { style = "width:150px" })</br>
-                @Html.ValidationMessageFor(model => model.Email)
+                @Html.DropDownListFor(model => model.RoleID, new SelectList(CH.GetAllData<Role>(), "ID", "Name"), "-请选择-", new { style = "width:150px" })<br>
+                @Html.ValidationMessageFor(model => model.RoleID)
             </td>
             <td>
                 @Html.LabelFor(model => model.StartDate)
             </td>
             <td>
-                @Html.Telerik().DatePickerFor(model => model.StartDate).HtmlAttributes(new { style = "width:150px" })</br>
+                @Html.Telerik().DatePickerFor(model => model.StartDate).HtmlAttributes(new { style = "width:150px" })<br>
                 @Html.ValidationMessageFor(model => model.StartDate)
             </td>
         </tr>
     </table>
 </fieldset>
-@*<style>
-    .field-validation-error
-    {
-        display: block;
-        position: absolute;
-    }
-    * html .field-validation-error
-    {
-        position: relative;
-    }
-    * + html .field-validation-error
-    {
-        position: relative;
-    }
-    .field-validation-error span
-    {
-       
-        padding: 17px 5px 3px;
-        color: red;
-        white-space: nowrap;
-        position: absolute;
-    }
-    .t-edit-form-container
-    {
-        margin: 1em;
-        width: 350px;
-    }
-    .t-edit-form-container .editor-label
-    {
-        padding-bottom: 1em;
-        float: left;
-    }
-    .t-edit-form-container .editor-field
-    {
-        padding-bottom: 1em;
-        float: left;
-    }
-    .t-edit-form-container .editor-label
-    {
-        width: 30%;
-        text-align: right;
-        padding-right: 3%;
-        clear: left;
-    }
-    .t-edit-form-container .editor-field
-    {
-        width: 60%;
-    }
-</style>*@ 
