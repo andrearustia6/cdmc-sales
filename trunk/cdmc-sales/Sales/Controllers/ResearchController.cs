@@ -185,7 +185,7 @@ namespace Sales.Controllers
 
 
         [GridAction]
-        public ActionResult _CompanyIndex(int? projectid, string sales, int? selType)
+        public ActionResult _CompanyIndex(int? projectid, string sales, int? selType, DateTime? startTime, DateTime? endTime)
         {
             //sales只能看到自己的项目Lead
             if (Employee.CurrentRole.Level == Role.LVL_Sales)
@@ -225,6 +225,17 @@ namespace Sales.Controllers
                 default:
                     break;
             }
+
+            if (startTime != null)
+            {
+                selCompany = selCompany.Where(s => s.CreatedDate >= startTime);
+            }
+
+            if (endTime != null)
+            {
+                selCompany = selCompany.Where(s => s.CreatedDate <= endTime);
+            }
+
             var findata = from c in selCompany
                           select new _CompanyResearchDetail
                                        {

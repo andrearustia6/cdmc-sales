@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.ComponentModel.DataAnnotations;
 using Entity;
+using System.Web.Mvc;
 
 namespace Model
 {
@@ -1102,25 +1103,49 @@ namespace Model
         public string DepartmentName { get; set; }
         public int? DepartmentID { get; set; }
 
-        [Display(Name = "级别")]
+        [Display(Name = "用户级别")]
         public string ExpLevelName { get; set; }
         public int? ExpLevelID { get; set; }
 
         [Display(Name = "入职时间")]
         public DateTime? StartDate { get; set; }
 
+        [DataType(DataType.EmailAddress)]
         [Display(Name = "邮件地址")]
-        [RegularExpression(@"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}", ErrorMessage = "请输入的有效的工作邮箱")]
+        [RegularExpression(@"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}", ErrorMessage = "{0}的格式不正确")]
         public string Email { get; set; }
 
-        [Display(Name = "中文名"), Required]
+        [Display(Name = "中文名称"), Required]
         public string AccountNameCN { get; set; }
 
-        [Display(Name = "座机")]
+        [Display(Name = "座机号码")]
         public int? AgentNum { get; set; }
 
+        [Display(Name = "是否实习")]
+        public bool? IsTrainee { get; set; }
 
+        [Display(Name = "是否激活")]
+        public bool IsActivated { get; set; }
 
+        [DataType(DataType.PhoneNumber)]
+        [Display(Name = "移动电话")]
+        public string Mobile { get; set; }
 
+        [Display(Name = "出生日期")]
+        public DateTime? BirthDay { get; set; }
+
+        [Display(Name = "员工性别")]
+        public string Gender { get; set; }
+
+        //[Required]
+        //[StringLength(100, ErrorMessage = "密码长度最少为{0}.", MinimumLength = 6)]
+        //[DataType(DataType.Password)]
+        //[Display(Name = "用户密码")]
+        //public string Password { get; set; }
+
+        //[DataType(DataType.Password)]
+        //[Display(Name = "密码确认")]
+        //[Compare("Password", ErrorMessage = "密码确认和新设密码不匹配.")]
+        //public string ConfirmPassword { get; set; }
     }
 }

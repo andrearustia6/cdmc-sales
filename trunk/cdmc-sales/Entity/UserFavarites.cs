@@ -52,7 +52,23 @@ namespace Entity
         [Display(Name = "中文名"), Required]
         public string AccountNameCN { get; set; }
 
-        [Display(Name = "座机"), Required]
+        [Display(Name = "座机")]
         public int? AgentNum { get; set; }
+
+        [Display(Name = "是否实习")]
+        public bool? IsTrainee { get; set; }
+
+        [Display(Name = "是否激活")]
+        public bool IsActivated { get; set; }
+
+        [DataType(DataType.PhoneNumber)]
+        [Display(Name = "移动电话")]
+        public string Mobile { get; set; }
+
+        [Display(Name = "生日")]
+        public DateTime? BirthDay { get; set; }
+
+        [Display(Name = "员工性别")]
+        public string Gender { get; set; }
     }
 }

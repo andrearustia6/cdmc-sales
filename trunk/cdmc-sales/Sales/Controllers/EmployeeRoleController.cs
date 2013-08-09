@@ -8,6 +8,8 @@ using Entity;
 using Utl;
 using System.Data;
 using Model;
+using System.Web.Security;
+using System.Web.Profile;
 
 namespace Sales.Controllers
 {
@@ -111,6 +113,220 @@ namespace Sales.Controllers
             }
 
             return list.ToList();
+        }
+
+        public ActionResult GetAccountInfo(int? id)
+        {
+            return PartialView("AccountInfoWindow", getEmployeeData(id));
+        }
+
+        public ActionResult GetSetRole(int? id)
+        {
+            return PartialView("SetRoleWindow", getEmployeeData(id));
+        }
+
+        private AjaxEmployee getEmployeeData(int? id)
+        {
+            var selAccount = CH.GetDataById<EmployeeRole>(id);
+            return new AjaxEmployee()
+             {
+                 ID = selAccount.ID,
+                 AccountName = selAccount.AccountName,
+                 AccountNameCN = selAccount.AccountNameCN,
+                 AgentNum = selAccount.AgentNum,
+                 BirthDay = selAccount.BirthDay,
+                 DepartmentID = selAccount.DepartmentID,
+                 DepartmentName = selAccount.Department == null ? string.Empty : selAccount.Department.Name,
+                 Email = selAccount.Email,
+                 ExpLevelID = selAccount.ExpLevelID,
+                 ExpLevelName = selAccount.ExpLevel == null ? string.Empty : selAccount.ExpLevel.Name,
+                 IsActivated = selAccount.IsActivated,
+                 Gender = selAccount.Gender,
+                 IsTrainee = selAccount.IsTrainee,
+                 Mobile = selAccount.Mobile,
+                 RoleID = selAccount.RoleID,
+                 RoleName = selAccount.Role == null ? string.Empty : selAccount.Role.Name,
+                 StartDate = selAccount.StartDate
+             };
+        }
+
+        [Authorize]
+        [HttpPost]
+        public ActionResult ChangePassword(ChangePasswordModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                bool changePasswordSucceeded;
+                try
+                {
+                    MembershipUser currentUser = Membership.GetUser(User.Identity.Name, true /* userIsOnline */);
+                    changePasswordSucceeded = currentUser.ChangePassword(model.OldPassword, model.NewPassword);
+                }
+                catch (Exception)
+                {
+                    changePasswordSucceeded = false;
+                }
+
+                if (changePasswordSucceeded)
+                {
+                    return Json("");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "The current password is incorrect or the new password is invalid.");
+                }
+            }
+            return Json("error");
+        }
+
+        [HttpPost]
+        [ManagerRequired]
+        public ActionResult AddAccount(UserInfoModel model)
+        {
+            if (model.UserName.Trim().Contains(" "))
+            {
+                ModelState.AddModelError("UserName", "帐号中间不可以有空格.");
+                return Json("帐号中间不可以有空格");
+            }
+            if (ModelState.IsValid)
+            {
+                MembershipCreateStatus createStatus;
+                Membership.CreateUser(model.UserName.Trim(), model.Password.Trim(), model.Email.Trim(), null, null, true, null, out createStatus);
+
+                if (createStatus == MembershipCreateStatus.Success)
+                {
+                    ProfileBase objProfile = ProfileBase.Create(model.UserName.Trim());
+
+                    objProfile.SetPropertyValue("RoleLevelID", 0);
+                    objProfile.SetPropertyValue("IsActivated", false);
+
+                    var emprole = new EmployeeRole()
+                    {
+                        AccountName = model.UserName,
+                        Email = model.Email,
+                        AccountNameCN = "-",
+                        IsActivated = false
+                    };
+                    CH.Create<EmployeeRole>(emprole);
+                    return Json("");
+                }
+                else
+                {
+                    string errorMsg = ErrorCodeToString(createStatus);
+                    ModelState.AddModelError("", errorMsg);
+                    return Json(errorMsg);
+                }
+            }
+            else
+            {
+                return Json("验证错误");
+            }
+        }
+
+        [HttpPost]
+        public ActionResult AccountInfo(AjaxEmployee model)
+        {
+            if (model.AccountName == null)
+            {
+                return Json("");
+            }
+            if (ModelState.IsValid)
+            {
+                var s = CH.GetDataById<EmployeeRole>(model.ID);
+                s.AccountNameCN = model.AccountNameCN;
+                s.AgentNum = model.AgentNum;
+                s.Gender = model.Gender;
+                s.Email = model.Email;
+                s.BirthDay = model.BirthDay;
+                s.DepartmentID = model.DepartmentID;
+                CH.Edit<EmployeeRole>(s);
+                return Json("");
+            }
+            else
+            {
+                string error = "";
+                foreach (var key in ModelState.Keys)
+                {
+                    var state = ModelState[key];
+                    if (state.Errors.Any())
+                    {
+                        error += state.Errors.First().ErrorMessage + ",";
+                    }
+                }
+                return Json(error.Substring(0, error.Length - 1));
+            }
+        }
+
+        [HttpPost]
+        public ActionResult SetRole(AjaxEmployee model)
+        {
+            if (ModelState.IsValid)
+            {
+                var s = CH.GetDataById<EmployeeRole>(model.ID);
+                s.IsActivated = model.IsActivated;
+                s.RoleID = model.RoleID;
+                s.ExpLevelID = model.ExpLevelID;
+                s.StartDate = model.StartDate;
+                s.IsTrainee = model.IsTrainee;
+
+                //MembershipUser user = Membership.GetUser(s.AccountName);
+                ProfileBase objProfile = ProfileBase.Create(s.AccountName);
+                objProfile.SetPropertyValue("IsActivated", model.IsActivated);
+                objProfile.Save();
+
+                CH.Edit<EmployeeRole>(s);
+                return Json("");
+            }
+            else
+            {
+                string error = "";
+                foreach (var key in ModelState.Keys)
+                {
+                    var state = ModelState[key];
+                    if (state.Errors.Any())
+                    {
+                        error += state.Errors.First().ErrorMessage + ",";
+                    }
+                }
+                return Json(error.Substring(0, error.Length - 1));
+            }
+        }
+
+
+        private static string ErrorCodeToString(MembershipCreateStatus createStatus)
+        {
+            switch (createStatus)
+            {
+                case MembershipCreateStatus.DuplicateUserName:
+                    return "User name already exists. Please enter a different user name.";
+
+                case MembershipCreateStatus.DuplicateEmail:
+                    return "A user name for that e-mail address already exists. Please enter a different e-mail address.";
+
+                case MembershipCreateStatus.InvalidPassword:
+                    return "The password provided is invalid. Please enter a valid password value.";
+
+                case MembershipCreateStatus.InvalidEmail:
+                    return "The e-mail address provided is invalid. Please check the value and try again.";
+
+                case MembershipCreateStatus.InvalidAnswer:
+                    return "The password retrieval answer provided is invalid. Please check the value and try again.";
+
+                case MembershipCreateStatus.InvalidQuestion:
+                    return "The password retrieval question provided is invalid. Please check the value and try again.";
+
+                case MembershipCreateStatus.InvalidUserName:
+                    return "The user name provided is invalid. Please check the value and try again.";
+
+                case MembershipCreateStatus.ProviderError:
+                    return "The authentication provider returned an error. Please verify your entry and try again. If the problem persists, please contact your system administrator.";
+
+                case MembershipCreateStatus.UserRejected:
+                    return "The user creation request has been canceled. Please verify your entry and try again. If the problem persists, please contact your system administrator.";
+
+                default:
+                    return "An unknown error occurred. Please verify your entry and try again. If the problem persists, please contact your system administrator.";
+            }
         }
     }
 }

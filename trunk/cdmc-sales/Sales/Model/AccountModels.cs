@@ -46,6 +46,7 @@ namespace Entity {
         public string UserName { get; set; }
 
         [DataType(DataType.EmailAddress)]
+        [RegularExpression(@"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}", ErrorMessage = "{0}的格式不正确")]
         [Display(Name = "邮件地址")]
         public string Email { get; set; }
 

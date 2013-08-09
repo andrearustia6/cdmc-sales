@@ -1,0 +1,83 @@
+﻿@model Model.AjaxEmployee
+@using Entity
+@using Utl
+@using (Html.BeginForm())
+{
+    <fieldset>
+        @Html.HiddenFor(model => model.ID)
+        @Html.HiddenFor(model => model.AccountNameCN)
+        <legend>帐号</legend>
+        <p id="errorSetRole" style="color: #FF0000">
+        </p>
+        @Html.ValidationSummary(true, "")
+        <table style="padding: 10px; margin: 10px">
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.AccountName)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.AccountName)
+                </td>
+                <td>
+                    @Html.LabelFor(model => model.IsActivated)
+                </td>
+                <td>
+                    @Html.CheckBoxFor(model => model.IsActivated)<br>
+                    @Html.ValidationMessageFor(model => model.IsActivated)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.RoleName)
+                </td>
+                <td>
+                    @{
+          
+    List<Role> data;
+    var lvl = Employee.CurrentRole.Level;
+    if (lvl == 99999)
+    {
+        data = CH.GetAllData<Entity.Role>();
+    }
+    else
+    {
+        data = CH.GetAllData<Entity.Role>(r => r.Level <= 10000);
+    }
+                        @Html.DropDownListFor(m => m.RoleID, new SelectList(data, "ID", "Name"), "-请选择-", new { style = "width:150px" })<br />
+                    }
+                    @Html.ValidationMessageFor(m => m.RoleID)
+                </td>
+                <td>
+                    @Html.LabelFor(model => model.ExpLevelName)
+                </td>
+                <td>
+                    @Html.DropDownListFor(model => model.ExpLevelID, new SelectList(CH.GetAllData<ExpLevel>(), "ID", "Name"), "-请选择-", new { style = "width:150px" })<br>
+                    @Html.ValidationMessageFor(model => model.ExpLevelID)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.StartDate)
+                </td>
+                <td>
+                    @Html.Telerik().DatePickerFor(model => model.StartDate).HtmlAttributes(new { style = "width:150px" })<br>
+                    @Html.ValidationMessageFor(model => model.StartDate)
+                </td>
+                <td>
+                    @Html.LabelFor(model => model.IsTrainee)
+                </td>
+                <td>
+                    @Html.DropDownListFor(model => model.IsTrainee, SelectHelper.TraineeSelectListInEmployee(), new { style = "width:150px" })<br>
+                    @Html.ValidationMessageFor(model => model.IsTrainee)
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+}
+<style>
+    table tr
+    {
+        height: 30px;
+        width: 500px;
+    }
+</style>

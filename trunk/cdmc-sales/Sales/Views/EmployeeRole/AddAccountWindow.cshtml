@@ -1,0 +1,53 @@
+﻿@model Entity.UserInfoModel
+@using (Html.BeginForm())
+{
+
+    <fieldset>
+        <legend>创建一个新的账号</legend>
+        <p>
+            使用下面表单来创建新账号。
+        </p>
+        <p>
+            新密码要求的最小长度为 @Membership.MinRequiredPasswordLength，帐号中间不可以有空格。
+        </p>
+        <p>
+            @Html.ValidationSummary(true, "Account creation was unsuccessful. Please correct the errors and try again.")
+        </p>
+        <p id="errorAddAccount" style="color: #FF0000">
+        </p>
+        <table style="padding: 10px; margin: 10px">
+            <tr style="height: 40px">
+                <td>
+                    @Html.LabelFor(m => m.UserName)
+                </td>
+                <td>
+                    @Html.TextBoxFor(m => m.UserName, new { style = "width:150px" })<br />
+                    @Html.ValidationMessageFor(m => m.UserName)
+                </td>
+                <td>
+                    @Html.LabelFor(m => m.Password)
+                </td>
+                <td>
+                    @Html.PasswordFor(m => m.Password, new { style = "width:150px" })<br />
+                    @Html.ValidationMessageFor(m => m.Password)
+                </td>
+            </tr>
+            <tr style="height: 40px">
+                <td>
+                    @Html.LabelFor(m => m.Email)
+                </td>
+                <td>
+                    @Html.TextBoxFor(m => m.Email, new { style = "width:150px" })<br />
+                    @Html.ValidationMessageFor(m => m.Email)
+                </td>
+                <td>
+                    @Html.LabelFor(m => m.ConfirmPassword)
+                </td>
+                <td>
+                    @Html.PasswordFor(m => m.ConfirmPassword, new { style = "width:150px" })<br />
+                    @Html.ValidationMessageFor(m => m.ConfirmPassword)
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+}
