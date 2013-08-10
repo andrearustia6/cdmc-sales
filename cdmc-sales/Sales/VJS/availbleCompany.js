@@ -303,6 +303,9 @@ function AddCall() {
                     tempCRMID = undefined;
                     tempProjectId = undefined;
                 }
+
+                onGetEmailPage($calltype.val());
+
                 RefreshCrmList(selectedVal);
                 onCompanyChanging(selectedVal);
             }
@@ -979,6 +982,9 @@ function QuickEntry() {
                 $.post('QuickEntry', query, function (result) {
                     if ((result.companyRelationshipId != null) && (result.leadId != null) && (result.leadCallId != null)) {
                         $('#QuickEntry').data('tWindow').close();
+
+                        onGetEmailPage($calltype.val());
+
                         RefreshCrmList(result.companyRelationshipId);
                         onCompanyChanging(result.companyRelationshipId);
                     } else {
@@ -1153,13 +1159,6 @@ function BulkEntry() {
         $('.dialogue-addcompany form #IndustryId').removeClass('fieldError');
     }
 
-//    if ($('.dialogue-addcompany form #TypeId').val().isEmpty()) {
-//        $('.dialogue-addcompany form #TypeId').addClass('fieldError');
-//        hasError = true;
-//    } else {
-//        $('.dialogue-addcompany form #TypeId').removeClass('fieldError');
-//    }
-
     if ($('.dialogue-addcompany form #ProgressId').val().isEmpty()) {
         $('.dialogue-addcompany form #ProgressId').addClass('fieldError');
         hasError = true;
@@ -1245,5 +1244,57 @@ function BulkEntry() {
 function CancelBulkEntry() {
     var window = $('#BulkEntry').data('tWindow');
     window.close();
+}
 
+function onGetEmailPage(calltype) {
+    $.post('GetEmailPage',{ callType:calltype}, function (result) {
+        $('.sendemail-wrapper').html(result);
+        var window = $('#SendEmail').data('tWindow');
+        window.center().open();
+    });
+}
+
+function SendEmail() {
+    var hasError = false;
+    $('.dialogue-sendemail form input').removeClass('fieldError');
+
+    String.prototype.isEmpty = function () { return /^\s*$/.test(this); }
+
+    if ($('.dialogue-sendemail form #FromEmail').val().isEmpty()) {
+        $('.dialogue-sendemail form #FromEmail').addClass('fieldError');
+        hasError = true;
+    }
+
+    if ($('.dialogue-sendemail form #FromName').val().isEmpty()) {
+        $('.dialogue-sendemail form #FromName').addClass('fieldError');
+        hasError = true;
+    }
+
+    if ($('.dialogue-sendemail form #ToEmail').val().isEmpty()) {
+        $('.dialogue-sendemail form #ToEmail').addClass('fieldError');
+        hasError = true;
+    }
+
+    if ($('.dialogue-sendemail form #ToName').val().isEmpty()) {
+        $('.dialogue-sendemail form #ToName').addClass('fieldError');
+        hasError = true;
+    } 
+
+    if (hasError) {
+        return;
+    } else {
+        var query = $('.dialogue-sendemail form').serializeArray();
+        $.post('EmailPage', query, function (result) {
+            if (result.sentEmail == true) {
+                $('#SendEmail').data('tWindow').close();
+            } else {
+                alert('邮件发送失败!');
+            }
+        });
+    }
+}
+
+function CancelSendEmail() {
+    var window = $('#SendEmail').data('tWindow');
+    window.close();
 }

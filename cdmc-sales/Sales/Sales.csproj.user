@@ -25,17 +25,6 @@
           </StartWorkingDirectory>
           <EnableENC>False</EnableENC>
           <AlwaysStartWebServerOnDebug>True</AlwaysStartWebServerOnDebug>
-          <UseIIS>False</UseIIS>
-          <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>37842</DevelopmentServerPort>
-          <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost/</IISUrl>
-          <OverrideIISAppRootUrl>True</OverrideIISAppRootUrl>
-          <IISAppRootUrl>http://localhost/</IISAppRootUrl>
-          <NTLMAuthentication>False</NTLMAuthentication>
-          <UseCustomServer>False</UseCustomServer>
-          <CustomServerUrl>
-          </CustomServerUrl>
         </WebProjectProperties>
       </FlavorProperties>
     </VisualStudio>

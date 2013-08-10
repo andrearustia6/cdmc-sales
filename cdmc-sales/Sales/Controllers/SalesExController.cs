@@ -9,6 +9,10 @@ using Model;
 using Telerik.Web.Mvc;
 using Entity;
 using Sales.Model;
+using System.Net.Mail;
+using System.Configuration;
+using System.Net;
+using System.IO;
 
 namespace Sales.Controllers
 {
@@ -356,8 +360,6 @@ namespace Sales.Controllers
             }
             return Content("");
         }
-
-
 
         public ActionResult GetEditLead(int leadId)
         {
@@ -1122,6 +1124,118 @@ namespace Sales.Controllers
             return Json(new { companyRelationshipId = companyRelationship.ID, companyId = companyRelationship.CompanyID, projectId = companyRelationship.ProjectID });
         }
 
+        public ActionResult GetEmailPage(string callType)
+        {
+            string template = "";
+            string filename = "";
+            if (!String.IsNullOrEmpty(callType))
+            {
+                #region callType mapping to Template
+                switch (callType)
+                {
+                    case "2":
+                        filename = "template01.html";
+                        break;
+                    case "3":
+                        filename = "template01.html";
+                        break;
+                    case "4":
+                        filename = "template01.html";
+                        break;
+                    case "5":
+                        filename = "template01.html";
+                        break;
+                    case "6":
+                        filename = "template01.html";
+                        break;
+                    case "7":
+                        filename = "template01.html";
+                        break;
+                    case "8":
+                        filename = "template01.html";
+                        break;
+                    case "9":
+                        filename = "template01.html";
+                        break;
+                    default :
+                        filename = "template01.html";
+                        break;
+                }
+                #endregion 
+            }
+
+            #region Read template from file.
+            string file = AppDomain.CurrentDomain.BaseDirectory + "/App_Data/" + filename;
+            if (System.IO.File.Exists(file))
+            {
+                FileInfo fi1einfo = new FileInfo(file);
+                using (StreamReader sr = fi1einfo.OpenText())
+                {
+                    //bool read = false;
+                    string s = "";
+                    while ((s = sr.ReadLine()) != null)
+                    {
+                        //if (s.Contains("<table id=\"mainContent\""))
+                        //    read = true;
+
+                        //if (read)
+                            template += s;
+
+                        //if (s.Contains("</table class=\"endflag\">"))
+                        //    read = false;
+                    }
+                }
+            }
+            #endregion 
+
+            EmailModel model = new EmailModel();
+            model.Content = template;
+
+            return PartialView("EmailPage", model);
+        }
+
+        [ValidateInput(false)]
+        [HttpPost]
+        public ActionResult EmailPage(EmailModel model)
+        {
+            SendEmail(model.FromEmail,model.FromName,model.ToEmail,model.ToName,model.Content);
+
+            return Json(new { sentEmail = true } ); 
+        }
+
+        /// <summary>
+        /// Methods to send email.
+        /// </summary>
+        /// <param name="fromEmail"></param>
+        /// <param name="fromName"></param>
+        /// <param name="toEmail"></param>
+        /// <param name="toName"></param>
+        /// <param name="content"></param>
+        public void SendEmail(string fromEmail, string fromName, string toEmail, string toName, string content)
+        {
+            // Send email
+            SmtpClient smtp = new SmtpClient();
+            smtp.Host = ConfigurationManager.AppSettings["SMTP_Server"].ToString();
+            smtp.Port = Convert.ToInt32(ConfigurationManager.AppSettings["SMTP_Port"].ToString());
+            NetworkCredential SMTPUserInfo = new NetworkCredential(ConfigurationManager.AppSettings["SMTP_Username"].ToString(), ConfigurationManager.AppSettings["SMTP_Password"].ToString());
+            smtp.UseDefaultCredentials = false;
+            smtp.Credentials = SMTPUserInfo;
+
+            MailAddress from = new MailAddress(fromEmail, fromName, System.Text.Encoding.Unicode);
+            MailAddress to = new MailAddress(toEmail, toName, System.Text.Encoding.UTF8);
+            MailMessage message = new MailMessage(from, to);
+            message.SubjectEncoding = System.Text.Encoding.UTF8;
+            message.Subject = "Notifications";
+            message.BodyEncoding = System.Text.Encoding.UTF8;
+            message.Body = content;
+            message.IsBodyHtml = true;
+            try
+            {
+                smtp.Send(message);
+            }
+            catch { }
+            finally { message.Dispose(); smtp.Dispose(); }
+        }
     }
 }
 
