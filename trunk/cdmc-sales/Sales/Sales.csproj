@@ -310,6 +310,13 @@
     <Compile Include="Utl\Utl.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\template01.html" />
+    <Content Include="App_Data\template02.html" />
+    <Content Include="App_Data\template03.html" />
+    <Content Include="App_Data\template04.html" />
+    <Content Include="App_Data\template05.html" />
+    <Content Include="App_Data\template06.html" />
+    <Content Include="App_Data\template07.html" />
     <Content Include="Content\jquery-ui-1.8.23.custom.css" />
     <Content Include="css\contextmenustyle.css" />
     <Content Include="css\css.css" />
@@ -1050,9 +1057,7 @@
   <ItemGroup>
     <Content Include="Views\OnPhoneblockType\Change.cshtml" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="App_Data\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="Views\PhoneSaleSupport\Change.cshtml" />
   </ItemGroup>
@@ -1702,10 +1707,12 @@
     <Content Include="Views\DirectorReport\ProjectsReportLastWeek.cshtml" />
     <Content Include="Views\SalesEx\BulkEntry.cshtml" />
     <Content Include="Views\Project\ExportEmail.cshtml" />
-    <Content Include="Views\Finance\Index.cshtml" />    <Content Include="Views\EmployeeRole\AccountInfoWindow.cshtml" />
+    <Content Include="Views\Finance\Index.cshtml" />
+    <Content Include="Views\EmployeeRole\AccountInfoWindow.cshtml" />
     <Content Include="Views\EmployeeRole\SetRoleWindow.cshtml" />
     <Content Include="Views\EmployeeRole\ChangePasswordWindow.cshtml" />
-    <Content Include="Views\EmployeeRole\AddAccountWindow.cshtml" />    <None Include="Views\SalesEx\EditCompany.cshtml" />
+    <Content Include="Views\EmployeeRole\AddAccountWindow.cshtml" />
+    <None Include="Views\SalesEx\EditCompany.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\SimulatorConfig.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\AjaxTargetOfMonthForMember.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\AjaxViewDeal.cshtml" />
@@ -1735,6 +1742,7 @@
     <Content Include="Views\Shared\EditorTemplates\_CompanyResearchDetail.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\PreCommissionEdit.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\_LeadResearchDetail.cshtml" />
+    <Content Include="Views\SalesEx\EmailPage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\TargetOfMonthForMember\Confirm.cshtml" />

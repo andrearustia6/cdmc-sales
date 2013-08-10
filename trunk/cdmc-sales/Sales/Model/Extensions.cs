@@ -14,9 +14,6 @@ using System.Collections;
 
 namespace Entity
 {
-
-    
-
     public static class PackageExtensions
     {
         public static decimal GetYuan(this Package item,double? rate)

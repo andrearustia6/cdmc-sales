@@ -1,0 +1,61 @@
+﻿@model Model.EmailModel
+           
+@{ Html.BeginForm("EmailPage", "SalesEx"); }
+
+<table width="100%" cellpadding="0" cellspacing="0">
+   <tr>
+        <td style="width:70px">@Html.LabelFor(model => model.FromName)</td>
+        <td>
+            @Html.TextBoxFor(model => model.FromName, new { id = "FromName", @style = "width:350px" })
+            @Html.ValidationMessageFor(model => model.FromName)
+        </td>
+   </tr>
+   <tr>
+        <td style="width:70px">@Html.LabelFor(model => model.FromEmail)</td>
+        <td>
+            @Html.TextBoxFor(model => model.FromEmail, new { id = "FromEmail", @style = "width:350px" })
+            @Html.ValidationMessageFor(model => model.FromEmail)
+        </td>
+   </tr>
+   <tr>
+        <td style="width:70px">@Html.LabelFor(model => model.ToName)</td>
+        <td>
+            @Html.TextBoxFor(model => model.ToName, new { id = "ToName", @style = "width:350px" })
+            @Html.ValidationMessageFor(model => model.ToName)
+        </td>
+   </tr>
+   <tr>
+        <td style="width:70px">@Html.LabelFor(model => model.ToEmail)</td>
+        <td>
+            @Html.TextBoxFor(model => model.ToEmail, new { id = "ToEmail", @style = "width:350px" })
+            @Html.ValidationMessageFor(model => model.ToEmail)
+        </td>
+   </tr>
+   <tr>
+        <td style="width:70px">@Html.LabelFor(model => model.Content)</td>
+        <td>
+            @{Html.Telerik().EditorFor(model=> model.Content)
+                .HtmlAttributes(new {style="height:300px"})
+                .Encode(false)
+                .Tools(tools => tools
+                    .Clear()
+                    .Bold().Italic().Underline()
+                    .Separator()
+                    .CreateLink().Unlink()
+                )
+                .Render();
+            }
+        </td>
+   </tr>
+</table>
+
+@{ Html.EndForm(); }
+
+<script type="text/javascript" language="javascript">
+//    $(document).ready(function () {
+//        var typeId = @ViewBag.Type;
+//        $.post('AjaxGetTemplate', { type: typeId }, function (result) {
+//            $('#container').html("Happy Life");
+//        });
+//    });
+</script>

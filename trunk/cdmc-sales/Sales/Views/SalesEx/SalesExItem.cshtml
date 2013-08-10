@@ -480,7 +480,7 @@
             <input type="button" class="btn-quxiao" onclick="CancelEditCall()" />
         </div>
     </div></text>)
-    .Width(750).Height(200).Draggable(true).Modal(true).Visible(false)
+    .Width(750).Height(500).Draggable(true).Modal(true).Visible(false)
 )
 @(Html.Telerik().Window().Title("添加通话结果")
     .Name("AddCall")
@@ -492,7 +492,20 @@
             <input type="button" class="btn-quxiao" onclick="CancelAddCall()" />
         </div>
     </div></text>)
-    .Width(750).Height(250).Draggable(true).Modal(true).Visible(false)
+    .Width(850).Height(250).Draggable(true).Modal(true).Visible(false)
+)
+
+@(Html.Telerik().Window().Title("发送邮件")
+    .Name("SendEmail")
+    .Content(@<text><div class="dialogue-sendemail">
+        <div class="sendemail-wrapper">
+        </div>
+        <div class="dialogue-buttons" style="float:right;">
+            <input type="button" class="btn-queding" onclick="SendEmail()" />
+            <input type="button" class="btn-quxiao" onclick="CancelSendEmail()" />
+        </div>
+    </div></text>)
+    .Width(750).Height(550).Draggable(true).Modal(true).Visible(false)
 )
 
 <style>

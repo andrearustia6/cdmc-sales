@@ -1148,4 +1148,22 @@ namespace Model
         //[Compare("Password", ErrorMessage = "密码确认和新设密码不匹配.")]
         //public string ConfirmPassword { get; set; }
     }
+
+    public class EmailModel
+    {
+        [Display(Name = "发件人名称"), Required]
+        public string FromName { get; set; }
+
+        [Display(Name = "发件人邮箱"), Required]
+        public string FromEmail { get; set; }
+
+        [Display(Name = "收件人名称"), Required]
+        public string ToName { get; set; }
+
+        [Display(Name = "收件人邮箱"), Required]
+        public string ToEmail { get; set; }
+
+        [Display(Name = "邮件内容"), Required]
+        public string Content { get; set; }
+    }
 }
