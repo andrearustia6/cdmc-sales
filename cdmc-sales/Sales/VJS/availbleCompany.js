@@ -304,7 +304,7 @@ function AddCall() {
                     tempProjectId = undefined;
                 }
 
-                onGetEmailPage($calltype.val());
+                //onGetEmailPage($calltype.val());
 
                 RefreshCrmList(selectedVal);
                 onCompanyChanging(selectedVal);
@@ -983,7 +983,7 @@ function QuickEntry() {
                     if ((result.companyRelationshipId != null) && (result.leadId != null) && (result.leadCallId != null)) {
                         $('#QuickEntry').data('tWindow').close();
 
-                        onGetEmailPage($calltype.val());
+                        //onGetEmailPage($calltype.val());
 
                         RefreshCrmList(result.companyRelationshipId);
                         onCompanyChanging(result.companyRelationshipId);
