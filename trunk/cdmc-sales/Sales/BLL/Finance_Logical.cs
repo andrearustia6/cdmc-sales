@@ -126,13 +126,12 @@ namespace BLL
 
             public static IEnumerable<_CommissionSales> GetSalesDDL(int month)
             {
-                
-                var mems = CH.DB.Members.Where(w => w.IsActivated == true && w.Project.IsActived == true);
+                var mems = CH.DB.Members.Where(w => w.IsActivated == true && w.Project.IsActived == true).Select(w=>w.Name).Distinct();
                 var ret = from p in mems
                             select new _CommissionSales
                             {
-                                salesid = p.Name,
-                                sales = p.Name
+                                salesid = p,
+                                sales = p
                             };
                 return ret;
                 

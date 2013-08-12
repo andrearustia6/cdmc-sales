@@ -90,6 +90,7 @@ namespace Sales.Controllers
             // if (month == null) month = 5;
             var list = Finance_Logical._PreCommissionBLL.GetSalesDDL(month);
             list = list.OrderBy(o=>o.sales);
+            
             return Json(list);
         }
 

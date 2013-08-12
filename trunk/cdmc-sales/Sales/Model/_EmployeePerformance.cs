@@ -768,6 +768,7 @@ namespace Sales.Model
         [Display(Name = "国内外")]
         public string InOut { get; set; }
         [Display(Name = "项目")]
+        [Required]
         [Remote("CheckUnique", "Finance", AdditionalFields = "StartDate,ID,TargetNameEN", ErrorMessage = "当月提成已经存在")]//ActionName,Controller,错误信息
         public int? ProjectID { get; set; }
 

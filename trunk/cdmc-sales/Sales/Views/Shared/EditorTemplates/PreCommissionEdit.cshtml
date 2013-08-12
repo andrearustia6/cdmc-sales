@@ -17,13 +17,54 @@
    }
 </style>
 <script>
+    function strTodate(strr) {
+        strr1 = strr.split(' ');
+        datestr = strr1[0];
+        strr2 = datestr.split('-');
+        date1 = new Date(strr2[0], strr2[1] - 1, strr2[2]);
+        return date1;
+    }
+    function dateTostr(date) {
+        yy = date.getFullYear();
+        mm = date.getMonth() + 1;
+        dd = date.getDate();
+        hours = date.getHours();
+        minutes = date.getMinutes();
+        seconds = date.getSeconds();
+        datestr = yy + '-' + mm + '-' + dd;
+        return datestr
+    }
 
+    function FormatNumber(srcStr) {
+        var dotPos = srcStr.indexOf(".", 0);
+        if (dotPos == -1) {
+            resultStr = srcStr;
+            return resultStr;
+        }
+        else {
+            resultStr = srcStr.substring(0,dotPos);
+            return resultStr;
+        }
+    }
     $("#TargetNameEN option[text='" + TargetNameEN + "']").attr("selected", true);
     if (TargetNameEN != "") {
-        $("#sales").hide();
-        $("#projects").hide();
+        $("#TargetNameEN").hide();
+        $("#TargetNameEN").append("<option value='" + TargetNameEN + "'>" + TargetNameEN + "</option>");
+        $("#TargetNameEN option[text='" + TargetNameEN + "']").attr("selected", true);
+        $("#ProjectID").hide();
+        $("#ProjectID").append("<option value='" + ProjectID + "'>" + ProjectID + "</option>");
+        $("#ProjectID option[text='" + ProjectID + "']").attr("selected", true);
         $("#salediv").html(TargetNameEN);
         $("#projectdiv").html(ProjectName);
+        $("#startdate1").hide();
+        $("#startdate2").html(dateTostr(StartDate));
+        $("#enddate1").hide();
+        $("#enddate2").html(dateTostr(EndDate));
+    }
+    else {
+        $("#DelegateLessRate").val(5);
+        $("#DelegateMoreRate").val(15);
+        $("#SponsorRate").val(5);
     }
 </script>
 <script type="text/javascript">
@@ -49,14 +90,18 @@
                 alert("获取数据失败，请重试。");
             },
             success: function (result) {
-                if ($("#sales").val() != 0) {
-                    $("#sales option[value!='']").remove();
-                }
-                if ($("#projects").val() != 0) {
-                    $("#projects option[value!='']").remove();
-                }
+//                if ($("#TargetNameEN").val() != 0) {
+//                    $("#TargetNameEN option[value!='']").remove();
+//                }
+//                if ($("#ProjectID").val() != 0) {
+//                    $("#ProjectID option[value!='']").remove();
+                //                }
+
+                $("#TargetNameEN").empty();
+                $("#ProjectID").empty();
+                $("#TargetNameEN").append("<option value='" + "" + "'>" + "请选择" + "</option>");
                 for (var i = 0; i < result.length; i++) {
-                    $("#sales").append("<option value='" + result[i].salesid + "'>" + result[i].sales + "</option>");
+                    $("#TargetNameEN").append("<option value='" + result[i].salesid + "'>" + result[i].sales + "</option>");
                 }
             }
         });
@@ -76,30 +121,25 @@
     }
 
     function calc() {
-        $("#DelegateLessCommission").val($("#DelegateLessIncome").val() * $("#DelegateLessRate").val() / 100);
-        $("#DelegateMoreCommission").val($("#DelegateMoreIncome").val() * $("#DelegateMoreRate").val() / 100);
-        $("#SponsorCommission").val($("#SponsorIncome").val() * $("#SponsorRate").val() / 100);
 
         var DelegateLessCommission = $("#DelegateLessIncome").val() * $("#DelegateLessRate").val() / 100;
         var DelegateMoreCommission = $("#DelegateMoreIncome").val() * $("#DelegateMoreRate").val() / 100;
         var SponsorCommission = $("#SponsorIncome").val() * $("#SponsorRate").val() / 100;
 
-        $("#Commission").val(DelegateLessCommission + DelegateMoreCommission + SponsorCommission);
+        $("#DelegateLessCommission").val(DelegateLessCommission.toFixed(0));
+        $("#DelegateMoreCommission").val(DelegateMoreCommission.toFixed(0));
+        $("#SponsorCommission").val(SponsorCommission.toFixed(0));
+
+        $("#Commission").val((DelegateLessCommission + DelegateMoreCommission + SponsorCommission).toFixed(0));
         var commission = $("#Commission").val();
         var bonus = $("#Bonus").val();
         var tax = $("#Tax").val();
         var returnincome = $("#ReturnIncome").val();
 
-        $("#ActualCommission").val(commission - bonus - tax - returnincome);
-        $("#TotalCommission").val(commission - bonus - tax);
+        $("#ActualCommission").val((commission - bonus - tax - returnincome).toFixed(0));
+        $("#TotalCommission").val((commission - bonus - tax).toFixed(0));
     }
-    function strTodate(strr) {
-        strr1 = strr.split(' ');
-        datestr = strr1[0];
-        strr2 = datestr.split('-');
-        date1 = new Date(strr2[0], strr2[1] - 1, strr2[2]);
-        return date1;
-    }
+    
    function setvalue(result) {
         if (result.TargetNameEN != "") {
             $("#TargetNameCN").val(result.TargetNameCN);
@@ -114,18 +154,21 @@
             $("#DelegateMoreCount").val(result.DelegateMoreCount == null ? 0 : result.DelegateMoreCount);
             $("#DelegateMoreIncome").val(result.DelegateMoreIncome == null ? 0 : result.DelegateMoreIncome);
             $("#SponsorIncome").val(result.SponsorIncome == null ? 0 : result.SponsorIncome);
-            $("#Income").val(result.Income);
+            $("#Income").val(result.Income == null ? 0 : result.Income);
 
+            $("#DelegateLessRate").val(5);
             $("#DelegateMoreRate").val(15);
             $("#SponsorRate").val(5);
-            $("#DelegateLessCommission").val(result.DelegateLessIncome == null ? 0 : result.DelegateLessIncome);
-            $("#DelegateMoreCommission").val(result.DelegateMoreIncome == null ? 0 : result.DelegateMoreIncome * 0.15);
-            $("#SponsorCommission").val(result.SponsorIncome == null ? 0 : result.SponsorIncome * 0.05);
 
-            var DelegateLessCommission = result.DelegateLessIncome == null ? 0 : result.DelegateLessIncome;
+            var DelegateLessCommission = result.DelegateLessIncome == null ? 0 : result.DelegateLessIncome * 0.05;
             var DelegateMoreCommission = result.DelegateMoreIncome == null ? 0 : result.DelegateMoreIncome * 0.15;
             var SponsorCommission = result.SponsorIncome == null ? 0 : result.SponsorIncome * 0.05;
-            $("#Commission").val(DelegateLessCommission + DelegateMoreCommission + SponsorCommission);
+
+            $("#DelegateLessCommission").val(DelegateLessCommission.toFixed(0));
+            $("#DelegateMoreCommission").val(DelegateMoreCommission.toFixed(0));
+            $("#SponsorCommission").val(SponsorCommission.toFixed(0));
+
+            $("#Commission").val((DelegateLessCommission + DelegateMoreCommission + SponsorCommission).toFixed(0));
             $("#TotalCommission").val($("#Commission").val());
             $("#ActualCommission").val($("#Commission").val());
         }
@@ -147,24 +190,29 @@
             开始时间
         </td>
         <td  style="width:5%">
-            @Html.Telerik().DatePickerFor(model => model.StartDate).ClientEvents(e => e.OnChange("OnChange"))
-            @Html.ValidationMessageFor(model => model.StartDate)
+            <div id="startdate1">
+                @Html.Telerik().DatePickerFor(model => model.StartDate).ClientEvents(e => e.OnChange("OnChange"))
+                @Html.ValidationMessageFor(model => model.StartDate)
+            </div>
+            <div id="startdate2">
+            </div>
         </td>
         <td  style="width:20%">
             结束时间
         </td>
         <td  style="width:5%">
-            @Html.Telerik().DatePickerFor(model => model.EndDate)
-            @Html.ValidationMessageFor(model => model.EndDate)
+            <div id="enddate1">
+                @Html.Telerik().DatePickerFor(model => model.EndDate)
+                @Html.ValidationMessageFor(model => model.EndDate)
+            </div>
+            <div id="enddate2">
+            </div>
         </td>
         <td  style="width:20%">
             英文名
         </td>
         <td  style="width:5%">
-            <select id="sales" name="sales">
-            <option value="">请选择</option>
-            </select>
-            @Html.HiddenFor(model => model.TargetNameEN)
+            @Html.DropDownListFor(model => model.TargetNameEN, new SelectList(new List<string>() { "请选择" }))
             @Html.ValidationMessageFor(model => model.TargetNameEN)
             <div id="salediv"></div>
         </td>
@@ -180,10 +228,10 @@
             @Html.LabelFor(model => model.ProjectID)
         </td>
         <td colspan="3">
-        <select id="projects" name="projects">
+        @*<select id="projects" name="projects">
             <option value="">请选择</option>
-        </select>
-        @Html.HiddenFor(model=>model.ProjectID)
+        </select>*@
+        @Html.DropDownListFor(model => model.ProjectID, new SelectList(new List<string>() { "请选择" }))
         @Html.ValidationMessageFor(model => model.ProjectID)
         <div id="projectdiv"></div>
         </td>
@@ -193,7 +241,6 @@
         <td colspan="3">
             @Html.TextBoxFor(model => model.InOut, new { READONLY = "readonly", style = "border:none;" })
         </td>
-        
     </tr>
     <tr>
         <td >
@@ -347,8 +394,8 @@
 
     //页面加载后设置币种的默认值
     $(function () {
-        $("#sales").change(function () {
-            var sale = $("#sales").find("option:selected").val();
+        $("#TargetNameEN").change(function () {
+            var sale = $("#TargetNameEN").find("option:selected").val();
             if ($("#StartDate").val() == "") {
                 alert("请选择开始时间");
                 $("#TargetNameEN option[text='请选择']").attr("selected", true);
@@ -378,30 +425,26 @@
                     alert("获取数据失败，请重试。");
                 },
                 success: function (result) {
-                    $("#TargetNameEN").val(sale);
-                    if ($("#projects").val() != 0) {
-                        $("#projects option[value!='']").remove();
-                    }
+                    $("#ProjectID").empty();
+                    //if ($("#ProjectID").val() != 0) {
+                    //$("#ProjectID option[value!='']").remove();
+                    //}
+                    $("#ProjectID").append("<option value='" + "" + "'>" + "请选择" + "</option>");
                     for (var i = 0; i < result.length; i++) {
-                        $("#projects").append("<option value='" + result[i].ID + "'>" + result[i].ProjectCode + "</option>");
+                        $("#ProjectID").append("<option value='" + result[i].ID + "'>" + result[i].ProjectCode + "</option>");
                     }
                 }
             });
 
         });
 
-        $("#projects").change(function () {
-            var sale = $("#sales").find("option:selected").val();
+        $("#ProjectID").change(function () {
+            var sale = $("#TargetNameEN").find("option:selected").val();
             if (sale == "") {
                 alert("请选择目标");
                 return;
             }
-            var projectid = $("#projects").find("option:selected").val();
-            if (projectid == "") {
-                alert("请选择项目");
-                return;
-            }
-
+            var projectid = $("#ProjectID").find("option:selected").val();
             if ($("#StartDate").val() == "") {
                 alert("请选择开始时间");
                 $("#TargetNameEN option[text='请选择']").attr("selected", true);
@@ -418,7 +461,7 @@
                     alert("获取数据失败，请重试。");
                 },
                 success: function (result) {
-                    $("#ProjectID").val(projectid);
+                    
                     setvalue(result);
                 }
             });
@@ -439,5 +482,7 @@
 
 //    var datepicker = $('#cEndDate').data('tDatePicker');
 //    alert(datepicker);
-//    datepicker.val(new Date('1/1/2012'));
+    //    datepicker.val(new Date('1/1/2012'));
+
+    
 </script>

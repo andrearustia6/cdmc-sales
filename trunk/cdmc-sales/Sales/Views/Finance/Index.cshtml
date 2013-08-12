@@ -7,6 +7,9 @@
 <script>
     var TargetNameEN = "";
     var ProjectName = "";
+    var ProjectID = "";
+    var StartDate = "";
+    var EndDate = "";
 </script>
 <fieldset>
     <legend>月份</legend>
@@ -95,10 +98,16 @@
         if (e.name == "edit") {
             TargetNameEN = e.dataItem.TargetNameEN;
             ProjectName = e.dataItem.ProjectName;
+            ProjectID = e.dataItem.ProjectID;
+            StartDate = e.dataItem.StartDate;
+            EndDate = e.dataItem.EndDate;
         }
         else if (e.name == "add") {
             TargetNameEN = "";
             ProjectName = "";
+            ProjectID = "";
+            StartDate = "";
+            EndDate = "";
         }
     }
     
