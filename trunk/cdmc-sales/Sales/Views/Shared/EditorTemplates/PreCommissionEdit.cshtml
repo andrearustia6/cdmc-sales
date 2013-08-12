@@ -123,7 +123,7 @@
     function calc() {
 
         var DelegateLessCommission = $("#DelegateLessIncome").val() * $("#DelegateLessRate").val() / 100;
-        var DelegateMoreCommission = $("#DelegateMoreIncome").val() * $("#DelegateMoreRate").val() / 100;
+        var DelegateMoreCommission = ($("#DelegateMoreIncome").val() - $("#DelegateMoreCount").val()*3000) * $("#DelegateMoreRate").val() / 100;
         var SponsorCommission = $("#SponsorIncome").val() * $("#SponsorRate").val() / 100;
 
         $("#DelegateLessCommission").val(DelegateLessCommission.toFixed(0));
@@ -161,7 +161,7 @@
             $("#SponsorRate").val(5);
 
             var DelegateLessCommission = result.DelegateLessIncome == null ? 0 : result.DelegateLessIncome * 0.05;
-            var DelegateMoreCommission = result.DelegateMoreIncome == null ? 0 : result.DelegateMoreIncome * 0.15;
+            var DelegateMoreCommission = result.DelegateMoreIncome == null ? 0 : (result.DelegateMoreIncome - result.DelegateMoreCount*3000)  * 0.15;
             var SponsorCommission = result.SponsorIncome == null ? 0 : result.SponsorIncome * 0.05;
 
             $("#DelegateLessCommission").val(DelegateLessCommission.toFixed(0));
@@ -362,7 +362,7 @@
     </tr>
     <tr>
     <td colspan="8" style="color:Red">
-    每月提成预发总额 = sponsor出单总额* 提成率(5%)+delegate人均三千以下出单总额*提成率(%) +(delegate人均3000以上出单总额-3000*人数)*大于3000提成率(15%)
+    每月提成预发总额 = sponsor出单总额* 提成率(5%)+delegate人均三千以下出单总额*提成率(5%) +(delegate人均3000以上出单总额-3000*人数)*大于3000提成率(15%)
     </td>
     </tr>
 </table>
