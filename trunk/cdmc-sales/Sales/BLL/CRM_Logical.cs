@@ -249,7 +249,7 @@ namespace BLL
 
                         sales = sales.Where(w => !leads.Any(a => a == w) && w.Contains(fuzzyInput));//排除sales中的lead
                         var year = DateTime.Now.Year;
-                        var deals = CRM_Logical.GetDeals().Where(w => w.ActualPaymentDate.Value != null && w.ActualPaymentDate.Value.Month == month && w.ActualPaymentDate.Value.Year==year);
+                        var deals = CRM_Logical.GetDeals();
                         var calls = from l in CH.DB.LeadCalls.Where(w => w.LeadCallTypeID != null && w.LeadCallType.Code >= 40 && w.Project.IsActived==true) select l;
                            // calls =from c in calls group c by c.LeadID into g select g.FirstOrDefault();//分组并选择第一个
                        
@@ -267,14 +267,14 @@ namespace BLL
                                       Rate = scores.Where(w => w.TargetName == l).Count() == 0 ? 1 : scores.Where(w => w.TargetName == l).Select(s => s.Rate).FirstOrDefault(),//scores.Where(w => w.TargetName == l).Select(s => s.Rate).FirstOrDefault()==null?1:scores.Where(w => w.TargetName == l).Select(s => s.Rate).FirstOrDefault(),
                                       AssignedScore = scores.Where(w => w.TargetName == l).Count() == 0 ? 10 : scores.Where(w => w.TargetName == l).Select(s => s.Score).FirstOrDefault(),//scores.Where(w => w.TargetName == l).Select(s => s.Score).FirstOrDefault(),//scores.Where(w => w.TargetName == l).Average(s => s.Score) == null ? 0 : scores.Where(w => w.TargetName == l).Average(s => s.Score),
                                       Target = targets.Where(t => t.Member.Name == l && t.StartDate.Month == month).Sum(s => (decimal?)s.CheckIn),
-                                      CheckIn = deals.Where(d => d.Sales == l).Sum(s => (decimal?)s.Income),
+                                      CheckIn = deals.Where(w => w.Sales == l && w.ActualPaymentDate.Value != null && w.ActualPaymentDate.Value.Month == month && w.ActualPaymentDate.Value.Year == DateTime.Now.Year).Sum(s => (decimal?)s.Income),
                                       Name = l,
                                       User = user,
                                       SalesPerformanceInWeeks = wd.Select(s => new _SalesPerformanceInWeek
                                       {
                                           FaxOutCount = calls.Where(w => w.Member != null && w.Member.Name == l &&  w.CreatedDate >= s && w.CreatedDate < EntityFunctions.AddDays(s, 7)
                                           && calls.Any(a=>a.CallDate<w.CallDate && a.LeadID==w.LeadID && a.Member.Name== l)==false).GroupBy(g=>g.LeadID).Count(),
-                                          DealsCount = deals.Count(c => c.SignDate >= s && c.SignDate < EntityFunctions.AddDays(s, 7)),
+                                          DealsCount = deals.Count(c => c.Sales == l && c.SignDate >= s && c.SignDate < EntityFunctions.AddDays(s, 7)),
                                           StartDate = s,
                                           EndDate = EntityFunctions.AddDays(s, 7).Value,
                                           LeadsCount = leadadds.Count(c => c.Creator == l && c.CreatedDate >= s && c.CreatedDate < EntityFunctions.AddDays(s, 7))
@@ -479,7 +479,7 @@ namespace BLL
                 IQueryable<string> sales = null;
                 sales = CH.DB.Members.Where(w => w.IsActivated == true && w.Project.IsActived == true && w.Name == user).Select(s => s.Name).Distinct();
 
-                var deals = CRM_Logical.GetDeals().Where(w => w.ActualPaymentDate.Value != null && w.ActualPaymentDate.Value.Month == month);
+                var deals = CRM_Logical.GetDeals();
                 var calls = from l in CH.DB.LeadCalls.Where(w => w.LeadCallTypeID != null && w.LeadCallType.Code >= 40) select l;
                 var leadadds = from l in CH.DB.Leads select l;
                 var rates = from r in CH.DB.AssignPerformanceRates.Where(w => w.Month == month && w.Year == DateTime.Now.Year) select r;
@@ -489,13 +489,12 @@ namespace BLL
                           select new _SalesPerformance()
                           {
                               Target = CH.DB.TargetOfMonthForMembers.Where(t => t.Member.Name == l && t.StartDate.Month == month && t.Project.IsActived == true).Sum(s => s.CheckIn),
-                              CheckIn = deals.Where(d => d.Project.TeamLeader == l).Sum(s => s.Income),
+                              CheckIn = deals.Where(w => w.ActualPaymentDate.Value != null && w.ActualPaymentDate.Value.Month == month).Sum(s => s.Income),
                               Name = l,
                               Rate = rates.Where(w => w.TargetName == l).Average(s => s.Rate) == null ? 1 : scores.Where(w => w.TargetName == l).Average(s => s.Score),
                               AssignedScore = scores.Where(w => w.TargetName == l).Average(s => s.Score) == null ? 0 : scores.Where(w => w.TargetName == l).Average(s => s.Score),
                               SalesPerformanceInWeeks = wd.Select(s => new _SalesPerformanceInWeek
                               {
-                                  //FaxOutCount = calls.Where(c => c.Member != null && c.Member.Name == l).GroupBy(c=>c.LeadID).Select(g=>g.FirstOrDefault()).Count(c=>c.CreatedDate >= s && c.CreatedDate < EntityFunctions.AddDays(s, 7)),
                                   FaxOutCount = calls.Where(w => w.Member != null && w.Member.Name == l).OrderBy(o => o.CallDate).GroupBy(c => c.LeadID).Select(ss => ss.FirstOrDefault()).Count(c => c.CreatedDate >= s && c.CreatedDate < EntityFunctions.AddDays(s, 7)),
                                   DealsCount = deals.Count(c => c.SignDate >= s && c.SignDate < EntityFunctions.AddDays(s, 7)),
                                   StartDate = s,
