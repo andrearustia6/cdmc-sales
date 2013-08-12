@@ -102,7 +102,7 @@
     .Width(520).Height(250).Draggable(true).Modal(true).Visible(false))
 <script type="text/javascript">
     function onAccountInfo(accountid) {
-        $.post('EmployeeRole/GetAccountInfo', { id: accountid }, function (result) {
+        $.post('GetAccountInfo', { id: accountid }, function (result) {
             $('.AccountInfo-wrapper').html(result);
             var window = $('#AccountInfo').data('tWindow');
             window.center().open();
@@ -110,7 +110,7 @@
     }
 
     function onSetRole(accountid) {
-        $.post('EmployeeRole/GetSetRole', { id: accountid }, function (result) {
+        $.post('GetSetRole', { id: accountid }, function (result) {
             $('.SetRole-wrapper').html(result);
             var window = $('#SetRole').data('tWindow');
             window.center().open();
@@ -130,7 +130,7 @@
     function OkAccountInfo() {
         if ($('.AccountInfo-wrapper form').valid()) {
             var query = $('.AccountInfo-wrapper form').serializeArray();
-            $.post('EmployeeRole/AccountInfo', query, function (result) {
+            $.post('AccountInfo', query, function (result) {
                 if (result == "") {
                     $('#AccountInfo').data('tWindow').close();
 
@@ -147,7 +147,7 @@
     function OkSetRole() {
         if ($('.SetRole-wrapper form').valid()) {
             var query = $('.SetRole-wrapper form').serializeArray();
-            $.post('EmployeeRole/SetRole', query, function (result) {
+            $.post('SetRole', query, function (result) {
                 if (result == "") {
                     $('#SetRole').data('tWindow').close();
                     $('#errorSetRole').text('')
@@ -163,7 +163,7 @@
     function OkAddAccount() {
         if ($('.AddAccount-wrapper form').valid()) {
             var query = $('.AddAccount-wrapper form').serializeArray();
-            $.post('EmployeeRole/AddAccount', query, function (result) {
+            $.post('AddAccount', query, function (result) {
                 if (result == "") {
                     $('#AddAccount').data('tWindow').close();
                     $('.AddAccount-wrapper input').val('');
@@ -180,7 +180,7 @@
     function OkChangePassword() {
         if ($('.ChangePassword-wrapper form').valid()) {
             var query = $('.ChangePassword-wrapper form').serializeArray();
-            $.post('EmployeeRole/ChangePassword', query, function (result) {
+            $.post('ChangePassword', query, function (result) {
                 if (result == "") {
                     $('#ChangePassword').data('tWindow').close();
                     $('.ChangePassword-wrapper input').val('');
