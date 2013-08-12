@@ -16,7 +16,7 @@
         <p id="errorAddAccount" style="color: #FF0000">
         </p>
         <table style="padding: 10px; margin: 10px">
-            <tr style="height: 40px">
+            <tr style="height: 30px">
                 <td>
                     @Html.LabelFor(m => m.UserName)
                 </td>
@@ -32,7 +32,22 @@
                     @Html.ValidationMessageFor(m => m.Password)
                 </td>
             </tr>
-            <tr style="height: 40px">
+            <tr style="height: 30px">
+                <td>
+                    中文名称
+                </td>
+                <td>
+                    @Html.TextBox("AccountNameCN", "", new { style = "width:150px" })<br />
+                </td>
+                <td>
+                    @Html.LabelFor(m => m.ConfirmPassword)
+                </td>
+                <td>
+                    @Html.PasswordFor(m => m.ConfirmPassword, new { style = "width:150px" })<br />
+                    @Html.ValidationMessageFor(m => m.ConfirmPassword)
+                </td>
+            </tr>
+            <tr style="height: 30px">
                 <td>
                     @Html.LabelFor(m => m.Email)
                 </td>
@@ -41,11 +56,8 @@
                     @Html.ValidationMessageFor(m => m.Email)
                 </td>
                 <td>
-                    @Html.LabelFor(m => m.ConfirmPassword)
                 </td>
                 <td>
-                    @Html.PasswordFor(m => m.ConfirmPassword, new { style = "width:150px" })<br />
-                    @Html.ValidationMessageFor(m => m.ConfirmPassword)
                 </td>
             </tr>
         </table>

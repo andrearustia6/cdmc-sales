@@ -181,13 +181,19 @@ namespace Sales.Controllers
 
         [HttpPost]
         [ManagerRequired]
-        public ActionResult AddAccount(UserInfoModel model)
+        public ActionResult AddAccount(UserInfoModel model, string AccountNameCN)
         {
             if (model.UserName.Trim().Contains(" "))
             {
                 ModelState.AddModelError("UserName", "帐号中间不可以有空格.");
                 return Json("帐号中间不可以有空格");
             }
+            if (string.IsNullOrWhiteSpace(AccountNameCN))
+            {
+                ModelState.AddModelError("UserName", "中文名称不能为空.");
+                return Json("中文名称不能为空");
+            }
+
             if (ModelState.IsValid)
             {
                 MembershipCreateStatus createStatus;
@@ -204,7 +210,7 @@ namespace Sales.Controllers
                     {
                         AccountName = model.UserName,
                         Email = model.Email,
-                        AccountNameCN = "-",
+                        AccountNameCN = AccountNameCN,
                         IsActivated = false
                     };
                     CH.Create<EmployeeRole>(emprole);
