@@ -69,11 +69,10 @@
                         <font>邮编：</font><span id="currentZipCodeString" class="datainfo">@Model.ZipCode</span>
                     </dd>
                  }
+                 
             </dl>
-            <br />
-            <br />
-            <dl >
-            @if (!string.IsNullOrWhiteSpace(Model.Desc) || !string.IsNullOrWhiteSpace(Model.Customers) || !string.IsNullOrWhiteSpace(Model.Competitor) || !string.IsNullOrWhiteSpace(Model.PitchedPoint))
+            
+            @*@if (!string.IsNullOrWhiteSpace(Model.Desc) || !string.IsNullOrWhiteSpace(Model.Customers) || !string.IsNullOrWhiteSpace(Model.Competitor) || !string.IsNullOrWhiteSpace(Model.PitchedPoint))
              {
                 {Html.Telerik().PanelBar()
                 .Name("PanelBarIndex")
@@ -90,7 +89,7 @@
                             <font>公司介绍：</font><span id="currentDesc" class="datainfo">@Model.Desc</span>
                             </dd>
                         }
-                        @*@if (!string.IsNullOrWhiteSpace(Model.Customers))
+                        @if (!string.IsNullOrWhiteSpace(Model.Customers))
                         {
                             <dd>
                             <font>公司主要客户：</font><span id="currentCustomers" class="datainfo">@Model.Customers</span>
@@ -107,14 +106,13 @@
                             <dd>
                             <font>电话pitch点：</font><span id="currentPitchedPoint" class="datainfo">@Model.PitchedPoint</span>
                             </dd>
-                        }*@
+                        }
                         </text>)
                         .Expanded(false);
                 })
                 .Render();
                 }
-            }
-            </dl>
+            }*@
             @if (Model.AjaxDeals != null && Model.AjaxDeals.Count() > 0)
             {
                     <br />
