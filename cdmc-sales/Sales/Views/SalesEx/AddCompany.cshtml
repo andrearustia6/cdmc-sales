@@ -137,6 +137,13 @@
                     @Html.TextBoxFor(model => model.Address_EN, new { @style = "width:370px" })
                 </td>
             </tr>
+            <tr>
+                <td colspan="4">
+                        @Html.LabelFor(model => model.Desc)
+
+                        @Html.TextAreaFor(model => model.Desc)
+                </td>
+            </tr>
            @* <tr>
                 <td colspan="4">
                    @{Html.Telerik().PanelBar()

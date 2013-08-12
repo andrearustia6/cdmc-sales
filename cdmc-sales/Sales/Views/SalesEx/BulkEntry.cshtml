@@ -81,6 +81,12 @@
                 @Html.DropDownListFor(model => model.ProgressId, SelectHelper.ProgressSelectList(null), "请选择")
             </td>
         </tr>
+        <tr>
+                <td colspan="4">
+                @Html.LabelFor(model => model.Description)
+                        @Html.TextAreaFor(model => model.Description)
+                </td>
+            </tr>
         @*<tr>
             <td colspan="4">
 
