@@ -294,6 +294,7 @@
     <Compile Include="Model\ViewModels.cs" />
     <Compile Include="Model\_Deal.cs" />
     <Compile Include="Model\_EmployeePerformance.cs" />
+    <Compile Include="Model\_Maturity.cs" />
     <Compile Include="Model\_MonthDuration.cs" />
     <Compile Include="Model\_Reports.cs" />
     <Compile Include="Model\_Research.cs" />
