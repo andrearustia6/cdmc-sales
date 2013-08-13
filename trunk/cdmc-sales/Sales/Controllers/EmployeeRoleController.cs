@@ -239,7 +239,7 @@ namespace Sales.Controllers
             if (ModelState.IsValid)
             {
                 var s = CH.GetDataById<EmployeeRole>(model.ID);
-                s.AccountNameCN = model.AccountNameCN;
+                //s.AccountNameCN = model.AccountNameCN;
                 s.AgentNum = model.AgentNum;
                 s.Gender = model.Gender;
                 s.Email = model.Email;

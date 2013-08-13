@@ -24,8 +24,9 @@
                         @Html.LabelFor(model => model.AccountNameCN)
                     </td>
                     <td>
-                        @Html.TextBoxFor(model => model.AccountNameCN, new { style = "width:150px" })<br />
-                        @Html.ValidationMessageFor(model => model.AccountNameCN)
+                        @Html.DisplayFor(model => model.AccountNameCN)
+                        @* @Html.TextBoxFor(model => model.AccountNameCN, new { style = "width:150px" })<br />
+                        @Html.ValidationMessageFor(model => model.AccountNameCN)*@
                     </td>
                 </tr>
                 <tr>
@@ -92,6 +93,8 @@
                     </td>
                     <td style="width: 160px">
                         @Html.DisplayFor(model => model.AccountNameCN)
+                        @*  @Html.TextBoxFor(model => model.AccountNameCN, new { style = "width:150px" })<br />
+                        @Html.ValidationMessageFor(model => model.AccountNameCN)*@
                     </td>
                 </tr>
                 <tr>
