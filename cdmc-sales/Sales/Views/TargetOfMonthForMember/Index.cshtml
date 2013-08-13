@@ -2,8 +2,7 @@
 @model List<TargetOfMonthForMember>
 @Html.Partial("contenttitle", "个人月目标")
 @Html.Partial("multipleprojectselector")
-@(Html.Telerik().Grid<TargetOfMonthForMember>(Model).Name("TargetOfMonthForMember").ToolBar(commands => commands.Custom().Text("个人月目标创建").Action("Create", "TargetOfMonthForMember"))
-                .DataKeys(keys =>
+@(Html.Telerik().Grid<TargetOfMonthForMember>(Model).Name("TargetOfMonthForMember").DataKeys(keys =>
                 {
                     keys.Add(s => s.ID);
                 })
