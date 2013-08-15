@@ -42,7 +42,7 @@
                             }
                         }
         </td>
-        <td><span>当月入账总额：@Model.CheckIn</span></td>
+        <td><span>当月入账总额：@{if((Model.CheckIn != null) && (Model.CheckIn.ToString() != "")) { <text>@Model.CheckIn</text> } else { <text>0.0</text> } }</span></td>
         <td><span>目标完成百分比：@Model.CompletePercent</span></td>
     </tr>
     <tr>
