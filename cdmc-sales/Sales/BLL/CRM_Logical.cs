@@ -428,10 +428,11 @@ namespace BLL
                 var leads = CH.DB.Projects.Where(w => w.IsActived == true && !string.IsNullOrEmpty(w.TeamLeader)).Select(s => s.TeamLeader).Distinct();
                 leads = leads.Where(w => w == user);
 
-                var deals = CRM_Logical.GetDeals().Where(w => w.ActualPaymentDate.Value != null && w.ActualPaymentDate.Value.Month == month);
+                var year = DateTime.Now.Year;
+                //var deals = CRM_Logical.GetDeals().Where(w => w.ActualPaymentDate.Value != null && w.ActualPaymentDate.Value.Month == month );
+                var deals = CRM_Logical.GetDeals().Where(w => w.ActualPaymentDate.Value != null && w.ActualPaymentDate.Value.Month == month && w.ActualPaymentDate.Value.Year == year);
                 var calls = from l in CH.DB.LeadCalls.Where(w => w.LeadCallTypeID != null && w.LeadCallType.Code >= 40) select l;
                 var leadadds = from l in CH.DB.Leads select l;
-                var year = DateTime.Now.Year;
                 var rates = from r in CH.DB.AssignPerformanceRates.Where(w => w.Month == month && w.Year == year) select r;
                 var scores = from r in CH.DB.AssignPerformanceScores.Where(w => w.Month == month && w.Year == year) select r;
                 var wd = MonthDuration.GetMonthInstance(month).WeekDurations.Select(s => s.StartDate);
@@ -479,7 +480,8 @@ namespace BLL
                 IQueryable<string> sales = null;
                 sales = CH.DB.Members.Where(w => w.IsActivated == true && w.Project.IsActived == true && w.Name == user).Select(s => s.Name).Distinct();
 
-                var deals = CRM_Logical.GetDeals();
+                //var deals = CRM_Logical.GetDeals();
+                var deals = CRM_Logical.GetDeals(false, null, user, null);
                 var calls = from l in CH.DB.LeadCalls.Where(w => w.LeadCallTypeID != null && w.LeadCallType.Code >= 40) select l;
                 var leadadds = from l in CH.DB.Leads select l;
                 var rates = from r in CH.DB.AssignPerformanceRates.Where(w => w.Month == month && w.Year == DateTime.Now.Year) select r;
@@ -489,7 +491,7 @@ namespace BLL
                           select new _SalesPerformance()
                           {
                               Target = CH.DB.TargetOfMonthForMembers.Where(t => t.Member.Name == l && t.StartDate.Month == month && t.Project.IsActived == true).Sum(s => s.CheckIn),
-                              CheckIn = deals.Where(w => w.ActualPaymentDate.Value != null && w.ActualPaymentDate.Value.Month == month).Sum(s => s.Income),
+                              CheckIn = deals.Where(w => w.ActualPaymentDate.Value != null && w.ActualPaymentDate.Value.Month == month && w.ActualPaymentDate.Value.Year == DateTime.Now.Year).Sum(s => s.Income),
                               Name = l,
                               Rate = rates.Where(w => w.TargetName == l).Average(s => s.Rate) == null ? 1 : scores.Where(w => w.TargetName == l).Average(s => s.Score),
                               AssignedScore = scores.Where(w => w.TargetName == l).Average(s => s.Score) == null ? 0 : scores.Where(w => w.TargetName == l).Average(s => s.Score),
