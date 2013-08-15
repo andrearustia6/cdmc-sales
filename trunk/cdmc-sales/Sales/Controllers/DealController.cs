@@ -89,7 +89,7 @@ namespace Sales.Controllers
                          PackageNameCH = d.Package.Name_CH,
                          PackageNameEN = d.Package.Name_EN,
                          Payment = d.Payment,
-                         Currency= d.Currencytype.Name,
+                         Currency = d.Currencytype.Name,
                          PaymentDetail = d.PaymentDetail,
                          Sales = d.Sales,
                          ProjectCode = d.Project.ProjectCode,
@@ -264,7 +264,7 @@ namespace Sales.Controllers
                              PackageNameCH = d.Package.Name_CH,
                              PackageNameEN = d.Package.Name_EN,
                              Payment = d.Payment,
-                             Currency=d.Currencytype.Name,
+                             Currency = d.Currencytype.Name,
                              PaymentDetail = d.PaymentDetail,
                              Sales = d.Sales,
                              ProjectCode = d.Project.ProjectCode,
@@ -406,7 +406,7 @@ namespace Sales.Controllers
 
                             s.ProjectID = Convert.ToInt32(Session["ProjectID"].ToString());
                             s.DealID = Convert.ToInt32(Session["DealID"].ToString());
-                           
+
 
                             //s.ProjectID = p.ProjectID;
                             //s.DealID = p.DealID;
@@ -489,7 +489,7 @@ namespace Sales.Controllers
                 PackageNameCH = d.Package.Name_CH,
                 PackageNameEN = d.Package.Name_EN,
                 Payment = d.Payment,
-                Currency=d.Currencytype.Name,
+                Currency = d.Currencytype.Name,
                 PaymentDetail = d.PaymentDetail,
                 Sales = d.Sales,
                 ProjectCode = d.Project.ProjectCode,
@@ -515,13 +515,16 @@ namespace Sales.Controllers
             else
             {
                 var item = CH.GetDataById<Deal>(newData.ID);
-                item.IsConfirm = true;
-                item.Confirmor = Employee.CurrentUserName;
-                //item.Income = newData.Income;
-                //item.ActualPaymentDate = newData.ActualPaymentDate;
-                item.Abandoned = newData.Abandoned;
-                item.AbandonReason = newData.AbandonReason;
-                CH.Edit<Deal>(item);
+                if (item.IsConfirm != true)
+                {
+                    item.IsConfirm = true;
+                    item.Confirmor = Employee.CurrentUserName;
+                    //item.Income = newData.Income;
+                    //item.ActualPaymentDate = newData.ActualPaymentDate;
+                    item.Abandoned = newData.Abandoned;
+                    item.AbandonReason = newData.AbandonReason;
+                    CH.Edit<Deal>(item);
+                }
             }
             return Json(new { dealName = newData.DealCode });
         }
