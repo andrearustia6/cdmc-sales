@@ -9,17 +9,38 @@ namespace Sales.Model
     {
         public string Name{get;set;}
         public string PitchPoint {get;set;}
+        public int? CRMID { get; set; }
     }
-
+    public class _LeadCall
+    {
+        public string LeadName { get; set; }
+        public string LeadTitle { get; set; }
+        public string CallResult { get; set; }
+        public string CallType { get; set; }
+    }
 
     public class _Lead 
     {
         public string Name { get; set; }
         public string Title { get; set; }
         public string Department { get; set; }
+        public string LastCallType { get; set; }
     }
+
+    public class _Comment
+    {
+        public string Person { get; set; }
+        public string Content { get; set; }
+        public DateTime SetDate { get; set; }
+        public int? CRMID { get; set; }
+    }
+   
      public class _CRM
     {
+         public bool CoreCompany { get; set; }
+         //点评，回应，通过
+         public string CrmCommentState { get; set; }
+         public bool _CoreCompany { get; set; }
          public string CompanyName{get;set;}
          public int LeadCount {get;set;}
          public int ContectedLeadCount{get;set;}
@@ -35,7 +56,8 @@ namespace Sales.Model
          public IQueryable<_Category> _Categorys { get; set; }
          public string Description { get; set; }
          public string PitchPoint { get; set; }
-         public IQueryable<AjaxLead> _Leads { get; set; }
+         public IQueryable<_Lead> _Leads { get; set; }
+         public IQueryable<_Comment> _Comments { get; set; }
      }
     public class _Maturity
     {

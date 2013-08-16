@@ -230,11 +230,15 @@ namespace Entity
         [Display(Name = "显示名")]
         public string DisplayName { get { return Name + ": " + Details; } }
 
-        [Display(Name = "Category详细")]
+        [Display(Name = "Pitch 点")]
         public string Details { get; set; }
+
+
+      
 
         public virtual List<CompanyRelationship> CompanyRelationships { get; set; }
     }
+
 
     [JsonIgnoreAttribute("Deals", "Project", "Categorys", "LeadCalls", "Members")]
     public class CompanyRelationship : EntityBase
