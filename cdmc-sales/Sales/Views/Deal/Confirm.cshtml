@@ -243,8 +243,10 @@
         </table>
     </fieldset>
     <fieldset>
-        <legend>参会人信息列表</legend>
-        @(Html.Telerik().Grid<AjaxParticipant>().Name("pList").BindTo(ViewData["pList"] as IEnumerable<AjaxParticipant>)
+        @if (Model.IsConfirm == "否")
+        {
+            <legend>参会人信息列表</legend>
+            @(Html.Telerik().Grid<AjaxParticipant>().Name("pList").BindTo(ViewData["pList"] as IEnumerable<AjaxParticipant>)
             .DataKeys(keys =>
             {
                 keys.Add(s => s.ID);
@@ -272,6 +274,39 @@
                     .Update("_UpdateAjaxParticipant", "Deal");
             })
             .Editable(editing => editing.Mode(GridEditMode.InCell).DefaultDataItem(new AjaxParticipant { })).Scrollable(scrolling => scrolling.Height(90)))
+        }
+        else
+        {
+            <legend>参会人信息列表</legend>
+            @(Html.Telerik().Grid<AjaxParticipant>().Name("pList").BindTo(ViewData["pList"] as IEnumerable<AjaxParticipant>)
+            .DataKeys(keys =>
+            {
+                keys.Add(s => s.ID);
+            })
+            .ToolBar(commands =>
+            {
+                commands.SubmitChanges();
+            })
+            .Columns(c =>
+            {
+                c.Bound(p => p.Name).Title("客户名称").Width(100);
+                c.Bound(p => p.Title).Title("客户职位").Width(100);
+                c.Bound(p => p.Gender).Title("客户性别").Width(80);
+                c.Bound(p => p.Mobile).Title("移动电话").Width(100);
+                c.Bound(p => p.Contact).Title("客户直线").Width(100);
+                c.Bound(p => p.Email).Title("电子邮箱").Width(120);
+                c.Bound(p => p.ParticipantTypeName).Title("参会类型").Width(100);
+
+            })
+            .DataBinding(dataBinding =>
+            {
+                dataBinding.Ajax()
+                    .Select("_SelectAjaxParticipant", "Deal", new { id = Model.ID })
+                    .Update("_UpdateAjaxParticipant", "Deal");
+            })
+            .Editable(editing => editing.Mode(GridEditMode.InCell).DefaultDataItem(new AjaxParticipant { })).Scrollable(scrolling => scrolling.Height(90)))
+        }
+        }
     </fieldset>
     <fieldset>
         @if (Model.IsConfirm == "否")
