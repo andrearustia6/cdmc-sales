@@ -51,11 +51,64 @@ namespace BLL
                             DelegateMoreCommission = pre.DelegateMoreCommission,
                             SponsorCommission = pre.SponsorCommission,
                             SponsorRate = pre.SponsorRate,
-                            TotalCommission=pre.TotalCommission
+                            TotalCommission=pre.TotalCommission,
+                            DelegateIncome=pre.DelegateIncome,
+                            DelegateRate=pre.DelegateRate,
+                            DelegateCommission=pre.DelegateCommission
                         };
                 return ps;
             }
+            public static IEnumerable<_FinalCommission> GetFinalCommission(int? projectid,string sale)
+            {
+                var lps = from f in CH.DB.FinalCommissions select f;
+                if (projectid != null)
+                    lps = lps.Where(l => l.ProjectID == projectid);
+                if(!string.IsNullOrWhiteSpace(sale))
+                    lps = lps.Where(l => l.TargetNameEN == sale);
+                var ps = from pre in lps
+                         join p in CH.DB.Projects on pre.ProjectID equals p.ID
+                         select new _FinalCommission
+                         {
+                             CommID = pre.CommID,
+                             ID = pre.ID,
+                             ProjectID = pre.ProjectID,
+                             ProjectName = p.ProjectCode,
+                             Income = pre.Income,
+                             TargetNameEN = pre.TargetNameEN,
+                             TargetNameCN = pre.TargetNameCN,
+                             InOut = pre.InOut,
+                             DelegateLessIncome = pre.DelegateLessIncome,
+                             DelegateMoreCount = pre.DelegateMoreCount,
+                             DelegateMoreIncome = pre.DelegateMoreIncome,
+                             SponsorIncome = pre.SponsorIncome == null ? 0 : pre.SponsorIncome.Value,
+                             Commission = pre.Commission,
+                             CommissionA=pre.Commission,
+                             CommissionRate = pre.CommissionRate,
+                             Tax = pre.Tax,
+                             Bonus = pre.Bonus,
+                             ReturnIncome = pre.ReturnIncome,
+                             ReturnReason = pre.ReturnReason,
+                             ActualCommission = pre.ActualCommission,
+                             DelegateLessRate = pre.DelegateLessRate,
+                             DelegateLessCommission = pre.DelegateLessCommission,
+                             DelegateLessPayed=pre.DelegateLessPayed,
+                             DelegateMoreRate = pre.DelegateMoreRate,
+                             DelegateMoreCommission = pre.DelegateMoreCommission,
+                             DelegateMorePayed=pre.DelegateMorePayed,
+                             SponsorCommission = pre.SponsorCommission,
+                             SponsorPayed=pre.SponsorPayed,
+                             SponsorRate = pre.SponsorRate,
+                             TotalCommission = pre.TotalCommission,
+                             CommissionPayed=pre.CommissionPayed,
+                             ManageCommission=pre.ManageCommission,
+                             DelegateIncome=pre.DelegateIncome,
+                             DelegateRate=pre.DelegateRate,
+                             DelegateCommission=pre.DelegateCommission,
+                             DelegatePayed=pre.DelegatePayed
 
+                         };
+                return ps;
+            }
             public static IEnumerable<_CommissionProjects> GetProjects(int month, string sale = "")
             {
                 var year = DateTime.Now.Year;
@@ -104,7 +157,6 @@ namespace BLL
                     var name = CH.GetDataById<Role>(roleid).Name;
                     if (name.Contains("国内"))
                         inout = "国内";
-
                 }
                 decimal standard = 3000;
                 var lps = new _PreCommission()
@@ -116,17 +168,20 @@ namespace BLL
                     TargetNameEN = sale,
                     TargetNameCN = displayname,
                     InOut = inout,
-                    DelegateLessIncome = deals.Where(w => w.Poll > 0 && w.Income / w.Poll < standard).Sum(s => (decimal?)s.Income),
-                    DelegateMoreCount = deals.Where(w => w.Poll > 0 && w.Income / w.Poll > standard).Sum(s => (int?)s.Poll),
-                    DelegateMoreIncome = deals.Where(w => w.Poll > 0 && w.Income / w.Poll >= standard).Sum(s => (decimal?)s.Income),
-                    SponsorIncome = deals.Where(w => w.Poll == 0).Sum(s => (decimal?)s.Income)
+                    DelegateLessIncome = inout == "海外" ? 0 :deals.Where(w => w.Poll > 0 && w.Income / w.Poll < standard).Sum(s => (decimal?)s.Income),
+                    DelegateMoreCount = inout ==  "海外" ? 0 : deals.Where(w => w.Poll > 0 && w.Income / w.Poll > standard).Sum(s => (int?)s.Poll),
+                    DelegateMoreIncome = inout == "海外" ? 0 : deals.Where(w => w.Poll > 0 && w.Income / w.Poll >= standard).Sum(s => (decimal?)s.Income),
+                    SponsorIncome = deals.Where(w => w.Poll == 0).Sum(s => (decimal?)s.Income),
+                    DelegateIncome = inout == "海外" ? deals.Where(w => w.Poll > 0).Sum(s => (decimal?)s.Income) : 0
                 };
                 return lps;
             }
 
             public static IEnumerable<_CommissionSales> GetSalesDDL(int month)
             {
-                var mems = CH.DB.Members.Where(w => w.IsActivated == true && w.Project.IsActived == true).Select(w=>w.Name).Distinct();
+                var year = DateTime.Now.Year;
+                
+                var mems = CH.DB.Members.Where(w => w.IsActivated == true && w.Project.IsActived == true ).Select(w=>w.Name).Distinct();
                 var ret = from p in mems
                             select new _CommissionSales
                             {
@@ -134,8 +189,76 @@ namespace BLL
                                 sales = p
                             };
                 return ret;
-                
+            }
+            public static IEnumerable<_CommissionSales> GetSalesByProDDL(int projectid)
+            {
+                List<SelectListItem> selectList = new List<SelectListItem>();
+                var mems = CH.DB.Members.Where(w => w.IsActivated == true && w.Project.IsActived == true && w.ProjectID==projectid).Select(w => w.Name).Distinct();
+                var ret = from p in mems
+                          select new _CommissionSales
+                          {
+                              salesid = p,
+                              sales = p
+                          };
+                return ret;
+            }
+            public static IEnumerable<SelectListItem> GetProjectsDDL()
+            {
+                List<SelectListItem> selectList = new List<SelectListItem>();
+                var projects = CH.DB.Projects.Where(w => w.IsActived == true );
+                var ret = from p in projects
+                          select new _CommissionProjects
+                          {
+                              ID = p.ID,
+                              ProjectCode = p.ProjectCode
+                          };
+                foreach (var r in ret)
+                {
+                    SelectListItem selectListItem = new SelectListItem() { Text = r.ProjectCode, Value = r.ID.ToString() };
+                    selectList.Add(selectListItem);
+                }
+                return selectList;
+            }
 
+            public static _FinalCommission GetPreCommByProSales(int projectid, string sale)
+            {
+                var year = DateTime.Now.Year;
+                var deals = from d in CH.DB.Deals.Where(o => o.ProjectID == projectid && o.Abandoned == false && o.Income > 0 && o.Sales == sale)
+                            select d;
+                var precommissions = from pre in CH.DB.PreCommissions.Where(p=>p.ProjectID==projectid && p.TargetNameEN==sale)
+                                         select pre;
+                var username = sale;
+                var emps = CH.DB.EmployeeRoles.Where(w => w.AccountName == username);
+                var displayname = emps.Select(s => s.AccountNameCN).FirstOrDefault();
+                var roleid = emps.Select(s => s.RoleID).FirstOrDefault();
+                string inout = "海外";
+                if (roleid != null)
+                {
+                    var name = CH.GetDataById<Role>(roleid).Name;
+                    if (name.Contains("国内"))
+                        inout = "国内";
+
+                }
+                decimal standard = 3000;
+                var lps = new _FinalCommission()
+                {
+                    RoleLevel = 1,
+                    ID = 0,
+                    Income = deals.Sum(s => (decimal?)s.Income),
+                    TargetNameEN = sale,
+                    TargetNameCN = displayname,
+                    InOut = inout,
+                    DelegateLessIncome = inout == "海外" ? 0 : deals.Where(w => w.Poll > 0 && w.Income / w.Poll < standard).Sum(s => (decimal?)s.Income),
+                    DelegateLessPayed=precommissions.Sum(w=>(decimal?)w.DelegateLessCommission),
+                    DelegateMoreCount = inout == "海外" ? 0 : deals.Where(w => w.Poll > 0 && w.Income / w.Poll > standard).Sum(s => (int?)s.Poll),
+                    DelegateMoreIncome = inout == "海外" ? 0 : deals.Where(w => w.Poll > 0 && w.Income / w.Poll >= standard).Sum(s => (decimal?)s.Income),
+                    DelegateMorePayed = precommissions.Sum(w => (decimal?)w.DelegateMoreCommission),
+                    SponsorIncome = deals.Where(w => w.Poll == 0).Sum(s => (decimal?)s.Income),
+                    SponsorPayed = precommissions.Sum(w => (decimal?)w.SponsorCommission),
+                    DelegateIncome = inout == "海外" ? deals.Where(w => w.Poll > 0).Sum(s => (int?)s.Income) : 0,
+                    DelegatePayed = precommissions.Sum(w => (decimal?)w.DelegateCommission)
+                };
+                return lps;
             }
         }
     }

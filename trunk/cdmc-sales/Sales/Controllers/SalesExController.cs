@@ -584,6 +584,7 @@ namespace Sales.Controllers
             companyRelationship.Company.AreaID = quickEntry.IndustryId;
             companyRelationship.Company.CompanyTypeID = quickEntry.TypeId;
             companyRelationship.Company.Contact = string.IsNullOrEmpty(quickEntry.Phone) ? "" : quickEntry.Phone.Trim();
+            companyRelationship.Company.Description = string.IsNullOrEmpty(quickEntry.Desc) ? "" : quickEntry.Desc.Trim();
             companyRelationship.Company.DistrictNumberID = quickEntry.DistrictNumberId;
             companyRelationship.Company.Name_CH = string.IsNullOrEmpty(quickEntry.Name_CN) ? "" : quickEntry.Name_CN.Trim();
             companyRelationship.Company.Name_EN = string.IsNullOrEmpty(quickEntry.Name_EN) ? "" : quickEntry.Name_EN.Trim();
@@ -601,6 +602,7 @@ namespace Sales.Controllers
             companyRelationship.CreatedDate = DateTime.Now;
             companyRelationship.ModifiedDate = DateTime.Now;
             companyRelationship.PitchedPoint = string.IsNullOrEmpty(quickEntry.PitchedPoint) ? "" : quickEntry.PitchedPoint.Trim();
+            companyRelationship.Description = string.IsNullOrEmpty(quickEntry.Desc) ? "" : quickEntry.Desc.Trim();
             if (quickEntry.Categories != null)
             {
                 companyRelationship.Categorys = CH.GetAllData<Category>(c => quickEntry.Categories.Contains(c.ID)).ToList();

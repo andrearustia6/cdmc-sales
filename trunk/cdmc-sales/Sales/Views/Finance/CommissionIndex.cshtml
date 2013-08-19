@@ -1,8 +1,13 @@
 ﻿@using Sales.Model
 @using Entity
-@model List<_PreCommission>
+@model List<_FinalCommission>
 @{
     ViewBag.Title = "Index";
+    List<SelectListItem> lists = new List<SelectListItem>();
+    var listitem = new SelectListItem();
+    listitem.Value = "";
+    listitem.Text = "请选择";
+    lists.Add(listitem);
 }
 <script>
     var TargetNameEN = "";
@@ -10,36 +15,25 @@
     var ProjectID = "";
     var StartDate = "";
     var EndDate = "";
-    var InOut = "";
+    var projectidparam = "";
+    var saleparam = "";
+    var inout = "";
 </script>
 <fieldset>
-    <legend>月份</legend>
-    @{
-        using (Html.BeginForm())
-        {
-            var m = ViewBag.Month as int?;
-            m = m == null ? DateTime.Now.Month : m;
-        @Html.DropDownList("month", new SelectList(new List<int>() { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 }, m), new { onchange = "this.form.submit();" })
-           @* if (Utl.Employee.CurrentRole.Level >= SuperManagerRequired.LVL || Utl.Employee.CurrentRole.Level == PoliticsInterfaceRequired.LVL)
-            {
-        <button value="export" id="export" type="submit" name="btnExport" onclick="this.form.submit();"
-            style="margin-left: 20px">
-            导出</button>
-            }*@
-
-        }
-    }
+    <legend>筛选条件</legend>
+    <div id="filter-container" style="height: 30px;">
+     项目 @Html.DropDownList("projects", BLL.Finance_Logical._PreCommissionBLL.GetProjectsDDL(), "请选择")
+    目标 @Html.DropDownList("sales", lists)
+     <button type="submit" onclick="filterChange()" style="margin: 2px 2px 2px 15px; ">
+            筛选</button>
+    </div>
+   
 </fieldset>
-@{
-    var month = ViewBag.Month as int?;
-    var query = ViewBag.fuzzyInput as string;
-    var rolelvl = ViewBag.RoleLevel as int?;
-}
 @{ 
     
     <fieldset>
-        <legend>销售提成预发表</legend>
-        @(Html.Telerik().Grid<_PreCommission>(Model).Name("PreCommission")
+        <legend>销售提成结算表</legend>
+        @(Html.Telerik().Grid<_FinalCommission>(Model).Name("Commission")
             .ToolBar(commands => commands.Insert().ImageHtmlAttributes(new { style = "margin-left:0" }))
             .DataKeys(keys =>
             {
@@ -47,26 +41,22 @@
             })
             .DataBinding(dataBinding =>
             {
-                dataBinding.Ajax().Select("PrecommissionIndex", "Finance", new { month = month })
-                    .Update("Save", "Finance")
-                    .Insert("Insert", "Finance")
-                    .Delete("Delete","Finance");
+                dataBinding.Ajax().Select("_CommissionIndex", "Finance")
+                    .Update("SaveCommission", "Finance")
+                    .Insert("InsertCommission", "Finance")
+                    .Delete("DeleteCommission", "Finance");
             })
         .Columns(columns =>
         {
             columns.Bound(p => p.CommID).Width(70).HtmlAttributes(new { style = "text-align:left" });
-            columns.Bound(p => p.InOut).Width(40).HtmlAttributes(new { style = "text-align:left" });
             columns.Bound(p => p.TargetNameEN).Width(50).HtmlAttributes(new { style = "text-align:left" });
             columns.Bound(p => p.TargetNameCN).Width(50).HtmlAttributes(new { style = "text-align:left" });
-            columns.Bound(p => p.StartDate).Width(60).HtmlAttributes(new { style = "text-align:left" }).Format("{0:d}");
-            columns.Bound(p => p.EndDate).Width(60).HtmlAttributes(new { style = "text-align:left" }).Format("{0:d}");
             columns.Bound(p => p.ProjectName).Width(50).HtmlAttributes(new { style = "text-align:right" });
             columns.Bound(p => p.Income).Width(80).HtmlAttributes(new { style = "text-align:right" }).Format("{0:c}");
             columns.Bound(p => p.Commission).Width(50).HtmlAttributes(new { style = "text-align:right" }).Format("{0:c}");
             columns.Bound(p => p.Tax).Width(50).HtmlAttributes(new { style = "text-align:right" }).Format("{0:c}");
             columns.Bound(p => p.Bonus).Width(50).HtmlAttributes(new { style = "text-align:right" }).Format("{0:c}");
             columns.Bound(p => p.TotalCommission).Width(60).HtmlAttributes(new { style = "text-align:right" }).Format("{0:c}");
-            columns.Bound(p => p.ReturnIncome).Width(60).HtmlAttributes(new { style = "text-align:right" }).Format("{0:c}");
             columns.Bound(p => p.ActualCommission).Width(60).HtmlAttributes(new { style = "text-align:right" }).Format("{0:c}");
             columns.Command(commands =>
             {
@@ -74,9 +64,10 @@
                 commands.Delete().ButtonType(GridButtonType.Text);
             }).Title("编辑").Width(100);
         })
-         .Editable(editing => editing.Mode(GridEditMode.PopUp).TemplateName("PreCommissionEdit"))
+         .Editable(editing => editing.Mode(GridEditMode.PopUp).TemplateName("CommissionEdit"))
                  .ClientEvents(events => events.OnEdit("ChangePopup"))
                                  .ClientEvents(events => events.OnCommand("SetParams").OnComplete("onComplete"))
+                                          .ClientEvents(events => events.OnDataBinding("dataBinding"))
                   .Pageable(p => p.Style(GridPagerStyles.Status).PageOnScroll(true)
                .PageSize(25)).Scrollable(scrolling => scrolling.Height(350)).Sortable().Resizable(r => r.Columns(true))
                            )
@@ -86,7 +77,7 @@
 <script>
     function onComplete(e) {
         if (e.name == "delete") {
-            $("#PreCommission").data("tGrid").rebind();
+            $("#Commission").data("tGrid").rebind();
         }
     }
     function ChangePopup(e) {
@@ -103,7 +94,7 @@
             ProjectID = e.dataItem.ProjectID;
             StartDate = e.dataItem.StartDate;
             EndDate = e.dataItem.EndDate;
-            InOut = e.dataItem.InOut;
+            inout = e.dataItem.InOut;
         }
         else if (e.name == "add") {
             TargetNameEN = "";
@@ -111,8 +102,46 @@
             ProjectID = "";
             StartDate = "";
             EndDate = "";
-            InOut = "";
+            inout = "";
+            projectidparam = $("#projects").val();
+            saleparam = $("#sales").val();
         }
     }
-    
+    $(function () {
+        $("#projects").change(function () {
+
+            var projectid = $("#projects").find("option:selected").val();
+            if (projectid == "") {
+                $("#sales").empty();
+                $("#sales").append("<option value='" + "" + "'>" + "请选择" + "</option>");
+                return;
+            }
+            $.ajax({
+                url: "/Finance/GetSalesByProject",
+                type: "post",
+                dataType: "json",
+                data: { projectid: projectid },
+                error: function (a, b, c) {
+                    alert("获取数据失败，请重试。");
+                },
+                success: function (result) {
+                    $("#sales").empty();
+                    $("#sales").append("<option value='" + "" + "'>" + "请选择" + "</option>");
+                    for (var i = 0; i < result.length; i++) {
+                        $("#sales").append("<option value='" + result[i].salesid + "'>" + result[i].sales + "</option>");
+                    }
+                }
+            });
+
+        });
+    });
+
+    function filterChange() {
+        $("#Commission").data("tGrid").rebind();
+    }
+    function dataBinding(e) {
+        var projectid = $("#projects").val();
+        var sale = $("#sales").val();
+        e.data = $.extend(e.data, { projectid: projectid, sale: sale});
+    }
 </script>

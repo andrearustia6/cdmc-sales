@@ -841,6 +841,27 @@ namespace Sales.Model
         public decimal? SponsorCommission { get; set; }
 
 
+        [Display(Name = "Delegate入账金额")]
+        [DisplayFormat(DataFormatString = "{0:#,###.00}")]
+        public decimal? DelegateIncome { get; set; }
+        public string DelegateIncomeStr
+        {
+            get
+            {
+                if (DelegateIncome == null)
+                    DelegateIncome = 0;
+                return DelegateIncome.Value.ToString("#,##0.00");
+            }
+        }
+
+        [Display(Name = "Delegate提成率")]
+        public double? DelegateRate { get; set; }
+
+        [Display(Name = "Delegate提成额")]
+        public decimal? DelegateCommission { get; set; }
+
+
+
         [Display(Name = "入账总额")]
         [DisplayFormat(DataFormatString = "{0:#,###.00}", ApplyFormatInEditMode = true)]
         public decimal? Income { get; set; }
@@ -888,6 +909,224 @@ namespace Sales.Model
     {
         public string salesid { get; set; }
         public string sales { get; set; }
+    }
+
+    public class _FinalCommission
+    {
+        [Key]
+        public int ID { get; set; }
+        [Display(Name = "提成单号")]
+        public string CommID { get; set; }
+        [ScaffoldColumn(false)]
+        public int RoleLevel { get; set; }
+
+        [Display(Name = "中文名")]
+        public string TargetNameCN { get; set; }
+
+        [Display(Name = "英文名")]
+        [Required]
+        [Remote("CheckUniqueForFinalComm", "Finance", AdditionalFields = "ProjectID,TargetNameEN,ID", ErrorMessage = "提成结算已经存在")]//ActionName,Controller,错误信息
+        public string TargetNameEN { get; set; }
+        [Display(Name = "国内外")]
+        public string InOut { get; set; }
+        [Display(Name = "项目")]
+        [Required]
+        public int? ProjectID { get; set; }
+
+        [Display(Name = "项目")]
+        public string ProjectName { get; set; }
+
+        [Display(Name = "小于3000入账金额")]
+        [DisplayFormat(DataFormatString = "{0:#,###.00}", ApplyFormatInEditMode = true)]
+        public decimal? DelegateLessIncome { get; set; }
+        public string DelegateLessIncomeStr
+        {
+            get
+            {
+                if (DelegateLessIncome == null)
+                    DelegateLessIncome = 0;
+                return DelegateLessIncome.Value.ToString("#,##0.00");
+            }
+        }
+
+        [Display(Name = "小于3000提成率")]
+        public double? DelegateLessRate { get; set; }
+        [Display(Name = "小于3000提成额")]
+        public decimal? DelegateLessCommission { get; set; }
+        [Display(Name = "小于3000已发放额")]
+        public decimal? DelegateLessPayed { get; set; }
+
+        [Display(Name = "小于3000结算额")]
+        public decimal? RealDelegateLessComm {
+            get
+            {
+                if (DelegateLessCommission == null)
+                    DelegateLessCommission = 0;
+                if (DelegateLessPayed == null)
+                    DelegateLessPayed = 0;
+                return DelegateLessCommission - DelegateLessPayed;
+            }
+        }
+
+        [Display(Name = "大于3000参会人数")]
+        public int? DelegateMoreCount { get; set; }
+        [Display(Name = "大于3000入账金额")]
+        [DisplayFormat(DataFormatString = "{0:#,###.00}", ApplyFormatInEditMode = true)]
+        public decimal? DelegateMoreIncome { get; set; }
+        public string DelegateMoreIncomeStr
+        {
+            get
+            {
+                if (DelegateMoreIncome == null)
+                    DelegateMoreIncome = 0;
+                return DelegateMoreIncome.Value.ToString("#,##0.00");
+            }
+        }
+
+        [Display(Name = "大于3000提成率")]
+        public double? DelegateMoreRate { get; set; }
+        [Display(Name = "大于3000提成额")]
+        public decimal? DelegateMoreCommission { get; set; }
+        [Display(Name = "大于3000已发放额")]
+        public decimal? DelegateMorePayed { get; set; }
+        [Display(Name = "大于3000结算额")]
+        public decimal? RealDelegateMoreComm {
+            get
+            {
+                if(DelegateMoreCommission==null)
+                    DelegateMoreCommission=0;
+                if(DelegateMorePayed==null)
+                    DelegateMorePayed=0;
+                return DelegateMoreCommission - DelegateMorePayed;
+            }
+        }
+
+        [Display(Name = "Sponsor入账金额")]
+        [DisplayFormat(DataFormatString = "{0:#,###.00}")]
+        public decimal? SponsorIncome { get; set; }
+        public string SponsorIncomeStr
+        {
+            get
+            {
+                if (SponsorIncome == null)
+                    SponsorIncome = 0;
+                return SponsorIncome.Value.ToString("#,##0.00");
+            }
+        }
+
+        [Display(Name = "Sponsor提成率")]
+        public double? SponsorRate { get; set; }
+
+        [Display(Name = "Sponsor提成额")]
+        public decimal? SponsorCommission { get; set; }
+        [Display(Name = "Sponsor已发放额")]
+        public decimal? SponsorPayed { get; set; }
+        [Display(Name = "Sponsor结算额")]
+        public decimal? RealSponsorComm {
+            get
+            {
+                if (SponsorCommission == null)
+                    SponsorCommission = 0;
+                if (SponsorPayed == null)
+                    SponsorPayed = 0;
+                return SponsorCommission - SponsorPayed;
+            }
+        }
+
+
+
+        [Display(Name = "Delegate入账金额")]
+        [DisplayFormat(DataFormatString = "{0:#,###.00}")]
+        public decimal? DelegateIncome { get; set; }
+        public string DelegateIncomeStr
+        {
+            get
+            {
+                if (DelegateIncome == null)
+                    DelegateIncome = 0;
+                return DelegateIncome.Value.ToString("#,##0.00");
+            }
+        }
+
+        [Display(Name = "Delegate提成率")]
+        public double? DelegateRate { get; set; }
+
+        [Display(Name = "Delegate提成额")]
+        public decimal? DelegateCommission { get; set; }
+        [Display(Name = "Delegate已发放额")]
+        public decimal? DelegatePayed { get; set; }
+        [Display(Name = "Delegate结算额")]
+        public decimal? RealDelegateComm
+        {
+            get
+            {
+                if (DelegateCommission == null)
+                    DelegateCommission = 0;
+                if (DelegatePayed == null)
+                    DelegatePayed = 0;
+                return DelegateCommission - DelegatePayed;
+            }
+        }
+
+
+        [Display(Name = "入账总额")]
+        [DisplayFormat(DataFormatString = "{0:#,##0}", ApplyFormatInEditMode = true)]
+        public decimal? Income { get; set; }
+        public string IncomeStr
+        {
+            get
+            {
+                if (Income == null)
+                    Income = 0;
+                return Income.Value.ToString("#,##0");
+            }
+        }
+        [Display(Name = "冲销金额")]
+        public decimal? ReturnIncome { get; set; }
+
+        [Display(Name = "冲销原因")]
+        public string ReturnReason { get; set; }
+
+        [Display(Name = "提成比率")]
+        public double? CommissionRate { get; set; }
+
+        [Display(Name = "提成总额")]
+        public decimal? Commission { get; set; }
+
+        [Display(Name = "提成总额")]
+        public decimal? CommissionA { get; set; }
+
+        [Display(Name = "已发总额")]
+        public decimal? CommissionPayed { get; set; }
+
+        [Display(Name = "结算总额")]
+        public decimal? TotalCommission { get; set; }
+
+        [Display(Name = "管理提成")]
+        public decimal? ManageCommission { get; set; }
+
+        [Display(Name = "扣税")]
+        public decimal? Tax { get; set; }
+
+        [Display(Name = "扣奖金")]
+        public decimal? Bonus { get; set; }
+        
+        [Display(Name = "实际结算额")]
+        public decimal? ActualCommission { get; set; }
+        
+
+    }
+    public class _CommissionDeals
+    {
+        public string DealCode { get; set; }
+        public decimal? Income { get; set; }
+        [Display(Name = "合约付款日期")]
+        public DateTime ExpectedPaymentDate { get; set; }
+        [Display(Name = "实际付款日期")]
+        public DateTime? ActualPaymentDate { get; set; }
+        [Display(Name = "签约日期")]
+        public DateTime? SignDate { get; set; }
+        
     }
     /// <summary>
     /// 用于考核人打分的下拉框
