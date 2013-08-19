@@ -6,10 +6,11 @@
 @{
     ViewBag.Title = "我的主页";
 }
-
-<center><h2>我的主页</h2></center>
+<center>
+    <h2>
+        我的主页</h2>
+</center>
 @Html.Partial("personinfo", Employee.CurrentUserName)
-
 @{  
     using (Html.BeginForm())
     {
@@ -19,23 +20,22 @@
         if (Employee.CurrentRole.Level == 10)
         {
             var single = CRM_Logical._EmployeePerformance.GetSingleSalesPerformance(month.Value);
-            if (single == null){ single = new Sales.Model._SalesPerformance();}
-        <text>@Html.Partial("SalesDashboard", single, new ViewDataDictionary {{ "month", month }});</text>
+            if (single == null) { single = new Sales.Model._SalesPerformance(); }
+    <text>@Html.Partial("SalesDashboard", single, new ViewDataDictionary { { "month", month } });</text>
         }
         else
         {
             var single = CRM_Logical._EmployeePerformance.GetSingleTemaLeadsPerformance(month.Value);
-            if (single == null) {single = new Sales.Model._TeamLeadPerformance();}
-        <text>@Html.Partial("TeamLeaderDashboard", single, new ViewDataDictionary {{ "month", month }});</text>
+            if (single == null) { single = new Sales.Model._TeamLeadPerformance(); }
+    <text>@Html.Partial("TeamLeaderDashboard", single, new ViewDataDictionary { { "month", month } });</text>
         }
     }
 }
-
 <fieldset>
-<legend>待打电话安排列表</legend>
-@{
-    if (Model != null)
-    {
+    <legend>待打电话安排列表</legend>
+    @{
+        if (Model != null)
+        {
         
         @(Html.Telerik().Grid(BLL.CRM_Logical._LeadCall.GetUserCallBackSince7DayBefore()).Name("ToCall").DataKeys(keys =>
         {
@@ -50,45 +50,45 @@
                 c.Bound(item => item.Lead.Contact).Width(100);
                 c.Bound(item => item.Lead.Mobile).Width(100);
                 c.Bound(item => item.Lead.Company.DistrictNumber.TimeDifference).Template(@<text>
-                @{
-                    if (item.Lead.SubCompanyID == null)
-                    {
-                        if (item.Lead.Company.DistrictNumber != null)
-                        {
-                        <p>@item.Lead.Company.DistrictNumber.TimeDifference</p>
-                        }
-                    }
-                    else
-                    {
-                        if (item.Lead.SubCompany.DistrictNumber != null)
-                        {
-                        <p>@item.Lead.SubCompany.DistrictNumber.TimeDifference</p>
-                        }
-                    }
+        @{
+            if (item.Lead.SubCompanyID == null)
+            {
+                if (item.Lead.Company.DistrictNumber != null)
+                {
+            <p>@item.Lead.Company.DistrictNumber.TimeDifference</p>
                 }
-                </text>);
+            }
+            else
+            {
+                if (item.Lead.SubCompany.DistrictNumber != null)
+                {
+            <p>@item.Lead.SubCompany.DistrictNumber.TimeDifference</p>
+                }
+            }
+        }
+        </text>);
                 c.Bound(item => item.CallBackDate).Template(@<text>@item.GetAvailabeTime()</text>).Width(100);
                 c.Bound(item => item.Result);
-                c.Bound(item => item.ID).Title("操作").Width(90).Template(@<span> <a  href=@Url.Content("~/Sales/AddLeadCall/?crid=" + item.CompanyRelationshipID + "&leadid=" + item.LeadID) >添加新通话</a> 
-                    </span>);
+                @*c.Bound(item => item.ID).Title("操作").Width(90).Template(@<span> <a  href=@Url.Content("~/Sales/AddLeadCall/?crid=" + item.CompanyRelationshipID + "&leadid=" + item.LeadID) >添加新通话</a> 
+                    </span>);*@
             })
             .Resizable(resizing => resizing.Columns(true))
             .Filterable().Sortable().Groupable()
             .Pageable(p => p.PageSize(20))
             .Scrollable(scrolling => scrolling.Height(300)))
         
+        }
     }
-  }
 </fieldset>
 <fieldset>
-<legend>未付款出单列表</legend>
-@{
-    //var user = Employee.CurrentUserName;
-    //var projects = CRM_Logical.GetSalesInvolveProject();
-    //var deals = CH.GetAllData<Deal>(d => projects.Any(p => p.ID == d.CompanyRelationship.ProjectID));
-    //deals = deals.FindAll(d => d.Sales == user && d.IsClosed == false && d.Abandoned == false);
+    <legend>未付款出单列表</legend>
+    @{
+            //var user = Employee.CurrentUserName;
+            //var projects = CRM_Logical.GetSalesInvolveProject();
+            //var deals = CH.GetAllData<Deal>(d => projects.Any(p => p.ID == d.CompanyRelationship.ProjectID));
+            //deals = deals.FindAll(d => d.Sales == user && d.IsClosed == false && d.Abandoned == false);
     
-    @(Html.Telerik().Grid<Deal>(CRM_Logical._Deal.GetUserUnClosedDeal()).Name("Deal")
+        @(Html.Telerik().Grid<Deal>(CRM_Logical._Deal.GetUserUnClosedDeal()).Name("Deal")
             .DataKeys(keys =>
             {
                 keys.Add(s => s.ID);
@@ -98,19 +98,23 @@
                 c.Bound(item => item.CompanyRelationship.Company.Name).Title("客户名称").Width(150);
                 c.Bound(item => item.Package.Name).Title("Package名称").Width(150);
                 c.Bound(item => item.Payment).Width(100).Format("{0:c}").Aggregate(aggregates => aggregates.Sum()).FooterTemplate(@<text>@if (item.Sum != null)
-                                                                                                                                         {<p>应收款: @item.Sum.Format("{0:c}")</p>}</text>).GroupFooterTemplate(@<text>@if (item.Sum != null)
-                                                                                                                                                                                                                    {<p>应收款: @item.Sum.Format("{0:c}")</p>}</text>).Width(100);
+                                                                                                                                         {<p>应收款:
+                    @item.Sum.Format("{0:c}")</p>}</text>).GroupFooterTemplate(@<text>@if (item.Sum != null)
+                                                                                      {<p>应收款:
+                        @item.Sum.Format("{0:c}")</p>}</text>).Width(100);
                 c.Bound(item => item.Income).Width(90).Format("{0:c}").Aggregate(aggregates => aggregates.Sum()).FooterTemplate(@<text>@if (item.Sum != null)
-                                                                                                                                       {<p>实收款: @item.Sum.Format("{0:c}")</p>}</text>).GroupFooterTemplate(@<text>@if (item.Sum != null)
-                                                                                                                                                                                                                  {<p>实收款: @item.Sum.Format("{0:c}")</p>}</text>).Width(100); ;
+                                                                                                                                       {<p>实收款:
+                    @item.Sum.Format("{0:c}")</p>}</text>).GroupFooterTemplate(@<text>@if (item.Sum != null)
+                                                                                      {<p>实收款:
+                        @item.Sum.Format("{0:c}")</p>}</text>).Width(100); ;
                 c.Bound(item => item.ExpectedPaymentDate).Format("{0:d}").Width(90);
                 c.Bound(item => item.Committer);
                 c.Bound(item => item.CommitterContect);
                 c.Bound(item => item.CommitterEmail);
                 c.Bound(item => item.CompanyRelationship.Project.ProjectCode).Width(100);
-                c.Bound(item => item.ID).Title("操作").Template(@<span>
-                <a href=@Url.Content("~/sales/EditDeal/?id=" + item.ID + "&projectid=" + item.CompanyRelationship.ProjectID) >编辑</a> | <a href=@Url.Content("~/sales/DisplayDeal/?id=" + item.ID + "&projectid=" + item.CompanyRelationship.ProjectID)>详细</a>  
-                </span>);
+                c.Bound(item => item.ID).Title("操作").Template(@<span> <a href=@Url.Content("~/sales/EditDeal/?id=" + item.ID + "&projectid=" + item.CompanyRelationship.ProjectID) >
+                    编辑</a> | <a href=@Url.Content("~/sales/DisplayDeal/?id=" + item.ID + "&projectid=" + item.CompanyRelationship.ProjectID)>
+                        详细</a> </span>);
             })
             .Resizable(resizing => resizing.Columns(true))
             .Filterable().Sortable().Groupable()
@@ -118,7 +122,7 @@
             .Scrollable(scrolling => scrolling.Height(250))
 
 )
-}
+    }
 </fieldset>
 @*<fieldset>
 <legend>24小时内Call List统计</legend>
@@ -165,14 +169,12 @@
 
 </div>
 </fieldset>*@
-
-
 <fieldset>
-<legend>所在项目</legend>
-<div>
-@if (Model != null)
-{
-@(Html.Telerik().TabStrip().Name("TabStrip").SelectedIndex(ViewBag.TabIndex == null ? 0 : (int)ViewBag.TabIndex).Items(items =>
+    <legend>所在项目</legend>
+    <div>
+        @if (Model != null)
+        {
+            @(Html.Telerik().TabStrip().Name("TabStrip").SelectedIndex(ViewBag.TabIndex == null ? 0 : (int)ViewBag.TabIndex).Items(items =>
 {
     foreach (var child in Model)
     {
@@ -180,10 +182,12 @@
         items.Add().Text(child.ProjectCode).Content(@<text>@Html.Partial("projectinfo", temp)</text>);
     }
 }))
-}
-</div>
+        }
+    </div>
 </fieldset>
-
 <style type="text/css">
- .calltable{ width:100%;}
+    .calltable
+    {
+        width: 100%;
+    }
 </style>
