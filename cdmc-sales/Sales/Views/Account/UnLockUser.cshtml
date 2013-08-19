@@ -1,0 +1,16 @@
+﻿@{
+    ViewBag.Title = "用户解锁";
+}
+@model string
+@using(Html.BeginForm())
+{
+<center>
+<div style="padding:5px;">
+   <span>输入用户名：<input type="text" name="username" /></span>
+       
+         <span>@Model</span>
+</div>
+
+<input type="submit"  value="提交"/>
+</center>
+}

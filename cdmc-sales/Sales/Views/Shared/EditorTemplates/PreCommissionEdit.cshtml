@@ -7,7 +7,7 @@
     .t-edit-form-container
     {
          width: 1100px;
-        height:400px;
+        height:480px;
         margin: 1em;
         text-align: right;
     }
@@ -15,8 +15,29 @@
    {
        text-align:left;
    }
+   .t-widget.t-numerictextbox
+   {
+       width:70px;
+   }
 </style>
 <script>
+//    $.validator.setDefaults({
+//        //光标移出时
+//        onfocusout: function (element) {
+//            this.element(element);
+//        },
+
+//        //光标移入时
+//        onfocusin: function (element, event) {
+//            //仅针对jquery.validate
+//            var errorElement = this.errorsFor(element);
+//            if (errorElement) {
+//                errorElement.remove();
+//            }
+//        },
+//        onkeyup: function (element, event) {
+//        }
+//    });
     function strTodate(strr) {
         strr1 = strr.split(' ');
         datestr = strr1[0];
@@ -60,11 +81,30 @@
         $("#startdate2").html(dateTostr(StartDate));
         $("#enddate1").hide();
         $("#enddate2").html(dateTostr(EndDate));
+        if (InOut == "国内") {
+            $("#Delegatetr").hide();
+            $("#DelegateLesstr").show();
+            $("#DelegateMoretr").show();
+            $("#Sponsortr").show();
+        }
+        else {
+            $("#DelegateLesstr").hide();
+            $("#DelegateMoretr").hide();
+            $("#Delegatetr").show();
+            $("#Sponsortr").show();
+        }
     }
     else {
         $("#DelegateLessRate").val(5);
         $("#DelegateMoreRate").val(15);
         $("#SponsorRate").val(5);
+        $("#DelegateRate").val(5);
+
+        $("#DelegateLesstr").hide();
+        $("#DelegateMoretr").hide();
+        $("#Sponsortr").hide();
+        $("#Delegatetr").hide();
+
     }
 </script>
 <script type="text/javascript">
@@ -72,6 +112,7 @@
     function OnChange(e) {
         if ($("#StartDate").val() == "")
             return;
+        jQuery('.field-validation-error').html('');
         var StartDate = strTodate($("#StartDate").val());
         var DateB = new Date(StartDate.getFullYear(), StartDate.getMonth() + 1, 0); //当月的最后一天
         yy = DateB.getFullYear();
@@ -125,12 +166,14 @@
         var DelegateLessCommission = $("#DelegateLessIncome").val() * $("#DelegateLessRate").val() / 100;
         var DelegateMoreCommission = ($("#DelegateMoreIncome").val() - $("#DelegateMoreCount").val()*3000) * $("#DelegateMoreRate").val() / 100;
         var SponsorCommission = $("#SponsorIncome").val() * $("#SponsorRate").val() / 100;
+        var DelegateCommission = $("#DelegateIncome").val() * $("#DelegateRate").val() / 100;
 
         $("#DelegateLessCommission").val(DelegateLessCommission.toFixed(0));
         $("#DelegateMoreCommission").val(DelegateMoreCommission.toFixed(0));
         $("#SponsorCommission").val(SponsorCommission.toFixed(0));
+        $("#DelegateCommission").val(DelegateCommission.toFixed(0));
 
-        $("#Commission").val((DelegateLessCommission + DelegateMoreCommission + SponsorCommission).toFixed(0));
+        $("#Commission").val((DelegateLessCommission + DelegateMoreCommission + SponsorCommission + DelegateCommission).toFixed(0));
         var commission = $("#Commission").val();
         var bonus = $("#Bonus").val();
         var tax = $("#Tax").val();
@@ -141,36 +184,55 @@
     }
     
    function setvalue(result) {
-        if (result.TargetNameEN != "") {
+       if (result.TargetNameEN != "") {
+           
             $("#TargetNameCN").val(result.TargetNameCN);
             $("#InOut").val(result.InOut);
 
             $("#DelegateLessIncomeStr").val(result.DelegateLessIncomeStr);
             $("#DelegateMoreIncomeStr").val(result.DelegateMoreIncomeStr);
             $("#SponsorIncomeStr").val(result.SponsorIncomeStr);
+            $("#DelegateIncomeStr").val(result.DelegateIncomeStr);
             $("#IncomeStr").val(result.IncomeStr);
 
             $("#DelegateLessIncome").val(result.DelegateLessIncome == null ? 0 : result.DelegateLessIncome);
             $("#DelegateMoreCount").val(result.DelegateMoreCount == null ? 0 : result.DelegateMoreCount);
             $("#DelegateMoreIncome").val(result.DelegateMoreIncome == null ? 0 : result.DelegateMoreIncome);
             $("#SponsorIncome").val(result.SponsorIncome == null ? 0 : result.SponsorIncome);
+            $("#DelegateIncome").val(result.DelegateIncome == null ? 0 : result.DelegateIncome);
             $("#Income").val(result.Income == null ? 0 : result.Income);
 
             $("#DelegateLessRate").val(5);
             $("#DelegateMoreRate").val(15);
             $("#SponsorRate").val(5);
+            $("#DelegateRate").val(5);
 
             var DelegateLessCommission = result.DelegateLessIncome == null ? 0 : result.DelegateLessIncome * 0.05;
             var DelegateMoreCommission = result.DelegateMoreIncome == null ? 0 : (result.DelegateMoreIncome - result.DelegateMoreCount*3000)  * 0.15;
             var SponsorCommission = result.SponsorIncome == null ? 0 : result.SponsorIncome * 0.05;
+            var DelegateCommission = result.DelegateIncome == null ? 0 : result.DelegateIncome * 0.05;
 
             $("#DelegateLessCommission").val(DelegateLessCommission.toFixed(0));
             $("#DelegateMoreCommission").val(DelegateMoreCommission.toFixed(0));
             $("#SponsorCommission").val(SponsorCommission.toFixed(0));
+            $("#DelegateCommission").val(DelegateCommission.toFixed(0));
 
-            $("#Commission").val((DelegateLessCommission + DelegateMoreCommission + SponsorCommission).toFixed(0));
+            $("#Commission").val((DelegateLessCommission + DelegateMoreCommission + SponsorCommission + DelegateCommission).toFixed(0));
             $("#TotalCommission").val($("#Commission").val());
             $("#ActualCommission").val($("#Commission").val());
+
+            if (result.InOut == "国内") {
+                $("#Delegatetr").hide();
+                $("#DelegateLesstr").show();
+                $("#DelegateMoretr").show();
+                $("#Sponsortr").show();
+            }
+            else {
+                $("#DelegateLesstr").hide();
+                $("#DelegateMoretr").hide();
+                $("#Delegatetr").show();
+                $("#Sponsortr").show();
+            }
         }
         else
             alert("没有获取到入账数据。");
@@ -182,14 +244,15 @@
 @Html.HiddenFor(model => model.DelegateLessIncome)
 @Html.HiddenFor(model => model.DelegateMoreIncome)
 @Html.HiddenFor(model => model.SponsorIncome)
+@Html.HiddenFor(model => model.DelegateIncome)
 @Html.HiddenFor(model => model.Income)
 <legend  style="text-align:left">提成预发表</legend>
    <table style="width:100%" >
     <tr>
-        <td  style="width:20%">
+        <td  style="width:15%">
             开始时间
         </td>
-        <td  style="width:5%">
+        <td  style="width:10%">
             <div id="startdate1">
                 @Html.Telerik().DatePickerFor(model => model.StartDate).ClientEvents(e => e.OnChange("OnChange"))
                 @Html.ValidationMessageFor(model => model.StartDate)
@@ -197,10 +260,10 @@
             <div id="startdate2">
             </div>
         </td>
-        <td  style="width:20%">
+        <td  style="width:15%">
             结束时间
         </td>
-        <td  style="width:5%">
+        <td  style="width:10%">
             <div id="enddate1">
                 @Html.Telerik().DatePickerFor(model => model.EndDate)
                 @Html.ValidationMessageFor(model => model.EndDate)
@@ -208,18 +271,18 @@
             <div id="enddate2">
             </div>
         </td>
-        <td  style="width:20%">
+        <td  style="width:15%">
             英文名
         </td>
-        <td  style="width:5%">
+        <td  style="width:10%">
             @Html.DropDownListFor(model => model.TargetNameEN, new SelectList(new List<string>() { "请选择" }))
             @Html.ValidationMessageFor(model => model.TargetNameEN)
             <div id="salediv"></div>
         </td>
-        <td  style="width:20%">
+        <td  style="width:15%">
             中文名
         </td>
-        <td  style="width:5%">
+        <td  style="width:10%">
              @Html.TextBoxFor(model => model.TargetNameCN, new { READONLY = "readonly", style = "border:none;" })
         </td>
     </tr>
@@ -242,18 +305,18 @@
             @Html.TextBoxFor(model => model.InOut, new { READONLY = "readonly", style = "border:none;" })
         </td>
     </tr>
-    <tr>
+    <tr id="DelegateLesstr">
         <td >
             @Html.LabelFor(model => model.DelegateLessIncome)
         </td>
         <td >
-            ￥@Html.TextBoxFor(model => model.DelegateLessIncomeStr, new { READONLY = "readonly", style = "border:none;width:50%" })
+            ￥@Html.TextBoxFor(model => model.DelegateLessIncomeStr, new { READONLY = "readonly", style = "border:none;width:80%" })
         </td>
         <td >
          @Html.LabelFor(model => model.DelegateLessRate)
         </td>
         <td >
-        @Html.TextBoxFor(model => model.DelegateLessRate)
+        @Html.TextBoxFor(model => model.DelegateLessRate, new { style = "width:50%" })
         </td>
         <td colspan="2">
         </td>
@@ -261,23 +324,23 @@
             @Html.LabelFor(model => model.DelegateLessCommission)
         </td>
         <td  >
-            ￥@Html.TextBoxFor(model => model.DelegateLessCommission, new { READONLY = "readonly", style = "border:none;width:50%" }) 
+            ￥@Html.TextBoxFor(model => model.DelegateLessCommission, new { READONLY = "readonly", style = "border:none;width:80%" }) 
         </td>
         
     </tr>
-    <tr>
+    <tr id="DelegateMoretr">
        
         <td >
         @Html.LabelFor(model => model.DelegateMoreIncome)
         </td>
         <td>
-        ￥@Html.TextBoxFor(model => model.DelegateMoreIncomeStr, new { READONLY = "readonly", style = "border:none;width:50%" })
+        ￥@Html.TextBoxFor(model => model.DelegateMoreIncomeStr, new { READONLY = "readonly", style = "border:none;width:80%" })
         </td>
         <td >
             @Html.LabelFor(model => model.DelegateMoreRate)
         </td>
         <td>
-            @Html.TextBoxFor(model => model.DelegateMoreRate)
+            @Html.TextBoxFor(model => model.DelegateMoreRate, new { style = "width:50%" })
         </td>
         <td>
             大于3000人数
@@ -289,24 +352,24 @@
             @Html.LabelFor(model => model.DelegateMoreCommission)
         </td>
         <td>
-            ￥@Html.TextBoxFor(model => model.DelegateMoreCommission, new { READONLY = "readonly", style = "border:none;width:50%" }) 
+            ￥@Html.TextBoxFor(model => model.DelegateMoreCommission, new { READONLY = "readonly", style = "border:none;width:80%" }) 
         </td>
          
         
     </tr>
-    <tr>
+    <tr id="Sponsortr">
         <td >
             @Html.LabelFor(model => model.SponsorIncome)
         </td>
         <td >
         
-            ￥@Html.TextBoxFor(model => model.SponsorIncomeStr, new { READONLY = "readonly", style = "border:none;width:50%" })
+            ￥@Html.TextBoxFor(model => model.SponsorIncomeStr, new { READONLY = "readonly", style = "border:none;width:80%" })
         </td>
         <td >
          @Html.LabelFor(model => model.SponsorRate)
         </td>
         <td >
-        @Html.TextBoxFor(model => model.SponsorRate)
+        @Html.TextBoxFor(model => model.SponsorRate, new { style = "width:50%" })
         </td>
         <td   colspan="2">
         </td>
@@ -314,7 +377,31 @@
             @Html.LabelFor(model => model.SponsorCommission)
         </td>
         <td  >
-           ￥@Html.TextBoxFor(model => model.SponsorCommission, new { READONLY = "readonly", style = "border:none;width:50%" }) 
+           ￥@Html.TextBoxFor(model => model.SponsorCommission, new { READONLY = "readonly", style = "border:none;width:80%" }) 
+        </td>
+        
+    </tr>
+    <tr id="Delegatetr">
+        <td >
+            @Html.LabelFor(model => model.DelegateIncome)
+        </td>
+        <td >
+        
+            ￥@Html.TextBoxFor(model => model.DelegateIncomeStr, new { READONLY = "readonly", style = "border:none;width:80%" })
+        </td>
+        <td >
+         @Html.LabelFor(model => model.DelegateRate)
+        </td>
+        <td >
+        @Html.TextBoxFor(model => model.DelegateRate, new { style = "width:50%" })
+        </td>
+        <td   colspan="2">
+        </td>
+        <td   >
+            @Html.LabelFor(model => model.DelegateCommission)
+        </td>
+        <td  >
+           ￥@Html.TextBoxFor(model => model.DelegateCommission, new { READONLY = "readonly", style = "border:none;width:80%" }) 
         </td>
         
     </tr>
@@ -323,13 +410,13 @@
          @Html.LabelFor(model => model.Income)
         </td>
         <td colspan="5" >
-        ￥@Html.TextBoxFor(model => model.IncomeStr, new { READONLY = "readonly", style = "border:none;width:50%" })
+        ￥@Html.TextBoxFor(model => model.IncomeStr, new { READONLY = "readonly", style = "border:none;width:80%" })
         </td>
         <td>
             @Html.LabelFor(model => model.Commission)
         </td>
         <td >
-        ￥@Html.TextBoxFor(model => model.Commission, new { READONLY = "readonly", style = "border:none;width:50%" }) 
+        ￥@Html.TextBoxFor(model => model.Commission, new { READONLY = "readonly", style = "border:none;width:80%" }) 
         </td>
         
     </tr>
@@ -338,13 +425,13 @@
          @Html.LabelFor(model => model.Tax)
         </td>
         <td>
-        @Html.Telerik().CurrencyTextBoxFor(model => model.Tax).ClientEvents(e => e.OnChange("OnTaxChange"))
+        @Html.Telerik().CurrencyTextBoxFor(model => model.Tax).ClientEvents(e => e.OnChange("OnTaxChange")).InputHtmlAttributes(new { style = "width:100%" })
         </td>
         <td>
             @Html.LabelFor(model => model.Bonus)
         </td>
         <td>
-            @Html.Telerik().CurrencyTextBoxFor(model => model.Bonus).ClientEvents(e => e.OnChange("OnBonusChange"))
+            @Html.Telerik().CurrencyTextBoxFor(model => model.Bonus).ClientEvents(e => e.OnChange("OnBonusChange")).InputHtmlAttributes(new { style = "width:100%" })
         </td>
         
         <td >
@@ -362,7 +449,12 @@
     </tr>
     <tr>
     <td colspan="8" style="color:Red">
-    每月提成预发总额 = sponsor出单总额* 提成率(5%)+delegate人均三千以下出单总额*提成率(5%) +(delegate人均3000以上出单总额-3000*人数)*大于3000提成率(15%)
+    国内每月提成预发总额 = sponsor出单总额* 提成率(5%)+delegate人均三千以下出单总额*提成率(5%) +(delegate人均3000以上出单总额-3000*人数)*大于3000提成率(15%)
+    </td>
+    </tr>
+    <tr>
+    <td colspan="8" style="color:Red">
+    国外每月提成预发总额 = sponsor出单总额* 提成率(5%)+delegate出单总额*提成率(5%)
     </td>
     </tr>
 </table>
@@ -396,6 +488,12 @@
     $(function () {
         $("#TargetNameEN").change(function () {
             var sale = $("#TargetNameEN").find("option:selected").val();
+            jQuery('.field-validation-error').html('');
+//            if (jQuery('.field-validation-error').is(":hidden"))
+//                jQuery('span').hide(".field-validation-error");
+//            else
+//                jQuery('span').show(".field-validation-error");
+
             if ($("#StartDate").val() == "") {
                 alert("请选择开始时间");
                 $("#TargetNameEN option[text='请选择']").attr("selected", true);
@@ -445,6 +543,8 @@
                 return;
             }
             var projectid = $("#ProjectID").find("option:selected").val();
+            if (projectid == "")
+                return;
             if ($("#StartDate").val() == "") {
                 alert("请选择开始时间");
                 $("#TargetNameEN option[text='请选择']").attr("selected", true);
@@ -461,7 +561,7 @@
                     alert("获取数据失败，请重试。");
                 },
                 success: function (result) {
-                    
+
                     setvalue(result);
                 }
             });
@@ -475,6 +575,9 @@
             calc();
         });
         $("#SponsorRate").change(function () {
+            calc();
+        });
+        $("#DelegateRate").change(function () {
             calc();
         });
     });

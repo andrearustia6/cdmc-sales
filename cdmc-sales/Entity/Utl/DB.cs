@@ -63,6 +63,7 @@ namespace Utl
         public DbSet<ManagerScore> ManagerScores { get; set; }
         public DbSet<EmployeeRole> EmployeeRoles { get; set; }
         public DbSet<PreCommission> PreCommissions { get; set; }
+        public DbSet<FinalCommission> FinalCommissions { get; set; }
         public DB(string connection = null)
         {
 

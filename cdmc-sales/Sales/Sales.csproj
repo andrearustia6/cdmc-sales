@@ -1719,6 +1719,8 @@
     <Content Include="Views\EmployeeRole\SetRoleWindow.cshtml" />
     <Content Include="Views\EmployeeRole\ChangePasswordWindow.cshtml" />
     <Content Include="Views\EmployeeRole\AddAccountWindow.cshtml" />
+    <Content Include="Views\Finance\CommissionIndex.cshtml" />
+    <Content Include="Views\Account\UnLockUser.cshtml" />
     <None Include="Views\SalesEx\EditCompany.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\SimulatorConfig.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\AjaxTargetOfMonthForMember.cshtml" />
@@ -1750,6 +1752,7 @@
     <Content Include="Views\Shared\EditorTemplates\PreCommissionEdit.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\_LeadResearchDetail.cshtml" />
     <Content Include="Views\SalesEx\EmailPage.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\CommissionEdit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\TargetOfMonthForMember\Confirm.cshtml" />

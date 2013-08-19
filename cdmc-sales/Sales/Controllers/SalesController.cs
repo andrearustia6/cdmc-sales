@@ -1691,5 +1691,43 @@ namespace Sales.Controllers
             return PartialView(single);
         }
 
+        //public JsonResult GetUserCallBackSince7DayBefore(int? projectid)
+        //{
+        //    var sevendaybefore = DateTime.Now.AddDays(-7);
+        //    var user = Employee.CurrentUserName;
+        //    var calls = from c in CH.DB.LeadCalls
+        //                where c.Member.Name == user && c.CallBackDate >= sevendaybefore
+        //                select c;
+        //    if (projectid != null)
+        //        calls = calls.Where(c => c.ProjectID == projectid);
+        //    var rets= from cs in calls
+        //              select new
+        //                {
+        //                    Name=cs.Lead.Name,
+        //                    Title=cs.Lead.Title,
+
+        //            };
+        //    return Json(calls);
+        //}
+
+        [GridAction]
+        public ActionResult GetUserCallBackSince7DayBefore(int? projectid)
+        {
+            var sevendaybefore = DateTime.Now.AddDays(-7);
+            var user = Employee.CurrentUserName;
+            var calls = from c in CH.DB.LeadCalls
+                        where c.Member.Name == user && c.CallBackDate >= sevendaybefore
+                        select c;
+            if (projectid != null)
+                calls = calls.Where(c => c.ProjectID == projectid);
+            var rets= from cs in calls
+                      select new
+                        {
+                            Name = cs.Lead.Name,
+                            Title = cs.Lead.Title
+
+                        };
+            return View(new GridModel(rets));
+        }
     }
 }

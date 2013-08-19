@@ -1,0 +1,735 @@
+@using Sales.Model
+@using Entity
+@model Sales.Model._FinalCommission
+@using Utl
+<style type="text/css">
+   
+    
+    /* in-form editing */
+    .t-edit-form-container
+    {
+         width: 1200px;
+        height:500px;
+        margin: 1em;
+        text-align: right;
+    }
+   td
+   {
+       text-align:left;
+   }
+   .t-widget.t-numerictextbox
+   {
+       width:70px;
+   }
+</style>
+<script>
+    function strTodate(strr) {
+        strr1 = strr.split(' ');
+        datestr = strr1[0];
+        strr2 = datestr.split('-');
+        date1 = new Date(strr2[0], strr2[1] - 1, strr2[2]);
+        return date1;
+    }
+    function dateTostr(date) {
+        yy = date.getFullYear();
+        mm = date.getMonth() + 1;
+        dd = date.getDate();
+        hours = date.getHours();
+        minutes = date.getMinutes();
+        seconds = date.getSeconds();
+        datestr = yy + '-' + mm + '-' + dd;
+        return datestr
+    }
+
+    function FormatNumber(srcStr) {
+        var dotPos = srcStr.indexOf(".", 0);
+        if (dotPos == -1) {
+            resultStr = srcStr;
+            return resultStr;
+        }
+        else {
+            resultStr = srcStr.substring(0,dotPos);
+            return resultStr;
+        }
+    }
+    if (TargetNameEN != "") {
+        $("#TargetNameEN").hide();
+        $("#TargetNameEN").append("<option value='" + TargetNameEN + "'>" + TargetNameEN + "</option>");
+        $("#TargetNameEN option[text='" + TargetNameEN + "']").attr("selected", true);
+        $("#ProjectID").hide();
+        $("#ProjectID").append("<option value='" + ProjectID + "'>" + ProjectID + "</option>");
+        $("#ProjectID option[text='" + ProjectID + "']").attr("selected", true);
+        $("#salediv").html(TargetNameEN);
+        $("#projectdiv").html(ProjectName);
+
+        $.ajax({
+            url: "/Finance/GetPrecommissions",
+            type: "post",
+            dataType: "json",
+            data: { projectid: ProjectID, sales: TargetNameEN },
+            error: function (a, b, c) {
+                alert("获取数据失败，请重试。");
+            },
+            success: function (result) {
+                $('#PreCommission').data('tGrid').dataBind(result);
+                //$('#PreCommission').data('tGrid').total = result.length;
+                //$('#PreCommission').data('tGrid').updatePager();
+
+            }
+        });
+
+        $.ajax({
+            url: "/Finance/GetDeals",
+            type: "post",
+            dataType: "json",
+            data: { projectid: ProjectID, sales: TargetNameEN },
+            error: function (a, b, c) {
+                alert("获取数据失败，请重试。");
+            },
+            success: function (result) {
+                $('#Deal').data('tGrid').dataBind(result);
+                //$('#PreCommission').data('tGrid').total = result.length;
+                //$('#PreCommission').data('tGrid').updatePager();
+            }
+        });
+        if (inout == "国内") {
+            $("#Delegatetr").hide();
+            $("#DelegateLesstr").show();
+            $("#DelegateMoretr").show();
+            $("#Sponsortr").show();
+        }
+        else {
+            $("#DelegateLesstr").hide();
+            $("#DelegateMoretr").hide();
+            $("#Delegatetr").show();
+            $("#Sponsortr").show();
+        }
+    }
+    else {
+        $("#DelegateLessRate").val(5);
+        $("#DelegateMoreRate").val(15);
+        $("#SponsorRate").val(5);
+        $("#DelegateRate").val(5);
+
+        $("#DelegateLesstr").hide();
+        $("#DelegateMoretr").hide();
+        $("#Sponsortr").hide();
+        $("#Delegatetr").hide();
+
+        if (projectidparam != "") {
+            $("#ProjectID option[value='" + projectidparam + "']").attr("selected", true);
+            $.ajax({
+                url: "/Finance/GetSalesByProject",
+                type: "post",
+                dataType: "json",
+                data: { projectid: projectidparam },
+                error: function (a, b, c) {
+                    alert("获取数据失败，请重试。");
+                },
+                success: function (result) {
+                    $("#TargetNameEN").empty();
+                    $("#TargetNameEN").append("<option value='" + "" + "'>" + "请选择" + "</option>");
+                    for (var i = 0; i < result.length; i++) {
+                        $("#TargetNameEN").append("<option value='" + result[i].salesid + "'>" + result[i].sales + "</option>");
+                    }
+                    if (saleparam != "") {
+                        $("#TargetNameEN option[value='" + saleparam + "']").attr("selected", true);
+                        var sale = $("#TargetNameEN").find("option:selected").val();
+                        var projectid = $("#ProjectID").find("option:selected").val();
+                        $.ajax({
+                            url: "/Finance/GetPreCommByProSales",
+                            type: "post",
+                            dataType: "json",
+                            data: { projectid: projectid, sale: sale },
+                            error: function (a, b, c) {
+                                alert("获取数据失败，请重试。");
+                            },
+                            success: function (result) {
+                                setvalue(result);
+                                $.ajax({
+                                    url: "/Finance/GetPrecommissions",
+                                    type: "post",
+                                    dataType: "json",
+                                    data: { projectid: projectid, sales: sale },
+                                    error: function (a, b, c) {
+                                        alert("获取数据失败，请重试。");
+                                    },
+                                    success: function (result) {
+                                        $('#PreCommission').data('tGrid').dataBind(result);
+                                        //$('#PreCommission').data('tGrid').total = result.length;
+                                        //$('#PreCommission').data('tGrid').updatePager();
+
+                                    }
+                                });
+
+                                $.ajax({
+                                    url: "/Finance/GetDeals",
+                                    type: "post",
+                                    dataType: "json",
+                                    data: { projectid: projectid, sales: sale },
+                                    error: function (a, b, c) {
+                                        alert("获取数据失败，请重试。");
+                                    },
+                                    success: function (result) {
+                                        $('#Deal').data('tGrid').dataBind(result);
+                                        //$('#PreCommission').data('tGrid').total = result.length;
+                                        //$('#PreCommission').data('tGrid').updatePager();
+
+                                    }
+                                });
+                            }
+                        });
+                    }
+                }
+            });
+        }
+    }
+</script>
+<script type="text/javascript">
+
+    
+    function OnRateChange(e) {
+        calc();
+    }
+    function OnTaxChange(e) {
+        calc();
+    }
+    function OnBonusChange(e) {
+        calc();
+    }
+    function OnReturnIncomeChange(e) {
+
+        calc();
+    }
+
+    function calc() {
+
+        var DelegateLessCommission = $("#DelegateLessIncome").val() * $("#DelegateLessRate").val() / 100;
+        var DelegateMoreCommission = ($("#DelegateMoreIncome").val() - $("#DelegateMoreCount").val()*3000) * $("#DelegateMoreRate").val() / 100;
+        var SponsorCommission = $("#SponsorIncome").val() * $("#SponsorRate").val() / 100;
+        var DelegateCommission = $("#DelegateIncome").val() * $("#DelegateRate").val() / 100;
+
+        var DelegateLessPayed = $("#DelegateLessPayed").val();
+        var DelegateMorePayed = $("#DelegateMorePayed").val();
+        var SponsorPayed = $("#SponsorPayed").val();
+        var DelegatePayed = $("#DelegatePayed").val();
+
+        $("#DelegateLessCommission").val(DelegateLessCommission.toFixed(0));
+        $("#DelegateMoreCommission").val(DelegateMoreCommission.toFixed(0));
+        $("#SponsorCommission").val(SponsorCommission.toFixed(0));
+        $("#DelegateCommission").val(DelegateCommission.toFixed(0));
+
+        $("#RealDelegateLessComm").val((DelegateLessCommission - DelegateLessPayed).toFixed(0));
+        $("#RealDelegateMoreComm").val((DelegateMoreCommission - DelegateMorePayed).toFixed(0));
+        $("#RealSponsorComm").val((SponsorCommission - SponsorPayed).toFixed(0));
+        $("#RealDelegateComm").val((DelegateCommission - DelegatePayed).toFixed(0));
+
+        $("#CommissionA").val((DelegateLessCommission + DelegateMoreCommission + SponsorCommission + DelegateCommission).toFixed(0));
+        var commission = $("#CommissionA").val();
+        var bonus = $("#Bonus").val();
+        var tax = $("#Tax").val();
+
+        $("#TotalCommission").val((commission - $("#CommissionPayed").val()).toFixed(0));
+        $("#ActualCommission").val((commission - $("#CommissionPayed").val() - bonus - tax ).toFixed(0));
+//        $("#TotalCommission").val((DelegateLessCommission - DelegateLessPayed + DelegateMoreCommission - DelegateMorePayed + SponsorCommission - SponsorPayed).toFixed(0));
+//        $("#ActualCommission").val($("#TotalCommission").val());
+    }
+    
+   function setvalue(result) {
+        if (result.TargetNameEN != "") {
+            $("#TargetNameCN").val(result.TargetNameCN);
+            $("#InOut").val(result.InOut);
+
+            $("#DelegateLessIncomeStr").val(result.DelegateLessIncomeStr);
+            $("#DelegateMoreIncomeStr").val(result.DelegateMoreIncomeStr);
+            $("#SponsorIncomeStr").val(result.SponsorIncomeStr);
+            $("#IncomeStr").val(result.IncomeStr);
+            $("#DelegateIncomeStr").val(result.DelegateIncomeStr);
+
+            $("#DelegateLessIncome").val(result.DelegateLessIncome == null ? 0 : result.DelegateLessIncome);
+            $("#DelegateMoreCount").val(result.DelegateMoreCount == null ? 0 : result.DelegateMoreCount);
+            $("#DelegateMoreIncome").val(result.DelegateMoreIncome == null ? 0 : result.DelegateMoreIncome);
+            $("#SponsorIncome").val(result.SponsorIncome == null ? 0 : result.SponsorIncome);
+            $("#Income").val(result.Income == null ? 0 : result.Income);
+            $("#DelegateIncome").val(result.DelegateIncome == null ? 0 : result.DelegateIncome);
+
+            var DelegateLessPayed = result.DelegateLessPayed == null ? 0 : result.DelegateLessPayed;
+            var DelegateMorePayed = result.DelegateMorePayed == null ? 0 : result.DelegateMorePayed;
+            var SponsorPayed = result.SponsorPayed == null ? 0 : result.SponsorPayed;
+            var DelegatePayed = result.DelegatePayed == null ? 0 : result.DelegatePayed;
+            $("#DelegateLessPayed").val(DelegateLessPayed.toFixed(0));
+            $("#DelegateMorePayed").val(DelegateMorePayed.toFixed(0));
+            $("#SponsorPayed").val(SponsorPayed.toFixed(0));
+            $("#DelegatePayed").val(DelegatePayed.toFixed(0));
+            $("#CommissionPayed").val((DelegateLessPayed + DelegateMorePayed + SponsorPayed + DelegatePayed).toFixed(0));
+
+            $("#DelegateLessRate").val(5);
+            $("#DelegateMoreRate").val(15);
+            $("#SponsorRate").val(5);
+            $("#DelegateRate").val(5);
+            var DelegateLessCommission = result.DelegateLessIncome == null ? 0 : result.DelegateLessIncome * 0.05;
+            var DelegateMoreCommission = result.DelegateMoreIncome == null ? 0 : (result.DelegateMoreIncome - result.DelegateMoreCount*3000)  * 0.15;
+            var SponsorCommission = result.SponsorIncome == null ? 0 : result.SponsorIncome * 0.05;
+            var DelegateCommission = result.DelegateIncome == null ? 0 : result.DelegateIncome * 0.05;
+
+            $("#DelegateLessCommission").val(DelegateLessCommission.toFixed(0));
+            $("#DelegateMoreCommission").val(DelegateMoreCommission.toFixed(0));
+            $("#SponsorCommission").val(SponsorCommission.toFixed(0));
+            $("#DelegateCommission").val(DelegateCommission.toFixed(0));
+
+            $("#RealDelegateLessComm").val((DelegateLessCommission - DelegateLessPayed).toFixed(0));
+            $("#RealDelegateMoreComm").val((DelegateMoreCommission - DelegateMorePayed).toFixed(0));
+            $("#RealSponsorComm").val((SponsorCommission - SponsorPayed).toFixed(0));
+            $("#RealDelegateComm").val((DelegateCommission - DelegatePayed).toFixed(0));
+            //alert(DelegateLessCommission + DelegateMoreCommission + SponsorCommission);
+            //alert($("#Commission").val());
+            $("#CommissionA").val((DelegateLessCommission + DelegateMoreCommission + SponsorCommission + DelegateCommission).toFixed(0));
+            $("#TotalCommission").val((DelegateLessCommission - DelegateLessPayed + DelegateMoreCommission - DelegateMorePayed + SponsorCommission - SponsorPayed + DelegateCommission - DelegatePayed).toFixed(0));
+            $("#ActualCommission").val($("#TotalCommission").val());
+
+            if (result.InOut == "国内") {
+                $("#Delegatetr").hide();
+                $("#DelegateLesstr").show();
+                $("#DelegateMoretr").show();
+                $("#Sponsortr").show();
+            }
+            else {
+                $("#DelegateLesstr").hide();
+                $("#DelegateMoretr").hide();
+                $("#Delegatetr").show();
+                $("#Sponsortr").show();
+            }
+        }
+        else
+            alert("没有获取到入账数据。");
+    }
+</script>
+
+<div style=" padding-bottom:10px;width:100%"> 
+@Html.HiddenFor(model => model.ID)
+@Html.HiddenFor(model => model.DelegateLessIncome)
+@Html.HiddenFor(model => model.DelegateMoreIncome)
+@Html.HiddenFor(model => model.SponsorIncome)
+@Html.HiddenFor(model => model.DelegateIncome)
+@Html.HiddenFor(model => model.Income)
+
+
+
+<legend  style="text-align:left">提成结算表</legend>
+   <table style="width:100%" >
+    <tr>
+        <td  >
+            @Html.LabelFor(model => model.ProjectID)
+        </td>
+        <td  >
+            @Html.DropDownListFor(model => model.ProjectID, BLL.Finance_Logical._PreCommissionBLL.GetProjectsDDL(), "请选择" )
+            @Html.ValidationMessageFor(model => model.ProjectID)
+            <div id="projectdiv"></div>
+        </td>
+        <td  >
+            英文名
+        </td>
+        <td  >
+            @Html.DropDownListFor(model => model.TargetNameEN, new SelectList(new List<string>() { "请选择" }))
+            @Html.ValidationMessageFor(model => model.TargetNameEN)
+            <div id="salediv"></div>
+        </td>
+        <td  >
+            @Html.LabelFor(model => model.TargetNameCN)
+        </td>
+        <td  >
+             @Html.TextBoxFor(model => model.TargetNameCN, new { READONLY = "readonly", style = "border:none;" })
+        </td>
+        <td  >
+            @Html.LabelFor(model => model.InOut)
+        </td>
+        <td  colspan="5" >
+             @Html.TextBoxFor(model => model.InOut, new { READONLY = "readonly", style = "border:none;" })
+        </td>
+        
+    </tr>
+    </table>
+    <table style="width:100%" >
+    <tr>
+    <td colspan="12">
+            @(Html.Telerik().Grid<_PreCommission>().Name("PreCommission")
+        .Columns(columns =>
+        {
+            columns.Bound(p => p.CommID).Width(70).HtmlAttributes(new { style = "text-align:left" });
+            //columns.Bound(p => p.TargetNameEN).Width(50).HtmlAttributes(new { style = "text-align:left" });
+            //columns.Bound(p => p.TargetNameCN).Width(50).HtmlAttributes(new { style = "text-align:left" });
+            columns.Bound(p => p.StartDate).Width(60).HtmlAttributes(new { style = "text-align:left" }).Format("{0:d}");
+            columns.Bound(p => p.EndDate).Width(60).HtmlAttributes(new { style = "text-align:left" }).Format("{0:d}");
+            //columns.Bound(p => p.ProjectName).Width(50).HtmlAttributes(new { style = "text-align:right" });
+            columns.Bound(p => p.Income).Width(80).HtmlAttributes(new { style = "text-align:right" }).Format("{0:c}");
+            //columns.Bound(p => p.Commission).Width(50).HtmlAttributes(new { style = "text-align:right" }).Format("{0:c}");
+            columns.Bound(p => p.Tax).Width(50).HtmlAttributes(new { style = "text-align:right" }).Format("{0:c}");
+            columns.Bound(p => p.Bonus).Width(50).HtmlAttributes(new { style = "text-align:right" }).Format("{0:c}");
+            columns.Bound(p => p.TotalCommission).Width(60).HtmlAttributes(new { style = "text-align:right" }).Format("{0:c}");
+            columns.Bound(p => p.ReturnIncome).Width(60).HtmlAttributes(new { style = "text-align:right" }).Format("{0:c}");
+            columns.Bound(p => p.ActualCommission).Width(60).HtmlAttributes(new { style = "text-align:right" }).Format("{0:c}");
+
+        })
+        )
+        </td>
+    </tr>
+    <tr>
+    <td colspan="12">
+        @(Html.Telerik().Grid<_CommissionDeals>().Name("Deal")
+        .Columns(c =>
+        {
+            c.Bound(item => item.DealCode).Title("出单号").Width(100);
+            c.Bound(item => item.Income).Title("入账总额").Width(90).Format("{0:￥#,##0}");
+            c.Bound(item => item.SignDate).Format("{0:d}").Width(90);
+            c.Bound(item => item.ExpectedPaymentDate).Format("{0:d}").Width(90);
+            c.Bound(item => item.ActualPaymentDate).Format("{0:d}").Width(100);
+        })
+)
+        </td>
+    </tr>
+    
+    <tr id="DelegateLesstr">
+        <td >
+            @Html.LabelFor(model => model.DelegateLessIncome)
+        </td>
+        <td >
+            ￥@Html.TextBoxFor(model => model.DelegateLessIncomeStr, new { READONLY = "readonly", style = "border:none;width:80%" })
+        </td>
+        <td >
+         @Html.LabelFor(model => model.DelegateLessRate)
+        </td>
+        <td >
+        @Html.TextBoxFor(model => model.DelegateLessRate, new { style = "width:50%" })
+        </td>
+        <td colspan="2">
+        </td>
+        <td  >
+            @Html.LabelFor(model => model.DelegateLessCommission)
+        </td>
+        <td  >
+            ￥@Html.TextBoxFor(model => model.DelegateLessCommission, new { READONLY = "readonly", style = "border:none;width:80%" }) 
+        </td>
+        <td  >
+            @Html.LabelFor(model => model.DelegateLessPayed)
+        </td>
+        <td  >
+            ￥@Html.TextBoxFor(model => model.DelegateLessPayed, new { READONLY = "readonly", style = "border:none;width:80%" }) 
+        </td>
+        <td  >
+            @Html.LabelFor(model => model.RealDelegateLessComm)
+        </td>
+        <td  >
+            ￥@Html.TextBoxFor(model => model.RealDelegateLessComm, new { READONLY = "readonly", style = "border:none;width:80%" }) 
+        </td>
+    </tr>
+    <tr id="DelegateMoretr">
+       
+        <td  style="width:8%">
+        @Html.LabelFor(model => model.DelegateMoreIncome)
+        </td>
+        <td style="width:8%">
+        ￥@Html.TextBoxFor(model => model.DelegateMoreIncomeStr, new { READONLY = "readonly", style = "border:none;width:80%" })
+        </td>
+        <td style="width:8%">
+            @Html.LabelFor(model => model.DelegateMoreRate)
+        </td>
+        <td style="width:8%">
+            @Html.TextBoxFor(model => model.DelegateMoreRate, new { style = "width:50%" })
+        </td>
+        <td style="width:8%">
+            大于3000人数
+        </td>
+        <td style="width:8%">
+            @Html.TextBoxFor(model => model.DelegateMoreCount, new { READONLY = "readonly", style = "border:none;width:80%" })
+        </td>
+        <td style="width:8%">
+            @Html.LabelFor(model => model.DelegateMoreCommission)
+        </td>
+        <td style="width:8%">
+            ￥@Html.TextBoxFor(model => model.DelegateMoreCommission, new { READONLY = "readonly", style = "border:none;width:80%" }) 
+        </td>
+         <td  style="width:8%">
+            @Html.LabelFor(model => model.DelegateMorePayed)
+        </td>
+        <td style="width:8%">
+            ￥@Html.TextBoxFor(model => model.DelegateMorePayed, new { READONLY = "readonly", style = "border:none;width:80%" }) 
+        </td>
+        <td  style="width:8%">
+            @Html.LabelFor(model => model.RealDelegateMoreComm)
+        </td>
+        <td style="width:8%">
+            ￥@Html.TextBoxFor(model => model.RealDelegateMoreComm, new { READONLY = "readonly", style = "border:none;width:80%" }) 
+        </td>
+    </tr>
+    <tr id="Sponsortr">
+        <td >
+            @Html.LabelFor(model => model.SponsorIncome)
+        </td>
+        <td >
+        
+            ￥@Html.TextBoxFor(model => model.SponsorIncomeStr, new { READONLY = "readonly", style = "border:none;width:80%" })
+        </td>
+        <td >
+         @Html.LabelFor(model => model.SponsorRate)
+        </td>
+        <td >
+        @Html.TextBoxFor(model => model.SponsorRate, new { style = "width:50%" })
+        </td>
+        <td   colspan="2">
+        </td>
+        <td   >
+            @Html.LabelFor(model => model.SponsorCommission)
+        </td>
+        <td  >
+           ￥@Html.TextBoxFor(model => model.SponsorCommission, new { READONLY = "readonly", style = "border:none;width:80%" }) 
+        </td>
+         <td >
+            @Html.LabelFor(model => model.SponsorPayed)
+        </td>
+        <td>
+            ￥@Html.TextBoxFor(model => model.SponsorPayed, new { READONLY = "readonly", style = "border:none;width:80%" }) 
+        </td>
+        <td >
+            @Html.LabelFor(model => model.RealSponsorComm)
+        </td>
+        <td>
+            ￥@Html.TextBoxFor(model => model.RealSponsorComm, new { READONLY = "readonly", style = "border:none;width:80%" }) 
+        </td>
+    </tr>
+    <tr id="Delegatetr">
+        <td >
+            @Html.LabelFor(model => model.DelegateIncome)
+        </td>
+        <td >
+        
+            ￥@Html.TextBoxFor(model => model.DelegateIncomeStr, new { READONLY = "readonly", style = "border:none;width:80%" })
+        </td>
+        <td >
+         @Html.LabelFor(model => model.DelegateRate)
+        </td>
+        <td >
+        @Html.TextBoxFor(model => model.DelegateRate, new { style = "width:50%" })
+        </td>
+        <td   colspan="2">
+        </td>
+        <td   >
+            @Html.LabelFor(model => model.DelegateCommission)
+        </td>
+        <td  >
+           ￥@Html.TextBoxFor(model => model.DelegateCommission, new { READONLY = "readonly", style = "border:none;width:80%" }) 
+        </td>
+         <td >
+            @Html.LabelFor(model => model.DelegatePayed)
+        </td>
+        <td>
+            ￥@Html.TextBoxFor(model => model.DelegatePayed, new { READONLY = "readonly", style = "border:none;width:80%" }) 
+        </td>
+        <td >
+            @Html.LabelFor(model => model.RealDelegateComm)
+        </td>
+        <td>
+            ￥@Html.TextBoxFor(model => model.RealDelegateComm, new { READONLY = "readonly", style = "border:none;width:80%" }) 
+        </td>
+    </tr>
+    <tr>
+        <td >
+         @Html.LabelFor(model => model.Income)
+        </td>
+        <td colspan="5" >
+        ￥@Html.TextBoxFor(model => model.IncomeStr, new { READONLY = "readonly", style = "border:none;width:80%" })
+        </td>
+        <td>
+            @Html.LabelFor(model => model.CommissionA)
+        </td>
+        <td >
+        ￥ @Html.TextBoxFor(model => model.CommissionA, new { READONLY = "readonly", style = "border:none;width:80%" }) 
+        </td>
+        <td>
+            @Html.LabelFor(model => model.CommissionPayed)
+        </td>
+        <td >
+        ￥@Html.TextBoxFor(model => model.CommissionPayed, new { READONLY = "readonly", style = "border:none;width:80%" }) 
+        </td>
+        <td>
+            @Html.LabelFor(model => model.TotalCommission)
+        </td>
+        <td >
+        ￥@Html.TextBoxFor(model => model.TotalCommission, new { READONLY = "readonly", style = "border:none;width:80%" }) 
+        </td>
+    </tr>
+    <tr>
+        <td>
+         @Html.LabelFor(model => model.Tax)
+        </td>
+        <td>
+        @Html.Telerik().CurrencyTextBoxFor(model => model.Tax).ClientEvents(e => e.OnChange("OnTaxChange")).InputHtmlAttributes(new { style = "width:100%" })
+        </td>
+        <td>
+            @Html.LabelFor(model => model.Bonus)
+        </td>
+        <td>
+            @Html.Telerik().CurrencyTextBoxFor(model => model.Bonus).ClientEvents(e => e.OnChange("OnBonusChange")).InputHtmlAttributes(new { style = "width:100%" })
+        </td>
+        
+        <td >
+        
+        </td>
+        <td>
+        
+        </td>
+        <td >
+        </td>
+        <td>
+        
+        </td>
+        <td >
+        
+        </td>
+        <td>
+        
+        </td>
+        <td >
+         @Html.LabelFor(model => model.ActualCommission)
+        </td>
+        <td>
+        ￥@Html.TextBoxFor(model => model.ActualCommission, new { READONLY = "readonly", style = "border:none;width:80%" })
+        </td>
+        
+    </tr>
+    <tr>
+    <td colspan="12" style="color:Red">
+    每月提成预发总额 = sponsor出单总额* 提成率(5%)+delegate人均三千以下出单总额*提成率(5%) +(delegate人均3000以上出单总额-3000*人数)*大于3000提成率(15%)
+    </td>
+    </tr>
+</table>
+@*<table style="width:100%">
+ <tr>
+        
+        <td>
+         @Html.LabelFor(model => model.ReturnIncome)
+        </td>
+        <td>
+        @Html.Telerik().CurrencyTextBoxFor(model => model.ReturnIncome).ClientEvents(e => e.OnChange("OnReturnIncomeChange"))
+        </td>
+        <td>
+            @Html.LabelFor(model => model.ReturnReason)
+        </td>
+        <td colspan="5">
+            @Html.TextAreaFor(model => model.ReturnReason)
+        </td>
+        
+    </tr>
+    <tr>
+    <td colspan="8" style="color:Red">
+    提成发放后如发生退款，请填写冲销金额
+    </td>
+    </tr>
+</table>*@
+</div>
+
+<script type="text/javascript">
+
+    //页面加载后设置币种的默认值
+    $(function () {
+        $("#ProjectID").change(function () {
+            jQuery('.field-validation-error').html('');
+            var projectid = $("#ProjectID").find("option:selected").val();
+            $.ajax({
+                url: "/Finance/GetSalesByProject",
+                type: "post",
+                dataType: "json",
+                data: { projectid: projectid },
+                error: function (a, b, c) {
+                    alert("获取数据失败，请重试。");
+                },
+                success: function (result) {
+                    $("#TargetNameEN").empty();
+                    $("#TargetNameEN").append("<option value='" + "" + "'>" + "请选择" + "</option>");
+                    for (var i = 0; i < result.length; i++) {
+                        $("#TargetNameEN").append("<option value='" + result[i].salesid + "'>" + result[i].sales + "</option>");
+                    }
+                }
+            });
+
+        });
+
+        $("#TargetNameEN").change(function () {
+            var sale = $("#TargetNameEN").find("option:selected").val();
+            var projectid = $("#ProjectID").find("option:selected").val();
+            if (projectid == "") {
+                alert("请选择项目");
+                return;
+            }
+            if (sale == "")
+                return;
+            $.ajax({
+                url: "/Finance/GetPreCommByProSales",
+                type: "post",
+                dataType: "json",
+                data: { projectid: projectid ,sale: sale},
+                error: function (a, b, c) {
+                    alert("获取数据失败，请重试。");
+                },
+                success: function (result) {
+                    setvalue(result);
+                    $.ajax({
+                        url: "/Finance/GetPrecommissions",
+                        type: "post",
+                        dataType: "json",
+                        data: { projectid: projectid, sales: sale },
+                        error: function (a, b, c) {
+                            alert("获取数据失败，请重试。");
+                        },
+                        success: function (result) {
+                            $('#PreCommission').data('tGrid').dataBind(result);
+                            //$('#PreCommission').data('tGrid').total = result.length;
+                            //$('#PreCommission').data('tGrid').updatePager();
+
+                        }
+                    });
+
+                    $.ajax({
+                        url: "/Finance/GetDeals",
+                        type: "post",
+                        dataType: "json",
+                        data: { projectid: projectid, sales: sale },
+                        error: function (a, b, c) {
+                            alert("获取数据失败，请重试。");
+                        },
+                        success: function (result) {
+                            $('#Deal').data('tGrid').dataBind(result);
+                            //$('#PreCommission').data('tGrid').total = result.length;
+                            //$('#PreCommission').data('tGrid').updatePager();
+
+                        }
+                    });
+                }
+            });
+
+            
+        });
+
+
+
+
+        $("#DelegateLessRate").change(function () {
+            calc();
+        });
+        $("#DelegateMoreRate").change(function () {
+            calc();
+        });
+        $("#SponsorRate").change(function () {
+            calc();
+        });
+        $("#DelegateRate").change(function () {
+            calc();
+        });
+    });
+    
+
+//    var datepicker = $('#cEndDate').data('tDatePicker');
+//    alert(datepicker);
+    //    datepicker.val(new Date('1/1/2012'));
+
+    
+</script>

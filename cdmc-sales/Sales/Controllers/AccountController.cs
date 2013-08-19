@@ -95,7 +95,21 @@ namespace MvcGlobalAuthorize.Controllers
             else
                 return View("ResetPassword", "", "找不到对应的用户");
         }
-
+        [AdministratorRequired]
+        public ActionResult UnLockUser(string username)
+        {
+            if (username == null) return View();
+            var user = Membership.GetUser(username.Trim());
+            
+            if (user != null)
+            {
+                if (user.IsLockedOut)
+                    user.UnlockUser();
+                return View("ResetPassword");
+            }
+            else
+                return View("ResetPassword", "", "找不到对应的用户");
+        }
         [AdministratorRequired]
         public ActionResult Delete(string username)
         {
