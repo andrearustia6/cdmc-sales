@@ -208,7 +208,9 @@ namespace BLL
             {
                 List<SelectListItem> selectList = new List<SelectListItem>();
                 var mems = CH.DB.Members.Where(w => w.IsActivated == true && w.Project.IsActived == true && w.ProjectID==projectid).Select(w => w.Name).Distinct();
-                var ret = from p in mems
+               
+                var alreadypaymen = from m in CH.DB.FinalCommissions.Where(w => w.ProjectID == projectid) select m;
+                var ret = from p in mems.Where(w=>alreadypaymen.Any(a=>a.TargetNameEN==w)==false)
                           select new _CommissionSales
                           {
                               salesid = p,
