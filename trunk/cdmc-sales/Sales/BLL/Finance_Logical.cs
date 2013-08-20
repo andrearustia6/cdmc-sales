@@ -179,10 +179,24 @@ namespace BLL
 
             public static IEnumerable<_CommissionSales> GetSalesDDL(int month)
             {
-                var year = DateTime.Now.Year;
-                
-                var mems = CH.DB.Members.Where(w => w.IsActivated == true && w.Project.IsActived == true ).Select(w=>w.Name).Distinct();
-                var ret = from p in mems
+
+                var startdate = new DateTime(DateTime.Now.Year,month,1);
+                var enddate = startdate.EndOfMonth();
+                var enddateacutal = enddate.AddDays(1);
+                var deals = CH.DB.Deals.Where(w => w.Abandoned == false && w.Income > 0
+                    && w.ActualPaymentDate >= startdate && w.ActualPaymentDate < enddateacutal);
+                var mems = from m in deals
+                           select new
+                           {
+                               proid = m.ProjectID,
+                               sales = m.Sales
+                           };
+                var alreadypaymen =  from m in CH.DB.PreCommissions.Where(w=>w.StartDate==startdate && w.EndDate==enddate) select m;
+                         
+                var targets  = mems.Where(w=>alreadypaymen.Any(a=>a.ProjectID ==w.proid && a.TargetNameEN==w.sales)==false).Select(s=>s.sales).Distinct();
+               // var mems = CH.DB.Members.Where(w => w.IsActivated == true && w.Project.IsActived == true).Select(w=>w.Name).Distinct();
+                var ret = from p in targets
+
                             select new _CommissionSales
                             {
                                 salesid = p,
