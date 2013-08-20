@@ -25,7 +25,20 @@
         ps = CRM_Logical.GetUserInvolveProject();
     }
     
-    
+    var paytype = ViewBag.paytype as int?;
+    List<SelectListItem> payedlists = new List<SelectListItem>();
+    var listitem = new SelectListItem();
+    listitem.Value = "0";
+    listitem.Text = "全部";
+    payedlists.Add(listitem);
+    listitem = new SelectListItem();
+    listitem.Value = "1";
+    listitem.Text = "已付款";
+    payedlists.Add(listitem);
+    listitem = new SelectListItem();
+    listitem.Value = "2";
+    listitem.Text = "未付款";
+    payedlists.Add(listitem);
     
     <fieldset>
         <legend>项目选择</legend>
@@ -52,6 +65,10 @@
                         @p.Name_CH</span> </li>
                 }
             </ul>
+        </div>
+        <div>
+        是否付款: 
+            @Html.DropDownList("paytype", payedlists, paytype)
         </div>
          </fieldset>
         if (displayduration=="true")
