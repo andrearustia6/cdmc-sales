@@ -22,21 +22,25 @@ namespace Sales.Controllers
             CH.DB.Dispose();
             base.Dispose(disposing);
         }
-        public ViewResult IndexEdit(List<int> selectedprojects, string selecttype)
+        public ViewResult IndexEdit(List<int> selectedprojects, string selecttype,int? paytype)
         {
             ViewBag.SelectedProjects = selectedprojects;
             selectedprojects = this.TryGetSelectedProjectIDs(selectedprojects);
             ViewBag.Right = EditRight.DealsEdit.ToString();
             ViewBag.SelectType = selecttype;
+            ViewBag.paytype = paytype;
             return View("index");
         }
 
-        public ViewResult IndexReview(List<int> selectedprojects, string selecttype)
+        public ViewResult IndexReview(List<int> selectedprojects, string selecttype, int? paytype)
         {
             ViewBag.SelectedProjects = selectedprojects;
             selectedprojects = this.TryGetSelectedProjectIDs(selectedprojects);
             ViewBag.Right = ReviewRight.DealsReview.ToString();
             ViewBag.SelectType = selecttype;
+            if (paytype == null)
+                paytype = 0;
+            ViewBag.paytype = paytype;
             return View("index");
         }
         [GridAction]
@@ -65,11 +69,17 @@ namespace Sales.Controllers
             return View(new GridModel<AjaxViewParticipant> { });
         }
         [GridAction]
-        public ActionResult _Index(string sp)
+        public ActionResult _Index(string sp,int? paytype)
         {
             var selectedprojects = Utl.Utl.ConvertStringToSelectProjectID(sp);
             selectedprojects = this.TryGetSelectedProjectIDs(selectedprojects);
-            var ds = from d in CH.DB.Deals
+            var deals = from dd in CH.DB.Deals select dd;
+            if (paytype == 1)
+                deals = deals.Where(d => d.Income > 0);
+            else if (paytype == 2)
+                deals = deals.Where(d => d.Income <= 0);
+
+            var ds = from d in deals
                      where selectedprojects.Contains(d.ProjectID.Value) && d.Abandoned == false
                      select new AjaxViewDeal
                      {
