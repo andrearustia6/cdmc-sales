@@ -16,6 +16,8 @@ namespace Utl
     public class DB : DbContext
     {
 
+        public DbSet<Progress> Progresss { get; set; }
+        public DbSet<CoreLVL> CoreLVLs { get; set; }
         public DbSet<AccessRight> AccessRights { get; set; }
         public DbSet<ProjectRight> ProjectRights { get; set; }
         public DbSet<AssignPerformanceRate> AssignPerformanceRates { get; set; }

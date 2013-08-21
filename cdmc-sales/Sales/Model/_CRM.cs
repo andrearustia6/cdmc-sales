@@ -2,16 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using Entity;
 
 namespace Sales.Model
 {
-    public class _Category
+    public class _Category : EntityBase
     {
         public string Name{get;set;}
         public string PitchPoint {get;set;}
         public int? CRMID { get; set; }
     }
-    public class _LeadCall
+    public class _LeadCall : EntityBase
     {
         public string LeadName { get; set; }
         public string LeadTitle { get; set; }
@@ -19,7 +20,7 @@ namespace Sales.Model
         public string CallType { get; set; }
     }
 
-    public class _Lead 
+    public class _Lead : EntityBase
     {
         public string Name { get; set; }
         public string Title { get; set; }
@@ -27,16 +28,20 @@ namespace Sales.Model
         public string LastCallType { get; set; }
     }
 
-    public class _Comment
+    public class _Comment : EntityBase
     {
         public string Person { get; set; }
         public string Content { get; set; }
         public DateTime SetDate { get; set; }
         public int? CRMID { get; set; }
     }
-   
-     public class _CRM
+
+  
+    public class _CRM : EntityBase
     {
+         public string Contact { get; set; }
+         public string Fax { get; set; }
+         public string Fax { get; set; }
          public bool CoreCompany { get; set; }
          //点评，回应，通过
          public string CrmCommentState { get; set; }
@@ -51,19 +56,50 @@ namespace Sales.Model
          public int PitchCount { get; set; }
          public int FullPitchCount { get; set; }
          public int CloseDealCount { get; set; }
-         public int WaitForApprove{ get; set; }
+         public int WaitForApproveCount { get; set; }
          public int NoCallCount { get; set; }
          public IQueryable<_Category> _Categorys { get; set; }
          public string Description { get; set; }
          public string PitchPoint { get; set; }
          public IQueryable<_Lead> _Leads { get; set; }
          public IQueryable<_Comment> _Comments { get; set; }
+         public IQueryable<_LeadCall> _LeadCalls { get; set; }
      }
-    public class _Maturity
+
+    public class _CoreLVL : EntityBase
+    {
+         public string CoreName { get; set; }
+         public IQueryable<_Maturity> _Maturitys { get; set; }
+         public int CrmCount { get; set; }
+
+         int? _NoContactCount;
+         int? _ContactCount;
+         public int NoContactCount
+         {
+             get
+             {
+                 if (_NoContactCount == null)
+                 { 
+                    // _Maturitys.SelectMany(s=>s._CRMs).Count(c=>c.)
+                 }
+                 return _NoContactCount.Value;
+             }
+         }
+         public int ContactCount
+         {
+             get
+             {
+                 if (_ContactCount == null)
+                 { }
+                 return _ContactCount.Value;
+             }
+         }
+    }
+    public class _Maturity : EntityBase
     {
         public string Name { get; set; }
         public int Count { get; set; }
         public string DisplayName { get { return Name + "("+Count+")";} }
-        IQueryable<_CRM> _CRMs { get; set; }
+        public IQueryable<_CRM> _CRMs { get; set; }
     }
 }

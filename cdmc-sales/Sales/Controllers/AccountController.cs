@@ -556,7 +556,7 @@ namespace MvcGlobalAuthorize.Controllers
                 }
             }
 
-            //Membership.GetUser("peggyh").UnlockUser();
+            Membership.GetUser("alextre").UnlockUser();
             //var p = Membership.GetUser("alextre").ResetPassword();
 
 
