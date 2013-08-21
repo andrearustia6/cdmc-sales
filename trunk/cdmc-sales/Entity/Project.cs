@@ -7,6 +7,13 @@ using Attributes;
 
 namespace Entity
 {
+
+    public class CrmCommentState : EntityBase
+    {
+        public string StateName { get; set; }
+    }
+
+
     public class ExpLevel : EntityBase
     {
         [Display(Name = "级别"), Required]
@@ -239,10 +246,22 @@ namespace Entity
         public virtual List<CompanyRelationship> CompanyRelationships { get; set; }
     }
 
+    public class CoreLVL : EntityBase
+    {
+        public string CoreLVL { get; set; }
+    }
 
     [JsonIgnoreAttribute("Deals", "Project", "Categorys", "LeadCalls", "Members")]
     public class CompanyRelationship : EntityBase
     {
+        public virtual CrmCommentState CrmCommentState { get; set; }
+        public int? CrmCommentStateID { get; set; }
+
+        public virtual CoreLVL CoreLVL { get; set; }
+        [Display(Name = "核心程度")]
+        public int? CoreLVLID { get; set; }
+
+
         string _categoryString;
         [Display(Name = "细分行业")]
         public string CategoryString
