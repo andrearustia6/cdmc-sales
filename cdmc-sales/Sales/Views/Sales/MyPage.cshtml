@@ -3,6 +3,7 @@
 @using Utl
 @using Model
 @using BLL
+
 @{
     ViewBag.Title = "我的主页";
 }
@@ -36,8 +37,41 @@
     @{
         if (Model != null)
         {
-        
-        @(Html.Telerik().Grid(BLL.CRM_Logical._LeadCall.GetUserCallBackSince7DayBefore()).Name("ToCall").DataKeys(keys =>
+            
+            <div id="filter-container" style="height: 30px;">
+     项目 @Html.DropDownList("projects", BLL.Finance_Logical._PreCommissionBLL.GetProjectsDDL(), "请选择")
+     <button type="submit" onclick="filterChange()" style="margin: 2px 2px 2px 15px; ">
+            筛选</button>
+    </div>
+        @(Html.Telerik().Grid<UserCallBackSince7DayBefore>().Name("ToCall").DataKeys(keys =>
+    {
+        keys.Add(s => s.ID);
+    })
+                 .DataBinding(dataBinding =>
+                 {
+                     dataBinding.Ajax().Select("GetUserCallBackSince7DayBefore", "Sales")
+                        ;
+                 })
+            .Columns(c =>
+            {
+                c.Bound(item => item.CustomerName).Title("客户姓名").Width(100);
+                c.Bound(item => item.Title).Width(100);
+                c.Bound(item => item.CompanyName).Title("公司姓名");
+                c.Bound(item => item.CompanyContact).Title("公司总机");
+                c.Bound(item => item.Contact).Width(100);
+                c.Bound(item => item.Mobile).Width(100);
+                c.Bound(item => item.ProjectCode);
+                c.Bound(item => item.TimeDifference);
+                c.Bound(item => item.CallBackDate).Width(100);
+                c.Bound(item => item.Result);
+                c.Bound(item => item.ID).Title("操作").Width(90).ClientTemplate("<span><a  href="+Url.Content("~/Sales/AddLeadCall/?crid=" + "<#= CompanyRelationshipID #>"+ "&leadid=" + "<#= LeadID #>") +">添加新通话</a></span>");
+            })
+            .ClientEvents(events => events.OnDataBinding("dataBinding"))
+            .Resizable(resizing => resizing.Columns(true))
+            .Filterable().Sortable().Groupable()
+            .Pageable(p => p.PageSize(20))
+            .Scrollable(scrolling => scrolling.Height(300)))
+        @*@(Html.Telerik().Grid(BLL.CRM_Logical._LeadCall.GetUserCallBackSince7DayBefore()).Name("ToCall").DataKeys(keys =>
         {
             keys.Add(s => s.ID);
         })
@@ -69,13 +103,13 @@
         </text>);
                 c.Bound(item => item.CallBackDate).Template(@<text>@item.GetAvailabeTime()</text>).Width(100);
                 c.Bound(item => item.Result);
-                @*c.Bound(item => item.ID).Title("操作").Width(90).Template(@<span> <a  href=@Url.Content("~/Sales/AddLeadCall/?crid=" + item.CompanyRelationshipID + "&leadid=" + item.LeadID) >添加新通话</a> 
-                    </span>);*@
+                c.Bound(item => item.ID).Title("操作").Width(90).Template(@<span> <a  href=@Url.Content("~/Sales/AddLeadCall/?crid=" + item.CompanyRelationshipID + "&leadid=" + item.LeadID) >添加新通话</a> 
+                    </span>);
             })
             .Resizable(resizing => resizing.Columns(true))
             .Filterable().Sortable().Groupable()
             .Pageable(p => p.PageSize(20))
-            .Scrollable(scrolling => scrolling.Height(300)))
+            .Scrollable(scrolling => scrolling.Height(300)))*@
         
         }
     }
@@ -175,13 +209,13 @@
         @if (Model != null)
         {
             @(Html.Telerik().TabStrip().Name("TabStrip").SelectedIndex(ViewBag.TabIndex == null ? 0 : (int)ViewBag.TabIndex).Items(items =>
-{
-    foreach (var child in Model)
-    {
-        var temp = child;
-        items.Add().Text(child.ProjectCode).Content(@<text>@Html.Partial("projectinfo", temp)</text>);
-    }
-}))
+        {
+            foreach (var child in Model)
+            {
+                var temp = child;
+                items.Add().Text(child.ProjectCode).Content(@<text>@Html.Partial("projectinfo", temp)</text>);
+            }
+        }))
         }
     </div>
 </fieldset>
@@ -191,3 +225,12 @@
         width: 100%;
     }
 </style>
+<script>
+ function filterChange() {
+     $("#ToCall").data("tGrid").rebind();
+    }
+    function dataBinding(e) {
+        var projectid = $("#projects").val();
+        e.data = $.extend(e.data, { projectid: projectid });
+    }
+</script>
