@@ -1721,11 +1721,21 @@ namespace Sales.Controllers
             if (projectid != null)
                 calls = calls.Where(c => c.ProjectID == projectid);
             var rets= from cs in calls
-                      select new
+                      select new UserCallBackSince7DayBefore
                         {
-                            Name = cs.Lead.Name,
-                            Title = cs.Lead.Title
-
+                            ProjectCode=cs.Project.ProjectCode,
+                            ID=cs.ID,
+                            CompanyRelationshipID=cs.CompanyRelationshipID,
+                            LeadID=cs.LeadID,
+                            CustomerName = cs.Lead.Name_EN+"|"+cs.Lead.Name_CH,
+                            Title = cs.Lead.Title,
+                            CompanyName = cs.Lead.Company.Name_EN + "|" + cs.Lead.Company.Name_CH,
+                            CompanyContact=cs.Lead.Company.Contact,
+                            Contact=cs.Lead.Contact,
+                            Mobile=cs.Lead.Mobile,
+                            TimeDifference = cs.Lead.Company.DistrictNumber.TimeDifference,
+                            CallBackDate=cs.CallBackDate,
+                            Result=cs.Result
                         };
             return View(new GridModel(rets));
         }

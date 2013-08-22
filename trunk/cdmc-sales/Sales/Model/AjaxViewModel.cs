@@ -1166,4 +1166,43 @@ namespace Model
         [Display(Name = "邮件内容"), Required]
         public string Content { get; set; }
     }
+    public class UserCallBackSince7DayBefore
+    {
+        public int? ID { get; set; }
+        public int? CompanyRelationshipID { get; set; }
+        public int? LeadID { get; set; }
+
+
+        [Display(Name = "项目")]
+        public string ProjectCode { get; set; }
+        [Display(Name = "客户姓名")]
+        public string CustomerName { get; set; }
+
+        [Display(Name = "客户职位")]
+        public string Title { get; set; }
+
+        [Display(Name = "公司姓名")]
+        public string CompanyName { get; set; }
+
+        [Display(Name = "公司总机")]
+        public string CompanyContact { get; set; }
+
+        [Display(Name = "客户直线")]
+        public string Contact { get; set; }
+
+        [Display(Name = "移动电话")]
+        public string Mobile { get; set; }
+
+        [Display(Name = "时差")]
+        public double? TimeDifference { get; set; }
+
+        [Display(Name = "所在分公司")]
+        public int? SubCompanyID { get; set; }
+
+        [Display(Name = "回电时间")]
+        public DateTime? CallBackDate { get; set; }
+
+        [Display(Name = "结果描述")]
+        public string Result { get; set; }
+    }
 }
