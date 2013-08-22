@@ -1,18 +1,19 @@
 ﻿var selectedvalue
+var clickedvalue
 function setSelectTreeNodeValue(value) {
     selectedvalue = value;
 
 }
 function onClickFollowBreadcrumb() {
-
-    var treeview = $("#TheTreeView").data("tTreeView");
-    // To clear any "selected" node:
-    $(".t-state-selected", treeview.element).removeClass('t-state-selected');
+    //return;
+    var treeview = $("#navigationView").data("tTreeView");
+    $(".t-state-selected").removeClass('t-state-selected');
     // Get the node based upon what part of the breadcrumb was selected.
-    var findString = ".t-input[name='itemValue'][value='" + selectedvalue + "']";
-    var item = $("#TheTreeView").find(findString).closest("li");
+    var findString = ".t-input[name='itemValue'][value='" + clickedvalue + "']";
+    var item = $("#navigationView").find(findString).closest("li");
     // Programmatically "click" the desired node.
     item.find(".t-in:first").trigger("click");
+    $(".t-state-selected").addClass('t-state-selected');
     return true;
 }
 
