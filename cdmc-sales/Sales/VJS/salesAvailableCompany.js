@@ -1,4 +1,22 @@
-﻿function onAvailiableCompanyPageLoad(e) {
+﻿var selectedvalue
+function setSelectTreeNodeValue(value) {
+    selectedvalue = value;
+
+}
+function onClickFollowBreadcrumb() {
+
+    var treeview = $("#TheTreeView").data("tTreeView");
+    // To clear any "selected" node:
+    $(".t-state-selected", treeview.element).removeClass('t-state-selected');
+    // Get the node based upon what part of the breadcrumb was selected.
+    var findString = ".t-input[name='itemValue'][value='" + selectedvalue + "']";
+    var item = $("#TheTreeView").find(findString).closest("li");
+    // Programmatically "click" the desired node.
+    item.find(".t-in:first").trigger("click");
+    return true;
+}
+
+function onAvailiableCompanyPageLoad(e) {
     addDatabindings();
     onCRMsUpdate();
     onInitialSearch();

@@ -248,7 +248,7 @@ namespace Entity
 
     public class CoreLVL : EntityBase
     {
-        public string CoreLVL { get; set; }
+        public string CoreLVLName { get; set; }
     }
 
     [JsonIgnoreAttribute("Deals", "Project", "Categorys", "LeadCalls", "Members")]
