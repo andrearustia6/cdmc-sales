@@ -41,7 +41,6 @@ namespace Sales.Model
     {
          public string Contact { get; set; }
          public string Fax { get; set; }
-         public string Fax { get; set; }
          public bool CoreCompany { get; set; }
          //点评，回应，通过
          public string CrmCommentState { get; set; }

@@ -33,7 +33,7 @@ namespace Sales.BLL
                            select
              new _CoreLVL
              {
-                 CoreName = core.CoreLVL,
+                 CoreName = core.CoreLVLName,
                  CrmCount = CH.DB.CompanyRelationships.Count(w => w.ProjectID == projectid && w.CoreLVLID == core.ID),
                  _Maturitys = (from m in CH.DB.Progresss
                                select new _Maturity()
