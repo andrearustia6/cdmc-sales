@@ -112,6 +112,7 @@ function Editcompany() {
                     var Indexes = $('.dialogue-editcompany form #CompanRelationshipId').val();
                     RefreshCrmList(Indexes);
                     onCompanyChanging(Indexes);
+                    //onClickFollowBreadcrumb();
                 }
             });
         }
@@ -230,6 +231,8 @@ function UpdateLead() {
             selectedVal = $('#CRMID').val() + "," + $('.dialogue-editlead form #LeadId').val();
             RefreshCrmList(selectedVal);
             onCompanyChanging(selectedVal);
+            selectedvalue = selectedVal;
+            //onClickFollowBreadcrumb();
         }
     });
 }
@@ -485,6 +488,7 @@ function RefreshCrmList(selectedVal) {
         $('#mainnavigationcontainer').html(result);
         initial();
     });
+    //onClickFollowBreadcrumb();
 }
 function CurrentProjectChange(currentProjectId) {
     $.get('GetCatagories', { currentProjectId: currentProjectId }, function (result) {
@@ -602,6 +606,7 @@ function initial() {
         onSelect: contextMenuSelected,
         onShow: generateContextMenu
     });
+    onClickFollowBreadcrumb();
 }
 
 //生成动态子菜单
@@ -627,6 +632,7 @@ function groupContextMenuSelected(e, context) {
 
 //公司关联菜单选中/自定义组公司关联选中
 function contextMenuSelected(e, context) {
+    alert('contextMenuSelected');
     var $target = $(e.target);
 
     //copy到新分组
@@ -682,18 +688,20 @@ function onGroupListWindowSubmit(e) {
 //var count=0
 //公司选择 
 function onIndexSelect(e) {
+
     var indexs = nv().getItemValue(e.item);
+    clickedvalue = indexs;
     if (e.item.innerHTML.indexOf("分组") < 0) {
         $.post('_SelectedList', { indexs: indexs, filters: GetFilters() }, function (result) {
             $('#crmdetailscontainer').html(result);
             //count++;
-
             //$('#crmdetailscontainer').html('<p>' + count + '</p>');
         });
     }
 }
 
 function onCompanyChanging(indexs) {
+    
     $.post('_SelectedList', { indexs: indexs, filters: GetFilters() }, function (result) {
         $('#crmdetailscontainer').html(result);
     });
