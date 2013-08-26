@@ -45,7 +45,7 @@ namespace Sales.Model
          //点评，回应，通过
          public string CrmCommentState { get; set; }
          public bool? _CoreCompany { get; set; }
-         public string CompanyName { get { return string.Join(CompanyNameEN, CompanyNameCH); } }
+         public string CompanyName { get { return string.Join(",",CompanyNameEN, CompanyNameCH); } }
          public string CompanyNameCH { get; set; }
          public string CompanyNameEN { get; set; }
          public int LeadCount {get;set;}
