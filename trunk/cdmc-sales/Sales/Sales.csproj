@@ -236,6 +236,7 @@
     <Compile Include="Controllers\EmployeeRoleController.cs" />
     <Compile Include="Controllers\FinanceController.cs" />
     <Compile Include="Controllers\PerformanceController.cs" />
+    <Compile Include="Controllers\AvaliableCompaniesController.cs" />
     <Compile Include="Controllers\SimulatorConfigController.cs" />
     <Compile Include="Controllers\DealController.cs" />
     <Compile Include="Controllers\FavorsGroupController.cs" />
@@ -1722,6 +1723,8 @@
     <Content Include="Views\EmployeeRole\AddAccountWindow.cshtml" />
     <Content Include="Views\Finance\CommissionIndex.cshtml" />
     <Content Include="Views\Account\UnLockUser.cshtml" />
+    <Content Include="Views\AvaliableCompanies\Index.cshtml" />
+    <Content Include="Views\AvaliableCompanies\MainNavigationContainer.cshtml" />
     <None Include="Views\SalesEx\EditCompany.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\SimulatorConfig.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\AjaxTargetOfMonthForMember.cshtml" />

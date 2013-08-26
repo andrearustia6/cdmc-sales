@@ -1,0 +1,34 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+@using Entity
+@using Sales.Model
+@using Utl
+@model _AvaliableCompanies
+
+
+<div style="clear: both;">
+ @Html.DropDownList("projectid",SelectHelper.ProjectSelectList(Employee.CurrentUserName))
+</div>
+@(Html.Telerik().Splitter().Name("sp1").HtmlAttributes(new { style = "min-height: 800px;overflow:auto;" })
+              .Orientation(SplitterOrientation.Horizontal).Panes(panes =>
+              {
+                  panes.Add().Size("26%").Content(@<text>@GetCRMS()</text>);
+                  panes.Add().Content(@<text>@GetCompanyDetails()</text>);
+              }))
+@helper GetCRMS()
+    {
+    
+
+        <div id="mainnavigationcontainer">
+            @Html.Partial("mainnavigationcontainer", Model)
+        </div>
+  
+ 
+}
+@helper GetCompanyDetails()
+    {
+    <div id="crmdetailscontainer" style="overflow: scroll; height: 790px;">
+      
+    </div>
+}
