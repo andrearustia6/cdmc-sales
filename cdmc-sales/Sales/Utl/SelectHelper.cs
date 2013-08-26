@@ -277,7 +277,7 @@ namespace Utl
             return selectList;
         }
 
-        public static IEnumerable<SelectListItem> ProjectSelectList(string currentUserName, int? selectVal)
+        public static IEnumerable<SelectListItem> ProjectSelectList(string currentUserName, int? selectVal=null)
         {
             List<SelectListItem> selectList = new List<SelectListItem>();
 

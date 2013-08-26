@@ -1,0 +1,35 @@
+﻿@using Entity
+@using Sales.Model
+@model _AvaliableCompanies
+
+
+<div class="memberCompanies">
+    @(Html.Telerik().TreeView().Name("memberCompanies").HtmlAttributes(new { style = "" })
+       // .ClientEvents(e => e.OnSelect("onIndexSelect"))
+        .BindTo(Model.MemberCompanies, mappings =>
+        {
+            mappings.For<_CoreLVL>(binding => binding
+            .ItemDataBound((item, core) =>
+            {
+                item.Text = core.CoreNameDisplayText;
+                item.Value = core.ID.ToString();
+            })
+            .Children(core => core._Maturitys));
+
+            mappings.For<_Maturity>(binding => binding
+            .ItemDataBound((item, maturity) =>
+            {
+                item.Text = maturity.DisplayName;
+                item.Value = maturity.ID.ToString();
+            })
+            .Children(maturity => maturity._CRMs));
+            
+            mappings.For<_CRM>(binding => binding
+          .ItemDataBound((item, crm) =>
+          {
+              item.Text = crm.DisplayName;
+              item.Value = crm.ID.ToString();
+          }));
+        })
+) 
+</div>

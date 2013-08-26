@@ -44,8 +44,10 @@ namespace Sales.Model
          public bool CoreCompany { get; set; }
          //点评，回应，通过
          public string CrmCommentState { get; set; }
-         public bool _CoreCompany { get; set; }
-         public string CompanyName{get;set;}
+         public bool? _CoreCompany { get; set; }
+         public string CompanyName { get { return string.Join(CompanyNameEN, CompanyNameCH); } }
+         public string CompanyNameCH { get; set; }
+         public string CompanyNameEN { get; set; }
          public int LeadCount {get;set;}
          public int ContectedLeadCount{get;set;}
          public string DisplayName {get{return CompanyName + "("+ContectedLeadCount+"/"+LeadCount+")";}}
@@ -65,8 +67,24 @@ namespace Sales.Model
          public IQueryable<_LeadCall> _LeadCalls { get; set; }
      }
 
+
+    public class _AvaliableCompanies : EntityBase
+    {
+        //领用公司
+        public IQueryable<_CoreLVL> MemberCompanies { get; set; }
+        //公海公司
+        public IQueryable<_CoreLVL> PublicCompanies { get; set; }
+    }
+
     public class _CoreLVL : EntityBase
     {
+        public string CoreNameDisplayText
+        {
+            get
+            {
+                return CoreName + "(" + CrmCount.ToString() + ")";
+            }
+        }
          public string CoreName { get; set; }
          public IQueryable<_Maturity> _Maturitys { get; set; }
          public int CrmCount { get; set; }
@@ -99,6 +117,6 @@ namespace Sales.Model
         public string Name { get; set; }
         public int Count { get; set; }
         public string DisplayName { get { return Name + "("+Count+")";} }
-        public IQueryable<_CRM> _CRMs { get; set; }
+        public IEnumerable<_CRM> _CRMs { get; set; }
     }
 }
