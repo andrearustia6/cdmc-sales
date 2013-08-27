@@ -5,7 +5,7 @@
 
 <div class="memberCompanies">
     @(Html.Telerik().TreeView().Name("memberCompanies").HtmlAttributes(new { style = "" })
-       // .ClientEvents(e => e.OnSelect("onIndexSelect"))
+                .ClientEvents(e => e.OnSelect("onIndexSelect"))
         .BindTo(Model.MemberCompanies, mappings =>
         {
             mappings.For<_CoreLVL>(binding => binding
@@ -33,3 +33,14 @@
         })
 ) 
 </div>
+<script>
+    //var count=0
+    //公司选择
+    function onIndexSelect(e) {
+        var nv = $('#memberCompanies').data('tTreeView');
+        var clickedvalue = nv.getItemValue(e.item);
+        $.post('_SelectedCRMNode', { crmid: clickedvalue }, function (result) {
+            $('#crmdetailscontainer').html(result);
+        });
+    }
+</script>
