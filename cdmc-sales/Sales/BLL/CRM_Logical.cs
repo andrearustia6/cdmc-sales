@@ -462,7 +462,8 @@ namespace BLL
                               TeamLeadPerformanceInWeeks = wd.Select(s => new _TeamLeadPerformanceInWeek
                               {
                                   //FaxOutCount = calls.Where(c => c.Member != null && c.Member.Name == l).GroupBy(c=>c.LeadID).Select(g=>g.FirstOrDefault()).Count(c=>c.CreatedDate >= s && c.CreatedDate < EntityFunctions.AddDays(s, 7)),
-                                  FaxOutCount = calls.Where(w => w.Member != null && w.Member.Name == l).OrderBy(o => o.CallDate).GroupBy(c => c.LeadID).Select(ss => ss.FirstOrDefault()).Count(c => c.CreatedDate >= s && c.CreatedDate < EntityFunctions.AddDays(s, 7)),
+                                  FaxOutCount = calls.Where(w => w.Member != null && w.Member.Name == l && w.CreatedDate >= s && w.CreatedDate < EntityFunctions.AddDays(s, 7)
+                                          && calls.Any(a => a.CallDate < s && a.LeadID == w.LeadID && a.Member.Name == l && a.ProjectID == w.ProjectID) == false).GroupBy(g => g.LeadID).Count(),
                                   DealsCount = deals.Count(c => c.SignDate >= s && c.SignDate < EntityFunctions.AddDays(s, 7)),
                                   StartDate = s,
                                   EndDate = EntityFunctions.AddDays(s, 7).Value,
@@ -498,7 +499,8 @@ namespace BLL
                               AssignedScore = scores.Where(w => w.TargetName == l).Average(s => s.Score) == null ? 0 : scores.Where(w => w.TargetName == l).Average(s => s.Score),
                               SalesPerformanceInWeeks = wd.Select(s => new _SalesPerformanceInWeek
                               {
-                                  FaxOutCount = calls.Where(w => w.Member != null && w.Member.Name == l).OrderBy(o => o.CallDate).GroupBy(c => c.LeadID).Select(ss => ss.FirstOrDefault()).Count(c => c.CreatedDate >= s && c.CreatedDate < EntityFunctions.AddDays(s, 7)),
+                                  FaxOutCount = calls.Where(w => w.Member != null && w.Member.Name == l && w.CreatedDate >= s && w.CreatedDate < EntityFunctions.AddDays(s, 7)
+                                          && calls.Any(a => a.CallDate < s && a.LeadID == w.LeadID && a.Member.Name == l && a.ProjectID == w.ProjectID) == false).GroupBy(g => g.LeadID).Count(),
                                   DealsCount = deals.Count(c => c.SignDate >= s && c.SignDate < EntityFunctions.AddDays(s, 7)),
                                   StartDate = s,
                                   EndDate = EntityFunctions.AddDays(s, 7).Value,
