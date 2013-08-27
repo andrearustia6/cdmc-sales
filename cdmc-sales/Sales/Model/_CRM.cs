@@ -26,6 +26,9 @@ namespace Sales.Model
         public string Title { get; set; }
         public string Department { get; set; }
         public string LastCallType { get; set; }
+        public string Contact { get; set; }
+        public string Fax { get; set; }
+        public string Email { get; set; }
     }
 
     public class _Comment : EntityBase
@@ -60,9 +63,14 @@ namespace Sales.Model
          public int WaitForApproveCount { get; set; }
          public int NoCallCount { get; set; }
          public IQueryable<_Category> _Categorys { get; set; }
+         public string CategoryString{ get; set; }
          public string Description { get; set; }
          public string PitchPoint { get; set; }
-         public IQueryable<_Lead> _Leads { get; set; }
+        /// <summary>
+        /// 竞争对手
+        /// </summary>
+         public string Competitor { get; set; }
+         public IEnumerable<_Lead> _Leads { get; set; }
          public IQueryable<_Comment> _Comments { get; set; }
          public IQueryable<_LeadCall> _LeadCalls { get; set; }
      }
