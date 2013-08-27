@@ -1,0 +1,178 @@
+﻿@using Entity
+@using Sales.Model
+@model _CRM
+
+<div class="memberCompanies">
+<div class="quan">
+<div class="quan_1">
+	<div class="quan_2">6.12<p><img src="../images/quan-01.jpg" width="19" height="20" alt="yuan" /></p></div>
+    <div class="quan_3">-2</div>
+    <div class="quan_2">6.12<p><img src="../images/quan-03.jpg" width="19" height="20" alt="yuan" /></p></div>
+    <div class="quan_3">-2</div>
+	<div class="quan_2">6.12<p><img src="../images/quan-04.jpg" width="19" height="20" alt="yuan" /></p></div>
+    <div class="quan_3">-2</div>
+    <div class="quan_2">6.12<p><img src="../images/quan-05.jpg" width="19" height="20" alt="yuan" /></p></div>
+</div>
+</div>
+<div class="quan_4">
+	<div class="left">
+    	<div class="left_1"><p>@Model.CompanyName</p>
+<p>T:+ @Model.Contact</p>
+<p>F:+ @Model.Fax</p>
+<p><a href="#">@Model.Email</a></p></div>
+        <div class="left_2"><a href="#"><img src="../images/quan-06.jpg" width="13" height="12" alt="xing" /></a><a href="#"><img src="../images/quan-07.jpg" width="14" height="16" alt="bianji" /></a></div>
+        <div class="left_3">
+        	<div class="left_4">决策者状态统计</div>
+            <div class="left_5"><img src="../images/quan-08.jpg" width="15" height="15" alt="yuan" />1<img src="../images/quan-09.jpg" width="15" height="15" alt="yuan" />1<img src="../images/quan-10.jpg" width="15" height="15" alt="yuan" />1<img src="../images/quan-11.jpg" width="15" height="15" alt="yuan" />1</div>
+            <div class="left_6">
+            	<ul>
+                	<li>
+                    	<h2>行业细分<a href="#"><img src="../images/quan-13.jpg" width="20" height="18" alt="wenhao" /></a></h2>
+                        @if (!string.IsNullOrWhiteSpace(Model.CategoryString))
+                        {
+                            @Model.CategoryString
+                        }
+                    </li>
+                    <li>
+                    	<h2>公司简介</h2>
+                        @if (!string.IsNullOrWhiteSpace(Model.Description))
+                        {
+                            @Model.Description
+                        }
+                    </li>
+                    <li>
+                    	<h2>竞争对手</h2>
+                        @if (!string.IsNullOrWhiteSpace(Model.Competitor))
+                        {
+                            @Model.Competitor.Substring(0,20) 
+                            if (Model.Competitor.Length > 20)
+                           {
+                                <p><a href="#" onclick="onCompetitor(@(Model.ID))">更多>></a></p>
+                           }
+                        }
+                    </li>
+                    <li>
+                    	<h2>Pitch Point</h2>
+                        @if (!string.IsNullOrWhiteSpace(Model.PitchPoint))
+                        {
+                           @Model.PitchPoint.Substring(0, 50)
+                          if (Model.PitchPoint.Length > 50)
+                          {
+                                <p><a href="#"  onclick="onPitchPoint(@(Model.ID))">更多>></a></p>
+                          }
+                        }
+                         
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="center">
+   
+     @if (Model._Leads != null)
+     {
+         var index = 1;
+         foreach (var lead in Model._Leads)
+         {
+            <div  class="center_@(index)">
+                <dl>
+                    <dt>
+                        @if(index==1)
+                        {
+                            <img src="../images/00.png" width="14" height="14" alt="tu" />
+                        }
+                        else
+                        {
+                            <img src="../images/22.png" width="14" height="14" alt="tu" />
+                        }
+                    </dt>
+                    <dd>
+                        <p>@lead.Name @lead.Title</p>
+                        <p>T:@lead.Contact</p>
+                        <p>F:@lead.Fax</p>
+                        <p>info@roche.com.cn</p>
+                     </dd>
+                 </dl>
+                 <h2><a href="#">更多>></a></h2>
+            </div>
+                                 index++;
+                                 if (index > 2)
+                                 {
+                                     index = 1;
+                                 }
+         }
+     }
+    	
+</div>
+<div class="right">
+    	<div class="right_1">
+        	<h2>David Benson  | CFO </h2>
+            <p><span>Fully Pitched</span></p>
+            <p>对我们的活动很感兴趣，但预算方面可能不
+足，仍需下次再进行电话协商</p>
+            <p>Dec 29,2013 14:45</p>
+            <p>By Bruce Xu</p>
+        </div>
+        <div class="right_2">
+        	<h2>David Benson  | CFO </h2>
+            <p><span>Waiting for approved</span></p>
+            <p>已确定会有两位来参展，将通过邮件发送合同。</p>
+            <p>Dec 29,2013 14:45</p>
+            <p>By Bruce Xu</p>
+        </div>
+<div class="right_3">
+        	<h2>David Benson  | CFO </h2>
+            <p><span>Blow</span></p>
+            <p>邮件确认后，已进单。</p>
+            <p>Dec 29,2013 14:45</p>
+            <p>By Bruce Xu</p>
+        </div>
+  </div>
+</div>
+</div>
+
+@(Html.Telerik().Window().Title("竞争对手")
+        .Name("Competitor")
+    .Content(@<text><div class="dialogue-Competitor">
+        <div class="Competitor-wrapper">
+        </div>
+        <div class="dialogue-buttons" style="float:right;">
+            <input type="button" class="btn-queding" onclick="Javescript:$('#Competitor').data('tWindow').close();" />
+        </div>
+    </div></text>)
+    .Width(600).Height(200).Draggable(true).Modal(true).Visible(false)
+)
+@(Html.Telerik().Window().Title("Pitch Point")
+            .Name("PitchPoint")
+    .Content(@<text><div class="dialogue-PitchPoint">
+        <div class="PitchPoint-wrapper">
+        </div>
+        <div class="dialogue-buttons" style="float:right;">
+            <input type="button" class="btn-queding" onclick="Javescript:$('#PitchPoint').data('tWindow').close();" />
+        </div>
+    </div></text>)
+    .Width(600).Height(200).Draggable(true).Modal(true).Visible(false)
+)
+<script>
+    function onCompetitor(currentCompanyId) {
+        $.post('GetCompetitor', { crmid: currentCompanyId }, function (result) {
+            $('.Competitor-wrapper').html(result);
+            var window = $('#Competitor').data('tWindow');
+            window.center().open();
+
+            while ($('.dialogue-Competitor form').length > 1) {
+                $('.dialogue-Competitor form').last().remove();
+            }
+        });
+    }
+    function onPitchPoint(currentCompanyId) {
+        $.post('GetPitchPoint', { crmid: currentCompanyId }, function (result) {
+            $('.PitchPoint-wrapper').html(result);
+            var window = $('#PitchPoint').data('tWindow');
+            window.center().open();
+            while ($('.dialogue-PitchPoint form').length > 1) {
+                $('.dialogue-PitchPoint form').last().remove();
+            }
+        });
+    }
+</script>

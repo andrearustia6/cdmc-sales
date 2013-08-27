@@ -13,14 +13,14 @@
 @(Html.Telerik().Splitter().Name("sp1").HtmlAttributes(new { style = "min-height: 800px;overflow:auto;" })
               .Orientation(SplitterOrientation.Horizontal).Panes(panes =>
               {
-                  panes.Add().Size("26%").Content(@<text>@GetCRMS()</text>);
+                  panes.Add().Size("20%").Content(@<text>@GetCRMS()</text>);
                   panes.Add().Content(@<text>@GetCompanyDetails()</text>);
               }))
 @helper GetCRMS()
     {
     
 
-        <div id="mainnavigationcontainer">
+        <div id="mainnavigationcontainer" >
             @Html.Partial("mainnavigationcontainer", Model)
         </div>
   
@@ -28,7 +28,8 @@
 }
 @helper GetCompanyDetails()
     {
+        var aa = new _CRM();
     <div id="crmdetailscontainer" style="overflow: scroll; height: 790px;">
-      
+      @Html.Partial("detailcontainer", aa)
     </div>
 }
