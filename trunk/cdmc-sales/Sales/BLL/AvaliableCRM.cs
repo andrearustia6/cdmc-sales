@@ -62,7 +62,26 @@ namespace Sales.BLL
             var data = CH.GetDataById<CompanyRelationship>(crmid);
             var crm = new _CRM()
             {
-               //  CompanyName = data.CompanyName
+                ID=data.ID,
+                CompanyNameEN = data.Company.Name_EN,
+                CompanyNameCH=data.Company.Name_CH,
+                Contact=data.Company.Contact,
+                Fax=data.Company.Fax,
+                Email="没找到字段",
+                CategoryString=data.CategoryString,
+                Description=data.Description,
+                Competitor=data.Company.Competitor,
+                PitchPoint=data.PitchedPoint,
+                _Leads= (from leads in data.Company.Leads
+                         select new _Lead()
+                         {
+                             Name=leads.Name_CH,
+                             Title=leads.Title,
+                             Contact=leads.Contact,
+                             Fax=leads.Fax,
+                             Email=leads.EMail
+                         })
+
             };
 
             return crm;
