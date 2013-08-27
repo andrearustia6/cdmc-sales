@@ -18,6 +18,8 @@ namespace Sales.Model
         public string LeadTitle { get; set; }
         public string CallResult { get; set; }
         public string CallType { get; set; }
+        public DateTime CallDate { get; set; }
+        public string Creator { get; set; }
     }
 
     public class _Lead : EntityBase
@@ -72,7 +74,7 @@ namespace Sales.Model
          public string Competitor { get; set; }
          public IEnumerable<_Lead> _Leads { get; set; }
          public IQueryable<_Comment> _Comments { get; set; }
-         public IQueryable<_LeadCall> _LeadCalls { get; set; }
+         public IEnumerable<_LeadCall> _LeadCalls { get; set; }
      }
 
 

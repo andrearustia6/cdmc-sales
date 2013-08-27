@@ -105,28 +105,26 @@
     	
 </div>
 <div class="right">
-    	<div class="right_1">
-        	<h2>David Benson  | CFO </h2>
-            <p><span>Fully Pitched</span></p>
-            <p>对我们的活动很感兴趣，但预算方面可能不
-足，仍需下次再进行电话协商</p>
-            <p>Dec 29,2013 14:45</p>
-            <p>By Bruce Xu</p>
-        </div>
-        <div class="right_2">
-        	<h2>David Benson  | CFO </h2>
-            <p><span>Waiting for approved</span></p>
-            <p>已确定会有两位来参展，将通过邮件发送合同。</p>
-            <p>Dec 29,2013 14:45</p>
-            <p>By Bruce Xu</p>
-        </div>
-<div class="right_3">
-        	<h2>David Benson  | CFO </h2>
-            <p><span>Blow</span></p>
-            <p>邮件确认后，已进单。</p>
-            <p>Dec 29,2013 14:45</p>
-            <p>By Bruce Xu</p>
-        </div>
+@if (Model._LeadCalls != null)
+     {
+         var index = 1;
+         foreach (var call in Model._LeadCalls)
+         {
+            <div  class="right_@(index)">
+               <h2>@call.LeadName  | @call.LeadTitle </h2>
+            <p><span>@call.CallType</span></p>
+            <p>@call.CallResult</p>
+            <p>@call.CallDate.ToLongDateString() @call.CallDate.ToShortTimeString()</p>
+            <p>By @call.Creator</p>
+            </div>
+            index++;
+            if (index > 2)
+            {
+                index = 1;
+            }
+         }
+     }
+    	
   </div>
 </div>
 </div>
