@@ -80,7 +80,17 @@ namespace Sales.BLL
                              Contact=leads.Contact,
                              Fax=leads.Fax,
                              Email=leads.EMail
-                         })
+                         }),
+                _LeadCalls = (from leadcalls in data.LeadCalls
+                              select new _LeadCall()
+                              {
+                                  LeadName=leadcalls.Lead.Name_CH,
+                                  LeadTitle=leadcalls.Lead.Title,
+                                  CallResult=leadcalls.Result,
+                                  CallType=leadcalls.LeadCallType.DisplayName,
+                                  CallDate=leadcalls.CallDate,
+                                  Creator=leadcalls.Creator
+                              })
 
             };
 
