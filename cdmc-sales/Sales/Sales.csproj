@@ -1749,6 +1749,12 @@
     <Content Include="Views\AvaliableCompanies\DetailContainer.cshtml" />
     <Content Include="Views\AvaliableCompanies\Competitor.cshtml" />
     <Content Include="Views\AvaliableCompanies\PitchPoint.cshtml" />
+    <Content Include="Views\AvaliableCompanies\AddCompany.cshtml" />
+    <Content Include="Views\AvaliableCompanies\AddLead.cshtml" />
+    <Content Include="Views\AvaliableCompanies\EditLead.cshtml" />
+    <Content Include="Views\AvaliableCompanies\EditCompany.cshtml" />
+    <Content Include="Views\AvaliableCompanies\AddCall.cshtml" />
+    <Content Include="Views\AvaliableCompanies\EditLeadCall.cshtml" />
     <None Include="Views\SalesEx\EditCompany.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\SimulatorConfig.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\AjaxTargetOfMonthForMember.cshtml" />

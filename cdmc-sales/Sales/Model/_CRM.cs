@@ -24,6 +24,7 @@ namespace Sales.Model
 
     public class _Lead : EntityBase
     {
+        public int? CompanyID { get; set; }
         public string Name { get; set; }
         public string Title { get; set; }
         public string Department { get; set; }
@@ -50,6 +51,7 @@ namespace Sales.Model
          //点评，回应，通过
          public string CrmCommentState { get; set; }
          public bool? _CoreCompany { get; set; }
+         public int? CompanyID { get; set; }
          public string CompanyName { get { return string.Join(",",CompanyNameEN, CompanyNameCH); } }
          public string CompanyNameCH { get; set; }
          public string CompanyNameEN { get; set; }
