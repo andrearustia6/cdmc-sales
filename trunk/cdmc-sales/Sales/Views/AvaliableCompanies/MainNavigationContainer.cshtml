@@ -39,6 +39,8 @@
     function onIndexSelect(e) {
         var nv = $('#memberCompanies').data('tTreeView');
         var clickedvalue = nv.getItemValue(e.item);
+        crmid = clickedvalue;
+        gleadid = "";
         $.post('_SelectedCRMNode', { crmid: clickedvalue }, function (result) {
             $('#crmdetailscontainer').html(result);
         });

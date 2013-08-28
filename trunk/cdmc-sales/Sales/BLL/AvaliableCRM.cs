@@ -63,6 +63,7 @@ namespace Sales.BLL
             var crm = new _CRM()
             {
                 ID=data.ID,
+                CompanyID=data.CompanyID,
                 CompanyNameEN = data.Company.Name_EN,
                 CompanyNameCH=data.Company.Name_CH,
                 Contact=data.Company.Contact,
@@ -75,6 +76,8 @@ namespace Sales.BLL
                 _Leads= (from leads in data.Company.Leads
                          select new _Lead()
                          {
+                             ID=leads.ID,
+                             CompanyID=leads.CompanyID,
                              Name=leads.Name_CH,
                              Title=leads.Title,
                              Contact=leads.Contact,
@@ -90,6 +93,47 @@ namespace Sales.BLL
                                   CallType=leadcalls.LeadCallType.DisplayName,
                                   CallDate=leadcalls.CallDate,
                                   Creator=leadcalls.Creator
+                              })
+
+            };
+
+            return crm;
+        }
+        public static _CRM _CRMGetAvaliableCrmDetailByCrmIDLeadID(int crmid,int leadid)
+        {
+            var data = CH.GetDataById<CompanyRelationship>(crmid);
+            var crm = new _CRM()
+            {
+                ID = data.ID,
+                CompanyID = data.CompanyID,
+                CompanyNameEN = data.Company.Name_EN,
+                CompanyNameCH = data.Company.Name_CH,
+                Contact = data.Company.Contact,
+                Fax = data.Company.Fax,
+                Email = "没找到字段",
+                CategoryString = data.CategoryString,
+                Description = data.Description,
+                Competitor = data.Company.Competitor,
+                PitchPoint = data.PitchedPoint,
+                _Leads = (from leads in data.Company.Leads
+                          select new _Lead()
+                          {
+                              ID = leads.ID,
+                              Name = leads.Name_CH,
+                              Title = leads.Title,
+                              Contact = leads.Contact,
+                              Fax = leads.Fax,
+                              Email = leads.EMail
+                          }),
+                _LeadCalls = (from leadcalls in data.LeadCalls.Where(c=>c.LeadID==leadid)
+                              select new _LeadCall()
+                              {
+                                  LeadName = leadcalls.Lead.Name_CH,
+                                  LeadTitle = leadcalls.Lead.Title,
+                                  CallResult = leadcalls.Result,
+                                  CallType = leadcalls.LeadCallType.DisplayName,
+                                  CallDate = leadcalls.CallDate,
+                                  Creator = leadcalls.Creator
                               })
 
             };

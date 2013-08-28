@@ -1,0 +1,24 @@
+﻿@using Entity
+@using Utl
+@model Model.AjaxViewLeadCall
+
+@using (Html.BeginForm("EditSaleCall", "Sales"))
+{
+    @Html.HiddenFor(model=>model.CompanyRelationshipId)
+    @Html.HiddenFor(model => model.LeadId)
+    @Html.HiddenFor(model => model.CallId)
+    @Html.HiddenFor(model => model.ProjectId)
+    <ul>
+        <li><span class="addcall-left">@Html.LabelFor(model => model.CallDate) @Html.Telerik().DatePickerFor(model => model.CallDate)
+            @Html.ValidationMessageFor(model => model.CallDate)</span> <span class="addcall-right">
+                @Html.LabelFor(model => model.CallBackDate) @Html.Telerik().DatePickerFor(model => model.CallBackDate)
+                @Html.ValidationMessageFor(model => model.CallBackDate)
+            </span></li>
+        <li><span class="addcall-left">@Html.LabelFor(model => model.CallTypeId) @Html.DropDownListFor(model => model.CallTypeId, SelectHelper.CallTypeSelectList(Model.CallTypeId), "-请选择-")
+            @Html.ValidationMessageFor(model => model.CallTypeId)</span> 
+        </li>
+        <li><span >@Html.LabelFor(model => model.Result) @Html.TextAreaFor(model => model.Result)
+            @Html.ValidationMessageFor(model => model.Result)</span>
+          </li>      
+    </ul>
+}
