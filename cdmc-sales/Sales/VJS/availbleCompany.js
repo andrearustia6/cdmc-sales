@@ -632,7 +632,7 @@ function groupContextMenuSelected(e, context) {
 
 //公司关联菜单选中/自定义组公司关联选中
 function contextMenuSelected(e, context) {
-    alert('contextMenuSelected');
+  
     var $target = $(e.target);
 
     //copy到新分组
