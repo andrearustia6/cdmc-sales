@@ -2,6 +2,7 @@
     ViewBag.Title = "项目出单";
     ViewBag.ShowDuration = "false";
     
+   
 }
 @using Entity
 @using Model
@@ -9,6 +10,7 @@
 @using Utl;
 @Html.Partial("contenttitle", "项目出单")
 @Html.Partial("multipleprojectselector")
+
 @{
     var pls = ViewBag.SelectedProjects as List<int>;
     var sid = Utl.ConvertSelectProjectIDtoString(pls);
@@ -29,11 +31,12 @@
 
                     c.Bound(item => item.RMBPayment).Title("RMB出单总额").Width(100).Format("{0:￥#,##0}").Aggregate(aggregates => aggregates.Sum()).ClientFooterTemplate("<p>RMB出单总额: ￥<#= $.telerik.formatString('{0:n0}', Sum) #></p>").ClientGroupFooterTemplate("<p>RMB出单总额: ￥<#= $.telerik.formatString('{0:n0}', Sum) #></p>");
                     c.Bound(item => item.USDPayment).Title("USD出单总额").Width(100).Format("{0:$#,##0}").Aggregate(aggregates => aggregates.Sum()).ClientFooterTemplate("<p>USD出单总额: $<#= $.telerik.formatString('{0:n0}', Sum) #></p>").ClientGroupFooterTemplate("<p>USD出单总额: $<#= $.telerik.formatString('{0:n0}', Sum) #></p>");
+                    c.Bound(item => item.PaymentTotal).Title("所有出单总额(RMB)").Width(130).Format("{0:$#,##0}").Aggregate(aggregates => aggregates.Sum()).ClientFooterTemplate("<p>所有出单总额(RMB): $<#= $.telerik.formatString('{0:n0}', Sum) #></p>").ClientGroupFooterTemplate("<p>所有出单总额(RMB): $<#= $.telerik.formatString('{0:n0}', Sum) #></p>");
                     c.Bound(item => item.Income).Title("入账总额").Width(100).Format("{0:￥#,##0}").Aggregate(aggregates => aggregates.Sum()).ClientFooterTemplate("<p>入账总额: ￥<#= $.telerik.formatString('{0:n0}', Sum) #></p>").ClientGroupFooterTemplate("<p>入账总额: ￥<#= $.telerik.formatString('{0:n0}', Sum) #></p>");
                     c.Bound(item => item.IsClosed).Width(70);
                     c.Bound(item => item.Abandoned).Width(70);
                     c.Bound(item => item.TicketDescription);
-                    c.Bound(item => item.SignDate).Format("{0:d}").Width(100);
+                    c.Bound(item => item.SignDate).Format("{0:d}").Width(80);
                     c.Bound(item => item.ExpectedPaymentDate).Format("{0:d}").Width(100);
                     c.Bound(item => item.ActualPaymentDate).Format("{0:d}").Width(100);
                     c.Bound(item => item.ProjectCode);

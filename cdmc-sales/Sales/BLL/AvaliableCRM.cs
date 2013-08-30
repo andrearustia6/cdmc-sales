@@ -70,6 +70,14 @@ namespace Sales.BLL
                 Fax=data.Company.Fax,
                 Email="没找到字段",
                 CategoryString=data.CategoryString,
+                _Categorys = (from c in data.Categorys
+                              select new _Category()
+                              {
+                                  Name = c.Name,
+                                  Details = c.Details,
+                                  Description = c.Description
+                              }
+                                 ),
                 Description=data.Description,
                 Competitor=data.Company.Competitor,
                 PitchPoint=data.PitchedPoint,
@@ -78,7 +86,7 @@ namespace Sales.BLL
                          {
                              ID=leads.ID,
                              CompanyID=leads.CompanyID,
-                             Name=leads.Name_CH,
+                             Name = leads.Name_CH + " " + leads.Name_EN,
                              Title=leads.Title,
                              Contact=leads.Contact,
                              Fax=leads.Fax,
@@ -87,10 +95,10 @@ namespace Sales.BLL
                 _LeadCalls = (from leadcalls in data.LeadCalls
                               select new _LeadCall()
                               {
-                                  LeadName=leadcalls.Lead.Name_CH,
+                                  LeadName=leadcalls.Lead.Name_EN,
                                   LeadTitle=leadcalls.Lead.Title,
                                   CallResult=leadcalls.Result,
-                                  CallType=leadcalls.LeadCallType.DisplayName,
+                                  CallType=leadcalls.LeadCallType.Name,
                                   CallDate=leadcalls.CallDate,
                                   Creator=leadcalls.Creator
                               })
@@ -111,6 +119,14 @@ namespace Sales.BLL
                 Contact = data.Company.Contact,
                 Fax = data.Company.Fax,
                 Email = "没找到字段",
+                _Categorys= (from c in data.Categorys
+                                 select new _Category()
+                                 {
+                                     Name=c.Name,
+                                     Details=c.Details,
+                                     Description=c.Description
+                                 }
+                                 ),
                 CategoryString = data.CategoryString,
                 Description = data.Description,
                 Competitor = data.Company.Competitor,
@@ -119,7 +135,7 @@ namespace Sales.BLL
                           select new _Lead()
                           {
                               ID = leads.ID,
-                              Name = leads.Name_CH,
+                              Name = leads.Name_CH + " " + leads.Name_EN,
                               Title = leads.Title,
                               Contact = leads.Contact,
                               Fax = leads.Fax,
@@ -131,7 +147,7 @@ namespace Sales.BLL
                                   LeadName = leadcalls.Lead.Name_CH,
                                   LeadTitle = leadcalls.Lead.Title,
                                   CallResult = leadcalls.Result,
-                                  CallType = leadcalls.LeadCallType.DisplayName,
+                                  CallType = leadcalls.LeadCallType.Name,
                                   CallDate = leadcalls.CallDate,
                                   Creator = leadcalls.Creator
                               })

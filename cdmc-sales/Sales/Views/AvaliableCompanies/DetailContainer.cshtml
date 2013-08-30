@@ -48,19 +48,22 @@
     	<div class="left_1"><p>@Model.CompanyName</p>
 <p>T:+ @Model.Contact</p>
 <p>F:+ @Model.Fax</p>
-<p><a href="#">@Model.Email</a></p></div>
-        <div class="left_2"><a href="#"><img src="../images/quan-06.jpg" width="13" height="12" alt="xing" /></a><a href="#"><img src="../images/quan-07.jpg" width="14" height="16" alt="bianji" onclick="onCompanyEdit(@(Model.CompanyID))"/></a></div>
+<p><a href="#">@Model.Email</a></p>
+
+</div>
+        <div class="left_2"><a href="#"><img src="../images/quan-06.jpg" width="13" height="12" alt="xing" /></a><a href="#"><img src="../images/pen1919.png" alt="bianji" onclick="onCompanyEdit(@(Model.CompanyID))"/></a><a href="#"  onclick="onLeadAdd(@(Model.CompanyID))"><img src="../images/user.png" alt="新增Leader" /></a></div>
         <div class="left_3">
         	<div class="left_4">决策者状态统计</div>
             <div class="left_5"><img src="../images/quan-08.jpg" width="15" height="15" alt="yuan" />1<img src="../images/quan-09.jpg" width="15" height="15" alt="yuan" />1<img src="../images/quan-10.jpg" width="15" height="15" alt="yuan" />1<img src="../images/quan-11.jpg" width="15" height="15" alt="yuan" />1</div>
             <div class="left_6">
             	<ul>
                 	<li>
-                    	<h2>行业细分<a href="#"><img src="../images/quan-13.jpg" width="20" height="18" alt="wenhao" /></a></h2>
+                    	<h2>行业细分</h2>
                         @if (!string.IsNullOrWhiteSpace(Model.CategoryString))
                         {
                             @Model.CategoryString
                         }
+                        <a href="#" onclick="GetCategories(@(Model.ID))"><img src="../images/quan-13.jpg" width="20" height="18" alt="wenhao" /></a>
                     </li>
                     <li>
                     	<h2>公司简介</h2>
@@ -97,16 +100,20 @@
         </div>
     </div>
     <div class="center">
-   <a href="#"  onclick="onLeadAdd(@(Model.CompanyID))">新增Leader</a>
+   
      @if (Model._Leads != null)
      {
          var index = 1;
          foreach (var lead in Model._Leads)
          {
+             <a href="#"  onclick="onLeadSelect(@(lead.ID))">
             <div  class="center_2" id="lead@(lead.ID)">
+            <img src="../images/call.png" alt="新增通话" onclick="onCallAdd(@(lead.ID))" style=" display: inline;float: right;" />
+            <img src="../images/pen1616.png" alt="编辑" onclick="onLeadEdit(@(lead.ID))" style=" display: inline;float: right;" />
+            
                 <dl>
                     <dt>
-                        @if(index==1)
+                        @if (index == 1)
                         {
                             <img src="../images/00.png" width="14" height="14" alt="tu" />
                         }
@@ -116,15 +123,16 @@
                         }
                     </dt>
                     <dd>
-                        <p><a href="#"  onclick="onLeadSelect(@(lead.ID))">@lead.Name @lead.Title</a><img src="../images/quan-07.jpg" alt="编辑" onclick="onLeadEdit(@(lead.ID))" style=" display: inline;float: right;" /></p>
+                        <p>@lead.Name</p>
+                        <p>@lead.Title</p>
                         <p>T:@lead.Contact</p>
                         <p>F:@lead.Fax</p>
-                        <p>info@roche.com.cn</p>
+                        <p>@lead.Email</p>
                      </dd>
                  </dl>
-                 <h2><a href="#">更多>></a></h2>
                  
             </div>
+         </a>
                         index++;
                         if (index > 2)
                         {
@@ -135,7 +143,7 @@
     	
 </div>
 <div class="right">
-<a href="#"  onclick="onCallAdd()">新增通话记录</a>
+
 @if (Model._LeadCalls != null)
 {
     var index = 1;
@@ -144,7 +152,7 @@
             <div  class="right_@(index)">
                <h2>@call.LeadName  | @call.LeadTitle </h2>
             <p><span>@call.CallType</span></p>
-            <p>@call.CallResult</p>
+            <p><span>@call.CallResult</span></p>
             <p>@call.CallDate.ToLongDateString() @call.CallDate.ToShortTimeString()</p>
             <p>By @call.Creator</p>
             </div>
@@ -159,6 +167,19 @@
   </div>
 </div>
 </div>
+@(Html.Telerik().Window().Title("行业细分")
+    .Name("Categories")
+    .Content(@<text><div class="dialogue-Categories">
+        <div class="Categories-wrapper">
+        </div>
+        <div class="dialogue-buttons" style="position:absolute;bottom:0;width:98%;text-align:right;">
+             <input type="button" class="btn-queding" onclick="Javescript:$('#Categories').data('tWindow').close();" />
+        </div>
+    </div></text>)
+        .Width(1000)
+        .Height(220)
+                .Modal(true).Visible(false).Draggable(true)
+    )
 @(Html.Telerik().Window().Title("添加公司")
     .Name("AddCompany1")
     .Content(@<text><div class="dialogue-addcompany1">
@@ -478,6 +499,16 @@
             }
         });
     }
+    function GetCategories(currentCompanyId) {
+        $.post('GetCategories', { crmid: currentCompanyId }, function (result) {
+            $('.Categories-wrapper').html(result);
+            var window = $('#Categories').data('tWindow');
+            window.center().open();
+            while ($('.dialogue-Categories form').length > 1) {
+                $('.dialogue-Categories form').last().remove();
+            }
+        });
+    }
     function onLeadSelect(leadid) {
         gleadid = leadid;
         $.post('GetCRMByCrmIDLeadID', { crmid: crmid, leadid: leadid }, function (result) {
@@ -678,7 +709,7 @@
                 $('#AddLead').data('tWindow').close();
                 gleadid = result;
                 if (confirm('Lead新增成功,是否新增相应Call')) {
-                    onCallAddWithLeadID(result);
+                    onCallAdd(result);
                 } else {
                     RefreshCrm();
                 }
@@ -689,35 +720,18 @@
         });
 
     }
-    //点选lead后添加call
-    function onCallAdd() {
-        if (gleadid == "" || gleadid==undefined) {
-            alert("请先选择客户");
-            return;
-        }
-
+    function onCallAdd(leadid) {
         currentProjectId = $('#projectid').val().replace(/(^\s*)|(\s*$)/g, '');
         if (currentProjectId.length == 0) {
             currentProjectId = null;
         }
-        $.post('GetAddCall', { leadId: gleadid, companyRelationId: crmid, projectId: currentProjectId }, function (result) {
+        $.post('GetAddCall', { leadId: leadid, companyRelationId: crmid, projectId: currentProjectId }, function (result) {
             $('.calladd-wrapper').html(result);
             var window = $('#AddCall').data('tWindow');
             window.center().open();
         });
     }
-    //添加lead后直接添加call
-    function onCallAddWithLeadID(result) {
-        currentProjectId = $('#projectid').val().replace(/(^\s*)|(\s*$)/g, '');
-        if (currentProjectId.length == 0) {
-            currentProjectId = null;
-        }
-        $.post('GetAddCall', { leadId: result, companyRelationId: crmid, projectId: currentProjectId }, function (result) {
-            $('.calladd-wrapper').html(result);
-            var window = $('#AddCall').data('tWindow');
-            window.center().open();
-        });
-    }
+    
     function AddCall() {
         if ($('.dialogue-addcall form #ProjectId').val() == 'null') {
             $('.dialogue-addcall form #ProjectId').val('');

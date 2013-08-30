@@ -42,7 +42,11 @@ namespace Sales.Controllers
             var data = AvaliableCRM._CRMGetAvaliableCrmDetail(int.Parse(crmid));
             return PartialView("PitchPoint", data);
         }
-
+        public PartialViewResult GetCategories(string crmid)
+        {
+            var data = AvaliableCRM._CRMGetAvaliableCrmDetail(int.Parse(crmid));
+            return PartialView("Category", data);
+        }
         public ActionResult GetAddLead(int companyId)
         {
             AjaxViewLead ajaxViewLead = new AjaxViewLead() { CompanyId = companyId };
