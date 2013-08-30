@@ -66,13 +66,17 @@
                 }
             </ul>
         </div>
-        <div>
+        
+        @if(Html.ViewContext.Controller.ToString().Contains("Deal"))
+        {
+            <div>
         是否付款: 
             @Html.DropDownList("paytype", payedlists, paytype)
         </div>
+        }
          </fieldset>
-        if (displayduration=="true")
-        {
+    if (displayduration == "true")
+    {
    
          <fieldset><legend>时间选择</legend>
        <div style="margin: 10px">
@@ -88,7 +92,7 @@
         </span></b>
     </div>
    </fieldset>
-            }
+    }
    
 }
 

@@ -10,6 +10,7 @@ namespace Sales.Model
     {
         public string Name{get;set;}
         public string PitchPoint {get;set;}
+        public string Details { get; set; }
         public int? CRMID { get; set; }
     }
     public class _LeadCall : EntityBase
@@ -66,7 +67,7 @@ namespace Sales.Model
          public int CloseDealCount { get; set; }
          public int WaitForApproveCount { get; set; }
          public int NoCallCount { get; set; }
-         public IQueryable<_Category> _Categorys { get; set; }
+         public IEnumerable<_Category> _Categorys { get; set; }
          public string CategoryString{ get; set; }
          public string Description { get; set; }
          public string PitchPoint { get; set; }

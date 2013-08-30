@@ -1,0 +1,16 @@
+﻿@using Entity
+@using Sales.Model
+@model _CRM
+<ul>
+ @if (Model._Categorys != null)
+ {
+     foreach (var category in Model._Categorys)
+     {
+          <li>
+          @category.Name:
+        <p  style="border:1px solid black; ">@category.Details</p>
+    </li>
+     }
+ }
+   
+</ul>

@@ -346,6 +346,7 @@
     <Content Include="images\bj.jpg" />
     <Content Include="images\bj_3.gif" />
     <Content Include="images\bj_4.gif" />
+    <Content Include="images\call.png" />
     <Content Include="images\chazhao.jpg" />
     <Content Include="images\chongzhi.jpg" />
     <Content Include="images\chudan.jpg" />
@@ -356,6 +357,8 @@
     <Content Include="images\hover.gif" />
     <Content Include="images\input.jpg" />
     <Content Include="images\logo_2.gif" />
+    <Content Include="images\pen1616.png" />
+    <Content Include="images\pen1919.png" />
     <Content Include="images\quan-01.jpg" />
     <Content Include="images\quan-02.jpg" />
     <Content Include="images\quan-03.jpg" />
@@ -386,6 +389,7 @@
     <Content Include="images\tu.jpg" />
     <Content Include="images\tubiao.gif" />
     <Content Include="images\tu_2.jpg" />
+    <Content Include="images\user.png" />
     <Content Include="images\yuanjiao.gif" />
     <Content Include="images\yuanjiao_2.gif" />
     <Content Include="images\yuanjiao_3.gif" />
@@ -1755,6 +1759,7 @@
     <Content Include="Views\AvaliableCompanies\EditCompany.cshtml" />
     <Content Include="Views\AvaliableCompanies\AddCall.cshtml" />
     <Content Include="Views\AvaliableCompanies\EditLeadCall.cshtml" />
+    <Content Include="Views\AvaliableCompanies\category.cshtml" />
     <None Include="Views\SalesEx\EditCompany.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\SimulatorConfig.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\AjaxTargetOfMonthForMember.cshtml" />

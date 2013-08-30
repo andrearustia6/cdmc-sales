@@ -211,7 +211,13 @@ namespace Model
                     return 0;
             }
         }
-
+        public decimal PaymentTotal
+        {
+            get
+            {
+                return RMBPayment + USDPayment * (decimal)6.3;
+            }
+        }
         [Display(Name = "出单经验分享")]
         public string PaymentDetail { get; set; }
 
