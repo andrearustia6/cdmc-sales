@@ -250,7 +250,19 @@ namespace Entity
     {
         public string CoreLVLName { get; set; }
     }
-
+    public class Comment : EntityBase
+    {
+        [Required]
+        public string Contents { get; set; }
+        public string Submitter { get; set; }
+        public DateTime CommentDate { get; set; }
+        public virtual CompanyRelationship CompanyRelationship { get; set; }
+        public int? CompanyRelationshipID { get; set; }
+    }
+    public class CommentContent : EntityBase
+    {
+        public string Contents { get; set; }
+    }
     [JsonIgnoreAttribute("Deals", "Project", "Categorys", "LeadCalls", "Members")]
     public class CompanyRelationship : EntityBase
     {
@@ -326,6 +338,8 @@ namespace Entity
 
         [Display(Name = "Pitch点")]
         public string PitchedPoint { get; set; }
+
+        public virtual List<Comment> Comments { get; set; }
     }
 
     /// <summary>

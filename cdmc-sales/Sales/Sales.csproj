@@ -1760,6 +1760,8 @@
     <Content Include="Views\AvaliableCompanies\AddCall.cshtml" />
     <Content Include="Views\AvaliableCompanies\EditLeadCall.cshtml" />
     <Content Include="Views\AvaliableCompanies\category.cshtml" />
+    <Content Include="Views\AvaliableCompanies\Comment.cshtml" />
+    <Content Include="Views\AvaliableCompanies\Description.cshtml" />
     <None Include="Views\SalesEx\EditCompany.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\SimulatorConfig.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\AjaxTargetOfMonthForMember.cshtml" />

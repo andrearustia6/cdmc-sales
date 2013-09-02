@@ -51,9 +51,14 @@
 <p><a href="#">@Model.Email</a></p>
 
 </div>
-        <div class="left_2"><a href="#"><img src="../images/quan-06.jpg" width="13" height="12" alt="xing" /></a><a href="#"><img src="../images/pen1919.png" alt="bianji" onclick="onCompanyEdit(@(Model.CompanyID))"/></a><a href="#"  onclick="onLeadAdd(@(Model.CompanyID))"><img src="../images/user.png" alt="新增Leader" /></a></div>
+        <div class="left_2">
+        @if (Model.CoreCompany)
+        {
+        <a href="#"><img src="../images/quan-06.jpg" width="13" height="12" alt="xing" /></a>
+        }
+        <a href="#"><img src="../images/pen1919.png" alt="bianji" onclick="onCompanyEdit(@(Model.CompanyID))"/></a><a href="#"  onclick="onLeadAdd(@(Model.CompanyID))"><img src="../images/user.png" alt="新增Leader" width="19" height="19" /></a></div>
         <div class="left_3">
-        	<div class="left_4">决策者状态统计</div>
+        	<div class="left_4">决策人状态统计</div>
             <div class="left_5"><img src="../images/quan-08.jpg" width="15" height="15" alt="yuan" />1<img src="../images/quan-09.jpg" width="15" height="15" alt="yuan" />1<img src="../images/quan-10.jpg" width="15" height="15" alt="yuan" />1<img src="../images/quan-11.jpg" width="15" height="15" alt="yuan" />1</div>
             <div class="left_6">
             	<ul>
@@ -69,18 +74,22 @@
                     	<h2>公司简介</h2>
                         @if (!string.IsNullOrWhiteSpace(Model.Description))
                         {
-                            @Model.Description
+                           @Model.Description.Substring(0, 50)
+                            if (Model.Description.Length > 50)
+                      {
+                                <p><a href="#"  onclick="onDescription(@(Model.ID))">更多>></a></p>
+                      }
                         }
                     </li>
                     <li>
                     	<h2>竞争对手</h2>
                         @if (!string.IsNullOrWhiteSpace(Model.Competitor))
                         {
-                            @Model.Competitor.Substring(0,20) 
-                            if (Model.Competitor.Length > 20)
-                           {
+                            @Model.Competitor.Substring(0, 20) 
+                       if (Model.Competitor.Length > 20)
+                       {
                                 <p><a href="#" onclick="onCompetitor(@(Model.ID))">更多>></a></p>
-                           }
+                       }
                         }
                     </li>
                     <li>
@@ -88,17 +97,50 @@
                         @if (!string.IsNullOrWhiteSpace(Model.PitchPoint))
                         {
                            @Model.PitchPoint.Substring(0, 50)
-                          if (Model.PitchPoint.Length > 50)
-                          {
+                      if (Model.PitchPoint.Length > 50)
+                      {
                                 <p><a href="#"  onclick="onPitchPoint(@(Model.ID))">更多>></a></p>
-                          }
+                      }
                         }
                          
                     </li>
                 </ul>
             </div>
         </div>
+
+    	<div class="dierye_1">
+            <div style="float: left;width: 70%;">
+                点评
+            </div>
+            <div style="float: left;width: 20%;">
+                <a href="#" onclick="GetAddComment()"><img src="../images/quan-14.jpg" width="29" height="29" alt="jia"></a>
+            </div>
+        </div>
+        
+    	<div class="dierye_3">
+         @if (Model._Comments != null)
+         {
+             var i = 1;
+             foreach (var comment in Model._Comments)
+             {
+        	<div class="dierye_3_@(i)">
+            	<dl>
+                	<dt><p>@comment.Content</p>
+                    <p>@comment.CommentDate.ToLongDateString() @comment.CommentDate.ToShortTimeString() By @comment.Submitter</p>
+                    </dt>
+                </dl>
+            </div>
+                                                                                                      i++;
+                                                                                                      if (i > 2)
+                                                                                                      {
+                                                                                                          i = 1;
+                                                                                                      }
+             }
+         }
+            
+        </div>
     </div>
+    
     <div class="center">
    
      @if (Model._Leads != null)
@@ -109,7 +151,7 @@
              <a href="#"  onclick="onLeadSelect(@(lead.ID))">
             <div  class="center_2" id="lead@(lead.ID)">
             <img src="../images/call.png" alt="新增通话" onclick="onCallAdd(@(lead.ID))" style=" display: inline;float: right;" />
-            <img src="../images/pen1616.png" alt="编辑" onclick="onLeadEdit(@(lead.ID))" style=" display: inline;float: right;" />
+            <img src="../images/pen1919.png" alt="编辑" onclick="onLeadEdit(@(lead.ID))" style=" display: inline;float: right;" />
             
                 <dl>
                     <dt>
@@ -133,11 +175,11 @@
                  
             </div>
          </a>
-                        index++;
-                        if (index > 2)
-                        {
-                            index = 1;
-                        }
+                      index++;
+                      if (index > 2)
+                      {
+                          index = 1;
+                      }
          }
      }
     	
@@ -172,7 +214,7 @@
     .Content(@<text><div class="dialogue-Categories">
         <div class="Categories-wrapper">
         </div>
-        <div class="dialogue-buttons" style="position:absolute;bottom:0;width:98%;text-align:right;">
+        <div class="dialogue-buttons" style=" float:right;">
              <input type="button" class="btn-queding" onclick="Javescript:$('#Categories').data('tWindow').close();" />
         </div>
     </div></text>)
@@ -185,7 +227,7 @@
     .Content(@<text><div class="dialogue-addcompany1">
         <div class="companyAdd1-wrapper">
         </div>
-        <div class="dialogue-buttons" style="float: right;">
+        <div class="dialogue-buttons" style=" float:right;">
             <input type="button" class="btn-queding" onclick="Addcompany()" />
             <input type="button" class="btn-quxiao" onclick="CancelAddcompany()" />
         </div>
@@ -199,20 +241,31 @@
     .Content(@<text><div class="dialogue-editcompany">
         <div class="companyEdit-wrapper">
         </div>
-        <div class="dialogue-buttons" style="float:right;">
+        <div class="dialogue-buttons" style=" float:right;">
             <input type="button" class="btn-queding" onclick="Editcompany()" />
             <input type="button" class="btn-quxiao" onclick="CancelEditcompany()" />
         </div>
     </div></text>)
     .Width(1000).Height(540).Draggable(true).Modal(true).Visible(false)
 )
-@(Html.Telerik().Window().Title("竞争对手")
-        .Name("Competitor")
-    .Content(@<text><div class="dialogue-Competitor">
-        <div class="Competitor-wrapper">
+@(Html.Telerik().Window().Title("公司介绍")
+        .Name("Description")
+    .Content(@<text><div class="dialogue-Description">
+        <div class="Description-wrapper">
         </div>
-        <div class="dialogue-buttons" style="float:right;">
-            <input type="button" class="btn-queding" onclick="Javescript:$('#Competitor').data('tWindow').close();" />
+        <div class="dialogue-buttons" style="position:absolute;bottom:0;width:98%;text-align:right;">
+            <input type="button" class="btn-queding" onclick="Javescript:$('#Description').data('tWindow').close();" />
+        </div>
+    </div></text>)
+    .Width(600).Height(200).Draggable(true).Modal(true).Visible(false)
+)
+@(Html.Telerik().Window().Title("竞争对手")
+        .Name("Competitor1")
+    .Content(@<text><div class="dialogue-Competitor1">
+        <div class="Competitor1-wrapper">
+        </div>
+        <div class="dialogue-buttons" style="position:absolute;bottom:0;width:98%;text-align:right;">
+            <input type="button" class="btn-queding" onclick="Javescript:$('#Competitor1').data('tWindow').close();" />
         </div>
     </div></text>)
     .Width(600).Height(200).Draggable(true).Modal(true).Visible(false)
@@ -222,7 +275,7 @@
     .Content(@<text><div class="dialogue-PitchPoint">
         <div class="PitchPoint-wrapper">
         </div>
-        <div class="dialogue-buttons" style="float:right;">
+        <div class="dialogue-buttons" style=" float:right;">
             <input type="button" class="btn-queding" onclick="Javescript:$('#PitchPoint').data('tWindow').close();" />
         </div>
     </div></text>)
@@ -234,7 +287,7 @@
     .Content(@<text><div class="dialogue-addlead">
         <div class="leadadd-wrapper">
         </div>
-        <div class="dialogue-buttons" style="float:right;">
+        <div class="dialogue-buttons" style=" float:right;">
             <input type="button" class="btn-queding" onclick="AddLead()" />
             <input type="button" class="btn-quxiao" onclick="CancelAddLead()" />
         </div>
@@ -246,7 +299,7 @@
     .Content(@<text><div class="dialogue-editlead">
         <div class="leadedit-wrapper">
         </div>
-        <div class="dialogue-buttons" style="float:right;">
+        <div class="dialogue-buttons" style=" float:right;">
             <input type="button" class="btn-queding" onclick="UpdateLead()" />
             <input type="button" class="btn-quxiao" onclick="javascript:$('#EditLead').data('tWindow').close();" />
         </div>
@@ -258,7 +311,7 @@
     .Content(@<text><div class="dialogue-editcall">
         <div class="calledit-wrapper">
         </div>
-        <div class="dialogue-buttons" style="float:right;">
+        <div class="dialogue-buttons" style=" float:right;">
             <input type="button" class="btn-queding" onclick="UpdateCall()" />
             <input type="button" class="btn-quxiao" onclick="CancelEditCall()" />
         </div>
@@ -270,13 +323,27 @@
     .Content(@<text><div class="dialogue-addcall">
         <div class="calladd-wrapper">
         </div>
-        <div class="dialogue-buttons" style="float:right;">
+        <div class="dialogue-buttons"style=" float:right;">
             <input type="button" class="btn-queding" onclick="AddCall()" />
             <input type="button" class="btn-quxiao" onclick="CancelAddCall()" />
         </div>
     </div></text>)
     .Width(850).Height(250).Draggable(true).Modal(true).Visible(false)
 )
+@(Html.Telerik().Window().Title("添加Comment")
+        .Name("Comment")
+    .Content(@<text><div class="dialogue-Comment">
+        <div class="Comment-wrapper">
+        </div>
+        <div class="dialogue-buttons" style=" float:right;">
+             <input type="button" class="btn-queding" onclick="AddComment()" />
+            <input type="button" class="btn-quxiao" onclick="CancelAddComment()" />
+        </div>
+    </div></text>)
+        .Width(1000)
+        .Height(220)
+                .Modal(true).Visible(false).Draggable(true)
+    )
 <script>
     function GetAddCompany() {
         var currentProjectId = $('#projectid').val();
@@ -478,14 +545,26 @@
             }
         });
     }
-    function onCompetitor(currentCompanyId) {
-        $.post('GetCompetitor', { crmid: currentCompanyId }, function (result) {
-            $('.Competitor-wrapper').html(result);
-            var window = $('#Competitor').data('tWindow');
+    function onDescription(currentCompanyId) {
+        $.post('GetDescription', { crmid: currentCompanyId }, function (result) {
+            $('.Description-wrapper').html(result);
+            var window = $('#Description').data('tWindow');
             window.center().open();
 
-            while ($('.dialogue-Competitor form').length > 1) {
-                $('.dialogue-Competitor form').last().remove();
+            while ($('.dialogue-Description form').length > 1) {
+                $('.dialogue-Description form').last().remove();
+            }
+        });
+    }
+
+    function onCompetitor(currentCompanyId) {
+        $.post('GetCompetitor', { crmid: currentCompanyId }, function (result) {
+            $('.Competitor1-wrapper').html(result);
+            var window = $('#Competitor1').data('tWindow');
+            window.center().open();
+
+            while ($('.dialogue-Competitor1 form').length > 1) {
+                $('.dialogue-Competitor1 form').last().remove();
             }
         });
     }
@@ -796,7 +875,32 @@
         }
        
     }
+    function GetAddComment() {
+        $.post('GetAddComment', { crmid: crmid }, function (result) {
+            $('.Comment-wrapper').html(result);
+            var window = $('#Comment').data('tWindow');
+            window.center().open();
+        });
+    }
+    function AddComment() {
 
+        if ($('.Comment-wrapper form').valid()) {
+            var query = $('.dialogue-Comment form').serializeArray();
+            $.post('AddComment', query, function (result) {
+                if (result.length > 0) {
+                    alert('新增Comment失败');
+                } else {
+                    $('#Comment').data('tWindow').close();
+                    alert('新增Comment成功');
+                    RefreshCrm();
+                }
+            });
+        }
+    }
+    function CancelAddComment() {
+        var window = $('#Comment').data('tWindow');
+        window.close();
+    }
     var leaddiv = $('#lead'+gleadid);
     leaddiv.removeClass('center_2');
     leaddiv.addClass('center_1');

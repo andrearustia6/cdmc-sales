@@ -1038,7 +1038,10 @@ namespace BLL
                                CurrentDayDealIn = deals.Where(w => w.Project.ProjectUnitCode == l.Code && w.SignDate >= currentdaystart && w.SignDate < currentdayend).Sum(s => (decimal?)s.Payment),
                                TotalCheckIn = deals.Where(w => w.Project.ProjectUnitCode == l.Code).Sum(s => (decimal?)s.Income),
                                TotalCheckInTarget = (decimal?)l.Target,
-                               CurrentSales = l.MemberCount
+                               CurrentSales = l.MemberCount,
+                               TotalDealInTarget = targets.Where(w => w.Project.ProjectUnitCode == l.Code ).Sum(s => (decimal?)s.Deal),
+                               RMBTotalDealIn = deals.Where(w => w.Project.ProjectUnitCode == l.Code && w.Currencytype.Name=="RMB").Sum(s => (decimal?)s.Payment),
+                               USDTotalDealIn = deals.Where(w => w.Project.ProjectUnitCode == l.Code && w.Currencytype.Name == "USD").Sum(s => (decimal?)s.Payment)
                            };
 
                 return data;

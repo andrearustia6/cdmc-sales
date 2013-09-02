@@ -37,9 +37,9 @@ namespace Sales.Model
 
     public class _Comment : EntityBase
     {
-        public string Person { get; set; }
+        public string Submitter { get; set; }
         public string Content { get; set; }
-        public DateTime SetDate { get; set; }
+        public DateTime CommentDate { get; set; }
         public int? CRMID { get; set; }
     }
 
@@ -76,7 +76,7 @@ namespace Sales.Model
         /// </summary>
          public string Competitor { get; set; }
          public IEnumerable<_Lead> _Leads { get; set; }
-         public IQueryable<_Comment> _Comments { get; set; }
+         public IEnumerable<_Comment> _Comments { get; set; }
          public IEnumerable<_LeadCall> _LeadCalls { get; set; }
      }
 

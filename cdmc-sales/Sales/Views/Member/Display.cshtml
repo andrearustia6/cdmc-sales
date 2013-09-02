@@ -35,11 +35,11 @@
         if(ps.Count>0)
         {
             <table style="width:80%">
-            <tr><th>项目名称</th><th>总CheckIn</th><th>总DealIn</th></tr>
+            <tr><th>项目名称</th><th>总CheckIn</th><th>人民币DealIn</th><th>美元DealIn</th></tr>
             @foreach (var p in ps)
             {
                 var process = @p.GetProjectMemberProgress(Model.Name);
-                <tr><td>@p.Name</td><td>@process.TotalCheckIn </td><td>@process.TotalDealIn</td></tr>
+                <tr><td>@p.Name</td><td>@process.TotalCheckIn </td><td>@process.RMBDealIn</td><td>@process.USDDealIn</td></tr>
             }
             </table>
         }

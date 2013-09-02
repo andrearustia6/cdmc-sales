@@ -49,7 +49,15 @@ namespace Sales.BLL
                                                                ID= crm.ID,
                                                                CompanyNameCH = crm.Company.Name_CH,
                                                                CompanyNameEN = crm.Company.Name_EN,
-                                                                 
+                                                               CoreCompany = c.CoreLVLName=="核心公司"?true:false,
+                                                               _Comments=(from co in crm.Comments.OrderByDescending(m=>m.CommentDate)
+                                                                          select new _Comment()
+                                                                          {
+                                                                              Submitter=co.Submitter,
+                                                                              CommentDate=co.CommentDate,
+                                                                              CRMID=co.CompanyRelationshipID,
+                                                                              Content=co.Contents
+                                                                          })
                                                          }
                                             }
                            };
@@ -70,6 +78,15 @@ namespace Sales.BLL
                 Fax=data.Company.Fax,
                 Email="没找到字段",
                 CategoryString=data.CategoryString,
+                CoreCompany = data.CoreLVL==null?false:data.CoreLVL.CoreLVLName == "核心公司" ? true : false,
+                _Comments = (from co in data.Comments.OrderByDescending(m => m.CommentDate)
+                            select new _Comment()
+                            {
+                                Submitter=co.Submitter,
+                                CommentDate=co.CommentDate,
+                                CRMID=co.CompanyRelationshipID,
+                                Content=co.Contents
+                            }),
                 _Categorys = (from c in data.Categorys
                               select new _Category()
                               {
@@ -92,10 +109,10 @@ namespace Sales.BLL
                              Fax=leads.Fax,
                              Email=leads.EMail
                          }),
-                _LeadCalls = (from leadcalls in data.LeadCalls
+                _LeadCalls = (from leadcalls in data.LeadCalls.OrderByDescending(m=>m.CallDate)
                               select new _LeadCall()
                               {
-                                  LeadName=leadcalls.Lead.Name_EN,
+                                  LeadName = leadcalls.Lead.Name_EN + " " + leadcalls.Lead.Name_CH,
                                   LeadTitle=leadcalls.Lead.Title,
                                   CallResult=leadcalls.Result,
                                   CallType=leadcalls.LeadCallType.Name,
@@ -128,6 +145,14 @@ namespace Sales.BLL
                                  }
                                  ),
                 CategoryString = data.CategoryString,
+                _Comments = (from co in data.Comments.OrderByDescending(m => m.CommentDate)
+                             select new _Comment()
+                             {
+                                 Submitter = co.Submitter,
+                                 CommentDate = co.CommentDate,
+                                 CRMID = co.CompanyRelationshipID,
+                                 Content = co.Contents
+                             }),
                 Description = data.Description,
                 Competitor = data.Company.Competitor,
                 PitchPoint = data.PitchedPoint,
@@ -141,10 +166,10 @@ namespace Sales.BLL
                               Fax = leads.Fax,
                               Email = leads.EMail
                           }),
-                _LeadCalls = (from leadcalls in data.LeadCalls.Where(c=>c.LeadID==leadid)
+                _LeadCalls = (from leadcalls in data.LeadCalls.Where(c => c.LeadID == leadid).OrderByDescending(m => m.CallDate)
                               select new _LeadCall()
                               {
-                                  LeadName = leadcalls.Lead.Name_CH,
+                                  LeadName = leadcalls.Lead.Name_EN + " " + leadcalls.Lead.Name_CH,
                                   LeadTitle = leadcalls.Lead.Title,
                                   CallResult = leadcalls.Result,
                                   CallType = leadcalls.LeadCallType.Name,
