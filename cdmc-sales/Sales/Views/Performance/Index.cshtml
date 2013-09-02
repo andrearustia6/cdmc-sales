@@ -66,7 +66,7 @@
             
             //columns.Bound(p => p.Month).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
             //columns.Bound(p => p.Year).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
-            if (ViewBag.RoleLevel == SuperManagerRequired.LVL || Utl.Employee.CurrentUserName == "ray" || Utl.Employee.CurrentUserName == "karen")
+            if (ViewBag.RoleLevel == SuperManagerRequired.LVL || Utl.Employee.CurrentUserName == "ray" || Utl.Employee.CurrentUserName == "karen" || Utl.Employee.CurrentUserName == "william")
             {
                 columns.Command(commands =>
                 {
@@ -611,9 +611,20 @@
             rowButton[0].innerText = "打分";
             rowConfirmButton.remove();
         }
-        else if ((e.dataItem.User == "ray")) {
+        else if ((e.dataItem.User == "ray") ) {
+
             rowButton.remove();
+            if (e.dataItem.TargetName == 'dorothy' || e.dataItem.TargetName == 'alex' || e.dataItem.TargetName == 'adams')
+                rowConfirmButton.remove();
             return;
+        }
+        else if ((e.dataItem.User == "william")) {
+            rowButton.remove();
+            if (e.dataItem.TargetName == 'dorothy' || e.dataItem.TargetName == 'alex' || e.dataItem.TargetName == 'adams')
+                return;
+            else
+                rowConfirmButton.remove();
+            
         }
         else {
 
@@ -634,11 +645,11 @@
             popupDataWin.title("打分");
     }
     function onManagerCommand(e) {
-        //if the custom command is triggered
-        if ((e.dataItem.ID == "0" && e.dataItem.User == "ray")) {
+        if (e.dataItem.ID == "0" && ((e.dataItem.User == "william") || (e.dataItem.User == "ray"))) {
             alert("还没有打分，不能确认。")
             return;
         }
+        
         if (e.name == 'Confirm') {
             if (!confirm("确实要确认" + $("#month").val() + "份的分数吗?")) {
                 // prevent the request        
