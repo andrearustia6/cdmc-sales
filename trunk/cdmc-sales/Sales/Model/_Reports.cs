@@ -257,7 +257,27 @@ namespace Model
                 return Utl.Utl.GetPercent(TotalCheckIn, TotalCheckInTarget);
             }
         }
-
+        public decimal? TotalDealInTarget { get; set; }
+        public decimal? RMBTotalDealIn { get; set; }
+        public decimal? USDTotalDealIn { get; set; }
+        public decimal? TotalDealIn
+        {
+            get
+            {
+                if (RMBTotalDealIn == null)
+                    RMBTotalDealIn = 0;
+                if (USDTotalDealIn == null)
+                    USDTotalDealIn = 0;
+                return RMBTotalDealIn + USDTotalDealIn*(decimal)6.3;
+            }
+        }
+        public double TotalDealInPercent
+        {
+            get
+            {
+                return Utl.Utl.GetPercent(TotalDealIn, TotalDealInTarget);
+            }
+        }
     }
     public class AjaxProjectCheckInByMonth
     {

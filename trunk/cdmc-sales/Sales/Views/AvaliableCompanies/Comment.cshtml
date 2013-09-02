@@ -1,0 +1,30 @@
+﻿@using Entity
+@using Sales.Model
+@using Utl
+@model Comment
+           @using (Html.BeginForm("AddComment", "AvaliableCompanies"))
+           {
+            @Html.HiddenFor(model => model.CompanyRelationshipID)
+<ul>
+ @foreach (var p in CH.GetAllData<CommentContent>())
+ {
+      <li>
+    @Html.CheckBox("content", false, new { onchange = "setcontent('" + p.Contents + "')" })
+    @p.Contents
+    </li>
+ }
+    <li>
+        @Html.TextAreaFor(model => model.Contents)
+    </li>
+</ul>
+           }
+<script>
+    function setcontent(content1) {
+        if ($("#Contents").val() != "") {
+            $("#Contents").val($("#Contents").val() + ";" + content1);
+        }
+        else {
+            $("#Contents").val(content1);
+        }
+    }
+</script>

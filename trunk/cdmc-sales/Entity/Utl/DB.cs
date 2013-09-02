@@ -66,6 +66,8 @@ namespace Utl
         public DbSet<EmployeeRole> EmployeeRoles { get; set; }
         public DbSet<PreCommission> PreCommissions { get; set; }
         public DbSet<FinalCommission> FinalCommissions { get; set; }
+        public DbSet<Comment> Comments { get; set; }
+        public DbSet<CommentContent> CommentContents { get; set; }
         public DB(string connection = null)
         {
 

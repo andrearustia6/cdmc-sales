@@ -103,13 +103,13 @@
                     @Html.TextBoxFor(model => model.Address_EN, new { @style = "width:370px" })
                 </td>
             </tr>      
-            <tr>
+           @* <tr>
                 <td colspan="4">
                     @Html.LabelFor(model => model.Desc)
                     @Html.TextAreaFor(model => model.Desc)
                 </td>
-            </tr>
-            @*<tr>
+            </tr>*@
+            <tr>
                 <td colspan="4">
                    @{Html.Telerik().PanelBar()
             .Name("PanelBarEdit")
@@ -121,8 +121,8 @@
                     .Content(@<text>
                         @Html.LabelFor(model => model.Desc)
                         @Html.TextAreaFor(model => model.Desc)
-                        公司主要客户
-                        @Html.TextAreaFor(model => model.Customers)
+                      @*  公司主要客户
+                        @Html.TextAreaFor(model => model.Customers)*@
                         主要竞争对手
                         @Html.TextAreaFor(model => model.Competitor)
                         电话pitch点
@@ -133,7 +133,7 @@
             .Render();
             }
                 </td>
-            </tr>  *@
+            </tr>  
              
         </table>
 

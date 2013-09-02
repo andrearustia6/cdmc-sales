@@ -398,6 +398,8 @@ namespace Entity
             decimal checkintarget = 0;
             decimal nextdealtarget = 0;
             decimal nextcheckintarget = 0;
+            decimal rmbdeal = 0;
+            decimal usddeal = 0;
             var crs = CH.GetAllData<CompanyRelationship>(c => c.ProjectID == item.ID, "Deals");
 
             item.CompanyRelationships.ForEach(c =>
@@ -405,11 +407,13 @@ namespace Entity
 
                 totalcheckin += c.Deals.FindAll(d => d.Sales == member).Sum(d => d.Income);
                 totaldeal += c.Deals.FindAll(d => d.Sales == member).Sum(d => d.Payment);
+                rmbdeal += c.Deals.FindAll(d => d.Sales == member && d.Currencytype.Name == "RMB").Sum(d => d.Income);
+                usddeal += c.Deals.FindAll(d => d.Sales == member && d.Currencytype.Name == "USD").Sum(d => d.Income);
             });
 
             item.CompanyRelationships.ForEach(c =>
             {
-
+                
                 deal += c.Deals.FindAll(d => d.Sales == member).FindAll(ds => ds.SignDate < enddate && ds.SignDate > startdate).Sum(d => d.Income);
                 checkin += c.Deals.FindAll(d => d.Sales == member).FindAll(ds => ds.ActualPaymentDate < enddate && ds.ActualPaymentDate > startdate).Sum(d => d.Payment);
             });
@@ -421,6 +425,8 @@ namespace Entity
                 TotalDealIn = totaldeal,
                 CheckIn = checkin,
                 DealIn = deal,
+                RMBDealIn=rmbdeal,
+                USDDealIn=usddeal,
                 Project = item
             };
             return result;

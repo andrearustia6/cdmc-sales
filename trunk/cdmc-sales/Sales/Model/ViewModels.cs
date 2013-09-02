@@ -398,6 +398,8 @@ namespace Model
 
     public class ViewProjectProgressAmount : ViewProgressAmount
     {
+        public decimal RMBDealIn { get; set; }
+        public decimal USDDealIn { get; set; }
         public Project Project { get; set; }
         public int LeftDay { get; set; }
         public string NameWithCompletePercentage { get { 

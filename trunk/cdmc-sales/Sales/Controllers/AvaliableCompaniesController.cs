@@ -32,6 +32,11 @@ namespace Sales.Controllers
             var data = AvaliableCRM._CRMGetAvaliableCrmDetailByCrmIDLeadID(crmid,leadid);
             return PartialView(@"~\views\AvaliableCompanies\DetailContainer.cshtml", data);
         }
+        public PartialViewResult GetDescription(string crmid)
+        {
+            var data = AvaliableCRM._CRMGetAvaliableCrmDetail(int.Parse(crmid));
+            return PartialView("Description", data);
+        }
         public PartialViewResult GetCompetitor(string crmid)
         {
             var data = AvaliableCRM._CRMGetAvaliableCrmDetail(int.Parse(crmid));
@@ -426,6 +431,20 @@ namespace Sales.Controllers
             //leadCall.Member = CH.DB.Members.FirstOrDefault(c => c.Name == Employee.CurrentUserName);
             leadCall.Result = ajaxViewLeadCall.Result;
             CH.Edit<LeadCall>(leadCall);
+            return null;
+        }
+
+        public ActionResult GetAddComment(int? crmid)
+        {
+            Comment comment = new Comment() { CompanyRelationshipID = crmid };
+            return PartialView("Comment", comment);
+        }
+        [ValidateInput(false)]
+        public ActionResult AddComment(Comment comment)
+        {
+            comment.CommentDate = DateTime.Now;
+            comment.Submitter = Employee.CurrentUserName;
+            CH.Create<Comment>(comment);
             return null;
         }
     }
