@@ -9,8 +9,9 @@
     <div class="editor-field">
         @{
             
-            var names = Membership.GetAllUsers().Cast<MembershipUser>().Where(s => s.IsLockedOut == false).Select(s => s.UserName);
- 
+            //var names = Membership.GetAllUsers().Cast<MembershipUser>().Where(s => s.IsLockedOut == false && CH.DB.EmployeeRoles.Where(e=>e.AccountName==s.UserName).FirstOrDefault().IsActivated==true ).Select(s => s.UserName);
+            
+            var names = CH.DB.EmployeeRoles.Where(n=>n.IsActivated==true).OrderBy(c=>c.AccountName).Select(c=>c.AccountName).Distinct();
                 
             
             
