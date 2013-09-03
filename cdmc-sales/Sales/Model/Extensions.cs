@@ -407,8 +407,8 @@ namespace Entity
 
                 totalcheckin += c.Deals.FindAll(d => d.Sales == member).Sum(d => d.Income);
                 totaldeal += c.Deals.FindAll(d => d.Sales == member).Sum(d => d.Payment);
-                rmbdeal += c.Deals.FindAll(d => d.Sales == member && d.Currencytype.Name == "RMB").Sum(d => d.Income);
-                usddeal += c.Deals.FindAll(d => d.Sales == member && d.Currencytype.Name == "USD").Sum(d => d.Income);
+                rmbdeal += c.Deals.FindAll(d => d.Sales == member && d.Currencytype.Name == "RMB").Sum(d => d.Payment);
+                usddeal += c.Deals.FindAll(d => d.Sales == member && d.Currencytype.Name == "USD").Sum(d => d.Payment);
             });
 
             item.CompanyRelationships.ForEach(c =>
