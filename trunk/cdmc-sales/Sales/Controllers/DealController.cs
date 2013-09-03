@@ -22,7 +22,7 @@ namespace Sales.Controllers
             CH.DB.Dispose();
             base.Dispose(disposing);
         }
-        public ViewResult IndexEdit(List<int> selectedprojects, string selecttype,int? paytype)
+        public ViewResult IndexEdit(List<int> selectedprojects, string selecttype, int? paytype)
         {
             ViewBag.SelectedProjects = selectedprojects;
             selectedprojects = this.TryGetSelectedProjectIDs(selectedprojects);
@@ -69,7 +69,7 @@ namespace Sales.Controllers
             return View(new GridModel<AjaxViewParticipant> { });
         }
         [GridAction]
-        public ActionResult _Index(string sp,int? paytype)
+        public ActionResult _Index(string sp, int? paytype)
         {
             var selectedprojects = Utl.Utl.ConvertStringToSelectProjectID(sp);
             selectedprojects = this.TryGetSelectedProjectIDs(selectedprojects);
@@ -531,8 +531,18 @@ namespace Sales.Controllers
                     item.Confirmor = Employee.CurrentUserName;
                     //item.Income = newData.Income;
                     //item.ActualPaymentDate = newData.ActualPaymentDate;
+
+                    item.Payment = newData.Payment;
+                    item.TicketDescription = newData.TicketDescription;
+
                     item.Abandoned = newData.Abandoned;
                     item.AbandonReason = newData.AbandonReason;
+                    CH.Edit<Deal>(item);
+                }
+                else
+                {
+                    item.Payment = newData.Payment;
+                    item.TicketDescription = newData.TicketDescription;
                     CH.Edit<Deal>(item);
                 }
             }
