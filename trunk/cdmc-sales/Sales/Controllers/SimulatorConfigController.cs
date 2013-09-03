@@ -15,6 +15,8 @@ namespace Sales.Controllers
     {
         public ViewResult index()
         {
+            var names = CH.DB.EmployeeRoles.Where(n => n.IsActivated == true).OrderBy(c => c.AccountName).Select(c => c.AccountName).Distinct();
+            ViewBag.names = names;
             return View();
         }
 
