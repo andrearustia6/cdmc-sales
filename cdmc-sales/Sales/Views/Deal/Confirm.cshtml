@@ -208,7 +208,7 @@
                     @Html.LabelFor(model => model.Payment)
                 </td>
                 <td>
-                    @Html.Telerik().NumericTextBoxFor(model => model.Payment).DecimalDigits(0).Enable(false).Spinners(false).InputHtmlAttributes(new { style = "width:60px" })
+                    @Html.Telerik().NumericTextBoxFor(model => model.Payment).DecimalDigits(0).InputHtmlAttributes(new { style = "width:60px" })
                     @Html.DisplayFor(model => model.Currency)
                 </td>
             </tr>
@@ -231,7 +231,7 @@
                     @Html.LabelFor(model => model.TicketDescription)
                 </td>
                 <td colspan="3">
-                    @Html.DisplayFor(model => model.TicketDescription)
+                    @Html.TextBoxFor(model => model.TicketDescription, new { style = "width:300px" })
                 </td>
                 <td>
                     @Html.LabelFor(model => model.PaymentDetail)
