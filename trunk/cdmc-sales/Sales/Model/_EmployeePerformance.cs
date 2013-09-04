@@ -138,7 +138,7 @@ namespace Sales.Model
             {
                 if (TeamLeadPerformanceInWeeks != null)
                 {
-                    var counts = TeamLeadPerformanceInWeeks.Select(s => s.FaxOutCount);
+                    var counts = TeamLeadPerformanceInWeeks.OrderBy(o=>o.StartDate).Select(s => s.FaxOutCount);
                     return string.Join(",", counts);
                 }
                 else
@@ -156,7 +156,7 @@ namespace Sales.Model
             {
                 if (TeamLeadPerformanceInWeeks != null)
                 {
-                    var counts = TeamLeadPerformanceInWeeks.Select(s => s.LeadsCount);
+                    var counts = TeamLeadPerformanceInWeeks.OrderBy(o => o.StartDate).Select(s => s.LeadsCount);
                     return string.Join(",", counts);
                 }
                 else
