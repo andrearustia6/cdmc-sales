@@ -267,7 +267,7 @@ namespace Sales.Controllers
                 }
                 else
                 {
-                    data = data.Where(s => spManagers.Any(m => m != s.Manger));
+                    data = data.Except(data.Where(s => spManagers.Any(m => m == s.Manger)));
                 }
             }
 
