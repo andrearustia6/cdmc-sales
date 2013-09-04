@@ -72,7 +72,7 @@
         {
           <table class="membertable" >
                 <tr><th>姓名</th><th>项目总DealIn</th><th>项目总CheckIn</th><th>一周内DealIn</th><th>一周内CheckIn</th></tr>
-            @foreach(var m in Model.Members)
+            @foreach(var m in Model.Members.Where(m=>m.IsActivated==true))
             {
                 var data = m.GetMemberProgress(DateTime.Now.AddDays(-7),DateTime.Now);
                 
