@@ -152,11 +152,10 @@
                                item.Add().Url("~/Project/AssignCompany").Text("分配公司");
 
 
-
-                               if (score == SuperManagerRequired.LVL)
+                               if (score == SuperManagerRequired.LVL || Employee.CurrentUserName == Utl.GetSpecialSuperManager())
                                {
                                    item.Add().Url("~/TargetOfMonth/AdminConfirmList").Text("项目月目标确认");
-                                   
+
                                }
                                if (score == ManagerRequired.LVL || score == SuperManagerRequired.LVL)
                                {
@@ -203,19 +202,19 @@
                                    //item.Add().Url("~/TargetOfMonthForMember/Index").Text("月目标");
                                    // item.Add().Url("~/AssignPerformanceScore/index").Text("打分");
 
-                                   
+
 
                                }
                                //item.Add().Url("~/Sales/MyWeeklyReport").Text("我的周报").ImageUrl("~/Content/Common/Icons/Docking.gif");
                            });
                        }
-                        if (score == ProductInterfaceRequired.LVL | score == MarketInterfaceRequired.LVL)
+                       if (score == ProductInterfaceRequired.LVL | score == MarketInterfaceRequired.LVL)
                        {
                            menu.Add().Text("日常工作").ImageUrl("~/Content/Common/Icons/editor.png").Items(item =>
                            {
                                item.Add().Url("~/SalesEx/index").Text("可打公司 V2.0");
                            });
-                        }
+                       }
                        if (score == MarketInterfaceRequired.LVL)
                        {
                            menu.Add().Text("客户信息").ImageUrl("~/Content/Common/Icons/GridView.gif").Items(item =>

@@ -171,9 +171,9 @@ namespace Utl
         {
 
             ProfileBase objProfile = ProfileBase.Create(username);
-           
+
             var email = Membership.GetUser(username).Email;
-            var roleid = CH.GetAllData<EmployeeRole>(w=>w.AccountName==username).Select(s=>s.RoleID).FirstOrDefault();
+            var roleid = CH.GetAllData<EmployeeRole>(w => w.AccountName == username).Select(s => s.RoleID).FirstOrDefault();
             var gender = objProfile.GetPropertyValue("Gender") as string;
             var displayName = objProfile.GetPropertyValue("DisplayName") as string;
             var mobile = objProfile.GetPropertyValue("Mobile") as string;
@@ -232,7 +232,7 @@ namespace Utl
         /// <returns></returns>
         public static IQueryable<string> GetEmplyeeByLVL(params int[] lvl)
         {
-            var names  = Membership.GetAllUsers().Cast<MembershipUser>().Where(s=>s.IsLockedOut==false).Select(s=>s.UserName).ToList();
+            var names = Membership.GetAllUsers().Cast<MembershipUser>().Where(s => s.IsLockedOut == false).Select(s => s.UserName).ToList();
             var emps = from e in CH.DB.EmployeeRoles.Where(w => names.Contains(w.AccountName)) select e;
 
             var data = from r in CH.DB.Roles
@@ -246,7 +246,7 @@ namespace Utl
             //    if (lvl.Contains(GetRoleLevel(l.UserName)))
             //        data.Add(l);
             //});
-            return data.OrderBy(o=>o);
+            return data.OrderBy(o => o);
         }
 
         ///// <summary>
@@ -273,7 +273,7 @@ namespace Utl
         {
             var list = GetEmplyeeByLVL(SalesRequired.LVL, LeaderRequired.LVL);
             var currentmembers = from m in CH.DB.Members where m.ProjectID == projectid select m.Name;
-            var sales = from s in list.Where(w => currentmembers.Any(a => a == w) == false) select s; 
+            var sales = from s in list.Where(w => currentmembers.Any(a => a == w) == false) select s;
 
             //if (ms != null)
             //{
@@ -284,7 +284,7 @@ namespace Utl
             //    });
             //}
 
-            return list.OrderBy(o=>o);
+            return list.OrderBy(o => o);
         }
 
         public static object GetCurrentProfile(string propertyName)
@@ -314,7 +314,7 @@ namespace Utl
         public static int GetCurrentRoleLevel()
         {
 
-            if (Employee.CurrentRole!= null && !string.IsNullOrEmpty(Employee.CurrentUserName))
+            if (Employee.CurrentRole != null && !string.IsNullOrEmpty(Employee.CurrentUserName))
                 return Employee.CurrentRole.Level;
             else
                 return -100;
@@ -407,10 +407,10 @@ namespace Utl
 
         public static Role GetRole(string name)
         {
-            var roles = from e in CH.DB.EmployeeRoles 
+            var roles = from e in CH.DB.EmployeeRoles
                         from r in CH.DB.Roles
                         where e.AccountName == name && e.RoleID == r.ID
-                        
+
                         select r;
             if (roles.FirstOrDefault() != null)
                 return roles.FirstOrDefault();
@@ -606,7 +606,7 @@ namespace Utl
 
     public class SR
     {
-    
+
         public static string GobackToList { get { return "回到列表"; } }
         public static string Save { get { return "保存"; } }
         public static string Delete { get { return "删除"; } }
@@ -648,12 +648,12 @@ namespace Utl
             if (HttpContext.Current != null && HttpContext.Current.Items["DebugModel"] == null)
             {
                 var settings = ConfigurationManager.AppSettings.GetValues("DebugModel");
-                var debug =  bool.Parse(settings.FirstOrDefault());
+                var debug = bool.Parse(settings.FirstOrDefault());
                 HttpContext.Current.Items["DebugModel"] = debug;
             }
 
             return (bool)HttpContext.Current.Items["DebugModel"];
-          
+
         }
 
         public static string DebugAccount()
@@ -661,12 +661,36 @@ namespace Utl
             if (HttpContext.Current != null && HttpContext.Current.Items["DebugAccount"] == null)
             {
                 var settings = ConfigurationManager.AppSettings.GetValues("DebugAccount");
-              
+
                 HttpContext.Current.Items["DebugAccount"] = settings[0] as String;
             }
 
             return (string)HttpContext.Current.Items["DebugAccount"];
 
+        }
+
+        public static string GetSpecialSuperManager()
+        {
+            if (HttpContext.Current != null && HttpContext.Current.Items["SpecialSuperManager"] == null)
+            {
+                var settings = ConfigurationManager.AppSettings.GetValues("SpecialSuperManager");
+
+                HttpContext.Current.Items["SpecialSuperManager"] = settings[0] as String;
+            }
+            return (string)HttpContext.Current.Items["SpecialSuperManager"];
+        }
+
+
+        public static string[] GetSpecialManagers()
+        {
+            if (HttpContext.Current != null && HttpContext.Current.Items["SpecialManagers"] == null)
+            {
+                var settings = ConfigurationManager.AppSettings.GetValues("SpecialManagers");
+
+                HttpContext.Current.Items["SpecialManagers"] = settings[0] as String;
+            }
+
+            return HttpContext.Current.Items["SpecialManagers"].ToString().Split(',');
         }
 
         public static decimal GetAverage(decimal? child, int father)
@@ -677,20 +701,20 @@ namespace Utl
 
         public static double GetPercent(double child, double father)
         {
-            if(father==0) return 0;
-            return Math.Round((child  / father), 2);
+            if (father == 0) return 0;
+            return Math.Round((child / father), 2);
         }
 
         public static double GetPercent(int child, int father)
         {
-            if (father == 0 || child == 0 ) return 0;
-            return Math.Round(((double)child  /(double)father), 2);
+            if (father == 0 || child == 0) return 0;
+            return Math.Round(((double)child / (double)father), 2);
         }
 
         public static double GetPercent(decimal? child, decimal? father)
         {
             if (father == 0 || child == 0 || father == null || child == null) return 0;
-            return (double)Math.Round((child.Value  / father.Value), 2);
+            return (double)Math.Round((child.Value / father.Value), 2);
         }
 
         public static void GetMonthActualStartdateAndEnddate(int? month, out DateTime startdate, out DateTime enddate)
@@ -825,7 +849,7 @@ namespace Utl
 
         public static string HidePhoneNumber(string origin)
         {
-            var m = origin; 
+            var m = origin;
             if (string.IsNullOrWhiteSpace(m)) return string.Empty;
             string start = string.Empty;
             if (m.Length > 3)
@@ -842,8 +866,8 @@ namespace Utl
             }
             return m;
         }
-            
-        
+
+
         public static string FilterStr(string source)
         {
             source = source.Replace("& ", "& ");

@@ -225,6 +225,8 @@ namespace Sales.Controllers
                 targets = targets.Where(t => t.ProjectID == projectId);
             }
 
+
+
             var data = from db in targets
 
                        select new AjaxTargetOfMonth
@@ -253,6 +255,21 @@ namespace Sales.Controllers
                            CheckInOf5thWeek = db.CheckInOf5thWeek
 
                        };
+
+            string spSuperManager = Utl.Utl.GetSpecialSuperManager();
+            string[] spManagers = Utl.Utl.GetSpecialManagers();
+
+            if (Employee.CurrentRole.Level != 4)
+            {
+                if (Employee.CurrentUserName == spSuperManager)
+                {
+                    data = data.Where(s => spManagers.Any(m => m == s.Manger));
+                }
+                else
+                {
+                    data = data.Where(s => spManagers.Any(m => m != s.Manger));
+                }
+            }
 
             return data.OrderByDescending(s => s.EndDate).ToList();
         }
