@@ -614,18 +614,10 @@
         else if ((e.dataItem.User == "ray") ) {
 
             rowButton.remove();
-            if (e.dataItem.TargetName == 'dorothy' || e.dataItem.TargetName == 'alex' || e.dataItem.TargetName == 'adams')
-                rowConfirmButton.remove();
+            
             return;
         }
-        else if ((e.dataItem.User == "william")) {
-            rowButton.remove();
-            if (e.dataItem.TargetName == 'dorothy' || e.dataItem.TargetName == 'alex' || e.dataItem.TargetName == 'adams')
-                return;
-            else
-                rowConfirmButton.remove();
-            
-        }
+        
         else {
 
             rowButton.remove();
