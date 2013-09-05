@@ -5,7 +5,7 @@ using System.Web;
 using System.ComponentModel.DataAnnotations;
 using Entity;
 using System.Web.Mvc;
-
+using Utl;
 namespace Model
 {
     public class AjaxViewParticipant
@@ -215,7 +215,7 @@ namespace Model
         {
             get
             {
-                return RMBPayment + USDPayment * (decimal)6.3;
+                return RMBPayment + USDPayment * (decimal)CH.DB.CurrencyTypes.Where(c=>c.Name=="USD").FirstOrDefault().Rate;
             }
         }
         [Display(Name = "出单经验分享")]
@@ -825,6 +825,8 @@ namespace Model
         public string CallTypeString { get; set; }
         [Display(Name = "致电结果")]
         public string Result { get; set; }
+        [Display(Name = "成熟度")]
+        public int ProgressId { get; set; }
     }
 
     public class AjaxViewSaleCompanyAll
