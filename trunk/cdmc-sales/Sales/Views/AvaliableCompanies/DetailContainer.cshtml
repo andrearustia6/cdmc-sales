@@ -74,9 +74,10 @@
                     	<h2>公司简介</h2>
                         @if (!string.IsNullOrWhiteSpace(Model.Description))
                         {
-                           @Model.Description.Substring(0, 50)
+                          
                             if (Model.Description.Length > 50)
                       {
+                                 @Model.Description.Substring(0, 50)
                                 <p><a href="#"  onclick="onDescription(@(Model.ID))">更多>></a></p>
                       }
                         }
@@ -86,10 +87,10 @@
                         @if (!string.IsNullOrWhiteSpace(Model.Competitor))
                         {
                             @Model.Competitor.Substring(0, 20) 
-                       if (Model.Competitor.Length > 20)
-                       {
+                            if (Model.Competitor.Length > 20)
+                            {
                                 <p><a href="#" onclick="onCompetitor(@(Model.ID))">更多>></a></p>
-                       }
+                            }
                         }
                     </li>
                     <li>
@@ -97,10 +98,10 @@
                         @if (!string.IsNullOrWhiteSpace(Model.PitchPoint))
                         {
                            @Model.PitchPoint.Substring(0, 50)
-                      if (Model.PitchPoint.Length > 50)
-                      {
+                            if (Model.PitchPoint.Length > 50)
+                            {
                                 <p><a href="#"  onclick="onPitchPoint(@(Model.ID))">更多>></a></p>
-                      }
+                            }
                         }
                          
                     </li>
@@ -130,11 +131,11 @@
                     </dt>
                 </dl>
             </div>
-                                                                                                      i++;
-                                                                                                      if (i > 2)
-                                                                                                      {
-                                                                                                          i = 1;
-                                                                                                      }
+                 i++;
+                 if (i > 2)
+                 {
+                     i = 1;
+                 }
              }
          }
             
@@ -175,11 +176,11 @@
                  
             </div>
          </a>
-                      index++;
-                      if (index > 2)
-                      {
-                          index = 1;
-                      }
+                        index++;
+                        if (index > 2)
+                        {
+                            index = 1;
+                        }
          }
      }
     	
@@ -198,11 +199,11 @@
             <p>@call.CallDate.ToLongDateString() @call.CallDate.ToShortTimeString()</p>
             <p>By @call.Creator</p>
             </div>
-             index++;
-             if (index > 2)
-             {
-                 index = 1;
-             }
+        index++;
+        if (index > 2)
+        {
+            index = 1;
+        }
     }
 }
     	
