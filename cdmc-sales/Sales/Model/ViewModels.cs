@@ -400,7 +400,7 @@ namespace Model
     {
         public decimal RMBDealIn { get; set; }
         public decimal USDDealIn { get; set; }
-        public decimal TotalDealInRMB { get { return RMBDealIn + USDDealIn * (decimal)6.3; } }
+        public decimal TotalDealInRMB { get { return RMBDealIn + USDDealIn * (decimal)CH.DB.CurrencyTypes.Where(c => c.Name == "USD").FirstOrDefault().Rate; } }
         public Project Project { get; set; }
         public int LeftDay { get; set; }
         public string NameWithCompletePercentage { get { 
