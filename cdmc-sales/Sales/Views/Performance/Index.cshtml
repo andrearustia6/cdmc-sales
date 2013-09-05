@@ -637,7 +637,7 @@
             popupDataWin.title("打分");
     }
     function onManagerCommand(e) {
-        if (e.dataItem.ID == "0" && ((e.dataItem.User == "william") || (e.dataItem.User == "ray"))) {
+        if (e.dataItem.ID == "0" && (e.dataItem.User == "ray")) {
             alert("还没有打分，不能确认。")
             return;
         }
