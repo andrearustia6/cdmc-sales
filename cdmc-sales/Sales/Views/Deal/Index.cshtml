@@ -31,7 +31,7 @@
 
                     c.Bound(item => item.RMBPayment).Title("RMB出单总额").Width(100).Format("{0:￥#,##0}").Aggregate(aggregates => aggregates.Sum()).ClientFooterTemplate("<p>RMB出单总额: ￥<#= $.telerik.formatString('{0:n0}', Sum) #></p>").ClientGroupFooterTemplate("<p>RMB出单总额: ￥<#= $.telerik.formatString('{0:n0}', Sum) #></p>");
                     c.Bound(item => item.USDPayment).Title("USD出单总额").Width(100).Format("{0:$#,##0}").Aggregate(aggregates => aggregates.Sum()).ClientFooterTemplate("<p>USD出单总额: $<#= $.telerik.formatString('{0:n0}', Sum) #></p>").ClientGroupFooterTemplate("<p>USD出单总额: $<#= $.telerik.formatString('{0:n0}', Sum) #></p>");
-                    c.Bound(item => item.PaymentTotal).Title("所有出单总额(RMB)").Width(130).Format("{0:$#,##0}").Aggregate(aggregates => aggregates.Sum()).ClientFooterTemplate("<p>所有出单总额(RMB): $<#= $.telerik.formatString('{0:n0}', Sum) #></p>").ClientGroupFooterTemplate("<p>所有出单总额(RMB): $<#= $.telerik.formatString('{0:n0}', Sum) #></p>");
+                    c.Bound(item => item.PaymentTotal).Title("所有出单总额(RMB)").Width(130).Format("{0:￥#,##0}").Aggregate(aggregates => aggregates.Sum()).ClientFooterTemplate("<p>所有出单总额(RMB): ￥<#= $.telerik.formatString('{0:n0}', Sum) #></p>").ClientGroupFooterTemplate("<p>所有出单总额(RMB): ￥<#= $.telerik.formatString('{0:n0}', Sum) #></p>");
                     c.Bound(item => item.Income).Title("入账总额").Width(100).Format("{0:￥#,##0}").Aggregate(aggregates => aggregates.Sum()).ClientFooterTemplate("<p>入账总额: ￥<#= $.telerik.formatString('{0:n0}', Sum) #></p>").ClientGroupFooterTemplate("<p>入账总额: ￥<#= $.telerik.formatString('{0:n0}', Sum) #></p>");
                     c.Bound(item => item.IsClosed).Width(70);
                     c.Bound(item => item.Abandoned).Width(70);
