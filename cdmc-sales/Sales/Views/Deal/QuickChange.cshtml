@@ -129,6 +129,25 @@
                 @Html.ValidationMessageFor(model => model.TicketDescription)
             </td>
         </tr>
+         @{
+            if (CRM != null)
+            {
+                var CRMCompany = CH.GetDataById<Company>(CRM.CompanyID);
+                if ((CRMCompany != null) && (CRMCompany.DistrictNumberID == null))
+                {
+                <tr>
+                    <td style="width: 85px;">公司地址</td>
+                    <td>
+                        @Html.TextBox("Address_CH", CRMCompany.Address, new { style = "width:360px;" })
+                    </td>
+                    <td style="width: 85px;">英文地址</td>
+                    <td>
+                        @Html.TextBox("Address_EN", CRMCompany.Address_EN, new { style = "width:360px;" })
+                    </td>
+                </tr>
+                }
+            }
+        }
     </table>
     <fieldset style="margin: 5px 0px 0px 0px;">
         <legend>请填入参会人信息</legend>
