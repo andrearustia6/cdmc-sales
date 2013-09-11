@@ -688,6 +688,14 @@ namespace Entity
         public int Poll { get; set; }
 
 
+        //[Display(Name = "公司地址")]
+        //public string Address_CH { get; set; }
+
+
+        //[Display(Name = "英文地址")]
+        //public string Address_EN { get; set; }
+
+
     }
 
     public class Progress : EntityBase

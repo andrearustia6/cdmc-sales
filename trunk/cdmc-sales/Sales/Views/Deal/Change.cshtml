@@ -33,15 +33,12 @@
     </div>
     <div class="editor-field">
         @{
-            //var data = ViewBag.AvaibleCRM==null? CH.GetAllData<CompanyRelationship>():ViewBag.AvaibleCRM as List<CompanyRelationship>;
             IQueryable<CompanyRelationship> data = null;
             var lvl = Employee.CurrentRole.Level;
             int? projectid = Model == null ? ViewBag.ProjectID as int? : Model.ProjectID;
-            //var project = CH.GetDataById<Project>(projectid);
             if (lvl <= 100 && lvl >= 10)
             {
                 data = CRM_Logical.GetUserCallingCRM(projectid);
-
             }
            
             @Html.DropDownListFor(m => m.CompanyRelationshipID, new SelectList(data.OrderBy(o => o.Company.Name_EN), "ID", "CompanyName"), "-请选择-")
@@ -174,20 +171,16 @@
         @Html.TextAreaFor(model => model.TicketDescription)
         @Html.ValidationMessageFor(model => model.TicketDescription)
     </div>
-   @* <div class="editor-label">
-        @Html.LabelFor(model => model.Abandoned, "是否坏账")
+    <div id="address-container" style="display:none;">
+        <div class="editor-label">公司地址</div>
+        <div class="editor-field">
+            @Html.TextBox("Address_CH", "", new { style = "width:400px;" })
+        </div>
+        <div class="editor-label">英文地址</div>
+        <div class="editor-field">
+            @Html.TextBox("Address_EN", "", new { style = "width:400px;" })
+        </div>
     </div>
-    <div class="editor-field">
-        @Html.EditorFor(m => m.Abandoned)
-        @Html.ValidationMessageFor(model => model.Abandoned)
-    </div>
-    <div class="editor-label">
-        @Html.LabelFor(model => model.AbandonReason, "坏账原因")
-    </div>
-    <div class="editor-field">
-        @Html.TextAreaFor(m => m.AbandonReason)
-        @Html.ValidationMessageFor(model => model.AbandonReason)
-    </div>*@
     <div class="editor-field">
         @Html.HiddenFor(m => m.IsConfirm)
     </div>
@@ -206,6 +199,10 @@
     $(function () {
         $("#PackageID").change(function () {
             setpollcount();
+        });
+
+        $("#CompanyRelationshipID").change(function () {
+            addressinput();
         });
     });
     //点击radiobutton后给CurrencyTypeID赋值
@@ -239,6 +236,23 @@
                     $("#Polldiv").hide();
                     $("#Polldivlabel").hide();
                     $("#Poll").val("0");
+                }
+            }
+        });
+    }
+
+    function addressinput() {
+        var selcrmid = $("#CompanyRelationshipID").find("option:selected").val();
+        if (selcrmid == "") {
+            return;
+        }
+        $.ajax({
+            url: "/SalesEx/IsAddressAvailable",
+            type: "post",
+            data: { CRMId: selcrmid },
+            success: function (result) {
+                if (result == 'True') {
+                    $("#address-container").css({ 'display': 'block' });
                 }
             }
         });
