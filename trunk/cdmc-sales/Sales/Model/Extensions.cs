@@ -570,7 +570,7 @@ namespace Entity
             return item.Members.FirstOrDefault(m => m.Name == username);
         }
 
-        public static List<Lead> ProjectLeads(this Project item, int? dealcondition, int? distinctnumber)
+        public static List<Lead> ProjectLeads(this Project item, int? dealcondition, int? distinctnumber, string categories = "")
         {
             var list = new List<Lead>();
             //item.CompanyRelationships.ForEach(c =>
@@ -590,6 +590,25 @@ namespace Entity
                 }
             }
             query = query.Where(q => q.Company.DistrictNumberID == distinctnumber).ToList();
+
+
+            if (!String.IsNullOrEmpty(categories))
+            {
+                List<int> catId = new List<int>();
+                List<string> catarr = categories.Split(',').ToList();
+                if ((catarr != null) && (catarr.Count > 0))
+                {
+                    foreach (string cat in catarr)
+                    {
+                        if (!string.IsNullOrEmpty(cat))
+                        {
+                            catId.Add(Convert.ToInt32(cat));
+                        }
+                    }
+                }
+                query = query.Where(q => q.Categorys.Any(c => catId.Any(a => a == c.ID))).ToList();
+            }
+
 
             query.ForEach(c =>
             {
