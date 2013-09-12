@@ -5,7 +5,14 @@
 @using Sales.Model
 @using Utl
 @model _AvaliableCompanies
-
+@*有颜色的灯表示可打公司所属的决策人的最后一个通话的状态，颜色灯后面的数字，则代表最后致电状态为此状态的决策者人数*@
+@*5个灯
+灰色是还没联系
+红色是blowed
+绿色是close
+蓝色是pitch
+黄歆  16:02:58
+半蓝半绿是 qulifydisicion 和waitforapprove*@
 <style>
     .fieldblock
     {
@@ -788,10 +795,11 @@
     }
     function onCompanyChanging(crmid, processid, corelvlid) {
         //return;
+        
         var treeview = $("#memberCompanies").data("tTreeView");
         var item1 = $("#memberCompanies").find(".t-input[name='itemValue'][value='" + corelvlid + "']").closest("li");
         treeview.expand(item1);
-        var item2 = item1.find(".t-input[name='itemValue'][value='" + processid + "']").closest("li");
+        var item2 = item1.find(".t-input[name='itemValue'][value='m: " + processid + "']").closest("li");
         treeview.expand(item2);
         $(".t-state-selected").removeClass('t-state-selected');
         // Get the node based upon what part of the breadcrumb was selected.
@@ -947,6 +955,7 @@
         });
     }
     function onLeadSelect(leadid) {
+        
         if (leadid == undefined || leadid == "")
             leadid = gleadid;
         if (leadid == "" || leadid == undefined)
