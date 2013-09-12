@@ -20,18 +20,15 @@ namespace Sales.Controllers
             base.Dispose(disposing);
         }
 
-        public ViewResult MarketIndex(int? projectid, int? projecttype, int? dealcondition, int? distinctnumber)
+        public ViewResult MarketIndex(int? projectid, int? dealcondition, int? distinctnumber)
         {
             var pjs = CH.GetAllData<Project>();
-            Project pj = null;
+            var pj = CH.GetDataById<Project>(projectid);
             if (projectid != null)
             {
                 pj = pjs.Where(p => p.ID == projectid).FirstOrDefault();
             }
-            if (projecttype != null)
-            {
-                pj = pjs.Where(p => p.ProjectTypeID == projecttype).FirstOrDefault();
-            }
+            string categories = String.IsNullOrEmpty(Request["Categories"]) ? null : Request["Categories"].Trim();
             if (pj == null)
             {
                 pj = CH.GetAllData<Project>().FirstOrDefault();
@@ -40,12 +37,12 @@ namespace Sales.Controllers
             }
             this.AddErrorStateIfCreatorIsTheLoginUserIsNotTheMarketInterface(pj);
             ViewBag.ProjectID = pj.ID;
-            ViewBag.ProjectType = projecttype;
+            ViewBag.Categories = categories;
             ViewBag.DealCondition = dealcondition;
             ViewBag.DistinctNumber = distinctnumber;
             if (ModelState.IsValid)
             {
-                var ls = pj.ProjectLeads(dealcondition, distinctnumber);
+                var ls = pj.ProjectLeads(dealcondition, distinctnumber, categories);
                 return View(ls);
             }
             else
@@ -53,24 +50,19 @@ namespace Sales.Controllers
             
         }
 
-        public ActionResult EmailExportCsv(int? projectid, int? projecttype, int? dealcondition, int? distinctnumber)
+        public ActionResult EmailExportCsv(int? projectid, int? dealcondition, int? distinctnumber, string categories = "")
         {
-            //var pj = CH.GetDataById<Project>(projectid);
             var pjs = CH.GetAllData<Project>();
-            Project pj = null;
+            var pj = CH.GetDataById<Project>(projectid);
             if (projectid != null)
             {
                 pj = pjs.Where(p => p.ID == projectid).FirstOrDefault();
-            }
-            if (projecttype != null)
-            {
-                pj = pjs.Where(p => p.ProjectTypeID == projecttype).FirstOrDefault();
             }
             if (pj == null)
             {
                 return RedirectToAction("MarketIndex", new { projectid = projectid });
             }
-            var ls = pj.ProjectLeads(dealcondition, distinctnumber);
+            var ls = pj.ProjectLeads(dealcondition, distinctnumber, categories);
 
             this.AddErrorStateIfCreatorIsTheLoginUserIsNotTheMarketInterface(pj);
             if (ModelState.IsValid)
