@@ -570,12 +570,30 @@ namespace Entity
             return item.Members.FirstOrDefault(m => m.Name == username);
         }
 
-        public static List<Lead> ProjectLeads(this Project item)
+        public static List<Lead> ProjectLeads(this Project item, int? dealcondition, int? distinctnumber)
         {
             var list = new List<Lead>();
-            item.CompanyRelationships.ForEach(c =>
+            //item.CompanyRelationships.ForEach(c =>
+            //{
+            //    list.AddRange(CH.GetAllData<Lead>(l => l.CompanyID == c.CompanyID && l.EMail != null));
+            //});
+            var query = item.CompanyRelationships;
+            if (dealcondition != null)
             {
-                list.AddRange(CH.GetAllData<Lead>(l => l.CompanyID == c.CompanyID));
+                if (dealcondition == 0)
+                {
+                    query = query.Where(q => (q.Deals.Count() == 0)).ToList();
+                }
+                else
+                {
+                    query = query.Where(q => (q.Deals.Count() > 0)).ToList();
+                }
+            }
+            query = query.Where(q => q.Company.DistrictNumberID == distinctnumber).ToList();
+
+            query.ForEach(c =>
+            {
+                list.AddRange(CH.GetAllData<Lead>(l => l.CompanyID == c.CompanyID && l.EMail != null));
             });
             return list;
         }

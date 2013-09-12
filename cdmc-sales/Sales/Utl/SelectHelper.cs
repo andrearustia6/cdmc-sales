@@ -448,5 +448,29 @@ namespace Utl
             return selectList;
         }
 
+        public static IEnumerable<SelectListItem> DealConditionSelectListInMarket(int? selectVal)
+        {
+            List<SelectListItem> selectList = new List<SelectListItem>();
+            SelectListItem selectListItemNull = new SelectListItem() { Text = "-请选择-", Value = "" };
+            if (selectVal == null)
+            {
+                selectListItemNull.Selected = true;
+            }
+            selectList.Add(selectListItemNull);
+            SelectListItem selectListItemHas = new SelectListItem() { Text = "未出单", Value = "0" };
+            if (selectVal == 0)
+            {
+                selectListItemHas.Selected = true;
+            }
+            selectList.Add(selectListItemHas);
+            SelectListItem selectListItemNone = new SelectListItem() { Text = "已出单", Value = "1" };
+            if (selectVal == 1)
+            {
+                selectListItemNone.Selected = true;
+            }
+            selectList.Add(selectListItemNone);
+            return selectList;
+        }
+
     }
 }

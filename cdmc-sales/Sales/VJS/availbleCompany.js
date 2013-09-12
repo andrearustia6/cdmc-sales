@@ -1064,6 +1064,12 @@ function QuickDeal() {
         $('.dialogue-quickdeal form #PaymentDetail').addClass('fieldError');
         hasError = true;
     }
+    if ($('.dialogue-quickdeal form #Address_CH')) {
+        if ($('.dialogue-quickdeal form #Address_CH').val().isEmpty()) {
+            $('.dialogue-quickdeal form #Address_CH').addClass('fieldError');
+            hasError = true;
+        } 
+    }
     // end validation for deal
 
     // validation for participant
