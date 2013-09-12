@@ -42,7 +42,6 @@
         if (crmid != clickedvalue)
             gleadid = "";
         crmid = clickedvalue;
-<<<<<<< .mine
         if (gleadid == "" || gleadid == undefined) {
             $.post('_SelectedCRMNode', { crmid: crmid }, function (result) {
                 $('#crmdetailscontainer').html(result);
@@ -59,13 +58,6 @@
 //        $.post('_SelectedCRMNode', { crmid: clickedvalue }, function (result) {
 //            $('#crmdetailscontainer').html(result);
 //        });
-=======
-        gleadid = "";
-        if (clickedvalue.indexOf('m') < 0) {
-            $.post('_SelectedCRMNode', { crmid: clickedvalue }, function (result) {
-                $('#crmdetailscontainer').html(result);
-            });
-        }
->>>>>>> .r1158
+
     }
 </script>

@@ -74,12 +74,7 @@
                     	<h2>公司简介</h2>
                         @if (!string.IsNullOrWhiteSpace(Model.Description))
                         {
-<<<<<<< .mine
-
-=======
-                          
->>>>>>> .r1158
-                            if (Model.Description.Length > 50)
+                          if (Model.Description.Length > 50)
                             {
                                 @Model.Description.Substring(0, 50)
                                  @Model.Description.Substring(0, 50)
@@ -100,21 +95,14 @@
                             if (Model.Competitor.Length > 20)
                             {
                             @Model.Competitor.Substring(0, 20) 
-<<<<<<< .mine
-=======
-                            if (Model.Competitor.Length > 20)
-                            {
->>>>>>> .r1158
+
                                 <p><a href="#" onclick="onCompetitor(@(Model.ID))">更多>></a></p>
-<<<<<<< .mine
                             }
                             else
                             {
-                                 @Model.Competitor
+                                @Model.Competitor
                             }
-=======
-                            }
->>>>>>> .r1158
+
                         }
                     </li>
                     <li>
@@ -125,21 +113,15 @@
                             if (Model.PitchPoint.Length > 50)
                             {
                            @Model.PitchPoint.Substring(0, 50)
-<<<<<<< .mine
-=======
-                            if (Model.PitchPoint.Length > 50)
-                            {
->>>>>>> .r1158
+
                                 <p><a href="#"  onclick="onPitchPoint(@(Model.ID))">更多>></a></p>
-<<<<<<< .mine
+
                             }
                             else
                             {
                                  @Model.PitchPoint
                             }
-=======
-                            }
->>>>>>> .r1158
+
                         }
                          
                     </li>
@@ -169,11 +151,11 @@
                     </dt>
                 </dl>
             </div>
-                 i++;
-                 if (i > 2)
-                 {
-                     i = 1;
-                 }
+                                                                                                      i++;
+                                                                                                      if (i > 2)
+                                                                                                      {
+                                                                                                          i = 1;
+                                                                                                      }
              }
          }
             
@@ -214,11 +196,11 @@
                  
             </div>
          </a>
-                        index++;
-                        if (index > 2)
-                        {
-                            index = 1;
-                        }
+                      index++;
+                      if (index > 2)
+                      {
+                          index = 1;
+                      }
          }
      }
     	
