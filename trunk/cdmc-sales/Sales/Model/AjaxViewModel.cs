@@ -463,7 +463,8 @@ namespace Model
 
         [Display(Name = "电话pitch点")]
         public string PitchedPoint { get; set; }
-
+        [Display(Name = "是否核心")]
+        public int CoreLVLID { get; set; }
 
         #endregion End Company
 
@@ -594,6 +595,8 @@ namespace Model
 
         [Display(Name = "Pitch点")]
         public string PitchedPoint { get; set; }
+        [Display(Name = "是否核心")]
+        public int CoreLVLID { get; set; }
         #endregion End Company
 
         public virtual List<LeadBulk> Leads { get; set; }
@@ -725,6 +728,8 @@ namespace Model
         [Display(Name = "Pitch点")]
         public string PitchedPoint { get; set; }
 
+        [Display(Name = "是否核心")]
+        public int? CoreLVLID { get; set; }
     }
 
     public class AjaxViewLead

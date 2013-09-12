@@ -6,9 +6,43 @@
 @using Utl
 @model _AvaliableCompanies
 
-
+<style>
+    .fieldblock
+    {
+    }
+    .fieldname div
+    {
+        padding: 2px;
+        min-width: 100px;
+        background-color: #FFDEAD;
+        border-bottom-color: #FF8C00;
+        border: 1px solid #CCC;
+        display: inline-block;
+        margin-left: 8px;
+        margin-bottom: 8px;
+    }
+    .fieldname div font
+    {
+        font-size: 12px;
+        color: Green;
+    }
+    
+    .selections span
+    {
+    }
+    .fieldError
+    {
+        border: 1px solid red !important;
+    }
+</style>
 <div style="clear: both;">
  @Html.DropDownList("projectid",SelectHelper.ProjectSelectList(Employee.CurrentUserName))
+  <input type="button" style="border: none; width: 67px; height: 21px; background-image: url('../images/tianjia_4.jpg');"
+                                onclick="GetAddCompany()" />
+ <input type="button" style="border: none; width: 67px; height: 21px; background-image: url('../images/quick_entry.jpg');"
+                                onclick="GetQuickEntry()" />
+<input type="button" style="border: none; width: 67px; height: 21px; background-image: url('../images/bulk_entry.jpg');"
+    onclick="GetBulkEntry()" />
 </div>
 @(Html.Telerik().Splitter().Name("sp1").HtmlAttributes(new { style = "min-height: 800px;overflow:auto;" })
               .Orientation(SplitterOrientation.Horizontal).Panes(panes =>
@@ -33,9 +67,1234 @@
     @*  @Html.Partial("detailcontainer", aa)*@
     </div>
 }
+@(Html.Telerik().Window().Title("添加公司")
+    .Name("AddCompany1")
+    .Content(@<text><div class="dialogue-AddCompany1">
+        <div class="AddCompany1-wrapper">
+        </div>
+        <div class="dialogue-buttons" style=" float:right;">
+            <input type="button" class="btn-queding" onclick="Addcompany()" />
+            <input type="button" class="btn-quxiao" onclick="CancelAddcompany()" />
+        </div>
+    </div></text>)
+        .Width(1000)
+        .Height(520)
+                .Modal(true).Visible(false).Draggable(true)
+    )
+    @(Html.Telerik().Window()
+    .Name("QuickEntry")
+    .Content(@<text>
+<div class="dialogue-quickEntry" style="margin-top: 0 20px 0 20px;">
+    <div class="quickEntry-wrapper">
+    </div>
+    <div class="dialogue-buttons" style="float: right;">
+        <input type="button" class="btn-queding" onclick="QuickEntry()" />
+        <input type="button" class="btn-quxiao" onclick="CancelQuickEntry()" />
+    </div>
+</div></text>)
+    .Width(1000)
+    .Height(650).Title("快捷录入")
+        .Modal(true).Visible(false).Draggable(true).ClientEvents(c => c.OnClose("QuickEntryOnClose"))
+    )
+@(Html.Telerik().Window()
+    .Name("BulkEntry")
+    .Content(@<text>
+<div class="dialogue-bulkEntry" style="margin: 0px;">
+    <div class="bulkEntry-wrapper">
+    </div>
+    <div class="dialogue-buttons" style="float: right;">
+        <input type="button" class="btn-queding" onclick="BulkEntry()" />
+        <input type="button" class="btn-quxiao" onclick="CancelBulkEntry()" />
+    </div>
+</div></text>)
+    .Title("批量录入")
+            .Modal(true).Visible(false).Draggable(true).ClientEvents(c => c.OnClose("BulkEntryOnClose"))
+    )
 
+    @(Html.Telerik().Window().Title("行业细分")
+    .Name("Categories")
+    .Content(@<text><div class="dialogue-Categories">
+        <div class="Categories-wrapper">
+        </div>
+        <div class="dialogue-buttons" style=" float:right;">
+             <input type="button" class="btn-queding" onclick="Javescript:$('#Categories').data('tWindow').close();" />
+        </div>
+    </div></text>)
+        .Width(1000)
+        .Height(220)
+                .Modal(true).Visible(false).Draggable(true)
+    )
 
+@(Html.Telerik().Window().Title("更新公司")
+    .Name("EditCompany")
+    .Content(@<text><div class="dialogue-editcompany">
+        <div class="companyEdit-wrapper">
+        </div>
+        <div class="dialogue-buttons" style=" float:right;">
+            <input type="button" class="btn-queding" onclick="Editcompany()" />
+            <input type="button" class="btn-quxiao" onclick="CancelEditcompany()" />
+        </div>
+    </div></text>)
+    .Width(1000).Height(540).Draggable(true).Modal(true).Visible(false)
+)
+@(Html.Telerik().Window().Title("公司介绍")
+        .Name("Description")
+    .Content(@<text><div class="dialogue-Description">
+        <div class="Description-wrapper">
+        </div>
+        <div class="dialogue-buttons" style="position:absolute;bottom:0;width:98%;text-align:right;">
+            <input type="button" class="btn-queding" onclick="Javescript:$('#Description').data('tWindow').close();" />
+        </div>
+    </div></text>)
+    .Width(600).Height(200).Draggable(true).Modal(true).Visible(false)
+)
+@(Html.Telerik().Window().Title("竞争对手")
+        .Name("Competitor1")
+    .Content(@<text><div class="dialogue-Competitor1">
+        <div class="Competitor1-wrapper">
+        </div>
+        <div class="dialogue-buttons" style="position:absolute;bottom:0;width:98%;text-align:right;">
+            <input type="button" class="btn-queding" onclick="Javescript:$('#Competitor1').data('tWindow').close();" />
+        </div>
+    </div></text>)
+    .Width(600).Height(200).Draggable(true).Modal(true).Visible(false)
+)
+@(Html.Telerik().Window().Title("Pitch Point")
+            .Name("PitchPoint")
+    .Content(@<text><div class="dialogue-PitchPoint">
+        <div class="PitchPoint-wrapper">
+        </div>
+        <div class="dialogue-buttons" style=" float:right;">
+            <input type="button" class="btn-queding" onclick="Javescript:$('#PitchPoint').data('tWindow').close();" />
+        </div>
+    </div></text>)
+    .Width(600).Height(200).Draggable(true).Modal(true).Visible(false)
+)
+
+@(Html.Telerik().Window().Title("新增客户")
+    .Name("AddLead")
+    .Content(@<text><div class="dialogue-addlead">
+        <div class="leadadd-wrapper">
+        </div>
+        <div class="dialogue-buttons" style=" float:right;">
+            <input type="button" class="btn-queding" onclick="AddLead()" />
+            <input type="button" class="btn-quxiao" onclick="CancelAddLead()" />
+        </div>
+    </div></text>)
+    .Width(1000).Height(340).Draggable(true).Modal(true).Visible(false)
+)
+@(Html.Telerik().Window().Title("更新客户")
+    .Name("EditLead")
+    .Content(@<text><div class="dialogue-editlead">
+        <div class="leadedit-wrapper">
+        </div>
+        <div class="dialogue-buttons" style=" float:right;">
+            <input type="button" class="btn-queding" onclick="UpdateLead()" />
+            <input type="button" class="btn-quxiao" onclick="javascript:$('#EditLead').data('tWindow').close();" />
+        </div>
+    </div></text>)
+    .Width(1000).Height(340).Draggable(true).Modal(true).Visible(false)
+)
+@(Html.Telerik().Window().Title("更新通话结果")
+    .Name("EditCall")
+    .Content(@<text><div class="dialogue-editcall">
+        <div class="calledit-wrapper">
+        </div>
+        <div class="dialogue-buttons" style=" float:right;">
+            <input type="button" class="btn-queding" onclick="UpdateCall()" />
+            <input type="button" class="btn-quxiao" onclick="CancelEditCall()" />
+        </div>
+    </div></text>)
+    .Width(750).Height(500).Draggable(true).Modal(true).Visible(false)
+)
+@(Html.Telerik().Window().Title("添加通话结果")
+    .Name("AddCall")
+    .Content(@<text><div class="dialogue-addcall">
+        <div class="calladd-wrapper">
+        </div>
+        <div class="dialogue-buttons"style=" float:right;">
+            <input type="button" class="btn-queding" onclick="AddCall()" />
+            <input type="button" class="btn-quxiao" onclick="CancelAddCall()" />
+        </div>
+    </div></text>)
+    .Width(850).Height(250).Draggable(true).Modal(true).Visible(false)
+)
+@(Html.Telerik().Window().Title("添加Comment")
+        .Name("AddComment")
+    .Content(@<text><div class="dialogue-AddComment">
+        <div class="AddComment-wrapper">
+        </div>
+        <div class="dialogue-buttons" style=" float:right;">
+             <input type="button" class="btn-queding" onclick="AddComment()" />
+            <input type="button" class="btn-quxiao" onclick="CancelAddComment()" />
+        </div>
+    </div></text>)
+        .Width(1000)
+        .Height(220)
+                .Modal(true).Visible(false).Draggable(true)
+    )
 <script>
     var crmid
     var gleadid
+
+    function GetAddCompany() {
+        var currentProjectId = $('#projectid').val();
+        $.post('GetAddCompany', { projectId: currentProjectId }, function (result) {
+            $('.AddCompany1-wrapper').html(result);
+            var window = $('#AddCompany1').data('tWindow');
+            window.center().open();
+        });
+    }
+    function CancelAddcompany() {
+        var window = $('#AddCompany1').data('tWindow');
+
+        window.close();
+    }
+    function Addcompany() {
+        var hasError = false;
+        $('.dialogue-AddCompany1 form input').removeClass('fieldError');
+        $('.dialogue-AddCompany1 form select').removeClass('fieldError');
+
+        String.prototype.isEmpty = function () { return /^\s*$/.test(this); }
+
+        if ($('.dialogue-AddCompany1 form #DistrictNumberId option:selected').val().isEmpty()) {
+            //            if ($('.dialogue-addcompany form #ZipCode').val().isEmpty()) {
+            //                $('.dialogue-addcompany form #ZipCode').addClass('fieldError');
+            //                hasError = true;
+            //            }
+            //            if ($('.dialogue-addcompany form #Address').val().isEmpty()) {
+            //                $('.dialogue-addcompany form #Address').addClass('fieldError');
+            //                hasError = true;
+            //            }
+            if ($('.dialogue-AddCompany1 form #Name_CN').val().isEmpty()) {
+                $('.dialogue-AddCompany1 form #Name_CN').addClass('fieldError');
+                hasError = true;
+            }
+        }
+        else {
+            if ($('.dialogue-AddCompany1 form #Name_EN').val().isEmpty()) {
+                $('.dialogue-AddCompany1 form #Name_EN').addClass('fieldError');
+                hasError = true;
+            }
+        }
+
+        var telephone = $('.dialogue-AddCompany1 form #Phone');
+        if (telephone.val().isEmpty() || !IsTelephone(telephone.val())) {
+            telephone.addClass('fieldError');
+            hasError = true;
+        }
+
+        var fax = $('.dialogue-AddCompany1 form #Fax');
+        if ((!fax.val().isEmpty()) && (!IsTelephone(fax.val()))) {
+            fax.addClass('fieldError');
+            hasError = true;
+        }
+        //            if ($('.dialogue-addcompany form #Fax').val().isEmpty()) {
+        //                $('.dialogue-addcompany form #Fax').addClass('fieldError');
+        //                hasError = true;
+        //            }
+        //        if ($('.dialogue-addcompany form #WebSite').val().isEmpty()) {
+        //            $('.dialogue-addcompany form #WebSite').addClass('fieldError');
+        //            hasError = true;
+        //        }
+        if ($('.dialogue-AddCompany1 form #IndustryId').val().isEmpty()) {
+            $('.dialogue-AddCompany1 form #IndustryId').addClass('fieldError');
+            hasError = true;
+        }
+        //    if ($('.dialogue-addcompany form #TypeId').val().isEmpty()) {
+        //        $('.dialogue-addcompany form #TypeId').addClass('fieldError');
+        //        hasError = true;
+        //    }
+        if ($('.dialogue-AddCompany1 form #CoreLVLID').val().isEmpty()) {
+            $('.dialogue-AddCompany1 form #CoreLVLID').addClass('fieldError');
+            hasError = true;
+        }
+        if ($('.dialogue-AddCompany1 form #ProgressId').val().isEmpty()) {
+            $('.dialogue-AddCompany1 form #ProgressId').addClass('fieldError');
+            hasError = true;
+        }
+
+        if ($('.dialogue-AddCompany1 form input[type=checkbox][name=Categories]:checked').length == 0) {
+            $('fieldset#categories').addClass('fieldError');
+            hasError = true;
+        } else {
+            $('fieldset#categories').removeClass('fieldError');
+        }
+        if (hasError) {
+            return;
+        }
+        var projectid = $('#projectid').val();
+        var companyNameCN = $('.dialogue-AddCompany1 #Name_CN').val();
+        var companyNameEN = $('.dialogue-AddCompany1 form #Name_EN').val();
+        $.post('CheckCompanyExist', { projectid: projectid, beforeUpdateCN: null, afterUpdateCN: companyNameCN, beforeUpdateEN: null, afterUpdateEN: companyNameEN }, function (result) {
+            if (result.length > 0) {
+                alert(result);
+            } else {
+                var query = $('.dialogue-AddCompany1 form').serializeArray();
+                $.post('AddCompany', query, function (result) {
+                    if (result.companyRelationshipId != null) {
+                        crmid = result.companyRelationshipId;
+                        var currentProjectId = $('#projectid').val();
+                        RefreshCrmTree(currentProjectId, result.companyRelationshipId, result.processid, result.corelvlid);
+                        if (confirm('公司新增成功,是否要往新增公司里面增加Lead')) {
+
+                            onLeadAdd(result.companyId);
+                            $('#AddCompany1').data('tWindow').close();
+                        }
+                        else {
+                            
+                            //onCompanyChanging(result.companyRelationshipId);
+                            $('#AddCompany1').data('tWindow').close();
+                        }
+                    } else {
+                        alert('公司新增失败');
+                    }
+                });
+            }
+        });
+    }
+    function GetQuickEntry() {
+        var currentProjectId = $('#projectid').val();
+        $.post('GetQuickEntry', { projectId: currentProjectId }, function (result) {
+            $('.quickEntry-wrapper').html(result);
+            var window = $('#QuickEntry').data('tWindow');
+            window.center().open();
+        });
+    }
+
+    function QuickEntry() {
+        var hasError = false;
+        $('.dialogue-quickEntry form input').removeClass('fieldError');
+        $('.dialogue-quickEntry form select').removeClass('fieldError');
+        $('.dialogue-quickEntry form textarea').removeClass('fieldError');
+        $('.dialogue-quickEntry form #Msg').html('');
+
+        String.prototype.isEmpty = function () { return /^\s*$/.test(this); }
+
+        var msg = '';
+
+        // validation for company
+        if ($('.dialogue-quickEntry form #DistrictNumberId option:selected').val().isEmpty()) {
+            if ($('.dialogue-quickEntry form #Name_CN').val().isEmpty()) {
+                $('.dialogue-quickEntry form #Name_CN').addClass('fieldError');
+                hasError = true;
+            }
+        }
+        else {
+            if ($('.dialogue-quickEntry form #Name_EN').val().isEmpty()) {
+                $('.dialogue-quickEntry form #Name_EN').addClass('fieldError');
+                hasError = true;
+            }
+        }
+
+        var telephone = $('.dialogue-quickEntry form #Phone');
+        if (telephone.val().isEmpty() || !IsTelephone(telephone.val())) {
+            telephone.addClass('fieldError');
+            hasError = true;
+        }
+
+        if ($('.dialogue-quickEntry form #IndustryId').val().isEmpty()) {
+            $('.dialogue-quickEntry form #IndustryId').addClass('fieldError');
+            hasError = true;
+        }
+        //    if ($('.dialogue-addcompany form #TypeId').val().isEmpty()) {
+        //        $('.dialogue-addcompany form #TypeId').addClass('fieldError');
+        //        hasError = true;
+        //    }
+        if ($('.dialogue-quickEntry form #Result').val().isEmpty()) {
+            $('.dialogue-quickEntry form #Result').addClass('fieldError');
+            hasError = true;
+        }
+
+        if ($('.dialogue-quickEntry form #ProgressId').val().isEmpty()) {
+            $('.dialogue-quickEntry form #ProgressId').addClass('fieldError');
+            hasError = true;
+        }
+
+        if ($('.dialogue-quickEntry form #CoreLVLID').val().isEmpty()) {
+            $('.dialogue-quickEntry form #CoreLVLID').addClass('fieldError');
+            hasError = true;
+        }
+        if ($('.dialogue-quickEntry form input[type=checkbox][name=Categories]:checked').length == 0) {
+            $('fieldset#categories').addClass('fieldError');
+            hasError = true;
+        } else {
+            $('fieldset#categories').removeClass('fieldError');
+        }
+        // end validation for company
+
+        // validation for lead
+        var $namecn = $('.dialogue-quickEntry form #LeadName_CN');
+        var $nameen = $('.dialogue-quickEntry form #LeadName_EN');
+        if ($namecn.val().length == 0 && $nameen.val().length == 0) {
+            $namecn.addClass('fieldError');
+            $nameen.addClass('fieldError');
+            msg += '客户信息中客户中英文名必需至少填一个.';
+            hasError = true;
+        }
+
+        $gender = $('.dialogue-quickEntry form #Gender');
+        if ($gender.val().length == 0) {
+            $gender.addClass('fieldError');
+            hasError = true;
+        }
+
+        $title = $('.dialogue-quickEntry form #Title');
+        if ($title.val().length == 0) {
+            $title.addClass('fieldError');
+            hasError = true;
+        }
+
+        var telephone = $('.dialogue-quickEntry form #Telephone');
+        var cellPhone = $('.dialogue-quickEntry form #CellPhone');
+        if ((cellPhone.val().length == 0) && (telephone.val().length == 0)) {
+            msg += '<br />客户信息中客户直线移动电话必需至少填一个.';
+            telephone.addClass('fieldError');
+            cellPhone.addClass('fieldError');
+            hasError = true;
+        } else {
+            if (telephone.val().length != 0 && !IsTelephone(telephone.val())) {
+                telephone.addClass('fieldError');
+                hasError = true;
+            }
+            if (cellPhone.val().length != 0 && !IsTelephone(cellPhone.val())) {
+                cellPhone.addClass('fieldError');
+                hasError = true;
+            }
+        }
+        // end validation for lead
+
+        // validation for leadcall
+
+        var callFirst = $('.dialogue-quickEntry form #CallDate');
+        var callBack = $('.dialogue-quickEntry form #CallBackDate');
+        if (callBack.val().length != 0 && callFirst.val().length != 0) {
+            if (Date.parse(callFirst.val()) >= Date.parse(callBack.val())) {
+                msg += '<br />通话信息中回打时间不能早于致电时间.';
+                callFirst.addClass('fieldError');
+                callBack.addClass('fieldError');
+                hasError = true;
+            }
+        }
+
+        var $calltype = $('.dialogue-quickEntry form #CallTypeId');
+        if ($calltype.val().length == 0) {
+            $calltype.addClass('fieldError');
+            hasError = true;
+        }
+
+        // end validation for leadcall
+
+        if (hasError) {
+            if (msg != '')
+                $('.dialogue-quickEntry form #Msg').html(msg);
+            return;
+        } else {
+            var projectid = $('#projectid').val();
+            var companyNameCN = $('.dialogue-quickEntry form #Name_CN').val();
+            var companyNameEN = $('.dialogue-quickEntry form #Name_EN').val();
+            $.post('CheckCompanyExist', { projectid: projectid, beforeUpdateCN: null, afterUpdateCN: companyNameCN, beforeUpdateEN: null, afterUpdateEN: companyNameEN }, function (result) {
+                if (result.length > 0) {
+                    alert(result);
+                } else {
+                    var query = $('.dialogue-quickEntry form').serializeArray();
+                    $.post('QuickEntry', query, function (result) {
+                        if ((result.companyRelationshipId != null) && (result.leadId != null) && (result.leadCallId != null)) {
+                            $('#QuickEntry').data('tWindow').close();
+                            crmid = result.companyRelationshipId;
+                            var currentProjectId = $('#projectid').val();
+                            RefreshCrmTree(currentProjectId, result.companyRelationshipId, result.processid, result.corelvlid);
+                        } else {
+                            alert('快捷录入失败');
+                        }
+                    });
+                }
+            });
+        }
+    }
+
+    function CancelQuickEntry() {
+        var window = $('#QuickEntry').data('tWindow');
+        window.close();
+    }
+
+    function onQuickAddDeal(currentProjectId, currentCRMId) {
+        $.post('GetQuickAddDeal', { projectId: currentProjectId, CRMId: currentCRMId }, function (result) {
+            $('.quickdeal-wrapper').html(result);
+            var window = $('#QuickAddDeal').data('tWindow');
+            window.center().open();
+        });
+    }
+
+    function QuickDeal() {
+        var hasError = false;
+        $('.dialogue-quickdeal form input').removeClass('fieldError');
+        $('.dialogue-quickdeal form select').removeClass('fieldError');
+
+        String.prototype.isEmpty = function () { return /^\s*$/.test(this); }
+
+        // validation for deal
+        if ($('.dialogue-quickdeal form #PackageID').val().isEmpty()) {
+            $('.dialogue-quickdeal form #PackageID').addClass('fieldError');
+            hasError = true;
+        }
+        if ($('.dialogue-quickdeal form #CompanyRelationshipID').val().isEmpty()) {
+            $('.dialogue-quickdeal form #CompanyRelationshipID').addClass('fieldError');
+            hasError = true;
+        }
+        if ($('.dialogue-quickdeal form #ExpectedPaymentDate').val().isEmpty()) {
+            $('.dialogue-quickdeal form #ExpectedPaymentDate').addClass('fieldError');
+            hasError = true;
+        }
+        if ($('.dialogue-quickdeal form #Payment').val().isEmpty() || $('.dialogue-quickdeal form #Payment').val() <= 0) {
+            $('.dialogue-quickdeal form #Payment').addClass('fieldError');
+            hasError = true;
+        }
+        if ($('.dialogue-quickdeal form #Committer').val().isEmpty()) {
+            $('.dialogue-quickdeal form #Committer').addClass('fieldError');
+            hasError = true;
+        }
+        var contact = $('.dialogue-quickdeal form #CommitterContect');
+        if (contact.val().length != 0 && !IsTelephone(contact.val())) {
+            contact.addClass('fieldError');
+            hasError = true;
+        }
+        var commiterEmail = $('.dialogue-quickdeal form #CommitterEmail');
+        if (commiterEmail.val().isEmpty()) {
+            commiterEmail.addClass('fieldError');
+            hasError = true;
+        } else {
+            if (!validateEmail(commiterEmail.val())) {
+                commiterEmail.addClass('fieldError');
+                hasError = true;
+            }
+        }
+        if ($('.dialogue-quickdeal form #PaymentDetail').val().isEmpty()) {
+            $('.dialogue-quickdeal form #PaymentDetail').addClass('fieldError');
+            hasError = true;
+        }
+        // end validation for deal
+
+        // validation for participant
+        //if ($('.dialogue-quickdeal form #Name').val().isEmpty()) {
+        //    $('.dialogue-quickdeal form #Name').addClass('fieldError');
+        //    hasError = true;
+        //}
+        //if ($('.dialogue-quickdeal form #ParticipantTypeID').val().isEmpty()) {
+        //    $('.dialogue-quickdeal form #ParticipantTypeID').addClass('fieldError');
+        //    hasError = true;
+        //}
+        // end validation for participant
+
+        if (hasError) {
+            return;
+        }
+
+        if ($('.quickdeal-wrapper form').valid()) {
+            var query = $('.quickdeal-wrapper form').serializeArray();
+
+            var grid = $('.quickdeal-wrapper form #pList').data('tGrid');
+            var data = grid.data;
+            if (data.length <= 0) {
+                if (confirm("您尚未填写参会人信息，请确认是否要提交？")) {
+                    $.post('QuickAddDeal', query, function (result) {
+                        if ((result.dealId != null) && (result.companyRelationshipId != null) && (result.dealCode != null)) {
+                            alert("您已经顺利提交出单，出单号为:" + result.dealCode)
+                            $('#QuickAddDeal').data('tWindow').close();
+                            RefreshCrm();
+                        } else {
+                            alert('快捷出单失败')
+                        }
+                    });
+                } else {
+                    return;
+                }
+            } else {
+                $.post('QuickAddDeal', query, function (result) {
+                    if ((result.dealId != null) && (result.companyRelationshipId != null) && (result.dealCode != null)) {
+                        alert("您已经顺利提交出单，出单号为:" + result.dealCode)
+                        $('#QuickAddDeal').data('tWindow').close();
+                        RefreshCrm();
+                    } else {
+                        alert('快捷出单失败')
+                    }
+                });
+            }
+        }
+    }
+
+    function CancelQuickDeal() {
+        var window = $('#QuickAddDeal').data('tWindow');
+        window.close();
+    }
+
+    function GetBulkEntry() {
+        var currentProjectId = $('#projectid').val();
+        $.post('GetBulkEntry', { projectId: currentProjectId }, function (result) {
+            $('.bulkEntry-wrapper').html(result);
+            var window = $('#BulkEntry').data('tWindow');
+            window.center().open();
+        });
+    }
+
+    function BulkEntry() {
+        var hasError = false;
+        $('.dialogue-bulkEntry form input').removeClass('fieldError');
+        $('.dialogue-bulkEntry form select').removeClass('fieldError');
+        $('.dialogue-bulkEntry form #Msg').html('');
+
+        String.prototype.isEmpty = function () { return /^\s*$/.test(this); }
+
+        // validation for company
+        if ($('.dialogue-bulkEntry form #DistrictNumberId option:selected').val().isEmpty()) {
+            if ($('.dialogue-bulkEntry form #Name_CN').val().isEmpty()) {
+                $('.dialogue-bulkEntry form #Name_CN').addClass('fieldError');
+                hasError = true;
+            }
+        }
+        else {
+            if ($('.dialogue-bulkEntry form #Name_EN').val().isEmpty()) {
+                $('.dialogue-bulkEntry form #Name_EN').addClass('fieldError');
+                hasError = true;
+            }
+        }
+
+        var telephone = $('.dialogue-bulkEntry form #Phone');
+        if (telephone.val().isEmpty() || !IsTelephone(telephone.val())) {
+            telephone.addClass('fieldError');
+            hasError = true;
+        } else {
+            telephone.removeClass('fieldError');
+        }
+
+        if ($('.dialogue-bulkEntry form #IndustryId').val().isEmpty()) {
+            $('.dialogue-bulkEntry form #IndustryId').addClass('fieldError');
+            hasError = true;
+        } else {
+            $('.dialogue-bulkEntry form #IndustryId').removeClass('fieldError');
+        }
+
+        if ($('.dialogue-bulkEntry form #ProgressId').val().isEmpty()) {
+            $('.dialogue-bulkEntry form #ProgressId').addClass('fieldError');
+            hasError = true;
+        } else {
+            $('.dialogue-bulkEntry form #ProgressId').removeClass('fieldError');
+        }
+        if ($('.dialogue-bulkEntry form #CoreLVLID').val().isEmpty()) {
+            $('.dialogue-bulkEntry form #CoreLVLID').addClass('fieldError');
+            hasError = true;
+        } else {
+            $('.dialogue-bulkEntry form #CoreLVLID').removeClass('fieldError');
+        }
+        if ($('.dialogue-bulkEntry form input[type=checkbox][name=Categories]:checked').length == 0) {
+            $('fieldset#categories').addClass('fieldError');
+            hasError = true;
+        } else {
+            $('fieldset#categories').removeClass('fieldError');
+        }
+        // end validation for company
+        for (var i = 0; i < 10; i++) {
+            $(".leadsTable tbody tr#row_" + i).each(function () {
+                var namecn = $(this).find("input[name='LeadName_CN']");
+                var nameen = $(this).find("input[name='LeadName_EN']")
+                var gender = $(this).find("select[name='Gender']");
+                var title = $(this).find("input[name='Title']");
+                var telephone = $(this).find("input[name='Telephone']");
+                var cellphone = $(this).find("input[name='CellPhone']");
+
+                if ((namecn.val().length == 0) && (nameen.val().length == 0)
+                    && (title.val().length == 0) && (telephone.val().length == 0)
+                    && (cellphone.val().length == 0)) {
+                } else {
+                    if (namecn.val().length == 0 && nameen.val().length == 0) {
+                        namecn.addClass('fieldError');
+                        nameen.addClass('fieldError');
+                        hasError = true;
+                    }
+                    if (gender.val().length == 0) {
+                        gender.addClass('fieldError');
+                        hasError = true;
+                    }
+                    if (title.val().length == 0) {
+                        title.addClass('fieldError');
+                        hasError = true;
+                    }
+                    if ((cellphone.val().length == 0) && (telephone.val().length == 0)) {
+                        telephone.addClass('fieldError');
+                        cellphone.addClass('fieldError');
+                        hasError = true;
+                    } else {
+                        if (telephone.val().length != 0 && !IsTelephone(telephone.val())) {
+                            telephone.addClass('fieldError');
+                            hasError = true;
+                        }
+                        if (cellphone.val().length != 0 && !IsTelephone(cellphone.val())) {
+                            cellphone.addClass('fieldError');
+                            hasError = true;
+                        }
+                    }
+                }
+            });
+        }
+        if (hasError) {
+            return;
+        } else {
+            var projectid = $('#projectid').val();
+            var companyNameCN = $('.dialogue-bulkEntry form #Name_CN').val();
+            var companyNameEN = $('.dialogue-bulkEntry form #Name_EN').val();
+            $.post('CheckCompanyExist', { projectid: projectid, beforeUpdateCN: null, afterUpdateCN: companyNameCN, beforeUpdateEN: null, afterUpdateEN: companyNameEN }, function (result) {
+                if (result.length > 0) {
+                    alert(result);
+                } else {
+                    var query = $('.dialogue-bulkEntry form').serializeArray();
+                    $.post('BulkEntry', query, function (result) {
+                        if (result.companyRelationshipId != null) {
+                            $('#BulkEntry').data('tWindow').close();
+                            crmid = result.companyRelationshipId;
+                            var currentProjectId = $('#projectid').val();
+                            RefreshCrmTree(currentProjectId, result.companyRelationshipId, result.processid, result.corelvlid);
+                        } else {
+                            alert('批量录入失败');
+                        }
+                    });
+                }
+            });
+        }
+    }
+
+    function CancelBulkEntry() {
+        var window = $('#BulkEntry').data('tWindow');
+        window.close();
+    }
+    function AddCompanyOnClose() {
+        $('.companyAdd-wrapper').empty();
+    }
+    function QuickEntryOnClose() {
+        $('.quickEntry-wrapper').empty();
+    }
+    function BulkEntryOnClose() {
+        $('.bulkEntry-wrapper').empty();
+    }
+
+    function RefreshCrmTree(projectid,crmid,processid,corelvlid) {
+        $.post('_RefreshCrmTree', { projectid: projectid }, function (result) {
+            $('#mainnavigationcontainer').html(result);
+            if (crmid > 0) {
+                onCompanyChanging(crmid, processid, corelvlid);
+                onLeadSelect(gleadid);
+            }
+        });
+
+    }
+    function onCompanyChanging(crmid, processid, corelvlid) {
+        //return;
+        var treeview = $("#memberCompanies").data("tTreeView");
+        var item1 = $("#memberCompanies").find(".t-input[name='itemValue'][value='" + corelvlid + "']").closest("li");
+        treeview.expand(item1);
+        var item2 = item1.find(".t-input[name='itemValue'][value='" + processid + "']").closest("li");
+        treeview.expand(item2);
+        $(".t-state-selected").removeClass('t-state-selected');
+        // Get the node based upon what part of the breadcrumb was selected.
+        var findString = ".t-input[name='itemValue'][value='" + crmid + "']";
+        var item3 = item2.find(findString).closest("li");
+        // Programmatically "click" the desired node.
+        item3.find(".t-in:first").trigger("click");
+        $(".t-state-selected").addClass('t-state-selected');
+        
+        return true;
+
+    }
+
+
+    function onCompanyEdit(currentCompanyId) {
+        $.post('GetEditCompany', { companyId: currentCompanyId }, function (result) {
+            $('.companyEdit-wrapper').html(result);
+            var window = $('#EditCompany').data('tWindow');
+            window.center().open();
+
+            while ($('.dialogue-editcompany form').length > 1) {
+                $('.dialogue-editcompany form').last().remove();
+            }
+        });
+    }
+
+    function Editcompany() {
+
+        var hasError = false;
+        $('.dialogue-editcompany form input').removeClass('fieldError');
+        $('.dialogue-editcompany form select').removeClass('fieldError');
+
+        String.prototype.isEmpty = function () { return /^\s*$/.test(this); }
+
+        if ($('.dialogue-editcompany form #DistrictNumberId option:selected').val().isEmpty()) {
+            if ($('.dialogue-editcompany form #Name_CN').val().isEmpty()) {
+                $('.dialogue-editcompany form #Name_CN').addClass('fieldError');
+                hasError = true;
+            }
+        }
+        else {
+            if ($('.dialogue-editcompany form #Name_EN').val().isEmpty()) {
+                $('.dialogue-editcompany form #Name_EN').addClass('fieldError');
+                hasError = true;
+            }
+        }
+
+        var telephone = $('.dialogue-editcompany form #Phone');
+        if (telephone.val().isEmpty() || !IsTelephone(telephone.val())) {
+            telephone.addClass('fieldError');
+            hasError = true;
+        }
+
+        var fax = $('.dialogue-editcompany form #Fax');
+        if ((!fax.val().isEmpty()) && (!IsTelephone(fax.val()))) {
+            fax.addClass('fieldError');
+            hasError = true;
+        }
+
+        if ($('.dialogue-editcompany form #IndustryId').val().isEmpty()) {
+            $('.dialogue-editcompany form #IndustryId').addClass('fieldError');
+            hasError = true;
+        }
+        if ($('.dialogue-editcompany form #ProgressId').val().isEmpty()) {
+            $('.dialogue-editcompany form #ProgressId').addClass('fieldError');
+            hasError = true;
+        }
+        if ($('.dialogue-editcompany form #CoreLVLID').val().isEmpty()) {
+            $('.dialogue-editcompany form #CoreLVLID').addClass('fieldError');
+            hasError = true;
+        }
+        if ($('.dialogue-editcompany form input[type=checkbox][name=Categories]:checked').length == 0) {
+            $('fieldset#categories').addClass('fieldError');
+            hasError = true;
+        } else {
+            $('fieldset#categories').removeClass('fieldError');
+        }
+
+        if (hasError) {
+            return;
+        }
+
+        var projectid = $('#CurrentProjectId').val();
+        var companyNameCN = $('.dialogue-editcompany form #Name_CN').val();
+        var companyNameEN = $('.dialogue-editcompany form #Name_EN').val();
+        $.post('CheckCompanyExist', { projectid: projectid, beforeUpdateCN: currentCompanyNameCN, afterUpdateCN: companyNameCN, beforeUpdateEN: currentCompanyNameEN, afterUpdateEN: companyNameEN }, function (result) {
+            if (result.length > 0) {
+                alert(result);
+            } else {
+                var query = $('.dialogue-editcompany form').serializeArray();
+                $.post('EditCompany', query, function (result) {
+                    if (result.companyRelationshipId != null) {
+                        alert('公司更新成功');
+                        crmid = result.companyRelationshipId;
+                        var currentProjectId = $('#projectid').val();
+                        gleadid = "";
+                        RefreshCrmTree(currentProjectId, result.companyRelationshipId, result.processid, result.corelvlid);
+                        $('#EditCompany').data('tWindow').close();
+                    }
+                    //                    if (result.length > 0) {
+                    //                        alert(result);
+                    //                    } else {
+                    //                        $('#EditCompany').data('tWindow').close();
+                    //                        alert('公司更新成功');
+                    //                        var Indexes = $('.dialogue-editcompany form #CompanRelationshipId').val();
+                    //                        RefreshCrm();
+                    //                    }
+                });
+            }
+        });
+    }
+    function onDescription(currentCompanyId) {
+        $.post('GetDescription', { crmid: currentCompanyId }, function (result) {
+            $('.Description-wrapper').html(result);
+            var window = $('#Description').data('tWindow');
+            window.center().open();
+
+            while ($('.dialogue-Description form').length > 1) {
+                $('.dialogue-Description form').last().remove();
+            }
+        });
+    }
+
+    function onCompetitor(currentCompanyId) {
+        $.post('GetCompetitor', { crmid: currentCompanyId }, function (result) {
+            $('.Competitor1-wrapper').html(result);
+            var window = $('#Competitor1').data('tWindow');
+            window.center().open();
+
+            while ($('.dialogue-Competitor1 form').length > 1) {
+                $('.dialogue-Competitor1 form').last().remove();
+            }
+        });
+    }
+    function onPitchPoint(currentCompanyId) {
+        $.post('GetPitchPoint', { crmid: currentCompanyId }, function (result) {
+            $('.PitchPoint-wrapper').html(result);
+            var window = $('#PitchPoint').data('tWindow');
+            window.center().open();
+            while ($('.dialogue-PitchPoint form').length > 1) {
+                $('.dialogue-PitchPoint form').last().remove();
+            }
+        });
+    }
+    function GetCategories(currentCompanyId) {
+        $.post('GetCategories', { crmid: currentCompanyId }, function (result) {
+            $('.Categories-wrapper').html(result);
+            var window = $('#Categories').data('tWindow');
+            window.center().open();
+            while ($('.dialogue-Categories form').length > 1) {
+                $('.dialogue-Categories form').last().remove();
+            }
+        });
+    }
+    function onLeadSelect(leadid) {
+        if (leadid == undefined || leadid == "")
+            leadid = gleadid;
+        if (leadid == "" || leadid == undefined)
+            return;
+        $.post('GetCRMByCrmIDLeadID', { crmid: crmid, leadid: leadid }, function (result) {
+            $('#crmdetailscontainer').html(result);
+
+            var leaddiv = $('#lead' + leadid);
+            
+            leaddiv.removeClass('center_2');
+            leaddiv.addClass('center_1');
+        });
+    }
+    function onLeadAdd(currentCompanyId) {
+        if (currentCompanyId == "" || currentCompanyId == undefined) {
+            alert("请先选择公司");
+            return;
+        }
+        $.post('GetAddLead', { companyId: currentCompanyId }, function (result) {
+            $('.leadadd-wrapper').html(result);
+            var window = $('#AddLead').data('tWindow');
+            window.center().open();
+        });
+    }
+    function onLeadEdit(leadId) {
+        gleadid = leadId;
+        $.post('GetEditLead', { leadId: leadId }, function (result) {
+            $('.leadedit-wrapper').html(result);
+            $('#EditLead').data('tWindow').center().open();
+            while ($('.dialogue-editlead form').length > 1) {
+                $('.dialogue-editlead form').last().remove();
+            }
+        });
+    }
+    function UpdateLead() {
+
+        var haserror = false;
+
+        $('.dialogue-editlead form input').removeClass('fieldError');
+        $('.dialogue-editlead form select').removeClass('fieldError');
+
+        $('.dialogue-editlead form #Msg').html('');
+        var msg = '';
+
+        var $namecn = $('.dialogue-editlead form #Name_CN');
+        var $nameen = $('.dialogue-editlead form #Name_EN');
+        if ($namecn.val().length == 0 && $nameen.val().length == 0) {
+            $namecn.addClass('fieldError');
+            $nameen.addClass('fieldError');
+            msg += '客户中英文名必需至少填一个.';
+            haserror = true;
+        }
+
+
+        $gender = $('.dialogue-editlead form #Gender');
+        if ($gender.val().length == 0) {
+            $gender.addClass('fieldError');
+            haserror = true;
+        }
+
+        $title = $('.dialogue-editlead form #Title');
+        if ($title.val().length == 0) {
+            $title.addClass('fieldError');
+            haserror = true;
+        }
+
+        var telephone = $('.dialogue-editlead form #Telephone');
+        var cellPhone = $('.dialogue-editlead form #CellPhone');
+        if ((cellPhone.val().length == 0) && (telephone.val().length == 0)) {
+            telephone.addClass('fieldError');
+            cellPhone.addClass('fieldError');
+            msg += '<br />客户直线移动电话必需至少填一个.';
+            haserror = true;
+        } else {
+            if (telephone.val().length != 0 && !IsTelephone(telephone.val())) {
+                telephone.addClass('fieldError');
+                haserror = true;
+            }
+            if (cellPhone.val().length != 0 && !IsTelephone(cellPhone.val())) {
+                cellPhone.addClass('fieldError');
+                haserror = true;
+            }
+        }
+
+        var personalPhone = $('.dialogue-editlead form #PersonalPhone ');
+        if (personalPhone.val().length != 0 && !IsTelephone(personalPhone.val())) {
+            personalPhone.addClass('fieldError');
+            haserror = true;
+        }
+
+        var personalCellPhone = $('.dialogue-editlead form #PersonalCellPhone ');
+        if (personalCellPhone.val().length != 0 && !IsTelephone(personalCellPhone.val())) {
+            personalCellPhone.addClass('fieldError');
+            haserror = true;
+        }
+
+        var personelEmail = $('.dialogue-editlead form #PersonelEmail');
+        if (personelEmail.val().length != 0 && !validateEmail(personelEmail.val())) {
+            personelEmail.addClass('fieldError');
+            haserror = true;
+        }
+
+        var workingEmail = $('.dialogue-editlead form #WorkingEmail');
+        if (workingEmail.val().length != 0 && !validateEmail(workingEmail.val())) {
+            workingEmail.addClass('fieldError');
+            haserror = true;
+        }
+
+        if (haserror) {
+            if (msg != '')
+                $('.dialogue-editlead form #Msg').html(msg);
+            return;
+        }
+
+        var query = $('.dialogue-editlead form').serializeArray();
+        $.post('EditLead', query, function (result) {
+            if (result.length > 0) {
+                alert(result);
+            } else {
+                $('#EditLead').data('tWindow').close();
+                alert('Lead更新成功');
+                RefreshCrm();
+            }
+        });
+    }
+    function AddLead() {
+        var haserror = false;
+
+        $('.dialogue-addlead form input').removeClass('fieldError');
+        $('.dialogue-addlead form select').removeClass('fieldError');
+        $('.dialogue-addlead form #Msg').html('');
+        var msg = '';
+
+        var $namecn = $('.dialogue-addlead form #Name_CN');
+        var $nameen = $('.dialogue-addlead form #Name_EN');
+        if ($namecn.val().length == 0 && $nameen.val().length == 0) {
+            $namecn.addClass('fieldError');
+            $nameen.addClass('fieldError');
+            msg += '客户中英文名必需至少填一个.';
+            haserror = true;
+        }
+
+        $gender = $('.dialogue-addlead form #Gender');
+        if ($gender.val().length == 0) {
+            $gender.addClass('fieldError');
+            haserror = true;
+        }
+
+        $title = $('.dialogue-addlead form #Title');
+        if ($title.val().length == 0) {
+            $title.addClass('fieldError');
+            haserror = true;
+        }
+
+        var telephone = $('.dialogue-addlead form #Telephone');
+        var cellPhone = $('.dialogue-addlead form #CellPhone');
+        if ((cellPhone.val().length == 0) && (telephone.val().length == 0)) {
+            telephone.addClass('fieldError');
+            cellPhone.addClass('fieldError');
+            msg += '<br />客户直线移动电话必需至少填一个.';
+            haserror = true;
+        } else {
+            if (telephone.val().length != 0 && !IsTelephone(telephone.val())) {
+                telephone.addClass('fieldError');
+                haserror = true;
+            }
+            if (cellPhone.val().length != 0 && !IsTelephone(cellPhone.val())) {
+                cellPhone.addClass('fieldError');
+                haserror = true;
+            }
+        }
+
+        var personalPhone = $('.dialogue-addlead form #PersonalPhone ');
+        if (personalPhone.val().length != 0 && !IsTelephone(personalPhone.val())) {
+            personalPhone.addClass('fieldError');
+            haserror = true;
+        }
+
+        var personalCellPhone = $('.dialogue-addlead form #PersonalCellPhone ');
+        if (personalCellPhone.val().length != 0 && !IsTelephone(personalCellPhone.val())) {
+            personalCellPhone.addClass('fieldError');
+            haserror = true;
+        }
+
+        var personelEmail = $('.dialogue-addlead form #PersonelEmail');
+        if (personelEmail.val().length != 0 && !validateEmail(personelEmail.val())) {
+            personelEmail.addClass('fieldError');
+            haserror = true;
+        }
+
+        var workingEmail = $('.dialogue-addlead form #WorkingEmail');
+        if (workingEmail.val().length != 0 && !validateEmail(workingEmail.val())) {
+            workingEmail.addClass('fieldError');
+            haserror = true;
+        }
+
+        if (haserror) {
+            if (msg != '')
+                $('.dialogue-addlead form #Msg').html(msg);
+            return;
+        }
+        var query = $('.dialogue-addlead form').serializeArray();
+        $.post('AddLead', query, function (result) {
+            if (result.length > 0) {
+                $('#AddLead').data('tWindow').close();
+                gleadid = result;
+                if (confirm('Lead新增成功,是否新增相应Call')) {
+                    onCallAdd(result);
+                } else {
+                    RefreshCrm();
+                }
+
+            } else {
+                alert('Lead新增失败');
+            }
+        });
+
+    }
+    function onCallAdd(leadid) {
+        gleadid = leadid;
+        currentProjectId = $('#projectid').val().replace(/(^\s*)|(\s*$)/g, '');
+        if (currentProjectId.length == 0) {
+            currentProjectId = null;
+        }
+        $.post('GetAddCall', { leadId: leadid, companyRelationId: crmid, projectId: currentProjectId }, function (result) {
+            $('.calladd-wrapper').html(result);
+            var window = $('#AddCall').data('tWindow');
+            window.center().open();
+        });
+    }
+
+    function AddCall() {
+        if ($('.dialogue-addcall form #ProjectId').val() == 'null') {
+            $('.dialogue-addcall form #ProjectId').val('');
+        }
+
+        if ($('.dialogue-addcall form').valid()) {
+            var haserror = false;
+            var $calltype = $('.dialogue-addcall form #CallTypeId');
+            if ($calltype.val().length == 0) {
+                $calltype.addClass('fieldError');
+                haserror = true;
+            }
+            var $processid = $('.dialogue-addcall form #ProgressId');
+            if ($processid.val().length == 0) {
+                $processid.addClass('fieldError');
+                haserror = true;
+            }
+            if (haserror) {
+                return;
+            }
+
+            var query = $('.dialogue-addcall form').serializeArray();
+            $.post('AddCall', query, function (result) {
+                if (result.companyRelationshipId != null) {
+                    alert('LeadCall新增成功');
+                    crmid = result.companyRelationshipId;
+                    gleadid = result.leadid;
+                    var currentProjectId = $('#projectid').val();
+                    RefreshCrmTree(currentProjectId, result.companyRelationshipId, result.processid, result.corelvlid);
+                   
+                    $('#AddCall').data('tWindow').close();
+                }
+                else
+                    alert('LeadCall新增失败');
+//                if (result.length > 0) {
+//                    alert('LeadCall新增失败');
+//                } else {
+//                    $('#AddCall').data('tWindow').close();
+//                    alert('LeadCall新增成功');
+//                    onLeadSelect(gleadid);
+//                }
+            });
+        }
+    }
+
+    function CancelAddCall() {
+        var window = $('#AddCall').data('tWindow');
+        window.close();
+    }
+    function UpdateCall() {
+        if ($('.calledit-wrapper form').valid()) {
+            var query = $('.calledit-wrapper form').serializeArray();
+            $.post('EditLeadCall', query, function (result) {
+                if (result.length > 0) {
+                    alert(result);
+                } else {
+                    $('#EditCall').data('tWindow').close();
+                    alert('LeadCall更新成功');
+                }
+            });
+        }
+    }
+    function CancelEditCall() {
+        var window = $('#EditCall').data('tWindow');
+        window.close();
+    }
+    function RefreshCrm() {
+        if (gleadid == "" || gleadid == undefined) {
+            $.post('_SelectedCRMNode', { crmid: crmid }, function (result) {
+                $('#crmdetailscontainer').html(result);
+            });
+        }
+        else {
+            $.post('GetCRMByCrmIDLeadID', { crmid: crmid, leadid: gleadid }, function (result) {
+                $('#crmdetailscontainer').html(result);
+                var leaddiv = $('#lead' + gleadid);
+                leaddiv.removeClass('center_2');
+                leaddiv.addClass('center_1');
+            });
+        }
+
+    }
+
+    function GetAddComment() {
+        $.post('GetAddComment', { crmid: crmid }, function (result) {
+            $('.AddComment-wrapper').html(result);
+            var window = $('#AddComment').data('tWindow');
+            window.center().open();
+        });
+    }
+    function AddComment() {
+
+        if ($('.AddComment-wrapper form').valid()) {
+            var haserror = false;
+            var $Contents = $('.dialogue-AddComment form #Contents');
+            if ($Contents.val().length == 0) {
+                $Contents.addClass('fieldError');
+                haserror = true;
+            }
+            if (haserror)
+                return;
+            var query = $('.dialogue-AddComment form').serializeArray();
+            $.post('AddComment', query, function (result) {
+                if (result.length > 0) {
+                    alert('新增Comment失败');
+                } else {
+                    $('#AddComment').data('tWindow').close();
+                    alert('新增Comment成功');
+                    RefreshCrm();
+                }
+            });
+        }
+    }
+    function CancelAddComment() {
+        var window = $('#AddComment').data('tWindow');
+        window.close();
+    }
+
+   
 </script>

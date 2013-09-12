@@ -226,6 +226,20 @@ namespace Utl
             return selectList;
         }
 
+        public static IEnumerable<SelectListItem> CoreLVLSelectList(int? selectVal)
+        {
+            List<SelectListItem> selectList = new List<SelectListItem>();
+            foreach (CoreLVL coreLVL in CH.GetAllData<CoreLVL>())
+            {
+                SelectListItem selectListItem = new SelectListItem() { Text = coreLVL.CoreLVLName, Value = coreLVL.ID.ToString() };
+                if (selectVal.HasValue && coreLVL.ID == selectVal.Value)
+                {
+                    selectListItem.Selected = true;
+                }
+                selectList.Add(selectListItem);
+            }
+            return selectList;
+        }
         public static IEnumerable<SelectListItem> ProgressSelectList(int? selectVal)
         {
             List<SelectListItem> selectList = new List<SelectListItem>();
@@ -240,7 +254,6 @@ namespace Utl
             }
             return selectList;
         }
-
         public static IEnumerable<SelectListItem> GenderSelectList(string selectVal)
         {
             List<SelectListItem> selectList = new List<SelectListItem>();

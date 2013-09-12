@@ -15,9 +15,13 @@
                     @Html.LabelFor(model => model.Name_CN)
                     @Html.TextBoxFor(model => model.Name_CN, new { @style = "width:370px" })
                 </td>
-                <td colspan="2">
+                <td >
                     @Html.LabelFor(model => model.Name_EN)
-                    @Html.TextBoxFor(model => model.Name_EN, new { @style = "width:370px" })
+                    @Html.TextBoxFor(model => model.Name_EN)
+                </td>
+                 <td>
+                    @Html.LabelFor(model => model.CoreLVLID)
+                    @Html.DropDownListFor(model => model.CoreLVLID, SelectHelper.CoreLVLSelectList(null), "请选择", new { })
                 </td>
             </tr>
 

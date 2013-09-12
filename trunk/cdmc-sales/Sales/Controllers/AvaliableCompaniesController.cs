@@ -241,7 +241,10 @@ namespace Sales.Controllers
                 ajaxViewSaleCompany.ProgressId = companyRelationship.ProgressID.Value;
                 ajaxViewSaleCompany.ProgressString = companyRelationship.Progress.Description;
             }
-
+            if (companyRelationship.CoreLVL != null)
+            {
+                ajaxViewSaleCompany.CoreLVLID = companyRelationship.CoreLVLID.Value;
+            }
             return PartialView("EditCompany", ajaxViewSaleCompany);
         }
 
@@ -293,6 +296,7 @@ namespace Sales.Controllers
             companyRelationship.Company.Competitor = ajaxViewSaleCompany.Competitor;
             companyRelationship.Description = ajaxViewSaleCompany.Desc;
             companyRelationship.ProgressID = ajaxViewSaleCompany.ProgressId;
+            companyRelationship.CoreLVLID = ajaxViewSaleCompany.CoreLVLID;
             companyRelationship.ModifiedDate = DateTime.Now;
             companyRelationship.PitchedPoint = ajaxViewSaleCompany.PitchedPoint;
             companyRelationship.Categorys.Clear();
@@ -311,7 +315,7 @@ namespace Sales.Controllers
             companyRelationship.CategoryString = categorystring;
 
             CH.Edit<CompanyRelationship>(companyRelationship);
-            return null;
+            return Json(new { companyRelationshipId = companyRelationship.ID, companyId = companyRelationship.CompanyID, projectId = companyRelationship.ProjectID, corelvlid = companyRelationship.CoreLVLID, processid = companyRelationship.ProgressID });
         }
 
         public ActionResult GetAddCompany(int? projectId)
@@ -354,6 +358,7 @@ namespace Sales.Controllers
 
             companyRelationship.Description = string.IsNullOrEmpty(ajaxViewSaleCompany.Desc) ? "" : ajaxViewSaleCompany.Desc.Trim();
             companyRelationship.ProgressID = ajaxViewSaleCompany.ProgressId;
+            companyRelationship.CoreLVLID = ajaxViewSaleCompany.CoreLVLID;
             companyRelationship.Members = new List<Member>() { };
             companyRelationship.Members.Add(CH.DB.Members.FirstOrDefault(c => c.Name == Employee.CurrentUserName && ajaxViewSaleCompany.ProjectId == c.ProjectID));
             companyRelationship.ProjectID = ajaxViewSaleCompany.ProjectId;
@@ -376,11 +381,11 @@ namespace Sales.Controllers
             companyRelationship.CategoryString = categorystring;
             CH.Create<CompanyRelationship>(companyRelationship);
 
-            return Json(new { companyRelationshipId = companyRelationship.ID, companyId = companyRelationship.CompanyID, projectId = companyRelationship.ProjectID });
+            return Json(new { companyRelationshipId = companyRelationship.ID, companyId = companyRelationship.CompanyID, projectId = companyRelationship.ProjectID, corelvlid = companyRelationship.CoreLVLID, processid = companyRelationship.ProgressID });
         }
         public ActionResult GetAddCall(int leadId, int companyRelationId, int? projectId)
         {
-            AjaxViewLeadCall ajaxViewLeadCall = new AjaxViewLeadCall() { LeadId = leadId, CompanyRelationshipId = companyRelationId, ProjectId = projectId, CallDate = DateTime.Now };
+            AjaxViewLeadCall ajaxViewLeadCall = new AjaxViewLeadCall() { LeadId = leadId, CompanyRelationshipId = companyRelationId, ProjectId = projectId, CallDate = DateTime.Now,ProgressId=(int)CH.GetDataById<CompanyRelationship>(companyRelationId).ProgressID };
             return PartialView("AddCall", ajaxViewLeadCall);
         }
         [ValidateInput(false)]
@@ -403,7 +408,10 @@ namespace Sales.Controllers
             leadCall.MarkForDelete = false;
             CH.Create<LeadCall>(leadCall);
 
-            return null;
+            CompanyRelationship ship = CH.GetDataById<CompanyRelationship>(ajaxViewLeadCall.CompanyRelationshipId);
+            ship.ProgressID = ajaxViewLeadCall.ProgressId;
+            CH.Edit<CompanyRelationship>(ship);
+            return Json(new { companyRelationshipId = ship.ID, companyId = ship.CompanyID, projectId = ship.ProjectID, corelvlid = ship.CoreLVLID, processid = ship.ProgressID, leadid = leadCall.LeadID });
         }
         public ActionResult GetEditLeadCall(int leadCallId)
         {
@@ -446,6 +454,227 @@ namespace Sales.Controllers
             comment.Submitter = Employee.CurrentUserName;
             CH.Create<Comment>(comment);
             return null;
+        }
+
+        public ActionResult GetQuickEntry(int? projectId)
+        {
+            var progress = CH.GetAllData<Progress>().Where(p => p.Code == 10).FirstOrDefault();
+
+            QuickEntry quickEntry = new QuickEntry() { ProjectId = projectId, Categories = new List<int>() { }, ProgressId = progress.ID, CallDate = DateTime.Now };
+            return PartialView("QuickEntry", quickEntry);
+        }
+
+        [ValidateInput(false)]
+        [HttpPost]
+        public ActionResult QuickEntry(QuickEntry quickEntry)
+        {
+            CompanyRelationship companyRelationship = new CompanyRelationship();
+            companyRelationship.Company = new Company();
+            companyRelationship.Company.AreaID = quickEntry.IndustryId;
+            companyRelationship.Company.CompanyTypeID = quickEntry.TypeId;
+            companyRelationship.Company.Contact = string.IsNullOrEmpty(quickEntry.Phone) ? "" : quickEntry.Phone.Trim();
+            companyRelationship.Company.Description = string.IsNullOrEmpty(quickEntry.Desc) ? "" : quickEntry.Desc.Trim();
+            companyRelationship.Company.DistrictNumberID = quickEntry.DistrictNumberId;
+            companyRelationship.Company.Name_CH = string.IsNullOrEmpty(quickEntry.Name_CN) ? "" : quickEntry.Name_CN.Trim();
+            companyRelationship.Company.Name_EN = string.IsNullOrEmpty(quickEntry.Name_EN) ? "" : quickEntry.Name_EN.Trim();
+            companyRelationship.Company.CreatedDate = DateTime.Now;
+            companyRelationship.Company.Creator = Employee.CurrentUserName;
+            companyRelationship.Company.ModifiedDate = DateTime.Now;
+            companyRelationship.Company.ModifiedUser = Employee.CurrentUserName;
+            companyRelationship.Company.Customers = string.IsNullOrEmpty(quickEntry.Customers) ? "" : quickEntry.Customers.Trim();
+            companyRelationship.Company.Competitor = string.IsNullOrEmpty(quickEntry.Competitor) ? "" : quickEntry.Competitor.Trim();
+            companyRelationship.ProgressID = quickEntry.ProgressId;
+            companyRelationship.Members = new List<Member>() { };
+            companyRelationship.Members.Add(CH.DB.Members.FirstOrDefault(c => c.Name == Employee.CurrentUserName && c.ProjectID == quickEntry.ProjectId));
+            companyRelationship.ProjectID = quickEntry.ProjectId;
+            companyRelationship.CoreLVLID = quickEntry.CoreLVLID;
+            companyRelationship.MarkForDelete = false;
+            companyRelationship.CreatedDate = DateTime.Now;
+            companyRelationship.ModifiedDate = DateTime.Now;
+            companyRelationship.PitchedPoint = string.IsNullOrEmpty(quickEntry.PitchedPoint) ? "" : quickEntry.PitchedPoint.Trim();
+            companyRelationship.Description = string.IsNullOrEmpty(quickEntry.Desc) ? "" : quickEntry.Desc.Trim();
+            if (quickEntry.Categories != null)
+            {
+                companyRelationship.Categorys = CH.GetAllData<Category>(c => quickEntry.Categories.Contains(c.ID)).ToList();
+            }
+            string categorystring = string.Empty;
+            companyRelationship.Categorys.ForEach(l =>
+            {
+                if (string.IsNullOrEmpty(categorystring))
+                    categorystring = l.Name;
+                else
+                    categorystring += "," + l.Name;
+            });
+            companyRelationship.CategoryString = categorystring;
+            CH.Create<CompanyRelationship>(companyRelationship);
+
+            Lead lead = null;
+            LeadCall leadCall = null;
+
+            if (companyRelationship.ID > 0)
+            {
+                lead = new Lead()
+                {
+                    Name_CH = string.IsNullOrEmpty(quickEntry.LeadName_CN) ? "" : quickEntry.LeadName_CN.Trim(),
+                    Name_EN = string.IsNullOrEmpty(quickEntry.LeadName_EN) ? "" : quickEntry.LeadName_EN.Trim(),
+                    Title = string.IsNullOrEmpty(quickEntry.Title) ? "" : quickEntry.Title.Trim(),
+                    CompanyID = companyRelationship.CompanyID,
+                    Contact = string.IsNullOrEmpty(quickEntry.Telephone) ? "" : quickEntry.Telephone.Trim(),
+                    Department = string.IsNullOrEmpty(quickEntry.Department) ? "" : quickEntry.Department.Trim(),
+                    Gender = string.IsNullOrEmpty(quickEntry.Gender) ? "" : quickEntry.Gender.Trim(),
+                    Mobile = string.IsNullOrEmpty(quickEntry.CellPhone) ? "" : quickEntry.CellPhone.Trim(),
+                    EMail = string.IsNullOrEmpty(quickEntry.WorkingEmail) ? "" : quickEntry.WorkingEmail.Trim(),
+                    MarkForDelete = false,
+                    CreatedDate = DateTime.Now,
+                    ModifiedDate = DateTime.Now,
+                };
+
+                CH.Create<Lead>(lead);
+
+                if (lead.ID > 0)
+                {
+
+                    var c = CH.GetDataById<CompanyRelationship>(companyRelationship.ID);
+                    var mem = c.Members.FirstOrDefault(m => m.Name == Employee.CurrentUserName && m.ProjectID == c.ProjectID);
+                    leadCall = new LeadCall()
+                    {
+                        CallBackDate = quickEntry.CallBackDate,
+                        CallDate = quickEntry.CallDate,
+                        CompanyRelationshipID = companyRelationship.ID,
+                        LeadCallTypeID = quickEntry.CallTypeId,
+                        LeadID = lead.ID,
+                        MemberID = mem.ID,
+                        ProjectID = quickEntry.ProjectId,
+                        Result = string.IsNullOrEmpty(quickEntry.Result) ? "" : quickEntry.Result.Trim(),
+                        MarkForDelete = false
+                    };
+                    CH.Create<LeadCall>(leadCall);
+                }
+            }
+            return Json(new { companyRelationshipId = companyRelationship.ID, companyId = companyRelationship.CompanyID, leadId = lead.ID, leadCallId = leadCall.ID, projectId = companyRelationship.ProjectID, processid = companyRelationship.ProgressID, corelvlid = companyRelationship.CoreLVLID });
+        }
+
+        public ActionResult GetBulkEntry(int? projectId)
+        {
+            var progress = CH.GetAllData<Progress>().Where(p => p.Code == 10).FirstOrDefault();
+
+            BulkEntry bulkEntry = new BulkEntry() { ProjectId = projectId, Categories = new List<int>() { }, ProgressId = progress.ID };
+            LeadBulk lead = new LeadBulk();
+            for (int i = 0; i < 10; i++)
+            {
+                bulkEntry.Leads.Add(lead);
+            }
+            return PartialView("BulkEntry", bulkEntry);
+        }
+
+        [ValidateInput(false)]
+        [HttpPost]
+        public ActionResult BulkEntry(BulkEntry bulkEntry, FormCollection collection)
+        {
+            CompanyRelationship companyRelationship = new CompanyRelationship();
+            companyRelationship.Company = new Company();
+            companyRelationship.Company.AreaID = bulkEntry.IndustryId;
+            companyRelationship.Company.CompanyTypeID = bulkEntry.TypeId;
+            companyRelationship.Company.Contact = string.IsNullOrEmpty(bulkEntry.Phone) ? "" : bulkEntry.Phone.Trim();
+            companyRelationship.Company.DistrictNumberID = bulkEntry.DistrictNumberId;
+            companyRelationship.Company.Name_CH = string.IsNullOrEmpty(bulkEntry.Name_CN) ? "" : bulkEntry.Name_CN.Trim();
+            companyRelationship.Company.Name_EN = string.IsNullOrEmpty(bulkEntry.Name_EN) ? "" : bulkEntry.Name_EN.Trim();
+            companyRelationship.Company.Description = bulkEntry.Description;
+            companyRelationship.Company.CreatedDate = DateTime.Now;
+            companyRelationship.Company.Creator = Employee.CurrentUserName;
+            companyRelationship.Company.ModifiedDate = DateTime.Now;
+            companyRelationship.Company.ModifiedUser = Employee.CurrentUserName;
+            companyRelationship.Company.Customers = string.IsNullOrEmpty(bulkEntry.Customers) ? "" : bulkEntry.Customers.Trim();
+            companyRelationship.Company.Competitor = string.IsNullOrEmpty(bulkEntry.Competitor) ? "" : bulkEntry.Competitor.Trim();
+            companyRelationship.ProgressID = bulkEntry.ProgressId;
+            companyRelationship.CoreLVLID = bulkEntry.CoreLVLID;
+            companyRelationship.Members = new List<Member>() { };
+            companyRelationship.Members.Add(CH.DB.Members.FirstOrDefault(c => c.Name == Employee.CurrentUserName && bulkEntry.ProjectId == c.ProjectID));
+            companyRelationship.ProjectID = bulkEntry.ProjectId;
+            companyRelationship.MarkForDelete = false;
+            companyRelationship.CreatedDate = DateTime.Now;
+            companyRelationship.ModifiedDate = DateTime.Now;
+            companyRelationship.PitchedPoint = string.IsNullOrEmpty(bulkEntry.PitchedPoint) ? "" : bulkEntry.PitchedPoint.Trim();
+            if (bulkEntry.Categories != null)
+            {
+                companyRelationship.Categorys = CH.GetAllData<Category>(c => bulkEntry.Categories.Contains(c.ID)).ToList();
+            }
+            string categorystring = string.Empty;
+            companyRelationship.Categorys.ForEach(l =>
+            {
+                if (string.IsNullOrEmpty(categorystring))
+                    categorystring = l.Name;
+                else
+                    categorystring += "," + l.Name;
+            });
+            companyRelationship.CategoryString = categorystring;
+            CH.Create<CompanyRelationship>(companyRelationship);
+
+            Lead lead = null;
+
+            if (companyRelationship.ID > 0)
+            {
+                string namecnstr = (collection["LeadName_CN"] != null) ? collection["LeadName_CN"].Trim() : "";
+                string nameenstr = (collection["LeadName_EN"] != null) ? collection["LeadName_EN"].Trim() : "";
+                string genderstr = (collection["Gender"] != null) ? collection["Gender"].Trim() : "";
+                string titlestr = (collection["Title"] != null) ? collection["Title"].Trim() : "";
+                string telstr = (collection["Telephone"] != null) ? collection["Telephone"].Trim() : "";
+                string cellstr = (collection["CellPhone"] != null) ? collection["CellPhone"].Trim() : "";
+                string emailstr = (collection["WorkingEmail"] != null) ? collection["WorkingEmail"].Trim() : "";
+                if (!(string.IsNullOrEmpty(namecnstr) && string.IsNullOrEmpty(nameenstr)) && !string.IsNullOrEmpty(genderstr)
+                        && !string.IsNullOrEmpty(titlestr) && !(string.IsNullOrEmpty(telstr) && string.IsNullOrEmpty(cellstr)))
+                {
+                    List<string> arrNameCN = namecnstr.Split(',').ToList();
+                    List<string> arrNameEN = nameenstr.Split(',').ToList();
+                    List<string> arrGender = genderstr.Split(',').ToList();
+                    List<string> arrTitle = titlestr.Split(',').ToList();
+                    List<string> arrTel = telstr.Split(',').ToList();
+                    List<string> arrCell = cellstr.Split(',').ToList();
+                    List<string> arrEmail = emailstr.Split(',').ToList();
+                    string namecn = ""; string nameen = ""; string gender = "";
+                    string title = ""; string tel = ""; string cell = ""; string email = "";
+
+                    for (int i = 0; i < 10; i++)
+                    {
+                        namecn = arrNameCN[i];
+                        nameen = arrNameEN[i];
+                        gender = arrGender[i];
+                        title = arrTitle[i];
+                        tel = arrTel[i];
+                        cell = arrCell[i];
+                        email = arrEmail[i];
+                        if (!(string.IsNullOrEmpty(namecn) && string.IsNullOrEmpty(nameen)) && !string.IsNullOrEmpty(gender)
+                            && !string.IsNullOrEmpty(title) && !(string.IsNullOrEmpty(tel) && string.IsNullOrEmpty(cell)))
+                        {
+                            lead = new Lead()
+                            {
+                                Name_CH = string.IsNullOrEmpty(arrNameCN[i]) ? "" : arrNameCN[i].Trim(),
+                                Name_EN = string.IsNullOrEmpty(arrNameEN[i]) ? "" : arrNameEN[i].Trim(),
+                                Title = string.IsNullOrEmpty(arrTitle[i]) ? "" : arrTitle[i].Trim(),
+                                CompanyID = companyRelationship.CompanyID,
+                                Contact = string.IsNullOrEmpty(arrTel[i]) ? "" : arrTel[i].Trim(),
+                                Gender = string.IsNullOrEmpty(arrGender[i]) ? "" : arrGender[i].Trim(),
+                                Mobile = string.IsNullOrEmpty(arrCell[i]) ? "" : arrCell[i].Trim(),
+                                EMail = string.IsNullOrEmpty(arrEmail[i]) ? "" : arrEmail[i].Trim(),
+                                MarkForDelete = false,
+                                CreatedDate = DateTime.Now,
+                                ModifiedDate = DateTime.Now,
+                            };
+                            CH.Create<Lead>(lead);
+                        }
+                    }
+                }
+            }
+            return Json(new { companyRelationshipId = companyRelationship.ID, companyId = companyRelationship.CompanyID, projectId = companyRelationship.ProjectID, processid = companyRelationship.ProgressID, corelvlid = companyRelationship.CoreLVLID });
+        }
+        /// <summary>
+        /// 刷新导航栏
+        /// </summary>
+        /// <returns></returns>
+        public PartialViewResult _RefreshCrmTree(int? projectid)
+        {
+            var data = AvaliableCRM.GetAvaliableCompanies(projectid);
+            return PartialView(@"~\views\AvaliableCompanies\MainNavigationContainer.cshtml", data);
         }
     }
 }
