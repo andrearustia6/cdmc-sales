@@ -340,6 +340,8 @@ namespace Entity
         public string PitchedPoint { get; set; }
 
         public virtual List<Comment> Comments { get; set; }
+
+       
     }
 
     /// <summary>

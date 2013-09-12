@@ -9,15 +9,19 @@
     @Html.HiddenFor(model => model.CompanyId)
     <fieldset>
         <legend>公司信息</legend>
-         <table>
+         <table style="width:100%">
             <tr>
                 <td colspan="2">
                     @Html.LabelFor(model => model.Name_CN)
                     @Html.TextBoxFor(model => model.Name_CN, new { @style = "width:370px" })
                 </td>
-                <td colspan="2">
+                <td >
                     @Html.LabelFor(model => model.Name_EN)
-                    @Html.TextBoxFor(model => model.Name_EN, new { @style = "width:370px" })
+                    @Html.TextBoxFor(model => model.Name_EN)
+                </td>
+                 <td>
+                    @Html.LabelFor(model => model.CoreLVLID)
+                    @Html.DropDownListFor(model => model.CoreLVLID, SelectHelper.CoreLVLSelectList(null), "请选择", new { })
                 </td>
             </tr>
 
@@ -80,6 +84,7 @@
                            
 }
                 </td>
+               
                 <td>
                     @Html.LabelFor(model => model.TypeId)
                     @Html.DropDownListFor(model => model.TypeId, SelectHelper.CompanyTypeSelectList(null), "请选择", new { })
@@ -92,19 +97,19 @@
            
               
             <tr>
-                <td>
+                <td style="width:25%">
                     @Html.LabelFor(model => model.DistrictNumberId)
                     @Html.DropDownListFor(model => model.DistrictNumberId, SelectHelper.DistinctNumberSelectList(null), "中国(默认)", new { })
                 </td>
-                <td>
+                <td style="width:25%">
                     @Html.LabelFor(model => model.Province)
                     @Html.TextBoxFor(model => model.Province)
                 </td>
-                <td>
+                <td style="width:25%">
                     @Html.LabelFor(model => model.City)
                     @Html.TextBoxFor(model => model.City)
                 </td>
-                <td>
+                <td style="width:25%">
                     @Html.LabelFor(model => model.ZipCode)
                     @Html.TextBoxFor(model => model.ZipCode)
                 </td>

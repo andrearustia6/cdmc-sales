@@ -29,7 +29,7 @@
         //columns.Bound(p => p.CurrentDayDealIn).Title("本日出单").HtmlAttributes(new { style = "text-align:right" }).Format("{0:C0}");
         columns.Bound(p => p.TotalDealIn).Title("项目出单总额").HtmlAttributes(new { style = "text-align:right" }).Format("{0:C0}");
         columns.Bound(p => p.TotalDealInTarget).Title("项目出单目标").HtmlAttributes(new { style = "text-align:right" }).Format("{0:C0}");
-        columns.Bound(p => p.TotalDealInPercent).Title("出单总百分比").Width(60).HtmlAttributes(new { style = "text-align:right" }).Format("{0:P0}");
+        columns.Bound(p => p.TotalDealInPercent).Title("出单总百分比").Width(80).HtmlAttributes(new { style = "text-align:right" }).Format("{0:P0}");
     })
     .CellAction(cell =>
     {
