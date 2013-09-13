@@ -69,6 +69,19 @@ namespace Sales.Model
              get;
              set;
          }
+         public int NoPitchCount
+         {
+             get;
+             set;
+         }
+         public int NoPitchBlowedCount
+         {
+             get
+             {
+                 return NoPitchCount + BlowedCount;
+             }
+         }
+
          public int PitchCount
          {
              get;
@@ -79,11 +92,16 @@ namespace Sales.Model
              get;
              set;
          }
+         public int CallBackedCount
+         {
+             get;
+             set;
+         }
          public int TotalPitchCount
          {
              get
              {
-                 return PitchCount + FullPitchCount;
+                 return PitchCount + FullPitchCount + CallBackedCount;
              }
          }
          public int QualifiedDecisionCount
