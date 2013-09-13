@@ -24,11 +24,13 @@ namespace Sales.Controllers
         /// <returns></returns>
         public PartialViewResult _SelectedCRMNode(string crmid)
         {
+            ViewBag.leadid = 0;
             var data = AvaliableCRM._CRMGetAvaliableCrmDetail(int.Parse(crmid));
             return PartialView(@"~\views\AvaliableCompanies\DetailContainer.cshtml", data);
         }
         public PartialViewResult GetCRMByCrmIDLeadID(int crmid,int leadid)
         {
+            ViewBag.leadid = leadid;
             var data = AvaliableCRM._CRMGetAvaliableCrmDetailByCrmIDLeadID(crmid,leadid);
             return PartialView(@"~\views\AvaliableCompanies\DetailContainer.cshtml", data);
         }
@@ -675,6 +677,18 @@ namespace Sales.Controllers
         {
             var data = AvaliableCRM.GetAvaliableCompanies(projectid);
             return PartialView(@"~\views\AvaliableCompanies\MainNavigationContainer.cshtml", data);
+        }
+
+        [ValidateInput(false)]
+        [HttpPost]
+        public ActionResult PickUp(int crmid)
+        {
+            CompanyRelationship companyRelationship = CH.GetDataById<CompanyRelationship>(crmid);
+            companyRelationship.ProgressID = 3;
+            Member member = CH.DB.Members.Where(m => m.Name == Employee.CurrentUserName).FirstOrDefault();
+            companyRelationship.Members.Add(member);
+            CH.Edit(companyRelationship);
+            return Json(new { companyRelationshipId = companyRelationship.ID, companyId = companyRelationship.CompanyID, projectId = companyRelationship.ProjectID, processid = companyRelationship.ProgressID, corelvlid = companyRelationship.CoreLVLID });
         }
     }
 }

@@ -249,6 +249,7 @@ namespace Entity
     public class CoreLVL : EntityBase
     {
         public string CoreLVLName { get; set; }
+        public int CoreLVLCode { get; set; }
     }
     public class Comment : EntityBase
     {
