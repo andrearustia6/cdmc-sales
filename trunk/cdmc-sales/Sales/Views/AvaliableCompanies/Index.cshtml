@@ -1312,7 +1312,7 @@
         
         $.post('PickUp', { crmid: crmid}, function (result) {
             if (result.companyRelationshipId != null) {
-                alert('领用成功成功');
+                alert('领用成功');
                 crmid = result.companyRelationshipId;
                 var currentProjectId = $('#projectid').val();
                 RefreshCrmTree(currentProjectId, result.companyRelationshipId, result.processid, result.corelvlid);
