@@ -12,7 +12,7 @@
             .ItemDataBound((item, core) =>
             {
                 item.Text = core.CoreNameDisplayText;
-                item.Value = core.ID.ToString();
+                item.Value =core.ID.ToString();
             })
             .Children(core => core._Maturitys));
 
@@ -20,7 +20,7 @@
             .ItemDataBound((item, maturity) =>
             {
                 item.Text = maturity.DisplayName;
-                item.Value ="m: "+ maturity.ID.ToString();
+                item.Value =maturity.ID.ToString();
             })
             .Children(maturity => maturity._CRMs));
             
@@ -28,17 +28,46 @@
           .ItemDataBound((item, crm) =>
           {
               item.Text = crm.CompanyName;
-              item.Value = crm.ID.ToString();
+              item.Value =crm.ID.ToString();
           }));
         })
+        
+) 
+</div>
+公海
+<div class="publicCompanies">
+    @(Html.Telerik().TreeView().Name("publicCompanies").HtmlAttributes(new { style = "" })
+                        .ClientEvents(e => e.OnSelect("onIndexSelectPublic"))
+                .BindTo(Model.PublicCompanies, mappings =>
+        {
+            mappings.For<_CoreLVL>(binding => binding
+            .ItemDataBound((item, core) =>
+            {
+                item.Text = core.CoreNameDisplayText;
+                item.Value =core.ID.ToString();
+            })
+           
+            .Children(maturity => maturity._CRMs));
+            
+            mappings.For<_CRM>(binding => binding
+          .ItemDataBound((item, crm) =>
+          {
+              item.Text = crm.CompanyName;
+              item.Value =crm.ID.ToString();
+          }));
+        })
+        
 ) 
 </div>
 <script>
     //var count=0
     //公司选择
     function onIndexSelect(e) {
+        if ($(e.item).parents(".t-item").length != 2)
+            return;
         var nv = $('#memberCompanies').data('tTreeView');
         var clickedvalue = nv.getItemValue(e.item);
+        
         if (crmid != clickedvalue)
             gleadid = "";
         crmid = clickedvalue;
@@ -59,5 +88,42 @@
 //            $('#crmdetailscontainer').html(result);
 //        });
 
+    }
+    //公海公司选择
+    function onIndexSelectPublic(e) {
+        if ($(e.item).parents(".t-item").length != 1)
+            return;
+        var nv = $('#memberCompanies').data('tTreeView');
+        var clickedvalue = nv.getItemValue(e.item);
+
+        if (crmid != clickedvalue)
+            gleadid = "";
+        crmid = clickedvalue;
+        if (gleadid == "" || gleadid == undefined) {
+            $.post('_SelectedCRMNode', { crmid: crmid }, function (result) {
+                $('#crmdetailscontainer').html(result);
+                hidebtn();
+
+            });
+        }
+        else {
+            $.post('GetCRMByCrmIDLeadID', { crmid: crmid, leadid: gleadid }, function (result) {
+                $('#crmdetailscontainer').html(result);
+                var leaddiv = $('#lead' + gleadid);
+                leaddiv.removeClass('center_2');
+                leaddiv.addClass('center_1');
+                hidebtn();
+            });
+        }
+        //        $.post('_SelectedCRMNode', { crmid: clickedvalue }, function (result) {
+        //            $('#crmdetailscontainer').html(result);
+        //        });
+
+    }
+    function hidebtn() {
+        jQuery(".hide").hide();
+        jQuery(".click").removeAttr("onclick");
+        jQuery(".click").removeAttr("href");
+        
     }
 </script>

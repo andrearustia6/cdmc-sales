@@ -15,7 +15,7 @@ namespace Sales.BLL
             var data = new _AvaliableCompanies();
 
             data.MemberCompanies = GetGroupedCRM(true,projectid);
-            data.PublicCompanies = GetGroupedCRM(false, projectid);
+            data.PublicCompanies = GetPublicCRM(false, projectid);
 
             return data;
         }
@@ -38,7 +38,7 @@ namespace Sales.BLL
                            {
                                CoreName = c.CoreLVLName,
                                ID = c.ID,
-                               _Maturitys = from m in crms group m by new{m.ProgressID,m.Progress.Name} into grp
+                               _Maturitys = from m in crms.Where(cr=>cr.CoreLVLID==c.CoreLVLCode) group m by new{m.ProgressID,m.Progress.Name} into grp
                                             select new _Maturity() 
                                             { 
                                                  Name= grp.Key.Name,
@@ -64,10 +64,50 @@ namespace Sales.BLL
           
            return data;
         }
+        static IQueryable<_CoreLVL> GetPublicCRM(bool memberonly, int? projectid)
+        {
+            if (projectid == null) projectid = 26;
+            var crms = from c in CH.DB.CompanyRelationships where c.ProjectID == projectid select c;
+            if (memberonly)
+            {
+                crms = crms.Where(w => w.Members.Count > 0);
+            }
+            else
+            {
+                crms = crms.Where(w => w.Members.Count == 0);
+            }
 
+            var data = from c in CH.DB.CoreLVLs
+                       select new _CoreLVL()
+                       {
+                           CoreName = c.CoreLVLName,
+                           ID = c.ID,
+                           _CRMs = from crm in crms
+                                    select new _CRM
+                                    {
+                                        ID = crm.ID,
+                                        CompanyNameCH = crm.Company.Name_CH,
+                                        CompanyNameEN = crm.Company.Name_EN,
+                                        CoreCompany = c.CoreLVLName == "核心公司" ? true : false,
+                                        _Comments = (from co in crm.Comments.OrderByDescending(m => m.CommentDate)
+                                                        select new _Comment()
+                                                        {
+                                                            Submitter = co.Submitter,
+                                                            CommentDate = co.CommentDate,
+                                                            CRMID = co.CompanyRelationshipID,
+                                                            Content = co.Contents
+                                                        })
+                                    }
+                       };
+
+            return data;
+        }
         public static _CRM _CRMGetAvaliableCrmDetail(int? crmid)
         {
             var data = CH.GetDataById<CompanyRelationship>(crmid);
+            var callsgrp = data.LeadCalls.OrderByDescending(c => c.CallDate).GroupBy(c => c.LeadID)
+                                .Where(g => g.Count() >= 1)
+                                .Select(g => g.ElementAt(0));
             var crm = new _CRM()
             {
                 ID=data.ID,
@@ -77,6 +117,13 @@ namespace Sales.BLL
                 Contact=data.Company.Contact,
                 Fax=data.Company.Fax,
                 Email="没找到字段",
+                BlowedCount = callsgrp.Where(c => c.LeadCallTypeID == 2).Count(),
+                PitchCount = callsgrp.Where(c => c.LeadCallTypeID == 4).Count(),
+                FullPitchCount = callsgrp.Where(c => c.LeadCallTypeID == 5).Count(),
+                QualifiedDecisionCount = callsgrp.Where(c => c.LeadCallTypeID == 8).Count(),
+                WaitForApproveCount = callsgrp.Where(c => c.LeadCallTypeID == 7).Count(),
+                CloseDealCount = callsgrp.Where(c => c.LeadCallTypeID == 9).Count(),
+                NoCallCount = data.Company.Leads.Where(l => !data.LeadCalls.Where(c => c.LeadID == l.ID).Any()).Count(),
                 CategoryString=data.CategoryString,
                 CoreCompany = data.CoreLVL==null?false:data.CoreLVL.CoreLVLName == "核心公司" ? true : false,
                 _Comments = (from co in data.Comments.OrderByDescending(m => m.CommentDate)
@@ -112,12 +159,14 @@ namespace Sales.BLL
                 _LeadCalls = (from leadcalls in data.LeadCalls.OrderByDescending(m=>m.CallDate)
                               select new _LeadCall()
                               {
+                                  LeadID=leadcalls.LeadID,
                                   LeadName = leadcalls.Lead.Name_EN + " " + leadcalls.Lead.Name_CH,
                                   LeadTitle=leadcalls.Lead.Title,
                                   CallResult=leadcalls.Result,
                                   CallType=leadcalls.LeadCallType.Name,
                                   CallDate=leadcalls.CallDate,
-                                  Creator=leadcalls.Creator
+                                  Creator=leadcalls.Creator,
+                                  LeadCallTypeID=leadcalls.LeadCallTypeID
                               })
 
             };
@@ -127,6 +176,9 @@ namespace Sales.BLL
         public static _CRM _CRMGetAvaliableCrmDetailByCrmIDLeadID(int crmid,int leadid)
         {
             var data = CH.GetDataById<CompanyRelationship>(crmid);
+            var callsgrp = data.LeadCalls.OrderByDescending(c => c.CallDate).GroupBy(c => c.LeadID)
+                                .Where(g => g.Count() >= 1)
+                                .Select(g => g.ElementAt(0));
             var crm = new _CRM()
             {
                 ID = data.ID,
@@ -136,6 +188,13 @@ namespace Sales.BLL
                 Contact = data.Company.Contact,
                 Fax = data.Company.Fax,
                 Email = "没找到字段",
+                BlowedCount = callsgrp.Where(c => c.LeadCallTypeID == 2).Count(),
+                PitchCount = callsgrp.Where(c => c.LeadCallTypeID == 4).Count(),
+                FullPitchCount = callsgrp.Where(c => c.LeadCallTypeID == 5).Count(),
+                QualifiedDecisionCount = callsgrp.Where(c => c.LeadCallTypeID == 8).Count(),
+                WaitForApproveCount = callsgrp.Where(c => c.LeadCallTypeID == 7).Count(),
+                CloseDealCount = callsgrp.Where(c => c.LeadCallTypeID == 9).Count(),
+                NoCallCount = data.Company.Leads.Where(l => !data.LeadCalls.Where(c => c.LeadID == l.ID).Any()).Count(),
                 _Categorys= (from c in data.Categorys
                                  select new _Category()
                                  {
@@ -166,15 +225,17 @@ namespace Sales.BLL
                               Fax = leads.Fax,
                               Email = leads.EMail
                           }),
-                _LeadCalls = (from leadcalls in data.LeadCalls.Where(c => c.LeadID == leadid).OrderByDescending(m => m.CallDate)
+                _LeadCalls = (from leadcalls in data.LeadCalls.OrderByDescending(m => m.CallDate)
                               select new _LeadCall()
                               {
+                                  LeadID=leadcalls.LeadID,
                                   LeadName = leadcalls.Lead.Name_EN + " " + leadcalls.Lead.Name_CH,
                                   LeadTitle = leadcalls.Lead.Title,
                                   CallResult = leadcalls.Result,
                                   CallType = leadcalls.LeadCallType.Name,
                                   CallDate = leadcalls.CallDate,
-                                  Creator = leadcalls.Creator
+                                  Creator = leadcalls.Creator,
+                                  LeadCallTypeID = leadcalls.LeadCallTypeID
                               })
 
             };

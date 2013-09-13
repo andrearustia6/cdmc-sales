@@ -21,6 +21,9 @@ namespace Sales.Model
         public string CallType { get; set; }
         public DateTime CallDate { get; set; }
         public string Creator { get; set; }
+        public int? LeadID { get; set; }
+        public int? LeadCallTypeID { get; set; }
+        
     }
 
     public class _Lead : EntityBase
@@ -61,12 +64,59 @@ namespace Sales.Model
          public string DisplayName {get{return CompanyName + "("+ContectedLeadCount+"/"+LeadCount+")";}}
          public string Contacts { get; set; }
          public string Email { get; set; }
-         public int BlowedCount { get; set; }
-         public int PitchCount { get; set; }
-         public int FullPitchCount { get; set; }
-         public int CloseDealCount { get; set; }
-         public int WaitForApproveCount { get; set; }
-         public int NoCallCount { get; set; }
+         public int BlowedCount
+         {
+             get;
+             set;
+         }
+         public int PitchCount
+         {
+             get;
+             set;
+         }
+         public int FullPitchCount
+         {
+             get;
+             set;
+         }
+         public int TotalPitchCount
+         {
+             get
+             {
+                 return PitchCount + FullPitchCount;
+             }
+         }
+         public int QualifiedDecisionCount
+         {
+             get;
+             set;
+
+         }
+         public int WaitForApproveCount
+         {
+             get;
+             set;
+             
+         }
+         public int QualifiedWaitForCount
+         {
+             get
+             {
+                 return WaitForApproveCount + QualifiedDecisionCount;
+             }
+
+         }
+         public int CloseDealCount {
+             get;
+             set;
+             
+         }
+         public int NoCallCount
+         {
+             get;
+             set;
+             
+         }
          public IEnumerable<_Category> _Categorys { get; set; }
          public string CategoryString{ get; set; }
          public string Description { get; set; }
@@ -124,6 +174,7 @@ namespace Sales.Model
                  return _ContactCount.Value;
              }
          }
+         public IEnumerable<_CRM> _CRMs { get; set; }
     }
     public class _Maturity : EntityBase
     {

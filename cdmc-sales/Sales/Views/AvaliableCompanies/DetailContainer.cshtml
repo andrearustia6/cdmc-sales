@@ -33,7 +33,7 @@
 <div class="memberCompanies">
 <div class="quan">
 <div class="quan_1">
-
+<a  href="#" onclick="onPickUp()">领用</a>
 	<div class="quan_2">6.12<p><img src="../images/quan-01.jpg" width="19" height="20" alt="yuan" /></p></div>
     <div class="quan_3">-2</div>
     <div class="quan_2">6.12<p><img src="../images/quan-03.jpg" width="19" height="20" alt="yuan" /></p></div>
@@ -56,10 +56,17 @@
         {
         <a href="#"><img src="../images/quan-06.jpg" width="13" height="12" alt="xing" /></a>
         }
-        <a href="#"><img src="../images/pen1919.png" alt="bianji" onclick="onCompanyEdit(@(Model.CompanyID))"/></a><a href="#"  onclick="onLeadAdd(@(Model.CompanyID))"><img src="../images/user.png" alt="新增Leader" width="19" height="19" /></a></div>
+        <a Class="hide" href="#"><img src="../images/pen1919.png" alt="bianji" onclick="onCompanyEdit(@(Model.CompanyID))"/></a>
+        <a Class="hide" href="#"  onclick="onLeadAdd(@(Model.CompanyID))"><img src="../images/user.png" alt="新增Leader" width="19" height="19" /></a></div>
         <div class="left_3">
         	<div class="left_4">决策人状态统计</div>
-            <div class="left_5"><img src="../images/quan-08.jpg" width="15" height="15" alt="yuan" />1<img src="../images/quan-09.jpg" width="15" height="15" alt="yuan" />1<img src="../images/quan-10.jpg" width="15" height="15" alt="yuan" />1<img src="../images/quan-11.jpg" width="15" height="15" alt="yuan" />1</div>
+            <div class="left_5">
+                <img src="../images/quan-01.jpg" width="15" height="15" alt="yuan" title="没联系" />@Model.NoCallCount
+                <img src="../images/quan-09.jpg" width="15" height="15" alt="yuan" title="Blowed" />@Model.BlowedCount
+                <img src="../images/quan-10.jpg" width="15" height="15" alt="yuan" title="Pitched和Full Pitched" />@Model.TotalPitchCount
+                <img src="../images/yuan-2.png" width="15" height="15" alt="yuan" title="Qualified Decision和Waiting for Approval" />@Model.QualifiedWaitForCount
+                <img src="../images/quan-08.jpg" width="15" height="15" alt="yuan" title="Closed" />@Model.CloseDealCount
+            </div>
             <div class="left_6">
             	<ul>
                 	<li>
@@ -134,7 +141,7 @@
                 点评
             </div>
             <div style="float: left;width: 20%;">
-                <a href="#" onclick="GetAddComment()"><img src="../images/quan-14.jpg" width="29" height="29" alt="jia"></a>
+                <a Class="hide" href="#" onclick="GetAddComment()"><img src="../images/quan-14.jpg" width="29" height="29" alt="jia"></a>
             </div>
         </div>
         
@@ -169,21 +176,40 @@
          var index = 1;
          foreach (var lead in Model._Leads)
          {
-             <a href="#"  onclick="onLeadSelect(@(lead.ID))">
+             <a Class="click" href="#"  onclick="onLeadSelect(@(lead.ID))">
             <div  class="center_2" id="lead@(lead.ID)">
-            <img src="../images/call.png" alt="新增通话" onclick="onCallAdd(@(lead.ID))" style=" display: inline;float: right;" />
-            <img src="../images/pen1919.png" alt="编辑" onclick="onLeadEdit(@(lead.ID))" style=" display: inline;float: right;" />
+            <img Class="hide"  src="../images/call.png" alt="新增通话" onclick="onCallAdd(@(lead.ID))" style=" display: inline;float: right;" />
+            <img Class="hide" src="../images/pen1919.png" alt="编辑" onclick="onLeadEdit(@(lead.ID))" style=" display: inline;float: right;" />
             
                 <dl>
                     <dt>
-                        @if (index == 1)
+                        @{
+                            var calls = @Model._LeadCalls.Where(c => c.LeadID == lead.ID).OrderByDescending(c => c.CallDate).FirstOrDefault();
+                            if(calls==null)
+                            {
+                                <img src="../images/quan-01.jpg" width="15" height="15" alt="yuan" title="没联系" />
+                            }
+                            else
+                            {
+                                if(calls.LeadCallTypeID==2){
+                                    <img src="../images/quan-09.jpg" width="15" height="15" alt="yuan" title="Blowed" />}
+                                else if(calls.LeadCallTypeID==4 || calls.LeadCallTypeID==5 ){
+                                    <img src="../images/quan-10.jpg" width="15" height="15" alt="yuan" title="Pitched和Full Pitched" />}
+                                else if(calls.LeadCallTypeID==7 || calls.LeadCallTypeID==8 ){
+                                    <img src="../images/yuan-2.png" width="15" height="15" alt="yuan" title="Qualified Decision和Waiting for Approval" />}
+                                else if(calls.LeadCallTypeID==9){
+                                    <img src="../images/quan-08.jpg" width="15" height="15" alt="yuan" title="Closed" />}
+                            }
+                         }
+                        
+                        @*@if (index == 1)
                         {
                             <img src="../images/00.png" width="14" height="14" alt="tu" />
                         }
                         else
                         {
                             <img src="../images/22.png" width="14" height="14" alt="tu" />
-                        }
+                        }*@
                     </dt>
                     <dd>
                         <p>@lead.Name</p>
@@ -210,7 +236,12 @@
 @if (Model._LeadCalls != null)
 {
     var index = 1;
-    foreach (var call in Model._LeadCalls)
+    var leadcalls=@Model._LeadCalls;
+    if (ViewBag.leadid > 0)
+    {
+        leadcalls = leadcalls.Where(c => c.LeadID == ViewBag.leadid);
+    }
+    foreach (var call in leadcalls)
     {
             <div  class="right_@(index)">
                <h2>@call.LeadName  | @call.LeadTitle </h2>
