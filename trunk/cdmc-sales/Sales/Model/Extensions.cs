@@ -592,7 +592,7 @@ namespace Entity
 
             if(distinctnumber!=null)
             {
-                    query = query.Where(q => q.Company.DistrictNumberID == distinctnumber);
+                query = query.Where(q => q.Company.DistrictNumberID == distinctnumber);
             }
 
 
@@ -610,7 +610,7 @@ namespace Entity
                         }
                     }
                 }
-                query = query.Where(q => q.Categorys.Any(c => catId.Any(a => a == c.ID))).ToList();
+                query = query.Where(q => q.Categorys.Any(c => catId.Any(a => a == c.ID)));
             }
 
             var leads = query.Select(s => s.Company).SelectMany(s => s.Leads);
