@@ -570,26 +570,30 @@ namespace Entity
             return item.Members.FirstOrDefault(m => m.Name == username);
         }
 
-        public static List<Lead> ProjectLeads(this Project item, int? dealcondition, int? distinctnumber, string categories = "")
+        public static  IEnumerable<Lead> ProjectLeads(this Project item, int? dealcondition, int? distinctnumber, string categories = "")
         {
             var list = new List<Lead>();
             //item.CompanyRelationships.ForEach(c =>
             //{
             //    list.AddRange(CH.GetAllData<Lead>(l => l.CompanyID == c.CompanyID && l.EMail != null));
-            //});
-            var query = item.CompanyRelationships;
+            //});   var crms = item.CompanyRelationships;
+            IEnumerable<CompanyRelationship> query = item.CompanyRelationships;
             if (dealcondition != null)
             {
                 if (dealcondition == 0)
                 {
-                    query = query.Where(q => (q.Deals.Count() == 0)).ToList();
+                    query = query.Where(q => (q.Deals.Count() == 0));
                 }
                 else
                 {
-                    query = query.Where(q => (q.Deals.Count() > 0)).ToList();
+                    query = query.Where(q => (q.Deals.Count() > 0));
                 }
             }
-            query = query.Where(q => q.Company.DistrictNumberID == distinctnumber).ToList();
+
+            if(distinctnumber!=null)
+            {
+                    query = query.Where(q => q.Company.DistrictNumberID == distinctnumber);
+            }
 
 
             if (!String.IsNullOrEmpty(categories))
@@ -609,12 +613,9 @@ namespace Entity
                 query = query.Where(q => q.Categorys.Any(c => catId.Any(a => a == c.ID))).ToList();
             }
 
+            var leads = query.Select(s => s.Company).SelectMany(s => s.Leads);
 
-            query.ForEach(c =>
-            {
-                list.AddRange(CH.GetAllData<Lead>(l => l.CompanyID == c.CompanyID && l.EMail != null));
-            });
-            return list;
+            return leads;
         }
 
         public static RoleInProject RoleInProject(this Project item)
