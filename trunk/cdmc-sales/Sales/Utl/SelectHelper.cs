@@ -485,5 +485,25 @@ namespace Utl
             return selectList;
         }
 
+        public static IEnumerable<SelectListItem> DistinctNumberFilterSelectList(int? selectVal)
+        {
+            var lists =  CH.GetAllData<DistrictNumber>();
+            int max = lists.Max(d => d.ID);
+            List<SelectListItem> selectList = new List<SelectListItem>();
+            selectList.Add(new SelectListItem() { Text = "- 请选择 -", Value = "0" });
+            selectList.Add(new SelectListItem() { Text = "中国(默认)", Value = "" });
+            selectList.Add(new SelectListItem() { Text = "国外所有", Value = (max + 1).ToString() });
+            foreach (DistrictNumber districtNumber in lists )
+            {
+                SelectListItem selectListItem = new SelectListItem() { Text = districtNumber.Name, Value = districtNumber.ID.ToString() };
+                if (selectVal.HasValue && districtNumber.ID == selectVal.Value)
+                {
+                    selectListItem.Selected = true;
+                }
+                selectList.Add(selectListItem);
+            }
+            return selectList;
+        }
+
     }
 }

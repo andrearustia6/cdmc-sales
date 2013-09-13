@@ -589,12 +589,23 @@ namespace Entity
                     query = query.Where(q => (q.Deals.Count() > 0));
                 }
             }
-
-            if(distinctnumber!=null)
+            if (distinctnumber != null && distinctnumber != 0)
             {
-                query = query.Where(q => q.Company.DistrictNumberID == distinctnumber);
+                var lists =  CH.GetAllData<DistrictNumber>();
+                int max = lists.Max(d => d.ID);
+                if (distinctnumber == max)
+                {
+                    query = query.Where(q => q.Company.DistrictNumberID != null);
+                }
+                else
+                {
+                    query = query.Where(q => q.Company.DistrictNumberID == distinctnumber);
+                }
             }
-
+            else if (distinctnumber == null)
+            {
+                query = query.Where(q => q.Company.DistrictNumberID == null);
+            }
 
             if (!String.IsNullOrEmpty(categories))
             {
