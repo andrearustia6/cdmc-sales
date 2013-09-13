@@ -7,13 +7,11 @@
 <div  style="margin:10px; margin-left:0px;">
     <span ><b>目标项目：</b>
     @{
-    var ps = CH.GetAllData<Project>(p => p.Market == Employee.CurrentUserName);
-    //var selected = ps.Count== 0 ? 0:ps.FirstOrDefault().ID;
+        var ps = CH.GetAllData<Project>(p => p.Market == Employee.CurrentUserName);
         @Html.DropDownList("ProjectID", new SelectList(ps, "ID", "ProjectCode", ViewBag.ProjectID), new { onchange="this.form.submit();"})
     }
     </span>
     <span id="categories"><b>细分行业：</b>
-        @*@Html.DropDownList("ProjectType", new SelectList(CH.GetAllData<ProjectType>(), "ID", "Name", ViewBag.ProjectType), "-请选择-")*@
         @{
             List<int> catId = new List<int>();
             string categories = ViewBag.Categories as string;
@@ -34,24 +32,24 @@
         }
         @foreach (Category category in CH.GetAllData<Category>(c => c.ProjectID == ViewBag.ProjectID))
         {
-            if (catId.Any(c => c == category.ID)) 
+            if (catId.Any(c => c == category.ID))
             {
-                <label class="company-category"> <input  name="Categories" type="checkbox" checked="checked" value="@category.ID" /> @category.Name </label>
+                <label class="company-category"><input  name="Categories" type="checkbox" checked="checked" value="@category.ID" /> @category.Name </label>
             }
             else
             {
-                <label class="company-category"> <input  name="Categories" type="checkbox" value="@category.ID" /> @category.Name </label>
+                <label class="company-category"><input  name="Categories" type="checkbox" value="@category.ID" /> @category.Name </label>
             }
         }
     </span>
     <span ><b>出单情况：</b>
     @{
-        @Html.DropDownList("DealCondition", SelectHelper.DealConditionSelectListInMarket((int?)ViewBag.DealCondition), new { onchange="this.form.submit();"})
+        @Html.DropDownList("DealCondition", SelectHelper.DealConditionSelectListInMarket((int?)ViewBag.DealCondition), new { onchange = "this.form.submit();" })
     }
     </span>
 
     <span ><b>时区：</b>
-        @Html.DropDownList("DistinctNumber", SelectHelper.DistinctNumberSelectList((int?)ViewBag.DistinctNumber), "中国(默认)", new { onchange = "this.form.submit();" })
+        @Html.DropDownList("DistinctNumber", SelectHelper.DistinctNumberFilterSelectList((int?)ViewBag.DistinctNumber), new { onchange = "this.form.submit();" })
     </span>
     <input type="submit" value="提交" />
 </div>
@@ -61,10 +59,13 @@
                 commands => commands.Custom()
                     .HtmlAttributes(new { id = "export" })
                     .Text("导出excel格式数据")
-                    .Action("EmailExportCsv", "MarketInterface", new { projectid = (int?)ViewBag.ProjectID,
-                                                                       dealcondition = (int?)ViewBag.DealCondition, 
-                                                                       distinctnumber = (int?)ViewBag.DistinctNumber,
-                                                                       categories = ViewBag.Categories })
+                    .Action("EmailExportCsv", "MarketInterface", new
+                    {
+                        projectid = (int?)ViewBag.ProjectID,
+                        dealcondition = (int?)ViewBag.DealCondition,
+                        distinctnumber = (int?)ViewBag.DistinctNumber,
+                        categories = ViewBag.Categories
+                    })
             )
     .DataKeys(keys =>
     {

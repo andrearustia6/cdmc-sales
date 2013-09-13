@@ -28,7 +28,6 @@ namespace Sales.Controllers
             {
                 pj = pjs.Where(p => p.ID == projectid).FirstOrDefault();
             }
-            string categories = String.IsNullOrEmpty(Request["Categories"]) ? null : Request["Categories"].Trim();
             if (pj == null)
             {
                 pj = CH.GetAllData<Project>().FirstOrDefault();
@@ -36,7 +35,32 @@ namespace Sales.Controllers
                     return View();
             }
             this.AddErrorStateIfCreatorIsTheLoginUserIsNotTheMarketInterface(pj);
+            string categories = String.IsNullOrEmpty(Request["Categories"]) ? null : Request["Categories"].Trim();
             ViewBag.ProjectID = pj.ID;
+
+            string currcate = "";
+            var cateList = CH.GetAllData<Category>(c => c.ProjectID == ViewBag.ProjectID);
+            if (cateList != null && cateList.Count > 0)
+            {
+                currcate = String.Join(",", cateList.Select(s => s.ID));
+            }
+            if (categories == null)
+            {
+                categories = currcate;
+            }
+            else
+            {
+                var currList = currcate.Split(',').ToList();
+                var postList = categories.Split(',').ToList();
+                if (postList.Any(p => currList.Any(c => c == p)))
+                {
+
+                }
+                else
+                {
+                    categories = currcate;
+                }
+            }
             ViewBag.Categories = categories;
             ViewBag.DealCondition = dealcondition;
             ViewBag.DistinctNumber = distinctnumber;
