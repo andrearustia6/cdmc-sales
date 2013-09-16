@@ -56,7 +56,7 @@ namespace Sales.Model
          public string CrmCommentState { get; set; }
          public bool? _CoreCompany { get; set; }
          public int? CompanyID { get; set; }
-         public string CompanyName { get { return string.Join(",",CompanyNameEN, CompanyNameCH); } }
+         public string CompanyName { get { return string.Join(",",CompanyNameEN, CompanyNameCH).Trim(','); } }
          public string CompanyNameCH { get; set; }
          public string CompanyNameEN { get; set; }
          public int LeadCount {get;set;}
@@ -64,6 +64,8 @@ namespace Sales.Model
          public string DisplayName {get{return CompanyName + "("+ContectedLeadCount+"/"+LeadCount+")";}}
          public string Contacts { get; set; }
          public string Email { get; set; }
+
+         public int? CoreLVLID { get; set; }
          public int BlowedCount
          {
              get;

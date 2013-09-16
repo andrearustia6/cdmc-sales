@@ -131,6 +131,7 @@ namespace Sales.BLL
                 NoCallCount = data.Company.Leads.Where(l => !data.LeadCalls.Where(c => c.LeadID == l.ID).Any()).Count(),
                 CategoryString=data.CategoryString,
                 CoreCompany = data.CoreLVL==null?false:data.CoreLVL.CoreLVLName == "核心公司" ? true : false,
+                CoreLVLID=data.CoreLVLID,
                 _Comments = (from co in data.Comments.OrderByDescending(m => m.CommentDate)
                             select new _Comment()
                             {
@@ -202,6 +203,7 @@ namespace Sales.BLL
                 WaitForApproveCount = callsgrp.Where(c => c.LeadCallTypeID == 7).Count(),
                 CloseDealCount = callsgrp.Where(c => c.LeadCallTypeID == 9).Count(),
                 NoCallCount = data.Company.Leads.Where(l => !data.LeadCalls.Where(c => c.LeadID == l.ID).Any()).Count(),
+                CoreLVLID = data.CoreLVLID,
                 _Categorys= (from c in data.Categorys
                                  select new _Category()
                                  {
