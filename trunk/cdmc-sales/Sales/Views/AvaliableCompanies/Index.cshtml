@@ -240,10 +240,22 @@
         .Height(220)
                 .Modal(true).Visible(false).Draggable(true)
     )
+    @(Html.Telerik().Window().Title("发送邮件")
+    .Name("SendEmail")
+    .Content(@<text><div class="dialogue-sendemail">
+        <div class="sendemail-wrapper">
+        </div>
+        <div class="dialogue-buttons" style="float:right;">
+            <input type="button" class="btn-queding" onclick="SendEmail()" />
+            <input type="button" class="btn-quxiao" onclick="CancelSendEmail()" />
+        </div>
+    </div></text>)
+    .Width(750).Height(550).Draggable(true).Modal(true).Visible(false)
+)
 <script>
     var crmid
     var gleadid
-
+    var clickpublic
     function GetAddCompany() {
         var currentProjectId = $('#projectid').val();
         $.post('GetAddCompany', { projectId: currentProjectId }, function (result) {
@@ -811,6 +823,20 @@
 
     }
 
+    function onPublicCompanyChanging(crmid, corelvlid) {
+        var treeview = $("#publicCompanies").data("tTreeView");
+        var item1 = $("#publicCompanies").find(".t-input[name='itemValue'][value='" + corelvlid + "']").closest("li");
+        treeview.expand(item1);
+        $(".t-state-selected").removeClass('t-state-selected');
+        // Get the node based upon what part of the breadcrumb was selected.
+        var findString = ".t-input[name='itemValue'][value='" + crmid + "']";
+        var item3 = item1.find(findString).closest("li");
+        // Programmatically "click" the desired node.
+        item3.find(".t-in:first").trigger("click");
+        $(".t-state-selected").addClass('t-state-selected');
+        return true;
+
+    }
 
     function onCompanyEdit(currentCompanyId) {
         $.post('GetEditCompany', { companyId: currentCompanyId }, function (result) {
@@ -962,9 +988,15 @@
             $('#crmdetailscontainer').html(result);
 
             var leaddiv = $('#lead' + leadid);
-            
+
             leaddiv.removeClass('center_2');
             leaddiv.addClass('center_1');
+
+            if (clickpublic) {
+                jQuery(".hide").hide();
+                jQuery(".click").removeAttr("onclick");
+
+            }
         });
     }
     function onLeadAdd(currentCompanyId) {
@@ -1219,8 +1251,9 @@
                     gleadid = result.leadid;
                     var currentProjectId = $('#projectid').val();
                     RefreshCrmTree(currentProjectId, result.companyRelationshipId, result.processid, result.corelvlid);
-                   
+
                     $('#AddCall').data('tWindow').close();
+                    onGetEmailPage($calltype.val());
                 }
                 else
                     alert('LeadCall新增失败');
@@ -1233,6 +1266,59 @@
 //                }
             });
         }
+    }
+
+    function onGetEmailPage(calltype) {
+        $.post('GetEmailPage', { callType: calltype }, function (result) {
+            $('.sendemail-wrapper').html(result);
+            var window = $('#SendEmail').data('tWindow');
+            window.center().open();
+        });
+    }
+
+    function SendEmail() {
+        var hasError = false;
+        $('.dialogue-sendemail form input').removeClass('fieldError');
+
+        String.prototype.isEmpty = function () { return /^\s*$/.test(this); }
+
+        if ($('.dialogue-sendemail form #FromEmail').val().isEmpty()) {
+            $('.dialogue-sendemail form #FromEmail').addClass('fieldError');
+            hasError = true;
+        }
+
+        if ($('.dialogue-sendemail form #FromName').val().isEmpty()) {
+            $('.dialogue-sendemail form #FromName').addClass('fieldError');
+            hasError = true;
+        }
+
+        if ($('.dialogue-sendemail form #ToEmail').val().isEmpty()) {
+            $('.dialogue-sendemail form #ToEmail').addClass('fieldError');
+            hasError = true;
+        }
+
+        if ($('.dialogue-sendemail form #ToName').val().isEmpty()) {
+            $('.dialogue-sendemail form #ToName').addClass('fieldError');
+            hasError = true;
+        }
+
+        if (hasError) {
+            return;
+        } else {
+            var query = $('.dialogue-sendemail form').serializeArray();
+            $.post('EmailPage', query, function (result) {
+                if (result.sentEmail == true) {
+                    $('#SendEmail').data('tWindow').close();
+                } else {
+                    alert('邮件发送失败!');
+                }
+            });
+        }
+    }
+
+    function CancelSendEmail() {
+        var window = $('#SendEmail').data('tWindow');
+        window.close();
     }
 
     function CancelAddCall() {

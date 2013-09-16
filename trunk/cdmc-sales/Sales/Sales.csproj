@@ -1766,6 +1766,7 @@
     <Content Include="Views\AvaliableCompanies\Description.cshtml" />
     <Content Include="Views\AvaliableCompanies\QuickEntry.cshtml" />
     <Content Include="Views\AvaliableCompanies\BulkEntry.cshtml" />
+    <Content Include="Views\AvaliableCompanies\EmailPage.cshtml" />
     <None Include="Views\SalesEx\EditCompany.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\SimulatorConfig.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\AjaxTargetOfMonthForMember.cshtml" />
