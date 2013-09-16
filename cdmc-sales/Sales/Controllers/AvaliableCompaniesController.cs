@@ -705,7 +705,7 @@ namespace Sales.Controllers
             return Json(new { companyRelationshipId = companyRelationship.ID, companyId = companyRelationship.CompanyID, projectId = companyRelationship.ProjectID, processid = companyRelationship.ProgressID, corelvlid = corelvlid });
         }
 
-        public ActionResult GetEmailPage(string callType)
+        public ActionResult GetEmailPage(string callType,int leadid)
         {
             string template = "";
             string filename = "";
@@ -769,9 +769,14 @@ namespace Sales.Controllers
             }
             #endregion
 
+            Lead lead = CH.GetDataById<Lead>(leadid);
+
             EmailModel model = new EmailModel();
             model.Content = template;
-
+            model.ToEmail = lead.EMail;
+            model.ToName = string.Join(",", lead.Name_EN, lead.Name_CH).Trim(',');
+            model.FromName = Employee.CurrentUserName;
+            model.FromEmail = Employee.GetUserByName(Employee.CurrentUserName).Email;
             return PartialView("EmailPage", model);
         }
 
