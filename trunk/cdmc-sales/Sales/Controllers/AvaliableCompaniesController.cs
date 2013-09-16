@@ -323,8 +323,8 @@ namespace Sales.Controllers
         public ActionResult GetAddCompany(int? projectId)
         {
             var progress = CH.GetAllData<Progress>().Where(p => p.Code == 10).FirstOrDefault();
-
-            AjaxViewSaleCompany ajaxViewSaleCompany = new AjaxViewSaleCompany() { ProjectId = projectId, Categories = new List<int>() { }, ProgressId = progress.ID };
+            var core = CH.GetAllData<CoreLVL>().Where(c => c.CoreLVLCode == 2).FirstOrDefault();
+            AjaxViewSaleCompany ajaxViewSaleCompany = new AjaxViewSaleCompany() { ProjectId = projectId, Categories = new List<int>() { }, ProgressId = progress.ID,CoreLVLID=core.ID };
             return PartialView("AddCompany", ajaxViewSaleCompany);
         }
         [ValidateInput(false)]
@@ -461,8 +461,8 @@ namespace Sales.Controllers
         public ActionResult GetQuickEntry(int? projectId)
         {
             var progress = CH.GetAllData<Progress>().Where(p => p.Code == 10).FirstOrDefault();
-
-            QuickEntry quickEntry = new QuickEntry() { ProjectId = projectId, Categories = new List<int>() { }, ProgressId = progress.ID, CallDate = DateTime.Now };
+            var core = CH.GetAllData<CoreLVL>().Where(c => c.CoreLVLCode == 2).FirstOrDefault();
+            QuickEntry quickEntry = new QuickEntry() { ProjectId = projectId, Categories = new List<int>() { }, ProgressId = progress.ID, CallDate = DateTime.Now,CoreLVLID=core.ID };
             return PartialView("QuickEntry", quickEntry);
         }
 
@@ -559,8 +559,8 @@ namespace Sales.Controllers
         public ActionResult GetBulkEntry(int? projectId)
         {
             var progress = CH.GetAllData<Progress>().Where(p => p.Code == 10).FirstOrDefault();
-
-            BulkEntry bulkEntry = new BulkEntry() { ProjectId = projectId, Categories = new List<int>() { }, ProgressId = progress.ID };
+            var core = CH.GetAllData<CoreLVL>().Where(c => c.CoreLVLCode == 2).FirstOrDefault();
+            BulkEntry bulkEntry = new BulkEntry() { ProjectId = projectId, Categories = new List<int>() { }, ProgressId = progress.ID ,CoreLVLID=core.ID};
             LeadBulk lead = new LeadBulk();
             for (int i = 0; i < 10; i++)
             {
@@ -684,7 +684,7 @@ namespace Sales.Controllers
         public ActionResult PickUp(int crmid)
         {
             CompanyRelationship companyRelationship = CH.GetDataById<CompanyRelationship>(crmid);
-            companyRelationship.ProgressID = 3;
+            
             Member member = CH.DB.Members.Where(m => m.Name == Employee.CurrentUserName).FirstOrDefault();
             companyRelationship.Members.Add(member);
             CH.Edit(companyRelationship);

@@ -26,11 +26,11 @@ namespace Sales.BLL
             var crms = from c in CH.DB.CompanyRelationships where c.ProjectID == projectid select c;
             if (memberonly)
             {
-                crms = crms.Where(w => w.Members.Count > 0);
+                crms = crms.Where(w => w.Members.Count > 0).OrderBy(w=>w.ID);
             }
             else
             {
-                crms = crms.Where(w => w.Members.Count == 0);
+                crms = crms.Where(w => w.Members.Count == 0).OrderBy(w => w.ID);
             }
 
             var data = from c in CH.DB.CoreLVLs
@@ -38,11 +38,13 @@ namespace Sales.BLL
                            {
                                CoreName = c.CoreLVLName,
                                ID = c.ID,
+                               CrmCount=crms.Where(cr=>cr.CoreLVLID==c.CoreLVLCode).Count(),
                                _Maturitys = from m in crms.Where(cr=>cr.CoreLVLID==c.CoreLVLCode) group m by new{m.ProgressID,m.Progress.Name} into grp
                                             select new _Maturity() 
                                             { 
                                                  Name= grp.Key.Name,
                                                   ID = grp.Key.ProgressID.Value,
+                                                  Count = crms.Where(co=>co.ProgressID==grp.Key.ProgressID).Count(),
                                                  _CRMs = from crm in grp.Select(s=>s)
                                                          select new _CRM
                                                          {
@@ -70,11 +72,11 @@ namespace Sales.BLL
             var crms = from c in CH.DB.CompanyRelationships where c.ProjectID == projectid select c;
             if (memberonly)
             {
-                crms = crms.Where(w => w.Members.Count > 0);
+                crms = crms.Where(w => w.Members.Count > 0).OrderBy(w => w.ID);
             }
             else
             {
-                crms = crms.Where(w => w.Members.Count == 0);
+                crms = crms.Where(w => w.Members.Count == 0).OrderBy(w => w.ID);
             }
 
             var data = from c in CH.DB.CoreLVLs
@@ -82,7 +84,8 @@ namespace Sales.BLL
                        {
                            CoreName = c.CoreLVLName,
                            ID = c.ID,
-                           _CRMs = from crm in crms
+                           CrmCount = crms.Where(cr => cr.CoreLVLID == c.CoreLVLCode).Count(),
+                           _CRMs = from crm in crms.Where(cr => cr.CoreLVLID == c.CoreLVLCode)
                                     select new _CRM
                                     {
                                         ID = crm.ID,
