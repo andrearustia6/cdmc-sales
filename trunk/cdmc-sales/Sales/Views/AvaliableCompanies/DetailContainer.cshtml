@@ -34,8 +34,7 @@
 <div class="quan">
 <div class="quan_1">
 <a  class="PickUp" href="#" onclick="onPickUp()">领用</a>
-是否核心：
-@Html.DropDownListFor(model => model.CoreLVLID, Utl.SelectHelper.CoreLVLSelectList(null), "请选择", new { })
+
 
 	<div class="quan_2">6.12<p><img src="../images/quan-01.jpg" width="19" height="20" alt="yuan" /></p></div>
     <div class="quan_3">-2</div>
@@ -44,6 +43,15 @@
 	<div class="quan_2">6.12<p><img src="../images/quan-04.jpg" width="19" height="20" alt="yuan" /></p></div>
     <div class="quan_3">-2</div>
     <div class="quan_2">6.12<p><img src="../images/quan-05.jpg" width="19" height="20" alt="yuan" /></p></div>
+    @{ 
+    if (Utl.Employee.CurrentRole.Level == ManagerRequired.LVL)
+    {
+        <div >是否核心：
+        @(Html.DropDownListFor(model => model.CoreLVLID, Utl.SelectHelper.CoreLVLSelectList(null), "请选择", new { }))
+        </div>
+    }
+}
+
 </div>
 </div>
 <div class="quan_4">
