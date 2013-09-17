@@ -227,20 +227,20 @@
     .Width(850).Height(250).Draggable(true).Modal(true).Visible(false)
 )
 @(Html.Telerik().Window().Title("添加Comment")
-        .Name("AddComment")
+    .Name("AddComment")
     .Content(@<text><div class="dialogue-AddComment">
-        <div class="AddComment-wrapper">
-        </div>
-        <div class="dialogue-buttons" style=" float:right;">
-             <input type="button" class="btn-queding" onclick="AddComment()" />
-            <input type="button" class="btn-quxiao" onclick="CancelAddComment()" />
-        </div>
-    </div></text>)
-        .Width(1000)
-        .Height(220)
-                .Modal(true).Visible(false).Draggable(true)
-    )
-    @(Html.Telerik().Window().Title("发送邮件")
+    <div class="AddComment-wrapper">
+    </div>
+    <div class="dialogue-buttons" style=" float:right;">
+            <input type="button" class="btn-queding" onclick="AddComment()" />
+        <input type="button" class="btn-quxiao" onclick="CancelAddComment()" />
+    </div>
+</div></text>)
+    .Width(1000)
+    .Height(220)
+    .Modal(true).Visible(false).Draggable(true)
+)
+@(Html.Telerik().Window().Title("发送邮件")
     .Name("SendEmail")
     .Content(@<text><div class="dialogue-sendemail">
         <div class="sendemail-wrapper">
