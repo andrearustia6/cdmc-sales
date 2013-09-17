@@ -50,6 +50,7 @@
 
     <span ><b>时区：</b>
         @Html.DropDownList("DistinctNumber", SelectHelper.DistinctNumberFilterSelectList((int?)ViewBag.DistinctNumber), new { onchange = "this.form.submit();" })
+        @Html.Hidden("DistinctHidden","Page")
     </span>
     <input type="submit" value="提交" />
 </div>

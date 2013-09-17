@@ -593,7 +593,7 @@ namespace Entity
             {
                 var lists =  CH.GetAllData<DistrictNumber>();
                 int max = lists.Max(d => d.ID);
-                if (distinctnumber == max)
+                if (distinctnumber == (max + 1))
                 {
                     query = query.Where(q => q.Company.DistrictNumberID != null);
                 }
