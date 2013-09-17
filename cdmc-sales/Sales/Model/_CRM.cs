@@ -36,6 +36,7 @@ namespace Sales.Model
         public string Contact { get; set; }
         public string Fax { get; set; }
         public string Email { get; set; }
+        public int? LastCallTypeID { get; set; }
     }
 
     public class _Comment : EntityBase
@@ -148,6 +149,7 @@ namespace Sales.Model
          public IEnumerable<_Lead> _Leads { get; set; }
          public IEnumerable<_Comment> _Comments { get; set; }
          public IEnumerable<_LeadCall> _LeadCalls { get; set; }
+         
      }
 
 

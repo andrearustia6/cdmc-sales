@@ -161,7 +161,8 @@ namespace Sales.BLL
                              Title=leads.Title,
                              Contact=leads.Contact,
                              Fax=leads.Fax,
-                             Email=leads.EMail
+                             Email=leads.EMail,
+                             LastCallTypeID = data.LeadCalls.Where(c => c.LeadID == leads.ID).OrderByDescending(c => c.CallDate).FirstOrDefault() == null ? 0 : data.LeadCalls.Where(c => c.LeadID == leads.ID).OrderByDescending(c => c.CallDate).FirstOrDefault().LeadCallTypeID,
                          }),
                 _LeadCalls = (from leadcalls in data.LeadCalls.OrderByDescending(m=>m.CallDate)
                               select new _LeadCall()
@@ -177,7 +178,7 @@ namespace Sales.BLL
                               })
 
             };
-
+            crm._Leads= crm._Leads.OrderByDescending(l => l.LastCallTypeID);
             return crm;
         }
         public static _CRM _CRMGetAvaliableCrmDetailByCrmIDLeadID(int crmid,int leadid)
@@ -233,7 +234,8 @@ namespace Sales.BLL
                               Title = leads.Title,
                               Contact = leads.Contact,
                               Fax = leads.Fax,
-                              Email = leads.EMail
+                              Email = leads.EMail,
+                              LastCallTypeID = data.LeadCalls.Where(c => c.LeadID == leads.ID).OrderByDescending(c => c.CallDate).FirstOrDefault() == null ? 0 : data.LeadCalls.Where(c => c.LeadID == leads.ID).OrderByDescending(c => c.CallDate).FirstOrDefault().LeadCallTypeID
                           }),
                 _LeadCalls = (from leadcalls in data.LeadCalls.OrderByDescending(m => m.CallDate)
                               select new _LeadCall()
@@ -249,7 +251,7 @@ namespace Sales.BLL
                               })
 
             };
-
+            crm._Leads = crm._Leads.OrderByDescending(l => l.LastCallTypeID);
             return crm;
         }
         /// <summary>
