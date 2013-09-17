@@ -226,10 +226,26 @@
                     </dt>
                     <dd>
                         <p>@lead.Name</p>
+                        @{if (@lead.Title != null)
+                          {
                         <p>@lead.Title</p>
+                            }
+                            }
+                        @{if(@lead.Contact != null)
+                          {
                         <p>T:@lead.Contact</p>
+                            }
+                            }
+                        @{if(@lead.Fax != null)
+                          {
                         <p>F:@lead.Fax</p>
+                            }
+                            }
+                         @{if(@lead.Email != null)
+                          {
                         <p>@lead.Email</p>
+                            }
+                            }
                      </dd>
                  </dl>
                  
