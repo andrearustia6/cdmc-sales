@@ -4,8 +4,9 @@
 
 
 <div class="memberCompanies">
-    @(Html.Telerik().TreeView().Name("memberCompanies").HtmlAttributes(new { style = "" })
-                .ClientEvents(e => e.OnSelect("onIndexSelect"))
+    @(Html.Telerik().TreeView().Name("memberCompanies")
+        .HtmlAttributes(new { style = "" })
+        .ClientEvents(e => e.OnSelect("onIndexSelect"))
         .BindTo(Model.MemberCompanies, mappings =>
         {
             mappings.For<_CoreLVL>(binding => binding

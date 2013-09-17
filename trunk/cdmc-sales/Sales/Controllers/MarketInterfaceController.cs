@@ -36,6 +36,11 @@ namespace Sales.Controllers
             }
             this.AddErrorStateIfCreatorIsTheLoginUserIsNotTheMarketInterface(pj);
             string categories = String.IsNullOrEmpty(Request["Categories"]) ? null : Request["Categories"].Trim();
+            string distinct = String.IsNullOrEmpty(Request["DistinctHidden"]) ? String.Empty : Request["DistinctHidden"].Trim();
+            if (distinct != "Page")
+            {
+                distinctnumber = 0;
+            }
             ViewBag.ProjectID = pj.ID;
 
             string currcate = "";
