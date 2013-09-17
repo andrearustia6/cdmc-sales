@@ -32,7 +32,6 @@ namespace Sales.BLL
             {
                 crms = crms.Where(w => w.Members.Count == 0).OrderBy(w => w.ID);
             }
-
             var data = from c in CH.DB.CoreLVLs
                        select new _CoreLVL()
                            {
@@ -44,7 +43,7 @@ namespace Sales.BLL
                                             { 
                                                  Name= grp.Key.Name,
                                                   ID = grp.Key.ProgressID.Value,
-                                                  Count = crms.Where(co=>co.ProgressID==grp.Key.ProgressID).Count(),
+                                                  Count = crms.Where(co=>co.ProgressID==grp.Key.ProgressID && co.CoreLVLID==c.CoreLVLCode).Count(),
                                                  _CRMs = from crm in grp.Select(s=>s)
                                                          select new _CRM
                                                          {
@@ -52,6 +51,8 @@ namespace Sales.BLL
                                                                CompanyNameCH = crm.Company.Name_CH,
                                                                CompanyNameEN = crm.Company.Name_EN,
                                                                CoreCompany = c.CoreLVLName=="核心公司"?true:false,
+                                                               ContectedLeadCount = crm.LeadCalls.GroupBy(call=>call.LeadID).Count(),
+                                                               LeadCount = CH.DB.Leads.Where(l=>l.CompanyID==crm.CompanyID).Count(),
                                                                _Comments=(from co in crm.Comments.OrderByDescending(m=>m.CommentDate)
                                                                           select new _Comment()
                                                                           {

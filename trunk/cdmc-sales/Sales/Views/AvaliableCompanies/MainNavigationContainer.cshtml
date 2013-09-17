@@ -28,7 +28,7 @@
             mappings.For<_CRM>(binding => binding
           .ItemDataBound((item, crm) =>
           {
-              item.Text = crm.CompanyName;
+              item.Text = crm.DisplayName;
               item.Value =crm.ID.ToString();
           }));
         })
