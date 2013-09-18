@@ -35,6 +35,7 @@ namespace Sales.Model
         public string LastCallType { get; set; }
         public string Contact { get; set; }
         public string Fax { get; set; }
+        public string TelePhone { get; set; }
         public string Email { get; set; }
         public int? LastCallTypeID { get; set; }
     }
