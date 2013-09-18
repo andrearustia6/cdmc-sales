@@ -57,9 +57,18 @@
 <div class="quan_4">
 	<div class="left">
     	<div class="left_1"><p>@Model.CompanyName</p>
-<p>T:+ @Model.Contact</p>
-<p>F:+ @Model.Fax</p>
-<p><a href="#">@Model.Email</a></p>
+        @{if(Model.Contact!=null)
+          {
+              <p>T:+ @Model.Contact</p>
+          }
+        }
+        @{if (Model.Fax != null)
+          {
+              <p>F:+ @Model.Fax</p>
+          }
+        }
+      
+
 
 </div>
         <div class="left_2">
@@ -72,11 +81,11 @@
         <div class="left_3">
         	<div class="left_4">决策人状态统计</div>
             <div class="left_5">
-                <img src="../images/quan-01.jpg" width="15" height="15" alt="yuan" title="没联系" />@Model.NoCallCount
-                <img src="../images/quan-09.jpg" width="15" height="15" alt="yuan" title="Not Piteched" />@Model.BlowedCount
-                <img src="../images/quan-10.jpg" width="15" height="15" alt="yuan" title="Pitched和Full Pitched和Call Backed" />@Model.TotalPitchCount
-                <img src="../images/yuan-2.png" width="15" height="15" alt="yuan" title="Qualified Decision和Waiting for Approval" />@Model.QualifiedWaitForCount
-                <img src="../images/quan-08.jpg" width="15" height="15" alt="yuan" title="Closed" />@Model.CloseDealCount
+                <img src="../images/quan-01.png" width="15" height="15" alt="yuan" title="没联系" />@Model.NoCallCount
+                <img src="../images/quan-09.png" width="15" height="15" alt="yuan" title="Not Piteched" />@Model.BlowedCount
+                <img src="../images/quan-10.png" width="15" height="15" alt="yuan" title="Pitched和Full Pitched和Call Backed" />@Model.TotalPitchCount
+                <img src="../images/55.png" width="15" height="15" alt="yuan" title="Qualified Decision和Waiting for Approval" />@Model.QualifiedWaitForCount
+                <img src="../images/quan-08.png" width="15" height="15" alt="yuan" title="Closed" />@Model.CloseDealCount
             </div>
             <div class="left_6">
             	<ul>
@@ -92,7 +101,7 @@
                     	<h2>公司简介</h2>
                         @if (!string.IsNullOrWhiteSpace(Model.Description))
                         {
-                          if (Model.Description.Length > 50)
+                            if (Model.Description.Length > 50)
                             {
                                 @Model.Description.Substring(0, 50)
                                  @Model.Description.Substring(0, 50)
@@ -189,30 +198,32 @@
          {
              <a href="#"  onclick="onLeadSelect(@(lead.ID))">
             <div  class="center_2" id="lead@(lead.ID)">
-            <img Class="hide"  src="../images/call.png" alt="新增通话" onclick="onCallAdd(@(lead.ID))" style=" display: inline;float: right;" />
-            <img Class="hide" src="../images/pen1919.png" alt="编辑" onclick="onLeadEdit(@(lead.ID))" style=" display: inline;float: right;" />
+            <img Class="hide"  src="../images/dianhua.png" alt="新增通话" onclick="onCallAdd(@(lead.ID))" style=" display: inline;float: right;" />
+            <img Class="hide" src="../images/bianji.png" alt="编辑" onclick="onLeadEdit(@(lead.ID))" style=" display: inline;float: right;" />
             
                 <dl>
                     <dt>
                         @{
-                            var calls = @Model._LeadCalls.Where(c => c.LeadID == lead.ID).OrderByDescending(c => c.CallDate).FirstOrDefault();
-                            if(calls==null)
-                            {
-                                <img src="../images/quan-01.jpg" width="15" height="15" alt="yuan" title="没联系" />
-                            }
-                            else
-                            {
-                                if (calls.LeadCallTypeID == 2 || calls.LeadCallTypeID == 3)
-                                {
-                                    <img src="../images/quan-09.jpg" width="15" height="15" alt="yuan" title="Blowed和Not Piteched" />}
-                                else if (calls.LeadCallTypeID == 4 || calls.LeadCallTypeID == 5 || calls.LeadCallTypeID == 6)
-                                {
-                                    <img src="../images/quan-10.jpg" width="15" height="15" alt="yuan" title="Pitched和Full Pitched和Call Backed" />}
-                                else if(calls.LeadCallTypeID==7 || calls.LeadCallTypeID==8 ){
-                                    <img src="../images/yuan-2.png" width="15" height="15" alt="yuan" title="Qualified Decision和Waiting for Approval" />}
-                                else if(calls.LeadCallTypeID==9){
-                                    <img src="../images/quan-08.jpg" width="15" height="15" alt="yuan" title="Closed" />}
-                            }
+                                                                                   var calls = @Model._LeadCalls.Where(c => c.LeadID == lead.ID).OrderByDescending(c => c.CallDate).FirstOrDefault();
+                                                                                   if (calls == null)
+                                                                                   {
+                                <img src="../images/quan-01.png" width="15" height="15" alt="yuan" title="没联系" />
+                                                                                   }
+                                                                                   else
+                                                                                   {
+                                                                                       if (calls.LeadCallTypeID == 2 || calls.LeadCallTypeID == 3)
+                                                                                       {
+                                    <img src="../images/quan-09.png" width="15" height="15" alt="yuan" title="Blowed和Not Piteched" />}
+                                                                                       else if (calls.LeadCallTypeID == 4 || calls.LeadCallTypeID == 5 || calls.LeadCallTypeID == 6)
+                                                                                       {
+                                    <img src="../images/quan-10.png" width="15" height="15" alt="yuan" title="Pitched和Full Pitched和Call Backed" />}
+                                                                                       else if (calls.LeadCallTypeID == 7 || calls.LeadCallTypeID == 8)
+                                                                                       {
+                                    <img src="../images/55.png" width="15" height="15" alt="yuan" title="Qualified Decision和Waiting for Approval" />}
+                                                                                       else if (calls.LeadCallTypeID == 9)
+                                                                                       {
+                                    <img src="../images/quan-08.png" width="15" height="15" alt="yuan" title="Closed" />}
+                                                                                   }
                          }
                         
                         @*@if (index == 1)
@@ -226,36 +237,49 @@
                     </dt>
                     <dd>
                         <p>@lead.Name</p>
+                        
                         @{if (@lead.Title != null)
                           {
                         <p>@lead.Title</p>
+                          }
                             }
-                            }
-                        @{if(@lead.Contact != null)
+                      </dd>
+                      </dl>
+                        @{if (@lead.Contact != null)
                           {
-                        <p>T:@lead.Contact</p>
+                              <dl>
+                              <dt><img src="../images/shouji.png" width="15" height="15" alt="yuan"  /></dt>
+                            <dd><p>@lead.Contact</p></dd>
+                            </dl>
+                        
+                          }
                             }
-                            }
-                        @{if(@lead.Fax != null)
+                        @{if (@lead.TelePhone != null)
                           {
-                        <p>F:@lead.Fax</p>
+                              <dl>
+                              <dt><img src="../images/zuoji.png" width="15" height="15" alt="yuan" /></dt>
+                            <dd><p>@lead.TelePhone</p></dd>
+                            </dl>
+                          }
                             }
+                         @{if (@lead.Email != null)
+                           {
+                               <dl>
+                              <dt><img src="../images/youjian.png" width="15" height="15" alt="yuan"  /></dt>
+                            <dd><p>@lead.Email</p></dd>
+                            </dl>
+                           }
                             }
-                         @{if(@lead.Email != null)
-                          {
-                        <p>@lead.Email</p>
-                            }
-                            }
-                     </dd>
-                 </dl>
+                     
+                 
                  
             </div>
          </a>
-                      index++;
-                      if (index > 2)
-                      {
-                          index = 1;
-                      }
+                           index++;
+                           if (index > 2)
+                           {
+                               index = 1;
+                           }
          }
      }
     	
@@ -265,7 +289,7 @@
 @if (Model._LeadCalls != null)
 {
     var index = 1;
-    var leadcalls=@Model._LeadCalls;
+    var leadcalls = @Model._LeadCalls;
     if (ViewBag.leadid > 0)
     {
         leadcalls = leadcalls.Where(c => c.LeadID == ViewBag.leadid);

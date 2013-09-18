@@ -22,6 +22,8 @@
         </li>
         <li><span >@Html.LabelFor(model => model.Result) @Html.TextAreaFor(model => model.Result)
             @Html.ValidationMessageFor(model => model.Result)</span>
+          </li>  
+          <li style="text-align:right"><span >是否发邮件：<input name="ifsend" type="checkbox" id="ifsend" checked="checked"/></span>
           </li>      
     </ul>
 }
