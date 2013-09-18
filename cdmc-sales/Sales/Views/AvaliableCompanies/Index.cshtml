@@ -250,7 +250,7 @@
             <input type="button" class="btn-quxiao" onclick="CancelSendEmail()" />
         </div>
     </div></text>)
-    .Width(750).Height(550).Draggable(true).Modal(true).Visible(false)
+    .Width(850).Height(650).Draggable(true).Modal(true).Visible(false)
 )
 <script>
     var crmid
@@ -1244,7 +1244,6 @@
             if (haserror) {
                 return;
             }
-
             var query = $('.dialogue-addcall form').serializeArray();
             $.post('AddCall', query, function (result) {
                 if (result.companyRelationshipId != null) {
@@ -1252,21 +1251,23 @@
                     crmid = result.companyRelationshipId;
                     gleadid = result.leadid;
                     var currentProjectId = $('#projectid').val();
-                    
-
                     $('#AddCall').data('tWindow').close();
-                    onGetEmailPage($calltype.val(), gleadid);
+                    if ($("input[name='ifsend']:checkbox:checked").length > 0) {
+                        onGetEmailPage($calltype.val(), gleadid);
+                    }
                     RefreshCrmTree(currentProjectId, result.companyRelationshipId, result.processid, result.corelvlid);
+                    
+                    
                 }
                 else
                     alert('LeadCall新增失败');
-//                if (result.length > 0) {
-//                    alert('LeadCall新增失败');
-//                } else {
-//                    $('#AddCall').data('tWindow').close();
-//                    alert('LeadCall新增成功');
-//                    onLeadSelect(gleadid);
-//                }
+                //                if (result.length > 0) {
+                //                    alert('LeadCall新增失败');
+                //                } else {
+                //                    $('#AddCall').data('tWindow').close();
+                //                    alert('LeadCall新增成功');
+                //                    onLeadSelect(gleadid);
+                //                }
             });
         }
     }
@@ -1276,6 +1277,7 @@
             $('.sendemail-wrapper').html(result);
             var window = $('#SendEmail').data('tWindow');
             window.center().open();
+            
         });
     }
 
