@@ -1,0 +1,18 @@
+@model CommentContent
+@using Entity
+@using Utl
+    <fieldset>
+     <legend>ÆÀÂÛÄÚÈİ</legend>
+
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Contents)
+        </div>
+        <div class="editor-field">
+         @Html.EditorFor(model => model.Contents)
+         @Html.ValidationMessageFor(model => model.Contents)
+        </div>
+
+    </fieldset>
+    @Html.Partial("editcommon", Model)
+

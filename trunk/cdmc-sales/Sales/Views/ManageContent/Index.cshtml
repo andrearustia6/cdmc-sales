@@ -1,0 +1,25 @@
+﻿@using Entity
+
+@Html.Partial("contenttitle", "评论内容")           
+@(Html.Telerik().Grid<CommentContent>()
+    .Name("Grid")
+    .DataKeys(keys => { keys.Add(cc =>cc.ID); })
+    .ToolBar(commands => commands.Insert().ImageHtmlAttributes(new { style = "margin-left:0" }))
+    .DataBinding(dataBinding => { dataBinding.Ajax()
+        .Select("_SelectIndex", "ManageContent")
+        .Insert("_InsertAjaxEditing", "ManageContent")
+        .Update("_SaveAjaxEditing", "ManageContent")
+        .Delete("_DeleteAjaxEditing", "ManageContent");
+    })
+    .Columns(columns =>
+    {
+        columns.Bound(cc => cc.Contents);
+    columns.Command(commands => { 
+        commands.Edit();
+        commands.Delete();
+    }).Width(220).Title("操作"); })
+    .Editable(editing => editing.Mode( GridEditMode.PopUp))
+    .Pageable(p=>p.Style(GridPagerStyles.Status)
+    .PageOnScroll(true)).Scrollable().Sortable().Filterable().Groupable()
+)
+

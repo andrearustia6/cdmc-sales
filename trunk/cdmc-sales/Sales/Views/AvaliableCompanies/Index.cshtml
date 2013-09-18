@@ -70,9 +70,8 @@
 @helper GetCompanyDetails()
     {
         var aa = new _CRM();
-    <div id="crmdetailscontainer" style="overflow: scroll; height: 790px;">
-    @*  @Html.Partial("detailcontainer", aa)*@
-    </div>
+        <div id="crmdetailscontainer" style="overflow: scroll; height: 790px;">
+        </div>
 }
 @(Html.Telerik().Window().Title("添加公司")
     .Name("AddCompany1")
