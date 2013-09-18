@@ -707,6 +707,7 @@ namespace Sales.Controllers
 
         public ActionResult GetEmailPage(string callType,int leadid)
         {
+            Lead lead = CH.GetDataById<Lead>(leadid);
             string template = "";
             string filename = "";
             if (!String.IsNullOrEmpty(callType))
@@ -767,9 +768,10 @@ namespace Sales.Controllers
                     }
                 }
             }
+
             #endregion
 
-            Lead lead = CH.GetDataById<Lead>(leadid);
+            
 
             EmailModel model = new EmailModel();
             model.Content = template;
