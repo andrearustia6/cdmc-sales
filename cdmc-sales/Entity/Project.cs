@@ -260,10 +260,13 @@ namespace Entity
         public virtual CompanyRelationship CompanyRelationship { get; set; }
         public int? CompanyRelationshipID { get; set; }
     }
+
     public class CommentContent : EntityBase
     {
+        [Display(Name = "内容"), Required]
         public string Contents { get; set; }
     }
+
     [JsonIgnoreAttribute("Deals", "Project", "Categorys", "LeadCalls", "Members")]
     public class CompanyRelationship : EntityBase
     {
