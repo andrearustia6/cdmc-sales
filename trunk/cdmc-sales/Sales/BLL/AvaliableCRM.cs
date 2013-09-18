@@ -5,6 +5,7 @@ using System.Web;
 using Sales.Model;
 using Utl;
 using Entity;
+using BLL;
 namespace Sales.BLL
 {
 
@@ -13,9 +14,16 @@ namespace Sales.BLL
         public static _AvaliableCompanies GetAvaliableCompanies(int? projectid)
         {
             var data = new _AvaliableCompanies();
-
-            data.MemberCompanies = GetGroupedCRM(true,projectid);
-            data.PublicCompanies = GetPublicCRM(false, projectid);
+            if (projectid == null)
+            {
+                projectid=CRM_Logical.GetUserInvolveProject().FirstOrDefault()==null?0:CRM_Logical.GetUserInvolveProject().FirstOrDefault().ID;
+            }
+            if (projectid >0)
+            {
+                data.MemberCompanies = GetGroupedCRM(true, projectid);
+                data.PublicCompanies = GetPublicCRM(false, projectid);
+            }
+            
 
             return data;
         }
@@ -93,6 +101,8 @@ namespace Sales.BLL
                                         CompanyNameCH = crm.Company.Name_CH,
                                         CompanyNameEN = crm.Company.Name_EN,
                                         CoreCompany = c.CoreLVLName == "核心公司" ? true : false,
+                                        ContectedLeadCount = crm.LeadCalls.GroupBy(call => call.LeadID).Count(),
+                                        LeadCount = CH.DB.Leads.Where(l => l.CompanyID == crm.CompanyID).Count(),
                                         _Comments = (from co in crm.Comments.OrderByDescending(m => m.CommentDate)
                                                         select new _Comment()
                                                         {
@@ -159,8 +169,9 @@ namespace Sales.BLL
                              CompanyID=leads.CompanyID,
                              Name = leads.Name_CH + " " + leads.Name_EN,
                              Title=leads.Title,
-                             Contact=leads.Contact,
-                             Fax=leads.Fax,
+                             Contact = leads.Mobile,
+                             Fax = leads.Fax,
+                             TelePhone = leads.Contact,
                              Email=leads.EMail,
                              LastCallTypeID = data.LeadCalls.Where(c => c.LeadID == leads.ID).OrderByDescending(c => c.CallDate).FirstOrDefault() == null ? 0 : data.LeadCalls.Where(c => c.LeadID == leads.ID).OrderByDescending(c => c.CallDate).FirstOrDefault().LeadCallTypeID,
                          }),
@@ -232,8 +243,9 @@ namespace Sales.BLL
                               ID = leads.ID,
                               Name = leads.Name_CH + " " + leads.Name_EN,
                               Title = leads.Title,
-                              Contact = leads.Contact,
+                              Contact = leads.Mobile,
                               Fax = leads.Fax,
+                              TelePhone=leads.Contact,
                               Email = leads.EMail,
                               LastCallTypeID = data.LeadCalls.Where(c => c.LeadID == leads.ID).OrderByDescending(c => c.CallDate).FirstOrDefault() == null ? 0 : data.LeadCalls.Where(c => c.LeadID == leads.ID).OrderByDescending(c => c.CallDate).FirstOrDefault().LeadCallTypeID
                           }),
