@@ -8,13 +8,16 @@
 @Html.Partial("contenttitle", "Call List")
 @using (Html.BeginForm())
 {
-   <div style="padding:3px;"> <span style="display: inline-block;"><b>开始时间：</b>@Html.Telerik().DateTimePicker().Name("startdate").Value((DateTime?)ViewBag.StartDate)
-   <b>结束时间：</b>@Html.Telerik().DateTimePicker().Name("enddate").Value((DateTime?)ViewBag.EndDate) <input type="submit" value="搜索" /></span></div>
-    <div></div>
-    <span style="display: inline-block;" ><b>项目筛选：</b> @Html.DropDownList("ProjectID", SelectHelper.SaleRelatedProjects((int?)ViewBag.ProjectID), null, new { onchange = "this.form.submit();" })
-     <b>致电类型筛选：</b> @Html.DropDownList("leadCallTypeId", SelectHelper.LeadCallTypeSelect((int?)ViewBag.LeadCallTypeId), "-请选择-", new { onchange = "this.form.submit();" })
-    <b>状态筛选：</b>@Html.DropDownList("FilterID", SelectHelper.SaleCallListFilter((int)ViewBag.FilterID), null, new { onchange = "this.form.submit();" })
-   </span>
+    <div style="padding: 3px;">
+        <span style="display: inline-block;"><b>开始时间：</b>@Html.Telerik().DateTimePicker().Name("startdate").Value((DateTime?)ViewBag.StartDate)
+            <b>结束时间：</b>@Html.Telerik().DateTimePicker().Name("enddate").Value((DateTime?)ViewBag.EndDate)
+            <input type="submit" value="搜索" /></span></div>
+    <div>
+    </div>
+    <span style="display: inline-block;"><b>项目筛选：</b> @Html.DropDownList("ProjectID", SelectHelper.SaleRelatedProjects((int?)ViewBag.ProjectID), null, new { onchange = "this.form.submit();" })
+        <b>致电类型筛选：</b> @Html.DropDownList("leadCallTypeId", SelectHelper.LeadCallTypeSelect((int?)ViewBag.LeadCallTypeId), "-请选择-", new { onchange = "this.form.submit();" })
+        <b>状态筛选：</b>@Html.DropDownList("FilterID", SelectHelper.SaleCallListFilter((int)ViewBag.FilterID), null, new { onchange = "this.form.submit();" })
+    </span>
 }
 @(Html.Telerik().Grid<AjaxViewSaleCallListData>().Name("Grid").ToolBar(commands => commands.Custom()
     .HtmlAttributes(new { id = "export" }).Text("导出客户电子邮件").Action("ExportCsv", "sales", new { projectid = ViewBag.projectid == null ? null : ViewBag.ProjectID as int?, orderBy = "~", filter = "~" }))
@@ -44,3 +47,11 @@
 @{ Html.Telerik().ScriptRegistrar().OnDocumentReady(@<text> onCallListDataBound();
     </text>);
 }
+<script type="text/javascript">
+    $(document).ready(function () {
+        if ($("#ProjectID").find("option").length == 0) {
+            $("#export").attr("disable", "true");
+        }
+    })
+
+</script>

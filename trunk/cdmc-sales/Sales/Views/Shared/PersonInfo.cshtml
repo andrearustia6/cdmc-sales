@@ -3,8 +3,68 @@
 @using Model
 @model string
 <fieldset>
-<legend>个人信息</legend>
-@{
+    <legend>个人信息</legend>
+    @{
+        var user = CH.DB.EmployeeRoles.Where(s => s.AccountName == Model).First();
+   
+        <table class="info">
+            <tr>
+                <td>
+                    <span>员工姓名：@user.AccountNameCN</span>
+                </td>
+                <td>
+                    <span>员工性别：@user.Gender</span>
+                </td>
+                <td>
+                    <span>电子邮箱：@user.Email</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span>公司座机：@user.AgentNum</span>
+                </td>
+                <td>
+                    <span>移动电话：@user.Mobile</span>
+                </td>
+                <td>
+                    @if (@user.StartDate == null)
+                    {
+                        <span>入职日期：</span>
+                    }
+                    else
+                    { 
+                        <span>入职日期：@user.StartDate</span> 
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @if (@user.RoleID == null)
+                    {
+                        <span>系统职级：</span>
+                    }
+                    else
+                    {
+                        <span>系统职级：@user.Role.Name</span>
+                    }
+                </td>
+                <td>
+                    @if (user.DepartmentID == null)
+                    {
+                        <span>所属部门：</span>
+                    }
+                    else
+                    {
+                        <span>所属部门：@user.Department.Name</span>
+                    }
+                </td>
+                <td>
+                    <span>员工账号：@user.AccountName</span>
+                </td>
+            </tr>
+        </table>
+    }
+    @*@{
     var user = Employee.GetUserByName(Model);
     var role = CH.GetDataById<Role>(user.RoleID);
     var department = CH.GetDataById<Department>(user.DepartmentID);
@@ -19,5 +79,5 @@
 <tr><td><span>公司座机：@user.Contact</span></td><td><span>移动电话：@user.Mobile</span></td><td><span>入职日期：@user.StartDate.Value.ToShortDateString()</span></td></tr>
 <tr><td><span>系统职级：@role.Name</span></td><td><span>所属部门：@dname</span></td><td><span>员工账号：@user.UserName</span></td></tr>
 </table>
-}
+}*@
 </fieldset>

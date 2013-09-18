@@ -931,6 +931,39 @@ namespace Utl
                 return false;
         }
 
+        public static void SyncUser()
+        {
+            foreach (MembershipUser item in Membership.GetAllUsers())
+            {
+                if (CH.DB.EmployeeRoles.Where(s => s.AccountName == item.UserName).Any())
+                {
+                    ProfileBase objProfile = ProfileBase.Create(item.UserName);
+                    EmployeeRole selUser = CH.DB.EmployeeRoles.Where(s => s.AccountName == item.UserName).First();
+                    selUser.Gender = objProfile.GetPropertyValue("Gender") as string;
+                    selUser.AccountNameCN = objProfile.GetPropertyValue("DisplayName") as string;
+                    selUser.Mobile = objProfile.GetPropertyValue("Mobile") as string;
+                    selUser.AgentNum = objProfile.GetPropertyValue("Contact") as int?;
+                    selUser.DepartmentID = objProfile.GetPropertyValue("DepartmentID") as int?;
+                    selUser.StartDate = objProfile.GetPropertyValue("StartDate") as DateTime?;
+                    selUser.BirthDay = objProfile.GetPropertyValue("BirthDay") as DateTime?;
+
+                    if (selUser.StartDate == DateTime.MinValue)
+                    {
+                        selUser.StartDate = null;
+                    }
+                    if (selUser.BirthDay == DateTime.MinValue)
+                    {
+                        selUser.BirthDay = null;
+                    }
+                    if (string.IsNullOrWhiteSpace(selUser.AccountNameCN))
+                    {
+                        selUser.AccountNameCN = "-";
+                    }
+                    CH.Edit<EmployeeRole>(selUser);
+                }
+            }
+        }
+
 
     }
 
@@ -975,5 +1008,7 @@ namespace Utl
             DateTime firstDayOfTheMonth = new DateTime(dt.Year, dt.Month, 1);
             return firstDayOfTheMonth.AddMonths(1).AddDays(-1);
         }
+
+
     }
 }
