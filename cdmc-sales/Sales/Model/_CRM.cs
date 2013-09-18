@@ -6,6 +6,9 @@ using Entity;
 
 namespace Sales.Model
 {
+    /// <summary>
+    /// 细分行业的分类
+    /// </summary>
     public class _Category : EntityBase
     {
         public string Name{get;set;}
@@ -13,6 +16,10 @@ namespace Sales.Model
         public string Details { get; set; }
         public int? CRMID { get; set; }
     }
+
+    /// <summary>
+    /// 拨打的结果
+    /// </summary>
     public class _LeadCall : EntityBase
     {
         public string LeadName { get; set; }
@@ -26,6 +33,9 @@ namespace Sales.Model
         
     }
 
+    /// <summary>
+    /// 决策人
+    /// </summary>
     public class _Lead : EntityBase
     {
         public int? CompanyID { get; set; }
@@ -40,6 +50,9 @@ namespace Sales.Model
         public int? LastCallTypeID { get; set; }
     }
 
+    /// <summary>
+    /// 点评
+    /// </summary>
     public class _Comment : EntityBase
     {
         public string Submitter { get; set; }
@@ -48,9 +61,18 @@ namespace Sales.Model
         public int? CRMID { get; set; }
     }
 
+    public class _CrmStatisitcs
+    {
+        public _CRM CRM { get; set; }
+
+    }
   
+    /// <summary>
+    /// 公司的客户关系
+    /// </summary>
     public class _CRM : EntityBase
     {
+        public _CrmStatisitcs CrmStatisitcs { get; set; }
          public string Contact { get; set; }
          public string Fax { get; set; }
          public bool CoreCompany { get; set; }
@@ -153,7 +175,9 @@ namespace Sales.Model
          
      }
 
-
+    /// <summary>
+    /// 可打公司左边的导航列表
+    /// </summary>
     public class _AvaliableCompanies : EntityBase
     {
         //领用公司
@@ -162,6 +186,9 @@ namespace Sales.Model
         public IQueryable<_CoreLVL> PublicCompanies { get; set; }
     }
 
+    /// <summary>
+    /// 可打公司的核心级别
+    /// </summary>
     public class _CoreLVL : EntityBase
     {
         public string CoreNameDisplayText
@@ -199,6 +226,10 @@ namespace Sales.Model
          }
          public IEnumerable<_CRM> _CRMs { get; set; }
     }
+
+    /// <summary>
+    /// 成熟度
+    /// </summary>
     public class _Maturity : EntityBase
     {
         public string Name { get; set; }
