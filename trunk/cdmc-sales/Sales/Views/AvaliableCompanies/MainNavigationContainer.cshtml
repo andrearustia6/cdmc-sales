@@ -4,7 +4,10 @@
 
 
 <div class="memberCompanies">
-    @(Html.Telerik().TreeView().Name("memberCompanies")
+@{
+    if(Model.MemberCompanies!=null)
+    {
+        @(Html.Telerik().TreeView().Name("memberCompanies")
         .HtmlAttributes(new { style = "" })
         .ClientEvents(e => e.OnSelect("onIndexSelect"))
         .BindTo(Model.MemberCompanies, mappings =>
@@ -13,7 +16,7 @@
             .ItemDataBound((item, core) =>
             {
                 item.Text = core.CoreNameDisplayText;
-                item.Value =core.ID.ToString();
+                item.Value = core.ID.ToString();
             })
             .Children(core => core._Maturitys));
 
@@ -21,44 +24,53 @@
             .ItemDataBound((item, maturity) =>
             {
                 item.Text = maturity.DisplayName;
-                item.Value =maturity.ID.ToString();
+                item.Value = maturity.ID.ToString();
             })
             .Children(maturity => maturity._CRMs));
-            
+
             mappings.For<_CRM>(binding => binding
           .ItemDataBound((item, crm) =>
           {
               item.Text = crm.DisplayName;
-              item.Value =crm.ID.ToString();
+              item.Value = crm.ID.ToString();
           }));
         })
-        
+
 ) 
+    }
+}
+    
 </div>
 公海
 <div class="publicCompanies">
-    @(Html.Telerik().TreeView().Name("publicCompanies").HtmlAttributes(new { style = "" })
+@{
+    if (Model.MemberCompanies != null)
+    { 
+        @(Html.Telerik().TreeView().Name("publicCompanies").HtmlAttributes(new { style = "" })
                         .ClientEvents(e => e.OnSelect("onIndexSelectPublic"))
                 .BindTo(Model.PublicCompanies, mappings =>
-        {
-            mappings.For<_CoreLVL>(binding => binding
-            .ItemDataBound((item, core) =>
-            {
-                item.Text = core.CoreNameDisplayText;
-                item.Value =core.ID.ToString();
-            })
-           
-            .Children(maturity => maturity._CRMs));
-            
-            mappings.For<_CRM>(binding => binding
-          .ItemDataBound((item, crm) =>
-          {
-              item.Text = crm.CompanyName;
-              item.Value =crm.ID.ToString();
-          }));
-        })
-        
+                {
+                    mappings.For<_CoreLVL>(binding => binding
+                    .ItemDataBound((item, core) =>
+                    {
+                        item.Text = core.CoreNameDisplayText;
+                        item.Value = core.ID.ToString();
+                    })
+
+                    .Children(maturity => maturity._CRMs));
+
+                    mappings.For<_CRM>(binding => binding
+                  .ItemDataBound((item, crm) =>
+                  {
+                      item.Text = crm.DisplayName;
+                      item.Value = crm.ID.ToString();
+                  }));
+                })
+
 ) 
+    }
+    }
+    
 </div>
 <script>
     //var count=0
