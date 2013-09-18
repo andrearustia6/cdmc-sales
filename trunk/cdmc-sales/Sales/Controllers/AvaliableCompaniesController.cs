@@ -717,31 +717,58 @@ namespace Sales.Controllers
                 switch (callType)
                 {
                     case "2":
-                        filename = "template01.html";
+                        if(lead.DistrictNumberID==null)
+                            filename = "template_ch_01.html";
+                        else
+                            filename = "template_en_01.html";
                         break;
                     case "3":
-                        filename = "template01.html";
+                        if (lead.DistrictNumberID == null)
+                            filename = "template_ch_01.html";
+                        else
+                            filename = "template_en_01.html";
                         break;
                     case "4":
-                        filename = "template01.html";
+                        if (lead.DistrictNumberID == null)
+                            filename = "template_ch_01.html";
+                        else
+                            filename = "template_en_01.html";
                         break;
                     case "5":
-                        filename = "template01.html";
+                        if (lead.DistrictNumberID == null)
+                            filename = "template_ch_01.html";
+                        else
+                            filename = "template_en_01.html";
                         break;
                     case "6":
-                        filename = "template01.html";
+                        if (lead.DistrictNumberID == null)
+                            filename = "template_ch_01.html";
+                        else
+                            filename = "template_en_01.html";
                         break;
                     case "7":
-                        filename = "template01.html";
+                        if (lead.DistrictNumberID == null)
+                            filename = "template_ch_01.html";
+                        else
+                            filename = "template_en_01.html";
                         break;
                     case "8":
-                        filename = "template01.html";
+                        if (lead.DistrictNumberID == null)
+                            filename = "template_ch_01.html";
+                        else
+                            filename = "template_en_01.html";
                         break;
                     case "9":
-                        filename = "template01.html";
+                        if (lead.DistrictNumberID == null)
+                            filename = "template_ch_01.html";
+                        else
+                            filename = "template_en_01.html";
                         break;
                     default:
-                        filename = "template01.html";
+                        if (lead.DistrictNumberID == null)
+                            filename = "template_ch_01.html";
+                        else
+                            filename = "template_en_01.html";
                         break;
                 }
                 #endregion
@@ -769,7 +796,10 @@ namespace Sales.Controllers
                     }
                 }
             }
-
+            if (lead.DistrictNumberID == null)
+                template=template.Replace("{CLIENTNAME}", string.IsNullOrEmpty(lead.Name_CH) ? "客户" : lead.Name_CH);
+            else
+                template=template.Replace("{CLIENTNAME}", string.IsNullOrEmpty(lead.Name_EN) ? "Client" : lead.Name_EN);
             #endregion
 
             

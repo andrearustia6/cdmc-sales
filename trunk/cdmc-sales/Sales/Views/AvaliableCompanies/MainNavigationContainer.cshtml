@@ -10,6 +10,7 @@
         @(Html.Telerik().TreeView().Name("memberCompanies")
         .HtmlAttributes(new { style = "" })
         .ClientEvents(e => e.OnSelect("onIndexSelect"))
+        .ClientEvents(e => e.OnLoad("OnmemberLoad"))
         .BindTo(Model.MemberCompanies, mappings =>
         {
             mappings.For<_CoreLVL>(binding => binding
@@ -140,6 +141,12 @@
         //        });
 
     }
+    function OnmemberLoad() {
+        var treeView = $("#memberCompanies").data("tTreeView");
+        var item = $("> ul > li", treeView.element);
+        treeView.expand(item);
+    }
+    
     function hidebtn() {
         jQuery(".hide").hide();
         jQuery(".click").removeAttr("onclick");
