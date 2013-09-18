@@ -13,6 +13,25 @@ namespace Entity
         public string StateName { get; set; }
     }
 
+    /// <summary>
+    /// 领用或者
+    /// </summary>
+    public class CrmTrack : EntityBase
+    {
+
+        public virtual CompanyRelationship CompanyRelationship { get; set; }
+        public int?  CompanyRelationshipID { get; set; }
+        //如果为公海领用或者自己加， assigner为空
+        public string Assigner { get; set; }
+        public string Owner { get; set; }
+        //分配 or 领用or 自加
+        public string Type { get; set; }
+        //得到公司的时间
+        public DateTime GetDate { get; set; }
+        //释放公司的时间
+        public DateTime ReleaseDate { get; set; }
+    }
+
 
     public class ExpLevel : EntityBase
     {
@@ -267,9 +286,12 @@ namespace Entity
         public string Contents { get; set; }
     }
 
+
     [JsonIgnoreAttribute("Deals", "Project", "Categorys", "LeadCalls", "Members")]
     public class CompanyRelationship : EntityBase
     {
+        public List<CrmTrack> CrmTracks { get; set; }
+
         public virtual CrmCommentState CrmCommentState { get; set; }
         public int? CrmCommentStateID { get; set; }
 
