@@ -15,7 +15,8 @@ namespace Utl
 {
     public class DB : DbContext
     {
-
+        public DbSet<CrmTrack> CrmTracks { get; set; }
+        public DbSet<CrmCommentState> CrmCommentStates { get; set; } 
         public DbSet<Progress> Progresss { get; set; }
         public DbSet<CoreLVL> CoreLVLs { get; set; }
         public DbSet<AccessRight> AccessRights { get; set; }
