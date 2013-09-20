@@ -216,45 +216,43 @@
                 }
             </div>
         </div>
-         <div class="center" style="width:28%">
+         <div class="center" style="width:28%" onmouseover = "javascript:showLeadBtn();" onmouseout = "javascript:hideLeadBtn();" >
             @if (Model._Leads != null)
             {
                 var index = 1;
                 foreach (var lead in Model._Leads)
                 {
-                <a href="#"  onclick="onLeadSelect(@(lead.ID))">
-                    <div  class="center_2" id="lead@(lead.ID)">
-                        <img Class="hide"  src="../images/dianhua.png" alt="新增通话" onclick="onCallAdd(@(lead.ID))" style=" display: inline;float: right;" />
-                        <img Class="hide" src="../images/bianji.png" alt="编辑" onclick="onLeadEdit(@(lead.ID))" style=" display: inline;float: right;" />
+                <a href="#" onclick="onLeadSelect(@(lead.ID))">
+                    <div class="center_2" id="lead@(lead.ID)">
+                        <div class="leadbtn" style=" display:none; float: right;">
+                            <img class="hide"  src="../images/dianhua.png" alt="新增通话" onclick="onCallAdd(@(lead.ID))" style=" display: inline;float: right;" />
+                            <img class="hide" src="../images/bianji.png" alt="编辑" onclick="onLeadEdit(@(lead.ID))" style=" display: inline;float: right;" />
+                        </div>
                         <dl>
                             <dt>
                                 @{
-                    var calls = @Model._LeadCalls.Where(c => c.LeadID == lead.ID).OrderByDescending(c => c.CallDate).FirstOrDefault();
-                    if (calls == null)
-                    {
-                                    <img src="../images/quan-01.png" width="15" height="15" alt="yuan" title="没联系" />
-                    }
-                    else
-                    {
-                        if (calls.LeadCallTypeID == 2 || calls.LeadCallTypeID == 3)
-                        {
-                                    <img src="../images/quan-09.png" width="15" height="15" alt="yuan" title="Blowed和Not Piteched" />}
-                        else if (calls.LeadCallTypeID == 4 || calls.LeadCallTypeID == 5 || calls.LeadCallTypeID == 6)
-                        {
-                                    <img src="../images/quan-10.png" width="15" height="15" alt="yuan" title="Pitched和Full Pitched和Call Backed" />}
-                        else if (calls.LeadCallTypeID == 7 || calls.LeadCallTypeID == 8)
-                        {
-                                    <img src="../images/55.png" width="15" height="15" alt="yuan" title="Qualified Decision和Waiting for Approval" />}
-                        else if (calls.LeadCallTypeID == 9)
-                        {
-                                    <img src="../images/quan-08.png" width="15" height="15" alt="yuan" title="Closed" />}
-                    }
+                                    var calls = @Model._LeadCalls.Where(c => c.LeadID == lead.ID).OrderByDescending(c => c.CallDate).FirstOrDefault();
+                                    if (calls == null)
+                                    {
+                                                    <img src="../images/quan-01.png" width="15" height="15" alt="yuan" title="没联系" />
+                                    }
+                                    else
+                                    {
+                                        if (calls.LeadCallTypeID == 2 || calls.LeadCallTypeID == 3)
+                                        {
+                                                    <img src="../images/quan-09.png" width="15" height="15" alt="yuan" title="Blowed和Not Piteched" />}
+                                        else if (calls.LeadCallTypeID == 4 || calls.LeadCallTypeID == 5 || calls.LeadCallTypeID == 6)
+                                        {
+                                                    <img src="../images/quan-10.png" width="15" height="15" alt="yuan" title="Pitched和Full Pitched和Call Backed" />}
+                                        else if (calls.LeadCallTypeID == 7 || calls.LeadCallTypeID == 8)
+                                        {
+                                                    <img src="../images/55.png" width="15" height="15" alt="yuan" title="Qualified Decision和Waiting for Approval" />}
+                                        else if (calls.LeadCallTypeID == 9)
+                                        {
+                                                    <img src="../images/quan-08.png" width="15" height="15" alt="yuan" title="Closed" />}
+                                    }
                                 }
-                                @*@if (index == 1) {
-                                <img src="../images/00.png" width="14" height="14" alt="tu" />
-                                } else {
-                                <img src="../images/22.png" width="14" height="14" alt="tu" />
-                                }*@ </dt>
+                            </dt>
                             <dd>
                                 <p>@lead.Name</p>
                                 @{if (@lead.Title != null)
@@ -314,29 +312,46 @@
             @if (Model._LeadCalls != null)
             {
                 var index = 1;
+                var index_btn = 1;
                 var leadcalls = @Model._LeadCalls;
                 if (ViewBag.leadid > 0)
                 {
                     leadcalls = leadcalls.Where(c => c.LeadID == ViewBag.leadid);
                 }
-                foreach (var call in leadcalls)
+                if (leadcalls != null && leadcalls.Count()>0)
                 {
-                <div  class="right_@(index)">
-                    <h2>@call.LeadName | @call.LeadTitle
-                    </h2>
-                    <p>
-                        <span>@call.CallType</span></p>
-                    <p>
-                        <span>@call.CallResult</span></p>
-                    <p>@call.CallDate.ToLongDateString() @call.CallDate.ToShortTimeString()</p>
-                    <p>
-                        By @call.Creator</p>
-                </div>
-                    index++;
-                    if (index > 2)
+                    foreach (var call in leadcalls)
                     {
-                        index = 1;
+                        <div  class="right_@(index)">
+                            <div style=" float:right; display:none;" id="filterbtn">
+                            @if (index_btn == 1)
+                            {
+                                <input type="button" value="取消筛选" onclick="RefreshCrm();" style="border: none; width: 67px; height: 21px;"/>
+                            }
+                            </div>
+                            <h2>@call.LeadName | @call.LeadTitle 
+                            </h2>
+                        
+                            <p>
+                                <span>@call.CallType</span></p>
+                            <p>
+                                <span>@call.CallResult</span></p>
+                            <p>@call.CallDate.ToLongDateString() @call.CallDate.ToShortTimeString()</p>
+                            <p>
+                                By @call.Creator</p>
+                        </div>
+                        index++; index_btn++;
+                        if (index > 2)
+                        {
+                            index = 1;
+                        }
                     }
+                }
+                else
+                {
+                    <div style=" float:right; display:none; margin-top:10px; margin-right:10px;" id="filterbtn">
+                        <input type="button" value="取消筛选" onclick="RefreshCrm();" style="border: none; width: 67px; height: 21px;"/>
+                    </div>
                 }
             }
         </div>

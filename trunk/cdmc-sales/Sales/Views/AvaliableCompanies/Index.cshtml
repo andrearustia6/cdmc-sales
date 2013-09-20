@@ -978,7 +978,6 @@
         });
     }
     function onLeadSelect(leadid) {
-        
         if (leadid == undefined || leadid == "")
             leadid = gleadid;
         if (leadid == "" || leadid == undefined)
@@ -990,6 +989,10 @@
 
             leaddiv.removeClass('center_2');
             leaddiv.addClass('center_1');
+
+            showLeadBtn();
+
+            $("#filterbtn").show();
 
             if (clickpublic) {
                 jQuery(".hide").hide();
@@ -1411,5 +1414,13 @@
                 alert('领用失败');
         });
 
+    }
+
+    function showLeadBtn() {
+        $(".leadbtn").show();
+    }
+
+    function hideLeadBtn() {
+        $(".leadbtn").hide();
     }
 </script>
