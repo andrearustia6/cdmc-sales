@@ -216,15 +216,15 @@
                 }
             </div>
         </div>
-         <div class="center" style="width:28%" onmouseover = "javascript:showLeadBtn();" onmouseout = "javascript:hideLeadBtn();" >
+         <div class="center" style="width:28%">
             @if (Model._Leads != null)
             {
                 var index = 1;
                 foreach (var lead in Model._Leads)
                 {
                 <a href="#" onclick="onLeadSelect(@(lead.ID))">
-                    <div class="center_2" id="lead@(lead.ID)">
-                        <div class="leadbtn" style=" display:none; float: right;">
+                    <div class="center_2" id="lead@(lead.ID)" onmouseover = "javascript:showLeadBtn(@(lead.ID));" onmouseout = "javascript:hideLeadBtn(@(lead.ID));" >
+                        <div id="leadbtn@(lead.ID)" style=" display:none; float: right;">
                             <img class="hide"  src="../images/dianhua.png" alt="新增通话" onclick="onCallAdd(@(lead.ID))" style=" display: inline;float: right;" />
                             <img class="hide" src="../images/bianji.png" alt="编辑" onclick="onLeadEdit(@(lead.ID))" style=" display: inline;float: right;" />
                         </div>
