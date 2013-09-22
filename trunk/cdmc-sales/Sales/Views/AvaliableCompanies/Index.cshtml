@@ -805,6 +805,7 @@
 
     }
     function onCompanyChanging(crmid, processid, corelvlid) {
+        
         var treeview = $("#memberCompanies").data("tTreeView");
         var item1 = $("#memberCompanies").find(".t-input[name='itemValue'][value='" + corelvlid + "']").closest("li");
         treeview.expand(item1);

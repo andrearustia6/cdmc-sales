@@ -31,7 +31,7 @@ namespace Entity
         //得到公司的时间
         public DateTime GetDate { get; set; }
         //释放公司的时间
-        public DateTime ReleaseDate { get; set; }
+        public DateTime? ReleaseDate { get; set; }
     }
 
 
