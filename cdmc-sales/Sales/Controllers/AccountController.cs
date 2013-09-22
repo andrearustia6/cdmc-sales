@@ -489,6 +489,8 @@ namespace MvcGlobalAuthorize.Controllers
             return View();
         }
 
+      
+     
         //
         // POST: /Account/ChangePassword
 
