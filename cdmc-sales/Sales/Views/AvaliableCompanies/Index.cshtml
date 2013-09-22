@@ -990,7 +990,7 @@
             leaddiv.removeClass('center_2');
             leaddiv.addClass('center_1');
 
-            showLeadBtn();
+            showLeadBtn(leadid);
 
             $("#filterbtn").show();
 
@@ -1416,11 +1416,11 @@
 
     }
 
-    function showLeadBtn() {
-        $(".leadbtn").show();
+    function showLeadBtn(id) {
+        $("#leadbtn" + id).show();
     }
 
-    function hideLeadBtn() {
-        $(".leadbtn").hide();
+    function hideLeadBtn(id) {
+        $("#leadbtn" + id).hide();
     }
 </script>
