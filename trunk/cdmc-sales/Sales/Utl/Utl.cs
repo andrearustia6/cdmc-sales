@@ -395,6 +395,11 @@ namespace Utl
 
 
 
+        public static EmployeeRole GetPerson(string name)
+        {
+            var user = CH.DB.EmployeeRoles.Where(s => s.AccountName == name).FirstOrDefault();
+            return user;
+        }
 
         public static int GetRoleLevel(string name)
         {
