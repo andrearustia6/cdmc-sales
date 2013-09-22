@@ -10,6 +10,8 @@ namespace Entity
 
     public class CrmCommentState : EntityBase
     {
+        public int RoleFlag { get; set; }
+        public int StateCode { get; set; }
         public string StateName { get; set; }
     }
 

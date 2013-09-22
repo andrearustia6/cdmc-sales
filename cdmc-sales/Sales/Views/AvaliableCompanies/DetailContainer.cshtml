@@ -29,6 +29,14 @@
     {
         border: 1px solid red !important;
     }
+    
+    .text-overflow {
+        display: inline-block;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
 </style>
 <div class="memberCompanies">
     <div class="quan">
@@ -201,7 +209,7 @@
                     <div class="dierye_3_@(i)">
                         <dl>
                             <dt>
-                                <p>@comment.Content</p>
+                                <p>@comment.Contents</p>
                                 <p>@comment.CommentDate.ToLongDateString() @comment.CommentDate.ToShortTimeString()
                                     By @comment.Submitter</p>
                             </dt>
@@ -254,10 +262,15 @@
                                 }
                             </dt>
                             <dd>
-                                <p>@lead.Name</p>
+                                <p class="text-overflow" style="width:100px">@lead.Name</p>
+                            </dd>
+                            </dl>
+                            
+                        <dl>
+                        <dd style="margin-left: 24px;">
                                 @{if (@lead.Title != null)
                                   {
-                                    <p>@lead.Title</p>
+                                    <p class="text-overflow" style="width:100px">@lead.Title</p>
                                   }
                                 }
                             </dd>
@@ -268,7 +281,7 @@
                                 <dt>
                                     <img src="../images/shouji.png" width="15" height="15" alt="yuan" /></dt>
                                 <dd>
-                                    <p>@lead.Contact</p>
+                                    <p  >@lead.Contact</p>
                                 </dd>
                             </dl>
                         
@@ -290,8 +303,8 @@
                             <dl>
                                 <dt>
                                     <img src="../images/youjian.png" width="15" height="15" alt="yuan" /></dt>
-                                <dd>
-                                    <p>@lead.Email</p>
+                                <dd  >
+                                    <p class="text-overflow" style="width:100px">@lead.Email</p>
                                 </dd>
                             </dl>
                           }

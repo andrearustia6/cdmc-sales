@@ -18,6 +18,7 @@
             {
                 item.Text = core.CoreNameDisplayText;
                 item.Value = core.ID.ToString();
+                
             })
             .Children(core => core._Maturitys));
 
@@ -34,6 +35,16 @@
           {
               item.Text = crm.DisplayName;
               item.Value = crm.ID.ToString();
+              if(crm.CrmCommentStateID==null)
+                  item.ImageUrl = "";
+              else if(crm.CrmCommentStateID==1)
+                  item.ImageUrl = "../images/gantaihao.jpg";
+              else if(crm.CrmCommentStateID==2)
+                  item.ImageUrl = "../images/wenhao-2.jpg";
+              else if (crm.CrmCommentStateID == 3)
+                  item.ImageUrl = "../images/wenhao-2.jpg";
+              else if (crm.CrmCommentStateID == 4)
+                  item.ImageUrl = "";
           }));
         })
 

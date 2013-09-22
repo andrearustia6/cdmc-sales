@@ -56,9 +56,10 @@ namespace Sales.Model
     public class _Comment : EntityBase
     {
         public string Submitter { get; set; }
-        public string Content { get; set; }
+        public string Contents { get; set; }
         public DateTime CommentDate { get; set; }
         public int? CRMID { get; set; }
+        public int? CrmCommentStateID { get; set; }
     }
 
     public class _CrmStatisitcs
@@ -88,7 +89,7 @@ namespace Sales.Model
          public string DisplayName {get{return CompanyName + "("+ContectedLeadCount+"/"+LeadCount+")";}}
          public string Contacts { get; set; }
          public string Email { get; set; }
-
+         public int? CrmCommentStateID { get; set; }
          public int? CoreLVLID { get; set; }
          public int BlowedCount
          {

@@ -387,7 +387,12 @@ namespace Sales.Controllers
             });
             companyRelationship.CategoryString = categorystring;
             CH.Create<CompanyRelationship>(companyRelationship);
-
+            CrmTrack ct = new CrmTrack();
+            ct.Owner = Employee.CurrentUserName;
+            ct.Type = "自加";
+            ct.CompanyRelationshipID = ajaxViewSaleCompany.CompanRelationshipId;
+            ct.GetDate = DateTime.Now;
+            CH.Create<CrmTrack>(ct);
             return Json(new { companyRelationshipId = companyRelationship.ID, companyId = companyRelationship.CompanyID, projectId = companyRelationship.ProjectID, corelvlid = companyRelationship.CoreLVLID, processid = companyRelationship.ProgressID });
         }
         public ActionResult GetAddCall(int leadId, int companyRelationId, int? projectId)
@@ -451,16 +456,24 @@ namespace Sales.Controllers
 
         public ActionResult GetAddComment(int? crmid)
         {
-            Comment comment = new Comment() { CompanyRelationshipID = crmid };
+            CompanyRelationship crm = CH.GetDataById<CompanyRelationship>(crmid);
+            _Comment comment = new _Comment() { CRMID = crmid, CrmCommentStateID = crm.CrmCommentStateID };
             return PartialView("Comment", comment);
         }
         [ValidateInput(false)]
-        public ActionResult AddComment(Comment comment)
+        public ActionResult AddComment(_Comment comment)
         {
-            comment.CommentDate = DateTime.Now;
-            comment.Submitter = Employee.CurrentUserName;
-            CH.Create<Comment>(comment);
-            return null;
+            Comment comm = new Comment();
+            comm.CommentDate = DateTime.Now;
+            comm.Submitter = Employee.CurrentUserName;
+            comm.Contents = comment.Contents;
+            comm.CompanyRelationshipID = comment.CRMID;
+            CH.Create<Comment>(comm);
+
+            CompanyRelationship crm = CH.GetDataById<CompanyRelationship>(comment.CRMID);
+            crm.CrmCommentStateID=comment.CrmCommentStateID;
+            CH.Edit<CompanyRelationship>(crm);
+            return Json(new { companyRelationshipId = crm.ID, companyId = crm.CompanyID, projectId = crm.ProjectID, corelvlid = crm.CoreLVLID, processid = crm.ProgressID});
         }
 
         public ActionResult GetQuickEntry(int? projectId)
@@ -693,6 +706,14 @@ namespace Sales.Controllers
             Member member = CH.DB.Members.Where(m => m.Name == Employee.CurrentUserName).FirstOrDefault();
             companyRelationship.Members.Add(member);
             CH.Edit(companyRelationship);
+
+            CrmTrack ct = new CrmTrack();
+            ct.Owner = Employee.CurrentUserName;
+            ct.Type = "领用";
+            ct.CompanyRelationshipID = crmid;
+            ct.GetDate = DateTime.Now;
+            CH.Create<CrmTrack>(ct);
+
             return Json(new { companyRelationshipId = companyRelationship.ID, companyId = companyRelationship.CompanyID, projectId = companyRelationship.ProjectID, processid = companyRelationship.ProgressID, corelvlid = companyRelationship.CoreLVLID });
         }
 
