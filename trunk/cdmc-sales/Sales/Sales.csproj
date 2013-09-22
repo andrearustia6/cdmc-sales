@@ -360,6 +360,7 @@
     <Content Include="images\fenzuguanli.jpg" />
     <Content Include="images\fenzuguanli_2.jpg" />
     <Content Include="images\gaikuo.jpg" />
+    <Content Include="images\gantaihao.jpg" />
     <Content Include="images\gengxin.jpg" />
     <Content Include="images\hover.gif" />
     <Content Include="images\input.jpg" />
@@ -406,6 +407,7 @@
     <Content Include="images\tubiao.gif" />
     <Content Include="images\tu_2.jpg" />
     <Content Include="images\user.png" />
+    <Content Include="images\wenhao-2.jpg" />
     <Content Include="images\youjian.png" />
     <Content Include="images\yuan-2.png" />
     <Content Include="images\yuan.png" />

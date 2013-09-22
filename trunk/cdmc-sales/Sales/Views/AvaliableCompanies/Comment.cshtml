@@ -1,12 +1,11 @@
 ﻿@using Entity
 @using Sales.Model
-@using Utl
-@model Comment
+@model _Comment
            @using (Html.BeginForm("AddComment", "AvaliableCompanies"))
            {
-            @Html.HiddenFor(model => model.CompanyRelationshipID)
+            @Html.HiddenFor(model => model.CRMID)
             <ul>
-             @foreach (var p in CH.GetAllData<CommentContent>())
+             @foreach (var p in Utl.CH.GetAllData<CommentContent>())
              {
                   <li>
                 @Html.CheckBox("content", false, new { onchange = "setcontent('" + p.Contents + "')" })
@@ -15,6 +14,18 @@
              }
                 <li>
                     @Html.TextAreaFor(model => model.Contents)
+                </li>
+                <li>
+                 @{ 
+               if (Utl.Employee.CurrentRole.Level == ManagerRequired.LVL)
+               {
+                    @Html.DropDownListFor(model => model.CrmCommentStateID, new SelectList(Utl.CH.GetAllData<CrmCommentState>().Where(c => c.RoleFlag == 2), "StateCode", "StateName"))
+               }
+               else
+               {
+                   @Html.DropDownListFor(model => model.CrmCommentStateID, new SelectList(Utl.CH.GetAllData<CrmCommentState>().Where(c => c.RoleFlag == 1), "StateCode", "StateName"))
+               }
+           }
                 </li>
             </ul>
            }

@@ -61,13 +61,14 @@ namespace Sales.BLL
                                                                CoreCompany = c.CoreLVLName=="核心公司"?true:false,
                                                                ContectedLeadCount = crm.LeadCalls.GroupBy(call=>call.LeadID).Count(),
                                                                LeadCount = CH.DB.Leads.Where(l=>l.CompanyID==crm.CompanyID).Count(),
+                                                               CrmCommentStateID = crm.CrmCommentStateID,
                                                                _Comments=(from co in crm.Comments.OrderByDescending(m=>m.CommentDate)
                                                                           select new _Comment()
                                                                           {
                                                                               Submitter=co.Submitter,
                                                                               CommentDate=co.CommentDate,
                                                                               CRMID=co.CompanyRelationshipID,
-                                                                              Content=co.Contents
+                                                                              Contents=co.Contents
                                                                           })
                                                          }
                                             }
@@ -101,15 +102,16 @@ namespace Sales.BLL
                                         CompanyNameCH = crm.Company.Name_CH,
                                         CompanyNameEN = crm.Company.Name_EN,
                                         CoreCompany = c.CoreLVLName == "核心公司" ? true : false,
-                                        ContectedLeadCount = crm.LeadCalls.GroupBy(call => call.LeadID).Count(),
+                                        ContectedLeadCount = crm.LeadCalls.Distinct(call=> call.GroupBy(call => call.LeadID).Count(),
                                         LeadCount = CH.DB.Leads.Where(l => l.CompanyID == crm.CompanyID).Count(),
+                                        CrmCommentStateID = crm.CrmCommentStateID,
                                         _Comments = (from co in crm.Comments.OrderByDescending(m => m.CommentDate)
                                                         select new _Comment()
                                                         {
                                                             Submitter = co.Submitter,
                                                             CommentDate = co.CommentDate,
                                                             CRMID = co.CompanyRelationshipID,
-                                                            Content = co.Contents
+                                                            Contents = co.Contents
                                                         })
                                     }
                        };
@@ -142,6 +144,7 @@ namespace Sales.BLL
                 NoCallCount = data.Company.Leads.Where(l => !data.LeadCalls.Where(c => c.LeadID == l.ID).Any()).Count(),
                 CategoryString=data.CategoryString,
                 CoreCompany = data.CoreLVL==null?false:data.CoreLVL.CoreLVLName == "核心公司" ? true : false,
+                CrmCommentStateID = data.CrmCommentStateID,
                 CoreLVLID=data.CoreLVLID,
                 _Comments = (from co in data.Comments.OrderByDescending(m => m.CommentDate)
                             select new _Comment()
@@ -149,7 +152,7 @@ namespace Sales.BLL
                                 Submitter=co.Submitter,
                                 CommentDate=co.CommentDate,
                                 CRMID=co.CompanyRelationshipID,
-                                Content=co.Contents
+                                Contents=co.Contents
                             }),
                 _Categorys = (from c in data.Categorys
                               select new _Category()
@@ -216,6 +219,7 @@ namespace Sales.BLL
                 WaitForApproveCount = callsgrp.Where(c => c.LeadCallTypeID == 7).Count(),
                 CloseDealCount = callsgrp.Where(c => c.LeadCallTypeID == 9).Count(),
                 NoCallCount = data.Company.Leads.Where(l => !data.LeadCalls.Where(c => c.LeadID == l.ID).Any()).Count(),
+                CrmCommentStateID=data.CrmCommentStateID,
                 CoreLVLID = data.CoreLVLID,
                 _Categorys= (from c in data.Categorys
                                  select new _Category()
@@ -232,7 +236,7 @@ namespace Sales.BLL
                                  Submitter = co.Submitter,
                                  CommentDate = co.CommentDate,
                                  CRMID = co.CompanyRelationshipID,
-                                 Content = co.Contents
+                                 Contents = co.Contents
                              }),
                 Description = data.Description,
                 Competitor = data.Company.Competitor,

@@ -1386,13 +1386,16 @@
                 return;
             var query = $('.dialogue-AddComment form').serializeArray();
             $.post('AddComment', query, function (result) {
-                if (result.length > 0) {
-                    alert('新增Comment失败');
-                } else {
+                if (result.companyRelationshipId != null) {
                     $('#AddComment').data('tWindow').close();
+                    crmid = result.companyRelationshipId;
+                    var currentProjectId = $('#projectid').val();
+                    RefreshCrmTree(currentProjectId, result.companyRelationshipId, result.processid, result.corelvlid);
                     alert('新增Comment成功');
-                    RefreshCrm();
                 }
+                else{
+                    alert('新增Comment失败');
+                } 
             });
         }
     }
