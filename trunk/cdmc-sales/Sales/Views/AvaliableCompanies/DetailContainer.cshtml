@@ -29,14 +29,12 @@
     {
         border: 1px solid red !important;
     }
-    
     .text-overflow {
         display: inline-block;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
     }
-
 </style>
 <div class="memberCompanies">
     <div class="quan">
@@ -76,48 +74,50 @@
         </div>
     </div>
     <div class="quan_4">
-        
-        @Html.Telerik().Splitter().Name("dsp").HtmlAttributes(new { style = "overflow:auto;min-height:680px;" }).Orientation(SplitterOrientation.Horizontal).Panes(p =>
-   {
-       p.Add().Size("60%").Content(@<text>
-       <div class="left" style="width:70%; ">
-            <div class="left_1">
-                <p>@Model.CompanyName</p>
-                @{if (Model.Contact != null)
-                  {
-                    <p>
-                        T:+ @Model.Contact</p>
-                  }
-                }
-                @{if (Model.Fax != null)
-                  {
-                    <p>
-                        F:+ @Model.Fax</p>
-                  }
-                }
-            </div>
-            <div class="left_2">
-                @if (Model.CoreCompany)
-                {
-                    <a href="#">
-                        <img src="../images/quan-06.jpg" width="13" height="12" alt="xing" /></a>
-                }
-                <a class="hide" href="#">
-                    <img src="../images/pen1919.png" alt="bianji" onclick="onCompanyEdit(@(Model.CompanyID))"/></a>
-                <a Class="hide" href="#"  onclick="onLeadAdd(@(Model.CompanyID))">
-                    <img src="../images/user.png" alt="新增Leader" width="19" height="19" /></a></div>
-            <div class="left_3">
-                <div class="left_4">
-                    决策人状态统计</div>
-                <div class="left_5">
-                    <img src="../images/quan-01.png" width="15" height="15" alt="yuan" title="没联系" />@Model.NoCallCount
-                    <img src="../images/quan-09.png" width="15" height="15" alt="yuan" title="Not Piteched" />@Model.BlowedCount
-                    <img src="../images/quan-10.png" width="15" height="15" alt="yuan" title="Pitched和Full Pitched和Call Backed" />@Model.TotalPitchCount
-                    <img src="../images/55.png" width="15" height="15" alt="yuan" title="Qualified Decision和Waiting for Approval" />@Model.QualifiedWaitForCount
-                    <img src="../images/quan-08.png" width="15" height="15" alt="yuan" title="Closed" />@Model.CloseDealCount
-                </div>
-                <div class="left_6">
-                    <ul>
+       @{
+            string leadhide = "";
+        }
+       @Html.Telerik().Splitter().Name("dsp").HtmlAttributes(new { style = "overflow:auto;min-height:680px;" }).Orientation(SplitterOrientation.Horizontal).Panes(p =>
+       {
+            p.Add().Size("60%").Content(@<text>
+                <div class="left" style="width:70%; ">
+                    <div class="left_1">
+                        <p>@Model.CompanyName</p>
+                        @{if (Model.Contact != null)
+                          {
+                            <p>
+                                T:+ @Model.Contact</p>
+                          }
+                        }
+                        @{if (Model.Fax != null)
+                          {
+                            <p>
+                                F:+ @Model.Fax</p>
+                          }
+                        }
+                    </div>
+                    <div class="left_2">
+                        @if (Model.CoreCompany)
+                        {
+                            <a href="#">
+                                <img src="../images/quan-06.jpg" width="13" height="12" alt="xing" /></a>
+                        }
+                        <a class="hide" href="#">
+                            <img src="../images/pen1919.png" alt="bianji" onclick="onCompanyEdit(@(Model.CompanyID))"/></a>
+                        <a Class="hide" href="#"  onclick="onLeadAdd(@(Model.CompanyID))">
+                            <img src="../images/user.png" alt="新增Leader" width="19" height="19" /></a>
+                    </div>
+                    <div class="left_3">
+                        <div class="left_4">决策人状态统计</div>
+                        <div class="left_5">
+                            <img src="../images/quan-01.png" width="15" height="15" alt="yuan" title="没联系" />@Model.NoCallCount
+                            <img src="../images/quan-09.png" width="15" height="15" alt="yuan" title="Not Piteched" />@Model.BlowedCount
+                            <img src="../images/quan-10.png" width="15" height="15" alt="yuan" title="Pitched和Full Pitched和Call Backed" />@Model.TotalPitchCount
+                            <img src="../images/55.png" width="15" height="15" alt="yuan" title="Qualified Decision和Waiting for Approval" />@Model.QualifiedWaitForCount
+                            <img src="../images/quan-08.png" width="15" height="15" alt="yuan" title="Closed" />@Model.CloseDealCount
+                        </div>
+                        <div class="left_6">
+                        <ul>
                         <li>
                             <h2>
                                 行业细分</h2>
@@ -189,194 +189,193 @@
                             }
                         </li>
                     </ul>
-                </div>
-            </div>
-            <div class="dierye_1">
-                <div style="float: left; width: 70%;">
-                    点评
-                </div>
-                <div style="float: left; width: 20%;">
-                    <a class="hide" href="#" onclick="GetAddComment()">
-                        <img src="../images/quan-14.jpg" width="29" height="29" alt="jia"></a>
-                </div>
-            </div>
-            <div class="dierye_3">
-                @if (Model._Comments != null)
-                {
-                    var i = 1;
-                    foreach (var comment in Model._Comments)
-                    {
-                    <div class="dierye_3_@(i)">
-                        <dl>
-                            <dt>
-                                <p>@comment.Contents</p>
-                                <p>@comment.CommentDate.ToLongDateString() @comment.CommentDate.ToShortTimeString()
-                                    By @comment.Submitter</p>
-                            </dt>
-                        </dl>
                     </div>
-                        i++;
-                        if (i > 2)
+                    </div>
+                    <div class="dierye_1">
+                    <div style="float: left; width: 70%;">
+                        点评
+                    </div>
+                    <div style="float: left; width: 20%;">
+                        <a class="hide" href="#" onclick="GetAddComment()">
+                            <img src="../images/quan-14.jpg" width="29" height="29" alt="jia"></a>
+                    </div>
+                </div>
+                    <div class="dierye_3">
+                        @if (Model._Comments != null)
                         {
-                            i = 1;
-                        }
-                    }
-                }
-            </div>
-        </div>
-         <div class="center" style="width:28%">
-            @if (Model._Leads != null)
-            {
-                var index = 1;
-                foreach (var lead in Model._Leads)
-                {
-                <a href="#" onclick="onLeadSelect(@(lead.ID))">
-                    <div class="center_2" id="lead@(lead.ID)" onmouseover = "javascript:showLeadBtn(@(lead.ID));" onmouseout = "javascript:hideLeadBtn(@(lead.ID));" >
-                        <div id="leadbtn@(lead.ID)" style=" display:none; float: right;">
-                            <img class="hide"  src="../images/dianhua.png" alt="新增通话" onclick="onCallAdd(@(lead.ID))" style=" display: inline;float: right;" />
-                            <img class="hide" src="../images/bianji.png" alt="编辑" onclick="onLeadEdit(@(lead.ID))" style=" display: inline;float: right;" />
-                        </div>
-                        <dl>
-                            <dt>
-                                @{
-                                    var calls = @Model._LeadCalls.Where(c => c.LeadID == lead.ID).OrderByDescending(c => c.CallDate).FirstOrDefault();
-                                    if (calls == null)
-                                    {
-                                                    <img src="../images/quan-01.png" width="15" height="15" alt="yuan" title="没联系" />
-                                    }
-                                    else
-                                    {
-                                        if (calls.LeadCallTypeID == 2 || calls.LeadCallTypeID == 3)
-                                        {
-                                                    <img src="../images/quan-09.png" width="15" height="15" alt="yuan" title="Blowed和Not Piteched" />}
-                                        else if (calls.LeadCallTypeID == 4 || calls.LeadCallTypeID == 5 || calls.LeadCallTypeID == 6)
-                                        {
-                                                    <img src="../images/quan-10.png" width="15" height="15" alt="yuan" title="Pitched和Full Pitched和Call Backed" />}
-                                        else if (calls.LeadCallTypeID == 7 || calls.LeadCallTypeID == 8)
-                                        {
-                                                    <img src="../images/55.png" width="15" height="15" alt="yuan" title="Qualified Decision和Waiting for Approval" />}
-                                        else if (calls.LeadCallTypeID == 9)
-                                        {
-                                                    <img src="../images/quan-08.png" width="15" height="15" alt="yuan" title="Closed" />}
-                                    }
+                            var i = 1;
+                            foreach (var comment in Model._Comments)
+                            {
+                            <div class="dierye_3_@(i)">
+                                <dl>
+                                    <dt>
+                                        <p>@comment.Contents</p>
+                                        <p>@comment.CommentDate.ToLongDateString() @comment.CommentDate.ToShortTimeString()
+                                            By @comment.Submitter</p>
+                                    </dt>
+                                </dl>
+                            </div>
+                                i++;
+                                if (i > 2)
+                                {
+                                    i = 1;
                                 }
-                            </dt>
-                            <dd>
-                                <p class="text-overflow" style="width:100px">@lead.Name</p>
-                            </dd>
-                            </dl>
-                            
-                        <dl>
-                        <dd style="margin-left: 24px;">
-                                @{if (@lead.Title != null)
+                            }
+                        }
+                    </div>
+                </div>
+                <div class="center" style="width:28%">
+                    @if (Model._Leads != null)
+                    {
+                        var index = 1;
+                        foreach (var lead in Model._Leads)
+                        {
+                            @*<a href="#" onclick="onLeadSelect(@(lead.ID))">*@
+                            <a href="#" onclick="onLeadSelectJS(@(lead.ID))">
+                                <div class="center_2" id="lead@(lead.ID)" onmouseover = "javascript:showLeadBtn(@(lead.ID));" onmouseout = "javascript:hideLeadBtn(@(lead.ID));" >
+                                <div id="leadbtn@(lead.ID)" style="width:16%; display:none; float: right;">
+                                    <img class="hide"  src="../images/dianhua.png" alt="新增通话" onclick="onCallAdd(@(lead.ID))" style=" display: inline;float: right;" />
+                                    <img class="hide" src="../images/bianji.png" alt="编辑" onclick="onLeadEdit(@(lead.ID))" style=" display: inline;float: right;" />
+                                </div>
+                                <div style=" width:84%;">
+                                <dl>
+                                    <dt>
+                                        @{
+                                            var calls = @Model._LeadCalls.Where(c => c.LeadID == lead.ID).OrderByDescending(c => c.CallDate).FirstOrDefault();
+                                            if (calls == null)
+                                            {
+                                                <img src="../images/quan-01.png" width="15" height="15" alt="yuan" title="没联系" />
+                                            }
+                                            else
+                                            {
+                                                if (calls.LeadCallTypeID == 2 || calls.LeadCallTypeID == 3)
+                                                {
+                                                    <img src="../images/quan-09.png" width="15" height="15" alt="yuan" title="Blowed和Not Piteched" />}
+                                                else if (calls.LeadCallTypeID == 4 || calls.LeadCallTypeID == 5 || calls.LeadCallTypeID == 6)
+                                                {
+                                                    <img src="../images/quan-10.png" width="15" height="15" alt="yuan" title="Pitched和Full Pitched和Call Backed" />}
+                                                else if (calls.LeadCallTypeID == 7 || calls.LeadCallTypeID == 8)
+                                                {
+                                                    <img src="../images/55.png" width="15" height="15" alt="yuan" title="Qualified Decision和Waiting for Approval" />}
+                                                else if (calls.LeadCallTypeID == 9)
+                                                {
+                                                    <img src="../images/quan-08.png" width="15" height="15" alt="yuan" title="Closed" />}
+                                            }
+                                        }
+                                    </dt>
+                                    <dd>
+                                        <p class="text-overflow" style="width:100px">@lead.Name</p>
+                                    </dd>
+                                </dl>
+                                <dl>
+                                    <dd style="margin-left: 24px;">
+                                        @{if (@lead.Title != null)
+                                            {
+                                            <p class="text-overflow" style="width:100px">@lead.Title</p>
+                                            }
+                                        }
+                                    </dd>
+                                </dl>
+
+                                @{if (@lead.Contact != null)
                                   {
-                                    <p class="text-overflow" style="width:100px">@lead.Title</p>
+                                    <dl>
+                                        <dt>
+                                            <img src="../images/shouji.png" width="15" height="15" alt="yuan" /></dt>
+                                        <dd>
+                                            <p>@lead.Contact</p>
+                                        </dd>
+                                    </dl>
                                   }
                                 }
-                            </dd>
-                        </dl>
-                        @{if (@lead.Contact != null)
-                          {
-                            <dl>
-                                <dt>
-                                    <img src="../images/shouji.png" width="15" height="15" alt="yuan" /></dt>
-                                <dd>
-                                    <p  >@lead.Contact</p>
-                                </dd>
-                            </dl>
-                        
-                          }
-                        }
-                        @{if (@lead.TelePhone != null)
-                          {
-                            <dl>
-                                <dt>
-                                    <img src="../images/zuoji.png" width="15" height="15" alt="yuan" /></dt>
-                                <dd>
-                                    <p>@lead.TelePhone</p>
-                                </dd>
-                            </dl>
-                          }
-                        }
-                        @{if (@lead.Email != null)
-                          {
-                            <dl>
-                                <dt>
-                                    <img src="../images/youjian.png" width="15" height="15" alt="yuan" /></dt>
-                                <dd  >
-                                    <p class="text-overflow" style="width:100px">@lead.Email</p>
-                                </dd>
-                            </dl>
-                          }
-                        }
-                    </div>
-                </a>
-                          index++;
-                          if (index > 2)
-                          {
-                              index = 1;
-                          }
-                }
-            }
-        </div>
-       </text>);
-       p.Add().Size("40%").Content(@<text>
-         <div class="right" style=" width:100%;">
-            @if (Model._LeadCalls != null)
-            {
-                var index = 1;
-                var index_btn = 1;
-                var leadcalls = @Model._LeadCalls;
-                if (ViewBag.leadid > 0)
-                {
-                    leadcalls = leadcalls.Where(c => c.LeadID == ViewBag.leadid);
-                }
-                if (leadcalls != null && leadcalls.Count()>0)
-                {
-                    foreach (var call in leadcalls)
-                    {
-                        <div  class="right_@(index)">
-                            <div style=" float:right; display:none;" id="filterbtn">
-                            @if (index_btn == 1)
-                            {
-                                <input type="button" value="取消筛选" onclick="RefreshCrm();" style="border: none; width: 67px; height: 21px;"/>
-                            }
+                                @{if (@lead.TelePhone != null)
+                                  {
+                                    <dl>
+                                        <dt>
+                                            <img src="../images/zuoji.png" width="15" height="15" alt="yuan" /></dt>
+                                        <dd>
+                                            <p>@lead.TelePhone</p>
+                                        </dd>
+                                    </dl>
+                                  }
+                                }
+                                @{if (@lead.Email != null)
+                                  {
+                                    <dl>
+                                        <dt>
+                                            <img src="../images/youjian.png" width="15" height="15" alt="yuan" /></dt>
+                                        <dd>
+                                            <p class="text-overflow" style="width:100px">@lead.Email</p>
+                                        </dd>
+                                    </dl>
+                                  }
+                                }
+                                </div>
                             </div>
-                            <h2>@call.LeadName | @call.LeadTitle 
-                            </h2>
-                        
-                            <p>
-                                <span>@call.CallType</span></p>
-                            <p>
-                                <span>@call.CallResult</span></p>
-                            <p>@call.CallDate.ToLongDateString() @call.CallDate.ToShortTimeString()</p>
-                            <p>
-                                By @call.Creator</p>
-                        </div>
-                        index++; index_btn++;
-                        if (index > 2)
-                        {
-                            index = 1;
+                            </a>
+                            index++;
+                            if (index > 2)
+                            {
+                                index = 1;
+                            }
                         }
                     }
-                }
-                else
-                {
-                    <div style=" float:right; display:none; margin-top:10px; margin-right:10px;" id="filterbtn">
-                        <input type="button" value="取消筛选" onclick="RefreshCrm();" style="border: none; width: 67px; height: 21px;"/>
-                    </div>
-                }
-            }
-        </div>
-      </text>);
-
-   })
-
-
-    
-      
-    
+            </div>
+            </text>);
+            p.Add().Size("40%").Content(@<text>
+                <div class="right" style=" width:100%;">
+                    @if (Model._LeadCalls != null)
+                    {
+                        var index = 1;
+                        var leadcalls = @Model._LeadCalls;
+                        List<int> lcIdList = new List<int>();
+                        if (ViewBag.leadid > 0)
+                        {
+                            leadcalls = leadcalls.Where(c => c.LeadID == ViewBag.leadid);
+                        }
+                        if (leadcalls != null && leadcalls.Count()>0)
+                        {
+                            foreach (var call in leadcalls)
+                            {
+                                leadhide += call.LeadID + ",";
+                                <div class="right_@(index) leadcall@(call.LeadID)">
+                                    @if (!lcIdList.Contains((int)call.LeadID))
+                                    {
+                                        <div style=" float:right; display:none;" id="filterbtn@(call.LeadID)">
+                                            <input type="button" value="取消筛选" onclick="RefreshCrm();" style="border: none; width: 67px; height: 21px;"/>
+                                        </div>
+                                    }
+                                    <h2>@call.LeadName | @call.LeadTitle 
+                                    </h2>
+                        
+                                    <p>
+                                        <span>@call.CallType</span></p>
+                                    <p>
+                                        <span>@call.CallResult</span></p>
+                                    <p>@call.CallDate.ToLongDateString() @call.CallDate.ToShortTimeString()</p>
+                                    <p>
+                                        By @call.Creator</p>
+                                </div>
+                                index++;
+                                lcIdList.Add((int)call.LeadID);
+                                if (index > 2)
+                                {
+                                    index = 1;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            <div style=" float:right; display:none; margin-top:10px; margin-right:10px;" id="filterbtn">
+                                <input type="button" value="取消筛选" onclick="RefreshCrm();" style="border: none; width: 67px; height: 21px;"/>
+                            </div>
+                        }
+                    }
+                </div>
+            </text>);
+       })
     </div>
+    @Html.Hidden("LeadIdHidden", string.IsNullOrEmpty(leadhide) ? "" : leadhide.Substring(0, leadhide.Length - 1))
 </div>
 <script>
     $(function () {
