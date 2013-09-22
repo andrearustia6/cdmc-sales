@@ -712,6 +712,7 @@ namespace Sales.Controllers
             ct.Type = "领用";
             ct.CompanyRelationshipID = crmid;
             ct.GetDate = DateTime.Now;
+            
             CH.Create<CrmTrack>(ct);
 
             return Json(new { companyRelationshipId = companyRelationship.ID, companyId = companyRelationship.CompanyID, projectId = companyRelationship.ProjectID, processid = companyRelationship.ProgressID, corelvlid = companyRelationship.CoreLVLID });
