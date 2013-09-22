@@ -1417,7 +1417,6 @@
             else
                 alert('领用失败');
         });
-
     }
 
     function showLeadBtn(id) {
@@ -1426,5 +1425,37 @@
 
     function hideLeadBtn(id) {
         $("#leadbtn" + id).hide();
+    }
+
+    function onLeadSelectJS(leadid) {
+        if ($("#filterbtn" + leadid).val() != null) {
+            $("#filterbtn" + leadid).show();
+        }
+        var leadids = "";
+        if ($("#LeadIdHidden")) {
+            leadids = $("#LeadIdHidden").val();
+        }
+        if (leadids != "undefined") {
+            var leadcallfind = false;
+            var arrids = leadids.split(',');
+            for (var i = 0; i < arrids.length; i++) {
+                if (arrids[i] == leadid) {
+                    leadcallfind = true;
+                    $(".leadcall" + leadid).show();
+                } else {
+                    $(".leadcall" + arrids[i]).hide();
+                }
+            }
+            if (!leadcallfind) {
+                if (($("#filterbtn" + leadid).val() == null) && ($("#filterbtn").val() == null)) {
+                    $(".right").append('<div style=" float:right; margin-top:10px; margin-right:10px;" id="filterbtn"><input type="button" value="取消筛选" onclick="RefreshCrm();" style="border: none; width: 67px; height: 21px;"/></div>');
+                } else if ($("#filterbtn").val() != null) {
+                    $("#filterbtn").show();
+                }
+            } else {
+                $("#filterbtn").hide();
+            }
+        }
+        
     }
 </script>
