@@ -102,7 +102,7 @@ namespace Sales.BLL
                                         CompanyNameCH = crm.Company.Name_CH,
                                         CompanyNameEN = crm.Company.Name_EN,
                                         CoreCompany = c.CoreLVLName == "核心公司" ? true : false,
-                                        ContectedLeadCount = crm.LeadCalls.Distinct(call=> call.GroupBy(call => call.LeadID).Count(),
+                                        ContectedLeadCount = crm.LeadCalls.GroupBy(call => call.LeadID).Count(),
                                         LeadCount = CH.DB.Leads.Where(l => l.CompanyID == crm.CompanyID).Count(),
                                         CrmCommentStateID = crm.CrmCommentStateID,
                                         _Comments = (from co in crm.Comments.OrderByDescending(m => m.CommentDate)
