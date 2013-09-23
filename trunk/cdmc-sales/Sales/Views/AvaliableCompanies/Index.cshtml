@@ -43,13 +43,98 @@
     }
 </style>
 <div style="clear: both;">
- @Html.DropDownList("projectid",SelectHelper.ProjectSelectList(Employee.CurrentUserName))
-  <input type="button" style="border: none; width: 67px; height: 21px; background-image: url('../images/tianjia_4.jpg');"
+<table style="width:100%">
+    <tr>
+        <td style="width:15%;">
+            项目选择: @Html.Telerik().DropDownList().Name("projectid").BindTo(new SelectList(SelectHelper.ProjectSelectList(Employee.CurrentUserName), "Value", "Text", "请选择")).HtmlAttributes(new { style = string.Format("width:{0}%", 80) }).DropDownHtmlAttributes(new { style = string.Format("width:{0}px", 200) }).ClientEvents(events => events.OnChange("onProjectChange"))
+        </td>
+        <td style="width:15%;">
+        @{
+            List<SelectListItem> category = (List<SelectListItem>)SelectHelper.CategoresSelectList(ViewBag.projectid);
+            category.Insert(0, (new SelectListItem { Text = "不指定", Value = "-1" }));
+        }
+           细分行业: @Html.Telerik().DropDownList().Name("f-category").BindTo(new SelectList(category, "Value", "Text", "")).DropDownHtmlAttributes(new { style = string.Format("width:{0}px", 200) }).HtmlAttributes(new { style = string.Format("width:{0}%", 80) })
+        </td>
+        <td style="width:15%;">
+        @{
+            List<SelectListItem> DistinctNumber = (List<SelectListItem>)SelectHelper.DistinctNumberSelectList(null);
+            DistinctNumber.Insert(0, (new SelectListItem { Text = "不指定", Value = "-1" }));
+        }
+            时区: @Html.Telerik().DropDownList().Name("DistinctNumber").BindTo(new SelectList(DistinctNumber, "Value", "Text", "")).DropDownHtmlAttributes(new { style = string.Format("width:{0}px", 200) }).HtmlAttributes(new { style = string.Format("width:{0}%", 80) })
+        </td>
+        <td style="width:15%;">
+        @{
+            List<SelectListItem> commentlist = new List<SelectListItem>();
+            commentlist.Add(new SelectListItem { Text = "已点评的", Value = "1" });
+            commentlist.Add(new SelectListItem { Text = "未点评", Value = "0" });
+            commentlist.Insert(0, (new SelectListItem { Text = "所有", Value = "-1" }));
+        }
+           是否点评: @Html.Telerik().DropDownList().Name("commentlist").BindTo(new SelectList(commentlist, "Value", "Text", "")).DropDownHtmlAttributes(new { style = string.Format("width:{0}px", 200) }).HtmlAttributes(new { style = string.Format("width:{0}%", 80) })
+        </td>
+        
+       @*<td style="width:6%;">
+            最近通话
+        </td>
+        <td style="width:10%;"> 
+        @{
+            List<SelectListItem> CallConditionSelectList = (List<SelectListItem>)SelectHelper.CallConditionSelectList();
+            CallConditionSelectList.Insert(0, (new SelectListItem { Text = "不指定", Value = "-1" }));
+        }
+        @Html.Telerik().DropDownList().Name("callprogress").BindTo(new SelectList(CallConditionSelectList, "Value", "Text", "")).DropDownHtmlAttributes(new { style = string.Format("width:{0}px", 200) }).HtmlAttributes(new { style = string.Format("width:{0}%", 100) })
+        </td>*@
+        @*<td style="width:6%;">
+            通话状态
+        </td>
+        <td style="width:10%;">
+        @{
+            List<SelectListItem> leadprogress = (List<SelectListItem>)SelectHelper.LeadConditionSelectList();
+            leadprogress.Insert(0, (new SelectListItem { Text = "不指定", Value = "-1" }));
+        }
+            @Html.Telerik().DropDownList().Name("leadprogress").BindTo(new SelectList(leadprogress, "Value", "Text", "")).DropDownHtmlAttributes(new { style = string.Format("width:{0}px", 200) }).HtmlAttributes(new { style = string.Format("width:{0}%", 100) })
+        </td>*@
+        @*<td style="width:6%;">
+            成熟程度
+        </td>
+        <td style="width:10%;">
+         @{
+             List<SelectListItem> companyprogress = (List<SelectListItem>)SelectHelper.CrmProgessSelectList();
+             companyprogress.Insert(0, (new SelectListItem { Text = "不指定", Value = "-1" }));
+        }
+            @Html.Telerik().DropDownList().Name("companyprogress").BindTo(new SelectList(companyprogress, "Value", "Text", "")).DropDownHtmlAttributes(new { style = string.Format("width:{0}px", 200) }).HtmlAttributes(new { style = string.Format("width:{0}%", 100) })
+        </td>*@
+        @*<td style="width:6%;">
+            出单状态
+        </td>
+        <td style="width:10%;">
+         @{
+             List<SelectListItem> dealprogress = (List<SelectListItem>)SelectHelper.DealConditionSelectList();
+             dealprogress.Insert(0, (new SelectListItem { Text = "不指定", Value = "-1" }));
+        }
+            @Html.Telerik().DropDownList().Name("dealprogress").BindTo(new SelectList(dealprogress, "Value", "Text", "")).DropDownHtmlAttributes(new { style = string.Format("width:{0}px", 200) }).HtmlAttributes(new { style = string.Format("width:{0}%", 100) })
+        </td>*@
+    </tr>
+    <tr>
+        <td colspan="2" align="center" >
+            寻找匹配的名称,邮件,电话: @Html.TextBox("f-fuzzy", "", new { style = "width:50%;line-height:22px" })
+            <input id="search" style="border: none; width: 67px; height: 21px; background-image: url('../images/chazhao.jpg'); vertical-align:middle;"
+                    type="button" onclick="search()"/>
+                <input type="button" style="border: none; width: 67px; height: 21px; background-image: url('../images/chongzhi.jpg'); vertical-align:middle;"
+                    onclick="resetquery()" />
+        </td>
+        <td colspan="2" align="left" style="padding-top:6px;">
+                
+                <input type="button" style="border: none; width: 67px; height: 21px; background-image: url('../images/tianjia_4.jpg'); vertical-align:middle;"
                                 onclick="GetAddCompany()" />
- <input type="button" style="border: none; width: 67px; height: 21px; background-image: url('../images/quick_entry.jpg');"
-                                onclick="GetQuickEntry()" />
-<input type="button" style="border: none; width: 67px; height: 21px; background-image: url('../images/bulk_entry.jpg');"
-    onclick="GetBulkEntry()" />
+                 <input type="button" style="border: none; width: 67px; height: 21px; background-image: url('../images/quick_entry.jpg'); vertical-align:middle;"
+                                                onclick="GetQuickEntry()" />
+                <input type="button" style="border: none; width: 67px; height: 21px; background-image: url('../images/bulk_entry.jpg'); vertical-align:middle;"
+                    onclick="GetBulkEntry()" />
+           
+        </td>
+    </tr>
+</table>
+
+ 
 </div>
 @(Html.Telerik().Splitter().Name("sp1").HtmlAttributes(new { style = "min-height: 800px;overflow:auto;" })
               .Orientation(SplitterOrientation.Horizontal).Panes(panes =>
@@ -255,6 +340,10 @@
     var crmid
     var gleadid
     var clickpublic
+
+    
+    
+
     function GetAddCompany() {
         var currentProjectId = $('#projectid').val();
         $.post('GetAddCompany', { projectId: currentProjectId }, function (result) {
@@ -794,8 +883,9 @@
         $('.bulkEntry-wrapper').empty();
     }
 
-    function RefreshCrmTree(projectid,crmid,processid,corelvlid) {
-        $.post('_RefreshCrmTree', { projectid: projectid }, function (result) {
+    function RefreshCrmTree(projectid, crmid, processid, corelvlid) {
+        var f = GetFilters();
+        $.post('_RefreshCrmTree', f, function (result) {
             $('#mainnavigationcontainer').html(result);
             if (crmid > 0) {
                 onCompanyChanging(crmid, processid, corelvlid);
@@ -1427,6 +1517,59 @@
         $("#leadbtn" + id).hide();
     }
 
+    function resetquery() {
+        var category = $('#f-category').data('tDropDownList');
+        category.value(-1);
+        var commentlist = $('#commentlist').data('tDropDownList');
+        commentlist.value(-1);
+        var DistinctNumber = $('#DistinctNumber').data('tDropDownList');
+        DistinctNumber.value(-1);
+        $('#f-fuzzy').val("");
+    }
+    function GetFilters() {
+        var projectid = $("#projectid").data("tDropDownList");
+        var id = projectid.value();
+        var DistinctNumber = $('#DistinctNumber').data("tDropDownList").value();
+        if (DistinctNumber == -1)
+            DistinctNumber = null;
+        var categoryId = $('#f-category').data("tDropDownList").value();
+        if (categoryId == -1)
+            categoryId = null;
+        var fuzzyQuery = $('#f-fuzzy').val();
+        var IfComment = $('#commentlist').data("tDropDownList").value();
+        if (IfComment == -1)
+            IfComment = null;
+        return { ProjectId: id, FuzzyQuery: fuzzyQuery, DistinctNumber: DistinctNumber, CategoryId: categoryId, IfComment: IfComment };
+    }
+    function search() {
+        var f = GetFilters();
+        $.post('_RefreshCrmTree', f, function (result) {
+            $('#mainnavigationcontainer').html(result);
+            $('#crmdetailscontainer').html("");
+        });
+    }
+
+
+    function onProjectChange(e) {
+        resetquery();
+        $.get('GetCatagories', { currentProjectId: e.value }, function (result) {
+            var category = $('#f-category').data('tDropDownList');
+            category.dataBind(result);
+            category.value(-1);
+//            $("<option value=''>不指定</option>").appendTo("#f-category")
+//            $.each(result, function (index) {
+//                $("<option value='" + result[index].value + "'>" + result[index].text + "</option>").appendTo("#f-category");
+//            });
+        });
+
+        $.post('_RefreshCrmTree', { ProjectId: e.value }, function (result) {
+            $('#mainnavigationcontainer').html(result);
+            $('#crmdetailscontainer').html("");
+            
+        });
+    }
+
+
     function onLeadSelectJS(leadid) {
         if ($("#filterbtn" + leadid).val() != null) {
             $("#filterbtn" + leadid).show();
@@ -1458,4 +1601,5 @@
         }
         
     }
+
 </script>

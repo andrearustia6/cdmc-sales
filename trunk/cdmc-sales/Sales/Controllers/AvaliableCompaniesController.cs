@@ -13,13 +13,23 @@ using System.Net.Mail;
 using System.Net;
 using System.Configuration;
 using Telerik.Web.Mvc;
+using BLL;
 namespace Sales.Controllers
 {
     public class AvaliableCompaniesController : Controller
     {
         public ActionResult Index(int? projectid)
         {
-            var data = AvaliableCRM.GetAvaliableCompanies(projectid);
+            CRMFilters filters = new CRMFilters();
+            if (projectid == null)
+            {
+                filters.ProjectId = CRM_Logical.GetUserInvolveProject().First().ID;
+            }
+            var data = AvaliableCRM.GetAvaliableCompanies(filters);
+            if(projectid==null)
+                ViewBag.projectid = CRM_Logical.GetUserInvolveProject().First().ID;
+            else
+                ViewBag.projectid = projectid;
             return View(data);
         }
         /// <summary>
@@ -691,9 +701,9 @@ namespace Sales.Controllers
         /// 刷新导航栏
         /// </summary>
         /// <returns></returns>
-        public PartialViewResult _RefreshCrmTree(int? projectid)
+        public PartialViewResult _RefreshCrmTree(CRMFilters f)
         {
-            var data = AvaliableCRM.GetAvaliableCompanies(projectid);
+            var data = AvaliableCRM.GetAvaliableCompanies(f);
             return PartialView(@"~\views\AvaliableCompanies\MainNavigationContainer.cshtml", data);
         }
 
@@ -894,5 +904,15 @@ namespace Sales.Controllers
             return result;
         }
 
+        [HttpGet]
+        public ActionResult GetCatagories(int currentProjectId)
+        {
+            List<Category> categoriylist = CH.GetAllData<Category>(o => o.ProjectID == currentProjectId).ToList();
+            Category ca = new Category();
+            ca.ID = -1;
+            ca.Name = "不指定";
+            categoriylist.Insert(0, ca);
+            return Json(categoriylist.Select(c => new { Value = c.ID, Text = c.Name }), JsonRequestBehavior.AllowGet);
+        }
     }
 }
