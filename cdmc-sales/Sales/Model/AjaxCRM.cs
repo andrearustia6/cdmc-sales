@@ -22,7 +22,16 @@ namespace Sales.Model
 
         public string selectedVal { get; set; }
     }
+    public class CRMFilters
+    {
+        public int? ProjectId { get; set; }
+        public int? CategoryId { get; set; }
+        public int? DistinctNumber { get; set; }
+        public int? IfComment { get; set; }
+        public string FuzzyQuery { get; set; }
 
+        public string selectedVal { get; set; }
+    }
     public class AjaxCrmTypedList
     {
         public bool ExpandAll

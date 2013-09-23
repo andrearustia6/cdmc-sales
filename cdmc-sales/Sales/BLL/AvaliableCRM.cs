@@ -11,27 +11,27 @@ namespace Sales.BLL
 
     public static class AvaliableCRM
     {
-        public static _AvaliableCompanies GetAvaliableCompanies(int? projectid)
+        public static _AvaliableCompanies GetAvaliableCompanies(CRMFilters filters = null)
         {
             var data = new _AvaliableCompanies();
-            if (projectid == null)
+            if (filters.ProjectId == null)
             {
-                projectid=CRM_Logical.GetUserInvolveProject().FirstOrDefault()==null?0:CRM_Logical.GetUserInvolveProject().FirstOrDefault().ID;
+                filters.ProjectId = CRM_Logical.GetUserInvolveProject().FirstOrDefault() == null ? 0 : CRM_Logical.GetUserInvolveProject().FirstOrDefault().ID;
             }
-            if (projectid >0)
+            if (filters.ProjectId > 0)
             {
-                data.MemberCompanies = GetGroupedCRM(true, projectid);
-                data.PublicCompanies = GetPublicCRM(false, projectid);
+                data.MemberCompanies = GetGroupedCRM(true, filters);
+                data.PublicCompanies = GetPublicCRM(false, filters);
             }
             
 
             return data;
         }
 
-        static IQueryable<_CoreLVL> GetGroupedCRM(bool memberonly, int? projectid)
+        static IQueryable<_CoreLVL> GetGroupedCRM(bool memberonly, CRMFilters filters = null)
         {
-            if (projectid == null) projectid = 26;
-            var crms = from c in CH.DB.CompanyRelationships where c.ProjectID == projectid select c;
+            if (filters == null) filters.ProjectId = 26;
+            var crms = from c in CH.DB.CompanyRelationships where c.ProjectID == filters.ProjectId select c;
             if (memberonly)
             {
                 crms = crms.Where(w => w.Members.Count > 0).OrderBy(w=>w.ID);
@@ -39,6 +39,30 @@ namespace Sales.BLL
             else
             {
                 crms = crms.Where(w => w.Members.Count == 0).OrderBy(w => w.ID);
+            }
+            //模糊搜索
+            if (filters != null && !string.IsNullOrWhiteSpace(filters.FuzzyQuery))
+            {
+                crms = crms.Where(q => q.Company.Leads.Any(l => l.Name_CH.Contains(filters.FuzzyQuery) || l.Name_EN.Contains(filters.FuzzyQuery) || l.EMail.Contains(filters.FuzzyQuery) || l.PersonalEmailAddress.Contains(filters.FuzzyQuery)) || q.Company.Name_CH.Contains(filters.FuzzyQuery) || q.Company.Name_EN.Contains(filters.FuzzyQuery) || q.Company.Contact.Contains(filters.FuzzyQuery));
+            }
+            //行业
+            if (filters != null && filters.CategoryId.HasValue)
+            {
+                crms = crms.Where(q => q.Categorys.Any(c => c.ID == filters.CategoryId.Value));
+            }
+            //时区
+            if (filters != null && filters.DistinctNumber.HasValue)
+            {
+                crms = crms.Where(q => q.Company.DistrictNumberID==filters.DistinctNumber);
+            }
+            //点评
+            if (filters != null && filters.IfComment==1)
+            {
+                crms = crms.Where(q => q.Comments.Count>0);
+            }
+            if (filters != null && filters.IfComment == 0)
+            {
+                crms = crms.Where(q => q.Comments.Count == 0);
             }
             var data = from c in CH.DB.CoreLVLs
                        select new _CoreLVL()
@@ -52,7 +76,7 @@ namespace Sales.BLL
                                                  Name= grp.Key.Name,
                                                   ID = grp.Key.ProgressID.Value,
                                                   Count = crms.Where(co=>co.ProgressID==grp.Key.ProgressID && co.CoreLVLID==c.CoreLVLCode).Count(),
-                                                 _CRMs = from crm in grp.Select(s=>s)
+                                                 _CRMs = (from crm in grp.Select(s=>s)
                                                          select new _CRM
                                                          {
                                                                ID= crm.ID,
@@ -62,6 +86,7 @@ namespace Sales.BLL
                                                                ContectedLeadCount = crm.LeadCalls.GroupBy(call=>call.LeadID).Count(),
                                                                LeadCount = CH.DB.Leads.Where(l=>l.CompanyID==crm.CompanyID).Count(),
                                                                CrmCommentStateID = crm.CrmCommentStateID,
+                                                               CrmCommentStateIDOrder = crm.CrmCommentStateID == 1 || crm.CrmCommentStateID == 2 || crm.CrmCommentStateID == 3 ? 1 : 0,
                                                                _Comments=(from co in crm.Comments.OrderByDescending(m=>m.CommentDate)
                                                                           select new _Comment()
                                                                           {
@@ -70,16 +95,16 @@ namespace Sales.BLL
                                                                               CRMID=co.CompanyRelationshipID,
                                                                               Contents=co.Contents
                                                                           })
-                                                         }
+                                                         }).OrderByDescending(cr => cr.CrmCommentStateIDOrder)
                                             }
                            };
-          
            return data;
         }
-        static IQueryable<_CoreLVL> GetPublicCRM(bool memberonly, int? projectid)
+        static IQueryable<_CoreLVL> GetPublicCRM(bool memberonly, CRMFilters filters = null)
         {
-            if (projectid == null) projectid = 26;
-            var crms = from c in CH.DB.CompanyRelationships where c.ProjectID == projectid select c;
+            if (filters.ProjectId == null) filters.ProjectId = 26;
+            var crms = from c in CH.DB.CompanyRelationships where c.ProjectID == filters.ProjectId select c;
+
             if (memberonly)
             {
                 crms = crms.Where(w => w.Members.Count > 0).OrderBy(w => w.ID);
@@ -88,14 +113,37 @@ namespace Sales.BLL
             {
                 crms = crms.Where(w => w.Members.Count == 0).OrderBy(w => w.ID);
             }
-
+            //模糊搜索
+            if (filters != null && !string.IsNullOrWhiteSpace(filters.FuzzyQuery))
+            {
+                crms = crms.Where(q => q.Company.Leads.Any(l => l.Name_CH.Contains(filters.FuzzyQuery) || l.Name_EN.Contains(filters.FuzzyQuery) || l.EMail.Contains(filters.FuzzyQuery) || l.PersonalEmailAddress.Contains(filters.FuzzyQuery)) || q.Company.Name_CH.Contains(filters.FuzzyQuery) || q.Company.Name_EN.Contains(filters.FuzzyQuery) || q.Company.Contact.Contains(filters.FuzzyQuery));
+            }
+            //行业
+            if (filters != null && filters.CategoryId.HasValue)
+            {
+                crms = crms.Where(q => q.Categorys.Any(c => c.ID == filters.CategoryId.Value));
+            }
+            //时区
+            if (filters != null && filters.DistinctNumber.HasValue)
+            {
+                crms = crms.Where(q => q.Company.DistrictNumberID == filters.DistinctNumber);
+            }
+            //点评
+            if (filters != null && filters.IfComment == 1)
+            {
+                crms = crms.Where(q => q.Comments.Count > 0);
+            }
+            if (filters != null && filters.IfComment == 0)
+            {
+                crms = crms.Where(q => q.Comments.Count == 0);
+            }
             var data = from c in CH.DB.CoreLVLs
                        select new _CoreLVL()
                        {
                            CoreName = c.CoreLVLName,
                            ID = c.ID,
                            CrmCount = crms.Where(cr => cr.CoreLVLID == c.CoreLVLCode).Count(),
-                           _CRMs = from crm in crms.Where(cr => cr.CoreLVLID == c.CoreLVLCode)
+                           _CRMs = (from crm in crms.Where(cr => cr.CoreLVLID == c.CoreLVLCode)
                                     select new _CRM
                                     {
                                         ID = crm.ID,
@@ -105,6 +153,7 @@ namespace Sales.BLL
                                         ContectedLeadCount = crm.LeadCalls.GroupBy(call => call.LeadID).Count(),
                                         LeadCount = CH.DB.Leads.Where(l => l.CompanyID == crm.CompanyID).Count(),
                                         CrmCommentStateID = crm.CrmCommentStateID,
+                                        CrmCommentStateIDOrder= crm.CrmCommentStateID==1 || crm.CrmCommentStateID==2 || crm.CrmCommentStateID==3?1:0,
                                         _Comments = (from co in crm.Comments.OrderByDescending(m => m.CommentDate)
                                                         select new _Comment()
                                                         {
@@ -113,7 +162,7 @@ namespace Sales.BLL
                                                             CRMID = co.CompanyRelationshipID,
                                                             Contents = co.Contents
                                                         })
-                                    }
+                                    }).OrderByDescending(cr=>cr.CrmCommentStateIDOrder)
                        };
 
             return data;
