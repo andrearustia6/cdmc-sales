@@ -191,37 +191,43 @@
                     </ul>
                     </div>
                     </div>
-                    <div class="dierye_1">
-                    <div style="float: left; width: 70%;">
-                        点评
+                    <div style="margin:15px 0 5px 0;">
+                         @Html.RadioButton("ComContent", "Comments", true, new { onchange = "onRadioSelect('comments')" })<span style=" font-size:medium;"><b>点评</b></span>
+                         @Html.RadioButton("ComContent", "Statistics", false, new { onchange = "onRadioSelect('statistics')" })<span style=" font-size:medium;"><b>统计</b></span>
                     </div>
-                    <div style="float: left; width: 20%;">
-                        <a class="hide" href="#" onclick="GetAddComment()">
-                            <img src="../images/quan-14.jpg" width="29" height="29" alt="jia"></a>
-                    </div>
-                </div>
-                    <div class="dierye_3">
-                        @if (Model._Comments != null)
-                        {
-                            var i = 1;
-                            foreach (var comment in Model._Comments)
-                            {
-                            <div class="dierye_3_@(i)">
-                                <dl>
-                                    <dt>
-                                        <p>@comment.Contents</p>
-                                        <p>@comment.CommentDate.ToLongDateString() @comment.CommentDate.ToShortTimeString()
-                                            By @comment.Submitter</p>
-                                    </dt>
-                                </dl>
+                    <div id="comments" style="display:none;">
+                        <div class="dierye_1">
+                            <div style="float: left; width: 70%;">点评</div>
+                            <div style="float: left; width: 20%;">
+                                <a class="hide" href="#" onclick="GetAddComment()"><img src="../images/quan-14.jpg" width="29" height="29" alt="jia"/></a>
                             </div>
-                                i++;
-                                if (i > 2)
+                        </div>
+                        <div class="dierye_3">
+                            @if (Model._Comments != null)
+                            {
+                                var i = 1;
+                                foreach (var comment in Model._Comments)
                                 {
-                                    i = 1;
+                                <div class="dierye_3_@(i)">
+                                    <dl>
+                                        <dt>
+                                            <p>@comment.Contents</p>
+                                            <p>@comment.CommentDate.ToLongDateString() @comment.CommentDate.ToShortTimeString()
+                                                By @comment.Submitter</p>
+                                        </dt>
+                                    </dl>
+                                </div>
+                                    i++;
+                                    if (i > 2)
+                                    {
+                                        i = 1;
+                                    }
                                 }
                             }
-                        }
+                        </div>
+                    
+                    </div>
+                    <div id="statistics" style="display:none;">
                     </div>
                 </div>
                 <div class="center" style="width:28%">
@@ -405,5 +411,6 @@
                     alert('修改失败');
             });
         })
+        onRadioSelect('comments');
     })
 </script>
