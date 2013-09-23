@@ -1569,7 +1569,6 @@
         });
     }
 
-
     function onLeadSelectJS(leadid) {
         if ($("#filterbtn" + leadid).val() != null) {
             $("#filterbtn" + leadid).show();
@@ -1599,7 +1598,17 @@
                 $("#filterbtn").hide();
             }
         }
-        
     }
 
+    function onRadioSelect(selector) {
+        if (selector == "") {
+            return;
+        } else if (selector == "comments") {
+            $("#" + selector).show();
+            $("#statistics").hide();
+        } else if (selector == "statistics") {
+            $("#" + selector).show();
+            $("#comments").hide();
+        }
+    }
 </script>
