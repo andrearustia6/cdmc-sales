@@ -730,6 +730,9 @@ namespace Model
 
         [Display(Name = "是否核心")]
         public int? CoreLVLID { get; set; }
+
+        [Display(Name = "VIP客户")]
+        public bool IsVIP { get; set; }
     }
 
     public class AjaxViewLead

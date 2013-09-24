@@ -240,7 +240,8 @@ namespace Sales.Controllers
                 ModifiedUser = companyRelationship.Company.ModifiedUser,
                 Customers = companyRelationship.Company.Customers,
                 Competitor = companyRelationship.Company.Competitor,
-                PitchedPoint = companyRelationship.PitchedPoint
+                PitchedPoint = companyRelationship.PitchedPoint,
+                IsVIP = companyRelationship.Company.IsVIP == null ? false : (bool)companyRelationship.Company.IsVIP
             };
 
             if (companyRelationship.Company.Area != null)
@@ -283,6 +284,16 @@ namespace Sales.Controllers
 
             return Content("");
         }
+        [ValidateInput(false)]
+        public ActionResult CheckMemberShip(int? projectid)
+        {
+            var exist = from c in CH.DB.CompanyRelationships.Where(w => w.ProjectID == projectid && w.Members.Where(m=>m.Name==Employee.CurrentUserName).Any()==true) select c;
+            if (exist.Count() == 0)
+            {
+                return Content("抱歉，您不是member，要成为member才能操作！");
+            }
+            return Content("");
+        }
         [HttpPost]
         [ValidateInput(false)]
         public ActionResult EditCompany(AjaxViewSaleCompany ajaxViewSaleCompany)
@@ -311,6 +322,7 @@ namespace Sales.Controllers
             companyRelationship.Company.ZIP = ajaxViewSaleCompany.ZipCode;
             companyRelationship.Company.Customers = ajaxViewSaleCompany.Customers;
             companyRelationship.Company.Competitor = ajaxViewSaleCompany.Competitor;
+            companyRelationship.Company.IsVIP = ajaxViewSaleCompany.IsVIP;
             companyRelationship.Description = ajaxViewSaleCompany.Desc;
             companyRelationship.ProgressID = ajaxViewSaleCompany.ProgressId;
             companyRelationship.CoreLVLID = ajaxViewSaleCompany.CoreLVLID;
@@ -372,7 +384,7 @@ namespace Sales.Controllers
             companyRelationship.Company.MainClient = string.IsNullOrEmpty(ajaxViewSaleCompany.MainClient) ? "" : ajaxViewSaleCompany.MainClient.Trim();
             companyRelationship.Company.Customers = string.IsNullOrEmpty(ajaxViewSaleCompany.Customers) ? "" : ajaxViewSaleCompany.Customers.Trim();
             companyRelationship.Company.Competitor = string.IsNullOrEmpty(ajaxViewSaleCompany.Competitor) ? "" : ajaxViewSaleCompany.Competitor.Trim();
-
+            companyRelationship.Company.IsVIP = ajaxViewSaleCompany.IsVIP;
             companyRelationship.Description = string.IsNullOrEmpty(ajaxViewSaleCompany.Desc) ? "" : ajaxViewSaleCompany.Desc.Trim();
             companyRelationship.ProgressID = ajaxViewSaleCompany.ProgressId;
             companyRelationship.CoreLVLID = ajaxViewSaleCompany.CoreLVLID;

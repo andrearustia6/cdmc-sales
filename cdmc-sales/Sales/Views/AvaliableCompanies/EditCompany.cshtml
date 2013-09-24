@@ -1,5 +1,4 @@
 ﻿@using Entity
-@using Utl
 @model Model.AjaxViewSaleCompany
 
 @using (Html.BeginForm("EditSaleCompany", "Sales"))
@@ -13,7 +12,20 @@
             <tr>
                 <td colspan="2">
                     @Html.LabelFor(model => model.Name_CN)
-                    @Html.TextBoxFor(model => model.Name_CN, new { @style = "width:370px" })
+                   
+                    @{ 
+                        if (Utl.Employee.CurrentRole.Level == ManagerRequired.LVL)
+                        {
+                                @Html.TextBoxFor(model => model.Name_CN, new { @style = "width:300px" })
+                                @Html.LabelFor(model => model.IsVIP)
+                                @Html.CheckBoxFor(model => model.IsVIP)
+                        }
+                        else
+                        {
+                             @Html.TextBoxFor(model => model.Name_CN, new { @style = "width:370px" })
+                             @Html.HiddenFor(model => model.IsVIP)
+                        }
+                    }
                 </td>
                 <td >
                     @Html.LabelFor(model => model.Name_EN)
@@ -21,7 +33,7 @@
                 </td>
                  <td>
                     @Html.LabelFor(model => model.CoreLVLID)
-                    @Html.DropDownListFor(model => model.CoreLVLID, SelectHelper.CoreLVLSelectList(null), "请选择", new { })
+                    @Html.DropDownListFor(model => model.CoreLVLID, Utl.SelectHelper.CoreLVLSelectList(null), "请选择", new { })
                 </td>
             </tr>
 
@@ -42,15 +54,15 @@
                <tr>
                 <td colspan="2">
                     @Html.LabelFor(model => model.IndustryId)
-                    @Html.DropDownListFor(model => model.IndustryId, SelectHelper.CompanyIndustrySelectList(null), "请选择", new { @style = "width:370px" })
+                    @Html.DropDownListFor(model => model.IndustryId, Utl.SelectHelper.CompanyIndustrySelectList(null), "请选择", new { @style = "width:370px" })
                 </td>
                 <td>
                     @Html.LabelFor(model => model.TypeId)
-                    @Html.DropDownListFor(model => model.TypeId, SelectHelper.CompanyTypeSelectList(null), "请选择", new { })
+                    @Html.DropDownListFor(model => model.TypeId, Utl.SelectHelper.CompanyTypeSelectList(null), "请选择", new { })
                 </td>
                 <td>
                     @Html.LabelFor(model => model.ProgressId)
-                    @Html.DropDownListFor(model => model.ProgressId, SelectHelper.ProgressSelectList(null), "请选择", new { })
+                    @Html.DropDownListFor(model => model.ProgressId, Utl.SelectHelper.ProgressSelectList(null), "请选择", new { })
                 </td>
             </tr>
          
@@ -58,7 +70,7 @@
             <tr>
                 <td>
                     @Html.LabelFor(model => model.DistrictNumberId)
-                    @Html.DropDownListFor(model => model.DistrictNumberId, SelectHelper.DistinctNumberSelectList(null), "中国(默认)", new { })
+                    @Html.DropDownListFor(model => model.DistrictNumberId, Utl.SelectHelper.DistinctNumberSelectList(null), "中国(默认)", new { })
                 </td>
                 <td>
                     @Html.LabelFor(model => model.Province)
@@ -82,11 +94,11 @@
             <tr>
                 <td>
                     @Html.LabelFor(model => model.Scale)
-                    @Html.DropDownListFor(model => model.Scale,SelectHelper.CompanyScaleSelectList(null),"请选择")
+                    @Html.DropDownListFor(model => model.Scale, Utl.SelectHelper.CompanyScaleSelectList(null), "请选择")
                 </td>
                 <td>
                     @Html.LabelFor(model => model.AnnualSales)
-                    @Html.DropDownListFor(model => model.AnnualSales, SelectHelper.AnnualSaleSelectList(null), "请选择")
+                    @Html.DropDownListFor(model => model.AnnualSales, Utl.SelectHelper.AnnualSaleSelectList(null), "请选择")
                 </td>
                 <td>
                     @Html.LabelFor(model => model.MainProduct)
@@ -143,14 +155,14 @@
 
         <fieldset id="categories">
             <legend>细分行业 <span id="categoriesError">必须选择一项</span></legend>
-            @foreach (Category category in CH.GetAllData<Category>(c => c.ProjectID == Model.ProjectId))
+            @foreach (Category category in Utl.CH.GetAllData<Category>(c => c.ProjectID == Model.ProjectId))
             { 
                     
                 <label class="company-category">
                   @if (Model.Categories.Contains(category.ID))
-                {
+                  {
                 <input  name="Categories" type="checkbox" value="@category.ID" checked="checked" />
-                }
+                  }
                   else
                   { 
                 <input  name="Categories" type="checkbox" value="@category.ID"/>
