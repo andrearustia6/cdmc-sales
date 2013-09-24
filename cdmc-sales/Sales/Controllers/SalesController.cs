@@ -209,11 +209,11 @@ namespace Sales.Controllers
 
             if (ModelState.IsValid)
             {
-                var CRM = CH.GetDataById<CompanyRelationship>(item.CompanyRelationshipID);
-                var CRMCompany = CH.GetDataById<Company>(CRM.CompanyID);
-                CRMCompany.Address = String.IsNullOrEmpty(Request["Address_CH"]) ? null : Request["Address_CH"].Trim();
-                CRMCompany.Address_EN = String.IsNullOrEmpty(Request["Address_EN"]) ? null : Request["Address_EN"].Trim();
-                CH.Edit<Company>(CRMCompany);
+                //var CRM = CH.GetDataById<CompanyRelationship>(item.CompanyRelationshipID);
+                //var CRMCompany = CH.GetDataById<Company>(CRM.CompanyID);
+                //CRMCompany.Address = String.IsNullOrEmpty(Request["Address_CH"]) ? null : Request["Address_CH"].Trim();
+                //CRMCompany.Address_EN = String.IsNullOrEmpty(Request["Address_EN"]) ? null : Request["Address_EN"].Trim();
+                //CH.Edit<Company>(CRMCompany);
 
                 item.Sales = Employee.CurrentUserName;
                 string prefix = CH.GetDataById<Project>(projectid).ProjectCode + DateTime.Now.Year.ToString();
