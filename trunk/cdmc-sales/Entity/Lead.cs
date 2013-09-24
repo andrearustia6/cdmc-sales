@@ -147,6 +147,9 @@ namespace Entity
 
         [Display(Name = "竞争对手")]
         public string Competitor { get; set; }
+
+        [Display(Name = "VIP客户")]
+        public bool? IsVIP { get; set; }
     }
 
     /// <summary>

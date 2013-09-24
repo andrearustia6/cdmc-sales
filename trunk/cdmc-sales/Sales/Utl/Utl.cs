@@ -287,6 +287,24 @@ namespace Utl
             return list.OrderBy(o => o);
         }
 
+        public static IQueryable<string> GetAvailbleMembers(int? projectid, params string[] ms)
+        {
+            var list = GetEmplyeeByLVL(SalesRequired.LVL, LeaderRequired.LVL);
+            var manager = CH.DB.Projects.Where(p=>p.ID==projectid).Select(p=>p.Manager);
+            var market= CH.DB.Projects.Where(p=>p.ID==projectid).Select(p=>p.Market);
+            var product= CH.DB.Projects.Where(p=>p.ID==projectid).Select(p=>p.Product);
+            list=list.Union(manager).Union(market).Union(product);
+            //if (ms != null)
+            //{
+            //    ms.ToList().ForEach(m =>
+            //    {
+            //        if (!string.IsNullOrEmpty(m))
+            //            list.Add(Membership.GetUser(m));
+            //    });
+            //}
+
+            return list.OrderBy(o => o);
+        }
         public static object GetCurrentProfile(string propertyName)
         {
             var user = Employee.CurrentUserName;
