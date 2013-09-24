@@ -1133,7 +1133,7 @@ namespace BLL
 
                 var user = Employee.CurrentUserName;
                 var deals = from d in CH.DB.Deals
-                            where d.Sales == user && d.Income == 0 && d.Abandoned==true
+                            where d.Sales == user && d.Income == 0 && d.Abandoned==false
                             select d;
 
                 return deals;
