@@ -3,10 +3,12 @@
 @model _AvaliableCompanies
 
 
-<div class="memberCompanies">
+<div class="memberCompanies" >
+
 @{
     if(Model.MemberCompanies!=null)
     {
+    <span>在打公司</span>
         @(Html.Telerik().TreeView().Name("memberCompanies")
         .HtmlAttributes(new { style = "" })
         .ClientEvents(e => e.OnSelect("onIndexSelect"))
@@ -53,11 +55,12 @@
 }
     
 </div>
-公海
+
 <div class="publicCompanies">
 @{
     if (Model.MemberCompanies != null)
     { 
+        <span>公海公司</span>
         @(Html.Telerik().TreeView().Name("publicCompanies").HtmlAttributes(new { style = "" })
                         .ClientEvents(e => e.OnSelect("onIndexSelectPublic"))
                 .BindTo(Model.PublicCompanies, mappings =>
@@ -114,9 +117,7 @@
                 jQuery(".PickUp").hide();
             });
         }
-//        $.post('_SelectedCRMNode', { crmid: clickedvalue }, function (result) {
-//            $('#crmdetailscontainer').html(result);
-//        });
+        
 
     }
     //公海公司选择
@@ -147,9 +148,7 @@
                 hidebtn();
             });
         }
-        //        $.post('_SelectedCRMNode', { crmid: clickedvalue }, function (result) {
-        //            $('#crmdetailscontainer').html(result);
-        //        });
+        
 
     }
     function OnmemberLoad() {
@@ -161,6 +160,7 @@
     function hidebtn() {
         jQuery(".hide").hide();
         jQuery(".click").removeAttr("onclick");
-        
+
     }
+    
 </script>
