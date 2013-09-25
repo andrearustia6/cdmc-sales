@@ -134,7 +134,9 @@
                         @Html.LabelFor(model => model.Deal)
                     </td>
                     <td rowspan="5">
-                        @{if (Model.IsAdminConfirm == true)
+                        @Html.Telerik().CurrencyTextBoxFor(model => model.Deal)
+                        @Html.ValidationMessageFor(model => model.Deal)
+                        @* @{if (Model.IsAdminConfirm == true)
                           {
                             @Html.Telerik().CurrencyTextBoxFor(model => model.Deal).Enable(false)
                             @Html.HiddenFor(model => model.Deal)
@@ -144,7 +146,7 @@
                             @Html.Telerik().CurrencyTextBoxFor(model => model.Deal)
                             @Html.ValidationMessageFor(model => model.Deal)
                           }
-                        }
+                        }*@
                     </td>
                     <td style="width: 140px; text-align: right;">
                         <label id="1stWeek">
