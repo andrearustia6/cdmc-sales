@@ -136,7 +136,7 @@
 
  
 </div>
-@(Html.Telerik().Splitter().Name("sp1").HtmlAttributes(new { style = "min-height: 800px;overflow:auto;" })
+@(Html.Telerik().Splitter().Name("sp1").HtmlAttributes(new { style = "height: 664px;overflow:auto;" })
               .Orientation(SplitterOrientation.Horizontal).Panes(panes =>
               {
                   panes.Add().Size("20%").Content(@<text>@GetCRMS()</text>);
@@ -155,7 +155,7 @@
 @helper GetCompanyDetails()
     {
         var aa = new _CRM();
-        <div id="crmdetailscontainer" style="overflow: scroll; height: 790px;">
+        <div id="crmdetailscontainer" style="overflow: scroll; height: 660px;">
         </div>
 }
 @(Html.Telerik().Window().Title("添加公司")
