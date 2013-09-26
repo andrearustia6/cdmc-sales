@@ -31,7 +31,7 @@ namespace Sales.Controllers
         [GridAction]
         public ActionResult _SelectIndex()
         {
-            return View(new GridModel(getData()));
+            return View(new GridModel(getData().OrderBy(o=>o.AccountName)));
         }
 
 
@@ -80,6 +80,7 @@ namespace Sales.Controllers
                        select new AjaxEmployee
                        {
                            ID = l.ID,
+                           IsActivated = l.IsActivated,
                            AccountName = l.AccountName,
                            DepartmentName = (l.Department != null ? l.Department.Name : string.Empty),
                            RoleName = (l.Role != null ? l.Role.Name : string.Empty),
