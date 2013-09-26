@@ -16,9 +16,13 @@
     @Html.Partial("contenttitle", "财务到账确认")
     </text>
     }
-    else
+    else if (Utl.Employee.CurrentRole.Level == 3)
     {
     <text> @Html.Partial("contenttitle", "会务出单确认")</text>
+    }
+    else
+    {
+    <text> @Html.Partial("contenttitle", "板块出单确认")</text>
     }
 }
 <div id="filter-container" style="height: 30px;">
@@ -115,9 +119,24 @@
     .Width(1000).Height(570).Draggable(true).Modal(true).Visible(false)
 )
   }
-  else
+  else if (Utl.Employee.CurrentRole.Level == 3)
   {
     @(Html.Telerik().Window().Title("会务出单确认")
+        .Name("confirmDeal")
+    .Content(@<text><div class="dialogue-quickdeal">
+        <div class="confirmDeal-wrapper">
+        </div>
+        <div class="dialogue-buttons" style="float: right;">
+            <input type="button" class="btn-queding" onclick="OkConfirm()" />
+            <input type="button" class="btn-quxiao" onclick="CancelConfirm()" />
+        </div>
+    </div></text>)
+          .Width(1000).Height(600).Draggable(true).Modal(true).Visible(false)
+)
+  }
+  else
+  {
+    @(Html.Telerik().Window().Title("板块出单确认")
         .Name("confirmDeal")
     .Content(@<text><div class="dialogue-quickdeal">
         <div class="confirmDeal-wrapper">
@@ -154,7 +173,7 @@
         @{
             if (Utl.Employee.CurrentRole.Level == 4)
             { }
-            else
+            else if (Utl.Employee.CurrentRole.Level == 3)
             {
                 <text>
                 if ((e.dataItem.IsConfirm == "是")) {
@@ -162,6 +181,12 @@
                     $(e.row).find("button[name='confirm']").text('编辑');
                 }
                 </text>
+            }
+            else
+            {
+             <text>
+             $(e.row).find("button[name='confirm']").text('编辑');
+             </text>
             }
         }
     }

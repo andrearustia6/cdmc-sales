@@ -285,7 +285,7 @@ namespace Sales.Controllers
                          };
                 return ds.OrderByDescending(o => o.SignDate).ToList();
             }
-            else//会务确定出单
+            else if (Employee.CurrentRole.Level == 3) //会务确定出单
             {
                 var user = Employee.CurrentUserName.Trim();
                 var pids = new List<int>();
@@ -302,6 +302,39 @@ namespace Sales.Controllers
                 }
 
                 deals = deals.Where(w => pids.Any(a => a == w.ProjectID));
+                var ds = from d in deals
+                         select new AjaxViewDeal
+                         {
+                             CompanyNameEN = d.CompanyRelationship.Company.Name_EN,
+                             CompanyNameCH = d.CompanyRelationship.Company.Name_CH,
+                             DealCode = d.DealCode,
+                             Abandoned = d.Abandoned,
+                             AbandonReason = d.AbandonReason,
+                             ActualPaymentDate = d.ActualPaymentDate,
+                             Committer = d.Committer,
+                             CommitterContect = d.Committer,
+                             CommitterEmail = d.CommitterEmail,
+                             ExpectedPaymentDate = d.ExpectedPaymentDate,
+                             ID = d.ID,
+                             Income = d.Income,
+                             IsClosed = d.IsClosed,
+                             PackageNameCH = d.Package.Name_CH,
+                             PackageNameEN = d.Package.Name_EN,
+                             Payment = d.Payment,
+                             Currency = d.Currencytype.Name,
+                             PaymentDetail = d.PaymentDetail,
+                             Sales = d.Sales,
+                             ProjectCode = d.Project.ProjectCode,
+                             SignDate = d.SignDate,
+                             TicketDescription = d.TicketDescription,
+                             IsConfirm = (d.IsConfirm == true ? "是" : "否"),
+                             ModifiedDate = d.ModifiedDate,
+                         };
+                return ds.OrderByDescending(o => o.SignDate).ToList();
+            }
+            else//板块修改deal
+            {
+                deals = deals.Where(d => CH.DB.Projects.Where(p => p.Manager == Employee.CurrentUserName).Any(p => p.ID == d.ProjectID));
                 var ds = from d in deals
                          select new AjaxViewDeal
                          {
@@ -522,7 +555,7 @@ namespace Sales.Controllers
                 item.AbandonReason = newData.AbandonReason;
                 CH.Edit<Deal>(item);
             }
-            else
+            else if (Employee.CurrentRole.Level == 3)
             {
                 var item = CH.GetDataById<Deal>(newData.ID);
                 if (item.IsConfirm != true)
@@ -545,6 +578,12 @@ namespace Sales.Controllers
                     item.TicketDescription = newData.TicketDescription;
                     CH.Edit<Deal>(item);
                 }
+            }
+            else
+            {
+                var item = CH.GetDataById<Deal>(newData.ID);
+                item.Payment = newData.Payment;
+                CH.Edit<Deal>(item);
             }
             return Json(new { dealName = newData.DealCode });
         }

@@ -153,9 +153,8 @@
         </table>
     </fieldset>
     }
-    else
+    else if (Employee.CurrentRole.Level == 3)
     {
-    
     <fieldset>
         <legend>出单信息列表</legend>
         <table style="width: 100%">
@@ -378,6 +377,151 @@
                 </tr>
             </table>
         }
+    </fieldset>
+    }
+    else
+    {
+    <fieldset>
+        <legend>板块修改出单</legend>
+        <table style="width: 100%">
+            <tr>
+                <td style="width: 12%;">
+                    @Html.LabelFor(model => model.CompanyName)
+                </td>
+                <td style="width: 13%;">
+                    @Html.DisplayFor(model => model.CompanyName)
+                </td>
+                <td style="width: 12%;">
+                    @Html.LabelFor(model => model.ProjectCode)
+                </td>
+                <td style="width: 13%;">
+                    @Html.DisplayFor(model => model.ProjectCode)
+                </td>
+                <td style="width: 12%;">
+                    @Html.LabelFor(model => model.DealCode)
+                </td>
+                <td style="width: 13%;">
+                    @Html.DisplayFor(model => model.DealCode)
+                </td>
+                <td style="width: 12%;">
+                    @Html.LabelFor(model => model.IsConfirm)
+                </td>
+                <td style="width: 13%;">
+                    @Html.DisplayFor(model => model.IsConfirm)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.Committer)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.Committer)
+                </td>
+                <td>
+                    @Html.LabelFor(model => model.CommitterEmail)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.CommitterEmail)
+                </td>
+                <td>
+                    @Html.LabelFor(model => model.ExpectedPaymentDate)
+                </td>
+                <td>
+                    @Html.Telerik().DatePickerFor(model => model.ExpectedPaymentDate).Enable(false).InputHtmlAttributes(new { style = "width:100px" })
+                </td>
+                <td>
+                    @Html.LabelFor(model => model.Payment)
+                </td>
+                <td>
+                    @Html.Telerik().NumericTextBoxFor(model => model.Payment).DecimalDigits(0).InputHtmlAttributes(new { style = "width:60px" })
+                    @Html.DisplayFor(model => model.Currency)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.CommitterContect)
+                </td>
+                <td colspan="3">
+                    @Html.DisplayFor(model => model.CommitterContect)
+                </td>
+                <td>
+                    @Html.LabelFor(model => model.PackageName)
+                </td>
+                <td colspan="3">
+                    @Html.DisplayFor(model => model.PackageName)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.TicketDescription)
+                </td>
+                <td colspan="3">
+                    @Html.DisplayFor(model => model.TicketDescription)
+                </td>
+                <td>
+                    @Html.LabelFor(model => model.PaymentDetail)
+                </td>
+                <td colspan="3">
+                    @Html.DisplayFor(model => model.PaymentDetail)
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+    <fieldset>
+        <legend>参会人信息列表</legend>
+        @(Html.Telerik().Grid<AjaxParticipant>().Name("pList").BindTo(ViewData["pList"] as IEnumerable<AjaxParticipant>)
+            .DataKeys(keys =>
+            {
+                keys.Add(s => s.ID);
+            })
+            .Columns(c =>
+            {
+                c.Bound(p => p.Name).Title("客户名称").Width(100);
+                c.Bound(p => p.Title).Title("客户职位").Width(100);
+                c.Bound(p => p.Gender).Title("客户性别").Width(100);
+                c.Bound(p => p.Mobile).Title("移动电话").Width(100);
+                c.Bound(p => p.Contact).Title("客户直线").Width(100);
+                c.Bound(p => p.Email).Title("电子邮箱").Width(120);
+                c.Bound(p => p.ParticipantTypeName).Title("参会类型").Width(100);
+            })
+            .DataBinding(dataBinding =>
+            {
+                dataBinding.Ajax()
+                    .Select("_SelectAjaxParticipant", "Deal", new { id = Model.ID });
+            }).Scrollable(scrolling => scrolling.Height(90)))
+    </fieldset>
+    <fieldset>
+        <legend>付款信息和坏账信息</legend>
+        <table style="width: 100%">
+            <tr>
+                <td style="width: 10%">
+                    @Html.LabelFor(model => model.ActualPaymentDate)
+                </td>
+                <td style="width: 23%">
+                    @Html.DisplayFor(model => model.ActualPaymentDate)
+                </td>
+                <td style="width: 10%">
+                    @Html.LabelFor(model => model.Income)
+                </td>
+                <td style="width: 23%">
+                    @Html.DisplayFor(model => model.Income)
+                </td>
+                <td style="width: 10%">
+                    @Html.LabelFor(model => model.Abandoned)
+                </td>
+                <td style="width: 23%">
+                    @Html.DisplayFor(model => model.Abandoned)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.AbandonReason)
+                </td>
+                <td colspan="5">
+                    @Html.TextAreaFor(model => model.AbandonReason, new { style = "width:100%", @readonly = "readonly" })
+                </td>
+            </tr>
+        </table>
     </fieldset>
     }
 }
