@@ -221,7 +221,7 @@ namespace BLL
             public static IEnumerable<SelectListItem> GetProjectsDDL()
             {
                 List<SelectListItem> selectList = new List<SelectListItem>();
-                var projects = CH.DB.Projects.Where(w => w.IsActived == true );
+                var projects = CH.DB.Projects.Where(w => w.IsActived == true && w.Members.Where(m=>m.Name==Employee.CurrentUserName).Any()==true );
                 var ret = from p in projects
                           select new _CommissionProjects
                           {
