@@ -77,6 +77,8 @@
                            });
                        }
 
+
+
                        if (score >= DirectorRequired.LVL)
                        {
                            menu.Add().Text("配置").ImageUrl("~/Content/Common/Icons/test.png").Items(item =>
@@ -161,6 +163,10 @@
                                if (score == ManagerRequired.LVL || score == SuperManagerRequired.LVL)
                                {
                                    item.Add().Url("~/TargetOfMonth/TargetOfMonthForProject").Text("项目月目标");
+                               }
+                               if (score == ManagerRequired.LVL)
+                               {
+                                   item.Add().Url("~/Deal/ConfirmList").Text("板块出单确认");
                                }
                            });
 
