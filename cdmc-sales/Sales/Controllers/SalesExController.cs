@@ -1020,6 +1020,55 @@ namespace Sales.Controllers
         }
 
 
+        [AcceptVerbs(HttpVerbs.Post)]
+        [GridAction]
+        public ActionResult _InsertAjaxParticipant(AjaxParticipant item)
+        {
+            List<AjaxParticipant> pList = new List<AjaxParticipant>();
+            if (Session["pList"] != null)
+            {
+                pList = Session["pList"] as List<AjaxParticipant>;
+            }
+            if (ModelState.IsValid)
+            {
+                ParticipantType pt = null;
+                if (item.ParticipantTypeID != null)
+                {
+                    pt = CH.GetDataById<ParticipantType>((int)item.ParticipantTypeID);
+                }
+                if (pt != null)
+                {
+                    item.ParticipantTypeName = pt.Name;
+                }
+                item.ID = pList.Count + 1;
+                pList.Add(item);
+            }
+            
+            //Rebind the grid       
+            return View(new GridModel(pList));
+        }
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        [GridAction]
+        public ActionResult _DeleteAjaxParticipant(int id)
+        {
+            List<AjaxParticipant> pList = new List<AjaxParticipant>();
+            if (Session["pList"] != null)
+            {
+                pList = Session["pList"] as List<AjaxParticipant>;
+            }
+            if (ModelState.IsValid)
+            {
+                //int index = pList.FindIndex(ap => ap.Name == item.Name && ap.ParticipantTypeID == item.ParticipantTypeID);
+                //if (index != -1)
+                //pList.RemoveAt(index);
+                pList.RemoveAll(p=>p.ID == id);
+                
+            }
+            return View(new GridModel(pList));
+        }
+
+
         public ActionResult GetBulkEntry(int? projectId)
         {
             var progress = CH.GetAllData<Progress>().Where(p => p.Code == 10).FirstOrDefault();

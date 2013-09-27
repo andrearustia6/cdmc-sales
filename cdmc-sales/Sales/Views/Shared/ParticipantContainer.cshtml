@@ -46,6 +46,21 @@
                             参会类型：@Html.DropDownList("ParticipantTypeID", new SelectList(CH.GetAllData<ParticipantType>(), "ID", "Name"), "-请选择-")<font
                                 style="color: Red">*</font>
                         </td>
+                        <td>
+                            国内邮编：@Html.TextBox("ZIP")<font style="color: Red">*</font>
+                        </td>
+                        <td>
+                            国内地址：@Html.TextBox("Address")<font style="color: Red">*</font>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            公司Lead：
+                            @if (Model.CompanyRelationship.CompanyID != null)
+                            {
+                                @Html.DropDownList("CompanyLeadID", SelectHelper.CompanyLeadsSelectList((int)Model.CompanyRelationship.CompanyID), "- 请选择 -", new { onchange = "onLeadSelected(this.value)" })
+                            }
+                        </td>
                     </tr>
                 </table>
                 <center>
@@ -53,7 +68,47 @@
                 </center>
                 @Html.Hidden("ProjectID", Model.ProjectID)
                 @Html.Hidden("DealID", Model.ID)
+                @Html.Hidden("CRMID", Model.CompanyRelationshipID)
+                @Html.Hidden("CompanyID", Model.CompanyRelationship.Company.ID)
             </div>
         </center>
     </fieldset>
+
 </div>
+<script type="text/javascript" language="javascript">
+    function onLeadSelected(leadid) {
+        if (leadid != null && leadid != "") {
+            $.ajax({
+                url: "/Sales/GetLeadById",
+                type: "post",
+                data: { id: leadid },
+                error: function () {
+                    alert("获取Lead信息失败");
+                },
+                success: function (data) {
+                    var leadstring = data;
+                    var lead = new Array();
+                    lead = leadstring.split(",");
+
+                    $(".addParticipant #Name").val(lead[0]);
+                    $(".addParticipant #Title").val(lead[1]);
+                    $(".addParticipant #Gender").val(lead[2]);
+                    $(".addParticipant #Mobile").val(lead[3]);
+                    $(".addParticipant #Contact").val(lead[4]);
+                    $(".addParticipant #Email").val(lead[5]);
+                    $(".addParticipant #ZIP").val(lead[6]);
+                    $(".addParticipant #Address").val(lead[7]);
+                }
+            });
+        } else {
+            $(".addParticipant #Name").val();
+            $(".addParticipant #Title").val();
+            $(".addParticipant #Gender").val();
+            $(".addParticipant #Mobile").val();
+            $(".addParticipant #Contact").val();
+            $(".addParticipant #Email").val();
+            $(".addParticipant #ZIP").val();
+            $(".addParticipant #Address").val();
+        }
+    }
+</script>

@@ -36,6 +36,12 @@
                         参会类型：@Html.DropDownListFor(m => m.ParticipantTypeID, new SelectList(CH.GetAllData<ParticipantType>(), "ID", "Name"), "-请选择-")<font
                             style="color: Red">*</font>
                     </td>
+                    <td>
+                        国内邮编：@Html.TextBoxFor(m => m.ZIP)<font style="color: Red">*</font>
+                    </td>
+                    <td>
+                        国内地址：@Html.TextBoxFor(m => m.Address)<font style="color: Red">*</font>
+                    </td>
                 </tr>
             </table>
         </center>

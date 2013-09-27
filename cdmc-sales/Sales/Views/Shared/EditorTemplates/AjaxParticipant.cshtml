@@ -1,0 +1,64 @@
+@model AjaxParticipant
+@using Entity
+@using Utl
+    <fieldset>
+     <legend>参会人信息</legend>
+        <table>
+            <tr>
+                <td>@Html.LabelFor(model => model.Name)</td>
+                <td>
+                    @Html.EditorFor(model => model.Name)<br />
+                    @Html.ValidationMessageFor(model => model.Name)
+                </td>
+                <td>@Html.LabelFor(model => model.Title)</td>
+                <td>
+                    @Html.EditorFor(model => model.Title)<br />
+                    @Html.ValidationMessageFor(model => model.Title)
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.Gender)</td>
+                <td>
+                    @Html.DropDownListFor(model => model.Gender, new SelectList(new List<string>() { "Mr", "Mrs" }, "-请选择-"))<br />
+                    @Html.ValidationMessageFor(model => model.Gender)
+                </td>
+                <td>@Html.LabelFor(model => model.Mobile)</td>
+                <td>
+                    @Html.EditorFor(model => model.Mobile)<br />
+                    @Html.ValidationMessageFor(model => model.Mobile)
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.Contact)</td>
+                <td>
+                    @Html.EditorFor(model => model.Contact)<br />
+                    @Html.ValidationMessageFor(model => model.Contact)
+                </td>
+                <td>@Html.LabelFor(model => model.Email)</td>
+                <td>
+                    @Html.EditorFor(model => model.Email)<br />
+                    @Html.ValidationMessageFor(model => model.Email)
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.ZIP)</td>
+                <td>
+                    @Html.EditorFor(model => model.ZIP)<br />
+                    @Html.ValidationMessageFor(model => model.ZIP)
+                </td>
+                <td>@Html.LabelFor(model => model.Address)</td>
+                <td>
+                    @Html.EditorFor(model => model.Address)<br />
+                    @Html.ValidationMessageFor(model => model.Address)
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.ParticipantTypeID)</td>
+                <td>
+                    @Html.DropDownListFor(model => model.ParticipantTypeID, new SelectList(CH.GetAllData<ParticipantType>(), "ID", "Name"), "-请选择-")<br />
+                    @Html.ValidationMessageFor(model => model.ParticipantTypeID)
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+
