@@ -149,10 +149,12 @@ namespace Sales.Controllers
         }
 
         #endregion participant
-        public ActionResult ModifyParticipant(int? dealid, int? projectid)
+        public ActionResult ModifyParticipant(int? dealid, int? projectid, int? crmid,int ? companyid)
         {
             ViewBag.ProjectID = projectid;
             ViewBag.DealID = dealid;
+            ViewBag.CRMID = crmid;
+            ViewBag.CompanyID = companyid;
             return View(CH.GetDataById<Deal>(dealid));
         }
 
@@ -175,6 +177,34 @@ namespace Sales.Controllers
             {
                 return PartialView(@"~\views\shared\PageMessage.cshtml", "参会类型不能为空");
             }
+            if (string.IsNullOrEmpty(p.ZIP))
+            {
+                return PartialView(@"~\views\shared\PageMessage.cshtml", "国内邮编不能为空");
+            }
+            else
+            {
+                if (!SelectHelper.IsTelephone(p.ZIP))
+                {
+                    return PartialView(@"~\views\shared\PageMessage.cshtml", "国内邮编只能为数字");
+                }
+            }
+            if (string.IsNullOrEmpty(p.Address))
+            {
+                return PartialView(@"~\views\shared\PageMessage.cshtml", "国内地址不能为空");
+            }
+            
+            string CompanyLeadID = string.IsNullOrEmpty(Request["CompanyLeadID"]) ? null : Request["CompanyLeadID"].Trim();
+            //string CompanyID = string.IsNullOrEmpty(Request["CompanyID"]) ? null : Request["CompanyID"].Trim();
+            //string CRMID = string.IsNullOrEmpty(Request["CRMID"]) ? null : Request["CRMID"].Trim();
+            if (!String.IsNullOrEmpty(CompanyLeadID) && CompanyLeadID != "0")
+            {
+                var lead = CH.GetDataById<Lead>(Convert.ToInt32(CompanyLeadID));
+                lead.ZIP = p.ZIP;
+                lead.Address = p.Address;
+
+                CH.Edit<Lead>(lead);
+            }
+            
 
             if (p.ID == 0)
                 CH.Create<Participant>(p);
@@ -1744,6 +1774,35 @@ namespace Sales.Controllers
                             Result=cs.Result
                         };
             return View(new GridModel(rets));
+        }
+
+        [HttpPost]
+        public string GetLeadById(int id)
+        {
+            StringBuilder result = new StringBuilder();
+            if (id != null && id != 0)
+            {
+                var lead = CH.GetDataById<Lead>(id);
+                if (lead != null)
+                {
+                    result.Append(lead.Name);
+                    result.Append(",");
+                    result.Append(lead.Title);
+                    result.Append(",");
+                    result.Append(lead.Gender);
+                    result.Append(",");
+                    result.Append(lead.Mobile);
+                    result.Append(",");
+                    result.Append(lead.Contact);
+                    result.Append(",");
+                    result.Append(lead.EMail);
+                    result.Append(",");
+                    result.Append(lead.ZIP);
+                    result.Append(",");
+                    result.Append(lead.Address);
+                }
+            }
+            return result.ToString();
         }
     }
 }

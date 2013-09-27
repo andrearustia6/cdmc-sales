@@ -115,6 +115,8 @@ function getParticipant($pdiv) {
     var mobile = $pdiv.find('#Mobile').val();
     var email = $pdiv.find('#Email').val();
     var projectid = $pdiv.find('#ProjectID').val();
+    var zip = $pdiv.find('#ZIP').val();
+    var address = $pdiv.find('#Address').val();
     var p = { 
         ID: id,
         Name: name,
@@ -125,7 +127,9 @@ function getParticipant($pdiv) {
         Contact: contact,
         Mobile: mobile,
         Email: email,
-        ProjectID: projectid
+        ProjectID: projectid,
+        ZIP: zip,
+        Address: address
     }
 
     p = JSON.stringify(p);

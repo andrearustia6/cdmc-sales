@@ -362,11 +362,12 @@ namespace Utl
 
         public static bool IsTelephone(string val)
         {
-            string tempchar = "";
             if (string.IsNullOrEmpty(val)) return false;
             for (int i = 0; i < val.Length; i++)
             {
-                tempchar = val.Substring(i, i + 1);
+                string tempchar = "";
+                //tempchar = val.Substring(i, i + 1);
+                tempchar = val.Substring(i, 1);
                 if (!(tempchar == "0" || tempchar == "1" || tempchar == "2" || tempchar == "3" || tempchar == "4" || tempchar == "5" || tempchar == "6" || tempchar == "7" || tempchar == "8" || tempchar == "9" || tempchar == "-" || tempchar == " "))
                 {
                     return false;
@@ -505,5 +506,24 @@ namespace Utl
             return selectList;
         }
 
+
+        public static IEnumerable<SelectListItem> CompanyLeadsSelectList(int companyid, int? selectVal = null)
+        {
+            List<SelectListItem> selectList = new List<SelectListItem>();
+
+            //var query = from c in CH.DB.CompanyRelationships.Where(w => w.Project.ID == projectid && w.Company.ID == companyid) select c.Company.Leads;
+            var leads = CH.GetAllData<Lead>().Where(l => l.CompanyID == companyid);
+
+            foreach (Lead lead in leads)
+            {
+                SelectListItem selectListItem = new SelectListItem { Text = lead.Name, Value =lead.ID.ToString() };
+                if (selectVal.HasValue && lead.ID == selectVal.Value)
+                {
+                    selectListItem.Selected = true;
+                }
+                selectList.Add(selectListItem);
+            }
+            return selectList;
+        }
     }
 }

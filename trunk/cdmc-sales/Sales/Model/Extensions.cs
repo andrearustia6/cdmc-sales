@@ -624,6 +624,8 @@ namespace Entity
                 query = query.Where(q => q.Categorys.Any(c => catId.Any(a => a == c.ID)));
             }
 
+            query = query.Where(q => q.Company.Leads.All(l => l.EMail != null && l.EMail != ""));
+
             var leads = query.Select(s => s.Company).SelectMany(s => s.Leads);
 
             return leads;

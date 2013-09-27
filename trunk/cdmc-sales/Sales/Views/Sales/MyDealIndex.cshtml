@@ -46,7 +46,7 @@
                     详细</a>
                     @{if (item.IsConfirm != true)
                       {
-                        <span>| </span><a href=@Url.Content("~/sales/ModifyParticipant/?dealid=" + item.ID + "&projectid=" + item.ProjectID + "&crmid=" + item.CompanyRelationshipID) >
+                        <span>| </span><a href=@Url.Content("~/sales/ModifyParticipant/?dealid=" + item.ID + "&projectid=" + item.ProjectID + "&crmid=" + item.CompanyRelationshipID + "&companyid=" + item.CompanyRelationship.Company.ID) >
                             参会客户编辑</a>
                         <span>| </span> <a href=@Url.Content("~/sales/EditDeal/?id=" + item.ID + "&projectid=" + item.ProjectID) >
                             编辑</a> 

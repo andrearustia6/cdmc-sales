@@ -1065,13 +1065,6 @@ function QuickDeal() {
         hasError = true;
     }
 
-    //if ($('.dialogue-quickdeal form #Address_CH')) {
-    //    if ($('.dialogue-quickdeal form #Address_CH').val().isEmpty()) {
-    //        $('.dialogue-quickdeal form #Address_CH').addClass('fieldError');
-    //        hasError = true;
-    //    } 
-    //}
-
     // end validation for deal
 
     // validation for participant
@@ -1313,4 +1306,10 @@ function SendEmail() {
 function CancelSendEmail() {
     var window = $('#SendEmail').data('tWindow');
     window.close();
+}
+
+function PopupLocation(e) {
+    $(e.form).closest(".t-window")
+             .data("tWindow")
+             .center();
 }
