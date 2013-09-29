@@ -170,39 +170,58 @@ namespace Sales.BLL
         public static _CRM _CRMGetAvaliableCrmDetail(int? crmid)
         {
             var data = CH.GetDataById<CompanyRelationship>(crmid);
-            var callsgrp = data.LeadCalls.OrderByDescending(c => c.CallDate).GroupBy(c => c.LeadID)
-                                .Where(g => g.Count() >= 1)
-                                .Select(g => g.ElementAt(0));
+            bool hasvalue = false;
+            var callsgrp = data.LeadCalls.OrderByDescending(c => c.CallDate).GroupBy(c => c.LeadID).Where(g => g.Count() >= 1).Select(g => g.ElementAt(0));
+           //覆盖率 = 以打lead数/总数 *１００％
+           // 不同时差数，是ｌｅａｄ所在ｌｅａｄｄｉｓｃｔｉｎｃｔｉｄ有几个不同
+           //  个人类型数量是个ｌｉｓｔ
+           // 各个ｃａｌｌｔｙｐｅ的数量
             var crm = new _CRM()
             {
-                ID=data.ID,
-                CompanyID=data.CompanyID,
+                ID = data.ID,
+                CompanyID = data.CompanyID,
                 CompanyNameEN = data.Company.Name_EN,
-                CompanyNameCH=data.Company.Name_CH,
-                Contact=data.Company.Contact,
-                Fax=data.Company.Fax,
-                Email="没找到字段",
-                BlowedCount = callsgrp.Where(c => c.LeadCallTypeID == 2).Count(),
-                NoPitchCount = callsgrp.Where(c => c.LeadCallTypeID == 3).Count(),
-                PitchCount = callsgrp.Where(c => c.LeadCallTypeID == 4).Count(),
-                FullPitchCount = callsgrp.Where(c => c.LeadCallTypeID == 5).Count(),
-                CallBackedCount = callsgrp.Where(c => c.LeadCallTypeID == 6).Count(),
-                QualifiedDecisionCount = callsgrp.Where(c => c.LeadCallTypeID == 8).Count(),
-                WaitForApproveCount = callsgrp.Where(c => c.LeadCallTypeID == 7).Count(),
-                CloseDealCount = callsgrp.Where(c => c.LeadCallTypeID == 9).Count(),
+                CompanyNameCH = data.Company.Name_CH,
+                Contact = data.Company.Contact,
+                Fax = data.Company.Fax,
+                Email = "没找到字段",
+                BlowedCount = callsgrp != null ? callsgrp.Where(c => c.LeadCallTypeID == 2).Count() : 0,
+                NoPitchCount = callsgrp != null ? callsgrp.Where(c => c.LeadCallTypeID == 3).Count() : 0,
+                PitchCount = callsgrp != null ? callsgrp.Where(c => c.LeadCallTypeID == 4).Count() : 0,
+                FullPitchCount = callsgrp != null ? callsgrp.Where(c => c.LeadCallTypeID == 5).Count() : 0,
+                CallBackedCount = callsgrp != null ? callsgrp.Where(c => c.LeadCallTypeID == 6).Count() : 0,
+                QualifiedDecisionCount = callsgrp != null ? callsgrp.Where(c => c.LeadCallTypeID == 8).Count() : 0,
+                WaitForApproveCount = callsgrp != null ? callsgrp.Where(c => c.LeadCallTypeID == 7).Count() : 0,
+                CloseDealCount = callsgrp != null ? callsgrp.Where(c => c.LeadCallTypeID == 9).Count() : 0,
                 NoCallCount = data.Company.Leads.Where(l => !data.LeadCalls.Where(c => c.LeadID == l.ID).Any()).Count(),
-                CategoryString=data.CategoryString,
-                CoreCompany = data.CoreLVL==null?false:data.CoreLVL.CoreLVLName == "核心公司" ? true : false,
+                CategoryString = data.CategoryString,
+                CoreCompany = data.CoreLVL == null ? false : data.CoreLVL.CoreLVLName == "核心公司" ? true : false,
                 CrmCommentStateID = data.CrmCommentStateID,
-                CoreLVLID=data.CoreLVLID,
+                CoreLVLID = data.CoreLVLID,
+                CrmStatisitcs = new _CrmStatisitcs()
+                                {
+                                    LeadCount = data.Company.Leads.Count(),
+                                    CallCount = data.LeadCalls.Count(),
+                                    LeadMaxCallCount = data.LeadCalls.GroupBy(lc => lc.LeadID).Select(k => new { Name = k.Key, Count = k.Count() }).OrderByDescending(m => m.Count).FirstOrDefault() != null ? data.LeadCalls.GroupBy(lc => lc.LeadID).Select(k => new { Name = k.Key, Count = k.Count() }).OrderByDescending(m => m.Count).FirstOrDefault().Count : 0,
+                                    LeadAvgCallCount = data.Company.Leads != null ? (double)data.LeadCalls.Count() / (double)data.Company.Leads.Count() : 0,
+                                    CoverageRate = data.Company.Leads != null ? ((double)callsgrp.Count() / (double)data.Company.Leads.Count())*100 : 0,
+                                    TimeDiffer = data.Company.Leads.GroupBy(l => l.DistrictNumberID).Count(),
+                                    CallTypeCounts = from grp in data.LeadCalls.GroupBy(lc => lc.LeadCallTypeID)
+                                                     select new CallTypeCount()
+                                                     {
+                                                         TypeName = CH.GetDataById<LeadCallType>(grp.Key).Name,
+                                                         Count = grp.Count()
+                                                     }
+                                },
+                _members = data.Project.Members,
                 _Comments = (from co in data.Comments.OrderByDescending(m => m.CommentDate)
-                            select new _Comment()
-                            {
-                                Submitter=co.Submitter,
-                                CommentDate=co.CommentDate,
-                                CRMID=co.CompanyRelationshipID,
-                                Contents=co.Contents
-                            }),
+                             select new _Comment()
+                             {
+                                 Submitter = co.Submitter,
+                                 CommentDate = co.CommentDate,
+                                 CRMID = co.CompanyRelationshipID,
+                                 Contents = co.Contents
+                             }),
                 _Categorys = (from c in data.Categorys
                               select new _Category()
                               {
@@ -211,33 +230,34 @@ namespace Sales.BLL
                                   Description = c.Description
                               }
                                  ),
-                Description=data.Description,
-                Competitor=data.Company.Competitor,
-                PitchPoint=data.PitchedPoint,
-                _Leads= (from leads in data.Company.Leads
-                         select new _Lead()
-                         {
-                             ID=leads.ID,
-                             CompanyID=leads.CompanyID,
-                             Name = leads.Name_CH + " " + leads.Name_EN,
-                             Title=leads.Title,
-                             Contact = leads.Mobile,
-                             Fax = leads.Fax,
-                             TelePhone = leads.Contact,
-                             Email=leads.EMail,
-                             LastCallTypeID = data.LeadCalls.Where(c => c.LeadID == leads.ID).OrderByDescending(c => c.CallDate).FirstOrDefault() == null ? 0 : data.LeadCalls.Where(c => c.LeadID == leads.ID).OrderByDescending(c => c.CallDate).FirstOrDefault().LeadCallTypeID,
-                         }),
-                _LeadCalls = (from leadcalls in data.LeadCalls.OrderByDescending(m=>m.CallDate)
+                Description = data.Description,
+                Competitor = data.Company.Competitor,
+                PitchPoint = data.PitchedPoint,
+                _Leads = (from leads in data.Company.Leads
+                          select new _Lead()
+                          {
+                              ID = leads.ID,
+                              CompanyID = leads.CompanyID,
+                              Name = leads.Name_CH + " " + leads.Name_EN,
+                              Title = leads.Title,
+                              Contact = leads.Mobile,
+                              Fax = leads.Fax,
+                              TelePhone = leads.Contact,
+                              Email = leads.EMail,
+                              LastCallTypeID = data.LeadCalls.Where(c => c.LeadID == leads.ID).OrderByDescending(c => c.CallDate).FirstOrDefault() == null ? 0 : data.LeadCalls.Where(c => c.LeadID == leads.ID).OrderByDescending(c => c.CallDate).FirstOrDefault().LeadCallTypeID,
+                          }),
+                _LeadCalls = (from leadcalls in data.LeadCalls.OrderByDescending(m => m.CallDate)
                               select new _LeadCall()
                               {
-                                  LeadID=leadcalls.LeadID,
+                                  LeadID = leadcalls.LeadID,
                                   LeadName = leadcalls.Lead.Name_EN + " " + leadcalls.Lead.Name_CH,
-                                  LeadTitle=leadcalls.Lead.Title,
-                                  CallResult=leadcalls.Result,
-                                  CallType=leadcalls.LeadCallType.Name,
-                                  CallDate=leadcalls.CallDate,
-                                  Creator=leadcalls.Creator,
-                                  LeadCallTypeID=leadcalls.LeadCallTypeID
+                                  LeadTitle = leadcalls.Lead.Title,
+                                  CallResult = leadcalls.Result,
+                                  CallType = leadcalls.LeadCallType.Name,
+                                  CallDate = leadcalls.CallDate,
+                                  Creator = leadcalls.Creator,
+                                  LeadCallTypeID = leadcalls.LeadCallTypeID,
+                                  MemberName = leadcalls.Member.Name
                               })
 
             };
@@ -312,7 +332,100 @@ namespace Sales.BLL
                                   CallType = leadcalls.LeadCallType.Name,
                                   CallDate = leadcalls.CallDate,
                                   Creator = leadcalls.Creator,
-                                  LeadCallTypeID = leadcalls.LeadCallTypeID
+                                  LeadCallTypeID = leadcalls.LeadCallTypeID,
+                                  MemberName=leadcalls.Member.Name
+                              })
+
+            };
+            crm._Leads = crm._Leads.OrderByDescending(l => l.LastCallTypeID);
+            return crm;
+        }
+        public static _CRM _CRMGetAvaliableCrmDetailByCrmIDMember(int crmid, string membername)
+        {
+            var data = CH.GetDataById<CompanyRelationship>(crmid);
+            var callsgrp = data.LeadCalls.OrderByDescending(c => c.CallDate).GroupBy(c => c.LeadID)
+                                .Where(g => g.Count() >= 1)
+                                .Select(g => g.ElementAt(0));
+            var crm = new _CRM()
+            {
+                ID = data.ID,
+                CompanyID = data.CompanyID,
+                CompanyNameEN = data.Company.Name_EN,
+                CompanyNameCH = data.Company.Name_CH,
+                Contact = data.Company.Contact,
+                Fax = data.Company.Fax,
+                Email = "没找到字段",
+                BlowedCount = callsgrp.Where(c => c.LeadCallTypeID == 2).Count(),
+                NoPitchCount = callsgrp.Where(c => c.LeadCallTypeID == 3).Count(),
+                PitchCount = callsgrp.Where(c => c.LeadCallTypeID == 4).Count(),
+                FullPitchCount = callsgrp.Where(c => c.LeadCallTypeID == 5).Count(),
+                CallBackedCount = callsgrp.Where(c => c.LeadCallTypeID == 6).Count(),
+                QualifiedDecisionCount = callsgrp.Where(c => c.LeadCallTypeID == 8).Count(),
+                WaitForApproveCount = callsgrp.Where(c => c.LeadCallTypeID == 7).Count(),
+                CloseDealCount = callsgrp.Where(c => c.LeadCallTypeID == 9).Count(),
+                NoCallCount = data.Company.Leads.Where(l => !data.LeadCalls.Where(c => c.LeadID == l.ID).Any()).Count(),
+                CrmCommentStateID = data.CrmCommentStateID,
+                CoreLVLID = data.CoreLVLID,
+                _members=data.Project.Members,
+                CrmStatisitcs = new _CrmStatisitcs()
+                {
+                    LeadCount = data.Company.Leads.Count(),
+                    CallCount = data.LeadCalls.Where(cc => cc.Member.Name == membername).Count(),
+                    LeadMaxCallCount = data.LeadCalls.Where(cc => cc.Member.Name == membername).GroupBy(lc => lc.LeadID).Select(k => new { Name = k.Key, Count = k.Count() }).OrderByDescending(m => m.Count).FirstOrDefault()!=null?data.LeadCalls.Where(cc => cc.Member.Name == membername).GroupBy(lc => lc.LeadID).Select(k => new { Name = k.Key, Count = k.Count() }).OrderByDescending(m => m.Count).FirstOrDefault().Count:0,
+                    LeadAvgCallCount = data.Company.Leads != null ? (double)data.LeadCalls.Where(cc => cc.Member.Name == membername).Count() / (double)data.Company.Leads.Count() : 0,
+                    CoverageRate = data.Company.Leads != null ? (double)callsgrp.Count() / (double)data.Company.Leads.Count()*100 : 0,
+                    TimeDiffer = data.Company.Leads.GroupBy(l => l.DistrictNumberID).Count(),
+                    CallTypeCounts = from grp in data.LeadCalls.Where(cc => cc.Member.Name == membername).GroupBy(lc => lc.LeadCallTypeID)
+                                     select new CallTypeCount()
+                                     {
+                                         TypeName = CH.GetDataById<LeadCallType>(grp.Key).Name,
+                                         Count = grp.Count()
+                                     }
+                },
+                _Categorys = (from c in data.Categorys
+                              select new _Category()
+                              {
+                                  Name = c.Name,
+                                  Details = c.Details,
+                                  Description = c.Description
+                              }
+                                 ),
+                CategoryString = data.CategoryString,
+                _Comments = (from co in data.Comments.OrderByDescending(m => m.CommentDate)
+                             select new _Comment()
+                             {
+                                 Submitter = co.Submitter,
+                                 CommentDate = co.CommentDate,
+                                 CRMID = co.CompanyRelationshipID,
+                                 Contents = co.Contents
+                             }),
+                Description = data.Description,
+                Competitor = data.Company.Competitor,
+                PitchPoint = data.PitchedPoint,
+                _Leads = (from leads in data.Company.Leads
+                          select new _Lead()
+                          {
+                              ID = leads.ID,
+                              Name = leads.Name_CH + " " + leads.Name_EN,
+                              Title = leads.Title,
+                              Contact = leads.Mobile,
+                              Fax = leads.Fax,
+                              TelePhone = leads.Contact,
+                              Email = leads.EMail,
+                              LastCallTypeID = data.LeadCalls.Where(c => c.LeadID == leads.ID).OrderByDescending(c => c.CallDate).FirstOrDefault() == null ? 0 : data.LeadCalls.Where(c => c.LeadID == leads.ID).OrderByDescending(c => c.CallDate).FirstOrDefault().LeadCallTypeID
+                          }),
+                _LeadCalls = (from leadcalls in data.LeadCalls.OrderByDescending(m => m.CallDate)
+                              select new _LeadCall()
+                              {
+                                  LeadID = leadcalls.LeadID,
+                                  LeadName = leadcalls.Lead.Name_EN + " " + leadcalls.Lead.Name_CH,
+                                  LeadTitle = leadcalls.Lead.Title,
+                                  CallResult = leadcalls.Result,
+                                  CallType = leadcalls.LeadCallType.Name,
+                                  CallDate = leadcalls.CallDate,
+                                  Creator = leadcalls.Creator,
+                                  LeadCallTypeID = leadcalls.LeadCallTypeID,
+                                  MemberName= leadcalls.Member.Name
                               })
 
             };

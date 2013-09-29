@@ -76,6 +76,7 @@
     <div class="quan_4">
        @{
             string leadhide = "";
+            string memberhide = "";
         }
        @Html.Telerik().Splitter().Name("dsp").HtmlAttributes(new { style = "overflow:auto;min-height:680px;" }).Orientation(SplitterOrientation.Horizontal).Panes(p =>
        {
@@ -228,6 +229,92 @@
                     
                     </div>
                     <div id="statistics" style="display:none;">
+                    @if (Model._members != null)
+                    {
+                       <div>
+                            <a id='allsales' class="onMember" href="#" onclick="onMember('')">所有销售</a>
+                                
+                           @foreach (var member in Model._members)
+                           {
+                                <span>| </span> <a id='sales@(member.Name)' class="onMember" href="#" onclick="onMember('@(member.Name)')">  @member.Name</a>
+                               memberhide += member.Name + ",";
+                           }
+                           @Html.Hidden("MemberHidden", string.IsNullOrEmpty(memberhide) ? "" : memberhide.Substring(0, memberhide.Length - 1))
+                           @Html.Hidden("SelectedMemberHidden")
+                        </div>
+                        <table style="width:80%">
+                        <tr>
+                        <td style="width:60%">
+                        <span> Lead总数：</span>
+                        </td>
+                        <td>
+                         @Model.CrmStatisitcs.LeadCount
+                        </td>
+                        </tr>
+                        <tr>
+                        <td>
+                        <span> 覆盖率：</span>
+                        </td>
+                        <td>
+                         @Model.CrmStatisitcs.CoverageRate.ToString("#,##0.00") %
+                        </td>
+                        </tr>
+                        <tr>
+                        <td>
+                        <span> 不同时差数：</span>
+                        </td>
+                        <td>
+                         @Model.CrmStatisitcs.TimeDiffer
+                        </td>
+                        </tr>
+                        <tr>
+                        <td>
+                        <span> 单个Lead最大联系次数：</span>
+                        </td>
+                        <td>
+                        @Model.CrmStatisitcs.LeadMaxCallCount
+                        </td>
+                        </tr>
+                        <tr>
+                        <td>
+                        <span> 人均Lead联系次数：</span>
+                        </td>
+                        <td>
+                        @Model.CrmStatisitcs.LeadAvgCallCount.ToString("#,##0.00")
+                        </td>
+                        </tr>
+                        <tr>
+                        <td>
+                        <span> Call总数：</span>
+                        </td>
+                        <td>
+                        @Model.CrmStatisitcs.CallCount
+                        </td>
+                        </tr>
+                        <tr>
+                        <td colspan='2' style="text-align:center">
+                        <span> 个人类型数量</span>
+                        </td>
+                        </tr>
+                         @if (@Model.CrmStatisitcs.CallTypeCounts != null)
+                         {
+
+                             foreach (var typecount in Model.CrmStatisitcs.CallTypeCounts)
+                             {
+                                <tr>
+                            <td >
+                            <span>@typecount.TypeName</span>
+                            </td>
+                            <td>
+                            <span>@typecount.Count</span>
+                            </td>
+                            </tr>
+                             }
+
+                         }
+                        </table>
+                       
+                    }
                     </div>
                 </div>
                 <div class="center" style="width:28%">
@@ -247,26 +334,26 @@
                                 <dl>
                                     <dt>
                                         @{
-                                            var calls = @Model._LeadCalls.Where(c => c.LeadID == lead.ID).OrderByDescending(c => c.CallDate).FirstOrDefault();
-                                            if (calls == null)
-                                            {
+                                                                                                          var calls = @Model._LeadCalls.Where(c => c.LeadID == lead.ID).OrderByDescending(c => c.CallDate).FirstOrDefault();
+                                                                                                          if (calls == null)
+                                                                                                          {
                                                 <img src="../images/quan-01.png" width="15" height="15" alt="yuan" title="没联系" />
-                                            }
-                                            else
-                                            {
-                                                if (calls.LeadCallTypeID == 2 || calls.LeadCallTypeID == 3)
-                                                {
+                                                                                                          }
+                                                                                                          else
+                                                                                                          {
+                                                                                                              if (calls.LeadCallTypeID == 2 || calls.LeadCallTypeID == 3)
+                                                                                                              {
                                                     <img src="../images/quan-09.png" width="15" height="15" alt="yuan" title="Blowed和Not Piteched" />}
-                                                else if (calls.LeadCallTypeID == 4 || calls.LeadCallTypeID == 5 || calls.LeadCallTypeID == 6)
-                                                {
+                                                                                                              else if (calls.LeadCallTypeID == 4 || calls.LeadCallTypeID == 5 || calls.LeadCallTypeID == 6)
+                                                                                                              {
                                                     <img src="../images/quan-10.png" width="15" height="15" alt="yuan" title="Pitched和Full Pitched和Call Backed" />}
-                                                else if (calls.LeadCallTypeID == 7 || calls.LeadCallTypeID == 8)
-                                                {
+                                                                                                              else if (calls.LeadCallTypeID == 7 || calls.LeadCallTypeID == 8)
+                                                                                                              {
                                                     <img src="../images/55.png" width="15" height="15" alt="yuan" title="Qualified Decision和Waiting for Approval" />}
-                                                else if (calls.LeadCallTypeID == 9)
-                                                {
+                                                                                                              else if (calls.LeadCallTypeID == 9)
+                                                                                                              {
                                                     <img src="../images/quan-08.png" width="15" height="15" alt="yuan" title="Closed" />}
-                                            }
+                                                                                                          }
                                         }
                                     </dt>
                                     <dd>
@@ -276,9 +363,9 @@
                                 <dl>
                                     <dd style="margin-left: 24px;">
                                         @{if (@lead.Title != null)
-                                            {
+                                          {
                                             <p class="text-overflow" style="width:100px">@lead.Title</p>
-                                            }
+                                          }
                                         }
                                     </dd>
                                 </dl>
@@ -319,11 +406,11 @@
                                 </div>
                             </div>
                             </a>
-                            index++;
-                            if (index > 2)
-                            {
-                                index = 1;
-                            }
+                                  index++;
+                                  if (index > 2)
+                                  {
+                                      index = 1;
+                                  }
                         }
                     }
             </div>
@@ -339,12 +426,12 @@
                         {
                             leadcalls = leadcalls.Where(c => c.LeadID == ViewBag.leadid);
                         }
-                        if (leadcalls != null && leadcalls.Count()>0)
+                        if (leadcalls != null && leadcalls.Count() > 0)
                         {
                             foreach (var call in leadcalls)
                             {
                                 leadhide += call.LeadID + ",";
-                                <div class="right_@(index) leadcall@(call.LeadID)">
+                                <div class="right_@(index) leadcall@(call.LeadID) call@(call.MemberName)">
                                     @if (!lcIdList.Contains((int)call.LeadID))
                                     {
                                         <div style=" float:right; display:none;" id="filterbtn@(call.LeadID)">
@@ -362,12 +449,12 @@
                                     <p>
                                         By @call.Creator</p>
                                 </div>
-                                index++;
-                                lcIdList.Add((int)call.LeadID);
-                                if (index > 2)
-                                {
-                                    index = 1;
-                                }
+                                      index++;
+                                      lcIdList.Add((int)call.LeadID);
+                                      if (index > 2)
+                                      {
+                                          index = 1;
+                                      }
                             }
                         }
                         else
