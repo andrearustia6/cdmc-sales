@@ -21,6 +21,10 @@
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
     <OldToolsVersion>4.0</OldToolsVersion>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -238,6 +242,7 @@
     <Compile Include="Controllers\FinanceController.cs" />
     <Compile Include="Controllers\PerformanceController.cs" />
     <Compile Include="Controllers\AvaliableCompaniesController.cs" />
+    <Compile Include="Controllers\ProjectReviewController.cs" />
     <Compile Include="Controllers\SimulatorConfigController.cs" />
     <Compile Include="Controllers\DealController.cs" />
     <Compile Include="Controllers\FavorsGroupController.cs" />
@@ -305,6 +310,7 @@
     <Compile Include="Model\_EmployeePerformance.cs" />
     <Compile Include="Model\_CRM.cs" />
     <Compile Include="Model\_MonthDuration.cs" />
+    <Compile Include="Model\_ProjectReview.cs" />
     <Compile Include="Model\_Reports.cs" />
     <Compile Include="Model\_Research.cs" />
     <Compile Include="Model\_Target.cs" />
@@ -1788,6 +1794,9 @@
     <Content Include="Views\AvaliableCompanies\BulkEntry.cshtml" />
     <Content Include="Views\AvaliableCompanies\EmailPage.cshtml" />
     <Content Include="Views\ManageContent\Index.cshtml" />
+    <Content Include="Views\ProjectReview\Index.cshtml" />
+    <Content Include="Views\ProjectReview\AddProjectReviewWindow.cshtml" />
+    <Content Include="Views\ProjectReview\EditorTemplates\_ProjectReview.cshtml" />
     <None Include="Views\SalesEx\EditCompany.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\SimulatorConfig.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\AjaxTargetOfMonthForMember.cshtml" />
