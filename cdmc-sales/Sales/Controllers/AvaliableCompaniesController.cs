@@ -49,6 +49,12 @@ namespace Sales.Controllers
             var data = AvaliableCRM._CRMGetAvaliableCrmDetailByCrmIDLeadID(crmid,leadid);
             return PartialView(@"~\views\AvaliableCompanies\DetailContainer.cshtml", data);
         }
+        public PartialViewResult GetCRMByCrmIDMember(string crmid,string membername)
+        {
+            ViewBag.leadid = 0;
+            var data = AvaliableCRM._CRMGetAvaliableCrmDetailByCrmIDMember(int.Parse(crmid),membername);
+            return PartialView(@"~\views\AvaliableCompanies\DetailContainer.cshtml", data);
+        }
         public PartialViewResult GetDescription(string crmid)
         {
             var data = AvaliableCRM._CRMGetAvaliableCrmDetail(int.Parse(crmid));
@@ -723,6 +729,9 @@ namespace Sales.Controllers
         [HttpPost]
         public ActionResult PickUp(int crmid)
         {
+            var p = CH.DB.CompanyRelationships.Where(c => c.ID == crmid).First().Project.CompanyRelationships.Count(w=>w.Members.Where(m=>m.Name==Employee.CurrentUserName).Any()==true);
+            if(p>100)
+                return Content("从公海领用的，公司数超过100的不能领用！");
             CompanyRelationship companyRelationship = CH.GetDataById<CompanyRelationship>(crmid);
             
             Member member = CH.DB.Members.Where(m => m.Name == Employee.CurrentUserName).FirstOrDefault();

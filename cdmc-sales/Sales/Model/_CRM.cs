@@ -92,7 +92,7 @@ namespace Sales.Model
         public string Creator { get; set; }
         public int? LeadID { get; set; }
         public int? LeadCallTypeID { get; set; }
-        
+        public string MemberName { get; set; }
     }
 
     /// <summary>
@@ -126,8 +126,35 @@ namespace Sales.Model
 
     public class _CrmStatisitcs
     {
-        public _CRM CRM { get; set; }
-
+        /// <summary>
+        /// Lead总数
+        /// </summary>
+        public int LeadCount { get; set; }
+        /// <summary>
+        /// 覆盖率
+        /// </summary>
+        public double CoverageRate { get; set; }
+        /// <summary>
+        /// 不同时差数
+        /// </summary>
+        public int TimeDiffer { get; set; }
+        /// <summary>
+        /// 单个Lead最大联系次数
+        /// </summary>
+        public int LeadMaxCallCount { get; set; }
+        /// <summary>
+        /// 人均Lead联系次数
+        /// </summary>
+        public double LeadAvgCallCount { get; set; }
+        /// <summary>
+        /// Call总数
+        /// </summary>
+        public int CallCount { get; set; }
+      
+        /// <summary>
+        /// Call类型数量统计表
+        /// </summary>
+        public IEnumerable<CallTypeCount> CallTypeCounts { get; set; }
     }
   
     /// <summary>
@@ -240,7 +267,7 @@ namespace Sales.Model
          public IEnumerable<_Lead> _Leads { get; set; }
          public IEnumerable<_Comment> _Comments { get; set; }
          public IEnumerable<_LeadCall> _LeadCalls { get; set; }
-         
+         public IEnumerable<Member> _members { get; set; }
      }
 
     /// <summary>

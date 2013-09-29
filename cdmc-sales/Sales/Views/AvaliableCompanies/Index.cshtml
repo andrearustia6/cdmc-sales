@@ -1518,16 +1518,22 @@
     }
 
     function onPickUp() {
-        
-        $.post('PickUp', { crmid: crmid}, function (result) {
+
+        $.post('PickUp', { crmid: crmid }, function (result) {
             if (result.companyRelationshipId != null) {
                 alert('领用成功');
                 crmid = result.companyRelationshipId;
                 var currentProjectId = $('#projectid').val();
                 RefreshCrmTree(currentProjectId, result.companyRelationshipId, result.processid, result.corelvlid);
             }
-            else
-                alert('领用失败');
+            else {
+                if (result != "") {
+                    alert('领用失败:' + result);
+                }
+                else {
+                    alert('领用失败');
+                }
+            }
         });
     }
 
@@ -1604,6 +1610,7 @@
         search();
     }
     function onLeadSelectJS(leadid) {
+        filterCallList($("#SelectedMemberHidden").val());
         if ($("#filterbtn" + leadid).val() != null) {
             $("#filterbtn" + leadid).show();
         }
@@ -1617,7 +1624,9 @@
             for (var i = 0; i < arrids.length; i++) {
                 if (arrids[i] == leadid) {
                     leadcallfind = true;
-                    $(".leadcall" + leadid).show();
+                    if(!$(".leadcall" + leadid).is(":hidden")){
+                        $(".leadcall" + leadid).show();
+                    }
                 } else {
                     $(".leadcall" + arrids[i]).hide();
                 }
@@ -1631,6 +1640,7 @@
             } else {
                 $("#filterbtn").hide();
             }
+            
         }
     }
 
@@ -1643,6 +1653,55 @@
         } else if (selector == "statistics") {
             $("#" + selector).show();
             $("#comments").hide();
+        }
+    }
+    function onMember(name) {
+        if (name == '') {
+
+            $.post('_SelectedCRMNode', { crmid: crmid }, function (result) {
+                $('#crmdetailscontainer').html(result);
+                $("#comments").hide();
+                $("#statistics").show();
+                jQuery("input[name=ComContent][value=Statistics]").attr("checked", true);
+                $("#allsales").css("color", '#1997ca');
+                filterCallList(name);
+                $("#SelectedMemberHidden").val(name);
+            });
+        }
+        else {
+            
+            $.post('GetCRMByCrmIDMember', { crmid: crmid, membername: name }, function (result) {
+                $('#crmdetailscontainer').html(result);
+                $("#comments").hide();
+                $("#statistics").show();
+                jQuery("input[name=ComContent][value=Statistics]").attr("checked", true);
+                $("#sales" + name).css("color", '#1997ca');
+                filterCallList(name);
+                $("#SelectedMemberHidden").val(name);
+            });
+        }
+    }
+    function filterCallList(name) {
+        var names = "";
+        if ($("#MemberHidden")) {
+            names = $("#MemberHidden").val();
+        }
+        var arrids = names.split(',');
+        if (name != '') {
+            if (names != "undefined") {
+                
+                for (var i = 0; i < arrids.length; i++) {
+                    if (arrids[i] == name) {
+                        $(".call" + name).show();
+                    } else {
+                        $(".call" + arrids[i]).hide();
+                    }
+                }
+            }
+        } else {
+            for (var i = 0; i < arrids.length; i++) {
+                $(".call" + arrids[i]).show();
+            }
         }
     }
 </script>
