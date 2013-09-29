@@ -50,6 +50,7 @@ namespace Utl
         public DbSet<Member> Members { get; set; }
         public DbSet<Deal> Deals { get; set; }
         public DbSet<Project> Projects { get; set; }
+        public DbSet<ProjectReview> ProjectReviews { get; set; }
         public DbSet<Department> Departments { get; set; }
         public DbSet<Message> Messages { get; set; }
         public DbSet<Image> Images { get; set; }

@@ -51,6 +51,7 @@
     <Compile Include="Lead.cs" />
     <Compile Include="EntityBase.cs" />
     <Compile Include="Project.cs" />
+    <Compile Include="ProjectReview.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SimulatorConfig.cs" />
     <Compile Include="Template.cs" />
