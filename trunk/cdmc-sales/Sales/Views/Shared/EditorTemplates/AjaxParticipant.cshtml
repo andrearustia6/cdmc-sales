@@ -3,7 +3,6 @@
 @using Utl
     <fieldset>
      <legend>参会人信息</legend>
-    @Html.DropDownList("p", SelectHelper.LeadSelectListByCRMID((int)ViewBag.CompanyRelationshipID))
         <table>
             <tr>
                 <td>@Html.LabelFor(model => model.Name)</td>
@@ -59,7 +58,53 @@
                     @Html.DropDownListFor(model => model.ParticipantTypeID, new SelectList(CH.GetAllData<ParticipantType>(), "ID", "Name"), "-请选择-")<br />
                     @Html.ValidationMessageFor(model => model.ParticipantTypeID)
                 </td>
+                <td>
+                    公司Lead
+                </td>
+                <td>
+                    @*@Html.DropDownList("p", SelectHelper.LeadSelectListByCRMID((int)ViewBag.CompanyRelationshipID))*@
+                    @Html.DropDownList("CompanyLeadID", SelectHelper.LeadSelectListByCRMID((int)ViewBag.CompanyRelationshipID), "- 请选择 -", new { onchange = "onLeadQuickSelected(this.value)" })
+                </td>
             </tr>
         </table>
     </fieldset>
 
+    <script type="text/javascript" language="javascript">
+
+        function onLeadQuickSelected(leadid) {
+            if (leadid != null && leadid != "") {
+                $.ajax({
+                    url: "/Sales/GetLeadById",
+                    type: "post",
+                    data: { id: leadid },
+                    error: function () {
+                        alert("获取Lead信息失败");
+                    },
+                    success: function (data) {
+                        var leadstring = data;
+                        var lead = new Array();
+                        lead = leadstring.split(",");
+
+                        $("#Name").val(lead[0]);
+                        $("#Title").val(lead[1]);
+                        $("#Gender").val(lead[2]);
+                        $("#Mobile").val(lead[3]);
+                        $("#Contact").val(lead[4]);
+                        $("#Email").val(lead[5]);
+                        $("#ZIP").val(lead[6]);
+                        $("#Address").val(lead[7]);
+                    }
+                });
+            } else {
+                $("#Name").val();
+                $("#Title").val();
+                $("#Gender").val();
+                $("#Mobile").val();
+                $("#Contact").val();
+                $("#Email").val();
+                $("#ZIP").val();
+                $("#Address").val();
+            }
+        }
+
+    </script>

@@ -901,7 +901,6 @@ namespace Sales.Controllers
         [HttpPost]
         public ActionResult QuickAddDeal(Deal item, int? projectid)
         {
-
             ViewBag.ProjectID = projectid;
             ViewBag.CompanyRelationshipID = item.CompanyRelationshipID;
             Participant p = null;
@@ -945,7 +944,16 @@ namespace Sales.Controllers
                         foreach (var ajaxp in pList)
                         {
                             var partType = CH.GetAllData<ParticipantType>().Where(pt => pt.Name == ajaxp.ParticipantTypeName).FirstOrDefault();
-
+                            if ((ajaxp.ID != null) && (ajaxp.ID != 0))
+                            {
+                                var lead = CH.GetDataById<Lead>(ajaxp.ID);
+                                if (lead != null)
+                                {
+                                    lead.ZIP = ajaxp.ZIP;
+                                    lead.Address = ajaxp.Address;
+                                    CH.Edit<Lead>(lead);
+                                }
+                            }
                             p = new Participant();
                             p.Name = string.IsNullOrEmpty(ajaxp.Name) ? "" : ajaxp.Name.Trim();
                             p.Title = string.IsNullOrEmpty(ajaxp.Title) ? "" : ajaxp.Title.Trim();
@@ -953,6 +961,8 @@ namespace Sales.Controllers
                             p.Mobile = string.IsNullOrEmpty(ajaxp.Mobile) ? "" : ajaxp.Mobile.Trim();
                             p.Contact = string.IsNullOrEmpty(ajaxp.Contact) ? "" : ajaxp.Contact.Trim();
                             p.Email = string.IsNullOrEmpty(ajaxp.Email) ? "" : ajaxp.Email.Trim();
+                            p.ZIP = string.IsNullOrEmpty(ajaxp.ZIP) ? "" : ajaxp.ZIP.Trim();
+                            p.Address = string.IsNullOrEmpty(ajaxp.Address) ? "" : ajaxp.Address.Trim();
                             p.ParticipantTypeID = partType.ID;
                             p.ProjectID = item.ProjectID;
                             p.DealID = item.ID;
@@ -1040,7 +1050,11 @@ namespace Sales.Controllers
                 {
                     item.ParticipantTypeName = pt.Name;
                 }
-                item.ID = pList.Count + 1;
+                string leadid = String.IsNullOrEmpty(Request["CompanyLeadID"]) ? null : Request["CompanyLeadID"].Trim();
+                if (leadid != null)
+                {
+                    item.ID = Convert.ToInt32(leadid);  //item.ID = pList.Count + 1;
+                }
                 pList.Add(item);
             }
             
