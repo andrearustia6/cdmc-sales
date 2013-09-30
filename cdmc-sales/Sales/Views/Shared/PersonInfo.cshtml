@@ -55,7 +55,12 @@
                     }
                     else
                     {
-                        <span>所属部门：@user.Department.Name</span>
+                        <span>所属部门：
+                        @if(@user.Department!=null)
+                        {
+                        @user.Department.Name
+                            }
+                        </span>
                     }
                 </td>
                 <td>
