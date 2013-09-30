@@ -4,11 +4,7 @@
 @model Entity.ProjectReview
 @using (Html.BeginForm())
 {
-    List<SelectListItem> list = new List<SelectListItem> { };
-    foreach (var x in CH.DB.Projects.ToList())
-    {
-        list.Add(new SelectListItem { Text = x.Name, Value = x.ID.ToString() });
-    }
+    List<SelectListItem> list = ViewBag.projectlist as List<SelectListItem>;
     <fieldset>
         <legend>添加项目总结</legend>
 
