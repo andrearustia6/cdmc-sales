@@ -1,0 +1,28 @@
+﻿@using Entity
+@using Utl
+
+@model Entity.ProjectReview
+@using (Html.BeginForm())
+{
+    List<SelectListItem> list = new List<SelectListItem> { };
+    foreach (var x in CH.DB.Projects.ToList())
+    {
+        list.Add(new SelectListItem { Text = x.Name, Value = x.ID.ToString() });
+    }
+    <fieldset>
+        <legend>添加项目总结</legend>
+
+        <table style="padding: 10px; margin: 10px">
+            <tr style="height: 30px">
+                <td>
+                    @Html.DropDownList("projectid",list)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <textarea style="width:100%;height:200px;" name="summary"></textarea>
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+}

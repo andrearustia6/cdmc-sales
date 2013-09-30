@@ -1,0 +1,88 @@
+﻿@using Utl
+@using Entity
+@using Sales.Model
+@{
+    ViewBag.Title = "项目总结和查看";
+}
+
+@Html.Partial("contenttitle", "项目总结和查看")
+
+@(Html.Telerik().Grid<_ProjectReview>()
+                .Name("Grid").DataBinding(dataBinding =>
+                {
+                    dataBinding.Ajax()
+                        .Select("_SelectAjaxEditing", "ProjectReview")
+                        .Update("_UpdateAjaxEditing", "ProjectReview")
+                        .Delete("_DeleteAjaxEditing", "ProjectReview");
+                })
+                .DataKeys(keys =>
+                {
+                    keys.Add(p => p.ID);
+                })
+                .Columns(c =>
+                {
+                    c.Bound(x => x.ProjectName).Title("项目名称").Width(250);
+                    c.Bound(x => x.ProjectType).Title("项目类型").Width(200);
+                    c.Bound(x => x.Summary).Title("总结");
+                    c.Bound(x => x.ModifiedUser).Width(100).Title("总结人");
+                    c.Bound(x => x.ModifiedDate).Width(120).Title("总结时间");
+                    c.Command(commands => {
+                        commands.Edit();
+                        commands.Delete();
+                    }).Width(220).Title("操作"); 
+                })
+                    .ToolBar(commands =>
+                    {
+                        commands.Template(@<text><span>
+                            <button name='addSummary' onclick='onaddSummary()'>
+                                添加项目总结</button></span></text>);
+                    })
+                    .Editable(editing => editing.Mode(GridEditMode.PopUp))
+                    .Pageable()
+                    .Scrollable()
+                    .Sortable()
+    )
+
+<script>
+    function onaddSummary() {
+        var window = $('#addSummary').data('tWindow');
+        window.center().open();
+    }
+
+    function Cancel(e) {
+        var window = $(e).data('tWindow');
+        window.close();
+    }
+
+    function OkaddSummary() {
+        $("textarea[name=summary]").val($.trim($("textarea[name=summary]").val()));
+        if ($("textarea[name=summary]").val() == "")
+            alert("请输入项目总结");
+        else {
+            $.ajax({
+                url: "/projectreview/create",
+                type: "post",
+                dataType: "json",
+                data: { id: $("select[name=projectid]").val(), summary: encodeURIComponent($("textarea[name=summary]").val()) },
+                success: function (data, status) {
+                    $('#addSummary').data('tWindow').close();
+                    $("textarea[name=summary]").val("");
+                    $("#Grid").data("tGrid").rebind();
+                }
+            });
+        }
+    }
+</script>
+
+@(Html.Telerik().Window().Title("添加项目总结")
+            .Name("addSummary")
+    .Content(@<text><div class="dialogue-AddAccount">
+        <div class="AddAccount-wrapper">
+            @Html.Partial("AddProjectReviewWindow", new Entity.ProjectReview())
+        </div>
+        <div class="dialogue-buttons" style="float: right;">
+            <input type="button" class="btn-queding" onclick="OkaddSummary()" />
+            <input type="button" class="btn-quxiao" onclick="Cancel(addSummary)" />
+        </div>
+    </div></text>)
+    .Width(770).Height(380).Draggable(true).Modal(true).Visible(false))
