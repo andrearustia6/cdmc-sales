@@ -1,0 +1,9 @@
+﻿@using Entity
+@using Sales.Model
+@model _ProjectReview
+<fieldset style="width:400px;">
+    <legend>修改项目总结</legend>
+    <div class="editor-label">
+        @Html.TextAreaFor(x=>x.Summary)
+    </div>
+</fieldset>
