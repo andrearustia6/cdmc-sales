@@ -3,6 +3,7 @@
 @using Utl
     <fieldset>
      <legend>参会人信息</legend>
+    @Html.DropDownList("p", SelectHelper.LeadSelectListByCRMID((int)ViewBag.CompanyRelationshipID))
         <table>
             <tr>
                 <td>@Html.LabelFor(model => model.Name)</td>

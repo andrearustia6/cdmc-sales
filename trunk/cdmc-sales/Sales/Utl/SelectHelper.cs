@@ -321,6 +321,19 @@ namespace Utl
             return selectList;
         }
 
+        public static List<SelectListItem> LeadSelectListByCRMID(int? crmid)
+        {
+
+            int? companyid = CH.GetDataById<CompanyRelationship>(crmid).CompanyID;
+            var ls = from l in CH.DB.Leads where l.CompanyID == companyid select new  { Text = l.Name_CH+" | "+l.Name_EN, Value = l.ID };
+            List<SelectListItem> list = new List<SelectListItem>();
+            foreach (var l in ls)
+            {
+                list.Add(new SelectListItem() {  Value = l.Value.ToString(), Text = l.Text});
+            }
+            return list;
+        }
+
         public static IEnumerable<SelectListItem> AnnualSaleSelectList(string selectVal)
         {
             List<SelectListItem> selectList = new List<SelectListItem>();

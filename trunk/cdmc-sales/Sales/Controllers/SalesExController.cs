@@ -1022,7 +1022,7 @@ namespace Sales.Controllers
 
         [AcceptVerbs(HttpVerbs.Post)]
         [GridAction]
-        public ActionResult _InsertAjaxParticipant(AjaxParticipant item)
+        public ActionResult _InsertAjaxParticipant(AjaxParticipant item, int? crmid)
         {
             List<AjaxParticipant> pList = new List<AjaxParticipant>();
             if (Session["pList"] != null)
