@@ -14,4 +14,5 @@ namespace Entity
         public virtual Project Project { get; set; }
 
     }
+
 }

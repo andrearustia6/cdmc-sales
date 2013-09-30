@@ -27,6 +27,13 @@ namespace Sales.Controllers
 
         public ActionResult Index()
         {
+            List<SelectListItem> list = new List<SelectListItem> { };
+            foreach (var x in CH.DB.Projects.ToList())
+            {
+                list.Add(new SelectListItem { Text = x.Name, Value = x.ID.ToString() });
+            }
+            ViewBag.projectlist = list;
+
             //List<ProjectReview> result = CH.DB.ProjectReviews.OrderByDescending(x => x.ModifiedDate).ToList();
             return View();
         }
