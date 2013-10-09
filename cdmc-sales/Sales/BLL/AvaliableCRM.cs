@@ -176,8 +176,11 @@ namespace Sales.BLL
            // 不同时差数，是ｌｅａｄ所在ｌｅａｄｄｉｓｃｔｉｎｃｔｉｄ有几个不同
            //  个人类型数量是个ｌｉｓｔ
            // 各个ｃａｌｌｔｙｐｅ的数量
+
+
             var crm = new _CRM()
             {
+                CategoryEdit = (Employee.AsManager() || Employee.AsProductInterface()),
                 ID = data.ID,
                 CompanyID = data.CompanyID,
                 CompanyNameEN = data.Company.Name_EN,
@@ -204,7 +207,7 @@ namespace Sales.BLL
                                     CallCount = data.LeadCalls.Count(),
                                     LeadMaxCallCount = data.LeadCalls.GroupBy(lc => lc.LeadID).Select(k => new { Name = k.Key, Count = k.Count() }).OrderByDescending(m => m.Count).FirstOrDefault() != null ? data.LeadCalls.GroupBy(lc => lc.LeadID).Select(k => new { Name = k.Key, Count = k.Count() }).OrderByDescending(m => m.Count).FirstOrDefault().Count : 0,
                                     LeadAvgCallCount = data.Company.Leads != null ? (double)data.LeadCalls.Count() / (double)data.Company.Leads.Count() : 0,
-                                    CoverageRate = data.Company.Leads != null ? ((double)callsgrp.Count() / (double)data.Company.Leads.Count())*100 : 0,
+                                    CoverageRate = data.Company.Leads != null ? ((double)callsgrp.Count() / (double)data.Company.Leads.Count()) * 100 : 0,
                                     TimeDiffer = data.Company.Leads.GroupBy(l => l.DistrictNumberID).Count(),
                                     CallTypeCounts = from grp in data.LeadCalls.GroupBy(lc => lc.LeadCallTypeID)
                                                      select new CallTypeCount()
@@ -225,6 +228,7 @@ namespace Sales.BLL
                 _Categorys = (from c in data.Categorys
                               select new _Category()
                               {
+                                  ID = c.ID,
                                   Name = c.Name,
                                   Details = c.Details,
                                   Description = c.Description

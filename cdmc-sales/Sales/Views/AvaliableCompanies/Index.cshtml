@@ -208,7 +208,7 @@
         <div class="Categories-wrapper">
         </div>
         <div class="dialogue-buttons" style=" float:right;">
-             <input type="button" class="btn-queding" onclick="Javescript:$('#Categories').data('tWindow').close();" />
+             <input type="button" class="btn-queding" onclick="saveCategories();" />
         </div>
     </div></text>)
         .Width(1000)
@@ -337,6 +337,31 @@
     .Width(850).Height(650).Draggable(true).Modal(true).Visible(false)
 )
 <script>
+
+    function saveCategories()
+    {
+        //回传category并回写数据库
+        var ids = "";
+        var cas = "";
+        $("#categoryedit-list li").each(function () {
+            ids += ($(this).find("input").val() + "|");
+            cas += (encodeURIComponent( $(this).find("textarea").val()) + "|");
+        });
+        ids = encodeURIComponent(ids);
+        cas = encodeURIComponent(cas);
+        $.ajax({
+            url: "/AvaliableCompanies/EditCategories",
+            type: "post",
+            data: { ids: ids, cas: cas },
+            dataType: "json",
+            success: function (data,status) {
+
+            }
+        });
+        $('#Categories').data('tWindow').close();
+    }
+
+
     var crmid
     var gleadid
     var clickpublic
