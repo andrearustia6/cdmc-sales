@@ -1,14 +1,22 @@
 ﻿@using Entity
 @using Sales.Model
 @model _CRM
-<ul>
+<ul id="categoryedit-list">
  @if (Model._Categorys != null)
  {
      foreach (var category in Model._Categorys)
      {
           <li>
           @category.Name:
-        <p  style="border:1px solid black; ">@category.Details</p>
+          @if(Model.CategoryEdit==false)
+          {
+                <p  style="border:1px solid black; ">@category.Details</p>
+          }
+              else
+              {
+              <input type="hidden" value="@category.ID"/>
+           <textarea style="border:1px solid black;width:100%;height:30px;">@category.Details</textarea>
+          }
     </li>
      }
  }

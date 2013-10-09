@@ -257,6 +257,7 @@ namespace Sales.Model
              
          }
          public IEnumerable<_Category> _Categorys { get; set; }
+         public bool CategoryEdit { get; set; }
          public string CategoryString{ get; set; }
          public string Description { get; set; }
          public string PitchPoint { get; set; }

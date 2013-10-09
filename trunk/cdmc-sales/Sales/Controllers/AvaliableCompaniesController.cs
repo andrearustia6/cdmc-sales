@@ -935,5 +935,28 @@ namespace Sales.Controllers
             categoriylist.Insert(0, ca);
             return Json(categoriylist.Select(c => new { Value = c.ID, Text = c.Name }), JsonRequestBehavior.AllowGet);
         }
+
+        [HttpPost]
+        [ValidateInput(false)]
+        public ActionResult EditCategories(FormCollection c)
+        {
+            string[] ids = Server.UrlDecode(c["ids"]).Split('|');
+            string[] cas = Server.UrlDecode(c["cas"]).Split('|');
+            for (int i = 0; i < ids.Length; i++)
+            {
+                try
+                {
+                    if (ids[i].Trim() != "")
+                    {
+                        int id = int.Parse(ids[i].Trim());
+                        Category category = CH.DB.Categorys.Find(id);
+                        category.Details = Server.UrlDecode(cas[i]);
+                        CH.Edit(category);
+                    }
+                }
+                catch (Exception ex) { }
+            }
+            return Json("");
+        }
     }
 }
