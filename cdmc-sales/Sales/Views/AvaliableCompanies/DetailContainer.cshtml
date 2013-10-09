@@ -98,11 +98,11 @@
                         }
                     </div>
                     <div class="left_2">
-                        @if (Model.CoreCompany)
+                        @*@if (Model.CoreCompany)
                         {
                             <a href="#">
                                 <img src="../images/quan-06.jpg" width="13" height="12" alt="xing" /></a>
-                        }
+                        }*@
                         <a class="hide" href="#">
                             <img src="../images/pen1919.png" alt="bianji" onclick="onCompanyEdit(@(Model.CompanyID))"/></a>
                         <a Class="hide" href="#"  onclick="onLeadAdd(@(Model.CompanyID))">
@@ -193,8 +193,8 @@
                     </div>
                     </div>
                     <div style="margin:15px 0 5px 0;">
-                         @Html.RadioButton("ComContent", "Comments", true, new { onchange = "onRadioSelect('comments')" })<span style=" font-size:medium;"><b>点评</b></span>
-                         @Html.RadioButton("ComContent", "Statistics", false, new { onchange = "onRadioSelect('statistics')" })<span style=" font-size:medium;"><b>统计</b></span>
+                         @Html.RadioButton("ComContent", "Comments", false, new { onchange = "onRadioSelect('comments')" })<span style=" font-size:medium;"><b>点评</b></span>
+                         @Html.RadioButton("ComContent", "Statistics", true, new { onchange = "onRadioSelect('statistics')" })<span style=" font-size:medium;"><b>统计</b></span>
                     </div>
                     <div id="comments" style="display:none;">
                         <div class="dierye_1">
@@ -293,7 +293,7 @@
                         </tr>
                         <tr>
                         <td colspan='2' style="text-align:center">
-                        <span> 个人类型数量</span>
+                        <span> 致电状态数量统计</span>
                         </td>
                         </tr>
                          @if (@Model.CrmStatisitcs.CallTypeCounts != null)
@@ -445,9 +445,7 @@
                                         <span>@call.CallType</span></p>
                                     <p>
                                         <span>@call.CallResult</span></p>
-                                    <p>@call.CallDate.ToLongDateString() @call.CallDate.ToShortTimeString()</p>
-                                    <p>
-                                        By @call.Creator</p>
+                                    <p>@call.CallDate.ToLongDateString() @call.CallDate.ToShortTimeString() By @call.Creator</p>
                                 </div>
                                       index++;
                                       lcIdList.Add((int)call.LeadID);
@@ -498,6 +496,6 @@
                     alert('修改失败');
             });
         })
-        onRadioSelect('comments');
+        onRadioSelect('statistics');
     })
 </script>

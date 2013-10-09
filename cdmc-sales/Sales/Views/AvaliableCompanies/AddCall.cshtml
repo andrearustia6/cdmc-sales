@@ -8,7 +8,8 @@
     @Html.HiddenFor(model => model.LeadId)
     @Html.HiddenFor(model => model.CallId)
     @Html.HiddenFor(model => model.ProjectId)
-    <ul>
+
+  @*  <ul>
         <li><span class="addcall-left">@Html.LabelFor(model => model.CallDate) @Html.Telerik().DateTimePickerFor(model => model.CallDate)
             @Html.ValidationMessageFor(model => model.CallDate)</span> <span class="addcall-right">
                 @Html.LabelFor(model => model.CallBackDate) @Html.Telerik().DateTimePickerFor(model => model.CallBackDate)
@@ -17,13 +18,68 @@
         <li><span class="addcall-left">@Html.LabelFor(model => model.CallTypeId) @Html.DropDownListFor(model => model.CallTypeId, SelectHelper.CallTypeSelectList(Model.CallTypeId), "-请选择-")
             @Html.ValidationMessageFor(model => model.CallTypeId)</span> 
             <span class="addcall-right">
-                @Html.LabelFor(model => model.ProgressId) @Html.DropDownListFor(model => model.ProgressId, SelectHelper.ProgressSelectList(null), "请选择", new { })
+                @Html.LabelFor(model => model.ProgressId) 
+                @Html.DropDownListFor(model => model.ProgressId, SelectHelper.ProgressSelectList(null), "请选择", new { })
             </span>
         </li>
-        <li><span >@Html.LabelFor(model => model.Result) @Html.TextAreaFor(model => model.Result)
+        <li><span>@Html.LabelFor(model => model.Result) @Html.TextAreaFor(model => model.Result)
             @Html.ValidationMessageFor(model => model.Result)</span>
           </li>  
-          <li style="text-align:right"><span >是否发邮件：<input name="ifsend" type="checkbox" id="ifsend" checked="checked"/></span>
+          <li ><span class="addcall-right" style="text-align:right">是否发邮件：<input name="ifsend" type="checkbox" id="ifsend" checked="checked"/></span>
           </li>      
-    </ul>
+
+        
+    </ul>*@
+    
+    <table id="addcalltable">
+        <tr>
+            <td class="t1">@Html.LabelFor(model => model.CallDate)</td>
+            <td class="t2">@Html.Telerik().DateTimePickerFor(model => model.CallDate)</td>
+        </tr>
+        <tr>
+            <td colspan="2">@Html.ValidationMessageFor(model => model.CallDate)</td>
+        </tr>
+
+        <tr>
+            <td class="t1">@Html.LabelFor(model => model.CallBackDate)</td>
+            <td class="t2">@Html.Telerik().DateTimePickerFor(model => model.CallBackDate)</td>
+        </tr>
+        <tr>
+            <td colspan="2">@Html.ValidationMessageFor(model => model.CallBackDate)</td>
+        </tr>
+
+        <tr>
+            <td class="t1">@Html.LabelFor(model => model.CallTypeId)</td>
+            <td class="t2">@Html.DropDownListFor(model => model.CallTypeId, SelectHelper.CallTypeSelectList(Model.CallTypeId), "-请选择-")</td>
+        </tr>
+        <tr>
+            <td colspan="2">@Html.ValidationMessageFor(model => model.CallTypeId)</td>
+        </tr>
+
+        <tr>
+            <td class="t1">@Html.LabelFor(model => model.ProgressId) </td>
+            <td class="t2">@Html.DropDownListFor(model => model.ProgressId, SelectHelper.ProgressSelectList(null), "请选择", new { })</td>
+        </tr>
+        <tr>
+            <td colspan="2">@Html.ValidationMessageFor(model => model.ProgressId)</td>
+        </tr>
+
+        <tr>
+            <td class="t1">@Html.LabelFor(model => model.Result)</td>
+            <td class="t2">@Html.TextAreaFor(model => model.Result)</td>
+        </tr>
+        <tr>
+            <td colspan="2">@Html.ValidationMessageFor(model => model.Result)</td>
+        </tr>
+        <tr>
+            <td class="t1">是否发邮件</td>
+            <td class="t2"><input name="ifsend" type="checkbox" id="ifsend" checked="checked"/></td>
+        </tr>
+    </table>
+    <style>
+        #addcalltable,#addcalltable tr,#addcalltable td {border:0;}
+            #addcalltable .t1 {padding:5px;text-align:right;}
+            #addcalltable .t2 {padding:5px;text-align:left;}
+                #addcalltable .t2 select,#addcalltable .t2 textarea { width:350px;}
+    </style>
 }
