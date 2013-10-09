@@ -26,6 +26,13 @@
                     c.Bound(x => x.Summary).Title("总结");
                     c.Bound(x => x.ModifiedUser).Width(100).Title("总结人");
                     c.Bound(x => x.ModifiedDate).Width(120).Title("总结时间");
+                    c.Bound(x => x.CallCount).Width(100).Title("call总数量");
+                    c.Bound(x => x.FaxOutCount).Width(100).Title("faxout总数量");
+                    c.Bound(x => x.出单数量).Width(100).Title("出单数量");
+                    c.Bound(x => x.delegatecount).Width(100).Title("delegate单总额");
+                    c.Bound(x => x.sponsorcount).Width(100).Title("sponsor单总额");
+                    c.Bound(x => x.ConCount).Width(100).Title("公司总数");
+                    c.Bound(x => x.LeadCount).Width(100).Title("lead总数");
                     c.Command(commands => {
                         commands.Edit();
                         commands.Delete();
