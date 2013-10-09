@@ -833,7 +833,7 @@ namespace Model
         public string CallTypeString { get; set; }
         [Display(Name = "致电结果")]
         public string Result { get; set; }
-        [Display(Name = "成熟度")]
+        [Display(Name = "成熟程度")]
         public int ProgressId { get; set; }
     }
 

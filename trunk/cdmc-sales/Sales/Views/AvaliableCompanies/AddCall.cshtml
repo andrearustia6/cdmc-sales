@@ -35,41 +35,29 @@
         <tr>
             <td class="t1">@Html.LabelFor(model => model.CallDate)</td>
             <td class="t2">@Html.Telerik().DateTimePickerFor(model => model.CallDate)</td>
-        </tr>
-        <tr>
-            <td colspan="2">@Html.ValidationMessageFor(model => model.CallDate)</td>
-        </tr>
-
-        <tr>
             <td class="t1">@Html.LabelFor(model => model.CallBackDate)</td>
             <td class="t2">@Html.Telerik().DateTimePickerFor(model => model.CallBackDate)</td>
         </tr>
         <tr>
-            <td colspan="2">@Html.ValidationMessageFor(model => model.CallBackDate)</td>
+            <td colspan="4">@Html.ValidationMessageFor(model => model.CallDate)@Html.ValidationMessageFor(model => model.CallBackDate)</td>
         </tr>
 
         <tr>
             <td class="t1">@Html.LabelFor(model => model.CallTypeId)</td>
             <td class="t2">@Html.DropDownListFor(model => model.CallTypeId, SelectHelper.CallTypeSelectList(Model.CallTypeId), "-请选择-")</td>
-        </tr>
-        <tr>
-            <td colspan="2">@Html.ValidationMessageFor(model => model.CallTypeId)</td>
-        </tr>
-
-        <tr>
             <td class="t1">@Html.LabelFor(model => model.ProgressId) </td>
             <td class="t2">@Html.DropDownListFor(model => model.ProgressId, SelectHelper.ProgressSelectList(null), "请选择", new { })</td>
         </tr>
         <tr>
-            <td colspan="2">@Html.ValidationMessageFor(model => model.ProgressId)</td>
+            <td colspan="4">@Html.ValidationMessageFor(model => model.CallTypeId)@Html.ValidationMessageFor(model => model.ProgressId)</td>
         </tr>
 
         <tr>
             <td class="t1">@Html.LabelFor(model => model.Result)</td>
-            <td class="t2">@Html.TextAreaFor(model => model.Result)</td>
+            <td class="t2" colspan="3">@Html.TextAreaFor(model => model.Result)</td>
         </tr>
         <tr>
-            <td colspan="2">@Html.ValidationMessageFor(model => model.Result)</td>
+            <td colspan="4">@Html.ValidationMessageFor(model => model.Result)</td>
         </tr>
         <tr>
             <td class="t1">是否发邮件</td>
@@ -80,6 +68,7 @@
         #addcalltable,#addcalltable tr,#addcalltable td {border:0;}
             #addcalltable .t1 {padding:5px;text-align:right;}
             #addcalltable .t2 {padding:5px;text-align:left;}
-                #addcalltable .t2 select,#addcalltable .t2 textarea { width:350px;}
+                #addcalltable .t2 select{ width:200px;}
+                #addcalltable .t2 textarea { }
     </style>
 }
