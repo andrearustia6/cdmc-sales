@@ -237,12 +237,8 @@
                                 
                            @foreach (var member in Model._LeadCalls)
                            {
-                               var leaditem = Utl.CH.DB.Leads.Find(member.LeadID);
-                               if(leaditem!=null)
-                               {
-                                <span>| </span> <a id='sales@(leaditem.Name)' class="onMember" href="#" onclick="onMember('@(leaditem.Name)')">  @leaditem.Name</a>
-                                   memberhide += leaditem.Name + ",";
-                               }
+                                <span>| </span> <a id='sales@(member.LeadName)' class="onMember" href="#" onclick="onMember('@(member.LeadName)')">  @member.LeadName</a>
+                                   memberhide += member.LeadName + ",";
                            }
                            @Html.Hidden("MemberHidden", string.IsNullOrEmpty(memberhide) ? "" : memberhide.Substring(0, memberhide.Length - 1))
                            @Html.Hidden("SelectedMemberHidden")
