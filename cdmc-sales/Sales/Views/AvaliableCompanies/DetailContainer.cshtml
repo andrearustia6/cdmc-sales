@@ -235,10 +235,10 @@
                        <div>
                             <a id='allsales' class="onMember" href="#" onclick="onMember('')">所有销售</a>
                                 
-                           @foreach (var member in Model._LeadCalls)
+                           @foreach (var member in Model._LeadCalls.Select(a=>a.MemberName).Distinct())
                            {
-                                <span>| </span> <a id='sales@(member.LeadName)' class="onMember" href="#" onclick="onMember('@(member.LeadName)')">  @member.LeadName</a>
-                                   memberhide += member.LeadName + ",";
+                                <span>| </span> <a id='sales@(member)' class="onMember" href="#" onclick="onMember('@(member)')">  @member</a>
+                               memberhide += member + ",";
                            }
                            @Html.Hidden("MemberHidden", string.IsNullOrEmpty(memberhide) ? "" : memberhide.Substring(0, memberhide.Length - 1))
                            @Html.Hidden("SelectedMemberHidden")
