@@ -81,7 +81,7 @@
        @Html.Telerik().Splitter().Name("dsp").HtmlAttributes(new { style = "overflow:auto;min-height:680px;" }).Orientation(SplitterOrientation.Horizontal).Panes(p =>
        {
             p.Add().Size("60%").Content(@<text>
-                <div class="left" style="width:70%; ">
+                <div class="left" style="width:65%; ">
                     <div class="left_1">
                         <p>@Model.CompanyName</p>
                         @{if (Model.Contact != null)
@@ -193,8 +193,9 @@
                     </div>
                     </div>
                     <div style="margin:15px 0 5px 0;">
-                         @Html.RadioButton("ComContent", "Comments", false, new { onchange = "onRadioSelect('comments')" })<span style=" font-size:medium;"><b>点评</b></span>
-                         @Html.RadioButton("ComContent", "Statistics", true, new { onchange = "onRadioSelect('statistics')" })<span style=" font-size:medium;"><b>统计</b></span>
+                        @Html.RadioButton("ComContent", "Statistics", true, new { onchange = "onRadioSelect('statistics')" })<span style=" font-size:medium;"><b>统计</b></span>
+                        @Html.RadioButton("ComContent", "Comments", false, new { onchange = "onRadioSelect('comments')" })<span style=" font-size:medium;"><b>点评</b></span>
+                         
                     </div>
                     <div id="comments" style="display:none;">
                         <div class="dierye_1">
@@ -234,10 +235,14 @@
                        <div>
                             <a id='allsales' class="onMember" href="#" onclick="onMember('')">所有销售</a>
                                 
-                           @foreach (var member in Model._members)
+                           @foreach (var member in Model._LeadCalls)
                            {
-                                <span>| </span> <a id='sales@(member.Name)' class="onMember" href="#" onclick="onMember('@(member.Name)')">  @member.Name</a>
-                               memberhide += member.Name + ",";
+                               var leaditem = Utl.CH.DB.Leads.Find(member.LeadID);
+                               if(leaditem!=null)
+                               {
+                                <span>| </span> <a id='sales@(leaditem.Name)' class="onMember" href="#" onclick="onMember('@(leaditem.Name)')">  @leaditem.Name</a>
+                                   memberhide += leaditem.Name + ",";
+                               }
                            }
                            @Html.Hidden("MemberHidden", string.IsNullOrEmpty(memberhide) ? "" : memberhide.Substring(0, memberhide.Length - 1))
                            @Html.Hidden("SelectedMemberHidden")
@@ -245,6 +250,14 @@
                         <table style="width:80%">
                         <tr>
                         <td style="width:60%">
+                        <span> 目前在打销售：</span>
+                        </td>
+                        <td>
+                         @string.Join("，",Model._members.Select(a=>a.Name).ToArray())
+                        </td>
+                        </tr>
+                        <tr>
+                        <td>
                         <span> Lead总数：</span>
                         </td>
                         <td>
@@ -253,7 +266,7 @@
                         </tr>
                         <tr>
                         <td>
-                        <span> 覆盖率：</span>
+                        <span> lead覆盖率：</span>
                         </td>
                         <td>
                          @Model.CrmStatisitcs.CoverageRate.ToString("#,##0.00") %
@@ -317,14 +330,14 @@
                     }
                     </div>
                 </div>
-                <div class="center" style="width:28%">
+                <div class="center" style="width:33%">
                     @if (Model._Leads != null)
                     {
                         var index = 1;
                         foreach (var lead in Model._Leads)
                         {
                             @*<a href="#" onclick="onLeadSelect(@(lead.ID))">*@
-                            <a href="#" onclick="onLeadSelectJS(@(lead.ID))">
+                            <a href="#" class="centera" onclick="onLeadSelectJS(@(lead.ID))">
                                 <div class="center_2" id="lead@(lead.ID)" onmouseover = "javascript:showLeadBtn(@(lead.ID));" onmouseout = "javascript:hideLeadBtn(@(lead.ID));" >
                                 <div id="leadbtn@(lead.ID)" style="width:16%; display:none; float: right;">
                                     <img class="hide"  src="../images/dianhua.png" alt="新增通话" onclick="onCallAdd(@(lead.ID))" style=" display: inline;float: right;" />
@@ -357,14 +370,14 @@
                                         }
                                     </dt>
                                     <dd>
-                                        <p class="text-overflow" style="width:100px">@lead.Name</p>
+                                        <p class="text-overflow" style="width:100px" title="@lead.Name">@lead.Name</p>
                                     </dd>
                                 </dl>
                                 <dl>
                                     <dd style="margin-left: 24px;">
                                         @{if (@lead.Title != null)
                                           {
-                                            <p class="text-overflow" style="width:100px">@lead.Title</p>
+                                            <p class="text-overflow" style="width:100px" title="@lead.Title">@lead.Title</p>
                                           }
                                         }
                                     </dd>
@@ -376,7 +389,7 @@
                                         <dt>
                                             <img src="../images/shouji.png" width="15" height="15" alt="yuan" /></dt>
                                         <dd>
-                                            <p>@lead.Contact</p>
+                                            <p title="@lead.Contact">@lead.Contact</p>
                                         </dd>
                                     </dl>
                                   }
@@ -387,7 +400,7 @@
                                         <dt>
                                             <img src="../images/zuoji.png" width="15" height="15" alt="yuan" /></dt>
                                         <dd>
-                                            <p>@lead.TelePhone</p>
+                                            <p title="@lead.TelePhone">@lead.TelePhone</p>
                                         </dd>
                                     </dl>
                                   }
@@ -398,7 +411,7 @@
                                         <dt>
                                             <img src="../images/youjian.png" width="15" height="15" alt="yuan" /></dt>
                                         <dd>
-                                            <p class="text-overflow" style="width:100px">@lead.Email</p>
+                                            <p class="text-overflow" style="width:100px" title="@lead.Email">@lead.Email</p>
                                         </dd>
                                     </dl>
                                   }
@@ -468,6 +481,9 @@
     </div>
     @Html.Hidden("LeadIdHidden", string.IsNullOrEmpty(leadhide) ? "" : leadhide.Substring(0, leadhide.Length - 1))
 </div>
+<style>
+    .centera * { font-size:12px;}
+</style>
 <script>
     $(function () {
         $("#CoreLVLID").change(function () {
