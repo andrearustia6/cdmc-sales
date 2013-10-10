@@ -199,7 +199,7 @@
                     </div>
                     <div id="comments" style="display:none;">
                         <div class="dierye_1">
-                            <div style="float: left; width: 70%;">点评</div>
+                            <div style="float: left; width: 70%;"></div>
                             <div style="float: left; width: 20%;">
                                 <a class="hide" href="#" onclick="GetAddComment()"><img src="../images/quan-14.jpg" width="29" height="29" alt="jia"/></a>
                             </div>
@@ -452,7 +452,8 @@
                             foreach (var call in leadcalls)
                             {
                                 leadhide += call.LeadID + ",";
-                                <div class="right_@(index) leadcall@(call.LeadID) call@(call.MemberName)">
+                                bool mysel = Utl.Employee.GetLoginUserName() == call.Creator;
+                                <div class="right_@(index) leadcall@(call.LeadID) call@(call.MemberName)" style="text-align: @(mysel?"right":"left")">
                                     @if (!lcIdList.Contains((int)call.LeadID))
                                     {
                                         <div style=" float:right; display:none;" id="filterbtn@(call.LeadID)">
@@ -463,10 +464,30 @@
                                     </h2>
                         
                                     <p>
-                                        <span>@call.CallType</span></p>
+                                        @if (call.LeadCallTypeID == null)
+                                        {                                         
+                                            <span style="color:#A8A8A8">@call.CallType</span>
+                                        }
+                                        else if (call.LeadCallTypeID == 2 || call.LeadCallTypeID == 3)
+                                        {
+                                            <span style="color:#FD0100">@call.CallType</span>
+                                        }
+                                        else if (call.LeadCallTypeID == 4 || call.LeadCallTypeID == 5 || call.LeadCallTypeID == 6)
+                                        {
+                                            <span style="color:#00AFF0">@call.CallType</span>
+                                        }
+                                        else if (call.LeadCallTypeID == 7|| call.LeadCallTypeID == 8 )
+                                        {
+                                            <span style="color:#FFC22E">@call.CallType</span>
+                                        }
+                                        else if (call.LeadCallTypeID == 9 )
+                                        {
+                                            <span style="color:#7EFF42">@call.CallType</span>
+                                        }
+                                    </p>
                                     <p>
                                         <span>@call.CallResult</span></p>
-                                    <p>@call.CallDate.ToLongDateString() @call.CallDate.ToShortTimeString() By @call.Creator</p>
+                                    <p>@call.CallDate.ToLongDateString() @call.CallDate.ToShortTimeString()  @call.Creator</p>
                                 </div>
                                       index++;
                                       lcIdList.Add((int)call.LeadID);

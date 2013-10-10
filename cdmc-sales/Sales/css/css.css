@@ -78,7 +78,7 @@ img{vertical-align:top; border:0;}
 .left_1{ float:left; font-family:"微软雅黑"; font-size:14px; width:70%; overflow:hidden;}
 .left_1 p a{ color:#0000ff; text-decoration:none;}
 .left_1 p a:hover{ color:#0000ff;text-decoration:none;}
-.left_2{ float:left; width:30%;}
+.left_2{ float:right; width:20%;}
 .left_2 img{ padding-left:10px;}
 .left_3{ padding-top:20px; clear:both;}
 .left_4{ font-family:"微软雅黑"; font-size:16px; font-weight:bold; color:#e5830b;}
