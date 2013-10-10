@@ -89,13 +89,13 @@
                           }
                         }
                          <p>
-                                成熟度: @(Html.DropDownListFor(model => model.ProgressID, Utl.SelectHelper.ProgressSelectList(null), "请选择", new { }))</p>
+                                成熟程度: @(Html.DropDownListFor(model => model.ProgressID, Utl.SelectHelper.ProgressSelectList(null), "请选择", new { style="width:70%" }))</p>
                         <p>
                                  @{ 
                             if (Utl.Employee.CurrentRole.Level == ManagerRequired.LVL)
                             {
                             <div>
-                                是否核心: @(Html.DropDownListFor(model => model.CoreLVLID, Utl.SelectHelper.CoreLVLSelectList(null), "请选择       ", new {}))
+                                是否核心: @(Html.DropDownListFor(model => model.CoreLVLID, Utl.SelectHelper.CoreLVLSelectList(null), "请选择       ", new { style = "width:70%" }))
                             </div>
                             }
                         }
@@ -369,6 +369,8 @@
                             </td>
                             <td>
                             <span>@pt.ChangeDate.ToShortDateString() @pt.ChangeDate.ToShortTimeString() </span>
+                            <br />
+                            <span>By  @pt.Owner</span>
                             </td>
                             </tr>
                              }
