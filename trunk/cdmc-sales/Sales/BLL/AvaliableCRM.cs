@@ -384,7 +384,8 @@ namespace Sales.BLL
                                      {
                                          TypeName = CH.GetDataById<LeadCallType>(grp.Key).Name,
                                          Count = grp.Count()
-                                     }
+                                     },
+                    crmtrack = CH.DB.CrmTracks.Where(tr => tr.CompanyRelationshipID == crmid && tr.Owner == membername).FirstOrDefault()
                 },
                 _Categorys = (from c in data.Categorys
                               select new _Category()

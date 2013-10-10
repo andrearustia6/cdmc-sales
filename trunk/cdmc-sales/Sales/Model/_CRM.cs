@@ -8,60 +8,7 @@ namespace Sales.Model
 {
 
 
-    public class _CrmStatistics
-    {
-        /// <summary>
-        /// member筛选
-        /// </summary>
-        public string MemberFilter { get; set; }
-
-        /// <summary>
-        ///  打过的职位
-        /// </summary>
-        public string ContactTitles { get; set; }
-        /// <summary>
-        /// 所有时间段
-        /// </summary>
-        public int Duration { get; set; }
-
-        /// <summary>
-        /// Lead总数
-        /// </summary>
-        public int LeadTotalCount { get; set; }
-
-        /// <summary>
-        /// 已覆盖lead数
-        /// </summary>
-        public int CoveredLeadCount { get; set; }
-
-        /// <summary>
-        /// lead所在不同时差数
-        /// </summary>
-        public int DistinctLeadCount { get; set; }
-
-
-        /// <summary>
-        /// 单个lead最大联系次数
-        /// </summary>
-        public int SingleLeadContactCount { get; set; }
-
-
-        /// <summary>
-        /// 人均lead联系次数
-        /// </summary>
-        public int AverageLeadContactCount { get; set; }
-
-        /// <summary>
-        /// Call的总数
-        /// </summary>
-        public int CallCount { get; set; }
-
-        /// <summary>
-        /// Call类型数量统计表
-        /// </summary>
-        public IQueryable<CallTypeCount> CallTypeCounts { get; set; }
-    }
-
+   
     public class CallTypeCount
     {
         public string TypeName { get; set; }
@@ -150,7 +97,26 @@ namespace Sales.Model
         /// Call总数
         /// </summary>
         public int CallCount { get; set; }
-      
+
+        public CrmTrack crmtrack { get; set; }
+        /// <summary>
+        /// track信息
+        /// </summary>
+        public string DispTrack
+        {
+            get
+            {
+                if (crmtrack != null)
+                    if(crmtrack.ReleaseDate==null)
+                        return "["+crmtrack.Type + "] "  + crmtrack.GetDate.ToShortDateString() + " " + crmtrack.GetDate.ToShortTimeString()+"-now";
+                    else
+                        return "[" + crmtrack.Type + "] " + crmtrack.GetDate.ToShortDateString() + " " + crmtrack.GetDate.ToShortTimeString() + "-"+crmtrack.ReleaseDate.Value.ToShortDateString()+" "+crmtrack.ReleaseDate.Value.ToShortTimeString();
+
+                else
+                    return "";
+            }
+        }
+
         /// <summary>
         /// Call类型数量统计表
         /// </summary>

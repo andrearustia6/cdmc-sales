@@ -244,8 +244,20 @@
                            @Html.Hidden("SelectedMemberHidden")
                         </div>
                         <table style="width:80%">
+                        @if(@Model.CrmStatisitcs.DispTrack!="")
+                        {
+                             <tr>
+                            <td style="width:50%">
+                            <span> 时段：</span>
+                            </td>
+                            <td>
+                             @Model.CrmStatisitcs.DispTrack
+                            </td>
+                            </tr>
+                        }
+                       
                         <tr>
-                        <td style="width:60%">
+                        <td style="width:40%">
                         <span> 目前在打销售：</span>
                         </td>
                         <td>

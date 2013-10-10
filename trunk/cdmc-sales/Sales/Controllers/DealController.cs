@@ -168,7 +168,7 @@ namespace Sales.Controllers
         public ActionResult _SelectIndex(string filterId, int? projectId, string CompanyDealCodeLike, int? PaymentID, int? ParticipantsID)
         {
             List<AjaxViewDeal> deals;
-            deals = getData(filterId, projectId, CompanyDealCodeLike, PaymentID, ParticipantsID);
+            deals = getData(filterId, projectId, CompanyDealCodeLike, PaymentID, ParticipantsID).ToList<AjaxViewDeal>();
             return View(new GridModel(deals));
         }
 
