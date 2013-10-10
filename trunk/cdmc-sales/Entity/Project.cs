@@ -33,7 +33,15 @@ namespace Entity
         //释放公司的时间
         public DateTime? ReleaseDate { get; set; }
     }
-
+    public class ProgressTrack : EntityBase
+    {
+        public virtual CompanyRelationship CompanyRelationship { get; set; }
+        public int? CompanyRelationshipID { get; set; }
+        public string Owner { get; set; }
+        public virtual Progress Progress { get; set; }
+        public int? ProgressID { get; set; }
+        public DateTime ChangeDate { get; set; }
+    }
 
     public class ExpLevel : EntityBase
     {

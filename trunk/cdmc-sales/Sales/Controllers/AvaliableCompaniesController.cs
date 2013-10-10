@@ -758,7 +758,15 @@ namespace Sales.Controllers
             CH.Edit(companyRelationship);
             return Json(new { companyRelationshipId = companyRelationship.ID, companyId = companyRelationship.CompanyID, projectId = companyRelationship.ProjectID, processid = companyRelationship.ProgressID, corelvlid = corelvlid });
         }
-
+        [ValidateInput(false)]
+        [HttpPost]
+        public ActionResult ChangeProgress(int crmid, int ProgressID)
+        {
+            CompanyRelationship companyRelationship = CH.GetDataById<CompanyRelationship>(crmid);
+            companyRelationship.ProgressID = ProgressID;
+            CH.Edit(companyRelationship);
+            return Json(new { companyRelationshipId = companyRelationship.ID, companyId = companyRelationship.CompanyID, projectId = companyRelationship.ProjectID, processid = companyRelationship.ProgressID, corelvlid = companyRelationship.CoreLVLID });
+        }
         public ActionResult GetEmailPage(string callType,int leadid)
         {
             Lead lead = CH.GetDataById<Lead>(leadid);
