@@ -1,4 +1,4 @@
-body{font-size:12px; margin:0; padding:0; font-family: Arial; background:url(../images/bj_3.gif) repeat-x;}
+﻿body{font-size:12px; margin:0; padding:0; font-family: Arial; background:url(../images/bj_3.gif) repeat-x;}
 div,form,input,img,ul,li,dl,dt,dd,textarea,h1,p,h2,h3{ margin:0; padding:0;}
 ul{ list-style-type: none;}
 img{vertical-align:top; border:0; margin:0px; padding:0px;}
@@ -133,6 +133,7 @@ img{vertical-align:top; border:0;}
 .dierye_2_2{ float:right;}
 .dierye_2_2 input{ padding:3px 10px; margin-top:5px;}
 .dierye_3{ margin:0 30px; clear:both; padding-top:20px;}
+.dierye_3 td, .dierye_3 tr { border:0; vertical-align:top;}
 .dierye_3_1{font-family:"微软雅黑"; font-size:12px; color:#77923b;width:100%}
 .dierye_3_1 dt{ float:left;}
 .dierye_3_1 dd{ float:right; padding-right:20px;}
