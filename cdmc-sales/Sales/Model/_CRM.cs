@@ -145,6 +145,7 @@ namespace Sales.Model
          public string Contacts { get; set; }
          public string Email { get; set; }
          public int? CrmCommentStateID { get; set; }
+         public int? ProgressID { get; set; }
          public int CrmCommentStateIDOrder
          {
              get;

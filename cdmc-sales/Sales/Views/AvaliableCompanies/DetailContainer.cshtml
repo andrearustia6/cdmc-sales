@@ -37,7 +37,7 @@
     }
 </style>
 <div class="memberCompanies">
-    <div class="quan">
+    @*<div class="quan">
         <div class="quan_1">
             <a class="PickUp" href="#" onclick="onPickUp()">领用</a>
             <div class="quan_2">
@@ -62,17 +62,9 @@
                 6.12<p>
                     <img src="../images/quan-05.jpg" width="19" height="20" alt="yuan" /></p>
             </div>
-            @{ 
-                if (Utl.Employee.CurrentRole.Level == ManagerRequired.LVL)
-                {
-                <div>
-                    是否核心：
-                    @(Html.DropDownListFor(model => model.CoreLVLID, Utl.SelectHelper.CoreLVLSelectList(null), "请选择", new { }))
-                </div>
-                }
-            }
+            
         </div>
-    </div>
+    </div>*@
     <div class="quan_4">
        @{
             string leadhide = "";
@@ -96,6 +88,8 @@
                                 F:+ @Model.Fax</p>
                           }
                         }
+                         <p>
+                                成熟度: @(Html.DropDownListFor(model => model.ProgressID, Utl.SelectHelper.ProgressSelectList(null), "请选择", new { }))</p>
                     </div>
                     <div class="left_2">
                         @*@if (Model.CoreCompany)
@@ -105,8 +99,20 @@
                         }*@
                         <a class="hide" href="#">
                             <img src="../images/pen1919.png" alt="bianji" onclick="onCompanyEdit(@(Model.CompanyID))"/></a>
+
+                        <a class="PickUp" href="#" onclick="onPickUp()">领用</a>
+                      
                         <a Class="hide" href="#"  onclick="onLeadAdd(@(Model.CompanyID))">
                             <img src="../images/user.png" alt="新增Leader" width="19" height="19" /></a>
+                              @{ 
+                            if (Utl.Employee.CurrentRole.Level == ManagerRequired.LVL)
+                            {
+                            <div>
+                                @(Html.DropDownListFor(model => model.CoreLVLID, Utl.SelectHelper.CoreLVLSelectList(null), "请选择", new { }))
+                            </div>
+                            }
+                        }
+                        
                     </div>
                     <div class="left_3">
                         <div class="left_4">决策人状态统计</div>
@@ -532,6 +538,32 @@
                 return;
             }
             $.post('ChangeCore', { crmid: crmid, corelvlid: $("#CoreLVLID").val() }, function (result) {
+                if (result.companyRelationshipId != null) {
+                    alert('修改成功');
+                    crmid = result.companyRelationshipId;
+                    var currentProjectId = $('#projectid').val();
+                    var corelvlid = result.corelvlid;
+                    var processid = result.processid;
+                    $.post('_RefreshCrmTree', { projectid: currentProjectId }, function (result) {
+                        $('#mainnavigationcontainer').html(result);
+                        if (crmid > 0) {
+                            if (clickpublic)
+                                onPublicCompanyChanging(crmid, corelvlid);
+                            else
+                                onCompanyChanging(crmid, processid, corelvlid);
+                        }
+                    });
+                }
+                else
+                    alert('修改失败');
+            });
+        })
+        $("#ProgressID").change(function () {
+            if ($("#ProgressID").val() == '') {
+                alert('必须选择其中一个项目');
+                return;
+            }
+            $.post('ChangeProgress', { crmid: crmid, ProgressID: $("#ProgressID").val() }, function (result) {
                 if (result.companyRelationshipId != null) {
                     alert('修改成功');
                     crmid = result.companyRelationshipId;

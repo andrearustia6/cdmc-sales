@@ -183,6 +183,7 @@ namespace Sales.BLL
                 CategoryEdit = (Employee.AsManager() || Employee.AsProductInterface()),
                 ID = data.ID,
                 CompanyID = data.CompanyID,
+                ProgressID=data.ProgressID,
                 CompanyNameEN = data.Company.Name_EN,
                 CompanyNameCH = data.Company.Name_CH,
                 Contact = data.Company.Contact,
@@ -278,6 +279,7 @@ namespace Sales.BLL
             {
                 ID = data.ID,
                 CompanyID = data.CompanyID,
+                ProgressID = data.ProgressID,
                 CompanyNameEN = data.Company.Name_EN,
                 CompanyNameCH = data.Company.Name_CH,
                 Contact = data.Company.Contact,
@@ -354,6 +356,7 @@ namespace Sales.BLL
             {
                 ID = data.ID,
                 CompanyID = data.CompanyID,
+                ProgressID = data.ProgressID,
                 CompanyNameEN = data.Company.Name_EN,
                 CompanyNameCH = data.Company.Name_CH,
                 Contact = data.Company.Contact,
