@@ -90,6 +90,16 @@
                         }
                          <p>
                                 成熟度: @(Html.DropDownListFor(model => model.ProgressID, Utl.SelectHelper.ProgressSelectList(null), "请选择", new { }))</p>
+                        <p>
+                                 @{ 
+                            if (Utl.Employee.CurrentRole.Level == ManagerRequired.LVL)
+                            {
+                            <div>
+                                是否核心: @(Html.DropDownListFor(model => model.CoreLVLID, Utl.SelectHelper.CoreLVLSelectList(null), "请选择       ", new {}))
+                            </div>
+                            }
+                        }
+                        </p>
                     </div>
                     <div class="left_2">
                         @*@if (Model.CoreCompany)
@@ -104,14 +114,7 @@
                       
                         <a Class="hide" href="#"  onclick="onLeadAdd(@(Model.CompanyID))">
                             <img src="../images/user.png" alt="新增Leader" width="19" height="19" /></a>
-                              @{ 
-                            if (Utl.Employee.CurrentRole.Level == ManagerRequired.LVL)
-                            {
-                            <div>
-                                @(Html.DropDownListFor(model => model.CoreLVLID, Utl.SelectHelper.CoreLVLSelectList(null), "请选择", new { }))
-                            </div>
-                            }
-                        }
+                             
                         
                     </div>
                     <div class="left_3">
@@ -274,7 +277,7 @@
                         }
                        
                         <tr>
-                        <td style="width:40%">
+                        <td style="width:50%">
                         <span> 目前在打销售：</span>
                         </td>
                         <td>
