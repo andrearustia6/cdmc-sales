@@ -31,6 +31,14 @@
             </ul>
            }
 <script>
+    $(function () {
+        $("#CrmCommentStateID").change(function () {
+            if ($("#CrmCommentStateID option:selected").text() == '确认通过')
+                $("#Contents").val($("#CrmCommentStateID option:selected").text());
+        })
+
+    })
+
     function setcontent(content1) {
         if ($("#Contents").val() != "") {
             $("#Contents").val($("#Contents").val() + ";" + content1);

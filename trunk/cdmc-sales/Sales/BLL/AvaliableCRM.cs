@@ -207,8 +207,8 @@ namespace Sales.BLL
                                     LeadCount = data.Company.Leads.Count(),
                                     CallCount = data.LeadCalls.Count(),
                                     LeadMaxCallCount = data.LeadCalls.GroupBy(lc => lc.LeadID).Select(k => new { Name = k.Key, Count = k.Count() }).OrderByDescending(m => m.Count).FirstOrDefault() != null ? data.LeadCalls.GroupBy(lc => lc.LeadID).Select(k => new { Name = k.Key, Count = k.Count() }).OrderByDescending(m => m.Count).FirstOrDefault().Count : 0,
-                                    LeadAvgCallCount = data.Company.Leads != null ? (double)data.LeadCalls.Count() / (double)data.Company.Leads.Count() : 0,
-                                    CoverageRate = data.Company.Leads != null ? ((double)callsgrp.Count() / (double)data.Company.Leads.Count()) * 100 : 0,
+                                    LeadAvgCallCount = data.Company.Leads.Count != 0 ? (double)data.LeadCalls.Count() / (double)data.Company.Leads.Count() : 0,
+                                    CoverageRate = data.Company.Leads.Count != 0 ? ((double)callsgrp.Count() / (double)data.Company.Leads.Count()) * 100 : 0,
                                     TimeDiffer = data.Company.Leads.GroupBy(l => l.DistrictNumberID).Count(),
                                     CallTypeCounts = from grp in data.LeadCalls.GroupBy(lc => lc.LeadCallTypeID)
                                                      select new CallTypeCount()
@@ -379,8 +379,8 @@ namespace Sales.BLL
                     LeadCount = data.Company.Leads.Count(),
                     CallCount = data.LeadCalls.Where(cc => cc.Member.Name == membername).Count(),
                     LeadMaxCallCount = data.LeadCalls.Where(cc => cc.Member.Name == membername).GroupBy(lc => lc.LeadID).Select(k => new { Name = k.Key, Count = k.Count() }).OrderByDescending(m => m.Count).FirstOrDefault()!=null?data.LeadCalls.Where(cc => cc.Member.Name == membername).GroupBy(lc => lc.LeadID).Select(k => new { Name = k.Key, Count = k.Count() }).OrderByDescending(m => m.Count).FirstOrDefault().Count:0,
-                    LeadAvgCallCount = data.Company.Leads != null ? (double)data.LeadCalls.Where(cc => cc.Member.Name == membername).Count() / (double)data.Company.Leads.Count() : 0,
-                    CoverageRate = data.Company.Leads != null ? (double)callsgrp.Count() / (double)data.Company.Leads.Count()*100 : 0,
+                    LeadAvgCallCount = data.Company.Leads.Count != 0 ? (double)data.LeadCalls.Where(cc => cc.Member.Name == membername).Count() / (double)data.Company.Leads.Count() : 0,
+                    CoverageRate = data.Company.Leads.Count != 0 ? (double)callsgrp.Count() / (double)data.Company.Leads.Count()*100 : 0,
                     TimeDiffer = data.Company.Leads.GroupBy(l => l.DistrictNumberID).Count(),
                     CallTypeCounts = from grp in data.LeadCalls.Where(cc => cc.Member.Name == membername).GroupBy(lc => lc.LeadCallTypeID)
                                      select new CallTypeCount()
