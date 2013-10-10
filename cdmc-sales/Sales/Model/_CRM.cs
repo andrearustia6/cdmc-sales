@@ -236,6 +236,7 @@ namespace Sales.Model
          public IEnumerable<_Comment> _Comments { get; set; }
          public IEnumerable<_LeadCall> _LeadCalls { get; set; }
          public IEnumerable<Member> _members { get; set; }
+         public IEnumerable<ProgressTrack> _ProgressTrack { get; set; }
      }
 
     /// <summary>

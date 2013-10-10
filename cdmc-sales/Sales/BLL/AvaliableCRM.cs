@@ -263,8 +263,8 @@ namespace Sales.BLL
                                   Creator = leadcalls.Creator,
                                   LeadCallTypeID = leadcalls.LeadCallTypeID,
                                   MemberName = leadcalls.Member.Name
-                              })
-
+                              }),
+                _ProgressTrack = CH.DB.ProgressTrack.Where(pt => pt.CompanyRelationshipID == crmid).OrderByDescending(pt => pt.ChangeDate)
             };
             crm._Leads= crm._Leads.OrderByDescending(l => l.LastCallTypeID);
             return crm;
@@ -340,7 +340,8 @@ namespace Sales.BLL
                                   Creator = leadcalls.Creator,
                                   LeadCallTypeID = leadcalls.LeadCallTypeID,
                                   MemberName=leadcalls.Member.Name
-                              })
+                              }),
+                _ProgressTrack = CH.DB.ProgressTrack.Where(pt => pt.CompanyRelationshipID == crmid).OrderByDescending(pt => pt.ChangeDate)
 
             };
             crm._Leads = crm._Leads.OrderByDescending(l => l.LastCallTypeID);
@@ -434,7 +435,8 @@ namespace Sales.BLL
                                   Creator = leadcalls.Creator,
                                   LeadCallTypeID = leadcalls.LeadCallTypeID,
                                   MemberName= leadcalls.Member.Name
-                              })
+                              }),
+                _ProgressTrack = CH.DB.ProgressTrack.Where(pt => pt.CompanyRelationshipID == crmid).OrderByDescending(pt=>pt.ChangeDate)
 
             };
             crm._Leads = crm._Leads.OrderByDescending(l => l.LastCallTypeID);
