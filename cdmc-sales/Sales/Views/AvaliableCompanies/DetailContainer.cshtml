@@ -199,8 +199,7 @@
                     </div>
                     <div id="comments" style="display:none;">
                         <div class="dierye_1">
-                            <div style="float: left; width: 70%;"></div>
-                            <div style="float: left; width: 20%;">
+                            <div style="float:left;">
                                 <a class="hide" href="#" onclick="GetAddComment()"><img src="../images/quan-14.jpg" width="29" height="29" alt="jia"/></a>
                             </div>
                         </div>
@@ -210,12 +209,24 @@
                                 var i = 1;
                                 foreach (var comment in Model._Comments)
                                 {
+                                bool mysel = Utl.Employee.GetLoginUserName() == comment.Submitter;
                                 <div class="dierye_3_@(i)">
-                                    <dl>
+                                    <dl style="float:@(mysel?"right":"left")">
                                         <dt>
                                             <p>@comment.Contents</p>
-                                            <p>@comment.CommentDate.ToLongDateString() @comment.CommentDate.ToShortTimeString()
-                                                By @comment.Submitter</p>
+                                            @if(mysel)
+                                            {
+                                                <p style="text-align:right;">@comment.Submitter </p>
+                                            <p>@comment.CommentDate.ToString("yyyy/MM/dd") @comment.CommentDate.ToShortTimeString()
+                                                </p>
+                                            }
+                                            else
+                                            {
+                                                <p>@comment.Submitter </p>
+                                                <p>@comment.CommentDate.ToString("yyyy/MM/dd") @comment.CommentDate.ToShortTimeString()
+                                                 </p>
+                                            }
+                                            
                                         </dt>
                                     </dl>
                                 </div>
@@ -452,8 +463,8 @@
                             foreach (var call in leadcalls)
                             {
                                 leadhide += call.LeadID + ",";
-                                bool mysel = Utl.Employee.GetLoginUserName() == call.Creator;
-                                <div class="right_@(index) leadcall@(call.LeadID) call@(call.MemberName)" style="text-align: @(mysel?"right":"left")">
+                                
+                                <div class="right_@(index) leadcall@(call.LeadID) call@(call.MemberName)">
                                     @if (!lcIdList.Contains((int)call.LeadID))
                                     {
                                         <div style=" float:right; display:none;" id="filterbtn@(call.LeadID)">
