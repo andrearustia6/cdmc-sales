@@ -332,14 +332,14 @@
                         @Model.CrmStatisitcs.CallCount
                         </td>
                         </tr>
-                        <tr>
+                        
+                         @if (@Model.CrmStatisitcs.CallTypeCounts.Count() != 0)
+                         {
+                         <tr>
                         <td colspan='2' style="text-align:center">
                         <span> 致电状态数量统计</span>
                         </td>
                         </tr>
-                         @if (@Model.CrmStatisitcs.CallTypeCounts != null)
-                         {
-
                              foreach (var typecount in Model.CrmStatisitcs.CallTypeCounts)
                              {
                                 <tr>
@@ -348,6 +348,27 @@
                             </td>
                             <td>
                             <span>@typecount.Count</span>
+                            </td>
+                            </tr>
+                             }
+
+                         }
+                       
+                         @if (@Model._ProgressTrack.Count() != 0)
+                         {
+                               <tr>
+                            <td colspan='2' style="text-align:center">
+                            <span> 成熟度变化</span>
+                            </td>
+                            </tr>
+                             foreach (var pt in Model._ProgressTrack)
+                             {
+                                <tr>
+                            <td >
+                            <span>@pt.Progress.Name</span>
+                            </td>
+                            <td>
+                            <span>@pt.ChangeDate.ToShortDateString() @pt.ChangeDate.ToShortTimeString() </span>
                             </td>
                             </tr>
                              }
@@ -496,11 +517,11 @@
                                         {
                                             <span style="color:#00AFF0">@call.CallType</span>
                                         }
-                                        else if (call.LeadCallTypeID == 7|| call.LeadCallTypeID == 8 )
+                                        else if (call.LeadCallTypeID == 7 || call.LeadCallTypeID == 8)
                                         {
                                             <span style="color:#FFC22E">@call.CallType</span>
                                         }
-                                        else if (call.LeadCallTypeID == 9 )
+                                        else if (call.LeadCallTypeID == 9)
                                         {
                                             <span style="color:#7EFF42">@call.CallType</span>
                                         }
@@ -509,12 +530,12 @@
                                         <span>@call.CallResult</span></p>
                                     <p>@call.CallDate.ToLongDateString() @call.CallDate.ToShortTimeString()  @call.Creator</p>
                                 </div>
-                                      index++;
-                                      lcIdList.Add((int)call.LeadID);
-                                      if (index > 2)
-                                      {
-                                          index = 1;
-                                      }
+                                                                                                        index++;
+                                                                                                        lcIdList.Add((int)call.LeadID);
+                                                                                                        if (index > 2)
+                                                                                                        {
+                                                                                                            index = 1;
+                                                                                                        }
                             }
                         }
                         else
