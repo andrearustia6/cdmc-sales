@@ -765,6 +765,14 @@ namespace Sales.Controllers
             CompanyRelationship companyRelationship = CH.GetDataById<CompanyRelationship>(crmid);
             companyRelationship.ProgressID = ProgressID;
             CH.Edit(companyRelationship);
+
+            ProgressTrack pt = new ProgressTrack();
+            pt.ProgressID = ProgressID;
+            pt.ChangeDate = DateTime.Now;
+            pt.CompanyRelationshipID = crmid;
+            pt.Owner = Employee.CurrentUserName;
+            CH.Create(pt);
+
             return Json(new { companyRelationshipId = companyRelationship.ID, companyId = companyRelationship.CompanyID, projectId = companyRelationship.ProjectID, processid = companyRelationship.ProgressID, corelvlid = companyRelationship.CoreLVLID });
         }
         public ActionResult GetEmailPage(string callType,int leadid)

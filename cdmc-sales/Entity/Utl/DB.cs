@@ -18,6 +18,7 @@ namespace Utl
         public DbSet<CrmTrack> CrmTracks { get; set; }
         public DbSet<CrmCommentState> CrmCommentStates { get; set; } 
         public DbSet<Progress> Progresss { get; set; }
+        public DbSet<ProgressTrack> ProgressTrack { get; set; }
         public DbSet<CoreLVL> CoreLVLs { get; set; }
         public DbSet<AccessRight> AccessRights { get; set; }
         public DbSet<ProjectRight> ProjectRights { get; set; }
