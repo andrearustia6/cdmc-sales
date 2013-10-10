@@ -751,6 +751,19 @@ namespace Sales.Controllers
 
         [ValidateInput(false)]
         [HttpPost]
+        public ActionResult UnPickUp(int crmid)
+        {
+            
+            CompanyRelationship companyRelationship = CH.GetDataById<CompanyRelationship>(crmid);
+
+            Member member = CH.DB.Members.Where(m => m.Name == Employee.CurrentUserName).FirstOrDefault();
+            companyRelationship.Members.Remove(member);
+            CH.Edit(companyRelationship);
+
+            return Json(new { companyRelationshipId = companyRelationship.ID, companyId = companyRelationship.CompanyID, projectId = companyRelationship.ProjectID, processid = companyRelationship.ProgressID, corelvlid = companyRelationship.CoreLVLID });
+        }
+        [ValidateInput(false)]
+        [HttpPost]
         public ActionResult ChangeCore(int crmid,int corelvlid)
         {
             CompanyRelationship companyRelationship = CH.GetDataById<CompanyRelationship>(crmid);

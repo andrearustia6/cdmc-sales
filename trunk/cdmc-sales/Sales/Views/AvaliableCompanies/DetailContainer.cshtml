@@ -88,7 +88,7 @@
                                 F:+ @Model.Fax</p>
                           }
                         }
-                         <p>
+                         <p id='ProgressIDdiv'>
                                 成熟程度: @(Html.DropDownListFor(model => model.ProgressID, Utl.SelectHelper.ProgressSelectList(null), "请选择", new { style="width:70%" }))</p>
                         <p>
                                  @{ 
@@ -111,7 +111,7 @@
                             <img src="../images/pen1919.png" alt="bianji" onclick="onCompanyEdit(@(Model.CompanyID))"/></a>
 
                         <a class="PickUp" href="#" onclick="onPickUp()">领用</a>
-                      
+                      <a class="UnPickUp" href="#" onclick="onUnPickUp()">放回</a>
                         <a Class="hide" href="#"  onclick="onLeadAdd(@(Model.CompanyID))">
                             <img src="../images/user.png" alt="新增Leader" width="19" height="19" /></a>
                              
@@ -281,7 +281,14 @@
                         <span> 目前在打销售：</span>
                         </td>
                         <td>
-                         @string.Join("，",Model._members.Select(a=>a.Name).ToArray())
+                        @if( Utl.Employee.CurrentRole.Level== ManagerRequired.LVL)
+                        {
+                              @string.Join("，",Model._members.Select(a=>a.Name).ToArray())
+                            }
+                            else
+                            {
+                                @Utl.Employee.CurrentUserName;
+                        }
                         </td>
                         </tr>
                         <tr>
