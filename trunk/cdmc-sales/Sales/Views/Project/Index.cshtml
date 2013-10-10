@@ -35,7 +35,7 @@
                 | <a href=@Url.Content("~/Project/delete/" + item.ID)>删除</a>
                 </text>
                 }
-                | <a href=@Url.Content("~/ProjectReview")> 查看</a>
+                | <a href="javascript:;" onclick="GetReviews(@item.ID)"> 查看</a>
             </span>);
         })
         .Resizable(resizing => resizing.Columns(true))
@@ -43,3 +43,30 @@
         .Pageable(p => p.PageSize(20))
         .Scrollable(scrolling => scrolling.Height(350))
 )
+
+    @(Html.Telerik().Window().Title("项目总结")
+    .Name("Reviews")
+    .Content(@<text><div class="dialogue-Categories">
+        <div class="Categories-wrapper">
+        </div>
+        <div class="dialogue-buttons" style=" float:right;">
+             <input type="button" class="btn-queding" onclick="$('#Reviews').data('tWindow').close()" />
+        </div>
+    </div></text>)
+        .Width(1000)
+        .Height(220)
+                .Modal(true).Visible(false).Draggable(true)
+    )
+
+<script>
+    function GetReviews(id) {
+        $.post('GetReviews', { id: id }, function (result) {
+            $('.Categories-wrapper').html(result);
+            var window = $('#Reviews').data('tWindow');
+            window.center().open();
+            while ($('.dialogue-Categories form').length > 1) {
+                $('.dialogue-Categories form').last().remove();
+            }
+        });
+    }
+</script>

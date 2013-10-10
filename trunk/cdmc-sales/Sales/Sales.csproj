@@ -1797,6 +1797,7 @@
     <Content Include="Views\ProjectReview\Index.cshtml" />
     <Content Include="Views\ProjectReview\AddProjectReviewWindow.cshtml" />
     <Content Include="Views\ProjectReview\EditorTemplates\_ProjectReview.cshtml" />
+    <Content Include="Views\Project\review.cshtml" />
     <None Include="Views\SalesEx\EditCompany.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\SimulatorConfig.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\AjaxTargetOfMonthForMember.cshtml" />

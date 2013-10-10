@@ -710,7 +710,13 @@ namespace Sales.Controllers
             return View(CH.GetAllData<ImportCompanyTrace>().OrderByDescending(s => s.ImportDate).ToList());
         }
 
-
+        public PartialViewResult GetReviews(int id)
+        {
+            var data = (from x in CH.DB.ProjectReviews
+                        where x.ProjectID == id
+                        select x).ToList();
+            return PartialView("review", data);
+        }
 
         public ActionResult ParticipantIndex(int? projectid)
         {
