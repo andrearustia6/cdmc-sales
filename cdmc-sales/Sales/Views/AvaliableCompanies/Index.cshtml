@@ -1561,7 +1561,25 @@
             }
         });
     }
+    function onUnPickUp() {
 
+        $.post('UnPickUp', { crmid: crmid }, function (result) {
+            if (result.companyRelationshipId != null) {
+                alert('放回公海成功');
+                crmid = result.companyRelationshipId;
+                var currentProjectId = $('#projectid').val();
+                RefreshCrmTree(currentProjectId, result.companyRelationshipId, result.processid, result.corelvlid);
+            }
+            else {
+                if (result != "") {
+                    alert('放回公海:' + result);
+                }
+                else {
+                    alert('放回公海');
+                }
+            }
+        });
+    }
     function showLeadBtn(id) {
         $("#leadbtn" + id).show();
     }

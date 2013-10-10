@@ -136,7 +136,7 @@
             $.post('_SelectedCRMNode', { crmid: crmid }, function (result) {
                 $('#crmdetailscontainer').html(result);
                 hidebtn();
-
+                jQuery(".UnPickUp").hide();
             });
         }
         else {
@@ -146,6 +146,7 @@
                 leaddiv.removeClass('center_2');
                 leaddiv.addClass('center_1');
                 hidebtn();
+                jQuery(".UnPickUp").hide();
             });
         }
         
@@ -160,7 +161,8 @@
     function hidebtn() {
         jQuery(".hide").hide();
         jQuery(".click").removeAttr("onclick");
-
+        $('#ProgressIDdiv').hide();
+        
     }
     
 </script>

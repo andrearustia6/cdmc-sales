@@ -133,11 +133,12 @@ img{vertical-align:top; border:0;}
 .dierye_2_2{ float:right;}
 .dierye_2_2 input{ padding:3px 10px; margin-top:5px;}
 .dierye_3{ margin:0 30px; clear:both; padding-top:20px;}
-.dierye_3_1{font-family:"微软雅黑"; font-size:12px; color:#77923b;}
+.dierye_3_1{font-family:"微软雅黑"; font-size:12px; color:#77923b;width:100%}
 .dierye_3_1 dt{ float:left;}
 .dierye_3_1 dd{ float:right; padding-right:20px;}
 .dierye_3_1 dd img{ border:3px solid #ccc;}
-.dierye_3_2{ clear:both; padding:20px 0; overflow:hidden;font-family:"微软雅黑"; font-size:12px; color:#807f7f;}
-.dierye_3_2 dt{ float:left;}
+.dierye_3_2{ clear:both; padding:20px 0; overflow:hidden;font-family:"微软雅黑"; font-size:12px; color:#807f7f;width:100%; text-align:right}
+.dierye_3_2 dl{ width:100%}
+.dierye_3_2 dt{ float:left;width:100%}
 .dierye_3_2 dd{ float:left; padding-right:20px;}
 .dierye_3_2 dd img{ border:3px solid #ccc;}
