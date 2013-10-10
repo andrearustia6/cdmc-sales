@@ -1569,6 +1569,7 @@
                 crmid = result.companyRelationshipId;
                 var currentProjectId = $('#projectid').val();
                 RefreshCrmTree(currentProjectId, result.companyRelationshipId, result.processid, result.corelvlid);
+                $('#crmdetailscontainer').html("");
             }
             else {
                 if (result != "") {
