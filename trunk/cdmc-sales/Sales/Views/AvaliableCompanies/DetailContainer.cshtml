@@ -219,13 +219,28 @@
                                 foreach (var comment in Model._Comments)
                                 {
                                 bool mysel = Utl.Employee.GetLoginUserName() == comment.Submitter;
-                                <div class="dierye_3_@(i)">
-                                    <dl style="float:@(mysel?"right":"left")">
+                                @*<div class="dierye_3_@(i)">*@
+                                    <div class="item" style="float:@(mysel?"right":"left");width:80%;text-align:@(mysel?"right":"left")">
+                                        <table style="border:0;margin-bottom:10px;width:100%;">
+                                            <tr>
+                                                <td style="width:@(mysel?"80%":"")">@(mysel?comment.Contents:comment.Submitter)</td>
+                                                <td>@(mysel?"我":comment.Contents)</td>
+                                            </tr>
+                                            <tr>
+                                                <td>@(mysel?(comment.CommentDate.ToString("yyyy/MM/dd")+" "+comment.CommentDate.ToShortTimeString()):"")</td>
+                                                <td>@(mysel?"":(comment.CommentDate.ToString("yyyy/MM/dd")+" "+comment.CommentDate.ToShortTimeString()))</td>
+                                            </tr>
+                                        </table>
+                                    </div>
+
+
+
+                                    @*<dl style="float:@(mysel?"right":"left")">
                                         <dt>
                                             <p>@comment.Contents</p>
                                             @if(mysel)
                                             {
-                                                <p style="text-align:right;">@comment.Submitter </p>
+                                                <p style="text-align:right;">我</p>
                                             <p>@comment.CommentDate.ToString("yyyy/MM/dd") @comment.CommentDate.ToShortTimeString()
                                                 </p>
                                             }
@@ -243,7 +258,7 @@
                                     if (i > 2)
                                     {
                                         i = 1;
-                                    }
+                                    }*@
                                 }
                             }
                         </div>
