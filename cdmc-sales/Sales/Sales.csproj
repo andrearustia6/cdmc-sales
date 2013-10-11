@@ -373,6 +373,7 @@
     <Content Include="images\logo_2.gif" />
     <Content Include="images\pen1616.png" />
     <Content Include="images\pen1919.png" />
+    <Content Include="images\pickup.png" />
     <Content Include="images\quan-01.jpg" />
     <Content Include="images\quan-01.png" />
     <Content Include="images\quan-02.jpg" />
@@ -412,6 +413,7 @@
     <Content Include="images\tu.jpg" />
     <Content Include="images\tubiao.gif" />
     <Content Include="images\tu_2.jpg" />
+    <Content Include="images\unpickup.png" />
     <Content Include="images\user.png" />
     <Content Include="images\wenhao-2.jpg" />
     <Content Include="images\youjian.png" />
