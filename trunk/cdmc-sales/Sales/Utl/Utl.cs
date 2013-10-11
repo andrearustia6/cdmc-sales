@@ -962,11 +962,31 @@ namespace Utl
                 {
                     ProfileBase objProfile = ProfileBase.Create(item.UserName);
                     EmployeeRole selUser = CH.DB.EmployeeRoles.Where(s => s.AccountName == item.UserName).First();
-                    selUser.Gender = objProfile.GetPropertyValue("Gender") as string;
-                    selUser.AccountNameCN = objProfile.GetPropertyValue("DisplayName") as string;
-                    selUser.Mobile = objProfile.GetPropertyValue("Mobile") as string;
-                    selUser.AgentNum = objProfile.GetPropertyValue("Contact") as int?;
-                    selUser.DepartmentID = objProfile.GetPropertyValue("DepartmentID") as int?;
+
+                    selUser.IsActivated = (bool)objProfile.GetPropertyValue("IsActivated");
+                    if (string.IsNullOrEmpty(selUser.Gender))
+                    {
+                        selUser.Gender = objProfile.GetPropertyValue("Gender") as string;
+                    }
+                    if (string.IsNullOrEmpty(selUser.AccountNameCN) || selUser.AccountNameCN=="-")
+                    {
+                        var v = objProfile.GetPropertyValue("DisplayName") as string;
+                        if (!string.IsNullOrEmpty(v))
+                        selUser.AccountNameCN = objProfile.GetPropertyValue("DisplayName") as string;
+                    }
+                    if (string.IsNullOrEmpty(selUser.Mobile))
+                    {
+                        selUser.Mobile = objProfile.GetPropertyValue("Mobile") as string;
+                    }
+                    if (selUser.AgentNum ==null)
+                    {
+                        selUser.AgentNum = objProfile.GetPropertyValue("Contact") as int?;
+                    }
+                    if (selUser.DepartmentID == null)
+                    {
+                        selUser.DepartmentID = objProfile.GetPropertyValue("DepartmentID") as int?;
+                    }
+
                     selUser.StartDate = objProfile.GetPropertyValue("StartDate") as DateTime?;
                     selUser.BirthDay = objProfile.GetPropertyValue("BirthDay") as DateTime?;
 
