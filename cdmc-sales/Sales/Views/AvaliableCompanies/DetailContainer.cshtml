@@ -138,11 +138,11 @@
                             <a href="#" onclick="GetCategories(@(Model.ID))">
                                 <img src="../images/quan-13.jpg" width="20" height="18" alt="wenhao" /></a>
                         </li>
-                        <li>
+                        <li>@if (!string.IsNullOrWhiteSpace(Model.Description))
+                            {
                             <h2>
                                 公司简介</h2>
-                            @if (!string.IsNullOrWhiteSpace(Model.Description))
-                            {
+                            
                                 if (Model.Description.Length > 50)
                                 {
                                 @Model.Description.Substring(0, 50)
@@ -157,11 +157,11 @@
 
                             }
                         </li>
-                        <li>
+                        <li>@if (!string.IsNullOrWhiteSpace(Model.Competitor))
+                            {
                             <h2>
                                 竞争对手</h2>
-                            @if (!string.IsNullOrWhiteSpace(Model.Competitor))
-                            {
+                            
 
                                 if (Model.Competitor.Length > 20)
                                 {
@@ -177,11 +177,11 @@
 
                             }
                         </li>
-                        <li>
+                        <li>@if (!string.IsNullOrWhiteSpace(Model.PitchPoint))
+                            {
                             <h2>
                                 Pitch Point</h2>
-                            @if (!string.IsNullOrWhiteSpace(Model.PitchPoint))
-                            {
+                            
 
                                 if (Model.PitchPoint.Length > 50)
                                 {
