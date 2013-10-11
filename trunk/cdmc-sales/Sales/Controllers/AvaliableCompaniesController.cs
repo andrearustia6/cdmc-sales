@@ -964,6 +964,13 @@ namespace Sales.Controllers
         }
 
         [HttpPost]
+        public PartialViewResult GetPitchPoint1(int crmid)
+        {
+            var cr = CH.DB.CompanyRelationships.Find(crmid);
+            return PartialView("GetPitchPoint", cr);
+        }
+
+        [HttpPost]
         [ValidateInput(false)]
         public ActionResult EditCategories(FormCollection c)
         {
@@ -985,6 +992,65 @@ namespace Sales.Controllers
             }
             return Json("");
         }
+
+        [HttpPost]
+        [ValidateInput(false)]
+        public ActionResult EditPitchPoint(FormCollection c)
+        {
+            int id = int.Parse(c["crmid"]);
+            string pp = c["pp"];
+            var cr = CH.DB.CompanyRelationships.Find(id);
+            cr.PitchedPoint = pp;
+            CH.Edit<CompanyRelationship>(cr);
+
+            return Json("");
+        }
+
+        [HttpPost]
+        public PartialViewResult GetUnPickUp(int crmid)
+        {
+            var result = CH.DB.CompanyRelationships.Find(crmid).Members.Select(x => x.ID).ToList();
+            ViewBag.project = CH.DB.CompanyRelationships.Find(crmid).Project;
+            return PartialView("GetUnPickUp", result);
+        }
+
+        [HttpPost]
+        public ActionResult SaveUnPickUp(int id, string ids)
+        {
+            try
+            {
+                var cr = CH.DB.CompanyRelationships.Find(id);
+                List<int> idlist = ids.Split(',').Where(x => x.Trim() != "").Select(x => int.Parse(x)).ToList();
+                List<int> crids = cr.Members.Select(x => x.ID).ToList();
+                //新增
+                foreach (var x in idlist)
+                {
+                    if (crids.Contains(x) == false)
+                    {
+                        Member member = CH.DB.Members.Find(x);
+                        cr.Members.Add(member);
+                        doCrmTrack(id, true);
+                    }
+                }
+                //减少
+                foreach (var x in crids)
+                {
+                    if (idlist.Contains(x) == false)
+                    {
+                        Member member = CH.DB.Members.Find(x);
+                        cr.Members.Remove(member);
+                        doCrmTrack(id, false);
+                    }
+                }
+
+                //存入
+                CH.Edit<CompanyRelationship>(cr);
+            }
+            catch (Exception ex)
+            { }
+            return Json("");
+        }
+
         /// <summary>
         /// 处理CrmTrack
         /// </summary>

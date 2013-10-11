@@ -181,11 +181,14 @@
 
                             }
                         </li>
-                        <li>@if (!string.IsNullOrWhiteSpace(Model.PitchPoint))
-                            {
+                        <li>
                             <h2>
-                                Pitch Point</h2>
-                            
+                                Pitch Point
+
+                                <a href="#" onclick="GetPitchPoint(@(Model.ID))"><img src="../images/quan-13.jpg" width="20" height="18" alt="wenhao" /></a>
+                            </h2>
+                            @if (!string.IsNullOrWhiteSpace(Model.PitchPoint))
+                            {
 
                                 if (Model.PitchPoint.Length > 50)
                                 {
@@ -450,7 +453,7 @@
                                         }
                                     </dt>
                                     <dd>
-                                        <p style="width:100px;" title="@lead.Name">@lead.Name</p>
+                                        <p style="width:100px;" title="@lead.SName">@lead.SName</p>
                                     </dd>
                                 </dl>
                                 <dl>
