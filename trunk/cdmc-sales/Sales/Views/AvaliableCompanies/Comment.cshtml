@@ -5,13 +5,17 @@
            {
             @Html.HiddenFor(model => model.CRMID)
             <ul>
-             @foreach (var p in Utl.CH.GetAllData<CommentContent>())
-             {
+            @if (Utl.Employee.CurrentRole.Level == ManagerRequired.LVL)
+            {
+                foreach (var p in Utl.CH.GetAllData<CommentContent>())
+                {
                   <li>
                 @Html.CheckBox("content", false, new { onchange = "setcontent('" + p.Contents + "')" })
                 @p.Contents
                 </li>
-             }
+                }
+            }
+             
                 <li>
                     @Html.TextAreaFor(model => model.Contents)
                 </li>
