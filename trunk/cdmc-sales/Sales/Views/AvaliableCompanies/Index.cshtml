@@ -1492,13 +1492,14 @@
                 $('#crmdetailscontainer').html(result);
                 if (clickpublic) {
                     $(".UnPickUp").hide();
+                    jQuery(".hide").hide();
+                    jQuery(".click").removeAttr("onclick");
+                    $('#ProgressIDdiv').hide();
                 }
                 else {
                     $(".PickUp").hide();
                 }
-                jQuery(".hide").hide();
-                jQuery(".click").removeAttr("onclick");
-                $('#ProgressIDdiv').hide();
+               
             });
         }
         else {
@@ -1509,13 +1510,14 @@
                 leaddiv.addClass('center_1');
                 if (clickpublic) {
                     $(".UnPickUp").hide();
+                    jQuery(".hide").hide();
+                    jQuery(".click").removeAttr("onclick");
+                    $('#ProgressIDdiv').hide();
                 }
                 else {
                     $(".PickUp").hide();
                 }
-                jQuery(".hide").hide();
-                jQuery(".click").removeAttr("onclick");
-                $('#ProgressIDdiv').hide();
+                
             });
         }
 
@@ -1675,6 +1677,7 @@
         if ($("#filterbtn" + leadid).val() != null) {
             $("#filterbtn" + leadid).show();
         }
+        $("#filterbtn").show();
         var leadids = "";
         if ($("#LeadIdHidden")) {
             leadids = $("#LeadIdHidden").val();
@@ -1699,7 +1702,7 @@
                     $("#filterbtn").show();
                 }
             } else {
-                $("#filterbtn").hide();
+                //$("#filterbtn").hide();
             }
             
         }
@@ -1736,6 +1739,7 @@
                 else {
                     $(".PickUp").hide();
                 }
+                $("#filterbtn").show();
             });
         }
         else {
@@ -1757,6 +1761,7 @@
                 else {
                     $(".PickUp").hide();
                 }
+                $("#filterbtn").show();
             });
         }
     }

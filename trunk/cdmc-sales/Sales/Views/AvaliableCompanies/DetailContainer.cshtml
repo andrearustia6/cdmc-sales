@@ -510,6 +510,9 @@
             </text>);
             p.Add().Size("40%").Content(@<text>
                 <div class="right" style=" width:100%;">
+                <div style=" float:right; display:none; margin-top:10px; margin-right:10px;" id="filterbtn">
+                                <input type="button" value="取消筛选" onclick="RefreshCrm();" style="border: none; width: 67px; height: 21px;"/>
+                            </div>
                     @if (Model._LeadCalls != null)
                     {
                         var index = 1;
@@ -521,17 +524,18 @@
                         }
                         if (leadcalls != null && leadcalls.Count() > 0)
                         {
+                            
                             foreach (var call in leadcalls)
                             {
                                 leadhide += call.LeadID + ",";
                                 
                                 <div class="right_@(index) leadcall@(call.LeadID) call@(call.MemberName)">
-                                    @if (!lcIdList.Contains((int)call.LeadID))
+                                    @*@if (!lcIdList.Contains((int)call.LeadID))
                                     {
-                                        <div style=" float:right; display:none;" id="filterbtn@(call.LeadID)">
+                                        <div style=" float:right; display:none;" id="filterbtn@(call.LeadID)" class="filterbtn">
                                             <input type="button" value="取消筛选" onclick="RefreshCrm();" style="border: none; width: 67px; height: 21px;"/>
                                         </div>
-                                    }
+                                    }*@
                                     <h2>@call.LeadName | @call.LeadTitle 
                                     </h2>
                         
@@ -569,12 +573,12 @@
                                                                                                         }
                             }
                         }
-                        else
+                       @* else
                         {
                             <div style=" float:right; display:none; margin-top:10px; margin-right:10px;" id="filterbtn">
                                 <input type="button" value="取消筛选" onclick="RefreshCrm();" style="border: none; width: 67px; height: 21px;"/>
                             </div>
-                        }
+                        }*@
                     }
                 </div>
             </text>);
