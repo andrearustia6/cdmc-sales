@@ -738,13 +738,7 @@ namespace Sales.Controllers
             companyRelationship.Members.Add(member);
             CH.Edit(companyRelationship);
 
-            CrmTrack ct = new CrmTrack();
-            ct.Owner = Employee.CurrentUserName;
-            ct.Type = "领用";
-            ct.CompanyRelationshipID = crmid;
-            ct.GetDate = DateTime.Now;
-            
-            CH.Create<CrmTrack>(ct);
+            doCrmTrack(crmid, true);
 
             return Json(new { companyRelationshipId = companyRelationship.ID, companyId = companyRelationship.CompanyID, projectId = companyRelationship.ProjectID, processid = companyRelationship.ProgressID, corelvlid = companyRelationship.CoreLVLID });
         }
@@ -760,23 +754,7 @@ namespace Sales.Controllers
             companyRelationship.Members.Remove(member);
             CH.Edit(companyRelationship);
 
-            CrmTrack ct = CH.DB.CrmTracks.Where(ct1=>ct1.CompanyRelationshipID==crmid && ct1.Owner==Employee.CurrentUserName).OrderByDescending(ct1=>ct1.GetDate).FirstOrDefault();
-            if (ct != null)
-            {
-                ct.Owner = Employee.CurrentUserName;
-                ct.Type = "放回";
-                ct.ReleaseDate = DateTime.Now;
-                CH.Edit<CrmTrack>(ct);
-            }
-            else
-            {
-                ct = new CrmTrack();
-                ct.Owner = Employee.CurrentUserName;
-                ct.Type = "放回";
-                ct.CompanyRelationshipID = crmid;
-                ct.ReleaseDate = DateTime.Now;
-                CH.Create<CrmTrack>(ct);
-            }
+            doCrmTrack(crmid, false);
             
 
 
@@ -1006,6 +984,43 @@ namespace Sales.Controllers
                 catch (Exception ex) { }
             }
             return Json("");
+        }
+        /// <summary>
+        /// 处理CrmTrack
+        /// </summary>
+        /// <param name="crmid"></param>
+        /// <param name="picked">true:领用；false：放回</param>
+        private void doCrmTrack(int crmid,bool picked)
+        {
+            if (picked)
+            {
+                CrmTrack ct = new CrmTrack();
+                ct.Owner = Employee.CurrentUserName;
+                ct.Type = "领用";
+                ct.CompanyRelationshipID = crmid;
+                ct.GetDate = DateTime.Now;
+                CH.Create<CrmTrack>(ct);
+            }
+            else
+            {
+                CrmTrack ct = CH.DB.CrmTracks.Where(ct1 => ct1.CompanyRelationshipID == crmid && ct1.Owner == Employee.CurrentUserName).OrderByDescending(ct1 => ct1.GetDate).FirstOrDefault();
+                if (ct != null)
+                {
+                    ct.Owner = Employee.CurrentUserName;
+                    ct.Type = "放回";
+                    ct.ReleaseDate = DateTime.Now;
+                    CH.Edit<CrmTrack>(ct);
+                }
+                else
+                {
+                    ct = new CrmTrack();
+                    ct.Owner = Employee.CurrentUserName;
+                    ct.Type = "放回";
+                    ct.CompanyRelationshipID = crmid;
+                    ct.ReleaseDate = DateTime.Now;
+                    CH.Create<CrmTrack>(ct);
+                }
+            }
         }
     }
 }
