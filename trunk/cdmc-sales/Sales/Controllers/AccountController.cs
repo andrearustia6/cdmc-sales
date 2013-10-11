@@ -58,7 +58,7 @@ namespace MvcGlobalAuthorize.Controllers
                         //if(Employee.CurrentRole.Level==DirectorRequired.LVL)
                         //    return RedirectToAction("ProjectsCheckInByMonth", "DirectorReport");
                         //else
-                        return RedirectToAction("Index", "employeerole");
+                        return RedirectToAction("Index", "EmployeeRole/Index");
                     }
                 }
                 else
