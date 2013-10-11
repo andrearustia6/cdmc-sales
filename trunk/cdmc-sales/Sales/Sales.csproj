@@ -1800,6 +1800,8 @@
     <Content Include="Views\ProjectReview\AddProjectReviewWindow.cshtml" />
     <Content Include="Views\ProjectReview\EditorTemplates\_ProjectReview.cshtml" />
     <Content Include="Views\Project\review.cshtml" />
+    <Content Include="Views\AvaliableCompanies\GetUnPickUp.cshtml" />
+    <Content Include="Views\AvaliableCompanies\GetPitchPoint.cshtml" />
     <None Include="Views\SalesEx\EditCompany.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\SimulatorConfig.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\AjaxTargetOfMonthForMember.cshtml" />

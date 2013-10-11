@@ -48,6 +48,7 @@ namespace Sales.Model
     public class _Lead : EntityBase
     {
         public int? CompanyID { get; set; }
+        public string SName { get; set; }
         public string Name { get; set; }
         public string Title { get; set; }
         public string Department { get; set; }

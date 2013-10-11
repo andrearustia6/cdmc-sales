@@ -251,6 +251,7 @@ namespace Sales.BLL
                               ID = leads.ID,
                               CompanyID = leads.CompanyID,
                               Name = leads.Name_CH + " " + leads.Name_EN,
+                              SName = (leads.Name_EN == "" ? leads.Name_CH : leads.Name_EN),
                               Title = leads.Title,
                               Contact = leads.Mobile,
                               Fax = leads.Fax,
@@ -328,6 +329,7 @@ namespace Sales.BLL
                           {
                               ID = leads.ID,
                               Name = leads.Name_CH + " " + leads.Name_EN,
+                              SName = (leads.Name_EN == "" ? leads.Name_CH : leads.Name_EN),
                               Title = leads.Title,
                               Contact = leads.Mobile,
                               Fax = leads.Fax,
@@ -423,6 +425,7 @@ namespace Sales.BLL
                           {
                               ID = leads.ID,
                               Name = leads.Name_CH + " " + leads.Name_EN,
+                              SName = (leads.Name_EN == "" ? leads.Name_CH : leads.Name_EN),
                               Title = leads.Title,
                               Contact = leads.Mobile,
                               Fax = leads.Fax,
