@@ -278,15 +278,18 @@
                            @Html.Hidden("MemberHidden", string.IsNullOrEmpty(memberhide) ? "" : memberhide.Substring(0, memberhide.Length - 1))
                            @Html.Hidden("SelectedMemberHidden")
                         </div>
-                        <table style="width:80%">
-                        @if(@Model.CrmStatisitcs.DispTrack!="")
+                        <table style="width:90%">
+                        @if(@Model.CrmStatisitcs.DispTrack.Count>0)
                         {
                              <tr>
                             <td style="width:50%">
                             <span> 时段：</span>
                             </td>
                             <td>
-                             @Model.CrmStatisitcs.DispTrack
+                            @foreach (var disp in Model.CrmStatisitcs.DispTrack)
+                             {
+                                @disp <br/>
+                             }
                             </td>
                             </tr>
                         }

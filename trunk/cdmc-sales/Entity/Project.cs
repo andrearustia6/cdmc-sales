@@ -29,7 +29,7 @@ namespace Entity
         //分配 or 领用or 自加
         public string Type { get; set; }
         //得到公司的时间
-        public DateTime GetDate { get; set; }
+        public DateTime? GetDate { get; set; }
         //释放公司的时间
         public DateTime? ReleaseDate { get; set; }
     }

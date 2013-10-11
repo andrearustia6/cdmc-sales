@@ -1490,7 +1490,15 @@
         if (gleadid == "" || gleadid == undefined) {
             $.post('_SelectedCRMNode', { crmid: crmid }, function (result) {
                 $('#crmdetailscontainer').html(result);
-                
+                if (clickpublic) {
+                    $(".UnPickUp").hide();
+                }
+                else {
+                    $(".PickUp").hide();
+                }
+                jQuery(".hide").hide();
+                jQuery(".click").removeAttr("onclick");
+                $('#ProgressIDdiv').hide();
             });
         }
         else {
@@ -1499,6 +1507,15 @@
                 var leaddiv = $('#lead' + gleadid);
                 leaddiv.removeClass('center_2');
                 leaddiv.addClass('center_1');
+                if (clickpublic) {
+                    $(".UnPickUp").hide();
+                }
+                else {
+                    $(".PickUp").hide();
+                }
+                jQuery(".hide").hide();
+                jQuery(".click").removeAttr("onclick");
+                $('#ProgressIDdiv').hide();
             });
         }
 
@@ -1710,6 +1727,12 @@
                 $("#allsales").css("color", '#1997ca');
                 filterCallList(name);
                 $("#SelectedMemberHidden").val(name);
+                if (clickpublic) {
+                    $(".UnPickUp").hide();
+                }
+                else {
+                    $(".PickUp").hide();
+                }
             });
         }
         else {
@@ -1722,6 +1745,12 @@
                 $("#sales" + name).css("color", '#1997ca');
                 filterCallList(name);
                 $("#SelectedMemberHidden").val(name);
+                if (clickpublic) {
+                    $(".UnPickUp").hide();
+                }
+                else {
+                    $(".PickUp").hide();
+                }
             });
         }
     }

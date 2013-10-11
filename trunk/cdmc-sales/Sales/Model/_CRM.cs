@@ -98,22 +98,29 @@ namespace Sales.Model
         /// </summary>
         public int CallCount { get; set; }
 
-        public CrmTrack crmtrack { get; set; }
+        public IEnumerable<CrmTrack> crmtracks { get; set; }
         /// <summary>
         /// track信息
         /// </summary>
-        public string DispTrack
+        public List<string> DispTrack
         {
             get
             {
-                if (crmtrack != null)
-                    if(crmtrack.ReleaseDate==null)
-                        return "["+crmtrack.Type + "] "  + crmtrack.GetDate.ToShortDateString() + " " + crmtrack.GetDate.ToShortTimeString()+"-now";
+                List<string> strList = new List<string>();
+                if (crmtracks == null)
+                    return strList;
+                foreach (var crmtrack in crmtracks)
+                {
+                    string str="";
+                    if (crmtrack.ReleaseDate == null && crmtrack.GetDate != null)
+                        str = crmtrack.GetDate.Value.ToShortDateString() + "~now" + "[" + (DateTime.Now - crmtrack.GetDate.Value).Days.ToString()+"]";
+                    else if (crmtrack.ReleaseDate != null && crmtrack.GetDate == null)
+                        str = "from~" + crmtrack.ReleaseDate.Value.ToShortDateString();
                     else
-                        return "[" + crmtrack.Type + "] " + crmtrack.GetDate.ToShortDateString() + " " + crmtrack.GetDate.ToShortTimeString() + "-"+crmtrack.ReleaseDate.Value.ToShortDateString()+" "+crmtrack.ReleaseDate.Value.ToShortTimeString();
-
-                else
-                    return "";
+                        str = crmtrack.GetDate.Value.ToShortDateString() + "~" + crmtrack.ReleaseDate.Value.ToShortDateString() + "[" + (crmtrack.ReleaseDate.Value - crmtrack.GetDate.Value).Days.ToString() + "]";
+                    strList.Add(str);
+                }
+                return strList;
             }
         }
 

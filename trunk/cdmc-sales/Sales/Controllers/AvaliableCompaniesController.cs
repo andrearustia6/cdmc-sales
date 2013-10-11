@@ -760,6 +760,26 @@ namespace Sales.Controllers
             companyRelationship.Members.Remove(member);
             CH.Edit(companyRelationship);
 
+            CrmTrack ct = CH.DB.CrmTracks.Where(ct1=>ct1.CompanyRelationshipID==crmid && ct1.Owner==Employee.CurrentUserName).OrderByDescending(ct1=>ct1.GetDate).FirstOrDefault();
+            if (ct != null)
+            {
+                ct.Owner = Employee.CurrentUserName;
+                ct.Type = "放回";
+                ct.ReleaseDate = DateTime.Now;
+                CH.Edit<CrmTrack>(ct);
+            }
+            else
+            {
+                ct = new CrmTrack();
+                ct.Owner = Employee.CurrentUserName;
+                ct.Type = "放回";
+                ct.CompanyRelationshipID = crmid;
+                ct.ReleaseDate = DateTime.Now;
+                CH.Create<CrmTrack>(ct);
+            }
+            
+
+
             return Json(new { companyRelationshipId = companyRelationship.ID, companyId = companyRelationship.CompanyID, projectId = companyRelationship.ProjectID, processid = companyRelationship.ProgressID, corelvlid = companyRelationship.CoreLVLID });
         }
         [ValidateInput(false)]
