@@ -216,6 +216,20 @@
                 .Modal(true).Visible(false).Draggable(true)
     )
 
+ @(Html.Telerik().Window().Title("PitchPoint")
+    .Name("PitchPoint1")
+    .Content(@<text><div class="dialogue-PitchPoint1">
+        <div class="PitchPoint1-wrapper">
+        </div>
+        <div class="dialogue-buttons" style=" float:right;">
+             <input type="button" class="btn-queding" onclick="savePitchPoint();" />
+        </div>
+    </div></text>)
+        .Width(1000)
+        .Height(220)
+                .Modal(true).Visible(false).Draggable(true)
+    )
+
 @(Html.Telerik().Window().Title("更新公司")
     .Name("EditCompany")
     .Content(@<text><div class="dialogue-editcompany">
@@ -250,10 +264,10 @@
     </div></text>)
     .Width(600).Height(200).Draggable(true).Modal(true).Visible(false)
 )
-@(Html.Telerik().Window().Title("Pitch Point")
+@(Html.Telerik().Window().Title("PitchPoint")
             .Name("PitchPoint")
     .Content(@<text><div class="dialogue-PitchPoint">
-        <div class="PitchPoint-wrapper">
+        <div class="PitchPoint-wrapper"> 
         </div>
         <div class="dialogue-buttons" style=" float:right;">
             <input type="button" class="btn-queding" onclick="Javescript:$('#PitchPoint').data('tWindow').close();" />
@@ -336,7 +350,48 @@
     </div></text>)
     .Width(850).Height(650).Draggable(true).Modal(true).Visible(false)
 )
+
+@(Html.Telerik().Window().Title("重新分配")
+    .Name("UnPickUp")
+    .Content(@<text><div class="dialogue-UnPickUp">
+        <div class="UnPickUp-wrapper">
+        </div>
+        <div class="dialogue-buttons" style="float:right;">
+            <input type="button" class="btn-queding" onclick="SaveUnPickUp()" />
+            <input type="button" class="btn-quxiao" onclick="$('#UnPickUp').data('tWindow').close();" />
+        </div>
+    </div></text>)
+    .Width(600).Height(300).Draggable(true).Modal(true).Visible(false)
+)
 <script>
+
+    function SaveUnPickUp() {
+
+        var check = "";
+        $("input[name='mbs']:checkbox").each(function () {
+            if ($(this).attr("checked")) {
+                check += $(this).val() + ","
+            }
+        })
+        $.post('SaveUnPickUp', { id: crmid, ids: check }, function (result) {
+            var window = $('#UnPickUp').data('tWindow');
+            window.close();
+        });
+    }
+
+    function savePitchPoint()
+    {
+        $.ajax({
+            url: "/AvaliableCompanies/EditPitchPoint",
+            type: "post",
+            data: { crmid: crmid, pp: $("textarea[name=PitchPoint]").val() },
+            dataType: "json",
+            success: function (data, status) {
+
+            }
+        });
+        $('#PitchPoint1').data('tWindow').close();
+    }
 
     function saveCategories()
     {
@@ -1094,13 +1149,13 @@
             }
         });
     }
-    function onPitchPoint(currentCompanyId) {
-        $.post('GetPitchPoint', { crmid: currentCompanyId }, function (result) {
-            $('.PitchPoint-wrapper').html(result);
-            var window = $('#PitchPoint').data('tWindow');
+    function GetPitchPoint(currentCompanyId) {
+        $.post('GetPitchPoint1', { crmid: currentCompanyId }, function (result) {
+            $('.PitchPoint1-wrapper').html(result);
+            var window = $('#PitchPoint1').data('tWindow');
             window.center().open();
-            while ($('.dialogue-PitchPoint form').length > 1) {
-                $('.dialogue-PitchPoint form').last().remove();
+            while ($('.dialogue-PitchPoint1 form').length > 1) {
+                $('.dialogue-PitchPoint1 form').last().remove();
             }
         });
     }
@@ -1114,6 +1169,9 @@
             }
         });
     }
+
+
+
     function onLeadSelect(leadid) {
         if (leadid == undefined || leadid == "")
             leadid = gleadid;
@@ -1582,24 +1640,33 @@
     }
     function onUnPickUp() {
 
-        $.post('UnPickUp', { crmid: crmid }, function (result) {
-            if (result.companyRelationshipId != null) {
-                alert('放回公海成功');
-                crmid = result.companyRelationshipId;
-                var currentProjectId = $('#projectid').val();
-                RefreshCrmTree(currentProjectId, result.companyRelationshipId, result.processid, result.corelvlid);
-                $('#crmdetailscontainer').html("");
-            }
-            else {
-                if (result != "") {
-                    alert('放回公海:' + result);
-                }
-                else {
-                    alert('放回公海');
-                }
-            }
+        $.post('GetUnPickUp', { crmid: crmid }, function (result) {
+            $('.UnPickUp-wrapper').html(result);
+            var window = $('#UnPickUp').data('tWindow');
+            window.center().open();
+
         });
+
+        //$.post('UnPickUp', { crmid: crmid }, function (result) {
+        //    if (result.companyRelationshipId != null) {
+        //        alert('放回公海成功');
+        //        crmid = result.companyRelationshipId;
+        //        var currentProjectId = $('#projectid').val();
+        //        RefreshCrmTree(currentProjectId, result.companyRelationshipId, result.processid, result.corelvlid);
+        //        $('#crmdetailscontainer').html("");
+        //    }
+        //    else {
+        //        if (result != "") {
+        //            alert('放回公海:' + result);
+        //        }
+        //        else {
+        //            alert('放回公海');
+        //        }
+        //    }
+        //});
     }
+
+
     function showLeadBtn(id) {
         $("#leadbtn" + id).show();
     }

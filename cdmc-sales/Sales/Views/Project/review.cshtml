@@ -1,0 +1,13 @@
+﻿@using Entity
+@using Sales.Model
+@model List<ProjectReview>
+<ul id="categoryedit-list">
+     @foreach (var review in Model)
+     {
+          <li>
+          @(review.ModifiedUser==null?review.Creator+" "+review.CreatedDate:review.ModifiedUser+" "+review.ModifiedDate)
+                <p  style="border:1px solid black; ">@review.Summary</p>
+    </li>
+     }
+   
+</ul>

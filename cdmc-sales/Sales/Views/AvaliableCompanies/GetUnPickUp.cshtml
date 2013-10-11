@@ -1,0 +1,21 @@
+﻿@using Entity
+@using Sales.Model
+@model List<int>
+           @{Project project = ViewBag.project as Project;}
+
+<ul id="gupu">
+@foreach (var x in project.Members)
+{ 
+    <li title="@x.Name" class="@(Model.Contains(x.ID)?"isselect":"")"><input type="checkbox" name="mbs" value="@x.ID"/>@x.Name</li>    
+}
+    
+</ul>
+<style>
+    #gupu { overflow:auto;}
+        #gupu li { width:135px;overflow:hidden;float:left;}
+</style>
+<script>
+    $(function () {
+        $(".isselect input[name='mbs']:checkbox").click();
+    })
+</script>
