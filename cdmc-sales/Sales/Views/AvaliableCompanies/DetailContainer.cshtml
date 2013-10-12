@@ -350,10 +350,18 @@
                         </tr>
                         <tr>
                         <td>
-                        <span> 人均Lead联系次数：</span>
+                        <span> 已打过人数：</span>
                         </td>
                         <td>
-                        @Model.CrmStatisitcs.LeadAvgCallCount.ToString("#,##0.00")
+                        @Model.CrmStatisitcs.LeadCalledCount
+                        </td>
+                        </tr>
+                        <tr>
+                        <td>
+                        <span> 未打过人数：</span>
+                        </td>
+                        <td>
+                        @Model.CrmStatisitcs.LeadNoCalledCount
                         </td>
                         </tr>
                         <tr>

@@ -91,9 +91,16 @@
     //var count=0
     //公司选择
     function onIndexSelect(e) {
+        var nv = $('#memberCompanies').data('tTreeView');
+        if ($(e.item).parents(".t-item").length == 0) {
+            $.post('GetCoreCoverage', { projectid: $("#projectid").data("tDropDownList").value(), coreid: nv.getItemValue(e.item) }, function (result) {
+                $('#crmdetailscontainer').html(result);
+            });
+            return;
+        }
         if ($(e.item).parents(".t-item").length != 2)
             return;
-        var nv = $('#memberCompanies').data('tTreeView');
+       
         var clickedvalue = nv.getItemValue(e.item);
         
         if (crmid != clickedvalue)
