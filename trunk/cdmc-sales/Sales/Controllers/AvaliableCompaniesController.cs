@@ -1088,5 +1088,25 @@ namespace Sales.Controllers
                 }
             }
         }
+        public PartialViewResult GetCoreCoverage(int projectid,int coreid)
+        {
+            var crms = CH.DB.CompanyRelationships.Where(cr => cr.ProjectID == projectid && cr.CoreLVLID == coreid && cr.Members.Count > 0);
+            if (Employee.CurrentRole.Level == SalesRequired.LVL || Employee.CurrentRole.Level == LeaderRequired.LVL)
+            {
+                crms = crms.Where(cr => cr.Members.Any(m => m.Name == Employee.CurrentUserName));
+            }
+            var ccs = from l in crms
+                      select new _CoreCoverage()
+                      {
+                          CompanyName = l.Company.Name_CH.Length >0 ? l.Company.Name_CH + "|" + l.Company.Name_EN : l.Company.Name_EN,
+                          Manager = l.CrmTracks.OrderByDescending(ct=>ct.GetDate).FirstOrDefault()!=null?l.CrmTracks.OrderByDescending(ct=>ct.GetDate).FirstOrDefault().Owner:"",
+                          PickUpTime = l.CrmTracks.OrderByDescending(ct => ct.GetDate).FirstOrDefault() != null ? l.CrmTracks.OrderByDescending(ct => ct.GetDate).FirstOrDefault().GetDate : null,
+                          SalesList = l.CrmTracks.Select(aa => aa.Owner).Distinct(),
+                          LeadCalledCount = l.LeadCalls.GroupBy(lc=>lc.LeadID).Count()
+                      };
+            
+            return PartialView(@"~\views\AvaliableCompanies\CoreCoverage.cshtml", ccs.ToList());
+        }
+
     }
 }

@@ -79,6 +79,14 @@ namespace Sales.Model
         /// </summary>
         public int LeadCount { get; set; }
         /// <summary>
+        /// Lead打过数
+        /// </summary>
+        public int LeadCalledCount { get; set; }
+        /// <summary>
+        /// Lead没打过数
+        /// </summary>
+        public int LeadNoCalledCount { get { return LeadCount - LeadCalledCount; } }
+        /// <summary>
         /// 覆盖率
         /// </summary>
         public double CoverageRate { get; set; }
@@ -308,5 +316,30 @@ namespace Sales.Model
         public int Count { get; set; }
         public string DisplayName { get { return Name + "("+Count+")";} }
         public IEnumerable<_CRM> _CRMs { get; set; }
+    }
+
+    /// <summary>
+    /// 核心公司覆盖表
+    /// </summary>
+    public class _CoreCoverage : EntityBase
+    {
+        public string CompanyName { get; set; }
+        /// <summary>
+        /// 领用人
+        /// </summary>
+        public string Manager { get; set; }
+        /// <summary>
+        /// 领用人打了几个lead
+        /// </summary>
+        public int LeadCalledCount { get; set; }
+        public DateTime? PickUpTime { get; set; }
+        public IEnumerable<string> SalesList { get; set; }
+        public string DispSales
+        {
+            get
+            {
+                return string.Join(",", SalesList.ToList());
+            }
+        }
     }
 }

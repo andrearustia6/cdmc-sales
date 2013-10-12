@@ -217,6 +217,8 @@ namespace Sales.BLL
                                     LeadAvgCallCount = data.Company.Leads.Count != 0 ? (double)data.LeadCalls.Count() / (double)data.Company.Leads.Count() : 0,
                                     CoverageRate = data.Company.Leads.Count != 0 ? ((double)callsgrp.Count() / (double)data.Company.Leads.Count()) * 100 : 0,
                                     TimeDiffer = data.Company.Leads.GroupBy(l => l.DistrictNumberID).Count(),
+                                    LeadCalledCount = data.LeadCalls.GroupBy(lc => lc.LeadID).Count(),
+                                    
                                     CallTypeCounts = from grp in data.LeadCalls.GroupBy(lc => lc.LeadCallTypeID)
                                                      select new CallTypeCount()
                                                      {
@@ -392,6 +394,7 @@ namespace Sales.BLL
                     LeadAvgCallCount = data.Company.Leads.Count != 0 ? (double)data.LeadCalls.Where(cc => cc.Member.Name == membername).Count() / (double)data.Company.Leads.Count() : 0,
                     CoverageRate = data.Company.Leads.Count != 0 ? (double)callsgrp.Count() / (double)data.Company.Leads.Count()*100 : 0,
                     TimeDiffer = data.Company.Leads.GroupBy(l => l.DistrictNumberID).Count(),
+                    LeadCalledCount = data.LeadCalls.Where(cc => cc.Member.Name == membername).GroupBy(lc => lc.LeadID).Count(),
                     CallTypeCounts = from grp in data.LeadCalls.Where(cc => cc.Member.Name == membername).GroupBy(lc => lc.LeadCallTypeID)
                                      select new CallTypeCount()
                                      {
