@@ -55,10 +55,10 @@ namespace Sales.Controllers
             var data = AvaliableCRM._CRMGetAvaliableCrmDetailByCrmIDMember(int.Parse(crmid),membername);
             return PartialView(@"~\views\AvaliableCompanies\DetailContainer.cshtml", data);
         }
-        public PartialViewResult GetDescription(string crmid)
+        public PartialViewResult GetDescription(int crmid)
         {
-            var data = AvaliableCRM._CRMGetAvaliableCrmDetail(int.Parse(crmid));
-            return PartialView("Description", data);
+            var cr = CH.DB.CompanyRelationships.Find(crmid);
+            return PartialView("Description", cr);
         }
         public PartialViewResult GetCompetitor(string crmid)
         {
@@ -1005,7 +1005,18 @@ namespace Sales.Controllers
 
             return Json("");
         }
+        [HttpPost]
+        [ValidateInput(false)]
+        public ActionResult EditDescription(FormCollection c)
+        {
+            int id = int.Parse(c["crmid"]);
+            string pp = c["pp"];
+            var cr = CH.DB.CompanyRelationships.Find(id);
+            cr.Description = pp;
+            CH.Edit<CompanyRelationship>(cr);
 
+            return Json("");
+        }
         [HttpPost]
         public PartialViewResult GetAssignCompany(int crmid)
         {
@@ -1102,7 +1113,9 @@ namespace Sales.Controllers
                           Manager = l.CrmTracks.OrderByDescending(ct=>ct.GetDate).FirstOrDefault()!=null?l.CrmTracks.OrderByDescending(ct=>ct.GetDate).FirstOrDefault().Owner:"",
                           PickUpTime = l.CrmTracks.OrderByDescending(ct => ct.GetDate).FirstOrDefault() != null ? l.CrmTracks.OrderByDescending(ct => ct.GetDate).FirstOrDefault().GetDate : null,
                           SalesList = l.CrmTracks.Select(aa => aa.Owner).Distinct(),
-                          LeadCalledCount = l.LeadCalls.GroupBy(lc=>lc.LeadID).Count()
+                          LeadCalledCount = l.LeadCalls.GroupBy(lc=>lc.LeadID).Count(),
+                          Calls = l.LeadCalls
+                          
                       };
             
             return PartialView(@"~\views\AvaliableCompanies\CoreCoverage.cshtml", ccs.ToList());

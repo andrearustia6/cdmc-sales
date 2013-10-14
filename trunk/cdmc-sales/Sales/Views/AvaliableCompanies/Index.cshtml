@@ -248,7 +248,7 @@
         <div class="Description-wrapper">
         </div>
         <div class="dialogue-buttons" style="position:absolute;bottom:0;width:98%;text-align:right;">
-            <input type="button" class="btn-queding" onclick="Javescript:$('#Description').data('tWindow').close();" />
+        <input type="button" class="btn-queding" onclick="saveDescription();" />
         </div>
     </div></text>)
     .Width(600).Height(200).Draggable(true).Modal(true).Visible(false)
@@ -387,7 +387,7 @@
             data: { crmid: crmid, pp: $("textarea[name=PitchPoint]").val() },
             dataType: "json",
             success: function (data, status) {
-
+                refreshdetail();
             }
         });
         $('#PitchPoint1').data('tWindow').close();
@@ -409,13 +409,25 @@
             type: "post",
             data: { ids: ids, cas: cas },
             dataType: "json",
-            success: function (data,status) {
-
+            success: function (data, status) {
+                refreshdetail();
             }
         });
         $('#Categories').data('tWindow').close();
     }
 
+    function saveDescription() {
+        $.ajax({
+            url: "/AvaliableCompanies/EditDescription",
+            type: "post",
+            data: { crmid: crmid, pp: $("textarea[name=Description]").val() },
+            dataType: "json",
+            success: function (data, status) {
+                refreshdetail();
+            }
+        });
+        $('#Description').data('tWindow').close();
+    }
 
     var crmid
     var gleadid
@@ -1854,5 +1866,24 @@
                 $(".call" + arrids[i]).show();
             }
         }
+    }
+    function refreshdetail() {
+        $.post('_SelectedCRMNode', { crmid: crmid }, function (result) {
+            $('#crmdetailscontainer').html(result);
+            $("#comments").hide();
+            $("#statistics").show();
+            jQuery("input[name=ComContent][value=Statistics]").attr("checked", true);
+            $("#allsales").css("color", '#1997ca');
+            $("#SelectedMemberHidden").val(name);
+            if (clickpublic) {
+                $(".UnPickUp").hide();
+                jQuery(".hide").hide();
+                jQuery(".click").removeAttr("onclick");
+                $('#ProgressIDdiv').hide();
+            }
+            else {
+                $(".PickUp").hide();
+            }
+        });
     }
 </script>

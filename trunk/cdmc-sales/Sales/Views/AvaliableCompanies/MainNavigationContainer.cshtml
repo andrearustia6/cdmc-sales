@@ -129,6 +129,10 @@
     }
     //公海公司选择
     function onIndexSelectPublic(e) {
+        if ($(e.item).parents(".t-item").length == 0) {
+            $('#crmdetailscontainer').html('');
+            return;
+        }
         if ($(e.item).parents(".t-item").length != 1)
             return;
         var nv = $('#memberCompanies').data('tTreeView');
