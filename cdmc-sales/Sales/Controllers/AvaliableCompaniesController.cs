@@ -441,8 +441,15 @@ namespace Sales.Controllers
             var c = CH.GetDataById<CompanyRelationship>(ajaxViewLeadCall.CompanyRelationshipId);
             var name = Employee.CurrentUserName;
             var memid = CH.DB.Members.Where(w => w.Name == name && w.ProjectID == c.ProjectID).Select(s => s.ID).FirstOrDefault();
+            //添加人不是member
+            if (memid == 0)
+            {
+                Member m = new Member() { Name = name, ProjectID = ajaxViewLeadCall.ProjectId, SalesTypeID=CH.GetAllData<SalesType>().FirstOrDefault(w=>w.Name=="其他").ID };
+                CH.Create<Member>(m);
+                memid = m.ID;
+            }
             leadCall.MemberID = memid;
-            //leadCall.Member = CH.DB.Members.FirstOrDefault(c => c.Name == Employee.CurrentUserName);
+  
             leadCall.ProjectID = ajaxViewLeadCall.ProjectId;
             leadCall.Result = ajaxViewLeadCall.Result;
             leadCall.MarkForDelete = false;

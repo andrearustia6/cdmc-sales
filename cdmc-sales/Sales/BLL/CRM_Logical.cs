@@ -221,7 +221,7 @@ namespace BLL
                 {
                     IQueryable<string> sales = null;
                     var user = Employee.CurrentUserName;
-                    var mems  = CH.DB.Members.Where(w => w.IsActivated == true && w.Project.IsActived == true);
+                    var mems  = CH.DB.Members.Where(w => w.IsActivated == true && w.Project.IsActived == true && !w.SalesType.Name.Contains("其他"));
                     if (Employee.EqualToLeader() || Employee.EqualToManager())//版块或者lead查看
                     {
                         sales =mems.Where(w=>w.Project.Manager == user || w.Project.TeamLeader == user).Select(s => s.Name).Distinct();

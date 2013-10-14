@@ -25,7 +25,7 @@ namespace Sales.Controllers
 
         public ActionResult index()
         {
-            //Utl.Utl.SyncUser();
+           // Utl.Utl.SyncUser();
             return View();
 
         }
