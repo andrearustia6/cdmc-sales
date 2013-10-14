@@ -1007,15 +1007,15 @@ namespace Sales.Controllers
         }
 
         [HttpPost]
-        public PartialViewResult GetUnPickUp(int crmid)
+        public PartialViewResult GetAssignCompany(int crmid)
         {
             var result = CH.DB.CompanyRelationships.Find(crmid).Members.Select(x => x.ID).ToList();
             ViewBag.project = CH.DB.CompanyRelationships.Find(crmid).Project;
-            return PartialView("GetUnPickUp", result);
+            return PartialView("AssignCompany", result);
         }
 
         [HttpPost]
-        public ActionResult SaveUnPickUp(int id, string ids)
+        public ActionResult SaveAssignCompany(int id, string ids)
         {
             try
             {

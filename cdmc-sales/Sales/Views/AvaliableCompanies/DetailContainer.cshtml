@@ -110,9 +110,17 @@
 
                          <a class="PickUp" href="#" onclick="onPickUp()">
                          <img src="../images/pickup.png" alt="领用" title="领用"/></a>
-                      <a class="UnPickUp" href="#" onclick="onUnPickUp()">
-                      <img src="../images/unpickup.png" alt="放弃公司" title="放弃公司"/></a>
 
+                          @if( Utl.Employee.CurrentRole.Level!= ManagerRequired.LVL)
+                          {
+                              <a class="UnPickUp" href="#" onclick="onUnPickUp()">
+                              <img src="../images/unpickup.png" alt="放弃公司" title="放弃公司"/></a>
+                           }
+                           @if( Utl.Employee.CurrentRole.Level== ManagerRequired.LVL)
+                          {
+                              <a class="UnPickUp" href="#" onclick="onGetAssignCompany()">
+                              <img src="../images/unpickup.png" alt="分配公司" title="分配公司"/></a>
+                           }
                         <a class="hide" href="#">
                             <img src="../images/pen1919.png" alt="bianji" onclick="onCompanyEdit(@(Model.CompanyID))"/></a>
 
@@ -274,6 +282,27 @@
                     <div id="statistics" style="display:none;">
                     @if (Model._members != null)
                     {
+                        <div>
+                            目前在打销售：
+                            @if( Utl.Employee.CurrentRole.Level== ManagerRequired.LVL)
+                        {
+                              @string.Join("，",Model._members.Select(a=>a.Name).ToArray())
+                            }
+                            else
+                            {
+                                @Utl.Employee.CurrentUserName;
+                        }
+                        </div>
+                        @*<table style="width:90%">
+                        <tr>
+                        <td style="width:50%">
+                        <span> 目前在打销售：</span>
+                        </td>
+                        <td>
+                        
+                        </td>
+                        </tr>
+                        </table>*@
                        <div>
                             <a id='allsales' class="onMember" href="#" onclick="onMember('')">所有销售</a>
                                 
@@ -301,21 +330,7 @@
                             </tr>
                         }
                        
-                        <tr>
-                        <td style="width:50%">
-                        <span> 目前在打销售：</span>
-                        </td>
-                        <td>
-                        @if( Utl.Employee.CurrentRole.Level== ManagerRequired.LVL)
-                        {
-                              @string.Join("，",Model._members.Select(a=>a.Name).ToArray())
-                            }
-                            else
-                            {
-                                @Utl.Employee.CurrentUserName;
-                        }
-                        </td>
-                        </tr>
+                        
                         <tr>
                         <td>
                         <span> Lead总数：</span>

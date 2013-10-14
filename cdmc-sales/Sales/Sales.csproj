@@ -1800,7 +1800,7 @@
     <Content Include="Views\ProjectReview\AddProjectReviewWindow.cshtml" />
     <Content Include="Views\ProjectReview\EditorTemplates\_ProjectReview.cshtml" />
     <Content Include="Views\Project\review.cshtml" />
-    <Content Include="Views\AvaliableCompanies\GetUnPickUp.cshtml" />
+    <Content Include="Views\AvaliableCompanies\AssignCompany.cshtml" />
     <Content Include="Views\AvaliableCompanies\GetPitchPoint.cshtml" />
     <Content Include="Views\AvaliableCompanies\CoreCoverage.cshtml" />
     <None Include="Views\SalesEx\EditCompany.cshtml" />
