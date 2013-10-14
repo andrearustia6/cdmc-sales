@@ -334,11 +334,19 @@ namespace Sales.Model
         public int LeadCalledCount { get; set; }
         public DateTime? PickUpTime { get; set; }
         public IEnumerable<string> SalesList { get; set; }
+        public IEnumerable<LeadCall> Calls { get; set; }
         public string DispSales
         {
             get
             {
-                return string.Join(",", SalesList.ToList());
+                string ret = "";
+                foreach (var str in SalesList)
+                {
+                    var salescall = Calls.Where(c => c.Member.Name == str);
+                    ret=ret+";"+str+"("+salescall.Count().ToString()+")";
+                }
+
+                return ret.TrimStart(';');
             }
         }
     }

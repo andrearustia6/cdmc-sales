@@ -133,7 +133,7 @@
                         <div class="left_4">决策人状态统计</div>
                         <div class="left_5">
                             <img src="../images/quan-01.png" width="15" height="15" alt="yuan" title="没联系" />@Model.NoCallCount
-                            <img src="../images/quan-09.png" width="15" height="15" alt="yuan" title="Not Piteched" />@Model.BlowedCount
+                            <img src="../images/quan-09.png" width="15" height="15" alt="yuan" title="Blowed和Not Piteched" />@Model.BlowedCount
                             <img src="../images/quan-10.png" width="15" height="15" alt="yuan" title="Pitched和Full Pitched和Call Backed" />@Model.TotalPitchCount
                             <img src="../images/55.png" width="15" height="15" alt="yuan" title="Qualified Decision和Waiting for Approval" />@Model.QualifiedWaitForCount
                             <img src="../images/quan-08.png" width="15" height="15" alt="yuan" title="Closed" />@Model.CloseDealCount
@@ -158,13 +158,18 @@
                                 if (Model.Description.Length > 50)
                                 {
                                 @Model.Description.Substring(0, 50)
-                                @Model.Description.Substring(0, 50)
                                 <p>
-                                    <a href="#"  onclick="onDescription(@(Model.ID))">更多>></a></p>
+                                     <a href="#" onclick="onDescription(@(Model.ID))">
+                                <img src="../images/quan-13.jpg" width="20" height="18" alt="wenhao" /></a>
+                                    </p>
                                 }
                                 else
                                 {
                                 @Model.Description
+                                <p>
+                                     <a href="#" onclick="onDescription(@(Model.ID))">
+                                <img src="../images/quan-13.jpg" width="20" height="18" alt="wenhao" /></a>
+                                    </p>
                                 }
 
                             }
@@ -233,17 +238,17 @@
                                 var i = 1;
                                 foreach (var comment in Model._Comments)
                                 {
-                                bool mysel = Utl.Employee.GetLoginUserName() == comment.Submitter;
+                                    bool mysel = Utl.Employee.GetLoginUserName() == comment.Submitter;
                                 @*<div class="dierye_3_@(i)">*@
-                                    <div class="item" style="float:@(mysel?"right":"left");width:80%;text-align:@(mysel?"right":"left")">
+                                    <div class="item" style="float:@(mysel ? "right" : "left");width:80%;text-align:@(mysel ? "right" : "left")">
                                         <table style="border:0;margin-bottom:10px;width:100%;">
                                             <tr>
-                                                <td style="width:@(mysel?"80%":"")">@(mysel?comment.Contents:comment.Submitter)</td>
-                                                <td>@(mysel?"我":comment.Contents)</td>
+                                                <td style="width:@(mysel ? "80%" : "")">@(mysel ? comment.Contents : comment.Submitter)</td>
+                                                <td>@(mysel ? "我" : comment.Contents)</td>
                                             </tr>
                                             <tr>
-                                                <td>@(mysel?(comment.CommentDate.ToString("yyyy/MM/dd")+" "+comment.CommentDate.ToShortTimeString()):"")</td>
-                                                <td>@(mysel?"":(comment.CommentDate.ToString("yyyy/MM/dd")+" "+comment.CommentDate.ToShortTimeString()))</td>
+                                                <td>@(mysel ? (comment.CommentDate.ToString("yyyy/MM/dd") + " " + comment.CommentDate.ToShortTimeString()) : "")</td>
+                                                <td>@(mysel ? "" : (comment.CommentDate.ToString("yyyy/MM/dd") + " " + comment.CommentDate.ToShortTimeString()))</td>
                                             </tr>
                                         </table>
                                     </div>
@@ -284,14 +289,14 @@
                     {
                         <div>
                             目前在打销售：
-                            @if( Utl.Employee.CurrentRole.Level== ManagerRequired.LVL)
-                        {
-                              @string.Join("，",Model._members.Select(a=>a.Name).ToArray())
+                            @if (Utl.Employee.CurrentRole.Level == ManagerRequired.LVL)
+                            {
+                              @string.Join("，", Model._members.Select(a => a.Name).ToArray())
                             }
                             else
                             {
                                 @Utl.Employee.CurrentUserName;
-                        }
+                            }
                         </div>
                         @*<table style="width:90%">
                         <tr>
@@ -306,16 +311,16 @@
                        <div>
                             <a id='allsales' class="onMember" href="#" onclick="onMember('')">所有销售</a>
                                 
-                           @foreach (var member in Model._LeadCalls.Select(a=>a.MemberName).Distinct())
+                           @foreach (var member in Model._LeadCalls.Select(a => a.MemberName).Distinct())
                            {
                                 <span>| </span> <a id='sales@(member)' class="onMember" href="#" onclick="onMember('@(member)')">  @member</a>
-                               memberhide += member + ",";
+                                                                                                                              memberhide += member + ",";
                            }
                            @Html.Hidden("MemberHidden", string.IsNullOrEmpty(memberhide) ? "" : memberhide.Substring(0, memberhide.Length - 1))
                            @Html.Hidden("SelectedMemberHidden")
                         </div>
                         <table style="width:90%">
-                        @if(@Model.CrmStatisitcs.DispTrack.Count>0)
+                        @if (@Model.CrmStatisitcs.DispTrack.Count > 0)
                         {
                              <tr>
                             <td style="width:50%">
@@ -323,9 +328,9 @@
                             </td>
                             <td>
                             @foreach (var disp in Model.CrmStatisitcs.DispTrack)
-                             {
+                            {
                                 @disp <br/>
-                             }
+                            }
                             </td>
                             </tr>
                         }
@@ -550,7 +555,7 @@
                         }
                         if (leadcalls != null && leadcalls.Count() > 0)
                         {
-                            
+
                             foreach (var call in leadcalls)
                             {
                                 leadhide += call.LeadID + ",";
