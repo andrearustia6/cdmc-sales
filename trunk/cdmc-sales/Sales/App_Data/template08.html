@@ -1,0 +1,605 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>CDMC</title>
+    <style>
+        
+        <!--
+        /* Font Definitions */
+        @font-face {
+            font-family: Wingdings;
+            panose-1: 5 0 0 0 0 0 0 0 0 0;
+        }
+
+        @font-face {
+            font-family: 宋体;
+            panose-1: 2 1 6 0 3 1 1 1 1 1;
+        }
+
+        @font-face {
+            font-family: 宋体;
+            panose-1: 2 1 6 0 3 1 1 1 1 1;
+        }
+
+        @font-face {
+            font-family: Cambria;
+            panose-1: 2 4 5 3 5 4 6 3 2 4;
+        }
+
+        @font-face {
+            font-family: "\@宋体";
+            panose-1: 2 1 6 0 3 1 1 1 1 1;
+        }
+        .ReadMsgBody
+        {
+            width: 100%;
+        }
+        .ExternalClass
+        {
+            width: 100%;
+        }
+        /* Style Definitions */
+        p.MsoNormal, li.MsoNormal, div.MsoNormal {
+            margin: 0cm;
+            margin-bottom: .0001pt;
+            font-size: 12.0pt;
+            font-family: "Times New Roman","serif";
+        }
+
+        p.MsoHeader, li.MsoHeader, div.MsoHeader {
+            mso-style-link: "页眉 Char";
+            margin: 0cm;
+            margin-bottom: .0001pt;
+            font-size: 12.0pt;
+            font-family: "Times New Roman","serif";
+        }
+
+        p.MsoFooter, li.MsoFooter, div.MsoFooter {
+            mso-style-link: "页脚 Char";
+            margin: 0cm;
+            margin-bottom: .0001pt;
+            font-size: 12.0pt;
+            font-family: "Times New Roman","serif";
+        }
+
+        a:link, span.MsoHyperlink {
+            color: blue;
+            text-decoration: underline;
+        }
+
+        a:visited, span.MsoHyperlinkFollowed {
+            color: purple;
+            text-decoration: underline;
+        }
+
+        p.-11, li.-11, div.-11 {
+            mso-style-name: "彩色列表 - 强调文字颜色 11";
+            margin-top: 0cm;
+            margin-right: 0cm;
+            margin-bottom: 0cm;
+            margin-left: 36.0pt;
+            margin-bottom: .0001pt;
+            font-size: 12.0pt;
+            font-family: "Times New Roman","serif";
+        }
+
+            p.-11CxSpFirst, li.-11CxSpFirst, div.-11CxSpFirst {
+                mso-style-name: "彩色列表 - 强调文字颜色 11CxSpFirst";
+                margin-top: 0cm;
+                margin-right: 0cm;
+                margin-bottom: 0cm;
+                margin-left: 36.0pt;
+                margin-bottom: .0001pt;
+                font-size: 12.0pt;
+                font-family: "Times New Roman","serif";
+            }
+
+            p.-11CxSpMiddle, li.-11CxSpMiddle, div.-11CxSpMiddle {
+                mso-style-name: "彩色列表 - 强调文字颜色 11CxSpMiddle";
+                margin-top: 0cm;
+                margin-right: 0cm;
+                margin-bottom: 0cm;
+                margin-left: 36.0pt;
+                margin-bottom: .0001pt;
+                font-size: 12.0pt;
+                font-family: "Times New Roman","serif";
+            }
+
+            p.-11CxSpLast, li.-11CxSpLast, div.-11CxSpLast {
+                mso-style-name: "彩色列表 - 强调文字颜色 11CxSpLast";
+                margin-top: 0cm;
+                margin-right: 0cm;
+                margin-bottom: 0cm;
+                margin-left: 36.0pt;
+                margin-bottom: .0001pt;
+                font-size: 12.0pt;
+                font-family: "Times New Roman","serif";
+            }
+
+        span.Char {
+            mso-style-name: "页眉 Char";
+            mso-style-link: 页眉;
+            font-family: "Times New Roman","serif";
+        }
+
+        span.Char0 {
+            mso-style-name: "页脚 Char";
+            mso-style-link: 页脚;
+            font-family: "Times New Roman","serif";
+        }
+        /* Page Definitions */
+        @page WordSection1 {
+            size: 595.0pt 842.0pt;
+            margin: 35.45pt 49.25pt 72.0pt 2.0cm;
+        }
+
+        div.WordSection1 {
+            page: WordSection1;
+        }
+        /* List Definitions */
+        ol {
+            margin-bottom: 0cm;
+        }
+
+        ul {
+            margin-bottom: 0cm;
+        }
+        -->
+    </style>
+</head>
+<body style="margin: 0; padding: 0;">
+    <table id="mainContent" width="700" border="0" cellspacing="0" cellpadding="0" align="center">
+        <tr>
+            <td style="background: #1E193F;">
+                <img src="../images/logo.jpg" height="110" alt="logo" />
+            </td>
+        </tr>
+        <tr>
+            <td style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; line-height: 16px;
+                border-left: 1px solid #cccccc; border-right: 1px solid #cccccc;">
+                <table width="100%" border="0" cellspacing="0" cellpadding="15">
+                    <tr>
+                        <td>
+                            <div class="WordSection1">
+                                <p class="MsoNormal" align="center" style='text-align: center'>
+                                    <b><span lang="EN-US" style='font-size: 14.0pt; font-family: "Arial","sans-serif";
+                                        color: black'>
+                                        <br>
+                                    </span></b><b><span style='font-size: 14.0pt; font-family: 宋体; color: black'>奖项申请表</span></b>
+                                </p>
+                                <p class="MsoNormal" align="center" style='text-align: center'>
+                                    <span style='font-size: 10.0pt; font-family: 宋体'>我</span><span lang="EN-US" style='font-size: 10.0pt;
+                                        font-family: "Arial","sans-serif"'>/</span><span style='font-size: 10.0pt; font-family: 宋体'>我们拟申请以下奖项（请在目标奖项方框内打“</span><span
+                                            lang="EN-US" style='font-size: 10.0pt; font-family: "Arial","sans-serif"; color: black'>√</span><span
+                                                style='font-size: 10.0pt; font-family: 宋体'>”；若申请多个奖项，请分开填写申请表）</span>
+                                </p>
+                                <p class="MsoNormal" align="center" style='text-align: center'>
+                                    <span lang="EN-US" style='font-size: 10.0pt; font-family: "Arial","sans-serif"'>&nbsp;</span>
+                                </p>
+                                <table class="MsoNormalTable" border="1" cellspacing="0" cellpadding="0" style='border-collapse: collapse;
+                                    border: none'>
+                                    <tr>
+                                        <td width="666" valign="top" style='width: 499.85pt; border: solid black 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt'>
+                                            <p class="MsoNormal">
+                                                <b><span style='font-size: 11.0pt; font-family: 宋体'>商业类别奖项</span></b></p>
+                                            <p class="MsoNormal">
+                                                <b><span lang="EN-US" style='font-size: 11.0pt; font-family: "Arial","sans-serif"'>&nbsp;</span></b>
+                                            </p>
+                                            <p class="MsoNormal" style='margin-left: 18.0pt; text-indent: -18.0pt'>
+                                                <span lang="EN-US" style='font-size: 11.0pt; font-family: 宋体'>□<span style='font: 7.0pt "Times New Roman"'>&nbsp;
+                                                </span></span><span style='font-size: 11.0pt; font-family: 宋体'>最受好评食品饮料生产企业</span>
+                                            </p>
+                                            <p class="MsoNormal" style='margin-left: 18.0pt; text-indent: -18.0pt'>
+                                                <span lang="EN-US" style='font-size: 11.0pt; font-family: 宋体'>□<span style='font: 7.0pt "Times New Roman"'>&nbsp;
+                                                </span></span><span style='font-size: 11.0pt; font-family: 宋体'>最具创新食品饮料包装企业</span>
+                                            </p>
+                                            <p class="MsoNormal" style='margin-left: 18.0pt; text-indent: -18.0pt'>
+                                                <span lang="EN-US" style='font-size: 11.0pt; font-family: 宋体'>□<span style='font: 7.0pt "Times New Roman"'>&nbsp;
+                                                </span></span><span style='font-size: 11.0pt; font-family: 宋体'>优秀食品饮料添加剂企业</span>
+                                            </p>
+                                            <p class="MsoNormal" style='margin-left: 18.0pt; text-indent: -18.0pt'>
+                                                <span lang="EN-US" style='font-size: 11.0pt; font-family: 宋体'>□<span style='font: 7.0pt "Times New Roman"'>&nbsp;
+                                                </span></span><span style='font-size: 11.0pt; font-family: 宋体'>绿色食品饮料杰出贡献奖</span>
+                                            </p>
+                                            <p class="MsoNormal" style='margin-left: 18.0pt; text-indent: -18.0pt'>
+                                                <span lang="EN-US" style='font-size: 11.0pt; font-family: 宋体'>□<span style='font: 7.0pt "Times New Roman"'>&nbsp;
+                                                </span></span><span style='font-size: 11.0pt; font-family: 宋体'>最受欢迎食品饮料检验检测企业</span>
+                                            </p>
+                                            <p class="MsoNormal" style='margin-left: 18.0pt; text-indent: -18.0pt'>
+                                                <span lang="EN-US" style='font-size: 11.0pt; font-family: 宋体'>□<span style='font: 7.0pt "Times New Roman"'>&nbsp;
+                                                </span></span><span style='font-size: 11.0pt; font-family: 宋体'>最受关注乳制品企业</span>
+                                            </p>
+                                            <p class="MsoNormal" style='margin-left: 18.0pt'>
+                                                <span lang="EN-US" style='font-size: 11.0pt; font-family: "Arial","sans-serif"'>&nbsp;</span>
+                                            </p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="666" valign="top" style='width: 499.85pt; border: solid black 1.0pt; border-top: none;
+                                            padding: 0cm 5.4pt 0cm 5.4pt'>
+                                            <p class="MsoNormal">
+                                                <b><span style='font-size: 11.0pt; font-family: 宋体'>个人奖项</span></b></p>
+                                            <p class="MsoNormal">
+                                                <b><span lang="EN-US" style='font-size: 11.0pt; font-family: "Arial","sans-serif"'>&nbsp;</span></b>
+                                            </p>
+                                            <p class="MsoNormal" style='margin-left: 18.0pt; text-align: justify; text-justify: inter-ideograph;
+                                                text-indent: -18.0pt'>
+                                                <span lang="EN-US" style='font-size: 11.0pt; font-family: 宋体'>□<span style='font: 7.0pt "Times New Roman"'>&nbsp;
+                                                </span></span><span lang="EN-US" style='font-size: 11.0pt; font-family: "Arial","sans-serif"'>
+                                                    2013-2014</span><span style='font-size: 11.0pt; font-family: 宋体'>年度最具影响力</span><span
+                                                        lang="EN-US" style='font-size: 11.0pt; font-family: "Arial","sans-serif"'>CEO</span><span
+                                                            style='font-size: 11.0pt; font-family: 宋体'>奖</span><span lang="EN-US" style='font-size: 11.0pt;
+                                                                font-family: "Arial","sans-serif"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                            </span>
+                                            </p>
+                                            <p class="MsoNormal" style='text-align: justify; text-justify: inter-ideograph'>
+                                                <span style='font-size: 11.0pt; font-family: 宋体'>□</span><span style='font-size: 11.0pt;
+                                                    font-family: "Arial","sans-serif"'> &nbsp;</span><span style='font-size: 11.0pt;
+                                                        font-family: 宋体'>终身成就奖</span>
+                                            </p>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <p class="MsoNormal">
+                                    <b><span lang="EN-US" style='font-size: 14.0pt; font-family: "Arial","sans-serif";
+                                        color: black'>&nbsp;</span></b>
+                                </p>
+                                <p class="MsoNormal">
+                                    <b><span style='font-size: 11.0pt; font-family: 宋体; color: black'>请依次回答以下问题，并参考字数限制要求将答案填写于以下表格内。</span></b><b><span
+                                        lang="EN-US" style='font-size: 11.0pt; font-family: "Arial","sans-serif"; color: black'>
+                                    </span></b>
+                                </p>
+                                <p class="MsoNormal">
+                                    <span lang="EN-US" style='font-size: 11.0pt; font-family: "Arial","sans-serif"; color: black'>
+                                        &nbsp;</span>
+                                </p>
+                                <p class="MsoNormal">
+                                    <span style='font-size: 11.0pt; font-family: 宋体; color: black'>填写完奖项申请表后，请于</span><span
+                                        lang="EN-US" style='font-size: 11.0pt; font-family: "Arial","sans-serif"; color: black'>2013</span><span
+                                            style='font-size: 11.0pt; font-family: 宋体; color: black'>年</span><span lang="EN-US"
+                                                style='font-size: 11.0pt; font-family: "Arial","sans-serif"; color: black'>9</span><span
+                                                    style='font-size: 11.0pt; font-family: 宋体; color: black'>月</span><span lang="EN-US"
+                                                        style='font-size: 11.0pt; font-family: "Arial","sans-serif"; color: black'>30</span><span
+                                                            style='font-size: 11.0pt; font-family: 宋体; color: black'>日前将申请表发送至</span><span style='font-size: 11.0pt;
+                                                                font-family: "Arial","sans-serif"; color: black'> &nbsp;<span lang="EN-US"><a href="mailto:cfbes@cdmc.org.cn">cfbes@cdmc.org.cn</a>
+                                                                </span></span><span style='font-size: 11.0pt; font-family: 宋体; color: black'>。随信请附上贵公司</span><span
+                                                                    lang="EN-US" style='font-size: 11.0pt; font-family: "Arial","sans-serif"; color: black'>logo</span><span
+                                                                        style='font-size: 11.0pt; font-family: 宋体; color: black'>、简介及相关申请补充材料。</span>
+                                </p>
+                                <p class="MsoNormal">
+                                    <span lang="EN-US" style='font-size: 11.0pt; font-family: "Arial","sans-serif"; color: black'>
+                                        &nbsp;</span>
+                                </p>
+                                <p class="MsoNormal">
+                                    <span style='font-size: 11.0pt; font-family: 宋体; color: black'>温馨提示：</span><span
+                                        lang="EN-US" style='font-size: 11.0pt; font-family: "Arial","sans-serif"; color: black'>2013</span><span
+                                            style='font-size: 11.0pt; font-family: 宋体; color: black'>年</span><span lang="EN-US"
+                                                style='font-size: 11.0pt; font-family: "Arial","sans-serif"; color: black'>9</span><span
+                                                    style='font-size: 11.0pt; font-family: 宋体; color: black'>月</span><span lang="EN-US"
+                                                        style='font-size: 11.0pt; font-family: "Arial","sans-serif"; color: black'>30</span><span
+                                                            style='font-size: 11.0pt; font-family: 宋体; color: black'>日后收到的奖项申请，组委会及评委会将一律不予进入评审阶段。</span>
+                                </p>
+                                <p class="MsoNormal">
+                                    <span lang="EN-US" style='font-size: 11.0pt; font-family: "Arial","sans-serif"; color: black'>
+                                        &nbsp;</span>
+                                </p>
+                                <div class="MsoNormal" align="center" style='text-align: center'>
+                                    <span lang="EN-US" style='font-size: 11.0pt; font-family: "Arial","sans-serif"'>
+                                        <hr size="2" width="100%" align="center">
+                                    </span>
+                                </div>
+                                <p class="MsoNormal">
+                                    <span style='font-size: 11.0pt; font-family: 宋体'>为保证奖项申请、评审、公布期间组委会与您保持及时良好的沟通，请确保以下信息填写完整及正确。</span></p>
+                                <p class="MsoNormal">
+                                    <b><u><span lang="EN-US" style='font-size: 11.0pt; font-family: "Arial","sans-serif"'>
+                                        <span style='text-decoration: none'>&nbsp;</span></span></u></b>
+                                </p>
+                                <p class="MsoNormal">
+                                    <b><u><span style='font-size: 11.0pt; font-family: 宋体'>申请人信息</span></u></b></p>
+                                <p class="MsoNormal">
+                                    <b><u><span lang="EN-US" style='font-size: 11.0pt; font-family: "Arial","sans-serif"'>
+                                        <span style='text-decoration: none'>&nbsp;</span></span></u></b>
+                                </p>
+                                <table class="MsoNormalTable" border="1" cellspacing="0" cellpadding="0" style='margin-left: 5.4pt;
+                                    border-collapse: collapse; border: none'>
+                                    <tr>
+                                        <td width="189" valign="top" style='width: 5.0cm; border: solid black 1.0pt; background: #CCCCCC;
+                                            padding: 0cm 5.4pt 0cm 5.4pt'>
+                                            <p class="MsoNormal">
+                                                <b><span style='font-size: 11.0pt; font-family: 宋体; color: black'>姓名</span></b>
+                                            </p>
+                                        </td>
+                                        <td width="491" valign="top" style='width: 13.0cm; border: solid black 1.0pt; border-left: none;
+                                            padding: 0cm 5.4pt 0cm 5.4pt'>
+                                            <p class="MsoNormal" align="center" style='text-align: center'>
+                                                <b><span lang="EN-US" style='font-size: 11.0pt; font-family: "Arial","sans-serif";
+                                                    color: black'>&nbsp;</span></b>
+                                            </p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="189" valign="top" style='width: 5.0cm; border: solid black 1.0pt; border-top: none;
+                                            background: #CCCCCC; padding: 0cm 5.4pt 0cm 5.4pt'>
+                                            <p class="MsoNormal">
+                                                <b><span style='font-size: 11.0pt; font-family: 宋体; color: black'>职位</span></b>
+                                            </p>
+                                        </td>
+                                        <td width="491" valign="top" style='width: 13.0cm; border-top: none; border-left: none;
+                                            border-bottom: solid black 1.0pt; border-right: solid black 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt'>
+                                            <p class="MsoNormal" align="center" style='text-align: center'>
+                                                <b><span lang="EN-US" style='font-size: 11.0pt; font-family: "Arial","sans-serif";
+                                                    color: black'>&nbsp;</span></b>
+                                            </p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="189" valign="top" style='width: 5.0cm; border: solid black 1.0pt; border-top: none;
+                                            background: #CCCCCC; padding: 0cm 5.4pt 0cm 5.4pt'>
+                                            <p class="MsoNormal">
+                                                <b><span style='font-size: 11.0pt; font-family: 宋体; color: black'>单位</span></b>
+                                            </p>
+                                        </td>
+                                        <td width="491" valign="top" style='width: 13.0cm; border-top: none; border-left: none;
+                                            border-bottom: solid black 1.0pt; border-right: solid black 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt'>
+                                            <p class="MsoNormal" align="center" style='text-align: center'>
+                                                <b><span lang="EN-US" style='font-size: 11.0pt; font-family: "Arial","sans-serif";
+                                                    color: black'>&nbsp;</span></b>
+                                            </p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="189" valign="top" style='width: 5.0cm; border: solid black 1.0pt; border-top: none;
+                                            background: #CCCCCC; padding: 0cm 5.4pt 0cm 5.4pt'>
+                                            <p class="MsoNormal">
+                                                <b><span style='font-size: 11.0pt; font-family: 宋体; color: black'>邮箱</span></b>
+                                            </p>
+                                        </td>
+                                        <td width="491" valign="top" style='width: 13.0cm; border-top: none; border-left: none;
+                                            border-bottom: solid black 1.0pt; border-right: solid black 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt'>
+                                            <p class="MsoNormal" align="center" style='text-align: center'>
+                                                <b><span lang="EN-US" style='font-size: 11.0pt; font-family: "Arial","sans-serif";
+                                                    color: black'>&nbsp;</span></b>
+                                            </p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="189" valign="top" style='width: 5.0cm; border: solid black 1.0pt; border-top: none;
+                                            background: #CCCCCC; padding: 0cm 5.4pt 0cm 5.4pt'>
+                                            <p class="MsoNormal">
+                                                <b><span style='font-size: 11.0pt; font-family: 宋体; color: black'>电话</span></b>
+                                            </p>
+                                        </td>
+                                        <td width="491" valign="top" style='width: 13.0cm; border-top: none; border-left: none;
+                                            border-bottom: solid black 1.0pt; border-right: solid black 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt'>
+                                            <p class="MsoNormal" align="center" style='text-align: center'>
+                                                <b><span lang="EN-US" style='font-size: 11.0pt; font-family: "Arial","sans-serif";
+                                                    color: black'>&nbsp;</span></b>
+                                            </p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="189" valign="top" style='width: 5.0cm; border: solid black 1.0pt; border-top: none;
+                                            background: #CCCCCC; padding: 0cm 5.4pt 0cm 5.4pt'>
+                                            <p class="MsoNormal">
+                                                <b><span style='font-size: 11.0pt; font-family: 宋体; color: black'>手机</span></b>
+                                            </p>
+                                        </td>
+                                        <td width="491" valign="top" style='width: 13.0cm; border-top: none; border-left: none;
+                                            border-bottom: solid black 1.0pt; border-right: solid black 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt'>
+                                            <p class="MsoNormal" align="center" style='text-align: center'>
+                                                <b><span lang="EN-US" style='font-size: 11.0pt; font-family: "Arial","sans-serif";
+                                                    color: black'>&nbsp;</span></b>
+                                            </p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="189" valign="top" style='width: 5.0cm; border: solid black 1.0pt; border-top: none;
+                                            background: #CCCCCC; padding: 0cm 5.4pt 0cm 5.4pt'>
+                                            <p class="MsoNormal">
+                                                <b><span style='font-size: 11.0pt; font-family: 宋体; color: black'>地址</span></b>
+                                            </p>
+                                        </td>
+                                        <td width="491" valign="top" style='width: 13.0cm; border-top: none; border-left: none;
+                                            border-bottom: solid black 1.0pt; border-right: solid black 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt'>
+                                            <p class="MsoNormal" align="center" style='text-align: center'>
+                                                <b><span lang="EN-US" style='font-size: 11.0pt; font-family: "Arial","sans-serif";
+                                                    color: black'>&nbsp;</span></b>
+                                            </p>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <p class="MsoNormal">
+                                    <b><span lang="EN-US" style='font-family: "Arial","sans-serif"'>&nbsp;</span></b></p>
+                                <p class="MsoNormal">
+                                    <b><u><span style='font-size: 11.0pt; font-family: 宋体; color: black'>参赛者信息</span></u></b>
+                                </p>
+                                <p class="MsoNormal">
+                                    <span lang="EN-US" style='font-size: 11.0pt; font-family: "Arial","sans-serif"; color: black'>
+                                        &nbsp;</span>
+                                </p>
+                                <table class="MsoNormalTable" border="1" cellspacing="0" cellpadding="0" style='margin-left: 5.4pt;
+                                    border-collapse: collapse; border: none'>
+                                    <tr>
+                                        <td width="189" valign="top" style='width: 5.0cm; border: solid black 1.0pt; background: #CCCCCC;
+                                            padding: 0cm 5.4pt 0cm 5.4pt'>
+                                            <p class="MsoNormal">
+                                                <b><span style='font-size: 11.0pt; font-family: 宋体; color: black'>单位</span></b>
+                                            </p>
+                                        </td>
+                                        <td width="491" valign="top" style='width: 13.0cm; border: solid black 1.0pt; border-left: none;
+                                            padding: 0cm 5.4pt 0cm 5.4pt'>
+                                            <p class="MsoNormal" align="center" style='text-align: center'>
+                                                <b><span lang="EN-US" style='font-size: 11.0pt; font-family: "Arial","sans-serif";
+                                                    color: black'>&nbsp;</span></b>
+                                            </p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="189" valign="top" style='width: 5.0cm; border: solid black 1.0pt; border-top: none;
+                                            background: #CCCCCC; padding: 0cm 5.4pt 0cm 5.4pt'>
+                                            <p class="MsoNormal">
+                                                <b><span style='font-size: 11.0pt; font-family: 宋体; color: black'>客户包括</span></b>
+                                            </p>
+                                        </td>
+                                        <td width="491" valign="top" style='width: 13.0cm; border-top: none; border-left: none;
+                                            border-bottom: solid black 1.0pt; border-right: solid black 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt'>
+                                            <p class="MsoNormal" align="center" style='text-align: center'>
+                                                <b><span lang="EN-US" style='font-size: 11.0pt; font-family: "Arial","sans-serif";
+                                                    color: black'>&nbsp;</span></b>
+                                            </p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="189" valign="top" style='width: 5.0cm; border: solid black 1.0pt; border-top: none;
+                                            background: #CCCCCC; padding: 0cm 5.4pt 0cm 5.4pt'>
+                                            <p class="MsoNormal">
+                                                <b><span style='font-size: 11.0pt; font-family: 宋体; color: black'>项目</span></b><b><span
+                                                    lang="EN-US" style='font-size: 11.0pt; font-family: "Arial","sans-serif"; color: black'>/</span></b><b><span
+                                                        style='font-size: 11.0pt; font-family: 宋体; color: black'>案例</span></b>
+                                            </p>
+                                        </td>
+                                        <td width="491" valign="top" style='width: 13.0cm; border-top: none; border-left: none;
+                                            border-bottom: solid black 1.0pt; border-right: solid black 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt'>
+                                            <p class="MsoNormal" align="center" style='text-align: center'>
+                                                <b><span lang="EN-US" style='font-size: 11.0pt; font-family: "Arial","sans-serif";
+                                                    color: black'>&nbsp;</span></b>
+                                            </p>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <p class="MsoNormal">
+                                    <span lang="EN-US" style='font-family: "Arial","sans-serif"'>
+                                        <br>
+                                        <br>
+                                    </span>
+                                </p>
+                                <p class="MsoNormal">
+                                    <b><span style='font-size: 11.0pt; font-family: 宋体; color: black'>奖项将授予近一年来在食品饮料领域进行技术及服务创新、作出杰出贡献、并广受客户及业界高度一致好评的公司</span></b><b><span
+                                        lang="EN-US" style='font-size: 11.0pt; font-family: "Arial","sans-serif"; color: black'>/</span></b><b><span
+                                            style='font-size: 11.0pt; font-family: 宋体; color: black'>个人。</span></b><span style='font-size: 11.0pt;
+                                                font-family: 宋体; color: black'>评审委员会将从以下几个方面进行评审：</span>
+                                </p>
+                                <p class="MsoNormal">
+                                    <span lang="EN-US" style='font-size: 11.0pt; font-family: "Arial","sans-serif"; color: black'>
+                                        &nbsp;</span>
+                                </p>
+                                <p class="MsoNormal">
+                                    <span style='font-size: 11.0pt; font-family: 宋体; color: black'>创新的技术与服务</span></p>
+                                <p class="MsoNormal">
+                                    <span style='font-size: 11.0pt; font-family: 宋体; color: black'>成功案例</span></p>
+                                <p class="MsoNormal">
+                                    <span style='font-size: 11.0pt; font-family: 宋体; color: black'>是否曾经取得其他类似奖项</span></p>
+                                <p class="MsoNormal">
+                                    <span style='font-size: 11.0pt; font-family: 宋体; color: black'>客户推荐及评价</span></p>
+                                <p class="MsoNormal">
+                                    <span lang="EN-US" style='font-size: 11.0pt; font-family: "Arial","sans-serif"; color: black'>
+                                        &nbsp;</span>
+                                </p>
+                                <div class="MsoNormal" align="center" style='text-align: center'>
+                                    <span lang="EN-US" style='font-size: 11.0pt; font-family: "Arial","sans-serif"'>
+                                        <hr size="2" width="100%" align="center">
+                                    </span>
+                                </div>
+                                <p class="MsoNormal">
+                                    <b><span style='font-size: 11.0pt; font-family: 宋体'>业务成果概要</span></b><span style='font-size: 11.0pt;
+                                        font-family: "Arial","sans-serif"'> <i><span lang="EN-US">(</span></i></span><i><span
+                                            lang="EN-US" style='font-size: 11.0pt; font-family: "Arial","sans-serif"'>200</span></i><i><span
+                                                style='font-size: 11.0pt; font-family: 宋体'>字以内</span></i><i><span lang="EN-US" style='font-size: 11.0pt;
+                                                    font-family: "Arial","sans-serif"'>)</span></i>
+                                </p>
+                                <p class="MsoNormal">
+                                    <span style='font-size: 11.0pt; font-family: 宋体'>请表述公司最近一年的经营状况</span></p>
+                                <p class="MsoNormal">
+                                    <b><span lang="EN-US" style='font-size: 11.0pt; font-family: "Arial","sans-serif"'>&nbsp;</span></b>
+                                </p>
+                                <table class="MsoNormalTable" border="1" cellspacing="0" cellpadding="0" width="652"
+                                    style='width: 489.05pt; margin-left: 5.4pt; border-collapse: collapse; border: none'>
+                                    <tr style='height: 97.7pt'>
+                                        <td width="652" valign="top" style='width: 489.05pt; border: solid black 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;
+                                            height: 97.7pt'>
+                                            <p class="MsoNormal">
+                                                <b><span lang="EN-US" style='font-size: 11.0pt; font-family: "Arial","sans-serif"'>&nbsp;</span></b>
+                                            </p>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <p class="MsoNormal">
+                                    <b><span lang="EN-US" style='font-size: 11.0pt; font-family: "Arial","sans-serif"'>
+                                        <br>
+                                    </span></b><b><span style='font-size: 11.0pt; font-family: 宋体'>申请说明</span></b><b><span
+                                        style='font-size: 11.0pt; font-family: "Arial","sans-serif"'> </span></b><i><span
+                                            lang="EN-US" style='font-size: 11.0pt; font-family: "Arial","sans-serif"'>(500</span></i><i><span
+                                                style='font-size: 11.0pt; font-family: 宋体'>字以内</span></i><i><span lang="EN-US" style='font-size: 11.0pt;
+                                                    font-family: "Arial","sans-serif"'>)</span></i>
+                                </p>
+                                <p class="MsoNormal">
+                                    <span style='font-size: 11.0pt; font-family: 宋体'>请提供奖项申请说明</span><span lang="EN-US"
+                                        style='font-size: 11.0pt; font-family: "Arial","sans-serif"'>-</span><span style='font-size: 11.0pt;
+                                            font-family: 宋体'>为什么可以获得该奖项</span>
+                                </p>
+                                <p class="MsoNormal">
+                                    <b><span lang="EN-US" style='font-size: 11.0pt; font-family: "Arial","sans-serif"'>&nbsp;</span></b>
+                                </p>
+                                <table class="MsoNormalTable" border="1" cellspacing="0" cellpadding="0" width="653"
+                                    style='width: 489.8pt; margin-left: 5.4pt; border-collapse: collapse; border: none'>
+                                    <tr style='height: 98.45pt'>
+                                        <td width="653" valign="top" style='width: 489.8pt; border: solid black 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;
+                                            height: 98.45pt'>
+                                            <p class="MsoNormal">
+                                                <b><span lang="EN-US" style='font-size: 11.0pt; font-family: "Arial","sans-serif"'>&nbsp;</span></b>
+                                            </p>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <p class="MsoNormal">
+                                    <b><span lang="EN-US" style='font-size: 11.0pt; font-family: "Arial","sans-serif"'>
+                                        <br>
+                                    </span></b><b><span style='font-size: 11.0pt; font-family: 宋体'>其他获奖情况及客户评价</span></b><b><span
+                                        style='font-size: 11.0pt; font-family: "Arial","sans-serif"'> </span></b><i><span
+                                            lang="EN-US" style='font-size: 11.0pt; font-family: "Arial","sans-serif"'>(</span></i><i><span
+                                                style='font-size: 11.0pt; font-family: 宋体'>选择性填写</span></i><i><span lang="EN-US"
+                                                    style='font-size: 11.0pt; font-family: "Arial","sans-serif"'>)</span></i>
+                                </p>
+                                <p class="MsoNormal">
+                                    <span style='font-size: 11.0pt; font-family: 宋体'>请描述其他获奖情况及客户评价，为您的申请提供支持</span></p>
+                                <table class="MsoNormalTable" border="1" cellspacing="0" cellpadding="0" width="652"
+                                    style='width: 489.05pt; margin-left: 5.4pt; border-collapse: collapse; border: none'>
+                                    <tr style='height: 102.2pt'>
+                                        <td width="652" valign="top" style='width: 489.05pt; border: solid black 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;
+                                            height: 102.2pt'>
+                                            <p class="MsoNormal">
+                                                <b><span lang="EN-US" style='font-size: 11.0pt; font-family: "Arial","sans-serif"'>&nbsp;</span></b>
+                                            </p>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <p class="MsoNormal">
+                                    <b><span lang="EN-US" style='font-size: 11.0pt; font-family: "Arial","sans-serif"'>
+                                        <br>
+                                    </span></b><b><span style='font-size: 11.0pt; font-family: 宋体'>请于</span></b><b><span
+                                        lang="EN-US" style='font-size: 11.0pt; font-family: "Arial","sans-serif"'>2013</span></b><b><span
+                                            style='font-size: 11.0pt; font-family: 宋体'>年</span></b><b><span lang="EN-US" style='font-size: 11.0pt;
+                                                font-family: "Arial","sans-serif"'>9</span></b><b><span style='font-size: 11.0pt;
+                                                    font-family: 宋体'>月</span></b><b><span lang="EN-US" style='font-size: 11.0pt; font-family: "Arial","sans-serif"'>30</span></b><b><span
+                                                        style='font-size: 11.0pt; font-family: 宋体'>日前将奖项申请表发送至</span></b><b><span style='font-size: 11.0pt;
+                                                            font-family: "Arial","sans-serif"'> <span lang="EN-US"><a href="mailto:cfbes@cdmc.org.cn">
+                                                                cfbes@cdmc.org.cn</a> </span></span></b><b><span style='font-size: 11.0pt; font-family: 宋体'>
+                                                                    。</span></b><b><span style='font-size: 11.0pt; font-family: "Arial","sans-serif"'> </span>
+                                                                    </b>
+                                </p>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td style="font-family: Arial, Helvetica, sans-serif; font-size: 10px; line-height: 36px;
+                color: #ffffff; background: #1E193F; text-align: center; text-transform: uppercase;">
+                &nbsp;
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
