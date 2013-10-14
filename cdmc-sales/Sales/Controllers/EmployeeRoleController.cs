@@ -25,14 +25,14 @@ namespace Sales.Controllers
 
         public ActionResult index()
         {
-           // Utl.Utl.SyncUser();
+            // Utl.Utl.SyncUser();
             return View();
 
         }
         [GridAction]
         public ActionResult _SelectIndex()
         {
-            return View(new GridModel(getData().OrderBy(o=>o.AccountName)));
+            return View(new GridModel(getData().OrderBy(o => o.AccountName)));
         }
 
 
@@ -247,6 +247,7 @@ namespace Sales.Controllers
                 s.Email = model.Email;
                 s.BirthDay = model.BirthDay;
                 s.DepartmentID = model.DepartmentID;
+                s.Mobile = model.Mobile;
                 CH.Edit<EmployeeRole>(s);
                 return Json("");
             }

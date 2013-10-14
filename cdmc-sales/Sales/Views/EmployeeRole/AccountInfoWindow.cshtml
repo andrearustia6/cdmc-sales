@@ -67,7 +67,7 @@
                     </td>
                     <td>
                         @Html.Telerik().DatePickerFor(model => model.BirthDay).HtmlAttributes(new { style = "width:150px" })<br />
-                        @Html.ValidationMessageFor(model => model.DepartmentID)
+                        @Html.ValidationMessageFor(model => model.BirthDay)
                     </td>
                     <td>
                         @Html.LabelFor(model => model.DepartmentName)
@@ -75,6 +75,15 @@
                     <td>
                         @Html.DropDownListFor(model => model.DepartmentID, new SelectList(CH.GetAllData<Department>(), "ID", "Name"), "-请选择-", new { style = "width:150px" })<br />
                         @Html.ValidationMessageFor(model => model.DepartmentID)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.LabelFor(model => model.Mobile)
+                    </td>
+                    <td colspan="3">
+                        @Html.TextBoxFor(model => model.Mobile, new { style = "width:150px" })<br />
+                        @Html.ValidationMessageFor(model => model.Mobile)
                     </td>
                 </tr>
             </table>
@@ -138,6 +147,14 @@
                     </td>
                     <td>
                         @Html.DisplayFor(model => model.DepartmentName)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.LabelFor(model => model.Mobile)
+                    </td>
+                    <td colspan="3">
+                        @Html.DisplayFor(model => model.Mobile, new { style = "width:150px" })<br />
                     </td>
                 </tr>
             </table>

@@ -716,6 +716,18 @@ namespace Utl
             return HttpContext.Current.Items["SpecialManagers"].ToString().Split(',');
         }
 
+        public static string[] GetAvaliableCompaniesRole()
+        {
+            if (HttpContext.Current != null && HttpContext.Current.Items["AvaliableCompaniesRole"] == null)
+            {
+                var settings = ConfigurationManager.AppSettings.GetValues("AvaliableCompaniesRole");
+
+                HttpContext.Current.Items["AvaliableCompaniesRole"] = settings[0] as String;
+            }
+
+            return HttpContext.Current.Items["AvaliableCompaniesRole"].ToString().Split(',');
+        }
+
         public static decimal GetAverage(decimal? child, int father)
         {
             if (father == 0) return 0;

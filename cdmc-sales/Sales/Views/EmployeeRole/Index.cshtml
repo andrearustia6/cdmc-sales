@@ -66,7 +66,7 @@
             <input type="button" class="btn-quxiao" onclick="Cancel(AddAccount)" />
         </div>
     </div></text>)
-    .Width(520).Height(250).Draggable(true).Modal(true).Visible(false))
+    .Width(520).Height(260).Draggable(true).Modal(true).Visible(false))
 @(Html.Telerik().Window().Title("个人信息")
                 .Name("AccountInfo")
     .Content(@<text><div class="dialogue-AccountInfo">
@@ -77,7 +77,7 @@
             <input type="button" class="btn-quxiao" onclick="Cancel(AccountInfo)" />
         </div>
     </div></text>)
-    .Width(520).Height(250).Draggable(true).Modal(true).Visible(false))
+    .Width(520).Height(260).Draggable(true).Modal(true).Visible(false))
 @(Html.Telerik().Window().Title("设置权限")
             .Name("SetRole")
     .Content(@<text><div class="dialogue-SetRole">
@@ -88,7 +88,7 @@
             <input type="button" class="btn-quxiao" onclick="Cancel(SetRole)" />
         </div>
     </div></text>)
-    .Width(520).Height(250).Draggable(true).Modal(true).Visible(false))
+    .Width(520).Height(260).Draggable(true).Modal(true).Visible(false))
 @(Html.Telerik().Window().Title("更换密码")
                 .Name("ChangePassword")
     .Content(@<text><div class="dialogue-ChangePassword">
@@ -100,7 +100,7 @@
             <input type="button" class="btn-quxiao" onclick="Cancel(ChangePassword)" />
         </div>
     </div></text>)
-    .Width(520).Height(250).Draggable(true).Modal(true).Visible(false))
+    .Width(520).Height(260).Draggable(true).Modal(true).Visible(false))
 <script type="text/javascript">
     function onAccountInfo(accountid) {
         $.post('GetAccountInfo', { id: accountid }, function (result) {

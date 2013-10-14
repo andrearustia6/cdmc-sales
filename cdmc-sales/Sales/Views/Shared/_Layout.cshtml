@@ -145,6 +145,12 @@
                                item.Add().Url("~/salesReport/MemberLeadCallsChart").Text("已打Lead比较");
                            }
                            item.Add().Url("~/Package/index").Text("Package");
+
+                           if (Utl.GetAvaliableCompaniesRole().Where(s => s == Employee.CurrentUserName).Any())
+                           {
+                               item.Add().Text("可打公司3.0").Url("~/AvaliableCompanies/index");
+                           }
+
                        });
 
                        if (score >= ManagerRequired.LVL)
