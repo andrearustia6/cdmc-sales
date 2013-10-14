@@ -24,7 +24,7 @@
   <div class="dl_rigrh">
 
   <div class="tu_left">
-  @*@{
+  @{
     var it = CH.GetAllData<Image>(i => i.ImageArea == "LoginPage").OrderByDescending(o => o.Sequence).FirstOrDefault();
     if (it == null)
   {
@@ -35,7 +35,7 @@
      <img   width="543" height="349" alt="tu" src=@Url.Action("DisplayImage", "Image", new { id = it.ID }) />
   }
   
-  }*@
+  }
    
  @* <img src="/images/tu_2.jpg"  width="543" height="349" alt="tu" />*@
   </div>
