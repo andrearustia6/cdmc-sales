@@ -303,7 +303,7 @@ namespace MvcGlobalAuthorize.Controllers
                 um.Gender = objProfile.GetPropertyValue("Gender") as string;
                 um.DisplayName = objProfile.GetPropertyValue("DisplayName") as string;
                 um.DepartmentID = objProfile.GetPropertyValue("DepartmentID") as int?;
-
+               
 
                 int roleid;
                 data = objProfile.GetPropertyValue("RoleLevelID");

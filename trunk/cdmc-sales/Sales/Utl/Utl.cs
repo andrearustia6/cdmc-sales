@@ -986,13 +986,14 @@ namespace Utl
                     {
                         selUser.DepartmentID = objProfile.GetPropertyValue("DepartmentID") as int?;
                     }
-
-                    selUser.StartDate = objProfile.GetPropertyValue("StartDate") as DateTime?;
+                    var sdstring = objProfile.GetPropertyValue("StartDate") as string;
+                  
                     selUser.BirthDay = objProfile.GetPropertyValue("BirthDay") as DateTime?;
-
-                    if (selUser.StartDate == DateTime.MinValue)
+                    DateTime sddate;
+                    DateTime.TryParse(sdstring, out sddate);
+                    if (sddate != DateTime.MinValue && sddate!=null)
                     {
-                        selUser.StartDate = null;
+                        selUser.StartDate = sddate;
                     }
                     if (selUser.BirthDay == DateTime.MinValue)
                     {
