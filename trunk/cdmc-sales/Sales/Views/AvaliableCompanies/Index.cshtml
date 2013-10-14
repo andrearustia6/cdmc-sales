@@ -352,20 +352,20 @@
 )
 
 @(Html.Telerik().Window().Title("重新分配")
-    .Name("UnPickUp")
-    .Content(@<text><div class="dialogue-UnPickUp">
-        <div class="UnPickUp-wrapper">
+        .Name("AssignCompany")
+    .Content(@<text><div class="dialogue-AssignCompany">
+        <div class="AssignCompany-wrapper">
         </div>
         <div class="dialogue-buttons" style="float:right;">
-            <input type="button" class="btn-queding" onclick="SaveUnPickUp()" />
-            <input type="button" class="btn-quxiao" onclick="$('#UnPickUp').data('tWindow').close();" />
+            <input type="button" class="btn-queding" onclick="SaveAssignCompany()" />
+            <input type="button" class="btn-quxiao" onclick="$('#AssignCompany').data('tWindow').close();" />
         </div>
     </div></text>)
     .Width(600).Height(300).Draggable(true).Modal(true).Visible(false)
 )
 <script>
 
-    function SaveUnPickUp() {
+    function SaveAssignCompany() {
 
         var check = "";
         $("input[name='mbs']:checkbox").each(function () {
@@ -373,8 +373,8 @@
                 check += $(this).val() + ","
             }
         })
-        $.post('SaveUnPickUp', { id: crmid, ids: check }, function (result) {
-            var window = $('#UnPickUp').data('tWindow');
+        $.post('SaveAssignCompany', { id: crmid, ids: check }, function (result) {
+            var window = $('#AssignCompany').data('tWindow');
             window.close();
         });
     }
@@ -1638,34 +1638,34 @@
             }
         });
     }
-    function onUnPickUp() {
+    function onGetAssignCompany() {
 
-        $.post('GetUnPickUp', { crmid: crmid }, function (result) {
-            $('.UnPickUp-wrapper').html(result);
-            var window = $('#UnPickUp').data('tWindow');
+        $.post('GetAssignCompany', { crmid: crmid }, function (result) {
+            $('.AssignCompany-wrapper').html(result);
+            var window = $('#AssignCompany').data('tWindow');
             window.center().open();
 
         });
-
-        //$.post('UnPickUp', { crmid: crmid }, function (result) {
-        //    if (result.companyRelationshipId != null) {
-        //        alert('放回公海成功');
-        //        crmid = result.companyRelationshipId;
-        //        var currentProjectId = $('#projectid').val();
-        //        RefreshCrmTree(currentProjectId, result.companyRelationshipId, result.processid, result.corelvlid);
-        //        $('#crmdetailscontainer').html("");
-        //    }
-        //    else {
-        //        if (result != "") {
-        //            alert('放回公海:' + result);
-        //        }
-        //        else {
-        //            alert('放回公海');
-        //        }
-        //    }
-        //});
     }
-
+    function onUnPickUp() {
+        $.post('UnPickUp', { crmid: crmid }, function (result) {
+            if (result.companyRelationshipId != null) {
+                alert('放回公海成功');
+                crmid = result.companyRelationshipId;
+                var currentProjectId = $('#projectid').val();
+                RefreshCrmTree(currentProjectId, result.companyRelationshipId, result.processid, result.corelvlid);
+                $('#crmdetailscontainer').html("");
+            }
+            else {
+                if (result != "") {
+                    alert('放回公海:' + result);
+                }
+                else {
+                    alert('放回公海');
+                }
+            }
+        });
+    }
 
     function showLeadBtn(id) {
         $("#leadbtn" + id).show();

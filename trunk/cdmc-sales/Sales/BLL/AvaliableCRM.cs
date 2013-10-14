@@ -110,14 +110,14 @@ namespace Sales.BLL
 
             if (memberonly)
             {
-                crms = crms.Where(w => w.Members.Count > 0).OrderBy(w => w.ID);
+                crms = crms.Where(w => w.Members.Count > 0);
             }
             else
             {
-                if (Employee.CurrentRole.Level == SalesRequired.LVL || Employee.CurrentRole.Level == LeaderRequired.LVL)
-                    crms = crms.Where(w => w.Members.Any(m => m.Name == Employee.CurrentUserName)==false).OrderBy(w => w.ID);
-                else if (Employee.CurrentRole.Level == ManagerRequired.LVL)
-                    crms = crms.Where(w => w.Members.Count == 0).OrderBy(w => w.ID);
+                //if (Employee.CurrentRole.Level == SalesRequired.LVL || Employee.CurrentRole.Level == LeaderRequired.LVL)
+                //    crms = crms.Where(w => w.Members.Any(m => m.Name == Employee.CurrentUserName)==false).OrderBy(w => w.ID);
+                //else if (Employee.CurrentRole.Level == ManagerRequired.LVL)
+                    crms = crms.Where(w => w.Members.Count == 0);
                 
             }
             //模糊搜索
