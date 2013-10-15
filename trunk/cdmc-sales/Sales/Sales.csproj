@@ -335,7 +335,6 @@
     <Content Include="App_Data\template07.html" />
     <Content Include="App_Data\template08.html" />
     <Content Include="App_Data\template09.html" />
-    <Content Include="App_Data\template_ch_01.html" />
     <Content Include="App_Data\template_en_01.html" />
     <Content Include="Content\jquery-ui-1.8.23.custom.css" />
     <Content Include="css\contextmenustyle.css" />

@@ -335,6 +335,7 @@ namespace Sales.Model
         public DateTime? PickUpTime { get; set; }
         public IEnumerable<string> SalesList { get; set; }
         public IEnumerable<LeadCall> Calls { get; set; }
+        public IEnumerable<Member> Members { get; set; }
         public string DispSales
         {
             get
@@ -346,6 +347,19 @@ namespace Sales.Model
                     ret=ret+";"+str+"("+salescall.Count().ToString()+")";
                 }
 
+                return ret.TrimStart(';');
+            }
+        }
+        public string DispMember
+        {
+            get
+            {
+                string ret = "";
+                foreach (var m in Members)
+                {
+                    var salescall = Calls.Where(c => c.Member.Name == m.Name);
+                    ret = ret + ";" + m.Name + "(" + salescall.GroupBy(s=>s.LeadID).Count().ToString() + ")";
+                }
                 return ret.TrimStart(';');
             }
         }

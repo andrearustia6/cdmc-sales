@@ -1461,12 +1461,13 @@
                     gleadid = result.leadid;
                     var currentProjectId = $('#projectid').val();
                     $('#AddCall').data('tWindow').close();
-                    if ($("input[name='ifsend']:checkbox:checked").length > 0) {
-                        onGetEmailPage($calltype.val(), gleadid);
+                    if ($("#template").val() != '') {
+                        
+                        onGetEmailPage($calltype.val(), gleadid, $("#template").val());
                     }
                     RefreshCrmTree(currentProjectId, result.companyRelationshipId, result.processid, result.corelvlid);
-                    
-                    
+
+
                 }
                 else
                     alert('LeadCall新增失败');
@@ -1481,8 +1482,8 @@
         }
     }
 
-    function onGetEmailPage(calltype,leadid) {
-        $.post('GetEmailPage', { callType: calltype,leadid:leadid }, function (result) {
+    function onGetEmailPage(calltype, leadid, templatename) {
+        $.post('GetEmailPage', { callType: calltype,leadid:leadid,templatename:templatename }, function (result) {
             $('.sendemail-wrapper').html(result);
             var window = $('#SendEmail').data('tWindow');
             window.center().open();
