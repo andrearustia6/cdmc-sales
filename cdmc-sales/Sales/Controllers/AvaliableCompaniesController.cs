@@ -1127,7 +1127,7 @@ namespace Sales.Controllers
 
                       };
             
-            return PartialView(@"~\views\AvaliableCompanies\CoreCoverage.cshtml", ccs.ToList());
+            return PartialView(@"~\views\AvaliableCompanies\CoreCoverage.cshtml", ccs);
         }
       
         public ActionResult GetTemplate(int calltypeid)
