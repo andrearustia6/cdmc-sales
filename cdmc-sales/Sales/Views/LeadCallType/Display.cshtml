@@ -8,13 +8,21 @@
         @Html.DisplayFor(model => model.Name)
     </div>
     <div class="display-label">
-       类型代码 </div>
+        类型代码
+    </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Code)
     </div>
     <div class="display-label">
-       致电结果描述 </div>
+        @Html.LabelFor(model => model.TemplateName)
+    </div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.Code)
+        @Html.DisplayFor(model => model.TemplateName)
+    </div>
+    <div class="display-label">
+        致电结果描述
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.ResultDescription)
     </div>
 </fieldset>

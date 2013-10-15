@@ -1,7 +1,6 @@
 ﻿@model LeadCallType
 @using Utl
 @using Entity
-
 @Html.ValidationSummary(true)
 <fieldset>
     <legend>@SR.Form</legend>
@@ -19,7 +18,14 @@
         @Html.EditorFor(model => model.Code)
         @Html.ValidationMessageFor(model => model.Code)
     </div>
-     <div class="editor-label">
+    <div class="editor-label">
+        @Html.LabelFor(model => model.TemplateName)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.TemplateName)
+        @Html.ValidationMessageFor(model => model.TemplateName)
+    </div>
+    <div class="editor-label">
         @Html.LabelFor(model => model.ResultDescription)
     </div>
     <div class="editor-field">
@@ -27,4 +33,3 @@
         @Html.ValidationMessageFor(model => model.ResultDescription)
     </div>
 </fieldset>
-

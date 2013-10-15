@@ -26,7 +26,7 @@ namespace Sales.Controllers
                 filters.ProjectId = CRM_Logical.GetUserInvolveProject().First().ID;
             }
             var data = AvaliableCRM.GetAvaliableCompanies(filters);
-            if(projectid==null)
+            if (projectid == null)
                 ViewBag.projectid = CRM_Logical.GetUserInvolveProject().First().ID;
             else
                 ViewBag.projectid = projectid;
@@ -43,16 +43,16 @@ namespace Sales.Controllers
             var data = AvaliableCRM._CRMGetAvaliableCrmDetail(int.Parse(crmid));
             return PartialView(@"~\views\AvaliableCompanies\DetailContainer.cshtml", data);
         }
-        public PartialViewResult GetCRMByCrmIDLeadID(int crmid,int leadid)
+        public PartialViewResult GetCRMByCrmIDLeadID(int crmid, int leadid)
         {
             ViewBag.leadid = leadid;
-            var data = AvaliableCRM._CRMGetAvaliableCrmDetailByCrmIDLeadID(crmid,leadid);
+            var data = AvaliableCRM._CRMGetAvaliableCrmDetailByCrmIDLeadID(crmid, leadid);
             return PartialView(@"~\views\AvaliableCompanies\DetailContainer.cshtml", data);
         }
-        public PartialViewResult GetCRMByCrmIDMember(string crmid,string membername)
+        public PartialViewResult GetCRMByCrmIDMember(string crmid, string membername)
         {
             ViewBag.leadid = 0;
-            var data = AvaliableCRM._CRMGetAvaliableCrmDetailByCrmIDMember(int.Parse(crmid),membername);
+            var data = AvaliableCRM._CRMGetAvaliableCrmDetailByCrmIDMember(int.Parse(crmid), membername);
             return PartialView(@"~\views\AvaliableCompanies\DetailContainer.cshtml", data);
         }
         public PartialViewResult GetDescription(int crmid)
@@ -293,7 +293,7 @@ namespace Sales.Controllers
         [ValidateInput(false)]
         public ActionResult CheckMemberShip(int? projectid)
         {
-            var exist = from c in CH.DB.CompanyRelationships.Where(w => w.ProjectID == projectid && w.Members.Where(m=>m.Name==Employee.CurrentUserName).Any()==true) select c;
+            var exist = from c in CH.DB.CompanyRelationships.Where(w => w.ProjectID == projectid && w.Members.Where(m => m.Name == Employee.CurrentUserName).Any() == true) select c;
             if (exist.Count() == 0)
             {
                 return Content("抱歉，您不是member，要成为member才能操作！");
@@ -357,7 +357,7 @@ namespace Sales.Controllers
         {
             var progress = CH.GetAllData<Progress>().Where(p => p.Code == 10).FirstOrDefault();
             var core = CH.GetAllData<CoreLVL>().Where(c => c.CoreLVLCode == 2).FirstOrDefault();
-            AjaxViewSaleCompany ajaxViewSaleCompany = new AjaxViewSaleCompany() { ProjectId = projectId, Categories = new List<int>() { }, ProgressId = progress.ID,CoreLVLID=core.ID };
+            AjaxViewSaleCompany ajaxViewSaleCompany = new AjaxViewSaleCompany() { ProjectId = projectId, Categories = new List<int>() { }, ProgressId = progress.ID, CoreLVLID = core.ID };
             return PartialView("AddCompany", ajaxViewSaleCompany);
         }
         [ValidateInput(false)]
@@ -425,7 +425,7 @@ namespace Sales.Controllers
         }
         public ActionResult GetAddCall(int leadId, int companyRelationId, int? projectId)
         {
-            AjaxViewLeadCall ajaxViewLeadCall = new AjaxViewLeadCall() { LeadId = leadId, CompanyRelationshipId = companyRelationId, ProjectId = projectId, CallDate = DateTime.Now,ProgressId=(int)CH.GetDataById<CompanyRelationship>(companyRelationId).ProgressID };
+            AjaxViewLeadCall ajaxViewLeadCall = new AjaxViewLeadCall() { LeadId = leadId, CompanyRelationshipId = companyRelationId, ProjectId = projectId, CallDate = DateTime.Now, ProgressId = (int)CH.GetDataById<CompanyRelationship>(companyRelationId).ProgressID };
             return PartialView("AddCall", ajaxViewLeadCall);
         }
         [ValidateInput(false)]
@@ -444,12 +444,12 @@ namespace Sales.Controllers
             //添加人不是member
             if (memid == 0)
             {
-                Member m = new Member() { Name = name, ProjectID = ajaxViewLeadCall.ProjectId, SalesTypeID=CH.GetAllData<SalesType>().FirstOrDefault(w=>w.Name=="其他").ID };
+                Member m = new Member() { Name = name, ProjectID = ajaxViewLeadCall.ProjectId, SalesTypeID = CH.GetAllData<SalesType>().FirstOrDefault(w => w.Name == "其他").ID };
                 CH.Create<Member>(m);
                 memid = m.ID;
             }
             leadCall.MemberID = memid;
-  
+
             leadCall.ProjectID = ajaxViewLeadCall.ProjectId;
             leadCall.Result = ajaxViewLeadCall.Result;
             leadCall.MarkForDelete = false;
@@ -506,16 +506,16 @@ namespace Sales.Controllers
             CH.Create<Comment>(comm);
 
             CompanyRelationship crm = CH.GetDataById<CompanyRelationship>(comment.CRMID);
-            crm.CrmCommentStateID=comment.CrmCommentStateID;
+            crm.CrmCommentStateID = comment.CrmCommentStateID;
             CH.Edit<CompanyRelationship>(crm);
-            return Json(new { companyRelationshipId = crm.ID, companyId = crm.CompanyID, projectId = crm.ProjectID, corelvlid = crm.CoreLVLID, processid = crm.ProgressID});
+            return Json(new { companyRelationshipId = crm.ID, companyId = crm.CompanyID, projectId = crm.ProjectID, corelvlid = crm.CoreLVLID, processid = crm.ProgressID });
         }
 
         public ActionResult GetQuickEntry(int? projectId)
         {
             var progress = CH.GetAllData<Progress>().Where(p => p.Code == 10).FirstOrDefault();
             var core = CH.GetAllData<CoreLVL>().Where(c => c.CoreLVLCode == 2).FirstOrDefault();
-            QuickEntry quickEntry = new QuickEntry() { ProjectId = projectId, Categories = new List<int>() { }, ProgressId = progress.ID, CallDate = DateTime.Now,CoreLVLID=core.ID };
+            QuickEntry quickEntry = new QuickEntry() { ProjectId = projectId, Categories = new List<int>() { }, ProgressId = progress.ID, CallDate = DateTime.Now, CoreLVLID = core.ID };
             return PartialView("QuickEntry", quickEntry);
         }
 
@@ -613,7 +613,7 @@ namespace Sales.Controllers
         {
             var progress = CH.GetAllData<Progress>().Where(p => p.Code == 10).FirstOrDefault();
             var core = CH.GetAllData<CoreLVL>().Where(c => c.CoreLVLCode == 2).FirstOrDefault();
-            BulkEntry bulkEntry = new BulkEntry() { ProjectId = projectId, Categories = new List<int>() { }, ProgressId = progress.ID ,CoreLVLID=core.ID};
+            BulkEntry bulkEntry = new BulkEntry() { ProjectId = projectId, Categories = new List<int>() { }, ProgressId = progress.ID, CoreLVLID = core.ID };
             LeadBulk lead = new LeadBulk();
             for (int i = 0; i < 10; i++)
             {
@@ -736,11 +736,11 @@ namespace Sales.Controllers
         [HttpPost]
         public ActionResult PickUp(int crmid)
         {
-            var p = CH.DB.CompanyRelationships.Where(c => c.ID == crmid).First().Project.CompanyRelationships.Count(w=>w.Members.Where(m=>m.Name==Employee.CurrentUserName).Any()==true);
-            if(p>100)
+            var p = CH.DB.CompanyRelationships.Where(c => c.ID == crmid).First().Project.CompanyRelationships.Count(w => w.Members.Where(m => m.Name == Employee.CurrentUserName).Any() == true);
+            if (p > 100)
                 return Content("从公海领用的，公司数超过100的不能领用！");
             CompanyRelationship companyRelationship = CH.GetDataById<CompanyRelationship>(crmid);
-            
+
             Member member = CH.DB.Members.Where(m => m.Name == Employee.CurrentUserName).FirstOrDefault();
             companyRelationship.Members.Add(member);
             CH.Edit(companyRelationship);
@@ -754,7 +754,7 @@ namespace Sales.Controllers
         [HttpPost]
         public ActionResult UnPickUp(int crmid)
         {
-            
+
             CompanyRelationship companyRelationship = CH.GetDataById<CompanyRelationship>(crmid);
 
             Member member = CH.DB.Members.Where(m => m.Name == Employee.CurrentUserName).FirstOrDefault();
@@ -762,17 +762,17 @@ namespace Sales.Controllers
             CH.Edit(companyRelationship);
 
             doCrmTrack(crmid, false);
-            
+
 
 
             return Json(new { companyRelationshipId = companyRelationship.ID, companyId = companyRelationship.CompanyID, projectId = companyRelationship.ProjectID, processid = companyRelationship.ProgressID, corelvlid = companyRelationship.CoreLVLID });
         }
         [ValidateInput(false)]
         [HttpPost]
-        public ActionResult ChangeCore(int crmid,int corelvlid)
+        public ActionResult ChangeCore(int crmid, int corelvlid)
         {
             CompanyRelationship companyRelationship = CH.GetDataById<CompanyRelationship>(crmid);
-            companyRelationship.CoreLVLID=corelvlid;
+            companyRelationship.CoreLVLID = corelvlid;
             CH.Edit(companyRelationship);
             return Json(new { companyRelationshipId = companyRelationship.ID, companyId = companyRelationship.CompanyID, projectId = companyRelationship.ProjectID, processid = companyRelationship.ProgressID, corelvlid = corelvlid });
         }
@@ -793,11 +793,11 @@ namespace Sales.Controllers
 
             return Json(new { companyRelationshipId = companyRelationship.ID, companyId = companyRelationship.CompanyID, projectId = companyRelationship.ProjectID, processid = companyRelationship.ProgressID, corelvlid = companyRelationship.CoreLVLID });
         }
-        public ActionResult GetEmailPage(string callType,int leadid,string templatename)
+        public ActionResult GetEmailPage(string callType, int leadid, string templatename)
         {
             Lead lead = CH.GetDataById<Lead>(leadid);
             string template = "";
-            string filename = templatename+".html";
+            string filename = templatename + ".html";
 
             //if (!String.IsNullOrEmpty(callType))
             //{
@@ -885,12 +885,12 @@ namespace Sales.Controllers
                 }
             }
             if (lead.DistrictNumberID == null)
-                template=template.Replace("{CLIENTNAME}", string.IsNullOrEmpty(lead.Name_CH) ? "客户" : lead.Name_CH);
+                template = template.Replace("{CLIENTNAME}", string.IsNullOrEmpty(lead.Name_CH) ? "客户" : lead.Name_CH);
             else
-                template=template.Replace("{CLIENTNAME}", string.IsNullOrEmpty(lead.Name_EN) ? "Client" : lead.Name_EN);
+                template = template.Replace("{CLIENTNAME}", string.IsNullOrEmpty(lead.Name_EN) ? "Client" : lead.Name_EN);
             #endregion
 
-            
+
 
             EmailModel model = new EmailModel();
             model.Content = template;
@@ -1026,9 +1026,9 @@ namespace Sales.Controllers
             return Json("");
         }
         [HttpPost]
-        public PartialViewResult GetAssignCompany(int crmid)
+        public PartialViewResult GetAssignCompany(int crmid, int projectid)
         {
-            var result = CH.DB.CompanyRelationships.Find(crmid).Members.Select(x => x.ID).ToList();
+            var result = CH.DB.CompanyRelationships.Find(crmid).Members.Where(s => s.IsActivated && s.ProjectID == projectid).Select(x => x.ID).ToList();
             ViewBag.project = CH.DB.CompanyRelationships.Find(crmid).Project;
             return PartialView("AssignCompany", result);
         }
@@ -1075,7 +1075,7 @@ namespace Sales.Controllers
         /// </summary>
         /// <param name="crmid"></param>
         /// <param name="picked">true:领用；false：放回</param>
-        private void doCrmTrack(int crmid,bool picked)
+        private void doCrmTrack(int crmid, bool picked)
         {
             if (picked)
             {
@@ -1107,7 +1107,7 @@ namespace Sales.Controllers
                 }
             }
         }
-        public PartialViewResult GetCoreCoverage(int projectid,int coreid)
+        public PartialViewResult GetCoreCoverage(int projectid, int coreid)
         {
             var crms = CH.DB.CompanyRelationships.Where(cr => cr.ProjectID == projectid && cr.CoreLVLID == coreid && cr.Members.Count > 0);
             if (Employee.CurrentRole.Level == SalesRequired.LVL || Employee.CurrentRole.Level == LeaderRequired.LVL)
@@ -1117,19 +1117,19 @@ namespace Sales.Controllers
             var ccs = from l in crms
                       select new _CoreCoverage()
                       {
-                          CompanyName = l.Company.Name_CH.Length >0 ? l.Company.Name_CH + "|" + l.Company.Name_EN : l.Company.Name_EN,
-                          Members =l.Members,
+                          CompanyName = l.Company.Name_CH.Length > 0 ? l.Company.Name_CH + "|" + l.Company.Name_EN : l.Company.Name_EN,
+                          Members = l.Members,
                           PickUpTime = l.CrmTracks.OrderByDescending(ct => ct.GetDate).FirstOrDefault() != null ? l.CrmTracks.OrderByDescending(ct => ct.GetDate).FirstOrDefault().GetDate : null,
-                          LeadCalledCount = l.LeadCalls.GroupBy(lc=>lc.LeadID).Count(),
+                          LeadCalledCount = l.LeadCalls.GroupBy(lc => lc.LeadID).Count(),
                           Calls = l.LeadCalls,
-                          ProcessName=l.Progress.Name
+                          ProcessName = l.Progress.Name
 
 
                       };
-            
+
             return PartialView(@"~\views\AvaliableCompanies\CoreCoverage.cshtml", ccs);
         }
-      
+
         public ActionResult GetTemplate(int calltypeid)
         {
             var calltype = CH.GetDataById<LeadCallType>(calltypeid);

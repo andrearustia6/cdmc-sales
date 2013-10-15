@@ -5,8 +5,7 @@
 @using Sales.Model
 @using Utl
 @model _AvaliableCompanies
-@*有颜色的灯表示可打公司所属的决策人的最后一个通话的状态，颜色灯后面的数字，则代表最后致电状态为此状态的决策者人数*@
-@*5个灯
+@*有颜色的灯表示可打公司所属的决策人的最后一个通话的状态，颜色灯后面的数字，则代表最后致电状态为此状态的决策者人数*@ @*5个灯
 灰色是还没联系
 红色是blowed
 绿色是close
@@ -43,36 +42,35 @@
     }
 </style>
 <div style="clear: both;">
-<table style="width:100%">
-    <tr>
-        <td style="width:15%;">
-            项目选择: @Html.Telerik().DropDownList().Name("projectid").BindTo(new SelectList(SelectHelper.ProjectSelectList(Employee.CurrentUserName), "Value", "Text", "请选择")).HtmlAttributes(new { style = string.Format("vertical-align:middle;width:{0}%", 80) }).DropDownHtmlAttributes(new { style = string.Format("width:{0}px", 200) }).ClientEvents(events => events.OnChange("onProjectChange"))
-        </td>
-        <td style="width:15%;">
-        @{
-            List<SelectListItem> category = (List<SelectListItem>)SelectHelper.CategoresSelectList(ViewBag.projectid);
-            category.Insert(0, (new SelectListItem { Text = "不指定", Value = "-1" }));
-        }
-           细分行业: @Html.Telerik().DropDownList().Name("f-category").BindTo(new SelectList(category, "Value", "Text", "")).DropDownHtmlAttributes(new { style = string.Format("width:{0}px", 200) }).HtmlAttributes(new { style = string.Format("vertical-align:middle;width:{0}%", 80) }).ClientEvents(events => events.OnChange("onCategoryChange"))
-        </td>
-        <td style="width:15%;">
-        @{
-            List<SelectListItem> DistinctNumber = (List<SelectListItem>)SelectHelper.DistinctNumberSelectList(null);
-            DistinctNumber.Insert(0, (new SelectListItem { Text = "不指定", Value = "-1" }));
-        }
-            时区: @Html.Telerik().DropDownList().Name("DistinctNumber").BindTo(new SelectList(DistinctNumber, "Value", "Text", "")).DropDownHtmlAttributes(new { style = string.Format("width:{0}px", 200) }).HtmlAttributes(new { style = string.Format("vertical-align:middle;width:{0}%", 80) }).ClientEvents(events => events.OnChange("onDistinctNumberChange"))
-        </td>
-        <td style="width:15%;">
-        @{
-            List<SelectListItem> commentlist = new List<SelectListItem>();
-            commentlist.Add(new SelectListItem { Text = "已点评的", Value = "1" });
-            commentlist.Add(new SelectListItem { Text = "未点评", Value = "0" });
-            commentlist.Insert(0, (new SelectListItem { Text = "所有", Value = "-1" }));
-        }
-           是否点评: @Html.Telerik().DropDownList().Name("commentlist").BindTo(new SelectList(commentlist, "Value", "Text", "")).DropDownHtmlAttributes(new { style = string.Format("width:{0}px", 200) }).HtmlAttributes(new { style = string.Format("vertical-align:middle;width:{0}%", 80) }).ClientEvents(events => events.OnChange("oncommentlistChange"))
-        </td>
-        
-       @*<td style="width:6%;">
+    <table style="width: 100%">
+        <tr>
+            <td style="width: 15%;">
+                项目选择: @Html.Telerik().DropDownList().Name("projectid").BindTo(new SelectList(SelectHelper.ProjectSelectList(Employee.CurrentUserName), "Value", "Text", "请选择")).HtmlAttributes(new { style = string.Format("vertical-align:middle;width:{0}%", 80) }).DropDownHtmlAttributes(new { style = string.Format("width:{0}px", 200) }).ClientEvents(events => events.OnChange("onProjectChange"))
+            </td>
+            <td style="width: 15%;">
+                @{
+                    List<SelectListItem> category = (List<SelectListItem>)SelectHelper.CategoresSelectList(ViewBag.projectid);
+                    category.Insert(0, (new SelectListItem { Text = "不指定", Value = "-1" }));
+                }
+                细分行业: @Html.Telerik().DropDownList().Name("f-category").BindTo(new SelectList(category, "Value", "Text", "")).DropDownHtmlAttributes(new { style = string.Format("width:{0}px", 200) }).HtmlAttributes(new { style = string.Format("vertical-align:middle;width:{0}%", 80) }).ClientEvents(events => events.OnChange("onCategoryChange"))
+            </td>
+            <td style="width: 15%;">
+                @{
+                    List<SelectListItem> DistinctNumber = (List<SelectListItem>)SelectHelper.DistinctNumberSelectList(null);
+                    DistinctNumber.Insert(0, (new SelectListItem { Text = "不指定", Value = "-1" }));
+                }
+                时区: @Html.Telerik().DropDownList().Name("DistinctNumber").BindTo(new SelectList(DistinctNumber, "Value", "Text", "")).DropDownHtmlAttributes(new { style = string.Format("width:{0}px", 200) }).HtmlAttributes(new { style = string.Format("vertical-align:middle;width:{0}%", 80) }).ClientEvents(events => events.OnChange("onDistinctNumberChange"))
+            </td>
+            <td style="width: 15%;">
+                @{
+                    List<SelectListItem> commentlist = new List<SelectListItem>();
+                    commentlist.Add(new SelectListItem { Text = "已点评的", Value = "1" });
+                    commentlist.Add(new SelectListItem { Text = "未点评", Value = "0" });
+                    commentlist.Insert(0, (new SelectListItem { Text = "所有", Value = "-1" }));
+                }
+                是否点评: @Html.Telerik().DropDownList().Name("commentlist").BindTo(new SelectList(commentlist, "Value", "Text", "")).DropDownHtmlAttributes(new { style = string.Format("width:{0}px", 200) }).HtmlAttributes(new { style = string.Format("vertical-align:middle;width:{0}%", 80) }).ClientEvents(events => events.OnChange("oncommentlistChange"))
+            </td>
+            @*<td style="width:6%;">
             最近通话
         </td>
         <td style="width:10%;"> 
@@ -81,8 +79,7 @@
             CallConditionSelectList.Insert(0, (new SelectListItem { Text = "不指定", Value = "-1" }));
         }
         @Html.Telerik().DropDownList().Name("callprogress").BindTo(new SelectList(CallConditionSelectList, "Value", "Text", "")).DropDownHtmlAttributes(new { style = string.Format("width:{0}px", 200) }).HtmlAttributes(new { style = string.Format("width:{0}%", 100) })
-        </td>*@
-        @*<td style="width:6%;">
+        </td>*@ @*<td style="width:6%;">
             通话状态
         </td>
         <td style="width:10%;">
@@ -91,8 +88,7 @@
             leadprogress.Insert(0, (new SelectListItem { Text = "不指定", Value = "-1" }));
         }
             @Html.Telerik().DropDownList().Name("leadprogress").BindTo(new SelectList(leadprogress, "Value", "Text", "")).DropDownHtmlAttributes(new { style = string.Format("width:{0}px", 200) }).HtmlAttributes(new { style = string.Format("width:{0}%", 100) })
-        </td>*@
-        @*<td style="width:6%;">
+        </td>*@ @*<td style="width:6%;">
             成熟程度
         </td>
         <td style="width:10%;">
@@ -101,8 +97,7 @@
              companyprogress.Insert(0, (new SelectListItem { Text = "不指定", Value = "-1" }));
         }
             @Html.Telerik().DropDownList().Name("companyprogress").BindTo(new SelectList(companyprogress, "Value", "Text", "")).DropDownHtmlAttributes(new { style = string.Format("width:{0}px", 200) }).HtmlAttributes(new { style = string.Format("width:{0}%", 100) })
-        </td>*@
-        @*<td style="width:6%;">
+        </td>*@ @*<td style="width:6%;">
             出单状态
         </td>
         <td style="width:10%;">
@@ -112,29 +107,25 @@
         }
             @Html.Telerik().DropDownList().Name("dealprogress").BindTo(new SelectList(dealprogress, "Value", "Text", "")).DropDownHtmlAttributes(new { style = string.Format("width:{0}px", 200) }).HtmlAttributes(new { style = string.Format("width:{0}%", 100) })
         </td>*@
-    </tr>
-    <tr>
-        <td colspan="2" align="center" >
-            寻找匹配的名称,邮件,电话: @Html.TextBox("f-fuzzy", "", new { style = "width:50%;line-height:22px" })
-            <input id="search" style="border: none; width: 67px; height: 21px; background-image: url('../images/chazhao.jpg'); vertical-align:middle;"
-                    type="button" onclick="search()"/>
-                <input type="button" style="border: none; width: 67px; height: 21px; background-image: url('../images/chongzhi.jpg'); vertical-align:middle;"
-                    onclick="resetquery()" />
-        </td>
-        <td colspan="2" align="left" style="padding-top:6px;">
-                
-                <input type="button" style="border: none; width: 67px; height: 21px; background-image: url('../images/tianjia_4.jpg'); vertical-align:middle;"
-                                onclick="GetAddCompany()" />
-                 <input type="button" style="border: none; width: 67px; height: 21px; background-image: url('../images/quick_entry.jpg'); vertical-align:middle;"
-                                                onclick="GetQuickEntry()" />
-                <input type="button" style="border: none; width: 67px; height: 21px; background-image: url('../images/bulk_entry.jpg'); vertical-align:middle;"
-                    onclick="GetBulkEntry()" />
-           
-        </td>
-    </tr>
-</table>
-
- 
+        </tr>
+        <tr>
+            <td colspan="2" align="center">
+                寻找匹配的名称,邮件,电话: @Html.TextBox("f-fuzzy", "", new { style = "width:50%;line-height:22px" })
+                <input id="search" style="border: none; width: 67px; height: 21px; background-image: url('../images/chazhao.jpg');
+                    vertical-align: middle;" type="button" onclick="search()" />
+                <input type="button" style="border: none; width: 67px; height: 21px; background-image: url('../images/chongzhi.jpg');
+                    vertical-align: middle;" onclick="resetquery()" />
+            </td>
+            <td colspan="2" align="left" style="padding-top: 6px;">
+                <input type="button" style="border: none; width: 67px; height: 21px; background-image: url('../images/tianjia_4.jpg');
+                    vertical-align: middle;" onclick="GetAddCompany()" />
+                <input type="button" style="border: none; width: 67px; height: 21px; background-image: url('../images/quick_entry.jpg');
+                    vertical-align: middle;" onclick="GetQuickEntry()" />
+                <input type="button" style="border: none; width: 67px; height: 21px; background-image: url('../images/bulk_entry.jpg');
+                    vertical-align: middle;" onclick="GetBulkEntry()" />
+            </td>
+        </tr>
+    </table>
 </div>
 @(Html.Telerik().Splitter().Name("sp1").HtmlAttributes(new { style = "height: 610px;overflow:auto;" })
               .Orientation(SplitterOrientation.Horizontal).Panes(panes =>
@@ -146,24 +137,24 @@
     {
     
 
-        <div id="mainnavigationcontainer" >
-            @Html.Partial("mainnavigationcontainer", Model)
-        </div>
+    <div id="mainnavigationcontainer">
+        @Html.Partial("mainnavigationcontainer", Model)
+    </div>
   
  
 }
 @helper GetCompanyDetails()
     {
         var aa = new _CRM();
-        <div id="crmdetailscontainer" style=" height: 500px;">
-        </div>
+    <div id="crmdetailscontainer" style="height: 500px;">
+    </div>
 }
 @(Html.Telerik().Window().Title("添加公司")
     .Name("AddCompany1")
     .Content(@<text><div class="dialogue-AddCompany1">
         <div class="AddCompany1-wrapper">
         </div>
-        <div class="dialogue-buttons" style=" float:right;">
+        <div class="dialogue-buttons" style="float: right;">
             <input type="button" class="btn-queding" onclick="Addcompany()" />
             <input type="button" class="btn-quxiao" onclick="CancelAddcompany()" />
         </div>
@@ -172,7 +163,7 @@
         .Height(520)
                 .Modal(true).Visible(false).Draggable(true)
     )
-    @(Html.Telerik().Window()
+@(Html.Telerik().Window()
     .Name("QuickEntry")
     .Content(@<text>
 <div class="dialogue-quickEntry" style="margin-top: 0 20px 0 20px;">
@@ -201,41 +192,38 @@
     .Title("批量录入")
             .Modal(true).Visible(false).Draggable(true).ClientEvents(c => c.OnClose("BulkEntryOnClose"))
     )
-
-    @(Html.Telerik().Window().Title("行业细分")
+@(Html.Telerik().Window().Title("行业细分")
     .Name("Categories")
     .Content(@<text><div class="dialogue-Categories">
         <div class="Categories-wrapper">
         </div>
-        <div class="dialogue-buttons" style=" float:right;">
-             <input type="button" class="btn-queding" onclick="saveCategories();" />
+        <div class="dialogue-buttons" style="float: right;">
+            <input type="button" class="btn-queding" onclick="saveCategories();" />
         </div>
     </div></text>)
         .Width(1000)
         .Height(220)
                 .Modal(true).Visible(false).Draggable(true)
     )
-
- @(Html.Telerik().Window().Title("PitchPoint")
+@(Html.Telerik().Window().Title("PitchPoint")
     .Name("PitchPoint1")
     .Content(@<text><div class="dialogue-PitchPoint1">
         <div class="PitchPoint1-wrapper">
         </div>
-        <div class="dialogue-buttons" style=" float:right;">
-             <input type="button" class="btn-queding" onclick="savePitchPoint();" />
+        <div class="dialogue-buttons" style="float: right;">
+            <input type="button" class="btn-queding" onclick="savePitchPoint();" />
         </div>
     </div></text>)
         .Width(1000)
         .Height(220)
                 .Modal(true).Visible(false).Draggable(true)
     )
-
 @(Html.Telerik().Window().Title("更新公司")
     .Name("EditCompany")
     .Content(@<text><div class="dialogue-editcompany">
         <div class="companyEdit-wrapper">
         </div>
-        <div class="dialogue-buttons" style=" float:right;">
+        <div class="dialogue-buttons" style="float: right;">
             <input type="button" class="btn-queding" onclick="Editcompany()" />
             <input type="button" class="btn-quxiao" onclick="CancelEditcompany()" />
         </div>
@@ -247,8 +235,8 @@
     .Content(@<text><div class="dialogue-Description">
         <div class="Description-wrapper">
         </div>
-        <div class="dialogue-buttons" style="position:absolute;bottom:0;width:98%;text-align:right;">
-        <input type="button" class="btn-queding" onclick="saveDescription();" />
+        <div class="dialogue-buttons" style="position: absolute; bottom: 0; width: 98%; text-align: right;">
+            <input type="button" class="btn-queding" onclick="saveDescription();" />
         </div>
     </div></text>)
     .Width(600).Height(200).Draggable(true).Modal(true).Visible(false)
@@ -258,7 +246,7 @@
     .Content(@<text><div class="dialogue-Competitor1">
         <div class="Competitor1-wrapper">
         </div>
-        <div class="dialogue-buttons" style="position:absolute;bottom:0;width:98%;text-align:right;">
+        <div class="dialogue-buttons" style="position: absolute; bottom: 0; width: 98%; text-align: right;">
             <input type="button" class="btn-queding" onclick="Javescript:$('#Competitor1').data('tWindow').close();" />
         </div>
     </div></text>)
@@ -267,21 +255,20 @@
 @(Html.Telerik().Window().Title("PitchPoint")
             .Name("PitchPoint")
     .Content(@<text><div class="dialogue-PitchPoint">
-        <div class="PitchPoint-wrapper"> 
+        <div class="PitchPoint-wrapper">
         </div>
-        <div class="dialogue-buttons" style=" float:right;">
+        <div class="dialogue-buttons" style="float: right;">
             <input type="button" class="btn-queding" onclick="Javescript:$('#PitchPoint').data('tWindow').close();" />
         </div>
     </div></text>)
     .Width(600).Height(200).Draggable(true).Modal(true).Visible(false)
 )
-
 @(Html.Telerik().Window().Title("新增客户")
     .Name("AddLead")
     .Content(@<text><div class="dialogue-addlead">
         <div class="leadadd-wrapper">
         </div>
-        <div class="dialogue-buttons" style=" float:right;">
+        <div class="dialogue-buttons" style="float: right;">
             <input type="button" class="btn-queding" onclick="AddLead()" />
             <input type="button" class="btn-quxiao" onclick="CancelAddLead()" />
         </div>
@@ -293,7 +280,7 @@
     .Content(@<text><div class="dialogue-editlead">
         <div class="leadedit-wrapper">
         </div>
-        <div class="dialogue-buttons" style=" float:right;">
+        <div class="dialogue-buttons" style="float: right;">
             <input type="button" class="btn-queding" onclick="UpdateLead()" />
             <input type="button" class="btn-quxiao" onclick="javascript:$('#EditLead').data('tWindow').close();" />
         </div>
@@ -305,7 +292,7 @@
     .Content(@<text><div class="dialogue-editcall">
         <div class="calledit-wrapper">
         </div>
-        <div class="dialogue-buttons" style=" float:right;">
+        <div class="dialogue-buttons" style="float: right;">
             <input type="button" class="btn-queding" onclick="UpdateCall()" />
             <input type="button" class="btn-quxiao" onclick="CancelEditCall()" />
         </div>
@@ -317,7 +304,7 @@
     .Content(@<text><div class="dialogue-addcall">
         <div class="calladd-wrapper">
         </div>
-        <div class="dialogue-buttons"style=" float:right;">
+        <div class="dialogue-buttons" style="float: right;">
             <input type="button" class="btn-queding" onclick="AddCall()" />
             <input type="button" class="btn-quxiao" onclick="CancelAddCall()" />
         </div>
@@ -327,13 +314,13 @@
 @(Html.Telerik().Window().Title("添加Comment")
     .Name("AddComment")
     .Content(@<text><div class="dialogue-AddComment">
-    <div class="AddComment-wrapper">
-    </div>
-    <div class="dialogue-buttons" style=" float:right;">
+        <div class="AddComment-wrapper">
+        </div>
+        <div class="dialogue-buttons" style="float: right;">
             <input type="button" class="btn-queding" onclick="AddComment()" />
-        <input type="button" class="btn-quxiao" onclick="CancelAddComment()" />
-    </div>
-</div></text>)
+            <input type="button" class="btn-quxiao" onclick="CancelAddComment()" />
+        </div>
+    </div></text>)
     .Width(1000)
     .Height(220)
     .Modal(true).Visible(false).Draggable(true)
@@ -343,20 +330,19 @@
     .Content(@<text><div class="dialogue-sendemail">
         <div class="sendemail-wrapper">
         </div>
-        <div class="dialogue-buttons" style="float:right;">
+        <div class="dialogue-buttons" style="float: right;">
             <input type="button" class="btn-queding" onclick="SendEmail()" />
             <input type="button" class="btn-quxiao" onclick="CancelSendEmail()" />
         </div>
     </div></text>)
     .Width(850).Height(650).Draggable(true).Modal(true).Visible(false)
 )
-
 @(Html.Telerik().Window().Title("重新分配")
         .Name("AssignCompany")
     .Content(@<text><div class="dialogue-AssignCompany">
         <div class="AssignCompany-wrapper">
         </div>
-        <div class="dialogue-buttons" style="float:right;">
+        <div class="dialogue-buttons" style="float: right;">
             <input type="button" class="btn-queding" onclick="SaveAssignCompany()" />
             <input type="button" class="btn-quxiao" onclick="$('#AssignCompany').data('tWindow').close();" />
         </div>
@@ -379,8 +365,7 @@
         });
     }
 
-    function savePitchPoint()
-    {
+    function savePitchPoint() {
         $.ajax({
             url: "/AvaliableCompanies/EditPitchPoint",
             type: "post",
@@ -393,14 +378,13 @@
         $('#PitchPoint1').data('tWindow').close();
     }
 
-    function saveCategories()
-    {
+    function saveCategories() {
         //回传category并回写数据库
         var ids = "";
         var cas = "";
         $("#categoryedit-list li").each(function () {
             ids += ($(this).find("input").val() + "|");
-            cas += (encodeURIComponent( $(this).find("textarea").val()) + "|");
+            cas += (encodeURIComponent($(this).find("textarea").val()) + "|");
         });
         ids = encodeURIComponent(ids);
         cas = encodeURIComponent(cas);
@@ -433,8 +417,8 @@
     var gleadid
     var clickpublic
 
-    
-    
+
+
 
     function GetAddCompany() {
         var currentProjectId = $('#projectid').val();
@@ -449,7 +433,7 @@
                 });
             }
         });
-        
+
     }
     function CancelAddcompany() {
         var window = $('#AddCompany1').data('tWindow');
@@ -548,7 +532,7 @@
                             $('#AddCompany1').data('tWindow').close();
                         }
                         else {
-                            
+
                             //onCompanyChanging(result.companyRelationshipId);
                             $('#AddCompany1').data('tWindow').close();
                         }
@@ -572,7 +556,7 @@
                 });
             }
         });
-       
+
     }
 
     function QuickEntry() {
@@ -854,7 +838,7 @@
                 });
             }
         });
-        
+
     }
 
     function BulkEntry() {
@@ -1008,7 +992,7 @@
 
     }
     function onCompanyChanging(crmid, processid, corelvlid) {
-        
+
         var treeview = $("#memberCompanies").data("tTreeView");
         var item1 = $("#memberCompanies").find(".t-input[name='itemValue'][value='" + corelvlid + "']").closest("li");
         treeview.expand(item1);
@@ -1021,7 +1005,7 @@
         // Programmatically "click" the desired node.
         item3.find(".t-in:first").trigger("click");
         $(".t-state-selected").addClass('t-state-selected');
-        
+
         return true;
 
     }
@@ -1462,7 +1446,7 @@
                     var currentProjectId = $('#projectid').val();
                     $('#AddCall').data('tWindow').close();
                     if ($("#template").val() != '') {
-                        
+
                         onGetEmailPage($calltype.val(), gleadid, $("#template").val());
                     }
                     RefreshCrmTree(currentProjectId, result.companyRelationshipId, result.processid, result.corelvlid);
@@ -1483,11 +1467,11 @@
     }
 
     function onGetEmailPage(calltype, leadid, templatename) {
-        $.post('GetEmailPage', { callType: calltype,leadid:leadid,templatename:templatename }, function (result) {
+        $.post('GetEmailPage', { callType: calltype, leadid: leadid, templatename: templatename }, function (result) {
             $('.sendemail-wrapper').html(result);
             var window = $('#SendEmail').data('tWindow');
             window.center().open();
-            
+
         });
     }
 
@@ -1570,7 +1554,7 @@
                 else {
                     $(".PickUp").hide();
                 }
-               
+
             });
         }
         else {
@@ -1588,7 +1572,7 @@
                 else {
                     $(".PickUp").hide();
                 }
-                
+
             });
         }
 
@@ -1621,9 +1605,9 @@
                     RefreshCrmTree(currentProjectId, result.companyRelationshipId, result.processid, result.corelvlid);
                     alert('新增Comment成功');
                 }
-                else{
+                else {
                     alert('新增Comment失败');
-                } 
+                }
             });
         }
     }
@@ -1652,8 +1636,8 @@
         });
     }
     function onGetAssignCompany() {
-
-        $.post('GetAssignCompany', { crmid: crmid }, function (result) {
+        var projectid = $("#projectid").val();
+        $.post('GetAssignCompany', { crmid: crmid, projectid: projectid }, function (result) {
             $('.AssignCompany-wrapper').html(result);
             var window = $('#AssignCompany').data('tWindow');
             window.center().open();
@@ -1727,22 +1711,22 @@
             var category = $('#f-category').data('tDropDownList');
             category.dataBind(result);
             category.value(-1);
-//            $("<option value=''>不指定</option>").appendTo("#f-category")
-//            $.each(result, function (index) {
-//                $("<option value='" + result[index].value + "'>" + result[index].text + "</option>").appendTo("#f-category");
-//            });
+            //            $("<option value=''>不指定</option>").appendTo("#f-category")
+            //            $.each(result, function (index) {
+            //                $("<option value='" + result[index].value + "'>" + result[index].text + "</option>").appendTo("#f-category");
+            //            });
         });
 
         $.post('_RefreshCrmTree', { ProjectId: e.value }, function (result) {
             $('#mainnavigationcontainer').html(result);
             $('#crmdetailscontainer').html("");
-            
+
         });
     }
 
-    
-    
-    
+
+
+
     function onCategoryChange(e) {
         search();
     }
@@ -1768,7 +1752,7 @@
             for (var i = 0; i < arrids.length; i++) {
                 if (arrids[i] == leadid) {
                     leadcallfind = true;
-                    if(!$(".leadcall" + leadid).is(":hidden")){
+                    if (!$(".leadcall" + leadid).is(":hidden")) {
                         $(".leadcall" + leadid).show();
                     }
                 } else {
@@ -1784,7 +1768,7 @@
             } else {
                 //$("#filterbtn").hide();
             }
-            
+
         }
     }
 
@@ -1823,7 +1807,7 @@
             });
         }
         else {
-            
+
             $.post('GetCRMByCrmIDMember', { crmid: crmid, membername: name }, function (result) {
                 $('#crmdetailscontainer').html(result);
                 $("#comments").hide();
@@ -1853,7 +1837,7 @@
         var arrids = names.split(',');
         if (name != '') {
             if (names != "undefined") {
-                
+
                 for (var i = 0; i < arrids.length; i++) {
                     if (arrids[i] == name) {
                         $(".call" + name).show();
