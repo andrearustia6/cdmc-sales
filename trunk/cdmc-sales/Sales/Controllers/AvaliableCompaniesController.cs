@@ -1119,11 +1119,12 @@ namespace Sales.Controllers
                       {
                           CompanyName = l.Company.Name_CH.Length >0 ? l.Company.Name_CH + "|" + l.Company.Name_EN : l.Company.Name_EN,
                           Members =l.Members,
-                          
                           PickUpTime = l.CrmTracks.OrderByDescending(ct => ct.GetDate).FirstOrDefault() != null ? l.CrmTracks.OrderByDescending(ct => ct.GetDate).FirstOrDefault().GetDate : null,
-                          SalesList = l.CrmTracks.Select(aa => aa.Owner).Distinct(),
                           LeadCalledCount = l.LeadCalls.GroupBy(lc=>lc.LeadID).Count(),
-                          Calls = l.LeadCalls
+                          Calls = l.LeadCalls,
+                          ProcessName=l.Progress.Name
+
+
                       };
             
             return PartialView(@"~\views\AvaliableCompanies\CoreCoverage.cshtml", ccs.ToList());
