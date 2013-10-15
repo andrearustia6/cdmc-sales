@@ -449,7 +449,8 @@
                         {
                             @*<a href="#" onclick="onLeadSelect(@(lead.ID))">*@
                             <a href="#" class="centera" onclick="onLeadSelectJS(@(lead.ID))">
-                                <div class="center_2" id="lead@(lead.ID)" onmouseover = "javascript:showLeadBtn(@(lead.ID));" onmouseout = "javascript:hideLeadBtn(@(lead.ID));" >
+                                @*<div class="center_2" id="lead@(lead.ID)" onmouseover = "javascript:showLeadBtn(@(lead.ID));" onmouseout = "javascript:hideLeadBtn(@(lead.ID));" >*@
+                                <div class="center_2" id="lead@(lead.ID)"  >
                                 <div id="leadbtn@(lead.ID)" style="width:16%; display:none; float: right;">
                                     <img class="hide"  src="../images/dianhua.png" alt="新增通话" onclick="onCallAdd(@(lead.ID))" style=" display: inline;float: right;" />
                                     <img class="hide" src="../images/bianji.png" alt="编辑" onclick="onLeadEdit(@(lead.ID))" style=" display: inline;float: right;" />
@@ -461,22 +462,22 @@
                                                                                                           var calls = @Model._LeadCalls.Where(c => c.LeadID == lead.ID).OrderByDescending(c => c.CallDate).FirstOrDefault();
                                                                                                           if (calls == null)
                                                                                                           {
-                                                <img src="../images/quan-01.png" width="15" height="15" alt="yuan" title="没联系" />
+                                                <img onclick="onLeadEdit(@(lead.ID))" src="../images/quan-01.png" width="15" height="15" alt="yuan" title="没联系" />
                                                                                                           }
                                                                                                           else
                                                                                                           {
                                                                                                               if (calls.LeadCallTypeID == 2 || calls.LeadCallTypeID == 3)
                                                                                                               {
-                                                    <img src="../images/quan-09.png" width="15" height="15" alt="yuan" title="Blowed和Not Piteched" />}
+                                                    <img onclick="onLeadEdit(@(lead.ID))"  src="../images/quan-09.png" width="15" height="15" alt="yuan" title="Blowed和Not Piteched" />}
                                                                                                               else if (calls.LeadCallTypeID == 4 || calls.LeadCallTypeID == 5 || calls.LeadCallTypeID == 6)
                                                                                                               {
-                                                    <img src="../images/quan-10.png" width="15" height="15" alt="yuan" title="Pitched和Full Pitched和Call Backed" />}
+                                                    <img  onclick="onLeadEdit(@(lead.ID))" src="../images/quan-10.png" width="15" height="15" alt="yuan" title="Pitched和Full Pitched和Call Backed" />}
                                                                                                               else if (calls.LeadCallTypeID == 7 || calls.LeadCallTypeID == 8)
                                                                                                               {
-                                                    <img src="../images/55.png" width="15" height="15" alt="yuan" title="Qualified Decision和Waiting for Approval" />}
+                                                    <img  onclick="onLeadEdit(@(lead.ID))" src="../images/55.png" width="15" height="15" alt="yuan" title="Qualified Decision和Waiting for Approval" />}
                                                                                                               else if (calls.LeadCallTypeID == 9)
                                                                                                               {
-                                                    <img src="../images/quan-08.png" width="15" height="15" alt="yuan" title="Closed" />}
+                                                    <img  onclick="onLeadEdit(@(lead.ID))" src="../images/quan-08.png" width="15" height="15" alt="yuan" title="Closed" />}
                                                                                                           }
                                         }
                                     </dt>
@@ -498,7 +499,7 @@
                                   {
                                     <dl>
                                         <dt>
-                                            <img src="../images/shouji.png" width="15" height="15" alt="yuan" /></dt>
+                                            <img onclick="onCallAdd(@(lead.ID))"  src="../images/shouji.png" width="15" height="15" alt="yuan" /></dt>
                                         <dd>
                                             <p title="@lead.Contact">@lead.Contact</p>
                                         </dd>
@@ -509,7 +510,7 @@
                                   {
                                     <dl>
                                         <dt>
-                                            <img src="../images/zuoji.png" width="15" height="15" alt="yuan" /></dt>
+                                            <img onclick="onCallAdd(@(lead.ID))"  src="../images/zuoji.png" width="15" height="15" alt="yuan" /></dt>
                                         <dd>
                                             <p title="@lead.TelePhone">@lead.TelePhone</p>
                                         </dd>
