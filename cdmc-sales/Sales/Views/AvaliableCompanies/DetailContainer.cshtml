@@ -142,56 +142,64 @@
                         <ul>
                         <li>
                             <h2>
-                                行业细分</h2>
+                                行业细分
+                                <a href="#" onclick="GetCategories(@(Model.ID))">
+                                <img src="../images/quan-13.jpg" width="20" height="18" alt="wenhao" /></a>
+                                </h2>
                             @if (!string.IsNullOrWhiteSpace(Model.CategoryString))
                             {
                                 @Model.CategoryString
                             }
-                            <a href="#" onclick="GetCategories(@(Model.ID))">
-                                <img src="../images/quan-13.jpg" width="20" height="18" alt="wenhao" /></a>
-                        </li>
-                        <li>@if (!string.IsNullOrWhiteSpace(Model.Description))
-                            {
-                            <h2>
-                                公司简介</h2>
                             
+                        </li>
+                        <li>
+                            <h2>
+                                公司简介
+                                <a href="#" onclick="onDescription(@(Model.ID))">
+                                <img src="../images/quan-13.jpg" width="20" height="18" alt="wenhao" /></a>
+                            </h2>
+                            @if (!string.IsNullOrWhiteSpace(Model.Description))
+                            {
                                 if (Model.Description.Length > 50)
                                 {
                                 <p>@Model.Description.Substring(0, 50)  ...</p>
-                                <p>
-                                     <a href="#" onclick="onDescription(@(Model.ID))">
-                                <img src="../images/quan-13.jpg" width="20" height="18" alt="wenhao" /></a>
-                                    </p>
+                                
                                 }
                                 else
                                 {
                                 @Model.Description
-                                <p>
-                                     <a href="#" onclick="onDescription(@(Model.ID))">
-                                <img src="../images/quan-13.jpg" width="20" height="18" alt="wenhao" /></a>
-                                    </p>
+                               
                                 }
 
                             }
-                        </li>
-                        <li>@if (!string.IsNullOrWhiteSpace(Model.Competitor))
+                            else
                             {
+                                
+                            }
+                        </li>
+                        <li>
                             <h2>
-                                竞争对手</h2>
-                            
+                                竞争对手
+                                <a href="#" onclick="onCompetitor(@(Model.ID))">
+                                <img src="../images/quan-13.jpg" width="20" height="18" alt="wenhao" /></a>
+                                </h2>
+                            @if (!string.IsNullOrWhiteSpace(Model.Competitor))
+                            {
 
                                 if (Model.Competitor.Length > 20)
                                 {
-                                @Model.Competitor.Substring(0, 20) 
+                                    <p> @Model.Competitor.Substring(0, 20) ...</p>
 
-                                <p>
-                                    <a href="#" onclick="onCompetitor(@(Model.ID))">更多>></a></p>
                                 }
                                 else
                                 {
                                 @Model.Competitor
                                 }
 
+                            }
+                            else
+                            {
+                                
                             }
                         </li>
                         <li>
@@ -207,8 +215,8 @@
                                 {
                                 @Model.PitchPoint.Substring(0, 50)
 
-                                <p>
-                                    <a href="#"  onclick="onPitchPoint(@(Model.ID))">更多>></a></p>
+                               @* <p>
+                                    <a href="#"  onclick="onPitchPoint(@(Model.ID))">更多>></a></p>*@
 
                                 }
                                 else
