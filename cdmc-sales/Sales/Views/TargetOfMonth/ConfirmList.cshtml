@@ -47,7 +47,7 @@
 }).Editable(editing => editing.Mode(GridEditMode.PopUp))
        .ClientEvents(events => events.OnCommand("onedit"))
 .Pageable(p => p.Style(GridPagerStyles.Status).PageSize(50).PageOnScroll(true)).Scrollable(s
-=> s.Height(350)).Sortable().Filterable().Groupable())
+    => s.Height(350)).Sortable().Filterable().Groupable().Resizable(resizing => resizing.Columns(true)))
 <script type="text/javascript">
     function onComplete(e) {
         if (e.name == "update") {
