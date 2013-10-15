@@ -324,6 +324,7 @@ namespace Sales.Model
     public class _CoreCoverage : EntityBase
     {
         public string CompanyName { get; set; }
+        public string ProcessName { get; set; }
         /// <summary>
         /// 领用人
         /// </summary>
@@ -333,7 +334,16 @@ namespace Sales.Model
         /// </summary>
         public int LeadCalledCount { get; set; }
         public DateTime? PickUpTime { get; set; }
-        public IEnumerable<string> SalesList { get; set; }
+        public string DispTime
+        {
+            get
+            {
+                if (PickUpTime != null)
+                    return PickUpTime.Value.ToShortDateString();
+                else
+                    return "";
+            }
+        }
         public IEnumerable<LeadCall> Calls { get; set; }
         public IEnumerable<Member> Members { get; set; }
         public string DispSales
@@ -341,7 +351,8 @@ namespace Sales.Model
             get
             {
                 string ret = "";
-                foreach (var str in SalesList)
+                var saleslist = Calls.Select(c => c.Member.Name).Distinct();
+                foreach (var str in saleslist)
                 {
                     var salescall = Calls.Where(c => c.Member.Name == str);
                     ret=ret+";"+str+"("+salescall.Count().ToString()+")";

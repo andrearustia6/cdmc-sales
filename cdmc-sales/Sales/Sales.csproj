@@ -326,15 +326,15 @@
     <Compile Include="Utl\Utl.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Data\template01.html" />
-    <Content Include="App_Data\template02.html" />
-    <Content Include="App_Data\template03.html" />
-    <Content Include="App_Data\template04.html" />
-    <Content Include="App_Data\template05.html" />
-    <Content Include="App_Data\template06.html" />
-    <Content Include="App_Data\template07.html" />
+    <Content Include="App_Data\未来合作.html" />
+    <Content Include="App_Data\会议更新.html" />
+    <Content Include="App_Data\奖项入围通知.html" />
+    <Content Include="App_Data\Fax Cover会议资料.html" />
+    <Content Include="App_Data\催款.html" />
+    <Content Include="App_Data\Urgency催表.html" />
+    <Content Include="App_Data\参会方案.html" />
     <Content Include="App_Data\template08.html" />
-    <Content Include="App_Data\template09.html" />
+    <Content Include="App_Data\奖项申请办法.html" />
     <Content Include="App_Data\template_en_01.html" />
     <Content Include="Content\jquery-ui-1.8.23.custom.css" />
     <Content Include="css\contextmenustyle.css" />
