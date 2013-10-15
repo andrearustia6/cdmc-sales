@@ -280,6 +280,9 @@ namespace Entity
 
         [Display(Name = "致电结果描述")]
         public string ResultDescription { get; set; }
+
+        [Display(Name = "模板名称")]
+        public string TemplateName { get; set; }
     }
 
 

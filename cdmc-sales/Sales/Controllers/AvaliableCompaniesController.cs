@@ -793,73 +793,74 @@ namespace Sales.Controllers
 
             return Json(new { companyRelationshipId = companyRelationship.ID, companyId = companyRelationship.CompanyID, projectId = companyRelationship.ProjectID, processid = companyRelationship.ProgressID, corelvlid = companyRelationship.CoreLVLID });
         }
-        public ActionResult GetEmailPage(string callType,int leadid)
+        public ActionResult GetEmailPage(string callType,int leadid,string templatename)
         {
             Lead lead = CH.GetDataById<Lead>(leadid);
             string template = "";
-            string filename = "";
-            if (!String.IsNullOrEmpty(callType))
-            {
-                #region callType mapping to Template
-                switch (callType)
-                {
-                    case "2":
-                        if(lead.DistrictNumberID==null)
-                            filename = "template_ch_01.html";
-                        else
-                            filename = "template_en_01.html";
-                        break;
-                    case "3":
-                        if (lead.DistrictNumberID == null)
-                            filename = "template_ch_01.html";
-                        else
-                            filename = "template_en_01.html";
-                        break;
-                    case "4":
-                        if (lead.DistrictNumberID == null)
-                            filename = "template_ch_01.html";
-                        else
-                            filename = "template_en_01.html";
-                        break;
-                    case "5":
-                        if (lead.DistrictNumberID == null)
-                            filename = "template_ch_01.html";
-                        else
-                            filename = "template_en_01.html";
-                        break;
-                    case "6":
-                        if (lead.DistrictNumberID == null)
-                            filename = "template_ch_01.html";
-                        else
-                            filename = "template_en_01.html";
-                        break;
-                    case "7":
-                        if (lead.DistrictNumberID == null)
-                            filename = "template_ch_01.html";
-                        else
-                            filename = "template_en_01.html";
-                        break;
-                    case "8":
-                        if (lead.DistrictNumberID == null)
-                            filename = "template_ch_01.html";
-                        else
-                            filename = "template_en_01.html";
-                        break;
-                    case "9":
-                        if (lead.DistrictNumberID == null)
-                            filename = "template_ch_01.html";
-                        else
-                            filename = "template_en_01.html";
-                        break;
-                    default:
-                        if (lead.DistrictNumberID == null)
-                            filename = "template_ch_01.html";
-                        else
-                            filename = "template_en_01.html";
-                        break;
-                }
-                #endregion
-            }
+            string filename = templatename+".html";
+
+            //if (!String.IsNullOrEmpty(callType))
+            //{
+            //    #region callType mapping to Template
+            //    switch (callType)
+            //    {
+            //        case "2":
+            //            if(lead.DistrictNumberID==null)
+            //                filename = "template_ch_01.html";
+            //            else
+            //                filename = "template_en_01.html";
+            //            break;
+            //        case "3":
+            //            if (lead.DistrictNumberID == null)
+            //                filename = "template_ch_01.html";
+            //            else
+            //                filename = "template_en_01.html";
+            //            break;
+            //        case "4":
+            //            if (lead.DistrictNumberID == null)
+            //                filename = "template_ch_01.html";
+            //            else
+            //                filename = "template_en_01.html";
+            //            break;
+            //        case "5":
+            //            if (lead.DistrictNumberID == null)
+            //                filename = "template_ch_01.html";
+            //            else
+            //                filename = "template_en_01.html";
+            //            break;
+            //        case "6":
+            //            if (lead.DistrictNumberID == null)
+            //                filename = "template_ch_01.html";
+            //            else
+            //                filename = "template_en_01.html";
+            //            break;
+            //        case "7":
+            //            if (lead.DistrictNumberID == null)
+            //                filename = "template_ch_01.html";
+            //            else
+            //                filename = "template_en_01.html";
+            //            break;
+            //        case "8":
+            //            if (lead.DistrictNumberID == null)
+            //                filename = "template_ch_01.html";
+            //            else
+            //                filename = "template_en_01.html";
+            //            break;
+            //        case "9":
+            //            if (lead.DistrictNumberID == null)
+            //                filename = "template_ch_01.html";
+            //            else
+            //                filename = "template_en_01.html";
+            //            break;
+            //        default:
+            //            if (lead.DistrictNumberID == null)
+            //                filename = "template_ch_01.html";
+            //            else
+            //                filename = "template_en_01.html";
+            //            break;
+            //    }
+            //    #endregion
+            //}
 
             #region Read template from file.
             string file = AppDomain.CurrentDomain.BaseDirectory + "/App_Data/" + filename;
@@ -1117,16 +1118,27 @@ namespace Sales.Controllers
                       select new _CoreCoverage()
                       {
                           CompanyName = l.Company.Name_CH.Length >0 ? l.Company.Name_CH + "|" + l.Company.Name_EN : l.Company.Name_EN,
-                          Manager = l.CrmTracks.OrderByDescending(ct=>ct.GetDate).FirstOrDefault()!=null?l.CrmTracks.OrderByDescending(ct=>ct.GetDate).FirstOrDefault().Owner:"",
+                          Members =l.Members,
+                          
                           PickUpTime = l.CrmTracks.OrderByDescending(ct => ct.GetDate).FirstOrDefault() != null ? l.CrmTracks.OrderByDescending(ct => ct.GetDate).FirstOrDefault().GetDate : null,
                           SalesList = l.CrmTracks.Select(aa => aa.Owner).Distinct(),
                           LeadCalledCount = l.LeadCalls.GroupBy(lc=>lc.LeadID).Count(),
                           Calls = l.LeadCalls
-                          
                       };
             
             return PartialView(@"~\views\AvaliableCompanies\CoreCoverage.cshtml", ccs.ToList());
         }
-
+      
+        public ActionResult GetTemplate(int calltypeid)
+        {
+            var calltype = CH.GetDataById<LeadCallType>(calltypeid);
+            if (string.IsNullOrEmpty(calltype.TemplateName))
+                return Json("");
+            else
+            {
+                string[] temp = calltype.TemplateName.Split(';');
+                return Json(temp);
+            }
+        }
     }
 }

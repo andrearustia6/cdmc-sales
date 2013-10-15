@@ -60,10 +60,10 @@
             <td colspan="4">@Html.ValidationMessageFor(model => model.Result)</td>
         </tr>
         <tr>
-            <td class="t1">是否发邮件</td>
+            <td class="t1">邮件模板</td>
             <td class="t2">
-
-            <input name="ifsend" type="checkbox" id="ifsend" checked="checked"/></td>
+            <select id="template" name="template"/> 
+            </td>
         </tr>
     </table>
     <style>
@@ -73,4 +73,35 @@
                 #addcalltable .t2 select{ width:200px;}
                 #addcalltable .t2 textarea { }
     </style>
+    
+    
 }
+
+<script>
+    $(function () {
+        $("#CallTypeId").change(function () {
+            if ($("#CallTypeId").val() == '') {
+                alert('请选择致电类型');
+                return;
+            }
+            $.ajax({
+                url: "/AvaliableCompanies/GetTemplate",
+                type: "post",
+                dataType: "json",
+                data: { calltypeid: $("#CallTypeId").val() },
+                error: function (a, b, c) {
+                    alert("获取数据失败，请重试。");
+                },
+                success: function (result) {
+                    var options = '';
+                    options += "<option value=''>请选择</option>"; 
+                    for (var i = 0; i < result.length; i++) {
+                        options += "<option value=" + result[i] + ">" + result[i] + "</option>";
+                    }
+                    $("#template").html(options);
+                }
+            });
+        })
+
+    })
+</script>
