@@ -1026,6 +1026,18 @@ namespace Sales.Controllers
             return Json("");
         }
         [HttpPost]
+        [ValidateInput(false)]
+        public ActionResult EditCompetitor(FormCollection c)
+        {
+            int id = int.Parse(c["crmid"]);
+            string pp = c["pp"];
+            var cr = CH.DB.CompanyRelationships.Find(id);
+            cr.Company.Competitor = pp;
+            CH.Edit<CompanyRelationship>(cr);
+
+            return Json("");
+        }
+        [HttpPost]
         public PartialViewResult GetAssignCompany(int crmid, int projectid)
         {
             var result = CH.DB.CompanyRelationships.Find(crmid).Members.Where(s => s.IsActivated && s.ProjectID == projectid).Select(x => x.ID).ToList();

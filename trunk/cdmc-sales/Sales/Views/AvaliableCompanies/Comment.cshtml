@@ -5,7 +5,7 @@
            {
             @Html.HiddenFor(model => model.CRMID)
             <ul>
-            @if (Utl.Employee.CurrentRole.Level == ManagerRequired.LVL)
+            @if (Utl.Employee.CurrentRole.Level == ManagerRequired.LVL || Utl.Employee.CurrentRole.Level == LeaderRequired.LVL || Utl.Employee.CurrentRole.Level == ProductInterfaceRequired.LVL)
             {
                 foreach (var p in Utl.CH.GetAllData<CommentContent>())
                 {
@@ -22,7 +22,7 @@
                 <li>
                 点评状态设置:
                  @{ 
-               if (Utl.Employee.CurrentRole.Level == ManagerRequired.LVL)
+               if (Utl.Employee.CurrentRole.Level == ManagerRequired.LVL || Utl.Employee.CurrentRole.Level == LeaderRequired.LVL || Utl.Employee.CurrentRole.Level == ProductInterfaceRequired.LVL)
                {
                     @Html.DropDownListFor(model => model.CrmCommentStateID, new SelectList(Utl.CH.GetAllData<CrmCommentState>().Where(c => c.RoleFlag == 2), "StateCode", "StateName"))
                }
