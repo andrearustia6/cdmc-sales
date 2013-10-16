@@ -306,6 +306,7 @@ namespace Sales.BLL
                 NoCallCount = data.Company.Leads.Where(l => !data.LeadCalls.Where(c => c.LeadID == l.ID).Any()).Count(),
                 CrmCommentStateID=data.CrmCommentStateID,
                 CoreLVLID = data.CoreLVLID,
+                _members = data.Members,
                 _Categorys= (from c in data.Categorys
                                  select new _Category()
                                  {
