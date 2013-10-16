@@ -441,6 +441,7 @@
                 var index = 1;
                 foreach (var lead in Model._Leads)
                 {
+                    leadhide += lead.ID + ",";
 @*<a href="#" onclick="onLeadSelect(@(lead.ID))">*@
                 <a href="#" class="centera" onclick="onLeadSelectJS(@(lead.ID))">@*<div class="center_2" id="lead@(lead.ID)" onmouseover = "javascript:showLeadBtn(@(lead.ID));" onmouseout = "javascript:hideLeadBtn(@(lead.ID));" >*@
                     <div class="center_2" id="lead@(lead.ID)"  >
@@ -487,7 +488,7 @@
                                     }
                                 </dd>
                             </dl>
-                            @{if (@lead.Contact != null)
+                            @{if (!string.IsNullOrWhiteSpace(lead.Contact))
                               {
                                 <dl>
                                     <dt>
@@ -498,7 +499,8 @@
                                 </dl>
                               }
                             }
-                            @{if (@lead.TelePhone != null)
+                            
+                            @{if (!string.IsNullOrWhiteSpace(lead.TelePhone))
                               {
                                 <dl>
                                     <dt>
@@ -509,7 +511,7 @@
                                 </dl>
                               }
                             }
-                            @{if (@lead.Email != null)
+                            @{if (!string.IsNullOrWhiteSpace(lead.Email))
                               {
                                 <dl>
                                     <dt><a href="mailto:@(lead.Email)">
@@ -530,6 +532,7 @@
                               }
                 }
             }
+            @Html.Hidden("LeadIdHidden", string.IsNullOrEmpty(leadhide) ? "" : leadhide.Substring(0, leadhide.Length - 1))
         </div>
         </text>);
            p.Add().Size("40%").Content(@<text>
@@ -552,7 +555,7 @@
 
                     foreach (var call in leadcalls)
                     {
-                        leadhide += call.LeadID + ",";
+                        
                                 
                 <div class="right_@(index) leadcall@(call.LeadID) call@(call.MemberName)">
                     @*@if (!lcIdList.Contains((int)call.LeadID))
@@ -608,7 +611,7 @@
         </text>);
        })
     </div>
-    @Html.Hidden("LeadIdHidden", string.IsNullOrEmpty(leadhide) ? "" : leadhide.Substring(0, leadhide.Length - 1))
+    
 </div>
 <style>
     .centera *

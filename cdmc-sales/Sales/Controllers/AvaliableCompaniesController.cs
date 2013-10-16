@@ -1109,27 +1109,54 @@ namespace Sales.Controllers
         }
         public PartialViewResult GetCoreCoverage(int projectid, int coreid)
         {
+            //var crms = CH.DB.CompanyRelationships.Where(cr => cr.ProjectID == projectid && cr.CoreLVLID == coreid && cr.Members.Count > 0);
+            //if (Employee.CurrentRole.Level == SalesRequired.LVL || Employee.CurrentRole.Level == LeaderRequired.LVL)
+            //{
+            //    crms = crms.Where(cr => cr.Members.Any(m => m.Name == Employee.CurrentUserName));
+            //}
+            //var ccs = from l in crms
+            //          select new _CoreCoverage()
+            //          {
+            //              CompanyName = l.Company.Name_CH.Length > 0 ? l.Company.Name_CH + "|" + l.Company.Name_EN : l.Company.Name_EN,
+            //              Members = l.Members,
+            //              PickUpTime = l.CrmTracks.OrderByDescending(ct => ct.GetDate).FirstOrDefault() != null ? l.CrmTracks.OrderByDescending(ct => ct.GetDate).FirstOrDefault().GetDate : null,
+            //              LeadCalledCount = l.LeadCalls.GroupBy(lc => lc.LeadID).Count(),
+            //              Calls = l.LeadCalls,
+            //              ProcessName = l.Progress.Name
+            //          };
+            ViewBag.projectid = projectid;
+            ViewBag.coreid = coreid;
+            //return PartialView(@"~\views\AvaliableCompanies\CoreCoverage.cshtml", ccs);
+            return PartialView(@"~\views\AvaliableCompanies\CoreCoverage.cshtml");
+        }
+        [GridAction]
+        public ActionResult _CoreCoverage(int projectid, int coreid)
+        {
             var crms = CH.DB.CompanyRelationships.Where(cr => cr.ProjectID == projectid && cr.CoreLVLID == coreid && cr.Members.Count > 0);
             if (Employee.CurrentRole.Level == SalesRequired.LVL || Employee.CurrentRole.Level == LeaderRequired.LVL)
             {
                 crms = crms.Where(cr => cr.Members.Any(m => m.Name == Employee.CurrentUserName));
             }
+            
             var ccs = from l in crms
                       select new _CoreCoverage()
                       {
+                          
                           CompanyName = l.Company.Name_CH.Length > 0 ? l.Company.Name_CH + "|" + l.Company.Name_EN : l.Company.Name_EN,
                           Members = l.Members,
                           PickUpTime = l.CrmTracks.OrderByDescending(ct => ct.GetDate).FirstOrDefault() != null ? l.CrmTracks.OrderByDescending(ct => ct.GetDate).FirstOrDefault().GetDate : null,
                           LeadCalledCount = l.LeadCalls.GroupBy(lc => lc.LeadID).Count(),
-                          Calls = l.LeadCalls,
-                          ProcessName = l.Progress.Name
-
-
+                          Calls = from c in l.LeadCalls
+                                      select new _LeadCall()
+                                      {
+                                          MemberName=c.Member.Name,
+                                          LeadID=c.LeadID},
+                          ProcessName = l.Progress.Name,
+                          l.Comments.OrderByDescending(dd=>dd.CommentDate).FirstOrDefault().Submitter
                       };
-
-            return PartialView(@"~\views\AvaliableCompanies\CoreCoverage.cshtml", ccs);
+            CH.DB.Configuration.ProxyCreationEnabled = false;
+            return View(new GridModel(ccs.ToList()));
         }
-
         public ActionResult GetTemplate(int calltypeid)
         {
             var calltype = CH.GetDataById<LeadCallType>(calltypeid);

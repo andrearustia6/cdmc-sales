@@ -344,17 +344,17 @@ namespace Sales.Model
                     return "";
             }
         }
-        public IEnumerable<LeadCall> Calls { get; set; }
+        public IEnumerable<_LeadCall> Calls { get; set; }
         public IEnumerable<Member> Members { get; set; }
         public string DispSales
         {
             get
             {
                 string ret = "";
-                var saleslist = Calls.Select(c => c.Member.Name).Distinct();
+                var saleslist = Calls.Select(c => c.MemberName).Distinct();
                 foreach (var str in saleslist)
                 {
-                    var salescall = Calls.Where(c => c.Member.Name == str);
+                    var salescall = Calls.Where(c => c.MemberName == str);
                     ret=ret+";"+str+"("+salescall.Count().ToString()+")";
                 }
 
@@ -368,7 +368,7 @@ namespace Sales.Model
                 string ret = "";
                 foreach (var m in Members)
                 {
-                    var salescall = Calls.Where(c => c.Member.Name == m.Name);
+                    var salescall = Calls.Where(c => c.MemberName == m.Name);
                     ret = ret + ";" + m.Name + "(" + salescall.GroupBy(s=>s.LeadID).Count().ToString() + ")";
                 }
                 return ret.TrimStart(';');
