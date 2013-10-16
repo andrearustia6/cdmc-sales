@@ -307,6 +307,23 @@ namespace Sales.BLL
                 CrmCommentStateID=data.CrmCommentStateID,
                 CoreLVLID = data.CoreLVLID,
                 _members = data.Members,
+                CrmStatisitcs = new _CrmStatisitcs()
+                {
+                    LeadCount = data.Company.Leads.Count(),
+                    CallCount = data.LeadCalls.Count(),
+                    LeadMaxCallCount = data.LeadCalls.GroupBy(lc => lc.LeadID).Select(k => new { Name = k.Key, Count = k.Count() }).OrderByDescending(m => m.Count).FirstOrDefault() != null ? data.LeadCalls.GroupBy(lc => lc.LeadID).Select(k => new { Name = k.Key, Count = k.Count() }).OrderByDescending(m => m.Count).FirstOrDefault().Count : 0,
+                    LeadAvgCallCount = data.Company.Leads.Count != 0 ? (double)data.LeadCalls.Count() / (double)data.Company.Leads.Count() : 0,
+                    CoverageRate = data.Company.Leads.Count != 0 ? ((double)callsgrp.Count() / (double)data.Company.Leads.Count()) * 100 : 0,
+                    TimeDiffer = data.Company.Leads.GroupBy(l => l.DistrictNumberID).Count(),
+                    LeadCalledCount = data.LeadCalls.GroupBy(lc => lc.LeadID).Count(),
+
+                    CallTypeCounts = from grp in data.LeadCalls.GroupBy(lc => lc.LeadCallTypeID)
+                                     select new CallTypeCount()
+                                     {
+                                         TypeName = CH.GetDataById<LeadCallType>(grp.Key).Name,
+                                         Count = grp.Count()
+                                     }
+                },
                 _Categorys= (from c in data.Categorys
                                  select new _Category()
                                  {

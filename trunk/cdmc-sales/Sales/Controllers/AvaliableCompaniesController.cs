@@ -905,9 +905,10 @@ namespace Sales.Controllers
         [HttpPost]
         public ActionResult EmailPage(EmailModel model)
         {
-            SendEmail(model.FromEmail, model.FromName, model.ToEmail, model.ToName, model.Content);
-
-            return Json(new { sentEmail = true });
+            if(SendEmail(model.FromEmail, model.FromName, model.ToEmail, model.ToName, model.Content))
+                return Json(new { sentEmail = true });
+            else
+                return Json(new { sentEmail = false });
         }
 
         /// <summary>
@@ -918,7 +919,7 @@ namespace Sales.Controllers
         /// <param name="toEmail"></param>
         /// <param name="toName"></param>
         /// <param name="content"></param>
-        public void SendEmail(string fromEmail, string fromName, string toEmail, string toName, string content)
+        public bool SendEmail(string fromEmail, string fromName, string toEmail, string toName, string content)
         {
             // Send email
             SmtpClient smtp = new SmtpClient();
@@ -939,8 +940,11 @@ namespace Sales.Controllers
             try
             {
                 smtp.Send(message);
+                return true;
             }
-            catch { }
+            catch {
+                return false;
+            }
             finally { message.Dispose(); smtp.Dispose(); }
         }
 
