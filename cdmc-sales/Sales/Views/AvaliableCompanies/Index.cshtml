@@ -247,7 +247,7 @@
         <div class="Competitor1-wrapper">
         </div>
         <div class="dialogue-buttons" style="position: absolute; bottom: 0; width: 98%; text-align: right;">
-            <input type="button" class="btn-queding" onclick="Javescript:$('#Competitor1').data('tWindow').close();" />
+           <input type="button" class="btn-queding" onclick="saveCompetitor();" />
         </div>
     </div></text>)
     .Width(600).Height(200).Draggable(true).Modal(true).Visible(false)
@@ -412,7 +412,18 @@
         });
         $('#Description').data('tWindow').close();
     }
-
+    function saveCompetitor() {
+        $.ajax({
+            url: "/AvaliableCompanies/EditCompetitor",
+            type: "post",
+            data: { crmid: crmid, pp: $("textarea[name=Competitor]").val() },
+            dataType: "json",
+            success: function (data, status) {
+                refreshdetail();
+            }
+        });
+        $('#Competitor1').data('tWindow').close();
+    }
     var crmid
     var gleadid
     var clickpublic
