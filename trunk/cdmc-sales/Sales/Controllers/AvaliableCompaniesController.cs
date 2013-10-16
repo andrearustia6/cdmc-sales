@@ -1151,8 +1151,7 @@ namespace Sales.Controllers
                                       {
                                           MemberName=c.Member.Name,
                                           LeadID=c.LeadID},
-                          ProcessName = l.Progress.Name,
-                          l.Comments.OrderByDescending(dd=>dd.CommentDate).FirstOrDefault().Submitter
+                          ProcessName = l.Progress.Name
                       };
             CH.DB.Configuration.ProxyCreationEnabled = false;
             return View(new GridModel(ccs.ToList()));
