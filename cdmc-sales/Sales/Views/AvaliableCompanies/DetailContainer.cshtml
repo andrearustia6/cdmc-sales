@@ -472,8 +472,10 @@
                 {
                     leadhide += lead.ID + ",";
 @*<a href="#" onclick="onLeadSelect(@(lead.ID))">*@
-                <a href="#" class="centera" onclick="onLeadSelectJS(@(lead.ID))">@*<div class="center_2" id="lead@(lead.ID)" onmouseover = "javascript:showLeadBtn(@(lead.ID));" onmouseout = "javascript:hideLeadBtn(@(lead.ID));" >*@
-                    <div class="center_2" id="lead@(lead.ID)"  >
+               @* <a href="#" class="centera" onclick="onLeadSelectJS(@(lead.ID))">*@
+                @*<div class="center_2" id="lead@(lead.ID)" onmouseover = "javascript:showLeadBtn(@(lead.ID));" onmouseout = "javascript:hideLeadBtn(@(lead.ID));" >*@
+                <span style="cursor:pointer">
+                    <div class="center_2" id="lead@(lead.ID)"  onclick="onLeadSelectJS(@(lead.ID))">
                         <div id="leadbtn@(lead.ID)" style="width:16%; display:none; float: right;">
                             <img class="hide"  src="../images/dianhua.png" alt="新增通话" onclick="onCallAdd(@(lead.ID))" style=" display: inline;float: right;" />
                             <img class="hide" src="../images/bianji.png" alt="编辑" onclick="onLeadEdit(@(lead.ID))" style=" display: inline;float: right;" />
@@ -537,7 +539,7 @@
                                 <dd style="margin-left: 24px;">
                                     @{if (@lead.Title != null)
                                       {
-                                        <p style="width:100px;color:#DE7D30;" title="@lead.Title">@lead.Title</p>
+                                        <p style="width:100px;" title="@lead.Title">@lead.Title</p>
                                       }
                                     }
                                 </dd>
@@ -602,7 +604,8 @@
                             }
                         </div>
                     </div>
-                </a>
+                    </span> 
+                @*</a>*@
                               index++;
                               if (index > 2)
                               {

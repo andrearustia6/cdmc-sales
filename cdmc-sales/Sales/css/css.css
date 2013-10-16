@@ -92,10 +92,10 @@ img{vertical-align:top; border:0;}
 .left_6 h2 img{ padding-left:5px;}
 
 .center{ float:left; width:20%; background:#e1f3fa; overflow:hidden;}
-.center_1{ font-size:14px; line-height:24px; font-family:"微软雅黑"; height:20%; background:#a6dff6;padding:5px 5px; color:#fff;}
+.center_1{ font-size:14px; line-height:24px; font-family:"微软雅黑"; height:20%; background:#a6dff6;padding:5px 5px; color:#1997ca;}
 .center_1 h2{ font-size:12px; font-family:"宋体"; font-weight:normal;}
 .center_1 h2 a{color:#fff; text-decoration:none;}
-.center_1 h2 a:hover{color:#fff; text-decoration:none;}
+.center_1 h2 a:hover{color:#1997ca; text-decoration:none;}
 .center_1 dl{ height:20%; overflow:hidden;}
 .center_1 dd{ float:left;}
 .center_1 dt{ float:left;}
