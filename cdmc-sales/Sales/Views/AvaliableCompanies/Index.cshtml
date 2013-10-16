@@ -247,7 +247,7 @@
         <div class="Competitor1-wrapper">
         </div>
         <div class="dialogue-buttons" style="position: absolute; bottom: 0; width: 98%; text-align: right;">
-           <input type="button" class="btn-queding" onclick="saveCompetitor();" />
+            <input type="button" class="btn-queding" onclick="saveCompetitor();" />
         </div>
     </div></text>)
     .Width(600).Height(200).Draggable(true).Modal(true).Visible(false)
@@ -362,7 +362,27 @@
         $.post('SaveAssignCompany', { id: crmid, ids: check }, function (result) {
             var window = $('#AssignCompany').data('tWindow');
             window.close();
+            refreshdetail();
         });
+        if (check == "") {
+            $.post('UnPickUp', { crmid: crmid }, function (result) {
+                if (result.companyRelationshipId != null) {
+                    alert('放回公海成功');
+                    crmid = result.companyRelationshipId;
+                    var currentProjectId = $('#projectid').val();
+                    RefreshCrmTree(currentProjectId, result.companyRelationshipId, result.processid, result.corelvlid);
+                    $('#crmdetailscontainer').html("");
+                }
+                else {
+                    if (result != "") {
+                        alert('放回公海:' + result);
+                    }
+                    else {
+                        alert('放回公海');
+                    }
+                }
+            });
+        }
     }
 
     function savePitchPoint() {
@@ -1189,8 +1209,8 @@
 
             var leaddiv = $('#lead' + leadid);
 
-//            leaddiv.removeClass('center_2');
-//            leaddiv.addClass('center_1');
+            //            leaddiv.removeClass('center_2');
+            //            leaddiv.addClass('center_1');
 
             showLeadBtn(leadid);
 
@@ -1572,8 +1592,8 @@
             $.post('GetCRMByCrmIDLeadID', { crmid: crmid, leadid: gleadid }, function (result) {
                 $('#crmdetailscontainer').html(result);
                 var leaddiv = $('#lead' + gleadid);
-//                leaddiv.removeClass('center_2');
-//                leaddiv.addClass('center_1');
+                //                leaddiv.removeClass('center_2');
+                //                leaddiv.addClass('center_1');
                 if (clickpublic) {
                     $(".UnPickUp").hide();
                     jQuery(".hide").hide();
