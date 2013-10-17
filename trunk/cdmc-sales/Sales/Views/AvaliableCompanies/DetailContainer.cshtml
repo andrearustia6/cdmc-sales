@@ -770,7 +770,13 @@
                                             <input type="button" value="取消筛选" onclick="RefreshCrm();" style="border: none; width: 67px; height: 21px;"/>
                                         </div>
                                     }*@
-                    <h2>@call.LeadName | @call.LeadTitle
+                    <h2>@call.LeadName 
+                    @if(string.IsNullOrEmpty(@call.LeadTitle))
+                    {}
+                    else
+                    {
+                        <span> | </span> @call.LeadTitle
+                        }
                     </h2>
                     <p>
                         @if (call.LeadCallTypeID == null)
