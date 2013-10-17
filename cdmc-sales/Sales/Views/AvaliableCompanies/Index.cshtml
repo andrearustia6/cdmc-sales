@@ -1886,9 +1886,24 @@
     function refreshdetail() {
         $.post('_SelectedCRMNode', { crmid: crmid }, function (result) {
             $('#crmdetailscontainer').html(result);
-            $("#comments").hide();
-            $("#statistics").show();
-            jQuery("input[name=ComContent][value=Statistics]").attr("checked", true);
+            if ($("#HideRoleLevel").val() == '10') {
+                $("#comments").show();
+                $("#statistics").hide();
+                jQuery("input[name=ComContent][value=comments]").attr("checked", true);
+            }
+            else if($("#MemberHidden").val().indexOf($("#HideCurrentUserName").val())!=-1 && $("#HideRoleLevel").val() == '100')
+            {
+                $("#comments").show();
+                $("#statistics").hide();
+                jQuery("input[name=ComContent][value=comments]").attr("checked", true);
+            }
+            else
+            {
+                $("#comments").hide();
+                $("#statistics").show();
+                jQuery("input[name=ComContent][value=Statistics]").attr("checked", true);
+            }
+            
             $("#allsales").css("color", '#1997ca');
             $("#SelectedMemberHidden").val(name);
             if (clickpublic) {
