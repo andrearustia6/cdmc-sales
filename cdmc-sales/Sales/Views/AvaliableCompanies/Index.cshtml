@@ -70,6 +70,18 @@
                 }
                 是否点评: @Html.Telerik().DropDownList().Name("commentlist").BindTo(new SelectList(commentlist, "Value", "Text", "")).DropDownHtmlAttributes(new { style = string.Format("width:{0}px", 200) }).HtmlAttributes(new { style = string.Format("vertical-align:middle;width:{0}%", 80) }).ClientEvents(events => events.OnChange("oncommentlistChange"))
             </td>
+            @if (Employee.CurrentRole.Level == 500)
+            {
+                <td style="width: 15%;">
+                    销售筛选:
+                    <select id="saleslist" style="width: 200px; vertical-align: middle; width: 80%" onchange="onsaleslistChange()">
+                    </select>
+                </td>
+            }
+            else
+            {
+                @Html.Hidden("saleslist")
+            }
             @*<td style="width:6%;">
             最近通话
         </td>
@@ -198,15 +210,15 @@
         <div class="Categories-wrapper">
         </div>
         <div class="dialogue-buttons" style="float: right;">
-        @if (Employee.CurrentRole.Level == ProductInterfaceRequired.LVL || Employee.CurrentRole.Level == LeaderRequired.LVL || Employee.CurrentRole.Level == ManagerRequired.LVL)
-        {                     
-            <input type="button" class="btn-queding" onclick="saveCategories();" />
-        }
-        else
-        {
-            <input type="button" class="btn-queding" onclick="Javescript:$('#Categories').data('tWindow').close();" />
+            @if (Employee.CurrentRole.Level == ProductInterfaceRequired.LVL || Employee.CurrentRole.Level == LeaderRequired.LVL || Employee.CurrentRole.Level == ManagerRequired.LVL)
+            {                     
+                <input type="button" class="btn-queding" onclick="saveCategories();" />
+            }
+            else
+            {
+                <input type="button" class="btn-queding" onclick="Javescript:$('#Categories').data('tWindow').close();" />
 
-        }
+            }
         </div>
     </div></text>)
                                 .Width(1000)
@@ -1792,7 +1804,7 @@
                 if (arrids[i] == leadid) {
                     leadcallfind = true;
                     //if (!$(".leadcall" + leadid).is(":hidden")) {
-                        $(".leadcall" + leadid).show();
+                    $(".leadcall" + leadid).show();
                     //}
                 } else {
                     $(".leadcall" + arrids[i]).hide();
@@ -1899,19 +1911,17 @@
                 $("#statistics").hide();
                 jQuery("input[name=ComContent][value=comments]").attr("checked", true);
             }
-            else if($("#MemberHidden").val().indexOf($("#HideCurrentUserName").val())!=-1 && $("#HideRoleLevel").val() == '100')
-            {
+            else if ($("#MemberHidden").val().indexOf($("#HideCurrentUserName").val()) != -1 && $("#HideRoleLevel").val() == '100') {
                 $("#comments").show();
                 $("#statistics").hide();
                 jQuery("input[name=ComContent][value=comments]").attr("checked", true);
             }
-            else
-            {
+            else {
                 $("#comments").hide();
                 $("#statistics").show();
                 jQuery("input[name=ComContent][value=Statistics]").attr("checked", true);
             }
-            
+
             $("#allsales").css("color", '#1997ca');
             $("#SelectedMemberHidden").val(name);
             if (clickpublic) {

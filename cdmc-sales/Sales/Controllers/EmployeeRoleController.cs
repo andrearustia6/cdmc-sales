@@ -10,6 +10,8 @@ using System.Data;
 using Model;
 using System.Web.Security;
 using System.Web.Profile;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace Sales.Controllers
 {
@@ -92,7 +94,7 @@ namespace Sales.Controllers
                            ExpLevelID = l.ExpLevelID,
                            RoleID = l.RoleID,
                            AccountNameCN = l.AccountNameCN,
-                           AgentNum = l.AgentNum
+                           AgentNum = l.AgentNum,
                        };
 
             var role = Employee.CurrentRole;
@@ -148,7 +150,8 @@ namespace Sales.Controllers
                  Mobile = selAccount.Mobile,
                  RoleID = selAccount.RoleID,
                  RoleName = selAccount.Role == null ? string.Empty : selAccount.Role.Name,
-                 StartDate = selAccount.StartDate
+                 StartDate = selAccount.StartDate,
+                 EmailSignatures = selAccount.EmailSignatures
              };
         }
 
@@ -241,13 +244,21 @@ namespace Sales.Controllers
             if (ModelState.IsValid)
             {
                 var s = CH.GetDataById<EmployeeRole>(model.ID);
-                //s.AccountNameCN = model.AccountNameCN;
                 s.AgentNum = model.AgentNum;
                 s.Gender = model.Gender;
                 s.Email = model.Email;
                 s.BirthDay = model.BirthDay;
                 s.DepartmentID = model.DepartmentID;
                 s.Mobile = model.Mobile;
+                s.EmailSignatures = model.EmailSignatures;
+                if (!string.IsNullOrWhiteSpace(s.EmailPassword))
+                {
+                    if (GetMD5Hash(model.OldPassword) != s.EmailPassword)
+                    {
+                        return Json("初始密码错误！");
+                    }
+                }
+                s.EmailPassword = GetMD5Hash(model.EmailPassword);
                 CH.Edit<EmployeeRole>(s);
                 return Json("");
             }
@@ -264,6 +275,15 @@ namespace Sales.Controllers
                 }
                 return Json(error.Substring(0, error.Length - 1));
             }
+        }
+
+        public static string GetMD5Hash(String input)
+        {
+            MD5 md5 = new MD5CryptoServiceProvider();
+            byte[] res = md5.ComputeHash(Encoding.Default.GetBytes(input), 0, input.Length);
+            char[] temp = new char[res.Length];
+            System.Array.Copy(res, temp, res.Length);
+            return new String(temp);
         }
 
         [HttpPost]

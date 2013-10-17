@@ -70,5 +70,13 @@ namespace Entity
 
         [Display(Name = "员工性别")]
         public string Gender { get; set; }
+
+        [Display(Name = "邮件签名")]
+        public string EmailSignatures { get; set; }
+
+        [Display(Name = "邮箱密码")]
+        public string EmailPassword { get; set; }
+        
+
     }
 }
