@@ -241,7 +241,16 @@ namespace Sales.Model
          }
          public IEnumerable<_Category> _Categorys { get; set; }
          public bool CategoryEdit { get; set; }
-         public string CategoryString{ get; set; }
+         public string CategoryString
+         {
+             get
+             {
+                 if (_Categorys.Count() > 0)
+                     return string.Join(",", _Categorys.Select(c => c.Name).ToArray());
+                 else
+                     return "";
+             }
+         }
          public string Description { get; set; }
          public string PitchPoint { get; set; }
         /// <summary>
