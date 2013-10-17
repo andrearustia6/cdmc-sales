@@ -131,8 +131,8 @@
             $.post('GetCRMByCrmIDLeadID', { crmid: crmid, leadid: gleadid }, function (result) {
                 $('#crmdetailscontainer').html(result);
                 var leaddiv = $('#lead' + gleadid);
-                leaddiv.removeClass('center_2');
-                leaddiv.addClass('center_1');
+//                leaddiv.removeClass('center_2');
+//                leaddiv.addClass('center_1');
                 jQuery(".PickUp").hide();
             });
         }
@@ -166,8 +166,8 @@
             $.post('GetCRMByCrmIDLeadID', { crmid: crmid, leadid: gleadid }, function (result) {
                 $('#crmdetailscontainer').html(result);
                 var leaddiv = $('#lead' + gleadid);
-                leaddiv.removeClass('center_2');
-                leaddiv.addClass('center_1');
+//                leaddiv.removeClass('center_2');
+//                leaddiv.addClass('center_1');
                 hidebtn();
                 jQuery(".UnPickUp").hide();
             });
