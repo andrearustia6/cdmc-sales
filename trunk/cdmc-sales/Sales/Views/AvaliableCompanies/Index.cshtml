@@ -198,13 +198,21 @@
         <div class="Categories-wrapper">
         </div>
         <div class="dialogue-buttons" style="float: right;">
+        @if (Employee.CurrentRole.Level == ProductInterfaceRequired.LVL || Employee.CurrentRole.Level == LeaderRequired.LVL || Employee.CurrentRole.Level == ManagerRequired.LVL)
+        {                     
             <input type="button" class="btn-queding" onclick="saveCategories();" />
+        }
+        else
+        {
+            <input type="button" class="btn-queding" onclick="Javescript:$('#Categories').data('tWindow').close();" />
+
+        }
         </div>
     </div></text>)
-        .Width(1000)
-        .Height(220)
-                .Modal(true).Visible(false).Draggable(true)
-    )
+                                .Width(1000)
+                                .Height(220)
+                                        .Modal(true).Visible(false).Draggable(true)
+                            )
 @(Html.Telerik().Window().Title("PitchPoint")
     .Name("PitchPoint1")
     .Content(@<text><div class="dialogue-PitchPoint1">
@@ -239,7 +247,7 @@
             <input type="button" class="btn-queding" onclick="saveDescription();" />
         </div>
     </div></text>)
-    .Width(600).Height(200).Draggable(true).Modal(true).Visible(false)
+    .Width(600).Height(500).Draggable(true).Modal(true).Visible(false)
 )
 @(Html.Telerik().Window().Title("竞争对手")
         .Name("Competitor1")

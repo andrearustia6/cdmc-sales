@@ -156,15 +156,8 @@
                         <li>
                             <h2>
                                 行业细分
-                                @if (Utl.Employee.CurrentRole.Level != ProductInterfaceRequired.LVL)
-                                {
-                                    if (@Model._members.Where(m => m.Name == Utl.Employee.CurrentUserName).Count() > 0)
-                                    {
                                  <a href="#" onclick="GetCategories(@(Model.ID))">
                                     <img src="../images/quan-13.jpg" width="20" height="18" alt="wenhao" /></a>
-
-                                    }
-                                }
                             </h2>
                             @if (!string.IsNullOrWhiteSpace(Model.CategoryString))
                             {
