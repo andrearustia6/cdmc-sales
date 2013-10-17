@@ -205,7 +205,6 @@ namespace Sales.BLL
                 WaitForApproveCount = callsgrp != null ? callsgrp.Where(c => c.LeadCallTypeID == 7).Count() : 0,
                 CloseDealCount = callsgrp != null ? callsgrp.Where(c => c.LeadCallTypeID == 9).Count() : 0,
                 NoCallCount = data.Company.Leads.Where(l => !data.LeadCalls.Where(c => c.LeadID == l.ID).Any()).Count(),
-                CategoryString = data.CategoryString,
                 CoreCompany = data.CoreLVL == null ? false : data.CoreLVL.CoreLVLName == "核心公司" ? true : false,
                 CrmCommentStateID = data.CrmCommentStateID,
                 CoreLVLID = data.CoreLVLID,
@@ -332,7 +331,6 @@ namespace Sales.BLL
                                      Description=c.Description
                                  }
                                  ),
-                CategoryString = data.CategoryString,
                 _Comments = (from co in data.Comments.OrderByDescending(m => m.CommentDate)
                              select new _Comment()
                              {
@@ -429,7 +427,6 @@ namespace Sales.BLL
                                   Description = c.Description
                               }
                                  ),
-                CategoryString = data.CategoryString,
                 _Comments = (from co in data.Comments.OrderByDescending(m => m.CommentDate)
                              select new _Comment()
                              {
