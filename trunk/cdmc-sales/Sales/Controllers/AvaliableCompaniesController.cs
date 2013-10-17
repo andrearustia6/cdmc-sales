@@ -929,7 +929,7 @@ namespace Sales.Controllers
             smtp.UseDefaultCredentials = false;
             smtp.Credentials = SMTPUserInfo;
 
-            MailAddress from = new MailAddress(fromEmail, fromName, System.Text.Encoding.Unicode);
+            MailAddress from = new MailAddress("system@cdmc.org.cn", "system@cdmc.org.cn", System.Text.Encoding.Unicode);
             MailAddress to = new MailAddress(toEmail, toName, System.Text.Encoding.UTF8);
             MailMessage message = new MailMessage(from, to);
             message.SubjectEncoding = System.Text.Encoding.UTF8;

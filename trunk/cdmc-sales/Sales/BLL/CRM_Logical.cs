@@ -152,7 +152,7 @@ namespace BLL
                 if (rolelvl >= LeaderRequired.LVL)
                 {
                     var leads = CH.DB.Projects.Where(w => w.IsActived == true && !string.IsNullOrEmpty(w.TeamLeader)).Select(s => s.TeamLeader).Distinct();
-
+                   //leads = leads.Where(w=>w.)
 
                     if (Utl.Utl.DebugModel() != true)
                     {
