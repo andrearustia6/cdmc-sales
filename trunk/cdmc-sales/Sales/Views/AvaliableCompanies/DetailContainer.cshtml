@@ -271,10 +271,32 @@
                 </div>
             </div>
             <div style="margin: 15px 0 5px 0;">
-                @Html.RadioButton("ComContent", "Statistics", true, new { onchange = "onRadioSelect('statistics')" })<span
-                    style="font-size: medium;"><b>统计</b></span>
-                @Html.RadioButton("ComContent", "Comments", false, new { onchange = "onRadioSelect('comments')" })<span
-                    style="font-size: medium;"><b>点评</b></span>
+                @Html.Hidden("HideRoleLevel", Utl.Employee.CurrentRole.Level)
+                @Html.Hidden("HideCurrentUserName", Utl.Employee.CurrentUserName)
+                @if (Utl.Employee.CurrentRole.Level == SalesRequired.LVL)
+                {
+                    @Html.RadioButton("ComContent", "Comments", true, new { onchange = "onRadioSelect('comments')" })<span
+                        style="font-size: medium;"><b>点评</b></span>
+                    @Html.RadioButton("ComContent", "Statistics", false, new { onchange = "onRadioSelect('statistics')" })<span
+                        style="font-size: medium;"><b>统计</b></span>
+                }
+                else
+                {
+                    if (Utl.Employee.CurrentRole.Level == LeaderRequired.LVL && @Model._members.Where(m => m.Name == Utl.Employee.CurrentUserName).Count() > 0)
+                    {
+                         @Html.RadioButton("ComContent", "Comments", true, new { onchange = "onRadioSelect('comments')" })<span
+                        style="font-size: medium;"><b>点评</b></span>
+                    @Html.RadioButton("ComContent", "Statistics", false, new { onchange = "onRadioSelect('statistics')" })<span
+                        style="font-size: medium;"><b>统计</b></span>
+                    }
+                    else
+                    {
+                        @Html.RadioButton("ComContent", "Statistics", true, new { onchange = "onRadioSelect('statistics')" })<span
+                            style="font-size: medium;"><b>统计</b></span>
+                        @Html.RadioButton("ComContent", "Comments", false, new { onchange = "onRadioSelect('comments')" })<span
+                            style="font-size: medium;"><b>点评</b></span>
+                    }
+                }
             </div>
             <div id="comments" style="display: none;">
                 <div class="dierye_1">
@@ -289,24 +311,53 @@
                         var i = 1;
                         foreach (var comment in Model._Comments)
                         {
-                            bool mysel = Utl.Employee.GetLoginUserName() == comment.Submitter;
-@*<div class="dierye_3_@(i)">*@
-                        <div class="item" style="float:@(mysel ? "right" : "left");width:80%;text-align:@(mysel ? "right" : "left")">
-                            <table style="border: 0; margin-bottom: 10px; width: 100%;">
-                                <tr>
-                                    <td style="width:@(mysel ? "80%" : "")">@(mysel ? comment.Contents : comment.Submitter)
-                                    </td>
-                                    <td>@(mysel ? "我" : comment.Contents)
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>@(mysel ? (comment.CommentDate.ToString("yyyy/MM/dd") + " " + comment.CommentDate.ToShortTimeString()) : "")
-                                    </td>
-                                    <td>@(mysel ? "" : (comment.CommentDate.ToString("yyyy/MM/dd") + " " + comment.CommentDate.ToShortTimeString()))
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
+                            bool mysel = Utl.Employee.CurrentUserName == comment.Submitter;
+                            if (mysel)
+                            {
+                                <div class="raised" style="float:@(mysel ? "right" : "left");width:80%;padding-top: 2px; ">
+                                <b class="b1"></b><b class="b2"></b><b class="b3"></b><b class="b4"></b>
+                                <div class="boxcontent">
+                                    <table style="border: 0;  width: 100%;">
+                                        <tr>
+                                            <td style="width:@(mysel ? "80%" : "")">@(mysel ? comment.Contents : comment.Submitter)
+                                            </td>
+                                            <td style=" text-align:right">@(mysel ? "我" : comment.Contents)
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>@(mysel ? (comment.CommentDate.ToString("yyyy/MM/dd") + " " + comment.CommentDate.ToShortTimeString()) : "")
+                                            </td>
+                                            <td>@(mysel ? "" : (comment.CommentDate.ToString("yyyy/MM/dd") + " " + comment.CommentDate.ToShortTimeString()))
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    </div>
+                                    <b class="b4b"></b><b class="b3b"></b><b class="b2b"></b><b class="b1b"></b>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="raised1" style="float:@(mysel ? "right" : "left");width:80%;padding-top: 2px;">
+                                <b class="b1"></b><b class="b2"></b><b class="b3"></b><b class="b4"></b>
+                                <div class="boxcontent">
+                                    <table style="border: 0;  width: 100%;">
+                                        <tr>
+                                            <td style="width:@(mysel ? "80%" : "")">@(mysel ? comment.Contents : comment.Submitter)
+                                            </td>
+                                            <td>@(mysel ? "我" : comment.Contents)
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>@(mysel ? (comment.CommentDate.ToString("yyyy/MM/dd") + " " + comment.CommentDate.ToShortTimeString()) : "")
+                                            </td>
+                                            <td>@(mysel ? "" : (comment.CommentDate.ToString("yyyy/MM/dd") + " " + comment.CommentDate.ToShortTimeString()))
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    </div>
+                                    <b class="b4b"></b><b class="b3b"></b><b class="b2b"></b><b class="b1b"></b>
+                                </div>
+                            }
 
 
 
@@ -369,7 +420,7 @@
                         {
                             <span>| </span> <a id='sales@(member)' class="onMember" href="#" onclick="onMember('@(member)')">
                                 @member</a>
-                            memberhide += member + ",";
+                           memberhide += member + ",";
                         }
                         @Html.Hidden("MemberHidden", string.IsNullOrEmpty(memberhide) ? "" : memberhide.Substring(0, memberhide.Length - 1))
                         @Html.Hidden("SelectedMemberHidden")
@@ -562,30 +613,30 @@
                                                                                                                 <img   src="../images/quan-08.png" width="15" height="15" alt="yuan" title="Closed" />}
                                                                                                           }
 
-                        }
-                    }
-                    else
-                    {
-                        if (calls == null)
-                        {
+                                                                                                      }
+                                                                                                  }
+                                                                                                  else
+                                                                                                  {
+                                                                                                      if (calls == null)
+                                                                                                      {
                                         <img src="../images/quan-01.png" width="15" height="15" alt="yuan" title="没联系" />
-                        }
-                        else
-                        {
-                            if (calls.LeadCallTypeID == 2 || calls.LeadCallTypeID == 3)
-                            {
+                                                                                                      }
+                                                                                                      else
+                                                                                                      {
+                                                                                                          if (calls.LeadCallTypeID == 2 || calls.LeadCallTypeID == 3)
+                                                                                                          {
                                         <img src="../images/quan-09.png" width="15" height="15" alt="yuan" title="Blowed和Not Piteched" />}
-                            else if (calls.LeadCallTypeID == 4 || calls.LeadCallTypeID == 5 || calls.LeadCallTypeID == 6)
-                            {
+                                                                                                          else if (calls.LeadCallTypeID == 4 || calls.LeadCallTypeID == 5 || calls.LeadCallTypeID == 6)
+                                                                                                          {
                                         <img src="../images/quan-10.png" width="15" height="15" alt="yuan" title="Pitched和Full Pitched和Call Backed" />}
-                            else if (calls.LeadCallTypeID == 7 || calls.LeadCallTypeID == 8)
-                            {
+                                                                                                          else if (calls.LeadCallTypeID == 7 || calls.LeadCallTypeID == 8)
+                                                                                                          {
                                         <img src="../images/55.png" width="15" height="15" alt="yuan" title="Qualified Decision和Waiting for Approval" />}
-                            else if (calls.LeadCallTypeID == 9)
-                            {
+                                                                                                          else if (calls.LeadCallTypeID == 9)
+                                                                                                          {
                                         <img src="../images/quan-08.png" width="15" height="15" alt="yuan" title="Closed" />}
-                        }
-                    }
+                                                                                                      }
+                                                                                                  }
                                     }
                                 </dt>
                                 <dd>
@@ -638,7 +689,8 @@
                                         {
                                         <img onclick="onCallAdd(@(lead.ID))"  src="../images/zuoji.png" width="15" height="15" alt="yuan" />
                                         }
-                                        else{
+                                        else
+                                        {
                                             <img  src="../images/zuoji.png" width="15" height="15" alt="yuan" />
                                         }
                                     }
@@ -664,7 +716,8 @@
                                     <a href="mailto:@(lead.Email)">
                                         <img src="../images/youjian.png" width="15" height="15" alt="yuan" /></a> 
                                         }
-                                        else{
+                                        else
+                                        {
                                             <a >
                                         <img src="../images/youjian.png" width="15" height="15" alt="yuan" /></a> 
                                         }
@@ -752,12 +805,12 @@
                         <span>@call.CallResult</span></p>
                     <p>@call.CallDate.ToLongDateString() @call.CallDate.ToShortTimeString() @call.Creator</p>
                 </div>
-                        index++;
-                        lcIdList.Add((int)call.LeadID);
-                        if (index > 2)
-                        {
-                            index = 1;
-                        }
+                                                                                       index++;
+                                                                                       lcIdList.Add((int)call.LeadID);
+                                                                                       if (index > 2)
+                                                                                       {
+                                                                                           index = 1;
+                                                                                       }
                     }
                 }
 @* else
@@ -832,6 +885,20 @@
                     alert('修改失败');
             });
         })
-        onRadioSelect('statistics');
+        if ($("#HideRoleLevel").val() == '10') {
+            $("#comments").show();
+            $("#statistics").hide();
+            jQuery("input[name=ComContent][value=comments]").attr("checked", true);
+        }
+        else if ($("#MemberHidden").val().indexOf($("#HideCurrentUserName").val()) != -1 && $("#HideRoleLevel").val() == '100') {
+            $("#comments").show();
+            $("#statistics").hide();
+            jQuery("input[name=ComContent][value=comments]").attr("checked", true);
+        }
+        else {
+            $("#comments").hide();
+            $("#statistics").show();
+            jQuery("input[name=ComContent][value=Statistics]").attr("checked", true);
+        }
     })
 </script>
