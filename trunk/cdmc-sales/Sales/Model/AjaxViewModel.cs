@@ -215,7 +215,7 @@ namespace Model
         {
             get
             {
-                return RMBPayment + USDPayment * (decimal)CH.DB.CurrencyTypes.Where(c=>c.Name=="USD").FirstOrDefault().Rate;
+                return RMBPayment + USDPayment * (decimal)CH.DB.CurrencyTypes.Where(c => c.Name == "USD").FirstOrDefault().Rate;
             }
         }
         [Display(Name = "出单经验分享")]
@@ -1152,6 +1152,24 @@ namespace Model
 
         [Display(Name = "员工性别")]
         public string Gender { get; set; }
+
+        [Display(Name = "邮件签名")]
+        public string EmailSignatures { get; set; }
+
+        [Required]
+        [DataType(DataType.Password)]
+        [Display(Name = "邮箱密码")]
+        public string EmailPassword { get; set; }
+
+        [Required]
+        [DataType(DataType.Password)]
+        [Compare("EmailPassword", ErrorMessage = "密码确认和邮箱密码不匹配。")]
+        [Display(Name = "密码确认")]
+        public string ConfirmPassword { get; set; }
+
+        [DataType(DataType.Password)]
+        [Display(Name = "初始密码")]
+        public string OldPassword { get; set; }
 
         //[Required]
         //[StringLength(100, ErrorMessage = "密码长度最少为{0}.", MinimumLength = 6)]
