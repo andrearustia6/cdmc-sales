@@ -1168,6 +1168,7 @@ namespace Model
         public string ConfirmPassword { get; set; }
 
         [DataType(DataType.Password)]
+        [Required]
         [Display(Name = "初始密码")]
         public string OldPassword { get; set; }
 

@@ -3,197 +3,211 @@
 @using Utl
 @using (Html.BeginForm())
 {
+
+    if (Employee.CurrentUserName == Model.AccountName)
+    {
     <fieldset>
         @Html.HiddenFor(model => model.ID)
         <legend>帐号信息</legend>
         <p id="errorAccountInfo" style="color: #FF0000">
         </p>
         @Html.ValidationSummary(true, "")
-        @if (Employee.CurrentUserName == Model.AccountName)
-        {
-            <table style="padding: 10px; margin: 10px">
-                <tr>
+        <table style="padding: 10px; margin: 10px">
+            <tr>
+                <td style="width: 70px">
+                    @Html.LabelFor(model => model.AccountName)
+                </td>
+                <td>
+                    @Html.HiddenFor(model => model.AccountName)
+                    @Html.DisplayFor(model => model.AccountName)
+                </td>
+                <td style="width: 70px">
+                    @Html.LabelFor(model => model.AccountNameCN)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.AccountNameCN)
+                    @Html.HiddenFor(model => model.AccountNameCN)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.RoleName)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.RoleName)
+                </td>
+                <td>
+                    @Html.LabelFor(model => model.AgentNum)
+                </td>
+                <td>
+                    @Html.TextBoxFor(model => model.AgentNum, new { style = "width:150px" })<br />
+                    @Html.ValidationMessageFor(model => model.AgentNum)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.Gender)
+                </td>
+                <td>
+                    @Html.DropDownListFor(m => m.Gender, new SelectList(new List<string>() { "男", "女" }), "-请选择-", new { style = "width:150px" })<br />
+                    @Html.ValidationMessageFor(model => model.AgentNum)
+                </td>
+                <td>
+                    @Html.LabelFor(model => model.Email)
+                </td>
+                <td>
+                    @Html.TextBoxFor(model => model.Email, new { style = "width:150px" })<br />
+                    @Html.ValidationMessageFor(model => model.Email)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.BirthDay)
+                </td>
+                <td>
+                    @Html.Telerik().DatePickerFor(model => model.BirthDay).HtmlAttributes(new { style = "width:150px" })<br />
+                    @Html.ValidationMessageFor(model => model.BirthDay)
+                </td>
+                <td>
+                    @Html.LabelFor(model => model.DepartmentName)
+                </td>
+                <td>
+                    @Html.DropDownListFor(model => model.DepartmentID, new SelectList(CH.GetAllData<Department>(), "ID", "Name"), "-请选择-", new { style = "width:150px" })<br />
+                    @Html.ValidationMessageFor(model => model.DepartmentID)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.Mobile)
+                </td>
+                <td>
+                    @Html.TextBoxFor(model => model.Mobile, new { style = "width:150px" })<br />
+                    @Html.ValidationMessageFor(model => model.Mobile)
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+    <fieldset>
+        <legend>邮箱信息</legend>
+        <table style="padding: 10px; margin: 10px">
+            <tr>
+                <td style="width: 70px">
+                    @Html.LabelFor(model => model.EmailSignatures)
+                </td>
+                <td>
+                    @Html.TextBoxFor(model => model.EmailSignatures, new { style = "width:150px" })<br />
+                    @Html.ValidationMessageFor(model => model.EmailSignatures)
+                </td>
+                @if (!string.IsNullOrWhiteSpace(Model.EmailPassword))
+                {
                     <td style="width: 70px">
-                        @Html.LabelFor(model => model.AccountName)
-                    </td>
-                    <td>
-                        @Html.HiddenFor(model => model.AccountName)
-                        @Html.DisplayFor(model => model.AccountName)
-                    </td>
-                    <td style="width: 70px">
-                        @Html.LabelFor(model => model.AccountNameCN)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(model => model.AccountNameCN)
-                        @Html.HiddenFor(model => model.AccountNameCN)
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        @Html.LabelFor(model => model.RoleName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(model => model.RoleName)
-                    </td>
-                    <td>
-                        @Html.LabelFor(model => model.AgentNum)
-                    </td>
-                    <td>
-                        @Html.TextBoxFor(model => model.AgentNum, new { style = "width:150px" })<br />
-                        @Html.ValidationMessageFor(model => model.AgentNum)
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        @Html.LabelFor(model => model.Gender)
-                    </td>
-                    <td>
-                        @Html.DropDownListFor(m => m.Gender, new SelectList(new List<string>() { "男", "女" }), "-请选择-", new { style = "width:150px" })<br />
-                        @Html.ValidationMessageFor(model => model.AgentNum)
-                    </td>
-                    <td>
-                        @Html.LabelFor(model => model.Email)
-                    </td>
-                    <td>
-                        @Html.TextBoxFor(model => model.Email, new { style = "width:150px" })<br />
-                        @Html.ValidationMessageFor(model => model.Email)
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        @Html.LabelFor(model => model.BirthDay)
-                    </td>
-                    <td>
-                        @Html.Telerik().DatePickerFor(model => model.BirthDay).HtmlAttributes(new { style = "width:150px" })<br />
-                        @Html.ValidationMessageFor(model => model.BirthDay)
-                    </td>
-                    <td>
-                        @Html.LabelFor(model => model.DepartmentName)
-                    </td>
-                    <td>
-                        @Html.DropDownListFor(model => model.DepartmentID, new SelectList(CH.GetAllData<Department>(), "ID", "Name"), "-请选择-", new { style = "width:150px" })<br />
-                        @Html.ValidationMessageFor(model => model.DepartmentID)
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        @Html.LabelFor(model => model.Mobile)
-                    </td>
-                    <td>
-                        @Html.TextBoxFor(model => model.Mobile, new { style = "width:150px" })<br />
-                        @Html.ValidationMessageFor(model => model.Mobile)
-                    </td>
-                    <td>
-                        @Html.LabelFor(model => model.EmailSignatures)
-                    </td>
-                    <td>
-                        @Html.TextBoxFor(model => model.EmailSignatures, new { style = "width:150px" })<br />
-                        @Html.ValidationMessageFor(model => model.EmailSignatures)
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        @Html.LabelFor(model => model.EmailPassword)
-                    </td>
-                    <td>
-                        @Html.PasswordFor(model => model.EmailPassword, new { style = "width:150px" })<br />
-                        @Html.ValidationMessageFor(model => model.EmailPassword)
-                    </td>
-                    <td>
                         @Html.LabelFor(model => model.OldPassword)
                     </td>
                     <td>
                         @Html.PasswordFor(model => model.OldPassword, new { style = "width:150px" })<br />
-                        @Html.ValidationMessageFor(model => model.EmailSignatures)
+                        @Html.ValidationMessageFor(model => model.OldPassword)
                     </td>
-                </tr>
-                <tr>
-                    <td>
-                        @Html.LabelFor(model => model.ConfirmPassword)
-                    </td>
-                    <td>
-                        @Html.PasswordFor(model => model.ConfirmPassword, new { style = "width:150px" })<br />
-                        @Html.ValidationMessageFor(model => model.ConfirmPassword)
-                    </td>
-                </tr>
-            </table>
-        }
-        else
-        {
-            <table style="padding: 10px; margin: 10px">
-                <tr>
-                    <td style="width: 70px">
-                        @Html.LabelFor(model => model.AccountName)
-                    </td>
-                    <td style="width: 160px">
-                        @Html.DisplayFor(model => model.AccountName)
-                    </td>
-                    <td style="width: 70px">
-                        @Html.LabelFor(model => model.AccountNameCN)
-                    </td>
-                    <td style="width: 160px">
-                        @Html.DisplayFor(model => model.AccountNameCN)
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        @Html.LabelFor(model => model.RoleName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(model => model.RoleName)
-                    </td>
-                    <td>
-                        @Html.LabelFor(model => model.AgentNum)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(model => model.AgentNum)
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        @Html.LabelFor(model => model.Gender)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(m => m.Gender)
-                    </td>
-                    <td>
-                        @Html.LabelFor(model => model.Email)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(model => model.Email)
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        @Html.LabelFor(model => model.BirthDay)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(model => model.BirthDay)
-                    </td>
-                    <td>
-                        @Html.LabelFor(model => model.DepartmentName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(model => model.DepartmentName)
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        @Html.LabelFor(model => model.Mobile)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(model => model.Mobile, new { style = "width:150px" })<br />
-                    </td>
-                    <td>
-                        @Html.LabelFor(model => model.EmailSignatures)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(model => model.EmailSignatures, new { style = "width:150px" })<br />
-                    </td>
-                </tr>
-            </table>
-        }
+                }
+            </tr>
+            <tr>
+                <td style="width: 70px">
+                    @Html.LabelFor(model => model.EmailPassword)
+                </td>
+                <td>
+                    @Html.PasswordFor(model => model.EmailPassword, new { style = "width:150px" })<br />
+                    @Html.ValidationMessageFor(model => model.EmailPassword)
+                </td>
+                <td style="width: 70px">
+                    @Html.LabelFor(model => model.ConfirmPassword)
+                </td>
+                <td>
+                    @Html.PasswordFor(model => model.ConfirmPassword, new { style = "width:150px" })<br />
+                    @Html.ValidationMessageFor(model => model.ConfirmPassword)
+                </td>
+            </tr>
+        </table>
+    </fieldset>   
+    }
+    else
+    {
+    <fieldset>
+        @Html.HiddenFor(model => model.ID)
+        <legend>帐号信息</legend>
+        <table style="padding: 10px; margin: 10px">
+            <tr>
+                <td style="width: 70px">
+                    @Html.LabelFor(model => model.AccountName)
+                </td>
+                <td style="width: 160px">
+                    @Html.DisplayFor(model => model.AccountName)
+                </td>
+                <td style="width: 70px">
+                    @Html.LabelFor(model => model.AccountNameCN)
+                </td>
+                <td style="width: 160px">
+                    @Html.DisplayFor(model => model.AccountNameCN)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.RoleName)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.RoleName)
+                </td>
+                <td>
+                    @Html.LabelFor(model => model.AgentNum)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.AgentNum)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.Gender)
+                </td>
+                <td>
+                    @Html.DisplayFor(m => m.Gender)
+                </td>
+                <td>
+                    @Html.LabelFor(model => model.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.Email)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.BirthDay)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.BirthDay)
+                </td>
+                <td>
+                    @Html.LabelFor(model => model.DepartmentName)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.DepartmentName)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.Mobile)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.Mobile, new { style = "width:150px" })<br />
+                </td>
+                <td>
+                    @Html.LabelFor(model => model.EmailSignatures)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.EmailSignatures, new { style = "width:150px" })<br />
+                </td>
+            </tr>
+        </table>
     </fieldset>
+    }
+
 }
 <style>
     table tr
