@@ -288,9 +288,15 @@ namespace Sales.Model
             }
         }
          public string CoreName { get; set; }
-         public IQueryable<_Maturity> _Maturitys { get; set; }
+         public IEnumerable<_Maturity> _Maturitys { get; set; }
          public int CrmCount { get; set; }
-
+         public IEnumerable<_Maturity> DispMaturitys
+         {
+             get
+             {
+                 return _Maturitys.OrderBy(mm => mm.Count);
+             }
+         }
          int? _NoContactCount;
          int? _ContactCount;
          public int NoContactCount

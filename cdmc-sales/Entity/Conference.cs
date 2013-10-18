@@ -190,11 +190,11 @@ namespace Entity
         [Display(Name = "参会类型")]
         public string ParticipantTypeName { get; set; }
 
-        [Display(Name = "国内邮编"), Required]
+        [Display(Name = "国内邮编")]
         [RegularExpression(@"[\d\s-]*", ErrorMessage = "请输入的有效的国内邮编")]
         public string ZIP { get; set; }
 
-        [Display(Name = "国内地址"), Required]
+        [Display(Name = "国内地址")]
         public string Address { get; set; }
 
         public virtual Project Project { get; set; }

@@ -358,6 +358,7 @@
     <Content Include="images\bj.jpg" />
     <Content Include="images\bj_3.gif" />
     <Content Include="images\bj_4.gif" />
+    <Content Include="images\blueStr.gif" />
     <Content Include="images\bulk_entry.jpg" />
     <Content Include="images\call.png" />
     <Content Include="images\chazhao.jpg" />
@@ -417,6 +418,7 @@
     <Content Include="images\unpickup.png" />
     <Content Include="images\user.png" />
     <Content Include="images\wenhao-2.jpg" />
+    <Content Include="images\whiteStr.gif" />
     <Content Include="images\youjian.png" />
     <Content Include="images\yuan-2.png" />
     <Content Include="images\yuan.png" />

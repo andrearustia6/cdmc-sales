@@ -7,48 +7,56 @@
             <tr>
                 <td>@Html.LabelFor(model => model.Name)</td>
                 <td>
-                    @Html.EditorFor(model => model.Name)<br />
+                    <div id="dispName"></div>
+                    @Html.HiddenFor(model => model.Name)
                     @Html.ValidationMessageFor(model => model.Name)
                 </td>
                 <td>@Html.LabelFor(model => model.Title)</td>
                 <td>
-                    @Html.EditorFor(model => model.Title)<br />
+                    <div id="dispTitle"></div>
+                    @Html.HiddenFor(model => model.Title)
                     @Html.ValidationMessageFor(model => model.Title)
                 </td>
             </tr>
             <tr>
                 <td>@Html.LabelFor(model => model.Gender)</td>
                 <td>
-                    @Html.DropDownListFor(model => model.Gender, new SelectList(new List<string>() { "Mr", "Mrs" }, "-«Î—°‘Ò-"))<br />
+                    <div id="dispGender"></div>
+                    @Html.HiddenFor(model => model.Gender)
                     @Html.ValidationMessageFor(model => model.Gender)
                 </td>
                 <td>@Html.LabelFor(model => model.Mobile)</td>
                 <td>
-                    @Html.EditorFor(model => model.Mobile)<br />
+                    <div id="dispMobile"></div>
+                    @Html.HiddenFor(model => model.Mobile)
                     @Html.ValidationMessageFor(model => model.Mobile)
                 </td>
             </tr>
             <tr>
                 <td>@Html.LabelFor(model => model.Contact)</td>
                 <td>
-                    @Html.EditorFor(model => model.Contact)<br />
+                     <div id="dispContact"></div>
+                    @Html.HiddenFor(model => model.Contact)
                     @Html.ValidationMessageFor(model => model.Contact)
                 </td>
                 <td>@Html.LabelFor(model => model.Email)</td>
                 <td>
-                    @Html.EditorFor(model => model.Email)<br />
+                    <div id="dispEmail"></div>
+                    @Html.HiddenFor(model => model.Email)
                     @Html.ValidationMessageFor(model => model.Email)
                 </td>
             </tr>
             <tr>
                 <td>@Html.LabelFor(model => model.ZIP)</td>
                 <td>
-                    @Html.EditorFor(model => model.ZIP)<br />
+                    <div id="dispZIP"></div>
+                    @Html.HiddenFor(model => model.ZIP)
                     @Html.ValidationMessageFor(model => model.ZIP)
                 </td>
                 <td>@Html.LabelFor(model => model.Address)</td>
                 <td>
-                    @Html.EditorFor(model => model.Address)<br />
+                    <div id="dispAddress"></div>
+                    @Html.HiddenFor(model => model.Address)
                     @Html.ValidationMessageFor(model => model.Address)
                 </td>
             </tr>
@@ -93,10 +101,20 @@
                         $("#Email").val(lead[5]);
                         $("#ZIP").val(lead[6]);
                         $("#Address").val(lead[7]);
+
+                        $("#dispName").html(lead[0]);
+                        $("#dispTitle").html(lead[1]);
+                        $("#dispGender").html(lead[2]);
+                        $("#dispMobile").html(lead[3]);
+                        $("#dispContact").html(lead[4]);
+                        $("#dispEmail").html(lead[5]);
+                        $("#dispZIP").html(lead[6]);
+                        $("#dispAddress").html(lead[7]);
                     }
                 });
             } else {
-                $("#Name").val();
+                $("#Name").val(lead[0]);
+                $("#dispName").val(lead[0]);
                 $("#Title").val();
                 $("#Gender").val();
                 $("#Mobile").val();
@@ -104,6 +122,15 @@
                 $("#Email").val();
                 $("#ZIP").val();
                 $("#Address").val();
+
+                $("#dispName").html();
+                $("#dispTitle").html();
+                $("#dispGender").html();
+                $("#dispMobile").html();
+                $("#dispContact").html();
+                $("#dispEmail").html();
+                $("#dispZIP").html();
+                $("#dispAddress").html();
             }
         }
 
