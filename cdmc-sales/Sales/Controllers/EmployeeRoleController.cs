@@ -151,7 +151,8 @@ namespace Sales.Controllers
                  RoleID = selAccount.RoleID,
                  RoleName = selAccount.Role == null ? string.Empty : selAccount.Role.Name,
                  StartDate = selAccount.StartDate,
-                 EmailSignatures = selAccount.EmailSignatures
+                 EmailSignatures = selAccount.EmailSignatures,
+                 EmailPassword = selAccount.EmailPassword
              };
         }
 
