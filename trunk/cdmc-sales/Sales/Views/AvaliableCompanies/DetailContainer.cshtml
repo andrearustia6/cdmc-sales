@@ -307,49 +307,78 @@
                             bool mysel = Utl.Employee.CurrentUserName == comment.Submitter;
                             if (mysel)
                             {
-                                <div class="raised" style="float:@(mysel ? "right" : "left");width:80%;padding-top: 2px; ">
-                                <b class="b1"></b><b class="b2"></b><b class="b3"></b><b class="b4"></b>
-                                <div class="boxcontent">
-                                    <table style="border: 0;  width: 100%;">
-                                        <tr>
-                                            <td style="width:@(mysel ? "80%" : "")">@(mysel ? comment.Contents : comment.Submitter)
-                                            </td>
-                                            <td style=" text-align:right">@(mysel ? "我" : comment.Contents)
-                                            </td>
+                                    <table style="border: 0;  " class="all allR">
+                                    <tr>
+                                    <td class="RoundedCorner" style="padding:0px">
+                                                <b class="rtop opacity whiteB">
+                                                      <b class="r1 opacity whiteB"> </b>
+                                                      <b class="r2 opacity whiteB"></b>
+                                                      <b class="r3 opacity whiteB"></b>
+                                                      <b class="r4 opacity whiteB"></b>
+                                                </b>
+                                                <div class="contert whiteB shadowR">
+                                                <p>
+                                                @comment.Contents 
+                                                </p>
+                                                <p>
+                                                @(comment.CommentDate.ToString("yyyy/MM/dd") + " " + comment.CommentDate.ToShortTimeString())
+                                                </p>
+                        
+                                                </div>
+                                                <b class="rbottom opacity whiteB">
+                                                       <b class="r4 opacity whiteB"></b>
+                                                       <b class="r3 opacity whiteB"></b>
+                                                       <b class="r2 opacity whiteB"></b>
+                                                       <b class="r1 opacity whiteB"></b>
+                                                </b>
+                                        </td>
+                                        <td  style="padding:0px;vertical-align:middle;width:18px">
+                                             <div class="str whiteStr"></div>
+                                        </td>
+                                        <td style="padding:0px;vertical-align:middle">
+                                             我
+                                        </td>
                                         </tr>
-                                        <tr>
-                                            <td>@(mysel ? (comment.CommentDate.ToString("yyyy/MM/dd") + " " + comment.CommentDate.ToShortTimeString()) : "")
-                                            </td>
-                                            <td>@(mysel ? "" : (comment.CommentDate.ToString("yyyy/MM/dd") + " " + comment.CommentDate.ToShortTimeString()))
-                                            </td>
-                                        </tr>
+                                        
                                     </table>
-                                    </div>
-                                    <b class="b4b"></b><b class="b3b"></b><b class="b2b"></b><b class="b1b"></b>
-                                </div>
+                                    
                             }
                             else
                             {
-                                <div class="raised1" style="float:@(mysel ? "right" : "left");width:80%;padding-top: 2px;">
-                                <b class="b1"></b><b class="b2"></b><b class="b3"></b><b class="b4"></b>
-                                <div class="boxcontent">
-                                    <table style="border: 0;  width: 100%;">
-                                        <tr>
-                                            <td style="width:@(mysel ? "80%" : "")">@(mysel ? comment.Contents : comment.Submitter)
-                                            </td>
-                                            <td>@(mysel ? "我" : comment.Contents)
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>@(mysel ? (comment.CommentDate.ToString("yyyy/MM/dd") + " " + comment.CommentDate.ToShortTimeString()) : "")
-                                            </td>
-                                            <td>@(mysel ? "" : (comment.CommentDate.ToString("yyyy/MM/dd") + " " + comment.CommentDate.ToShortTimeString()))
-                                            </td>
-                                        </tr>
+                                <table style="border: 0;  " class="all allL">
+                                <tr>
+                                     <td style="padding:0px;vertical-align:middle; text-align:right">
+                                             @comment.Submitter
+                                        </td>
+                                  <td style="padding:0px;vertical-align:middle;width:16px">
+                                        <div class="str blueStr"></div>
+                                  </td>
+                                  <td style="padding:0px; min-width:150px">
+                                        <b class="rtop opacity blueB">
+                         
+                                              <b class="r1 opacity blueB"></b>
+                                              <b class="r2 opacity blueB"></b>
+                                              <b class="r3 opacity blueB"></b>
+                                              <b class="r4 opacity blueB"></b>
+                         
+                                        </b>
+                                        <div class="contert blueB shadowL">
+                                            <p>
+                                            @comment.Contents 
+                                            </p>
+                                            <p>
+                                            @(comment.CommentDate.ToString("yyyy/MM/dd") + " " + comment.CommentDate.ToShortTimeString())
+                                            </p>
+                                        </div>
+                                        <b class="rbottom opacity blueB">
+                                               <b class="r4 opacity blueB"></b>
+                                               <b class="r3 opacity blueB"></b>
+                                               <b class="r2 opacity blueB"></b>
+                                               <b class="r1 opacity blueB"></b> 
+                                        </b>         
+                                  </td>
+                               </tr>
                                     </table>
-                                    </div>
-                                    <b class="b4b"></b><b class="b3b"></b><b class="b2b"></b><b class="b1b"></b>
-                                </div>
                             }
 
 
@@ -771,12 +800,12 @@
                                         </div>
                                     }*@
                     <h2>@call.LeadName 
-                    @if(string.IsNullOrEmpty(@call.LeadTitle))
-                    {}
+                    @if (string.IsNullOrEmpty(@call.LeadTitle))
+                    { }
                     else
                     {
                         <span> | </span> @call.LeadTitle
-                        }
+                    }
                     </h2>
                     <p>
                         @if (call.LeadCallTypeID == null)

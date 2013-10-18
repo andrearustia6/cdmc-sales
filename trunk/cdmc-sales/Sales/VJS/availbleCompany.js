@@ -1025,45 +1025,45 @@ function QuickDeal() {
     String.prototype.isEmpty = function () { return /^\s*$/.test(this); }
 
     // validation for deal
-    if ($('.dialogue-quickdeal form #PackageID').val().isEmpty()) {
-        $('.dialogue-quickdeal form #PackageID').addClass('fieldError');
-        hasError = true;
-    }
-    if ($('.dialogue-quickdeal form #CompanyRelationshipID').val().isEmpty()) {
-        $('.dialogue-quickdeal form #CompanyRelationshipID').addClass('fieldError');
-        hasError = true;
-    }
-    if ($('.dialogue-quickdeal form #ExpectedPaymentDate').val().isEmpty()) {
-        $('.dialogue-quickdeal form #ExpectedPaymentDate').addClass('fieldError');
-        hasError = true;
-    }
-    if ($('.dialogue-quickdeal form #Payment').val().isEmpty() || $('.dialogue-quickdeal form #Payment').val() <= 0) {
-        $('.dialogue-quickdeal form #Payment').addClass('fieldError');
-        hasError = true;
-    }
-    if ($('.dialogue-quickdeal form #Committer').val().isEmpty()) {
-        $('.dialogue-quickdeal form #Committer').addClass('fieldError');
-        hasError = true;
-    }
-    var contact = $('.dialogue-quickdeal form #CommitterContect');
-    if (contact.val().length != 0 && !IsTelephone(contact.val())) {
-        contact.addClass('fieldError');
-        hasError = true;
-    }
-    var commiterEmail = $('.dialogue-quickdeal form #CommitterEmail');
-    if (commiterEmail.val().isEmpty()) {
-        commiterEmail.addClass('fieldError');
-        hasError = true;
-    } else {
-        if (!validateEmail(commiterEmail.val())) {
-            commiterEmail.addClass('fieldError');
-            hasError = true;
-        }
-    }
-    if ($('.dialogue-quickdeal form #PaymentDetail').val().isEmpty()) {
-        $('.dialogue-quickdeal form #PaymentDetail').addClass('fieldError');
-        hasError = true;
-    }
+//    if ($('.dialogue-quickdeal form #PackageID').val().isEmpty()) {
+//        $('.dialogue-quickdeal form #PackageID').addClass('fieldError');
+//        hasError = true;
+//    }
+//    if ($('.dialogue-quickdeal form #CompanyRelationshipID').val().isEmpty()) {
+//        $('.dialogue-quickdeal form #CompanyRelationshipID').addClass('fieldError');
+//        hasError = true;
+//    }
+//    if ($('.dialogue-quickdeal form #ExpectedPaymentDate').val().isEmpty()) {
+//        $('.dialogue-quickdeal form #ExpectedPaymentDate').addClass('fieldError');
+//        hasError = true;
+//    }
+//    if ($('.dialogue-quickdeal form #Payment').val().isEmpty() || $('.dialogue-quickdeal form #Payment').val() <= 0) {
+//        $('.dialogue-quickdeal form #Payment').addClass('fieldError');
+//        hasError = true;
+//    }
+//    if ($('.dialogue-quickdeal form #Committer').val().isEmpty()) {
+//        $('.dialogue-quickdeal form #Committer').addClass('fieldError');
+//        hasError = true;
+//    }
+//    var contact = $('.dialogue-quickdeal form #CommitterContect');
+//    if (contact.val().length != 0 && !IsTelephone(contact.val())) {
+//        contact.addClass('fieldError');
+//        hasError = true;
+//    }
+//    var commiterEmail = $('.dialogue-quickdeal form #CommitterEmail');
+//    if (commiterEmail.val().isEmpty()) {
+//        commiterEmail.addClass('fieldError');
+//        hasError = true;
+//    } else {
+//        if (!validateEmail(commiterEmail.val())) {
+//            commiterEmail.addClass('fieldError');
+//            hasError = true;
+//        }
+//    }
+//    if ($('.dialogue-quickdeal form #PaymentDetail').val().isEmpty()) {
+//        $('.dialogue-quickdeal form #PaymentDetail').addClass('fieldError');
+//        hasError = true;
+//    }
 
     // end validation for deal
 

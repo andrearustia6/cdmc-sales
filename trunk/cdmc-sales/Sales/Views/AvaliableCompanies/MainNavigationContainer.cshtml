@@ -22,7 +22,7 @@
                 item.Value = core.ID.ToString();
                 
             })
-            .Children(core => core._Maturitys));
+            .Children(core => core.DispMaturitys));
 
             mappings.For<_Maturity>(binding => binding
             .ItemDataBound((item, maturity) =>
