@@ -31,6 +31,7 @@ namespace Sales.Model
         public string FuzzyQuery { get; set; }
 
         public string selectedVal { get; set; }
+        public string selSales { get; set; }
     }
     public class AjaxCrmTypedList
     {
@@ -55,7 +56,7 @@ namespace Sales.Model
         IQueryable<CompanyRelationship> GetFilteredCRM()
         {
             string user = Employee.CurrentUserName;
-            var query = from c in CH.DB.CompanyRelationships.Where(w =>w.Project.IsActived==true && w.Members.Select(s=>s.Name).Contains(user)) select c;
+            var query = from c in CH.DB.CompanyRelationships.Where(w => w.Project.IsActived == true && w.Members.Select(s => s.Name).Contains(user)) select c;
             //模糊搜索
             if (Filters != null && !string.IsNullOrWhiteSpace(Filters.FuzzyQuery))
             {
@@ -101,7 +102,7 @@ namespace Sales.Model
             if (Filters != null && Filters.LeadProgress.HasValue)
             {
                 if (Filters.LeadProgress == 1)
-                    query = query.Where(q => (q.Company.Leads.Count == q.LeadCalls.Select(s => s.LeadID).Distinct().Count()) && q.LeadCalls.Count>0 && q.LeadCalls.All(a => a.LeadCallType.Code == 20));
+                    query = query.Where(q => (q.Company.Leads.Count == q.LeadCalls.Select(s => s.LeadID).Distinct().Count()) && q.LeadCalls.Count > 0 && q.LeadCalls.All(a => a.LeadCallType.Code == 20));
                 else if (Filters.LeadProgress == 3)
                     query = query.Where(q => q.Company.Leads.Count > q.LeadCalls.Select(s => s.LeadID).Distinct().Count());
                 else if (Filters.LeadProgress == 5)
@@ -126,7 +127,7 @@ namespace Sales.Model
                 query = query.Where(q => q.Categorys.Any(c => c.ID == Filters.CategoryId.Value));
             }
 
-          
+
             return query;
         }
 
@@ -143,7 +144,7 @@ namespace Sales.Model
                            UserName = f.UserName,
                            DisplayName = f.DisplayName,
                            GroupedCRMs = (
-                                         
+
                                           from c in filteredcrm
                                           where f.UserFavorsCRMs.Select(s => s.CompanyRelationshipID).Contains(c.ID)
                                           orderby c.CreatedDate descending
@@ -196,13 +197,13 @@ namespace Sales.Model
         /// <returns></returns>
         IQueryable<AjaxCRM> GetCrmDataQuery(bool? alldata = false)
         {
-           // var deals = from deal in CH.DB.Deals.Where(d => d.Abandoned == false && d.Project.IsActived == true) select deal;
-           
+            // var deals = from deal in CH.DB.Deals.Where(d => d.Abandoned == false && d.Project.IsActived == true) select deal;
+
             var user = Employee.CurrentUserName;
             var custom = from cg in CH.DB.UserFavorsCRMs.Where(w => w.UserFavorsCrmGroup.UserName == user) select cg;
             var filteredcrm = GetFilteredCRM();
             var data = from c in filteredcrm
-                       where  (!custom.Select(s => s.CompanyRelationshipID).Contains(c.ID))
+                       where (!custom.Select(s => s.CompanyRelationshipID).Contains(c.ID))
                        orderby c.CreatedDate descending
                        select new AjaxCRM
                        {
@@ -219,16 +220,16 @@ namespace Sales.Model
                            CompanyDistinct = c.Company.DistrictNumber,
                            CompanyCreateDate = c.Company.CreatedDate,
 
-                          // CompanyPayment = deals.Where(d => d.CompanyRelationshipID == c.ID).Sum(s => s.Payment),
+                           // CompanyPayment = deals.Where(d => d.CompanyRelationshipID == c.ID).Sum(s => s.Payment),
 
 
                            CRMID = c.ID,
                            ProgressID = c.ProgressID,
                            AreaID = c.Company.AreaID,
                            CompanyTypeID = c.Company.CompanyTypeID,
-                           PitchedPoint=c.PitchedPoint,
-                           Customers=c.Company.Customers,
-                           Competitor=c.Company.Competitor,
+                           PitchedPoint = c.PitchedPoint,
+                           Customers = c.Company.Customers,
+                           Competitor = c.Company.Competitor,
                            AjaxLeads = (from l in c.Company.Leads
                                         select new AjaxLead
                                         {
@@ -238,22 +239,22 @@ namespace Sales.Model
                                             CRMID = c.ID,
                                             LeadID = l.ID,
                                             AjaxCalls = (from call in c.LeadCalls.Where(w => w.LeadID == l.ID)
-                                                        select new AjaxCall
-                                                        {
-                                                            CallDate = call.CallDate,
-                                                            CallBackDate = call.CallBackDate,
-                                                            CallType = call.LeadCallType.Name,
-                                                            Caller = call.Member.Name,
-                                                            LeadCallTypeCode = call.LeadCallType.Code
-                                                        })
+                                                         select new AjaxCall
+                                                         {
+                                                             CallDate = call.CallDate,
+                                                             CallBackDate = call.CallBackDate,
+                                                             CallType = call.LeadCallType.Name,
+                                                             Caller = call.Member.Name,
+                                                             LeadCallTypeCode = call.LeadCallType.Code
+                                                         })
                                         }),
                            //RMBCompanyPayment = deals.Where(d => d.CompanyRelationshipID == c.ID && d.Currencytype.Name == "RMB").Sum(s => s.Payment) == null ? 0 : deals.Where(d => d.CompanyRelationshipID == c.ID && d.Currencytype.Name == "RMB").Sum(s => s.Payment),
                            //USDCompanyPayment = deals.Where(d => d.CompanyRelationshipID == c.ID && d.Currencytype.Name == "USD").Sum(s => s.Payment) == null ? 0 : deals.Where(d => d.CompanyRelationshipID == c.ID && d.Currencytype.Name == "USD").Sum(s => s.Payment)
 
 
                        };
-           // string v = data.ToString();
-            return data  ;
+            // string v = data.ToString();
+            return data;
         }
 
 
@@ -298,12 +299,12 @@ namespace Sales.Model
 
     public class AjaxCRM
     {
-        
+
         #region project
         public string ProjectName { get; set; }
         public int? ProjectID { get; set; }
         #endregion
-        
+
         #region crm
         public Progress Progress { private get; set; }
         public string ProgressString
@@ -337,7 +338,7 @@ namespace Sales.Model
         [Display(Name = "录入时间")]
         public DateTime? CrmCreateDate { get; set; }
         [Display(Name = "添加人")]
-        public string CrmCreator{ get; set; }
+        public string CrmCreator { get; set; }
 
         public string MembersString
         {
@@ -349,7 +350,7 @@ namespace Sales.Model
             }
         }
 
-        public  IEnumerable<int> MembersIds
+        public IEnumerable<int> MembersIds
         {
             get
             {
@@ -373,7 +374,7 @@ namespace Sales.Model
         [Display(Name = "英文名字")]
         public string CompanyNameEN { get; set; }
         public int LeadsCount { get; set; }
-        public string CompanyName { get { return Utl.Utl.GetFullString(",",CompanyNameCH, CompanyNameEN); } }
+        public string CompanyName { get { return Utl.Utl.GetFullString(",", CompanyNameCH, CompanyNameEN); } }
         public string CompanyDisplayName { get { return Utl.Utl.GetFullString(" ", CompanyNameCH, CompanyNameEN, CategoryString, ProgressString); } }
         public int? CompanyID { get; set; }
         [Display(Name = "公司总机")]
@@ -398,8 +399,8 @@ namespace Sales.Model
             }
         }
         public decimal? CompanyPayment { set; private get; }
-        public decimal RMBCompanyPayment { set;  get; }
-        public decimal USDCompanyPayment { set;  get; }
+        public decimal RMBCompanyPayment { set; get; }
+        public decimal USDCompanyPayment { set; get; }
 
         [Display(Name = "公司客户")]
         public string Customers { get; set; }
@@ -427,7 +428,7 @@ namespace Sales.Model
         public IEnumerable<AjaxLead> AjaxLeads { get; set; }
         public IEnumerable<AjaxDeal> AjaxDeals { get; set; }
         //Added for Company Edit.
-       
+
         [Display(Name = "区号/时差")]
         public int? DistrictNumberID { get; set; }
         [Required(ErrorMessage = " ")]
@@ -504,9 +505,9 @@ namespace Sales.Model
                     else
                         lastcall = " ";
                 }
-              
+
                 var leadname = string.IsNullOrEmpty(LeadName) ? "未填" : LeadName;
-              
+
                 return Utl.Utl.GetFullString(",", leadname, LeadTitle, lastcall);
             }
         }

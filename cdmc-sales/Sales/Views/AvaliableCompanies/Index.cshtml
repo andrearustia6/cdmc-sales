@@ -45,7 +45,7 @@
     <table style="width: 100%">
         <tr>
             <td style="width: 15%;">
-                项目选择: @Html.Telerik().DropDownList().Name("projectid").BindTo(new SelectList(SelectHelper.ProjectSelectList(Employee.CurrentUserName), "Value", "Text", "请选择")).HtmlAttributes(new { style = string.Format("vertical-align:middle;width:{0}%", 80) }).DropDownHtmlAttributes(new { style = string.Format("width:{0}px", 200) }).ClientEvents(events => events.OnChange("onProjectChange"))
+                项目选择: @Html.Telerik().DropDownList().Name("projectid").BindTo(new SelectList(SelectHelper.ProjectSelectList(Employee.CurrentUserName), "Value", "Text", "请选择")).HtmlAttributes(new { style = string.Format("vertical-align:middle;width:{0}%", 80) }).DropDownHtmlAttributes(new { style = string.Format("width:{0}px", 200) }).ClientEvents(events => events.OnChange("onProjectChange").OnLoad("onProjectDropDownLoad"))
             </td>
             <td style="width: 15%;">
                 @{
@@ -74,7 +74,7 @@
             {
                 <td style="width: 15%;">
                     销售筛选:
-                    <select id="saleslist" style="width: 200px; vertical-align: middle; width: 80%" onchange="onsaleslistChange()">
+                    <select id="saleslist" style="width: 200px; vertical-align: middle; width: 80%" onchange="search()">
                     </select>
                 </td>
             }
@@ -1745,7 +1745,9 @@
         var IfComment = $('#commentlist').data("tDropDownList").value();
         if (IfComment == -1)
             IfComment = null;
-        return { ProjectId: id, FuzzyQuery: fuzzyQuery, DistinctNumber: DistinctNumber, CategoryId: categoryId, IfComment: IfComment };
+
+        var selSales = $('#saleslist').val();
+        return { ProjectId: id, FuzzyQuery: fuzzyQuery, DistinctNumber: DistinctNumber, CategoryId: categoryId, IfComment: IfComment, selSales: selSales };
     }
     function search() {
         var f = GetFilters();
@@ -1773,10 +1775,35 @@
             $('#crmdetailscontainer').html("");
 
         });
+        $.post('_SalesFilter', { ProjectId: e.value }, function (result) {
+            $("#saleslist").empty();
+            $("#saleslist").append("<option value=''>全部</option>");
+
+            for (var i = 0; i < result.length; i++) {
+                $("#saleslist").append("<option value=" + result[i] + ">" + result[i] + "</option>");
+            }
+            //            $.each(result, function (Name) {
+            //                $("#saleslist").append("<option value=" + Name + ">" + Name + "</option>");
+
+            //            });
+        }
+    );
     }
 
-
-
+    function onProjectDropDownLoad(e) {
+        var projectid = $("#projectid").data("tDropDownList");
+        var id = projectid.value();
+        $.post('_SalesFilter', { ProjectId: id }, function (result) {
+            $("#saleslist").empty();
+            $("#saleslist").append("<option value=''>全部</option>");
+            for (var i = 0; i < result.length; i++) {
+                $("#saleslist").append("<option value=" + result[i] + ">" + result[i] + "</option>");
+            }
+            //            $.each(result, function (value) {
+            //                $("#saleslist").append("<option value=" + value + ">" + value + "</option>");
+            //            });
+        })
+    }
 
     function onCategoryChange(e) {
         search();

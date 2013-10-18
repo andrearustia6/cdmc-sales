@@ -905,7 +905,7 @@ namespace Sales.Controllers
         [HttpPost]
         public ActionResult EmailPage(EmailModel model)
         {
-            if(SendEmail(model.FromEmail, model.FromName, model.ToEmail, model.ToName, model.Content))
+            if (SendEmail(model.FromEmail, model.FromName, model.ToEmail, model.ToName, model.Content))
                 return Json(new { sentEmail = true });
             else
                 return Json(new { sentEmail = false });
@@ -942,7 +942,8 @@ namespace Sales.Controllers
                 smtp.Send(message);
                 return true;
             }
-            catch {
+            catch
+            {
                 return false;
             }
             finally { message.Dispose(); smtp.Dispose(); }
@@ -1153,20 +1154,21 @@ namespace Sales.Controllers
             {
                 crms = crms.Where(cr => cr.Members.Any(m => m.Name == Employee.CurrentUserName));
             }
-            
+
             var ccs = from l in crms
                       select new _CoreCoverage()
                       {
-                          
+
                           CompanyName = l.Company.Name_CH.Length > 0 ? l.Company.Name_CH + "|" + l.Company.Name_EN : l.Company.Name_EN,
                           Members = l.Members,
                           PickUpTime = l.CrmTracks.OrderByDescending(ct => ct.GetDate).FirstOrDefault() != null ? l.CrmTracks.OrderByDescending(ct => ct.GetDate).FirstOrDefault().GetDate : null,
                           LeadCalledCount = l.LeadCalls.GroupBy(lc => lc.LeadID).Count(),
                           Calls = from c in l.LeadCalls
-                                      select new _LeadCall()
-                                      {
-                                          MemberName=c.Member.Name,
-                                          LeadID=c.LeadID},
+                                  select new _LeadCall()
+                                  {
+                                      MemberName = c.Member.Name,
+                                      LeadID = c.LeadID
+                                  },
                           ProcessName = l.Progress.Name
                       };
             CH.DB.Configuration.ProxyCreationEnabled = false;
@@ -1182,6 +1184,12 @@ namespace Sales.Controllers
                 string[] temp = calltype.TemplateName.Split(';');
                 return Json(temp);
             }
+        }
+
+        public ActionResult _SalesFilter(int ProjectId)
+        {
+            var selSales = CH.DB.Members.Where(s => s.ProjectID == ProjectId).Select(s => s.Name);
+            return Json(selSales);
         }
     }
 }
