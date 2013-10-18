@@ -152,10 +152,10 @@ namespace Sales.BLL
                 crms = crms.Where(q => q.Comments.Count == 0);
             }
 
-            if (filters != null && !string.IsNullOrWhiteSpace(filters.selSales))
-            {
-                crms = crms.Where(s => s.Members.Any(q => q.Name == filters.selSales));
-            }
+            //if (filters != null && !string.IsNullOrWhiteSpace(filters.selSales))
+            //{
+            //    crms = crms.Where(s => s.Members.Any(q => q.Name == filters.selSales));
+            //}
 
             var data = from c in CH.DB.CoreLVLs
                        select new _CoreLVL()
