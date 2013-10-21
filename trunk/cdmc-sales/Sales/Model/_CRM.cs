@@ -327,6 +327,7 @@ namespace Sales.Model
     /// </summary>
     public class _Maturity : EntityBase
     {
+        public int? Code { get; set; }
         public string Name { get; set; }
         public int Count { get; set; }
         public string DisplayName { get { return Name + "("+Count+")";} }

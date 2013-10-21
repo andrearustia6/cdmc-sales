@@ -254,6 +254,7 @@ namespace Entity
         [Display(Name = "默认行业"), Required]
         public int? AreaID { get; set; }
     }
+
     [JsonIgnoreAttribute("CompanyRelationships")]
     public class Category : EntityBase
     {

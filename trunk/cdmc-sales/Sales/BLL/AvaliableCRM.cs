@@ -79,14 +79,14 @@ namespace Sales.BLL
                                CoreName = c.CoreLVLName,
                                ID = c.ID,
                                CrmCount=crms.Where(cr=>cr.CoreLVLID==c.CoreLVLCode).Count(),
-                               _Maturitys = (from m in crms.Where(cr=>cr.CoreLVLID==c.CoreLVLCode) group m by new{m.ProgressID,m.Progress.Name} into grp
+                               _Maturitys = (from m in crms.Where(cr=>cr.CoreLVLID==c.CoreLVLCode) group m by new{m.ProgressID,m.Progress.Name,m.Progress.Code} into grp
                                             select new _Maturity() 
                                             { 
+                                                Code = grp.Key.Code,
                                                  Name= grp.Key.Name,
                                                   ID = grp.Key.ProgressID.Value,
                                                   Count = crms.Where(co=>co.ProgressID==grp.Key.ProgressID && co.CoreLVLID==c.CoreLVLCode).Count(),
                                                  _CRMs = (from crm in grp.Select(s=>s)
-
                                                          select new _CRM
                                                          {
                                                              ID = crm.ID,
@@ -107,6 +107,7 @@ namespace Sales.BLL
                                                                           })
                                                          }).OrderByDescending(cr => cr.CrmCommentStateIDOrder)
                                             })
+                                          //  .OrderBy(o=>o.Code)
                            };
             return data;
         }
