@@ -10,6 +10,10 @@
         <p id="errorSetRole" style="color: #FF0000">
         </p>
         @Html.ValidationSummary(true, "")
+        @Html.HiddenFor(m => m.EmailPassword, new { Value = "-" })
+        @Html.HiddenFor(m => m.EmailSignatures, new { Value = "-" })
+        @Html.HiddenFor(m => m.ConfirmPassword, new { Value = "-" })
+        @Html.HiddenFor(m => m.OldPassword, new { Value = "-" })
         <table style="padding: 10px; margin: 10px">
             <tr>
                 <td>
