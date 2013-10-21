@@ -269,7 +269,7 @@
                 @if (Utl.Employee.CurrentRole.Level == SalesRequired.LVL)
                 {
                     @Html.RadioButton("ComContent", "Comments", true, new { onchange = "onRadioSelect('comments')" })<span
-                        style="font-size: medium;"><b>点评</b></span>
+                        style="font-size: medium;"><b>提问及点评</b></span>
                     @Html.RadioButton("ComContent", "Statistics", false, new { onchange = "onRadioSelect('statistics')" })<span
                         style="font-size: medium;"><b>统计</b></span>
                 }
@@ -278,7 +278,7 @@
                     if (Utl.Employee.CurrentRole.Level == LeaderRequired.LVL && @Model._members.Where(m => m.Name == Utl.Employee.CurrentUserName).Count() > 0)
                     {
                          @Html.RadioButton("ComContent", "Comments", true, new { onchange = "onRadioSelect('comments')" })<span
-                        style="font-size: medium;"><b>点评</b></span>
+                        style="font-size: medium;"><b>提问及点评</b></span>
                     @Html.RadioButton("ComContent", "Statistics", false, new { onchange = "onRadioSelect('statistics')" })<span
                         style="font-size: medium;"><b>统计</b></span>
                     }
@@ -287,7 +287,7 @@
                         @Html.RadioButton("ComContent", "Statistics", true, new { onchange = "onRadioSelect('statistics')" })<span
                             style="font-size: medium;"><b>统计</b></span>
                         @Html.RadioButton("ComContent", "Comments", false, new { onchange = "onRadioSelect('comments')" })<span
-                            style="font-size: medium;"><b>点评</b></span>
+                            style="font-size: medium;"><b>提问及点评</b></span>
                     }
                 }
             </div>

@@ -45,21 +45,21 @@
     <table style="width: 100%">
         <tr>
             <td style="width: 15%;">
-                项目选择: @Html.Telerik().DropDownList().Name("projectid").BindTo(new SelectList(SelectHelper.ProjectSelectList(Employee.CurrentUserName), "Value", "Text", "请选择")).HtmlAttributes(new { style = string.Format("vertical-align:middle;width:{0}%", 80) }).DropDownHtmlAttributes(new { style = string.Format("width:{0}px", 200) }).ClientEvents(events => events.OnChange("onProjectChange").OnLoad("onProjectDropDownLoad"))
+                项目选择: <br />@Html.Telerik().DropDownList().Name("projectid").BindTo(new SelectList(SelectHelper.ProjectSelectList(Employee.CurrentUserName), "Value", "Text", "请选择")).HtmlAttributes(new { style = string.Format("vertical-align:middle;width:{0}%", 80) }).DropDownHtmlAttributes(new { style = string.Format("width:{0}px", 200) }).ClientEvents(events => events.OnChange("onProjectChange").OnLoad("onProjectDropDownLoad"))
             </td>
             <td style="width: 15%;">
                 @{
                     List<SelectListItem> category = (List<SelectListItem>)SelectHelper.CategoresSelectList(ViewBag.projectid);
                     category.Insert(0, (new SelectListItem { Text = "不指定", Value = "-1" }));
                 }
-                细分行业: @Html.Telerik().DropDownList().Name("f-category").BindTo(new SelectList(category, "Value", "Text", "")).DropDownHtmlAttributes(new { style = string.Format("width:{0}px", 200) }).HtmlAttributes(new { style = string.Format("vertical-align:middle;width:{0}%", 80) }).ClientEvents(events => events.OnChange("onCategoryChange"))
+                细分行业: <br />@Html.Telerik().DropDownList().Name("f-category").BindTo(new SelectList(category, "Value", "Text", "")).DropDownHtmlAttributes(new { style = string.Format("width:{0}px", 200) }).HtmlAttributes(new { style = string.Format("vertical-align:middle;width:{0}%", 80) }).ClientEvents(events => events.OnChange("onCategoryChange"))
             </td>
             <td style="width: 15%;">
                 @{
                     List<SelectListItem> DistinctNumber = (List<SelectListItem>)SelectHelper.DistinctNumberSelectList(null);
                     DistinctNumber.Insert(0, (new SelectListItem { Text = "不指定", Value = "-1" }));
                 }
-                时区: @Html.Telerik().DropDownList().Name("DistinctNumber").BindTo(new SelectList(DistinctNumber, "Value", "Text", "")).DropDownHtmlAttributes(new { style = string.Format("width:{0}px", 200) }).HtmlAttributes(new { style = string.Format("vertical-align:middle;width:{0}%", 80) }).ClientEvents(events => events.OnChange("onDistinctNumberChange"))
+                时区: <br />@Html.Telerik().DropDownList().Name("DistinctNumber").BindTo(new SelectList(DistinctNumber, "Value", "Text", "")).DropDownHtmlAttributes(new { style = string.Format("width:{0}px", 200) }).HtmlAttributes(new { style = string.Format("vertical-align:middle;width:{0}%", 80) }).ClientEvents(events => events.OnChange("onDistinctNumberChange"))
             </td>
             <td style="width: 15%;">
                 @{
@@ -68,12 +68,12 @@
                     commentlist.Add(new SelectListItem { Text = "未点评", Value = "0" });
                     commentlist.Insert(0, (new SelectListItem { Text = "所有", Value = "-1" }));
                 }
-                是否点评: @Html.Telerik().DropDownList().Name("commentlist").BindTo(new SelectList(commentlist, "Value", "Text", "")).DropDownHtmlAttributes(new { style = string.Format("width:{0}px", 200) }).HtmlAttributes(new { style = string.Format("vertical-align:middle;width:{0}%", 80) }).ClientEvents(events => events.OnChange("oncommentlistChange"))
+                是否点评: <br />@Html.Telerik().DropDownList().Name("commentlist").BindTo(new SelectList(commentlist, "Value", "Text", "")).DropDownHtmlAttributes(new { style = string.Format("width:{0}px", 200) }).HtmlAttributes(new { style = string.Format("vertical-align:middle;width:{0}%", 80) }).ClientEvents(events => events.OnChange("oncommentlistChange"))
             </td>
             @if (Employee.CurrentRole.Level >= 100)
             {
                 <td style="width: 15%;">
-                    销售筛选:
+                    销售筛选:<br />
                     <select id="saleslist" style="width: 200px; vertical-align: middle; width: 80%" onchange="search()">
                         <option value="">全部</option>
                     </select>
@@ -123,7 +123,7 @@
         </tr>
         <tr>
             <td colspan="2" align="center">
-                寻找匹配的名称,邮件,电话: @Html.TextBox("f-fuzzy", "", new { style = "width:50%;line-height:22px" })
+                寻找匹配的名称,邮件,电话: @Html.TextBox("f-fuzzy", "", new { style = "width:200px;line-height:22px" })
                 <input id="search" style="border: none; width: 67px; height: 21px; background-image: url('../images/chazhao.jpg');
                     vertical-align: middle;" type="button" onclick="search()" />
                 <input type="button" style="border: none; width: 67px; height: 21px; background-image: url('../images/chongzhi.jpg');
