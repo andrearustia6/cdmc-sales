@@ -888,7 +888,12 @@ namespace Sales.Controllers
             projectId = this.TrySetProjectIDForUser(projectId);
             ViewBag.ProjectID = projectId;
             ViewBag.CompanyRelationshipID = CRMId;
-
+            if (CRMId == null)
+                ViewBag.DistrictNumberID = 0;
+            else if (CH.GetDataById<CompanyRelationship>(CRMId).Company.DistrictNumberID == null)
+                ViewBag.DistrictNumberID = 0;
+            else
+                ViewBag.DistrictNumberID = 1;
             List<AjaxParticipant> pList = new List<AjaxParticipant>();
             Session["pList"] = pList;
 

@@ -177,18 +177,19 @@ namespace Sales.Controllers
             {
                 return PartialView(@"~\views\shared\PageMessage.cshtml", "参会类型不能为空");
             }
-            if (string.IsNullOrEmpty(p.ZIP))
+            Deal deal = CH.GetDataById<Deal>(p.DealID);
+            if (string.IsNullOrEmpty(p.ZIP)&& deal.CompanyRelationship.Company.DistrictNumberID==null)
             {
                 return PartialView(@"~\views\shared\PageMessage.cshtml", "国内邮编不能为空");
             }
             else
             {
-                if (!SelectHelper.IsTelephone(p.ZIP))
+                if (!SelectHelper.IsTelephone(p.ZIP) && deal.CompanyRelationship.Company.DistrictNumberID == null)
                 {
                     return PartialView(@"~\views\shared\PageMessage.cshtml", "国内邮编只能为数字");
                 }
             }
-            if (string.IsNullOrEmpty(p.Address))
+            if (string.IsNullOrEmpty(p.Address) && deal.CompanyRelationship.Company.DistrictNumberID == null)
             {
                 return PartialView(@"~\views\shared\PageMessage.cshtml", "国内地址不能为空");
             }

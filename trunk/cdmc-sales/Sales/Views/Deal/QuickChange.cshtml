@@ -5,6 +5,26 @@
 @using Entity
 @using Utl
 @using BLL
+<script>
+    function onSave(e) {
+        var haserror = false;
+        if ($("#HideDistrictNumberID").val() == '0') {
+            if ($("#ZIP").val() == '') {
+                alert('请输入国内邮编');
+                haserror = true;
+            } else if ($("#Address").val() == '') {
+                alert('请输入国内地址');
+                haserror = true;
+            }
+        }
+        if (haserror)
+        { e.preventDefault(); }
+        //        if ($(".t-button.t-grid-update").attr("disabled") == "disabled") {
+        //            e.preventDefault();
+        //        }
+        //        $(".t-button.t-grid-update").attr("disabled", "disabled");
+    }
+</script>
 <fieldset>
     <legend>请填入出单信息</legend>
     <table id="quickTable" cellpadding="0" cellspacing="0" align="center" style="width: 100%;">
@@ -190,6 +210,7 @@
                     .Insert("_InsertAjaxParticipant", "SalesEx")
                     .Delete("_DeleteAjaxParticipant", "SalesEx");
             })
+            .ClientEvents(events => events.OnSave("onSave"))
             .Editable(editing => editing.Mode(GridEditMode.PopUp).DefaultDataItem(new AjaxParticipant { }))
             .Scrollable(scrolling => scrolling.Height(90))
             .ClientEvents(events => events.OnEdit("PopupLocation"))
@@ -278,5 +299,5 @@
                 .data("tWindow")
                 .center();
     }
-
+   
 </script>

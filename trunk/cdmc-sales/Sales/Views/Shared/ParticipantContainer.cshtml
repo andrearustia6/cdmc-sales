@@ -47,10 +47,18 @@
                                 style="color: Red">*</font>
                         </td>
                         <td>
-                            国内邮编：@Html.TextBox("ZIP")<font style="color: Red">*</font>
+                            @if(Model.CompanyRelationship.Company.DistrictNumberID==null)
+                            {
+                                <span>国内邮编：</span>
+                            @Html.TextBox("ZIP")<font style="color: Red">*</font>
+                            }
                         </td>
                         <td>
-                            国内地址：@Html.TextBox("Address")<font style="color: Red">*</font>
+                            @if(Model.CompanyRelationship.Company.DistrictNumberID==null)
+                            {
+                                <span>国内地址：</span>
+                            @Html.TextBox("Address")<font style="color: Red">*</font>
+                            }
                         </td>
                     </tr>
                     <tr>
