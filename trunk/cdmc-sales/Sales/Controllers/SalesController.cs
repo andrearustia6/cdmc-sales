@@ -1805,5 +1805,28 @@ namespace Sales.Controllers
             }
             return result.ToString();
         }
+
+        [HttpPost]
+        public JsonResult GetZipByLeadId(int id)
+        {
+            List<string> strList = new List<string>();
+            Lead lead =CH.GetDataById<Lead>(id);
+            if(!string.IsNullOrEmpty(lead.Company.ZIP))
+                strList.Add(lead.Company.ZIP);
+            if (!string.IsNullOrEmpty(lead.ZIP))
+                strList.Add(lead.ZIP);
+            return Json(strList);
+        }
+        [HttpPost]
+        public JsonResult GetAddressByLeadId(int id)
+        {
+            List<string> strList = new List<string>();
+            Lead lead = CH.GetDataById<Lead>(id);
+            if (!string.IsNullOrEmpty(lead.Company.Address))
+                strList.Add(lead.Company.Address);
+            if (!string.IsNullOrEmpty(lead.Address))
+                strList.Add(lead.Address);
+            return Json(strList);
+        }
     }
 }

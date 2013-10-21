@@ -1806,6 +1806,7 @@
     <Content Include="Views\AvaliableCompanies\AssignCompany.cshtml" />
     <Content Include="Views\AvaliableCompanies\GetPitchPoint.cshtml" />
     <Content Include="Views\AvaliableCompanies\CoreCoverage.cshtml" />
+    <Content Include="Views\AvaliableCompanies\QuickAddDeal.cshtml" />
     <None Include="Views\SalesEx\EditCompany.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\SimulatorConfig.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\AjaxTargetOfMonthForMember.cshtml" />

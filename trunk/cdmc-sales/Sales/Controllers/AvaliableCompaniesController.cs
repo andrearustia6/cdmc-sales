@@ -1191,5 +1191,106 @@ namespace Sales.Controllers
             var selSales = CH.DB.Members.Where(s => s.ProjectID == ProjectId).Select(s => s.Name);
             return Json(selSales);
         }
+
+        public ActionResult GetQuickAddDeal(int? projectId, int? CRMId)
+        {
+            projectId = this.TrySetProjectIDForUser(projectId);
+            ViewBag.ProjectID = projectId;
+            ViewBag.CompanyRelationshipID = CRMId;
+            if (CRMId == null)
+                ViewBag.DistrictNumberID = 0;
+            else if (CH.GetDataById<CompanyRelationship>(CRMId).Company.DistrictNumberID == null)
+                ViewBag.DistrictNumberID = 0;
+            else
+                ViewBag.DistrictNumberID = 1;
+            List<AjaxParticipant> pList = new List<AjaxParticipant>();
+            Session["pList"] = pList;
+
+            ViewBag.pList = pList;
+
+            this.AddErrorStateIfSalesNoAccessRightToTheProject(projectId);
+            return PartialView("QuickAddDeal");
+        }
+
+        [HttpPost]
+        public ActionResult QuickAddDeal(Deal item, int? projectid)
+        {
+            ViewBag.ProjectID = projectid;
+            ViewBag.CompanyRelationshipID = item.CompanyRelationshipID;
+            Participant p = null;
+            if (ModelState.IsValid)
+            {
+                //var CRM = CH.GetDataById<CompanyRelationship>(item.CompanyRelationshipID);
+                //var CRMCompany = CH.GetDataById<Company>(CRM.CompanyID);
+                //CRMCompany.Address = String.IsNullOrEmpty(Request["Address_CH"]) ? null : Request["Address_CH"].Trim(); 
+                //CRMCompany.Address_EN = String.IsNullOrEmpty(Request["Address_EN"]) ? null : Request["Address_EN"].Trim(); 
+                //CH.Edit<Company>(CRMCompany);
+
+                item.Sales = Employee.CurrentUserName;
+                string prefix = CH.GetDataById<Project>(projectid).ProjectCode + DateTime.Now.Year.ToString();
+                var records = CH.GetAllData<Deal>().Where(s => s.DealCode != null && s.DealCode.StartsWith(prefix));
+                if (records != null && records.Count() > 0)
+                {
+                    item.DealCode = prefix + string.Format("{0:D3}", Convert.ToInt32(records.OrderByDescending(s => s.DealCode).First().DealCode.Substring(prefix.Length)) + 1);
+                }
+                else
+                {
+                    item.DealCode = prefix + "001";
+                }
+                item.Committer = string.IsNullOrEmpty(item.Committer) ? "" : item.Committer.Trim();
+                item.CommitterContect = string.IsNullOrEmpty(item.CommitterContect) ? "" : item.CommitterContect.Trim();
+                item.CommitterEmail = string.IsNullOrEmpty(item.CommitterEmail) ? "" : item.CommitterEmail.Trim();
+                item.TicketDescription = string.IsNullOrEmpty(item.TicketDescription) ? "" : item.TicketDescription.Trim();
+                //item.AbandonReason = string.IsNullOrEmpty(item.AbandonReason) ? "" : item.AbandonReason.Trim();
+                item.PaymentDetail = string.IsNullOrEmpty(item.PaymentDetail) ? "" : item.PaymentDetail.Trim();
+                item.Sales = item.Sales.Trim();
+                CH.Create<Deal>(item);
+                if (item.ID > 0)
+                {
+                    List<AjaxParticipant> pList = new List<AjaxParticipant>();
+                    if (Session["pList"] != null)
+                    {
+                        pList = Session["pList"] as List<AjaxParticipant>;
+                    }
+                    if (pList != null && pList.Count > 0)
+                    {
+
+                        foreach (var ajaxp in pList)
+                        {
+                            var partType = CH.GetAllData<ParticipantType>().Where(pt => pt.Name == ajaxp.ParticipantTypeName).FirstOrDefault();
+                            if ((ajaxp.ID != null) && (ajaxp.ID != 0))
+                            {
+                                var lead = CH.GetDataById<Lead>(ajaxp.ID);
+                                if (lead != null)
+                                {
+                                    lead.ZIP = ajaxp.ZIP;
+                                    lead.Address = ajaxp.Address;
+                                    CH.Edit<Lead>(lead);
+                                }
+                            }
+                            p = new Participant();
+                            p.Name = string.IsNullOrEmpty(ajaxp.Name) ? "" : ajaxp.Name.Trim();
+                            p.Title = string.IsNullOrEmpty(ajaxp.Title) ? "" : ajaxp.Title.Trim();
+                            p.Gender = string.IsNullOrEmpty(ajaxp.Gender) ? "" : ajaxp.Gender.Trim();
+                            p.Mobile = string.IsNullOrEmpty(ajaxp.Mobile) ? "" : ajaxp.Mobile.Trim();
+                            p.Contact = string.IsNullOrEmpty(ajaxp.Contact) ? "" : ajaxp.Contact.Trim();
+                            p.Email = string.IsNullOrEmpty(ajaxp.Email) ? "" : ajaxp.Email.Trim();
+                            p.ZIP = string.IsNullOrEmpty(ajaxp.ZIP) ? "" : ajaxp.ZIP.Trim();
+                            p.Address = string.IsNullOrEmpty(ajaxp.Address) ? "" : ajaxp.Address.Trim();
+                            p.ParticipantTypeID = partType.ID;
+                            p.ProjectID = item.ProjectID;
+                            p.DealID = item.ID;
+                            p.Creator = Employee.CurrentUser.UserName;
+                            p.CreatedDate = DateTime.Now;
+                            p.ModifiedUser = Employee.CurrentUser.UserName;
+                            p.ModifiedDate = DateTime.Now;
+                            if (p.ID == 0)
+                                CH.Create<Participant>(p);
+                        }
+                    }
+                }
+            }
+            return Json(new { dealId = item.ID, dealCode = item.DealCode, companyRelationshipId = item.CompanyRelationshipID });
+        }
     }
 }

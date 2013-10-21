@@ -50,13 +50,13 @@
                 
             <td>@Html.LabelFor(model => model.ZIP)</td>
             <td>
-                @Html.TextBoxFor(model => model.ZIP)
-                @Html.ValidationMessageFor(model => model.ZIP)
+                <select id="ZIPsel" name="ZIPsel" /> 
+                @Html.HiddenFor(model=>model.ZIP)
             </td>
             <td>@Html.LabelFor(model => model.Address)</td>
             <td>
-                @Html.TextBoxFor(model => model.Address)
-                @Html.ValidationMessageFor(model => model.Address)
+            <select id="Addresssel" name="Addresssel" /> 
+                @Html.HiddenFor(model => model.Address)
             </td>
             </tr>
             <tr>
@@ -86,7 +86,14 @@
     </fieldset>
 
     <script type="text/javascript" language="javascript">
-
+        $(document).ready(function () {
+            $('#ZIPsel').change(function () {
+                $("#ZIP").val($(this).children('option:selected').val());
+            });
+            $('#Addresssel').change(function () {
+                $("#Address").val($(this).children('option:selected').val());
+            })
+        })
         function onLeadQuickSelected(leadid) {
             if (leadid != null && leadid != "") {
                 $.ajax({
@@ -108,8 +115,8 @@
                         $("#Contact").val(lead[4]);
                         $("#Email").val(lead[5]);
 
-                        $("#ZIP").val(lead[6]);
-                        $("#Address").val(lead[7]);
+                        //$("#ZIP").val(lead[6]);
+                        //$("#Address").val(lead[7]);
 
                         $("#dispName").html(lead[0]);
                         $("#dispTitle").html(lead[1]);
@@ -117,8 +124,11 @@
                         $("#dispMobile").html(lead[3]);
                         $("#dispContact").html(lead[4]);
                         $("#dispEmail").html(lead[5]);
-                        $("#dispZIP").html(lead[6]);
-                        $("#dispAddress").html(lead[7]);
+                        //$("#dispZIP").html(lead[6]);
+                        //$("#dispAddress").html(lead[7]);
+
+                        getZip(leadid);
+                        getAddress(leadid);
                     }
                 });
             } else {
@@ -144,5 +154,54 @@
         }
         if ($("#HideDistrictNumberID").val() == '1') {
             $("#zipadd").hide();
+        }
+        function getZip(leadid) {
+            $.ajax({
+                url: "/Sales/GetZipByLeadId",
+                type: "post",
+                dataType: "json",
+                data: { id: leadid },
+                error: function (a, b, c) {
+                    alert("获取数据失败，请重试。");
+                },
+                success: function (result) {
+                    var options = '';
+                    options += "<option value=''>请选择</option>";
+                    for (var i = 0; i < result.length; i++) {
+                        if (i == 0) {
+                            options += "<option value=" + result[i] + " selected = \"selected\">" + result[i] + "</option>";
+                            $("#ZIP").val(result[i]);
+                        }
+                        else
+                            options += "<option value=" + result[i] + ">" + result[i] + "</option>";
+
+                    }
+                    $("#ZIPsel").html(options);
+                }
+            });
+        }
+        function getAddress(leadid) {
+            $.ajax({
+                url: "/Sales/GetAddressByLeadId",
+                type: "post",
+                dataType: "json",
+                data: { id: leadid },
+                error: function (a, b, c) {
+                    alert("获取数据失败，请重试。");
+                },
+                success: function (result) {
+                    var options = '';
+                    options += "<option value=''>请选择</option>";
+                    for (var i = 0; i < result.length; i++) {
+                        if (i == 0) {
+                            options += "<option value=" + result[i] + " selected = \"selected\">" + result[i] + "</option>";
+                            $("#Address").val(result[i]);
+                        }
+                        else
+                            options += "<option value=" + result[i] + ">" + result[i] + "</option>";
+                    }
+                    $("#Addresssel").html(options);
+                }
+            });
         }
     </script>
