@@ -46,19 +46,18 @@
                     @Html.ValidationMessageFor(model => model.Email)
                 </td>
             </tr>
-            <tr>
-                <td>@Html.LabelFor(model => model.ZIP)</td>
-                <td>
-                    <div id="dispZIP"></div>
-                    @Html.HiddenFor(model => model.ZIP)
-                    @Html.ValidationMessageFor(model => model.ZIP)
-                </td>
-                <td>@Html.LabelFor(model => model.Address)</td>
-                <td>
-                    <div id="dispAddress"></div>
-                    @Html.HiddenFor(model => model.Address)
-                    @Html.ValidationMessageFor(model => model.Address)
-                </td>
+            <tr id="zipadd">
+                
+            <td>@Html.LabelFor(model => model.ZIP)</td>
+            <td>
+                @Html.TextBoxFor(model => model.ZIP)
+                @Html.ValidationMessageFor(model => model.ZIP)
+            </td>
+            <td>@Html.LabelFor(model => model.Address)</td>
+            <td>
+                @Html.TextBoxFor(model => model.Address)
+                @Html.ValidationMessageFor(model => model.Address)
+            </td>
             </tr>
             <tr>
                 <td>@Html.LabelFor(model => model.ParticipantTypeID)</td>
@@ -75,6 +74,15 @@
                 </td>
             </tr>
         </table>
+        @if (ViewBag.DistrictNumberID == 1)
+        {
+            @Html.Hidden("HideDistrictNumberID", "1")
+        }
+        else
+        {
+            @Html.Hidden("HideDistrictNumberID", "0")
+        }
+            
     </fieldset>
 
     <script type="text/javascript" language="javascript">
@@ -99,6 +107,7 @@
                         $("#Mobile").val(lead[3]);
                         $("#Contact").val(lead[4]);
                         $("#Email").val(lead[5]);
+
                         $("#ZIP").val(lead[6]);
                         $("#Address").val(lead[7]);
 
@@ -133,5 +142,7 @@
                 $("#dispAddress").html();
             }
         }
-
+        if ($("#HideDistrictNumberID").val() == '1') {
+            $("#zipadd").hide();
+        }
     </script>
