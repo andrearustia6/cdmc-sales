@@ -45,7 +45,6 @@
                        {
                            menu.Add().Text("管理员配置").ImageUrl("~/Content/Common/Icons/wpf.png").Items(item =>
                            {
-                               item.Add().Text("可打公司3.0").Url("~/AvaliableCompanies/index");
                                item.Add().Url("~/Deal/IndexReview").Text("项目出单统计");
                                item.Add().Text("部门").Url("~/department/index");
                                item.Add().Text("职级").Url("~/explevel/index");
@@ -146,10 +145,7 @@
                            }
                            item.Add().Url("~/Package/index").Text("Package");
 
-                           if (Utl.GetAvaliableCompaniesRole().Where(s => s == Employee.CurrentUserName).Any())
-                           {
-                               item.Add().Text("可打公司3.0").Url("~/AvaliableCompanies/index");
-                           }
+                          
 
                        });
 
@@ -192,7 +188,7 @@
                              });
                        }
 
-                       if (score == LeaderRequired.LVL | score == SalesRequired.LVL)
+                       if (score == LeaderRequired.LVL | score == SalesRequired.LVL | score== ManagerRequired.LVL)
                        {
                            menu.Add().Text("日常工作").ImageUrl("~/Content/Common/Icons/editor.png").Items(item =>
                            {
@@ -200,7 +196,14 @@
                                //item.Add().Url("~/Research/MyIndex").Text("调研管理");
                                //item.Add().Url("~/Sales/companyrelationshipindex").Text("可打公司");
                                //item.Add().Url("~/Sales/AvailableCompanys").Text("可打公司 V2.0");
-                               item.Add().Url("~/SalesEx/index").Text("可打公司 V2.0");
+                               if (Utl.GetAvaliableCompaniesRole().Where(s => s == Employee.CurrentUserName).Any())
+                               {
+                                   item.Add().Text("可打公司 V3.0").Url("~/AvaliableCompanies/index");
+                               }
+                               else
+                               {
+                                item.Add().Url("~/SalesEx/index").Text("可打公司 V2.0");
+                               }
                                item.Add().Url("~/Sales/ContectedLeads").Text("Call List");
 
                                item.Add().Url("~/Sales/MyDealIndex").Text("我的出单");
@@ -218,6 +221,8 @@
 
 
                                }
+
+                              
                                //item.Add().Url("~/Sales/MyWeeklyReport").Text("我的周报").ImageUrl("~/Content/Common/Icons/Docking.gif");
                            });
                        }
