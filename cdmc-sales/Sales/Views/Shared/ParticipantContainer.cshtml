@@ -50,14 +50,16 @@
                             @if(Model.CompanyRelationship.Company.DistrictNumberID==null)
                             {
                                 <span>国内邮编：</span>
-                            @Html.TextBox("ZIP")<font style="color: Red">*</font>
+                                <select id="ZIPsel" name="ZIPsel" /> 
+                                @Html.Hidden("ZIP")
                             }
                         </td>
                         <td>
-                            @if(Model.CompanyRelationship.Company.DistrictNumberID==null)
+                            @if (Model.CompanyRelationship.Company.DistrictNumberID == null)
                             {
                                 <span>国内地址：</span>
-                            @Html.TextBox("Address")<font style="color: Red">*</font>
+                                <select id="Addresssel" name="Addresssel" /> 
+                                @Html.Hidden("Address")
                             }
                         </td>
                     </tr>
@@ -84,6 +86,16 @@
 
 </div>
 <script type="text/javascript" language="javascript">
+    $(document).ready(function () {
+        $('#ZIPsel').change(function () {
+            alert($(this).children('option:selected').val());
+            $(".addParticipant #ZIP").val($(this).children('option:selected').val());
+        });
+        $('#Addresssel').change(function () {
+            $(".addParticipant #Address").val($(this).children('option:selected').val());
+        })
+    })
+
     function onLeadSelected(leadid) {
         if (leadid != null && leadid != "") {
             $.ajax({
@@ -104,8 +116,10 @@
                     $(".addParticipant #Mobile").val(lead[3]);
                     $(".addParticipant #Contact").val(lead[4]);
                     $(".addParticipant #Email").val(lead[5]);
-                    $(".addParticipant #ZIP").val(lead[6]);
-                    $(".addParticipant #Address").val(lead[7]);
+                    //$(".addParticipant #ZIP").val(lead[6]);
+                    //$(".addParticipant #Address").val(lead[7]);
+                    getZip(leadid);
+                    getAddress(leadid);
                 }
             });
         } else {
@@ -118,5 +132,55 @@
             $(".addParticipant #ZIP").val();
             $(".addParticipant #Address").val();
         }
+    }
+
+    function getZip(leadid) {
+        $.ajax({
+            url: "/Sales/GetZipByLeadId",
+            type: "post",
+            dataType: "json",
+            data: { id: leadid },
+            error: function (a, b, c) {
+                alert("获取数据失败，请重试。");
+            },
+            success: function (result) {
+                var options = '';
+                options += "<option value=''>请选择</option>";
+                for (var i = 0; i < result.length; i++) {
+                    if (i == 0) {
+                        options += "<option value=" + result[i] + " selected = \"selected\">" + result[i] + "</option>";
+                        $(".addParticipant #ZIP").val(result[i]);
+                    }
+                    else
+                        options += "<option value=" + result[i] + ">" + result[i] + "</option>";
+
+                }
+                $("#ZIPsel").html(options);
+            }
+        });
+    }
+    function getAddress(leadid) {
+        $.ajax({
+            url: "/Sales/GetAddressByLeadId",
+            type: "post",
+            dataType: "json",
+            data: { id: leadid },
+            error: function (a, b, c) {
+                alert("获取数据失败，请重试。");
+            },
+            success: function (result) {
+                var options = '';
+                options += "<option value=''>请选择</option>";
+                for (var i = 0; i < result.length; i++) {
+                    if (i == 0) {
+                        options += "<option value=" + result[i] + " selected = \"selected\">" + result[i] + "</option>";
+                        $(".addParticipant #Address").val(result[i]);
+                    }
+                    else
+                        options += "<option value=" + result[i] + ">" + result[i] + "</option>";
+                }
+                $("#Addresssel").html(options);
+            }
+        });
     }
 </script>

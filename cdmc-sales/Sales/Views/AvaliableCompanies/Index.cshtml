@@ -42,6 +42,8 @@
     }
 </style>
 <div style="clear: both;">
+@Html.Hidden("indexhiderole",Employee.CurrentRole.Level)
+@Html.Hidden("indexhideuser",Employee.CurrentUserName)
     <table style="width: 100%">
         <tr>
             <td style="width: 15%;">
@@ -72,6 +74,7 @@
             </td>
             @if (Employee.CurrentRole.Level >= 100)
             {
+                
                 <td style="width: 15%;">
                     销售筛选:<br />
                     <select id="saleslist" style="width: 200px; vertical-align: middle; width: 80%" onchange="search()">
@@ -122,7 +125,7 @@
         </td>*@
         </tr>
         <tr>
-            <td colspan="2" align="center">
+            <td colspan="3" align="center">
                 寻找匹配的名称,邮件,电话: @Html.TextBox("f-fuzzy", "", new { style = "width:200px;line-height:22px" })
                 <input id="search" style="border: none; width: 67px; height: 21px; background-image: url('../images/chazhao.jpg');
                     vertical-align: middle;" type="button" onclick="search()" />
@@ -369,6 +372,18 @@
         </div>
     </div></text>)
     .Width(600).Height(300).Draggable(true).Modal(true).Visible(false)
+)
+@(Html.Telerik().Window().Title("出单")
+    .Name("QuickAddDeal")
+    .Content(@<text><div class="dialogue-quickdeal">
+        <div class="quickdeal-wrapper">
+        </div>
+        <div class="dialogue-buttons" style="float:right;">
+            <input type="button" class="btn-queding" onclick="QuickDeal()" />
+            <input type="button" class="btn-quxiao" onclick="CancelQuickDeal()" />
+        </div>
+    </div></text>)
+    .Width(1000).Height(620).Draggable(true).Modal(true).Visible(false)
 )
 <script>
 
@@ -767,8 +782,8 @@
         window.close();
     }
 
-    function onQuickAddDeal(currentProjectId, currentCRMId) {
-        $.post('GetQuickAddDeal', { projectId: currentProjectId, CRMId: currentCRMId }, function (result) {
+    function onQuickAddDeal() {
+        $.post('GetQuickAddDeal', { projectId: $('#projectid').val(), CRMId: crmid }, function (result) {
             $('.quickdeal-wrapper').html(result);
             var window = $('#QuickAddDeal').data('tWindow');
             window.center().open();
@@ -1781,10 +1796,15 @@
             $("#saleslist").append("<option value=''>全部</option>");
 
             for (var i = 0; i < result.length; i++) {
-                $("#saleslist").append("<option value=" + result[i] + ">" + result[i] + "</option>");
+                if (typeof (result[i]) != "undefined") {
+                    if ($("#indexhiderole").val() == 100 && result[i] == $("#indexhideuser").val())
+                        $("#saleslist").append("<option value=" + result[i] + " selected=selected>" + result[i] + "</option>");
+                    else
+                        $("#saleslist").append("<option value=" + result[i] + ">" + result[i] + "</option>");
+                }
             }
-        }
-    );
+            search();
+        });
     }
 
     function onProjectDropDownLoad(e) {
@@ -1795,10 +1815,15 @@
             $("#saleslist").append("<option value=''>全部</option>");
             for (var j = 0; j < result.length; j++) {
                 if (typeof (result[j]) != "undefined") {
-                    $("#saleslist").append("<option value=" + result[j] + ">" + result[j] + "</option>");
+                    if ($("#indexhiderole").val() == 100 && result[j] == $("#indexhideuser").val())
+                        $("#saleslist").append("<option value=" + result[j] + " selected=selected>" + result[j] + "</option>");
+                    else
+                        $("#saleslist").append("<option value=" + result[j] + ">" + result[j] + "</option>");
                 }
             }
+            search();
         })
+        
     }
 
     function onCategoryChange(e) {
