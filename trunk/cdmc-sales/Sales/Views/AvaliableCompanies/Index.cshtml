@@ -75,23 +75,13 @@
                 <td style="width: 15%;">
                     销售筛选:
                     <select id="saleslist" style="width: 200px; vertical-align: middle; width: 80%" onchange="search()">
-                        <option value=''>全部</option>
+                        <option value="">全部</option>
                     </select>
                 </td>
-                if (Employee.CurrentRole.Level == 100)
-                {
-                @Html.Hidden("tlName", Employee.CurrentUserName)
-                }
-                else
-                {
-                @Html.Hidden("tlName", "")
-                }
-
             }
             else
             {
                 @Html.Hidden("saleslist")
-                @Html.Hidden("tlName", "")
             }
             @*<td style="width:6%;">
             最近通话
@@ -1793,10 +1783,6 @@
             for (var i = 0; i < result.length; i++) {
                 $("#saleslist").append("<option value=" + result[i] + ">" + result[i] + "</option>");
             }
-            //            $.each(result, function (Name) {
-            //                $("#saleslist").append("<option value=" + Name + ">" + Name + "</option>");
-
-            //            });
         }
     );
     }
@@ -1806,25 +1792,10 @@
         var id = projectid.value();
         $.post('_SalesFilter', { ProjectId: id }, function (result) {
             $("#saleslist").empty();
-
-
-            var tlname = $("#tlName").val();
-            if (tlname != "") {
-                $("#saleslist").append("<option value=" + tlname + ">" + tlname + "</option>");
-                $("#saleslist").append("<option value=''>全部</option>");
-                for (var j = 0; j < result.length; j++) {
-                    if (typeof (result[j]) != "undefined" && result[j] != tlname) {
-                        $("#saleslist").append("<option value=" + result[j] + ">" + result[j] + "</option>");
-                    }
-                }
-                search();
-            }
-            else {
-                $("#saleslist").append("<option value=''>全部</option>");
-                for (var j = 0; j < result.length; j++) {
-                    if (typeof (result[j]) != "undefined") {
-                        $("#saleslist").append("<option value=" + result[j] + ">" + result[j] + "</option>");
-                    }
+            $("#saleslist").append("<option value=''>全部</option>");
+            for (var j = 0; j < result.length; j++) {
+                if (typeof (result[j]) != "undefined") {
+                    $("#saleslist").append("<option value=" + result[j] + ">" + result[j] + "</option>");
                 }
             }
         })
