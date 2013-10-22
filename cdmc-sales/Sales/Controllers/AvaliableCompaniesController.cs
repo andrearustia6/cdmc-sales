@@ -737,8 +737,8 @@ namespace Sales.Controllers
         public ActionResult PickUp(int crmid)
         {
             var p = CH.DB.CompanyRelationships.Where(c => c.ID == crmid).First().Project.CompanyRelationships.Count(w => w.Members.Where(m => m.Name == Employee.CurrentUserName).Any() == true);
-            if (p > 100)
-                return Content("从公海领用的，公司数超过100的不能领用！");
+            if (p > 200)
+                return Content("从公海领用的，公司数超过200的不能领用！");
             CompanyRelationship companyRelationship = CH.GetDataById<CompanyRelationship>(crmid);
 
             Member member = CH.DB.Members.Where(m => m.Name == Employee.CurrentUserName).FirstOrDefault();
