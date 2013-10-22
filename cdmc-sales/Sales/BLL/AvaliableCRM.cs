@@ -80,7 +80,7 @@ namespace Sales.BLL
                                ID = c.ID,
                                CrmCount=crms.Where(cr=>cr.CoreLVLID==c.CoreLVLCode).Count(),
                                _Maturitys = (from m in crms.Where(cr=>cr.CoreLVLID==c.CoreLVLCode) group m by new{m.ProgressID,m.Progress.Name} into grp
-                                            select new _Maturity() 
+                                            select new _Maturity()
                                             { 
                                                  Name= grp.Key.Name,
                                                   ID = grp.Key.ProgressID.Value,
@@ -104,7 +104,7 @@ namespace Sales.BLL
                                                                               CRMID = co.CompanyRelationshipID,
                                                                               Contents = co.Contents
                                                                           })
-                                                         }).OrderByDescending(cr => cr.CrmCommentStateIDOrder)
+                                                         }).OrderByDescending(cr => cr.CrmCommentStateIDOrder).OrderBy(cr => cr.CompanyNameEN).OrderBy(cr => cr.CompanyNameCH)
                                             })
                                           //  .OrderBy(o=>o.Code)
                            };
@@ -182,7 +182,7 @@ namespace Sales.BLL
                                                          CRMID = co.CompanyRelationshipID,
                                                          Contents = co.Contents
                                                      })
-                                    }).OrderByDescending(cr => cr.CrmCommentStateIDOrder)
+                                    }).OrderByDescending(cr => cr.CrmCommentStateIDOrder).OrderBy(cr => cr.CompanyNameEN).OrderBy(cr => cr.CompanyNameCH)
                        };
 
             return data;
