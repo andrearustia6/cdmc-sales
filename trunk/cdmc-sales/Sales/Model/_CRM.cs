@@ -162,7 +162,7 @@ namespace Sales.Model
          public string Email { get; set; }
          public int? CrmCommentStateID { get; set; }
          public int? ProgressID { get; set; }
-         public int CrmCommentStateIDOrder
+         public string CrmCommentStateIDOrder
          {
              get;
              set;

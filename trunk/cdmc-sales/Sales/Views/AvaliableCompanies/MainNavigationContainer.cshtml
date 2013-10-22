@@ -33,66 +33,55 @@
             .Children(maturity => maturity._CRMs));
 
             mappings.For<_CRM>(binding => binding
-          .ItemDataBound((item, crm) =>
-          {
-              item.Text = crm.DisplayName;
-              item.Value = crm.ID.ToString();
-              if (Utl.Employee.CurrentRole.Level == ManagerRequired.LVL)
-              {
-                  //if (crm.CrmCommentStateID == null)
-                  //    item.ImageUrl = "";
-                  //else if (crm.CrmCommentStateID == 1)
-                  //    item.ImageUrl = "../images/gantaihao.jpg";
-                  //else if (crm.CrmCommentStateID == 2)
-                  //    item.ImageUrl = "../images/wenhao-2.jpg";
-                  //else if (crm.CrmCommentStateID == 3)
-                  //    item.ImageUrl = "../images/wenhao-2.jpg";
-                  //else if (crm.CrmCommentStateID == 4)
-                  //    item.ImageUrl = "";
-                  
-                  var comment  = crm._Comments.FirstOrDefault();
-                  if (crm.CrmCommentStateID == 4 || crm.CrmCommentStateID == null)
-                  {
-                      item.ImageUrl = "";
-                  }
-                  else
-                  {
-                      if (comment != null)
-                      {
-                          if (Utl.Employee.CurrentUserName == comment.Submitter)
-                          {
-                              item.ImageUrl = "../images/gantaihao.jpg";
-                          }
-                          else
-                          {
-                              item.ImageUrl = "../images/wenhao-2.jpg";
-                          }
-                      }
-                  }
-              }
-              else
-              {
-                  var comment = crm._Comments.FirstOrDefault();
-                  if (crm.CrmCommentStateID == 4 || crm.CrmCommentStateID == null)
-                  {
-                      item.ImageUrl = "";
-                  }
-                  else
-                  {
-                      if (comment != null)
-                      {
-                          if (Utl.Employee.CurrentUserName == comment.Submitter)
-                          {
-                              item.ImageUrl = "../images/gantaihao.jpg";
-                          }
-                          else
-                          {
-                              item.ImageUrl = "../images/wenhao-2.jpg";
-                          }
-                      }
-                  }
-              }
-          }));
+            .ItemDataBound((item, crm) =>
+            {
+                item.Text = crm.DisplayName;
+                item.Value = crm.ID.ToString();
+                if (Utl.Employee.CurrentRole.Level == ManagerRequired.LVL)
+                {
+                    var comment  = crm._Comments.FirstOrDefault();
+                    if (crm.CrmCommentStateID == 4 || crm.CrmCommentStateID == null)
+                    {
+                        item.ImageUrl = "";
+                    }
+                    else
+                    {
+                        if (comment != null)
+                        {
+                            if (Utl.Employee.CurrentUserName == comment.Submitter)
+                            {
+                                item.ImageUrl = "../images/gantaihao.jpg";
+                            }
+                            else
+                            {
+                                item.ImageUrl = "../images/wenhao-2.jpg";
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    var comment = crm._Comments.FirstOrDefault();
+                    if (crm.CrmCommentStateID == 4 || crm.CrmCommentStateID == null)
+                    {
+                        item.ImageUrl = "";
+                    }
+                    else
+                    {
+                        if (comment != null)
+                        {
+                            if (Utl.Employee.CurrentUserName == comment.Submitter)
+                            {
+                                item.ImageUrl = "../images/gantaihao.jpg";
+                            }
+                            else
+                            {
+                                item.ImageUrl = "../images/wenhao-2.jpg";
+                            }
+                        }
+                    }
+                }
+            }));
         })
 
 ) 

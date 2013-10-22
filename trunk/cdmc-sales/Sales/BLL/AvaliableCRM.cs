@@ -6,6 +6,7 @@ using Sales.Model;
 using Utl;
 using Entity;
 using BLL;
+using System.Data.Common;
 namespace Sales.BLL
 {
 
@@ -82,7 +83,7 @@ namespace Sales.BLL
                                _Maturitys = (from m in crms.Where(cr=>cr.CoreLVLID==c.CoreLVLCode) group m by new{m.ProgressID,m.Progress.Name} into grp
                                             select new _Maturity()
                                             { 
-                                                 Name= grp.Key.Name,
+                                                  Name= grp.Key.Name,
                                                   ID = grp.Key.ProgressID.Value,
                                                   Count = crms.Where(co=>co.ProgressID==grp.Key.ProgressID && co.CoreLVLID==c.CoreLVLCode).Count(),
                                                  _CRMs = (from crm in grp.Select(s=>s)
@@ -95,7 +96,7 @@ namespace Sales.BLL
                                                              ContectedLeadCount = crm.LeadCalls.GroupBy(call => call.LeadID).Count(),
                                                              LeadCount = CH.DB.Leads.Where(l => l.CompanyID == crm.CompanyID).Count(),
                                                              CrmCommentStateID = crm.CrmCommentStateID,
-                                                             CrmCommentStateIDOrder = crm.CrmCommentStateID == 1 || crm.CrmCommentStateID == 2 || crm.CrmCommentStateID == 3 ? 1 : 0,
+                                                             CrmCommentStateIDOrder = (crm.CrmCommentStateID == 1 || crm.CrmCommentStateID == 2 || crm.CrmCommentStateID == 3) ? "a" : "b",
                                                              _Comments = (from co in crm.Comments.OrderByDescending(m => m.CommentDate)
                                                                           select new _Comment()
                                                                           {
@@ -104,7 +105,7 @@ namespace Sales.BLL
                                                                               CRMID = co.CompanyRelationshipID,
                                                                               Contents = co.Contents
                                                                           })
-                                                         }).OrderByDescending(cr => cr.CrmCommentStateIDOrder).OrderBy(cr => cr.CompanyNameEN).OrderBy(cr => cr.CompanyNameCH)
+                                                         }).OrderBy(cr => cr.CompanyNameCH).OrderBy(cr => cr.CompanyNameEN).OrderBy(cr => cr.CrmCommentStateIDOrder)
                                             })
                                           //  .OrderBy(o=>o.Code)
                            };
@@ -173,7 +174,7 @@ namespace Sales.BLL
                                         ContectedLeadCount = crm.LeadCalls.GroupBy(call => call.LeadID).Count(),
                                         LeadCount = CH.DB.Leads.Where(l => l.CompanyID == crm.CompanyID).Count(),
                                         CrmCommentStateID = crm.CrmCommentStateID,
-                                        CrmCommentStateIDOrder = crm.CrmCommentStateID == 1 || crm.CrmCommentStateID == 2 || crm.CrmCommentStateID == 3 ? 1 : 0,
+                                        CrmCommentStateIDOrder = (crm.CrmCommentStateID == 1 || crm.CrmCommentStateID == 2 || crm.CrmCommentStateID == 3) ? "a" : "b",
                                         _Comments = (from co in crm.Comments.OrderByDescending(m => m.CommentDate)
                                                      select new _Comment()
                                                      {
@@ -182,7 +183,7 @@ namespace Sales.BLL
                                                          CRMID = co.CompanyRelationshipID,
                                                          Contents = co.Contents
                                                      })
-                                    }).OrderByDescending(cr => cr.CrmCommentStateIDOrder).OrderBy(cr => cr.CompanyNameEN).OrderBy(cr => cr.CompanyNameCH)
+                                    }).OrderBy(cr => cr.CompanyNameCH).OrderBy(cr => cr.CompanyNameEN).OrderBy(cr => cr.CrmCommentStateIDOrder)
                        };
 
             return data;
