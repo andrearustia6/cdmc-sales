@@ -1188,7 +1188,7 @@ namespace Sales.Controllers
 
         public ActionResult _SalesFilter(int ProjectId)
         {
-            var selSales = CH.DB.Members.Where(s => s.ProjectID == ProjectId).Select(s => s.Name);
+            var selSales = CH.DB.Members.Where(s => s.ProjectID == ProjectId && s.IsActivated==true).Select(s => s.Name);
             return Json(selSales);
         }
 
