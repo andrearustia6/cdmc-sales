@@ -217,9 +217,6 @@
                                    //item.Add().Url("~/teamleader/breakdownindex").Text("周目标");
                                    //item.Add().Url("~/TargetOfMonthForMember/Index").Text("月目标");
                                    // item.Add().Url("~/AssignPerformanceScore/index").Text("打分");
-
-
-
                                }
 
                               
@@ -228,9 +225,15 @@
                        }
                        if (score == ProductInterfaceRequired.LVL | score == MarketInterfaceRequired.LVL)
                        {
+                           
                            menu.Add().Text("日常工作").ImageUrl("~/Content/Common/Icons/editor.png").Items(item =>
-                           {
-                               item.Add().Url("~/SalesEx/index").Text("可打公司 V2.0");
+                           {    
+                                if (Utl.GetAvaliableCompaniesRole().Where(s => s == Employee.CurrentUserName).Any())
+                                {
+                                    item.Add().Text("可打公司 V3.0").Url("~/AvaliableCompanies/index");
+                                } else {
+                                    item.Add().Url("~/SalesEx/index").Text("可打公司 V2.0");
+                                }
                            });
                        }
                        if (score == MarketInterfaceRequired.LVL)
