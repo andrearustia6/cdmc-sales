@@ -98,35 +98,12 @@
                     @Html.TextBoxFor(model => model.EmailSignatures, new { style = "width:150px" })<br />
                     @Html.ValidationMessageFor(model => model.EmailSignatures)
                 </td>
-                @if (!string.IsNullOrWhiteSpace(Model.EmailPassword))
-                {
-                    <td style="width: 70px">
-                        @Html.LabelFor(model => model.OldPassword)
-                    </td>
-                    <td>
-                        @Html.PasswordFor(model => model.OldPassword, new { style = "width:150px" })<br />
-                        @Html.ValidationMessageFor(model => model.OldPassword)
-                    </td>
-                }
-                else
-                {
-                    @Html.HiddenFor(model => model.OldPassword, new { Value = "-" })
-                }
-            </tr>
-            <tr>
                 <td style="width: 70px">
                     @Html.LabelFor(model => model.EmailPassword)
                 </td>
                 <td>
                     @Html.PasswordFor(model => model.EmailPassword, new { style = "width:150px" })<br />
                     @Html.ValidationMessageFor(model => model.EmailPassword)
-                </td>
-                <td style="width: 70px">
-                    @Html.LabelFor(model => model.ConfirmPassword)
-                </td>
-                <td>
-                    @Html.PasswordFor(model => model.ConfirmPassword, new { style = "width:150px" })<br />
-                    @Html.ValidationMessageFor(model => model.ConfirmPassword)
                 </td>
             </tr>
         </table>

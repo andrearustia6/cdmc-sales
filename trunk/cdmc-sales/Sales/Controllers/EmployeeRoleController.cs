@@ -254,12 +254,13 @@ namespace Sales.Controllers
                 s.EmailSignatures = model.EmailSignatures;
                 if (!string.IsNullOrWhiteSpace(s.EmailPassword))
                 {
-                    if (GetMD5Hash(model.OldPassword) != s.EmailPassword)
-                    {
-                        return Json("初始密码错误！");
-                    }
+                    s.EmailPassword = model.EmailPassword;
+                    //if (GetMD5Hash(model.OldPassword) != s.EmailPassword)
+                    //{
+                    //    return Json("初始密码错误！");
+                    //}
                 }
-                s.EmailPassword = GetMD5Hash(model.EmailPassword);
+                //s.EmailPassword = GetMD5Hash(model.EmailPassword);
                 CH.Edit<EmployeeRole>(s);
                 return Json("");
             }
@@ -278,14 +279,14 @@ namespace Sales.Controllers
             }
         }
 
-        public static string GetMD5Hash(String input)
-        {
-            MD5 md5 = new MD5CryptoServiceProvider();
-            byte[] res = md5.ComputeHash(Encoding.Default.GetBytes(input), 0, input.Length);
-            char[] temp = new char[res.Length];
-            System.Array.Copy(res, temp, res.Length);
-            return new String(temp);
-        }
+        //public static string GetMD5Hash(String input)
+        //{
+        //    MD5 md5 = new MD5CryptoServiceProvider();
+        //    byte[] res = md5.ComputeHash(Encoding.Default.GetBytes(input), 0, input.Length);
+        //    char[] temp = new char[res.Length];
+        //    System.Array.Copy(res, temp, res.Length);
+        //    return new String(temp);
+        //}
 
         [HttpPost]
         public ActionResult SetRole(AjaxEmployee model)
