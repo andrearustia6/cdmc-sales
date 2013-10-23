@@ -125,7 +125,7 @@ header h1, #header h1
     background: #fff;
     /*padding: 30px 30px 15px 30px;*/
     
-    margin-bottom: 30px;
+    /*margin-bottom: 30px;*/
     overflow:auto;
     _height: 1px; /* only IE6 applies CSS properties starting with an underscore */
 }

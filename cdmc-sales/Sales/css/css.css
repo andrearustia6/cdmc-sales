@@ -4,7 +4,7 @@ ul{ list-style-type: none;}
 img{vertical-align:top; border:0; margin:0px; padding:0px;}
 .clear{ clear:both; height:0; overflow:hidden}
 
-.top{ width:95%; margin:0 auto; height:60px;}
+.top{ width:100%; margin:0 auto; height:60px;}
 .top_1{ float:right; padding:15px 0;}
 .top_1 a{ font-size:12px; color:#f18024; padding-left:10px; text-decoration:none;}
 .top_1 a:hover{color:#f18024;}
@@ -13,8 +13,8 @@ img{vertical-align:top; border:0; margin:0px; padding:0px;}
 
 
 .bottom{ background:#f4a05c; clear:both;}
-.bottom_2{ width:95%; margin:0 auto; padding-bottom:100px;}
-.xiangmu{ height:56px; background:#f6ac71;}
+.bottom_2{ width:100%; margin:0 auto; }
+.xiangmu{ height:56px;}
 .xiangmu LI {
 	PADDING-BOTTOM: 0px; LINE-HEIGHT: 56px; PADDING-LEFT: 10px; WIDTH: 110px; PADDING-RIGHT: 0px; font-family:'微软雅黑';FLOAT: left; HEIGHT: 56px; COLOR: #a34900; FONT-SIZE: 14px; PADDING-TOP: 0px}
 
@@ -112,17 +112,17 @@ img{vertical-align:top; border:0;}
 
 
 .right{ float:left; width:43%;}
-.right_1{ margin:10px; line-height:24px;font-family:"微软雅黑"; font-size:12px; color:#b8b8b8; border-bottom:1px solid #72b62a; padding-bottom:10px;}
-.right_1 h2{ font-family:"微软雅黑"; font-size:12px; font-weight:bold; color:#b8b8b8;}
-.right_1 span{ font-family:"微软雅黑"; font-size:12px; color:#72b62a;}
+.right_1{ margin:10px; line-height:24px;font-family:"微软雅黑"; font-size:12px; color:#585858; border-bottom:1px solid #72b62a; padding-bottom:10px;}
+.right_1 h2{ font-family:"微软雅黑"; font-size:12px; font-weight:bold; color:#585858;}
+.right_1 span{ font-family:"微软雅黑"; font-size:12px; ;}
 
-.right_2{ margin:10px; line-height:24px;font-family:"微软雅黑"; font-size:12px; color:#b8b8b8; border-bottom:1px solid #00bcec; padding-bottom:10px;}
-.right_2 h2{ font-family:"微软雅黑"; font-size:12px; font-weight:bold; color:#b8b8b8;}
-.right_2 span{ font-family:"微软雅黑"; font-size:12px; color:#00bcec;}
+.right_2{ margin:10px; line-height:24px;font-family:"微软雅黑"; font-size:12px; color:#585858; border-bottom:1px solid #00bcec; padding-bottom:10px;}
+.right_2 h2{ font-family:"微软雅黑"; font-size:12px; font-weight:bold; color:#585858;}
+.right_2 span{ font-family:"微软雅黑"; font-size:12px;}
 
-.right_3{ margin:10px 30px; line-height:24px;font-family:"微软雅黑"; font-size:12px; color:#b8b8b8; border-bottom:1px solid #ff0000; padding-bottom:10px;}
-.right_3 h2{ font-family:"微软雅黑"; font-size:12px; font-weight:bold; color:#b8b8b8;}
-.right_3 span{ font-family:"微软雅黑"; font-size:12px; color:#ff0000;}
+.right_3{ margin:10px 30px; line-height:24px;font-family:"微软雅黑"; font-size:12px; color:#585858; border-bottom:1px solid #ff0000; padding-bottom:10px;}
+.right_3 h2{ font-family:"微软雅黑"; font-size:12px; font-weight:bold; color:#585858;}
+.right_3 span{ font-family:"微软雅黑"; font-size:12px; }
 
 
 .dierye{ float:left; width:40%; overflow:hidden;}
