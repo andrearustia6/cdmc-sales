@@ -192,7 +192,10 @@
                             {
                                 menu.Add().Text("日常工作").ImageUrl("~/Content/Common/Icons/editor.png").Items(item =>
                                 {
-                                    item.Add().Url("~/Sales/mypage").Text("我的主页");
+                                    if (score == LeaderRequired.LVL | score == SalesRequired.LVL)
+                                    {
+                                        item.Add().Url("~/Sales/mypage").Text("我的主页");
+                                    }
                                     //item.Add().Url("~/Research/MyIndex").Text("调研管理");
                                     //item.Add().Url("~/Sales/companyrelationshipindex").Text("可打公司");
                                     //item.Add().Url("~/Sales/AvailableCompanys").Text("可打公司 V2.0");
