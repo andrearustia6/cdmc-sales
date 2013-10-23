@@ -105,9 +105,8 @@ namespace Sales.BLL
                                                                               CRMID = co.CompanyRelationshipID,
                                                                               Contents = co.Contents
                                                                           })
-                                                         }).OrderBy(cr => cr.CompanyNameCH).OrderBy(cr => cr.CompanyNameEN).OrderBy(cr => cr.CrmCommentStateIDOrder)
+                                                         }).OrderBy(cr => cr.CrmCommentStateIDOrder).ThenBy(cr => cr.CompanyNameEN).ThenBy(cr => cr.CompanyNameCH)
                                             })
-                                          //  .OrderBy(o=>o.Code)
                            };
             return data;
         }
@@ -183,7 +182,8 @@ namespace Sales.BLL
                                                          CRMID = co.CompanyRelationshipID,
                                                          Contents = co.Contents
                                                      })
-                                    }).OrderBy(cr => cr.CompanyNameCH).OrderBy(cr => cr.CompanyNameEN).OrderBy(cr => cr.CrmCommentStateIDOrder)
+                                    }).OrderBy(cr => cr.CrmCommentStateIDOrder).ThenBy(cr => cr.CompanyNameEN).ThenBy(cr => cr.CompanyNameCH)
+                           //.OrderBy(cr => cr.CompanyNameCH).OrderBy(cr => cr.CompanyNameEN).OrderBy(cr => cr.CrmCommentStateIDOrder)
                        };
 
             return data;
