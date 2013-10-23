@@ -108,6 +108,10 @@
                         @Html.ValidationMessageFor(model => model.OldPassword)
                     </td>
                 }
+                else
+                {
+                    @Html.HiddenFor(model => model.OldPassword, new { Value = "-" })
+                }
             </tr>
             <tr>
                 <td style="width: 70px">
