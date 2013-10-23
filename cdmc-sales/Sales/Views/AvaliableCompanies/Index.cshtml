@@ -1786,11 +1786,11 @@
             //            });
         });
 
-        $.post('_RefreshCrmTree', { ProjectId: e.value }, function (result) {
-            $('#mainnavigationcontainer').html(result);
-            $('#crmdetailscontainer').html("");
+//        $.post('_RefreshCrmTree', { ProjectId: e.value }, function (result) {
+//            $('#mainnavigationcontainer').html(result);
+//            $('#crmdetailscontainer').html("");
 
-        });
+//        });
         $.post('_SalesFilter', { ProjectId: e.value }, function (result) {
             $("#saleslist").empty();
             $("#saleslist").append("<option value=''>全部</option>");
