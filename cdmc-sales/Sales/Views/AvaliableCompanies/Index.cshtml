@@ -72,7 +72,7 @@
                 }
                 是否点评: <br />@Html.Telerik().DropDownList().Name("commentlist").BindTo(new SelectList(commentlist, "Value", "Text", "")).DropDownHtmlAttributes(new { style = string.Format("width:{0}px", 200) }).HtmlAttributes(new { style = string.Format("vertical-align:middle;width:{0}%", 80) }).ClientEvents(events => events.OnChange("oncommentlistChange"))
             </td>
-            @if (Employee.CurrentRole.Level >= 100)
+            @if ((Employee.CurrentRole.Level >= 100) || (Employee.CurrentRole.Level == 5))
             {
                 
                 <td style="width: 15%;">
@@ -87,52 +87,52 @@
                 @Html.Hidden("saleslist")
             }
             @*<td style="width:6%;">
-            最近通话
-        </td>
-        <td style="width:10%;"> 
-        @{
-            List<SelectListItem> CallConditionSelectList = (List<SelectListItem>)SelectHelper.CallConditionSelectList();
-            CallConditionSelectList.Insert(0, (new SelectListItem { Text = "不指定", Value = "-1" }));
-        }
-        @Html.Telerik().DropDownList().Name("callprogress").BindTo(new SelectList(CallConditionSelectList, "Value", "Text", "")).DropDownHtmlAttributes(new { style = string.Format("width:{0}px", 200) }).HtmlAttributes(new { style = string.Format("width:{0}%", 100) })
-        </td>*@ @*<td style="width:6%;">
-            通话状态
-        </td>
-        <td style="width:10%;">
-        @{
-            List<SelectListItem> leadprogress = (List<SelectListItem>)SelectHelper.LeadConditionSelectList();
-            leadprogress.Insert(0, (new SelectListItem { Text = "不指定", Value = "-1" }));
-        }
-            @Html.Telerik().DropDownList().Name("leadprogress").BindTo(new SelectList(leadprogress, "Value", "Text", "")).DropDownHtmlAttributes(new { style = string.Format("width:{0}px", 200) }).HtmlAttributes(new { style = string.Format("width:{0}%", 100) })
-        </td>*@ @*<td style="width:6%;">
-            成熟程度
-        </td>
-        <td style="width:10%;">
-         @{
-             List<SelectListItem> companyprogress = (List<SelectListItem>)SelectHelper.CrmProgessSelectList();
-             companyprogress.Insert(0, (new SelectListItem { Text = "不指定", Value = "-1" }));
-        }
-            @Html.Telerik().DropDownList().Name("companyprogress").BindTo(new SelectList(companyprogress, "Value", "Text", "")).DropDownHtmlAttributes(new { style = string.Format("width:{0}px", 200) }).HtmlAttributes(new { style = string.Format("width:{0}%", 100) })
-        </td>*@ @*<td style="width:6%;">
-            出单状态
-        </td>
-        <td style="width:10%;">
-         @{
-             List<SelectListItem> dealprogress = (List<SelectListItem>)SelectHelper.DealConditionSelectList();
-             dealprogress.Insert(0, (new SelectListItem { Text = "不指定", Value = "-1" }));
-        }
-            @Html.Telerik().DropDownList().Name("dealprogress").BindTo(new SelectList(dealprogress, "Value", "Text", "")).DropDownHtmlAttributes(new { style = string.Format("width:{0}px", 200) }).HtmlAttributes(new { style = string.Format("width:{0}%", 100) })
-        </td>*@
+                最近通话
+                </td>
+                <td style="width:10%;"> 
+                @{
+                    List<SelectListItem> CallConditionSelectList = (List<SelectListItem>)SelectHelper.CallConditionSelectList();
+                    CallConditionSelectList.Insert(0, (new SelectListItem { Text = "不指定", Value = "-1" }));
+                }
+                @Html.Telerik().DropDownList().Name("callprogress").BindTo(new SelectList(CallConditionSelectList, "Value", "Text", "")).DropDownHtmlAttributes(new { style = string.Format("width:{0}px", 200) }).HtmlAttributes(new { style = string.Format("width:{0}%", 100) })
+                </td>*@ @*<td style="width:6%;">
+                    通话状态
+                </td>
+                <td style="width:10%;">
+                @{
+                    List<SelectListItem> leadprogress = (List<SelectListItem>)SelectHelper.LeadConditionSelectList();
+                    leadprogress.Insert(0, (new SelectListItem { Text = "不指定", Value = "-1" }));
+                }
+                    @Html.Telerik().DropDownList().Name("leadprogress").BindTo(new SelectList(leadprogress, "Value", "Text", "")).DropDownHtmlAttributes(new { style = string.Format("width:{0}px", 200) }).HtmlAttributes(new { style = string.Format("width:{0}%", 100) })
+                </td>*@ @*<td style="width:6%;">
+                    成熟程度
+                </td>
+                <td style="width:10%;">
+                 @{
+                     List<SelectListItem> companyprogress = (List<SelectListItem>)SelectHelper.CrmProgessSelectList();
+                     companyprogress.Insert(0, (new SelectListItem { Text = "不指定", Value = "-1" }));
+                }
+                    @Html.Telerik().DropDownList().Name("companyprogress").BindTo(new SelectList(companyprogress, "Value", "Text", "")).DropDownHtmlAttributes(new { style = string.Format("width:{0}px", 200) }).HtmlAttributes(new { style = string.Format("width:{0}%", 100) })
+                </td>*@ @*<td style="width:6%;">
+                    出单状态
+                </td>
+                <td style="width:10%;">
+                 @{
+                     List<SelectListItem> dealprogress = (List<SelectListItem>)SelectHelper.DealConditionSelectList();
+                     dealprogress.Insert(0, (new SelectListItem { Text = "不指定", Value = "-1" }));
+                }
+                    @Html.Telerik().DropDownList().Name("dealprogress").BindTo(new SelectList(dealprogress, "Value", "Text", "")).DropDownHtmlAttributes(new { style = string.Format("width:{0}px", 200) }).HtmlAttributes(new { style = string.Format("width:{0}%", 100) })
+            </td>*@
         </tr>
         <tr>
-            <td colspan="3" align="center">
-                寻找匹配的名称,邮件,电话: @Html.TextBox("f-fuzzy", "", new { style = "width:200px;line-height:22px" })
+            <td colspan="2" align="left">
+                寻找匹配的名称,邮件,电话: @Html.TextBox("f-fuzzy", "", new { style = "width:200px;line-height:22px; margin-top:8px;" })
                 <input id="search" style="border: none; width: 67px; height: 21px; background-image: url('../images/chazhao.jpg');
                     vertical-align: middle;" type="button" onclick="search()" />
                 <input type="button" style="border: none; width: 67px; height: 21px; background-image: url('../images/chongzhi.jpg');
                     vertical-align: middle;" onclick="resetquery()" />
             </td>
-            <td colspan="2" align="left" style="padding-top: 6px;">
+            <td colspan="3" align="left" style="padding-top: 6px;">
                 <input type="button" style="border: none; width: 67px; height: 21px; background-image: url('../images/tianjia_4.jpg');
                     vertical-align: middle;" onclick="GetAddCompany()" />
                 <input type="button" style="border: none; width: 67px; height: 21px; background-image: url('../images/quick_entry.jpg');

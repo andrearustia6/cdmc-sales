@@ -39,243 +39,245 @@
                     {
                         var score = role.Level;
                         Html.Telerik().Menu().Name("Menu1").Items(menu =>
-                   {
-                       var loginUserIsAdmin = Employee.LoginUserIsAdmin();
-                       if (loginUserIsAdmin)
-                       {
-                           menu.Add().Text("管理员配置").ImageUrl("~/Content/Common/Icons/wpf.png").Items(item =>
-                           {
-                               item.Add().Url("~/Deal/IndexReview").Text("项目出单统计");
-                               item.Add().Text("部门").Url("~/department/index");
-                               item.Add().Text("职级").Url("~/explevel/index");
-                               item.Add().Text("权限配置").Url("~/accessright/index");
-                               item.Add().Text("项目权限").Url("~/projectright/index");
-                               item.Add().Url("~/Project/ImportCompany").Text("客户数据导入");
-                               item.Add().Url("~/Project/ImportTrace").Text("历史导入操作");
-                               item.Add().Text("模拟人配置").Url("~/SimulatorConfig/index");
-                           });
-                       }
-
-                       if (score == FinancialInterfaceRequired.LVL)
-                       {
-                           menu.Add().Text("日常工作").ImageUrl("~/Content/Common/Icons/editor.png").Items(item =>
-                           {
-                               item.Add().Url("~/Deal/ConfirmList").Text("出单到账确认");
-                               item.Add().Url("~/TargetOfMonth/ConfirmList").Text("项目月目标确认");
-                               item.Add().Url("~/Finance/Index").Text("销售提成预发表");
-                               item.Add().Url("~/Finance/CommissionIndex").Text("销售提成表");
-                           });
-                       }
-
-                       if (score == ConferenceInterfaceRequired.LVL)
-                       {
-                           menu.Add().Text("日常工作").ImageUrl("~/Content/Common/Icons/editor.png").Items(item =>
-                           {
-                               item.Add().Url("~/Deal/ConfirmList").Text("出单确认");
-                               //item.Add().Url("~/Project/ParticipantIndex").Text("参会人导出");
-                           });
-                       }
-
-
-
-                       if (score >= DirectorRequired.LVL)
-                       {
-                           menu.Add().Text("配置").ImageUrl("~/Content/Common/Icons/test.png").Items(item =>
-                           {
-                               item.Add().Text("行业").Url("~/Area/index");
-                               item.Add().Text("货币").Url("~/CurrencyType/index");
-                               item.Add().Text("项目").Url("~/ProjectType/index");
-                               item.Add().Text("评论内容").Url("~/ManageContent/Index");
-                               item.Add().Text("公司").Url("~/CompanyType/index");
-                               item.Add().Text("Package").Url("~/PackageType/index");
-                               item.Add().Text("付款").Url("~/Paymenttype/index");
-                               item.Add().Text("参会").Url("~/ParticipantType/index");
-                               item.Add().Text("模板").Url("~/TemplateType/index");
-                               item.Add().Text("Block").Url("~/OnPhoneBlockType/index");
-                               item.Add().Text("销售类型").Url("~/Salestype/index");
-                               item.Add().Text("Call List").Url("~/LeadCallType/index");
-                               item.Add().Text("区号管理").Url("~/DistrictNumber/index");
-                               item.Add().Text("成熟度").Url("~/progress/index");
-                               item.Add().Text("登陆图片").Url("~/loginpageimage/index");
-                               item.Add().Text("权限").Url("~/accessright/index");
-                               item.Add().Text("配置项目权限").Url("~/projectright/index");
-                           });
-                       }
-
-                       menu.Add().Text("查看").ImageUrl("~/Content/Common/Icons/mvc.png").Items(item =>
-                       {
-                           if (score >= SuperManagerRequired.LVL)
-                           {
-                               item.Add().Url("~/DirectorReport/ProjectsProgress").Text("报表");
-                               //if (score == DirectorRequired.LVL)
-                               //{
-                               //    item.Add().Url("~/Project/ImportTrace").Text("历史导入操作");
-                               //}
-                           }
-
-                           if (score >= SalesRequired.LVL)
-                           {
-                               item.Add().Url("~/Performance/Index").Text("考核表 2.0");
-                           }
-
-                           if (score > SalesRequired.LVL)
-                           {
-
-                               item.Add().Url("~/Deal/IndexReview").Text("项目出单统计");
-                               item.Add().Url("~/Report/LeadCalls").Text("项目CallList统计");
-                               item.Add().Url("~/Report/MemberLeadCalls").Text("销售 Call List");
-                               //item.Add().Url("~/TargetOfMonth/index").Text("项目月目标查看");
-                               item.Add().Url("~/TargetOfMonthforMember/index").Text("销售月目标查看");
-                               item.Add().Url("~/Research/ResearchIndex").Text("调研查看");
-                           }
-                           if (score == MarketInterfaceRequired.LVL)
-                           {
-
-                               item.Add().Url("~/Deal/IndexReview").Text("项目出单统计");
-                           }
-                           if (score == PoliticsInterfaceRequired.LVL)//行政身份登陆后，能看到考核结果
-                           {
-
-                               item.Add().Url("~/Performance/Index").Text("考核表 2.0");
-                           }
-                           if (score == 500 || score == 100 || score == 10)
-                           {
-                               item.Add().Url("~/ProtectedCompanys/CompanyIndex").Text("被保护的公司");
-                               item.Add().Url("~/salesReport/MemberLeadCallsChart").Text("已打Lead比较");
-                           }
-                           item.Add().Url("~/Package/index").Text("Package");
-
-                          
-
-                       });
-
-                       if (score >= ManagerRequired.LVL)
-                       {
-                           menu.Add().Text("管理菜单").ImageUrl("~/Content/Common/Icons/Chart.gif").Items(item =>
-                           {
-                               item.Add().Url("~/Project/index").Text("项目管理");
-                               item.Add().Url("~/Project/AssignCompany").Text("分配公司");
-
-
-                               if (score == SuperManagerRequired.LVL || Employee.CurrentUserName == Utl.GetSpecialSuperManager())
-                               {
-                                   item.Add().Url("~/TargetOfMonth/AdminConfirmList").Text("项目月目标确认");
-
-                               }
-                               if (score == ManagerRequired.LVL || score == SuperManagerRequired.LVL)
-                               {
-                                   item.Add().Url("~/TargetOfMonth/TargetOfMonthForProject").Text("项目月目标");
-                               }
-                               if (score == ManagerRequired.LVL)
-                               {
-                                   item.Add().Url("~/Deal/ConfirmList").Text("板块出单确认");
-                               }
-                           });
-
-                           menu.Add().Text("模板管理").ImageUrl("~/Content/Common/Icons/win.png").Items(item =>
-                           {
-                               item.Add().Url("~/Template/index").Text("通用模板");
-                               item.Add().Url("~/PhoneSaleSupport/index").Text("话术模板");
-                           });
-                       }
-
-                       if (score == AdministratorRequired.LVL)
-                       {
-                           menu.Add().Text("客户管理").ImageUrl("~/Content/Common/Icons/GridView.gif").Items(item =>
-                             {
-                                 item.Add().Url("~/Company/index").Text("公司");
-                                 // item.Add().Url("~/Lead/index").Text("客户").ImageUrl("~/Content/Common/Icons/Docking.gif");
-                             });
-                       }
-
-                       if (score == LeaderRequired.LVL | score == SalesRequired.LVL | score== ManagerRequired.LVL)
-                       {
-                           menu.Add().Text("日常工作").ImageUrl("~/Content/Common/Icons/editor.png").Items(item =>
-                           {
-                               item.Add().Url("~/Sales/mypage").Text("我的主页");
-                               //item.Add().Url("~/Research/MyIndex").Text("调研管理");
-                               //item.Add().Url("~/Sales/companyrelationshipindex").Text("可打公司");
-                               //item.Add().Url("~/Sales/AvailableCompanys").Text("可打公司 V2.0");
-                               if (Utl.GetAvaliableCompaniesRole().Where(s => s == Employee.CurrentUserName).Any())
-                               {
-                                   item.Add().Text("可打公司 V3.0").Url("~/AvaliableCompanies/index");
-                               }
-                               else
-                               {
-                                item.Add().Url("~/SalesEx/index").Text("可打公司 V2.0");
-                               }
-                               item.Add().Url("~/Sales/ContectedLeads").Text("Call List");
-
-                               item.Add().Url("~/Sales/MyDealIndex").Text("我的出单");
-                               item.Add().Url("~/Sales/PhoneSaleSupport").Text("话术支持");
-                               item.Add().Url("~/Sales/MyMessageIndex").Text("留言求助");
-                               item.Add().Url("~/TargetOfMonthForMember/MyTargetIndexEx").Text("我的月目标");
-                               if (score == LeaderRequired.LVL)
-                               {
-
-                                   item.Add().Url("~/TargetOfMonthForMember/ConfirmList").Text("月目标确认");
-                                   //item.Add().Url("~/teamleader/breakdownindex").Text("周目标");
-                                   //item.Add().Url("~/TargetOfMonthForMember/Index").Text("月目标");
-                                   // item.Add().Url("~/AssignPerformanceScore/index").Text("打分");
-                               }
-
-                              
-                               //item.Add().Url("~/Sales/MyWeeklyReport").Text("我的周报").ImageUrl("~/Content/Common/Icons/Docking.gif");
-                           });
-                       }
-                       if (score == ProductInterfaceRequired.LVL | score == MarketInterfaceRequired.LVL)
-                       {
-                           
-                           menu.Add().Text("日常工作").ImageUrl("~/Content/Common/Icons/editor.png").Items(item =>
-                           {    
-                                if (Utl.GetAvaliableCompaniesRole().Where(s => s == Employee.CurrentUserName).Any())
+                        {
+                            var loginUserIsAdmin = Employee.LoginUserIsAdmin();
+                            if (loginUserIsAdmin)
+                            {
+                                menu.Add().Text("管理员配置").ImageUrl("~/Content/Common/Icons/wpf.png").Items(item =>
                                 {
-                                    item.Add().Text("可打公司 V3.0").Url("~/AvaliableCompanies/index");
-                                } else {
-                                    item.Add().Url("~/SalesEx/index").Text("可打公司 V2.0");
+                                    item.Add().Url("~/Deal/IndexReview").Text("项目出单统计");
+                                    item.Add().Text("部门").Url("~/department/index");
+                                    item.Add().Text("职级").Url("~/explevel/index");
+                                    item.Add().Text("权限配置").Url("~/accessright/index");
+                                    item.Add().Text("项目权限").Url("~/projectright/index");
+                                    item.Add().Url("~/Project/ImportCompany").Text("客户数据导入");
+                                    item.Add().Url("~/Project/ImportTrace").Text("历史导入操作");
+                                    item.Add().Text("模拟人配置").Url("~/SimulatorConfig/index");
+                                });
+                            }
+
+                            if (score == FinancialInterfaceRequired.LVL)
+                            {
+                                menu.Add().Text("日常工作").ImageUrl("~/Content/Common/Icons/editor.png").Items(item =>
+                                {
+                                    item.Add().Url("~/Deal/ConfirmList").Text("出单到账确认");
+                                    item.Add().Url("~/TargetOfMonth/ConfirmList").Text("项目月目标确认");
+                                    item.Add().Url("~/Finance/Index").Text("销售提成预发表");
+                                    item.Add().Url("~/Finance/CommissionIndex").Text("销售提成表");
+                                });
+                            }
+
+                            if (score == ConferenceInterfaceRequired.LVL)
+                            {
+                                menu.Add().Text("日常工作").ImageUrl("~/Content/Common/Icons/editor.png").Items(item =>
+                                {
+                                    item.Add().Url("~/Deal/ConfirmList").Text("出单确认");
+                                    //item.Add().Url("~/Project/ParticipantIndex").Text("参会人导出");
+                                });
+                            }
+
+
+
+                            if (score >= DirectorRequired.LVL)
+                            {
+                                menu.Add().Text("配置").ImageUrl("~/Content/Common/Icons/test.png").Items(item =>
+                                {
+                                    item.Add().Text("行业").Url("~/Area/index");
+                                    item.Add().Text("货币").Url("~/CurrencyType/index");
+                                    item.Add().Text("项目").Url("~/ProjectType/index");
+                                    item.Add().Text("评论内容").Url("~/ManageContent/Index");
+                                    item.Add().Text("公司").Url("~/CompanyType/index");
+                                    item.Add().Text("Package").Url("~/PackageType/index");
+                                    item.Add().Text("付款").Url("~/Paymenttype/index");
+                                    item.Add().Text("参会").Url("~/ParticipantType/index");
+                                    item.Add().Text("模板").Url("~/TemplateType/index");
+                                    item.Add().Text("Block").Url("~/OnPhoneBlockType/index");
+                                    item.Add().Text("销售类型").Url("~/Salestype/index");
+                                    item.Add().Text("Call List").Url("~/LeadCallType/index");
+                                    item.Add().Text("区号管理").Url("~/DistrictNumber/index");
+                                    item.Add().Text("成熟度").Url("~/progress/index");
+                                    item.Add().Text("登陆图片").Url("~/loginpageimage/index");
+                                    item.Add().Text("权限").Url("~/accessright/index");
+                                    item.Add().Text("配置项目权限").Url("~/projectright/index");
+                                });
+                            }
+
+                            menu.Add().Text("查看").ImageUrl("~/Content/Common/Icons/mvc.png").Items(item =>
+                            {
+                                if (score >= SuperManagerRequired.LVL)
+                                {
+                                    item.Add().Url("~/DirectorReport/ProjectsProgress").Text("报表");
+                                    //if (score == DirectorRequired.LVL)
+                                    //{
+                                    //    item.Add().Url("~/Project/ImportTrace").Text("历史导入操作");
+                                    //}
                                 }
-                           });
-                       }
-                       if (score == MarketInterfaceRequired.LVL)
-                       {
-                           menu.Add().Text("客户信息").ImageUrl("~/Content/Common/Icons/GridView.gif").Items(item =>
-                           {
-                               item.Add().Url("~/MarketInterface/MarketIndex").Text("客户邮箱");
-                           });
-                       }
 
-                       if (score == ProductInterfaceRequired.LVL)
-                       {
-                           menu.Add().Text("公司信息").ImageUrl("~/Content/Common/Icons/GridView.gif").Items(item =>
-                           {
-                               item.Add().Url("~/ProductInterface/CompanyRelationshipIndex").Text("项目公司");
-                               item.Add().Url("~/ProductInterface/MyMessageIndex").Text("留言答疑");
-                               item.Add().Url("~/ProductInterface/MyProjectIndex").Text("项目信息");
-                               item.Add().Url("~/news/Index").Text("项目新闻");
+                                if (score >= SalesRequired.LVL)
+                                {
+                                    item.Add().Url("~/Performance/Index").Text("考核表 2.0");
+                                }
 
-                           });
-                           menu.Add().Text("管理菜单").ImageUrl("~/Content/Common/Icons/Chart.gif").Items(item =>
-                           {
-                               item.Add().Url("~/LeadCall/Index").Text("致电结果描述");//研发角色登陆后看到致电结果描述
-                           });
-                       }
+                                if (score > SalesRequired.LVL)
+                                {
 
-                       if (score == ImportingInterfaceRequired.LVL)
-                       {
-                           menu.Add().Text("日常工作").ImageUrl("~/Content/Common/Icons/editor.png").Items(item =>
-                           {
-                               item.Add().Url("~/Project/ImportCompany").Text("客户数据导入");
-                               item.Add().Url("~/Project/ImportTrace").Text("历史导入操作");
-                           });
-                       }
+                                    item.Add().Url("~/Deal/IndexReview").Text("项目出单统计");
+                                    item.Add().Url("~/Report/LeadCalls").Text("项目CallList统计");
+                                    item.Add().Url("~/Report/MemberLeadCalls").Text("销售 Call List");
+                                    //item.Add().Url("~/TargetOfMonth/index").Text("项目月目标查看");
+                                    item.Add().Url("~/TargetOfMonthforMember/index").Text("销售月目标查看");
+                                    item.Add().Url("~/Research/ResearchIndex").Text("调研查看");
+                                }
+                                if (score == MarketInterfaceRequired.LVL)
+                                {
 
-                       menu.Add().Text("销售信息").ImageUrl("~/Content/Common/Icons/docking.gif").Items(item =>
-                       {
-                           //item.Add().Url("~/Account/index").Text("账号管理");
-                           item.Add().Url("~/EmployeeRole/index").Text("账号管理 V2.0");
-                       });
+                                    item.Add().Url("~/Deal/IndexReview").Text("项目出单统计");
+                                }
+                                if (score == PoliticsInterfaceRequired.LVL)//行政身份登陆后，能看到考核结果
+                                {
 
-                   }).Render();
+                                    item.Add().Url("~/Performance/Index").Text("考核表 2.0");
+                                }
+                                if (score == 500 || score == 100 || score == 10)
+                                {
+                                    item.Add().Url("~/ProtectedCompanys/CompanyIndex").Text("被保护的公司");
+                                    item.Add().Url("~/salesReport/MemberLeadCallsChart").Text("已打Lead比较");
+                                }
+                                item.Add().Url("~/Package/index").Text("Package");
+
+
+
+                            });
+
+                            if (score >= ManagerRequired.LVL)
+                            {
+                                menu.Add().Text("管理菜单").ImageUrl("~/Content/Common/Icons/Chart.gif").Items(item =>
+                                {
+                                    item.Add().Url("~/Project/index").Text("项目管理");
+                                    item.Add().Url("~/Project/AssignCompany").Text("分配公司");
+
+
+                                    if (score == SuperManagerRequired.LVL || Employee.CurrentUserName == Utl.GetSpecialSuperManager())
+                                    {
+                                        item.Add().Url("~/TargetOfMonth/AdminConfirmList").Text("项目月目标确认");
+
+                                    }
+                                    if (score == ManagerRequired.LVL || score == SuperManagerRequired.LVL)
+                                    {
+                                        item.Add().Url("~/TargetOfMonth/TargetOfMonthForProject").Text("项目月目标");
+                                    }
+                                    if (score == ManagerRequired.LVL)
+                                    {
+                                        item.Add().Url("~/Deal/ConfirmList").Text("板块出单确认");
+                                    }
+                                });
+
+                                menu.Add().Text("模板管理").ImageUrl("~/Content/Common/Icons/win.png").Items(item =>
+                                {
+                                    item.Add().Url("~/Template/index").Text("通用模板");
+                                    item.Add().Url("~/PhoneSaleSupport/index").Text("话术模板");
+                                });
+                            }
+
+                            if (score == AdministratorRequired.LVL)
+                            {
+                                menu.Add().Text("客户管理").ImageUrl("~/Content/Common/Icons/GridView.gif").Items(item =>
+                                {
+                                    item.Add().Url("~/Company/index").Text("公司");
+                                    // item.Add().Url("~/Lead/index").Text("客户").ImageUrl("~/Content/Common/Icons/Docking.gif");
+                                });
+                            }
+
+                            if (score == LeaderRequired.LVL | score == SalesRequired.LVL | score == ManagerRequired.LVL)
+                            {
+                                menu.Add().Text("日常工作").ImageUrl("~/Content/Common/Icons/editor.png").Items(item =>
+                                {
+                                    item.Add().Url("~/Sales/mypage").Text("我的主页");
+                                    //item.Add().Url("~/Research/MyIndex").Text("调研管理");
+                                    //item.Add().Url("~/Sales/companyrelationshipindex").Text("可打公司");
+                                    //item.Add().Url("~/Sales/AvailableCompanys").Text("可打公司 V2.0");
+                                    if (Utl.GetAvaliableCompaniesRole().Where(s => s == Employee.CurrentUserName).Any())
+                                    {
+                                        item.Add().Text("可打公司 V3.0").Url("~/AvaliableCompanies/index");
+                                    }
+                                    else
+                                    {
+                                        item.Add().Url("~/SalesEx/index").Text("可打公司 V2.0");
+                                    }
+                                    if (score == LeaderRequired.LVL | score == SalesRequired.LVL)
+                                    {
+                                        item.Add().Url("~/Sales/ContectedLeads").Text("Call List");
+                                        item.Add().Url("~/Sales/MyDealIndex").Text("我的出单");
+                                        item.Add().Url("~/Sales/PhoneSaleSupport").Text("话术支持");
+                                        item.Add().Url("~/Sales/MyMessageIndex").Text("留言求助");
+                                        item.Add().Url("~/TargetOfMonthForMember/MyTargetIndexEx").Text("我的月目标");
+                                    }
+                                    if (score == LeaderRequired.LVL)
+                                    {
+
+                                        item.Add().Url("~/TargetOfMonthForMember/ConfirmList").Text("月目标确认");
+                                        //item.Add().Url("~/teamleader/breakdownindex").Text("周目标");
+                                        //item.Add().Url("~/TargetOfMonthForMember/Index").Text("月目标");
+                                        // item.Add().Url("~/AssignPerformanceScore/index").Text("打分");
+                                    }
+                                    //item.Add().Url("~/Sales/MyWeeklyReport").Text("我的周报").ImageUrl("~/Content/Common/Icons/Docking.gif");
+                                });
+                            }
+                            if (score == ProductInterfaceRequired.LVL | score == MarketInterfaceRequired.LVL)
+                            {
+
+                                menu.Add().Text("日常工作").ImageUrl("~/Content/Common/Icons/editor.png").Items(item =>
+                                {
+                                    if (Utl.GetAvaliableCompaniesRole().Where(s => s == Employee.CurrentUserName).Any())
+                                    {
+                                        item.Add().Text("可打公司 V3.0").Url("~/AvaliableCompanies/index");
+                                    }
+                                    else
+                                    {
+                                        item.Add().Url("~/SalesEx/index").Text("可打公司 V2.0");
+                                    }
+                                });
+                            }
+                            if (score == MarketInterfaceRequired.LVL)
+                            {
+                                menu.Add().Text("客户信息").ImageUrl("~/Content/Common/Icons/GridView.gif").Items(item =>
+                                {
+                                    item.Add().Url("~/MarketInterface/MarketIndex").Text("客户邮箱");
+                                });
+                            }
+
+                            if (score == ProductInterfaceRequired.LVL)
+                            {
+                                menu.Add().Text("公司信息").ImageUrl("~/Content/Common/Icons/GridView.gif").Items(item =>
+                                {
+                                    item.Add().Url("~/ProductInterface/CompanyRelationshipIndex").Text("项目公司");
+                                    item.Add().Url("~/ProductInterface/MyMessageIndex").Text("留言答疑");
+                                    item.Add().Url("~/ProductInterface/MyProjectIndex").Text("项目信息");
+                                    item.Add().Url("~/news/Index").Text("项目新闻");
+
+                                });
+                                menu.Add().Text("管理菜单").ImageUrl("~/Content/Common/Icons/Chart.gif").Items(item =>
+                                {
+                                    item.Add().Url("~/LeadCall/Index").Text("致电结果描述");//研发角色登陆后看到致电结果描述
+                                });
+                            }
+
+                            if (score == ImportingInterfaceRequired.LVL)
+                            {
+                                menu.Add().Text("日常工作").ImageUrl("~/Content/Common/Icons/editor.png").Items(item =>
+                                {
+                                    item.Add().Url("~/Project/ImportCompany").Text("客户数据导入");
+                                    item.Add().Url("~/Project/ImportTrace").Text("历史导入操作");
+                                });
+                            }
+
+                            menu.Add().Text("销售信息").ImageUrl("~/Content/Common/Icons/docking.gif").Items(item =>
+                            {
+                                //item.Add().Url("~/Account/index").Text("账号管理");
+                                item.Add().Url("~/EmployeeRole/index").Text("账号管理 V2.0");
+                            });
+
+                        }).Render();
                     }
                 }
             </div>

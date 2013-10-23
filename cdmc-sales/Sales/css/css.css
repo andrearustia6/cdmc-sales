@@ -282,7 +282,7 @@ b.r3{
 	}
 .text-overflow {   
         display:block;/*内联对象需加*/   
-        width:150px;/*指定宽度*/   
+        width:130px;/*指定宽度*/   
         word-break:keep-all;/* 不换行 */   
         white-space:nowrap;/* 强制在同一行内显示所有文本，直到文本结束或者遭遇 br 对象。不换行 */   
         overflow:hidden;/* 内容超出宽度时隐藏超出部分的内容 */   
