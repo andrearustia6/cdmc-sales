@@ -799,69 +799,6 @@ namespace Sales.Controllers
             string template = "";
             string filename = templatename + ".html";
 
-            //if (!String.IsNullOrEmpty(callType))
-            //{
-            //    #region callType mapping to Template
-            //    switch (callType)
-            //    {
-            //        case "2":
-            //            if(lead.DistrictNumberID==null)
-            //                filename = "template_ch_01.html";
-            //            else
-            //                filename = "template_en_01.html";
-            //            break;
-            //        case "3":
-            //            if (lead.DistrictNumberID == null)
-            //                filename = "template_ch_01.html";
-            //            else
-            //                filename = "template_en_01.html";
-            //            break;
-            //        case "4":
-            //            if (lead.DistrictNumberID == null)
-            //                filename = "template_ch_01.html";
-            //            else
-            //                filename = "template_en_01.html";
-            //            break;
-            //        case "5":
-            //            if (lead.DistrictNumberID == null)
-            //                filename = "template_ch_01.html";
-            //            else
-            //                filename = "template_en_01.html";
-            //            break;
-            //        case "6":
-            //            if (lead.DistrictNumberID == null)
-            //                filename = "template_ch_01.html";
-            //            else
-            //                filename = "template_en_01.html";
-            //            break;
-            //        case "7":
-            //            if (lead.DistrictNumberID == null)
-            //                filename = "template_ch_01.html";
-            //            else
-            //                filename = "template_en_01.html";
-            //            break;
-            //        case "8":
-            //            if (lead.DistrictNumberID == null)
-            //                filename = "template_ch_01.html";
-            //            else
-            //                filename = "template_en_01.html";
-            //            break;
-            //        case "9":
-            //            if (lead.DistrictNumberID == null)
-            //                filename = "template_ch_01.html";
-            //            else
-            //                filename = "template_en_01.html";
-            //            break;
-            //        default:
-            //            if (lead.DistrictNumberID == null)
-            //                filename = "template_ch_01.html";
-            //            else
-            //                filename = "template_en_01.html";
-            //            break;
-            //    }
-            //    #endregion
-            //}
-
             #region Read template from file.
             string file = AppDomain.CurrentDomain.BaseDirectory + "/App_Data/" + filename;
             if (System.IO.File.Exists(file))
@@ -869,18 +806,10 @@ namespace Sales.Controllers
                 FileInfo fi1einfo = new FileInfo(file);
                 using (StreamReader sr = fi1einfo.OpenText())
                 {
-                    //bool read = false;
                     string s = "";
                     while ((s = sr.ReadLine()) != null)
                     {
-                        //if (s.Contains("<table id=\"mainContent\""))
-                        //    read = true;
-
-                        //if (read)
                         template += s;
-
-                        //if (s.Contains("</table class=\"endflag\">"))
-                        //    read = false;
                     }
                 }
             }
@@ -921,15 +850,22 @@ namespace Sales.Controllers
         /// <param name="content"></param>
         public bool SendEmail(string fromEmail, string fromName, string toEmail, string toName, string content)
         {
+            UserInfoModel currUser =  Employee.GetUserByName(Employee.CurrentUserName);
+
+            if ((currUser == null) || (String.IsNullOrEmpty(currUser.Email)) || string.IsNullOrEmpty(currUser.Password))
+                return false;
+
             // Send email
             SmtpClient smtp = new SmtpClient();
             smtp.Host = ConfigurationManager.AppSettings["SMTP_Server"].ToString();
             smtp.Port = Convert.ToInt32(ConfigurationManager.AppSettings["SMTP_Port"].ToString());
-            NetworkCredential SMTPUserInfo = new NetworkCredential(ConfigurationManager.AppSettings["SMTP_Username"].ToString(), ConfigurationManager.AppSettings["SMTP_Password"].ToString());
+            //NetworkCredential SMTPUserInfo = new NetworkCredential(ConfigurationManager.AppSettings["SMTP_Username"].ToString(), ConfigurationManager.AppSettings["SMTP_Password"].ToString());
+            NetworkCredential SMTPUserInfo = new NetworkCredential(currUser.Email, currUser.Password);
             smtp.UseDefaultCredentials = false;
             smtp.Credentials = SMTPUserInfo;
 
-            MailAddress from = new MailAddress("system@cdmc.org.cn", "system@cdmc.org.cn", System.Text.Encoding.Unicode);
+            //MailAddress from = new MailAddress("system@cdmc.org.cn", "system@cdmc.org.cn", System.Text.Encoding.Unicode);
+            MailAddress from = new MailAddress(fromEmail, fromName, System.Text.Encoding.Unicode);
             MailAddress to = new MailAddress(toEmail, toName, System.Text.Encoding.UTF8);
             MailMessage message = new MailMessage(from, to);
             message.SubjectEncoding = System.Text.Encoding.UTF8;
