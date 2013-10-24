@@ -541,6 +541,28 @@ namespace Utl
             }
             return selectList;
         }
+        public static IEnumerable<SelectListItem> ProjectTypeSelectList()
+        {
+            List<SelectListItem> selectList = new List<SelectListItem>();
+            //var query = from c in CH.DB.CompanyRelationships.Where(w => w.Project.ID == projectid && w.Company.ID == companyid) select c.Company.Leads;
+            var types = CH.GetAllData<ProjectType>();
+            foreach (ProjectType type in types)
+            {
+                SelectListItem selectListItem = new SelectListItem { Text = type.Name, Value = type.ID.ToString() };
+                selectList.Add(selectListItem);
+            }
+            return selectList;
+        }
 
+        public static IEnumerable<SelectListItem> YearSelectList()
+        {
+            List<SelectListItem> selectList = new List<SelectListItem>();
+            selectList.Add(new SelectListItem() { Text = "2012", Value = "2012" });
+            selectList.Add(new SelectListItem() { Text = "2013", Value = "2013" });
+            selectList.Add(new SelectListItem() { Text = "2014", Value = "2014" });
+            selectList.Add(new SelectListItem() { Text = "2015", Value = "2015" });
+            selectList.Add(new SelectListItem() { Text = "2016", Value = "2016" });
+            return selectList;
+        }
     }
 }

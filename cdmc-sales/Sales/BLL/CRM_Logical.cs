@@ -717,6 +717,7 @@ namespace BLL
                 if (week == 3) return f.TargetOf4thWeek;
                 else return f.TargetOf5thWeek;
             }
+
             public static List<ProjectWeekPerformance> GetProjectsReportLastweek(DateTime? day)
             {
                 if (day == null)
@@ -756,7 +757,7 @@ namespace BLL
                             Target = 0,
                             Income = checkins.Where(w => w.ProjectID == p.ID).Sum(s => s.Income),
                             Payment = dealins.Where(w => w.ProjectID == p.ID).Sum(s => s.Payment),
-                            RMBPayment = dealins.Where(w => w.ProjectID == p.ID && w.Currencytype.Name=="RMB").Sum(s => s.Payment),
+                            RMBPayment = dealins.Where(w => w.ProjectID == p.ID && w.Currencytype.Name == "RMB").Sum(s => s.Payment),
                             USDPayment = dealins.Where(w => w.ProjectID == p.ID && w.Currencytype.Name == "USD").Sum(s => s.Payment),
                             ProjectName = p.Name_CH,
                             ProjectID = p.ID,
@@ -828,6 +829,366 @@ namespace BLL
                 }
                 return list;
             }
+
+            public static List<AjaxProjectsProgressByWeek> GetProjectsProgressByWeek(DateTime? day, int? typeid, string manager = null)
+            {
+                var ps = CRM_Logical.GetUserInvolveProject();
+                if (typeid != null)
+                    ps = ps.Where(p => p.ProjectTypeID == typeid).ToList();
+                if (!string.IsNullOrEmpty(manager))
+                    ps = ps.Where(p => p.Manager == manager).ToList();
+                var plist = from p in ps
+                           group p by new {p.ID, p.ProjectUnitCode, p.ProjectUnitName, p.ConferenceStartDate } into grp
+                           select new
+                           {
+                               ID=grp.Key.ID,
+                               Name = grp.Key.ProjectUnitName,
+                               Code = grp.Key.ProjectUnitCode,
+                               StartDate = grp.Key.ConferenceStartDate
+                           };
+                if (day == null)
+                    day = DateTime.Now.AddDays(1); ;
+                //day = day.Value.AddDays(25);
+                var weekend = day.Value;
+                if (day.Value.DayOfWeek == DayOfWeek.Sunday)
+                    weekend = day.Value.AddDays(-3);
+                else if (day.Value.DayOfWeek == DayOfWeek.Saturday)
+                    weekend = day.Value.AddDays(-2);
+                else if (day.Value.DayOfWeek == DayOfWeek.Friday)
+                    weekend = day.Value.AddDays(-1);
+                else if (day.Value.DayOfWeek == DayOfWeek.Thursday)
+                    weekend = day.Value.AddDays(-7);
+                else if (day.Value.DayOfWeek == DayOfWeek.Wednesday)
+                    weekend = day.Value.AddDays(-6);
+                else if (day.Value.DayOfWeek == DayOfWeek.Tuesday)
+                    weekend = day.Value.AddDays(-5);
+                else if (day.Value.DayOfWeek == DayOfWeek.Monday)
+                    weekend = day.Value.AddDays(-4);
+                //var weekend = day.Value.AddDays(0 - (day.Value.DayOfWeek + 3));//3天表示周五周六周日三天。
+                var weekstart = weekend.AddDays(-6);
+                var lastweekstart = weekstart.AddDays(-6);
+                var lastweekend = weekend.AddDays(-6);
+                ////本周业绩
+                //var dealins = from d in GetDeals().Where(w => w.SignDate >= weekstart && w.SignDate < weekend) select d;
+                ////本周入账
+                //var checkins = from d in GetDeals().Where(w => w.ActualPaymentDate >= weekstart && w.ActualPaymentDate < weekend) select d;
+                var alldeals = GetDeals();
+                //月目标
+                var targets = from t in CH.DB.TargetOfMonths
+                              select t;
+                var cs =from l in plist
+                        select new AjaxProjectsProgressByWeek()
+                        {
+                            ProjectUnitName = l.Name,
+                            ProjectUnitCode = l.Code,
+                            ProjectID=l.ID,
+                            LastWeekRMBTotalDealIn = alldeals.Where(w => w.Project.ProjectUnitCode == l.Code && w.Currencytype.Name == "RMB" && w.SignDate >= lastweekstart && w.SignDate < lastweekend).Sum(s => (decimal?)s.Payment),
+                            LastWeekUSDTotalDealIn = alldeals.Where(w => w.Project.ProjectUnitCode == l.Code && w.Currencytype.Name == "USD" && w.SignDate >= lastweekstart && w.SignDate < lastweekend).Sum(s => (decimal?)s.Payment),
+                            LastWeekCheckIn = alldeals.Where(w => w.Project.ProjectUnitCode == l.Code && w.ActualPaymentDate >= lastweekstart && w.ActualPaymentDate < lastweekend).Sum(s => (decimal?)s.Income),
+
+                            CurrentWeekRMBTotalDealIn = alldeals.Where(w => w.Project.ProjectUnitCode == l.Code && w.Currencytype.Name == "RMB" && w.SignDate >= weekstart && w.SignDate < weekend).Sum(s => (decimal?)s.Payment),
+                            CurrentWeekUSDTotalDealIn = alldeals.Where(w => w.Project.ProjectUnitCode == l.Code && w.Currencytype.Name == "USD" && w.SignDate >= weekstart && w.SignDate < weekend).Sum(s => (decimal?)s.Payment),
+                            CurrentWeekCheckIn = alldeals.Where(w => w.Project.ProjectUnitCode == l.Code && w.ActualPaymentDate >= weekstart && w.ActualPaymentDate < weekend).Sum(s => (decimal?)s.Income),
+                        };
+
+                var rate = CH.DB.CurrencyTypes.Where(r => r.Name == "USD").Select(r => r.Rate).FirstOrDefault();
+                var list = cs.ToList();
+                foreach (var l in list)
+                {
+                    l.rate = rate;
+                    targets = targets.Where(w => w.ProjectID == l.ProjectID);
+                    decimal? checkintarget;//入账目标
+                    decimal? dealintarget;//业绩目标
+                    if (weekend.Month != weekstart.Month)//跨月
+                    {
+                        //处理本周目标
+                        DateTime matchdate = DateTime.Parse(weekstart.Year.ToString() + "-" + weekstart.Month.ToString() + "-" + "1");
+                        //上月最后一周
+                        dealintarget = targets.Where(t => t.StartDate == matchdate).Select(t => t.TargetOf5thWeek).FirstOrDefault();
+                        checkintarget = targets.Where(t => t.StartDate == matchdate).Select(t => t.CheckInOf5thWeek).FirstOrDefault();
+                        matchdate = DateTime.Parse(weekend.Year.ToString() + "-" + weekend.Month.ToString() + "-" + "1");
+                        //本月第一周
+                        dealintarget = dealintarget + targets.Where(t => t.StartDate == matchdate).Select(t => t.TargetOf1stWeek).FirstOrDefault();
+                        checkintarget = checkintarget + targets.Where(t => t.StartDate == matchdate).Select(t => t.CheckInOf1stWeek).FirstOrDefault();
+                        l.CurrentWeekDealInTarget = dealintarget;
+                        l.CurrentWeekCheckInTarget = checkintarget;
+                        //处理上周目标
+                        matchdate = DateTime.Parse(lastweekstart.Year.ToString() + "-" + lastweekstart.Month.ToString() + "-" + "1");
+                        //上月最后一周
+                        dealintarget = targets.Where(t => t.StartDate == matchdate).Select(t => t.TargetOf5thWeek).FirstOrDefault();
+                        checkintarget = targets.Where(t => t.StartDate == matchdate).Select(t => t.CheckInOf5thWeek).FirstOrDefault();
+                        matchdate = DateTime.Parse(lastweekend.Year.ToString() + "-" + lastweekend.Month.ToString() + "-" + "1");
+                        //本月第一周
+                        dealintarget = dealintarget + targets.Where(t => t.StartDate == matchdate).Select(t => t.TargetOf1stWeek).FirstOrDefault();
+                        checkintarget = checkintarget + targets.Where(t => t.StartDate == matchdate).Select(t => t.CheckInOf1stWeek).FirstOrDefault();
+                        l.LastWeekDealInTarget= dealintarget;
+                        l.LastWeekCheckInTarget = checkintarget;
+                    }
+                    else
+                    {
+                        int i = weekend.Day;
+                        int weekindex = 0;
+                        while (i > 0)
+                        {
+                            if (DateTime.Parse(weekend.Year.ToString() + "-" + weekend.Month.ToString() + "-" + i.ToString()).DayOfWeek == DayOfWeek.Thursday)
+                                weekindex++;
+                            i--;
+                        }
+                        DateTime matchdate = DateTime.Parse(weekend.Year.ToString() + "-" + weekend.Month.ToString() + "-" + "1");
+                        if (weekindex == 1)
+                        {
+                            l.CurrentWeekDealInTarget = targets.Where(t => t.StartDate == matchdate).Select(t => t.TargetOf1stWeek).FirstOrDefault();
+                            l.CurrentWeekCheckInTarget = targets.Where(t => t.StartDate == matchdate).Select(t => t.CheckInOf1stWeek).FirstOrDefault();
+                        }
+                        else if (weekindex == 2)
+                        {
+                            l.CurrentWeekDealInTarget = targets.Where(t => t.StartDate == matchdate).Select(t => t.TargetOf2ndWeek).FirstOrDefault();
+                            l.CurrentWeekCheckInTarget = targets.Where(t => t.StartDate == matchdate).Select(t => t.CheckInOf2ndWeek).FirstOrDefault();
+                        }
+                        else if (weekindex == 3)
+                        {
+                            l.CurrentWeekDealInTarget = targets.Where(t => t.StartDate == matchdate).Select(t => t.TargetOf3rdWeek).FirstOrDefault();
+                            l.CurrentWeekCheckInTarget = targets.Where(t => t.StartDate == matchdate).Select(t => t.CheckInOf3rdWeek).FirstOrDefault();
+                        }
+                        else if (weekindex == 4)
+                        {
+                            l.CurrentWeekDealInTarget = targets.Where(t => t.StartDate == matchdate).Select(t => t.TargetOf4thWeek).FirstOrDefault();
+                            l.CurrentWeekCheckInTarget = targets.Where(t => t.StartDate == matchdate).Select(t => t.CheckInOf4thWeek).FirstOrDefault();
+                        }
+                        else if (weekindex == 5)
+                        {
+                            l.CurrentWeekDealInTarget = targets.Where(t => t.StartDate == matchdate).Select(t => t.TargetOf5thWeek).FirstOrDefault();
+                            l.CurrentWeekCheckInTarget = targets.Where(t => t.StartDate == matchdate).Select(t => t.CheckInOf5thWeek).FirstOrDefault();
+                        }
+                        //处理上周目标
+                        i = lastweekend.Day;
+                        weekindex = 0;
+                        while (i > 0)
+                        {
+                            if (DateTime.Parse(lastweekend.Year.ToString() + "-" + lastweekend.Month.ToString() + "-" + i.ToString()).DayOfWeek == DayOfWeek.Thursday)
+                                weekindex++;
+                            i--;
+                        }
+                        matchdate = DateTime.Parse(lastweekend.Year.ToString() + "-" + lastweekend.Month.ToString() + "-" + "1");
+                        if (weekindex == 1)
+                        {
+                            l.LastWeekDealInTarget = targets.Where(t => t.StartDate == matchdate).Select(t => t.TargetOf1stWeek).FirstOrDefault();
+                            l.LastWeekCheckInTarget = targets.Where(t => t.StartDate == matchdate).Select(t => t.CheckInOf1stWeek).FirstOrDefault();
+                        }
+                        else if (weekindex == 2)
+                        {
+                            l.LastWeekDealInTarget = targets.Where(t => t.StartDate == matchdate).Select(t => t.TargetOf2ndWeek).FirstOrDefault();
+                            l.LastWeekCheckInTarget = targets.Where(t => t.StartDate == matchdate).Select(t => t.CheckInOf2ndWeek).FirstOrDefault();
+                        }
+                        else if (weekindex == 3)
+                        {
+                            l.LastWeekDealInTarget = targets.Where(t => t.StartDate == matchdate).Select(t => t.TargetOf3rdWeek).FirstOrDefault();
+                            l.LastWeekCheckInTarget = targets.Where(t => t.StartDate == matchdate).Select(t => t.CheckInOf3rdWeek).FirstOrDefault();
+                        }
+                        else if (weekindex == 4)
+                        {
+                            l.LastWeekDealInTarget = targets.Where(t => t.StartDate == matchdate).Select(t => t.TargetOf4thWeek).FirstOrDefault();
+                            l.LastWeekCheckInTarget = targets.Where(t => t.StartDate == matchdate).Select(t => t.CheckInOf4thWeek).FirstOrDefault();
+                        }
+                        else if (weekindex == 5)
+                        {
+                            l.LastWeekDealInTarget = targets.Where(t => t.StartDate == matchdate).Select(t => t.TargetOf5thWeek).FirstOrDefault();
+                            l.LastWeekCheckInTarget = targets.Where(t => t.StartDate == matchdate).Select(t => t.CheckInOf5thWeek).FirstOrDefault();
+                        }
+                    }
+                }
+                return list;
+            }
+
+            public static List<AjaxMemberProjectsProgressByWeek> GetMemberProjectsProgressByWeek(DateTime? day, int? typeid, string manager = null)
+            {
+                var ps = CRM_Logical.GetUserInvolveProject();
+                if (typeid != null)
+                    ps = ps.Where(p => p.ProjectTypeID == typeid).ToList();
+                if (!string.IsNullOrEmpty(manager))
+                    ps = ps.Where(p => p.Manager == manager).ToList();
+                //IEnumerable<int> idList = ps.Select(o => o.ID);
+                //var plist = (from p in idList
+                //               join m in CH.DB.Members on p equals m.ProjectID
+                //               select new
+                //               {
+                //                   Sales = m.Name,
+                //                   ProjectID = p,
+                //                   ProjectUnitName = m.Project.ProjectUnitName,
+                //                   ConferenceStartDate = m.Project.ConferenceStartDate
+                //               }).ToList();
+                IEnumerable<int> idList = ps.Select(o => o.ID);
+                var deals = from d in CH.DB.Deals where idList.Contains((int)d.ProjectID) select d;
+                
+                if (day == null)
+                    day = DateTime.Now.AddDays(1); ;
+                //day = day.Value.AddDays(25);
+                var weekend = day.Value;
+                if (day.Value.DayOfWeek == DayOfWeek.Sunday)
+                    weekend = day.Value.AddDays(-3);
+                else if (day.Value.DayOfWeek == DayOfWeek.Saturday)
+                    weekend = day.Value.AddDays(-2);
+                else if (day.Value.DayOfWeek == DayOfWeek.Friday)
+                    weekend = day.Value.AddDays(-1);
+                else if (day.Value.DayOfWeek == DayOfWeek.Thursday)
+                    weekend = day.Value.AddDays(-7);
+                else if (day.Value.DayOfWeek == DayOfWeek.Wednesday)
+                    weekend = day.Value.AddDays(-6);
+                else if (day.Value.DayOfWeek == DayOfWeek.Tuesday)
+                    weekend = day.Value.AddDays(-5);
+                else if (day.Value.DayOfWeek == DayOfWeek.Monday)
+                    weekend = day.Value.AddDays(-4);
+                //var weekend = day.Value.AddDays(0 - (day.Value.DayOfWeek + 3));//3天表示周五周六周日三天。
+                var weekstart = weekend.AddDays(-6);
+                var lastweekstart = weekstart.AddDays(-6);
+                var lastweekend = weekend.AddDays(-6);
+                ////本周业绩
+                //var dealins = from d in GetDeals().Where(w => w.SignDate >= weekstart && w.SignDate < weekend) select d;
+                ////本周入账
+                //var checkins = from d in GetDeals().Where(w => w.ActualPaymentDate >= weekstart && w.ActualPaymentDate < weekend) select d;
+                //var alldeals = GetDeals();
+                //月目标
+                var targets = from t in CH.DB.TargetOfMonthForMembers
+                              select t;
+                //var list = from d in deals
+                //           group d by new { d.Sales,d.ProjectID,d.Project.ProjectUnitName,d.Project.ConferenceStartDate } into grp
+                var cs = from d in deals
+                         group d by new { d.Sales,d.ProjectID,d.Project.ProjectUnitName,d.Project.ConferenceStartDate } into grp
+                         select new AjaxMemberProjectsProgressByWeek()
+                         {
+                             Member = grp.Key.Sales,
+                             ProjectUnitName = grp.Key.ProjectUnitName,
+                             LastWeekRMBTotalDealIn = deals.Where(w => w.Project.ID == grp.Key.ProjectID && w.Sales == grp.Key.Sales && w.Currencytype.Name == "RMB" && w.SignDate >= lastweekstart && w.SignDate < lastweekend).Sum(s => (decimal?)s.Payment),
+                             LastWeekUSDTotalDealIn = deals.Where(w => w.Project.ID == grp.Key.ProjectID && w.Sales == grp.Key.Sales && w.Currencytype.Name == "USD" && w.SignDate >= lastweekstart && w.SignDate < lastweekend).Sum(s => (decimal?)s.Payment),
+                             LastWeekCheckIn = deals.Where(w => w.Project.ID == grp.Key.ProjectID && w.Sales == grp.Key.Sales && w.ActualPaymentDate >= lastweekstart && w.ActualPaymentDate < lastweekend).Sum(s => (decimal?)s.Income),
+
+                             CurrentWeekRMBTotalDealIn = deals.Where(w => w.Project.ID == grp.Key.ProjectID && w.Sales == grp.Key.Sales && w.Currencytype.Name == "RMB" && w.SignDate >= weekstart && w.SignDate < weekend).Sum(s => (decimal?)s.Payment),
+                             CurrentWeekUSDTotalDealIn = deals.Where(w => w.Project.ID == grp.Key.ProjectID && w.Sales == grp.Key.Sales && w.Currencytype.Name == "USD" && w.SignDate >= weekstart && w.SignDate < weekend).Sum(s => (decimal?)s.Payment),
+                             CurrentWeekCheckIn = deals.Where(w => w.Project.ID == grp.Key.ProjectID && w.Sales == grp.Key.Sales && w.ActualPaymentDate >= weekstart && w.ActualPaymentDate < weekend).Sum(s => (decimal?)s.Income),
+                         };
+                //var cs = from l in plist
+                //         select new AjaxMemberProjectsProgressByWeek()
+                //         {
+                //             Member = l.Sales,
+                //             ProjectUnitName = l.ProjectUnitName,
+                //             LastWeekRMBTotalDealIn = alldeals.Where(w => w.Project.ID == l.ProjectID && w.Sales==l.Sales && w.Currencytype.Name == "RMB" && w.SignDate >= lastweekstart && w.SignDate < lastweekend).Count()==0?0: alldeals.Where(w => w.Project.ID == l.ProjectID && w.Sales==l.Sales && w.Currencytype.Name == "RMB" && w.SignDate >= lastweekstart && w.SignDate < lastweekend).Sum(s => (decimal?)s.Payment),
+                //             LastWeekUSDTotalDealIn = alldeals.Where(w => w.Project.ID == l.ProjectID && w.Sales == l.Sales && w.Currencytype.Name == "USD" && w.SignDate >= lastweekstart && w.SignDate < lastweekend).Count()==0?0: alldeals.Where(w => w.Project.ID == l.ProjectID && w.Sales == l.Sales && w.Currencytype.Name == "USD" && w.SignDate >= lastweekstart && w.SignDate < lastweekend).Sum(s => (decimal?)s.Payment),
+                //             LastWeekCheckIn = alldeals.Where(w => w.Project.ID == l.ProjectID && w.Sales == l.Sales && w.ActualPaymentDate >= lastweekstart && w.ActualPaymentDate < lastweekend).Count()==0?0: alldeals.Where(w => w.Project.ID == l.ProjectID && w.Sales == l.Sales && w.ActualPaymentDate >= lastweekstart && w.ActualPaymentDate < lastweekend).Sum(s => (decimal?)s.Income),
+
+                //             CurrentWeekRMBTotalDealIn = alldeals.Where(w => w.Project.ID == l.ProjectID && w.Sales == l.Sales && w.Currencytype.Name == "RMB" && w.SignDate >= weekstart && w.SignDate < weekend).Count()==0?0: alldeals.Where(w => w.Project.ID == l.ProjectID && w.Sales == l.Sales && w.Currencytype.Name == "RMB" && w.SignDate >= weekstart && w.SignDate < weekend).Sum(s => (decimal?)s.Payment),
+                //             CurrentWeekUSDTotalDealIn = alldeals.Where(w => w.Project.ID == l.ProjectID && w.Sales == l.Sales && w.Currencytype.Name == "USD" && w.SignDate >= weekstart && w.SignDate < weekend).Count()==0?0: alldeals.Where(w => w.Project.ID == l.ProjectID && w.Sales == l.Sales && w.Currencytype.Name == "USD" && w.SignDate >= weekstart && w.SignDate < weekend).Sum(s => (decimal?)s.Payment),
+                //             CurrentWeekCheckIn = alldeals.Where(w => w.Project.ID == l.ProjectID && w.Sales == l.Sales && w.ActualPaymentDate >= weekstart && w.ActualPaymentDate < weekend).Count()==0?0: alldeals.Where(w => w.Project.ID == l.ProjectID && w.Sales == l.Sales && w.ActualPaymentDate >= weekstart && w.ActualPaymentDate < weekend).Sum(s => (decimal?)s.Income),
+                //         };
+                var rate = CH.DB.CurrencyTypes.Where(r => r.Name == "USD").Select(r => r.Rate).FirstOrDefault();
+                cs = cs.OrderBy(d => d.Member);
+                var list = cs.ToList();
+                foreach (var l in list)
+                {
+                    l.rate = rate;
+                    targets = targets.Where(w => w.ProjectID == l.ProjectID);
+                    decimal? checkintarget;//入账目标
+                    decimal? dealintarget;//业绩目标
+                    if (weekend.Month != weekstart.Month)//跨月
+                    {
+                        //处理本周目标
+                        DateTime matchdate = DateTime.Parse(weekstart.Year.ToString() + "-" + weekstart.Month.ToString() + "-" + "1");
+                        //上月最后一周
+                        dealintarget = targets.Where(t => t.StartDate == matchdate && t.Member.Name==l.Member).Count()==0?0:targets.Where(t => t.StartDate == matchdate && t.Member.Name==l.Member).Select(t => t.TargetOf5thWeek).FirstOrDefault();
+                        checkintarget = targets.Where(t => t.StartDate == matchdate && t.Member.Name == l.Member).Count()==0?0:targets.Where(t => t.StartDate == matchdate && t.Member.Name == l.Member).Select(t => t.CheckInOf5thWeek).FirstOrDefault();
+                        matchdate = DateTime.Parse(weekend.Year.ToString() + "-" + weekend.Month.ToString() + "-" + "1");
+                        //本月第一周
+                        dealintarget = dealintarget + targets.Where(t => t.StartDate == matchdate && t.Member.Name == l.Member).Count()==0?0:targets.Where(t => t.StartDate == matchdate && t.Member.Name == l.Member).Select(t => t.TargetOf1stWeek).FirstOrDefault();
+                        checkintarget = checkintarget + targets.Where(t => t.StartDate == matchdate && t.Member.Name == l.Member).Count()==0?0:targets.Where(t => t.StartDate == matchdate && t.Member.Name == l.Member).Select(t => t.CheckInOf1stWeek).FirstOrDefault();
+                        l.CurrentWeekDealInTarget = dealintarget;
+                        l.CurrentWeekCheckInTarget = checkintarget;
+                        //处理上周目标
+                        matchdate = DateTime.Parse(lastweekstart.Year.ToString() + "-" + lastweekstart.Month.ToString() + "-" + "1");
+                        //上月最后一周
+                        dealintarget = targets.Where(t => t.StartDate == matchdate && t.Member.Name == l.Member).Count()==0?0:targets.Where(t => t.StartDate == matchdate && t.Member.Name == l.Member).Select(t => t.TargetOf5thWeek).FirstOrDefault();
+                        checkintarget = targets.Where(t => t.StartDate == matchdate && t.Member.Name == l.Member).Count()==0?0:targets.Where(t => t.StartDate == matchdate && t.Member.Name == l.Member).Select(t => t.CheckInOf5thWeek).FirstOrDefault();
+                        matchdate = DateTime.Parse(lastweekend.Year.ToString() + "-" + lastweekend.Month.ToString() + "-" + "1");
+                        //本月第一周
+                        dealintarget = dealintarget + targets.Where(t => t.StartDate == matchdate && t.Member.Name == l.Member).Count()==0?0:targets.Where(t => t.StartDate == matchdate && t.Member.Name == l.Member).Select(t => t.TargetOf1stWeek).FirstOrDefault();
+                        checkintarget = checkintarget + targets.Where(t => t.StartDate == matchdate && t.Member.Name == l.Member).Count()==0?0:targets.Where(t => t.StartDate == matchdate && t.Member.Name == l.Member).Select(t => t.CheckInOf1stWeek).FirstOrDefault();
+                        l.LastWeekDealInTarget = dealintarget;
+                        l.LastWeekCheckInTarget = checkintarget;
+                    }
+                    else
+                    {
+                        int i = weekend.Day;
+                        int weekindex = 0;
+                        while (i > 0)
+                        {
+                            if (DateTime.Parse(weekend.Year.ToString() + "-" + weekend.Month.ToString() + "-" + i.ToString()).DayOfWeek == DayOfWeek.Thursday)
+                                weekindex++;
+                            i--;
+                        }
+                        DateTime matchdate = DateTime.Parse(weekend.Year.ToString() + "-" + weekend.Month.ToString() + "-" + "1");
+                        if (weekindex == 1)
+                        {
+                            l.CurrentWeekDealInTarget = targets.Where(t => t.StartDate == matchdate && t.Member.Name == l.Member).Count()==0?0:targets.Where(t => t.StartDate == matchdate && t.Member.Name == l.Member).Select(t => t.TargetOf1stWeek).FirstOrDefault();
+                            l.CurrentWeekCheckInTarget = targets.Where(t => t.StartDate == matchdate && t.Member.Name == l.Member).Count() == 0 ? 0 : targets.Where(t => t.StartDate == matchdate && t.Member.Name == l.Member).Select(t => t.CheckInOf1stWeek).FirstOrDefault();
+                        }
+                        else if (weekindex == 2)
+                        {
+                            l.CurrentWeekDealInTarget = targets.Where(t => t.StartDate == matchdate && t.Member.Name == l.Member).Count() == 0 ? 0 : targets.Where(t => t.StartDate == matchdate && t.Member.Name == l.Member).Select(t => t.TargetOf2ndWeek).FirstOrDefault();
+                            l.CurrentWeekCheckInTarget = targets.Where(t => t.StartDate == matchdate && t.Member.Name == l.Member).Count() == 0 ? 0 : targets.Where(t => t.StartDate == matchdate && t.Member.Name == l.Member).Select(t => t.CheckInOf2ndWeek).FirstOrDefault();
+                        }
+                        else if (weekindex == 3)
+                        {
+                            l.CurrentWeekDealInTarget = targets.Where(t => t.StartDate == matchdate && t.Member.Name == l.Member).Count() == 0 ? 0 : targets.Where(t => t.StartDate == matchdate && t.Member.Name == l.Member).Select(t => t.TargetOf3rdWeek).FirstOrDefault();
+                            l.CurrentWeekCheckInTarget = targets.Where(t => t.StartDate == matchdate && t.Member.Name == l.Member).Count() == 0 ? 0 : targets.Where(t => t.StartDate == matchdate && t.Member.Name == l.Member).Select(t => t.CheckInOf3rdWeek).FirstOrDefault();
+                        }
+                        else if (weekindex == 4)
+                        {
+                            l.CurrentWeekDealInTarget = targets.Where(t => t.StartDate == matchdate && t.Member.Name == l.Member).Count() == 0 ? 0 : targets.Where(t => t.StartDate == matchdate && t.Member.Name == l.Member).Select(t => t.TargetOf4thWeek).FirstOrDefault();
+                            l.CurrentWeekCheckInTarget = targets.Where(t => t.StartDate == matchdate && t.Member.Name == l.Member).Count() == 0 ? 0 : targets.Where(t => t.StartDate == matchdate && t.Member.Name == l.Member).Select(t => t.CheckInOf4thWeek).FirstOrDefault();
+                        }
+                        else if (weekindex == 5)
+                        {
+                            l.CurrentWeekDealInTarget = targets.Where(t => t.StartDate == matchdate && t.Member.Name == l.Member).Count() == 0 ? 0 : targets.Where(t => t.StartDate == matchdate && t.Member.Name == l.Member).Select(t => t.TargetOf5thWeek).FirstOrDefault();
+                            l.CurrentWeekCheckInTarget = targets.Where(t => t.StartDate == matchdate && t.Member.Name == l.Member).Count() == 0 ? 0 : targets.Where(t => t.StartDate == matchdate && t.Member.Name == l.Member).Select(t => t.CheckInOf5thWeek).FirstOrDefault();
+                        }
+                        //处理上周目标
+                        i = lastweekend.Day;
+                        weekindex = 0;
+                        while (i > 0)
+                        {
+                            if (DateTime.Parse(lastweekend.Year.ToString() + "-" + lastweekend.Month.ToString() + "-" + i.ToString()).DayOfWeek == DayOfWeek.Thursday)
+                                weekindex++;
+                            i--;
+                        }
+                        matchdate = DateTime.Parse(lastweekend.Year.ToString() + "-" + lastweekend.Month.ToString() + "-" + "1");
+                        if (weekindex == 1)
+                        {
+                            l.LastWeekDealInTarget = targets.Where(t => t.StartDate == matchdate && t.Member.Name == l.Member).Count() == 0 ? 0 : targets.Where(t => t.StartDate == matchdate && t.Member.Name == l.Member).Select(t => t.TargetOf1stWeek).FirstOrDefault();
+                            l.LastWeekCheckInTarget = targets.Where(t => t.StartDate == matchdate && t.Member.Name == l.Member).Count() == 0 ? 0 : targets.Where(t => t.StartDate == matchdate && t.Member.Name == l.Member).Select(t => t.CheckInOf1stWeek).FirstOrDefault();
+                        }
+                        else if (weekindex == 2)
+                        {
+                            l.LastWeekDealInTarget = targets.Where(t => t.StartDate == matchdate && t.Member.Name == l.Member).Count() == 0 ? 0 : targets.Where(t => t.StartDate == matchdate && t.Member.Name == l.Member).Select(t => t.TargetOf2ndWeek).FirstOrDefault();
+                            l.LastWeekCheckInTarget = targets.Where(t => t.StartDate == matchdate && t.Member.Name == l.Member).Count() == 0 ? 0 : targets.Where(t => t.StartDate == matchdate && t.Member.Name == l.Member).Select(t => t.CheckInOf2ndWeek).FirstOrDefault();
+                        }
+                        else if (weekindex == 3)
+                        {
+                            l.LastWeekDealInTarget = targets.Where(t => t.StartDate == matchdate && t.Member.Name == l.Member).Count() == 0 ? 0 : targets.Where(t => t.StartDate == matchdate && t.Member.Name == l.Member).Select(t => t.TargetOf3rdWeek).FirstOrDefault();
+                            l.LastWeekCheckInTarget = targets.Where(t => t.StartDate == matchdate && t.Member.Name == l.Member).Count() == 0 ? 0 : targets.Where(t => t.StartDate == matchdate && t.Member.Name == l.Member).Select(t => t.CheckInOf3rdWeek).FirstOrDefault();
+                        }
+                        else if (weekindex == 4)
+                        {
+                            l.LastWeekDealInTarget = targets.Where(t => t.StartDate == matchdate && t.Member.Name == l.Member).Count() == 0 ? 0 : targets.Where(t => t.StartDate == matchdate && t.Member.Name == l.Member).Select(t => t.TargetOf4thWeek).FirstOrDefault();
+                            l.LastWeekCheckInTarget = targets.Where(t => t.StartDate == matchdate && t.Member.Name == l.Member).Count() == 0 ? 0 : targets.Where(t => t.StartDate == matchdate && t.Member.Name == l.Member).Select(t => t.CheckInOf4thWeek).FirstOrDefault();
+                        }
+                        else if (weekindex == 5)
+                        {
+                            l.LastWeekDealInTarget = targets.Where(t => t.StartDate == matchdate && t.Member.Name == l.Member).Count() == 0 ? 0 : targets.Where(t => t.StartDate == matchdate && t.Member.Name == l.Member).Select(t => t.TargetOf5thWeek).FirstOrDefault();
+                            l.LastWeekCheckInTarget = targets.Where(t => t.StartDate == matchdate && t.Member.Name == l.Member).Count() == 0 ? 0 : targets.Where(t => t.StartDate == matchdate && t.Member.Name == l.Member).Select(t => t.CheckInOf5thWeek).FirstOrDefault();
+                        }
+                    }
+                }
+                return list;
+            }
+
             public static IQueryable<AjaxProjectCheckInByMonth> GetProjectsCheckInByMonth()
             {
                 var yeaerstart = new DateTime(DateTime.Now.Year, 1, 1);
@@ -1049,6 +1410,302 @@ namespace BLL
                            };
 
                 return data;
+            }
+
+            public static IEnumerable<AjaxProjectProcessByMonth> GetProjectsProgressByMonth(int? typeid,string manager=null)
+            {
+                var ps = CRM_Logical.GetUserInvolveProject();
+                if (typeid != null)
+                    ps = ps.Where(p => p.ProjectTypeID == typeid).ToList();
+                if (!string.IsNullOrEmpty(manager))
+                    ps = ps.Where(p => p.Manager == manager).ToList();
+                var targets = CH.DB.TargetOfMonths.Where(w => w.Project.IsActived == true);
+                var deals = CRM_Logical.GetDeals(true);
+                var date = new DateTime(2013, 5, 1);
+                //var date = DateTime.Now;
+                var currentmonthstart = date.StartOfMonth();
+                var currentmonthend = date.EndOfMonth();
+                var currentweekstart = date.StartOfWeek();
+                var currentweekend = date.EndOfWeek();
+                var currentdaystart = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
+                var currentdayend = currentdaystart.AddDays(1);
+                var list = from p in ps
+                           group p by new { p.ProjectUnitCode, p.ProjectUnitName, p.ConferenceStartDate } into grp
+                           select new
+                           {
+                               Name = grp.Key.ProjectUnitName,
+                               Code = grp.Key.ProjectUnitCode,
+                               StartDate = grp.Key.ConferenceStartDate,
+                               LeftDay = (grp.Key.ConferenceStartDate - DateTime.Now).Days,
+                               Target = grp.Sum(s => s.Target),
+                               MemberCount = grp.Sum(s => s.Members.Where(w => w.IsActivated == true).Count())
+                           };
+
+                var data = from l in list
+                           select new AjaxProjectProcessByMonth
+                           {
+                               ProjectUnitName = l.Name,
+                               ProjectUnitCode = l.Code,
+                               ConferenceStartDate = l.StartDate,
+                               LeftedDay = l.LeftDay,
+                               TotalDealInTarget = targets.Where(w => w.Project.ProjectUnitCode == l.Code).Sum(s => (decimal?)s.Deal),
+                               RMBTotalDealIn = deals.Where(w => w.Project.ProjectUnitCode == l.Code && w.Currencytype.Name == "RMB").Sum(s => (decimal?)s.Payment),
+                               USDTotalDealIn = deals.Where(w => w.Project.ProjectUnitCode == l.Code && w.Currencytype.Name == "USD").Sum(s => (decimal?)s.Payment),
+                               TotalCheckInTarget = (decimal?)l.Target,
+                               TotalCheckIn = deals.Where(w => w.Project.ProjectUnitCode == l.Code).Sum(s => (decimal?)s.Income),
+                               CurrentMonthDealInTarget = targets.Where(w => w.Project.ProjectUnitCode == l.Code  && w.StartDate.Month == currentmonthstart.Month).Sum(s => (decimal?)s.Deal),
+                               CurrentMonthRMBTotalDealIn = deals.Where(w => w.Project.ProjectUnitCode == l.Code && w.Currencytype.Name == "RMB" && w.SignDate >= currentmonthstart && w.SignDate < currentmonthend).Sum(s => (decimal?)s.Payment),
+                               CurrentMonthUSDTotalDealIn = deals.Where(w => w.Project.ProjectUnitCode == l.Code && w.Currencytype.Name == "USD" && w.SignDate >= currentmonthstart && w.SignDate < currentmonthend).Sum(s => (decimal?)s.Payment),
+
+                               CurrentMonthCheckInTarget = targets.Where(w => w.Project.ProjectUnitCode == l.Code && w.StartDate.Month == currentmonthstart.Month).Sum(s => (decimal?)s.CheckIn),
+                               CurrentMonthCheckIn = deals.Where(w => w.Project.ProjectUnitCode == l.Code && w.ActualPaymentDate >= currentmonthstart && w.ActualPaymentDate < currentmonthend).Sum(s => (decimal?)s.Income),
+                               
+                           };
+
+                return data;
+            }
+
+            public static IEnumerable<AjaxProjectsCheckInSummary> GetProjectsCheckInSummary(int?year,int? typeid, string manager = null)
+            {
+                var ps = CRM_Logical.GetUserInvolveProject();
+                if (typeid != null)
+                    ps = ps.Where(p => p.ProjectTypeID == typeid).ToList();
+                if (!string.IsNullOrEmpty(manager))
+                    ps = ps.Where(p => p.Manager == manager).ToList();
+                var targets = CH.DB.TargetOfMonths.Where(w => w.Project.IsActived == true);
+                var deals = CRM_Logical.GetDeals(true);
+                if (year == null)
+                    year = DateTime.Now.Year;
+                //var date = DateTime.Now;
+                var list = from p in ps
+                           group p by new { p.ProjectUnitCode, p.ProjectUnitName, p.ConferenceStartDate } into grp
+                           select new
+                           {
+                               Code=grp.Key.ProjectUnitCode,
+                               Name = grp.Key.ProjectUnitName,
+                               StartDate = grp.Key.ConferenceStartDate,
+                               Target = grp.Sum(s => s.Target),
+                           };
+
+                var data = from l in list
+                           select new AjaxProjectsCheckInSummary
+                           {
+                               ProjectUnitName = l.Name,
+                               ConferenceStartDate = l.StartDate,
+                               TotalCheckInTarget = (decimal?)l.Target,
+
+                               CheckInJanuary = deals.Where(w => w.Project.ProjectUnitCode == l.Code && w.ActualPaymentDate.Value.Year == year && w.ActualPaymentDate.Value.Month ==1).Sum(s => (decimal?)s.Income),
+                                CheckInFebruary  = deals.Where(w => w.Project.ProjectUnitCode == l.Code && w.ActualPaymentDate.Value.Year == year && w.ActualPaymentDate.Value.Month ==2).Sum(s => (decimal?)s.Income),
+                                CheckInMarch = deals.Where(w => w.Project.ProjectUnitCode == l.Code && w.ActualPaymentDate.Value.Year == year && w.ActualPaymentDate.Value.Month ==3).Sum(s => (decimal?)s.Income),
+                                CheckInApril = deals.Where(w => w.Project.ProjectUnitCode == l.Code && w.ActualPaymentDate.Value.Year == year && w.ActualPaymentDate.Value.Month ==4).Sum(s => (decimal?)s.Income),
+                                CheckInMay  = deals.Where(w => w.Project.ProjectUnitCode == l.Code && w.ActualPaymentDate.Value.Year == year && w.ActualPaymentDate.Value.Month ==5).Sum(s => (decimal?)s.Income),
+                                CheckInJune = deals.Where(w => w.Project.ProjectUnitCode == l.Code && w.ActualPaymentDate.Value.Year == year && w.ActualPaymentDate.Value.Month ==5).Sum(s => (decimal?)s.Income),
+                                CheckInJuly = deals.Where(w => w.Project.ProjectUnitCode == l.Code && w.ActualPaymentDate.Value.Year == year && w.ActualPaymentDate.Value.Month ==6).Sum(s => (decimal?)s.Income),
+                                CheckInAugust = deals.Where(w => w.Project.ProjectUnitCode == l.Code && w.ActualPaymentDate.Value.Year == year && w.ActualPaymentDate.Value.Month ==8).Sum(s => (decimal?)s.Income),
+                                CheckInSeptember = deals.Where(w => w.Project.ProjectUnitCode == l.Code && w.ActualPaymentDate.Value.Year == year && w.ActualPaymentDate.Value.Month ==9).Sum(s => (decimal?)s.Income),
+                                CheckInOctober  = deals.Where(w => w.Project.ProjectUnitCode == l.Code && w.ActualPaymentDate.Value.Year == year && w.ActualPaymentDate.Value.Month ==10).Sum(s => (decimal?)s.Income),
+                                CheckInNovember = deals.Where(w => w.Project.ProjectUnitCode == l.Code && w.ActualPaymentDate.Value.Year == year && w.ActualPaymentDate.Value.Month ==11).Sum(s => (decimal?)s.Income),
+                               CheckInDecember = deals.Where(w => w.Project.ProjectUnitCode == l.Code && w.ActualPaymentDate.Value.Year == year && w.ActualPaymentDate.Value.Month == 12).Sum(s => (decimal?)s.Income),
+
+                           };
+
+                return data;
+            }
+
+
+            public static IEnumerable<AjaxMemberProjectProcessByMonth> GetMemberProjectsProgressByMonth(int? typeid, string manager = null)
+            {
+                var ps = CRM_Logical.GetUserInvolveProject();
+                if (typeid != null)
+                    ps = ps.Where(p => p.ProjectTypeID == typeid).ToList();
+                if (!string.IsNullOrEmpty(manager))
+                    ps = ps.Where(p => p.Manager == manager).ToList();
+                var targets = CH.DB.TargetOfMonthForMembers.Where(w => w.Project.IsActived == true);
+                //var deals = CRM_Logical.GetDeals(true);
+                var date = new DateTime(2013, 5, 1);
+                //var date = DateTime.Now;
+                var currentmonthstart = date.StartOfMonth();
+                var currentmonthend = date.EndOfMonth();
+                IEnumerable<int> idList = ps.Select(o => o.ID);
+                var deals = from d in CH.DB.Deals where idList.Contains((int)d.ProjectID) select d;
+                
+                var list = from d in deals
+                           group d by new { d.Sales,d.ProjectID,d.Project.ProjectUnitName,d.Project.ConferenceStartDate } into grp
+                           select new AjaxMemberProjectProcessByMonth
+                           {
+                               Member = grp.Key.Sales,
+                               //ConferenceStartDate = CH.GetDataById<Project>(grp.Key.ProjectID).ConferenceStartDate,
+                               TotalCheckInTarget = targets.Where(w => w.Member.Name == grp.Key.Sales).Sum(w => (decimal?)w.CheckIn),
+                               TotalDealInRMB = deals.Where(w => w.Project.ID == grp.Key.ProjectID && w.Currencytype.Name == "RMB" && w.Sales == grp.Key.Sales).Sum(s => (decimal?)s.Payment),
+                               TotalDealInUSD = deals.Where(w => w.Project.ID == grp.Key.ProjectID && w.Currencytype.Name == "USD" && w.Sales == grp.Key.Sales).Sum(s => (decimal?)s.Payment),
+                               TotalCheckIn = deals.Where(w => w.Project.ID == grp.Key.ProjectID && w.Sales == grp.Key.Sales).Sum(s => (decimal?)s.Income),
+                               CurrentMonthDealInTarget = targets.Where(w => w.Project.ID == grp.Key.ProjectID && w.Member.Name == grp.Key.Sales && w.StartDate.Month == currentmonthstart.Month).Sum(s => (decimal?)s.Deal),
+                               CurrentMonthRMBTotalDealIn = deals.Where(w => w.Project.ID == grp.Key.ProjectID && w.Sales == grp.Key.Sales && w.Currencytype.Name == "RMB" && w.SignDate >= currentmonthstart && w.SignDate < currentmonthend).Sum(s => (decimal?)s.Payment),
+                               CurrentMonthUSDTotalDealIn = deals.Where(w => w.Project.ID == grp.Key.ProjectID && w.Sales == grp.Key.Sales && w.Currencytype.Name == "USD" && w.SignDate >= currentmonthstart && w.SignDate < currentmonthend).Sum(s => (decimal?)s.Payment),
+
+                               CurrentMonthCheckInTarget = targets.Where(w => w.Project.ID == grp.Key.ProjectID && w.Member.Name == grp.Key.Sales && w.StartDate.Month == currentmonthstart.Month).Sum(s => (decimal?)s.CheckIn),
+                               CurrentMonthCheckIn = deals.Where(w => w.Project.ID == grp.Key.ProjectID && w.Sales == grp.Key.Sales && w.ActualPaymentDate >= currentmonthstart && w.ActualPaymentDate < currentmonthend).Sum(s => (decimal?)s.Income),
+                               ProjectUnitName = grp.Key.ProjectUnitName,
+                               ConferenceStartDate = grp.Key.ConferenceStartDate
+                           };
+               
+                list = list.OrderBy(l => l.Member);
+
+                //list = list.Where(w => salesList.Any(a => a == w.Member));
+                
+
+                return list;
+            }
+
+            public static IEnumerable<AjaxSalesCheckInSummary> GetAjaxSalesCheckInSummary(int?year ,int? typeid, string manager = null)
+            {
+                var ps = CRM_Logical.GetUserInvolveProject();
+                if (typeid != null)
+                    ps = ps.Where(p => p.ProjectTypeID == typeid).ToList();
+                if (!string.IsNullOrEmpty(manager))
+                    ps = ps.Where(p => p.Manager == manager).ToList();
+                if (year == null)
+                    year = DateTime.Now.Year;
+                IEnumerable<int> idList = ps.Select(o => o.ID);
+                var deals = from d in CH.DB.Deals where idList.Contains((int)d.ProjectID) select d;
+                var employroles = from e in CH.DB.EmployeeRoles select e;
+                var list = from d in deals
+                           group d by new { d.Sales} into grp
+                           select new AjaxSalesCheckInSummary
+                           {
+                               Sales = grp.Key.Sales,
+                               SalesStartDate = employroles.Where(w=>w.AccountName==grp.Key.Sales).FirstOrDefault().StartDate,
+                               CheckInJanuary = deals.Where(w => w.Sales == grp.Key.Sales && w.ActualPaymentDate.Value.Year == year && w.ActualPaymentDate.Value.Month == 1).Sum(s => (decimal?)s.Income),
+                               CheckInFebruary = deals.Where(w => w.Sales == grp.Key.Sales && w.ActualPaymentDate.Value.Year == year && w.ActualPaymentDate.Value.Month == 2).Sum(s => (decimal?)s.Income),
+                               CheckInMarch = deals.Where(w => w.Sales == grp.Key.Sales && w.ActualPaymentDate.Value.Year == year && w.ActualPaymentDate.Value.Month == 3).Sum(s => (decimal?)s.Income),
+                               CheckInApril = deals.Where(w => w.Sales == grp.Key.Sales && w.ActualPaymentDate.Value.Year == year && w.ActualPaymentDate.Value.Month == 4).Sum(s => (decimal?)s.Income),
+                               CheckInMay = deals.Where(w => w.Sales == grp.Key.Sales && w.ActualPaymentDate.Value.Year == year && w.ActualPaymentDate.Value.Month == 5).Sum(s => (decimal?)s.Income),
+                               CheckInJune = deals.Where(w => w.Sales == grp.Key.Sales && w.ActualPaymentDate.Value.Year == year && w.ActualPaymentDate.Value.Month == 5).Sum(s => (decimal?)s.Income),
+                               CheckInJuly = deals.Where(w => w.Sales == grp.Key.Sales && w.ActualPaymentDate.Value.Year == year && w.ActualPaymentDate.Value.Month == 6).Sum(s => (decimal?)s.Income),
+                               CheckInAugust = deals.Where(w => w.Sales == grp.Key.Sales && w.ActualPaymentDate.Value.Year == year && w.ActualPaymentDate.Value.Month == 8).Sum(s => (decimal?)s.Income),
+                               CheckInSeptember = deals.Where(w => w.Sales == grp.Key.Sales && w.ActualPaymentDate.Value.Year == year && w.ActualPaymentDate.Value.Month == 9).Sum(s => (decimal?)s.Income),
+                               CheckInOctober = deals.Where(w => w.Sales == grp.Key.Sales && w.ActualPaymentDate.Value.Year == year && w.ActualPaymentDate.Value.Month == 10).Sum(s => (decimal?)s.Income),
+                               CheckInNovember = deals.Where(w => w.Sales == grp.Key.Sales && w.ActualPaymentDate.Value.Year == year && w.ActualPaymentDate.Value.Month == 11).Sum(s => (decimal?)s.Income),
+                               CheckInDecember = deals.Where(w => w.Sales == grp.Key.Sales && w.ActualPaymentDate.Value.Year == year && w.ActualPaymentDate.Value.Month == 12).Sum(s => (decimal?)s.Income),
+
+                           };
+
+                list = list.OrderBy(l => l.Sales);
+
+                //list = list.Where(w => salesList.Any(a => a == w.Member));
+
+
+                return list;
+            }
+
+            public static IEnumerable<AjaxCompanyDailyReceivedPayment> GetCompanyDailyReceivedPayment(DateTime? currentdate, int? abstractid, string sales, int? projectid, string companyname = null)
+            {
+                var ps = CRM_Logical.GetUserInvolveProject();
+                if (projectid != null)
+                    ps = ps.Where(p => p.ID == projectid).ToList();
+                var deals = CRM_Logical.GetDeals(true);
+                if (currentdate != null)
+                    deals = deals.Where(w => w.ActualPaymentDate == currentdate);
+                if (!string.IsNullOrEmpty(companyname))
+                {
+                    deals = deals.Where(w => w.CompanyRelationship.Company.Name_CH.Contains(companyname) || w.CompanyRelationship.Company.Name_EN.Contains(companyname));
+                }
+                var date = new DateTime(2013, 5, 1);
+                //var date = DateTime.Now;
+                IEnumerable<int> idList = ps.Select(o => o.ID);
+                var members = (from p in idList
+                               join d in deals on p equals d.ProjectID
+                               join m in CH.DB.EmployeeRoles on d.Sales equals m.AccountName
+                               select new
+                               {
+                                   Sales = d.Sales,
+                                   ProjectID = p,
+                                   RoleName = m.Role.Name
+                               });
+                if (abstractid != null)
+                {
+                    if (abstractid == 1 || abstractid == 3)
+                    {
+                        //members = from m in members
+                        //          join d in CH.DB.EmployeeRoles.Where(w=>w.Role.Name=="国外销售") on m.Sales equals d.AccountName 
+                        //          select new
+                        //          {
+                        //              Sales = m.Sales,
+                        //              ProjectID = m.ProjectID
+                        //          };
+                        members = members.Where(m => m.RoleName == "海外销售");
+                    }
+                    else
+                    {
+                        //members = from m in members
+                        //          join d in CH.DB.EmployeeRoles.Where(w => w.Role.Name == "国内销售") on m.Sales equals d.AccountName 
+                        //          select new
+                        //          {
+                        //              Sales = m.Sales,
+                        //              ProjectID = m.ProjectID
+                        //          };
+                        members = members.Where(m => m.RoleName == "国内销售");
+                    }
+                }
+                if (!string.IsNullOrEmpty(sales))
+                {
+                    //members = from m in members.Where(w => w.Sales == sales)
+                    //          select new
+                    //          {
+                    //              Sales = m.Sales,
+                    //              ProjectID = m.ProjectID
+                    //          };
+                    members = members.Where(m => m.Sales == sales);
+                }
+                IEnumerable<string> salesList = members.Select(o => o.Sales).Distinct();
+                var list = from p in idList
+                           join d in deals on p equals d.ProjectID
+                           join m in salesList on d.Sales equals m
+                           select new AjaxCompanyDailyReceivedPayment
+                           {
+                               Sales = d.Sales,
+                               CheckInDate=d.ActualPaymentDate,
+                               CheckInRMB = d.Currencytype.Name == "RMB" ? (decimal?)d.Payment : 0,
+                               CheckInUSD = d.Currencytype.Name == "USD" ? (decimal?)d.Payment : 0,
+                               CompanyName = d.CompanyRelationship.Company.Name_CH == null ? d.CompanyRelationship.Company.Name_EN : d.CompanyRelationship.Company.Name_CH + "|" + d.CompanyRelationship.Company.Name_EN,
+                               ProjectName = d.Project.ProjectUnitName,
+                               Abstract = CH.DB.EmployeeRoles.Where(e => e.AccountName == d.Sales).FirstOrDefault() == null ? "" : CH.DB.EmployeeRoles.Where(e => e.AccountName == d.Sales).FirstOrDefault().Role.Name=="国内销售"?"国内销售收入":"国外销售收入",
+                               Remark = d.PaymentDetail
+                               
+                           };
+                list = list.OrderBy(w=>w.Sales);
+                return list;
+            }
+            public static IEnumerable<SelectListItem> GetProjectsManager()
+            {
+                var ps = CRM_Logical.GetUserInvolveProject();
+                var pros=ps.Select(p => p.Manager).Distinct();
+                List<SelectListItem> selectList = new List<SelectListItem>();
+                foreach (var pro in pros)
+                {
+                    SelectListItem selectListItem = new SelectListItem { Text = pro, Value = pro };
+                    selectList.Add(selectListItem);
+                }
+                return selectList;
+            }
+            public static IEnumerable<SelectListItem> GetProjectsSales()
+            {
+                var ps = CRM_Logical.GetUserInvolveProject();
+                IEnumerable<int> idList = ps.Select(o => o.ID);
+                var members = (from p in idList
+                               join m in CH.DB.Members on p equals m.ProjectID
+                               select new
+                               {
+                                   Sales = m.Name,
+                               }).ToList();
+                var pros = members.Select(p => p.Sales).Distinct();
+                List<SelectListItem> selectList = new List<SelectListItem>();
+                foreach (var pro in pros)
+                {
+                    SelectListItem selectListItem = new SelectListItem { Text = pro, Value = pro };
+                    selectList.Add(selectListItem);
+                }
+                return selectList;
             }
         }
 

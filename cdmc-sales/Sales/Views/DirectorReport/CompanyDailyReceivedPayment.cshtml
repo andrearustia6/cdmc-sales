@@ -1,0 +1,115 @@
+﻿@{
+    ViewBag.Title = "公司日回款明细";
+    Layout = "~/Views/DirectorReport/Master.cshtml";
+}
+@using Model
+@using Utl;
+@using BLL;
+@{
+    List<SelectListItem> abstractList = new List<SelectListItem>();
+    SelectListItem item = new SelectListItem();
+    item.Value = "";
+    item.Text="请选择";
+    abstractList.Add(item);
+    
+    item = new SelectListItem();
+    item.Value = "1";
+    item.Text="国外销售收入";
+    abstractList.Add(item);
+    
+    item = new SelectListItem();
+    item.Value = "2";
+    item.Text="国内销售收入";
+    abstractList.Add(item);
+    
+    item = new SelectListItem();
+    item.Value = "3";
+    item.Text="国外销售收入：退款";
+    abstractList.Add(item);
+    
+    item = new SelectListItem();
+    item.Value = "4";
+    item.Text = "国内销售收入：退款";
+    abstractList.Add(item);
+   <fieldset>
+   <legend>公司日回款明细</legend>
+   日期 @Html.Telerik().DatePicker().Name("CurrentDate").Value(DateTime.Now).ClientEvents(events=>events.OnChange("onDateChange"))
+   摘要 @Html.DropDownList("AbstractID", abstractList, new { onchange = "onAbstractChange();" })
+   业务员  @Html.DropDownList("Sales",CRM_Logical._Reports.GetProjectsSales(),"请选择", new { onchange = "onSalesChange();" })
+   项目 @Html.DropDownList("ProjectID", SelectHelper.ProjectSelectList(Employee.CurrentUserName), "请选择", new { onchange = "onProjectChange();" })
+   客户名称 @Html.TextBox("CompanyName")
+   <input type="button" title="查找" name="查找" value="查找" style=" width: 67px; height: 21px;" onclick="refreshGrid()" />
+@(Html.Telerik().Grid<AjaxCompanyDailyReceivedPayment>().Name("AjaxCompanyDailyReceivedPayment")
+     .DataBinding(dataBinding =>
+     {
+         dataBinding.Ajax().Select("CompanyDailyReceivedPayment", "DirectorReport");
+     })
+    .ClientEvents(events => events.OnDataBinding("dataBinding"))
+    .Columns(columns =>
+    {
+        columns.Bound(p => p.CheckInDate).Width(80).Title("入账日期").HtmlAttributes(new { style = "text-align:left" }).Format("{0:yyyy-MM-dd}");
+        columns.Bound(p => p.Abstract).Width(90).Title("摘要").HtmlAttributes(new { style = "text-align:left" });
+        columns.Bound(p => p.Sales).Title("业务员").Width(70).HtmlAttributes(new { style = "text-align:right" });
+        columns.Bound(p => p.CompanyName).Title("客户名称").Width(120).HtmlAttributes(new { style = "text-align:right" });
+        columns.Bound(p => p.ProjectName).Title("项目").Width(70).HtmlAttributes(new { style = "text-align:right" });
+        columns.Bound(p => p.CheckIn).Title("入账金额").Width(70).HtmlAttributes(new { style = "text-align:right" }).Format("{0:c0}").Aggregate(aggregates => aggregates.Sum())
+        .ClientFooterTemplate("<p><#= $.telerik.formatString('{0:c0}', Sum) #></p>")
+        .FooterHtmlAttributes(new { style = "text-align:right" });
+        columns.Bound(p => p.Remark).Title("备注").HtmlAttributes(new { style = "text-align:right" });
+    })
+        .Pageable(p => p.Style(GridPagerStyles.Status)
+                   .PageOnScroll(true).PageSize(25)).Scrollable(scrolling => scrolling.Height(500)).Resizable(r => r.Columns(true))
+)
+</fieldset>    
+  
+}
+<script>
+    
+</script>
+<script>
+    //var currentdate;
+    function strTodate(strr) {
+        strr1 = strr.split(' ');
+        datestr = strr1[0];
+        strr2 = datestr.split('-');
+        date1 = new Date(strr2[0], strr2[1] - 1, strr2[2]);
+        return date1;
+    }
+    function dataBinding(e) {
+//        var datepicker = $('#CurrentDate').data('tDatePicker');
+//        var currentdate = datepicker.Value();
+        var currentdate = $("#CurrentDate").val();
+        var abstractid = $('#AbstractID').val();
+        var sales = $('#Sales').val();
+        var projectid = $('#ProjectID').val();
+        var companyname = $('#CompanyName').val();
+        e.data = $.extend(e.data, { currentdate: currentdate, abstractid: abstractid, sales: sales, projectid: projectid, companyname: companyname });
+    }
+    function refreshGrid() {
+
+        $("#AjaxCompanyDailyReceivedPayment").data("tGrid").rebind();
+
+    }
+    function onProjectTypeChange() {
+       
+        refreshGrid();
+    }
+    function onManagerChange() {
+        refreshGrid();
+    }
+    function onDateChange(e) {
+//        var ds = e.currentTarget.value;
+//        currentdate = new Date(ds);
+        refreshGrid();
+    }
+    function onAbstractChange() {
+        refreshGrid();
+    }
+    function onSalesChange() {
+        refreshGrid();
+    }
+    function onProjectChange() {
+        refreshGrid();
+    }
+    
+</script>

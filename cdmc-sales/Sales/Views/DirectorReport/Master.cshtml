@@ -35,6 +35,16 @@
              {
                  item.Add().Text("入账/通话时间");
              });
+             menu.Add().Text("新报表").Items(item =>
+             {
+                 item.Add().Text("项目月进度表").Url("~/DirectorReport/ProjectsProgressByMonth");
+                 item.Add().Text("项目周进度表").Url("~/DirectorReport/ProjectsProgressByWeek");
+                 item.Add().Text("销售人员月进度表").Url("~/DirectorReport/MemberProjectsProgressByMonth");
+                 item.Add().Text("销售人员周进度表").Url("~/DirectorReport/MemberProjectsProgressByWeek");
+                 item.Add().Text("公司日回款明细").Url("~/DirectorReport/CompanyDailyReceivedPayment");
+                 item.Add().Text("项目回款总表").Url("~/DirectorReport/ProjectsCheckInSummary");
+                 item.Add().Text("销售人员回款表").Url("~/DirectorReport/SalesCheckInSummary");
+             });
          }))
         </div>
      
