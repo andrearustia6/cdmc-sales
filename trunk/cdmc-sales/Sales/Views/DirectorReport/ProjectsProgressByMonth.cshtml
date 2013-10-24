@@ -1,0 +1,88 @@
+﻿@{
+    ViewBag.Title = "项目月进度表";
+    Layout = "~/Views/DirectorReport/Master.cshtml";
+}
+@using Model
+@using Utl;
+@using BLL;
+@{
+
+   <fieldset>
+   <legend>项目月进度表</legend>
+   项目类型 @Html.DropDownList("ProjectType", SelectHelper.ProjectTypeSelectList(), "请选择", new { onchange = "onProjectTypeChange();" })
+   板块负责人 @Html.DropDownList("Manager",CRM_Logical._Reports.GetProjectsManager(),"请选择", new { onchange = "onManagerChange();" })
+@(Html.Telerik().Grid<AjaxProjectProcessByMonth>().Name("AjaxProjectProcessByMonth")
+     .DataBinding(dataBinding =>
+     {
+         dataBinding.Ajax().Select("ProjectsProgressByMonth", "DirectorReport");
+     })
+    .ClientEvents(events => events.OnDataBinding("dataBinding"))
+    .Columns(columns =>
+    {
+        columns.Bound(p => p.ProjectUnitName).Width(150).Title("项目简称").HtmlAttributes(new { style = "text-align:left" });
+        columns.Bound(p => p.ConferenceStartDate).Width(85).Title("会议时间").HtmlAttributes(new { style = "text-align:left" }).Format("{0:yyyy-MM-dd}");
+        columns.Bound(p => p.LeftedDay).Title("所剩工作日").Width(70).HtmlAttributes(new { style = "text-align:right" });
+        
+        columns.Bound(p => p.TotalCheckInTarget).Title("PDM目标").HtmlAttributes(new { style = "text-align:right" }).Format("{0:c0}")
+            .Aggregate(aggregates => aggregates.Sum())
+        .ClientFooterTemplate("<p><#= $.telerik.formatString('{0:c0}', Sum) #></p>")
+        .FooterHtmlAttributes(new { style = "text-align:right" }); 
+        columns.Bound(p => p.TotalDealIn).Title("项目业绩").HtmlAttributes(new { style = "text-align:right" }).Format("{0:c0}")
+            .Aggregate(aggregates => aggregates.Sum())
+        .ClientFooterTemplate("<p><#= $.telerik.formatString('{0:c0}', Sum) #></p>")
+        .FooterHtmlAttributes(new { style = "text-align:right" });
+        columns.Bound(p => p.TotalCheckIn).Title("项目入账").HtmlAttributes(new { style = "text-align:right" }).Format("{0:c0}")
+        .Aggregate(aggregates => aggregates.Sum())
+        .ClientFooterTemplate("<p><#= $.telerik.formatString('{0:c0}', Sum) #></p>")
+        .FooterHtmlAttributes(new { style = "text-align:right" });
+
+        columns.Bound(p => p.CurrentMonthDealInTarget).Title("本月业绩目标").HtmlAttributes(new { style = "text-align:right" }).Format("{0:c0}")
+            .Aggregate(aggregates => aggregates.Sum())
+        .ClientFooterTemplate("<p><#= $.telerik.formatString('{0:c0}', Sum) #></p>")
+        .FooterHtmlAttributes(new { style = "text-align:right" });
+        columns.Bound(p => p.CurrentMonthDealIn).Title("本月业绩").HtmlAttributes(new { style = "text-align:right" }).Format("{0:c0}")
+            .Aggregate(aggregates => aggregates.Sum())
+        .ClientFooterTemplate("<p><#= $.telerik.formatString('{0:c0}', Sum) #></p>")
+        .FooterHtmlAttributes(new { style = "text-align:right" });
+        columns.Bound(p => p.CurrentMonthDealInPercent).Title("完成率").Width(60).HtmlAttributes(new { style = "text-align:right" }).Format("{0:p0}");
+
+        columns.Bound(p => p.CurrentMonthCheckInTarget).Title("本月到账目标").HtmlAttributes(new { style = "text-align:right" }).Format("{0:c0}")
+            .Aggregate(aggregates => aggregates.Sum())
+        .ClientFooterTemplate("<p><#= $.telerik.formatString('{0:c0}', Sum) #></p>")
+        .FooterHtmlAttributes(new { style = "text-align:right" });
+        columns.Bound(p => p.CurrentMonthCheckIn).Title("本月到账").HtmlAttributes(new { style = "text-align:right" }).Format("{0:c0}")
+            .Aggregate(aggregates => aggregates.Sum())
+        .ClientFooterTemplate("<p><#= $.telerik.formatString('{0:c0}', Sum) #></p>")
+        .FooterHtmlAttributes(new { style = "text-align:right" });
+        columns.Bound(p => p.CheckInMonthPercent).Title("完成率").Width(60).HtmlAttributes(new { style = "text-align:right" }).Format("{0:p0}");
+    })
+
+                        .Pageable(p => p.Style(GridPagerStyles.Status)
+                                   .PageOnScroll(true).PageSize(25)).Scrollable(scrolling => scrolling.Height(500)).Resizable(r => r.Columns(true))
+                )
+</fieldset>    
+  
+}
+<script>
+    
+</script>
+<script>
+    function dataBinding(e) {
+        var typeid = $('#ProjectType').val();
+        var manager = $('#Manager').val();
+        e.data = $.extend(e.data, { typeid: typeid, manager: manager });
+    }
+    function refreshGrid() {
+       
+        $("#AjaxProjectProcessByMonth").data("tGrid").rebind();
+
+    }
+    function onProjectTypeChange() {
+       
+        refreshGrid();
+    }
+    function onManagerChange() {
+        refreshGrid();
+    }
+    
+</script>

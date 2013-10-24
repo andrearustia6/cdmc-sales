@@ -79,7 +79,257 @@ namespace Model
         /// </summary>
         public double rate { get; set; }
     }
+    /// <summary>
+    /// 项目周进度表
+    /// </summary>
+    public class AjaxProjectsProgressByWeek
+    {
+        public int? ProjectID { get; set; }
+        public string ProjectUnitName { get; set; }
+        public string ProjectUnitCode { get; set; }
 
+
+        /// <summary>
+        /// 上周入账
+        /// </summary>
+        public decimal? LastWeekCheckIn { get; set; }
+        /// <summary>
+        /// 上周入账目标
+        /// </summary>
+        public decimal? LastWeekCheckInTarget { get; set; }
+        /// <summary>
+        /// 上周入账完成率
+        /// </summary>
+        public double CheckInLastWeekPercent
+        {
+            get
+            {
+                return Utl.Utl.GetPercent(LastWeekCheckIn, LastWeekCheckInTarget);
+            }
+        }
+        /// <summary>
+        /// 上周项目业绩目标
+        /// </summary>
+        public decimal? LastWeekDealInTarget { get; set; }
+        /// <summary>
+        /// 上周项目业绩rmb
+        /// </summary>
+        public decimal? LastWeekRMBTotalDealIn { get; set; }
+        /// <summary>
+        /// 上周项目业绩usd
+        /// </summary>
+        public decimal? LastWeekUSDTotalDealIn { get; set; }
+        /// <summary>
+        /// 上周业绩usd+rmb
+        /// </summary>
+        public decimal? LastWeekDealIn
+        {
+            get
+            {
+                if (LastWeekRMBTotalDealIn == null)
+                    LastWeekRMBTotalDealIn = 0;
+                if (LastWeekUSDTotalDealIn == null)
+                    LastWeekUSDTotalDealIn = 0;
+                return LastWeekRMBTotalDealIn + LastWeekUSDTotalDealIn * (decimal)6.3;
+            }
+        }
+        /// <summary>
+        /// 上周业绩完成率
+        /// </summary>
+        public double LastWeekDealInPercent
+        {
+            get
+            {
+                return Utl.Utl.GetPercent(LastWeekDealIn, LastWeekDealInTarget);
+            }
+        }
+
+
+        /// <summary>
+        /// 当周入账
+        /// </summary>
+        public decimal? CurrentWeekCheckIn { get; set; }
+        /// <summary>
+        /// 当周入账目标
+        /// </summary>
+        public decimal? CurrentWeekCheckInTarget { get; set; }
+        /// <summary>
+        /// 当周入账完成率
+        /// </summary>
+        public double CheckInWeekPercent
+        {
+            get
+            {
+                return Utl.Utl.GetPercent(CurrentWeekCheckIn, CurrentWeekCheckInTarget);
+            }
+        }
+        /// <summary>
+        /// 当周项目业绩目标
+        /// </summary>
+        public decimal? CurrentWeekDealInTarget { get; set; }
+        /// <summary>
+        /// 当周项目业绩rmb
+        /// </summary>
+        public decimal? CurrentWeekRMBTotalDealIn { get; set; }
+        /// <summary>
+        /// 当周项目业绩usd
+        /// </summary>
+        public decimal? CurrentWeekUSDTotalDealIn { get; set; }
+        /// <summary>
+        /// 当周业绩usd+rmb
+        /// </summary>
+        public decimal? CurrentWeekDealIn
+        {
+            get
+            {
+                if (CurrentWeekRMBTotalDealIn == null)
+                    CurrentWeekRMBTotalDealIn = 0;
+                if (CurrentWeekUSDTotalDealIn == null)
+                    CurrentWeekUSDTotalDealIn = 0;
+                return CurrentWeekRMBTotalDealIn + CurrentWeekUSDTotalDealIn * (decimal)6.3;
+            }
+        }
+        /// <summary>
+        /// 当周业绩完成率
+        /// </summary>
+        public double CurrentWeekDealInPercent
+        {
+            get
+            {
+                return Utl.Utl.GetPercent(CurrentWeekDealIn, CurrentWeekDealInTarget);
+            }
+        }
+        /// <summary>
+        /// 货币汇率
+        /// </summary>
+        public double rate { get; set; }
+    }
+    /// <summary>
+    /// 个人项目周进度表
+    /// </summary>
+    public class AjaxMemberProjectsProgressByWeek
+    {
+        public int? ProjectID { get; set; }
+        public string Member { get; set; }
+        public string ProjectUnitName { get; set; }
+        public string ProjectUnitCode { get; set; }
+
+
+        /// <summary>
+        /// 上周入账
+        /// </summary>
+        public decimal? LastWeekCheckIn { get; set; }
+        /// <summary>
+        /// 上周入账目标
+        /// </summary>
+        public decimal? LastWeekCheckInTarget { get; set; }
+        /// <summary>
+        /// 上周入账完成率
+        /// </summary>
+        public double CheckInLastWeekPercent
+        {
+            get
+            {
+                return Utl.Utl.GetPercent(LastWeekCheckIn, LastWeekCheckInTarget);
+            }
+        }
+        /// <summary>
+        /// 上周项目业绩目标
+        /// </summary>
+        public decimal? LastWeekDealInTarget { get; set; }
+        /// <summary>
+        /// 上周项目业绩rmb
+        /// </summary>
+        public decimal? LastWeekRMBTotalDealIn { get; set; }
+        /// <summary>
+        /// 上周项目业绩usd
+        /// </summary>
+        public decimal? LastWeekUSDTotalDealIn { get; set; }
+        /// <summary>
+        /// 上周业绩usd+rmb
+        /// </summary>
+        public decimal? LastWeekDealIn
+        {
+            get
+            {
+                if (LastWeekRMBTotalDealIn == null)
+                    LastWeekRMBTotalDealIn = 0;
+                if (LastWeekUSDTotalDealIn == null)
+                    LastWeekUSDTotalDealIn = 0;
+                return LastWeekRMBTotalDealIn + LastWeekUSDTotalDealIn * (decimal)6.3;
+            }
+        }
+        /// <summary>
+        /// 上周业绩完成率
+        /// </summary>
+        public double LastWeekDealInPercent
+        {
+            get
+            {
+                return Utl.Utl.GetPercent(LastWeekDealIn, LastWeekDealInTarget);
+            }
+        }
+
+
+        /// <summary>
+        /// 当周入账
+        /// </summary>
+        public decimal? CurrentWeekCheckIn { get; set; }
+        /// <summary>
+        /// 当周入账目标
+        /// </summary>
+        public decimal? CurrentWeekCheckInTarget { get; set; }
+        /// <summary>
+        /// 当周入账完成率
+        /// </summary>
+        public double CheckInWeekPercent
+        {
+            get
+            {
+                return Utl.Utl.GetPercent(CurrentWeekCheckIn, CurrentWeekCheckInTarget);
+            }
+        }
+        /// <summary>
+        /// 当周项目业绩目标
+        /// </summary>
+        public decimal? CurrentWeekDealInTarget { get; set; }
+        /// <summary>
+        /// 当周项目业绩rmb
+        /// </summary>
+        public decimal? CurrentWeekRMBTotalDealIn { get; set; }
+        /// <summary>
+        /// 当周项目业绩usd
+        /// </summary>
+        public decimal? CurrentWeekUSDTotalDealIn { get; set; }
+        /// <summary>
+        /// 当周业绩usd+rmb
+        /// </summary>
+        public decimal? CurrentWeekDealIn
+        {
+            get
+            {
+                if (CurrentWeekRMBTotalDealIn == null)
+                    CurrentWeekRMBTotalDealIn = 0;
+                if (CurrentWeekUSDTotalDealIn == null)
+                    CurrentWeekUSDTotalDealIn = 0;
+                return CurrentWeekRMBTotalDealIn + CurrentWeekUSDTotalDealIn * (decimal)6.3;
+            }
+        }
+        /// <summary>
+        /// 当周业绩完成率
+        /// </summary>
+        public double CurrentWeekDealInPercent
+        {
+            get
+            {
+                return Utl.Utl.GetPercent(CurrentWeekDealIn, CurrentWeekDealInTarget);
+            }
+        }
+        /// <summary>
+        /// 货币汇率
+        /// </summary>
+        public double rate { get; set; }
+    }
     public class AjaxEmployeeCheckInDistribution
     {
         [Key]
@@ -278,6 +528,419 @@ namespace Model
                 return Utl.Utl.GetPercent(TotalDealIn, TotalDealInTarget);
             }
         }
+    }
+
+    public class AjaxProjectProcessByMonth
+    {
+        public string Manager { get; set; }
+        public string Lead { get; set; }
+        public int CurrentSales { get; set; }
+        public string ProjectUnitName { get; set; }
+        public string ProjectUnitCode { get; set; }
+        public DateTime ConferenceStartDate { get; set; }
+        /// <summary>
+        /// 当月入账
+        /// </summary>
+        public decimal? CurrentMonthCheckIn { get; set; }
+        /// <summary>
+        /// 当月入账目标
+        /// </summary>
+        public decimal? CurrentMonthCheckInTarget { get; set; }
+        /// <summary>
+        /// 当月入账完成率
+        /// </summary>
+        public double CheckInMonthPercent
+        {
+            get
+            {
+                return Utl.Utl.GetPercent(CurrentMonthCheckIn, CurrentMonthCheckInTarget);
+            }
+        }
+       
+        public int PassedDay { get; set; }
+        public int LeftedDay { get; set; }
+
+        /// <summary>
+        /// 项目入账目标
+        /// </summary>
+        public decimal? TotalCheckInTarget { get; set; }
+        /// <summary>
+        /// 项目入账
+        /// </summary>
+        public decimal? TotalCheckIn{get;set;}
+        public decimal? DispTotalCheckIn
+        {
+            get
+            {
+                if (TotalCheckIn == null)
+                    return 0;
+                else
+                    return TotalCheckIn;
+
+            }
+        }
+        public double TotalCheckInPercent
+        {
+            get
+            {
+                return Utl.Utl.GetPercent(TotalCheckIn, TotalCheckInTarget);
+            }
+        }
+        /// <summary>
+        /// 项目业绩目标
+        /// </summary>
+        public decimal? TotalDealInTarget { get; set; }
+        /// <summary>
+        /// 项目业绩rmb
+        /// </summary>
+        public decimal? RMBTotalDealIn { get; set; }
+        /// <summary>
+        /// 项目业绩usd
+        /// </summary>
+        public decimal? USDTotalDealIn { get; set; }
+        /// <summary>
+        /// 项目业绩
+        /// </summary>
+        public decimal? TotalDealIn
+        {
+            get
+            {
+                if (RMBTotalDealIn == null)
+                    RMBTotalDealIn = 0;
+                if (USDTotalDealIn == null)
+                    USDTotalDealIn = 0;
+                return RMBTotalDealIn + USDTotalDealIn * (decimal)6.3;
+            }
+        }
+        public double TotalDealInPercent
+        {
+            get
+            {
+                return Utl.Utl.GetPercent(TotalDealIn, TotalDealInTarget);
+            }
+        }
+
+
+        /// <summary>
+        /// 当月项目业绩目标
+        /// </summary>
+        public decimal? CurrentMonthDealInTarget { get; set; }
+        /// <summary>
+        /// 当月项目业绩rmb
+        /// </summary>
+        public decimal? CurrentMonthRMBTotalDealIn { get; set; }
+        /// <summary>
+        /// 当月项目业绩usd
+        /// </summary>
+        public decimal? CurrentMonthUSDTotalDealIn { get; set; }
+        /// <summary>
+        /// 当月业绩usd+rmb
+        /// </summary>
+        public decimal? CurrentMonthDealIn
+        {
+            get
+            {
+                if (CurrentMonthRMBTotalDealIn == null)
+                    CurrentMonthRMBTotalDealIn = 0;
+                if (CurrentMonthUSDTotalDealIn == null)
+                    CurrentMonthUSDTotalDealIn = 0;
+                return CurrentMonthRMBTotalDealIn + CurrentMonthUSDTotalDealIn * (decimal)6.3;
+            }
+        }
+        /// <summary>
+        /// 当月业绩完成率
+        /// </summary>
+        public double CurrentMonthDealInPercent
+        {
+            get
+            {
+                return Utl.Utl.GetPercent(CurrentMonthDealIn, CurrentMonthDealInTarget);
+            }
+        }
+
+    }
+    /// <summary>
+    /// 项目回款总表
+    /// </summary>
+    public class AjaxProjectsCheckInSummary
+    {
+        public string ProjectUnitName { get; set; }
+        public string ProjectUnitCode { get; set; }
+        public DateTime ConferenceStartDate { get; set; }
+        /// <summary>
+        /// PDM目标
+        /// </summary>
+        public decimal? TotalCheckInTarget { get; set; }
+        public decimal? CheckInTotal
+        {
+            get
+            {
+                if (CheckInJanuary == null)
+                    CheckInJanuary = 0;
+                if (CheckInFebruary == null)
+                    CheckInFebruary = 0;
+                if (CheckInMarch == null)
+                    CheckInMarch = 0;
+                if (CheckInApril == null)
+                    CheckInApril = 0;
+                if (CheckInMay == null)
+                    CheckInMay = 0;
+                if (CheckInJune == null)
+                    CheckInJune = 0;
+                if (CheckInJuly == null)
+                    CheckInJuly = 0;
+                if (CheckInAugust == null)
+                    CheckInAugust = 0;
+                if (CheckInSeptember == null)
+                    CheckInSeptember = 0;
+                if (CheckInOctober == null)
+                    CheckInOctober = 0;
+                if (CheckInNovember == null)
+                    CheckInNovember = 0;
+                if (CheckInDecember == null)
+                    CheckInDecember = 0;
+
+                return CheckInJanuary +
+                    CheckInFebruary +
+                    CheckInMarch +
+                    CheckInApril +
+                    CheckInMay +
+                    CheckInJune +
+                    CheckInJuly +
+                    CheckInAugust +
+                    CheckInSeptember +
+                    CheckInOctober +
+                    CheckInNovember;
+            }
+        }
+        /// <summary>
+        /// 一月
+        /// </summary>
+        public decimal? CheckInJanuary { get; set; }
+        public decimal? CheckInFebruary { get; set; }
+        public decimal? CheckInMarch { get; set; }
+        public decimal? CheckInApril { get; set; }
+        public decimal? CheckInMay { get; set; }
+        public decimal? CheckInJune { get; set; }
+        public decimal? CheckInJuly { get; set; }
+        public decimal? CheckInAugust { get; set; }
+        public decimal? CheckInSeptember { get; set; }
+        public decimal? CheckInOctober { get; set; }
+        public decimal? CheckInNovember { get; set; }
+        /// <summary>
+        /// 12月
+        /// </summary>
+        public decimal? CheckInDecember { get; set; }
+
+    }
+    /// <summary>
+    /// 销售人员回款总表
+    /// </summary>
+    public class AjaxSalesCheckInSummary
+    {
+        public string Sales { get; set; }
+        public DateTime? SalesStartDate { get; set; }
+        public string Stars { get; set; }
+        public decimal? CheckInTotal
+        {
+            get
+            {
+                if (CheckInJanuary == null)
+                    CheckInJanuary = 0;
+                if (CheckInFebruary == null)
+                    CheckInFebruary = 0;
+                if (CheckInMarch == null)
+                    CheckInMarch = 0;
+                if (CheckInApril == null)
+                    CheckInApril = 0;
+                if (CheckInMay == null)
+                    CheckInMay = 0;
+                if (CheckInJune == null)
+                    CheckInJune = 0;
+                if (CheckInJuly == null)
+                    CheckInJuly = 0;
+                if (CheckInAugust == null)
+                    CheckInAugust = 0;
+                if (CheckInSeptember == null)
+                    CheckInSeptember = 0;
+                if (CheckInOctober == null)
+                    CheckInOctober = 0;
+                if (CheckInNovember == null)
+                    CheckInNovember = 0;
+                if (CheckInDecember == null)
+                    CheckInDecember = 0;
+
+                return CheckInJanuary +
+                    CheckInFebruary +
+                    CheckInMarch +
+                    CheckInApril +
+                    CheckInMay +
+                    CheckInJune +
+                    CheckInJuly +
+                    CheckInAugust +
+                    CheckInSeptember +
+                    CheckInOctober +
+                    CheckInNovember;
+            }
+        }
+        /// <summary>
+        /// 一月
+        /// </summary>
+        public decimal? CheckInJanuary { get; set; }
+        public decimal? CheckInFebruary { get; set; }
+        public decimal? CheckInMarch { get; set; }
+        public decimal? CheckInApril { get; set; }
+        public decimal? CheckInMay { get; set; }
+        public decimal? CheckInJune { get; set; }
+        public decimal? CheckInJuly { get; set; }
+        public decimal? CheckInAugust { get; set; }
+        public decimal? CheckInSeptember { get; set; }
+        public decimal? CheckInOctober { get; set; }
+        public decimal? CheckInNovember { get; set; }
+        /// <summary>
+        /// 12月
+        /// </summary>
+        public decimal? CheckInDecember { get; set; }
+
+    }
+    /// <summary>
+    /// 销售人员月进度表
+    /// </summary>
+    public class AjaxMemberProjectProcessByMonth
+    {
+        public string Manager { get; set; }
+        public string Member { get; set; }
+        public string ProjectUnitName { get; set; }
+        public string ProjectUnitCode { get; set; }
+        public DateTime? ConferenceStartDate { get; set; }
+        /// <summary>
+        /// 个人项目到账目标
+        /// </summary>
+        public decimal? TotalCheckInTarget { get; set; }
+
+        /// <summary>
+        /// 个人项目业绩rmb
+        /// </summary>
+        public decimal? TotalDealInRMB { get; set; }
+        /// <summary>
+        /// 个人项目业绩usd
+        /// </summary>
+        public decimal? TotalDealInUSD { get; set; }
+        /// <summary>
+        /// 个人项目业绩usd+rmb
+        /// </summary>
+        public decimal? TotalDealIn
+        {
+            get
+            {
+                if (TotalDealInRMB == null)
+                    TotalDealInRMB = 0;
+                if (TotalDealInUSD == null)
+                    TotalDealInUSD = 0;
+                return TotalDealInRMB + TotalDealInUSD * (decimal)6.3;
+            }
+        }
+
+        /// <summary>
+        /// 个人项目入账
+        /// </summary>
+        public decimal? TotalCheckIn { get; set; }
+
+        /// <summary>
+        /// 当月入账
+        /// </summary>
+        public decimal? CurrentMonthCheckIn { get; set; }
+        /// <summary>
+        /// 当月入账目标
+        /// </summary>
+        public decimal? CurrentMonthCheckInTarget { get; set; }
+        /// <summary>
+        /// 当月入账完成率
+        /// </summary>
+        public double CheckInMonthPercent
+        {
+            get
+            {
+                return Utl.Utl.GetPercent(CurrentMonthCheckIn, CurrentMonthCheckInTarget);
+            }
+        }
+
+        public int PassedDay { get; set; }
+        public int LeftedDay { get; set; }
+
+        
+        
+
+
+        /// <summary>
+        /// 当月项目业绩目标
+        /// </summary>
+        public decimal? CurrentMonthDealInTarget { get; set; }
+        /// <summary>
+        /// 当月项目业绩rmb
+        /// </summary>
+        public decimal? CurrentMonthRMBTotalDealIn { get; set; }
+        /// <summary>
+        /// 当月项目业绩usd
+        /// </summary>
+        public decimal? CurrentMonthUSDTotalDealIn { get; set; }
+        /// <summary>
+        /// 当月业绩usd+rmb
+        /// </summary>
+        public decimal? CurrentMonthDealIn
+        {
+            get
+            {
+                if (CurrentMonthRMBTotalDealIn == null)
+                    CurrentMonthRMBTotalDealIn = 0;
+                if (CurrentMonthUSDTotalDealIn == null)
+                    CurrentMonthUSDTotalDealIn = 0;
+                return CurrentMonthRMBTotalDealIn + CurrentMonthUSDTotalDealIn * (decimal)6.3;
+            }
+        }
+        /// <summary>
+        /// 当月业绩完成率
+        /// </summary>
+        public double CurrentMonthDealInPercent
+        {
+            get
+            {
+                return Utl.Utl.GetPercent(CurrentMonthDealIn, CurrentMonthDealInTarget);
+            }
+        }
+
+    }
+    public class AjaxCompanyDailyReceivedPayment
+    {
+        /// <summary>
+        /// 入账日期
+        /// </summary>
+        public DateTime? CheckInDate { get; set; }
+        /// <summary>
+        /// 摘要
+        /// </summary>
+        public string Abstract{ get; set; }
+        public string Sales { get; set; }
+        public string CompanyName { get; set; }
+        public string ProjectName { get; set; }
+        public string Remark { get; set; }
+        /// <summary>
+        /// 入账金额
+        /// </summary>
+        public decimal? CheckIn {
+            get
+            {
+                if (CheckInRMB == null)
+                    CheckInRMB = 0;
+                if (CheckInUSD == null)
+                    CheckInUSD = 0;
+                return CheckInRMB + CheckInUSD * (decimal)6.3;
+            }
+        }
+
+        public decimal? CheckInRMB { get; set; }
+        public decimal? CheckInUSD { get; set; }
+
     }
     public class AjaxProjectCheckInByMonth
     {

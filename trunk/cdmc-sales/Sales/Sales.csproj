@@ -1799,6 +1799,13 @@
     <Content Include="Views\AvaliableCompanies\GetPitchPoint.cshtml" />
     <Content Include="Views\AvaliableCompanies\CoreCoverage.cshtml" />
     <Content Include="Views\AvaliableCompanies\QuickAddDeal.cshtml" />
+    <Content Include="Views\DirectorReport\ProjectsProgressByMonth.cshtml" />
+    <Content Include="Views\DirectorReport\ProjectsProgressByWeek.cshtml" />
+    <Content Include="Views\DirectorReport\MemberProjectsProgressByMonth.cshtml" />
+    <Content Include="Views\DirectorReport\MemberProjectsProgressByWeek.cshtml" />
+    <Content Include="Views\DirectorReport\CompanyDailyReceivedPayment.cshtml" />
+    <Content Include="Views\DirectorReport\ProjectsCheckInSummary.cshtml" />
+    <Content Include="Views\DirectorReport\SalesCheckInSummary.cshtml" />
     <None Include="Views\SalesEx\EditCompany.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\SimulatorConfig.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\AjaxTargetOfMonthForMember.cshtml" />

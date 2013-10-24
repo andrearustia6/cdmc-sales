@@ -144,6 +144,55 @@ namespace Sales.Controllers
         {
             return View();
         }
+        [GridAction]
+        public ActionResult ProjectsProgressByMonth(int? typeid,string manager=null)
+        {
+            var list = CRM_Logical._Reports.GetProjectsProgressByMonth(typeid,manager);
 
+            return View(new GridModel(list.ToList()));
+        }
+        [GridAction]
+        public ActionResult ProjectsProgressByWeek(int? typeid, string manager = null)
+        {
+            var list = CRM_Logical._Reports.GetProjectsProgressByWeek(new DateTime(2013, 7, 15), typeid, manager);
+
+            return View(new GridModel(list.ToList()));
+        }
+        [GridAction]
+        public ActionResult MemberProjectsProgressByMonth(int? typeid, string manager = null)
+        {
+            var list = CRM_Logical._Reports.GetMemberProjectsProgressByMonth(typeid, manager);
+
+            return View(new GridModel(list.ToList()));
+        }
+
+        [GridAction]
+        public ActionResult MemberProjectsProgressByWeek(int? typeid, string manager = null)
+        {
+            var list = CRM_Logical._Reports.GetMemberProjectsProgressByWeek(new DateTime(2013, 7, 15), typeid, manager);
+
+            return View(new GridModel(list.ToList()));
+        }
+        [GridAction]
+        public ActionResult CompanyDailyReceivedPayment(DateTime? currentdate,int? abstractid,string sales,int? projectid,string companyname= null)
+        {
+            var list = CRM_Logical._Reports.GetCompanyDailyReceivedPayment(currentdate, abstractid, sales, projectid,companyname);
+
+            return View(new GridModel(list.ToList()));
+        }
+        [GridAction]
+        public ActionResult ProjectsCheckInSummary(int? year,int? typeid, string manager = null)
+        {
+            var list = CRM_Logical._Reports.GetProjectsCheckInSummary(year, typeid, manager);
+
+            return View(new GridModel(list.ToList()));
+        }
+        [GridAction]
+        public ActionResult SalesCheckInSummary(int? year, int? typeid, string manager = null)
+        {
+            var list = CRM_Logical._Reports.GetAjaxSalesCheckInSummary(year, typeid, manager);
+
+            return View(new GridModel(list.ToList()));
+        }
     }
 }

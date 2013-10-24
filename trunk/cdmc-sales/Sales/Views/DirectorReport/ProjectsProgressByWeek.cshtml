@@ -1,0 +1,88 @@
+﻿@{
+    ViewBag.Title = "项目周进度表";
+    Layout = "~/Views/DirectorReport/Master.cshtml";
+}
+@using Model
+@using Utl;
+@using BLL;
+<fieldset>
+<legend>项目周进度表</legend>
+ 项目类型 @Html.DropDownList("ProjectType", SelectHelper.ProjectTypeSelectList(), "请选择", new { onchange = "onProjectTypeChange();" })
+   板块负责人 @Html.DropDownList("Manager",CRM_Logical._Reports.GetProjectsManager(),"请选择", new { onchange = "onManagerChange();" })
+@(
+    Html.Telerik().Grid<AjaxProjectsProgressByWeek>().Name("ProjectWeekPerformance")
+         .DataBinding(dataBinding =>
+         {
+             dataBinding.Ajax().Select("ProjectsProgressByWeek", "DirectorReport");
+         })
+         .ClientEvents(events => events.OnDataBinding("dataBinding"))
+        .Columns(columns =>
+        {
+            columns.Bound(p => p.ProjectUnitName).Width(150).Title("项目名").HtmlAttributes(new { style = "text-align:left" });
+            columns.Bound(p => p.LastWeekDealInTarget).Width(100).Title("上周业绩目标").HtmlAttributes(new { style = "text-align:left" }).Format("{0:c0}")
+                .Aggregate(aggregates => aggregates.Sum())
+        .ClientFooterTemplate("<p><#= $.telerik.formatString('{0:c0}', Sum) #></p>")
+        .FooterHtmlAttributes(new { style = "text-align:right" });
+            columns.Bound(p => p.LastWeekDealIn).Width(100).Title("上周业绩").HtmlAttributes(new { style = "text-align:left" }).Format("{0:c0}")
+                .Aggregate(aggregates => aggregates.Sum())
+        .ClientFooterTemplate("<p><#= $.telerik.formatString('{0:c0}', Sum) #></p>")
+        .FooterHtmlAttributes(new { style = "text-align:right" });
+            columns.Bound(p => p.LastWeekDealInPercent).Width(100).Title("完成率").HtmlAttributes(new { style = "text-align:left" }).Format("{0:p0}");
+            columns.Bound(p => p.LastWeekCheckInTarget).Width(100).Title("上周入账目标").HtmlAttributes(new { style = "text-align:left" }).Format("{0:c0}")
+                .Aggregate(aggregates => aggregates.Sum())
+        .ClientFooterTemplate("<p><#= $.telerik.formatString('{0:c0}', Sum) #></p>")
+        .FooterHtmlAttributes(new { style = "text-align:right" });
+            columns.Bound(p => p.LastWeekCheckIn).Width(100).Title("上周入账").HtmlAttributes(new { style = "text-align:left" }).Format("{0:c0}")
+                .Aggregate(aggregates => aggregates.Sum())
+        .ClientFooterTemplate("<p><#= $.telerik.formatString('{0:c0}', Sum) #></p>")
+        .FooterHtmlAttributes(new { style = "text-align:right" });
+            columns.Bound(p => p.CheckInLastWeekPercent).Width(100).Title("完成率").HtmlAttributes(new { style = "text-align:left" }).Format("{0:p0}");
+
+            columns.Bound(p => p.CurrentWeekDealInTarget).Width(100).Title("本周业绩目标").HtmlAttributes(new { style = "text-align:left" }).Format("{0:c0}")
+                .Aggregate(aggregates => aggregates.Sum())
+        .ClientFooterTemplate("<p><#= $.telerik.formatString('{0:c0}', Sum) #></p>")
+        .FooterHtmlAttributes(new { style = "text-align:right" });
+            columns.Bound(p => p.CurrentWeekDealIn).Width(100).Title("本周业绩").HtmlAttributes(new { style = "text-align:left" }).Format("{0:c0}")
+                .Aggregate(aggregates => aggregates.Sum())
+        .ClientFooterTemplate("<p><#= $.telerik.formatString('{0:c0}', Sum) #></p>")
+        .FooterHtmlAttributes(new { style = "text-align:right" });
+            columns.Bound(p => p.CurrentWeekDealInPercent).Width(100).Title("完成率").HtmlAttributes(new { style = "text-align:left" }).Format("{0:p0}");
+            columns.Bound(p => p.CurrentWeekCheckInTarget).Width(100).Title("本周入账目标").HtmlAttributes(new { style = "text-align:left" }).Format("{0:c0}")
+                .Aggregate(aggregates => aggregates.Sum())
+        .ClientFooterTemplate("<p><#= $.telerik.formatString('{0:c0}', Sum) #></p>")
+        .FooterHtmlAttributes(new { style = "text-align:right" });
+            columns.Bound(p => p.CurrentWeekCheckIn).Width(100).Title("本周入账").HtmlAttributes(new { style = "text-align:left" }).Format("{0:c0}")
+                .Aggregate(aggregates => aggregates.Sum())
+        .ClientFooterTemplate("<p><#= $.telerik.formatString('{0:c0}', Sum) #></p>")
+        .FooterHtmlAttributes(new { style = "text-align:right" });
+            columns.Bound(p => p.CheckInWeekPercent).Width(100).Title("完成率").HtmlAttributes(new { style = "text-align:left" }).Format("{0:p0}");
+            
+        }
+        )
+             .Pageable(p => p.Style(GridPagerStyles.Status)
+                       .PageOnScroll(true).PageSize(25)).Scrollable(scrolling => scrolling.Height(500)).Resizable(r => r.Columns(true))
+        .HtmlAttributes(new { style = "max-width:1100px" })
+)
+
+</fieldset>
+
+<script>
+    function dataBinding(e) {
+        var typeid = $('#ProjectType').val();
+        var manager = $('#Manager').val();
+        e.data = $.extend(e.data, { typeid: typeid, manager: manager });
+    }
+    function refreshGrid() {
+
+        $("#ProjectWeekPerformance").data("tGrid").rebind();
+
+    }
+    function onProjectTypeChange() {
+
+        refreshGrid();
+    }
+    function onManagerChange() {
+        refreshGrid();
+    }
+    
+</script>
