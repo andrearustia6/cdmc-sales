@@ -757,7 +757,8 @@ namespace Sales.Controllers
 
             CompanyRelationship companyRelationship = CH.GetDataById<CompanyRelationship>(crmid);
 
-            Member member = CH.DB.Members.Where(m => m.Name == Employee.CurrentUserName).FirstOrDefault();
+            Member member = companyRelationship.Members.Where(m => m.Name == Employee.CurrentUserName).FirstOrDefault();
+
             companyRelationship.Members.Remove(member);
             CH.Edit(companyRelationship);
 
