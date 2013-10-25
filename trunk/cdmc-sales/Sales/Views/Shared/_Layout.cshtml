@@ -205,7 +205,8 @@
                                     }
                                     else
                                     {
-                                        //item.Add().Url("~/SalesEx/index").Text("可打公司 V2.0");
+                                        if (score <= 100)
+                                        item.Add().Url("~/SalesEx/index").Text("可打公司 V2.0");
                                     }
                                     if (score == LeaderRequired.LVL | score == SalesRequired.LVL)
                                     {
