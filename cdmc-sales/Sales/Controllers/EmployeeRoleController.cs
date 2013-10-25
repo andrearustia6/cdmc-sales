@@ -252,9 +252,11 @@ namespace Sales.Controllers
                 s.DepartmentID = model.DepartmentID;
                 s.Mobile = model.Mobile;
                 s.EmailSignatures = model.EmailSignatures;
-                if (!string.IsNullOrWhiteSpace(s.EmailPassword))
+                if (!string.IsNullOrWhiteSpace(model.EmailPassword))
                 {
                     s.EmailPassword = model.EmailPassword;
+
+
                     //if (GetMD5Hash(model.OldPassword) != s.EmailPassword)
                     //{
                     //    return Json("初始密码错误！");
