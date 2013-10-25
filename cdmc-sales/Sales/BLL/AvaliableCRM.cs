@@ -289,7 +289,7 @@ namespace Sales.BLL
                               }),
                 _ProgressTrack = CH.DB.ProgressTrack.Where(pt => pt.CompanyRelationshipID == crmid).OrderByDescending(pt => pt.ChangeDate)
             };
-            crm._Leads = crm._Leads.OrderByDescending(l => l.LastCallTypeID);
+            crm._Leads = crm._Leads.OrderByDescending(l => l.LastCallTypeID).ThenBy(l => l.Name);
             return crm;
         }
         public static _CRM _CRMGetAvaliableCrmDetailByCrmIDLeadID(int crmid, int leadid)
