@@ -851,9 +851,10 @@ namespace Sales.Controllers
         /// <param name="content"></param>
         public bool SendEmail(string fromEmail, string fromName, string toEmail, string toName, string content)
         {
-            UserInfoModel currUser =  Employee.GetUserByName(Employee.CurrentUserName);
-
-            if ((currUser == null) || (String.IsNullOrEmpty(currUser.Email)) || string.IsNullOrEmpty(currUser.Password))
+            //UserInfoModel currUser =  Employee.GetUserByName(Employee.CurrentUserName);
+            var  currUsers = from c in CH.DB.EmployeeRoles where c.AccountName == Employee.CurrentUserName select c;
+            EmployeeRole currUser = currUsers.FirstOrDefault();
+            if ((currUser == null) || (String.IsNullOrEmpty(currUser.Email)) || string.IsNullOrEmpty(currUser.EmailPassword))
                 return false;
 
             // Send email
@@ -861,12 +862,12 @@ namespace Sales.Controllers
             smtp.Host = ConfigurationManager.AppSettings["SMTP_Server"].ToString();
             smtp.Port = Convert.ToInt32(ConfigurationManager.AppSettings["SMTP_Port"].ToString());
             //NetworkCredential SMTPUserInfo = new NetworkCredential(ConfigurationManager.AppSettings["SMTP_Username"].ToString(), ConfigurationManager.AppSettings["SMTP_Password"].ToString());
-            NetworkCredential SMTPUserInfo = new NetworkCredential(currUser.Email, currUser.Password);
+            NetworkCredential SMTPUserInfo = new NetworkCredential(currUser.Email, currUser.EmailPassword);
             smtp.UseDefaultCredentials = false;
             smtp.Credentials = SMTPUserInfo;
 
             //MailAddress from = new MailAddress("system@cdmc.org.cn", "system@cdmc.org.cn", System.Text.Encoding.Unicode);
-            MailAddress from = new MailAddress(fromEmail, fromName, System.Text.Encoding.Unicode);
+            MailAddress from = new MailAddress(currUser.Email, currUser.EmailSignatures, System.Text.Encoding.Unicode);
             MailAddress to = new MailAddress(toEmail, toName, System.Text.Encoding.UTF8);
             MailMessage message = new MailMessage(from, to);
             message.SubjectEncoding = System.Text.Encoding.UTF8;
