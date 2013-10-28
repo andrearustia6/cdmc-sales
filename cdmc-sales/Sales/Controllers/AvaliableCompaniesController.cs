@@ -983,7 +983,7 @@ namespace Sales.Controllers
         [HttpPost]
         public PartialViewResult GetAssignCompany(int crmid, int projectid)
         {
-            var result = CH.DB.CompanyRelationships.Find(crmid).Members.Where(s => s.IsActivated && s.ProjectID == projectid);
+            var result = CH.DB.CompanyRelationships.Find(crmid).Members.Where(s => s.IsActivated && s.ProjectID == projectid).Select(s=>s.ID);
             ViewBag.project = CH.GetDataById<Project>(projectid);
             return PartialView("AssignCompany", result);
         }
