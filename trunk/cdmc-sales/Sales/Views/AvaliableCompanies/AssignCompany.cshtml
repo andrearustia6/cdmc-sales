@@ -4,7 +4,7 @@
            @{Project project = ViewBag.project as Project;}
 
 <ul id="gupu">
-@foreach (var x in project.Members)
+@foreach (var x in project.Members.Where(w=>w.IsActivated==true))
 { 
     <li title="@x.Name" class="@(Model.Contains(x.ID)?"isselect":"")"><input type="checkbox" name="mbs" value="@x.ID"/>@x.Name</li>    
 }
