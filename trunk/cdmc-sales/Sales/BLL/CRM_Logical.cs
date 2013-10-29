@@ -1843,8 +1843,8 @@ namespace BLL
             public static IEnumerable<SelectListItem> GetProjectsManager()
             {
                 var ps = CRM_Logical.GetUserInvolveProject();
-                var pros=ps.Select(p => p.Manager).Distinct();
-
+                var pros=ps.Where(p=>p.Manager!=null).Select(p => p.Manager).Distinct();
+                pros = pros.OrderBy(w => w);
                 string spSuperManager = Utl.Utl.GetSpecialSuperManager();
                 string team1leader = Utl.Utl.GetTeam1Leader();
                 string team2leader = Utl.Utl.GetTeam2Leader();
@@ -1878,6 +1878,7 @@ namespace BLL
                                    Sales = m.Name,
                                }).OrderBy(p=>p.Sales).ToList();
                 var pros = members.Select(p => p.Sales).Distinct();
+                pros = pros.OrderBy(w => w);
                 List<SelectListItem> selectList = new List<SelectListItem>();
                 foreach (var pro in pros)
                 {
