@@ -210,7 +210,7 @@ namespace Entity
 
         public Double Rate { get; set; }
     }
-
+    
       /// <summary>
     /// 付款类型
     /// </summary>

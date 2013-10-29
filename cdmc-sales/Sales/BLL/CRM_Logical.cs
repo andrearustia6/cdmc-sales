@@ -837,6 +837,21 @@ namespace BLL
                     ps = ps.Where(p => p.ProjectTypeID == typeid).ToList();
                 if (!string.IsNullOrEmpty(manager))
                     ps = ps.Where(p => p.Manager == manager).ToList();
+
+                string spSuperManager = Utl.Utl.GetSpecialSuperManager();
+                string team1leader = Utl.Utl.GetTeam1Leader();
+                string team2leader = Utl.Utl.GetTeam2Leader();
+                if (Employee.CurrentUserName == team1leader)
+                {
+                    string[] managers = Utl.Utl.GetTeam1ReportManagers();
+                    ps = ps.Where(w => managers.Contains(w.Manager)).ToList();
+                }
+                else if (Employee.CurrentUserName == team2leader)
+                {
+                    string[] managers = Utl.Utl.GetTeam2ReportManagers();
+                    ps = ps.Where(w => managers.Contains(w.Manager)).ToList();
+                }
+
                 var plist = from p in ps
                            group p by new {p.ID, p.ProjectUnitCode, p.ProjectUnitName, p.ConferenceStartDate } into grp
                            select new
@@ -847,7 +862,7 @@ namespace BLL
                                StartDate = grp.Key.ConferenceStartDate
                            };
                 if (day == null)
-                    day = DateTime.Now.AddDays(1); ;
+                    day = DateTime.Now.AddDays(1);
                 //day = day.Value.AddDays(25);
                 var weekend = day.Value;
                 if (day.Value.DayOfWeek == DayOfWeek.Sunday)
@@ -1007,6 +1022,19 @@ namespace BLL
                     ps = ps.Where(p => p.ProjectTypeID == typeid).ToList();
                 if (!string.IsNullOrEmpty(manager))
                     ps = ps.Where(p => p.Manager == manager).ToList();
+                string spSuperManager = Utl.Utl.GetSpecialSuperManager();
+                string team1leader = Utl.Utl.GetTeam1Leader();
+                string team2leader = Utl.Utl.GetTeam2Leader();
+                if (Employee.CurrentUserName == team1leader)
+                {
+                    string[] managers = Utl.Utl.GetTeam1ReportManagers();
+                    ps = ps.Where(w => managers.Contains(w.Manager)).ToList();
+                }
+                else if (Employee.CurrentUserName == team2leader)
+                {
+                    string[] managers = Utl.Utl.GetTeam2ReportManagers();
+                    ps = ps.Where(w => managers.Contains(w.Manager)).ToList();
+                }
                 //IEnumerable<int> idList = ps.Select(o => o.ID);
                 //var plist = (from p in idList
                 //               join m in CH.DB.Members on p equals m.ProjectID
@@ -1019,7 +1047,8 @@ namespace BLL
                 //               }).ToList();
                 IEnumerable<int> idList = ps.Select(o => o.ID);
                 var deals = from d in CH.DB.Deals where idList.Contains((int)d.ProjectID) select d;
-                
+                var members = CH.DB.Members.Where(w => w.IsActivated == true).Select(w => w.Name).Distinct();
+                deals = deals.Where(w => members.Contains(w.Sales));
                 if (day == null)
                     day = DateTime.Now.AddDays(1); ;
                 //day = day.Value.AddDays(25);
@@ -1248,6 +1277,39 @@ namespace BLL
                 return list.Where(w => !string.IsNullOrEmpty(w.ProjectName) || !string.IsNullOrEmpty(w.ProjectCode));
             }
 
+            public static IQueryable<AjaxProjectChartInMonthHeader> GetProjectChartInMonth(int? year, List<int> selectedprojects)
+            {
+                var yeaerstart = new DateTime(DateTime.Now.Year, 1, 1);
+                if (year == null)
+                    year = DateTime.Now.Year;
+                var ps = CRM_Logical.GetUserInvolveProject();
+                if(selectedprojects!=null)
+                    ps = ps.Where(w => selectedprojects.Contains(w.ID)).ToList();
+                var pid = ps.Select(s => s.ID);
+                var targets = CH.DB.TargetOfMonths.Where(w => w.Project.IsActived == true);
+                var deals = CRM_Logical.GetDeals(true);
+                deals = deals.Where(w => pid.Contains((int)w.ProjectID));
+                var list = from d in deals
+                           group d by new { d.Project.ProjectUnitCode, d.Project.ProjectUnitName } into grp
+                           select new AjaxProjectChartInMonthHeader
+                           {
+
+                               ProjectName = grp.Key.ProjectUnitName,
+                               ProjectCode = grp.Key.ProjectUnitCode,
+                               ProjectLines = (from ds in deals.Where(w => w.Project.ProjectUnitCode == grp.Key.ProjectUnitCode && w.ActualPaymentDate != null && w.ActualPaymentDate.Value.Year==year)
+                                               group ds by new { ds.ActualPaymentDate.Value.Month } into grps
+                                               select new AjaxProjectChartInMonth()
+                                               {
+                                                   Month = grps.Key.Month,
+                                                   CheckIn = grps.Sum(s => (decimal?)s.Income),
+                                                   CheckInTarget = targets.Where(w => w.StartDate.Month == grps.Key.Month && w.Project.ProjectUnitCode == grp.Key.ProjectUnitCode).Sum(s => (decimal?)s.CheckIn),
+                                                   DealIn = grps.Sum(s => (decimal?)s.Payment),
+                                                   DealInTarget = targets.Where(w => w.StartDate.Month == grps.Key.Month && w.Project.ProjectUnitCode == grp.Key.ProjectUnitCode).Sum(s => (decimal?)s.Deal),
+                                               })
+                           };
+                return list;
+            }
+
             public static IQueryable<AjaxProjectCheckInMonthByProjectType> GetProjectsPerformanceInProjectType()
             {
                 var pid = CRM_Logical.GetUserInvolveProject().Select(s => s.ID);
@@ -1365,7 +1427,48 @@ namespace BLL
 
                 return list.Where(w => !string.IsNullOrEmpty(w.ProjectName) || !string.IsNullOrEmpty(w.ProjectCode));
             }
+            public static AjaxProjectCheckInByWeek GetCheckInInfo(string code,int? year,int month)
+            {
+                var ps = CRM_Logical.GetUserInvolveProject();
+                //var monthstart = DateTime.Now.StartOfMonth();
+                if (year == null)
+                    year = DateTime.Now.Year;
+                var monthstart = new DateTime((int)year, month, 1);
+                var monthend = DateTime.Now.EndOfMonth();
+                var firstweekstart = monthstart;
+                while (firstweekstart.DayOfWeek == DayOfWeek.Thursday && firstweekstart.DayOfWeek == DayOfWeek.Sunday)
+                {
+                    firstweekstart = firstweekstart.AddDays(1);
+                }
+                var firstweekend = firstweekstart;
+                while (firstweekend.DayOfWeek != DayOfWeek.Sunday)
+                {
+                    firstweekend = firstweekend.AddDays(1);
+                }
+                var secondweekstart = firstweekend;
+                var secondweekend = secondweekstart.AddDays(7);
+                var thirdweekstart = secondweekend;
+                var thirdweekend = thirdweekstart.AddDays(7);
+                var fourthweekstart = thirdweekend;
+                var fourthweekend = fourthweekstart.AddDays(7);
+                var fifthweekstart = fourthweekend;
+                var fifthweekend = fifthweekstart.AddDays(7);
+                while (fifthweekend > monthend)
+                {
+                    firstweekend.AddDays(-1);
+                }
+                IQueryable<Deal> deals = from deal in CH.DB.Deals.Where(d => d.Abandoned == false).Where(w => w.ActualPaymentDate >= monthstart && w.ActualPaymentDate < monthend) select deal;
+                var checkin = new AjaxProjectCheckInByWeek()
+                           {
+                               FirstWeekCheckIn = deals.Where(w => w.Project.ProjectUnitCode == code && w.ActualPaymentDate >= firstweekstart && w.ActualPaymentDate < firstweekend).Sum(s => (decimal?)s.Income),
+                               SencondWeekCheckIn = deals.Where(w => w.Project.ProjectUnitCode == code && w.ActualPaymentDate >= secondweekstart && w.ActualPaymentDate < secondweekend).Sum(s => (decimal?)s.Income),
+                               ThirdWeekCheckIn = deals.Where(w => w.Project.ProjectUnitCode == code && w.ActualPaymentDate >= thirdweekstart && w.ActualPaymentDate < thirdweekend).Sum(s => (decimal?)s.Income),
+                               FourWeekCheckIn = deals.Where(w => w.Project.ProjectUnitCode == code && w.ActualPaymentDate >= fourthweekstart && w.ActualPaymentDate < fourthweekend).Sum(s => (decimal?)s.Income),
+                               FifthWeekCheckIn = deals.Where(w => w.Project.ProjectUnitCode == code && w.ActualPaymentDate >= fifthweekstart && w.ActualPaymentDate < fifthweekend).Sum(s => (decimal?)s.Income),
+                           };
 
+                return checkin;
+            }
             public static IEnumerable<AjaxProjectProcess> GetProjectsProgress()
             {
                 var ps = CRM_Logical.GetUserInvolveProject();
@@ -1421,8 +1524,22 @@ namespace BLL
                     ps = ps.Where(p => p.Manager == manager).ToList();
                 var targets = CH.DB.TargetOfMonths.Where(w => w.Project.IsActived == true);
                 var deals = CRM_Logical.GetDeals(true);
-                var date = new DateTime(2013, 5, 1);
-                //var date = DateTime.Now;
+                string spSuperManager = Utl.Utl.GetSpecialSuperManager();
+                string team1leader = Utl.Utl.GetTeam1Leader();
+                string team2leader = Utl.Utl.GetTeam2Leader();
+                if (Employee.CurrentUserName == team1leader)
+                {
+                    string[] managers = Utl.Utl.GetTeam1ReportManagers();
+                    ps = ps.Where(w => managers.Contains(w.Manager)).ToList();
+                }
+                else if (Employee.CurrentUserName == team2leader)
+                {
+                    string[] managers = Utl.Utl.GetTeam2ReportManagers();
+                    ps = ps.Where(w => managers.Contains(w.Manager)).ToList();
+                }
+
+                //var date = new DateTime(2013, 5, 1);
+                var date = DateTime.Now;
                 var currentmonthstart = date.StartOfMonth();
                 var currentmonthend = date.EndOfMonth();
                 var currentweekstart = date.StartOfWeek();
@@ -1461,7 +1578,7 @@ namespace BLL
                                CurrentMonthCheckIn = deals.Where(w => w.Project.ProjectUnitCode == l.Code && w.ActualPaymentDate >= currentmonthstart && w.ActualPaymentDate < currentmonthend).Sum(s => (decimal?)s.Income),
                                
                            };
-
+                data = data.OrderBy(w => w.ConferenceStartDate);
                 return data;
             }
 
@@ -1472,6 +1589,20 @@ namespace BLL
                     ps = ps.Where(p => p.ProjectTypeID == typeid).ToList();
                 if (!string.IsNullOrEmpty(manager))
                     ps = ps.Where(p => p.Manager == manager).ToList();
+                string spSuperManager = Utl.Utl.GetSpecialSuperManager();
+                string team1leader = Utl.Utl.GetTeam1Leader();
+                string team2leader = Utl.Utl.GetTeam2Leader();
+                if (Employee.CurrentUserName == team1leader)
+                {
+                    string[] managers = Utl.Utl.GetTeam1ReportManagers();
+                    ps = ps.Where(w => managers.Contains(w.Manager)).ToList();
+                }
+                else if (Employee.CurrentUserName == team2leader)
+                {
+                    string[] managers = Utl.Utl.GetTeam2ReportManagers();
+                    ps = ps.Where(w => managers.Contains(w.Manager)).ToList();
+                }
+
                 var targets = CH.DB.TargetOfMonths.Where(w => w.Project.IsActived == true);
                 var deals = CRM_Logical.GetDeals(true);
                 if (year == null)
@@ -1490,6 +1621,7 @@ namespace BLL
                 var data = from l in list
                            select new AjaxProjectsCheckInSummary
                            {
+                               ProjectUnitCode=l.Code,
                                ProjectUnitName = l.Name,
                                ConferenceStartDate = l.StartDate,
                                TotalCheckInTarget = (decimal?)l.Target,
@@ -1499,8 +1631,8 @@ namespace BLL
                                 CheckInMarch = deals.Where(w => w.Project.ProjectUnitCode == l.Code && w.ActualPaymentDate.Value.Year == year && w.ActualPaymentDate.Value.Month ==3).Sum(s => (decimal?)s.Income),
                                 CheckInApril = deals.Where(w => w.Project.ProjectUnitCode == l.Code && w.ActualPaymentDate.Value.Year == year && w.ActualPaymentDate.Value.Month ==4).Sum(s => (decimal?)s.Income),
                                 CheckInMay  = deals.Where(w => w.Project.ProjectUnitCode == l.Code && w.ActualPaymentDate.Value.Year == year && w.ActualPaymentDate.Value.Month ==5).Sum(s => (decimal?)s.Income),
-                                CheckInJune = deals.Where(w => w.Project.ProjectUnitCode == l.Code && w.ActualPaymentDate.Value.Year == year && w.ActualPaymentDate.Value.Month ==5).Sum(s => (decimal?)s.Income),
-                                CheckInJuly = deals.Where(w => w.Project.ProjectUnitCode == l.Code && w.ActualPaymentDate.Value.Year == year && w.ActualPaymentDate.Value.Month ==6).Sum(s => (decimal?)s.Income),
+                                CheckInJune = deals.Where(w => w.Project.ProjectUnitCode == l.Code && w.ActualPaymentDate.Value.Year == year && w.ActualPaymentDate.Value.Month ==6).Sum(s => (decimal?)s.Income),
+                                CheckInJuly = deals.Where(w => w.Project.ProjectUnitCode == l.Code && w.ActualPaymentDate.Value.Year == year && w.ActualPaymentDate.Value.Month ==7).Sum(s => (decimal?)s.Income),
                                 CheckInAugust = deals.Where(w => w.Project.ProjectUnitCode == l.Code && w.ActualPaymentDate.Value.Year == year && w.ActualPaymentDate.Value.Month ==8).Sum(s => (decimal?)s.Income),
                                 CheckInSeptember = deals.Where(w => w.Project.ProjectUnitCode == l.Code && w.ActualPaymentDate.Value.Year == year && w.ActualPaymentDate.Value.Month ==9).Sum(s => (decimal?)s.Income),
                                 CheckInOctober  = deals.Where(w => w.Project.ProjectUnitCode == l.Code && w.ActualPaymentDate.Value.Year == year && w.ActualPaymentDate.Value.Month ==10).Sum(s => (decimal?)s.Income),
@@ -1520,15 +1652,29 @@ namespace BLL
                     ps = ps.Where(p => p.ProjectTypeID == typeid).ToList();
                 if (!string.IsNullOrEmpty(manager))
                     ps = ps.Where(p => p.Manager == manager).ToList();
+                string spSuperManager = Utl.Utl.GetSpecialSuperManager();
+                string team1leader = Utl.Utl.GetTeam1Leader();
+                string team2leader = Utl.Utl.GetTeam2Leader();
+                if (Employee.CurrentUserName == team1leader)
+                {
+                    string[] managers = Utl.Utl.GetTeam1ReportManagers();
+                    ps = ps.Where(w => managers.Contains(w.Manager)).ToList();
+                }
+                else if (Employee.CurrentUserName == team2leader)
+                {
+                    string[] managers = Utl.Utl.GetTeam2ReportManagers();
+                    ps = ps.Where(w => managers.Contains(w.Manager)).ToList();
+                }
                 var targets = CH.DB.TargetOfMonthForMembers.Where(w => w.Project.IsActived == true);
                 //var deals = CRM_Logical.GetDeals(true);
-                var date = new DateTime(2013, 5, 1);
-                //var date = DateTime.Now;
+                //var date = new DateTime(2013, 5, 1);
+                var date = DateTime.Now;
                 var currentmonthstart = date.StartOfMonth();
                 var currentmonthend = date.EndOfMonth();
                 IEnumerable<int> idList = ps.Select(o => o.ID);
                 var deals = from d in CH.DB.Deals where idList.Contains((int)d.ProjectID) select d;
-                
+                var members = CH.DB.Members.Where(w => w.IsActivated == true).Select(w => w.Name).Distinct();
+                deals = deals.Where(w => members.Contains(w.Sales));
                 var list = from d in deals
                            group d by new { d.Sales,d.ProjectID,d.Project.ProjectUnitName,d.Project.ConferenceStartDate } into grp
                            select new AjaxMemberProjectProcessByMonth
@@ -1564,10 +1710,25 @@ namespace BLL
                     ps = ps.Where(p => p.ProjectTypeID == typeid).ToList();
                 if (!string.IsNullOrEmpty(manager))
                     ps = ps.Where(p => p.Manager == manager).ToList();
+                string spSuperManager = Utl.Utl.GetSpecialSuperManager();
+                string team1leader = Utl.Utl.GetTeam1Leader();
+                string team2leader = Utl.Utl.GetTeam2Leader();
+                if (Employee.CurrentUserName == team1leader)
+                {
+                    string[] managers = Utl.Utl.GetTeam1ReportManagers();
+                    ps = ps.Where(w => managers.Contains(w.Manager)).ToList();
+                }
+                else if (Employee.CurrentUserName == team2leader)
+                {
+                    string[] managers = Utl.Utl.GetTeam2ReportManagers();
+                    ps = ps.Where(w => managers.Contains(w.Manager)).ToList();
+                }
                 if (year == null)
                     year = DateTime.Now.Year;
                 IEnumerable<int> idList = ps.Select(o => o.ID);
                 var deals = from d in CH.DB.Deals where idList.Contains((int)d.ProjectID) select d;
+                var members = CH.DB.Members.Where(w => w.IsActivated == true).Select(w => w.Name).Distinct();
+                deals = deals.Where(w => members.Contains(w.Sales));
                 var employroles = from e in CH.DB.EmployeeRoles select e;
                 var list = from d in deals
                            group d by new { d.Sales} into grp
@@ -1575,13 +1736,14 @@ namespace BLL
                            {
                                Sales = grp.Key.Sales,
                                SalesStartDate = employroles.Where(w=>w.AccountName==grp.Key.Sales).FirstOrDefault().StartDate,
+                               Stars = employroles.Where(w=>w.AccountName==grp.Key.Sales).FirstOrDefault().ExpLevel.Name,
                                CheckInJanuary = deals.Where(w => w.Sales == grp.Key.Sales && w.ActualPaymentDate.Value.Year == year && w.ActualPaymentDate.Value.Month == 1).Sum(s => (decimal?)s.Income),
                                CheckInFebruary = deals.Where(w => w.Sales == grp.Key.Sales && w.ActualPaymentDate.Value.Year == year && w.ActualPaymentDate.Value.Month == 2).Sum(s => (decimal?)s.Income),
                                CheckInMarch = deals.Where(w => w.Sales == grp.Key.Sales && w.ActualPaymentDate.Value.Year == year && w.ActualPaymentDate.Value.Month == 3).Sum(s => (decimal?)s.Income),
                                CheckInApril = deals.Where(w => w.Sales == grp.Key.Sales && w.ActualPaymentDate.Value.Year == year && w.ActualPaymentDate.Value.Month == 4).Sum(s => (decimal?)s.Income),
                                CheckInMay = deals.Where(w => w.Sales == grp.Key.Sales && w.ActualPaymentDate.Value.Year == year && w.ActualPaymentDate.Value.Month == 5).Sum(s => (decimal?)s.Income),
-                               CheckInJune = deals.Where(w => w.Sales == grp.Key.Sales && w.ActualPaymentDate.Value.Year == year && w.ActualPaymentDate.Value.Month == 5).Sum(s => (decimal?)s.Income),
-                               CheckInJuly = deals.Where(w => w.Sales == grp.Key.Sales && w.ActualPaymentDate.Value.Year == year && w.ActualPaymentDate.Value.Month == 6).Sum(s => (decimal?)s.Income),
+                               CheckInJune = deals.Where(w => w.Sales == grp.Key.Sales && w.ActualPaymentDate.Value.Year == year && w.ActualPaymentDate.Value.Month == 6).Sum(s => (decimal?)s.Income),
+                               CheckInJuly = deals.Where(w => w.Sales == grp.Key.Sales && w.ActualPaymentDate.Value.Year == year && w.ActualPaymentDate.Value.Month == 7).Sum(s => (decimal?)s.Income),
                                CheckInAugust = deals.Where(w => w.Sales == grp.Key.Sales && w.ActualPaymentDate.Value.Year == year && w.ActualPaymentDate.Value.Month == 8).Sum(s => (decimal?)s.Income),
                                CheckInSeptember = deals.Where(w => w.Sales == grp.Key.Sales && w.ActualPaymentDate.Value.Year == year && w.ActualPaymentDate.Value.Month == 9).Sum(s => (decimal?)s.Income),
                                CheckInOctober = deals.Where(w => w.Sales == grp.Key.Sales && w.ActualPaymentDate.Value.Year == year && w.ActualPaymentDate.Value.Month == 10).Sum(s => (decimal?)s.Income),
@@ -1598,20 +1760,22 @@ namespace BLL
                 return list;
             }
 
-            public static IEnumerable<AjaxCompanyDailyReceivedPayment> GetCompanyDailyReceivedPayment(DateTime? currentdate, int? abstractid, string sales, int? projectid, string companyname = null)
+            public static IEnumerable<AjaxCompanyDailyReceivedPayment> GetCompanyDailyReceivedPayment(int? year, int? month, int? day, int? abstractid, string sales, int? projectid, string companyname = null)
             {
                 var ps = CRM_Logical.GetUserInvolveProject();
                 if (projectid != null)
                     ps = ps.Where(p => p.ID == projectid).ToList();
                 var deals = CRM_Logical.GetDeals(true);
-                if (currentdate != null)
-                    deals = deals.Where(w => w.ActualPaymentDate == currentdate);
+                if (year != null)
+                    deals = deals.Where(w => w.ActualPaymentDate.Value.Year == year);
+                if (month != null)
+                    deals = deals.Where(w => w.ActualPaymentDate.Value.Month == month);
+                if (day != null)
+                    deals = deals.Where(w => w.ActualPaymentDate.Value.Day == day);
                 if (!string.IsNullOrEmpty(companyname))
                 {
                     deals = deals.Where(w => w.CompanyRelationship.Company.Name_CH.Contains(companyname) || w.CompanyRelationship.Company.Name_EN.Contains(companyname));
                 }
-                var date = new DateTime(2013, 5, 1);
-                //var date = DateTime.Now;
                 IEnumerable<int> idList = ps.Select(o => o.ID);
                 var members = (from p in idList
                                join d in deals on p equals d.ProjectID
@@ -1670,7 +1834,7 @@ namespace BLL
                                CompanyName = d.CompanyRelationship.Company.Name_CH == null ? d.CompanyRelationship.Company.Name_EN : d.CompanyRelationship.Company.Name_CH + "|" + d.CompanyRelationship.Company.Name_EN,
                                ProjectName = d.Project.ProjectUnitName,
                                Abstract = CH.DB.EmployeeRoles.Where(e => e.AccountName == d.Sales).FirstOrDefault() == null ? "" : CH.DB.EmployeeRoles.Where(e => e.AccountName == d.Sales).FirstOrDefault().Role.Name=="国内销售"?"国内销售收入":"国外销售收入",
-                               Remark = d.PaymentDetail
+                               Remark = d.Remark
                                
                            };
                 list = list.OrderBy(w=>w.Sales);
@@ -1680,6 +1844,21 @@ namespace BLL
             {
                 var ps = CRM_Logical.GetUserInvolveProject();
                 var pros=ps.Select(p => p.Manager).Distinct();
+
+                string spSuperManager = Utl.Utl.GetSpecialSuperManager();
+                string team1leader = Utl.Utl.GetTeam1Leader();
+                string team2leader = Utl.Utl.GetTeam2Leader();
+                if (Employee.CurrentUserName == team1leader)
+                {
+                    string[] managers = Utl.Utl.GetTeam1ReportManagers();
+                    pros = pros.Where(w => managers.Contains(w));
+                }
+                else if (Employee.CurrentUserName == team2leader)
+                {
+                    string[] managers = Utl.Utl.GetTeam2ReportManagers();
+                    pros = pros.Where(w => managers.Contains(w));
+                }
+
                 List<SelectListItem> selectList = new List<SelectListItem>();
                 foreach (var pro in pros)
                 {
@@ -1697,7 +1876,7 @@ namespace BLL
                                select new
                                {
                                    Sales = m.Name,
-                               }).ToList();
+                               }).OrderBy(p=>p.Sales).ToList();
                 var pros = members.Select(p => p.Sales).Distinct();
                 List<SelectListItem> selectList = new List<SelectListItem>();
                 foreach (var pro in pros)

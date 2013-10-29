@@ -553,6 +553,7 @@ namespace Sales.Controllers
                 item.ActualPaymentDate = newData.ActualPaymentDate;
                 item.Abandoned = newData.Abandoned;
                 item.AbandonReason = newData.AbandonReason;
+                item.Remark = newData.Remark;
                 CH.Edit<Deal>(item);
             }
             else if (Employee.CurrentRole.Level == 3)

@@ -1806,6 +1806,7 @@
     <Content Include="Views\DirectorReport\CompanyDailyReceivedPayment.cshtml" />
     <Content Include="Views\DirectorReport\ProjectsCheckInSummary.cshtml" />
     <Content Include="Views\DirectorReport\SalesCheckInSummary.cshtml" />
+    <Content Include="Views\DirectorReport\ProjectChartInMonthLines.cshtml" />
     <None Include="Views\SalesEx\EditCompany.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\SimulatorConfig.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\AjaxTargetOfMonthForMember.cshtml" />

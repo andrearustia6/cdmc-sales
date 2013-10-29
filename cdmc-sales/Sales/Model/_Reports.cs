@@ -529,7 +529,11 @@ namespace Model
             }
         }
     }
-
+    public class AggregatedProjectProcessByMonth
+    {
+        public IEnumerable<AjaxProjectProcessByMonth> bymonthes { get; set; }
+        public decimal? CurrentMonthDealInTotal { get; set; }
+    }
     public class AjaxProjectProcessByMonth
     {
         public string Manager { get; set; }
@@ -1039,6 +1043,8 @@ namespace Model
         public decimal? TotalCheckIn { get; set; }
     }
 
+    
+
     public class AjaxProjectCheckInMonthByProjectType
     {
         [Display(Name = "考察入账")]
@@ -1087,6 +1093,21 @@ namespace Model
         public string MonthString { get { return Month.ToString() + "月"; } }
     }
 
+    public class AjaxProjectChartInMonthHeader
+    {
+        public string ProjectName{ get; set; }
+        public string ProjectCode { get; set; }
+        public IEnumerable<AjaxProjectChartInMonth> ProjectLines { get; set; }
+    }
+    public class AjaxProjectChartInMonth
+    {
+        public decimal? CheckInTarget { get; set; }
+        public decimal? CheckIn { get; set; }
+        public decimal? DealInTarget { get; set; }
+        public decimal? DealIn { get; set; }
+        public int? Month { get; set; }
+        public string MonthString { get { return Month.ToString() + "月"; } }
+    }
     public class AjaxMember
     {
         public string Name { get; set; }

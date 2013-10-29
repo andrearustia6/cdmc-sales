@@ -164,6 +164,9 @@ namespace Model
         [Display(Name = "坏账原因")]
         public string AbandonReason { get; set; }
 
+        [Display(Name = "备注")]
+        public string Remark { get; set; }
+
         [Display(Name = "合约付款日期")]
         public DateTime ExpectedPaymentDate { get; set; }
 

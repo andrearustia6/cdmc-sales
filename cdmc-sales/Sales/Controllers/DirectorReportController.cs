@@ -108,7 +108,19 @@ namespace Sales.Controllers
             var list = CRM_Logical._Reports.GetProjectsCheckInByMonth();
             return View(list.ToList());
         }
-
+        /// <summary>
+        /// 项目总目标完成情况趋势图
+        /// </summary>
+        /// <param name="year"></param>
+        /// <returns></returns>
+        public ActionResult ProjectChartInMonthLines(int? year, List<int> selectedprojects,string selecttype)
+        {
+            ViewBag.SelectedProjects = selectedprojects;
+            ViewBag.SelectType = selecttype;
+            var list = CRM_Logical._Reports.GetProjectChartInMonth(year, selectedprojects);
+            return View(list.ToList());
+        }
+        
          /// <summary>
         /// 个人入账
         /// </summary>
@@ -154,8 +166,7 @@ namespace Sales.Controllers
         [GridAction]
         public ActionResult ProjectsProgressByWeek(int? typeid, string manager = null)
         {
-            var list = CRM_Logical._Reports.GetProjectsProgressByWeek(new DateTime(2013, 7, 15), typeid, manager);
-
+            var list = CRM_Logical._Reports.GetProjectsProgressByWeek(DateTime.Now, typeid, manager);
             return View(new GridModel(list.ToList()));
         }
         [GridAction]
@@ -169,14 +180,14 @@ namespace Sales.Controllers
         [GridAction]
         public ActionResult MemberProjectsProgressByWeek(int? typeid, string manager = null)
         {
-            var list = CRM_Logical._Reports.GetMemberProjectsProgressByWeek(new DateTime(2013, 7, 15), typeid, manager);
+            var list = CRM_Logical._Reports.GetMemberProjectsProgressByWeek(DateTime.Now, typeid, manager);
 
             return View(new GridModel(list.ToList()));
         }
         [GridAction]
-        public ActionResult CompanyDailyReceivedPayment(DateTime? currentdate,int? abstractid,string sales,int? projectid,string companyname= null)
+        public ActionResult CompanyDailyReceivedPayment(int? year,int? month,int? day,int? abstractid,string sales,int? projectid,string companyname= null)
         {
-            var list = CRM_Logical._Reports.GetCompanyDailyReceivedPayment(currentdate, abstractid, sales, projectid,companyname);
+            var list = CRM_Logical._Reports.GetCompanyDailyReceivedPayment(year,month,day, abstractid, sales, projectid, companyname);
 
             return View(new GridModel(list.ToList()));
         }
@@ -193,6 +204,25 @@ namespace Sales.Controllers
             var list = CRM_Logical._Reports.GetAjaxSalesCheckInSummary(year, typeid, manager);
 
             return View(new GridModel(list.ToList()));
+        }
+        public ActionResult GetManagerInfo(string code)
+        {
+            var project = CH.DB.Projects.Where(p => p.ProjectUnitCode == code).FirstOrDefault();
+            var guoneiEmp = CH.DB.EmployeeRoles.Where(w=>w.Role.Name=="国内销售").Select(w=>w.AccountName);
+            var guoneiMembers = project.Members.Where(w => w.ProjectID == project.ID && guoneiEmp.Contains(w.Name)).Select(w=>w.Name);
+            string guoneisales = string.Join(",", guoneiMembers.ToArray());
+
+            var guowaiEmp = CH.DB.EmployeeRoles.Where(w => w.Role.Name == "海外销售").Select(w => w.AccountName);
+            var guowaiMembers = project.Members.Where(w => w.ProjectID == project.ID && guowaiEmp.Contains(w.Name)).Select(w => w.Name);
+            string guowaisales = string.Join(",", guowaiMembers.ToArray());
+
+            return Json(new { manager = project.Manager, product = project.Product, tl = project.TeamLeader, market = project.Market, conference = project.Conference, guoneisales = guoneisales, guowaisales = guowaisales });
+        }
+        public ActionResult GetCheckInInfo(string code, int? year, int month)
+        {
+            var checkin = CRM_Logical._Reports.GetCheckInInfo(code, year, month);
+
+            return Json(new { firstweek = checkin.FirstWeekCheckIn == null ? 0 : checkin.FirstWeekCheckIn, secondweek = checkin.SencondWeekCheckIn == null ? 0 : checkin.SencondWeekCheckIn, thirdweek = checkin.ThirdWeekCheckIn == null ? 0 : checkin.ThirdWeekCheckIn, forthweek = checkin.FourWeekCheckIn == null ? 0 : checkin.FourWeekCheckIn, fifthweek = checkin.FifthWeekCheckIn == null ? 0 : checkin.FifthWeekCheckIn });
         }
     }
 }

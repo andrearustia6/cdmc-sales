@@ -76,7 +76,7 @@ namespace Entity
 
         [Display(Name = "邮箱密码")]
         public string EmailPassword { get; set; }
-        
 
+       
     }
 }

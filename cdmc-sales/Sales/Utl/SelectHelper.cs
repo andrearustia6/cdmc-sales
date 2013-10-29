@@ -564,5 +564,27 @@ namespace Utl
             selectList.Add(new SelectListItem() { Text = "2016", Value = "2016" });
             return selectList;
         }
+        public static IEnumerable<SelectListItem> MonthSelectList()
+        {
+            List<SelectListItem> selectList = new List<SelectListItem>();
+            for (int i = 1; i <= 12; i++)
+            {
+                selectList.Add(new SelectListItem() { Text = i.ToString(), Value = i.ToString() });
+            }
+            
+            return selectList;
+        }
+
+        public static IEnumerable<SelectListItem> DaySelectList()
+        {
+            List<SelectListItem> selectList = new List<SelectListItem>();
+            for (int i = 1; i <=31; i++)
+            {
+                selectList.Add(new SelectListItem() { Text = i.ToString(), Value = i.ToString() });
+            }
+            return selectList;
+        }
+
+
     }
 }
