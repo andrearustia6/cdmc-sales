@@ -727,7 +727,46 @@ namespace Utl
 
             return HttpContext.Current.Items["AvaliableCompaniesRole"].ToString().Split(',');
         }
+        public static string GetTeam1Leader()
+        {
+            if (HttpContext.Current != null && HttpContext.Current.Items["team1leader"] == null)
+            {
+                var settings = ConfigurationManager.AppSettings.GetValues("team1leader");
 
+                HttpContext.Current.Items["team1leader"] = settings[0] as String;
+            }
+            return (string)HttpContext.Current.Items["team1leader"];
+        }
+        public static string GetTeam2Leader()
+        {
+            if (HttpContext.Current != null && HttpContext.Current.Items["team2leader"] == null)
+            {
+                var settings = ConfigurationManager.AppSettings.GetValues("team2leader");
+
+                HttpContext.Current.Items["team2leader"] = settings[0] as String;
+            }
+            return (string)HttpContext.Current.Items["team2leader"];
+        }
+        public static string[] GetTeam1ReportManagers()
+        {
+            if (HttpContext.Current != null && HttpContext.Current.Items["team1Managers"] == null)
+            {
+                var settings = ConfigurationManager.AppSettings.GetValues("team1Managers");
+
+                HttpContext.Current.Items["team1Managers"] = settings[0] as String;
+            }
+            return HttpContext.Current.Items["team1Managers"].ToString().Split(',');
+        }
+        public static string[] GetTeam2ReportManagers()
+        {
+            if (HttpContext.Current != null && HttpContext.Current.Items["team2Managers"] == null)
+            {
+                var settings = ConfigurationManager.AppSettings.GetValues("team2Managers");
+
+                HttpContext.Current.Items["team2Managers"] = settings[0] as String;
+            }
+            return HttpContext.Current.Items["team2Managers"].ToString().Split(',');
+        }
         public static decimal GetAverage(decimal? child, int father)
         {
             if (father == 0) return 0;

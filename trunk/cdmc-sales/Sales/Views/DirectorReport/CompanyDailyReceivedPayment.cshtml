@@ -33,7 +33,9 @@
     abstractList.Add(item);
    <fieldset>
    <legend>公司日回款明细</legend>
-   日期 @Html.Telerik().DatePicker().Name("CurrentDate").Value(DateTime.Now).ClientEvents(events=>events.OnChange("onDateChange"))
+   年 @Html.DropDownList("Year", SelectHelper.YearSelectList(), "请选择", new { onchange = "onYearChange();" })
+   月 @Html.DropDownList("Month", SelectHelper.MonthSelectList(), "请选择", new { onchange = "onMonthChange();" })
+   日 @Html.DropDownList("Day", SelectHelper.DaySelectList(), "请选择", new { onchange = "onDayChange();" })
    摘要 @Html.DropDownList("AbstractID", abstractList, new { onchange = "onAbstractChange();" })
    业务员  @Html.DropDownList("Sales",CRM_Logical._Reports.GetProjectsSales(),"请选择", new { onchange = "onSalesChange();" })
    项目 @Html.DropDownList("ProjectID", SelectHelper.ProjectSelectList(Employee.CurrentUserName), "请选择", new { onchange = "onProjectChange();" })
@@ -58,15 +60,14 @@
         columns.Bound(p => p.Remark).Title("备注").HtmlAttributes(new { style = "text-align:right" });
     })
         .Pageable(p => p.Style(GridPagerStyles.Status)
-                   .PageOnScroll(true).PageSize(25)).Scrollable(scrolling => scrolling.Height(500)).Resizable(r => r.Columns(true))
+                   .PageOnScroll(true).PageSize(25)).Scrollable(scrolling => scrolling.Height(480)).Resizable(r => r.Columns(true))
 )
 </fieldset>    
   
 }
+
 <script>
-    
-</script>
-<script>
+    var clicked = false;
     //var currentdate;
     function strTodate(strr) {
         strr1 = strr.split(' ');
@@ -76,17 +77,21 @@
         return date1;
     }
     function dataBinding(e) {
-//        var datepicker = $('#CurrentDate').data('tDatePicker');
-//        var currentdate = datepicker.Value();
-        var currentdate = $("#CurrentDate").val();
-        var abstractid = $('#AbstractID').val();
-        var sales = $('#Sales').val();
-        var projectid = $('#ProjectID').val();
-        var companyname = $('#CompanyName').val();
-        e.data = $.extend(e.data, { currentdate: currentdate, abstractid: abstractid, sales: sales, projectid: projectid, companyname: companyname });
+        if (clicked) {
+            //        var datepicker = $('#CurrentDate').data('tDatePicker');
+            //        var currentdate = datepicker.Value();
+            var year = $("#Year").val();
+            var month = $("#Month").val();
+            var day = $("#Day").val();
+            var abstractid = $('#AbstractID').val();
+            var sales = $('#Sales').val();
+            var projectid = $('#ProjectID').val();
+            var companyname = $('#CompanyName').val();
+            e.data = $.extend(e.data, { year:year,month:month,day:day, abstractid: abstractid, sales: sales, projectid: projectid, companyname: companyname });
+        }
     }
     function refreshGrid() {
-
+        clicked = true;
         $("#AjaxCompanyDailyReceivedPayment").data("tGrid").rebind();
 
     }
@@ -111,5 +116,13 @@
     function onProjectChange() {
         refreshGrid();
     }
-    
+    function onYearChange() {
+        refreshGrid();
+    }
+    function onMonthChange() {
+        refreshGrid();
+    }
+    function onDayChange() {
+        refreshGrid();
+    }
 </script>

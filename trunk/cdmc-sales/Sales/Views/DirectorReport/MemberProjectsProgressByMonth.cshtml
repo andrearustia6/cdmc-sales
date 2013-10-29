@@ -16,7 +16,7 @@
      {
          dataBinding.Ajax().Select("MemberProjectsProgressByMonth", "DirectorReport");
      })
-    .ClientEvents(events => events.OnDataBinding("dataBinding"))
+        .ClientEvents(events => events.OnDataBinding("dataBinding").OnDataBound("OnDataBound"))
     .Columns(columns =>
     {
         columns.Bound(p => p.Member).Width(100).Title("业务员").HtmlAttributes(new { style = "text-align:left" });
@@ -43,7 +43,7 @@
             .Aggregate(aggregates => aggregates.Sum())
         .ClientFooterTemplate("<p><#= $.telerik.formatString('{0:c0}', Sum) #></p>")
         .FooterHtmlAttributes(new { style = "text-align:right" });
-        columns.Bound(p => p.CurrentMonthDealInPercent).Title("完成率").Width(60).HtmlAttributes(new { style = "text-align:right" }).Format("{0:p0}");
+        columns.Bound(p => p.CurrentMonthDealInPercent).Title("完成率").Width(60).HtmlAttributes(new { style = "text-align:right" }).Format("{0:p0}").FooterHtmlAttributes(new { style = "text-align:right" });
 
         columns.Bound(p => p.CurrentMonthCheckInTarget).Title("本月到账目标").HtmlAttributes(new { style = "text-align:right" }).Format("{0:c0}")
             .Aggregate(aggregates => aggregates.Sum())
@@ -53,7 +53,7 @@
             .Aggregate(aggregates => aggregates.Sum())
         .ClientFooterTemplate("<p><#= $.telerik.formatString('{0:c0}', Sum) #></p>")
         .FooterHtmlAttributes(new { style = "text-align:right" });
-        columns.Bound(p => p.CheckInMonthPercent).Title("完成率").Width(60).HtmlAttributes(new { style = "text-align:right" }).Format("{0:p0}");
+        columns.Bound(p => p.CheckInMonthPercent).Title("完成率").Width(60).HtmlAttributes(new { style = "text-align:right" }).Format("{0:p0}").FooterHtmlAttributes(new { style = "text-align:right" });
     })
     //.CellAction(cell =>
     //{
@@ -74,22 +74,45 @@
                             
     //})
         .Pageable(p => p.Style(GridPagerStyles.Status)
-                   .PageOnScroll(true).PageSize(25)).Scrollable(scrolling => scrolling.Height(500)).Resizable(r => r.Columns(true))
+                   .PageOnScroll(true).PageSize(25)).Scrollable(scrolling => scrolling.Height(480)).Resizable(r => r.Columns(true))
 )
 </fieldset>    
   
 }
+
 <script>
-    
-</script>
-<script>
+    var clicked = false;
     function dataBinding(e) {
-        var typeid = $('#ProjectType').val();
-        var manager = $('#Manager').val();
-        e.data = $.extend(e.data, { typeid: typeid, manager: manager });
+        if (clicked) {
+            var typeid = $('#ProjectType').val();
+            var manager = $('#Manager').val();
+            e.data = $.extend(e.data, { typeid: typeid, manager: manager });
+        }
+    }
+    function OnDataBound(e) {
+        var CurrentMonthDealInTargetTotal = $('#AjaxMemberProjectProcessByMonth').find('.t-footer-template').children().eq(6).text();
+        //CurrentMonthDealInTargetTotal = CurrentMonthDealInTargetTotal.replaceall(',', '');
+        CurrentMonthDealInTargetTotal = CurrentMonthDealInTargetTotal.replace(/,/g, '');
+        CurrentMonthDealInTargetTotal = CurrentMonthDealInTargetTotal.replace(/￥/g, '');
+        var CurrentMonthDealInTotal = $('#AjaxMemberProjectProcessByMonth').find('.t-footer-template').children().eq(7).text();
+        CurrentMonthDealInTotal = CurrentMonthDealInTotal.replace(/,/g, '');
+        CurrentMonthDealInTotal = CurrentMonthDealInTotal.replace(/￥/g, '');
+        if (CurrentMonthDealInTargetTotal > 0)
+            $('#AjaxMemberProjectProcessByMonth').find('.t-footer-template').children().eq(8).text((CurrentMonthDealInTotal / CurrentMonthDealInTargetTotal * 100).toFixed(0) + '%');
+
+        var CurrentMonthDealInTargetTotal = $('#AjaxMemberProjectProcessByMonth').find('.t-footer-template').children().eq(9).text();
+        //CurrentMonthDealInTargetTotal = CurrentMonthDealInTargetTotal.replaceall(',', '');
+        CurrentMonthDealInTargetTotal = CurrentMonthDealInTargetTotal.replace(/,/g, '');
+        CurrentMonthDealInTargetTotal = CurrentMonthDealInTargetTotal.replace(/￥/g, '');
+        var CurrentMonthDealInTotal = $('#AjaxMemberProjectProcessByMonth').find('.t-footer-template').children().eq(10).text();
+        CurrentMonthDealInTotal = CurrentMonthDealInTotal.replace(/,/g, '');
+        CurrentMonthDealInTotal = CurrentMonthDealInTotal.replace(/￥/g, '');
+        if (CurrentMonthDealInTargetTotal > 0)
+            $('#AjaxMemberProjectProcessByMonth').find('.t-footer-template').children().eq(11).text((CurrentMonthDealInTotal / CurrentMonthDealInTargetTotal * 100).toFixed(0) + '%');
+
     }
     function refreshGrid() {
-
+        clicked = true;
         $("#AjaxMemberProjectProcessByMonth").data("tGrid").rebind();
 
     }

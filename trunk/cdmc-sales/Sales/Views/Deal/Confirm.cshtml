@@ -150,6 +150,14 @@
                     @Html.ValidationMessageFor(model => model.AbandonReason)
                 </td>
             </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.Remark)
+                </td>
+                <td colspan="5">
+                    @Html.TextAreaFor(model => model.Remark, new { style = "width:100%" })
+                </td>
+            </tr>
         </table>
     </fieldset>
     }

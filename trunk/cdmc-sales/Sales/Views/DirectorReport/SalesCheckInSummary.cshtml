@@ -22,7 +22,7 @@
     {
         columns.Bound(p => p.Sales).Width(150).Title("业务员").HtmlAttributes(new { style = "text-align:left" });
         columns.Bound(p => p.SalesStartDate).Width(85).Title("入职时间").HtmlAttributes(new { style = "text-align:left" }).Format("{0:yyyy-MM-dd}");
-
+        columns.Bound(p => p.Stars).Width(50).Title("星级").HtmlAttributes(new { style = "text-align:left" });
         columns.Bound(p => p.CheckInTotal).Title("合计").HtmlAttributes(new { style = "text-align:right" }).Format("{0:c0}")
             .Aggregate(aggregates => aggregates.Sum())
         .ClientFooterTemplate("<p><#= $.telerik.formatString('{0:c0}', Sum) #></p>")
@@ -87,23 +87,24 @@
     })
 
                         .Pageable(p => p.Style(GridPagerStyles.Status)
-                                   .PageOnScroll(true).PageSize(25)).Scrollable(scrolling => scrolling.Height(500)).Resizable(r => r.Columns(true))
+                                   .PageOnScroll(true).PageSize(25)).Scrollable(scrolling => scrolling.Height(480)).Resizable(r => r.Columns(true))
                 )
 </fieldset>    
   
 }
+
 <script>
-    
-</script>
-<script>
+    var clicked = false;
     function dataBinding(e) {
-        var typeid = $('#ProjectType').val();
-        var manager = $('#Manager').val();
-        var year = $('#Year').val();
-        e.data = $.extend(e.data, {year:year, typeid: typeid, manager: manager });
+        if (clicked) {
+            var typeid = $('#ProjectType').val();
+            var manager = $('#Manager').val();
+            var year = $('#Year').val();
+            e.data = $.extend(e.data, { year: year, typeid: typeid, manager: manager });
+        }
     }
     function refreshGrid() {
-       
+        clicked = true;
         $("#AjaxProjectProcessByMonth").data("tGrid").rebind();
 
     }

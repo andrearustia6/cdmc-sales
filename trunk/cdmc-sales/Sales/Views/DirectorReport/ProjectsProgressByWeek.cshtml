@@ -15,65 +15,122 @@
          {
              dataBinding.Ajax().Select("ProjectsProgressByWeek", "DirectorReport");
          })
-         .ClientEvents(events => events.OnDataBinding("dataBinding"))
+                 .ClientEvents(events => events.OnDataBinding("dataBinding").OnDataBound("OnDataBound").OnRowDataBound("onRowDataBound"))
         .Columns(columns =>
         {
             columns.Bound(p => p.ProjectUnitName).Width(150).Title("项目名").HtmlAttributes(new { style = "text-align:left" });
-            columns.Bound(p => p.LastWeekDealInTarget).Width(100).Title("上周业绩目标").HtmlAttributes(new { style = "text-align:left" }).Format("{0:c0}")
+            columns.Bound(p => p.LastWeekDealInTarget).Width(100).Title("上周业绩目标").HtmlAttributes(new { style = "text-align:right" }).Format("{0:c0}")
                 .Aggregate(aggregates => aggregates.Sum())
         .ClientFooterTemplate("<p><#= $.telerik.formatString('{0:c0}', Sum) #></p>")
         .FooterHtmlAttributes(new { style = "text-align:right" });
-            columns.Bound(p => p.LastWeekDealIn).Width(100).Title("上周业绩").HtmlAttributes(new { style = "text-align:left" }).Format("{0:c0}")
+            columns.Bound(p => p.LastWeekDealIn).Width(100).Title("上周业绩").HtmlAttributes(new { style = "text-align:right" }).Format("{0:c0}")
                 .Aggregate(aggregates => aggregates.Sum())
         .ClientFooterTemplate("<p><#= $.telerik.formatString('{0:c0}', Sum) #></p>")
         .FooterHtmlAttributes(new { style = "text-align:right" });
-            columns.Bound(p => p.LastWeekDealInPercent).Width(100).Title("完成率").HtmlAttributes(new { style = "text-align:left" }).Format("{0:p0}");
-            columns.Bound(p => p.LastWeekCheckInTarget).Width(100).Title("上周入账目标").HtmlAttributes(new { style = "text-align:left" }).Format("{0:c0}")
+            columns.Bound(p => p.LastWeekDealInPercent).Width(100).Title("完成率").HtmlAttributes(new { style = "text-align:right" }).Format("{0:p0}").FooterHtmlAttributes(new { style = "text-align:right" });
+            columns.Bound(p => p.LastWeekCheckInTarget).Width(100).Title("上周入账目标").HtmlAttributes(new { style = "text-align:right" }).Format("{0:c0}")
                 .Aggregate(aggregates => aggregates.Sum())
         .ClientFooterTemplate("<p><#= $.telerik.formatString('{0:c0}', Sum) #></p>")
         .FooterHtmlAttributes(new { style = "text-align:right" });
-            columns.Bound(p => p.LastWeekCheckIn).Width(100).Title("上周入账").HtmlAttributes(new { style = "text-align:left" }).Format("{0:c0}")
+            columns.Bound(p => p.LastWeekCheckIn).Width(100).Title("上周入账").HtmlAttributes(new { style = "text-align:right" }).Format("{0:c0}")
                 .Aggregate(aggregates => aggregates.Sum())
         .ClientFooterTemplate("<p><#= $.telerik.formatString('{0:c0}', Sum) #></p>")
         .FooterHtmlAttributes(new { style = "text-align:right" });
-            columns.Bound(p => p.CheckInLastWeekPercent).Width(100).Title("完成率").HtmlAttributes(new { style = "text-align:left" }).Format("{0:p0}");
+            columns.Bound(p => p.CheckInLastWeekPercent).Width(100).Title("完成率").HtmlAttributes(new { style = "text-align:right" }).Format("{0:p0}").FooterHtmlAttributes(new { style = "text-align:right" });
 
-            columns.Bound(p => p.CurrentWeekDealInTarget).Width(100).Title("本周业绩目标").HtmlAttributes(new { style = "text-align:left" }).Format("{0:c0}")
+            columns.Bound(p => p.CurrentWeekDealInTarget).Width(100).Title("本周业绩目标").HtmlAttributes(new { style = "text-align:right" }).Format("{0:c0}")
                 .Aggregate(aggregates => aggregates.Sum())
         .ClientFooterTemplate("<p><#= $.telerik.formatString('{0:c0}', Sum) #></p>")
         .FooterHtmlAttributes(new { style = "text-align:right" });
-            columns.Bound(p => p.CurrentWeekDealIn).Width(100).Title("本周业绩").HtmlAttributes(new { style = "text-align:left" }).Format("{0:c0}")
+            columns.Bound(p => p.CurrentWeekDealIn).Width(100).Title("本周业绩").HtmlAttributes(new { style = "text-align:right" }).Format("{0:c0}")
                 .Aggregate(aggregates => aggregates.Sum())
         .ClientFooterTemplate("<p><#= $.telerik.formatString('{0:c0}', Sum) #></p>")
         .FooterHtmlAttributes(new { style = "text-align:right" });
-            columns.Bound(p => p.CurrentWeekDealInPercent).Width(100).Title("完成率").HtmlAttributes(new { style = "text-align:left" }).Format("{0:p0}");
-            columns.Bound(p => p.CurrentWeekCheckInTarget).Width(100).Title("本周入账目标").HtmlAttributes(new { style = "text-align:left" }).Format("{0:c0}")
+            columns.Bound(p => p.CurrentWeekDealInPercent).Width(100).Title("完成率").HtmlAttributes(new { style = "text-align:right" }).Format("{0:p0}").FooterHtmlAttributes(new { style = "text-align:right" });
+            columns.Bound(p => p.CurrentWeekCheckInTarget).Width(100).Title("本周入账目标").HtmlAttributes(new { style = "text-align:right" }).Format("{0:c0}")
                 .Aggregate(aggregates => aggregates.Sum())
         .ClientFooterTemplate("<p><#= $.telerik.formatString('{0:c0}', Sum) #></p>")
         .FooterHtmlAttributes(new { style = "text-align:right" });
-            columns.Bound(p => p.CurrentWeekCheckIn).Width(100).Title("本周入账").HtmlAttributes(new { style = "text-align:left" }).Format("{0:c0}")
+            columns.Bound(p => p.CurrentWeekCheckIn).Width(100).Title("本周入账").HtmlAttributes(new { style = "text-align:right" }).Format("{0:c0}")
                 .Aggregate(aggregates => aggregates.Sum())
         .ClientFooterTemplate("<p><#= $.telerik.formatString('{0:c0}', Sum) #></p>")
         .FooterHtmlAttributes(new { style = "text-align:right" });
-            columns.Bound(p => p.CheckInWeekPercent).Width(100).Title("完成率").HtmlAttributes(new { style = "text-align:left" }).Format("{0:p0}");
+            columns.Bound(p => p.CheckInWeekPercent).Width(100).Title("完成率").HtmlAttributes(new { style = "text-align:right" }).Format("{0:p0}").FooterHtmlAttributes(new { style = "text-align:right" });
             
         }
         )
              .Pageable(p => p.Style(GridPagerStyles.Status)
-                       .PageOnScroll(true).PageSize(25)).Scrollable(scrolling => scrolling.Height(500)).Resizable(r => r.Columns(true))
-        .HtmlAttributes(new { style = "max-width:1100px" })
+                       .PageOnScroll(true).PageSize(25)).Scrollable(scrolling => scrolling.Height(480)).Resizable(r => r.Columns(true))
+        .HtmlAttributes(new { style = "max-width:1150px" })
 )
 
 </fieldset>
-
+<div id="managerinfo" style="display:none;z-index:210000; position:absolute;" >
+<table>
+<tr><td>事业部总监</td><td><div id="gm"></div></td></tr>
+<tr><td>项目经理</td><td><div id="projectmanager"></div></td></tr>
+<tr><td>产品经理</td><td><div id="product"></div></td></tr>
+<tr><td>销售经理</td><td><div id="salemanager"></div></td></tr>
+<tr><td>TL</td><td><div id="teamleader"></div></td></tr>
+<tr><td>赞助商销售</td><td></td></tr>
+<tr><td>市场专员</td><td><div id="market"></div></td></tr>
+<tr><td>会务专员</td><td><div id="conference"></div></td></tr>
+<tr><td>海外销售</td><td><div id="guowaisales"></div></td></tr>
+<tr><td>国内销售</td><td><div id="guoneisales"></div></td></tr>
+</table>
+</div>
 <script>
+    var clicked = false;
     function dataBinding(e) {
-        var typeid = $('#ProjectType').val();
-        var manager = $('#Manager').val();
-        e.data = $.extend(e.data, { typeid: typeid, manager: manager });
+        if (clicked) {
+            var typeid = $('#ProjectType').val();
+            var manager = $('#Manager').val();
+            e.data = $.extend(e.data, { typeid: typeid, manager: manager });
+        }
+    }
+    function OnDataBound(e) {
+        var CurrentMonthDealInTargetTotal = $('#ProjectWeekPerformance').find('.t-footer-template').children().eq(1).text();
+        //CurrentMonthDealInTargetTotal = CurrentMonthDealInTargetTotal.replaceall(',', '');
+        CurrentMonthDealInTargetTotal = CurrentMonthDealInTargetTotal.replace(/,/g, '');
+        CurrentMonthDealInTargetTotal = CurrentMonthDealInTargetTotal.replace(/￥/g, '');
+        var CurrentMonthDealInTotal = $('#ProjectWeekPerformance').find('.t-footer-template').children().eq(2).text();
+        CurrentMonthDealInTotal = CurrentMonthDealInTotal.replace(/,/g, '');
+        CurrentMonthDealInTotal = CurrentMonthDealInTotal.replace(/￥/g, '');
+        if (CurrentMonthDealInTargetTotal > 0)
+            $('#ProjectWeekPerformance').find('.t-footer-template').children().eq(3).text((CurrentMonthDealInTotal / CurrentMonthDealInTargetTotal * 100).toFixed(0) + '%');
+
+        var CurrentMonthDealInTargetTotal = $('#ProjectWeekPerformance').find('.t-footer-template').children().eq(4).text();
+        //CurrentMonthDealInTargetTotal = CurrentMonthDealInTargetTotal.replaceall(',', '');
+        CurrentMonthDealInTargetTotal = CurrentMonthDealInTargetTotal.replace(/,/g, '');
+        CurrentMonthDealInTargetTotal = CurrentMonthDealInTargetTotal.replace(/￥/g, '');
+        var CurrentMonthDealInTotal = $('#ProjectWeekPerformance').find('.t-footer-template').children().eq(5).text();
+        CurrentMonthDealInTotal = CurrentMonthDealInTotal.replace(/,/g, '');
+        CurrentMonthDealInTotal = CurrentMonthDealInTotal.replace(/￥/g, '');
+        if (CurrentMonthDealInTargetTotal > 0)
+            $('#ProjectWeekPerformance').find('.t-footer-template').children().eq(6).text((CurrentMonthDealInTotal / CurrentMonthDealInTargetTotal * 100).toFixed(0) + '%');
+
+        CurrentMonthDealInTargetTotal = $('#ProjectWeekPerformance').find('.t-footer-template').children().eq(7).text();
+        //CurrentMonthDealInTargetTotal = CurrentMonthDealInTargetTotal.replaceall(',', '');
+        CurrentMonthDealInTargetTotal = CurrentMonthDealInTargetTotal.replace(/,/g, '');
+        CurrentMonthDealInTargetTotal = CurrentMonthDealInTargetTotal.replace(/￥/g, '');
+        CurrentMonthDealInTotal = $('#ProjectWeekPerformance').find('.t-footer-template').children().eq(8).text();
+        CurrentMonthDealInTotal = CurrentMonthDealInTotal.replace(/,/g, '');
+        CurrentMonthDealInTotal = CurrentMonthDealInTotal.replace(/￥/g, '');
+        if (CurrentMonthDealInTargetTotal > 0)
+            $('#ProjectWeekPerformance').find('.t-footer-template').children().eq(9).text((CurrentMonthDealInTotal / CurrentMonthDealInTargetTotal * 100).toFixed(0) + '%');
+
+        CurrentMonthDealInTargetTotal = $('#ProjectWeekPerformance').find('.t-footer-template').children().eq(10).text();
+        //CurrentMonthDealInTargetTotal = CurrentMonthDealInTargetTotal.replaceall(',', '');
+        CurrentMonthDealInTargetTotal = CurrentMonthDealInTargetTotal.replace(/,/g, '');
+        CurrentMonthDealInTargetTotal = CurrentMonthDealInTargetTotal.replace(/￥/g, '');
+        CurrentMonthDealInTotal = $('#ProjectWeekPerformance').find('.t-footer-template').children().eq(11).text();
+        CurrentMonthDealInTotal = CurrentMonthDealInTotal.replace(/,/g, '');
+        CurrentMonthDealInTotal = CurrentMonthDealInTotal.replace(/￥/g, '');
+        if (CurrentMonthDealInTargetTotal > 0)
+            $('#ProjectWeekPerformance').find('.t-footer-template').children().eq(12).text((CurrentMonthDealInTotal / CurrentMonthDealInTargetTotal * 100).toFixed(0) + '%');
     }
     function refreshGrid() {
-
+        clicked = true;
         $("#ProjectWeekPerformance").data("tGrid").rebind();
 
     }
@@ -84,5 +141,46 @@
     function onManagerChange() {
         refreshGrid();
     }
-    
+    function doOver(code) {
+        var div = $("#managerinfo");
+        var height = document.body.clientHeight;
+        div.show();
+        div.css("background-color", "#EFF7FE");
+        if (event.clientY > height / 2) {
+            div.css("left", document.body.scrollLeft + event.clientX + 1);
+            div.css("top", document.body.scrollLeft + event.clientY + 10 - 250);
+        }
+        else {
+            div.css("left", document.body.scrollLeft + event.clientX + 1);
+            div.css("top", document.body.scrollLeft + event.clientY + 10);
+        }
+
+
+        $.post('GetManagerInfo', { code: code }, function (result) {
+            if ((result.manager != null)) {
+                $("#gm").html(result.manager);
+                $("#projectmanager").html(result.manager);
+                $("#product").html(result.product);
+                $("#salemanager").html(result.tl);
+                $("#teamleader").html(result.tl);
+                $("#market").html(result.market);
+                $("#conference").html(result.conference);
+                $("#guoneisales").html(result.guoneisales);
+                $("#guowaisales").html(result.guowaisales);
+
+            } else {
+
+            }
+        });
+    }
+    function doOut() {
+        var div = $("#managerinfo");
+        div.hide();
+    }
+    function onRowDataBound(e) {
+        var row = e.row;
+        var dataItem = e.dataItem;
+        var code = "'" + dataItem.ProjectUnitCode + "'"
+        row.cells[0].innerHTML = "<div width='100%' onmouseover=doOver(" + code + ") onmouseout='doOut()'>" + dataItem.ProjectUnitName + "</div>";
+    }
 </script>

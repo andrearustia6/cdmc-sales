@@ -1,0 +1,90 @@
+﻿@{
+    ViewBag.Title = "项目总目标完成情况趋势图";
+    Layout = "~/Views/DirectorReport/Master.cshtml";
+}
+@using Entity
+@using Model
+@model List<AjaxProjectChartInMonthHeader>
+@using Utl;
+@using BLL
+<fieldset>
+<div>
+ @{
+     using (Html.BeginForm())
+     {
+            <legend>年份</legend>
+@Html.DropDownList("Year", SelectHelper.YearSelectList(), "请选择");
+   <legend>项目选择</legend>
+                                                                List<Project> ps;
+                                                                ps = CRM_Logical.GetUserInvolveProject();
+                                                                bool selectall = true;
+                                                                var selecttype = ViewBag.SelectType as string;
+                                                                var selectedlist = ViewBag.SelectedProjects as List<int>;
+                                                                if (selecttype == "disselectall")
+                                                                {
+                                                                    selectall = false;
+                                                                }
+    <div>
+            @Html.RadioButton("selectall", "", selectall) 全部选择 @Html.RadioButton("disselectall", "", !selectall)全部取消
+            @Html.Hidden("selecttype")
+        </div>
+        <div>
+            <ul style="list-style-type: none; float: inherit; width: 100%; overflow: auto;">
+                @foreach (var p in ps)
+                {
+                    <li style="float: left; width: 23%; margin: 2px;"><span style="line-height: 11px;
+                        height: 11px; vertical-align: middle">
+                        <input type="checkbox"  name="selectedprojects" class="selectedprojects" 
+                @{
+                    if (selectall == true || (selectedlist != null && selectedlist.Any(sid => sid == p.ID)))
+                    {
+             
+                        <text>checked="checked" </text>
+                    }
+               
+                }
+                    value=@p.ID />
+                        @p.Name_CH</span> </li>
+                }
+            </ul>
+        </div>
+     <center>
+     <input type="submit" value="提交" />
+     </center>
+     }
+     }
+</div>
+<div>
+@{
+   
+   
+    if (Model != null)
+    {
+        foreach (var p in Model)
+        {
+            if (p.ProjectLines.Count() >= 3)
+            {
+                <fieldset style="width:90%;float:left;margin-left:10px;">
+                <legend>@p.ProjectName.ToString()</legend>
+            @(Html.Telerik().Chart(p.ProjectLines.OrderBy(o => o.Month)).Name(p.ProjectCode).Series(series =>
+        {
+            series.Line(s => s.CheckIn).Name("入账").Labels(l => l.Format("{0:c}").Visible(true));
+            series.Line(s => s.CheckInTarget).Name("入账目标").Labels(l => l.Format("{0:c}").Visible(true));
+            series.Line(s => s.DealIn).Name("项目业绩").Labels(l => l.Format("{0:c}").Visible(true));
+            series.Line(s => s.DealInTarget).Name("项目业绩目标").Labels(l => l.Format("{0:c}").Visible(true));
+        }
+        ).CategoryAxis(axis => axis.Categories(s => s.MonthString))
+                .ValueAxis(axis => axis.Numeric().Labels(l => l.Format("{0:c}")).Labels(true))
+               .Tooltip(tooltip => tooltip.Visible(true).Format("{0:c}"))
+                .Legend(legend => legend.Position(ChartLegendPosition.Top).Visible(true)).HtmlAttributes(new { style = " height:300px;" })
+          )
+          </fieldset>
+            }
+        }
+    }
+    
+}
+</div>
+</fieldset>
+@{ Html.Telerik().ScriptRegistrar().OnDocumentReady(@<text> onSelectOrDiselect(); </text>);
+}
