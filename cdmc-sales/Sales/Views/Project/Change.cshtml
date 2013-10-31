@@ -26,6 +26,13 @@
         @Html.ValidationMessageFor(model => model.Name_EN)
     </div>
     <div class="editor-label">
+        @Html.LabelFor(model => model.ProjectState)：项目的属性
+    </div>
+    <div class="editor-field">
+        @Html.DropDownListFor(model => model.ProjectState, SelectHelper.ProjectStateSelectList(), "请选择")
+        @Html.ValidationMessageFor(model => model.Name_EN)
+    </div>
+    <div class="editor-label">
         @Html.LabelFor(model => model.AreaID)：项目的默认行业
     </div>
     <div class="editor-field">

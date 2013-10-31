@@ -186,6 +186,38 @@ namespace Model
         [Display(Name = "出单人")]
         public string Sales { get; set; }
 
+
+        [Display(Name = "销售区分")]
+        public string Role { get; set; }
+
+        [Display(Name = "参会类型")]
+        public string ParticipantTypeName { get; set; }
+
+        [Display(Name = "Poll")]
+        public int? Poll{ get; set; }
+
+        [Display(Name = "参会类型")]
+        public string DispParticipantTypeName
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(ParticipantTypeName))
+                {
+                    if (ParticipantTypeName.Contains("Delegate"))
+                    {
+                        if (Poll == null)
+                            Poll = 0;
+                        return "Delegate(" + Poll.ToString() + ")";
+                    }
+                    else
+                        return "Sponsor";
+                }
+                else
+                    return "";
+            }
+
+        }
+
         [Display(Name = "应付款")]
         public decimal Payment { get; set; }
         [Display(Name = "币种")]

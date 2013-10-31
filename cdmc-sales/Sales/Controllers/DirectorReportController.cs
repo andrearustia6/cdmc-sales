@@ -170,17 +170,17 @@ namespace Sales.Controllers
             return View(new GridModel(list.ToList()));
         }
         [GridAction]
-        public ActionResult MemberProjectsProgressByMonth(int? typeid, string manager = null)
+        public ActionResult MemberProjectsProgressByMonth(int? projectid,int? typeid, string manager = null)
         {
-            var list = CRM_Logical._Reports.GetMemberProjectsProgressByMonth(typeid, manager);
+            var list = CRM_Logical._Reports.GetMemberProjectsProgressByMonth(projectid,typeid, manager);
 
             return View(new GridModel(list.ToList()));
         }
 
         [GridAction]
-        public ActionResult MemberProjectsProgressByWeek(int? typeid, string manager = null)
+        public ActionResult MemberProjectsProgressByWeek(int? projectid, int? typeid, string manager = null)
         {
-            var list = CRM_Logical._Reports.GetMemberProjectsProgressByWeek(DateTime.Now, typeid, manager);
+            var list = CRM_Logical._Reports.GetMemberProjectsProgressByWeek(projectid,DateTime.Now, typeid, manager);
 
             return View(new GridModel(list.ToList()));
         }

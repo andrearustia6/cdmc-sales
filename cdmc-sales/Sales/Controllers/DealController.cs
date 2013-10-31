@@ -165,10 +165,10 @@ namespace Sales.Controllers
         }
 
         [GridAction]
-        public ActionResult _SelectIndex(string filterId, int? projectId, string CompanyDealCodeLike, int? PaymentID, int? ParticipantsID)
+        public ActionResult _SelectIndex(string filterId, int? projectId, string CompanyDealCodeLike, int? PaymentID, int? ParticipantsID,int? year,int? month)
         {
             List<AjaxViewDeal> deals;
-            deals = getData(filterId, projectId, CompanyDealCodeLike, PaymentID, ParticipantsID).ToList<AjaxViewDeal>();
+            deals = getData(filterId, projectId, CompanyDealCodeLike, PaymentID, ParticipantsID,year,month).ToList<AjaxViewDeal>();
             return View(new GridModel(deals));
         }
 
@@ -204,9 +204,14 @@ namespace Sales.Controllers
             return View(new GridModel(getData()));
         }
 
-        private List<AjaxViewDeal> getData(string filter = "", int? projectId = null, string CompanyDealCodeLike = "", int? PaymentID = null, int? ParticipantsID = null)
+        private List<AjaxViewDeal> getData(string filter = "", int? projectId = null, string CompanyDealCodeLike = "", int? PaymentID = null, int? ParticipantsID = null,int? year=null, int? month=null)
         {
             var deals = CRM_Logical.GetDeals(false, projectId, null, filter);
+
+            if (year != null)
+                deals = deals.Where(w => w.ActualPaymentDate.Value.Year == year);
+            if (month != null)
+                deals = deals.Where(w => w.ActualPaymentDate.Value.Month == month);
             if (!string.IsNullOrWhiteSpace(CompanyDealCodeLike))
             {
                 deals = deals.Where(w => w.CompanyRelationship.Company.Name_EN.Contains(CompanyDealCodeLike.Trim()) || w.CompanyRelationship.Company.Name_CH.Contains(CompanyDealCodeLike.Trim()) || w.DealCode.Contains(CompanyDealCodeLike.Trim()));
@@ -250,7 +255,7 @@ namespace Sales.Controllers
                     deals = deals.Where(s => !s.Participants.Any());
                 }
             }
-
+            var emprole = CH.DB.EmployeeRoles.Where(w => 1 == 1);
             if (Employee.CurrentRole.Level == 4)//财务填写income
             {
                 var ds = from d in deals
@@ -277,11 +282,14 @@ namespace Sales.Controllers
                              Currency = d.Currencytype.Name,
                              PaymentDetail = d.PaymentDetail,
                              Sales = d.Sales,
+                             ParticipantTypeName=d.Package.ParticipantType.Name_EN,
+                             Poll=d.Poll,
                              ProjectCode = d.Project.ProjectCode,
                              SignDate = d.SignDate,
                              TicketDescription = d.TicketDescription,
                              IsConfirm = (d.IsConfirm == true ? "是" : "否"),
                              ModifiedDate = d.ModifiedDate,
+                             Role = emprole.Where(w=>w.AccountName==d.Sales).FirstOrDefault().Role.Name
                          };
                 return ds.OrderByDescending(o => o.SignDate).ToList();
             }
