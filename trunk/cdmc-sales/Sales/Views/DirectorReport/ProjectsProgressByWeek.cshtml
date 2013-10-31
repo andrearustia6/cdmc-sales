@@ -65,7 +65,7 @@
 )
 
 </fieldset>
-<div id="managerinfo" style="display:none;z-index:210000; position:absolute;" >
+<div id="mjs:tip" style="display:none;z-index:210000; position:absolute; background-color:#EFF7FE;" >
 <table>
 <tr><td>事业部总监</td><td><div id="gm"></div></td></tr>
 <tr><td>项目经理</td><td><div id="projectmanager"></div></td></tr>
@@ -141,46 +141,64 @@
     function onManagerChange() {
         refreshGrid();
     }
-    function doOver(code) {
-        var div = $("#managerinfo");
-        var height = document.body.clientHeight;
-        div.show();
-        div.css("background-color", "#EFF7FE");
-        if (event.clientY > height / 2) {
-            div.css("left", document.body.scrollLeft + event.clientX + 1);
-            div.css("top", document.body.scrollLeft + event.clientY + 10 - 250);
-        }
-        else {
-            div.css("left", document.body.scrollLeft + event.clientX + 1);
-            div.css("top", document.body.scrollLeft + event.clientY + 10);
-        }
-
-
-        $.post('GetManagerInfo', { code: code }, function (result) {
-            if ((result.manager != null)) {
-                $("#gm").html(result.manager);
-                $("#projectmanager").html(result.manager);
-                $("#product").html(result.product);
-                $("#salemanager").html(result.tl);
-                $("#teamleader").html(result.tl);
-                $("#market").html(result.market);
-                $("#conference").html(result.conference);
-                $("#guoneisales").html(result.guoneisales);
-                $("#guowaisales").html(result.guowaisales);
-
-            } else {
-
-            }
-        });
-    }
-    function doOut() {
-        var div = $("#managerinfo");
-        div.hide();
-    }
+    
     function onRowDataBound(e) {
         var row = e.row;
         var dataItem = e.dataItem;
         var code = "'" + dataItem.ProjectUnitCode + "'"
-        row.cells[0].innerHTML = "<div width='100%' onmouseover=doOver(" + code + ") onmouseout='doOut()'>" + dataItem.ProjectUnitName + "</div>";
+        //row.cells[0].innerHTML = "<div width='100%' onmouseover=doOver(" + code + ") onmouseout='doOut()'>" + dataItem.ProjectUnitName + "</div>";
+        row.cells[0].innerHTML = "<div width='100%' onmouseover=tip.start(this," + code + ") >" + dataItem.ProjectUnitName + "</div>";
     }
+</script>
+<script type="text/javascript">
+    var tip = { $: function (ele) {
+        if (typeof (ele) == "object")
+            return ele;
+        else if (typeof (ele) == "string" || typeof (ele) == "number")
+            return document.getElementById(ele.toString());
+        return null;
+    },
+        mousePos: function (e) {
+            var x, y;
+            var e = e || window.event;
+            return { x: e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft, y: e.clientY + document.body.scrollTop + document.documentElement.scrollTop };
+        },
+        start: function (obj, code) {
+            var self = this;
+            var t = self.$("mjs:tip");
+            obj.onmousemove = function (e) {
+                var mouse = self.mousePos(e);
+                var height = document.body.clientHeight;
+                if (mouse.y > height / 2) {
+                    t.style.left = mouse.x + 10 + 'px';
+                    t.style.top = mouse.y + 10 - 250 + 'px';
+                }
+                else {
+                    t.style.left = mouse.x + 10 + 'px';
+                    t.style.top = mouse.y + 10 + 'px';
+                }
+
+                t.style.display = '';
+                $.post('GetManagerInfo', { code: code }, function (result) {
+                    if ((result.manager != null)) {
+                        $("#gm").html(result.manager);
+                        $("#projectmanager").html(result.manager);
+                        $("#product").html(result.product);
+                        $("#salemanager").html(result.tl);
+                        $("#teamleader").html(result.tl);
+                        $("#market").html(result.market);
+                        $("#conference").html(result.conference);
+                        $("#guoneisales").html(result.guoneisales);
+                        $("#guowaisales").html(result.guowaisales);
+
+                    } else {
+
+                    }
+                });
+            }
+            obj.onmouseout = function () {
+                t.style.display = 'none';
+            }
+        }
+    } 
 </script>

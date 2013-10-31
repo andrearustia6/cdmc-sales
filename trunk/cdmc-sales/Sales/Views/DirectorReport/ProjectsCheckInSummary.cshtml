@@ -98,7 +98,7 @@
 </fieldset>    
   
 }
-<div id="managerinfo" style="display:none;z-index:210000; position:absolute;" >
+<div id="mjs:tip" style="display:none;z-index:210000; position:absolute;background-color:#EFF7FE;" >
 <table>
 <tr><td>事业部总监</td><td><div id="gm"></div></td></tr>
 <tr><td>项目经理</td><td><div id="projectmanager"></div></td></tr>
@@ -112,7 +112,7 @@
 <tr><td>国内销售</td><td><div id="guoneisales"></div></td></tr>
 </table>
 </div>
-<div id="checkininfo" style="display:none;z-index:210000; position:absolute;" >
+<div id="mjs:checkininfo" style="display:none;z-index:210000; position:absolute;background-color:#EFF7FE;" >
 <table>
 <tr><td>第一周入账</td><td><div id="firstweek"></div></td></tr>
 <tr><td>第二周入账</td><td><div id="secondweek"></div></td></tr>
@@ -215,19 +215,19 @@
         var row = e.row;
         var dataItem = e.dataItem;
         var code = "'" + dataItem.ProjectUnitCode + "'"
-        row.cells[0].innerHTML = "<div width='100%' onmouseover=doManagerOver(" + code + ") onmouseout='doManagerOut()'>" + dataItem.ProjectUnitName + "</div>";
-        row.cells[4].innerHTML = "<div width='100%' onmouseover=doCheckInOver(" + code + ",1) onmouseout='doCheckInOut()'>" + outputMoney(dataItem.CheckInJanuary) + "</div>";
-        row.cells[5].innerHTML = "<div width='100%' onmouseover=doCheckInOver(" + code + ",2) onmouseout='doCheckInOut()'>" + outputMoney(dataItem.CheckInFebruary) + "</div>";
-        row.cells[6].innerHTML = "<div width='100%' onmouseover=doCheckInOver(" + code + ",3) onmouseout='doCheckInOut()'>" + outputMoney(dataItem.CheckInMarch) + "</div>";
-        row.cells[7].innerHTML = "<div width='100%' onmouseover=doCheckInOver(" + code + ",4) onmouseout='doCheckInOut()'>" + outputMoney(dataItem.CheckInApril) + "</div>";
-        row.cells[8].innerHTML = "<div width='100%' onmouseover=doCheckInOver(" + code + ",5) onmouseout='doCheckInOut()'>" + outputMoney(dataItem.CheckInMay) + "</div>";
-        row.cells[9].innerHTML = "<div width='100%' onmouseover=doCheckInOver(" + code + ",6) onmouseout='doCheckInOut()'>" + outputMoney(dataItem.CheckInJune) + "</div>";
-        row.cells[10].innerHTML = "<div width='100%' onmouseover=doCheckInOver(" + code + ",7) onmouseout='doCheckInOut()'>" + outputMoney(dataItem.CheckInJuly) + "</div>";
-        row.cells[11].innerHTML = "<div width='100%' onmouseover=doCheckInOver(" + code + ",8) onmouseout='doCheckInOut()'>" + outputMoney(dataItem.CheckInAugust) + "</div>";
-        row.cells[12].innerHTML = "<div width='100%' onmouseover=doCheckInOver(" + code + ",9) onmouseout='doCheckInOut()'>" + outputMoney(dataItem.CheckInSeptember) + "</div>";
-        row.cells[13].innerHTML = "<div width='100%' onmouseover=doCheckInOver(" + code + ",10) onmouseout='doCheckInOut()'>" + outputMoney(dataItem.CheckInOctober) + "</div>";
-        row.cells[14].innerHTML = "<div width='100%' onmouseover=doCheckInOver(" + code + ",11) onmouseout='doCheckInOut()'>" + outputMoney(dataItem.CheckInNovember) + "</div>";
-        row.cells[15].innerHTML = "<div width='100%' onmouseover=doCheckInOver(" + code + ",12) onmouseout='doCheckInOut()'>" + outputMoney(dataItem.CheckInDecember) + "</div>";
+        row.cells[0].innerHTML = "<div width='100%' onmouseover=tip.start(this," + code + ") >" + dataItem.ProjectUnitName + "</div>";
+        row.cells[4].innerHTML = "<div width='100%' onmouseover=checkintip.start(this," + code + ",1) >" + outputMoney(dataItem.CheckInJanuary) + "</div>";
+        row.cells[5].innerHTML = "<div width='100%' onmouseover=checkintip.start(this," + code + ",2) >" + outputMoney(dataItem.CheckInFebruary) + "</div>";
+        row.cells[6].innerHTML = "<div width='100%' onmouseover=checkintip.start(this," + code + ",3) >" + outputMoney(dataItem.CheckInMarch) + "</div>";
+        row.cells[7].innerHTML = "<div width='100%' onmouseover=checkintip.start(this," + code + ",4) >" + outputMoney(dataItem.CheckInApril) + "</div>";
+        row.cells[8].innerHTML = "<div width='100%' onmouseover=checkintip.start(this," + code + ",5) >" + outputMoney(dataItem.CheckInMay) + "</div>";
+        row.cells[9].innerHTML = "<div width='100%' onmouseover=checkintip.start(this," + code + ",6) >" + outputMoney(dataItem.CheckInJune) + "</div>";
+        row.cells[10].innerHTML = "<div width='100%' onmouseover=checkintip.start(this," + code + ",7) >" + outputMoney(dataItem.CheckInJuly) + "</div>";
+        row.cells[11].innerHTML = "<div width='100%' onmouseover=checkintip.start(this," + code + ",8) >" + outputMoney(dataItem.CheckInAugust) + "</div>";
+        row.cells[12].innerHTML = "<div width='100%' onmouseover=checkintip.start(this," + code + ",9) >" + outputMoney(dataItem.CheckInSeptember) + "</div>";
+        row.cells[13].innerHTML = "<div width='100%' onmouseover=checkintip.start(this," + code + ",10) >" + outputMoney(dataItem.CheckInOctober) + "</div>";
+        row.cells[14].innerHTML = "<div width='100%' onmouseover=checkintip.start(this," + code + ",11) >" + outputMoney(dataItem.CheckInNovember) + "</div>";
+        row.cells[15].innerHTML = "<div width='100%' onmouseover=checkintip.start(this," + code + ",12) >" + outputMoney(dataItem.CheckInDecember) + "</div>";
     }
     function outputMoney(s) {
         if (s == 0)
@@ -245,4 +245,98 @@
         return "￥"+s.replace(/^\./, "0.")  
     }
     
+</script>
+<script type="text/javascript">
+    var tip = { $: function (ele) {
+        if (typeof (ele) == "object")
+            return ele;
+        else if (typeof (ele) == "string" || typeof (ele) == "number")
+            return document.getElementById(ele.toString());
+        return null;
+    },
+        mousePos: function (e) {
+            var x, y;
+            var e = e || window.event;
+            return { x: e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft, y: e.clientY + document.body.scrollTop + document.documentElement.scrollTop };
+        },
+        start: function (obj, code) {
+            var self = this;
+            var t = self.$("mjs:tip");
+            obj.onmousemove = function (e) {
+                var mouse = self.mousePos(e);
+                var height = document.body.clientHeight;
+                if (mouse.y > height / 2) {
+                    t.style.left = mouse.x + 10 + 'px';
+                    t.style.top = mouse.y + 10 - 250 + 'px';
+                }
+                else {
+                    t.style.left = mouse.x + 10 + 'px';
+                    t.style.top = mouse.y + 10 + 'px';
+                }
+
+                t.style.display = '';
+                $.post('GetManagerInfo', { code: code }, function (result) {
+                    if ((result.manager != null)) {
+                        $("#gm").html(result.manager);
+                        $("#projectmanager").html(result.manager);
+                        $("#product").html(result.product);
+                        $("#salemanager").html(result.tl);
+                        $("#teamleader").html(result.tl);
+                        $("#market").html(result.market);
+                        $("#conference").html(result.conference);
+                        $("#guoneisales").html(result.guoneisales);
+                        $("#guowaisales").html(result.guowaisales);
+
+                    } else {
+
+                    }
+                });
+            }
+            obj.onmouseout = function () {
+                t.style.display = 'none';
+            }
+        }
+    }
+    var checkintip = { $: function (ele) {
+        if (typeof (ele) == "object")
+            return ele;
+        else if (typeof (ele) == "string" || typeof (ele) == "number")
+            return document.getElementById(ele.toString());
+        return null;
+    },
+        mousePos: function (e) {
+            var x, y;
+            var e = e || window.event;
+            return { x: e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft, y: e.clientY + document.body.scrollTop + document.documentElement.scrollTop };
+        },
+        start: function (obj, month) {
+            var self = this;
+            var t = self.$("mjs:checkininfo");
+            obj.onmousemove = function (e) {
+                var mouse = self.mousePos(e);
+                var height = document.body.clientHeight;
+                if (mouse.y > height / 2) {
+                    t.style.left = mouse.x + 10 + 'px';
+                    t.style.top = mouse.y + 10 - 150 + 'px';
+                }
+                else {
+                    t.style.left = mouse.x + 10 + 'px';
+                    t.style.top = mouse.y + 10 + 'px';
+                }
+
+                t.style.display = '';
+                var year = $('#Year').val();
+                $.post('GetCheckInInfo', { code: code, year: year, month: month }, function (result) {
+                    $("#firstweek").html(outputMoney(result.firstweek));
+                    $("#secondweek").html(outputMoney(result.secondweek));
+                    $("#thridweek").html(outputMoney(result.thirdweek));
+                    $("#forthweek").html(outputMoney(result.forthweek));
+                    $("#fifthweek").html(outputMoney(result.fifthweek));
+                });
+            }
+            obj.onmouseout = function () {
+                t.style.display = 'none';
+            }
+        }
+    } 
 </script>

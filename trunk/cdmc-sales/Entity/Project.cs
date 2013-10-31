@@ -145,6 +145,9 @@ namespace Entity
         [Display(Name = "测试数据")]
         public bool? Test { get; set; }
 
+        [Display(Name = "项目属性")]
+        public string ProjectState { get; set; }
+
         [Display(Name = "销售简介文件下载显示名称")]
         public string SalesBriefName { get; set; }
 

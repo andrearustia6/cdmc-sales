@@ -26,6 +26,109 @@ namespace Sales.Controllers
                 rolelvl = DirectorRequired.LVL;
             }
             ViewBag.RoleLevel = rolelvl;
+
+            if (btnExport == "1")
+            {
+                MemoryStream output = new MemoryStream();
+                StreamWriter writer = new StreamWriter(output, System.Text.Encoding.Default);
+
+                if (month == null) month = DateTime.Now.Month;
+
+                writer.Write(month + "月");
+                writer.WriteLine();
+
+                var PreCommissionList = Finance_Logical._PreCommissionBLL.GetPreCommission(month.Value).ToList();
+
+                if (PreCommissionList.Count() > 0)
+                {
+                    writer.Write("销售提成预发表,");
+                    writer.WriteLine();
+
+                    writer.Write("提成单号,");
+                    writer.Write("国内外,");
+                    writer.Write("英文名,");
+                    writer.Write("中文名,");
+                    writer.Write("开始时间,");
+                    writer.Write("结束时间,");
+                    writer.Write("项目,");
+                    writer.Write("入账总额,");
+                    writer.Write("提成总额,");
+                    writer.Write("扣税,");
+                    writer.Write("扣奖金,");
+                    writer.Write("预发总额,");
+                    writer.Write("冲销金额,");
+                    writer.Write("冲销后总额");
+                    writer.WriteLine();
+
+                    foreach (var item in PreCommissionList)
+                    {
+                        writer.Write(item.CommID);
+                        writer.Write(",");
+                        writer.Write("\"");
+                        writer.Write(item.InOut);
+                        writer.Write("\"");
+                        writer.Write(",");
+                        writer.Write("\"");
+                        writer.Write(item.TargetNameEN);
+                        writer.Write("\"");
+                        writer.Write(",");
+                        writer.Write("\"");
+                        writer.Write(item.TargetNameCN);
+                        writer.Write("\"");
+                        writer.Write(",");
+                        writer.Write("\"");
+                        writer.Write(string.Format("{0:yyyy-MM-dd}", item.StartDate));
+                        writer.Write("\"");
+                        writer.Write(",");
+                        writer.Write("\"");
+                        writer.Write(string.Format("{0:yyyy-MM-dd}", item.EndDate));
+                        writer.Write("\"");
+                        writer.Write(",");
+                        writer.Write("\"");
+                        writer.Write(item.ProjectName);
+                        writer.Write("\"");
+                        writer.Write(",");
+
+                        writer.Write("\"");
+                        writer.Write(string.Format("{0:c0}", Convert.ToDouble(item.Income==null?0:item.Income)));
+                        writer.Write("\"");
+                        writer.Write(",");
+                        writer.Write("\"");
+                        writer.Write(string.Format("{0:c0}", Convert.ToDouble(item.Commission==null?0:item.Commission)));
+                        writer.Write("\"");
+                        writer.Write(",");
+                        writer.Write("\"");
+                        writer.Write(string.Format("{0:c0}", Convert.ToDouble(item.Tax==null?0:item.Tax)));
+                        writer.Write("\"");
+                        writer.Write(",");
+                        writer.Write("\"");
+                        writer.Write(string.Format("{0:c0}", Convert.ToDouble(item.Bonus==null?0:item.Bonus)));
+                        writer.Write("\"");
+                        writer.Write(",");
+                        writer.Write("\"");
+                        writer.Write(string.Format("{0:c0}", Convert.ToDouble(item.TotalCommission==null?0:item.TotalCommission)));
+                        writer.Write("\"");
+                        writer.Write(",");
+                        writer.Write("\"");
+                        writer.Write(string.Format("{0:c0}", Convert.ToDouble(item.ReturnIncome==null?0:item.ReturnIncome)));
+                        writer.Write("\"");
+                        writer.Write(",");
+                        writer.Write("\"");
+                        writer.Write(string.Format("{0:c0}", Convert.ToDouble(item.ActualCommission==null?0:item.ActualCommission)));
+                        writer.Write("\"");
+                        writer.WriteLine();
+
+                    }
+
+                    writer.WriteLine();
+                    writer.WriteLine();
+                }
+                writer.Flush();
+                output.Position = 0;
+                return File(output, "text/comma-separated-values", "PreCommission.csv");
+
+            }
+
             return View();
             //if (month == null) month = DateTime.Now.Month;
             //// if (month == null) month = 5;

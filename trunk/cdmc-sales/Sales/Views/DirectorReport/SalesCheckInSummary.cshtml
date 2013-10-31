@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "项目回款总表";
+    ViewBag.Title = "销售人员回款表";
     Layout = "~/Views/DirectorReport/Master.cshtml";
 }
 @using Model
@@ -8,7 +8,7 @@
 @{
 
    <fieldset>
-   <legend>项目回款总表</legend>
+   <legend>销售人员回款表</legend>
    年份 @Html.DropDownList("Year", SelectHelper.YearSelectList(), "请选择", new { onchange = "onYearChange();" })
    项目类型 @Html.DropDownList("ProjectType", SelectHelper.ProjectTypeSelectList(), "请选择", new { onchange = "onProjectTypeChange();" })
    板块负责人 @Html.DropDownList("Manager",CRM_Logical._Reports.GetProjectsManager(),"请选择", new { onchange = "onManagerChange();" })

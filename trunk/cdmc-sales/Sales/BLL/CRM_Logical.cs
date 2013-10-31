@@ -1015,13 +1015,15 @@ namespace BLL
                 return list;
             }
 
-            public static List<AjaxMemberProjectsProgressByWeek> GetMemberProjectsProgressByWeek(DateTime? day, int? typeid, string manager = null)
+            public static List<AjaxMemberProjectsProgressByWeek> GetMemberProjectsProgressByWeek(int? projectid,DateTime? day, int? typeid, string manager = null)
             {
                 var ps = CRM_Logical.GetUserInvolveProject();
                 if (typeid != null)
                     ps = ps.Where(p => p.ProjectTypeID == typeid).ToList();
                 if (!string.IsNullOrEmpty(manager))
                     ps = ps.Where(p => p.Manager == manager).ToList();
+                if (projectid != null)
+                    ps = ps.Where(w => w.ID == projectid).ToList();
                 string spSuperManager = Utl.Utl.GetSpecialSuperManager();
                 string team1leader = Utl.Utl.GetTeam1Leader();
                 string team2leader = Utl.Utl.GetTeam2Leader();
@@ -1645,13 +1647,15 @@ namespace BLL
             }
 
 
-            public static IEnumerable<AjaxMemberProjectProcessByMonth> GetMemberProjectsProgressByMonth(int? typeid, string manager = null)
+            public static IEnumerable<AjaxMemberProjectProcessByMonth> GetMemberProjectsProgressByMonth(int? projectid,int? typeid, string manager = null)
             {
                 var ps = CRM_Logical.GetUserInvolveProject();
                 if (typeid != null)
                     ps = ps.Where(p => p.ProjectTypeID == typeid).ToList();
                 if (!string.IsNullOrEmpty(manager))
                     ps = ps.Where(p => p.Manager == manager).ToList();
+                if(projectid!=null)
+                    ps = ps.Where(p => p.ID == projectid).ToList();
                 string spSuperManager = Utl.Utl.GetSpecialSuperManager();
                 string team1leader = Utl.Utl.GetTeam1Leader();
                 string team2leader = Utl.Utl.GetTeam2Leader();
@@ -1837,7 +1841,7 @@ namespace BLL
                                Remark = d.Remark
                                
                            };
-                list = list.OrderBy(w=>w.Sales);
+                list = list.OrderBy(w=>w.CheckInDate);
                 return list;
             }
             public static IEnumerable<SelectListItem> GetProjectsManager()

@@ -585,6 +585,14 @@ namespace Utl
             return selectList;
         }
 
-
+        public static IEnumerable<SelectListItem> ProjectStateSelectList()
+        {
+            List<SelectListItem> selectList = new List<SelectListItem>();
+            selectList.Add(new SelectListItem() { Text = "老项目", Value = "老项目" });
+            selectList.Add(new SelectListItem() { Text = "二届项目", Value = "二届项目" });
+            selectList.Add(new SelectListItem() { Text = "次新项目", Value = "次新项目" });
+            selectList.Add(new SelectListItem() { Text = "全新项目", Value = "全新项目" });
+            return selectList;
+        }
     }
 }

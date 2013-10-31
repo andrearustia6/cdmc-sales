@@ -28,9 +28,20 @@
 <div id="filter-container" style="height: 30px;">
     <span>
         <label style="margin: 7px; float: left;">
+            年份:</label>
+        @Html.DropDownList("Year", Utl.SelectHelper.YearSelectList(),"请选择", new { style = "margin:5px;float: left;" })
+    </span>
+    <span>
+        <label style="margin: 7px; float: left;">
+            月份:</label>
+        @Html.DropDownList("Month", Utl.SelectHelper.MonthSelectList(),"请选择", new { style = "margin:5px;float: left;" })
+    </span>
+    <span>
+        <label style="margin: 7px; float: left;">
             出单筛选:</label>
         @Html.DropDownList("Filters", Utl.SelectHelper.FilterSelectList(), new { style = "margin:5px;float: left;" })
-    </span><span>
+    </span>
+    <span>
         <label style="margin: 7px; float: left;">
             项目:</label>
         @Html.DropDownList("Projects", Utl.SelectHelper.ProjectSelectList(Utl.Employee.CurrentUserName, (int?)ViewBag.selectVal), "全部项目", new { style = "margin:5px;float: left;" })
@@ -62,6 +73,8 @@
     c.Bound(item => item.PackageName);//Package中文名
     c.Bound(item => item.Committer);//客户签单人
     c.Bound(item => item.Sales);//权益描述
+    c.Bound(item => item.Role);//权益描述
+    c.Bound(item => item.DispParticipantTypeName);//权益描述
     c.Bound(item => item.SignDate).Format("{0:d}");//签约日期
     c.Bound(item => item.ExpectedPaymentDate).Format("{0:d}");//合约付款日期
     //c.Bound(item => item.Payment).Format("{0:c}").Aggregate(a => a.Sum()).ClientFooterTemplate("<#= $.telerik.formatString('{0:c}', Sum) #>");//应付款
@@ -166,7 +179,9 @@
       
         var Payment = $("#Payments").val();
         var Participant = $("#Participants").val();
-        e.data = $.extend(e.data, { filterId: filter, projectId: project, CompanyDealCodeLike: CompanyDealCode,  PaymentID: Payment, ParticipantsID: Participant });
+        var year = $("#Year").val();
+        var month = $("#Month").val();
+        e.data = $.extend(e.data, { filterId: filter, projectId: project, CompanyDealCodeLike: CompanyDealCode,  PaymentID: Payment, ParticipantsID: Participant,year:year,month:month });
     }
 
     function onRowDataBound(e) {
