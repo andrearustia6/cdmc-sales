@@ -309,7 +309,7 @@
             var e = e || window.event;
             return { x: e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft, y: e.clientY + document.body.scrollTop + document.documentElement.scrollTop };
         },
-        start: function (obj, month) {
+        start: function (obj,code, month) {
             var self = this;
             var t = self.$("mjs:checkininfo");
             obj.onmousemove = function (e) {
