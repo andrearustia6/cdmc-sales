@@ -58,7 +58,9 @@ namespace BLL
                                           Manager = p.Manager,
                                           ProjectID = p.ID,
                                           member = c.Member.Name,
-                                          salestypeid = c.Member.SalesTypeID
+                                          salestypeid = c.Member.SalesTypeID,
+                                          saletypename = c.Member.SalesType.Name,
+                                          activate = c.Member.IsActivated
                                       };
                     //var memberscall = from l in CH.DB.LeadCalls.Where(w => w.LeadCallTypeID != null && w.LeadCallType.Code >= 40 && w.CreatedDate >= md.MonthStartDate && w.CreatedDate <= md.MonthEndDate && w.Project.IsActived == true)
                     //                        join m in managers on l.Project.Manager equals m
@@ -79,7 +81,8 @@ namespace BLL
                                       {
                                           manager = p.Manager,
                                           name = l.Creator,
-                                          salestypeid = m.SalesTypeID
+                                          salestypeid = m.SalesTypeID,
+                                          salestypename = m.SalesType.Name
                                       };
                     var leadgroupbymanager = from l in CH.DB.Leads.Where(w => w.CreatedDate >= md.MonthStartDate && w.CreatedDate <= md.MonthEndDate)
                                       join m in CH.DB.Members on l.Creator equals m.Name
@@ -119,8 +122,8 @@ namespace BLL
                                   PitchPaper = aa != null ? aa.PitchPaper : 5,//aa.Item7Score.HasValue == false ? 5 : aa.Item7Score,
                                   WeeklyMeeting = aa != null ? aa.WeeklyMeeting : 5,//aa.Item8Score.HasValue == false ? 5 : aa.Item8Score,
                                   MonthlyMeeting = aa != null ? aa.MonthlyMeeting : 10,//aa.Item9Score.HasValue == false ? 10 : aa.Item9Score,
-                                  leadcallcount = memberscall.Where(c => c.Manager == l).Count(c => c.salestypeid == 2),
-                                  salescallcount = memberscall.Where(c => c.Manager == l).Count(c => c.salestypeid == 1),
+                                  leadcallcount = memberscall.Where(c => c.Manager == l).Count(c => c.activate == true && c.saletypename.Contains("销售")),
+                                  salescallcount = memberscall.Where(c => c.Manager == l).Count(c =>c.activate==true && c.saletypename.Contains("销售")),
                                   leadscount = memberscall.Where(c => c.Manager == l && c.salestypeid == 2).Select(s=>s.member).Distinct().Count(),
                                   salescount = memberscall.Where(c => c.Manager == l && c.salestypeid == 1).Select(s => s.member).Distinct().Count(),
                                   leadnewlead = memberslead.Where(c => c.manager == l).Count(c => c.salestypeid == 2),

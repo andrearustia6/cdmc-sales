@@ -45,6 +45,7 @@ public sealed class LogonRequired : AuthorizeAttribute
 
         if (!skipAuthorization)
         {
+            filterContext.Result = new HttpUnauthorizedResult();
             base.OnAuthorization(filterContext);
         }
     }
