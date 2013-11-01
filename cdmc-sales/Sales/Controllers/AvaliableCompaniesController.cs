@@ -1096,7 +1096,7 @@ namespace Sales.Controllers
             var ccs = from l in crms
                       select new _CoreCoverage()
                       {
-                          CompanyName = l.Company.Name_CH.Length > 0 ? l.Company.Name_CH + "|" + l.Company.Name_EN : l.Company.Name_EN,
+                          CompanyName = l.Company.Name_EN.Length > 0 ? l.Company.Name_EN : l.Company.Name_CH,
                           Members = l.Members,
                           PickUpTime = l.CrmTracks.OrderByDescending(ct => ct.GetDate).FirstOrDefault() != null ? l.CrmTracks.OrderByDescending(ct => ct.GetDate).FirstOrDefault().GetDate : null,
                           LeadCalledCount = l.LeadCalls.GroupBy(lc => lc.LeadID).Count(),
@@ -1118,7 +1118,7 @@ namespace Sales.Controllers
                 ccs = ccs.Where(w => w.LeadCalledCount == 2);
             else if (typeid == 3)
                 ccs = ccs.Where(w => w.LeadCalledCount >= 3);
-
+            ccs = ccs.OrderBy(w => w.CompanyName);
             return View(new GridModel(ccs.ToList()));
         }
         public ActionResult GetTemplate(int calltypeid)
