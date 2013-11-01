@@ -1105,6 +1105,12 @@ namespace Sales.Model
         [Display(Name = "管理提成")]
         public decimal? ManageCommission { get; set; }
 
+        [Display(Name = "其他项")]
+        public decimal? OtherCommission { get; set; }
+
+        [Display(Name = "说明项")]
+        public decimal? ExplainCommission { get; set; }
+
         [Display(Name = "扣税")]
         public decimal? Tax { get; set; }
 

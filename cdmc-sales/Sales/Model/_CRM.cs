@@ -349,6 +349,8 @@ namespace Sales.Model
         /// 领用人打了几个lead
         /// </summary>
         public int LeadCalledCount { get; set; }
+
+        public int DealCount { get; set; }
         public DateTime? PickUpTime { get; set; }
         public string DispTime
         {

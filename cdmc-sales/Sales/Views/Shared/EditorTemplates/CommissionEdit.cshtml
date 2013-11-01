@@ -201,6 +201,12 @@
 
         calc();
     }
+    function OnOtherCommissionChange(e) {
+        calc();
+    }
+    function OnExplainCommissionChange(e) {
+        calc();
+    }
 
     function calc() {
 
@@ -227,14 +233,42 @@
         $("#CommissionA").val((DelegateLessCommission + DelegateMoreCommission + SponsorCommission + DelegateCommission).toFixed(0));
         var commission = $("#CommissionA").val();
         var bonus = $("#Bonus").val();
-        var tax = $("#Tax").val();
+        
+        var OtherCommission = $("#OtherCommission").val();
+        var ExplainCommission = $("#ExplainCommission").val();
 
-        $("#TotalCommission").val((commission - $("#CommissionPayed").val()).toFixed(0));
-        $("#ActualCommission").val((commission - $("#CommissionPayed").val() - bonus - tax ).toFixed(0));
+        $("#TotalCommission").val((commission - $("#CommissionPayed").val() - OtherCommission - ExplainCommission).toFixed(0));
+        $("#Tax").val((($("#TotalCommission").val() - 3500) * 0.07).toFixed(0));
+        var tax = $("#Tax").val();
+        $("#ActualCommission").val((commission - $("#CommissionPayed").val() - bonus - tax - OtherCommission - ExplainCommission).toFixed(0));
 //        $("#TotalCommission").val((DelegateLessCommission - DelegateLessPayed + DelegateMoreCommission - DelegateMorePayed + SponsorCommission - SponsorPayed).toFixed(0));
 //        $("#ActualCommission").val($("#TotalCommission").val());
     }
-    
+    function calctax() {
+
+        var DelegateLessCommission = $("#DelegateLessIncome").val() * $("#DelegateLessRate").val() / 100;
+        var DelegateMoreCommission = ($("#DelegateMoreIncome").val() - $("#DelegateMoreCount").val() * 3000) * $("#DelegateMoreRate").val() / 100;
+        var SponsorCommission = $("#SponsorIncome").val() * $("#SponsorRate").val() / 100;
+        var DelegateCommission = $("#DelegateIncome").val() * $("#DelegateRate").val() / 100;
+
+        var DelegateLessPayed = $("#DelegateLessPayed").val();
+        var DelegateMorePayed = $("#DelegateMorePayed").val();
+        var SponsorPayed = $("#SponsorPayed").val();
+        var DelegatePayed = $("#DelegatePayed").val();
+
+        
+
+        var commission = $("#CommissionA").val();
+        var bonus = $("#Bonus").val();
+
+        var OtherCommission = $("#OtherCommission").val();
+        var ExplainCommission = $("#ExplainCommission").val();
+
+        var tax = $("#Tax").val();
+        $("#ActualCommission").val((commission - $("#CommissionPayed").val() - bonus - tax - OtherCommission - ExplainCommission).toFixed(0));
+        //        $("#TotalCommission").val((DelegateLessCommission - DelegateLessPayed + DelegateMoreCommission - DelegateMorePayed + SponsorCommission - SponsorPayed).toFixed(0));
+        //        $("#ActualCommission").val($("#TotalCommission").val());
+    }
    function setvalue(result) {
         if (result.TargetNameEN != "") {
             $("#TargetNameCN").val(result.TargetNameCN);
@@ -285,7 +319,8 @@
             //alert($("#Commission").val());
             $("#CommissionA").val((DelegateLessCommission + DelegateMoreCommission + SponsorCommission + DelegateCommission).toFixed(0));
             $("#TotalCommission").val((DelegateLessCommission - DelegateLessPayed + DelegateMoreCommission - DelegateMorePayed + SponsorCommission - SponsorPayed + DelegateCommission - DelegatePayed).toFixed(0));
-            $("#ActualCommission").val($("#TotalCommission").val());
+            $("#Tax").val((($("#TotalCommission").val() - 3500) * 0.07).toFixed(0));
+            $("#ActualCommission").val($("#TotalCommission").val() - $("#Tax").val());
 
             if (result.InOut == "国内") {
                 $("#Delegatetr").hide();
@@ -322,7 +357,7 @@
             @Html.LabelFor(model => model.ProjectID)
         </td>
         <td  >
-            @Html.DropDownListFor(model => model.ProjectID, BLL.Finance_Logical._PreCommissionBLL.GetProjectsDDL(), "请选择" )
+            @Html.DropDownListFor(model => model.ProjectID, SelectHelper.ProjectSelectList(Employee.CurrentUserName), "请选择")
             @Html.ValidationMessageFor(model => model.ProjectID)
             <div id="projectdiv"></div>
         </td>
@@ -550,43 +585,46 @@
         <td >
         ￥@Html.TextBoxFor(model => model.CommissionPayed, new { READONLY = "readonly", style = "border:none;width:80%" }) 
         </td>
+       <td>
+         @Html.LabelFor(model => model.OtherCommission)
+        </td>
+        <td>
+        ￥ @Html.TextBoxFor(model => model.OtherCommission, new { style = "width:50%" })
+        </td>
+    </tr>
+    <tr>
+        
+        <td>
+            @Html.LabelFor(model => model.ExplainCommission)
+        </td>
+        <td>
+        ￥ @Html.TextBoxFor(model => model.ExplainCommission, new { style = "width:50%" })
+        </td>
+
         <td>
             @Html.LabelFor(model => model.TotalCommission)
         </td>
         <td >
+
         ￥@Html.TextBoxFor(model => model.TotalCommission, new { READONLY = "readonly", style = "border:none;width:80%" }) 
         </td>
-    </tr>
-    <tr>
+        <td >
+        
+        </td>
+        <td >
+        
+        </td>
         <td>
          @Html.LabelFor(model => model.Tax)
         </td>
         <td>
-        @Html.Telerik().CurrencyTextBoxFor(model => model.Tax).ClientEvents(e => e.OnChange("OnTaxChange")).InputHtmlAttributes(new { style = "width:100%" })
+        ￥ @Html.TextBoxFor(model => model.Tax, new { style = "width:50%" })
         </td>
         <td>
             @Html.LabelFor(model => model.Bonus)
         </td>
         <td>
             @Html.Telerik().CurrencyTextBoxFor(model => model.Bonus).ClientEvents(e => e.OnChange("OnBonusChange")).InputHtmlAttributes(new { style = "width:100%" })
-        </td>
-        
-        <td >
-        
-        </td>
-        <td>
-        
-        </td>
-        <td >
-        </td>
-        <td>
-        
-        </td>
-        <td >
-        
-        </td>
-        <td>
-        
         </td>
         <td >
          @Html.LabelFor(model => model.ActualCommission)
@@ -723,6 +761,15 @@
         });
         $("#DelegateRate").change(function () {
             calc();
+        });
+        $("#OtherCommission").change(function () {
+            calc();
+        });
+        $("#ExplainCommission").change(function () {
+            calc();
+        });
+        $("#Tax").change(function () {
+            calctax();
         });
     });
     

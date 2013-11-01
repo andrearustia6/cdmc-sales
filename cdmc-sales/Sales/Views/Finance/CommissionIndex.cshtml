@@ -1,5 +1,6 @@
 ﻿@using Sales.Model
 @using Entity
+@using Utl
 @model List<_FinalCommission>
 @{
     ViewBag.Title = "Index";
@@ -21,13 +22,23 @@
 </script>
 <fieldset>
     <legend>筛选条件</legend>
+    @{
+     using (Html.BeginForm())
+        {
     <div id="filter-container" style="height: 30px;">
-     项目 @Html.DropDownList("projects", BLL.Finance_Logical._PreCommissionBLL.GetProjectsDDL(), "请选择")
-    目标 @Html.DropDownList("sales", lists)
-     <button type="submit" onclick="filterChange()" style="margin: 2px 2px 2px 15px; ">
-            筛选</button>
+    
+     项目 @Html.DropDownList("projectid", SelectHelper.ProjectSelectList(Employee.CurrentUserName), "请选择", new { onchange = "onProjecctChange();" })
+    目标 @Html.DropDownList("sale", lists)
+    @*@Html.DropDownList("sale", SelectHelper.AllMembersSelectList(Employee.CurrentUserName), "请选择")*@
+    @Html.Hidden("btnExport")
+     <button  onclick="setexport('0');filterChange();return false;" style="margin: 2px 2px 2px 15px; ">筛选</button>
+    <button value="export" id="export" type="button" name="Export" onclick="setexport('1');this.form.submit();"
+            style="margin-left: 20px">
+            导出</button>
+       
     </div>
-   
+    }
+        }
 </fieldset>
 @{ 
     
@@ -103,17 +114,18 @@
             StartDate = "";
             EndDate = "";
             inout = "";
-            projectidparam = $("#projects").val();
-            saleparam = $("#sales").val();
+            projectidparam = $("#projectid").val();
+            
+            saleparam = $("#sale").val();
         }
     }
     $(function () {
         $("#projects").change(function () {
 
-            var projectid = $("#projects").find("option:selected").val();
+            var projectid = $("#projectid").val();
             if (projectid == "") {
-                $("#sales").empty();
-                $("#sales").append("<option value='" + "" + "'>" + "请选择" + "</option>");
+                $("#sale").empty();
+                $("#sale").append("<option value='" + "" + "'>" + "请选择" + "</option>");
                 return;
             }
             $.ajax({
@@ -125,10 +137,10 @@
                     alert("获取数据失败，请重试。");
                 },
                 success: function (result) {
-                    $("#sales").empty();
-                    $("#sales").append("<option value='" + "" + "'>" + "请选择" + "</option>");
+                    $("#sale").empty();
+                    $("#sale").append("<option value='" + "" + "'>" + "请选择" + "</option>");
                     for (var i = 0; i < result.length; i++) {
-                        $("#sales").append("<option value='" + result[i].salesid + "'>" + result[i].sales + "</option>");
+                        $("#sale").append("<option value='" + result[i].salesid + "'>" + result[i].sales + "</option>");
                     }
                 }
             });
@@ -138,10 +150,38 @@
 
     function filterChange() {
         $("#Commission").data("tGrid").rebind();
+        
     }
     function dataBinding(e) {
-        var projectid = $("#projects").val();
-        var sale = $("#sales").val();
+        var projectid = $("#projectid").val();
+        var sale = $("#sale").val();
         e.data = $.extend(e.data, { projectid: projectid, sale: sale});
+    }
+    function setexport(code) {
+        $("#btnExport").val(code);
+    }
+    function onProjecctChange() {
+        var projectid = $("#projectid").val();
+        if (projectid == "") {
+            $("#sale").empty();
+            $("#sale").append("<option value='" + "" + "'>" + "请选择" + "</option>");
+            return;
+        }
+        $.ajax({
+            url: "/Finance/GetSalesByProject",
+            type: "post",
+            dataType: "json",
+            data: { projectid: projectid },
+            error: function (a, b, c) {
+                alert("获取数据失败，请重试。");
+            },
+            success: function (result) {
+                $("#sale").empty();
+                $("#sale").append("<option value='" + "" + "'>" + "请选择" + "</option>");
+                for (var i = 0; i < result.length; i++) {
+                    $("#sale").append("<option value='" + result[i].salesid + "'>" + result[i].sales + "</option>");
+                }
+            }
+        });
     }
 </script>
