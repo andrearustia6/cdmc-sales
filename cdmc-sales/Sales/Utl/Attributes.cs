@@ -33,21 +33,27 @@ public sealed class LogonRequired : AuthorizeAttribute
     {
 
         bool skipAuthorization = filterContext.ActionDescriptor.IsDefined(typeof(AllowAnonymousAttribute), true);
-
+        string name;
         if (Utl.Utl.DebugModel())
         {
             skipAuthorization = true;
-            var name = Utl.Utl.DebugAccount();
+             name = Utl.Utl.DebugAccount();
             FormsAuthentication.SetAuthCookie(name, true);
         }
-
-        //skipAuthorization = true;
-
-        if (!skipAuthorization)
+        else
         {
-            filterContext.Result = new HttpUnauthorizedResult();
-            base.OnAuthorization(filterContext);
+            if (string.IsNullOrEmpty(Employee.CurrentUserName) && skipAuthorization == false)
+            {
+                base.OnAuthorization(filterContext);
+            }
         }
+
+    
+        
+       
+        
+      
+     
     }
 }
 
