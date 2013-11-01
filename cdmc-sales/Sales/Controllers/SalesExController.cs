@@ -1275,42 +1275,55 @@ namespace Sales.Controllers
         [HttpPost]
         public ActionResult EmailPage(EmailModel model)
         {
-            SendEmail(model.FromEmail,model.FromName,model.ToEmail,model.ToName,model.Content);
-
-            return Json(new { sentEmail = true } ); 
+            if (SendEmail(model.ToEmail, model.ToName, model.Subject, model.Content))
+                return Json(new { sentEmail = true });
+            else
+                return Json(new { sentEmail = false });
         }
 
         /// <summary>
         /// Methods to send email.
         /// </summary>
-        /// <param name="fromEmail"></param>
-        /// <param name="fromName"></param>
         /// <param name="toEmail"></param>
         /// <param name="toName"></param>
+        /// <param name="subject"></param>
         /// <param name="content"></param>
-        public void SendEmail(string fromEmail, string fromName, string toEmail, string toName, string content)
+        /// <returns></returns>
+        public bool SendEmail(string toEmail, string toName, string subject, string content)
         {
+            //UserInfoModel currUser =  Employee.GetUserByName(Employee.CurrentUserName);
+            var currUsers = from c in CH.DB.EmployeeRoles where c.AccountName == Employee.CurrentUserName select c;
+            EmployeeRole currUser = currUsers.FirstOrDefault();
+            if ((currUser == null) || (String.IsNullOrEmpty(currUser.Email)) || string.IsNullOrEmpty(currUser.EmailPassword))
+                return false;
+
             // Send email
             SmtpClient smtp = new SmtpClient();
             smtp.Host = ConfigurationManager.AppSettings["SMTP_Server"].ToString();
             smtp.Port = Convert.ToInt32(ConfigurationManager.AppSettings["SMTP_Port"].ToString());
-            NetworkCredential SMTPUserInfo = new NetworkCredential(ConfigurationManager.AppSettings["SMTP_Username"].ToString(), ConfigurationManager.AppSettings["SMTP_Password"].ToString());
+            //NetworkCredential SMTPUserInfo = new NetworkCredential(ConfigurationManager.AppSettings["SMTP_Username"].ToString(), ConfigurationManager.AppSettings["SMTP_Password"].ToString());
+            NetworkCredential SMTPUserInfo = new NetworkCredential(currUser.Email, currUser.EmailPassword);
             smtp.UseDefaultCredentials = false;
             smtp.Credentials = SMTPUserInfo;
 
-            MailAddress from = new MailAddress(fromEmail, fromName, System.Text.Encoding.Unicode);
+            //MailAddress from = new MailAddress("system@cdmc.org.cn", "system@cdmc.org.cn", System.Text.Encoding.Unicode);
+            MailAddress from = new MailAddress(currUser.Email, currUser.EmailSignatures, System.Text.Encoding.Unicode);
             MailAddress to = new MailAddress(toEmail, toName, System.Text.Encoding.UTF8);
             MailMessage message = new MailMessage(from, to);
             message.SubjectEncoding = System.Text.Encoding.UTF8;
-            message.Subject = "Notifications";
+            message.Subject = subject;
             message.BodyEncoding = System.Text.Encoding.UTF8;
             message.Body = content;
             message.IsBodyHtml = true;
             try
             {
                 smtp.Send(message);
+                return true;
             }
-            catch { }
+            catch
+            {
+                return false;
+            }
             finally { message.Dispose(); smtp.Dispose(); }
         }
 
