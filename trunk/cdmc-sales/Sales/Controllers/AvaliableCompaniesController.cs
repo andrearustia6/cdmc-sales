@@ -794,6 +794,7 @@ namespace Sales.Controllers
 
             return Json(new { companyRelationshipId = companyRelationship.ID, companyId = companyRelationship.CompanyID, projectId = companyRelationship.ProjectID, processid = companyRelationship.ProgressID, corelvlid = companyRelationship.CoreLVLID });
         }
+
         public ActionResult GetEmailPage(string callType, int leadid, string templatename)
         {
             Lead lead = CH.GetDataById<Lead>(leadid);
@@ -820,14 +821,12 @@ namespace Sales.Controllers
                 template = template.Replace("{CLIENTNAME}", string.IsNullOrEmpty(lead.Name_EN) ? "Client" : lead.Name_EN);
             #endregion
 
-
-
             EmailModel model = new EmailModel();
             model.Content = template;
             model.ToEmail = lead.EMail;
             model.ToName = string.Join(",", lead.Name_EN, lead.Name_CH).Trim(',');
-            model.FromName = Employee.CurrentUserName;
-            model.FromEmail = Employee.GetUserByName(Employee.CurrentUserName).Email;
+            //model.FromName = Employee.CurrentUserName;
+            //model.FromEmail = Employee.GetUserByName(Employee.CurrentUserName).Email;
             return PartialView("EmailPage", model);
         }
 
@@ -835,7 +834,7 @@ namespace Sales.Controllers
         [HttpPost]
         public ActionResult EmailPage(EmailModel model)
         {
-            if (SendEmail(model.FromEmail, model.FromName, model.ToEmail, model.ToName, model.Content))
+            if (SendEmail(model.ToEmail, model.ToName, model.Subject, model.Content))
                 return Json(new { sentEmail = true });
             else
                 return Json(new { sentEmail = false });
@@ -844,12 +843,12 @@ namespace Sales.Controllers
         /// <summary>
         /// Methods to send email.
         /// </summary>
-        /// <param name="fromEmail"></param>
-        /// <param name="fromName"></param>
         /// <param name="toEmail"></param>
         /// <param name="toName"></param>
+        /// <param name="subject"></param>
         /// <param name="content"></param>
-        public bool SendEmail(string fromEmail, string fromName, string toEmail, string toName, string content)
+        /// <returns></returns>
+        public bool SendEmail(string toEmail, string toName, string subject, string content)
         {
             //UserInfoModel currUser =  Employee.GetUserByName(Employee.CurrentUserName);
             var  currUsers = from c in CH.DB.EmployeeRoles where c.AccountName == Employee.CurrentUserName select c;
@@ -871,7 +870,7 @@ namespace Sales.Controllers
             MailAddress to = new MailAddress(toEmail, toName, System.Text.Encoding.UTF8);
             MailMessage message = new MailMessage(from, to);
             message.SubjectEncoding = System.Text.Encoding.UTF8;
-            message.Subject = "Notifications";
+            message.Subject = subject;
             message.BodyEncoding = System.Text.Encoding.UTF8;
             message.Body = content;
             message.IsBodyHtml = true;

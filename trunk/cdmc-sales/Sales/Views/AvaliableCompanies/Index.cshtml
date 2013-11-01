@@ -1545,26 +1545,30 @@
 
         String.prototype.isEmpty = function () { return /^\s*$/.test(this); }
 
-        if ($('.dialogue-sendemail form #FromEmail').val().isEmpty()) {
-            $('.dialogue-sendemail form #FromEmail').addClass('fieldError');
+//        if ($('.dialogue-sendemail form #FromEmail').val().isEmpty()) {
+//            $('.dialogue-sendemail form #FromEmail').addClass('fieldError');
+//            hasError = true;
+//        }
+
+//        if ($('.dialogue-sendemail form #FromName').val().isEmpty()) {
+//            $('.dialogue-sendemail form #FromName').addClass('fieldError');
+//            hasError = true;
+//        }
+
+//        if ($('.dialogue-sendemail form #ToEmail').val().isEmpty()) {
+//            $('.dialogue-sendemail form #ToEmail').addClass('fieldError');
+//            hasError = true;
+//        }
+
+//        if ($('.dialogue-sendemail form #ToName').val().isEmpty()) {
+//            $('.dialogue-sendemail form #ToName').addClass('fieldError');
+//            hasError = true;
+//        }
+
+        if ($('.dialogue-sendemail form #Subject').val().isEmpty()) {
+            $('.dialogue-sendemail form #Subject').addClass('fieldError');
             hasError = true;
         }
-
-        if ($('.dialogue-sendemail form #FromName').val().isEmpty()) {
-            $('.dialogue-sendemail form #FromName').addClass('fieldError');
-            hasError = true;
-        }
-
-        if ($('.dialogue-sendemail form #ToEmail').val().isEmpty()) {
-            $('.dialogue-sendemail form #ToEmail').addClass('fieldError');
-            hasError = true;
-        }
-
-        if ($('.dialogue-sendemail form #ToName').val().isEmpty()) {
-            $('.dialogue-sendemail form #ToName').addClass('fieldError');
-            hasError = true;
-        }
-
         if (hasError) {
             return;
         } else {

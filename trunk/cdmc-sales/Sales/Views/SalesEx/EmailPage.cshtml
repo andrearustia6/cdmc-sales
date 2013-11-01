@@ -4,36 +4,17 @@
 
 <table width="100%" cellpadding="0" cellspacing="0">
    <tr>
-        <td style="width:70px">@Html.LabelFor(model => model.FromName)</td>
+        <td style="width:5%">@Html.LabelFor(model => model.Subject)</td>
         <td>
-            @Html.TextBoxFor(model => model.FromName, new { id = "FromName", @style = "width:350px" })
-            @Html.ValidationMessageFor(model => model.FromName)
+            @Html.TextBoxFor(model => model.Subject, new { id = "Subject", style = "width:100%" })
+            @Html.ValidationMessageFor(model => model.Subject)
         </td>
    </tr>
    <tr>
-        <td style="width:70px">@Html.LabelFor(model => model.FromEmail)</td>
-        <td>
-            @Html.TextBoxFor(model => model.FromEmail, new { id = "FromEmail", @style = "width:350px" })
-            @Html.ValidationMessageFor(model => model.FromEmail)
-        </td>
+        <td colspan="2">@Html.LabelFor(model => model.Content)</td>
    </tr>
    <tr>
-        <td style="width:70px">@Html.LabelFor(model => model.ToName)</td>
-        <td>
-            @Html.TextBoxFor(model => model.ToName, new { id = "ToName", @style = "width:350px" })
-            @Html.ValidationMessageFor(model => model.ToName)
-        </td>
-   </tr>
-   <tr>
-        <td style="width:70px">@Html.LabelFor(model => model.ToEmail)</td>
-        <td>
-            @Html.TextBoxFor(model => model.ToEmail, new { id = "ToEmail", @style = "width:350px" })
-            @Html.ValidationMessageFor(model => model.ToEmail)
-        </td>
-   </tr>
-   <tr>
-        <td style="width:70px">@Html.LabelFor(model => model.Content)</td>
-        <td>
+        <td colspan="2">
             @{Html.Telerik().EditorFor(model=> model.Content)
                 .HtmlAttributes(new {style="height:300px"})
                 .Encode(false)
@@ -50,12 +31,3 @@
 </table>
 
 @{ Html.EndForm(); }
-
-<script type="text/javascript" language="javascript">
-//    $(document).ready(function () {
-//        var typeId = @ViewBag.Type;
-//        $.post('AjaxGetTemplate', { type: typeId }, function (result) {
-//            $('#container').html("Happy Life");
-//        });
-//    });
-</script>
