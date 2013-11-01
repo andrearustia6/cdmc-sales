@@ -1085,7 +1085,7 @@ namespace Sales.Controllers
             return PartialView(@"~\views\AvaliableCompanies\CoreCoverage.cshtml");
         }
         [GridAction]
-        public ActionResult _CoreCoverage(int projectid, int coreid)
+        public ActionResult _CoreCoverage(int projectid, int coreid,int? typeid)
         {
             var crms = CH.DB.CompanyRelationships.Where(cr => cr.ProjectID == projectid && cr.CoreLVLID == coreid && cr.Members.Count > 0);
             if (Employee.CurrentRole.Level == SalesRequired.LVL || Employee.CurrentRole.Level == LeaderRequired.LVL)
@@ -1096,7 +1096,6 @@ namespace Sales.Controllers
             var ccs = from l in crms
                       select new _CoreCoverage()
                       {
-
                           CompanyName = l.Company.Name_CH.Length > 0 ? l.Company.Name_CH + "|" + l.Company.Name_EN : l.Company.Name_EN,
                           Members = l.Members,
                           PickUpTime = l.CrmTracks.OrderByDescending(ct => ct.GetDate).FirstOrDefault() != null ? l.CrmTracks.OrderByDescending(ct => ct.GetDate).FirstOrDefault().GetDate : null,
@@ -1107,9 +1106,19 @@ namespace Sales.Controllers
                                       MemberName = c.Member.Name,
                                       LeadID = c.LeadID
                                   },
-                          ProcessName = l.Progress.Name
+                          ProcessName = l.Progress.Name,
+                          DealCount = l.Deals.Count()
                       };
             CH.DB.Configuration.ProxyCreationEnabled = false;
+            if (typeid == 0)
+                ccs = ccs.Where(w => w.LeadCalledCount == 0);
+            else if (typeid == 1)
+                ccs = ccs.Where(w => w.LeadCalledCount == 1);
+            else if (typeid == 2)
+                ccs = ccs.Where(w => w.LeadCalledCount == 2);
+            else if (typeid == 3)
+                ccs = ccs.Where(w => w.LeadCalledCount >= 3);
+
             return View(new GridModel(ccs.ToList()));
         }
         public ActionResult GetTemplate(int calltypeid)

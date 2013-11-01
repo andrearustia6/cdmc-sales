@@ -4,12 +4,34 @@
 @{
     var projectid = ViewBag.projectid;
     var coreid = ViewBag.coreid;
+
+    List<SelectListItem> lists = new List<SelectListItem>();
+    var listitem = new SelectListItem();
+    listitem.Value = "1";
+    listitem.Text = "打了一个的公司";
+    lists.Add(listitem);
+    listitem = new SelectListItem();
+    listitem.Value = "2";
+    listitem.Text = "打了两个的公司";
+    lists.Add(listitem);
+    listitem = new SelectListItem();
+    listitem.Value = "3";
+    listitem.Text = "打了三个以上的公司";
+    lists.Add(listitem);
+    listitem = new SelectListItem();
+    listitem.Value = "0";
+    listitem.Text = "没打的公司";
+    lists.Add(listitem);
 }
+<div>
+已打 @Html.DropDownList("list", lists, "请选择", new { onchange = "onListChange();" })
+</div>
 @(Html.Telerik().Grid<_CoreCoverage>().Name("CoreCoverage")
      .DataBinding(dataBinding =>
      {
          dataBinding.Ajax().Select("_CoreCoverage", "AvaliableCompanies", new { projectid = projectid, coreid = coreid });
      })
+              .ClientEvents(events => events.OnDataBinding("dataBinding").OnRowDataBound("onRowDataBound"))
         .Columns(columns =>
         {
             columns.Bound(p => p.CompanyName).Title("名称").Width(80).HtmlAttributes(new { style = "text-align:left" });
@@ -18,8 +40,34 @@
             columns.Bound(p => p.LeadCalledCount).Title("打过Lead数").Width(60).HtmlAttributes(new { style = "text-align:left" });
             columns.Bound(p => p.DispTime).Title("领用时间").Width(60).HtmlAttributes(new { style = "text-align:left" });
             columns.Bound(p => p.DispSales).Title("之前领用销售").Width(60).HtmlAttributes(new { style = "text-align:left" });
-        }).Pageable(p => p.Style(GridPagerStyles.Status)
+        })
+            .Pageable(p => p.Style(GridPagerStyles.Status)
                .PageOnScroll(true).PageSize(25))
                    .Scrollable(scrolling => scrolling.Height(600)).Sortable().Resizable(r => r.Columns(true)).Filterable()
                        )
-    
+    <script>
+        var clicked = false;
+        function dataBinding(e) {
+            if (clicked) {
+                var typeid = $('#list').val();
+                e.data = $.extend(e.data, { typeid: typeid });
+            }
+
+
+        }
+        function refreshGrid() {
+            clicked = true;
+            $("#CoreCoverage").data("tGrid").rebind();
+
+        }
+        function onListChange() {
+
+            refreshGrid();
+        }
+        function onRowDataBound(e) {
+            var row = e.row;
+            var dataItem = e.dataItem;
+            if (dataItem.DealCount > 0)
+                row.cells[0].innerHTML = "<div width='100%' style='background-color:green'>" + dataItem.CompanyName + "</div>";
+        }
+    </script>
