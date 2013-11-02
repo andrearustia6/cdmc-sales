@@ -574,199 +574,187 @@
                 foreach (var lead in Model._Leads)
                 {
                     leadhide += lead.ID + ",";
-@*<a href="#" onclick="onLeadSelect(@(lead.ID))">*@
-@* <a href="#" class="centera" onclick="onLeadSelectJS(@(lead.ID))">*@
-@*<div class="center_2" id="lead@(lead.ID)" onmouseover = "javascript:showLeadBtn(@(lead.ID));" onmouseout = "javascript:hideLeadBtn(@(lead.ID));" >*@
-                <span style="cursor: pointer">
-                    <div class="center_2" id="lead@(lead.ID)"  onclick="onLeadSelectJS(@(lead.ID))">
-                        <div id="leadbtn@(lead.ID)" style="width:16%; display:none; float: right;">
-                            <img class="hide"  src="../images/dianhua.png" alt="新增通话" onclick="onCallAdd(@(lead.ID))" style=" display: inline;float: right;" />
-                            <img class="hide" src="../images/bianji.png" alt="编辑" onclick="onLeadEdit(@(lead.ID))" style=" display: inline;float: right;" />
-                        </div>
-                        <div style="width: 84%;">
-                            <dl>
-                                <dt>
-                                    @{
-                                                                                                  var calls = @Model._LeadCalls.Where(c => c.LeadID == lead.ID).OrderByDescending(c => c.CallDate).FirstOrDefault();
-                                                                                                  if (Utl.Employee.CurrentRole.Level != ProductInterfaceRequired.LVL)
-                                                                                                  {
-                                                                                                      if (@Model._members.Where(m => m.Name == Utl.Employee.CurrentUserName).Count() > 0)
-                                                                                                      {
-
-                                                                                                          if (calls == null)
-                                                                                                          {
-                                                                                                                <img onclick="onLeadEdit(@(lead.ID))" src="../images/quan-01.png" width="15" height="15" alt="yuan" title="没联系" />
-                                                                                                          }
-                                                                                                          else
-                                                                                                          {
-                                                                                                              if (calls.LeadCallTypeID == 2 || calls.LeadCallTypeID == 3)
-                                                                                                              {
-                                                                                                                <img onclick="onLeadEdit(@(lead.ID))"  src="../images/quan-09.png" width="15" height="15" alt="yuan" title="Blowed和Not Piteched" />}
-                                                                                                              else if (calls.LeadCallTypeID == 4 || calls.LeadCallTypeID == 5 || calls.LeadCallTypeID == 6)
-                                                                                                              {
-                                                                                                                <img  onclick="onLeadEdit(@(lead.ID))" src="../images/quan-10.png" width="15" height="15" alt="yuan" title="Pitched和Full Pitched和Call Backed" />}
-                                                                                                              else if (calls.LeadCallTypeID == 7 || calls.LeadCallTypeID == 8)
-                                                                                                              {
-                                                                                                                 <img  onclick="onLeadEdit(@(lead.ID))" src="../images/55.png" width="15" height="15" alt="yuan" title="Qualified Decision和Waiting for Approval" />}
-                                                                                                              else if (calls.LeadCallTypeID == 9)
-                                                                                                              {
-                                                                                                                <img  onclick="onLeadEdit(@(lead.ID))" src="../images/quan-08.png" width="15" height="15" alt="yuan" title="Closed" />}
-                                                                                                          }
-                                                                                                      }
-                                                                                                      else
-                                                                                                      {
-                                                                                                          if (calls == null)
-                                                                                                          {
-
-                                                                                                                <img  src="../images/quan-01.png" width="15" height="15" alt="yuan" title="没联系" />
-                                                                                                          }
-                                                                                                          else
-                                                                                                          {
-
-                                                                                                              if (calls.LeadCallTypeID == 2 || calls.LeadCallTypeID == 3)
-                                                                                                              {
-                                                                                                                <img   src="../images/quan-09.png" width="15" height="15" alt="yuan" title="Blowed和Not Piteched" />}
-                                                                                                              else if (calls.LeadCallTypeID == 4 || calls.LeadCallTypeID == 5 || calls.LeadCallTypeID == 6)
-                                                                                                              {
-                                                                                                                <img   src="../images/quan-10.png" width="15" height="15" alt="yuan" title="Pitched和Full Pitched和Call Backed" />}
-                                                                                                              else if (calls.LeadCallTypeID == 7 || calls.LeadCallTypeID == 8)
-                                                                                                              {
-                                                                                                                 <img   src="../images/55.png" width="15" height="15" alt="yuan" title="Qualified Decision和Waiting for Approval" />}
-                                                                                                              else if (calls.LeadCallTypeID == 9)
-                                                                                                              {
-                                                                                                                <img   src="../images/quan-08.png" width="15" height="15" alt="yuan" title="Closed" />}
-                                                                                                          }
-
-                                                                                                      }
-                                                                                                  }
-                                                                                                  else
-                                                                                                  {
-                                                                                                      if (calls == null)
-                                                                                                      {
-                                        <img src="../images/quan-01.png" width="15" height="15" alt="yuan" title="没联系" />
-                                                                                                      }
-                                                                                                      else
-                                                                                                      {
-                                                                                                          if (calls.LeadCallTypeID == 2 || calls.LeadCallTypeID == 3)
-                                                                                                          {
-                                        <img src="../images/quan-09.png" width="15" height="15" alt="yuan" title="Blowed和Not Piteched" />}
-                                                                                                          else if (calls.LeadCallTypeID == 4 || calls.LeadCallTypeID == 5 || calls.LeadCallTypeID == 6)
-                                                                                                          {
-                                        <img src="../images/quan-10.png" width="15" height="15" alt="yuan" title="Pitched和Full Pitched和Call Backed" />}
-                                                                                                          else if (calls.LeadCallTypeID == 7 || calls.LeadCallTypeID == 8)
-                                                                                                          {
-                                        <img src="../images/55.png" width="15" height="15" alt="yuan" title="Qualified Decision和Waiting for Approval" />}
-                                                                                                          else if (calls.LeadCallTypeID == 9)
-                                                                                                          {
-                                        <img src="../images/quan-08.png" width="15" height="15" alt="yuan" title="Closed" />}
-                                                                                                      }
-                                                                                                  }
-                                    }
-                                </dt>
-                                <dd>
-                                    <div class="text-overflow" title="@lead.SName">@lead.SName</div>
-                                </dd>
-                            </dl>
-                            <dl>
-                                <dd style="margin-left: 24px;">
-                                    @{if (@lead.Title != null)
-                                      {
-                                        <p style="color:#ffa500" title="@lead.Title">@lead.Title</p>
-                                      }
-                                    }
-                                </dd>
-                            </dl>
-                            @{if (!string.IsNullOrWhiteSpace(lead.Contact))
-                              {
+                    <span style="cursor: pointer">
+                        <div class="center_2" id="lead@(lead.ID)"  onclick="onLeadSelectJS(@(lead.ID))">
+                            <div id="leadbtn@(lead.ID)" style="width:16%; display:none; float: right;">
+                                <img class="hide"  src="../images/dianhua.png" alt="新增通话" onclick="onCallAdd(@(lead.ID))" style=" display: inline;float: right;" />
+                                <img class="hide" src="../images/bianji.png" alt="编辑" onclick="onLeadEdit(@(lead.ID))" style=" display: inline;float: right;" />
+                            </div>
+                            <div style="width: 84%;">
                                 <dl>
                                     <dt>
-                                    @if (Utl.Employee.CurrentRole.Level != ProductInterfaceRequired.LVL)
-                                    {
-                                        if (@Model._members.Where(m => m.Name == Utl.Employee.CurrentUserName).Count() > 0)
+                                        @{
+                                            var calls = @Model._LeadCalls.Where(c => c.LeadID == lead.ID).OrderByDescending(c => c.CallDate).FirstOrDefault();
+                                            if (Utl.Employee.CurrentRole.Level != ProductInterfaceRequired.LVL)
+                                            {
+                                                if (@Model._members.Where(m => m.Name == Utl.Employee.CurrentUserName).Count() > 0)
+                                                {
+
+                                                    if (calls == null)
+                                                    {
+                                                        <img onclick="onLeadEdit(@(lead.ID))" src="../images/quan-01.png" width="15" height="15" alt="yuan" title="没联系" />
+                                                    }
+                                                    else
+                                                    {
+                                                        if (calls.LeadCallTypeID == 2 || calls.LeadCallTypeID == 3)
+                                                        {
+                                                        <img onclick="onLeadEdit(@(lead.ID))"  src="../images/quan-09.png" width="15" height="15" alt="yuan" title="Blowed和Not Piteched" />}
+                                                        else if (calls.LeadCallTypeID == 4 || calls.LeadCallTypeID == 5 || calls.LeadCallTypeID == 6)
+                                                        {
+                                                        <img  onclick="onLeadEdit(@(lead.ID))" src="../images/quan-10.png" width="15" height="15" alt="yuan" title="Pitched和Full Pitched和Call Backed" />}
+                                                        else if (calls.LeadCallTypeID == 7 || calls.LeadCallTypeID == 8)
+                                                        {
+                                                            <img  onclick="onLeadEdit(@(lead.ID))" src="../images/55.png" width="15" height="15" alt="yuan" title="Qualified Decision和Waiting for Approval" />}
+                                                        else if (calls.LeadCallTypeID == 9)
+                                                        {
+                                                        <img  onclick="onLeadEdit(@(lead.ID))" src="../images/quan-08.png" width="15" height="15" alt="yuan" title="Closed" />}
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    if (calls == null)
+                                                    {
+                                                        <img  src="../images/quan-01.png" width="15" height="15" alt="yuan" title="没联系" />
+                                                    }
+                                                    else
+                                                    {
+                                                        if (calls.LeadCallTypeID == 2 || calls.LeadCallTypeID == 3)
+                                                        {
+                                                            <img   src="../images/quan-09.png" width="15" height="15" alt="yuan" title="Blowed和Not Piteched" />}
+                                                        else if (calls.LeadCallTypeID == 4 || calls.LeadCallTypeID == 5 || calls.LeadCallTypeID == 6)
+                                                        {
+                                                            <img   src="../images/quan-10.png" width="15" height="15" alt="yuan" title="Pitched和Full Pitched和Call Backed" />}
+                                                        else if (calls.LeadCallTypeID == 7 || calls.LeadCallTypeID == 8)
+                                                        {
+                                                            <img   src="../images/55.png" width="15" height="15" alt="yuan" title="Qualified Decision和Waiting for Approval" />}
+                                                        else if (calls.LeadCallTypeID == 9)
+                                                        {
+                                                            <img   src="../images/quan-08.png" width="15" height="15" alt="yuan" title="Closed" />}
+                                                    }
+                                                }
+                                            }
+                                            else
+                                            {
+                                                if (calls == null)
+                                                {
+                                                    <img src="../images/quan-01.png" width="15" height="15" alt="yuan" title="没联系" />
+                                                }
+                                                else
+                                                {
+                                                    if (calls.LeadCallTypeID == 2 || calls.LeadCallTypeID == 3)
+                                                    {
+                                                        <img src="../images/quan-09.png" width="15" height="15" alt="yuan" title="Blowed和Not Piteched" />}
+                                                    else if (calls.LeadCallTypeID == 4 || calls.LeadCallTypeID == 5 || calls.LeadCallTypeID == 6)
+                                                    {
+                                                        <img src="../images/quan-10.png" width="15" height="15" alt="yuan" title="Pitched和Full Pitched和Call Backed" />}
+                                                    else if (calls.LeadCallTypeID == 7 || calls.LeadCallTypeID == 8)
+                                                    {
+                                                        <img src="../images/55.png" width="15" height="15" alt="yuan" title="Qualified Decision和Waiting for Approval" />}
+                                                    else if (calls.LeadCallTypeID == 9)
+                                                    {
+                                                        <img src="../images/quan-08.png" width="15" height="15" alt="yuan" title="Closed" />}
+                                                }
+                                            }
+                                        }
+                                    </dt>
+                                    <dd>
+                                        <div class="text-overflow" title="@lead.SName">@lead.SName</div>
+                                    </dd>
+                                </dl>
+                                <dl>
+                                    <dd style="margin-left: 24px;">
+                                        @{if (@lead.Title != null)
+                                          {
+                                            <p style="color:#ffa500" title="@lead.Title">@lead.Title</p>
+                                          }
+                                        }
+                                    </dd>
+                                </dl>
+                                @{if (!string.IsNullOrWhiteSpace(lead.Contact))
+                                  {
+                                    <dl>
+                                        <dt>
+                                        @if (Utl.Employee.CurrentRole.Level != ProductInterfaceRequired.LVL)
                                         {
-                                        <img onclick="onCallAdd(@(lead.ID))"  src="../images/shouji.png" width="15" height="15" alt="yuan" />
+                                            if (@Model._members.Where(m => m.Name == Utl.Employee.CurrentUserName).Count() > 0)
+                                            {
+                                            <img onclick="onCallAdd(@(lead.ID))"  src="../images/shouji.png" width="15" height="15" alt="yuan" />
+                                            }
+                                            else
+                                            {
+                                                <img  src="../images/shouji.png" width="15" height="15" alt="yuan" />
+                                            }
                                         }
                                         else
                                         {
                                             <img  src="../images/shouji.png" width="15" height="15" alt="yuan" />
                                         }
-                                    }
-                                    else
-                                    {
-                                        <img  src="../images/shouji.png" width="15" height="15" alt="yuan" />
-                                    }
-                                        </dt>
-
-                                    <dd>
-                                        <p title="@lead.Contact">@lead.Contact</p>
-                                    </dd>
-                                </dl>
-                              }
-                            }
-                            @{if (!string.IsNullOrWhiteSpace(lead.TelePhone))
-                              {
-                                <dl>
-                                    <dt>
-                                    @if (Utl.Employee.CurrentRole.Level != ProductInterfaceRequired.LVL)
-                                    {
-                                        if (@Model._members.Where(m => m.Name == Utl.Employee.CurrentUserName).Count() > 0)
+                                            </dt>
+                                        <dd>
+                                            <p title="@lead.Contact">@lead.Contact</p>
+                                        </dd>
+                                    </dl>
+                                  }
+                                }
+                                @{if (!string.IsNullOrWhiteSpace(lead.TelePhone))
+                                  {
+                                    <dl>
+                                        <dt>
+                                        @if (Utl.Employee.CurrentRole.Level != ProductInterfaceRequired.LVL)
                                         {
-                                        <img onclick="onCallAdd(@(lead.ID))"  src="../images/zuoji.png" width="15" height="15" alt="yuan" />
+                                            if (@Model._members.Where(m => m.Name == Utl.Employee.CurrentUserName).Count() > 0)
+                                            {
+                                                <img onclick="onCallAdd(@(lead.ID))"  src="../images/zuoji.png" width="15" height="15" alt="yuan" />
+                                            }
+                                            else
+                                            {
+                                                <img  src="../images/zuoji.png" width="15" height="15" alt="yuan" />
+                                            }
                                         }
                                         else
                                         {
                                             <img  src="../images/zuoji.png" width="15" height="15" alt="yuan" />
-                                        }
-                                    }
-                                    else
-                                    {
-                                        <img  src="../images/zuoji.png" width="15" height="15" alt="yuan" />
-                                    }</dt>
-
-                                    <dd>
-                                        <p title="@lead.TelePhone">@lead.TelePhone</p>
-                                    </dd>
-                                </dl>
-                              }
-                            }
-                            @{if (!string.IsNullOrWhiteSpace(lead.Email))
-                              {
-                                <dl>
-                                    <dt>
-                                    @if (Utl.Employee.CurrentRole.Level != ProductInterfaceRequired.LVL)
-                                    {
-                                        if (@Model._members.Where(m => m.Name == Utl.Employee.CurrentUserName).Count() > 0)
+                                        }</dt>
+                                        <dd>
+                                            <p title="@lead.TelePhone">@lead.TelePhone</p>
+                                        </dd>
+                                    </dl>
+                                  }
+                                }
+                                @{if (!string.IsNullOrWhiteSpace(lead.Email))
+                                  {
+                                    <dl>
+                                        <dt>
+                                        @if (Utl.Employee.CurrentRole.Level != ProductInterfaceRequired.LVL)
                                         {
-                                    <a href="mailto:@(lead.Email)">
-                                        <img src="../images/youjian.png" width="15" height="15" alt="yuan" /></a> 
+                                            if (@Model._members.Where(m => m.Name == Utl.Employee.CurrentUserName).Count() > 0)
+                                            {
+                                                <a href="mailto:@(lead.Email)">
+                                                <img src="../images/youjian.png" width="15" height="15" alt="yuan" /></a> 
+                                            }
+                                            else
+                                            {
+                                                <a><img src="../images/youjian.png" width="15" height="15" alt="yuan" /></a> 
+                                            }
                                         }
                                         else
                                         {
-                                            <a >
-                                        <img src="../images/youjian.png" width="15" height="15" alt="yuan" /></a> 
-                                        }
-                                    }
-                                    else
-                                    {
-                                        <a >
-                                        <img src="../images/youjian.png" width="15" height="15" alt="yuan" /></a> 
-                                    }</dt>
-
-                                    <dd>
-                                        <p style="width:100px" title="@lead.Email">@lead.Email</p>
-                                    </dd>
-                                </dl>
-                              }
-                            }
+                                            <a><img src="../images/youjian.png" width="15" height="15" alt="yuan" /></a> 
+                                        }</dt>
+                                        <dd>
+                                            <p style="width:100px" title="@lead.Email">@lead.Email</p>
+                                        </dd>
+                                    </dl>
+                                  }
+                                }
+                            </div>
                         </div>
-                    </div>
-                </span> 
-@*</a>*@
-                              index++;
-                              if (index > 2)
-                              {
-                                  index = 1;
-                              }
+                    </span> 
+                    index++;
+                    if (index > 2)
+                    {
+                        index = 1;
+                    }
                 }
             }
             @Html.Hidden("LeadIdHidden", string.IsNullOrEmpty(leadhide) ? "" : leadhide.Substring(0, leadhide.Length - 1))
@@ -775,80 +763,103 @@
        p.Add().Size("40%").Content(@<text>
         <div class="right" style="width: 100%;">
             <div style="float: right; display: none; margin-top: 10px; margin-right: 10px;" id="filterbtn">
-                <input type="button" value="取消筛选" onclick="RefreshCrm();" style="border: none; width: 67px;
-                    height: 21px;" />
+                <input type="button" value="取消筛选" onclick="RefreshCrm();" style="border: none; width: 67px; height: 21px;" />
             </div>
             @if (Model._LeadCalls != null)
             {
-                var index = 1;
                 var leadcalls = @Model._LeadCalls;
                 List<int> lcIdList = new List<int>();
-                //if (ViewBag.leadid > 0)
-                //{
-                //    leadcalls = leadcalls.Where(c => c.LeadID == ViewBag.leadid);
-                //}
+
                 if (leadcalls != null && leadcalls.Count() > 0)
                 {
-
+                    <h4 style="margin-left:5px;">致电列表</h4>
                     foreach (var call in leadcalls)
                     {
-                        
-                                
-                <div class="right_2 leadcall@(call.LeadID) call@(call.MemberName)">
-                    @*@if (!lcIdList.Contains((int)call.LeadID))
-                                    {
-                                        <div style=" float:right; display:none;" id="filterbtn@(call.LeadID)" class="filterbtn">
-                                            <input type="button" value="取消筛选" onclick="RefreshCrm();" style="border: none; width: 67px; height: 21px;"/>
-                                        </div>
-                                    }*@
-                    <h2>@call.LeadName 
-                    @if (string.IsNullOrEmpty(@call.LeadTitle))
-                    { }
-                    else
-                    {
-                        <span> | </span> @call.LeadTitle
-                    }
-                    </h2>
-                    <p>
-                        @if (call.LeadCallTypeID == null)
-                        {                                         
-                            <span style="color: #A8A8A8">@call.CallType</span>
-                        }
-                        else if (call.LeadCallTypeID == 2 || call.LeadCallTypeID == 3)
-                        {
-                            <span style="color: #FD0100">@call.CallType</span>
-                        }
-                        else if (call.LeadCallTypeID == 4 || call.LeadCallTypeID == 5 || call.LeadCallTypeID == 6)
-                        {
-                            <span style="color: #00AFF0">@call.CallType</span>
-                        }
-                        else if (call.LeadCallTypeID == 7 || call.LeadCallTypeID == 8)
-                        {
-                            <span style="color: #FFC22E">@call.CallType</span>
-                        }
-                        else if (call.LeadCallTypeID == 9)
-                        {
-                            <span style="color: #7EFF42">@call.CallType</span>
-                        }
-                    </p>
-                    <p>
-                        <span>@call.CallResult</span></p>
-                    <p>@call.CallDate.ToLongDateString() @call.CallDate.ToShortTimeString() @call.Creator</p>
-                </div>
-                                                                                       index++;
-                                                                                       lcIdList.Add((int)call.LeadID);
-                                                                                       if (index > 2)
-                                                                                       {
-                                                                                           index = 1;
-                                                                                       }
+                        <div class="right_2 leadcall@(call.LeadID) call@(call.MemberName)">
+                            <h2>@call.LeadName 
+                            @if (string.IsNullOrEmpty(@call.LeadTitle))
+                            { }
+                            else
+                            {
+                                <span> | </span> @call.LeadTitle
+                            }
+                            </h2>
+                            <p>
+                                @if (call.LeadCallTypeID == null)
+                                {                                         
+                                    <span style="color: #A8A8A8">@call.CallType</span>
+                                }
+                                else if (call.LeadCallTypeID == 2 || call.LeadCallTypeID == 3)
+                                {
+                                    <span style="color: #FD0100">@call.CallType</span>
+                                }
+                                else if (call.LeadCallTypeID == 4 || call.LeadCallTypeID == 5 || call.LeadCallTypeID == 6)
+                                {
+                                    <span style="color: #00AFF0">@call.CallType</span>
+                                }
+                                else if (call.LeadCallTypeID == 7 || call.LeadCallTypeID == 8)
+                                {
+                                    <span style="color: #FFC22E">@call.CallType</span>
+                                }
+                                else if (call.LeadCallTypeID == 9)
+                                {
+                                    <span style="color: #7EFF42">@call.CallType</span>
+                                }
+                            </p>
+                            <p>
+                                <span>@call.CallResult</span></p>
+                            <p>@call.CallDate.ToLongDateString() @call.CallDate.ToShortTimeString() @call.Creator</p>
+                        </div>
                     }
                 }
-@* else
-                        {
-                            <div style=" float:right; display:none; margin-top:10px; margin-right:10px;" id="filterbtn">
-                                <input type="button" value="取消筛选" onclick="RefreshCrm();" style="border: none; width: 67px; height: 21px;"/>
-                            </div>
-                        }*@
+            }
+            @if (Model._HistoryCalls != null)
+            {
+                var historycalls = @Model._HistoryCalls;
+                List<int> lcIdList = new List<int>();
+
+                if (historycalls != null && historycalls.Count() > 0)
+                {
+                    <h4 style="margin-left:5px;">历史致电列表</h4>
+                    foreach (var call in historycalls)
+                    {
+                        <div class="right_2 leadcall@(call.LeadID) call@(call.MemberName)">
+                            <h2>@call.LeadName 
+                            @if (string.IsNullOrEmpty(@call.LeadTitle))
+                            { }
+                            else
+                            {
+                                <span> | </span> @call.LeadTitle
+                            }
+                            </h2>
+                            <p>
+                                @if (call.LeadCallTypeID == null)
+                                {                                         
+                                    <span style="color: #A8A8A8">@call.CallType</span>
+                                }
+                                else if (call.LeadCallTypeID == 2 || call.LeadCallTypeID == 3)
+                                {
+                                    <span style="color: #FD0100">@call.CallType</span>
+                                }
+                                else if (call.LeadCallTypeID == 4 || call.LeadCallTypeID == 5 || call.LeadCallTypeID == 6)
+                                {
+                                    <span style="color: #00AFF0">@call.CallType</span>
+                                }
+                                else if (call.LeadCallTypeID == 7 || call.LeadCallTypeID == 8)
+                                {
+                                    <span style="color: #FFC22E">@call.CallType</span>
+                                }
+                                else if (call.LeadCallTypeID == 9)
+                                {
+                                    <span style="color: #7EFF42">@call.CallType</span>
+                                }
+                            </p>
+                            <p>
+                                <span>@call.CallResult</span></p>
+                            <p>@call.CallDate.ToLongDateString() @call.CallDate.ToShortTimeString() @call.Creator</p>
+                        </div>
+                    }
+                }
             }
         </div>
         </text>);

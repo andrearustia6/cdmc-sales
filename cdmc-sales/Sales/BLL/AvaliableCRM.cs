@@ -287,6 +287,19 @@ namespace Sales.BLL
                                   LeadCallTypeID = leadcalls.LeadCallTypeID,
                                   MemberName = leadcalls.Member.Name
                               }),
+                _HistoryCalls = (from leadcalls in data.LeadCalls.Where(call=> call.ProjectID != data.ProjectID).OrderByDescending(m => m.CallDate)
+                              select new _LeadCall()
+                              {
+                                  LeadID = leadcalls.LeadID,
+                                  LeadName = leadcalls.Lead.Name_EN + " " + leadcalls.Lead.Name_CH,
+                                  LeadTitle = leadcalls.Lead.Title,
+                                  CallResult = leadcalls.Result,
+                                  CallType = leadcalls.LeadCallType.Name,
+                                  CallDate = leadcalls.CallDate,
+                                  Creator = leadcalls.Creator,
+                                  LeadCallTypeID = leadcalls.LeadCallTypeID,
+                                  MemberName = leadcalls.Member.Name
+                              }),
                 _ProgressTrack = CH.DB.ProgressTrack.Where(pt => pt.CompanyRelationshipID == crmid).OrderByDescending(pt => pt.ChangeDate)
             };
             crm._Leads = crm._Leads.OrderByDescending(l => l.LastCallTypeID).ThenBy(l => l.Name);

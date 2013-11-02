@@ -144,7 +144,7 @@ namespace Sales.Model
     /// </summary>
     public class _CRM : EntityBase
     {
-        public _CrmStatisitcs CrmStatisitcs { get; set; }
+         public _CrmStatisitcs CrmStatisitcs { get; set; }
          public string Contact { get; set; }
          public string Fax { get; set; }
          public bool CoreCompany { get; set; }
@@ -260,6 +260,7 @@ namespace Sales.Model
          public IEnumerable<_Lead> _Leads { get; set; }
          public IEnumerable<_Comment> _Comments { get; set; }
          public IEnumerable<_LeadCall> _LeadCalls { get; set; }
+         public IEnumerable<_LeadCall> _HistoryCalls { get; set; }
          public IEnumerable<Member> _members { get; set; }
          public IEnumerable<ProgressTrack> _ProgressTrack { get; set; }
      }
