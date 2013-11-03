@@ -252,6 +252,7 @@ namespace Sales.Controllers
                 s.DepartmentID = model.DepartmentID;
                 s.Mobile = model.Mobile;
                 s.EmailSignatures = model.EmailSignatures;
+                s.AccountNameCN = model.AccountNameCN;
                 if (!string.IsNullOrWhiteSpace(model.EmailPassword))
                 {
                     s.EmailPassword = model.EmailPassword;
