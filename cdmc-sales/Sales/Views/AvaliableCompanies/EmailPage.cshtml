@@ -7,11 +7,16 @@
         <td style=" width:5%">@Html.LabelFor(model => model.Subject)</td>
         <td>
             @Html.TextBoxFor(model => model.Subject, new { id = "Subject", style = "width:100%" })
+            
             @Html.ValidationMessageFor(model => model.Subject)
         </td>
    </tr>
    <tr>
-        <td colspan="2">@Html.LabelFor(model => model.Content)</td>
+        <td colspan="2">
+            @Html.LabelFor(model => model.Content)
+            @Html.HiddenFor(model => model.ToEmail)
+            @Html.HiddenFor(model => model.ToName)
+        </td>
    </tr>
    <tr>
         <td colspan="2">
