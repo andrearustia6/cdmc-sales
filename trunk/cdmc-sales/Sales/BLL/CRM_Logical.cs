@@ -1829,20 +1829,33 @@ namespace BLL
                     members = members.Where(m => m.Sales == sales);
                 }
                 IEnumerable<string> salesList = members.Select(o => o.Sales).Distinct();
-                var list = from p in idList
-                           join d in deals on p equals d.ProjectID
-                           join m in salesList on d.Sales equals m
+                //var list = from p in idList
+                //           join d in deals on p equals d.ProjectID
+                //           join m in salesList on d.Sales equals m
+                //           select new AjaxCompanyDailyReceivedPayment
+                //           {
+                //               Sales = d.Sales,
+                //               CheckInDate=d.ActualPaymentDate,
+                //               CheckInRMB = d.Currencytype.Name == "RMB" ? (decimal?)d.Payment : 0,
+                //               CheckInUSD = d.Currencytype.Name == "USD" ? (decimal?)d.Payment : 0,
+                //               CompanyName = d.CompanyRelationship.Company.Name_CH == null ? d.CompanyRelationship.Company.Name_EN : d.CompanyRelationship.Company.Name_CH + "|" + d.CompanyRelationship.Company.Name_EN,
+                //               ProjectName = d.Project.ProjectUnitName,
+                //               Abstract = CH.DB.EmployeeRoles.Where(e => e.AccountName == d.Sales).FirstOrDefault() == null ? "" : CH.DB.EmployeeRoles.Where(e => e.AccountName == d.Sales).FirstOrDefault().Role.Name=="国内销售"?"国内销售收入":"国外销售收入",
+                //               Remark = d.Remark
+                               
+                //           };
+                var list = from d in deals.Where(w=> idList.Contains((int)w.ProjectID) && salesList.Contains(w.Sales))
                            select new AjaxCompanyDailyReceivedPayment
                            {
                                Sales = d.Sales,
-                               CheckInDate=d.ActualPaymentDate,
+                               CheckInDate = d.ActualPaymentDate,
                                CheckInRMB = d.Currencytype.Name == "RMB" ? (decimal?)d.Payment : 0,
                                CheckInUSD = d.Currencytype.Name == "USD" ? (decimal?)d.Payment : 0,
                                CompanyName = d.CompanyRelationship.Company.Name_CH == null ? d.CompanyRelationship.Company.Name_EN : d.CompanyRelationship.Company.Name_CH + "|" + d.CompanyRelationship.Company.Name_EN,
                                ProjectName = d.Project.ProjectUnitName,
-                               Abstract = CH.DB.EmployeeRoles.Where(e => e.AccountName == d.Sales).FirstOrDefault() == null ? "" : CH.DB.EmployeeRoles.Where(e => e.AccountName == d.Sales).FirstOrDefault().Role.Name=="国内销售"?"国内销售收入":"国外销售收入",
+                               Abstract = CH.DB.EmployeeRoles.Where(e => e.AccountName == d.Sales).FirstOrDefault() == null ? "" : CH.DB.EmployeeRoles.Where(e => e.AccountName == d.Sales).FirstOrDefault().Role.Name == "国内销售" ? "国内销售收入" : "国外销售收入",
                                Remark = d.Remark
-                               
+
                            };
                 list = list.OrderBy(w=>w.CheckInDate);
                 return list;
