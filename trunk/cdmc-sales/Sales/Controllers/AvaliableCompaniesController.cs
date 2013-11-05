@@ -293,7 +293,7 @@ namespace Sales.Controllers
         [ValidateInput(false)]
         public ActionResult CheckMemberShip(int? projectid)
         {
-            var exist = from c in CH.DB.CompanyRelationships.Where(w => w.ProjectID == projectid && w.Members.Where(m => m.Name == Employee.CurrentUserName).Any() == true) select c;
+            var exist = from c in CH.DB.Members.Where(w => w.ProjectID == projectid && w.Name == Employee.CurrentUserName) select c;
             if (exist.Count() == 0)
             {
                 return Content("抱歉，您不是member，要成为member才能操作！");
