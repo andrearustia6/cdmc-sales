@@ -235,3 +235,19 @@
         color: Red;
     }
 </style>
+<script>
+    $(function () {
+        $("#Name_CN").change(function () {
+            $.post('CheckCompanyNameCNExist', { name: $("#Name_CN").val() }, function (result) {
+                if (result != '')
+                    alert(result);
+            });
+        })
+        $("#Name_EN").change(function () {
+            $.post('CheckCompanyNameENExist', { name: $("#Name_EN").val() }, function (result) {
+                if (result != '')
+                    alert(result);
+            });
+        })
+    })
+</script>
