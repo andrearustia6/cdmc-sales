@@ -879,8 +879,6 @@ namespace Sales.Controllers
             model.Content = template;
             model.ToEmail = lead.EMail;
             model.ToName = string.Join(",", lead.Name_EN, lead.Name_CH).Trim(',');
-            //model.FromName = Employee.CurrentUserName;
-            //model.FromEmail = Employee.GetUserByName(Employee.CurrentUserName).Email;
             return PartialView("EmailPage", model);
         }
 

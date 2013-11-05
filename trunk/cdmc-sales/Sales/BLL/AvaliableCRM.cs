@@ -198,7 +198,6 @@ namespace Sales.BLL
             //  个人类型数量是个ｌｉｓｔ
             // 各个ｃａｌｌｔｙｐｅ的数量
 
-
             var crm = new _CRM()
             {
                 CategoryEdit = (Employee.AsManager() || Employee.AsProductInterface()),
@@ -287,18 +286,19 @@ namespace Sales.BLL
                                   LeadCallTypeID = leadcalls.LeadCallTypeID,
                                   MemberName = leadcalls.Member.Name
                               }),
-                _HistoryCalls = (from leadcalls in data.LeadCalls.Where(call=> call.ProjectID != data.ProjectID).OrderByDescending(m => m.CallDate)
+                _HistoryCalls = (from histcalls in data.LeadCalls.OrderByDescending(m => m.CallDate)
+                              //_HistoryCalls = (from histcalls in .GetAllData<LeadCall>().Where(c => c.ProjectID != data.ProjectID && data.Company.Leads.Any(l => l.ID == c.LeadID)).ToList().OrderByDescending(m => m.CallDate)
                               select new _LeadCall()
                               {
-                                  LeadID = leadcalls.LeadID,
-                                  LeadName = leadcalls.Lead.Name_EN + " " + leadcalls.Lead.Name_CH,
-                                  LeadTitle = leadcalls.Lead.Title,
-                                  CallResult = leadcalls.Result,
-                                  CallType = leadcalls.LeadCallType.Name,
-                                  CallDate = leadcalls.CallDate,
-                                  Creator = leadcalls.Creator,
-                                  LeadCallTypeID = leadcalls.LeadCallTypeID,
-                                  MemberName = leadcalls.Member.Name
+                                  LeadID = histcalls.LeadID,
+                                  LeadName = histcalls.Lead.Name_EN + " " + histcalls.Lead.Name_CH,
+                                  LeadTitle = histcalls.Lead.Title,
+                                  CallResult = histcalls.Result,
+                                  CallType = histcalls.LeadCallType.Name,
+                                  CallDate = histcalls.CallDate,
+                                  Creator = histcalls.Creator,
+                                  LeadCallTypeID = histcalls.LeadCallTypeID,
+                                  MemberName = histcalls.Member.Name
                               }),
                 _ProgressTrack = CH.DB.ProgressTrack.Where(pt => pt.CompanyRelationshipID == crmid).OrderByDescending(pt => pt.ChangeDate)
             };

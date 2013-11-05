@@ -347,7 +347,7 @@ namespace Entity
 
         public virtual List<LeadCall> LeadCalls { get; set; }
 
-        //public virtual List<Lead> Leads { get; set; }
+        //public virtual List<LeadCall> HistoryCalls { get; set; }
 
         public virtual List<Member> Members { get; set; }
 
