@@ -157,30 +157,36 @@ namespace Sales.Controllers
             return View();
         }
         [GridAction]
-        public ActionResult ProjectsProgressByMonth(int? typeid,string manager=null)
+        public ActionResult ProjectsProgressByMonth(string month,int? typeid,string manager=null)
         {
-            var list = CRM_Logical._Reports.GetProjectsProgressByMonth(typeid,manager);
+            var list = CRM_Logical._Reports.GetProjectsProgressByMonth(month,typeid,manager);
 
             return View(new GridModel(list.ToList()));
         }
         [GridAction]
-        public ActionResult ProjectsProgressByWeek(int? typeid, string manager = null)
+        public ActionResult ProjectsProgressByWeek(string month, int? typeid, string manager = null)
         {
-            var list = CRM_Logical._Reports.GetProjectsProgressByWeek(DateTime.Now, typeid, manager);
+            var list = CRM_Logical._Reports.GetProjectsProgressByWeek(month, typeid, manager);
             return View(new GridModel(list.ToList()));
         }
         [GridAction]
-        public ActionResult MemberProjectsProgressByMonth(int? projectid,int? typeid, string manager = null)
+        public ActionResult MemberProjectsProgressByMonth(string sales,string month,int? projectid,int? typeid, string manager = null)
         {
-            var list = CRM_Logical._Reports.GetMemberProjectsProgressByMonth(projectid,typeid, manager);
+            var list = CRM_Logical._Reports.GetMemberProjectsProgressByMonth(sales,month,projectid,typeid, manager);
 
             return View(new GridModel(list.ToList()));
         }
-
         [GridAction]
-        public ActionResult MemberProjectsProgressByWeek(int? projectid, int? typeid, string manager = null)
+        public ActionResult SalesMonthTargetSummary(string sales, string month, int? projectid, int? typeid, string manager = null)
         {
-            var list = CRM_Logical._Reports.GetMemberProjectsProgressByWeek(projectid,DateTime.Now, typeid, manager);
+            var list = CRM_Logical._Reports.GetSalesMonthTargetSummary(sales, month, projectid, typeid, manager);
+
+            return View(new GridModel(list.ToList()));
+        }
+        [GridAction]
+        public ActionResult MemberProjectsProgressByWeek(string month,int? projectid, int? typeid, string manager = null)
+        {
+            var list = CRM_Logical._Reports.GetMemberProjectsProgressByWeek(month,projectid, typeid, manager);
 
             return View(new GridModel(list.ToList()));
         }
