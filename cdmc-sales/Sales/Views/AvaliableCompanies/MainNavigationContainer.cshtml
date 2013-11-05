@@ -8,7 +8,7 @@
 @{
     if(Model.MemberCompanies!=null)
     {
-    <span>在打公司</span>
+    <span>在打公司 </span>
         @(Html.Telerik().TreeView().Name("memberCompanies")
         .HtmlAttributes(new { style = "" })
         .ClientEvents(e => e.OnSelect("onIndexSelect"))
@@ -94,9 +94,11 @@
 @{
     if (Model.MemberCompanies != null)
     { 
-        <span>公海公司</span>
+        <span>公海公司<a class="BulkPickUp" href="#" onclick="BulkPickUp()">
+                        批量领用</a></span>
         @(Html.Telerik().TreeView().Name("publicCompanies").HtmlAttributes(new { style = "" })
-                        .ClientEvents(e => e.OnSelect("onIndexSelectPublic"))
+                            .ClientEvents(e => e.OnSelect("onIndexSelectPublic").OnChecked("onChecked"))
+                            .ShowCheckBox(true)
                 .BindTo(Model.PublicCompanies, mappings =>
                 {
                     mappings.For<_CoreLVL>(binding => binding
@@ -104,6 +106,10 @@
                     {
                         item.Text = core.CoreNameDisplayText;
                         item.Value = core.ID.ToString();
+                        if (item.Parent == null)
+                        {
+                            item.Checkable = false;
+                        }
                     })
 
                     .Children(maturity => maturity._CRMs));
@@ -111,8 +117,10 @@
                     mappings.For<_CRM>(binding => binding
                   .ItemDataBound((item, crm) =>
                   {
+                      
                       item.Text = crm.DisplayName;
                       item.Value = crm.ID.ToString();
+                      
                   }));
                 })
 
@@ -209,5 +217,33 @@
         $('#ProgressIDdiv').hide();
         
     }
-    
+    function BulkPickUp() {
+        if (arr.length == 0) {
+            alert('请选择公司');
+            return;
+        }
+        $.post('BulkPickUp', $.param({ crmid: arr }, true), function (result) {
+            if (result.companyRelationshipId != null) {
+                alert('批量领用成功');
+                crmid = result.companyRelationshipId;
+                var currentProjectId = $('#projectid').val();
+                RefreshCrmTree(currentProjectId, result.companyRelationshipId, result.processid, result.corelvlid);
+            }
+            else
+                alert(result);
+        });
+    }
+    var arr = [];
+    function treeView() {
+        return $('#publicCompanies').data('tTreeView');
+    }
+          
+    function onChecked(e) {
+        if (e.checked)
+            arr.push(treeView().getItemValue(e.item));
+        else
+            arr = jQuery.grep(arr, function (value) {
+                return value != treeView().getItemValue(e.item);
+            });
+    }
 </script>

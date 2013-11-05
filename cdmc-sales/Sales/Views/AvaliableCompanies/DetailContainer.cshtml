@@ -886,14 +886,40 @@
                     var currentProjectId = $('#projectid').val();
                     var corelvlid = result.corelvlid;
                     var processid = result.processid;
-                    $.post('_RefreshCrmTree', { projectid: currentProjectId }, function (result) {
+                    var f = GetFilters();
+                    $.post('_RefreshCrmTree', f, function (result) {
                         $('#mainnavigationcontainer').html(result);
                         if (crmid > 0) {
-                            if (clickpublic)
+                            if (clickpublic) {
                                 onPublicCompanyChanging(crmid, corelvlid);
-                            else
-                                onCompanyChanging(crmid, processid, corelvlid);
+                            }
+                            else {
+                                var treeview = $("#memberCompanies").data("tTreeView");
+                                var item1 = $("#memberCompanies").find(".t-input[name='itemValue'][value='" + corelvlid + "']").closest("li");
+                                treeview.expand(item1);
+                                var item2 = item1.find(".t-input[name='itemValue'][value='" + processid + "']").closest("li");
+                                treeview.expand(item2);
+                                $(".t-state-selected").removeClass('t-state-selected');
+                                // Get the node based upon what part of the breadcrumb was selected.
+                                var findString = ".t-input[name='itemValue'][value='" + crmid + "']";
+                                var item3 = item2.find(findString).closest("li");
+                                // Programmatically "click" the desired node.
+                                item3.find(".t-in:first").trigger("click");
+                                $(".t-state-selected").addClass('t-state-selected');
+
+                                if (corelvlid == 1)
+                                    corelvlid = 2;
+                                else
+                                    corelvlid = 1;
+                                item1 = $("#memberCompanies").find(".t-input[name='itemValue'][value='" + corelvlid + "']").closest("li");
+                                if (item1.parents(".t-item").length == 0)
+                                    treeview.expand(item1);
+                                item2 = item1.find(".t-input[name='itemValue'][value='" + processid + "']").closest("li");
+                                treeview.expand(item2);
+                            }
+
                         }
+
                     });
                 }
                 else

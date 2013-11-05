@@ -290,6 +290,31 @@ namespace Sales.Controllers
 
             return Content("");
         }
+        public ActionResult CheckCompanyNameCNExist(string name)
+        {
+            var exist = from c in CH.DB.CompanyRelationships select c;
+            var chcount = exist.Count(c => c.Company.Name_CH == name );
+            if (chcount > 0)
+            {
+                return Content("同名中文公司名字已存在！");
+            }
+
+            
+
+            return Content("");
+        }
+        public ActionResult CheckCompanyNameENExist(string name)
+        {
+            var exist = from c in CH.DB.CompanyRelationships select c;
+            
+            var encount = exist.Count(c => c.Company.Name_EN == name);
+            if (encount > 0)
+            {
+                return Content("同名英文公司名字已存在！");
+            }
+
+            return Content("");
+        }
         [ValidateInput(false)]
         public ActionResult CheckMemberShip(int? projectid)
         {
@@ -736,9 +761,9 @@ namespace Sales.Controllers
         [HttpPost]
         public ActionResult PickUp(int crmid)
         {
-            var p = CH.DB.CompanyRelationships.Where(c => c.ID == crmid).First().Project.CompanyRelationships.Count(w => w.Members.Where(m => m.Name == Employee.CurrentUserName).Any() == true);
-            if (p > 200)
-                return Content("从公海领用的，公司数超过200的不能领用！");
+            var p = CH.DB.CompanyRelationships.Where(c => c.ID == crmid).First().Project.CompanyRelationships.Count(w =>  w.Members.Where(m => m.Name == Employee.CurrentUserName).Any() == true);
+            if (p > 300)
+                return Content("从公海领用的，公司数超过300的不能领用！");
             CompanyRelationship companyRelationship = CH.GetDataById<CompanyRelationship>(crmid);
 
             Member member = CH.DB.Members.Where(m => m.Name == Employee.CurrentUserName).FirstOrDefault();
@@ -750,6 +775,35 @@ namespace Sales.Controllers
             return Json(new { companyRelationshipId = companyRelationship.ID, companyId = companyRelationship.CompanyID, projectId = companyRelationship.ProjectID, processid = companyRelationship.ProgressID, corelvlid = companyRelationship.CoreLVLID });
         }
 
+        [ValidateInput(false)]
+        [HttpPost]
+        public ActionResult BulkPickUp(List<int> crmid)
+        {
+            //List<int> crmid = ids.ToList();
+            int id = crmid[0];
+            var p = CH.DB.CompanyRelationships.Where(c => c.ID == id).First().Project.CompanyRelationships.Count(w => w.Members.Where(m => m.Name == Employee.CurrentUserName).Any() == true);
+            if (p + crmid.Count> 300)
+                return Content("从公海领用的，公司数超过300的不能领用！");
+            int companyRelationshipId=0;
+            int companyId = 0;
+            int projectId = 0;
+            int processid = 0;
+            int corelvlid = 0; 
+            for (int i = 0; i < crmid.Count; i++)
+            {
+                CompanyRelationship companyRelationship = CH.GetDataById<CompanyRelationship>(crmid[i]);
+                Member member = CH.DB.Members.Where(m => m.Name == Employee.CurrentUserName).FirstOrDefault();
+                companyRelationship.Members.Add(member);
+                CH.Edit(companyRelationship);
+                doCrmTrack(crmid[i], true);
+                companyRelationshipId =(int) companyRelationship.ID;
+                companyId = (int)companyRelationship.CompanyID;
+                projectId = (int)companyRelationship.ProjectID;
+                processid = (int)companyRelationship.ProgressID;
+                corelvlid = (int)companyRelationship.CoreLVLID;
+            }
+            return Json(new { companyRelationshipId = companyRelationshipId, companyId = companyId, projectId = projectId, processid = processid, corelvlid = corelvlid });
+        }
         [ValidateInput(false)]
         [HttpPost]
         public ActionResult UnPickUp(int crmid)
