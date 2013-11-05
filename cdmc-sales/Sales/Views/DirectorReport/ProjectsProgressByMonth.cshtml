@@ -9,6 +9,7 @@
 
    <fieldset>
    <legend>项目月进度表</legend>
+   日期 @Html.Telerik().DatePicker().Name("Month").ClientEvents(w => w.OnChange("OnMonthChange"))
    项目类型 @Html.DropDownList("ProjectType", SelectHelper.ProjectTypeSelectList(), "请选择", new { onchange = "onProjectTypeChange();" })
    板块负责人 @Html.DropDownList("Manager",CRM_Logical._Reports.GetProjectsManager(),"请选择", new { onchange = "onManagerChange();" })
 @(Html.Telerik().Grid<AjaxProjectProcessByMonth>().Name("AjaxProjectProcessByMonth")
@@ -136,7 +137,8 @@
         if (clicked) {
             var typeid = $('#ProjectType').val();
             var manager = $('#Manager').val();
-            e.data = $.extend(e.data, { typeid: typeid, manager: manager });
+            var month = $("#Month").val()
+            e.data = $.extend(e.data, {month:month, typeid: typeid, manager: manager });
         }
         
         
@@ -175,7 +177,9 @@
     function onManagerChange() {
         refreshGrid();
     }
-    
+    function OnMonthChange(e) {
+        refreshGrid();
+    }
     function onRowDataBound(e) {
         var row = e.row;
         var dataItem = e.dataItem;

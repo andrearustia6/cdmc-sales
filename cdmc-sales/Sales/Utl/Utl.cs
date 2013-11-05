@@ -747,6 +747,16 @@ namespace Utl
             }
             return (string)HttpContext.Current.Items["team2leader"];
         }
+        public static string GetTeam3Leader()
+        {
+            if (HttpContext.Current != null && HttpContext.Current.Items["team3leader"] == null)
+            {
+                var settings = ConfigurationManager.AppSettings.GetValues("team3leader");
+
+                HttpContext.Current.Items["team3leader"] = settings[0] as String;
+            }
+            return (string)HttpContext.Current.Items["team3leader"];
+        }
         public static string[] GetTeam1ReportManagers()
         {
             if (HttpContext.Current != null && HttpContext.Current.Items["team1Managers"] == null)
@@ -766,6 +776,16 @@ namespace Utl
                 HttpContext.Current.Items["team2Managers"] = settings[0] as String;
             }
             return HttpContext.Current.Items["team2Managers"].ToString().Split(',');
+        }
+        public static string[] GetTeam3ReportManagers()
+        {
+            if (HttpContext.Current != null && HttpContext.Current.Items["team3Managers"] == null)
+            {
+                var settings = ConfigurationManager.AppSettings.GetValues("team3Managers");
+
+                HttpContext.Current.Items["team3Managers"] = settings[0] as String;
+            }
+            return HttpContext.Current.Items["team3Managers"].ToString().Split(',');
         }
         public static decimal GetAverage(decimal? child, int father)
         {

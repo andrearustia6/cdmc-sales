@@ -914,6 +914,31 @@ namespace Model
         }
 
     }
+    /// <summary>
+    /// 销售人员月进度表
+    /// </summary>
+    public class AjaxSalesMonthTargetSummary
+    {
+        public string Member { get; set; }
+        public string ProjectUnitName { get; set; }
+        public string ProjectUnitCode { get; set; }
+        public DateTime? StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
+        public bool? IsConfirm { get; set; }
+        public string dispConfirm
+        {
+            get
+            {
+                if (IsConfirm == null)
+                    return "否";
+                else if(IsConfirm==false)
+                    return "否";
+                else if(IsConfirm==true)
+                    return "是";
+                return "否";
+            }
+        }
+    }
     public class AjaxCompanyDailyReceivedPayment
     {
         /// <summary>
