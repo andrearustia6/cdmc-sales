@@ -836,6 +836,7 @@ namespace BLL
             public static List<AjaxProjectsProgressByWeek> GetProjectsProgressByWeek(string month, int? typeid, string manager = null)
             {
                 var ps = CRM_Logical.GetUserInvolveProject();
+                ps = ps.Where(w => w.IsActived == true).ToList();
                 if (typeid != null)
                     ps = ps.Where(p => p.ProjectTypeID == typeid).ToList();
                 if (!string.IsNullOrEmpty(manager))
@@ -1013,6 +1014,7 @@ namespace BLL
             public static List<AjaxMemberProjectsProgressByWeek> GetMemberProjectsProgressByWeek(string month,int? projectid, int? typeid, string manager = null)
             {
                 var ps = CRM_Logical.GetUserInvolveProject();
+                ps = ps.Where(w => w.IsActived == true).ToList();
                 if (typeid != null)
                     ps = ps.Where(p => p.ProjectTypeID == typeid).ToList();
                 if (!string.IsNullOrEmpty(manager))
@@ -1035,7 +1037,8 @@ namespace BLL
                 //               }).ToList();
                 IEnumerable<int> idList = ps.Select(o => o.ID);
                 var deals = from d in CH.DB.Deals where idList.Contains((int)d.ProjectID) select d;
-                var members = CH.DB.Members.Where(w => w.IsActivated == true).Select(w => w.Name).Distinct();
+                //var members = CH.DB.Members.Where(w => w.IsActivated == true).Select(w => w.Name).Distinct();
+                var members = GetOwnSales();
                 deals = deals.Where(w => members.Contains(w.Sales));
                 var day = DateTime.Now;
                 if (!string.IsNullOrEmpty(month))
@@ -1327,6 +1330,7 @@ namespace BLL
                 var yeaerstart = new DateTime(DateTime.Now.Year, 1, 1);
 
                 var ps = CRM_Logical.GetUserInvolveProject();
+                ps = ps.Where(w => w.IsActived == true).ToList();
                 var pid = ps.Select(s => s.ID);
                 var targets = CH.DB.TargetOfMonthForMembers.Where(w => w.Project.IsActived == true);
                 var currentmonthstart = DateTime.Now.StartOfMonth();
@@ -1461,6 +1465,7 @@ namespace BLL
             public static IEnumerable<AjaxProjectProcess> GetProjectsProgress()
             {
                 var ps = CRM_Logical.GetUserInvolveProject();
+                ps = ps.Where(w => w.IsActived == true).ToList();
                 var targets = CH.DB.TargetOfMonths.Where(w => w.Project.IsActived == true);
                 var deals = CRM_Logical.GetDeals(true);
                 //var date = new DateTime(2013, 5, 1);
@@ -1508,6 +1513,7 @@ namespace BLL
             {
                
                 var ps = CRM_Logical.GetUserInvolveProject();
+                ps = ps.Where(w => w.IsActived == true).ToList();
                 if (typeid != null)
                     ps = ps.Where(p => p.ProjectTypeID == typeid).ToList();
                 if (!string.IsNullOrEmpty(manager))
@@ -1568,6 +1574,7 @@ namespace BLL
             public static IEnumerable<AjaxProjectsCheckInSummary> GetProjectsCheckInSummary(int?year,int? typeid, string manager = null)
             {
                 var ps = CRM_Logical.GetUserInvolveProject();
+                ps = ps.Where(w => w.IsActived == true).ToList();
                 if (typeid != null)
                     ps = ps.Where(p => p.ProjectTypeID == typeid).ToList();
                 if (!string.IsNullOrEmpty(manager))
@@ -1621,6 +1628,7 @@ namespace BLL
             public static IEnumerable<AjaxMemberProjectProcessByMonth> GetMemberProjectsProgressByMonth(string sales,string month,int? projectid,int? typeid, string manager = null)
             {
                 var ps = CRM_Logical.GetUserInvolveProject();
+                ps = ps.Where(w => w.IsActived == true).ToList();
                 if (typeid != null)
                     ps = ps.Where(p => p.ProjectTypeID == typeid).ToList();
                 if (!string.IsNullOrEmpty(manager))
@@ -1642,7 +1650,8 @@ namespace BLL
                 var currentmonthend = date.EndOfMonth();
                 IEnumerable<int> idList = ps.Select(o => o.ID);
                 var deals = from d in CH.DB.Deals where idList.Contains((int)d.ProjectID) select d;
-                var members = CH.DB.Members.Where(w => w.IsActivated == true).Select(w => w.Name).Distinct();
+                //var members = CH.DB.Members.Where(w => w.IsActivated == true).Select(w => w.Name).Distinct();
+                var members = GetOwnSales();
                 deals = deals.Where(w => members.Contains(w.Sales));
                 if (!string.IsNullOrEmpty(sales))
                     deals = deals.Where(w => w.Sales == sales);
@@ -1676,6 +1685,7 @@ namespace BLL
             public static IEnumerable<AjaxSalesMonthTargetSummary> GetSalesMonthTargetSummary(string sales, string month, int? projectid, int? typeid, string manager = null)
             {
                 var ps = CRM_Logical.GetUserInvolveProject();
+                ps = ps.Where(w => w.IsActived == true).ToList();
                 if (typeid != null)
                     ps = ps.Where(p => p.ProjectTypeID == typeid).ToList();
                 if (!string.IsNullOrEmpty(manager))
@@ -1697,10 +1707,12 @@ namespace BLL
                 var startofmonth = date.StartOfMonth();
                 targets = targets.Where(w => idList.Contains((int)w.ProjectID) && w.StartDate == startofmonth);
 
+                //if (!string.IsNullOrEmpty(sales))
+                //    targets = targets.Where(w => w.Member.Name == sales);
+                //var saleslist = CH.DB.Members.Where(w => idList.Contains((int)w.ProjectID)).OrderBy(w => w.Name).Select(w => w.Name).Distinct().ToList();
+                var saleslist = GetOwnSales();
                 if (!string.IsNullOrEmpty(sales))
-                    targets = targets.Where(w => w.Member.Name == sales);
-                var saleslist = CH.DB.Members.Where(w => idList.Contains((int)w.ProjectID)).OrderBy(w => w.Name).Select(w => w.Name).Distinct().ToList();
-
+                    saleslist = saleslist.Where(w => w == sales).ToList();
                 var list = from s in saleslist
                            join d in targets on s equals d.Member.Name into Joinedtargets
                            from aa in Joinedtargets.DefaultIfEmpty()
@@ -1723,6 +1735,7 @@ namespace BLL
             public static IEnumerable<AjaxSalesCheckInSummary> GetAjaxSalesCheckInSummary(int?year ,int? typeid, string manager = null)
             {
                 var ps = CRM_Logical.GetUserInvolveProject();
+                ps = ps.Where(w => w.IsActived == true).ToList();
                 if (typeid != null)
                     ps = ps.Where(p => p.ProjectTypeID == typeid).ToList();
                 if (!string.IsNullOrEmpty(manager))
@@ -1735,7 +1748,9 @@ namespace BLL
                     year = DateTime.Now.Year;
                 IEnumerable<int> idList = ps.Select(o => o.ID);
                 var deals = from d in CH.DB.Deals where idList.Contains((int)d.ProjectID) select d;
-                var members = CH.DB.Members.Where(w => w.IsActivated == true).Select(w => w.Name).Distinct();
+                //var members = CH.DB.Members.Where(w => w.IsActivated == true).Select(w => w.Name).Distinct();
+                var members = GetOwnSales();
+
                 deals = deals.Where(w => members.Contains(w.Sales));
                 var employroles = from e in CH.DB.EmployeeRoles select e;
                 var list = from d in deals
@@ -1771,6 +1786,7 @@ namespace BLL
             public static IEnumerable<AjaxCompanyDailyReceivedPayment> GetCompanyDailyReceivedPayment(int? year, int? month, int? day, int? abstractid, string sales, int? projectid, string companyname = null)
             {
                 var ps = CRM_Logical.GetUserInvolveProject();
+                ps = ps.Where(w => w.IsActived == true).ToList();
                 if (projectid != null)
                     ps = ps.Where(p => p.ID == projectid).ToList();
                 var deals = CRM_Logical.GetDeals(true);
@@ -1830,6 +1846,8 @@ namespace BLL
                     members = members.Where(m => m.Sales == sales);
                 }
                 IEnumerable<string> salesList = members.Select(o => o.Sales).Distinct();
+                var ownsales = GetOwnSales();
+                salesList = salesList.Where(s => ownsales.Contains(s)).ToList();
                 //var list = from p in idList
                 //           join d in deals on p equals d.ProjectID
                 //           join m in salesList on d.Sales equals m
@@ -1864,6 +1882,7 @@ namespace BLL
             public static IEnumerable<SelectListItem> GetProjectsManager()
             {
                 var ps = CRM_Logical.GetUserInvolveProject();
+                ps = ps.Where(w => w.IsActived == true).ToList();
                 var pros=ps.Where(p=>p.Manager!=null).Select(p => p.Manager).Distinct();
                 pros = pros.OrderBy(w => w);
                 string spSuperManager = Utl.Utl.GetSpecialSuperManager();
@@ -1883,6 +1902,10 @@ namespace BLL
             public static IEnumerable<SelectListItem> GetProjectsSales()
             {
                 var ps = CRM_Logical.GetUserInvolveProject();
+                ps = ps.Where(w => w.IsActived == true).ToList();
+                string[] managers = GetManagers();
+                if (managers != null)
+                    ps = ps.Where(w => managers.Contains(w.Manager)).ToList();
                 IEnumerable<int> idList = ps.Select(o => o.ID);
                 var members = (from p in idList
                                join m in CH.DB.Members.Where(w=>w.IsActivated==true && (w.SalesType.Name.Contains("销售专员") || w.SalesType.Name.Contains("销售经理"))) on p equals m.ProjectID
@@ -1919,6 +1942,25 @@ namespace BLL
                     managers = Utl.Utl.GetTeam3ReportManagers();
                 }
                 return managers;
+            }
+            private static List<string> GetOwnSales()
+            {
+                var ps = CRM_Logical.GetUserInvolveProject();
+                ps = ps.Where(w => w.IsActived == true).ToList();
+                string[] managers = GetManagers();
+                if (managers != null)
+                    ps = ps.Where(w => managers.Contains(w.Manager)).ToList();
+                IEnumerable<int> idList = ps.Select(o => o.ID);
+                var members = (from p in idList
+                               join m in CH.DB.Members.Where(w => w.IsActivated == true && (w.SalesType.Name.Contains("销售专员") || w.SalesType.Name.Contains("销售经理"))) on p equals m.ProjectID
+                               select new
+                               {
+                                   Sales = m.Name,
+                               }).OrderBy(p => p.Sales).ToList();
+                var pros = members.Select(p => p.Sales).Distinct();
+                pros = pros.OrderBy(w => w);
+
+                return pros.ToList();
             }
             
         }
