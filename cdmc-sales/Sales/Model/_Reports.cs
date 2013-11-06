@@ -938,6 +938,14 @@ namespace Model
                 return "否";
             }
         }
+        /// <summary>
+        /// 业绩目标
+        /// </summary>
+        public decimal DealTarget { get; set; }
+        /// <summary>
+        /// 入账目标
+        /// </summary>
+        public decimal CheckInTarget { get; set; }
     }
     public class AjaxCompanyDailyReceivedPayment
     {

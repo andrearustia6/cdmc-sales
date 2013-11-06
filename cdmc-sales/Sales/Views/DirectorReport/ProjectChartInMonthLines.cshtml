@@ -68,10 +68,11 @@
                 <legend>@p.ProjectName.ToString()</legend>
             @(Html.Telerik().Chart(p.ProjectLines.OrderBy(o => o.Month)).Name(p.ProjectCode).Series(series =>
         {
-            series.Line(s => s.CheckIn).Name("项目入账").Labels(l => l.Format("{0:c}").Visible(false));
             series.Line(s => s.CheckInTarget).Name("项目入账目标").Labels(l => l.Format("{0:c}").Visible(false));
-            series.Line(s => s.DealIn).Name("项目业绩").Labels(l => l.Format("{0:c}").Visible(false));
+            series.Line(s => s.CheckIn).Name("项目入账").Labels(l => l.Format("{0:c}").Visible(false));
             series.Line(s => s.DealInTarget).Name("项目业绩目标").Labels(l => l.Format("{0:c}").Visible(false));
+            series.Line(s => s.DealIn).Name("项目业绩").Labels(l => l.Format("{0:c}").Visible(false));
+            
         }
         ).CategoryAxis(axis => axis.Categories(s => s.MonthString))
                 .ValueAxis(axis => axis.Numeric().Labels(l => l.Format("{0:c}")).Labels(true))
