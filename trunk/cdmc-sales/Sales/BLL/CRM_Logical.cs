@@ -1699,17 +1699,21 @@ namespace BLL
 
                 if (!string.IsNullOrEmpty(sales))
                     targets = targets.Where(w => w.Member.Name == sales);
-                var list = from d in targets
+                var saleslist = CH.DB.Members.Where(w => idList.Contains((int)w.ProjectID)).OrderBy(w => w.Name).Select(w => w.Name).Distinct().ToList();
+
+                var list = from s in saleslist
+                           join d in targets on s equals d.Member.Name into Joinedtargets
+                           from aa in Joinedtargets.DefaultIfEmpty()
                            select new AjaxSalesMonthTargetSummary
                            {
-                               Member = d.Member.Name,
-                               ProjectUnitName = d.Project.ProjectUnitCode+"("+d.Project.ProjectUnitName+")",
-                               ProjectUnitCode = d.Project.ProjectUnitCode,
-                               StartDate = d.StartDate,
-                               EndDate=d.EndDate,
-                               IsConfirm=d.IsConfirm,
-                               DealTarget = d.Deal,
-                               CheckInTarget = d.CheckIn
+                               Member = aa==null? s :aa.Member.Name,
+                               ProjectUnitName = aa == null ? "" : aa.Project.ProjectUnitCode + "(" + aa.Project.ProjectUnitName + ")",
+                               ProjectUnitCode = aa == null ? "" : aa.Project.ProjectUnitCode,
+                               StartDate = aa == null ? currentmonthstart : aa.StartDate,
+                               EndDate = aa == null ? currentmonthend : aa.EndDate,
+                               IsConfirm = aa == null ? false : aa.IsConfirm,
+                               DealTarget = aa == null ? 0 : aa.Deal,
+                               CheckInTarget = aa == null ? 0 : aa.CheckIn
                            };
 
                 list = list.OrderBy(l => l.Member);
@@ -1881,7 +1885,7 @@ namespace BLL
                 var ps = CRM_Logical.GetUserInvolveProject();
                 IEnumerable<int> idList = ps.Select(o => o.ID);
                 var members = (from p in idList
-                               join m in CH.DB.Members on p equals m.ProjectID
+                               join m in CH.DB.Members.Where(w=>w.IsActivated==true && (w.SalesType.Name.Contains("销售专员") || w.SalesType.Name.Contains("销售经理"))) on p equals m.ProjectID
                                select new
                                {
                                    Sales = m.Name,
