@@ -197,6 +197,9 @@ namespace Sales.BLL
             // 不同时差数，是ｌｅａｄ所在ｌｅａｄｄｉｓｃｔｉｎｃｔｉｄ有几个不同
             //  个人类型数量是个ｌｉｓｔ
             // 各个ｃａｌｌｔｙｐｅ的数量
+            var leadids = data.Company.Leads.Select(s=>s.ID);
+            var hiscall = from c in CH.DB.LeadCalls where leadids.Any(a => a==c.LeadID) select c;
+
 
             var crm = new _CRM()
             {
@@ -286,9 +289,8 @@ namespace Sales.BLL
                                   LeadCallTypeID = leadcalls.LeadCallTypeID,
                                   MemberName = leadcalls.Member.Name
                               }),
-                _HistoryCalls = (from histcalls in data.LeadCalls.OrderByDescending(m => m.CallDate)
-                              //_HistoryCalls = (from histcalls in .GetAllData<LeadCall>().Where(c => c.ProjectID != data.ProjectID && data.Company.Leads.Any(l => l.ID == c.LeadID)).ToList().OrderByDescending(m => m.CallDate)
-                              select new _LeadCall()
+                              _HistoryCalls = (from histcalls in  hiscall
+                                select new _LeadCall()
                               {
                                   LeadID = histcalls.LeadID,
                                   LeadName = histcalls.Lead.Name_EN + " " + histcalls.Lead.Name_CH,
