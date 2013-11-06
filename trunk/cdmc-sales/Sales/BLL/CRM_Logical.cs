@@ -1707,7 +1707,9 @@ namespace BLL
                                ProjectUnitCode = d.Project.ProjectUnitCode,
                                StartDate = d.StartDate,
                                EndDate=d.EndDate,
-                               IsConfirm=d.IsConfirm
+                               IsConfirm=d.IsConfirm,
+                               DealTarget = d.Deal,
+                               CheckInTarget = d.CheckIn
                            };
 
                 list = list.OrderBy(l => l.Member);

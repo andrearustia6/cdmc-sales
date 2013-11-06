@@ -24,6 +24,12 @@
     {
         columns.Bound(p => p.Member).Width(80).Title("销售").HtmlAttributes(new { style = "text-align:left" });
         columns.Bound(p => p.ProjectUnitName).Width(150).Title("项目").HtmlAttributes(new { style = "text-align:left" });
+        columns.Bound(p => p.DealTarget).Width(100).Title("业绩目标").HtmlAttributes(new { style = "text-align:right" }).Format("{0:c0}").Aggregate(aggregates => aggregates.Sum())
+        .ClientFooterTemplate("<p><#= $.telerik.formatString('{0:c0}', Sum) #></p>")
+        .FooterHtmlAttributes(new { style = "text-align:right" });
+        columns.Bound(p => p.CheckInTarget).Width(100).Title("入账目标").HtmlAttributes(new { style = "text-align:right" }).Format("{0:c0}").Aggregate(aggregates => aggregates.Sum())
+        .ClientFooterTemplate("<p><#= $.telerik.formatString('{0:c0}', Sum) #></p>")
+        .FooterHtmlAttributes(new { style = "text-align:right" });
         columns.Bound(p => p.StartDate).Width(85).Title("开始日期").HtmlAttributes(new { style = "text-align:left" }).Format("{0:yyyy-MM-dd}");
         columns.Bound(p => p.EndDate).Width(85).Title("结束日期").HtmlAttributes(new { style = "text-align:left" }).Format("{0:yyyy-MM-dd}");
         columns.Bound(p => p.dispConfirm).Title("TL是否确认").Width(60).HtmlAttributes(new { style = "text-align:right" });
