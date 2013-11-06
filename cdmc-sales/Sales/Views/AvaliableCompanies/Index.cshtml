@@ -1059,7 +1059,8 @@
 
         var treeview = $("#memberCompanies").data("tTreeView");
         var item1 = $("#memberCompanies").find(".t-input[name='itemValue'][value='" + corelvlid + "']").closest("li");
-        treeview.expand(item1);
+        if (item1.parents(".t-item").length == 0) 
+            treeview.expand(item1);
         var item2 = item1.find(".t-input[name='itemValue'][value='" + processid + "']").closest("li");
         treeview.expand(item2);
         $(".t-state-selected").removeClass('t-state-selected');
