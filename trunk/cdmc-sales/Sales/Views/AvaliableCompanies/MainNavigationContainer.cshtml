@@ -97,6 +97,7 @@
         <span>公海公司<a class="BulkPickUp" href="#" onclick="BulkPickUp()">
                         批量领用</a></span>
         @(Html.Telerik().TreeView().Name("publicCompanies").HtmlAttributes(new { style = "" })
+        
                             .ClientEvents(e => e.OnSelect("onIndexSelectPublic").OnChecked("onChecked"))
                             .ShowCheckBox(true)
                 .BindTo(Model.PublicCompanies, mappings =>
@@ -118,7 +119,7 @@
                   .ItemDataBound((item, crm) =>
                   {
                       
-                      item.Text = crm.DisplayName;
+                      item.Text = crm.CompanyName;
                       item.Value = crm.ID.ToString();
                       
                   }));
