@@ -240,7 +240,7 @@
         $("#Name_CN").change(function () {
             if ($("#Name_CN").val() != '') {
                 $.post('CheckCompanyNameCNExist', { name: $("#Name_CN").val() }, function (result) {
-                    if (result != '')
+                    if (result.length > 0 )
                         alert(result);
                 });
             }
@@ -248,7 +248,7 @@
         $("#Name_EN").change(function () {
             if ($("#Name_EN").val() != '') {
                 $.post('CheckCompanyNameENExist', { name: $("#Name_EN").val() }, function (result) {
-                    if (result != '')
+                    if (result.length > 0 )
                         alert(result);
                 });
             }
