@@ -1077,6 +1077,7 @@ namespace BLL
                          group d by new { d.Sales,d.ProjectID,d.Project.ProjectUnitCode,d.Project.ProjectUnitName,d.Project.ConferenceStartDate } into grp
                          select new AjaxMemberProjectsProgressByWeek()
                          {
+                             ProjectID = grp.Key.ProjectID,
                              Member = grp.Key.Sales,
                              ProjectUnitName = grp.Key.ProjectUnitCode+"("+grp.Key.ProjectUnitName+")",
                              LastWeekRMBTotalDealIn = deals.Where(w => w.Project.ID == grp.Key.ProjectID && w.Sales == grp.Key.Sales && w.Currencytype.Name == "RMB" && w.SignDate >= lastweekstart && w.SignDate < lastweekend).Sum(s => (decimal?)s.Payment),
@@ -1952,7 +1953,8 @@ namespace BLL
                     ps = ps.Where(w => managers.Contains(w.Manager)).ToList();
                 IEnumerable<int> idList = ps.Select(o => o.ID);
                 var members = (from p in idList
-                               join m in CH.DB.Members.Where(w => w.IsActivated == true && (w.SalesType.Name.Contains("销售专员") || w.SalesType.Name.Contains("销售经理"))) on p equals m.ProjectID
+                               //join m in CH.DB.Members.Where(w => w.IsActivated == true && (w.SalesType.Name.Contains("销售专员") || w.SalesType.Name.Contains("销售经理"))) on p equals m.ProjectID
+                               join m in CH.DB.Members.Where(w => w.IsActivated == true ) on p equals m.ProjectID
                                select new
                                {
                                    Sales = m.Name,
