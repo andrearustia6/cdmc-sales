@@ -172,17 +172,18 @@ namespace Sales.BLL
                                         CoreCompany = c.CoreLVLName == "核心公司" ? true : false,
                                         ContectedLeadCount = crm.LeadCalls.GroupBy(call => call.LeadID).Count(),
                                         LeadCount = CH.DB.Leads.Where(l => l.CompanyID == crm.CompanyID).Count(),
-                                        CrmCommentStateID = crm.CrmCommentStateID,
-                                        CrmCommentStateIDOrder = (crm.CrmCommentStateID == 1 || crm.CrmCommentStateID == 2 || crm.CrmCommentStateID == 3) ? "a" : "b",
-                                        _Comments = (from co in crm.Comments.OrderByDescending(m => m.CommentDate)
-                                                     select new _Comment()
-                                                     {
-                                                         Submitter = co.Submitter,
-                                                         CommentDate = co.CommentDate,
-                                                         CRMID = co.CompanyRelationshipID,
-                                                         Contents = co.Contents
-                                                     })
-                                    }).OrderBy(cr => cr.CrmCommentStateIDOrder).ThenBy(cr => cr.CompanyNameEN).ThenBy(cr => cr.CompanyNameCH)
+                                        //CrmCommentStateID = crm.CrmCommentStateID,
+                                        //CrmCommentStateIDOrder = (crm.CrmCommentStateID == 1 || crm.CrmCommentStateID == 2 || crm.CrmCommentStateID == 3) ? "a" : "b",
+                                        //_Comments = (from co in crm.Comments.OrderByDescending(m => m.CommentDate)
+                                        //             select new _Comment()
+                                        //             {
+                                        //                 Submitter = co.Submitter,
+                                        //                 CommentDate = co.CommentDate,
+                                        //                 CRMID = co.CompanyRelationshipID,
+                                        //                 Contents = co.Contents
+                                        //             })
+                                    })
+                                    //.OrderBy(cr => cr.CrmCommentStateIDOrder).ThenBy(cr => cr.CompanyNameEN).ThenBy(cr => cr.CompanyNameCH)
                            //.OrderBy(cr => cr.CompanyNameCH).OrderBy(cr => cr.CompanyNameEN).OrderBy(cr => cr.CrmCommentStateIDOrder)
                        };
 
