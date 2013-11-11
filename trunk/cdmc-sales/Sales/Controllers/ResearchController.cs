@@ -83,7 +83,7 @@ namespace Sales.Controllers
         }
 
         [GridAction]
-        public ActionResult _UserResearchList(string name, string type, int? duration, string sale = "")
+        public ActionResult _UserResearchList(string name, string type, DateTime? starttime,DateTime? endtime, string sale = "")
         {
             IQueryable<_UserResearchDetail> details = null;
             if (type == "project")
@@ -142,14 +142,18 @@ namespace Sales.Controllers
             if (details != null)
             {
 
-                if (duration == null)
-                {
-                    duration = 1;
-                }
-                DateTime startdate = DateTime.Now;
-                startdate = startdate.AddDays(-duration.Value);
-                details = details.Where(d => d.CreateDate >= startdate && d.CreateDate <= DateTime.Now);
+                //if (duration == null)
+                //{
+                //    duration = 1;
+                //}
+                //DateTime startdate = DateTime.Now;
+                //startdate = startdate.AddDays(-duration.Value);
+                //details = details.Where(d => d.CreateDate >= startdate && d.CreateDate <= DateTime.Now);
 
+                if (starttime != null)
+                    details = details.Where(d => d.CreateDate >= starttime);
+                if (endtime != null)
+                    details = details.Where(d => d.CreateDate <= endtime);
                 //权限控制
                 Detailslist = details.OrderByDescending(o => o.CreateDate).ToList();
             }
