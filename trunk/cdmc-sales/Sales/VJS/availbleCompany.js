@@ -7,7 +7,7 @@ var currentCompanyNameEN = undefined;
 function onCompanyEdit(currentCompanyId) {
     currentCompanyNameCN = $('#currentCompanyNameCN').html().replace(/(^\s*)|(\s*$)/g, '');
     currentCompanyNameEN = $('#currentCompanyNameEN').html().replace(/(^\s*)|(\s*$)/g, '');
-    $.post('GetEditCompany', { companyId: currentCompanyId }, function (result) {
+    $.post('GetEditCompany', { crmid: currentCompanyId }, function (result) {
         $('.companyEdit-wrapper').html(result);
         var window = $('#EditCompany').data('tWindow');
         window.center().open();
