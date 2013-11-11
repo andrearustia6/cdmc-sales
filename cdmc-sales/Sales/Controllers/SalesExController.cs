@@ -722,9 +722,9 @@ namespace Sales.Controllers
             return Json(new { companyRelationshipId = companyRelationship.ID, companyId = companyRelationship.CompanyID, projectId = companyRelationship.ProjectID });
         }
 
-        public ActionResult GetEditCompany(int companyId)
+        public ActionResult GetEditCompany(int crmid)
         {
-            var companyRelationship = CH.DB.CompanyRelationships.FirstOrDefault(c => c.CompanyID == companyId);
+            var companyRelationship = CH.GetDataById<CompanyRelationship>(crmid);
             AjaxViewSaleCompany ajaxViewSaleCompany = new AjaxViewSaleCompany()
             {
                 CompanRelationshipId = companyRelationship.ID,
