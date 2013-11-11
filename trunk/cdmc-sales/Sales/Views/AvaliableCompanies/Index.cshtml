@@ -1091,8 +1091,8 @@
 
     }
 
-    function onCompanyEdit(currentCompanyId) {
-        $.post('GetEditCompany', { companyId: currentCompanyId }, function (result) {
+    function onCompanyEdit(_crmid) {
+        $.post('GetEditCompany', { crmid: _crmid }, function (result) {
             $('.companyEdit-wrapper').html(result);
             var window = $('#EditCompany').data('tWindow');
             window.center().open();

@@ -1,0 +1,189 @@
+﻿@using Entity
+@model List<Company>
+<style>
+    table
+    {
+        border:none;
+     }
+    table tr td
+    {
+        width: 240px;
+        border:none;
+    }
+    table tr td label
+    {
+        display: inline-block;
+        width: 55px;
+        padding-right: 5px;
+    }
+    table tr td input[type=text], table tr td select
+    {
+        width: 140px;
+    }
+    table tr td textarea
+    {
+        height: 100px;
+    }
+    #categoriesError
+    {
+        display: none;
+    }
+    fieldset.fieldError span
+    {
+        display: inline-block !important;
+        color: Red;
+    }
+</style>
+@for (int i = 0; i < Model.Count; i++)
+{
+    using (Html.BeginForm(null, null, FormMethod.Post, new { id = Model[i].ID }))
+    {
+        var scale = Model[i].Scale;
+        var areaid = Model[i].AreaID;
+        var DistrictNumberID = Model[i].DistrictNumberID;
+        var AnnualSales = Model[i].AnnualSales;
+    <fieldset>
+        <legend>公司信息 <input type='checkbox' name='checkedCompay' value='@Model[i].ID' onclick='setmainid(@Model[i].ID)'/>
+        </legend>
+        @Html.Hidden("ID", Model[i].ID)
+       
+        <table>
+            <tr>
+                <td colspan="2">
+                    @Html.LabelFor(model => model[i].Name_CH)
+                   @Html.TextBoxFor(model => model[i].Name_CH, new { @style = "width:300px" })
+                                
+                    
+                </td>
+                <td >
+                    @Html.LabelFor(model => model[i].Name_EN)
+                    @Html.TextBoxFor(model => model[i].Name_EN)
+                </td>
+                 <td>
+                    
+                </td>
+            </tr>
+
+                <tr>
+                <td>
+                    @Html.LabelFor(model => model[i].Contact)
+                    @Html.TextBoxFor(model => model[i].Contact)
+                </td>
+                <td>
+                    @Html.LabelFor(model => model[i].Fax)
+                    @Html.TextBoxFor(model => model[i].Fax)
+                </td>
+                <td colspan="2">
+                    @Html.LabelFor(model => model[i].WebSite)
+                    @Html.TextBoxFor(model => model[i].WebSite, new { @style = "width:370px" })
+                </td>
+            </tr>
+               <tr>
+                <td colspan="2">
+                @Html.LabelFor(model => model[i].AreaID)
+                    @Html.DropDownListFor(model => model[i].AreaID, Utl.SelectHelper.CompanyIndustrySelectList(areaid), "请选择", new { @style = "width:370px" })
+                </td>
+                <td>
+                </td>
+                <td>
+                </td>
+            </tr>
+         
+              
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model[i].DistrictNumberID)
+                    @Html.DropDownListFor(model => model[i].DistrictNumberID, Utl.SelectHelper.DistinctNumberSelectList(DistrictNumberID), "中国(默认)", new { })
+                </td>
+                <td>
+                    @Html.LabelFor(model => model[i].Province)
+                    @Html.TextBoxFor(model => model[i].Province)
+                </td>
+                <td>
+                    @Html.LabelFor(model => model[i].City)
+                    @Html.TextBoxFor(model => model[i].City)
+                </td>
+                <td>
+                    @Html.LabelFor(model => model[i].ZIP)
+                    @Html.TextBoxFor(model => model[i].ZIP)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model[i].Scale)
+                    @Html.DropDownListFor(model => model[i].Scale, Utl.SelectHelper.CompanyScaleSelectList(scale), "请选择")
+                </td>
+                <td>
+                    @Html.LabelFor(model => model[i].AnnualSales)
+                    @Html.DropDownListFor(model => model[i].AnnualSales, Utl.SelectHelper.AnnualSaleSelectList(AnnualSales), "请选择")
+                </td>
+                <td>
+                    @Html.LabelFor(model => model[i].MainProduct)
+                    @Html.TextBoxFor(model => model[i].MainProduct)
+                </td>
+                <td>
+                    @Html.LabelFor(model => model[i].MainClient)
+                    @Html.TextBoxFor(model => model[i].MainClient)
+                </td>
+            </tr>
+              <tr>
+                <td colspan="2">
+                    @Html.LabelFor(model => model[i].Address)
+                    @Html.TextBoxFor(model => model[i].Address, new { @style = "width:370px" })
+                </td>
+                <td colspan="2">
+                    @Html.LabelFor(model => model[i].Address_EN)
+                    @Html.TextBoxFor(model => model[i].Address_EN, new { @style = "width:370px" })
+                </td>
+            </tr>      
+          
+            <tr>
+                <td colspan="4">
+                   @{Html.Telerik().PanelBar()
+            .Name("PanelBarEdit" + @Model[i].ID)
+            .HtmlAttributes(new { style = "width: 100%" })
+            .Items(parent =>
+            {
+                parent.Add()
+                    .Text("更多...")
+                    .Content(@<text>
+                        @Html.LabelFor(model => model[i].Description)
+                        @Html.TextAreaFor(model => model[i].Description)
+                     
+                        主要竞争对手
+                        @Html.TextAreaFor(model => model[i].Competitor)
+                    </text>)
+                    .Expanded(false);
+            })
+            .Render();
+            }
+                </td>
+            </tr>  
+             
+        </table>
+        
+    </fieldset>
+    }
+
+}
+
+<script>
+    $(function () {
+        $("#Name_CN").change(function () {
+            if ($("#Name_CN").val() != '') {
+                $.post('CheckCompanyNameCNExist', { name: $("#Name_CN").val() }, function (result) {
+                    if (result.length > 0 )
+                        alert(result);
+                });
+            }
+        })
+        $("#Name_EN").change(function () {
+            if ($("#Name_EN").val() != '') {
+                $.post('CheckCompanyNameENExist', { name: $("#Name_EN").val() }, function (result) {
+                    if (result.length > 0 )
+                        alert(result);
+                });
+            }
+        })
+    })
+</script>

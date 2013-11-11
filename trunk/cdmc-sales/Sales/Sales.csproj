@@ -293,6 +293,7 @@
     <Compile Include="Controllers\Type\TemplateTypeController.cs" />
     <Compile Include="Controllers\UserFavorsCrmGroupController.cs" />
     <Compile Include="Controllers\ProjectTypeController.cs" />
+    <Compile Include="Controllers\CompanyMergeController.cs" />
     <Compile Include="DB.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -303,6 +304,7 @@
     <Compile Include="Model\AjaxPerformance.cs" />
     <Compile Include="Model\AjaxProgress.cs" />
     <Compile Include="Model\AjaxViewModel.cs" />
+    <Compile Include="Model\CompanyMerge.cs" />
     <Compile Include="Model\Extensions.cs" />
     <Compile Include="Model\Validations.cs" />
     <Compile Include="Model\ViewModels.cs" />
@@ -1851,6 +1853,8 @@
     <Content Include="web.Release.config">
       <DependentUpon>web.config</DependentUpon>
     </Content>
+    <Content Include="Views\CompanyMerge\MergeCompany.cshtml" />
+    <Content Include="Views\CompanyMerge\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\TargetOfMonthForMember\Confirm.cshtml" />

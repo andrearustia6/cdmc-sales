@@ -16,21 +16,99 @@ using Telerik.Web.Mvc;
 using BLL;
 namespace Sales.Controllers
 {
-    public class AvaliableCompaniesController : Controller
+    public class CompanyMergeController : Controller
     {
-        public ActionResult Index(int? projectid)
+        public ActionResult Index()
         {
-            CRMFilters filters = new CRMFilters();
-            if (projectid == null)
-            {
-                filters.ProjectId = CRM_Logical.GetUserInvolveProject().First().ID;
-            }
-            var data = AvaliableCRM.GetAvaliableCompanies(filters);
-            if (projectid == null)
-                ViewBag.projectid = CRM_Logical.GetUserInvolveProject().First().ID;
-            else
-                ViewBag.projectid = projectid;
-            return View(data);
+            return View();
+        }
+
+        [GridAction]
+        public ActionResult _index(int? projectid,string companyname)
+        {
+            var ps = CRM_Logical.GetUserInvolveProject();
+            ps = ps.Where(w => w.IsActived == true).ToList();
+            IEnumerable<int> idList = ps.Select(o => o.ID);
+            var crms =from c in CH.DB.CompanyRelationships.Where(w=>idList.Contains((int)w.ProjectID)) select c;
+            if (projectid != null)
+                crms = crms.Where(w => w.ProjectID == projectid);
+            if(companyname!=null)
+                crms = crms.Where(q => q.Company.Name_CH.Contains(companyname) || q.Company.Name_EN.Contains(companyname));
+            var list = from crm in crms
+                       select new CompanyInfo
+                       {
+                           CRMID = crm.ID,
+                           CompanyID = crm.CompanyID,
+                           CompanyNameCH=crm.Company.Name_CH,
+                           CompanyNameEN=crm.Company.Name_EN,
+                           
+                       };
+            list = list.OrderBy(w => w.CompanyNameEN);
+            return View(new GridModel(list.ToList()));
+        }
+        [HttpPost]
+        public ActionResult GetCompanies(List<int> checkedRecords)
+        {
+            var crms = from c in CH.DB.CompanyRelationships.Where(w => checkedRecords.Contains(w.ID)) select c;
+            var companies = from c in crms
+                            select new _Company
+                            {
+                                CRMID = c.ID,
+                                Address = c.Company.Address,
+                                AreaID = c.Company.AreaID,
+                                Business = c.Company.Business,
+                                CompanyTypeID = c.Company.CompanyTypeID,
+                                Contact = c.Company.Contact,
+                                Address_EN = c.Company.Address_EN,
+                                Province = c.Company.Province,
+                                City = c.Company.City,
+                                Scale = c.Company.Scale,
+                                AnnualSales = c.Company.AnnualSales,
+                                MainProduct = c.Company.MainProduct,
+                                MainClient = c.Company.MainClient,
+                                Description = c.Company.Description,
+                                DistrictNumberID = c.Company.DistrictNumberID,
+                                Fax = c.Company.Fax,
+                                Name_CH = c.Company.Name_CH,
+                                Name_EN = c.Company.Name_EN,
+                                WebSite = c.Company.WebSite,
+                                ZIP = c.Company.ZIP,
+                                Customers = c.Company.Customers,
+                                Competitor = c.Company.Competitor,
+                            };
+
+            return PartialView("MergeCompany", companies.ToList());
+        }
+        [HttpPost]
+        [ValidateInput(false)]
+        public ActionResult MergeCompay(AjaxMergeCompany mergecompany)
+        {
+            Company com = CH.GetDataById<Company>(mergecompany.company.ID);
+            com.Address = mergecompany.company.Address;
+            com.AreaID = mergecompany.company.AreaID;
+            com.Business = mergecompany.company.Business;
+            com.CompanyTypeID = mergecompany.company.CompanyTypeID;
+            com.Contact = mergecompany.company.Contact;
+            com.ModifiedDate = DateTime.Now;
+            com.ModifiedUser = Employee.CurrentUserName;
+            com.Address_EN = mergecompany.company.Address_EN;
+            com.Province = mergecompany.company.Province;
+            com.City = mergecompany.company.City;
+            com.Scale = mergecompany.company.Scale;
+            com.AnnualSales = mergecompany.company.AnnualSales;
+            com.MainProduct = mergecompany.company.MainProduct;
+            com.MainClient = mergecompany.company.MainClient;
+            com.Description = mergecompany.company.Description;
+            com.DistrictNumberID = mergecompany.company.DistrictNumberID;
+            com.Fax = mergecompany.company.Fax;
+            com.Name_CH = mergecompany.company.Name_CH;
+            com.Name_EN = mergecompany.company.Name_EN;
+            com.WebSite = mergecompany.company.WebSite;
+            com.ZIP = mergecompany.company.ZIP;
+            com.Customers = mergecompany.company.Customers;
+            com.Competitor = mergecompany.company.Competitor;
+            CH.Edit<Company>(com);
+            return Json(new { companyid = com.ID});
         }
         /// <summary>
         /// 导航选中的公司或者lead
@@ -214,10 +292,9 @@ namespace Sales.Controllers
             return null;
         }
 
-        public ActionResult GetEditCompany(int crmid)
+        public ActionResult GetEditCompany(int companyId)
         {
-            var companyRelationship = CH.GetDataById<CompanyRelationship>(crmid);
-
+            var companyRelationship = CH.DB.CompanyRelationships.FirstOrDefault(c => c.CompanyID == companyId);
             AjaxViewSaleCompany ajaxViewSaleCompany = new AjaxViewSaleCompany()
             {
                 CompanRelationshipId = companyRelationship.ID,

@@ -136,7 +136,7 @@
                     if (@Model._members.Where(m => m.Name == Utl.Employee.CurrentUserName).Count() > 0)
                     {
                         <a class="hide" href="#">
-                            <img src="../images/pen1919.png" alt="bianji" onclick="onCompanyEdit(@(Model.CompanyID))"/></a>
+                            <img src="../images/pen1919.png" alt="bianji" onclick="onCompanyEdit(@(Model.ID))"/></a>
                         <a Class="hide" href="#"  onclick="onLeadAdd(@(Model.CompanyID))">
                             <img src="../images/user.png" alt="新增Leader" width="19" height="19" /></a>
                     }
