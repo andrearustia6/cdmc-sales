@@ -179,10 +179,17 @@
             dataBinding.Ajax().Select("_UserResearchList", "Research", new { name = "", type = "" });
         })
         .ToolBar(toolBar => toolBar.Template(
-                @<text><label>
-                    时间筛选:
-                </label>
-    @Html.DropDownList("durationselect", Utl.SelectHelper.DurationSelectList())
+                @<text> <span>
+                <label>
+                        开始时间:
+                    </label>
+                    @Html.Telerik().DatePicker().Name("startT").ClientEvents(c => c.OnChange("onTimeChange")).HtmlAttributes(new { style = "width:150px" })
+                </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>
+                    <label>
+                        结束时间:
+                    </label>
+                    @Html.Telerik().DatePicker().Name("endT").ClientEvents(c => c.OnChange("onTimeChange")).HtmlAttributes(new { style = "width:150px" })
+                </span>
     <span id="salecontainer"></span>
     <label>
         销售筛选:
@@ -287,12 +294,25 @@
 
     function sdlOnChange() {
         var saleVal = sdl().val();
-        var duration = ddl().val();
+        //var duration = ddl().val();
+        var starttime = $("#startT").val();
+        var endtime = $("#endT").val();
         var d = dg();
 
         var type = $("#detailtype").val();
         var name = $("#detailname").val();
-        dg().ajaxRequest({ name: name, type: type, duration: duration, sale: saleVal });
+        dg().ajaxRequest({ name: name, type: type, starttime: starttime,endtime:endtime, sale: saleVal });
+    }
+    function onTimeChange() {
+        var saleVal = sdl().val();
+        //var duration = ddl().val();
+        var starttime = $("#startT").val();
+        var endtime = $("#endT").val();
+        var d = dg();
+
+        var type = $("#detailtype").val();
+        var name = $("#detailname").val();
+        dg().ajaxRequest({ name: name, type: type, starttime: starttime, endtime: endtime, sale: saleVal });
     }
 
     function onUserDetails(e) {
