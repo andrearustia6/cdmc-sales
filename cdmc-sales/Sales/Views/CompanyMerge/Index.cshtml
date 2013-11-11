@@ -1,0 +1,188 @@
+﻿
+@using Sales.Model
+@using Utl;
+@using BLL;
+@using Entity;
+@{
+
+   <fieldset>
+   <legend>项目月进度表</legend>
+   项目 @Html.DropDownList("ProjectID", SelectHelper.ProjectSelectList(Employee.CurrentUserName), "请选择", new { onchange = "onProjectChange();" })
+   公司名称 @Html.TextBox("CompanyName")
+   <input type="button" title="查找" name="查找" value="查找" style=" width: 67px; height: 21px;" onclick="refreshGrid()" />
+   <input type="button" title="合并" name="合并" value="合并" style=" width: 67px; height: 21px;" onclick="getcompanies()" />
+@(Html.Telerik().Grid<CompanyInfo>().Name("Company")
+     .DataBinding(dataBinding =>
+     {
+         dataBinding.Ajax().Select("_index", "CompanyMerge");
+     })
+        .ClientEvents(events => events.OnDataBinding("dataBinding").OnDataBound("OnDataBound").OnRowDataBound("onRowDataBound"))
+    .Columns(columns =>
+    {
+        columns.Bound(p => p.CRMID)
+                   .ClientTemplate("<input type='checkbox' name='checkedRecords' value='<#= CRMID #>' />")
+                   .Title("")
+                   .Width(50)
+                   .HtmlAttributes(new { style = "text-align:center" });
+        columns.Bound(p => p.CompanyName).Width(150).Title("公司名称").HtmlAttributes(new { style = "text-align:left" });
+    })
+    .Pageable(p => p.Style(GridPagerStyles.Status)
+                .PageOnScroll(true).PageSize(25)).Scrollable(scrolling => scrolling.Height(480)).Resizable(r => r.Columns(true))
+                )
+</fieldset>    
+  
+}
+@(Html.Telerik().Window().Title("合并公司")
+    .Name("MergeCompany")
+    .Content(@<text><div class="dialogue-MergeCompany">
+        <div class="MergeCompany-wrapper">
+        </div>
+        <div class="dialogue-buttons" style="float: right;">
+            <input type="button" class="btn-queding" onclick="mergecompany()" />
+            <input type="button" class="btn-quxiao" onclick="CancelMergeCompany()" />
+        </div>
+    </div></text>)
+        .Width(1000)
+        .Height(520)
+                .Modal(true).Visible(false).Draggable(true)
+    )
+<script>
+    var clicked = false;
+    var maincompanyid;
+    var companyids = [];
+    function converttojson(form) {
+        var o = {};
+        var a = form.serializeArray();
+        $.each(a, function () {
+            var index = this.name.indexOf('.');
+            var name = this.name;
+            if (index > 0)
+                name = name.substr(index+1);
+            if (o[name] !== undefined) {
+                if (!o[name].push) {
+                    o[name] = [o[name]];
+                }
+                o[name].push(this.value || '');
+            } else {
+                o[name] = this.value || '';
+            }
+        });
+        return o;
+    }
+    function dataBinding(e) {
+        if (clicked) {
+            var projectid = $('#ProjectID').val();
+            var companyname = $('#CompanyName').val();
+            e.data = $.extend(e.data, { projectid: projectid, companyname: companyname });
+        }
+        else
+            e.preventDefault();
+        
+    }
+    function OnDataBound(e) {
+        
+    }
+    function refreshGrid() {
+        clicked = true;
+        $("#Company").data("tGrid").rebind();
+
+    }
+    function onProjectChange() {
+        refreshGrid();
+    }
+    
+    function onRowDataBound(e) {
+    }
+
+    function getcompanies() {
+        companyids = [];
+        var $checkedRecords = $('input[name=checkedRecords]:checked');
+        if ($checkedRecords.length < 2) {
+            alert('请选择公司.');
+            return;
+        }
+        
+        for (var i = 0; i < $checkedRecords.length; i++) {
+            companyids.push($checkedRecords[i].value);
+        }
+
+        $.post('GetCompanies', $.param({ checkedRecords: companyids }, true), function (result) {
+            $('.MergeCompany-wrapper').html(result);
+            var window = $('#MergeCompany').data('tWindow');
+            window.center().open();
+        });
+    }
+    function mergecompany() {
+        if (maincompanyid == '' || maincompanyid==undefined) {
+            alert('请选择基准公司');
+            return;
+        }
+        var mainform =$('#' + maincompanyid);
+        $('.dialogue-editcompany form input').removeClass('fieldError');
+        $('.dialogue-editcompany form select').removeClass('fieldError');
+
+        String.prototype.isEmpty = function () { return /^\s*$/.test(this); }
+        var index = 0;
+        for(var i=0;i<companyids.length;i++)
+        {
+            if(companyids[i]==maincompanyid)
+            {
+            index=i;
+            break;
+            }
+        }
+
+
+        if (mainform.find(":input[name='[" + index + "].DistrictNumberID']").val().isEmpty()) {
+            if (mainform.find(":input[name='[" + index + "].Name_CH']").val().isEmpty()) {
+                alert('请输入中文名称');
+                return;
+            }
+        }
+        else {
+            if (mainform.find(":input[name='[" + index + "].Name_EN']").val().isEmpty()) {
+                alert('请输入英文名称');
+                return;
+            }
+        }
+        var telephone = mainform.find(":input[name='[" + index + "].Contact']");
+        if (telephone.val().isEmpty()) {
+            alert('请输入公司总机');
+            return;
+        }
+        if (!IsTelephone(telephone.val())) {
+            return;
+        }
+
+        var query = converttojson($('#' + maincompanyid));
+        //query = query.replace(/[index]/g, '');
+        $.ajax({
+            url: 'MergeCompay',
+            type: 'POST',
+            dataType: 'json',
+            data: JSON.stringify({ ids: companyids, company: query }),
+            contentType: 'application/json;',
+            success: function (data) {
+                if (data.companyid != null) {
+                    alert('公司合并成功');
+                    $('#MergeCompany').data('tWindow').close();
+                    refreshGrid();
+                }
+                else {
+                    alert('公司合并失败');
+                }
+            }
+        });
+//        $.post('MergeCompay', query, function (result) {
+//        });
+    }
+    function CancelMergeCompany() {
+        var window = $('#MergeCompany').data('tWindow');
+        window.close();
+    }
+    function setmainid(id) {
+        $("input[name='checkedCompay']").attr("checked", false);
+        maincompanyid = id;
+        $("input[value='"+id+"']").attr("checked", true);
+    }
+</script>
