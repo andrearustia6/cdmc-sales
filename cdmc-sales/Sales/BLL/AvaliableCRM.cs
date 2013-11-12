@@ -171,7 +171,7 @@ namespace Sales.BLL
                                         CompanyNameEN = crm.Company.Name_EN,
                                         CoreCompany = c.CoreLVLName == "核心公司" ? true : false,
                                         //ContectedLeadCount = crm.LeadCalls.GroupBy(call => call.LeadID).Count(),
-                                        ContectedLeadCount = CH.DB.Leads.Where(l => l.CompanyID == crm.CompanyID && crm.LeadCalls.Any(w=>w.LeadID==l.ID)).Count(),
+                                       // ContectedLeadCount = CH.DB.Leads.Where(l => l.CompanyID == crm.CompanyID && crm.LeadCalls.Any(w=>w.LeadID==l.ID)).Count(),
                                         LeadCount = CH.DB.Leads.Where(l => l.CompanyID == crm.CompanyID).Count(),
                                         //CrmCommentStateID = crm.CrmCommentStateID,
                                         //CrmCommentStateIDOrder = (crm.CrmCommentStateID == 1 || crm.CrmCommentStateID == 2 || crm.CrmCommentStateID == 3) ? "a" : "b",
