@@ -163,7 +163,7 @@
             data: JSON.stringify({ ids: companyids, company: query }),
             contentType: 'application/json;',
             success: function (data) {
-                if (data.companyid != null) {
+                if (data.crmid != null) {
                     alert('公司合并成功');
                     $('#MergeCompany').data('tWindow').close();
                     refreshGrid();

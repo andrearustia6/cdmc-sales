@@ -22,7 +22,7 @@ namespace Sales.BLL
             if (filters.ProjectId > 0)
             {
                 data.MemberCompanies = GetGroupedCRM(true, filters);
-                data.PublicCompanies = GetPublicCRM(false, filters);
+                //data.PublicCompanies = GetPublicCRM(false, filters);
             }
 
 
@@ -163,27 +163,27 @@ namespace Sales.BLL
                            CoreName = c.CoreLVLName,
                            ID = c.ID,
                            CrmCount = crms.Where(cr => cr.CoreLVLID == c.CoreLVLCode).Count(),
-                           _CRMs = (from crm in crms.Where(cr => cr.CoreLVLID == c.CoreLVLCode)
-                                    select new _CRM
-                                    {
-                                        ID = crm.ID,
-                                        CompanyNameCH = crm.Company.Name_CH,
-                                        CompanyNameEN = crm.Company.Name_EN,
-                                        CoreCompany = c.CoreLVLName == "核心公司" ? true : false,
-                                        //ContectedLeadCount = crm.LeadCalls.GroupBy(call => call.LeadID).Count(),
-                                       // ContectedLeadCount = CH.DB.Leads.Where(l => l.CompanyID == crm.CompanyID && crm.LeadCalls.Any(w=>w.LeadID==l.ID)).Count(),
-                                        LeadCount = CH.DB.Leads.Where(l => l.CompanyID == crm.CompanyID).Count(),
-                                        //CrmCommentStateID = crm.CrmCommentStateID,
-                                        //CrmCommentStateIDOrder = (crm.CrmCommentStateID == 1 || crm.CrmCommentStateID == 2 || crm.CrmCommentStateID == 3) ? "a" : "b",
-                                        //_Comments = (from co in crm.Comments.OrderByDescending(m => m.CommentDate)
-                                        //             select new _Comment()
-                                        //             {
-                                        //                 Submitter = co.Submitter,
-                                        //                 CommentDate = co.CommentDate,
-                                        //                 CRMID = co.CompanyRelationshipID,
-                                        //                 Contents = co.Contents
-                                        //             })
-                                    })
+                           //_CRMs = (from crm in crms.Where(cr => cr.CoreLVLID == c.CoreLVLCode)
+                           //         select new _CRM
+                           //         {
+                           //             ID = crm.ID,
+                           //             CompanyNameCH = crm.Company.Name_CH,
+                           //             CompanyNameEN = crm.Company.Name_EN,
+                           //             CoreCompany = c.CoreLVLName == "核心公司" ? true : false,
+                           //             //ContectedLeadCount = crm.LeadCalls.GroupBy(call => call.LeadID).Count(),
+                           //            // ContectedLeadCount = CH.DB.Leads.Where(l => l.CompanyID == crm.CompanyID && crm.LeadCalls.Any(w=>w.LeadID==l.ID)).Count(),
+                           //             LeadCount = CH.DB.Leads.Where(l => l.CompanyID == crm.CompanyID).Count(),
+                           //             //CrmCommentStateID = crm.CrmCommentStateID,
+                           //             //CrmCommentStateIDOrder = (crm.CrmCommentStateID == 1 || crm.CrmCommentStateID == 2 || crm.CrmCommentStateID == 3) ? "a" : "b",
+                           //             //_Comments = (from co in crm.Comments.OrderByDescending(m => m.CommentDate)
+                           //             //             select new _Comment()
+                           //             //             {
+                           //             //                 Submitter = co.Submitter,
+                           //             //                 CommentDate = co.CommentDate,
+                           //             //                 CRMID = co.CompanyRelationshipID,
+                           //             //                 Contents = co.Contents
+                           //             //             })
+                           //         })
                                     //.OrderBy(cr => cr.CrmCommentStateIDOrder).ThenBy(cr => cr.CompanyNameEN).ThenBy(cr => cr.CompanyNameCH)
                            //.OrderBy(cr => cr.CompanyNameCH).OrderBy(cr => cr.CompanyNameEN).OrderBy(cr => cr.CrmCommentStateIDOrder)
                        };

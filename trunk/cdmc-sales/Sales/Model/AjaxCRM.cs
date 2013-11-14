@@ -32,6 +32,7 @@ namespace Sales.Model
 
         public string selectedVal { get; set; }
         public string selSales { get; set; }
+        public int? CoreId { get; set; }
     }
     public class AjaxCrmTypedList
     {

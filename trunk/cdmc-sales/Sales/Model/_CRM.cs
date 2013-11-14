@@ -157,7 +157,15 @@ namespace Sales.Model
          public string CompanyNameEN { get; set; }
          public int LeadCount {get;set;}
          public int ContectedLeadCount{get;set;}
-         public string DisplayName {get{return CompanyName + "("+ContectedLeadCount+"/"+LeadCount+")";}}
+         public string DisplayName {
+             get
+             {
+                 if (LeadCount == -1)
+                     return CompanyName;
+                 else
+                     return CompanyName + "("+ContectedLeadCount+"/"+LeadCount+")";
+             }
+         }
          public string Contacts { get; set; }
          public string Email { get; set; }
          public int? CrmCommentStateID { get; set; }
@@ -245,6 +253,8 @@ namespace Sales.Model
          {
              get
              {
+                 if(_Categorys==null)
+                     return "";
                  if (_Categorys.Count() > 0)
                      return string.Join(",", _Categorys.Select(c => c.Name).ToArray());
                  else
@@ -295,6 +305,8 @@ namespace Sales.Model
          {
              get
              {
+                 if (_Maturitys == null)
+                     return null;
                  return _Maturitys.OrderBy(mm => mm.ID);
              }
          }
@@ -305,7 +317,8 @@ namespace Sales.Model
              get
              {
                  if (_NoContactCount == null)
-                 { 
+                 {
+                     return 0;
                     // _Maturitys.SelectMany(s=>s._CRMs).Count(c=>c.)
                  }
                  return _NoContactCount.Value;
@@ -316,7 +329,7 @@ namespace Sales.Model
              get
              {
                  if (_ContactCount == null)
-                 { }
+                 { return 0; }
                  return _ContactCount.Value;
              }
          }
@@ -393,5 +406,32 @@ namespace Sales.Model
                 return ret.TrimStart(';');
             }
         }
+
+
+    }
+
+
+    public class TreeViewItemModel
+    {
+        //public string Text { get; set; }
+        public int Value { get; set; }
+        public bool LoadOnDemand { get; set; }
+        public bool Enabled { get; set; }
+        public string Text { 
+            get 
+            { 
+                if(CrmCount==-1)
+                    return string.Join(",", NameEN, NameCH).Trim(','); 
+                else
+                    return string.Join(",", NameEN, NameCH).Trim(',') + "(" + CrmCount + ")"; 
+            } 
+        }
+        public string NameCH { get; set; }
+        public string NameEN { get; set; }
+        public int CrmCount { get; set; }
+        public bool Expanded { get; set; }
+        public bool Checkable { get; set; }
+        
+         
     }
 }

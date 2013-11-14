@@ -469,7 +469,7 @@
         $.ajax({
             url: "/AvaliableCompanies/EditCompetitor",
             type: "post",
-            data: { crmid: crmid, pp: $("textarea[name=Competitor]").val() },
+            data: { crmid: crmid, pp: $("textarea[name=Competitor3]").val() },
             dataType: "json",
             success: function (data, status) {
                 refreshdetail();
@@ -1050,6 +1050,8 @@
             $('#mainnavigationcontainer').html(result);
             if (crmid > 0) {
                 onCompanyChanging(crmid, processid, corelvlid);
+                var treeview = $("#publicCompanies").data("tTreeView");
+                treeview.ajaxRequest();
                 onLeadSelect(gleadid);
             }
         });
