@@ -83,32 +83,33 @@ namespace Sales.Controllers
         [ValidateInput(false)]
         public ActionResult MergeCompay(AjaxMergeCompany mergecompany)
         {
-            Company com = CH.GetDataById<Company>(mergecompany.company.ID);
-            com.Address = mergecompany.company.Address;
-            com.AreaID = mergecompany.company.AreaID;
-            com.Business = mergecompany.company.Business;
-            com.CompanyTypeID = mergecompany.company.CompanyTypeID;
-            com.Contact = mergecompany.company.Contact;
-            com.ModifiedDate = DateTime.Now;
-            com.ModifiedUser = Employee.CurrentUserName;
-            com.Address_EN = mergecompany.company.Address_EN;
-            com.Province = mergecompany.company.Province;
-            com.City = mergecompany.company.City;
-            com.Scale = mergecompany.company.Scale;
-            com.AnnualSales = mergecompany.company.AnnualSales;
-            com.MainProduct = mergecompany.company.MainProduct;
-            com.MainClient = mergecompany.company.MainClient;
-            com.Description = mergecompany.company.Description;
-            com.DistrictNumberID = mergecompany.company.DistrictNumberID;
-            com.Fax = mergecompany.company.Fax;
-            com.Name_CH = mergecompany.company.Name_CH;
-            com.Name_EN = mergecompany.company.Name_EN;
-            com.WebSite = mergecompany.company.WebSite;
-            com.ZIP = mergecompany.company.ZIP;
-            com.Customers = mergecompany.company.Customers;
-            com.Competitor = mergecompany.company.Competitor;
-            CH.Edit<Company>(com);
-            return Json(new { companyid = com.ID});
+            CompanyRelationship crm = CH.GetDataById<CompanyRelationship>(mergecompany.company.CRMID);
+            crm.Company.Address = mergecompany.company.Address;
+            crm.Company.AreaID = mergecompany.company.AreaID;
+            crm.Company.Business = mergecompany.company.Business;
+            crm.Company.CompanyTypeID = mergecompany.company.CompanyTypeID;
+            crm.Company.Contact = mergecompany.company.Contact;
+            crm.Company.ModifiedDate = DateTime.Now;
+            crm.Company.ModifiedUser = Employee.CurrentUserName;
+            crm.Company.Address_EN = mergecompany.company.Address_EN;
+            crm.Company.Province = mergecompany.company.Province;
+            crm.Company.City = mergecompany.company.City;
+            crm.Company.Scale = mergecompany.company.Scale;
+            crm.Company.AnnualSales = mergecompany.company.AnnualSales;
+            crm.Company.MainProduct = mergecompany.company.MainProduct;
+            crm.Company.MainClient = mergecompany.company.MainClient;
+            crm.Company.Description = mergecompany.company.Description;
+            crm.Company.DistrictNumberID = mergecompany.company.DistrictNumberID;
+            crm.Company.Fax = mergecompany.company.Fax;
+            crm.Company.Name_CH = mergecompany.company.Name_CH;
+            crm.Company.Name_EN = mergecompany.company.Name_EN;
+            crm.Company.WebSite = mergecompany.company.WebSite;
+            crm.Company.ZIP = mergecompany.company.ZIP;
+            crm.Company.Customers = mergecompany.company.Customers;
+            crm.Company.Competitor = mergecompany.company.Competitor;
+
+            CH.Edit<CompanyRelationship>(crm);
+            return Json(new { crmid = crm.ID });
         }
         /// <summary>
         /// 导航选中的公司或者lead

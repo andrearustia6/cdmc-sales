@@ -14,6 +14,8 @@ using System.Net;
 using System.Configuration;
 using Telerik.Web.Mvc;
 using BLL;
+using Telerik.Web.Mvc.UI;
+using System.Collections;
 namespace Sales.Controllers
 {
     public class AvaliableCompaniesController : Controller
@@ -758,6 +760,95 @@ namespace Sales.Controllers
             return PartialView(@"~\views\AvaliableCompanies\MainNavigationContainer.cshtml", data);
         }
 
+        [HttpPost]
+        public ActionResult _AjaxTreeViewLoadingCore(CRMFilters filters)
+        {
+            if (filters.ProjectId == null) filters.ProjectId = 26;
+            var crms = from c in CH.DB.CompanyRelationships where c.ProjectID == filters.ProjectId select c;
+
+            crms = crms.Where(w => w.Members.Count == 0);
+
+            //模糊搜索
+            if (filters != null && !string.IsNullOrWhiteSpace(filters.FuzzyQuery))
+            {
+                crms = crms.Where(q => q.Company.Leads.Any(l => l.Name_CH.Contains(filters.FuzzyQuery) || l.Name_EN.Contains(filters.FuzzyQuery) || l.EMail.Contains(filters.FuzzyQuery) || l.PersonalEmailAddress.Contains(filters.FuzzyQuery)) || q.Company.Name_CH.Contains(filters.FuzzyQuery) || q.Company.Name_EN.Contains(filters.FuzzyQuery) || q.Company.Contact.Contains(filters.FuzzyQuery));
+            }
+            //行业
+            if (filters != null && filters.CategoryId.HasValue)
+            {
+                crms = crms.Where(q => q.Categorys.Any(c => c.ID == filters.CategoryId.Value));
+            }
+            //时区
+            if (filters != null && filters.DistinctNumber.HasValue)
+            {
+                crms = crms.Where(q => q.Company.DistrictNumberID == filters.DistinctNumber);
+            }
+            //点评
+            if (filters != null && filters.IfComment == 1)
+            {
+                crms = crms.Where(q => q.Comments.Count > 0);
+            }
+            if (filters != null && filters.IfComment == 0)
+            {
+                crms = crms.Where(q => q.Comments.Count == 0);
+            }
+            var data = from c in CH.DB.CoreLVLs
+                      select new Sales.Model.TreeViewItemModel
+                       {
+                           Value = c.ID,
+                           NameCH = c.CoreLVLName,
+                           NameEN="",
+                           LoadOnDemand=true,
+                           Enabled=true,
+                           CrmCount = crms.Where(cr => cr.CoreLVLID == c.CoreLVLCode).Count()
+                       };
+            return Json ( data );
+        }
+        [HttpPost]
+        public ActionResult _AjaxTreeViewLoading(CRMFilters filters)
+        {
+            var crms = from c in CH.DB.CompanyRelationships where c.ProjectID == filters.ProjectId select c;
+
+            crms = crms.Where(w => w.Members.Count == 0);
+            //模糊搜索
+            if (filters != null && !string.IsNullOrWhiteSpace(filters.FuzzyQuery))
+            {
+                crms = crms.Where(q => q.Company.Leads.Any(l => l.Name_CH.Contains(filters.FuzzyQuery) || l.Name_EN.Contains(filters.FuzzyQuery) || l.EMail.Contains(filters.FuzzyQuery) || l.PersonalEmailAddress.Contains(filters.FuzzyQuery)) || q.Company.Name_CH.Contains(filters.FuzzyQuery) || q.Company.Name_EN.Contains(filters.FuzzyQuery) || q.Company.Contact.Contains(filters.FuzzyQuery));
+            }
+            //行业
+            if (filters != null && filters.CategoryId.HasValue)
+            {
+                crms = crms.Where(q => q.Categorys.Any(c => c.ID == filters.CategoryId.Value));
+            }
+            //时区
+            if (filters != null && filters.DistinctNumber.HasValue)
+            {
+                crms = crms.Where(q => q.Company.DistrictNumberID == filters.DistinctNumber);
+            }
+            //点评
+            if (filters != null && filters.IfComment == 1)
+            {
+                crms = crms.Where(q => q.Comments.Count > 0);
+            }
+            if (filters != null && filters.IfComment == 0)
+            {
+                crms = crms.Where(q => q.Comments.Count == 0);
+            }
+            IEnumerable nodes = from crm in crms.OrderBy(w=>w.Company.Name_EN).ThenBy(w=>w.Company.Name_CH)
+                                where crm.CoreLVLID == filters.CoreId
+                       select new Sales.Model.TreeViewItemModel
+                       {
+                           Checkable=true,
+                           Value = crm.ID,
+                           NameEN = crm.Company.Name_EN,
+                           NameCH = crm.Company.Name_CH,
+                           LoadOnDemand=false,
+                           Enabled=true,
+                           CrmCount=-1,
+                       };
+            
+            return new JsonResult { Data = nodes };
+        }
         [ValidateInput(false)]
         [HttpPost]
         public ActionResult PickUp(int crmid)

@@ -1,5 +1,6 @@
 ﻿@using Entity
-@model List<Company>
+@using Sales.Model
+@model List<_Company>
 <style>
     table
     {
@@ -36,17 +37,17 @@
 </style>
 @for (int i = 0; i < Model.Count; i++)
 {
-    using (Html.BeginForm(null, null, FormMethod.Post, new { id = Model[i].ID }))
+    using (Html.BeginForm(null, null, FormMethod.Post, new { id = Model[i].CRMID }))
     {
         var scale = Model[i].Scale;
         var areaid = Model[i].AreaID;
         var DistrictNumberID = Model[i].DistrictNumberID;
         var AnnualSales = Model[i].AnnualSales;
     <fieldset>
-        <legend>公司信息 <input type='checkbox' name='checkedCompay' value='@Model[i].ID' onclick='setmainid(@Model[i].ID)'/>
+        <legend>公司信息 <input type='checkbox' name='checkedCompay' value='@Model[i].CRMID' onclick='setmainid(@Model[i].CRMID)'/>
         </legend>
         @Html.Hidden("ID", Model[i].ID)
-       
+        @Html.Hidden("CRMID", Model[i].CRMID)
         <table>
             <tr>
                 <td colspan="2">

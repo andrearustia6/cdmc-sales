@@ -92,14 +92,14 @@
 
 <div class="publicCompanies">
 @{
-    if (Model.MemberCompanies != null)
-    { 
+    //if (Model.publicCompanies != null)
+    //{ 
         <span>公海公司<a class="BulkPickUp" href="#" onclick="BulkPickUp()">
                         批量领用</a></span>
-        @(Html.Telerik().TreeView().Name("publicCompanies").HtmlAttributes(new { style = "" })
-        
-                            .ClientEvents(e => e.OnSelect("onIndexSelectPublic").OnChecked("onChecked"))
-                            .ShowCheckBox(true)
+        @*@(Html.Telerik().TreeView().Name("publicCompanies").HtmlAttributes(new { style = "" })
+            .ClientEvents(e => e.OnSelect("onIndexSelectPublic").OnChecked("onChecked"))
+            .ShowCheckBox(true)
+            //.DataBinding(dataBinding => dataBinding.Ajax().Select("_AjaxTreeViewLoading", "AvaliableCompanies"))
                 .BindTo(Model.PublicCompanies, mappings =>
                 {
                     mappings.For<_CoreLVL>(binding => binding
@@ -107,13 +107,15 @@
                     {
                         item.Text = core.CoreNameDisplayText;
                         item.Value = core.ID.ToString();
+                        item.LoadOnDemand = true;
                         if (item.Parent == null)
                         {
                             item.Checkable = false;
                         }
                     })
 
-                    .Children(maturity => maturity._CRMs));
+                    .Children(maturity => maturity._CRMs)
+                    );
 
                     mappings.For<_CRM>(binding => binding
                   .ItemDataBound((item, crm) =>
@@ -121,15 +123,97 @@
 
                       item.Text = crm.DisplayName;
                       item.Value = crm.ID.ToString();
-                      
+
                   }));
                 })
 
 ) 
-    }
-    }
+    }*@
     
+    
+    Html.Telerik().TreeView()
+              .Name("publicCompanies")
+           .ShowCheckBox(true)
+              .ClientEvents(events => events
+                        .OnDataBinding("onStdTreeDataBinding")
+                        .OnSelect("onIndexSelectPublic").OnChecked("onChecked")
+                ) 
+          
+              .Render();  
+             
+    
+    
+    }
 </div>
+<script type="text/javascript">
+    var curNode;
+    function onStdTreeDataBinding(e) {
+        var treeview = $('#publicCompanies').data('tTreeView');
+        var jsonObject;
+        var item = $(e.item);
+        //curNode = item; 
+        curNode = e;
+        var txt = treeview.getItemText(item);
+        var val = treeview.getItemValue(item);
+        if (txt != "" && val != "") {
+//            var jsonObject = [{ Text: "Abyss Node", LoadOnDemand: true, Value: "abyss"}];
+
+//            treeview.dataBind(e.item, jsonObject);
+            onSelect(e);
+        }
+        else {
+            f=GetFilters();
+            $.post('_AjaxTreeViewLoadingCore', f, function (data) {
+                treeview.dataBind(e.item, data);
+            });
+
+
+
+
+        }
+    }
+
+    function onSelect(e) {
+        var tv = $("#publicCompanies").data("tTreeView");
+        //var itemVal = tv.getItemText(); 
+        //var itm = $(tv.element); 
+        //var txt = e.item.textContent; 
+        //treeArg = e; 
+        var item = $(e.item);
+        var txt = tv.getItemText(item);
+        var val = tv.getItemValue(item);
+
+        var projectid = $("#projectid").data("tDropDownList");
+        var id = projectid.value();
+        var DistinctNumber = $('#DistinctNumber').data("tDropDownList").value();
+        if (DistinctNumber == -1)
+            DistinctNumber = null;
+        var categoryId = $('#f-category').data("tDropDownList").value();
+        if (categoryId == -1)
+            categoryId = null;
+        var fuzzyQuery = $('#f-fuzzy').val();
+        var IfComment = $('#commentlist').data("tDropDownList").value();
+        if (IfComment == -1)
+            IfComment = null;
+
+        var selSales = $('#saleslist').val();
+        var f = { CoreId :val, ProjectId: id, FuzzyQuery: fuzzyQuery, DistinctNumber: DistinctNumber, CategoryId: categoryId, IfComment: IfComment, selSales: selSales };
+        $.post('_AjaxTreeViewLoading', f, function (data) {
+            onPass(e, data);
+        });
+    }
+    function onPass(e,data) {
+
+        var treeview = $("#publicCompanies").data("tTreeView");
+//        var firstNodeElement = $("li:first", treeview.element)[0];
+//        treeview.dataBind(firstNodeElement, data);
+        treeview.dataBind(e.item, data);
+        treeview.expand(e.item);
+
+
+    } 
+
+</script>
 <script>
     //var count=0
     //公司选择
@@ -178,7 +262,7 @@
         }
         if ($(e.item).parents(".t-item").length != 1)
             return;
-        var nv = $('#memberCompanies').data('tTreeView');
+        var nv = $('#publicCompanies').data('tTreeView');
         var clickedvalue = nv.getItemValue(e.item);
 
         if (crmid != clickedvalue)
