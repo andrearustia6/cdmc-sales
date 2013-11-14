@@ -2414,7 +2414,7 @@ namespace BLL
 
             if (lvl == 1)
             {
-                ps = GetProductInvolveProject();
+                ps = GetMarketInvolveProject();
             }
 
             if (lvl == 3)
