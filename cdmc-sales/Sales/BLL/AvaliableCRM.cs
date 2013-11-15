@@ -35,7 +35,7 @@ namespace Sales.BLL
             var crms = from c in CH.DB.CompanyRelationships where c.ProjectID == filters.ProjectId select c;
             if (memberonly)
             {
-                if (Employee.CurrentRole.Level == SalesRequired.LVL)
+                if (Employee.CurrentRole.Level == SalesRequired.LVL || Employee.CurrentRole.Level == MarketInterfaceRequired.LVL || Employee.CurrentRole.Level == ProductInterfaceRequired.LVL)
                     crms = crms.Where(w => w.Members.Count > 0 && w.Members.Any(m => m.Name == Employee.CurrentUserName)).OrderBy(w => w.ID);
                 else if (Employee.CurrentRole.Level == ManagerRequired.LVL || Employee.CurrentRole.Level == LeaderRequired.LVL)
                     crms = crms.Where(w => w.Members.Count > 0).OrderBy(w => w.ID);
