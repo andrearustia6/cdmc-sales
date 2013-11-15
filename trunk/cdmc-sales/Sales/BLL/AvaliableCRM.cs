@@ -385,6 +385,7 @@ namespace Sales.BLL
                               Fax = leads.Fax,
                               TelePhone = leads.Contact,
                               Email = leads.EMail,
+                              Gender = !string.IsNullOrEmpty(leads.Gender) ? leads.Gender : "",
                               LastCallTypeID = data.LeadCalls.Where(c => c.LeadID == leads.ID).OrderByDescending(c => c.CallDate).FirstOrDefault() == null ? 0 : data.LeadCalls.Where(c => c.LeadID == leads.ID).OrderByDescending(c => c.CallDate).FirstOrDefault().LeadCallTypeID
                           }),
                 _LeadCalls = (from leadcalls in data.LeadCalls.OrderByDescending(m => m.CallDate)
@@ -481,6 +482,7 @@ namespace Sales.BLL
                               Fax = leads.Fax,
                               TelePhone = leads.Contact,
                               Email = leads.EMail,
+                              Gender = !string.IsNullOrEmpty(leads.Gender) ? leads.Gender : "",
                               LastCallTypeID = data.LeadCalls.Where(c => c.LeadID == leads.ID).OrderByDescending(c => c.CallDate).FirstOrDefault() == null ? 0 : data.LeadCalls.Where(c => c.LeadID == leads.ID).OrderByDescending(c => c.CallDate).FirstOrDefault().LeadCallTypeID
                           }),
                 _LeadCalls = (from leadcalls in data.LeadCalls.OrderByDescending(m => m.CallDate)
