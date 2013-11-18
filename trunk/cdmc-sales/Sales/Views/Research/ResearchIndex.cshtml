@@ -333,6 +333,7 @@
         var d = dg();
 
         $.post('MemberInPorject', { projectId: id }, function (result) {
+            $("#saleselect").empty();
             $("#saleselect").each(function () {
                 var dropdownList = this;
                 $.each(result, function (key, item) {
