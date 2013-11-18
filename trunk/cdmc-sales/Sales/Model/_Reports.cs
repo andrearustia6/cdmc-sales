@@ -545,11 +545,32 @@ namespace Model
         /// <summary>
         /// 当月入账
         /// </summary>
-        public decimal? CurrentMonthCheckIn { get; set; }
+        public decimal? CurrentMonthCheckIn
+        {
+            get
+            {
+                if (CurrentMonthCheckInOri == null)
+                    return 0;
+                else
+                    return CurrentMonthCheckInOri;
+            }
+        }
+        public decimal? CurrentMonthCheckInOri { get; set; }
         /// <summary>
         /// 当月入账目标
         /// </summary>
-        public decimal? CurrentMonthCheckInTarget { get; set; }
+        public decimal? CurrentMonthCheckInTarget
+        {
+            get
+            {
+                if (CurrentMonthCheckInTargetOri == null)
+                    return 0;
+                else
+                    return CurrentMonthCheckInTargetOri;
+            }
+        }
+
+        public decimal? CurrentMonthCheckInTargetOri { get; set; }
         /// <summary>
         /// 当月入账完成率
         /// </summary>
@@ -567,7 +588,17 @@ namespace Model
         /// <summary>
         /// 项目入账目标
         /// </summary>
-        public decimal? TotalCheckInTarget { get; set; }
+        public decimal? TotalCheckInTarget
+        {
+            get
+            {
+                if (TotalCheckInTargetOri == null)
+                    return 0;
+                else
+                    return TotalCheckInTargetOri;
+            }
+        }
+        public decimal? TotalCheckInTargetOri { get; set; }
         /// <summary>
         /// 项目入账
         /// </summary>
@@ -593,15 +624,45 @@ namespace Model
         /// <summary>
         /// 项目业绩目标
         /// </summary>
-        public decimal? TotalDealInTarget { get; set; }
+        public decimal? TotalDealInTarget
+        {
+            get
+            {
+                if (TotalDealInTargetOri == null)
+                    return 0;
+                else
+                    return TotalDealInTargetOri;
+            }
+        }
+        public decimal? TotalDealInTargetOri { get; set; }
         /// <summary>
         /// 项目业绩rmb
         /// </summary>
-        public decimal? RMBTotalDealIn { get; set; }
+        public decimal? RMBTotalDealIn
+        {
+            get
+            {
+                if (RMBTotalDealInOri == null)
+                    return 0;
+                else
+                    return RMBTotalDealInOri;
+            }
+        }
+        public decimal? RMBTotalDealInOri { get; set; }
         /// <summary>
         /// 项目业绩usd
         /// </summary>
-        public decimal? USDTotalDealIn { get; set; }
+        public decimal? USDTotalDealIn
+        {
+            get
+            {
+                if (USDTotalDealInOri == null)
+                    return 0;
+                else
+                    return USDTotalDealInOri;
+            }
+        }
+        public decimal? USDTotalDealInOri { get; set; }
         /// <summary>
         /// 项目业绩
         /// </summary>
@@ -609,11 +670,11 @@ namespace Model
         {
             get
             {
-                if (RMBTotalDealIn == null)
-                    RMBTotalDealIn = 0;
-                if (USDTotalDealIn == null)
-                    USDTotalDealIn = 0;
-                return RMBTotalDealIn + USDTotalDealIn * (decimal)6.3;
+                if (RMBTotalDealInOri == null)
+                    RMBTotalDealInOri = 0;
+                if (USDTotalDealInOri == null)
+                    USDTotalDealInOri = 0;
+                return RMBTotalDealInOri + USDTotalDealInOri * (decimal)6.3;
             }
         }
         public double TotalDealInPercent
@@ -628,15 +689,46 @@ namespace Model
         /// <summary>
         /// 当月项目业绩目标
         /// </summary>
-        public decimal? CurrentMonthDealInTarget { get; set; }
+        public decimal? CurrentMonthDealInTarget
+        {
+            get
+            {
+                if (CurrentMonthDealInTargetOri == null)
+                    return 0;
+                else
+                    return CurrentMonthDealInTargetOri;
+            }
+
+        }
+        public decimal? CurrentMonthDealInTargetOri { get; set; }
         /// <summary>
         /// 当月项目业绩rmb
         /// </summary>
-        public decimal? CurrentMonthRMBTotalDealIn { get; set; }
+        public decimal? CurrentMonthRMBTotalDealIn
+        {
+            get
+            {
+                if (CurrentMonthRMBTotalDealInOri == null)
+                    return 0;
+                else
+                    return CurrentMonthRMBTotalDealInOri;
+            }
+        }
+        public decimal? CurrentMonthRMBTotalDealInOri { get; set; }
         /// <summary>
         /// 当月项目业绩usd
         /// </summary>
-        public decimal? CurrentMonthUSDTotalDealIn { get; set; }
+        public decimal? CurrentMonthUSDTotalDealIn
+        {
+            get
+            {
+                if (CurrentMonthUSDTotalDealInOri == null)
+                    return 0;
+                else
+                    return CurrentMonthUSDTotalDealInOri;
+            }
+        }
+        public decimal? CurrentMonthUSDTotalDealInOri { get; set; }
         /// <summary>
         /// 当月业绩usd+rmb
         /// </summary>
@@ -644,11 +736,11 @@ namespace Model
         {
             get
             {
-                if (CurrentMonthRMBTotalDealIn == null)
-                    CurrentMonthRMBTotalDealIn = 0;
-                if (CurrentMonthUSDTotalDealIn == null)
-                    CurrentMonthUSDTotalDealIn = 0;
-                return CurrentMonthRMBTotalDealIn + CurrentMonthUSDTotalDealIn * (decimal)6.3;
+                if (CurrentMonthRMBTotalDealInOri == null)
+                    CurrentMonthRMBTotalDealInOri = 0;
+                if (CurrentMonthUSDTotalDealInOri == null)
+                    CurrentMonthUSDTotalDealInOri = 0;
+                return CurrentMonthRMBTotalDealInOri + CurrentMonthUSDTotalDealInOri * (decimal)6.3;
             }
         }
         /// <summary>
@@ -820,16 +912,45 @@ namespace Model
         /// <summary>
         /// 个人项目到账目标
         /// </summary>
-        public decimal? TotalCheckInTarget { get; set; }
-
+        public decimal? TotalCheckInTarget
+        {
+            get
+            {
+                if (TotalCheckInTargetOri == null)
+                    return 0;
+                else
+                    return TotalCheckInTargetOri;
+            }
+        }
+        public decimal? TotalCheckInTargetOri { get; set; }
         /// <summary>
         /// 个人项目业绩rmb
         /// </summary>
-        public decimal? TotalDealInRMB { get; set; }
+        public decimal? TotalDealInRMB
+        {
+            get
+            {
+                if (TotalDealInRMBOri == null)
+                    return 0;
+                else
+                    return TotalDealInRMBOri;
+            }
+        }
+        public decimal? TotalDealInRMBOri { get; set; }
         /// <summary>
         /// 个人项目业绩usd
         /// </summary>
-        public decimal? TotalDealInUSD { get; set; }
+        public decimal? TotalDealInUSD
+        {
+            get
+            {
+                if (TotalDealInUSDOri == null)
+                    return 0;
+                else
+                    return TotalDealInUSDOri;
+            }
+        }
+        public decimal? TotalDealInUSDOri { get; set; }
         /// <summary>
         /// 个人项目业绩usd+rmb
         /// </summary>
@@ -837,27 +958,57 @@ namespace Model
         {
             get
             {
-                if (TotalDealInRMB == null)
-                    TotalDealInRMB = 0;
-                if (TotalDealInUSD == null)
-                    TotalDealInUSD = 0;
-                return TotalDealInRMB + TotalDealInUSD * (decimal)6.3;
+                if (TotalDealInRMBOri == null)
+                    TotalDealInRMBOri = 0;
+                if (TotalDealInUSDOri == null)
+                    TotalDealInUSDOri = 0;
+                return TotalDealInRMBOri + TotalDealInUSDOri * (decimal)6.3;
             }
         }
 
         /// <summary>
         /// 个人项目入账
         /// </summary>
-        public decimal? TotalCheckIn { get; set; }
-
+        public decimal? TotalCheckIn
+        {
+            get
+            {
+                if (TotalCheckInOri == null)
+                    return 0;
+                else
+                    return TotalCheckInOri;
+            }
+        }
+        public decimal? TotalCheckInOri { get; set; }
         /// <summary>
         /// 当月入账
         /// </summary>
-        public decimal? CurrentMonthCheckIn { get; set; }
+        public decimal? CurrentMonthCheckIn
+        {
+            get
+            {
+                if (CurrentMonthCheckInOri == null)
+                    return 0;
+                else
+                    return CurrentMonthCheckInOri;
+            }
+        }
+
+        public decimal? CurrentMonthCheckInOri { get; set; }
         /// <summary>
         /// 当月入账目标
         /// </summary>
-        public decimal? CurrentMonthCheckInTarget { get; set; }
+        public decimal? CurrentMonthCheckInTarget
+        {
+            get
+            {
+                if (CurrentMonthCheckInTargetOri == null)
+                    return 0;
+                else
+                    return CurrentMonthCheckInTargetOri;
+            }
+        }
+        public decimal? CurrentMonthCheckInTargetOri { get; set; }
         /// <summary>
         /// 当月入账完成率
         /// </summary>
@@ -879,15 +1030,45 @@ namespace Model
         /// <summary>
         /// 当月项目业绩目标
         /// </summary>
-        public decimal? CurrentMonthDealInTarget { get; set; }
+        public decimal? CurrentMonthDealInTarget
+        {
+            get
+            {
+                if (CurrentMonthDealInTargetOri == null)
+                    return 0;
+                else
+                    return CurrentMonthDealInTargetOri;
+            }
+        }
+        public decimal? CurrentMonthDealInTargetOri { get; set; }
         /// <summary>
         /// 当月项目业绩rmb
         /// </summary>
-        public decimal? CurrentMonthRMBTotalDealIn { get; set; }
+        public decimal? CurrentMonthRMBTotalDealIn
+        {
+            get
+            {
+                if (CurrentMonthRMBTotalDealInOri == null)
+                    return 0;
+                else
+                    return CurrentMonthRMBTotalDealInOri;
+            }
+        }
+        public decimal? CurrentMonthRMBTotalDealInOri { get; set; }
         /// <summary>
         /// 当月项目业绩usd
         /// </summary>
-        public decimal? CurrentMonthUSDTotalDealIn { get; set; }
+        public decimal? CurrentMonthUSDTotalDealIn
+        {
+            get
+            {
+                if (CurrentMonthUSDTotalDealInOri == null)
+                    return 0;
+                else
+                    return CurrentMonthUSDTotalDealInOri;
+            }
+        }
+        public decimal? CurrentMonthUSDTotalDealInOri { get; set; }
         /// <summary>
         /// 当月业绩usd+rmb
         /// </summary>
@@ -895,11 +1076,11 @@ namespace Model
         {
             get
             {
-                if (CurrentMonthRMBTotalDealIn == null)
-                    CurrentMonthRMBTotalDealIn = 0;
-                if (CurrentMonthUSDTotalDealIn == null)
-                    CurrentMonthUSDTotalDealIn = 0;
-                return CurrentMonthRMBTotalDealIn + CurrentMonthUSDTotalDealIn * (decimal)6.3;
+                if (CurrentMonthRMBTotalDealInOri == null)
+                    CurrentMonthRMBTotalDealInOri = 0;
+                if (CurrentMonthUSDTotalDealInOri == null)
+                    CurrentMonthUSDTotalDealInOri = 0;
+                return CurrentMonthRMBTotalDealInOri + CurrentMonthUSDTotalDealInOri * (decimal)6.3;
             }
         }
         /// <summary>
