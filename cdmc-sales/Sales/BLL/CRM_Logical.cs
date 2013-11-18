@@ -1007,6 +1007,16 @@ namespace BLL
                             l.LastWeekCheckInTarget = targets.Where(t => t.StartDate == matchdate).Select(t => t.CheckInOf5thWeek).FirstOrDefault();
                         }
                     }
+                    l.CurrentWeekCheckIn = l.CurrentWeekCheckIn == null ? 0 : l.CurrentWeekCheckIn;
+                    l.CurrentWeekCheckInTarget = l.CurrentWeekCheckInTarget == null ? 0 : l.CurrentWeekCheckInTarget;
+                    l.CurrentWeekDealInTarget = l.CurrentWeekDealInTarget == null ? 0 : l.CurrentWeekDealInTarget;
+                    l.CurrentWeekRMBTotalDealIn = l.CurrentWeekRMBTotalDealIn == null ? 0 : l.CurrentWeekRMBTotalDealIn;
+                    l.CurrentWeekUSDTotalDealIn = l.CurrentWeekUSDTotalDealIn == null ? 0 : l.CurrentWeekUSDTotalDealIn;
+                    l.LastWeekCheckIn = l.LastWeekCheckIn == null ? 0 : l.LastWeekCheckIn;
+                    l.LastWeekCheckInTarget = l.LastWeekCheckInTarget == null ? 0 : l.LastWeekCheckInTarget;
+                    l.LastWeekDealInTarget = l.LastWeekDealInTarget == null ? 0 : l.LastWeekDealInTarget;
+                    l.LastWeekRMBTotalDealIn = l.LastWeekRMBTotalDealIn == null ? 0 : l.LastWeekRMBTotalDealIn;
+                    l.LastWeekUSDTotalDealIn = l.LastWeekUSDTotalDealIn == null ? 0 : l.LastWeekUSDTotalDealIn;
                 }
                 return list;
             }
@@ -1207,6 +1217,16 @@ namespace BLL
                             l.LastWeekCheckInTarget = targets.Where(t => t.StartDate == matchdate && t.Member.Name == l.Member).Count() == 0 ? 0 : targets.Where(t => t.StartDate == matchdate && t.Member.Name == l.Member).Select(t => t.CheckInOf5thWeek).FirstOrDefault();
                         }
                     }
+                    l.CurrentWeekCheckIn = l.CurrentWeekCheckIn == null ? 0 : l.CurrentWeekCheckIn;
+                    l.CurrentWeekCheckInTarget = l.CurrentWeekCheckInTarget == null ? 0 : l.CurrentWeekCheckInTarget;
+                    l.CurrentWeekDealInTarget = l.CurrentWeekDealInTarget == null ? 0 : l.CurrentWeekDealInTarget;
+                    l.CurrentWeekRMBTotalDealIn = l.CurrentWeekRMBTotalDealIn == null ? 0 : l.CurrentWeekRMBTotalDealIn;
+                    l.CurrentWeekUSDTotalDealIn = l.CurrentWeekUSDTotalDealIn == null ? 0 : l.CurrentWeekUSDTotalDealIn;
+                    l.LastWeekCheckIn = l.LastWeekCheckIn == null ? 0 : l.LastWeekCheckIn;
+                    l.LastWeekCheckInTarget = l.LastWeekCheckInTarget == null ? 0 : l.LastWeekCheckInTarget;
+                    l.LastWeekDealInTarget = l.LastWeekDealInTarget == null ? 0 : l.LastWeekDealInTarget;
+                    l.LastWeekRMBTotalDealIn = l.LastWeekRMBTotalDealIn == null ? 0 : l.LastWeekRMBTotalDealIn;
+                    l.LastWeekUSDTotalDealIn = l.LastWeekUSDTotalDealIn == null ? 0 : l.LastWeekUSDTotalDealIn;
                 }
                 return list;
             }
@@ -1555,17 +1575,17 @@ namespace BLL
                                ProjectUnitCode = l.Code,
                                ConferenceStartDate = l.StartDate,
                                LeftedDay = l.LeftDay,
-                               TotalDealInTarget = targets.Where(w => w.Project.ProjectUnitCode == l.Code).Sum(s => (decimal?)s.Deal),
-                               RMBTotalDealIn = deals.Where(w => w.Project.ProjectUnitCode == l.Code && w.Currencytype.Name == "RMB").Sum(s => (decimal?)s.Payment),
-                               USDTotalDealIn = deals.Where(w => w.Project.ProjectUnitCode == l.Code && w.Currencytype.Name == "USD").Sum(s => (decimal?)s.Payment),
-                               TotalCheckInTarget = (decimal?)l.Target,
+                               TotalDealInTargetOri = targets.Where(w => w.Project.ProjectUnitCode == l.Code).Sum(s => (decimal?)s.Deal),
+                               RMBTotalDealInOri = deals.Where(w => w.Project.ProjectUnitCode == l.Code && w.Currencytype.Name == "RMB").Sum(s => (decimal?)s.Payment),
+                               USDTotalDealInOri = deals.Where(w => w.Project.ProjectUnitCode == l.Code && w.Currencytype.Name == "USD").Sum(s => (decimal?)s.Payment),
+                               TotalCheckInTargetOri = (decimal?)l.Target,
                                TotalCheckIn = deals.Where(w => w.Project.ProjectUnitCode == l.Code).Sum(s => (decimal?)s.Income),
-                               CurrentMonthDealInTarget = targets.Where(w => w.Project.ProjectUnitCode == l.Code  && w.StartDate.Month == currentmonthstart.Month).Sum(s => (decimal?)s.Deal),
-                               CurrentMonthRMBTotalDealIn = deals.Where(w => w.Project.ProjectUnitCode == l.Code && w.Currencytype.Name == "RMB" && w.SignDate >= currentmonthstart && w.SignDate < currentmonthend).Sum(s => (decimal?)s.Payment),
-                               CurrentMonthUSDTotalDealIn = deals.Where(w => w.Project.ProjectUnitCode == l.Code && w.Currencytype.Name == "USD" && w.SignDate >= currentmonthstart && w.SignDate < currentmonthend).Sum(s => (decimal?)s.Payment),
+                               CurrentMonthDealInTargetOri = targets.Where(w => w.Project.ProjectUnitCode == l.Code && w.StartDate.Month == currentmonthstart.Month).Sum(s => (decimal?)s.Deal == null ? 0 : (decimal?)s.Deal),
+                               CurrentMonthRMBTotalDealInOri = deals.Where(w => w.Project.ProjectUnitCode == l.Code && w.Currencytype.Name == "RMB" && w.SignDate >= currentmonthstart && w.SignDate < currentmonthend).Sum(s => (decimal?)s.Payment),
+                               CurrentMonthUSDTotalDealInOri = deals.Where(w => w.Project.ProjectUnitCode == l.Code && w.Currencytype.Name == "USD" && w.SignDate >= currentmonthstart && w.SignDate < currentmonthend).Sum(s => (decimal?)s.Payment),
 
-                               CurrentMonthCheckInTarget = targets.Where(w => w.Project.ProjectUnitCode == l.Code && w.StartDate.Month == currentmonthstart.Month).Sum(s => (decimal?)s.CheckIn),
-                               CurrentMonthCheckIn = deals.Where(w => w.Project.ProjectUnitCode == l.Code && w.ActualPaymentDate >= currentmonthstart && w.ActualPaymentDate < currentmonthend).Sum(s => (decimal?)s.Income),
+                               CurrentMonthCheckInTargetOri = targets.Where(w => w.Project.ProjectUnitCode == l.Code && w.StartDate.Month == currentmonthstart.Month).Sum(s => (decimal?)s.CheckIn),
+                               CurrentMonthCheckInOri = deals.Where(w => w.Project.ProjectUnitCode == l.Code && w.ActualPaymentDate >= currentmonthstart && w.ActualPaymentDate < currentmonthend).Sum(s => (decimal?)s.Income),
                                
                            };
                 data = data.OrderBy(w => w.ConferenceStartDate);
@@ -1662,16 +1682,16 @@ namespace BLL
                            {
                                Member = grp.Key.Sales,
                                //ConferenceStartDate = CH.GetDataById<Project>(grp.Key.ProjectID).ConferenceStartDate,
-                               TotalCheckInTarget = targets.Where(w => w.Member.Name == grp.Key.Sales).Sum(w => (decimal?)w.CheckIn),
-                               TotalDealInRMB = deals.Where(w => w.Project.ID == grp.Key.ProjectID && w.Currencytype.Name == "RMB" && w.Sales == grp.Key.Sales).Sum(s => (decimal?)s.Payment),
-                               TotalDealInUSD = deals.Where(w => w.Project.ID == grp.Key.ProjectID && w.Currencytype.Name == "USD" && w.Sales == grp.Key.Sales).Sum(s => (decimal?)s.Payment),
-                               TotalCheckIn = deals.Where(w => w.Project.ID == grp.Key.ProjectID && w.Sales == grp.Key.Sales).Sum(s => (decimal?)s.Income),
-                               CurrentMonthDealInTarget = targets.Where(w => w.Project.ID == grp.Key.ProjectID && w.Member.Name == grp.Key.Sales && w.StartDate.Month == currentmonthstart.Month).Sum(s => (decimal?)s.Deal),
-                               CurrentMonthRMBTotalDealIn = deals.Where(w => w.Project.ID == grp.Key.ProjectID && w.Sales == grp.Key.Sales && w.Currencytype.Name == "RMB" && w.SignDate >= currentmonthstart && w.SignDate < currentmonthend).Sum(s => (decimal?)s.Payment),
-                               CurrentMonthUSDTotalDealIn = deals.Where(w => w.Project.ID == grp.Key.ProjectID && w.Sales == grp.Key.Sales && w.Currencytype.Name == "USD" && w.SignDate >= currentmonthstart && w.SignDate < currentmonthend).Sum(s => (decimal?)s.Payment),
+                               TotalCheckInTargetOri = targets.Where(w => w.Member.Name == grp.Key.Sales).Sum(w => (decimal?)w.CheckIn),
+                               TotalDealInRMBOri = deals.Where(w => w.Project.ID == grp.Key.ProjectID && w.Currencytype.Name == "RMB" && w.Sales == grp.Key.Sales).Sum(s => (decimal?)s.Payment),
+                               TotalDealInUSDOri = deals.Where(w => w.Project.ID == grp.Key.ProjectID && w.Currencytype.Name == "USD" && w.Sales == grp.Key.Sales).Sum(s => (decimal?)s.Payment),
+                               TotalCheckInOri = deals.Where(w => w.Project.ID == grp.Key.ProjectID && w.Sales == grp.Key.Sales).Sum(s => (decimal?)s.Income),
+                               CurrentMonthDealInTargetOri = targets.Where(w => w.Project.ID == grp.Key.ProjectID && w.Member.Name == grp.Key.Sales && w.StartDate.Month == currentmonthstart.Month).Sum(s => (decimal?)s.Deal),
+                               CurrentMonthRMBTotalDealInOri = deals.Where(w => w.Project.ID == grp.Key.ProjectID && w.Sales == grp.Key.Sales && w.Currencytype.Name == "RMB" && w.SignDate >= currentmonthstart && w.SignDate < currentmonthend).Sum(s => (decimal?)s.Payment),
+                               CurrentMonthUSDTotalDealInOri = deals.Where(w => w.Project.ID == grp.Key.ProjectID && w.Sales == grp.Key.Sales && w.Currencytype.Name == "USD" && w.SignDate >= currentmonthstart && w.SignDate < currentmonthend).Sum(s => (decimal?)s.Payment),
 
-                               CurrentMonthCheckInTarget = targets.Where(w => w.Project.ID == grp.Key.ProjectID && w.Member.Name == grp.Key.Sales && w.StartDate.Month == currentmonthstart.Month).Sum(s => (decimal?)s.CheckIn),
-                               CurrentMonthCheckIn = deals.Where(w => w.Project.ID == grp.Key.ProjectID && w.Sales == grp.Key.Sales && w.ActualPaymentDate >= currentmonthstart && w.ActualPaymentDate < currentmonthend).Sum(s => (decimal?)s.Income),
+                               CurrentMonthCheckInTargetOri = targets.Where(w => w.Project.ID == grp.Key.ProjectID && w.Member.Name == grp.Key.Sales && w.StartDate.Month == currentmonthstart.Month).Sum(s => (decimal?)s.CheckIn),
+                               CurrentMonthCheckInOri = deals.Where(w => w.Project.ID == grp.Key.ProjectID && w.Sales == grp.Key.Sales && w.ActualPaymentDate >= currentmonthstart && w.ActualPaymentDate < currentmonthend).Sum(s => (decimal?)s.Income),
                                ProjectUnitName = grp.Key.ProjectUnitCode+"("+grp.Key.ProjectUnitName+")",
                                ConferenceStartDate = grp.Key.ConferenceStartDate
                            };
@@ -1890,8 +1910,7 @@ namespace BLL
                 string[] managers = GetManagers();
                 if (managers != null)
                     pros = pros.Where(w => managers.Contains(w));
-
-
+                pros = pros.Where(w => CH.DB.EmployeeRoles.Where(e => e.AccountName == w && e.IsActivated == true).Any());
                 List<SelectListItem> selectList = new List<SelectListItem>();
                 foreach (var pro in pros)
                 {
@@ -1909,7 +1928,7 @@ namespace BLL
                     ps = ps.Where(w => managers.Contains(w.Manager)).ToList();
                 IEnumerable<int> idList = ps.Select(o => o.ID);
                 var members = (from p in idList
-                               join m in CH.DB.Members.Where(w=>w.IsActivated==true && (w.SalesType.Name.Contains("销售专员") || w.SalesType.Name.Contains("销售经理"))) on p equals m.ProjectID
+                               join m in CH.DB.Members.Where(w=>w.IsActivated==true && (w.SalesType.Name.Contains("销售"))) on p equals m.ProjectID
                                select new
                                {
                                    Sales = m.Name,
