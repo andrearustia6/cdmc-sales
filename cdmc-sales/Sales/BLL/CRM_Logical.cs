@@ -137,7 +137,7 @@ namespace BLL
                                  
 
                               };
-                    
+                    lps = lps.Where(w => CH.DB.EmployeeRoles.Any(e => e.AccountName == w.TargetName && e.IsActivated == true));
                     return lps;
                 }
                 return new List<_ManagerScore>();
@@ -207,6 +207,7 @@ namespace BLL
                                   })
 
                               };
+                    lps = lps.Where(w => CH.DB.EmployeeRoles.Any(e => e.AccountName == w.Name && e.IsActivated == true));
                     return lps;
                 }
                 return new List<_TeamLeadPerformance>();
@@ -285,6 +286,7 @@ namespace BLL
                                           LeadsCount = leadadds.Count(c => c.Creator == l && c.CreatedDate >= s && c.CreatedDate < EntityFunctions.AddDays(s, 7))
                                       })
                                   };
+                        lps = lps.Where(w => CH.DB.EmployeeRoles.Any(e => e.AccountName == w.Name && e.IsActivated == true));
                         return lps;
                     }
                 }
