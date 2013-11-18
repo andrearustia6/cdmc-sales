@@ -7,7 +7,7 @@
 {
     @Html.HiddenFor(model => model.ProjectId)
     @Html.HiddenFor(model => model.CompanyId)
-    <fieldset style="margin:0px 0px 0px 0px;">
+    <fieldset >
         <legend>快捷录入信息</legend>
         <table>
             <tr>
@@ -24,17 +24,17 @@
                 </td>
             </tr>
             <tr>
-                <td>
+                <td colspan="2">
                     @Html.LabelFor(model => model.Phone)
-                    @Html.TextBoxFor(model => model.Phone)
+                    @Html.TextBoxFor(model => model.Phone, new { @style = "width:350px" })
                 </td>
-                <td>
+                <td colspan="2">
                     @Html.LabelFor(model => model.DistrictNumberId)
-                    @Html.DropDownListFor(model => model.DistrictNumberId, SelectHelper.DistinctNumberSelectList(null), "中国(默认)", new { })
+                    @Html.DropDownListFor(model => model.DistrictNumberId, SelectHelper.DistinctNumberSelectList(null), "中国(默认)", new { @style = "width:350px" })
                 </td>
             </tr>
             <tr>
-                <td>
+                <td colspan="2">
                    @{
     if (Model.IndustryId != null)
     {
@@ -77,17 +77,19 @@
                            
 }
                 </td>
-                <td>
+                <td colspan="2">
                     @Html.LabelFor(model => model.TypeId)
-                    @Html.DropDownListFor(model => model.TypeId, SelectHelper.CompanyTypeSelectList(null), "请选择", new { })
+                    @Html.DropDownListFor(model => model.TypeId, SelectHelper.CompanyTypeSelectList(null), "请选择", new { @style = "width:350px" })
                 </td>
-                <td>
+                </tr>
+            <tr>
+                <td colspan="2">
                     @Html.LabelFor(model => model.ProgressId)
-                    @Html.DropDownListFor(model => model.ProgressId, SelectHelper.ProgressSelectList(null), "请选择", new { })
+                    @Html.DropDownListFor(model => model.ProgressId, SelectHelper.ProgressSelectList(null), "请选择", new { @style = "width:350px" })
                 </td>
-                <td>
+                <td colspan="2">
                     @Html.LabelFor(model => model.CoreLVLID)
-                    @Html.DropDownListFor(model => model.CoreLVLID, SelectHelper.CoreLVLSelectList(null), "请选择", new { })
+                    @Html.DropDownListFor(model => model.CoreLVLID, SelectHelper.CoreLVLSelectList(null), "请选择", new { @style = "width:350px" })
                 </td>
             </tr>
             <tr>
