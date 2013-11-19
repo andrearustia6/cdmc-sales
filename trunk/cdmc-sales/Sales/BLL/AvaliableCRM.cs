@@ -200,8 +200,9 @@ namespace Sales.BLL
             //  个人类型数量是个ｌｉｓｔ
             // 各个ｃａｌｌｔｙｐｅ的数量
             var leadids = data.Company.Leads.Select(s=>s.ID);
-            var hiscall = from c in CH.DB.LeadCalls where leadids.Any(a => a==c.LeadID && c.ProjectID != data.ProjectID) select c;
-
+            var hiscall = from c in CH.DB.LeadCalls where leadids.Any(a => a==c.LeadID && c.ProjectID != data.ProjectID)
+                          orderby c.CallDate descending
+                          select c;
 
             var crm = new _CRM()
             {
