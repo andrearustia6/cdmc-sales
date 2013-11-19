@@ -83,7 +83,7 @@ namespace Sales.Controllers
         }
 
         [GridAction]
-        public ActionResult _UserResearchList(string name, string type, DateTime? starttime,DateTime? endtime, string sale = "")
+        public ActionResult _UserResearchList(string name, string type, DateTime? starttime,DateTime? endtime, string sale = null)
         {
             IQueryable<_UserResearchDetail> details = null;
             if (type == "project")
