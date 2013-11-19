@@ -52,21 +52,21 @@
                     @Html.Telerik().DatePicker().Name("endTime").ClientEvents(c => c.OnChange("onChange")).HtmlAttributes(new { style = "width:150px" })
                 </span>
         </text>)).DataKeys(keys => { keys.Add(p => p.ID); }).DataBinding(dataBinding =>
-         {
-             dataBinding.Ajax().Select("_CompanyIndex",
-                 "Research", new { month = Model.Month }).Update("_CompanyIndexEdit", "Research", new { projectid = ViewBag.projectid });
-         }).Columns(columns =>
-         {
-             columns.Bound(p => p.CompanyName);
-             columns.Bound(p => p.CompanyContact);
-             //columns.Bound(p => p.CompanyDesicription);
-             columns.Bound(p => p.Creator);
-             columns.Bound(p => p.CreateDate).Format("{0:d}");
-             columns.Bound(p => p.LeadCount);
-             columns.Bound(p => p.CompanyReviews).HtmlAttributes(new { name = "CompanyReviews" });
-             columns.Bound(p => p.IsValid);
-             columns.Command(c => c.Edit().ButtonType(GridButtonType.Image)).Title("有效确认").Width(150);
-         }).ClientEvents(events => events.OnDataBinding("companyDataBinding")
+             {
+                 dataBinding.Ajax().Select("_CompanyIndex",
+                     "Research", new { month = Model.Month }).Update("_CompanyIndexEdit", "Research", new { projectid = ViewBag.projectid });
+             }).Columns(columns =>
+             {
+                 columns.Bound(p => p.CompanyName);
+                 columns.Bound(p => p.CompanyContact);
+                 //columns.Bound(p => p.CompanyDesicription);
+                 columns.Bound(p => p.Creator);
+                 columns.Bound(p => p.CreateDate).Format("{0:d}");
+                 columns.Bound(p => p.LeadCount);
+                 columns.Bound(p => p.CompanyReviews).HtmlAttributes(new { name = "CompanyReviews" });
+                 columns.Bound(p => p.IsValid);
+                 columns.Command(c => c.Edit().ButtonType(GridButtonType.Image)).Title("有效确认").Width(150);
+             }).ClientEvents(events => events.OnDataBinding("companyDataBinding")
 
                                                  .OnRowDataBound("rowDataBound").OnComplete("onCompanyComplete")
          ).DetailView(details
@@ -168,17 +168,36 @@
 )
 </fieldset>
 @(Html.Telerik().Window().Name("DetailsWindow").Visible(false).Title("调研列表").Modal(true).Width(900).Height(610).Content(@<text>
+
 @DetailList()
 </text>).Resizable().Draggable(true)
 )
 @helper DetailList()
     {
+        <div><span>
+                <label>
+                        开始时间:
+                    </label>
+                    @Html.Telerik().DatePicker().Name("startT").ClientEvents(c => c.OnChange("onTimeChange")).HtmlAttributes(new { style = "width:150px" })
+                </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>
+                    <label>
+                        结束时间:
+                    </label>
+                    @Html.Telerik().DatePicker().Name("endT").ClientEvents(c => c.OnChange("onTimeChange")).HtmlAttributes(new { style = "width:150px" })
+                </span>
+    <span id="salecontainer"></span>
+    <label>
+        销售筛选:
+    </label>
+    <select id="saleselect" name="saleselect" onchange="sdlOnChange()">
+    </select></div>
     @(Html.Telerik().Grid<_UserResearchDetail>().Name("DetailsGrid")
         .DataBinding(dataBinding =>
         {
-            dataBinding.Ajax().Select("_UserResearchList", "Research", new { name = "", type = "" });
+            dataBinding.Ajax().Select("_UserResearchList", "Research");
         })
-        .ToolBar(toolBar => toolBar.Template(
+         .ClientEvents(events => events.OnDataBinding("dataBinding"))
+        @*.ToolBar(toolBar => toolBar.Template(
                 @<text> <span>
                 <label>
                         开始时间:
@@ -197,7 +216,7 @@
     <select id="saleselect" name="saleselect" onchange="sdlOnChange()">
     </select>
     </text>)
-        )
+        )*@
         .Columns(columns =>
         {
             columns.Bound(p => p.CompanyName);
@@ -221,6 +240,7 @@
 <input id="detailname" type="hidden" />
 <input id="username" type="hidden" value=@Utl.Employee.CurrentUserName />
 <script type="text/javascript">
+    var clicked = false;
     function selectChange(e) {
         if (e == true) {
             $("#selectSales").empty();
@@ -280,53 +300,75 @@
 
         currentuser = $('#username').val();
 
-        ddl().bind('change', function () {
-            var duration = ddl().val();
-            var saleVal = sdl().val();
+//        ddl().bind('change', function () {
+//            var duration = ddl().val();
+//            var saleVal = sdl().val();
+//            var d = dg();
+
+//            var type = $("#detailtype").val();
+//            var name = $("#detailname").val();
+//            dg().ajaxRequest({ name: name, type: type, duration: duration, sale: saleVal });
+
+//        });
+    });
+
+    function sdlOnChange() {
+//        var saleVal = sdl().val();
+//        //var duration = ddl().val();
+//        var starttime = $("#startT").val();
+//        var endtime = $("#endT").val();
+//        var d = dg();
+
+//        var type = $("#detailtype").val();
+//        var name = $("#detailname").val();
+        dg().rebind();
+//        dg().ajaxRequest({ name: name, type: type, starttime: starttime,endtime:endtime, sale: saleVal });
+    }
+    function onTimeChange() {
+//        var saleVal = sdl().val();
+//        //var duration = ddl().val();
+//        var starttime = $("#startT").val();
+//        var endtime = $("#endT").val();
+//        var d = dg();
+
+//        var type = $("#detailtype").val();
+//        var name = $("#detailname").val();
+        dg().rebind();
+        //dg().ajaxRequest({ name: name, type: type, starttime: starttime, endtime: endtime, sale: saleVal });
+    }
+    function dataBinding(e) {
+//        if (clicked) {
+        var saleVal = sdl().val();
+        if (saleVal == null)
+            saleVal = '';
+            //var duration = ddl().val();
+            var starttime = $("#startT").val();
+            var endtime = $("#endT").val();
             var d = dg();
 
             var type = $("#detailtype").val();
             var name = $("#detailname").val();
-            dg().ajaxRequest({ name: name, type: type, duration: duration, sale: saleVal });
+            e.data = $.extend(e.data, { name: name, type: type, starttime: starttime, endtime: endtime, sale: saleVal });
+//        }
+//        else
+//            e.preventDefault();
 
-        });
-    });
-
-    function sdlOnChange() {
-        var saleVal = sdl().val();
-        //var duration = ddl().val();
-        var starttime = $("#startT").val();
-        var endtime = $("#endT").val();
-        var d = dg();
-
-        var type = $("#detailtype").val();
-        var name = $("#detailname").val();
-        dg().ajaxRequest({ name: name, type: type, starttime: starttime,endtime:endtime, sale: saleVal });
     }
-    function onTimeChange() {
-        var saleVal = sdl().val();
-        //var duration = ddl().val();
-        var starttime = $("#startT").val();
-        var endtime = $("#endT").val();
-        var d = dg();
-
-        var type = $("#detailtype").val();
-        var name = $("#detailname").val();
-        dg().ajaxRequest({ name: name, type: type, starttime: starttime, endtime: endtime, sale: saleVal });
-    }
-
     function onUserDetails(e) {
+        clicked = true;
         resetddl();
         var user = e.dataItem.UserName;
         var d = dg();
         setdetailselections(user, 'user');
-        dg().ajax.selectUrl = "/Research/_UserResearchList/?name=" + user + "&type=user";
+//        dg().ajax.selectUrl = "/Research/_UserResearchList/?name=" + user + "&type=user";
 
-        dg().ajaxRequest({ name: user, type: 'user' });
+        //        dg().ajaxRequest({ name: user, type: 'user' });
+        dg().rebind();
         dw().center().open();
     }
 
     function onProjectDetails(e) {
+        clicked = true;
         resetddl();
         resetsdl();
         var id = e.dataItem.ProjectID;
@@ -345,10 +387,11 @@
 
         setdetailselections(id, 'project');
 
-        dg().ajax.selectUrl = "/Research/_UserResearchList/?name=" + id + "&type=project";
-        dg().ajaxRequest({ name: id, type: 'project' });
-
+//        dg().ajax.selectUrl = "/Research/_UserResearchList/?name=" + id + "&type=project";
+//        dg().ajaxRequest({ name: id, type: 'project' });
+        dg().rebind();
         dw().center().open();
+        
     }
     //重设ddl
     function resetddl() {
