@@ -92,14 +92,27 @@ namespace Sales.Controllers
 
                 ViewBag.ProjectId = id;
 
+              
+
                 var temp = from tc in CH.DB.CompanyRelationships.Where(w => w.Project.ID == id) select tc;
+
+                var leads = temp.SelectMany(s => s.Company.Leads);
+
                 if (!string.IsNullOrEmpty(sale))
                 {
                     int saleVal = int.Parse(sale);
-                    temp = temp.Where(c => c.Members.Any(m => m.ID == saleVal));
+                    var sales = CH.GetDataById<Member>(saleVal).Name;
+                    leads = leads.Where(c => c.Creator == sales);
                 }
-                details = from c in temp
-                          from l in c.Company.Leads
+             
+
+                
+                if (starttime != null)
+                    leads = leads.Where(d => d.CreatedDate >= starttime);
+                if (endtime != null)
+                    leads = leads.Where(d => d.CreatedDate <= endtime);
+
+                details = from l in leads
                           select new _UserResearchDetail()
                           {
                               LeadNameEN = l.Name_EN,
@@ -114,7 +127,7 @@ namespace Sales.Controllers
                               LeadTitle = l.Title,
                               Creator = l.Creator,
                               CreateDate = l.CreatedDate,
-                              Categoris = c.CategoryString
+                             // Categoris = c.CategoryString
                           };
             }
             if (type == "user")
@@ -150,14 +163,17 @@ namespace Sales.Controllers
                 //startdate = startdate.AddDays(-duration.Value);
                 //details = details.Where(d => d.CreateDate >= startdate && d.CreateDate <= DateTime.Now);
 
-                if (starttime != null)
-                    details = details.Where(d => d.CreateDate >= starttime);
-                if (endtime != null)
-                    details = details.Where(d => d.CreateDate <= endtime);
-                //权限控制
-                Detailslist = details.OrderByDescending(o => o.CreateDate).ToList();
+                //if (starttime != null)
+                //    details = details.Where(d => d.CreateDate >= starttime);
+                //if (endtime != null)
+                //    details = details.Where(d => d.CreateDate <= endtime);
+                ////权限控制
+
+                Detailslist = details.ToList();
+
             }
-            return View(new GridModel(Detailslist));
+
+            return View("UserResearchListView", new GridModel(Detailslist));
         }
 
 
