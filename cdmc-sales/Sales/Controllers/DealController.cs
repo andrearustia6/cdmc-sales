@@ -256,9 +256,12 @@ namespace Sales.Controllers
                 }
             }
             var emprole = CH.DB.EmployeeRoles.Where(w => 1 == 1);
+            List<Deal> dllist;
             if (Employee.CurrentRole.Level == 4)//财务填写income
             {
-                var ds = from d in deals
+
+                dllist = deals.ToList();
+                var ds = from d in dllist
                          where d.IsConfirm == true
                          //where d.IsConfirm == true && (d.Income == 0 || d.ActualPaymentDate == null)
                          select new AjaxViewDeal
@@ -308,9 +311,9 @@ namespace Sales.Controllers
                         }
                     }
                 }
-
-                deals = deals.Where(w => pids.Any(a => a == w.ProjectID));
-                var ds = from d in deals
+              
+                dllist = deals.Where(w => pids.Any(a => a == w.ProjectID)).ToList();
+                var ds = from d in dllist
                          select new AjaxViewDeal
                          {
                              CompanyNameEN = d.CompanyRelationship.Company.Name_EN,
@@ -342,8 +345,8 @@ namespace Sales.Controllers
             }
             else//板块修改deal
             {
-                deals = deals.Where(d => CH.DB.Projects.Where(p => p.Manager == Employee.CurrentUserName).Any(p => p.ID == d.ProjectID));
-                var ds = from d in deals
+                dllist = deals.Where(d => CH.DB.Projects.Where(p => p.Manager == Employee.CurrentUserName).Any(p => p.ID == d.ProjectID)).ToList();
+                var ds = from d in dllist
                          select new AjaxViewDeal
                          {
                              CompanyNameEN = d.CompanyRelationship.Company.Name_EN,
