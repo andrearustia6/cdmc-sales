@@ -27,21 +27,49 @@ function onMemberSelected() {
         var $this = $(this);
         var gridid = $this.attr('gridid')
         var member = $this.val();
+        var type = $('#typeselect').val();
         var grid = $('#' + gridid).data('tGrid');
         if (member) {
             grid.filterBy = "Member~eq~'" + member + "'";
+            if (type)
+                grid.filterBy = grid.filterBy + "~and~LeadCallType~eq~'" + type + "'";
             //grid.rebind(); 
             grid.ajaxRequest();
         }
         else {
             grid.filterBy = "";
+            if (type)
+                grid.filterBy = grid.filterBy + "LeadCallType~eq~'" + type + "'";
             //grid.rebind(); 
             grid.ajaxRequest();
         }
 
     });
 }
+function onCallTypeSelected() {
+    $('.typeselect').change(function () {
+        var $this = $(this);
+        var gridid = $this.attr('gridid')
+        var member = $('#memberselect').val();
+        var type = $this.val();
+        var grid = $('#' + gridid).data('tGrid');
+        if (type) {
+            grid.filterBy = "LeadCallType~eq~'" + type + "'";
+            if (member)
+                grid.filterBy = grid.filterBy + "Member~eq~'" + member + "'";
+            //grid.rebind(); 
+            grid.ajaxRequest();
+        }
+        else {
+            grid.filterBy = "";
+            if (member)
+                grid.filterBy = grid.filterBy + "~and~Member~eq~'" + member + "'";
+            //grid.rebind(); 
+            grid.ajaxRequest();
+        }
 
+    });
+}
 function onColorSet() {
 
     $('.calltype').each(function () {
