@@ -321,7 +321,7 @@ namespace BLL
                     {
                         sales = mems.Select(s => s.Name).Distinct();
                     }
-
+                    sales = sales.Where(w => CH.DB.EmployeeRoles.Any(e => e.AccountName == w && (e.Role.Level == ManagerRequired.LVL || e.Role.Level == LeaderRequired.LVL || e.Role.Level == MarketInterfaceRequired.LVL)) == false);
                     if (sales != null)
                     {
                         if (Utl.Utl.DebugModel() != true)
@@ -2502,20 +2502,55 @@ namespace BLL
 
         public static List<Project> GetProductInvolveProject()
         {
+            //var name = Employee.CurrentUserName;
+            //var now = DateTime.Now;
+            //var projects = CH.GetAllData<Project>(p => p.Product == name);
+            //var data = projects.FindAll(p => p.IsActived == true);
+            //return data;
+
             var name = Employee.CurrentUserName;
-            var now = DateTime.Now;
-            var projects = CH.GetAllData<Project>(p => p.Product == name);
-            var data = projects.FindAll(p => p.IsActived == true);
+            var projects = CH.GetAllData<Project>();
+
+            List<Project> data = new List<Project>();
+            foreach (var c in projects.FindAll(p => p.IsActived == true))
+            {
+                if (!string.IsNullOrEmpty(c.Product))
+                {
+                    var names = c.Product.Trim().Split(new string[] { ";", "；" }, StringSplitOptions.RemoveEmptyEntries);
+                    if (names.Contains(name))
+                    {
+                        data.Add(c);
+                    }
+                }
+            }
             return data;
         }
 
         public static List<Project> GetMarketInvolveProject()
         {
+            //var name = Employee.CurrentUserName;
+            //var now = DateTime.Now;
+            //var projects = CH.GetAllData<Project>();
+
+            //var data = projects.FindAll(p => p.Market == name && p.IsActived == true);
+            //return data;
+
+
             var name = Employee.CurrentUserName;
-            var now = DateTime.Now;
             var projects = CH.GetAllData<Project>();
 
-            var data = projects.FindAll(p => p.Market == name && p.IsActived == true);
+            List<Project> data = new List<Project>();
+            foreach (var c in projects.FindAll(p => p.IsActived == true))
+            {
+                if (!string.IsNullOrEmpty(c.Market))
+                {
+                    var names = c.Market.Trim().Split(new string[] { ";", "；" }, StringSplitOptions.RemoveEmptyEntries);
+                    if (names.Contains(name))
+                    {
+                        data.Add(c);
+                    }
+                }
+            }
             return data;
         }
 
