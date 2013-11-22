@@ -319,20 +319,20 @@ namespace Entity
         {
             startdate = startdate == null ? new DateTime(1, 1, 1) : startdate;
             enddate = enddate == null ? new DateTime(9999, 1, 1) : enddate;
-            var property = Employee.GetProfile("Contact",item.Name);
-            string phone = property == null ? string.Empty : property.ToString();
+            //var property = Employee.GetProfile("Contact",item.Name);
+            //string phone = property == null ? string.Empty : property.ToString();
             
-            var result = new ViewLeadCallAmount() { Member = item,Phone = phone};
-            var phonerecord = cs.FirstOrDefault(c => c.Phone == phone);
+             var result = new ViewLeadCallAmount() { Member = item};
+            //var phonerecord = cs.FirstOrDefault(c => c.Phone == phone);
 
-            if (phonerecord!=null)
-            {
-                result.Duration = phonerecord.Duration;
-                result.Cold_Calls = phonerecord.CallSum;
-            }
+            //if (phonerecord!=null)
+            //{
+            //    result.Duration = phonerecord.Duration;
+            //    result.Cold_Calls = phonerecord.CallSum;
+            //}
             
-            var lcs = CH.GetAllData<LeadCall>(l => l.MemberID == item.ID);
-
+           // var lcs = CH.GetAllData<LeadCall>(l => l.MemberID == item.ID);
+            var lcs = from c in CH.DB.LeadCalls where c.MemberID == item.ID && c.CallDate>= startdate && c.CallDate<= enddate select c;
             var dealins = CH.GetAllData<Deal>(d => d.Abandoned==false && d.Sales == item.Name && d.SignDate >= startdate && d.SignDate <= enddate && d.ProjectID == item.ProjectID);
             var checkins = CH.GetAllData<Deal>(d => d.Abandoned == false &&  d.Sales == item.Name && d.ActualPaymentDate >= startdate && d.ActualPaymentDate <= enddate && d.ProjectID == item.ProjectID);
             decimal checkinamount=0;
@@ -348,35 +348,52 @@ namespace Entity
 
             result.DealInAmount = dealinamount;
             result.CheckInAmount = checkinamount;
+            result.CallListAmount = lcs.Count();
+            //result.Others = lcs.Count(w=>w.LeadCallType.Code  ==1);
+            result.Blowed = lcs.Count(w => w.LeadCallType.Code == 20);
+            result.Not_Pitched = lcs.Count(w => w.LeadCallType.Code == 30);
+            result.Pitched = lcs.Count(w => w.LeadCallType.Code == 40);
+            result.Full_Pitched = lcs.Count(w => w.LeadCallType.Code == 50);
+        
+            result.Call_Backed = lcs.Count(w => w.LeadCallType.Code == 60);
+            result.Waiting_For_Approval = lcs.Count(w => w.LeadCallType.Code == 70);
 
-            lcs.FindAll(lc => lc.CallDate > startdate && lc.CallDate < enddate).ForEach(l =>
-            {
-                result.CallListAmount++;
 
-                if (l.LeadCallType.Code > 30)
-                    result.DMs++;
-                if (l.IsFirstPitch())
-                    result.New_DMs++;
+            result.Qualified_Decision = lcs.Count(w => w.LeadCallType.Code == 80);
+            result.Closed = lcs.Count(w => w.LeadCallType.Code == 90);
+            result.DMs = lcs.Count(w => w.LeadCallType.Code >= 40);
+            var calls = from l in CH.DB.LeadCalls.Where(w => w.LeadCallTypeID != null && w.LeadCallType.Code >= 40 && w.Project.IsActived == true) select l;
 
-                if (l.LeadCallTypeID == 1)
-                    result.Others++;
-                else if (l.LeadCallTypeID == 2)
-                    result.Blowed++;
-                else if (l.LeadCallTypeID == 3)
-                    result.Not_Pitched++;
-                else if (l.LeadCallTypeID == 4)
-                    result.Pitched++;
-                else if (l.LeadCallTypeID == 5)
-                    result.Full_Pitched++;
-                else if (l.LeadCallTypeID == 6)
-                    result.Call_Backed++;
-                else if (l.LeadCallTypeID == 7)
-                    result.Waiting_For_Approval++;
-                else if (l.LeadCallTypeID == 8)
-                    result.Qualified_Decision++;
-                else if (l.LeadCallTypeID == 9)
-                    result.Closed++;
-            });
+            //result.New_DMs = lcs.Where(w => w.LeadCallType.Code >= 40 && calls.Any(a => a.CallDate < w.CallDate && a.LeadID == w.LeadID)).GroupBy(g=>g.LeadID).Count();
+            result.New_DMs = calls.OrderBy(o => o.CallDate).GroupBy(g => g.LeadID).Select(s => s.FirstOrDefault()).Where(w => w.CallDate >= startdate && w.CallDate <= enddate && w.MemberID == item.ID　).Count();
+            //lcs.FindAll(lc => lc.CallDate > startdate && lc.CallDate < enddate).ForEach(l =>
+            //{
+            //    result.CallListAmount++;
+
+            //    if (l.LeadCallType.Code > 30)
+            //        result.DMs++;
+            //    if (l.IsFirstPitch())
+            //        result.New_DMs++;
+
+            //    if (l.LeadCallTypeID == 1)
+            //        result.Others++;
+            //    else if (l.LeadCallTypeID == 2)
+            //        result.Blowed++;
+            //    else if (l.LeadCallTypeID == 3)
+            //        result.Not_Pitched++;
+            //    else if (l.LeadCallTypeID == 4)
+            //        result.Pitched++;
+            //    else if (l.LeadCallTypeID == 5)
+            //        result.Full_Pitched++;
+            //    else if (l.LeadCallTypeID == 6)
+            //        result.Call_Backed++;
+            //    else if (l.LeadCallTypeID == 7)
+            //        result.Waiting_For_Approval++;
+            //    else if (l.LeadCallTypeID == 8)
+            //        result.Qualified_Decision++;
+            //    else if (l.LeadCallTypeID == 9)
+            //        result.Closed++;
+            //});
 
             return result;
         }
