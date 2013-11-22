@@ -56,7 +56,7 @@ function onCallTypeSelected() {
         if (type) {
             grid.filterBy = "LeadCallType~eq~'" + type + "'";
             if (member)
-                grid.filterBy = grid.filterBy + "Member~eq~'" + member + "'";
+                grid.filterBy = grid.filterBy + "~and~Member~eq~'" + member + "'";
             //grid.rebind(); 
             grid.ajaxRequest();
         }
