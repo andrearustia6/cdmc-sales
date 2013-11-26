@@ -167,9 +167,9 @@ namespace Sales.Controllers
         [GridAction]
         public ActionResult _SelectIndex(string filterId, int? projectId, string CompanyDealCodeLike, int? PaymentID, int? ParticipantsID,int? year,int? month)
         {
-            List<AjaxViewDeal> deals;
-            deals = getData(filterId, projectId, CompanyDealCodeLike, PaymentID, ParticipantsID,year,month).ToList<AjaxViewDeal>();
-            return View(new GridModel(deals));
+            //List<AjaxViewDeal> deals;
+           var deals = getData(filterId, projectId, CompanyDealCodeLike, PaymentID, ParticipantsID,year,month).ToList<AjaxViewDeal>();
+           return View(new GridModel(deals));
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
@@ -204,7 +204,7 @@ namespace Sales.Controllers
             return View(new GridModel(getData()));
         }
 
-        private List<AjaxViewDeal> getData(string filter = "", int? projectId = null, string CompanyDealCodeLike = "", int? PaymentID = null, int? ParticipantsID = null,int? year=null, int? month=null)
+        private IOrderedEnumerable<AjaxViewDeal> getData(string filter = "", int? projectId = null, string CompanyDealCodeLike = "", int? PaymentID = null, int? ParticipantsID = null,int? year=null, int? month=null)
         {
             var deals = CRM_Logical.GetDeals(false, projectId, null, filter);
 
@@ -294,7 +294,7 @@ namespace Sales.Controllers
                              ModifiedDate = d.ModifiedDate,
                              Role = emprole.Where(w=>w.AccountName==d.Sales).FirstOrDefault().Role.Name
                          };
-                return ds.OrderByDescending(o => o.SignDate).ToList();
+                return ds.OrderByDescending(o => o.SignDate);
             }
             else if (Employee.CurrentRole.Level == 3) //会务确定出单
             {
@@ -312,7 +312,7 @@ namespace Sales.Controllers
                     }
                 }
               
-                dllist = deals.Where(w => pids.Any(a => a == w.ProjectID)).ToList();
+                dllist = deals.Where(w => pids.Contains((int)w.ProjectID)).ToList();
                 var ds = from d in dllist
                          select new AjaxViewDeal
                          {
@@ -341,7 +341,7 @@ namespace Sales.Controllers
                              IsConfirm = (d.IsConfirm == true ? "是" : "否"),
                              ModifiedDate = d.ModifiedDate,
                          };
-                return ds.OrderByDescending(o => o.SignDate).ToList();
+                return ds.OrderByDescending(o => o.SignDate);
             }
             else//板块修改deal
             {
@@ -374,7 +374,7 @@ namespace Sales.Controllers
                              IsConfirm = (d.IsConfirm == true ? "是" : "否"),
                              ModifiedDate = d.ModifiedDate,
                          };
-                return ds.OrderByDescending(o => o.SignDate).ToList();
+                return ds.OrderByDescending(o => o.SignDate);
             }
         }
 
