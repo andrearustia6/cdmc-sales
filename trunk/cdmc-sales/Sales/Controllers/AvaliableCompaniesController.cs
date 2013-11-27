@@ -127,7 +127,7 @@ namespace Sales.Controllers
                     lead.LeadRoles += leadrole + ";";
                 }
             }
-
+            lead.Deleted = false;
             CH.Create<Lead>(lead);
             return Content(lead.ID.ToString());
         }
@@ -443,6 +443,7 @@ namespace Sales.Controllers
             companyRelationship.MarkForDelete = false;
             companyRelationship.CreatedDate = DateTime.Now;
             companyRelationship.ModifiedDate = DateTime.Now;
+            companyRelationship.Deleted = false;
             if (ajaxViewSaleCompany.Categories != null)
             {
                 companyRelationship.Categorys = CH.GetAllData<Category>(c => ajaxViewSaleCompany.Categories.Contains(c.ID)).ToList();
@@ -495,6 +496,7 @@ namespace Sales.Controllers
             leadCall.ProjectID = ajaxViewLeadCall.ProjectId;
             leadCall.Result = ajaxViewLeadCall.Result;
             leadCall.MarkForDelete = false;
+            leadCall.Deleted = false;
             CH.Create<LeadCall>(leadCall);
 
             CompanyRelationship ship = CH.GetDataById<CompanyRelationship>(ajaxViewLeadCall.CompanyRelationshipId);
@@ -545,6 +547,7 @@ namespace Sales.Controllers
             comm.Submitter = Employee.CurrentUserName;
             comm.Contents = comment.Contents;
             comm.CompanyRelationshipID = comment.CRMID;
+            comm.Deleted = false;
             CH.Create<Comment>(comm);
 
             CompanyRelationship crm = CH.GetDataById<CompanyRelationship>(comment.CRMID);
@@ -590,6 +593,7 @@ namespace Sales.Controllers
             companyRelationship.ModifiedDate = DateTime.Now;
             companyRelationship.PitchedPoint = string.IsNullOrEmpty(quickEntry.PitchedPoint) ? "" : quickEntry.PitchedPoint.Trim();
             companyRelationship.Description = string.IsNullOrEmpty(quickEntry.Desc) ? "" : quickEntry.Desc.Trim();
+            companyRelationship.Deleted = false;
             if (quickEntry.Categories != null)
             {
                 companyRelationship.Categorys = CH.GetAllData<Category>(c => quickEntry.Categories.Contains(c.ID)).ToList();
@@ -624,6 +628,7 @@ namespace Sales.Controllers
                     MarkForDelete = false,
                     CreatedDate = DateTime.Now,
                     ModifiedDate = DateTime.Now,
+                    Deleted=false,
                 };
 
                 CH.Create<Lead>(lead);
@@ -643,7 +648,8 @@ namespace Sales.Controllers
                         MemberID = mem.ID,
                         ProjectID = quickEntry.ProjectId,
                         Result = string.IsNullOrEmpty(quickEntry.Result) ? "" : quickEntry.Result.Trim(),
-                        MarkForDelete = false
+                        MarkForDelete = false,
+                        Deleted=false,
                     };
                     CH.Create<LeadCall>(leadCall);
                 }
@@ -691,6 +697,7 @@ namespace Sales.Controllers
             companyRelationship.MarkForDelete = false;
             companyRelationship.CreatedDate = DateTime.Now;
             companyRelationship.ModifiedDate = DateTime.Now;
+            companyRelationship.Deleted = false;
             companyRelationship.PitchedPoint = string.IsNullOrEmpty(bulkEntry.PitchedPoint) ? "" : bulkEntry.PitchedPoint.Trim();
             if (bulkEntry.Categories != null)
             {
@@ -756,6 +763,7 @@ namespace Sales.Controllers
                                 MarkForDelete = false,
                                 CreatedDate = DateTime.Now,
                                 ModifiedDate = DateTime.Now,
+                                Deleted=false,
                             };
                             CH.Create<Lead>(lead);
                         }
@@ -1395,6 +1403,7 @@ namespace Sales.Controllers
                 //item.AbandonReason = string.IsNullOrEmpty(item.AbandonReason) ? "" : item.AbandonReason.Trim();
                 item.PaymentDetail = string.IsNullOrEmpty(item.PaymentDetail) ? "" : item.PaymentDetail.Trim();
                 item.Sales = item.Sales.Trim();
+                item.Deleted = false;
                 CH.Create<Deal>(item);
                 if (item.ID > 0)
                 {
