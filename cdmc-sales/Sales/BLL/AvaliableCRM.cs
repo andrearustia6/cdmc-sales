@@ -32,7 +32,7 @@ namespace Sales.BLL
         static IQueryable<_CoreLVL> GetGroupedCRM(bool memberonly, CRMFilters filters = null)
         {
             if (filters == null) filters.ProjectId = 26;
-            var crms = from c in CH.DB.CompanyRelationships where c.ProjectID == filters.ProjectId select c;
+            var crms = from c in CH.DB.CompanyRelationships where c.ProjectID == filters.ProjectId && c.Deleted==false select c;
             if (memberonly)
             {
                 if (Employee.CurrentRole.Level == SalesRequired.LVL || Employee.CurrentRole.Level == MarketInterfaceRequired.LVL || Employee.CurrentRole.Level == ProductInterfaceRequired.LVL)
@@ -47,7 +47,7 @@ namespace Sales.BLL
             //模糊搜索
             if (filters != null && !string.IsNullOrWhiteSpace(filters.FuzzyQuery))
             {
-                crms = crms.Where(q => q.Company.Leads.Any(l => l.Name_CH.Contains(filters.FuzzyQuery) || l.Name_EN.Contains(filters.FuzzyQuery) || l.EMail.Contains(filters.FuzzyQuery) || l.PersonalEmailAddress.Contains(filters.FuzzyQuery)) || q.Company.Name_CH.Contains(filters.FuzzyQuery) || q.Company.Name_EN.Contains(filters.FuzzyQuery) || q.Company.Contact.Contains(filters.FuzzyQuery));
+                crms = crms.Where(q => q.Company.Leads.Any(l =>  l.Deleted==false &&(l.Name_CH.Contains(filters.FuzzyQuery) || l.Name_EN.Contains(filters.FuzzyQuery) || l.EMail.Contains(filters.FuzzyQuery) || l.PersonalEmailAddress.Contains(filters.FuzzyQuery)) || q.Company.Name_CH.Contains(filters.FuzzyQuery) || q.Company.Name_EN.Contains(filters.FuzzyQuery) || q.Company.Contact.Contains(filters.FuzzyQuery)));
             }
             //行业
             if (filters != null && filters.CategoryId.HasValue)
@@ -93,8 +93,8 @@ namespace Sales.BLL
                                                              CompanyNameCH = crm.Company.Name_CH,
                                                              CompanyNameEN = crm.Company.Name_EN,
                                                              CoreCompany = c.CoreLVLName == "核心公司" ? true : false,
-                                                             ContectedLeadCount = CH.DB.Leads.Where(l => l.CompanyID == crm.CompanyID && crm.LeadCalls.Any(w => w.LeadID == l.ID)).Count(),
-                                                             LeadCount = CH.DB.Leads.Where(l => l.CompanyID == crm.CompanyID).Count(),
+                                                             ContectedLeadCount = CH.DB.Leads.Where(l => l.CompanyID == crm.CompanyID && l.Deleted == false && crm.LeadCalls.Any(w => w.LeadID == l.ID)).Count(),
+                                                             LeadCount = CH.DB.Leads.Where(l => l.CompanyID == crm.CompanyID && l.Deleted==false).Count(),
                                                              CrmCommentStateID = crm.CrmCommentStateID,
                                                              CrmCommentStateIDOrder = (crm.CrmCommentStateID == 1 || crm.CrmCommentStateID == 2 || crm.CrmCommentStateID == 3) ? "a" : "b",
                                                              _Comments = (from co in crm.Comments.OrderByDescending(m => m.CommentDate)
@@ -113,7 +113,7 @@ namespace Sales.BLL
         static IQueryable<_CoreLVL> GetPublicCRM(bool memberonly, CRMFilters filters = null)
         {
             if (filters.ProjectId == null) filters.ProjectId = 26;
-            var crms = from c in CH.DB.CompanyRelationships where c.ProjectID == filters.ProjectId select c;
+            var crms = from c in CH.DB.CompanyRelationships where c.ProjectID == filters.ProjectId && c.Deleted==false select c;
 
             if (memberonly)
             {
@@ -130,7 +130,7 @@ namespace Sales.BLL
             //模糊搜索
             if (filters != null && !string.IsNullOrWhiteSpace(filters.FuzzyQuery))
             {
-                crms = crms.Where(q => q.Company.Leads.Any(l => l.Name_CH.Contains(filters.FuzzyQuery) || l.Name_EN.Contains(filters.FuzzyQuery) || l.EMail.Contains(filters.FuzzyQuery) || l.PersonalEmailAddress.Contains(filters.FuzzyQuery)) || q.Company.Name_CH.Contains(filters.FuzzyQuery) || q.Company.Name_EN.Contains(filters.FuzzyQuery) || q.Company.Contact.Contains(filters.FuzzyQuery));
+                crms = crms.Where(q => q.Company.Leads.Any(l =>  l.Deleted==false &&( l.Name_CH.Contains(filters.FuzzyQuery) || l.Name_EN.Contains(filters.FuzzyQuery) || l.EMail.Contains(filters.FuzzyQuery) || l.PersonalEmailAddress.Contains(filters.FuzzyQuery)) || q.Company.Name_CH.Contains(filters.FuzzyQuery) || q.Company.Name_EN.Contains(filters.FuzzyQuery) || q.Company.Contact.Contains(filters.FuzzyQuery)));
             }
             //行业
             if (filters != null && filters.CategoryId.HasValue)
@@ -194,13 +194,13 @@ namespace Sales.BLL
         {
             var data = CH.GetDataById<CompanyRelationship>(crmid);
             bool hasvalue = false;
-            var callsgrp = data.LeadCalls.OrderByDescending(c => c.CallDate).GroupBy(c => c.LeadID).Where(g => g.Count() >= 1).Select(g => g.ElementAt(0));
+            var callsgrp = data.LeadCalls.Where(w=>w.Deleted==false).OrderByDescending(c => c.CallDate).GroupBy(c => c.LeadID).Where(g => g.Count() >= 1).Select(g => g.ElementAt(0));
             //覆盖率 = 以打lead数/总数 *１００％
             // 不同时差数，是ｌｅａｄ所在ｌｅａｄｄｉｓｃｔｉｎｃｔｉｄ有几个不同
             //  个人类型数量是个ｌｉｓｔ
             // 各个ｃａｌｌｔｙｐｅ的数量
-            var leadids = data.Company.Leads.Select(s=>s.ID);
-            var hiscall = from c in CH.DB.LeadCalls where leadids.Any(a => a==c.LeadID && c.ProjectID != data.ProjectID)
+            var leadids = data.Company.Leads.Where(w=>w.Deleted==false).Select(s=>s.ID);
+            var hiscall = from c in CH.DB.LeadCalls where leadids.Any(a => a==c.LeadID && c.ProjectID != data.ProjectID) && c.Deleted==false
                           orderby c.CallDate descending
                           select c;
 
@@ -229,15 +229,15 @@ namespace Sales.BLL
                 CoreLVLID = data.CoreLVLID,
                 CrmStatisitcs = new _CrmStatisitcs()
                                 {
-                                    LeadCount = data.Company.Leads.Count(),
-                                    CallCount = data.LeadCalls.Count(),
-                                    LeadMaxCallCount = data.LeadCalls.GroupBy(lc => lc.LeadID).Select(k => new { Name = k.Key, Count = k.Count() }).OrderByDescending(m => m.Count).FirstOrDefault() != null ? data.LeadCalls.GroupBy(lc => lc.LeadID).Select(k => new { Name = k.Key, Count = k.Count() }).OrderByDescending(m => m.Count).FirstOrDefault().Count : 0,
-                                    LeadAvgCallCount = data.Company.Leads.Count != 0 ? (double)data.LeadCalls.Count() / (double)data.Company.Leads.Count() : 0,
-                                    CoverageRate = data.Company.Leads.Count != 0 ? ((double)callsgrp.Count() / (double)data.Company.Leads.Count()) * 100 : 0,
-                                    TimeDiffer = data.Company.Leads.GroupBy(l => l.DistrictNumberID).Count(),
-                                    LeadCalledCount = data.LeadCalls.GroupBy(lc => lc.LeadID).Count(),
+                                    LeadCount = data.Company.Leads.Count(f=>f.Deleted==false),
+                                    CallCount = data.LeadCalls.Count(f => f.Deleted == false),
+                                    LeadMaxCallCount = data.LeadCalls.Where(f=>f.Deleted==false).GroupBy(lc => lc.LeadID).Select(k => new { Name = k.Key, Count = k.Count() }).OrderByDescending(m => m.Count).FirstOrDefault() != null ? data.LeadCalls.Where(f=>f.Deleted==false).GroupBy(lc => lc.LeadID).Select(k => new { Name = k.Key, Count = k.Count() }).OrderByDescending(m => m.Count).FirstOrDefault().Count : 0,
+                                    LeadAvgCallCount = data.Company.Leads.Where(f=>f.Deleted==false).Count() != 0 ? (double)data.LeadCalls.Count(f => f.Deleted == false) / (double)data.Company.Leads.Count(f => f.Deleted == false) : 0,
+                                    CoverageRate = data.Company.Leads.Where(f => f.Deleted == false).Count() != 0 ? ((double)callsgrp.Count() / (double)data.Company.Leads.Count(f => f.Deleted == false)) * 100 : 0,
+                                    TimeDiffer = data.Company.Leads.Where(f => f.Deleted == false).GroupBy(l => l.DistrictNumberID).Count(),
+                                    LeadCalledCount = data.LeadCalls.Where(f => f.Deleted == false).GroupBy(lc => lc.LeadID).Count(),
 
-                                    CallTypeCounts = from grp in data.LeadCalls.GroupBy(lc => lc.LeadCallTypeID)
+                                    CallTypeCounts = from grp in data.LeadCalls.Where(f => f.Deleted == false).GroupBy(lc => lc.LeadCallTypeID)
                                                      select new CallTypeCount()
                                                      {
                                                          TypeName = CH.GetDataById<LeadCallType>(grp.Key).Name,
@@ -265,7 +265,7 @@ namespace Sales.BLL
                 Description = data.Description,
                 Competitor = data.Company.Competitor,
                 PitchPoint = data.PitchedPoint,
-                _Leads = (from leads in data.Company.Leads
+                _Leads = (from leads in data.Company.Leads.Where(f => f.Deleted == false)
                           select new _Lead()
                           {
                               ID = leads.ID,
@@ -278,9 +278,11 @@ namespace Sales.BLL
                               TelePhone = leads.Contact,
                               Email = leads.EMail,
                               Gender = !string.IsNullOrEmpty(leads.Gender) ? leads.Gender : "",
-                              LastCallTypeID = data.LeadCalls.Where(c => c.LeadID == leads.ID).OrderByDescending(c => c.CallDate).FirstOrDefault() == null ? 0 : data.LeadCalls.Where(c => c.LeadID == leads.ID).OrderByDescending(c => c.CallDate).FirstOrDefault().LeadCallTypeID,
+                              
+                              LastCallTypeID = data.LeadCalls.Where(c => c.LeadID == leads.ID && c.Deleted==false).OrderByDescending(c => c.CallDate).FirstOrDefault() == null ? 0 : data.LeadCalls.Where(c => c.LeadID == leads.ID && c.Deleted==false).OrderByDescending(c => c.CallDate).FirstOrDefault().LeadCallTypeID,
+                              OwnLeader = data.Members.Where(w=>w.Name==Employee.CurrentUserName).Any()
                           }),
-                _LeadCalls = (from leadcalls in data.LeadCalls.OrderByDescending(m => m.CallDate)
+                _LeadCalls = (from leadcalls in data.LeadCalls.Where(f => f.Deleted == false).OrderByDescending(m => m.CallDate)
                               select new _LeadCall()
                               {
                                   LeadID = leadcalls.LeadID,
@@ -314,7 +316,7 @@ namespace Sales.BLL
         public static _CRM _CRMGetAvaliableCrmDetailByCrmIDLeadID(int crmid, int leadid)
         {
             var data = CH.GetDataById<CompanyRelationship>(crmid);
-            var callsgrp = data.LeadCalls.OrderByDescending(c => c.CallDate).GroupBy(c => c.LeadID)
+            var callsgrp = data.LeadCalls.Where(f => f.Deleted == false).OrderByDescending(c => c.CallDate).GroupBy(c => c.LeadID)
                                 .Where(g => g.Count() >= 1)
                                 .Select(g => g.ElementAt(0));
             var crm = new _CRM()
@@ -341,15 +343,15 @@ namespace Sales.BLL
                 _members = data.Members,
                 CrmStatisitcs = new _CrmStatisitcs()
                 {
-                    LeadCount = data.Company.Leads.Count(),
-                    CallCount = data.LeadCalls.Count(),
-                    LeadMaxCallCount = data.LeadCalls.GroupBy(lc => lc.LeadID).Select(k => new { Name = k.Key, Count = k.Count() }).OrderByDescending(m => m.Count).FirstOrDefault() != null ? data.LeadCalls.GroupBy(lc => lc.LeadID).Select(k => new { Name = k.Key, Count = k.Count() }).OrderByDescending(m => m.Count).FirstOrDefault().Count : 0,
-                    LeadAvgCallCount = data.Company.Leads.Count != 0 ? (double)data.LeadCalls.Count() / (double)data.Company.Leads.Count() : 0,
-                    CoverageRate = data.Company.Leads.Count != 0 ? ((double)callsgrp.Count() / (double)data.Company.Leads.Count()) * 100 : 0,
-                    TimeDiffer = data.Company.Leads.GroupBy(l => l.DistrictNumberID).Count(),
-                    LeadCalledCount = data.LeadCalls.GroupBy(lc => lc.LeadID).Count(),
+                    LeadCount = data.Company.Leads.Where(f => f.Deleted == false).Count(),
+                    CallCount = data.LeadCalls.Where(f => f.Deleted == false).Count(),
+                    LeadMaxCallCount = data.LeadCalls.Where(f => f.Deleted == false).GroupBy(lc => lc.LeadID).Select(k => new { Name = k.Key, Count = k.Count() }).OrderByDescending(m => m.Count).FirstOrDefault() != null ? data.LeadCalls.Where(f=>f.Deleted==false).GroupBy(lc => lc.LeadID).Select(k => new { Name = k.Key, Count = k.Count() }).OrderByDescending(m => m.Count).FirstOrDefault().Count : 0,
+                    LeadAvgCallCount = data.Company.Leads.Where(f => f.Deleted == false).Count() != 0 ? (double)data.LeadCalls.Count(f => f.Deleted == false) / (double)data.Company.Leads.Count(f => f.Deleted == false) : 0,
+                    CoverageRate = data.Company.Leads.Count(f => f.Deleted == false) != 0 ? ((double)callsgrp.Count() / (double)data.Company.Leads.Count(f => f.Deleted == false)) * 100 : 0,
+                    TimeDiffer = data.Company.Leads.Where(f => f.Deleted == false).GroupBy(l => l.DistrictNumberID).Count(),
+                    LeadCalledCount = data.LeadCalls.Where(f => f.Deleted == false).GroupBy(lc => lc.LeadID).Count(),
 
-                    CallTypeCounts = from grp in data.LeadCalls.GroupBy(lc => lc.LeadCallTypeID)
+                    CallTypeCounts = from grp in data.LeadCalls.Where(f => f.Deleted == false).GroupBy(lc => lc.LeadCallTypeID)
                                      select new CallTypeCount()
                                      {
                                          TypeName = CH.GetDataById<LeadCallType>(grp.Key).Name,
@@ -375,7 +377,7 @@ namespace Sales.BLL
                 Description = data.Description,
                 Competitor = data.Company.Competitor,
                 PitchPoint = data.PitchedPoint,
-                _Leads = (from leads in data.Company.Leads
+                _Leads = (from leads in data.Company.Leads.Where(f => f.Deleted == false)
                           select new _Lead()
                           {
                               ID = leads.ID,
@@ -387,9 +389,9 @@ namespace Sales.BLL
                               TelePhone = leads.Contact,
                               Email = leads.EMail,
                               Gender = !string.IsNullOrEmpty(leads.Gender) ? leads.Gender : "",
-                              LastCallTypeID = data.LeadCalls.Where(c => c.LeadID == leads.ID).OrderByDescending(c => c.CallDate).FirstOrDefault() == null ? 0 : data.LeadCalls.Where(c => c.LeadID == leads.ID).OrderByDescending(c => c.CallDate).FirstOrDefault().LeadCallTypeID
+                              LastCallTypeID = data.LeadCalls.Where(c => c.LeadID == leads.ID && c.Deleted==false).OrderByDescending(c => c.CallDate).FirstOrDefault() == null ? 0 : data.LeadCalls.Where(c => c.LeadID == leads.ID && c.Deleted==false).OrderByDescending(c => c.CallDate).FirstOrDefault().LeadCallTypeID
                           }),
-                _LeadCalls = (from leadcalls in data.LeadCalls.OrderByDescending(m => m.CallDate)
+                _LeadCalls = (from leadcalls in data.LeadCalls.Where(f => f.Deleted == false).OrderByDescending(m => m.CallDate)
                               select new _LeadCall()
                               {
                                   LeadID = leadcalls.LeadID,
@@ -411,7 +413,7 @@ namespace Sales.BLL
         public static _CRM _CRMGetAvaliableCrmDetailByCrmIDMember(int crmid, string membername)
         {
             var data = CH.GetDataById<CompanyRelationship>(crmid);
-            var callsgrp = data.LeadCalls.OrderByDescending(c => c.CallDate).GroupBy(c => c.LeadID)
+            var callsgrp = data.LeadCalls.Where(f => f.Deleted == false).OrderByDescending(c => c.CallDate).GroupBy(c => c.LeadID)
                                 .Where(g => g.Count() >= 1)
                                 .Select(g => g.ElementAt(0));
             var crm = new _CRM()
@@ -438,14 +440,14 @@ namespace Sales.BLL
                 _members = data.Members,
                 CrmStatisitcs = new _CrmStatisitcs()
                 {
-                    LeadCount = data.Company.Leads.Count(),
-                    CallCount = data.LeadCalls.Where(cc => cc.Member.Name == membername).Count(),
-                    LeadMaxCallCount = data.LeadCalls.Where(cc => cc.Member.Name == membername).GroupBy(lc => lc.LeadID).Select(k => new { Name = k.Key, Count = k.Count() }).OrderByDescending(m => m.Count).FirstOrDefault() != null ? data.LeadCalls.Where(cc => cc.Member.Name == membername).GroupBy(lc => lc.LeadID).Select(k => new { Name = k.Key, Count = k.Count() }).OrderByDescending(m => m.Count).FirstOrDefault().Count : 0,
-                    LeadAvgCallCount = data.Company.Leads.Count != 0 ? (double)data.LeadCalls.Where(cc => cc.Member.Name == membername).Count() / (double)data.Company.Leads.Count() : 0,
-                    CoverageRate = data.Company.Leads.Count != 0 ? (double)callsgrp.Count() / (double)data.Company.Leads.Count() * 100 : 0,
-                    TimeDiffer = data.Company.Leads.GroupBy(l => l.DistrictNumberID).Count(),
-                    LeadCalledCount = data.LeadCalls.Where(cc => cc.Member.Name == membername).GroupBy(lc => lc.LeadID).Count(),
-                    CallTypeCounts = from grp in data.LeadCalls.Where(cc => cc.Member.Name == membername).GroupBy(lc => lc.LeadCallTypeID)
+                    LeadCount = data.Company.Leads.Where(f => f.Deleted == false).Count(),
+                    CallCount = data.LeadCalls.Where(cc => cc.Member.Name == membername && cc.Deleted==false).Count(),
+                    LeadMaxCallCount = data.LeadCalls.Where(cc => cc.Member.Name == membername && cc.Deleted==false).GroupBy(lc => lc.LeadID).Select(k => new { Name = k.Key, Count = k.Count() }).OrderByDescending(m => m.Count).FirstOrDefault() != null ? data.LeadCalls.Where(cc => cc.Member.Name == membername).GroupBy(lc => lc.LeadID).Select(k => new { Name = k.Key, Count = k.Count() }).OrderByDescending(m => m.Count).FirstOrDefault().Count : 0,
+                    LeadAvgCallCount = data.Company.Leads.Count(f => f.Deleted == false) != 0 ? (double)data.LeadCalls.Where(cc => cc.Member.Name == membername).Count(f => f.Deleted == false) / (double)data.Company.Leads.Count(f => f.Deleted == false) : 0,
+                    CoverageRate = data.Company.Leads.Count(f => f.Deleted == false) != 0 ? (double)callsgrp.Count() / (double)data.Company.Leads.Count(f => f.Deleted == false) * 100 : 0,
+                    TimeDiffer = data.Company.Leads.Where(f => f.Deleted == false).GroupBy(l => l.DistrictNumberID).Count(),
+                    LeadCalledCount = data.LeadCalls.Where(cc => cc.Member.Name == membername && cc.Deleted==false).GroupBy(lc => lc.LeadID).Count(),
+                    CallTypeCounts = from grp in data.LeadCalls.Where(cc => cc.Member.Name == membername && cc.Deleted==false).GroupBy(lc => lc.LeadCallTypeID)
                                      select new CallTypeCount()
                                      {
                                          TypeName = CH.GetDataById<LeadCallType>(grp.Key).Name,
@@ -472,7 +474,7 @@ namespace Sales.BLL
                 Description = data.Description,
                 Competitor = data.Company.Competitor,
                 PitchPoint = data.PitchedPoint,
-                _Leads = (from leads in data.Company.Leads
+                _Leads = (from leads in data.Company.Leads.Where(f => f.Deleted == false)
                           select new _Lead()
                           {
                               ID = leads.ID,
@@ -484,9 +486,9 @@ namespace Sales.BLL
                               TelePhone = leads.Contact,
                               Email = leads.EMail,
                               Gender = !string.IsNullOrEmpty(leads.Gender) ? leads.Gender : "",
-                              LastCallTypeID = data.LeadCalls.Where(c => c.LeadID == leads.ID).OrderByDescending(c => c.CallDate).FirstOrDefault() == null ? 0 : data.LeadCalls.Where(c => c.LeadID == leads.ID).OrderByDescending(c => c.CallDate).FirstOrDefault().LeadCallTypeID
+                              LastCallTypeID = data.LeadCalls.Where(c => c.LeadID == leads.ID && c.Deleted==false).OrderByDescending(c => c.CallDate).FirstOrDefault() == null ? 0 : data.LeadCalls.Where(c => c.LeadID == leads.ID && c.Deleted==false).OrderByDescending(c => c.CallDate).FirstOrDefault().LeadCallTypeID
                           }),
-                _LeadCalls = (from leadcalls in data.LeadCalls.OrderByDescending(m => m.CallDate)
+                _LeadCalls = (from leadcalls in data.LeadCalls.Where(f => f.Deleted == false).OrderByDescending(m => m.CallDate)
                               select new _LeadCall()
                               {
                                   LeadID = leadcalls.LeadID,
@@ -518,12 +520,12 @@ namespace Sales.BLL
              new _CoreLVL
              {
                  CoreName = core.CoreLVLName,
-                 CrmCount = CH.DB.CompanyRelationships.Count(w => w.ProjectID == projectid && w.CoreLVLID == core.ID),
+                 CrmCount = CH.DB.CompanyRelationships.Where(f => f.Deleted == false).Count(w => w.ProjectID == projectid && w.CoreLVLID == core.ID),
                  _Maturitys = (from m in CH.DB.Progresss
                                select new _Maturity()
                                {
                                    Name = m.Name,
-                                   _CRMs = from crm in CH.DB.CompanyRelationships.Where(w => w.ProjectID == projectid && w.CoreLVLID == core.ID)
+                                   _CRMs = from crm in CH.DB.CompanyRelationships.Where(w => w.ProjectID == projectid && w.CoreLVLID == core.ID && w.Deleted==false)
                                            select new _CRM()
                                            {
                                                _Categorys = (from cate in crm.Categorys

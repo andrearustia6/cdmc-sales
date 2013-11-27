@@ -119,25 +119,28 @@
     </div>
     <div class="editor-field">
          
-        @Html.Telerik().ComboBoxFor(model => model.TeamLeader).BindTo(new SelectList(Employee.GetEmplyeeByLVL(LeaderRequired.LVL,ManagerRequired.LVL)))
+        @*@Html.Telerik().ComboBoxFor(model => model.TeamLeader).BindTo(new SelectList(Employee.GetEmplyeeByLVL(LeaderRequired.LVL,ManagerRequired.LVL)))*@
+        @Html.Telerik().AutoCompleteFor(model => model.TeamLeader).AutoFill(true).Multiple(multi => { multi.Separator("; ").Enabled(true); }).BindTo(Employee.GetEmplyeeByLVL(LeaderRequired.LVL))
         @Html.ValidationMessageFor(model => model.TeamLeader)
     </div>
       <div class="editor-label">
         @Html.LabelFor(model => model.Market)
     </div>
     <div class="editor-field">
-         @Html.Telerik().ComboBoxFor(model => model.Market).BindTo(new SelectList(Employee.GetEmplyeeByLVL(MarketInterfaceRequired.LVL)))
+         @*@Html.Telerik().ComboBoxFor(model => model.Market).BindTo(new SelectList(Employee.GetEmplyeeByLVL(MarketInterfaceRequired.LVL)))*@
+         @Html.Telerik().AutoCompleteFor(model => model.Product).AutoFill(true).Multiple(multi => { multi.Separator("; ").Enabled(true); }).BindTo(Employee.GetEmplyeeByLVL(MarketInterfaceRequired.LVL))
         @Html.ValidationMessageFor(model => model.Market)
     </div>
     <div class="editor-label">
         @Html.LabelFor(model => model.Product)
     </div>
     <div class="editor-field">
-        @Html.Telerik().ComboBoxFor(model => model.Product).BindTo(new SelectList(Employee.GetEmplyeeByLVL( ProductInterfaceRequired.LVL )))
+        @*@Html.Telerik().ComboBoxFor(model => model.Product).BindTo(new SelectList(Employee.GetEmplyeeByLVL( ProductInterfaceRequired.LVL )))*@
+        @Html.Telerik().AutoCompleteFor(model => model.Product).AutoFill(true).Multiple(multi => { multi.Separator("; ").Enabled(true); }).BindTo(Employee.GetEmplyeeByLVL(ProductInterfaceRequired.LVL))
         @Html.ValidationMessageFor(model => model.Product)
     </div>
      <div class="editor-label">
-        @Html.LabelFor(model => model.Conference)
+        @Html.LabelFor(model => model.Conference) 
     </div>
     <div class="editor-field">
         

@@ -150,6 +150,12 @@ namespace Entity
 
         [Display(Name = "VIP客户")]
         public bool? IsVIP { get; set; }
+
+        [Display(Name = "Info/会展")]
+        public string Info { get; set; }
+
+        [Display(Name = "Info/会展说明")]
+        public string InfoRemark { get; set; }
     }
 
     /// <summary>
@@ -262,6 +268,9 @@ namespace Entity
 
         [Display(Name = "是否有效")]
         public bool? IsValid { get; set; }
+
+        [Display(Name = "删除")]
+        public bool? Deleted { get; set; }
     }
 
     /// <summary>
@@ -344,5 +353,8 @@ namespace Entity
         //public int? CompanyID { get; set; }
 
         //public bool? IsImport { get; set; }
+
+        [Display(Name = "删除")]
+        public bool? Deleted { get; set; }
     }
 }

@@ -691,7 +691,23 @@
                                         }
                                             </dt>
                                         <dd>
-                                            <p title="@lead.Contact">@lead.Contact</p>
+                                            <p >
+                                            @if (@lead.OwnLeader)
+                                            {
+                                                @lead.Contact
+                                            }
+                                            else
+                                            {
+                                                if(@lead.Contact.Length>4)
+                                                {
+                                                    @lead.Contact.Substring(0, @lead.Contact.Length - 4).PadRight(@lead.Contact.Length, '*');
+                                                }
+                                                else
+                                                {
+                                                    @lead.Contact
+                                                }
+                                            }
+                                                </p>
                                         </dd>
                                     </dl>
                                   }
@@ -716,7 +732,23 @@
                                             <img  src="../images/zuoji.png" width="15" height="15" alt="yuan" />
                                         }</dt>
                                         <dd>
-                                            <p title="@lead.TelePhone">@lead.TelePhone</p>
+                                            <p >
+                                            @if (@lead.OwnLeader)
+                                            {
+                                                @lead.TelePhone
+                                            }
+                                            else
+                                            {
+                                                if (@lead.TelePhone.Length > 4)
+                                                {
+                                                    @lead.TelePhone.Substring(0, @lead.TelePhone.Length - 4).PadRight(@lead.TelePhone.Length, '*');
+                                                }
+                                                else
+                                                {
+                                                    @lead.TelePhone
+                                                }
+                                            }
+                                            </p>
                                         </dd>
                                     </dl>
                                   }
@@ -750,11 +782,11 @@
                             </div>
                         </div>
                     </span> 
-                    index++;
-                    if (index > 2)
-                    {
-                        index = 1;
-                    }
+                                  index++;
+                                  if (index > 2)
+                                  {
+                                      index = 1;
+                                  }
                 }
             }
             @Html.Hidden("LeadIdHidden", string.IsNullOrEmpty(leadhide) ? "" : leadhide.Substring(0, leadhide.Length - 1))

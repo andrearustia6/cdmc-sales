@@ -1,0 +1,236 @@
+﻿@using Entity
+@using Sales.Model
+@model List<Model.AjaxViewLead>
+@for (int i = 0; i < Model.Count; i++)
+{
+using (Html.BeginForm(null, null, FormMethod.Post, new { id = Model[i].LeadId }))
+{
+    var DistrictNumberID = Model[i].DistrictNumberId;
+    var Gender = Model[i].Gender;
+    <fieldset>
+    
+        <legend >Lead信息<input type='checkbox' name='checkedLead' value='@Model[i].LeadId' onclick='setmainleadid(@Model[i].LeadId)'/>
+        <div id="leadid@{@Model[i].LeadId}" class="deletediv" style="display:none; color:Red; font-weight:bold;">删除</div>
+        </legend>
+         @Html.Hidden("LeadId", Model[i].LeadId)
+    <table class="leadinput">
+        <tr>
+            <td colspan="4"><span id="Msg" style="color:Red;"></span></td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(model => model[i].Name_CN)
+                @Html.TextBoxFor(model => model[i].Name_CN)
+            </td>
+             <td>@Html.LabelFor(model => model[i].Name_EN)
+                @Html.TextBoxFor(model => model[i].Name_EN)
+            </td>
+            <td>
+                @Html.LabelFor(model => model[i].Gender)
+                @Html.DropDownListFor(model => model[i].Gender, Utl.SelectHelper.GenderSelectList(Gender), "-请选择-")
+            </td>
+           
+            <td>
+                @Html.LabelFor(model => model[i].Title)
+                @Html.TextBoxFor(model => model[i].Title)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(model => model[i].Telephone)
+                @Html.TextBoxFor(model => model[i].Telephone)
+            </td>
+            <td>
+                @Html.LabelFor(model => model[i].CellPhone)
+                @Html.TextBoxFor(model => model[i].CellPhone)
+            </td>
+             <td>
+                @Html.LabelFor(model => model[i].Department)
+                @Html.TextBoxFor(model => model[i].Department)
+            </td>
+           
+            <td>
+                @Html.LabelFor(model => model[i].WorkingEmail)
+                @Html.TextBoxFor(model => model[i].WorkingEmail)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(model => model[i].PersonalPhone)
+                @Html.TextBoxFor(model => model[i].PersonalPhone)
+            </td>
+            <td>
+                @Html.LabelFor(model => model[i].PersonalCellPhone)
+                @Html.TextBoxFor(model => model[i].PersonalCellPhone)
+            </td>
+             <td>
+                @Html.LabelFor(model => model[i].Fax)
+                @Html.TextBoxFor(model => model[i].Fax)
+            </td>
+            <td>
+                @Html.LabelFor(model => model[i].PersonelEmail)
+                @Html.TextBoxFor(model => model[i].PersonelEmail)
+            </td>
+        </tr>
+           <tr>
+           <td>
+                @Html.LabelFor(model => model[i].DistrictNumberId)
+                @Html.DropDownListFor(model => model[i].DistrictNumberId, Utl.SelectHelper.DistinctNumberSelectList(DistrictNumberID), "中国(默认)")
+            </td>
+            <td>
+                @Html.LabelFor(model => model[i].Branch)
+                @Html.TextBoxFor(model => model[i].Branch)
+            </td>
+            <td>
+                @Html.LabelFor(model => model[i].Address)
+                @Html.TextBoxFor(model => model[i].Address)
+            </td>
+            <td>
+                @Html.LabelFor(model => model[i].Zip)
+                @Html.TextBoxFor(model => model[i].Zip)
+            </td>
+            
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(model => model[i].Birthday)
+                @Html.Telerik().DatePickerFor(model => model[i].Birthday)
+            </td>
+            <td>
+                @Html.LabelFor(model => model[i].Comment)
+                @Html.TextBoxFor(model => model[i].Comment)
+            </td>
+            <td colspan="2">
+                @Html.LabelFor(model => model[i].LeadRoles)
+                @if (Model[i].LeadRoles != null && Model[i].LeadRoles.Contains("决策人"))
+                {
+                    <span class="leadRole">
+                        <input type="checkbox" value="决策人" checked="checked" name="leadRole" />
+                        <label>
+                            决策人</label></span>
+                }
+                else
+                { 
+                    <span class="leadRole">
+                        <input type="checkbox" value="决策人" name="leadRole" />
+                        <label>
+                            决策人</label></span>
+                }
+                @if (Model[i].LeadRoles != null && Model[i].LeadRoles.Contains("参与人"))
+                {
+                    <span class="leadRole">
+                        <input type="checkbox" value="参与人" checked="checked" name="leadRole" />
+                        <label>
+                            参与人</label></span> 
+                }
+                else
+                { 
+                    <span class="leadRole">
+                        <input type="checkbox" value="参与人" name="leadRole" />
+                        <label>
+                            参与人</label></span> 
+                }
+                @if (Model[i].LeadRoles != null && Model[i].LeadRoles.Contains("联系人"))
+                {
+                    <span class="leadRole">
+                        <input type="checkbox" value="联系人" checked="checked" name="leadRole" />
+                        <label>
+                            联系人</label></span>
+                }
+                else
+                { 
+                    <span class="leadRole">
+                        <input type="checkbox" value="联系人" name="leadRole" />
+                        <label>
+                            联系人</label></span>
+                }
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(model => model[i].LinkIn)
+                @Html.TextBoxFor(model => model[i].LinkIn)
+            </td>
+            <td>
+                @Html.LabelFor(model => model[i].FaceBook)
+                @Html.TextBoxFor(model => model[i].FaceBook)
+            </td>
+            <td>
+                @Html.LabelFor(model => model[i].WeiXin)
+                @Html.TextBoxFor(model => model[i].WeiXin)
+            </td>
+            <td>
+                @Html.LabelFor(model => model[i].WeiBo)
+                @Html.TextBoxFor(model => model[i].WeiBo)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(model => model[i].QQ)
+                @Html.TextBoxFor(model => model[i].QQ)
+            </td>
+              <td>
+                @Html.LabelFor(model => model[i].PersonalFax)
+                @Html.TextBoxFor(model => model[i].PersonalFax)
+            </td>
+            <td colspan="2">
+                @Html.LabelFor(model => model[i].Twitter)
+                @Html.TextBoxFor(model => model[i].Twitter)
+            </td>
+
+            
+        </tr>
+     
+    </table>
+         
+    </fieldset>
+}
+}
+<script>
+    
+    function setmainleadid(id) {
+        $("input[name='checkedLead']").attr("checked", false);
+        mainleadid = id;
+        $("input[value='" + id + "']").attr("checked", true);
+        jQuery(".deletediv").show();
+        $("#leadid" + id).hide();
+    }
+</script>
+<style>
+    table
+    {
+        border: none;
+    }
+    table tr td
+    {
+        width: 240px;
+        border: none;
+    }
+    table tr td label
+    {
+        display: inline-block;
+        width: 55px;
+        padding-right: 5px;
+    }
+    table tr td input[type=text], table tr td select
+    {
+        width: 140px;
+    }
+    table tr td textarea
+    {
+        height: 100px;
+    }
+    #categoriesError
+    {
+        display: none;
+    }
+    fieldset.fieldError span
+    {
+        display: inline-block !important;
+        color: Red;
+    }
+    span.leadRole
+    {
+        margin-left:5px;
+        margin-right:5px;
+    }
+</style>

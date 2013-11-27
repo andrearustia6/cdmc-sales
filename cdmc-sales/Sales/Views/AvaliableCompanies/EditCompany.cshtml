@@ -125,6 +125,17 @@
                     @Html.TextAreaFor(model => model.Desc)
                 </td>
             </tr>*@
+            @if (Utl.Employee.CurrentRole.Level == MarketInterfaceRequired.LVL)
+             {
+                <tr>
+                 <td colspan="4">
+                 @Html.LabelFor(model => model.Info)
+                    @Html.DropDownListFor(model => model.Info, Utl.SelectHelper.InfoSelectList(), "请选择")
+                     @Html.TextAreaFor(model => model.InfoRemark)
+                 </td>
+               
+                 </tr>
+             }
             <tr>
                 <td colspan="4">
                    @{Html.Telerik().PanelBar()

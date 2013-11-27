@@ -292,6 +292,7 @@ namespace Entity
         public DateTime CommentDate { get; set; }
         public virtual CompanyRelationship CompanyRelationship { get; set; }
         public int? CompanyRelationshipID { get; set; }
+        public bool? Deleted { get; set; }
     }
 
     public class CommentContent : EntityBase
@@ -381,6 +382,8 @@ namespace Entity
 
         public virtual List<Comment> Comments { get; set; }
 
+        [Display(Name = "删除")]
+        public bool? Deleted { get; set; }
        
     }
 
@@ -740,7 +743,8 @@ namespace Entity
         //[Display(Name = "英文地址")]
         //public string Address_EN { get; set; }
 
-
+        [Display(Name = "删除")]
+        public bool? Deleted { get; set; }
     }
 
     public class Progress : EntityBase
@@ -772,6 +776,19 @@ namespace Entity
 
         [Display(Name = "导入项目源")]
         public string ImportSourceProject { get; set; }
+    }
+
+    public class CompanyMergeTrack: EntityBase
+    {
+        [Display(Name = "表名")]
+        public string TableName { get; set; }
+
+        [Display(Name = "删除ID")]
+        public string OldID { get; set; }
+
+        [Display(Name = "新ID")]
+        public string NewID { get; set; }
+        
     }
 }
 

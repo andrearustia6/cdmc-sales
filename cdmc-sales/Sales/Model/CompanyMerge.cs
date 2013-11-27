@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using Entity;
 using System.ComponentModel.DataAnnotations;
+using Model;
 namespace Sales.Model
 {
     public class CompanyInfo
@@ -13,7 +14,20 @@ namespace Sales.Model
         public string CompanyNameCH { get; set; }
         public string CompanyNameEN { get; set; }
         public string CompanyName { get { return string.Join(",", CompanyNameEN, CompanyNameCH).Trim(','); }  }
-        
+        public bool? Deleted { get; set; }
+        public string DeletedStr
+        {
+            get
+            {
+                if (Deleted == null)
+                    return "否";
+                else if ((bool)Deleted)
+                    return "是";
+                else if (!(bool)Deleted)
+                    return "否";
+                return "否";
+            }
+        }
     }
     public class _Company
     {
@@ -111,10 +125,26 @@ namespace Sales.Model
         [Display(Name = "VIP客户")]
         public bool? IsVIP { get; set; }
 
+        [Display(Name = "Info/会展")]
+        public string Info { get; set; }
+
+        [Display(Name = "Info/会展说明")]
+        public string InfoRemark { get; set; }
+
     }
     public class AjaxMergeCompany
     {
         public List<int> ids { get; set; }
         public _Company company { get; set; }
+    }
+
+    public class AjaxViewLead1 : AjaxViewLead
+    {
+        public List<string> leadRole { get; set; }
+    }
+    public class AjaxMergeLead
+    {
+        public List<int> ids { get; set; }
+        public AjaxViewLead1 lead { get; set; }
     }
 }

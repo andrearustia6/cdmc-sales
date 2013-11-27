@@ -1,0 +1,16 @@
+﻿@using Entity
+@using Utl
+@model List<Comment>
+@(Html.Telerik().Grid<Comment>(Model).Name("Comment")
+              
+                .Columns(c =>
+                {
+                    c.Bound(o => o.Submitter).Title("点评人");
+                    c.Bound(o => o.CommentDate).Title("点评时间");
+                    c.Bound(o => o.Contents).Title("内容");
+                    
+                   
+                })
+                .Resizable(resizing => resizing.Columns(true))
+)
+

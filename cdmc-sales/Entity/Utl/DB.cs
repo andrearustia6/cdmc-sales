@@ -71,6 +71,7 @@ namespace Utl
         public DbSet<FinalCommission> FinalCommissions { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<CommentContent> CommentContents { get; set; }
+        public DbSet<CompanyMergeTrack> CompanyMergeTracks { get; set; }
         public DB(string connection = null)
         {
 

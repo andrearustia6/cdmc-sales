@@ -768,6 +768,12 @@ namespace Model
 
         [Display(Name = "VIP客户")]
         public bool IsVIP { get; set; }
+
+        [Display(Name = "Info/会展")]
+        public string Info { get; set; }
+
+        [Display(Name = "Info/会展说明")]
+        public string InfoRemark { get; set; }
     }
 
     public class AjaxViewLead

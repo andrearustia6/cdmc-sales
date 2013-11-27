@@ -1810,6 +1810,13 @@
     <Content Include="Views\DirectorReport\SalesCheckInSummary.cshtml" />
     <Content Include="Views\DirectorReport\ProjectChartInMonthLines.cshtml" />
     <Content Include="Views\DirectorReport\SalesMonthTargetSummary.cshtml" />
+    <Content Include="Views\CompanyMerge\Lead.cshtml" />
+    <Content Include="Views\CompanyMerge\LeadCall.cshtml" />
+    <Content Include="Views\CompanyMerge\Deal.cshtml" />
+    <Content Include="Views\CompanyMerge\Category.cshtml" />
+    <Content Include="Views\CompanyMerge\Comment.cshtml" />
+    <Content Include="Views\CompanyMerge\LeadCheck.cshtml" />
+    <Content Include="Views\CompanyMerge\MergeLead.cshtml" />
     <None Include="Views\SalesEx\EditCompany.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\SimulatorConfig.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\AjaxTargetOfMonthForMember.cshtml" />

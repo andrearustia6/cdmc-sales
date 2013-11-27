@@ -2476,7 +2476,18 @@ namespace BLL
             var now = DateTime.Now;
             var projects = CH.GetAllData<Project>();
 
-            var data = projects.FindAll(p => (p.Members.Any(m => m.Name == name && m.IsActivated==true) || p.TeamLeader == name ) && p.IsActived == true );
+            var data = projects.FindAll(p => p.Members.Any(m => m.Name == name && m.IsActivated==true) && p.IsActived == true );
+            foreach (var c in CH.GetAllData<Project>())
+            {
+                if (!string.IsNullOrEmpty(c.TeamLeader))
+                {
+                    var names = c.TeamLeader.Trim().Split(new string[] { ";", "；" }, StringSplitOptions.RemoveEmptyEntries);
+                    if (names.Contains(name))
+                    {
+                        data.Add(c);
+                    }
+                }
+            }
             return data;
         }
 
