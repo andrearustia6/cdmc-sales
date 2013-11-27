@@ -1,6 +1,6 @@
 ﻿@using Entity
 @using Sales.Model
-@model IQueryable<_CoreCoverage>
+
 @{
     var projectid = ViewBag.projectid;
     var coreid = ViewBag.coreid;
@@ -40,6 +40,24 @@
             columns.Bound(p => p.LeadCalledCount).Title("打过Lead数").Width(60).HtmlAttributes(new { style = "text-align:left" });
             columns.Bound(p => p.DispTime).Title("领用时间").Width(60).HtmlAttributes(new { style = "text-align:left" });
             columns.Bound(p => p.DispSales).Title("之前领用销售").Width(60).HtmlAttributes(new { style = "text-align:left" });
+        })
+            .Pageable(p => p.Style(GridPagerStyles.Status)
+               .PageOnScroll(true).PageSize(25))
+                   .Scrollable(scrolling => scrolling.Height(600)).Sortable().Resizable(r => r.Columns(true)).Filterable()
+                       )
+
+     @(Html.Telerik().Grid<_PickUpList>().Name("PickUpList")
+     .DataBinding(dataBinding =>
+     {
+         dataBinding.Ajax().Select("_PickUpList", "AvaliableCompanies", new { projectid = projectid, coreid = coreid });
+     })
+        .Columns(columns =>
+        {
+            columns.Bound(p => p.Sales).Title("姓名").Width(80).HtmlAttributes(new { style = "text-align:left" });
+            columns.Bound(p => p.FirstWeekCount).Title("领用1周公司数").Width(80).HtmlAttributes(new { style = "text-align:left" });
+            columns.Bound(p => p.SecondWeekCount).Title("领用3周公司数").Width(60).HtmlAttributes(new { style = "text-align:left" });
+            columns.Bound(p => p.ThirdWeekCount).Title("领用3周公司数").Width(60).HtmlAttributes(new { style = "text-align:left" });
+            columns.Bound(p => p.FourthWeekCount).Title("领用4周以上公司数").Width(60).HtmlAttributes(new { style = "text-align:left" });
         })
             .Pageable(p => p.Style(GridPagerStyles.Status)
                .PageOnScroll(true).PageSize(25))

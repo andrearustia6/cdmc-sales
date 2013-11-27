@@ -6,11 +6,13 @@
 @{
 
    <fieldset>
-   <legend>项目月进度表</legend>
+   <legend>公司合并</legend>
    项目 @Html.DropDownList("ProjectID", SelectHelper.ProjectSelectList(Employee.CurrentUserName), "请选择", new { onchange = "onProjectChange();" })
    公司名称 @Html.TextBox("CompanyName")
+   @*是否删除 @Html.DropDownList("Deleted", SelectHelper.DeletedSelectList(), "请选择", new { onchange = "onDeletedChange();" })*@
    <input type="button" title="查找" name="查找" value="查找" style=" width: 67px; height: 21px;" onclick="refreshGrid()" />
-   <input type="button" title="合并" name="合并" value="合并" style=" width: 67px; height: 21px;" onclick="getcompanies()" />
+   <input type="button" title="合并公司" name="合并公司" value="合并公司" style=" width: 67px; height: 21px;" onclick="getcompanies()" />
+   <input type="button" title="合并Lead" name="合并Lead" value="合并Lead" style=" width: 67px; height: 21px;" onclick="getleads()" />
 @(Html.Telerik().Grid<CompanyInfo>().Name("Company")
      .DataBinding(dataBinding =>
      {
@@ -25,6 +27,7 @@
                    .Width(50)
                    .HtmlAttributes(new { style = "text-align:center" });
         columns.Bound(p => p.CompanyName).Width(150).Title("公司名称").HtmlAttributes(new { style = "text-align:left" });
+        
     })
     .Pageable(p => p.Style(GridPagerStyles.Status)
                 .PageOnScroll(true).PageSize(25)).Scrollable(scrolling => scrolling.Height(480)).Resizable(r => r.Columns(true))
@@ -46,10 +49,42 @@
         .Height(520)
                 .Modal(true).Visible(false).Draggable(true)
     )
+
+    @(Html.Telerik().Window().Title("请选择Lead")
+    .Name("LeadCheck")
+    .Content(@<text><div class="dialogue-LeadCheck">
+        <div class="LeadCheck-wrapper">
+        </div>
+        <div class="dialogue-buttons" style="float: right;">
+            <input type="button" class="btn-queding" onclick="LeadCheck()" />
+            <input type="button" class="btn-quxiao" onclick="CancelLeadCheck()" />
+        </div>
+    </div></text>)
+        .Width(1000)
+        .Height(520)
+                .Modal(true).Visible(false).Draggable(true)
+    )
+    @(Html.Telerik().Window().Title("合并Lead")
+    .Name("MergeLead")
+    .Content(@<text><div class="dialogue-MergeLead">
+        <div class="MergeLead-wrapper">
+        </div>
+        <div class="dialogue-buttons" style="float: right;">
+            <input type="button" class="btn-queding" onclick="mergelead()" />
+            <input type="button" class="btn-quxiao" onclick="Cancelmergelead()" />
+        </div>
+    </div></text>)
+        .Width(1000)
+        .Height(520)
+                .Modal(true).Visible(false).Draggable(true)
+    )
 <script>
     var clicked = false;
     var maincompanyid;
+    var mainleadid;
     var companyids = [];
+    var leadids = [];
+    var crmid;
     function converttojson(form) {
         var o = {};
         var a = form.serializeArray();
@@ -73,7 +108,14 @@
         if (clicked) {
             var projectid = $('#ProjectID').val();
             var companyname = $('#CompanyName').val();
-            e.data = $.extend(e.data, { projectid: projectid, companyname: companyname });
+            var deleted = false;
+//            if (deleted == '')
+//                deleted = null;
+//            else if (deleted == '1')
+//                deleted = true;
+//            else if (deleted == '0')
+//                deleted = false;
+            e.data = $.extend(e.data, { projectid: projectid, companyname: companyname, deleted: deleted });
         }
         else
             e.preventDefault();
@@ -90,7 +132,9 @@
     function onProjectChange() {
         refreshGrid();
     }
-    
+    function onDeletedChange() {
+        refreshGrid();
+    }
     function onRowDataBound(e) {
     }
 
@@ -105,7 +149,7 @@
         for (var i = 0; i < $checkedRecords.length; i++) {
             companyids.push($checkedRecords[i].value);
         }
-
+        companyids.sort(function (a, b) { return a > b ? 1 : -1 });
         $.post('GetCompanies', $.param({ checkedRecords: companyids }, true), function (result) {
             $('.MergeCompany-wrapper').html(result);
             var window = $('#MergeCompany').data('tWindow');
@@ -145,6 +189,8 @@
                 return;
             }
         }
+        
+        
         var telephone = mainform.find(":input[name='[" + index + "].Contact']");
         if (telephone.val().isEmpty()) {
             alert('请输入公司总机');
@@ -180,9 +226,123 @@
         var window = $('#MergeCompany').data('tWindow');
         window.close();
     }
-    function setmainid(id) {
-        $("input[name='checkedCompay']").attr("checked", false);
-        maincompanyid = id;
-        $("input[value='"+id+"']").attr("checked", true);
+    function getleads() {
+        leadids = [];
+        var $checkedRecords = $('input[name=checkedRecords]:checked');
+        if ($checkedRecords.length !=1) {
+            alert('只能选择一个公司.');
+            return;
+        }
+
+        for (var i = 0; i < $checkedRecords.length; i++) {
+            crmid = $checkedRecords[i].value;
+        }
+
+        $.post('GetLeads', { crmid: crmid }, function (result) {
+            $('.LeadCheck-wrapper').html(result);
+            var window = $('#LeadCheck').data('tWindow');
+            window.center().open();
+        });
+
+    }
+    function LeadCheck() {
+
+        var $checkedRecords = $('input[name=checkedLead]:checked');
+        if ($checkedRecords.length < 2) {
+            alert('请选择2个以上Lead.');
+            return;
+        }
+        for (var i = 0; i < $checkedRecords.length; i++) {
+            leadids.push($checkedRecords[i].value);
+        }
+        var window = $('#LeadCheck').data('tWindow');
+        window.close();
+        leadids.sort(function (a, b) { return a > b ? 1 : -1 });
+        $.post('GetLeadsByids', $.param({ checkedRecords: leadids }, true), function (result) {
+            $('.MergeLead-wrapper').html(result);
+            var window = $('#MergeLead').data('tWindow');
+            window.center().open();
+        });
+    }
+
+    function mergelead() {
+        if (mainleadid == '' || mainleadid == undefined) {
+            alert('请选择基准Lead');
+            return;
+        }
+        var mainform = $('#' + mainleadid);
+
+        String.prototype.isEmpty = function () { return /^\s*$/.test(this); }
+        var index = 0;
+        for (var i = 0; i < leadids.length; i++) {
+            if (leadids[i] == mainleadid) {
+                index = i;
+                break;
+            }
+        }
+
+
+        if (mainform.find(":input[name='[" + index + "].Name_EN']").val().isEmpty() && mainform.find(":input[name='[" + index + "].Name_CN']").val().isEmpty()) {
+            alert('客户中英文名必需至少填一个.');
+            return;
+        }
+        var telephone = mainform.find(":input[name='[" + index + "].Telephone']");
+        var CellPhone = mainform.find(":input[name='[" + index + "].CellPhone']");
+        if (CellPhone.val().isEmpty() && telephone.val().isEmpty()) {
+            alert('客户直线移动电话必需至少填一个.');
+            return;
+        }
+        if (!telephone.val().isEmpty()) {
+            if (!IsTelephone(telephone.val())) {
+                return;
+            }
+        }
+        if (!CellPhone.val().isEmpty()) {
+            if (!IsTelephone(CellPhone.val())) {
+                return;
+            }
+        }
+        var Gender = mainform.find(":input[name='[" + index + "].Gender']");
+        if (Gender.val().isEmpty()) {
+            alert('请输入客户性别');
+            return;
+        }
+        var Title = mainform.find(":input[name='[" + index + "].Title']");
+        if (Title.val().isEmpty()) {
+            alert('请输入客户职位');
+            return;
+        }
+        
+        var query = converttojson($('#' + mainleadid));
+        //query = query.replace(/[index]/g, '');
+        $.ajax({
+            url: 'MergeLead',
+            type: 'POST',
+            dataType: 'json',
+            data: JSON.stringify({ ids: leadids, lead: query }),
+            contentType: 'application/json;',
+            success: function (data) {
+                if (data.leadid != null) {
+                    alert('Lead合并成功');
+                    $('#MergeLead').data('tWindow').close();
+                    
+                }
+                else {
+                    alert('Lead合并失败');
+                }
+            }
+        });
+        //        $.post('MergeCompay', query, function (result) {
+        //        });
+    }
+
+    function Cancelmergelead() {
+        var window = $('#MergeLead').data('tWindow');
+        window.close();
+    }
+
+    function CancelLeadCheck() {
+        var window = $('#LeadCheck').data('tWindow');
+        window.close();
     }
 </script>

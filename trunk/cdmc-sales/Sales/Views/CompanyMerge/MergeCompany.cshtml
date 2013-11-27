@@ -1,6 +1,43 @@
 ﻿@using Entity
 @using Sales.Model
 @model List<_Company>
+<script>
+    function OnExpand(e) {
+        var vItem = $(e.item);
+        var vItemID = vItem.attr('Value');
+        var text = vItem.find('> .t-link').text()
+        if (text == "Lead") {
+            $.post('DisplayLeads', { crmid: vItemID }, function (result) {
+                $('#PanelBarEdit'+vItemID+'-2').html(result);
+                
+            });
+        }
+        else if (text == "LeadCall") {
+            $.post('DisplayLeadCalls', { crmid: vItemID }, function (result) {
+                $('#PanelBarEdit' + vItemID + '-3').html(result);
+
+            });
+        }
+        else if (text == "Deal") {
+            $.post('DisplayDeals', { crmid: vItemID }, function (result) {
+                $('#PanelBarEdit' + vItemID + '-4').html(result);
+
+            });
+        }
+        else if (text == "Category") {
+            $.post('DisplayCategories', { crmid: vItemID }, function (result) {
+                $('#PanelBarEdit' + vItemID + '-5').html(result);
+
+            });
+        }
+        else if (text == "Comment") {
+            $.post('DisplayComments', { crmid: vItemID }, function (result) {
+                $('#PanelBarEdit' + vItemID + '-6').html(result);
+
+            });
+        }
+    }
+</script>
 <style>
     table
     {
@@ -43,9 +80,13 @@
         var areaid = Model[i].AreaID;
         var DistrictNumberID = Model[i].DistrictNumberID;
         var AnnualSales = Model[i].AnnualSales;
+        
     <fieldset>
-        <legend>公司信息 <input type='checkbox' name='checkedCompay' value='@Model[i].CRMID' onclick='setmainid(@Model[i].CRMID)'/>
+    
+        <legend >公司信息<input type='checkbox' name='checkedCompay' value='@Model[i].CRMID' onclick='setmainid(@Model[i].CRMID)'/>
+        <div id="crmid@{@Model[i].CRMID}" class="deletediv" style="display:none; color:Red; font-weight:bold;">删除</div>
         </legend>
+        
         @Html.Hidden("ID", Model[i].ID)
         @Html.Hidden("CRMID", Model[i].CRMID)
         <table>
@@ -53,8 +94,6 @@
                 <td colspan="2">
                     @Html.LabelFor(model => model[i].Name_CH)
                    @Html.TextBoxFor(model => model[i].Name_CH, new { @style = "width:300px" })
-                                
-                    
                 </td>
                 <td >
                     @Html.LabelFor(model => model[i].Name_EN)
@@ -137,22 +176,57 @@
                     @Html.TextBoxFor(model => model[i].Address_EN, new { @style = "width:370px" })
                 </td>
             </tr>      
-          
+          <tr>
+                 <td colspan="4">
+                 @Html.LabelFor(model => model[i].Info)
+                    @Html.DropDownListFor(model => model[i].Info, Utl.SelectHelper.InfoSelectList(), "请选择")
+                     @Html.TextAreaFor(model => model[i].InfoRemark)
+                 </td>
+               
+                 </tr>
             <tr>
                 <td colspan="4">
                    @{Html.Telerik().PanelBar()
-            .Name("PanelBarEdit" + @Model[i].ID)
+            .Name("PanelBarEdit" + @Model[i].CRMID)
             .HtmlAttributes(new { style = "width: 100%" })
+             .ClientEvents(events => events
+                .OnExpand("OnExpand")
+        )
             .Items(parent =>
             {
                 parent.Add()
-                    .Text("更多...")
+                    .Text("更多...").HtmlAttributes(new { Value = @Model[i].CRMID })
                     .Content(@<text>
                         @Html.LabelFor(model => model[i].Description)
                         @Html.TextAreaFor(model => model[i].Description)
                      
                         主要竞争对手
                         @Html.TextAreaFor(model => model[i].Competitor)
+                    </text>)
+                    .Expanded(false);
+                parent.Add()
+                    .Text("Lead").HtmlAttributes(new { Value = @Model[i].CRMID })
+                    .Content(@<text>
+                    </text>)
+                    .Expanded(false);
+                parent.Add()
+                    .Text("LeadCall").HtmlAttributes(new { Value = @Model[i].CRMID })
+                    .Content(@<text>
+                    </text>)
+                    .Expanded(false);
+                parent.Add()
+                    .Text("Deal").HtmlAttributes(new { Value = @Model[i].CRMID })
+                    .Content(@<text>
+                    </text>)
+                    .Expanded(false);
+                parent.Add()
+                    .Text("Category").HtmlAttributes(new { Value = @Model[i].CRMID })
+                    .Content(@<text>
+                    </text>)
+                    .Expanded(false);
+                parent.Add()
+                    .Text("Comment").HtmlAttributes(new { Value = @Model[i].CRMID })
+                    .Content(@<text>
                     </text>)
                     .Expanded(false);
             })
@@ -187,4 +261,11 @@
             }
         })
     })
+    function setmainid(id) {
+        $("input[name='checkedCompay']").attr("checked", false);
+        maincompanyid = id;
+        $("input[value='" + id + "']").attr("checked", true);
+        jQuery(".deletediv").show();
+        $("#crmid"+id).hide();
+    }
 </script>

@@ -163,6 +163,17 @@
                         @Html.TextAreaFor(model => model.Desc)
                 </td>
             </tr>*@
+             @if (Utl.Employee.CurrentRole.Level == MarketInterfaceRequired.LVL)
+             {
+                 <tr>
+                 <td colspan="4">
+                 @Html.LabelFor(model => model.Info)
+                    @Html.DropDownListFor(model => model.Info, Utl.SelectHelper.InfoSelectList(), "请选择")
+                     @Html.TextAreaFor(model => model.InfoRemark)
+                 </td>
+               
+                 </tr>
+             }
             <tr>
                 <td colspan="4">
                    @{Html.Telerik().PanelBar()
@@ -239,17 +250,62 @@
     $(function () {
         $("#Name_CN").change(function () {
             if ($("#Name_CN").val() != '') {
-                $.post('CheckCompanyNameCNExist', { name: $("#Name_CN").val() }, function (result) {
-                    if (result.length > 0 )
-                        alert(result);
+                $.post('CheckCompanyNameCNExist', { name: $("#Name_CN").val(), projectid: $("#ProjectId").val() }, function (result) {
+                    if (result.flag == 0)
+                        alert(result.Content);
+                    else if (result.flag == 1) {
+                        if (confirm(result.Content)) {
+                            $.post('PickUpDirect', { crmid: result.crmid, projectid: $('#projectid').val() }, function (result) {
+                                if (result.companyRelationshipId != null) {
+                                    alert('领用成功');
+                                    crmid = result.companyRelationshipId;
+                                    var currentProjectId = $('#projectid').val();
+                                    RefreshCrmTree(currentProjectId, result.companyRelationshipId, result.processid, result.corelvlid);
+                                }
+                                else {
+                                    if (result != "") {
+                                        alert('领用失败:' + result);
+                                    }
+                                    else {
+                                        alert('领用失败');
+                                    }
+                                }
+                                CancelAddcompany();
+                            });
+                            
+                        }
+                    }
+
                 });
             }
         })
         $("#Name_EN").change(function () {
             if ($("#Name_EN").val() != '') {
-                $.post('CheckCompanyNameENExist', { name: $("#Name_EN").val() }, function (result) {
-                    if (result.length > 0 )
-                        alert(result);
+                $.post('CheckCompanyNameENExist', { name: $("#Name_EN").val(), projectid: $("#ProjectId").val() }, function (result) {
+                    if (result.flag == 0)
+                        alert(result.Content);
+                    else if (result.flag == 1) {
+                        if (confirm(result.Content)) {
+                            $.post('PickUpDirect', { crmid: result.crmid, projectid: $('#projectid').val() }, function (result) {
+                                if (result.companyRelationshipId != null) {
+                                    alert('领用成功');
+                                    crmid = result.companyRelationshipId;
+                                    var currentProjectId = $('#projectid').val();
+                                    RefreshCrmTree(currentProjectId, result.companyRelationshipId, result.processid, result.corelvlid);
+                                }
+                                else {
+                                    if (result != "") {
+                                        alert('领用失败:' + result);
+                                    }
+                                    else {
+                                        alert('领用失败');
+                                    }
+                                }
+                                CancelAddcompany();
+                            });
+
+                        }
+                    }
                 });
             }
         })

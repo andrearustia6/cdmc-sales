@@ -1,0 +1,16 @@
+﻿@using Entity
+@model List<LeadCall>
+@(Html.Telerik().Grid<LeadCall>(Model).Name("LeadCall")
+               
+                .Columns(c =>
+                {
+                    c.Bound(item => item.Lead.Name).Width(100);
+                    c.Bound(item => item.Lead.Title).Width(100);
+                    c.Bound(item => item.LeadCallType.Name).Width(100);
+                    c.Bound(item => item.CallDate).Width(100);
+                    c.Bound(item => item.Result);
+                    
+                })
+                
+
+)

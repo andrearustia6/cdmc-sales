@@ -1,0 +1,33 @@
+﻿@using Entity
+@using Utl
+@using Sales.Model
+
+           <script>
+               function dataBindingLeads(e) {
+                   e.data = $.extend(e.data, { crmid: crmid });
+               }
+               function onRowDataBound(e) {
+                   var row = e.row;
+                   var dataItem = e.dataItem;
+                   row.cells[0].innerHTML = "<div width='100%' >" + "<input type='checkbox' name='checkedLead' value='" + dataItem.LeadID + "' />" + "</div>";
+               }
+</script>
+@(Html.Telerik().Grid<AjaxLead>().Name("Lead")
+                          .DataBinding(dataBinding =>
+                          {
+                              dataBinding.Ajax().Select("GetLeadsJson", "CompanyMerge");
+                          })
+                        .ClientEvents(events => events.OnRowDataBound("onRowDataBound").OnDataBinding("dataBindingLeads"))
+                .Columns(c =>
+                {
+                    c.Bound(o => o.LeadID).Title("").Width(50);
+                    c.Bound(o => o.LeadNameCH).Title("中文名称").Width(100);
+                    c.Bound(o => o.LeadNameEN).Title("英文名称").Width(100);
+                    c.Bound(o => o.LeadTitle).Title("职位").Width(200);
+                    c.Bound(o => o.LeadContact).Title("客户直线").Width(100);
+                    c.Bound(o => o.LeadMobile).Title("移动电话").Width(100);
+                })
+                    .Pageable(p => p.Style(GridPagerStyles.Status)
+                    .PageOnScroll(true).PageSize(25)).Scrollable(scrolling => scrolling.Height(430)).Resizable(r => r.Columns(true))
+)
+

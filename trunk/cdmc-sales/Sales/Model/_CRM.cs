@@ -58,8 +58,9 @@ namespace Sales.Model
         public string TelePhone { get; set; }
         public string Email { get; set; }
         public string Gender { get; set; }
-
+        public bool OwnLeader { get; set; }
         public int? LastCallTypeID { get; set; }
+
     }
 
     /// <summary>
@@ -435,5 +436,16 @@ namespace Sales.Model
         public bool Checkable { get; set; }
         
          
+    }
+    /// <summary>
+    /// 核心公司覆盖表
+    /// </summary>
+    public class _PickUpList : EntityBase
+    {
+        public string Sales { get; set; }
+        public int FirstWeekCount { get; set; }
+        public int SecondWeekCount { get; set; }
+        public int ThirdWeekCount { get; set; }
+        public int FourthWeekCount { get; set; }
     }
 }
