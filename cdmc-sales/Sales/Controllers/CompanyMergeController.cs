@@ -92,7 +92,7 @@ namespace Sales.Controllers
             crm.Company.AreaID = mergecompany.company.AreaID;
             crm.Company.Business = mergecompany.company.Business;
             crm.Company.CompanyTypeID = mergecompany.company.CompanyTypeID;
-            crm.Company.Contact = mergecompany.company.Contact.Trim();
+            crm.Company.Contact = mergecompany.company.Contact==null?mergecompany.company.Contact:mergecompany.company.Contact.Trim();
             crm.Company.ModifiedDate = DateTime.Now;
             crm.Company.ModifiedUser = Employee.CurrentUserName;
             crm.Company.Address_EN = mergecompany.company.Address_EN;
@@ -105,8 +105,8 @@ namespace Sales.Controllers
             crm.Company.Description = mergecompany.company.Description;
             crm.Company.DistrictNumberID = mergecompany.company.DistrictNumberID;
             crm.Company.Fax = mergecompany.company.Fax;
-            crm.Company.Name_CH = mergecompany.company.Name_CH.Trim();
-            crm.Company.Name_EN = mergecompany.company.Name_EN.Trim();
+            crm.Company.Name_CH = mergecompany.company.Name_CH==null?mergecompany.company.Name_CH:mergecompany.company.Name_CH.Trim();
+            crm.Company.Name_EN = mergecompany.company.Name_EN==null?mergecompany.company.Name_EN:mergecompany.company.Name_EN.Trim();
             crm.Company.WebSite = mergecompany.company.WebSite;
             crm.Company.ZIP = mergecompany.company.ZIP;
             crm.Company.Customers = mergecompany.company.Customers;
@@ -296,19 +296,19 @@ namespace Sales.Controllers
         {
             int mainleadid = mergelead.lead.LeadId;
             Lead lead = CH.GetDataById<Lead>(mainleadid);
-            lead.Name_CH = mergelead.lead.Name_CN.Trim();
-            lead.Name_EN = mergelead.lead.Name_EN.Trim();
+            lead.Name_CH = mergelead.lead.Name_CN==null?mergelead.lead.Name_CN:mergelead.lead.Name_CN.Trim();
+            lead.Name_EN = mergelead.lead.Name_EN==null?mergelead.lead.Name_EN:mergelead.lead.Name_EN.Trim();
             lead.Gender = mergelead.lead.Gender;
-            lead.Title = mergelead.lead.Title.Trim();
-            lead.Address = mergelead.lead.Address.Trim();
+            lead.Title = mergelead.lead.Title==null?mergelead.lead.Title:mergelead.lead.Title.Trim();
+            lead.Address = mergelead.lead.Address==null?mergelead.lead.Address:mergelead.lead.Address.Trim();
             lead.Birthday = mergelead.lead.Birthday;
-            lead.Contact = mergelead.lead.Telephone.Trim();
+            lead.Contact = mergelead.lead.Telephone==null?mergelead.lead.Telephone:mergelead.lead.Telephone.Trim();
             lead.Department = mergelead.lead.Department;
             lead.Description = mergelead.lead.Desc;
             lead.EMail = mergelead.lead.WorkingEmail;
             lead.Fax = mergelead.lead.Fax;
             lead.Gender = mergelead.lead.Gender;
-            lead.Mobile = mergelead.lead.CellPhone.Trim();
+            lead.Mobile = mergelead.lead.CellPhone==null?mergelead.lead.CellPhone:mergelead.lead.CellPhone.Trim();
             lead.WeiBo = mergelead.lead.WeiBo;
             lead.WeiXin = mergelead.lead.WeiXin;
             lead.LinkIn = mergelead.lead.LinkIn;
