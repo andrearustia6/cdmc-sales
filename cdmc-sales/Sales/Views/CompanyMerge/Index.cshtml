@@ -180,12 +180,16 @@
         if (mainform.find(":input[name='[" + index + "].DistrictNumberID']").val().isEmpty()) {
             if (mainform.find(":input[name='[" + index + "].Name_CH']").val().isEmpty()) {
                 alert('请输入中文名称');
+                mainform.find(":input[name='[" + index + "].Name_CH']").val('      ');
+                mainform.find(":input[name='[" + index + "].Name_CH']").focus().select();
                 return;
             }
         }
         else {
             if (mainform.find(":input[name='[" + index + "].Name_EN']").val().isEmpty()) {
                 alert('请输入英文名称');
+                mainform.find(":input[name='[" + index + "].Name_EN']").val('      ');
+                mainform.find(":input[name='[" + index + "].Name_EN']").focus().select();
                 return;
             }
         }
@@ -194,9 +198,14 @@
         var telephone = mainform.find(":input[name='[" + index + "].Contact']");
         if (telephone.val().isEmpty()) {
             alert('请输入公司总机');
+            telephone.val('      ');
+            telephone.focus().select();
             return;
         }
+
         if (!IsTelephone(telephone.val())) {
+            telephone.val('      ');
+            telephone.focus().select();
             return;
         }
 
@@ -284,32 +293,43 @@
 
         if (mainform.find(":input[name='[" + index + "].Name_EN']").val().isEmpty() && mainform.find(":input[name='[" + index + "].Name_CN']").val().isEmpty()) {
             alert('客户中英文名必需至少填一个.');
+            mainform.find(":input[name='[" + index + "].Name_EN']").val('      ');
+            mainform.find(":input[name='[" + index + "].Name_EN']").focus().select();
             return;
         }
         var telephone = mainform.find(":input[name='[" + index + "].Telephone']");
         var CellPhone = mainform.find(":input[name='[" + index + "].CellPhone']");
         if (CellPhone.val().isEmpty() && telephone.val().isEmpty()) {
             alert('客户直线移动电话必需至少填一个.');
+            telephone.val('      ');
+            telephone.focus().select();
             return;
         }
         if (!telephone.val().isEmpty()) {
             if (!IsTelephone(telephone.val())) {
+                telephone.val('      ');
+                telephone.focus().select();
                 return;
             }
         }
         if (!CellPhone.val().isEmpty()) {
             if (!IsTelephone(CellPhone.val())) {
+                CellPhone.val('      ');
+                CellPhone.focus().select();
                 return;
             }
         }
         var Gender = mainform.find(":input[name='[" + index + "].Gender']");
         if (Gender.val().isEmpty()) {
             alert('请输入客户性别');
+            Gender.focus().select();
             return;
         }
         var Title = mainform.find(":input[name='[" + index + "].Title']");
         if (Title.val().isEmpty()) {
+            Title.val('      ');
             alert('请输入客户职位');
+            Title.focus().select();
             return;
         }
         
