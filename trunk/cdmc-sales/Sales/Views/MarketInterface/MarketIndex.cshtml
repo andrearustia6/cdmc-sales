@@ -7,7 +7,7 @@
 <div  style="margin:10px; margin-left:0px;">
     <span ><b>目标项目：</b>
     @{
-        var ps = CH.GetAllData<Project>(p => p.Market == Employee.CurrentUserName);
+        var ps = CH.GetAllData<Project>(p => p.Market == Employee.CurrentUserName).OrderBy(p=>p.ID);
         @Html.DropDownList("ProjectID", new SelectList(ps, "ID", "ProjectCode", ViewBag.ProjectID), new { onchange="this.form.submit();"})
     }
     </span>

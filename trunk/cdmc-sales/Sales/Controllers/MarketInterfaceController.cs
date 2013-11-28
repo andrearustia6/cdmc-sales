@@ -30,7 +30,7 @@ namespace Sales.Controllers
             }
             if (pj == null)
             {
-                pj = CH.GetAllData<Project>().FirstOrDefault();
+                pj = CH.GetAllData<Project>().Where(p => p.Market == Employee.CurrentUserName).OrderBy(p=>p.ID).FirstOrDefault();
                 if (pj == null)
                     return View();
             }
