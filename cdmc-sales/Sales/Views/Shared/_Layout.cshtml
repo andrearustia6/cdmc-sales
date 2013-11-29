@@ -201,15 +201,18 @@
                                     //item.Add().Url("~/Research/MyIndex").Text("调研管理");
                                     //item.Add().Url("~/Sales/companyrelationshipindex").Text("可打公司");
                                     //item.Add().Url("~/Sales/AvailableCompanys").Text("可打公司 V2.0");
-                                    if (Utl.GetAvaliableCompaniesRole().Where(s => s == Employee.CurrentUserName).Any())
-                                    {
-                                        item.Add().Text("可打公司 V3.0").Url("~/AvaliableCompanies/index");
-                                    }
-                                    else
-                                    {
-                                        if (score <= 100)
-                                        item.Add().Url("~/SalesEx/index").Text("可打公司 V2.0");
-                                    }
+
+                                    item.Add().Text("可打公司 V3.0").Url("~/AvaliableCompanies/index");
+                                    
+                                    //if (Utl.GetAvaliableCompaniesRole().Where(s => s == Employee.CurrentUserName).Any())
+                                    //{
+                                    //    item.Add().Text("可打公司 V3.0").Url("~/AvaliableCompanies/index");
+                                    //}
+                                    //else
+                                    //{
+                                    //    if (score <= 100)
+                                    //    item.Add().Url("~/SalesEx/index").Text("可打公司 V2.0");
+                                    //}
                                     if (score == LeaderRequired.LVL | score == SalesRequired.LVL)
                                     {
                                         item.Add().Url("~/Sales/ContectedLeads").Text("Call List");
