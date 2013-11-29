@@ -648,7 +648,67 @@ namespace Entity
             
             return leads.Where(w=>w.EMail!=null && w.EMail!="");
         }
+        public static List<string> ProjectLeadsEmail(this Project item, int? dealcondition, int? distinctnumber, string categories = "")
+        {
+            var list = new List<Lead>();
+            //item.CompanyRelationships.ForEach(c =>
+            //{
+            //    list.AddRange(CH.GetAllData<Lead>(l => l.CompanyID == c.CompanyID && l.EMail != null));
+            //});   var crms = item.CompanyRelationships;
+            IEnumerable<CompanyRelationship> query = item.CompanyRelationships;
+            if (dealcondition != null)
+            {
+                if (dealcondition == 0)
+                {
+                    query = query.Where(q => (q.Deals.Count() == 0));
+                }
+                else
+                {
+                    query = query.Where(q => (q.Deals.Count() > 0));
+                }
+            }
+            if (distinctnumber != null && distinctnumber != 0)
+            {
+                var lists = CH.GetAllData<DistrictNumber>();
+                int max = lists.Max(d => d.ID);
+                if (distinctnumber == (max + 1))
+                {
+                    query = query.Where(q => q.Company.DistrictNumberID != null);
+                }
+                else
+                {
+                    query = query.Where(q => q.Company.DistrictNumberID == distinctnumber);
+                }
+            }
+            else if (distinctnumber == null)
+            {
+                query = query.Where(q => q.Company.DistrictNumberID == null);
+            }
 
+            if (!String.IsNullOrEmpty(categories))
+            {
+                List<int> catId = new List<int>();
+                List<string> catarr = categories.Split(',').ToList();
+                if ((catarr != null) && (catarr.Count > 0))
+                {
+                    foreach (string cat in catarr)
+                    {
+                        if (!string.IsNullOrEmpty(cat))
+                        {
+                            catId.Add(Convert.ToInt32(cat));
+                        }
+                    }
+                }
+
+                query = query.Where(q => q.Categorys.Any(c => catId.Any(a => a == c.ID)) || q.Categorys.Count == 0);
+            }
+
+            //query = query.Where(q => q.Company.Leads.All(l => l.EMail != null && l.EMail != ""));
+
+            var leads = query.Select(s => s.Company).SelectMany(s => s.Leads);
+
+            return leads.Where(w => w.EMail != null && w.EMail != "").Select(w=>w.EMail).ToList();
+        }
         public static RoleInProject RoleInProject(this Project item)
         {
             var p = CH.GetDataById<Project>(item.ID);
