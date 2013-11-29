@@ -91,16 +91,17 @@ namespace Sales.Controllers
             {
                 return RedirectToAction("MarketIndex", new { projectid = projectid });
             }
-            var ls = pj.ProjectLeads(dealcondition, distinctnumber, categories);
+            var ls = pj.ProjectLeadsEmail(dealcondition, distinctnumber, categories);
 
             this.AddErrorStateIfCreatorIsTheLoginUserIsNotTheMarketInterface(pj);
             if (ModelState.IsValid)
             {
                 MemoryStream output = new MemoryStream();
-                StreamWriter writer = new StreamWriter(output, Encoding.UTF8);
+                //StreamWriter writer = new StreamWriter(output, Encoding.UTF8);
+                StreamWriter writer = new StreamWriter(output, System.Text.Encoding.Default);
                 foreach (var lead in ls)
                 {
-                    writer.Write(lead.EMail);
+                    writer.Write(lead);
                     writer.WriteLine();
                 }
                 writer.Flush();

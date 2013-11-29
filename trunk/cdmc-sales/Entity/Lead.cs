@@ -156,6 +156,9 @@ namespace Entity
 
         [Display(Name = "Info/会展说明")]
         public string InfoRemark { get; set; }
+
+        [Display(Name = "是否删除")]
+        public bool? Deleted { get; set; }
     }
 
     /// <summary>

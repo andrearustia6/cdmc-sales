@@ -33,7 +33,7 @@ namespace Sales.Controllers
             if (projectid != null)
                 crms = crms.Where(w => w.ProjectID == projectid);
             if(companyname!=null)
-                crms = crms.Where(q => q.Company.Name_CH.Contains(companyname) || q.Company.Name_EN.Contains(companyname));
+                crms = crms.Where(q => q.Company.Deleted==false &&( q.Company.Name_CH.Contains(companyname) || q.Company.Name_EN.Contains(companyname)));
             if (deleted != null)
                 crms = crms.Where(w => w.Deleted == deleted);
             var list = from crm in crms
@@ -112,6 +112,7 @@ namespace Sales.Controllers
             crm.Company.Customers = mergecompany.company.Customers;
             crm.Company.Competitor = mergecompany.company.Competitor;
 
+            var maincompanyid = crm.CompanyID;
             
             List<int> crmids = mergecompany.ids.Where(w => w != maincrmid).ToList();
             List<Category> othercates = new List<Category>();
@@ -125,16 +126,34 @@ namespace Sales.Controllers
             crm.Categorys.AddRange(othercates);
             CH.Edit<CompanyRelationship>(crm);
 
-            
-            
-            
+
+
+            List<int> oldcompanyids = new List<int>();
             foreach (int i in crmids)
             {
                 CompanyRelationship othercrm = CH.GetDataById<CompanyRelationship>(i);
                 othercrm.Deleted = true;
                 CH.Edit<CompanyRelationship>(othercrm);
+
+                //判断是否有其他crm指向次公司
+                var hasothercrm = CH.DB.CompanyRelationships.Any(w => w.CompanyID == othercrm.CompanyID && !crmids.Contains(w.ID));
+                if (!hasothercrm)
+                {
+                    Company com = CH.GetDataById<Company>(othercrm.CompanyID);
+                    com.Deleted = true;
+                    CH.Edit<Company>(com);
+                    oldcompanyids.Add((int)othercrm.CompanyID);
+                }
+                
+                
             }
             CompanyMergeTrack _track = new CompanyMergeTrack();
+            _track.TableName = "Company";
+            _track.OldID = maincompanyid.ToString();
+            _track.NewID = string.Join(";", oldcompanyids.ToArray());
+            CH.Create<CompanyMergeTrack>(_track);
+
+            _track = new CompanyMergeTrack();
             _track.TableName = "CompanyRelationship";
             _track.OldID = maincrmid.ToString();
             _track.NewID = string.Join(";", crmids.ToArray());
@@ -142,11 +161,13 @@ namespace Sales.Controllers
 
             List<int> companyids = CH.DB.CompanyRelationships.Where(w=> crmids.Contains((int)w.ID)).Select(w=>(int)w.CompanyID).ToList();
             List<Lead> otherleads = CH.DB.Leads.Where(w => companyids.Contains((int)w.CompanyID)).ToList();
+            List<int> oldleadids = new List<int>();
             List<int> newleadids = new List<int>();
             List<int> oldcallids = new List<int>();
             List<int> newcallids = new List<int>();
             foreach (Lead lead in otherleads)
             {
+                oldleadids.Add(lead.ID);
                 lead.Deleted = true;
                 CH.Edit<Lead>(lead);
 
@@ -172,7 +193,7 @@ namespace Sales.Controllers
             {
                 _track = new CompanyMergeTrack();
                 _track.TableName = "Lead";
-                _track.OldID = string.Join(";", otherleads.Select(w => w.ID).ToArray());
+                _track.OldID = string.Join(";", oldleadids.ToArray());
                 _track.NewID = string.Join(";", newleadids.ToArray());
                 CH.Create<CompanyMergeTrack>(_track);
             }
