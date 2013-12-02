@@ -584,6 +584,7 @@ namespace Sales.Controllers
             companyRelationship.Company.ModifiedUser = Employee.CurrentUserName;
             companyRelationship.Company.Customers = string.IsNullOrEmpty(quickEntry.Customers) ? "" : quickEntry.Customers.Trim();
             companyRelationship.Company.Competitor = string.IsNullOrEmpty(quickEntry.Competitor) ? "" : quickEntry.Competitor.Trim();
+            companyRelationship.Company.Deleted = false;
             companyRelationship.ProgressID = quickEntry.ProgressId;
             companyRelationship.Members = new List<Member>() { };
             companyRelationship.Members.Add(CH.DB.Members.FirstOrDefault(c => c.Name == Employee.CurrentUserName && c.ProjectID == quickEntry.ProjectId));
@@ -690,6 +691,7 @@ namespace Sales.Controllers
             companyRelationship.Company.ModifiedUser = Employee.CurrentUserName;
             companyRelationship.Company.Customers = string.IsNullOrEmpty(bulkEntry.Customers) ? "" : bulkEntry.Customers.Trim();
             companyRelationship.Company.Competitor = string.IsNullOrEmpty(bulkEntry.Competitor) ? "" : bulkEntry.Competitor.Trim();
+            companyRelationship.Company.Deleted = false;
             companyRelationship.ProgressID = bulkEntry.ProgressId;
             companyRelationship.CoreLVLID = bulkEntry.CoreLVLID;
             companyRelationship.Members = new List<Member>() { };
