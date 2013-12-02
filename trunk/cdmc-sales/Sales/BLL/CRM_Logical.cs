@@ -2484,7 +2484,8 @@ namespace BLL
                     var names = c.TeamLeader.Trim().Split(new string[] { ";", "；" }, StringSplitOptions.RemoveEmptyEntries);
                     if (names.Contains(name))
                     {
-                        data.Add(c);
+                        if(!data.Contains(c))
+                            data.Add(c);
                     }
                 }
             }
