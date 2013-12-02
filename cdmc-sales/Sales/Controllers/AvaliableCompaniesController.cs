@@ -282,13 +282,13 @@ namespace Sales.Controllers
         public ActionResult CheckCompanyExist(int? projectid, string beforeUpdateCN, string afterUpdateCN, string beforeUpdateEN, string afterUpdateEN)
         {
             var exist = from c in CH.DB.CompanyRelationships.Where(w => w.ProjectID == projectid) select c;
-            var chcount = exist.Count((c => !string.IsNullOrEmpty(afterUpdateCN) & c.Company.Name_CH == afterUpdateCN && c.Company.Name_CH != beforeUpdateCN));
+            var chcount = exist.Count((c => !string.IsNullOrEmpty(afterUpdateCN) & c.Company.Name_CH == afterUpdateCN && c.Company.Name_CH != beforeUpdateCN && c.Company.Deleted==false));
             if (chcount > 0)
             {
                 return Content("同名中文公司名字已存在！");
             }
 
-            var encount = exist.Count(c => !string.IsNullOrEmpty(afterUpdateEN) & c.Company.Name_EN == afterUpdateEN && c.Company.Name_EN != beforeUpdateEN);
+            var encount = exist.Count(c => !string.IsNullOrEmpty(afterUpdateEN) & c.Company.Name_EN == afterUpdateEN && c.Company.Name_EN != beforeUpdateEN && c.Company.Deleted==false);
             if (encount > 0)
             {
                 return Content("同名英文公司名字已存在！");
@@ -299,15 +299,15 @@ namespace Sales.Controllers
         public ActionResult CheckCompanyNameCNExist(string name,int projectid)
         {
             var exist = from c in CH.DB.CompanyRelationships select c;
-            var chcount = exist.Count(c => c.Company.Name_CH == name && c.ProjectID==projectid );
+            var chcount = exist.Count(c => c.Company.Name_CH == name && c.ProjectID==projectid && c.Deleted==false );
             if (chcount > 0)
             {
                 return Json(new { flag = 0, Content = "本项目中已经存在同名中文公司，不能重复录入！"});
             }
-            var ex = exist.Any(c=> c.Company.Name_CH == name && c.ProjectID!=projectid);
+            var ex = exist.Any(c=> c.Company.Name_CH == name && c.ProjectID!=projectid && c.Company.Deleted==false);
             if (ex)
             {
-                return Json(new { flag = 1, crmid = exist.Where(c => c.Company.Name_CH == name && c.ProjectID != projectid).FirstOrDefault().ID, Content = "已经存在同名英文公司，是否领用?" });
+                return Json(new { flag = 1, crmid = exist.Where(c => c.Company.Name_CH == name && c.ProjectID != projectid && c.Company.Deleted==false).FirstOrDefault().ID, Content = "已经存在同名中文公司，是否领用?" });
             }
 
             return Json(new { flag = 2, Content = "" });
@@ -315,15 +315,15 @@ namespace Sales.Controllers
         public ActionResult CheckCompanyNameENExist(string name, int projectid)
         {
             var exist = from c in CH.DB.CompanyRelationships select c;
-            var chcount = exist.Count(c => c.Company.Name_CH == name && c.ProjectID == projectid);
+            var chcount = exist.Count(c => c.Company.Name_CH == name && c.ProjectID == projectid && c.Deleted == false);
             if (chcount > 0)
             {
                 return Json(new { flag = 0, Content = "本项目中已经存在同名英文公司，不能重复录入！" });
             }
-            var ex = exist.Any(c => c.Company.Name_CH == name && c.ProjectID != projectid);
+            var ex = exist.Any(c => c.Company.Name_CH == name && c.ProjectID != projectid && c.Company.Deleted == false);
             if (ex)
             {
-                return Json(new { flag = 1, crmid = exist.Where(c => c.Company.Name_CH == name && c.ProjectID != projectid).FirstOrDefault().ID, Content = "已经存在同名英文公司，是否领用?" });
+                return Json(new { flag = 1, crmid = exist.Where(c => c.Company.Name_CH == name && c.ProjectID != projectid && c.Company.Deleted == false).FirstOrDefault().ID, Content = "已经存在同名英文公司，是否领用?" });
             }
 
             return Json(new { flag = 2, Content = "" });
@@ -433,6 +433,7 @@ namespace Sales.Controllers
             companyRelationship.Company.IsVIP = ajaxViewSaleCompany.IsVIP;
             companyRelationship.Company.Info = ajaxViewSaleCompany.Info;
             companyRelationship.Company.InfoRemark = ajaxViewSaleCompany.InfoRemark;
+            companyRelationship.Company.Deleted = false;
             companyRelationship.Description = string.IsNullOrEmpty(ajaxViewSaleCompany.Desc) ? "" : ajaxViewSaleCompany.Desc.Trim();
             companyRelationship.ProgressID = ajaxViewSaleCompany.ProgressId;
             companyRelationship.CoreLVLID = ajaxViewSaleCompany.CoreLVLID;
@@ -899,7 +900,7 @@ namespace Sales.Controllers
             if (d > 300)
                 return Content("从公海领用的，公司数超过300的不能领用！");
 
-            Member member = CH.DB.Members.Where(m => m.Name == Employee.CurrentUserName).FirstOrDefault();
+            Member member = CH.DB.Members.Where(m => m.Name == Employee.CurrentUserName && m.ProjectID==projectid).FirstOrDefault();
             companyRelationship.ProjectID = projectid;
             companyRelationship.Members.Add(member);
 

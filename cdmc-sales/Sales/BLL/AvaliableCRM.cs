@@ -47,7 +47,20 @@ namespace Sales.BLL
             //模糊搜索
             if (filters != null && !string.IsNullOrWhiteSpace(filters.FuzzyQuery))
             {
-                crms = crms.Where(q => q.Company.Leads.Any(l =>  l.Deleted==false &&(l.Name_CH.Contains(filters.FuzzyQuery) || l.Name_EN.Contains(filters.FuzzyQuery) || l.EMail.Contains(filters.FuzzyQuery) || l.PersonalEmailAddress.Contains(filters.FuzzyQuery)) || q.Company.Name_CH.Contains(filters.FuzzyQuery) || q.Company.Name_EN.Contains(filters.FuzzyQuery) || q.Company.Contact.Contains(filters.FuzzyQuery)));
+                crms = crms.Where(q => q.Company.Leads.Any(l =>  
+                    l.Deleted==false &&
+                    (
+                        l.Name_CH.Contains(filters.FuzzyQuery) || 
+                        l.Name_EN.Contains(filters.FuzzyQuery) || 
+                        l.EMail.Contains(filters.FuzzyQuery) || 
+                        l.PersonalEmailAddress.Contains(filters.FuzzyQuery)
+                       )) || 
+                       q.Company.Deleted==false &&
+                        (q.Company.Name_CH.Contains(filters.FuzzyQuery) || 
+                        q.Company.Name_EN.Contains(filters.FuzzyQuery) || 
+                        q.Company.Contact.Contains(filters.FuzzyQuery))
+                    
+                    );
             }
             //行业
             if (filters != null && filters.CategoryId.HasValue)
