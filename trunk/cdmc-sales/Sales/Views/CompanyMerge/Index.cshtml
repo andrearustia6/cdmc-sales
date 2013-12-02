@@ -85,6 +85,19 @@
     var companyids = [];
     var leadids = [];
     var crmid;
+
+    function compareInt(int1, int2) {
+        var iNum1 = parseInt(int1); //强制转换成int 型;
+        var iNum2 = parseInt(int2);
+        if (iNum1 < iNum2) {
+            return -1;
+        } else if (iNum1 > iNum2) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
     function converttojson(form) {
         var o = {};
         var a = form.serializeArray();
@@ -139,6 +152,9 @@
     }
 
     function getcompanies() {
+//        var arr = [203629, 29420];
+//        arr.sort(function (a, b) { return a > b ? 1 : -1 });
+//        alert(arr);
         companyids = [];
         var $checkedRecords = $('input[name=checkedRecords]:checked');
         if ($checkedRecords.length < 2) {
@@ -149,7 +165,8 @@
         for (var i = 0; i < $checkedRecords.length; i++) {
             companyids.push($checkedRecords[i].value);
         }
-        companyids.sort(function (a, b) { return a > b ? 1 : -1 });
+        //companyids.sort(function (a, b) { return a > b ? 1 : -1 });
+        companyids.sort(compareInt);
         $.post('GetCompanies', $.param({ checkedRecords: companyids }, true), function (result) {
             $('.MergeCompany-wrapper').html(result);
             var window = $('#MergeCompany').data('tWindow');
@@ -232,6 +249,7 @@
 //        });
     }
     function CancelMergeCompany() {
+        companyids = [];
         var window = $('#MergeCompany').data('tWindow');
         window.close();
     }
@@ -255,7 +273,6 @@
 
     }
     function LeadCheck() {
-
         var $checkedRecords = $('input[name=checkedLead]:checked');
         if ($checkedRecords.length < 2) {
             alert('请选择2个以上Lead.');
@@ -266,7 +283,8 @@
         }
         var window = $('#LeadCheck').data('tWindow');
         window.close();
-        leadids.sort(function (a, b) { return a > b ? 1 : -1 });
+        //leadids.sort(function (a, b) { return a > b ? 1 : -1 });
+        leadids.sort(compareInt);
         $.post('GetLeadsByids', $.param({ checkedRecords: leadids }, true), function (result) {
             $('.MergeLead-wrapper').html(result);
             var window = $('#MergeLead').data('tWindow');
@@ -357,11 +375,13 @@
     }
 
     function Cancelmergelead() {
+        leadids = [];
         var window = $('#MergeLead').data('tWindow');
         window.close();
     }
 
     function CancelLeadCheck() {
+        leadids = [];
         var window = $('#LeadCheck').data('tWindow');
         window.close();
     }
