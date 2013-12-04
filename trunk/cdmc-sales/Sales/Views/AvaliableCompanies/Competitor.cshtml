@@ -3,7 +3,13 @@
 @model _CRM
 <ul>
     <li>
-    <textarea style="border:1px solid black;width:100%;height:440px;" name="Competitor3">@Model.Competitor</textarea>
-        
+        @if (Utl.Employee.CurrentRole.Level == ManagerRequired.LVL || Utl.Employee.CurrentRole.Level == LeaderRequired.LVL)
+          {
+            <textarea style="border:1px solid black;width:100%;height:440px;" name="Competitor3"  readonly="readonly" >@Model.Competitor</textarea>
+          }
+          else
+          {
+            <textarea style="border:1px solid black;width:100%;height:440px;" name="Competitor3">@Model.Competitor</textarea>
+          }
     </li>
 </ul>
