@@ -55,10 +55,10 @@ namespace Sales.BLL
                         l.EMail.Contains(filters.FuzzyQuery) || 
                         l.PersonalEmailAddress.Contains(filters.FuzzyQuery)
                        )) || 
-                       q.Company.Deleted==false &&
+                       (q.Company.Deleted==false &&
                         (q.Company.Name_CH.Contains(filters.FuzzyQuery) || 
                         q.Company.Name_EN.Contains(filters.FuzzyQuery) || 
-                        q.Company.Contact.Contains(filters.FuzzyQuery))
+                        q.Company.Contact.Contains(filters.FuzzyQuery)))
                     
                     );
             }
@@ -212,8 +212,8 @@ namespace Sales.BLL
             // 不同时差数，是ｌｅａｄ所在ｌｅａｄｄｉｓｃｔｉｎｃｔｉｄ有几个不同
             //  个人类型数量是个ｌｉｓｔ
             // 各个ｃａｌｌｔｙｐｅ的数量
-            var leadids = data.Company.Leads.Where(w=>w.Deleted==false).Select(s=>s.ID);
-            var hiscall = from c in CH.DB.LeadCalls where leadids.Any(a => a==c.LeadID && c.ProjectID != data.ProjectID) && c.Deleted==false
+            var leadids = data.Company.Leads.Where(w=>w.Deleted==false).Select(s=>s.ID).ToList();
+            var hiscall = from c in CH.DB.LeadCalls where leadids.Contains((int)c.LeadID) && c.ProjectID != data.ProjectID && c.Deleted==false
                           orderby c.CallDate descending
                           select c;
 
