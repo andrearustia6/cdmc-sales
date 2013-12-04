@@ -36,7 +36,7 @@ namespace Sales.Model
             get
             {
                 if (TeamLeadPerformanceInWeeks != null)
-                    return TeamLeadPerformanceInWeeks.Count(c => c.IsLeadAddedQualified == false);
+                    return TeamLeadPerformanceInWeeks.Where(c => c.IsLeadAddedQualified == false).Count();
                 else
                     return 0;
             }
@@ -129,8 +129,8 @@ namespace Sales.Model
         }
         }
 
-        public IEnumerable<_TeamLeadPerformanceInWeek> TeamLeadPerformanceInWeeks { private get; set; }
-
+        public IEnumerable<_TeamLeadPerformanceInWeek> TeamLeadPerformanceInWeeks { get; set; }
+        public List<_TeamLeadPerformanceInWeek> TeamLeadPerformanceInWeeks1 { get; set; }
         [Display(Name = "Faxout详细")]
         public string FaxOutCountString
         {
@@ -195,12 +195,13 @@ namespace Sales.Model
         {
             get
             {
+
                 return FaxOutCount >= FaxOutStandard;
             }
         }
 
 
-        public bool IsLeadAddedQualified
+        public bool? IsLeadAddedQualified
         {
             get
             {

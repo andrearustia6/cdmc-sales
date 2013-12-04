@@ -388,8 +388,9 @@ namespace Sales.Controllers
             if (month == null) month = DateTime.Now.Month;
             // if (month == null) month = 5;
             var list = CRM_Logical._EmployeePerformance.GetTeamLeadsPerformances(month.Value);
-            var data = list.OrderBy(p => p.Name).ToList();
-            return View(new GridModel(data));
+            list = list.OrderBy(w => w.Name).ToList();
+            //var data = list.OrderBy(p => p.Name).ToList();
+            return View(new GridModel(list));
         }
         [AcceptVerbs(HttpVerbs.Post)]
         [GridAction]

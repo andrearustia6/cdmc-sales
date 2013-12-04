@@ -143,7 +143,7 @@ namespace BLL
                 return new List<_ManagerScore>();
             }
 
-            public static IEnumerable<_TeamLeadPerformance> GetTeamLeadsPerformances(int month)
+            public static List<_TeamLeadPerformance> GetTeamLeadsPerformances(int month)
             {
                 var user = Employee.CurrentUserName;
                 var rolelvl = Employee.CurrentRole.Level;
@@ -154,22 +154,33 @@ namespace BLL
                 }
                 if (rolelvl >= LeaderRequired.LVL)
                 {
-                    var leads = CH.DB.Projects.Where(w => w.IsActived == true && !string.IsNullOrEmpty(w.TeamLeader)).Select(s => s.TeamLeader).Distinct();
+                    var leadStr = CH.DB.Projects.Where(w => w.IsActived == true && !string.IsNullOrEmpty(w.TeamLeader)).Select(s => s.TeamLeader).Distinct();
+                    List<string> leadList = new List<string>();
+                    foreach (string l in leadStr)
+                    {
+                        var temp = l.Trim().Split(new string[] { ";", "；" }, StringSplitOptions.RemoveEmptyEntries);
+                        foreach (string m in temp)
+                        {
+                            leadList.Add(m);
+                        }
+                    }
+                    List<string> leads = leadList;
                    //leads = leads.Where(w=>w.)
 
-                    if (Utl.Utl.DebugModel() != true)
-                    {
-                        var debugmembers = CH.DB.Members.Where(w => w.Test == true).Select(s => s.Name).Distinct();
-                        leads = leads.Where(w => debugmembers.Any(a => a == w) == false);
-                    }
+                    //if (Utl.Utl.DebugModel() != true)
+                    //{
+                    //    var debugmembers = CH.DB.Members.Where(w => w.Test == true).Select(s => s.Name).Distinct();
+                    //    leads = leads.Where(w => debugmembers.Any(a => a == w)==true);
+                    //}
                     if (Employee.EqualToManager())//版块负责人只能看到自己项目所属的lead
                     {
-                        var leadinsameprojects = from p in CH.DB.Projects.Where(w => w.Manager == user && w.IsActived==true) select p.TeamLeader;
-                        leads = leads.Where(w => leadinsameprojects.Any(a => a == w));
+                        var leadinsameprojects = from p in CH.DB.Projects.Where(w => w.Manager == user && w.IsActived == true) select p.TeamLeader;
+                        leads = leads.Where(w => leadinsameprojects.Any(a => a.Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries).Contains( w))).ToList();
                     }
-                    else if (rolelvl == 100)
+                    else 
+                    if (rolelvl == 100)
                     {
-                        leads = leads.Where(w => w == user);
+                        leads = leads.Where(w => w.Contains( user)).ToList();
                     }
 
 
@@ -181,34 +192,86 @@ namespace BLL
                     var rates = from r in CH.DB.AssignPerformanceRates.Where(w => w.Month == month && w.Year == year) select r;
                     var scores = from r in CH.DB.AssignPerformanceScores.Where(w => w.Month == month && w.Year == year) select r;
                     var wd = MonthDuration.GetMonthInstance(month).WeekDurations.Select(s => s.StartDate);
-                    var lps = from l in leads
+                    List<_TeamLeadPerformance> retList = new List<_TeamLeadPerformance>();
+                    foreach (var l in leads)
+                    {
+                        _TeamLeadPerformance ret = new _TeamLeadPerformance
+                        {
+                            RoleLevel = rolelvl,
+                            ID = scores.Where(w => w.TargetName == l).Select(s => s.ID).FirstOrDefault() == null ? 0 : scores.Where(w => w.TargetName == l).Select(s => s.ID).FirstOrDefault(),
+                            Target = CH.DB.TargetOfMonths.Where(t => t.Project.TeamLeader == l && t.Project.IsActived == true && t.StartDate.Month == month).Sum(s => (decimal?)s.CheckIn),
+                            CheckIn = deals.Where(d => d.Project.TeamLeader == l).Sum(s => (decimal?)s.Income),
+                            Name = l,
+                            User = user,
+                            //Assigner = scores.Where(w => w.TargetName == l).Select(s => s.Assigner).FirstOrDefault() == null ? user : scores.Where(w => w.TargetName == l).Select(s => s.Assigner).FirstOrDefault(),
+                            Rate = scores.Where(w => w.TargetName == l).Count() == 0 ? 1 : scores.Where(w => w.TargetName == l).Select(s => s.Rate).FirstOrDefault(), //rates.Where(w => w.TargetName == l).Average(s => s.Rate) == null ? 1 : scores.Where(w => w.TargetName == l).Average(s => s.Score),
+                            AssignedScore = scores.Where(w => w.TargetName == l).Count() == 0 ? 10 : scores.Where(w => w.TargetName == l).Select(s => s.Score).FirstOrDefault(),//scores.Where(w => w.TargetName == l).Average(s => s.Score) == null ? 0 : scores.Where(w => w.TargetName == l).Average(s => s.Score),
+                            TeamLeadPerformanceInWeeks = from s in wd
+                                                         select new _TeamLeadPerformanceInWeek
+                                                         {
+                                                             //FaxOutCount = calls.Where(w => w.Member != null && w.Member.Name == l && w.CreatedDate >= s && w.CreatedDate < EntityFunctions.AddDays(s, 7)
+                                                             //    && calls.Any(a => a.CallDate < s && a.LeadID == w.LeadID && a.Member.Name == l && a.ProjectID == w.ProjectID) == false).GroupBy(g => g.LeadID).Count(),
+                                                             //DealsCount = deals.Count(c => c.SignDate >= s && c.SignDate < EntityFunctions.AddDays(s, 7) && c.Sales == l),
+                                                             //StartDate = s,
+                                                             //EndDate = EntityFunctions.AddDays(s, 7).Value,
+                                                             //LeadsCount = leadadds.Count(c => c.Creator == l && c.CreatedDate >= s && c.CreatedDate < EntityFunctions.AddDays(s, 7))
+                                                             FaxOutCount = calls.Where(w => w.Member != null && EntityFunctions.Equals(w.Member.Name, l) && w.CreatedDate >= s && w.CreatedDate < EntityFunctions.AddDays(s, 7)
+                                                                 && calls.Any(a => a.CallDate < s && a.LeadID == w.LeadID && EntityFunctions.Equals(a.Member.Name, l) && a.ProjectID == w.ProjectID) == false).GroupBy(g => g.LeadID).Count(),
+                                                             DealsCount = deals.Count(c => c.SignDate >= s && c.SignDate < EntityFunctions.AddDays(s, 7) && EntityFunctions.Equals(c.Sales, l)),
+                                                             StartDate = s,
+                                                             EndDate = (DateTime)s.AddDays(7),
+                                                             LeadsCount = leadadds.Count(c => EntityFunctions.Equals(c.Creator, l) && c.CreatedDate >= s && c.CreatedDate < EntityFunctions.AddDays(s, 7))
+                                                         }
+                        };
+                        //ret.TeamLeadPerformanceInWeeks1 = new List<_TeamLeadPerformanceInWeek>();
+                        //foreach (var s in wd)
+                        //{
+                        //    _TeamLeadPerformanceInWeek week = new _TeamLeadPerformanceInWeek();
+                        //    week.FaxOutCount = calls.Where(w => w.Member != null && EntityFunctions.Equals(w.Member.Name, ret.Name) && w.CreatedDate >= s && w.CreatedDate < EntityFunctions.AddDays(s, 7)
+                        //                                             && calls.Any(a => a.CallDate < s && a.LeadID == w.LeadID && EntityFunctions.Equals(a.Member.Name, ret.Name) && a.ProjectID == w.ProjectID) == false).GroupBy(g => g.LeadID).Count();
+                        //    week.DealsCount = deals.Count(c => c.SignDate >= s && c.SignDate < EntityFunctions.AddDays(s, 7) && EntityFunctions.Equals(c.Sales, ret.Name));
+                        //    week.StartDate = s;
+                        //    week.EndDate = s.AddDays(7);
+                        //    week.LeadsCount = leadadds.Count(c => EntityFunctions.Equals(c.Creator, ret.Name) && c.CreatedDate >= s && c.CreatedDate < EntityFunctions.AddDays(s, 7));
+                        //    ret.TeamLeadPerformanceInWeeks1.Add(week);
+                        //}
+                        
 
-                              select new _TeamLeadPerformance()
+                        retList.Add(ret);
 
-                              {
-                                  RoleLevel = rolelvl,
-                                  ID = scores.Where(w => w.TargetName == l).Select(s => s.ID).FirstOrDefault() == null ? 0 : scores.Where(w => w.TargetName == l).Select(s => s.ID).FirstOrDefault(),
-                                  Target = CH.DB.TargetOfMonths.Where(t => t.Project.TeamLeader == l && t.Project.IsActived == true && t.StartDate.Month == month).Sum(s => s.CheckIn),
-                                  CheckIn = deals.Where(d => d.Project.TeamLeader == l).Sum(s => s.Income),
-                                  Name = l,
-                                  User = user,
-                                  //Assigner = scores.Where(w => w.TargetName == l).Select(s => s.Assigner).FirstOrDefault() == null ? user : scores.Where(w => w.TargetName == l).Select(s => s.Assigner).FirstOrDefault(),
-                                  Rate = scores.Where(w => w.TargetName == l).Count() == 0 ? 1 : scores.Where(w => w.TargetName == l).Select(s => s.Rate).FirstOrDefault(), //rates.Where(w => w.TargetName == l).Average(s => s.Rate) == null ? 1 : scores.Where(w => w.TargetName == l).Average(s => s.Score),
-                                  AssignedScore = scores.Where(w => w.TargetName == l).Count() == 0 ? 10 : scores.Where(w => w.TargetName == l).Select(s => s.Score).FirstOrDefault(),//scores.Where(w => w.TargetName == l).Average(s => s.Score) == null ? 0 : scores.Where(w => w.TargetName == l).Average(s => s.Score),
-                                  TeamLeadPerformanceInWeeks = wd.Select(s => new _TeamLeadPerformanceInWeek
-                                  {
-                                      //FaxOutCount = calls.Where(c => c.Member != null && c.Member.Name == l).GroupBy(c=>c.LeadID).Select(g=>g.FirstOrDefault()).Count(c=>c.CreatedDate >= s && c.CreatedDate < EntityFunctions.AddDays(s, 7)),
-                                      FaxOutCount = calls.Where(w => w.Member != null && w.Member.Name == l && w.CreatedDate >= s && w.CreatedDate < EntityFunctions.AddDays(s, 7)
-                                          && calls.Any(a => a.CallDate < s && a.LeadID == w.LeadID && a.Member.Name == l && a.ProjectID==w.ProjectID) == false).GroupBy(g => g.LeadID).Count(),
-                                      DealsCount = deals.Count(c => c.SignDate >= s && c.SignDate < EntityFunctions.AddDays(s, 7) && c.Sales==l),
-                                      StartDate = s,
-                                      EndDate = EntityFunctions.AddDays(s, 7).Value,
-                                      LeadsCount = leadadds.Count(c => c.Creator == l && c.CreatedDate >= s && c.CreatedDate < EntityFunctions.AddDays(s, 7))
-                                  })
+                    }
+                    //var lps = from l in leads
+                    //          select new _TeamLeadPerformance()
+                    //          {
+                    //              RoleLevel = rolelvl,
+                    //              ID = scores.Where(w => w.TargetName == l).Select(s => s.ID).FirstOrDefault() == null ? 0 : scores.Where(w => w.TargetName == l).Select(s => s.ID).FirstOrDefault(),
+                    //              Target = CH.DB.TargetOfMonths.Where(t => t.Project.TeamLeader == l && t.Project.IsActived == true && t.StartDate.Month == month).Sum(s =>(decimal?) s.CheckIn),
+                    //              CheckIn = deals.Where(d => d.Project.TeamLeader == l).Sum(s => (decimal?)s.Income),
+                    //              Name = l,
+                    //              User = user,
+                    //              //Assigner = scores.Where(w => w.TargetName == l).Select(s => s.Assigner).FirstOrDefault() == null ? user : scores.Where(w => w.TargetName == l).Select(s => s.Assigner).FirstOrDefault(),
+                    //              Rate = scores.Where(w => w.TargetName == l).Count() == 0 ? 1 : scores.Where(w => w.TargetName == l).Select(s => s.Rate).FirstOrDefault(), //rates.Where(w => w.TargetName == l).Average(s => s.Rate) == null ? 1 : scores.Where(w => w.TargetName == l).Average(s => s.Score),
+                    //              AssignedScore = scores.Where(w => w.TargetName == l).Count() == 0 ? 10 : scores.Where(w => w.TargetName == l).Select(s => s.Score).FirstOrDefault(),//scores.Where(w => w.TargetName == l).Average(s => s.Score) == null ? 0 : scores.Where(w => w.TargetName == l).Average(s => s.Score),
+                    //              TeamLeadPerformanceInWeeks =from s in  wd
+                    //              select new _TeamLeadPerformanceInWeek
+                    //              {
+                    //                  //FaxOutCount = calls.Where(w => w.Member != null && w.Member.Name == l && w.CreatedDate >= s && w.CreatedDate < EntityFunctions.AddDays(s, 7)
+                    //                  //    && calls.Any(a => a.CallDate < s && a.LeadID == w.LeadID && a.Member.Name == l && a.ProjectID == w.ProjectID) == false).GroupBy(g => g.LeadID).Count(),
+                    //                  //DealsCount = deals.Count(c => c.SignDate >= s && c.SignDate < EntityFunctions.AddDays(s, 7) && c.Sales == l),
+                    //                  //StartDate = s,
+                    //                  //EndDate = EntityFunctions.AddDays(s, 7).Value,
+                    //                  //LeadsCount = leadadds.Count(c => c.Creator == l && c.CreatedDate >= s && c.CreatedDate < EntityFunctions.AddDays(s, 7))
+                    //                  FaxOutCount = calls.Where(w => w.Member != null && EntityFunctions.Equals(w.Member.Name , l) && w.CreatedDate >= s && w.CreatedDate < EntityFunctions.AddDays(s, 7)
+                    //                      && calls.Any(a => a.CallDate < s && a.LeadID == w.LeadID && EntityFunctions.Equals(a.Member.Name , l) && a.ProjectID == w.ProjectID) == false).GroupBy(g => g.LeadID).Count(),
+                    //                  DealsCount = deals.Count(c => c.SignDate >= s && c.SignDate < EntityFunctions.AddDays(s, 7) && EntityFunctions.Equals(c.Sales , l)),
+                    //                  StartDate = s,
+                    //                  EndDate = EntityFunctions.AddDays(s, 7).Value,
+                    //                  LeadsCount = leadadds.Count(c => EntityFunctions.Equals(c.Creator , l) && c.CreatedDate >= s && c.CreatedDate < EntityFunctions.AddDays(s, 7))
+                    //              }
 
-                              };
-                    lps = lps.Where(w => CH.DB.EmployeeRoles.Any(e => e.AccountName == w.Name && e.IsActivated == true));
-                    return lps;
+                    //          };
+                    //lps = lps.Where(w => CH.DB.EmployeeRoles.Any(e => e.AccountName == w.Name && e.IsActivated == true));
+                    return retList;
                 }
                 return new List<_TeamLeadPerformance>();
             }
