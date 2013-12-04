@@ -35,7 +35,8 @@
             mappings.For<_CRM>(binding => binding
             .ItemDataBound((item, crm) =>
             {
-                item.Text = crm.DisplayName; // + "-CH:" + crm.CompanyNameCH + "-EN:" + crm.CompanyNameEN + "-Order:" + crm.CrmCommentStateIDOrder;
+                //item.Text = crm.DisplayName; // + "-CH:" + crm.CompanyNameCH + "-EN:" + crm.CompanyNameEN + "-Order:" + crm.CrmCommentStateIDOrder;
+                item.Text = crm.CompanyName;
                 item.Value = crm.ID.ToString();
                 if (Utl.Employee.CurrentRole.Level == ManagerRequired.LVL)
                 {
