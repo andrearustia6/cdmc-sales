@@ -123,86 +123,86 @@ namespace Sales.BLL
                            };
             return data;
         }
-        static IQueryable<_CoreLVL> GetPublicCRM(bool memberonly, CRMFilters filters = null)
-        {
-            if (filters.ProjectId == null) filters.ProjectId = 26;
-            var crms = from c in CH.DB.CompanyRelationships where c.ProjectID == filters.ProjectId && c.Deleted==false select c;
+        //static IQueryable<_CoreLVL> GetPublicCRM(bool memberonly, CRMFilters filters = null)
+        //{
+        //    if (filters.ProjectId == null) filters.ProjectId = 26;
+        //    var crms = from c in CH.DB.CompanyRelationships where c.ProjectID == filters.ProjectId && c.Deleted==false select c;
 
-            if (memberonly)
-            {
-                crms = crms.Where(w => w.Members.Count > 0);
-            }
-            else
-            {
-                //if (Employee.CurrentRole.Level == SalesRequired.LVL || Employee.CurrentRole.Level == LeaderRequired.LVL)
-                //    crms = crms.Where(w => w.Members.Any(m => m.Name == Employee.CurrentUserName)==false).OrderBy(w => w.ID);
-                //else if (Employee.CurrentRole.Level == ManagerRequired.LVL)
-                crms = crms.Where(w => w.Members.Count == 0);
+        //    if (memberonly)
+        //    {
+        //        crms = crms.Where(w => w.Members.Count > 0);
+        //    }
+        //    else
+        //    {
+        //        //if (Employee.CurrentRole.Level == SalesRequired.LVL || Employee.CurrentRole.Level == LeaderRequired.LVL)
+        //        //    crms = crms.Where(w => w.Members.Any(m => m.Name == Employee.CurrentUserName)==false).OrderBy(w => w.ID);
+        //        //else if (Employee.CurrentRole.Level == ManagerRequired.LVL)
+        //        crms = crms.Where(w => w.Members.Count == 0);
 
-            }
-            //模糊搜索
-            if (filters != null && !string.IsNullOrWhiteSpace(filters.FuzzyQuery))
-            {
-                crms = crms.Where(q => q.Company.Leads.Any(l =>  l.Deleted==false &&( l.Name_CH.Contains(filters.FuzzyQuery) || l.Name_EN.Contains(filters.FuzzyQuery) || l.EMail.Contains(filters.FuzzyQuery) || l.PersonalEmailAddress.Contains(filters.FuzzyQuery)) || q.Company.Name_CH.Contains(filters.FuzzyQuery) || q.Company.Name_EN.Contains(filters.FuzzyQuery) || q.Company.Contact.Contains(filters.FuzzyQuery)));
-            }
-            //行业
-            if (filters != null && filters.CategoryId.HasValue)
-            {
-                crms = crms.Where(q => q.Categorys.Any(c => c.ID == filters.CategoryId.Value));
-            }
-            //时区
-            if (filters != null && filters.DistinctNumber.HasValue)
-            {
-                crms = crms.Where(q => q.Company.DistrictNumberID == filters.DistinctNumber);
-            }
-            //点评
-            if (filters != null && filters.IfComment == 1)
-            {
-                crms = crms.Where(q => q.Comments.Count > 0);
-            }
-            if (filters != null && filters.IfComment == 0)
-            {
-                crms = crms.Where(q => q.Comments.Count == 0);
-            }
+        //    }
+        //    //模糊搜索
+        //    if (filters != null && !string.IsNullOrWhiteSpace(filters.FuzzyQuery))
+        //    {
+        //        crms = crms.Where(q => q.Company.Leads.Any(l =>  l.Deleted==false &&( l.Name_CH.Contains(filters.FuzzyQuery) || l.Name_EN.Contains(filters.FuzzyQuery) || l.EMail.Contains(filters.FuzzyQuery) || l.PersonalEmailAddress.Contains(filters.FuzzyQuery)) || q.Company.Name_CH.Contains(filters.FuzzyQuery) || q.Company.Name_EN.Contains(filters.FuzzyQuery) || q.Company.Contact.Contains(filters.FuzzyQuery)));
+        //    }
+        //    //行业
+        //    if (filters != null && filters.CategoryId.HasValue)
+        //    {
+        //        crms = crms.Where(q => q.Categorys.Any(c => c.ID == filters.CategoryId.Value));
+        //    }
+        //    //时区
+        //    if (filters != null && filters.DistinctNumber.HasValue)
+        //    {
+        //        crms = crms.Where(q => q.Company.DistrictNumberID == filters.DistinctNumber);
+        //    }
+        //    //点评
+        //    if (filters != null && filters.IfComment == 1)
+        //    {
+        //        crms = crms.Where(q => q.Comments.Count > 0);
+        //    }
+        //    if (filters != null && filters.IfComment == 0)
+        //    {
+        //        crms = crms.Where(q => q.Comments.Count == 0);
+        //    }
 
-            //if (filters != null && !string.IsNullOrWhiteSpace(filters.selSales))
-            //{
-            //    crms = crms.Where(s => s.Members.Any(q => q.Name == filters.selSales));
-            //}
+        //    //if (filters != null && !string.IsNullOrWhiteSpace(filters.selSales))
+        //    //{
+        //    //    crms = crms.Where(s => s.Members.Any(q => q.Name == filters.selSales));
+        //    //}
 
-            var data = from c in CH.DB.CoreLVLs
-                       select new _CoreLVL()
-                       {
-                           CoreName = c.CoreLVLName,
-                           ID = c.ID,
-                           CrmCount = crms.Where(cr => cr.CoreLVLID == c.CoreLVLCode).Count(),
-                           //_CRMs = (from crm in crms.Where(cr => cr.CoreLVLID == c.CoreLVLCode)
-                           //         select new _CRM
-                           //         {
-                           //             ID = crm.ID,
-                           //             CompanyNameCH = crm.Company.Name_CH,
-                           //             CompanyNameEN = crm.Company.Name_EN,
-                           //             CoreCompany = c.CoreLVLName == "核心公司" ? true : false,
-                           //             //ContectedLeadCount = crm.LeadCalls.GroupBy(call => call.LeadID).Count(),
-                           //            // ContectedLeadCount = CH.DB.Leads.Where(l => l.CompanyID == crm.CompanyID && crm.LeadCalls.Any(w=>w.LeadID==l.ID)).Count(),
-                           //             LeadCount = CH.DB.Leads.Where(l => l.CompanyID == crm.CompanyID).Count(),
-                           //             //CrmCommentStateID = crm.CrmCommentStateID,
-                           //             //CrmCommentStateIDOrder = (crm.CrmCommentStateID == 1 || crm.CrmCommentStateID == 2 || crm.CrmCommentStateID == 3) ? "a" : "b",
-                           //             //_Comments = (from co in crm.Comments.OrderByDescending(m => m.CommentDate)
-                           //             //             select new _Comment()
-                           //             //             {
-                           //             //                 Submitter = co.Submitter,
-                           //             //                 CommentDate = co.CommentDate,
-                           //             //                 CRMID = co.CompanyRelationshipID,
-                           //             //                 Contents = co.Contents
-                           //             //             })
-                           //         })
-                                    //.OrderBy(cr => cr.CrmCommentStateIDOrder).ThenBy(cr => cr.CompanyNameEN).ThenBy(cr => cr.CompanyNameCH)
-                           //.OrderBy(cr => cr.CompanyNameCH).OrderBy(cr => cr.CompanyNameEN).OrderBy(cr => cr.CrmCommentStateIDOrder)
-                       };
+        //    var data = from c in CH.DB.CoreLVLs
+        //               select new _CoreLVL()
+        //               {
+        //                   CoreName = c.CoreLVLName,
+        //                   ID = c.ID,
+        //                   CrmCount = crms.Where(cr => cr.CoreLVLID == c.CoreLVLCode).Count(),
+        //                   //_CRMs = (from crm in crms.Where(cr => cr.CoreLVLID == c.CoreLVLCode)
+        //                   //         select new _CRM
+        //                   //         {
+        //                   //             ID = crm.ID,
+        //                   //             CompanyNameCH = crm.Company.Name_CH,
+        //                   //             CompanyNameEN = crm.Company.Name_EN,
+        //                   //             CoreCompany = c.CoreLVLName == "核心公司" ? true : false,
+        //                   //             //ContectedLeadCount = crm.LeadCalls.GroupBy(call => call.LeadID).Count(),
+        //                   //            // ContectedLeadCount = CH.DB.Leads.Where(l => l.CompanyID == crm.CompanyID && crm.LeadCalls.Any(w=>w.LeadID==l.ID)).Count(),
+        //                   //             LeadCount = CH.DB.Leads.Where(l => l.CompanyID == crm.CompanyID).Count(),
+        //                   //             //CrmCommentStateID = crm.CrmCommentStateID,
+        //                   //             //CrmCommentStateIDOrder = (crm.CrmCommentStateID == 1 || crm.CrmCommentStateID == 2 || crm.CrmCommentStateID == 3) ? "a" : "b",
+        //                   //             //_Comments = (from co in crm.Comments.OrderByDescending(m => m.CommentDate)
+        //                   //             //             select new _Comment()
+        //                   //             //             {
+        //                   //             //                 Submitter = co.Submitter,
+        //                   //             //                 CommentDate = co.CommentDate,
+        //                   //             //                 CRMID = co.CompanyRelationshipID,
+        //                   //             //                 Contents = co.Contents
+        //                   //             //             })
+        //                   //         })
+        //                            //.OrderBy(cr => cr.CrmCommentStateIDOrder).ThenBy(cr => cr.CompanyNameEN).ThenBy(cr => cr.CompanyNameCH)
+        //                   //.OrderBy(cr => cr.CompanyNameCH).OrderBy(cr => cr.CompanyNameEN).OrderBy(cr => cr.CrmCommentStateIDOrder)
+        //               };
 
-            return data;
-        }
+        //    return data;
+        //}
         public static _CRM _CRMGetAvaliableCrmDetail(int? crmid)
         {
             var data = CH.GetDataById<CompanyRelationship>(crmid);
