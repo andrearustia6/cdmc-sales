@@ -2,4 +2,16 @@
 @using Sales.Model
 @model CompanyRelationship
 
-<textarea style="border:1px solid black;width:100%;height:440px;" name="PitchPoint">@Model.PitchedPoint</textarea>
+
+<ul>
+    <li>
+        @if (Utl.Employee.CurrentRole.Level == ManagerRequired.LVL || Utl.Employee.CurrentRole.Level == LeaderRequired.LVL)
+          {
+            <textarea style="border:1px solid black;width:100%;height:440px;" name="PitchPoint" readonly="readonly">@Model.PitchedPoint</textarea>
+          }
+        else
+        {
+            <textarea style="border:1px solid black;width:100%;height:440px;" name="PitchPoint">@Model.PitchedPoint</textarea>
+          }
+    </li>
+</ul>
