@@ -11,13 +11,31 @@
                    var dataItem = e.dataItem;
                    row.cells[0].innerHTML = "<div width='100%' >" + "<input type='checkbox' name='checkedLead' value='" + dataItem.LeadID + "' />" + "</div>";
                }
+
+               $.ajax({
+                   url: "/CompanyMerge/GetLeadsJson",
+                   type: "post",
+                   dataType: "json",
+                   data: { crmid: crmid },
+                   error: function (a, b, c) {
+                       alert("获取数据失败，请重试。");
+                   },
+                   success: function (result) {
+                       $('#LeadsCheck').data('tGrid').dataBind(result);
+                       //$('#PreCommission').data('tGrid').total = result.length;
+                       //$('#PreCommission').data('tGrid').updatePager();
+
+                   }
+               });
+               $("input[name='checkedLead']").attr("checked", false);
 </script>
-@(Html.Telerik().Grid<AjaxLead>().Name("Lead")
-                          .DataBinding(dataBinding =>
-                          {
-                              dataBinding.Ajax().Select("GetLeadsJson", "CompanyMerge");
-                          })
-                        .ClientEvents(events => events.OnRowDataBound("onRowDataBound").OnDataBinding("dataBindingLeads"))
+@(Html.Telerik().Grid<AjaxLead>().Name("LeadsCheck")
+                          //.DataBinding(dataBinding =>
+                          //{
+                          //    dataBinding.Ajax().Select("GetLeadsJson", "CompanyMerge");
+                          //})
+                        //.ClientEvents(events => events.OnRowDataBound("onRowDataBound").OnDataBinding("dataBindingLeads"))
+                            .ClientEvents(events => events.OnRowDataBound("onRowDataBound"))
                 .Columns(c =>
                 {
                     c.Bound(o => o.LeadID).Title("").Width(50);
@@ -27,7 +45,7 @@
                     c.Bound(o => o.LeadContact).Title("客户直线").Width(100);
                     c.Bound(o => o.LeadMobile).Title("移动电话").Width(100);
                 })
-                    .Pageable(p => p.Style(GridPagerStyles.Status)
-                    .PageOnScroll(true).PageSize(25)).Scrollable(scrolling => scrolling.Height(430)).Resizable(r => r.Columns(true))
+                    //.Pageable(p => p.Style(GridPagerStyles.Status)
+                    //.PageOnScroll(true).PageSize(25)).Scrollable(scrolling => scrolling.Height(430)).Resizable(r => r.Columns(true))
 )
 

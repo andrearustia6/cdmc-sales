@@ -258,8 +258,7 @@ namespace Sales.Controllers
         {
             CompanyRelationship crm = CH.GetDataById<CompanyRelationship>(crmid);
             var leads = from c in crm.Company.Leads.Where(w=>w.Deleted==false)
-                        select new AjaxLead
-                        {
+                        select new {
                             LeadID = c.ID,
                             LeadNameCH = c.Name_CH,
                             LeadNameEN = c.Name_EN,
@@ -413,6 +412,7 @@ namespace Sales.Controllers
         public ActionResult DisplayLeads(int crmid)
         {
             CompanyRelationship crm = CH.GetDataById<CompanyRelationship>(crmid);
+
             return PartialView("Lead", crm.Company.Leads);
         }
         public ActionResult DisplayLeadCalls(int crmid)
