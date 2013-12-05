@@ -32,7 +32,7 @@
             .Aggregate(aggregates => aggregates.Sum())
         .ClientFooterTemplate("<p><#= $.telerik.formatString('{0:c0}', Sum) #></p>")
         .FooterHtmlAttributes(new { style = "text-align:right" });
-        columns.Bound(p => p.TotalCheckIn).Title("项目入账").HtmlAttributes(new { style = "text-align:right" }).Format("{0:c0}")
+        columns.Bound(p => p.DispTotalCheckIn).Title("项目入账").HtmlAttributes(new { style = "text-align:right" }).Format("{0:c0}")
         .Aggregate(aggregates => aggregates.Sum())
         .ClientFooterTemplate("<p><#= $.telerik.formatString('{0:c0}', Sum) #></p>")
         .FooterHtmlAttributes(new { style = "text-align:right" });

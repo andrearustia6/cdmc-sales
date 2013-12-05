@@ -213,18 +213,18 @@ namespace Sales.Controllers
                 sales = Employee.CurrentUserName;
             }
             var selCompany = from data in CH.DB.Companys select data;
-            IQueryable<CompanyRelationship> crms;
+            IQueryable<CompanyRelationship> crms = CH.DB.CompanyRelationships.Where(w => w.ProjectID >0);
             if (projectid != null)
             {
                 // selCompany.Where(c => CH.DB.CompanyRelationships.Where(r => r.ProjectID == projectid).Any(r => r.CompanyID == c.ID));
-                crms = CH.DB.CompanyRelationships.Where(w => w.ProjectID == projectid);
+                crms = crms.Where(w => w.ProjectID == projectid);
             }
             else
             {
                 //var relationship = CH.DB.CompanyRelationships.Where(r => CRM_Logical.GetUserInvolveProject().Any(c => c.ID == r.ProjectID));
                 //selCompany.Where(c => relationship.Any(r => r.CompanyID == c.ID));
-                var pids = CRM_Logical.GetUserInvolveProject().Select(s => s.ID);
-                crms = CH.DB.CompanyRelationships.Where(w => pids.Any(a => a == w.ProjectID));
+                var pids = CRM_Logical.GetUserInvolveProject().Select(s => s.ID).ToList();
+                crms = CH.DB.CompanyRelationships.Where(w => pids.Contains((int)w.ProjectID));
             }
 
             if (sales != string.Empty && sales != "null")
@@ -233,14 +233,16 @@ namespace Sales.Controllers
                 //selCompany.Where(c => relationship.Any(r => r.CompanyID == c.ID));
                 crms = crms.Where(w => w.Members.Any(a => a.Name == sales));
             }
-            selCompany = crms.Select(s => s.Company);
+            //selCompany = crms.Select(s => s.Company);
             switch (selType)
             {
                 case 1:
-                    selCompany = selCompany.Where(s => s.IsValid == false);
+                    //selCompany = selCompany.Where(s => s.IsValid == false);
+                    crms.Where(w => w.Company.IsValid == false);
                     break;
                 case 2:
-                    selCompany = selCompany.Where(s => !string.IsNullOrEmpty(s.CompanyReviews));
+                    crms.Where(w => !string.IsNullOrEmpty(w.Company.CompanyReviews));
+                    //selCompany = selCompany.Where(s => !string.IsNullOrEmpty(s.CompanyReviews));
                     break;
                 default:
                     break;
@@ -248,27 +250,30 @@ namespace Sales.Controllers
 
             if (startTime != null)
             {
-                selCompany = selCompany.Where(s => s.CreatedDate >= startTime);
+                //selCompany = selCompany.Where(s => s.CreatedDate >= startTime);
+                crms.Where(w => w.Company.CreatedDate >= startTime);
             }
 
             if (endTime != null)
             {
-                selCompany = selCompany.Where(s => s.CreatedDate <= endTime);
+                //selCompany = selCompany.Where(s => s.CreatedDate <= endTime);
+                crms.Where(w => w.Company.CreatedDate >= endTime);
             }
 
-            var findata = from c in selCompany
+            var findata = from c in crms
                           select new _CompanyResearchDetail
                                        {
-                                           ID = c.ID,
-                                           CompanyNameCH = c.Name_CH,
-                                           CompanyNameEN = c.Name_EN,
-                                           CompanyContact = c.Contact,
-                                           CompanyDesicription = c.Description,
-                                           CompanyReviews = c.CompanyReviews,
-                                           Creator = c.Creator,
-                                           CreateDate = c.CreatedDate,
-                                           IsValid = c.IsValid == false ? "否" : "是",
-                                           Description = c.Description
+                                           ID = c.Company.ID,
+                                           CompanyNameCH = c.Company.Name_CH,
+                                           CompanyNameEN = c.Company.Name_EN,
+                                           CompanyContact = c.Company.Contact,
+                                           CompanyDesicription = c.Company.Description,
+                                           CompanyReviews = c.Company.CompanyReviews,
+                                           Creator = c.Company.Creator,
+                                           CreateDate = c.Company.CreatedDate,
+                                           IsValid = c.Company.IsValid == false ? "否" : "是",
+                                           Description = c.Description,
+
                                        };
 
             return View(new GridModel(findata));
