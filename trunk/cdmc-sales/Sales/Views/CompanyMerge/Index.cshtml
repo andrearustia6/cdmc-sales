@@ -238,6 +238,7 @@
                 if (data.crmid != null) {
                     alert('公司合并成功');
                     $('#MergeCompany').data('tWindow').close();
+                    companyids = [];
                     refreshGrid();
                 }
                 else {
@@ -362,6 +363,7 @@
             success: function (data) {
                 if (data.leadid != null) {
                     alert('Lead合并成功');
+                    leadids = [];
                     $('#MergeLead').data('tWindow').close();
                     
                 }
