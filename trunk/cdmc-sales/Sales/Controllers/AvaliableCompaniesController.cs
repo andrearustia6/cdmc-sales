@@ -882,7 +882,7 @@ namespace Sales.Controllers
             CompanyRelationship companyRelationship = CH.GetDataById<CompanyRelationship>(crmid);
             //var p = companyRelationship.Project.CompanyRelationships.Count(w => w.Members.Where(m => m.Name == Employee.CurrentUserName).Any() == true);
             //var d = CH.DB.Members.Where(w => w.Name == Employee.CurrentUserName && w.CompanyRelationships.Where(c=>c.ProjectID == companyRelationship.ProjectID).Any() == true).Count();
-            var d = CH.DB.CompanyRelationships.Where(w => w.Members.Where(m => m.Name == Employee.CurrentUserName).Any() == true && w.ProjectID == companyRelationship.ProjectID).Count();
+            var d = CH.DB.CompanyRelationships.Where(w =>w.Deleted==false && w.Members.Where(m => m.Name == Employee.CurrentUserName).Any() == true && w.ProjectID == companyRelationship.ProjectID).Count();
             if (d > 300)
                 return Content("从公海领用的，公司数超过300的不能领用！");
 
@@ -899,7 +899,7 @@ namespace Sales.Controllers
         public ActionResult PickUpDirect(int? crmid,int projectid)
         {
             CompanyRelationship companyRelationship = CH.GetDataById<CompanyRelationship>(crmid);
-            var d = CH.DB.CompanyRelationships.Where(w => w.Members.Where(m => m.Name == Employee.CurrentUserName).Any() == true && w.ProjectID == companyRelationship.ProjectID).Count();
+            var d = CH.DB.CompanyRelationships.Where(w => w.Deleted==false && w.Members.Where(m => m.Name == Employee.CurrentUserName).Count()>0 && w.ProjectID == companyRelationship.ProjectID).Count();
             if (d > 300)
                 return Content("从公海领用的，公司数超过300的不能领用！");
 
@@ -921,7 +921,7 @@ namespace Sales.Controllers
             int id = crmid[0];
             CompanyRelationship companyRelationship1 = CH.GetDataById<CompanyRelationship>(id);
             //var p = companyRelationship1.Project.CompanyRelationships.Count(w => w.Members.Where(m => m.Name == Employee.CurrentUserName).Any() == true);
-            var d = CH.DB.CompanyRelationships.Where(w => w.Members.Where(m => m.Name == Employee.CurrentUserName).Any() == true && w.ProjectID == companyRelationship1.ProjectID).Count();
+            var d = CH.DB.CompanyRelationships.Where(w => w.Deleted == false && w.Members.Where(m => m.Name == Employee.CurrentUserName).Any() == true && w.ProjectID == companyRelationship1.ProjectID).Count();
             if (d + crmid.Count> 300)
                 return Content("从公海领用的，公司数超过300的不能领用！");
             int companyRelationshipId=0;
