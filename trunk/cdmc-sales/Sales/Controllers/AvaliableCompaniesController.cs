@@ -701,7 +701,7 @@ namespace Sales.Controllers
             companyRelationship.CreatedDate = DateTime.Now;
             companyRelationship.ModifiedDate = DateTime.Now;
             companyRelationship.Deleted = false;
-            companyRelationship.Description= bulkEntry.Description.Trim();
+            companyRelationship.Description =  string.IsNullOrEmpty(bulkEntry.Description) ? string.Empty : bulkEntry.Description.Trim();
             companyRelationship.PitchedPoint = string.IsNullOrEmpty(bulkEntry.PitchedPoint) ? "" : bulkEntry.PitchedPoint.Trim();
             if (bulkEntry.Categories != null)
             {
