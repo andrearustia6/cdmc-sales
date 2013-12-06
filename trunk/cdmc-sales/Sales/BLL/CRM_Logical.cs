@@ -1509,6 +1509,10 @@ namespace BLL
             public static AjaxProjectCheckInByWeek GetCheckInInfo(string code,int? year,int month)
             {
                 var ps = CRM_Logical.GetUserInvolveProject();
+                string[] managers = GetManagers();
+                if (managers != null)
+                    ps = ps.Where(w => managers.Contains(w.Manager)).ToList();
+                var idlist = ps.Select(w => w.ID).ToList();
                 //var monthstart = DateTime.Now.StartOfMonth();
                 if (year == null)
                     year = DateTime.Now.Year;
@@ -1536,7 +1540,7 @@ namespace BLL
                 {
                     firstweekend.AddDays(-1);
                 }
-                IQueryable<Deal> deals = from deal in CH.DB.Deals.Where(d => d.Abandoned == false).Where(w => w.ActualPaymentDate >= monthstart && w.ActualPaymentDate < monthend) select deal;
+                IQueryable<Deal> deals = from deal in CH.DB.Deals.Where(d => d.Abandoned == false).Where(w => w.ActualPaymentDate >= monthstart && w.ActualPaymentDate < monthend && idlist.Contains((int)w.ProjectID)) select deal;
                 var checkin = new AjaxProjectCheckInByWeek()
                            {
                                FirstWeekCheckIn = deals.Where(w => w.Project.ProjectUnitCode == code && w.ActualPaymentDate >= firstweekstart && w.ActualPaymentDate < firstweekend).Sum(s => (decimal?)s.Income),
