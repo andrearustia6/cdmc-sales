@@ -22,71 +22,71 @@
     {
         columns.Bound(p => p.ProjectUnitName).Width(150).Title("项目简称").HtmlAttributes(new { style = "text-align:left" });
         columns.Bound(p => p.ConferenceStartDate).Width(85).Title("会议时间").HtmlAttributes(new { style = "text-align:left" }).Format("{0:yyyy-MM-dd}");
-        
-        columns.Bound(p => p.TotalCheckInTarget).Title("PDM目标").HtmlAttributes(new { style = "text-align:right" }).Format("{0:c0}")
+
+        columns.Bound(p => p.TotalCheckInTarget).Width(100).Title("PDM目标").HtmlAttributes(new { style = "text-align:right" }).Format("{0:c0}")
             .Aggregate(aggregates => aggregates.Sum())
         .ClientFooterTemplate("<p><#= $.telerik.formatString('{0:c0}', Sum) #></p>")
         .FooterHtmlAttributes(new { style = "text-align:right" });
 
-        columns.Bound(p => p.CheckInTotal).Title("合计").HtmlAttributes(new { style = "text-align:right" }).Format("{0:c0}")
+        columns.Bound(p => p.CheckInTotal).Width(100).Title("合计").HtmlAttributes(new { style = "text-align:right" }).Format("{0:c0}")
             .Aggregate(aggregates => aggregates.Sum())
         .ClientFooterTemplate("<p><#= $.telerik.formatString('{0:c0}', Sum) #></p>")
         .FooterHtmlAttributes(new { style = "text-align:right" });
-        
-        columns.Bound(p => p.CheckInJanuary).Title("1月份").HtmlAttributes(new { style = "text-align:right" }).Format("{0:c0}")
+
+        columns.Bound(p => p.CheckInJanuary).Width(100).Title("1月份").HtmlAttributes(new { style = "text-align:right" }).Format("{0:c0}")
             .Aggregate(aggregates => aggregates.Sum())
         .ClientFooterTemplate("<p><#= $.telerik.formatString('{0:c0}', Sum) #></p>")
         .FooterHtmlAttributes(new { style = "text-align:right" });
-        
-        columns.Bound(p => p.CheckInFebruary).Title("2月份").HtmlAttributes(new { style = "text-align:right" }).Format("{0:c0}")
+
+        columns.Bound(p => p.CheckInFebruary).Width(100).Title("2月份").HtmlAttributes(new { style = "text-align:right" }).Format("{0:c0}")
         .Aggregate(aggregates => aggregates.Sum())
         .ClientFooterTemplate("<p><#= $.telerik.formatString('{0:c0}', Sum) #></p>")
         .FooterHtmlAttributes(new { style = "text-align:right" });
 
-        columns.Bound(p => p.CheckInMarch).Title("3月份").HtmlAttributes(new { style = "text-align:right" }).Format("{0:c0}")
+        columns.Bound(p => p.CheckInMarch).Width(100).Title("3月份").HtmlAttributes(new { style = "text-align:right" }).Format("{0:c0}")
             .Aggregate(aggregates => aggregates.Sum())
         .ClientFooterTemplate("<p><#= $.telerik.formatString('{0:c0}', Sum) #></p>")
         .FooterHtmlAttributes(new { style = "text-align:right" });
-        columns.Bound(p => p.CheckInApril).Title("4月份").HtmlAttributes(new { style = "text-align:right" }).Format("{0:c0}")
-            .Aggregate(aggregates => aggregates.Sum())
-        .ClientFooterTemplate("<p><#= $.telerik.formatString('{0:c0}', Sum) #></p>")
-        .FooterHtmlAttributes(new { style = "text-align:right" });
-
-        columns.Bound(p => p.CheckInMay).Title("5月份").HtmlAttributes(new { style = "text-align:right" }).Format("{0:c0}")
-            .Aggregate(aggregates => aggregates.Sum())
-        .ClientFooterTemplate("<p><#= $.telerik.formatString('{0:c0}', Sum) #></p>")
-        .FooterHtmlAttributes(new { style = "text-align:right" });
-        columns.Bound(p => p.CheckInJune).Title("6月份").HtmlAttributes(new { style = "text-align:right" }).Format("{0:c0}")
+        columns.Bound(p => p.CheckInApril).Width(100).Title("4月份").HtmlAttributes(new { style = "text-align:right" }).Format("{0:c0}")
             .Aggregate(aggregates => aggregates.Sum())
         .ClientFooterTemplate("<p><#= $.telerik.formatString('{0:c0}', Sum) #></p>")
         .FooterHtmlAttributes(new { style = "text-align:right" });
 
-        columns.Bound(p => p.CheckInJuly).Title("7月份").HtmlAttributes(new { style = "text-align:right" }).Format("{0:c0}")
+        columns.Bound(p => p.CheckInMay).Width(100).Title("5月份").HtmlAttributes(new { style = "text-align:right" }).Format("{0:c0}")
+            .Aggregate(aggregates => aggregates.Sum())
+        .ClientFooterTemplate("<p><#= $.telerik.formatString('{0:c0}', Sum) #></p>")
+        .FooterHtmlAttributes(new { style = "text-align:right" });
+        columns.Bound(p => p.CheckInJune).Width(100).Title("6月份").HtmlAttributes(new { style = "text-align:right" }).Format("{0:c0}")
             .Aggregate(aggregates => aggregates.Sum())
         .ClientFooterTemplate("<p><#= $.telerik.formatString('{0:c0}', Sum) #></p>")
         .FooterHtmlAttributes(new { style = "text-align:right" });
 
-        columns.Bound(p => p.CheckInAugust).Title("8月份").HtmlAttributes(new { style = "text-align:right" }).Format("{0:c0}")
+        columns.Bound(p => p.CheckInJuly).Width(100).Title("7月份").HtmlAttributes(new { style = "text-align:right" }).Format("{0:c0}")
             .Aggregate(aggregates => aggregates.Sum())
         .ClientFooterTemplate("<p><#= $.telerik.formatString('{0:c0}', Sum) #></p>")
         .FooterHtmlAttributes(new { style = "text-align:right" });
 
-        columns.Bound(p => p.CheckInSeptember).Title("9月份").HtmlAttributes(new { style = "text-align:right" }).Format("{0:c0}")
+        columns.Bound(p => p.CheckInAugust).Width(100).Title("8月份").HtmlAttributes(new { style = "text-align:right" }).Format("{0:c0}")
             .Aggregate(aggregates => aggregates.Sum())
         .ClientFooterTemplate("<p><#= $.telerik.formatString('{0:c0}', Sum) #></p>")
         .FooterHtmlAttributes(new { style = "text-align:right" });
 
-        columns.Bound(p => p.CheckInOctober).Title("10月份").HtmlAttributes(new { style = "text-align:right" }).Format("{0:c0}")
+        columns.Bound(p => p.CheckInSeptember).Width(100).Title("9月份").HtmlAttributes(new { style = "text-align:right" }).Format("{0:c0}")
             .Aggregate(aggregates => aggregates.Sum())
         .ClientFooterTemplate("<p><#= $.telerik.formatString('{0:c0}', Sum) #></p>")
         .FooterHtmlAttributes(new { style = "text-align:right" });
 
-        columns.Bound(p => p.CheckInNovember).Title("11月份").HtmlAttributes(new { style = "text-align:right" }).Format("{0:c0}")
+        columns.Bound(p => p.CheckInOctober).Width(100).Title("10月份").HtmlAttributes(new { style = "text-align:right" }).Format("{0:c0}")
             .Aggregate(aggregates => aggregates.Sum())
         .ClientFooterTemplate("<p><#= $.telerik.formatString('{0:c0}', Sum) #></p>")
         .FooterHtmlAttributes(new { style = "text-align:right" });
 
-        columns.Bound(p => p.CheckInDecember).Title("12月份").HtmlAttributes(new { style = "text-align:right" }).Format("{0:c0}")
+        columns.Bound(p => p.CheckInNovember).Width(100).Title("11月份").HtmlAttributes(new { style = "text-align:right" }).Format("{0:c0}")
+            .Aggregate(aggregates => aggregates.Sum())
+        .ClientFooterTemplate("<p><#= $.telerik.formatString('{0:c0}', Sum) #></p>")
+        .FooterHtmlAttributes(new { style = "text-align:right" });
+
+        columns.Bound(p => p.CheckInDecember).Width(100).Title("12月份").HtmlAttributes(new { style = "text-align:right" }).Format("{0:c0}")
             .Aggregate(aggregates => aggregates.Sum())
         .ClientFooterTemplate("<p><#= $.telerik.formatString('{0:c0}', Sum) #></p>")
         .FooterHtmlAttributes(new { style = "text-align:right" });
