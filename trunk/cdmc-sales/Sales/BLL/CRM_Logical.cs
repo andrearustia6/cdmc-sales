@@ -175,12 +175,21 @@ namespace BLL
                     if (Employee.EqualToManager())//版块负责人只能看到自己项目所属的lead
                     {
                         var leadinsameprojects = from p in CH.DB.Projects.Where(w => w.Manager == user && w.IsActived == true) select p.TeamLeader;
-                        leads = leads.Where(w => leadinsameprojects.Any(a => a.Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries).Contains( w))).ToList();
+                        List<string> leadList1 = new List<string>();
+                        foreach (string l in leadinsameprojects)
+                        {
+                            var temp = l.Trim().Split(new string[] { ";", "；" }, StringSplitOptions.RemoveEmptyEntries);
+                            foreach (string m in temp)
+                            {
+                                leadList1.Add(m);
+                            }
+                        }
+                        leads = leadList1.Distinct().ToList();
                     }
                     else 
                     if (rolelvl == 100)
                     {
-                        leads = leads.Where(w => w.Contains( user)).ToList();
+                        leads = leads.Where(w => w== user).ToList();
                     }
 
 
