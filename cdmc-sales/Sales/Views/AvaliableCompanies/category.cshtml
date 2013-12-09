@@ -8,15 +8,26 @@
      {
           <li>
           @category.Name:
-          @if (Utl.Employee.CurrentRole.Level == ProductInterfaceRequired.LVL || Utl.Employee.CurrentRole.Level == LeaderRequired.LVL || Utl.Employee.CurrentRole.Level == ManagerRequired.LVL)
+
+          
+
+          @if (@Model._members.Where(m => m.Name == Utl.Employee.CurrentUserName).Count() > 0)
           {
-                <input type="hidden" value="@category.ID"/>
+             <input type="hidden" value="@category.ID"/>
             <textarea style="border:1px solid black;width:100%;height:400px;">@category.Details</textarea>
           }
           else
           {
+              if (Utl.Employee.CurrentRole.Level == ProductInterfaceRequired.LVL || Utl.Employee.CurrentRole.Level == LeaderRequired.LVL || Utl.Employee.CurrentRole.Level == ManagerRequired.LVL)
+              {
+                <input type="hidden" value="@category.ID"/>
+            <textarea style="border:1px solid black;width:100%;height:400px;">@category.Details</textarea>
+              }
+              else
+              {
                 <input type="hidden" value="@category.ID"/>
             <textarea style="border:1px solid black;width:100%;height:400px;" readonly="readonly" >@category.Details</textarea>
+              }
           }
     </li>
      }
