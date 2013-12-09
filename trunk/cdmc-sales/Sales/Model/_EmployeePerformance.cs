@@ -130,7 +130,6 @@ namespace Sales.Model
         }
 
         public IEnumerable<_TeamLeadPerformanceInWeek> TeamLeadPerformanceInWeeks { get; set; }
-        public List<_TeamLeadPerformanceInWeek> TeamLeadPerformanceInWeeks1 { get; set; }
         [Display(Name = "Faxout详细")]
         public string FaxOutCountString
         {
