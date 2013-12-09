@@ -275,7 +275,7 @@ namespace Sales.BLL
                                   Description = c.Description
                               }
                                  ),
-                Description = data.Description,
+                Description = data.Company.Description,
                 Competitor = data.Company.Competitor,
                 PitchPoint = data.PitchedPoint,
                 _Leads = (from leads in data.Company.Leads.Where(f => f.Deleted == false)
@@ -387,7 +387,7 @@ namespace Sales.BLL
                                  CRMID = co.CompanyRelationshipID,
                                  Contents = co.Contents
                              }),
-                Description = data.Description,
+                Description = data.Company.Description,
                 Competitor = data.Company.Competitor,
                 PitchPoint = data.PitchedPoint,
                 _Leads = (from leads in data.Company.Leads.Where(f => f.Deleted == false)
@@ -485,7 +485,7 @@ namespace Sales.BLL
                                  CRMID = co.CompanyRelationshipID,
                                  Contents = co.Contents
                              }),
-                Description = data.Description,
+                Description = data.Company.Description,
                 Competitor = data.Company.Competitor,
                 PitchPoint = data.PitchedPoint,
                 _Leads = (from leads in data.Company.Leads.Where(f => f.Deleted == false)

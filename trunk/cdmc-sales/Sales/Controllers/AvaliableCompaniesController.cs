@@ -1154,7 +1154,7 @@ namespace Sales.Controllers
             int id = int.Parse(c["crmid"]);
             string pp = c["pp"];
             var cr = CH.DB.CompanyRelationships.Find(id);
-            cr.Description = pp;
+            cr.Company.Description = pp;
             CH.Edit<CompanyRelationship>(cr);
 
             return Json("");
