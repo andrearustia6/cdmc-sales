@@ -210,6 +210,8 @@
         <div class="Categories-wrapper">
         </div>
         <div class="dialogue-buttons" style="float: right;">
+        <input type="button" class="btn-queding" onclick="saveCategories();" />
+@*
             @if (Employee.CurrentRole.Level == ProductInterfaceRequired.LVL || Employee.CurrentRole.Level == LeaderRequired.LVL || Employee.CurrentRole.Level == ManagerRequired.LVL)
             {                     
                 <input type="button" class="btn-queding" onclick="saveCategories();" />
@@ -218,7 +220,7 @@
             {
                 <input type="button" class="btn-queding" onclick="Javescript:$('#Categories').data('tWindow').close();" />
 
-            }
+            }*@
         </div>
     </div></text>)
                                 .Width(600)
