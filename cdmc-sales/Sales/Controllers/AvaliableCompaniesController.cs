@@ -899,7 +899,7 @@ namespace Sales.Controllers
         public ActionResult PickUpDirect(int? crmid,int projectid)
         {
             CompanyRelationship companyRelationship = CH.GetDataById<CompanyRelationship>(crmid);
-            var d = CH.DB.CompanyRelationships.Where(w => w.Deleted==false && w.Members.Where(m => m.Name == Employee.CurrentUserName).Count()>0 && w.ProjectID == companyRelationship.ProjectID).Count();
+            var d = CH.DB.CompanyRelationships.Where(w => w.Deleted == false && w.Members.Where(m => m.Name == Employee.CurrentUserName).Count() > 0 && w.ProjectID == projectid).Count();
             if (d > 300)
                 return Content("从公海领用的，公司数超过300的不能领用！");
 

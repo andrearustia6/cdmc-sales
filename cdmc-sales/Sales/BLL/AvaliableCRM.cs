@@ -92,35 +92,37 @@ namespace Sales.BLL
                            {
                                CoreName = c.CoreLVLName,
                                ID = c.ID,
-                               CrmCount=crms.Where(cr=>cr.CoreLVLID==c.CoreLVLCode).Count(),
-                               _Maturitys = (from m in crms.Where(cr=>cr.CoreLVLID==c.CoreLVLCode) group m by new{m.ProgressID,m.Progress.Name} into grp
-                                            select new _Maturity()
-                                            { 
-                                                  Name= grp.Key.Name,
-                                                  ID = grp.Key.ProgressID.Value,
-                                                  Count = crms.Where(co=>co.ProgressID==grp.Key.ProgressID && co.CoreLVLID==c.CoreLVLCode).Count(),
-                                                 _CRMs = (from crm in grp.Select(s=>s)
-                                                         select new _CRM
-                                                         {
-                                                             ID = crm.ID,
-                                                             CompanyNameCH = crm.Company.Name_CH,
-                                                             CompanyNameEN = crm.Company.Name_EN,
-                                                             CoreCompany = c.CoreLVLName == "核心公司" ? true : false,
-                                                             //ContectedLeadCount = CH.DB.Leads.Where(l => l.CompanyID == crm.CompanyID && l.Deleted == false && crm.LeadCalls.Any(w => w.LeadID == l.ID)).Count(),
-                                                             //LeadCount = CH.DB.Leads.Where(l => l.CompanyID == crm.CompanyID && l.Deleted==false).Count(),
-                                                             CrmCommentStateID = crm.CrmCommentStateID,
-                                                             CrmCommentStateIDOrder = (crm.CrmCommentStateID == 1 || crm.CrmCommentStateID == 2 || crm.CrmCommentStateID == 3) ? "a" : "b",
-                                                             _Comments = (from co in crm.Comments.OrderByDescending(m => m.CommentDate)
-                                                                          select new _Comment()
-                                                                          {
-                                                                              Submitter = co.Submitter,
-                                                                              CommentDate = co.CommentDate,
-                                                                              CRMID = co.CompanyRelationshipID,
-                                                                              Contents = co.Contents
-                                                                          })
-                                                         }).OrderBy(cr => cr.CrmCommentStateIDOrder).ThenBy(cr => cr.CompanyNameEN).ThenBy(cr => cr.CompanyNameCH)
-                                            })
+                               CrmCount = crms.Where(cr => cr.CoreLVLID == c.CoreLVLCode).Count(),
+                               _Maturitys = (from m in crms.Where(cr => cr.CoreLVLID == c.CoreLVLCode)
+                                             group m by new { m.ProgressID, m.Progress.Name } into grp
+                                             select new _Maturity()
+                                             {
+                                                 Name = grp.Key.Name,
+                                                 ID = grp.Key.ProgressID.Value,
+                                                 Count = crms.Where(co => co.ProgressID == grp.Key.ProgressID && co.CoreLVLID == c.CoreLVLCode).Count(),
+                                                 _CRMs = (from crm in grp.Select(s => s)
+                                                          select new _CRM
+                                                          {
+                                                              ID = crm.ID,
+                                                              CompanyNameCH = crm.Company.Name_CH,
+                                                              CompanyNameEN = crm.Company.Name_EN,
+                                                              CoreCompany = c.CoreLVLName == "核心公司" ? true : false,
+                                                              //ContectedLeadCount = CH.DB.Leads.Where(l => l.CompanyID == crm.CompanyID && l.Deleted == false && crm.LeadCalls.Any(w => w.LeadID == l.ID)).Count(),
+                                                              //LeadCount = CH.DB.Leads.Where(l => l.CompanyID == crm.CompanyID && l.Deleted==false).Count(),
+                                                              CrmCommentStateID = crm.CrmCommentStateID,
+                                                              CrmCommentStateIDOrder = (crm.CrmCommentStateID == 1 || crm.CrmCommentStateID == 2 || crm.CrmCommentStateID == 3) ? "a" : "b",
+                                                              _Comments = (from co in crm.Comments.OrderByDescending(m => m.CommentDate)
+                                                                           select new _Comment()
+                                                                           {
+                                                                               Submitter = co.Submitter,
+                                                                               CommentDate = co.CommentDate,
+                                                                               CRMID = co.CompanyRelationshipID,
+                                                                               Contents = co.Contents
+                                                                           })
+                                                          }).OrderBy(cr => cr.CrmCommentStateIDOrder).ThenBy(cr => cr.CompanyNameEN).ThenBy(cr => cr.CompanyNameCH)
+                                             })
                            };
+            
             return data;
         }
         //static IQueryable<_CoreLVL> GetPublicCRM(bool memberonly, CRMFilters filters = null)
