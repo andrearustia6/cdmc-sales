@@ -455,7 +455,7 @@
                     <div>
                         <a id='allsales' class="onMember" href="#" onclick="onMember('')">所有销售</a>
                         
-                        @foreach (var member in Model._members.Select(a => a.Name))
+                        @foreach (var member in @Model._LeadCalls.Select(w=>w.MemberName).Distinct())
                         {
                             <span>| </span> <a id='sales@(member)' class="onMember" href="#" onclick="onMember('@(member)')">
                                 @member</a>
@@ -463,6 +463,8 @@
                         }
                         @Html.Hidden("MemberHidden", string.IsNullOrEmpty(memberhide) ? "" : memberhide.Substring(0, memberhide.Length - 1))
                         @Html.Hidden("SelectedMemberHidden")
+                        
+
                     </div>
                     <table style="width: 90%">
                         @if (@Model.CrmStatisitcs.DispTrack.Count > 0)
