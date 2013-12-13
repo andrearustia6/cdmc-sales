@@ -10,61 +10,59 @@
 @Html.Partial("multipleprojectselector")
 @if (Model != null)
 {
-<fieldset>
-    <legend>统计</legend>
-    <table  width="100%">
-        <tr>
-            <td>
-                TopSales
-            </td>
-            <td>
-                OnPhone王
-            </td>
-            <td>
-                通话最短
-            </td>
-        </tr>
-        <tr>
-            <td style="vertical-align:top">
-            
-               @(Html.Telerik().Grid(Model.TopSales).Name("TopSales").Columns(c =>
+   @* <fieldset>
+        <legend>统计</legend>
+        <table width="100%">
+            <tr>
+                <td>
+                    TopSales
+                </td>
+                <td>
+                    OnPhone王
+                </td>
+                <td>
+                    通话最短
+                </td>
+            </tr>
+            <tr>
+                <td style="vertical-align: top">
+                    @(Html.Telerik().Grid(Model.TopSales).Name("TopSales").Columns(c =>
 {
     c.Bound(item => item.Name);
     c.Bound(item => item.CheckInSum);
 }).HtmlAttributes(new { style = "margin-top:0px" }))
-            </td>
-            <td style="vertical-align:top">@(Html.Telerik().Grid(Model.TopCallers).Name("TopCallers").Columns(c =>
+                </td>
+                <td style="vertical-align: top">@(Html.Telerik().Grid(Model.TopCallers).Name("TopCallers").Columns(c =>
  {
      c.Bound(item => item.Name);
      c.Bound(item => item.DurationSum).Template(@<text>@Math.Round(item.DurationSum, 2)</text>);
      c.Bound(item => item.SalesType);
      c.Bound(item => item.CallSum);
  }))
-            </td>
-            <td style="vertical-align:top">@(Html.Telerik().Grid(Model.WorstCallers).Name("WorstCallers").Columns(c =>
+                </td>
+                <td style="vertical-align: top">@(Html.Telerik().Grid(Model.WorstCallers).Name("WorstCallers").Columns(c =>
 {
     c.Bound(item => item.Name);
     c.Bound(item => item.DurationSum).Template(@<text>@Math.Round(item.DurationSum, 2)</text>);
     c.Bound(item => item.SalesType);
     c.Bound(item => item.CallSum);
 }))
-            </td>
-        </tr>
-    </table>
+                </td>
+            </tr>
+        </table>
+    </fieldset>*@
 
-</fieldset>
-
-<fieldset>
-    @{
+    <fieldset>
+        @{
   
   
-        <ul>
-            <li>
-                @foreach (var p in Model.ViewLeadCallAmountInProjects)
-                {
-                    <br />
-                    <b><span>项目名称：@p.project.Name</span></b>
-                    @(Html.Telerik().Grid(p.LeadCallAmounts).Name("project" + p.project.ID).DataKeys(keys =>
+            <ul>
+                <li>
+                    @foreach (var p in Model.ViewLeadCallAmountInProjects)
+                    {
+                        <br />
+                        <b><span>项目名称：@p.project.Name</span></b>
+                        @(Html.Telerik().Grid(p.LeadCallAmounts).Name("project" + p.project.ID).DataKeys(keys =>
                 {
                     keys.Add(s => s.Member.ID);
                 }).Columns(c =>
@@ -87,9 +85,9 @@
                                                                                                                       .Filterable().Sortable()
                                                                                                                       .Scrollable(scrolling => scrolling.Height(200))
                                                                                                                       .HtmlAttributes(new { style = "max-width:1310px" }))
-                }
-            </li>
-        </ul>
-    }
-</fieldset>
+                    }
+                </li>
+            </ul>
+        }
+    </fieldset>
 }
