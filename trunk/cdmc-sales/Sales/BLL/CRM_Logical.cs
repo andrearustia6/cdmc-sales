@@ -2225,7 +2225,7 @@ namespace BLL
             {
                 if (projectid != null)
                 {
-                    var crms = CH.DB.CompanyRelationships.Where(c => c.ProjectID == projectid);
+                    var crms = CH.DB.CompanyRelationships.Where(c => c.ProjectID == projectid && c.Deleted==false);
                     var ajaxcrms = from c in crms
                                    select new AjaxCRM()
                                    {

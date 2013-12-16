@@ -324,7 +324,7 @@ namespace Sales.Controllers
                              ActualPaymentDate = d.ActualPaymentDate,
                              Committer = d.Committer,
                              CommitterContect = d.Committer,
-                             CommitterEmail = d.CommitterEmail,
+                             CommitterEmail = "",
                              ExpectedPaymentDate = d.ExpectedPaymentDate,
                              ID = d.ID,
                              Income = d.Income,

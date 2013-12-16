@@ -238,7 +238,10 @@
             alert("没有获取到入账数据。");
     }
 </script>
-
+@{
+    var firstday = DateTime.Now.AddMonths(-1).StartOfMonth();
+    var endday = DateTime.Now.AddMonths(-1).EndOfMonth();
+}
 <div style=" padding-bottom:10px;width:100%"> 
 @Html.HiddenFor(model => model.ID)
 @Html.HiddenFor(model => model.DelegateLessIncome)
@@ -254,7 +257,7 @@
         </td>
         <td  style="width:10%">
             <div id="startdate1">
-                @Html.Telerik().DatePickerFor(model => model.StartDate).ClientEvents(e => e.OnChange("OnChange"))
+                @Html.Telerik().DatePickerFor(model => model.StartDate).Value(Model.ID == 0 ? DateTime.Now.AddMonths(-1).StartOfMonth() : Model.StartDate).ClientEvents(e => e.OnChange("OnChange"))
                 @Html.ValidationMessageFor(model => model.StartDate)
             </div>
             <div id="startdate2">
@@ -265,7 +268,7 @@
         </td>
         <td  style="width:10%">
             <div id="enddate1">
-                @Html.Telerik().DatePickerFor(model => model.EndDate)
+                @Html.Telerik().DatePickerFor(model => model.EndDate).Value(Model.ID == 0 ? DateTime.Now.AddMonths(-1).EndOfMonth() : Model.EndDate)
                 @Html.ValidationMessageFor(model => model.EndDate)
             </div>
             <div id="enddate2">
@@ -583,9 +586,39 @@
     });
     
 
-//    var datepicker = $('#cEndDate').data('tDatePicker');
-//    alert(datepicker);
-    //    datepicker.val(new Date('1/1/2012'));
+        jQuery('.field-validation-error').html('');
+        var StartDate = strTodate($("#StartDate").val());
+        var DateB = new Date(StartDate.getFullYear(), StartDate.getMonth() + 1, 0); //当月的最后一天
+        yy = DateB.getFullYear();
+        mm = DateB.getMonth() + 1;
+        dd = DateB.getDate();
+        datestr = yy + '-' + mm + '-' + dd;
+        $("#EndDate").val(datestr);
+       
+        var month = StartDate.getMonth() + 1;
+        $.ajax({
+            url: "/Finance/GetSales",
+            type: "post",
+            dataType: "json",
+            data: { month: month},
+            error: function (a, b, c) {
+                alert("获取数据失败，请重试。");
+            },
+            success: function (result) {
+//                if ($("#TargetNameEN").val() != 0) {
+//                    $("#TargetNameEN option[value!='']").remove();
+//                }
+//                if ($("#ProjectID").val() != 0) {
+//                    $("#ProjectID option[value!='']").remove();
+                //                }
 
+                $("#TargetNameEN").empty();
+                $("#ProjectID").empty();
+                $("#TargetNameEN").append("<option value='" + "" + "'>" + "请选择" + "</option>");
+                for (var i = 0; i < result.length; i++) {
+                    $("#TargetNameEN").append("<option value='" + result[i].salesid + "'>" + result[i].sales + "</option>");
+                }
+            }
+        });
     
 </script>
