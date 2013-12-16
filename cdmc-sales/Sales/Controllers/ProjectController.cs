@@ -655,6 +655,7 @@ namespace Sales.Controllers
                     //|| c.CompanyFilterCategories.Any(ct => ct.Name.Contains(fuzzyInput))
                                         );
             }
+            
             return View(new GridModel(p.CRMs.ToList()));
         }
 

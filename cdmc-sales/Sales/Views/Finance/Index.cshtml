@@ -18,7 +18,7 @@
         using (Html.BeginForm())
         {
             var m = ViewBag.Month as int?;
-            m = m == null ? DateTime.Now.Month : m;
+            m = m == null ? DateTime.Now.AddMonths(-1).Month : m;
         @Html.DropDownList("month", new SelectList(new List<int>() { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 }, m), new { onchange = "setexport('0');this.form.submit();" })
             @Html.Hidden("btnExport");
         <button value="export" id="export" type="button" name="Export" onclick="setexport('1');this.form.submit();"
