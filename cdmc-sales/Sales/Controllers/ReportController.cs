@@ -354,7 +354,7 @@ namespace Sales.Controllers
 
             var lcs = from l in CH.DB.LeadCalls
                       where l.ProjectID == projectid && l.CallDate>= startdate && l.CallDate<= enddate
-                      && selectedcallTypes.Any(a=>a==l.LeadCallTypeID)
+                      && selectedcallTypes.Any(a=>a==l.LeadCallTypeID) && l.Deleted==false
                       select new AjaxViewCallListData
                       {
                           LeadNameCH = l.Lead.Name_CH,
