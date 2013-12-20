@@ -297,7 +297,7 @@ namespace Sales.BLL
                               LastCallTypeID = data.LeadCalls.Where(c => c.LeadID == leads.ID && c.Deleted==false).OrderByDescending(c => c.CallDate).FirstOrDefault() == null ? 0 : data.LeadCalls.Where(c => c.LeadID == leads.ID && c.Deleted==false).OrderByDescending(c => c.CallDate).FirstOrDefault().LeadCallTypeID,
                               OwnLeader = data.Members.Where(w=>w.Name==Employee.CurrentUserName).Any()
                           }),
-                _LeadCalls = (from leadcalls in data.LeadCalls.Where(f => f.Deleted == false).OrderByDescending(m => m.CallDate)
+                _LeadCalls = (from leadcalls in data.LeadCalls.Where(f => f.Deleted == false && f.ProjectID==data.ProjectID).OrderByDescending(m => m.CallDate)
                               select new _LeadCall()
                               {
                                   LeadID = leadcalls.LeadID,
