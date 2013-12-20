@@ -16,7 +16,7 @@ namespace Entity
 {
     public static class PackageExtensions
     {
-        public static decimal GetYuan(this Package item,double? rate)
+        public static decimal GetYuan(this Package item, double? rate)
         {
             var yuan = item.Prize * (decimal)rate;
             return yuan;
@@ -70,7 +70,7 @@ namespace Entity
     {
         public static DateTime? GetAvailabeTime(this LeadCall item)
         {
-            if (item.CallBackDate==null) return null;
+            if (item.CallBackDate == null) return null;
             var date = item.CallBackDate.Value;
             var districtNumber = item.Lead.SubCompanyID == null ? item.Lead.Company.DistrictNumber : item.Lead.SubCompany.DistrictNumber;
             if (districtNumber != null)
@@ -80,11 +80,11 @@ namespace Entity
             }
             return date;
         }
-          
+
 
         public static bool CallerIsTheLoginUser(this LeadCall item)
         {
-            if (item.Member.Name ==Employee.CurrentUserName)
+            if (item.Member.Name == Employee.CurrentUserName)
                 return true;
             else
                 return false;
@@ -93,7 +93,7 @@ namespace Entity
         public static bool IsFirstPitch(this LeadCall item)
         {
             var ls = item.CompanyRelationship.LeadCalls.FindAll(lc => lc.LeadCallType.Code >= 40 && lc.Lead.Name == item.Lead.Name).OrderBy(o => o.CallDate).ToList().FirstOrDefault();
-            if (ls!=null &&ls.CallDate == item.CallDate)
+            if (ls != null && ls.CallDate == item.CallDate)
                 return true;
             else
                 return false;
@@ -103,7 +103,7 @@ namespace Entity
 
 
 
-        public static bool IsFullPitched(this LeadCall item,LeadCall call)
+        public static bool IsFullPitched(this LeadCall item, LeadCall call)
         {
             return call.LeadCallType.Name == "Full Pitched" ? true : false;
         }
@@ -112,7 +112,7 @@ namespace Entity
             return item.LeadCallType.Name == "Pitched" ? true : false;
         }
 
-        public static bool IsDMs(this LeadCall item,string leadCallType)
+        public static bool IsDMs(this LeadCall item, string leadCallType)
         {
             if (leadCallType == "Others" || leadCallType == "Blowed" || leadCallType == "Not Pitched")
                 return false;
@@ -148,7 +148,7 @@ namespace Entity
 
     public enum RoleInProject
     {
-        Administrator,Director, Manager, Leader, Member, MarketInterface, ProductInterface, NotIn
+        Administrator, Director, Manager, Leader, Member, MarketInterface, ProductInterface, NotIn
     }
 
     public static class MemberExtensions
@@ -161,7 +161,7 @@ namespace Entity
         /// <returns></returns>
         //public static bool IsAbleToAccessTheCompanyRelationship(this Member item, CompanyRelationship cr)
         //{
-          
+
         //    var d = cr.WhoCallTheCompanyMember();
         //    if (d.Any(i => i.Name == Employee.CurrentUser))
         //        return true;
@@ -221,10 +221,10 @@ namespace Entity
             enddate = enddate == null ? new DateTime(9999, 1, 1) : enddate;
 
             var leadcalls = from l in CH.DB.LeadCalls
-                            where l.CallBackDate != null && l.MemberID == item.ID && l.CallBackDate > startdate && l.CallBackDate < enddate 
-                            && CH.DB.LeadCalls.FirstOrDefault(f=>f.CallDate>l.CallBackDate && f.LeadID==l.LeadID&&f.MemberID == item.ID)==null
+                            where l.CallBackDate != null && l.MemberID == item.ID && l.CallBackDate > startdate && l.CallBackDate < enddate
+                            && CH.DB.LeadCalls.FirstOrDefault(f => f.CallDate > l.CallBackDate && f.LeadID == l.LeadID && f.MemberID == item.ID) == null
                             select l;
-            
+
             return leadcalls.OrderByDescending(o => o.CallBackDate).ToList().Distinct(new LeadCallLeadDistinct()).ToList();
         }
         /// <summary>
@@ -321,8 +321,8 @@ namespace Entity
             enddate = enddate == null ? new DateTime(9999, 1, 1) : enddate;
             //var property = Employee.GetProfile("Contact",item.Name);
             //string phone = property == null ? string.Empty : property.ToString();
-            
-             var result = new ViewLeadCallAmount() { Member = item};
+
+            var result = new ViewLeadCallAmount() { Member = item };
             //var phonerecord = cs.FirstOrDefault(c => c.Phone == phone);
 
             //if (phonerecord!=null)
@@ -330,15 +330,16 @@ namespace Entity
             //    result.Duration = phonerecord.Duration;
             //    result.Cold_Calls = phonerecord.CallSum;
             //}
-            
-           // var lcs = CH.GetAllData<LeadCall>(l => l.MemberID == item.ID);
-            var lcs = from c in CH.DB.LeadCalls where c.MemberID == item.ID && c.CallDate>= startdate && c.CallDate<= enddate select c;
-            var dealins = CH.GetAllData<Deal>(d => d.Abandoned==false && d.Sales == item.Name && d.SignDate >= startdate && d.SignDate <= enddate && d.ProjectID == item.ProjectID);
-            var checkins = CH.GetAllData<Deal>(d => d.Abandoned == false &&  d.Sales == item.Name && d.ActualPaymentDate >= startdate && d.ActualPaymentDate <= enddate && d.ProjectID == item.ProjectID);
-            decimal checkinamount=0;
-            decimal dealinamount=0;
 
-            dealins.ForEach(da => {
+            // var lcs = CH.GetAllData<LeadCall>(l => l.MemberID == item.ID);
+            var lcs = from c in CH.DB.LeadCalls where c.MemberID == item.ID && c.CallDate >= startdate && c.CallDate <= enddate select c;
+            var dealins = CH.GetAllData<Deal>(d => d.Abandoned == false && d.Sales == item.Name && d.SignDate >= startdate && d.SignDate <= enddate && d.ProjectID == item.ProjectID);
+            var checkins = CH.GetAllData<Deal>(d => d.Abandoned == false && d.Sales == item.Name && d.ActualPaymentDate >= startdate && d.ActualPaymentDate <= enddate && d.ProjectID == item.ProjectID);
+            decimal checkinamount = 0;
+            decimal dealinamount = 0;
+
+            dealins.ForEach(da =>
+            {
                 dealinamount += da.Payment;
             });
             checkins.ForEach(da =>
@@ -359,26 +360,20 @@ namespace Entity
             //result.Waiting_For_Approval = lcs.Count(w => w.LeadCallType.Code == 70);
             //result.Qualified_Decision = lcs.Count(w => w.LeadCallType.Code == 80);
 
-
-            result.Pitched = lcs.OrderBy(o => o.CallDate).GroupBy(g => g.LeadID).Select(s => s.FirstOrDefault()).Where(w => w.LeadCallType.Code == 40).Count();
-            result.Full_Pitched = lcs.OrderBy(o => o.CallDate).GroupBy(g => g.LeadID).Select(s => s.FirstOrDefault()).Where(w => w.LeadCallType.Code == 50).Count();
-            result.Call_Backed = lcs.OrderBy(o => o.CallDate).GroupBy(g => g.LeadID).Select(s => s.FirstOrDefault()).Where(w => w.LeadCallType.Code == 60).Count();
-            result.Waiting_For_Approval = lcs.OrderBy(o => o.CallDate).GroupBy(g => g.LeadID).Select(s => s.FirstOrDefault()).Where(w => w.LeadCallType.Code == 70).Count();
-            result.Qualified_Decision = lcs.OrderBy(o => o.CallDate).GroupBy(g => g.LeadID).Select(s => s.FirstOrDefault()).Where(w => w.LeadCallType.Code == 80).Count();
-
-
-
-
             result.Closed = lcs.Count(w => w.LeadCallType.Code == 90);
             result.DMs = lcs.Count(w => w.LeadCallType.Code >= 40);
-            var calls = from l in CH.DB.LeadCalls.Where(w => w.LeadCallTypeID != null && w.LeadCallType.Code >= 40 && w.LeadCallType.Code <= 80 &&w.Project.IsActived == true) select l;
+            var calls = from l in CH.DB.LeadCalls.Where(w => w.LeadCallTypeID != null && w.LeadCallType.Code >= 40 && w.LeadCallType.Code <= 80 && w.Project.IsActived == true) select l;
 
             //result.New_DMs = lcs.Where(w => w.LeadCallType.Code >= 40 && calls.Any(a => a.CallDate < w.CallDate && a.LeadID == w.LeadID)).GroupBy(g=>g.LeadID).Count();
-            
-            
-            result.New_DMs = calls.OrderBy(o => o.CallDate).GroupBy(g => g.LeadID).Select(s => s.FirstOrDefault()).Where(w => w.CallDate >= startdate && w.CallDate <= enddate && w.MemberID == item.ID　).Count();
-            
-            
+            result.Pitched = calls.OrderBy(o => o.CallDate).GroupBy(g => g.LeadID).Select(s => s.FirstOrDefault()).Where(w => w.CallDate >= startdate && w.CallDate <= enddate && w.MemberID == item.ID && w.LeadCallType.Code == 40).Count();
+            result.Full_Pitched = calls.OrderBy(o => o.CallDate).GroupBy(g => g.LeadID).Select(s => s.FirstOrDefault()).Where(w => w.CallDate >= startdate && w.CallDate <= enddate && w.MemberID == item.ID && w.LeadCallType.Code == 50).Count();
+            result.Call_Backed = calls.OrderBy(o => o.CallDate).GroupBy(g => g.LeadID).Select(s => s.FirstOrDefault()).Where(w => w.CallDate >= startdate && w.CallDate <= enddate && w.MemberID == item.ID && w.LeadCallType.Code == 60).Count();
+            result.Waiting_For_Approval = calls.OrderBy(o => o.CallDate).GroupBy(g => g.LeadID).Select(s => s.FirstOrDefault()).Where(w => w.CallDate >= startdate && w.CallDate <= enddate && w.MemberID == item.ID && w.LeadCallType.Code == 70).Count();
+            result.Qualified_Decision = calls.OrderBy(o => o.CallDate).GroupBy(g => g.LeadID).Select(s => s.FirstOrDefault()).Where(w => w.CallDate >= startdate && w.CallDate <= enddate && w.MemberID == item.ID && w.LeadCallType.Code == 80).Count();
+
+            result.New_DMs = calls.OrderBy(o => o.CallDate).GroupBy(g => g.LeadID).Select(s => s.FirstOrDefault()).Where(w => w.CallDate >= startdate && w.CallDate <= enddate && w.MemberID == item.ID).Count();
+
+
             //lcs.FindAll(lc => lc.CallDate > startdate && lc.CallDate < enddate).ForEach(l =>
             //{
             //    result.CallListAmount++;
@@ -443,27 +438,27 @@ namespace Entity
 
             item.CompanyRelationships.ForEach(c =>
             {
-                
+
                 deal += c.Deals.FindAll(d => d.Sales == member).FindAll(ds => ds.SignDate < enddate && ds.SignDate > startdate).Sum(d => d.Income);
                 checkin += c.Deals.FindAll(d => d.Sales == member).FindAll(ds => ds.ActualPaymentDate < enddate && ds.ActualPaymentDate > startdate).Sum(d => d.Payment);
             });
 
-           
+
             var result = new ViewProjectProgressAmount()
             {
                 TotalCheckIn = totalcheckin,
                 TotalDealIn = totaldeal,
                 CheckIn = checkin,
                 DealIn = deal,
-                RMBDealIn=rmbdeal,
-                USDDealIn=usddeal,
+                RMBDealIn = rmbdeal,
+                USDDealIn = usddeal,
                 Project = item
             };
             return result;
 
         }
 
-        public static List<Deal> GetProjectDeals(this Project item, DateTime? startdate=null, DateTime? enddate=null)
+        public static List<Deal> GetProjectDeals(this Project item, DateTime? startdate = null, DateTime? enddate = null)
         {
             if (startdate == null) startdate = new DateTime(1000, 1, 1);
             if (enddate == null) enddate = new DateTime(9000, 1, 1);
@@ -482,7 +477,7 @@ namespace Entity
         {
             var data = new List<CompanyRelationship>();
             if (item == null) return data;
-            var cs = CH.GetAllData<CompanyRelationship>(c => c.ProjectID == item.ID&& c.Members.Any(s=>s.Name==user),"Company","Members");
+            var cs = CH.GetAllData<CompanyRelationship>(c => c.ProjectID == item.ID && c.Members.Any(s => s.Name == user), "Company", "Members");
 
             return cs;
 
@@ -580,15 +575,15 @@ namespace Entity
             return item.Members.FirstOrDefault(m => m.Name == username);
         }
 
-        public static List<ViewLeadCallAmount> GetProjectMemberLeadCalls(this Project item,  List<ViewPhoneInfo> cs, DateTime? startdate=null, DateTime? enddate=null)
+        public static List<ViewLeadCallAmount> GetProjectMemberLeadCalls(this Project item, List<ViewPhoneInfo> cs, DateTime? startdate = null, DateTime? enddate = null)
         {
             var list = new List<ViewLeadCallAmount>();
             if (item.Members != null)
             {
                 item.Members.ForEach(m =>
                 {
-                    if (m.IsActivated==true)
-                      list.Add(m.CallAmount(cs,startdate, enddate));
+                    if (m.IsActivated == true)
+                        list.Add(m.CallAmount(cs, startdate, enddate));
                 });
             }
             return list;
@@ -600,7 +595,7 @@ namespace Entity
             return item.Members.FirstOrDefault(m => m.Name == username);
         }
 
-        public static  IEnumerable<Lead> ProjectLeads(this Project item, int? dealcondition, int? distinctnumber, string categories = "")
+        public static IEnumerable<Lead> ProjectLeads(this Project item, int? dealcondition, int? distinctnumber, string categories = "")
         {
             var list = new List<Lead>();
             //item.CompanyRelationships.ForEach(c =>
@@ -621,7 +616,7 @@ namespace Entity
             }
             if (distinctnumber != null && distinctnumber != 0)
             {
-                var lists =  CH.GetAllData<DistrictNumber>();
+                var lists = CH.GetAllData<DistrictNumber>();
                 int max = lists.Max(d => d.ID);
                 if (distinctnumber == (max + 1))
                 {
@@ -658,8 +653,8 @@ namespace Entity
             //query = query.Where(q => q.Company.Leads.All(l => l.EMail != null && l.EMail != ""));
 
             var leads = query.Select(s => s.Company).SelectMany(s => s.Leads);
-            
-            return leads.Where(w=>w.EMail!=null && w.EMail!="");
+
+            return leads.Where(w => w.EMail != null && w.EMail != "");
         }
         public static List<string> ProjectLeadsEmail(this Project item, int? dealcondition, int? distinctnumber, string categories = "")
         {
@@ -720,7 +715,7 @@ namespace Entity
 
             var leads = query.Select(s => s.Company).SelectMany(s => s.Leads);
 
-            return leads.Where(w => w.EMail != null && w.EMail != "").Select(w=>w.EMail).ToList();
+            return leads.Where(w => w.EMail != null && w.EMail != "").Select(w => w.EMail).ToList();
         }
         public static RoleInProject RoleInProject(this Project item)
         {
@@ -739,7 +734,7 @@ namespace Entity
                 return Entity.RoleInProject.ProductInterface;
             else if (p.Market == name)
                 return Entity.RoleInProject.MarketInterface;
-            else if (p.Members!=null && p.Members.Any(m => m.Name == name))
+            else if (p.Members != null && p.Members.Any(m => m.Name == name))
                 return Entity.RoleInProject.Member;
             else
                 return Entity.RoleInProject.NotIn;
@@ -845,7 +840,7 @@ namespace Entity
             return result;
         }
 
-        public static string WhoCallTheCompanyMemberName(this CompanyRelationship item,List<Member> members=null)
+        public static string WhoCallTheCompanyMemberName(this CompanyRelationship item, List<Member> members = null)
         {
             var ml = item.WhoCallTheCompanyMember(members);
 
