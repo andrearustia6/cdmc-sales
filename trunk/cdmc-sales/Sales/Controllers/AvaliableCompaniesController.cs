@@ -1309,7 +1309,8 @@ namespace Sales.Controllers
                 ccs = ccs.Where(w => w.LeadCalledCount == 2);
             else if (typeid == 3)
                 ccs = ccs.Where(w => w.LeadCalledCount >= 3);
-            ccs = ccs.OrderBy(w => w.CompanyName);
+            ccs = ccs.OrderByDescending(w => w.DealCount).ThenBy(w=>w.CompanyName);
+
             return View(new GridModel(ccs.ToList()));
         }
         [GridAction]
