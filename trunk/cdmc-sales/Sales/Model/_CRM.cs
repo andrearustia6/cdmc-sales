@@ -387,10 +387,14 @@ namespace Sales.Model
             {
                 string ret = "";
                 var saleslist = Calls.Select(c => c.MemberName).Distinct();
+                var templist = Members.Select(c => c.Name).Distinct();
                 foreach (var str in saleslist)
                 {
-                    var salescall = Calls.Where(c => c.MemberName == str);
-                    ret=ret+";"+str+"("+salescall.Count().ToString()+")";
+                    if (!templist.Contains(str))
+                    {
+                        var salescall = Calls.Where(c => c.MemberName == str);
+                        ret = ret + ";" + str + "(" + salescall.Count().ToString() + ")";
+                    }
                 }
 
                 return ret.TrimStart(';');
