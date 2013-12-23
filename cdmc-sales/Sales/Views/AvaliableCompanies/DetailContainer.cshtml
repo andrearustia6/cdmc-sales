@@ -987,7 +987,8 @@
                     var currentProjectId = $('#projectid').val();
                     var corelvlid = result.corelvlid;
                     var processid = result.processid;
-                    $.post('_RefreshCrmTree', { projectid: currentProjectId }, function (result) {
+                    var f = GetFilters();
+                    $.post('_RefreshCrmTree', f, function (result) {
                         $('#mainnavigationcontainer').html(result);
                         if (crmid > 0) {
                             if (clickpublic)
