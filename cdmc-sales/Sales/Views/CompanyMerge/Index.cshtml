@@ -7,7 +7,7 @@
 
    <fieldset>
    <legend>公司合并</legend>
-   项目 @Html.DropDownList("ProjectID", SelectHelper.ProjectSelectList(Employee.CurrentUserName), "请选择", new { onchange = "onProjectChange();" })
+   项目 @Html.DropDownList("ProjectID", SelectHelper.ProjectSelectList(Employee.CurrentUserName), new { onchange = "onProjectChange();" })
    公司名称 @Html.TextBox("CompanyName")
    @*是否删除 @Html.DropDownList("Deleted", SelectHelper.DeletedSelectList(), "请选择", new { onchange = "onDeletedChange();" })*@
    <input type="button" title="查找" name="查找" value="查找" style=" width: 67px; height: 21px;" onclick="refreshGrid()" />
