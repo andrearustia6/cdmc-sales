@@ -104,6 +104,11 @@
 
                             menu.Add().Text("查看").ImageUrl("~/Content/Common/Icons/mvc.png").Items(item =>
                             {
+                                if (score == DealViewerRequired.LVL)
+                                {
+                                    item.Add().Url("~/Deal/AllIndex").Text("所有出单");
+                                }
+                                
                                 if (score >= SuperManagerRequired.LVL)
                                 {
                                     item.Add().Url("~/DirectorReport/ProjectsProgressByMonth").Text("报表");

@@ -111,6 +111,50 @@ namespace Sales.Controllers
             return View(new GridModel<AjaxViewDeal> { Data = list });
         }
 
+        public ViewResult AllIndex()
+        {
+            return View();
+        }
+        [GridAction]
+        public ActionResult _AllIndex(string dealcode, string companyname)
+        {
+           
+            var deals =  CH.DB.Deals.Where(w=>w.Deleted==false);
+            if (dealcode != null)
+                deals = deals.Where(d => d.DealCode.Contains(dealcode));
+            if(companyname!=null)
+                deals = deals.Where(d => d.CompanyRelationship.Company.Name_CH.Contains(companyname) || d.CompanyRelationship.Company.Name_EN.Contains(companyname));
+
+            var ds = from d in deals
+                     select new AjaxViewDeal
+                     {
+                         CompanyNameEN = d.CompanyRelationship.Company.Name_EN,
+                         CompanyNameCH = d.CompanyRelationship.Company.Name_CH,
+                         DealCode = d.DealCode,
+                         Abandoned = d.Abandoned,
+                         AbandonReason = d.AbandonReason,
+                         ActualPaymentDate = d.ActualPaymentDate,
+                         Committer = d.Committer,
+                         CommitterContect = d.Committer,
+                         CommitterEmail = d.CommitterEmail,
+                         ExpectedPaymentDate = d.ExpectedPaymentDate,
+                         ID = d.ID,
+                         Income = d.Income,
+                         IsClosed = d.IsClosed,
+                         PackageNameCH = d.Package.Name_CH,
+                         PackageNameEN = d.Package.Name_EN,
+                         Payment = d.Payment,
+                         Currency = d.Currencytype.Name,
+                         PaymentDetail = d.PaymentDetail,
+                         Sales = d.Sales,
+                         ProjectCode = d.Project.ProjectCode,
+                         SignDate = d.SignDate,
+                         TicketDescription = d.TicketDescription,
+                         IsConfirm = (d.IsConfirm == true ? "是" : "否")
+                     };
+            var list = ds.OrderBy(o => o.SignDate).ToList();
+            return View(new GridModel<AjaxViewDeal> { Data = list });
+        }
         public ViewResult Details(int id)
         {
             return View(CH.GetDataById<Deal>(id));

@@ -18,7 +18,7 @@
      {
          dataBinding.Ajax().Select("_index", "CompanyMerge");
      })
-        .ClientEvents(events => events.OnDataBinding("dataBinding").OnDataBound("OnDataBound").OnRowDataBound("onRowDataBound"))
+    .ClientEvents(events => events.OnDataBinding("dataBinding").OnDataBound("OnDataBound").OnRowDataBound("onRowDataBound"))
     .Columns(columns =>
     {
         columns.Bound(p => p.CRMID)
@@ -173,9 +173,15 @@
             window.center().open();
         });
     }
+    var mergecompanyclicked = false;
     function mergecompany() {
+        if (mergecompanyclicked)
+            return;
+        else
+            mergecompanyclicked = true;
         if (maincompanyid == '' || maincompanyid==undefined) {
             alert('请选择基准公司');
+            mergecompanyclicked = false;
             return;
         }
         var mainform =$('#' + maincompanyid);
@@ -199,6 +205,7 @@
                 alert('请输入中文名称');
                 mainform.find(":input[name='[" + index + "].Name_CH']").val('      ');
                 mainform.find(":input[name='[" + index + "].Name_CH']").focus().select();
+                mergecompanyclicked = false;
                 return;
             }
         }
@@ -207,6 +214,7 @@
                 alert('请输入英文名称');
                 mainform.find(":input[name='[" + index + "].Name_EN']").val('      ');
                 mainform.find(":input[name='[" + index + "].Name_EN']").focus().select();
+                mergecompanyclicked = false;
                 return;
             }
         }
@@ -217,12 +225,14 @@
             alert('请输入公司总机');
             telephone.val('      ');
             telephone.focus().select();
+            mergecompanyclicked = false;
             return;
         }
 
         if (!IsTelephone(telephone.val())) {
             telephone.val('      ');
             telephone.focus().select();
+            mergecompanyclicked = false;
             return;
         }
 
@@ -237,11 +247,13 @@
             success: function (data) {
                 if (data.crmid != null) {
                     alert('公司合并成功');
+                    mergecompanyclicked = false;
                     $('#MergeCompany').data('tWindow').close();
                     companyids = [];
                     refreshGrid();
                 }
                 else {
+                    mergecompanyclicked = false;
                     alert('公司合并失败');
                 }
             }
@@ -292,10 +304,15 @@
             window.center().open();
         });
     }
-
+    var mergeleadclicked = false;
     function mergelead() {
+        if (mergeleadclicked)
+            return;
+        else
+            mergeleadclicked = false;
         if (mainleadid == '' || mainleadid == undefined) {
             alert('请选择基准Lead');
+            mergeleadclicked = false;
             return;
         }
         var mainform = $('#' + mainleadid);
@@ -314,6 +331,7 @@
             alert('客户中英文名必需至少填一个.');
             mainform.find(":input[name='[" + index + "].Name_EN']").val('      ');
             mainform.find(":input[name='[" + index + "].Name_EN']").focus().select();
+            mergeleadclicked = false;
             return;
         }
         var telephone = mainform.find(":input[name='[" + index + "].Telephone']");
@@ -322,12 +340,14 @@
             alert('客户直线移动电话必需至少填一个.');
             telephone.val('      ');
             telephone.focus().select();
+            mergeleadclicked = false;
             return;
         }
         if (!telephone.val().isEmpty()) {
             if (!IsTelephone(telephone.val())) {
                 telephone.val('      ');
                 telephone.focus().select();
+                mergeleadclicked = false;
                 return;
             }
         }
@@ -335,6 +355,7 @@
             if (!IsTelephone(CellPhone.val())) {
                 CellPhone.val('      ');
                 CellPhone.focus().select();
+                mergeleadclicked = false;
                 return;
             }
         }
@@ -342,6 +363,7 @@
         if (Gender.val().isEmpty()) {
             alert('请输入客户性别');
             Gender.focus().select();
+            mergeleadclicked = false;
             return;
         }
         var Title = mainform.find(":input[name='[" + index + "].Title']");
@@ -349,6 +371,7 @@
             Title.val('      ');
             alert('请输入客户职位');
             Title.focus().select();
+            mergeleadclicked = false;
             return;
         }
         
@@ -364,10 +387,12 @@
                 if (data.leadid != null) {
                     alert('Lead合并成功');
                     leadids = [];
+                    mergeleadclicked = false;
                     $('#MergeLead').data('tWindow').close();
                     
                 }
                 else {
+                    mergeleadclicked = false;
                     alert('Lead合并失败');
                 }
             }
