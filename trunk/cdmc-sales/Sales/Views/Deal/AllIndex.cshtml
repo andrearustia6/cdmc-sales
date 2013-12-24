@@ -1,0 +1,66 @@
+﻿@{
+    ViewBag.Title = "项目出单";
+    ViewBag.ShowDuration = "false";
+}
+@using Entity
+@using Model
+@model List<AjaxViewDeal>
+@using Utl;
+@{
+    <fieldset>
+   <legend>出单查询</legend>
+     单号 @Html.TextBox("dealcode")
+   公司名称 @Html.TextBox("CompanyName")
+       <input type="button" title="查找" name="查找" value="查找" style=" width: 67px; height: 21px;" onclick="refreshGrid()" />
+    @(Html.Telerik().Grid<AjaxViewDeal>().Name("Deal")
+                .DataKeys(keys =>
+                {
+                    keys.Add(s => s.ID);
+                })
+                .DataBinding(b => b.Ajax().Select("_AllIndex", "Deal"))
+                .ClientEvents(events => events.OnDataBinding("dataBinding"))
+                .Columns(c =>
+                {
+                    c.Bound(item => item.CompanyName).Title("客户名公司").Width(150);
+                    c.Bound(item => item.DealCode).Title("出单号").Width(100);
+                    c.Bound(item => item.Sales).Width(70);
+                    c.Bound(item => item.PackageName).Title("Package").Width(150);
+                    c.Bound(item => item.RMBPayment).Title("RMB出单总额").Width(100).Format("{0:￥#,##0}").Aggregate(aggregates => aggregates.Sum()).ClientFooterTemplate("<p>RMB出单总额: ￥<#= $.telerik.formatString('{0:n0}', Sum) #></p>").ClientGroupFooterTemplate("<p>RMB出单总额: ￥<#= $.telerik.formatString('{0:n0}', Sum) #></p>");
+                    c.Bound(item => item.USDPayment).Title("USD出单总额").Width(100).Format("{0:$#,##0}").Aggregate(aggregates => aggregates.Sum()).ClientFooterTemplate("<p>USD出单总额: $<#= $.telerik.formatString('{0:n0}', Sum) #></p>").ClientGroupFooterTemplate("<p>USD出单总额: $<#= $.telerik.formatString('{0:n0}', Sum) #></p>");
+                    c.Bound(item => item.PaymentTotal).Title("所有出单总额(RMB)").Width(130).Format("{0:￥#,##0}").Aggregate(aggregates => aggregates.Sum()).ClientFooterTemplate("<p>所有出单总额(RMB): ￥<#= $.telerik.formatString('{0:n0}', Sum) #></p>").ClientGroupFooterTemplate("<p>所有出单总额(RMB): ￥<#= $.telerik.formatString('{0:n0}', Sum) #></p>");
+                    c.Bound(item => item.Income).Title("入账总额").Width(100).Format("{0:￥#,##0}").Aggregate(aggregates => aggregates.Sum()).ClientFooterTemplate("<p>入账总额: ￥<#= $.telerik.formatString('{0:n0}', Sum) #></p>").ClientGroupFooterTemplate("<p>入账总额: ￥<#= $.telerik.formatString('{0:n0}', Sum) #></p>");
+                    c.Bound(item => item.IsClosed).Width(70).Hidden();
+                    c.Bound(item => item.Abandoned).Width(70);
+                    c.Bound(item => item.TicketDescription);
+                    c.Bound(item => item.SignDate).Format("{0:d}").Width(80);
+                    c.Bound(item => item.ExpectedPaymentDate).Format("{0:d}").Width(100);
+                    c.Bound(item => item.ActualPaymentDate).Format("{0:d}").Width(100);
+                    //c.Bound(item => item.ProjectCode);
+                    //c.Bound(item => item.IsConfirm);
+                }
+    )
+.Resizable(resizing => resizing.Columns(true))
+
+.Pageable(p => p.Style(GridPagerStyles.Status).PageOnScroll(true).PageSize(100))
+.Scrollable(scrolling => scrolling.Height(450))
+)
+</fieldset>   
+}
+<script>
+    function dataBinding(e) {
+        if (clicked) {
+            var dealcode = $('#dealcode').val();
+            var companyname = $('#CompanyName').val();
+
+            e.data = $.extend(e.data, { dealcode: dealcode, companyname: companyname });
+        }
+        else
+            e.preventDefault();
+
+    }
+    function refreshGrid() {
+        clicked = true;
+        $("#Deal").data("tGrid").rebind();
+
+    }
+</script>

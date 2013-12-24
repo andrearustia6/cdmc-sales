@@ -334,7 +334,17 @@ public sealed class SuperManagerRequired : RoleRequired
         get { return LVL; }
     }
 }
-
+/// <summary>
+/// 600
+/// </summary>
+public sealed class DealViewerRequired : RoleRequired
+{
+    public const int LVL = 600;
+    public override int Level
+    {
+        get { return LVL; }
+    }
+}
 public class RoleLevel
 {
     public static int SuperManager = 800;
@@ -348,6 +358,7 @@ public class RoleLevel
     public static int ConferenceInterface = 3;
     public static int PoliticsInterface = 2;
     public static int MarketInterface = 1;
+    public static int DealViewer = 600;
 }
 
 
