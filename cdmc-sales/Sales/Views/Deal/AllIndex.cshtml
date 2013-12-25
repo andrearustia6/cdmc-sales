@@ -21,22 +21,24 @@
                 .ClientEvents(events => events.OnDataBinding("dataBinding"))
                 .Columns(c =>
                 {
-                    c.Bound(item => item.CompanyName).Title("客户名公司").Width(150);
-                    c.Bound(item => item.DealCode).Title("出单号").Width(100);
-                    c.Bound(item => item.Sales).Width(70);
-                    c.Bound(item => item.PackageName).Title("Package").Width(150);
-                    c.Bound(item => item.RMBPayment).Title("RMB出单总额").Width(100).Format("{0:￥#,##0}").Aggregate(aggregates => aggregates.Sum()).ClientFooterTemplate("<p>RMB出单总额: ￥<#= $.telerik.formatString('{0:n0}', Sum) #></p>").ClientGroupFooterTemplate("<p>RMB出单总额: ￥<#= $.telerik.formatString('{0:n0}', Sum) #></p>");
-                    c.Bound(item => item.USDPayment).Title("USD出单总额").Width(100).Format("{0:$#,##0}").Aggregate(aggregates => aggregates.Sum()).ClientFooterTemplate("<p>USD出单总额: $<#= $.telerik.formatString('{0:n0}', Sum) #></p>").ClientGroupFooterTemplate("<p>USD出单总额: $<#= $.telerik.formatString('{0:n0}', Sum) #></p>");
-                    c.Bound(item => item.PaymentTotal).Title("所有出单总额(RMB)").Width(130).Format("{0:￥#,##0}").Aggregate(aggregates => aggregates.Sum()).ClientFooterTemplate("<p>所有出单总额(RMB): ￥<#= $.telerik.formatString('{0:n0}', Sum) #></p>").ClientGroupFooterTemplate("<p>所有出单总额(RMB): ￥<#= $.telerik.formatString('{0:n0}', Sum) #></p>");
-                    c.Bound(item => item.Income).Title("入账总额").Width(100).Format("{0:￥#,##0}").Aggregate(aggregates => aggregates.Sum()).ClientFooterTemplate("<p>入账总额: ￥<#= $.telerik.formatString('{0:n0}', Sum) #></p>").ClientGroupFooterTemplate("<p>入账总额: ￥<#= $.telerik.formatString('{0:n0}', Sum) #></p>");
-                    c.Bound(item => item.IsClosed).Width(70).Hidden();
-                    c.Bound(item => item.Abandoned).Width(70);
-                    c.Bound(item => item.TicketDescription);
-                    c.Bound(item => item.SignDate).Format("{0:d}").Width(80);
-                    c.Bound(item => item.ExpectedPaymentDate).Format("{0:d}").Width(100);
-                    c.Bound(item => item.ActualPaymentDate).Format("{0:d}").Width(100);
-                    //c.Bound(item => item.ProjectCode);
-                    //c.Bound(item => item.IsConfirm);
+                    //c.Bound(item => item.ID);//客户公司
+                    c.Bound(item => item.CompanyName);//客户公司
+                    c.Bound(item => item.ProjectCode);//项目编号
+                    c.Bound(item => item.DealCode);//出单号
+                    c.Bound(item => item.PackageName);//Package中文名
+                    c.Bound(item => item.Committer);//客户签单人
+                    c.Bound(item => item.Sales);//权益描述
+                    c.Bound(item => item.Role);//权益描述
+                    c.Bound(item => item.DispParticipantTypeName);//权益描述
+                    c.Bound(item => item.SignDate).Format("{0:d}");//签约日期
+                    c.Bound(item => item.ExpectedPaymentDate).Format("{0:d}");//合约付款日期
+                    //c.Bound(item => item.Payment).Format("{0:c}").Aggregate(a => a.Sum()).ClientFooterTemplate("<#= $.telerik.formatString('{0:c}', Sum) #>");//应付款
+                    c.Bound(item => item.RMBPayment).Title("RMB应付款").Width(100).Format("{0:￥#,##0}").Aggregate(aggregates => aggregates.Sum()).ClientFooterTemplate("<p>RMB应付款: ￥<#= $.telerik.formatString('{0:n0}', Sum) #></p>").ClientGroupFooterTemplate("<p>RMB应付款: ￥<#= $.telerik.formatString('{0:n0}', Sum) #></p>");
+                    c.Bound(item => item.USDPayment).Title("USD应付款").Width(100).Format("{0:$#,##0}").Aggregate(aggregates => aggregates.Sum()).ClientFooterTemplate("<p>USD应付款: $<#= $.telerik.formatString('{0:n0}', Sum) #></p>").ClientGroupFooterTemplate("<p>USD应付款: $<#= $.telerik.formatString('{0:n0}', Sum) #></p>");
+                    c.Bound(item => item.ActualPaymentDate).Format("{0:d}");//实际付款日期
+                    c.Bound(item => item.Income).Format("{0:c0}");//实际入账
+                    c.Bound(item => item.ModifiedDate);
+                    c.Bound(item => item.TicketDescription).Width(200);
                 }
     )
 .Resizable(resizing => resizing.Columns(true))
@@ -47,6 +49,7 @@
 </fieldset>   
 }
 <script>
+    var clicked = false;
     function dataBinding(e) {
         if (clicked) {
             var dealcode = $('#dealcode').val();
