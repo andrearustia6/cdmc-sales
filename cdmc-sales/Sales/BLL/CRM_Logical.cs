@@ -2273,7 +2273,7 @@ namespace BLL
         }
         public static IQueryable<Deal> GetDeals(bool? acitivatedprojectonly = false, int? projectid = null, string sales = null, string filter = null)
         {
-            IQueryable<Deal> deals = from deal in CH.DB.Deals.Where(d => d.Abandoned == false) select deal;
+            IQueryable<Deal> deals = from deal in CH.DB.Deals.Where(d => d.Abandoned == false && d.Deleted==false) select deal;
 
             if (Utl.Utl.DebugModel() != true)
             {
