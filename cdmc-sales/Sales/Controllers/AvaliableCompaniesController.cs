@@ -790,6 +790,89 @@ namespace Sales.Controllers
         [HttpPost]
         public ActionResult _PickUpByOtherSales(CRMFilters filters)
         {
+            if(string.IsNullOrWhiteSpace(filters.FuzzyQuery))
+                return Content("");
+            var owncrms = from c in CH.DB.CompanyRelationships where c.ProjectID == filters.ProjectId && c.Deleted==false select c;
+            if (Employee.CurrentRole.Level == SalesRequired.LVL || Employee.CurrentRole.Level == MarketInterfaceRequired.LVL )
+                owncrms = owncrms.Where(w => w.Members.Count > 0 && w.Members.Any(m => m.Name == Employee.CurrentUserName)).OrderBy(w => w.ID);
+            else if (Employee.CurrentRole.Level == ManagerRequired.LVL || Employee.CurrentRole.Level == LeaderRequired.LVL || Employee.CurrentRole.Level == ProductInterfaceRequired.LVL)
+                owncrms = owncrms.Where(w => w.Members.Count > 0).OrderBy(w => w.ID);
+            
+            //模糊搜索
+            if (filters != null && !string.IsNullOrWhiteSpace(filters.FuzzyQuery))
+            {
+                owncrms = owncrms.Where(q => q.Company.Leads.Any(l =>  
+                    l.Deleted==false &&
+                    (
+                        l.Name_CH.Contains(filters.FuzzyQuery) || 
+                        l.Name_EN.Contains(filters.FuzzyQuery) || 
+                        l.EMail.Contains(filters.FuzzyQuery) || 
+                        l.PersonalEmailAddress.Contains(filters.FuzzyQuery)
+                       )) || 
+                       (q.Company.Deleted==false &&
+                        (q.Company.Name_CH.Contains(filters.FuzzyQuery) || 
+                        q.Company.Name_EN.Contains(filters.FuzzyQuery) || 
+                        q.Company.Contact.Contains(filters.FuzzyQuery)))
+                    
+                    );
+            }
+            //行业
+            if (filters != null && filters.CategoryId.HasValue)
+            {
+                owncrms = owncrms.Where(q => q.Categorys.Any(c => c.ID == filters.CategoryId.Value));
+            }
+            //时区
+            if (filters != null && filters.DistinctNumber.HasValue)
+            {
+                owncrms = owncrms.Where(q => q.Company.DistrictNumberID == filters.DistinctNumber);
+            }
+            //点评
+            if (filters != null && filters.IfComment == 1)
+            {
+                owncrms = owncrms.Where(q => q.Comments.Count > 0);
+            }
+            if (filters != null && filters.IfComment == 0)
+            {
+                owncrms = owncrms.Where(q => q.Comments.Count == 0);
+            }
+
+            if (filters != null && !string.IsNullOrWhiteSpace(filters.selSales))
+            {
+                owncrms = owncrms.Where(s => s.Members.Any(q => q.Name == filters.selSales));
+            }
+
+
+            var publiccrms = from c in CH.DB.CompanyRelationships where c.ProjectID == filters.ProjectId && c.Deleted == false select c;
+
+            publiccrms = publiccrms.Where(w => w.Members.Count == 0);
+
+            //模糊搜索
+            if (filters != null && !string.IsNullOrWhiteSpace(filters.FuzzyQuery))
+            {
+                publiccrms = publiccrms.Where(q => q.Company.Leads.Any(l => l.Deleted == false && (l.Name_CH.Contains(filters.FuzzyQuery) || l.Name_EN.Contains(filters.FuzzyQuery) || l.EMail.Contains(filters.FuzzyQuery) || l.PersonalEmailAddress.Contains(filters.FuzzyQuery)) || q.Company.Name_CH.Contains(filters.FuzzyQuery) || q.Company.Name_EN.Contains(filters.FuzzyQuery) || q.Company.Contact.Contains(filters.FuzzyQuery)));
+            }
+            //行业
+            if (filters != null && filters.CategoryId.HasValue)
+            {
+                publiccrms = publiccrms.Where(q => q.Categorys.Any(c => c.ID == filters.CategoryId.Value));
+            }
+            //时区
+            if (filters != null && filters.DistinctNumber.HasValue)
+            {
+                publiccrms = publiccrms.Where(q => q.Company.DistrictNumberID == filters.DistinctNumber);
+            }
+            //点评
+            if (filters != null && filters.IfComment == 1)
+            {
+                publiccrms = publiccrms.Where(q => q.Comments.Count > 0);
+            }
+            if (filters != null && filters.IfComment == 0)
+            {
+                publiccrms = publiccrms.Where(q => q.Comments.Count == 0);
+            }
+            if(owncrms.Count()>0 || publiccrms.Count()>0)
+                return Content("");
+
             var crms = from c in CH.DB.CompanyRelationships where c.ProjectID == filters.ProjectId && c.Deleted == false select c;
             crms = crms.Where(w => w.Members.Count > 0 && w.Members.Any(m => m.Name == Employee.CurrentUserName)==false).OrderBy(w => w.ID);
             //模糊搜索
