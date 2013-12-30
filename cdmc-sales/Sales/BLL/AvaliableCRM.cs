@@ -36,7 +36,8 @@ namespace Sales.BLL
             if (memberonly)
             {
                 if (Employee.CurrentRole.Level == SalesRequired.LVL || Employee.CurrentRole.Level == MarketInterfaceRequired.LVL )
-                    crms = crms.Where(w => w.Members.Count > 0 && w.Members.Any(m => m.Name == Employee.CurrentUserName)).OrderBy(w => w.ID);
+                    crms = crms.Where(w => w.Members.Count > 0 && w.Members.Select(s=>s.Name).Contains(Employee.CurrentUserName)).OrderBy(w => w.ID);
+                    //crms = crms.Where(w => w.Members.Count > 0 && w.Members.Any(m => m.Name == Employee.CurrentUserName)).OrderBy(w => w.ID);
                 else if (Employee.CurrentRole.Level == ManagerRequired.LVL || Employee.CurrentRole.Level == LeaderRequired.LVL || Employee.CurrentRole.Level == ProductInterfaceRequired.LVL)
                     crms = crms.Where(w => w.Members.Count > 0).OrderBy(w => w.ID);
             }
@@ -122,7 +123,9 @@ namespace Sales.BLL
                                                           }).OrderBy(cr => cr.CrmCommentStateIDOrder).ThenBy(cr => cr.CompanyNameEN).ThenBy(cr => cr.CompanyNameCH)
                                              })
                            };
-            
+
+            data = data.Take(2);//修复数据异常
+
             return data;
         }
         //static IQueryable<_CoreLVL> GetPublicCRM(bool memberonly, CRMFilters filters = null)
