@@ -128,7 +128,7 @@
     </div>
     <div class="editor-field">
          @*@Html.Telerik().ComboBoxFor(model => model.Market).BindTo(new SelectList(Employee.GetEmplyeeByLVL(MarketInterfaceRequired.LVL)))*@
-         @Html.Telerik().AutoCompleteFor(model => model.Product).AutoFill(true).Multiple(multi => { multi.Separator("; ").Enabled(true); }).BindTo(Employee.GetEmplyeeByLVL(MarketInterfaceRequired.LVL))
+         @Html.Telerik().AutoCompleteFor(model => model.Market).AutoFill(true).Multiple(multi => { multi.Separator("; ").Enabled(true); }).BindTo(Employee.GetEmplyeeByLVL(MarketInterfaceRequired.LVL))
         @Html.ValidationMessageFor(model => model.Market)
     </div>
     <div class="editor-label">

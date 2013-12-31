@@ -790,8 +790,8 @@ namespace Sales.Controllers
         [HttpPost]
         public ActionResult _PickUpByOtherSales(CRMFilters filters)
         {
-            if(string.IsNullOrWhiteSpace(filters.FuzzyQuery))
-                return Content("");
+            if (string.IsNullOrWhiteSpace(filters.FuzzyQuery))
+                return Json(new { msg = "" });
             var owncrms = from c in CH.DB.CompanyRelationships where c.ProjectID == filters.ProjectId && c.Deleted==false select c;
             if (Employee.CurrentRole.Level == SalesRequired.LVL || Employee.CurrentRole.Level == MarketInterfaceRequired.LVL )
                 owncrms = owncrms.Where(w => w.Members.Count > 0 && w.Members.Any(m => m.Name == Employee.CurrentUserName)).OrderBy(w => w.ID);
@@ -871,7 +871,7 @@ namespace Sales.Controllers
                 publiccrms = publiccrms.Where(q => q.Comments.Count == 0);
             }
             if(owncrms.Count()>0 || publiccrms.Count()>0)
-                return Content("");
+                return Json(new { msg = "" });
 
             var crms = from c in CH.DB.CompanyRelationships where c.ProjectID == filters.ProjectId && c.Deleted == false select c;
             crms = crms.Where(w => w.Members.Count > 0 && w.Members.Any(m => m.Name == Employee.CurrentUserName)==false).OrderBy(w => w.ID);
@@ -931,9 +931,9 @@ namespace Sales.Controllers
                
             }
             if(hascompany)
-                return Content(ret);
+                return Json(new { msg = ret });
             else
-                return Content("");
+                return Json(new { msg = "" });
         }
         [HttpPost]
         public ActionResult _AjaxTreeViewLoadingCore(CRMFilters filters)
