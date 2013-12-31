@@ -1778,8 +1778,8 @@
             $('#crmdetailscontainer').html("");
             if ($("#indexhiderole").val() == '10') {
                 $.post('_PickUpByOtherSales', f, function (result) {
-                    if (result != "")
-                        alert(result);
+                    if (result.msg != "")
+                        alert(result.msg);
                 });
             }
         });
