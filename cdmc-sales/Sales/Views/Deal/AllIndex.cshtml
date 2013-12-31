@@ -51,14 +51,14 @@
 <script>
     var clicked = false;
     function dataBinding(e) {
-        if (clicked) {
+//        if (clicked) {
             var dealcode = $('#dealcode').val();
             var companyname = $('#CompanyName').val();
 
             e.data = $.extend(e.data, { dealcode: dealcode, companyname: companyname });
-        }
-        else
-            e.preventDefault();
+//        }
+//        else
+//            e.preventDefault();
 
     }
     function refreshGrid() {
