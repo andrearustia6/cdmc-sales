@@ -257,7 +257,7 @@ namespace Sales.Controllers
                 {
                     item.DealCode = prefix + "001";
                 }
-
+                item.Deleted = false;
                 CH.Create<Deal>(item);
                 return RedirectToAction("MyDealIndex", "Sales", new { projectid = projectid });
             }
@@ -298,6 +298,7 @@ namespace Sales.Controllers
             {
                 //Deal old = CH.DB.Deals.AsNoTracking().Where(s => s.ID == item.ID).Single();
                 //item.IsConfirm = old.IsConfirm;
+                item.Deleted = false;
                 CH.Edit<Deal>(item);
                 return RedirectToAction("MyDealIndex", "Sales", new { projectid = projectid });
             }
