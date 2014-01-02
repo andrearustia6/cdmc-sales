@@ -13,9 +13,10 @@ namespace Sales.Controllers
 {
     public class PerformanceController : Controller
     {
-        public ActionResult Index(int? month, string btnExport)
+        public ActionResult Index(int? year,int? month, string btnExport)
         {
             ViewBag.Month = month;
+            ViewBag.Year = year;
             var rolelvl = Employee.CurrentRole.Level;
             if (rolelvl == PoliticsInterfaceRequired.LVL)
             {
@@ -32,12 +33,14 @@ namespace Sales.Controllers
                 MemoryStream output = new MemoryStream();
                 StreamWriter writer = new StreamWriter(output, System.Text.Encoding.Default);
 
+                if (year == null) year = DateTime.Now.Year;
                 if (month == null) month = DateTime.Now.Month;
 
-                writer.Write(month + "月");
+
+                writer.Write(year+"年 "+month + "月");
                 writer.WriteLine();
 
-                var EmployeeList = CRM_Logical._EmployeePerformance.GetManagerLeadsPerformances(month.Value).ToList();
+                var EmployeeList = CRM_Logical._EmployeePerformance.GetManagerLeadsPerformances(year.Value,month.Value).ToList();
 
                 if (EmployeeList.Count() > 0)
                 {
@@ -131,7 +134,7 @@ namespace Sales.Controllers
                     writer.WriteLine();
                 }
 
-                var TlList = CRM_Logical._EmployeePerformance.GetTeamLeadsPerformances(month.Value).ToList(); ;
+                var TlList = CRM_Logical._EmployeePerformance.GetTeamLeadsPerformances(year.Value,month.Value).ToList(); ;
                 if (TlList.Count() > 0)
                 {
                     writer.Write("销售经理考核,");
@@ -206,7 +209,7 @@ namespace Sales.Controllers
                     writer.WriteLine();
                 }
 
-                var salesList = CRM_Logical._EmployeePerformance.GetSalesPerformances(month.Value, string.Empty).ToList();
+                var salesList = CRM_Logical._EmployeePerformance.GetSalesPerformances(year.Value,month.Value, string.Empty).ToList();
 
                 if (salesList.Count() > 0)
                 {
@@ -292,18 +295,20 @@ namespace Sales.Controllers
             return View();
         }
         [GridAction]
-        public ActionResult _SelectManagerIndex(int? month)
+        public ActionResult _SelectManagerIndex(int? year,int? month)
         {
+            if (year == null) year = DateTime.Now.Year;
             if (month == null) month = DateTime.Now.Month;
             // if (month == null) month = 5;
-            var list = CRM_Logical._EmployeePerformance.GetManagerLeadsPerformances(month.Value);
+            var list = CRM_Logical._EmployeePerformance.GetManagerLeadsPerformances(year.Value,month.Value);
             var data = list.OrderBy(p => p.TargetName).ToList();
             return View(new GridModel(data));
         }
         [AcceptVerbs(HttpVerbs.Post)]
         [GridAction]
-        public ActionResult _UpdateManagerScore(int id, int? month)
+        public ActionResult _UpdateManagerScore(int id, int? year,int? month)
         {
+            if (year == null) year = DateTime.Now.Year;
             if (month == null) month = DateTime.Now.Month;
             _ManagerScore model = new _ManagerScore();
             ManagerScore newmodel = new ManagerScore();
@@ -326,7 +331,7 @@ namespace Sales.Controllers
                     newmodel.MonthlyMeeting = model.MonthlyMeeting;
                     newmodel.Rate = model.Rate;
                     newmodel.Month = month;
-                    newmodel.Year = DateTime.Now.Year;
+                    newmodel.Year = year;
 
                     CH.Edit<ManagerScore>(newmodel);
                 }
@@ -353,21 +358,22 @@ namespace Sales.Controllers
                     newmodel.Rate = model.Rate;
                     newmodel.Confirmed = false;
                     newmodel.Month = month;
-                    newmodel.Year = DateTime.Now.Year;
+                    newmodel.Year = year;
                     CH.Create<ManagerScore>(newmodel);
                 }
             }
 
-            var list = CRM_Logical._EmployeePerformance.GetManagerLeadsPerformances(month.Value);
+            var list = CRM_Logical._EmployeePerformance.GetManagerLeadsPerformances(year.Value,month.Value);
             var data = list.OrderBy(p => p.TargetName).ToList();
             return View(new GridModel(data));
 
         }
         //[AcceptVerbs(HttpVerbs.Post)]
         [GridAction]
-        public ActionResult _ConfirmManagerScore(int id, int? month)
+        public ActionResult _ConfirmManagerScore(int id,int? year, int? month)
         {
 
+            if (year == null) year = DateTime.Now.Year;
             if (month == null) month = DateTime.Now.Month;
             if (id > 0)
             {
@@ -376,26 +382,28 @@ namespace Sales.Controllers
                 CH.Edit<ManagerScore>(model);
                 //return View(model);
             }
-            var list = CRM_Logical._EmployeePerformance.GetManagerLeadsPerformances(month.Value);
+            var list = CRM_Logical._EmployeePerformance.GetManagerLeadsPerformances(year.Value,month.Value);
             var data = list.OrderBy(p => p.TargetName).ToList();
 
             return View(new GridModel(data));
 
         }
         [GridAction]
-        public ActionResult _SelectLeadIndex(int? month)
+        public ActionResult _SelectLeadIndex(int? year,int? month)
         {
+            if (year == null) year = DateTime.Now.Year;
             if (month == null) month = DateTime.Now.Month;
             // if (month == null) month = 5;
-            var list = CRM_Logical._EmployeePerformance.GetTeamLeadsPerformances(month.Value);
+            var list = CRM_Logical._EmployeePerformance.GetTeamLeadsPerformances(year.Value,month.Value);
             list = list.OrderBy(w => w.Name).ToList();
             //var data = list.OrderBy(p => p.Name).ToList();
             return View(new GridModel(list));
         }
         [AcceptVerbs(HttpVerbs.Post)]
         [GridAction]
-        public ActionResult _UpdateTeamLeadPerformance(int id, int? month)
+        public ActionResult _UpdateTeamLeadPerformance(int id,int? year, int? month)
         {
+            if (year == null) year = DateTime.Now.Year;
             if (month == null) month = DateTime.Now.Month;
             _TeamLeadPerformance model = new _TeamLeadPerformance();
             AssignPerformanceScore newmodel = new AssignPerformanceScore();
@@ -412,8 +420,9 @@ namespace Sales.Controllers
                         newmodel.Assigner = model.User;
                     newmodel.Rate = model.Rate;
                     newmodel.Score = (int)model.AssignedScore;
+
                     newmodel.Month = month;
-                    newmodel.Year = DateTime.Now.Year;
+                    newmodel.Year = year;
 
                     CH.Edit<AssignPerformanceScore>(newmodel);
                 }
@@ -435,23 +444,24 @@ namespace Sales.Controllers
                     newmodel.Rate = model.Rate;
                     newmodel.Score = (int)model.AssignedScore;
                     newmodel.Month = month;
-                    newmodel.Year = DateTime.Now.Year;
+                    newmodel.Year = year;
                     CH.Create<AssignPerformanceScore>(newmodel);
                 }
             }
 
-            var list = CRM_Logical._EmployeePerformance.GetTeamLeadsPerformances(month.Value);
+            var list = CRM_Logical._EmployeePerformance.GetTeamLeadsPerformances(year.Value,month.Value);
             var data = list.OrderBy(p => p.Name).ToList();
             return View(new GridModel(data));
 
         }
         [GridAction]
-        public ActionResult _SelectSalesIndex(int? month, string fuzzyInput = "")
+        public ActionResult _SelectSalesIndex(int? year,int? month, string fuzzyInput = "")
         {
+            if (year == null) year = DateTime.Now.Year;
             if (month == null) month = DateTime.Now.Month;
             ViewBag.fuzzyInput = fuzzyInput;
             // if (month == null) month = 5;
-            var list = CRM_Logical._EmployeePerformance.GetSalesPerformances(month.Value, fuzzyInput);
+            var list = CRM_Logical._EmployeePerformance.GetSalesPerformances(year.Value,month.Value, fuzzyInput);
             list = list.OrderBy(p => p.Name);
             return View(new GridModel(list));
             //var data = list.ToList();
@@ -459,8 +469,9 @@ namespace Sales.Controllers
         }
         [AcceptVerbs(HttpVerbs.Post)]
         [GridAction]
-        public ActionResult _UpdateSalesPerformance(int id, int? month)
+        public ActionResult _UpdateSalesPerformance(int id,int? year, int? month)
         {
+            if (year == null) year = DateTime.Now.Year;
             if (month == null) month = DateTime.Now.Month;
             _SalesPerformance model = new _SalesPerformance();
             AssignPerformanceScore newmodel = new AssignPerformanceScore();
@@ -479,7 +490,7 @@ namespace Sales.Controllers
 
                     newmodel.Score = (int)model.AssignedScore;
                     newmodel.Month = month;
-                    newmodel.Year = DateTime.Now.Year;
+                    newmodel.Year = year;
 
                     CH.Edit<AssignPerformanceScore>(newmodel);
                 }
@@ -500,12 +511,12 @@ namespace Sales.Controllers
                         newmodel.Assigner = model.User;
                     newmodel.Score = (int)model.AssignedScore;
                     newmodel.Month = month;
-                    newmodel.Year = DateTime.Now.Year;
+                    newmodel.Year = year;
                     CH.Create<AssignPerformanceScore>(newmodel);
                 }
             }
 
-            var list = CRM_Logical._EmployeePerformance.GetSalesPerformances(month.Value, "");
+            var list = CRM_Logical._EmployeePerformance.GetSalesPerformances(year.Value,month.Value, "");
             var data = list.OrderBy(p => p.Name).ToList();
             return View(new GridModel(data));
 

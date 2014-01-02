@@ -90,9 +90,9 @@
                   }
                 }
 
-                @if (Utl.Employee.CurrentRole.Level != ProductInterfaceRequired.LVL)
-                {
-                    if (@Model._members.Where(m => m.Name == Utl.Employee.CurrentUserName).Count() > 0)
+                @*@if (Utl.Employee.CurrentRole.Level != ProductInterfaceRequired.LVL)
+                {*@
+                    @if (@Model._members.Where(m => m.Name == Utl.Employee.CurrentUserName).Count() > 0)
                     {
                 <p id='ProgressIDdiv'>
                     成熟程度: @(Html.DropDownListFor(model => model.ProgressID, Utl.SelectHelper.ProgressSelectList(null), "请选择", new { style = "width:70%" }))</p>
@@ -100,7 +100,7 @@
                     是否核心: @(Html.DropDownListFor(model => model.CoreLVLID, Utl.SelectHelper.CoreLVLSelectList(null), "请选择", new { style = "width:70%" }))
                 </p>
                     }
-                }
+                @*}*@
                    
 
             </div>
@@ -110,12 +110,12 @@
                             <a href="#">
                                 <img src="../images/quan-06.jpg" width="13" height="12" alt="xing" /></a>
                         }*@
-                @if (Utl.Employee.CurrentRole.Level != ProductInterfaceRequired.LVL)
-                {
+                @*@if (Utl.Employee.CurrentRole.Level != ProductInterfaceRequired.LVL)
+                {*@
                         <a class="PickUp" href="#" onclick="onPickUp()">
                             <img src="../images/pickup.png" alt="领用" title="领用" /></a>
-                }
-                @if (Utl.Employee.CurrentRole.Level != ManagerRequired.LVL && Utl.Employee.CurrentRole.Level != ProductInterfaceRequired.LVL)
+                @*}*@
+                @if (Utl.Employee.CurrentRole.Level != ManagerRequired.LVL )
                 {
                     if (@Model._members.Where(m => m.Name == Utl.Employee.CurrentUserName).Count() > 0)
                     {
@@ -125,15 +125,14 @@
                         <img src="../images/quickdeal.png" alt="出单" title="出单" /></a>
                     }
                 }
-                @if (Utl.Employee.CurrentRole.Level == ManagerRequired.LVL && Utl.Employee.CurrentRole.Level != ProductInterfaceRequired.LVL)
+                @if (Utl.Employee.CurrentRole.Level == ManagerRequired.LVL )
                 {
                     
                     <a class="UnPickUp" href="#" onclick="onGetAssignCompany()">
                         <img src="../images/unpickup.png" alt="分配公司" title="分配公司" /></a>
                 }
-                @if (Utl.Employee.CurrentRole.Level != ProductInterfaceRequired.LVL)
-                {
-                    if (@Model._members.Where(m => m.Name == Utl.Employee.CurrentUserName).Count() > 0)
+                
+                    @if (@Model._members.Where(m => m.Name == Utl.Employee.CurrentUserName).Count() > 0)
                     {
                         <a class="hide" href="#">
                             <img src="../images/pen1919.png" alt="bianji" title='编辑公司' onclick="onCompanyEdit(@(Model.ID))"/></a>
@@ -141,7 +140,7 @@
                             <img src="../images/user.png" alt="新增Leader" title='新增Leader' width="19" height="19" /></a>
                     }
 
-                }
+                
             </div>
             <div class="left_3">
                 <div class="left_4">
@@ -169,9 +168,8 @@
                         <li>
                             <h2>
                                 公司简介
-                                @if (Utl.Employee.CurrentRole.Level != ProductInterfaceRequired.LVL)
-                                {
-                                    if (@Model._members.Where(m => m.Name == Utl.Employee.CurrentUserName).Count() > 0)
+                                
+                                    @if (@Model._members.Where(m => m.Name == Utl.Employee.CurrentUserName).Count() > 0)
                                     {
                                     <a href="#" onclick="onDescription(@(Model.ID))">
                                     <img src="../images/quan-13.jpg" width="20" height="18" alt="wenhao" /></a>
@@ -182,7 +180,7 @@
                                         <a href="#" onclick="onDescription(@(Model.ID))">
                                     <img src="../images/quan-13.jpg" width="20" height="18" alt="wenhao" /></a>
                                     }
-                                }
+                                
                             </h2>
                             @if (!string.IsNullOrWhiteSpace(Model.Description))
                             {
@@ -206,9 +204,8 @@
                         <li>
                             <h2>
                                 竞争对手
-                                @if (Utl.Employee.CurrentRole.Level != ProductInterfaceRequired.LVL)
-                                {
-                                    if (@Model._members.Where(m => m.Name == Utl.Employee.CurrentUserName).Count() > 0)
+                                
+                                    @if (@Model._members.Where(m => m.Name == Utl.Employee.CurrentUserName).Count() > 0)
                                     {
                                  <a href="#" onclick="onCompetitor(@(Model.ID))">
                                     <img src="../images/quan-13.jpg" width="20" height="18" alt="wenhao" /></a>
@@ -219,7 +216,7 @@
                                         <a href="#" onclick="onCompetitor(@(Model.ID))">
                                     <img src="../images/quan-13.jpg" width="20" height="18" alt="wenhao" /></a>
                                     }
-                                }
+                                
                             </h2>
                             @if (!string.IsNullOrWhiteSpace(Model.Competitor))
                             {
@@ -244,9 +241,8 @@
                         <li>
                             <h2>
                                 Pitch Point
-                                @if (Utl.Employee.CurrentRole.Level != ProductInterfaceRequired.LVL)
-                                {
-                                    if (@Model._members.Where(m => m.Name == Utl.Employee.CurrentUserName).Count() > 0)
+                                
+                                    @if (@Model._members.Where(m => m.Name == Utl.Employee.CurrentUserName).Count() > 0)
                                     {
                                  <a href="#" onclick="GetPitchPoint(@(Model.ID))">
                                     <img src="../images/quan-13.jpg" width="20" height="18" alt="wenhao" /></a>
@@ -257,7 +253,7 @@
                                         <a href="#" onclick="GetPitchPoint(@(Model.ID))">
                                     <img src="../images/quan-13.jpg" width="20" height="18" alt="wenhao" /></a>
                                     }
-                                }
+                                
                             </h2>
                             @if (!string.IsNullOrWhiteSpace(Model.PitchPoint))
                             {
@@ -602,8 +598,7 @@
                                     <dt>
                                         @{
                                                                                                       var calls = @Model._LeadCalls.Where(c => c.LeadID == lead.ID).OrderByDescending(c => c.CallDate).FirstOrDefault();
-                                                                                                      if (Utl.Employee.CurrentRole.Level != ProductInterfaceRequired.LVL)
-                                                                                                      {
+                                                                                                      
                                                                                                           if (@Model._members.Where(m => m.Name == Utl.Employee.CurrentUserName).Count() > 0)
                                                                                                           {
 
@@ -649,7 +644,7 @@
                                                             <img   src="../images/quan-08.png" width="15" height="15" alt="yuan" title="Closed" />}
                                                                                                               }
                                                                                                           }
-                                                                                                      }
+                                                                                                     @* }
                                                                                                       else
                                                                                                       {
                                                                                                           if (calls == null)
@@ -671,7 +666,7 @@
                                                                                                               {
                                                         <img src="../images/quan-08.png" width="15" height="15" alt="yuan" title="Closed" />}
                                                                                                           }
-                                                                                                      }
+                                                                                                      }*@
                                         }
                                     </dt>
                                     <dd>
@@ -691,9 +686,8 @@
                                   {
                                     <dl>
                                         <dt>
-                                        @if (Utl.Employee.CurrentRole.Level != ProductInterfaceRequired.LVL)
-                                        {
-                                            if (@Model._members.Where(m => m.Name == Utl.Employee.CurrentUserName).Count() > 0)
+                                        
+                                            @if (@Model._members.Where(m => m.Name == Utl.Employee.CurrentUserName).Count() > 0)
                                             {
                                             <img onclick="onCallAdd(@(lead.ID))"  src="../images/shouji.png" width="15" height="15" alt="yuan" />
                                             }
@@ -701,11 +695,7 @@
                                             {
                                                 <img  src="../images/shouji.png" width="15" height="15" alt="yuan" />
                                             }
-                                        }
-                                        else
-                                        {
-                                            <img  src="../images/shouji.png" width="15" height="15" alt="yuan" />
-                                        }
+                                       
                                             </dt>
                                         <dd>
                                             <p >
@@ -733,9 +723,8 @@
                                   {
                                     <dl>
                                         <dt>
-                                        @if (Utl.Employee.CurrentRole.Level != ProductInterfaceRequired.LVL)
-                                        {
-                                            if (@Model._members.Where(m => m.Name == Utl.Employee.CurrentUserName).Count() > 0)
+                                        
+                                            @if (@Model._members.Where(m => m.Name == Utl.Employee.CurrentUserName).Count() > 0)
                                             {
                                                 <img onclick="onCallAdd(@(lead.ID))"  src="../images/zuoji.png" width="15" height="15" alt="yuan" />
                                             }
@@ -743,11 +732,11 @@
                                             {
                                                 <img  src="../images/zuoji.png" width="15" height="15" alt="yuan" />
                                             }
-                                        }
+                                       @* }
                                         else
                                         {
                                             <img  src="../images/zuoji.png" width="15" height="15" alt="yuan" />
-                                        }</dt>
+                                        }*@</dt>
                                         <dd>
                                             <p >
                                             @if (@lead.OwnLeader)
@@ -774,9 +763,8 @@
                                   {
                                     <dl>
                                         <dt>
-                                        @if (Utl.Employee.CurrentRole.Level != ProductInterfaceRequired.LVL)
-                                        {
-                                            if (@Model._members.Where(m => m.Name == Utl.Employee.CurrentUserName).Count() > 0)
+                                       
+                                            @if (@Model._members.Where(m => m.Name == Utl.Employee.CurrentUserName).Count() > 0)
                                             {
                                                 <a href="mailto:@(lead.Email)">
                                                 <img src="../images/youjian.png" width="15" height="15" alt="yuan" /></a> 
@@ -785,11 +773,11 @@
                                             {
                                                 <a><img src="../images/youjian.png" width="15" height="15" alt="yuan" /></a> 
                                             }
-                                        }
+                                        @*}
                                         else
                                         {
                                             <a><img src="../images/youjian.png" width="15" height="15" alt="yuan" /></a> 
-                                        }</dt>
+                                        }*@</dt>
                                         <dd>
                                             <p style="width:100px" title="@lead.Email">@lead.Email</p>
                                         </dd>
