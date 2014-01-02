@@ -4,26 +4,44 @@
 @{
     ViewBag.Title = "Index";
 }
-<fieldset>
-    <legend>月份</legend>
-    @{
-        using (Html.BeginForm())
+ @using (Html.BeginForm())
         {
+            var y = ViewBag.Year as int?;
+            y = y == null ? DateTime.Now.Year : y;
             var m = ViewBag.Month as int?;
             m = m == null ? DateTime.Now.Month : m;
-        @Html.DropDownList("month", new SelectList(new List<int>() { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 }, m), new { onchange = "this.form.submit();" })
-            if (Utl.Employee.CurrentRole.Level >= SuperManagerRequired.LVL || Utl.Employee.CurrentRole.Level == FinancialInterfaceRequired.LVL)
-            {
+      <fieldset>
+     <table  style="border: solid 1px #000000 !important;">
+     <tr>
+     <td>
+     年份
+     </td>
+     <td>
+    @Html.DropDownList("year", new SelectList(Utl.SelectHelper.YearSelectList(), "Value", "Text", y), new { onchange = "this.form.submit();" })
+     </td>
+     <td>
+     月份
+     </td>
+     <td>
+    
+          @Html.DropDownList("month", new SelectList(new List<int>() { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 }, m), new { onchange = "this.form.submit();" })
+
+     @if (Utl.Employee.CurrentRole.Level >= SuperManagerRequired.LVL || Utl.Employee.CurrentRole.Level == FinancialInterfaceRequired.LVL)
+     {
         <button value="export" id="export" type="submit" name="btnExport" onclick="this.form.submit();"
             style="margin-left: 20px">
             导出</button>
-            }
-
         }
-    }
-</fieldset>
+     </td>
+     </tr>
+     </table>
+     </fieldset>
+    
+        }
 @{
+    var year = ViewBag.Year as int?;
     var month = ViewBag.Month as int?;
+    
     var query = ViewBag.fuzzyInput as string;
     var rolelvl = ViewBag.RoleLevel as int?;
 }
@@ -40,8 +58,8 @@
             })
             .DataBinding(dataBinding =>
             {
-                dataBinding.Ajax().Select("_SelectManagerIndex", "Performance", new { month = month })
-                    .Update("_UpdateManagerScore", "Performance", new { month = month });
+                dataBinding.Ajax().Select("_SelectManagerIndex", "Performance", new {year=year, month = month })
+                    .Update("_UpdateManagerScore", "Performance", new { year = year, month = month });
             })
         .Columns(columns =>
         {
@@ -63,7 +81,7 @@
             columns.Bound(p => p.Score).Width(60).HtmlAttributes(new { style = "text-align:right" }).ClientTemplate("<p><#= $.telerik.formatString('{0:p0}', Score/100) #></p>");
             columns.Bound(p => p.Graded).Width(35);
             columns.Bound(p => p.Confirmed).Width(35);
-            
+
             //columns.Bound(p => p.Month).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
             //columns.Bound(p => p.Year).HtmlAttributes(new { style = "text-align:right" }).HeaderHtmlAttributes(new { style = "text-align:right" });
             if (ViewBag.RoleLevel == SuperManagerRequired.LVL || Utl.Employee.CurrentUserName == "ray" || Utl.Employee.CurrentUserName == "karen" || Utl.Employee.CurrentUserName == "william")
@@ -286,8 +304,8 @@
      })
     .DataBinding(dataBinding =>
     {
-        dataBinding.Ajax().Select("_SelectLeadIndex", "Performance", new { month = month })
-            .Update("_UpdateTeamLeadPerformance", "Performance", new { month = month });
+        dataBinding.Ajax().Select("_SelectLeadIndex", "Performance", new { year = year, month = month })
+            .Update("_UpdateTeamLeadPerformance", "Performance", new { year = year, month = month });
     })
 .Columns(columns =>
 {

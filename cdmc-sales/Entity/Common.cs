@@ -20,7 +20,7 @@ namespace Entity
         [Display(Name = "月"), Required]
         public  int? Month{get;set;}
         [Display(Name = "年"), Required]
-        public int Year { get; set; }
+        public int? Year { get; set; }
     }
 
     public class AssignPerformanceRate : EntityBase
