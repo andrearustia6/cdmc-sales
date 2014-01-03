@@ -356,8 +356,8 @@
      })
     .DataBinding(dataBinding =>
     {
-        dataBinding.Ajax().Select("_SelectSalesIndex", "Performance", new { month = month })
-            .Update("_UpdateSalesPerformance", "Performance", new { month = month });
+        dataBinding.Ajax().Select("_SelectSalesIndex", "Performance", new {year=year, month = month })
+            .Update("_UpdateSalesPerformance", "Performance", new { year = year, month = month });
     })
 .Columns(columns =>
 {

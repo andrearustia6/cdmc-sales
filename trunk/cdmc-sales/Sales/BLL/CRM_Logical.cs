@@ -391,6 +391,7 @@ namespace BLL
                 return new List<SelectListItem>();
 
             }
+            
             #region manager考核的业务逻辑
             public static int CalcItem10Score(int faxcount)
             {
