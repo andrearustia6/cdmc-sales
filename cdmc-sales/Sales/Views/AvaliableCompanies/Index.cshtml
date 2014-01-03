@@ -1776,12 +1776,12 @@
         $.post('_RefreshCrmTree', f, function (result) {
             $('#mainnavigationcontainer').html(result);
             $('#crmdetailscontainer').html("");
-            if ($("#indexhiderole").val() == '10') {
+            //if ($("#indexhiderole").val() == '10') {
                 $.post('_PickUpByOtherSales', f, function (result) {
                     if (result.msg != "")
                         alert(result.msg);
                 });
-            }
+            //}
         });
     }
 

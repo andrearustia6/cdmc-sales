@@ -462,7 +462,7 @@ namespace Sales.Controllers
             CrmTrack ct = new CrmTrack();
             ct.Owner = Employee.CurrentUserName;
             ct.Type = "自加";
-            ct.CompanyRelationshipID = ajaxViewSaleCompany.CompanRelationshipId;
+            ct.CompanyRelationshipID = companyRelationship.ID;
             ct.GetDate = DateTime.Now;
             CH.Create<CrmTrack>(ct);
             return Json(new { companyRelationshipId = companyRelationship.ID, companyId = companyRelationship.CompanyID, projectId = companyRelationship.ProjectID, corelvlid = companyRelationship.CoreLVLID, processid = companyRelationship.ProgressID });
@@ -913,16 +913,13 @@ namespace Sales.Controllers
                 crms = crms.Where(q => q.Comments.Count == 0);
             }
 
-            if (filters != null && !string.IsNullOrWhiteSpace(filters.selSales))
-            {
-                crms = crms.Where(s => s.Members.Any(q => q.Name == filters.selSales));
-            }
+            
             string ret = "符合条件的公司有:";
             bool hascompany = false;
 
             foreach (var crm in crms)
             {
-                var track = CH.DB.CrmTracks.Where(w=>w.CompanyRelationshipID==crm.ID && w.Type=="领用").OrderByDescending(w=>w.GetDate).FirstOrDefault();
+                var track = CH.DB.CrmTracks.Where(w=>w.CompanyRelationshipID==crm.ID && (w.Type=="领用" || w.Type=="自加")).OrderByDescending(w=>w.GetDate).FirstOrDefault();
                 if (track != null)
                 {
                     ret += crm.CompanyName + "(领用人:" + track.Owner + ");";
