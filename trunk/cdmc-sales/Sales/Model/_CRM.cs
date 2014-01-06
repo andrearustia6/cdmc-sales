@@ -407,8 +407,11 @@ namespace Sales.Model
                 string ret = "";
                 foreach (var m in Members)
                 {
-                    var salescall = Calls.Where(c => c.MemberName == m.Name);
-                    ret = ret + ";" + m.Name + "(" + salescall.GroupBy(s=>s.LeadID).Count().ToString() + ")";
+                    if (m.IsActivated == true)
+                    {
+                        var salescall = Calls.Where(c => c.MemberName == m.Name);
+                        ret = ret + ";" + m.Name + "(" + salescall.GroupBy(s => s.LeadID).Count().ToString() + ")";
+                    }
                 }
                 return ret.TrimStart(';');
             }

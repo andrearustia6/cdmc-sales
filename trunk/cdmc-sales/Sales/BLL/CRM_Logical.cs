@@ -102,6 +102,7 @@ namespace BLL
                     managers = from m in managers
                                       where !(new String[] { "Doris", "Michael","Theresa","Dorothy", "Eric", "Olivia"}).Contains(m)
                                       select m;
+                    managers = managers.Distinct();
                     var lps = from l in managers
                               join sc in scores on l equals sc.TargetName into Joinedscores
                               from aa in Joinedscores.DefaultIfEmpty()
@@ -226,6 +227,7 @@ namespace BLL
                     //    };
                     //    retList.Add(ret);
                     //}
+                    leads = leads.Distinct().ToList();
                     var lps = from l in leads
                               select new _TeamLeadPerformance()
                               {
@@ -313,6 +315,7 @@ namespace BLL
                         var scores = from r in CH.DB.AssignPerformanceScores.Where(w => w.Month == month && w.Year == year) select r;
                         var durations = MonthDuration.GetMonthInstanceByYearMonth(year,month).WeekDurations.OrderBy(m=>m.StartDate);
                         var wd = durations.Select(s => s.StartDate);
+                        sales = sales.Distinct();
                         var lps = from l in sales
                                   select new _SalesPerformance()
                                   {

@@ -1434,7 +1434,7 @@ namespace Sales.Controllers
                       select new _CoreCoverage()
                       {
                           CompanyName = l.Company.Name_EN.Length > 0 ? l.Company.Name_EN : l.Company.Name_CH,
-                          Members = l.Members,
+                          
                           PickUpTime = l.CrmTracks.OrderByDescending(ct => ct.GetDate).FirstOrDefault() != null ? l.CrmTracks.OrderByDescending(ct => ct.GetDate).FirstOrDefault().GetDate : null,
                           LeadCalledCount = l.LeadCalls.Where(lc=>lc.Deleted==false).GroupBy(lc => lc.LeadID).Count(),
                           Calls = from c in l.LeadCalls.Where(lc => lc.Deleted == false)
@@ -1444,7 +1444,8 @@ namespace Sales.Controllers
                                       LeadID = c.LeadID
                                   },
                           ProcessName = l.Progress.Name,
-                          DealCount = l.Deals.Count()
+                          DealCount = l.Deals.Count(),
+                          Members = l.Members
                       };
             CH.DB.Configuration.ProxyCreationEnabled = false;
             if (typeid == 0)
