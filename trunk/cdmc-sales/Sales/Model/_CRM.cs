@@ -407,7 +407,8 @@ namespace Sales.Model
                 string ret = "";
                 foreach (var m in Members)
                 {
-                    if (m.IsActivated == true)
+
+                    if (Utl.CH.DB.EmployeeRoles.Any(w => w.AccountName == m.Name && w.IsActivated == true))
                     {
                         var salescall = Calls.Where(c => c.MemberName == m.Name);
                         ret = ret + ";" + m.Name + "(" + salescall.GroupBy(s => s.LeadID).Count().ToString() + ")";
