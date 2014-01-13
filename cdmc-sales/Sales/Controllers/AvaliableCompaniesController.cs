@@ -1436,8 +1436,8 @@ namespace Sales.Controllers
                           CompanyName = l.Company.Name_EN.Length > 0 ? l.Company.Name_EN : l.Company.Name_CH,
                           
                           PickUpTime = l.CrmTracks.OrderByDescending(ct => ct.GetDate).FirstOrDefault() != null ? l.CrmTracks.OrderByDescending(ct => ct.GetDate).FirstOrDefault().GetDate : null,
-                          LeadCalledCount = l.LeadCalls.Where(lc=>lc.Deleted==false).GroupBy(lc => lc.LeadID).Count(),
-                          Calls = from c in l.LeadCalls.Where(lc => lc.Deleted == false)
+                          LeadCalledCount = l.LeadCalls.Where(lc => lc.Deleted == false ).GroupBy(lc => lc.LeadID).Count(),
+                          Calls = from c in l.LeadCalls.Where(lc => lc.Deleted == false && lc.CallDate>=l.CreatedDate)
                                   select new _LeadCall()
                                   {
                                       MemberName = c.Member.Name,
