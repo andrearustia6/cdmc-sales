@@ -232,8 +232,8 @@ namespace Utl
         /// <returns></returns>
         public static IQueryable<string> GetEmplyeeByLVL(params int[] lvl)
         {
-            var names = Membership.GetAllUsers().Cast<MembershipUser>().Where(s => s.IsLockedOut == false).Select(s => s.UserName).ToList();
-            var emps = from e in CH.DB.EmployeeRoles.Where(w => names.Contains(w.AccountName)) select e;
+           // var names = Membership.GetAllUsers().Cast<MembershipUser>().Where(s => s.IsLockedOut == false).Select(s => s.UserName).ToList();
+            var emps = from e in CH.DB.EmployeeRoles.Where(w => w.IsActivated==true) select e;
 
             var data = from r in CH.DB.Roles
                        from e in emps
