@@ -2584,6 +2584,8 @@ namespace BLL
             {
                 if (!string.IsNullOrEmpty(c.Product))
                 {
+                    if (c.Product.Contains("linda"))
+                    { }
                     var names = c.Product.Trim().Split(new string[] { ";", "；" }, StringSplitOptions.RemoveEmptyEntries);
                     if (names.Contains(name))
                     {
