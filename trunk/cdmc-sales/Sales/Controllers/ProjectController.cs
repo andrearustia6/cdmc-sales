@@ -634,7 +634,7 @@ namespace Sales.Controllers
                 }
                 else//指定公司
                 {
-                    p.CRMs = p.CRMs.Where(c => c.MembersIds.Any(m => m == memberId)).ToList();
+                    p.CRMs = p.CRMs.Where(c => c.MembersIds.ToList().Contains( memberId)).ToList();
                 }
             }
             if (!String.IsNullOrEmpty(prefixFilter))
