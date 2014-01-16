@@ -417,14 +417,14 @@ namespace BLL
             }
 
             /// <summary>
-            /// 当周出单三次或以上，60个Lead添加达标，否则70个Lead添加达标
+            /// 当周出单三次或以上，80个Lead添加达标，否则105个Lead添加达标
             /// </summary>
             public static int GetLeadAddStandard(int dealscount)
             {
                 if (dealscount >= 3)
-                    return 60;
+                    return 80;
                 else
-                    return 70;
+                    return 105;
             }
             #endregion
 

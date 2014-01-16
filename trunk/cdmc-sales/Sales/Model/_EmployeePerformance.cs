@@ -255,6 +255,7 @@ namespace Sales.Model
             {
                 if (SalesPerformanceInWeeks != null)
                     return SalesPerformanceInWeeks.Count(c => c.IsLeadAddedQualified == false);
+                    //return SalesPerformanceInWeeks.Sum(c => c.LeadAddedQualifiedCount);
                 else
                     return 0;
             }
@@ -267,6 +268,7 @@ namespace Sales.Model
             {
                 if (SalesPerformanceInWeeks != null)
                     return SalesPerformanceInWeeks.Count(c => c.IsFaxOutOrCallHoursQualified == false);
+                    //return SalesPerformanceInWeeks.Sum(c => c.FaxOutOrCallHoursQualifiedCount);
                 else
                     return 0;
             }
@@ -295,7 +297,17 @@ namespace Sales.Model
         {
             get
             {
-                return CRM_Logical._EmployeePerformance.GetLeadAddScore(LeadNotQualifiedWeeksCount);
+                if (SalesPerformanceInWeeks != null)
+                {
+                    var count = SalesPerformanceInWeeks.Sum(c => c.LeadAddedQualifiedCount);
+                    //return CRM_Logical._EmployeePerformance.GetLeadAddScore(LeadNotQualifiedWeeksCount);
+                    if (count > 20)
+                        return 20;
+                    else
+                        return count;
+                }
+                else
+                    return 0;
             }
         }
 
@@ -304,8 +316,17 @@ namespace Sales.Model
         {
             get
             {
-
-                return CRM_Logical._EmployeePerformance.GetFaxOutScore(HoursOrFaxNotQualifiedWeeksCount);
+                if (SalesPerformanceInWeeks != null)
+                {
+                    var count = SalesPerformanceInWeeks.Sum(c => c.FaxOutOrCallHoursQualifiedCount);
+                    //return CRM_Logical._EmployeePerformance.GetFaxOutScore(HoursOrFaxNotQualifiedWeeksCount);
+                    if (count > 20)
+                        return 20;
+                    else
+                        return count;
+                }
+                else
+                    return 0;
             }
         }
 
@@ -409,13 +430,52 @@ namespace Sales.Model
                 return FaxOutCount >= FaxOutStandard;
             }
         }
-
+        public int FaxOutOrCallHoursQualifiedCount
+        {
+            get
+            {
+                if (DealsCount >= 3)
+                {
+                    if (FaxOutCount >= 40)
+                        return 5;
+                    else
+                        return FaxOutCount / 8;
+                }
+                else
+                {
+                    if (FaxOutCount >= 50)
+                        return 5;
+                    else
+                        return FaxOutCount / 10;
+                }
+            }
+        }
 
         public bool IsLeadAddedQualified
         {
             get
             {
                 return LeadsCount >= LeadAddStandard;
+            }
+        }
+        public int LeadAddedQualifiedCount
+        {
+            get
+            {
+                if (DealsCount >= 3)
+                {
+                    if (LeadsCount >= 80)
+                        return 5;
+                    else
+                        return LeadsCount / 16;
+                }
+                else
+                {
+                    if (LeadsCount >= 105)
+                        return 5;
+                    else
+                        return LeadsCount / 21;
+                }
             }
         }
 
