@@ -375,7 +375,7 @@
     columns.Bound(p => p.Score).Width(80).HtmlAttributes(new { style = "text-align:right" }).ClientTemplate("<p><#= $.telerik.formatString('{0:p0}', Score/100) #></p>");
     columns.Bound(p => p.FaxOutCountString).Width(80).HtmlAttributes(new { style = "text-align:right" });
     columns.Bound(p => p.LeadAddCountString).Width(80).HtmlAttributes(new { style = "text-align:right" });
-    if (ViewBag.RoleLevel == LeaderRequired.LVL || Utl.Employee.CurrentUserName == "karen")
+    if (ViewBag.RoleLevel == LeaderRequired.LVL || Utl.Employee.CurrentUserName == "admin")
     {
         columns.Command(commands =>
         {
@@ -485,7 +485,7 @@
     }
 }
 <fieldset>
-    <legend>销售和销售经理考核标准</legend>
+    <legend>基础销售考核标准</legend>
     <table width="100%">
         <tr>
             <td>
@@ -510,10 +510,11 @@
                 R<60%,0%
             </td>
         </tr>
-        <tr>
+       <!-- <tr>
             <td colspan="7">
                 说明：销售经理月目标为团队月目标，入账额为团队入账额，销售月目标为个人目标，入账额为个人入账额
             </td>
+            -->
         </tr>
         <tr>
             <td>
@@ -523,16 +524,16 @@
                 每周达标, 20%
             </td>
             <td>
-                一周不达标, 15%
+                一周达标, 5%
             </td>
             <td>
-                两周不达标, 10%
+                两周达标, 10%
             </td>
             <td>
-                三周不达标, 5%
+                三周达标, 15%
             </td>
             <td colspan="2">
-                四周及以上不达标,0%
+                四周及以上达标，20%
             </td>
         </tr>
         <tr>
@@ -543,33 +544,35 @@
                 每周达标, 20%
             </td>
             <td>
-                一周不达标, 15%
+                一周达标, 5%
             </td>
             <td>
-                两周不达标, 10%
+                两周达标, 10%
             </td>
             <td>
-                三周不达标, 5%
+                三周达标, 15%
             </td>
             <td colspan="2">
-                四周及以上不达标,0%
+                四周及以上达标，20%
             </td>
         </tr>
         <tr>
-            <td>
-                销售Faxout标准
-            </td>
-            <td colspan="2">
-                当周出单三次或以上，sales 40个faxout达标，否则50个faxout达标
-            </td>
             <td>
                 销售新增Leads标准
             </td>
-            <td colspan="3">
-                当周出单三次或以上，sales 80个lead达标，否则105个lead达标
+            <td colspan="6">
+                每录入21条leads分数增加1%，当周最高5%（若当周出单三次或以上，每录入16个leads分数增加1%，当周最高5%）
+            </td>
+            </tr>
+            <tr>
+            <td>
+                销售Faxout标准
+            </td>
+            <td colspan="6">
+                每录入10条faxout分数增加1%，当周最高5%（若当周出单三次或以上，每录入8条faxout分数增加1%，当周最高5%）
             </td>
         </tr>
-        <tr>
+        <!--<tr>
             <td>
                 销售经理Faxout标准
             </td>
@@ -583,6 +586,7 @@
                 当周出单三次或以上，60个Lead添加达标，否则70个Lead添加达标
             </td>
         </tr>
+        -->
         <tr>
             <td>
                 完成布置的任务
@@ -714,7 +718,7 @@
         var rowButton = $row.find(".t-grid-edit");
         if (rowButton[0] == null)
             return;
-        if ((e.dataItem.User == "karen")) {
+        if ((e.dataItem.User == "admin")) {
             rowButton[0].innerText = "修改系数";
             return;
         }
