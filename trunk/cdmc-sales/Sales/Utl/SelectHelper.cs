@@ -136,7 +136,8 @@ namespace Utl
                 {
                     selectListItem.Selected = true;
                 }
-                selectList.Add(selectListItem);
+                if(!selectList.Contains(selectListItem))
+                    selectList.Add(selectListItem);
             }
             return selectList;
         }
