@@ -919,12 +919,21 @@ namespace Sales.Controllers
 
             foreach (var crm in crms)
             {
-                var track = CH.DB.CrmTracks.Where(w=>w.CompanyRelationshipID==crm.ID && (w.Type=="领用" || w.Type=="自加")).OrderByDescending(w=>w.GetDate).FirstOrDefault();
-                if (track != null)
+                //var track = CH.DB.CrmTracks.Where(w=>w.CompanyRelationshipID==crm.ID ).OrderByDescending(w=>w.CreatedDate).FirstOrDefault();
+                var members = crm.Members;
+                if (crm.Members != null)
                 {
-                    ret += crm.CompanyName + "(领用人:" + track.Owner + ");";
+                    ret += crm.CompanyName + "(领用人:" + string.Join(",",crm.Members.Select(w=>w.Name).ToArray()) + ");";
                     hascompany = true;
                 }
+                //if (track != null)
+                //{
+                //    if (track.Type != "放回")
+                //    {
+                //        ret += crm.CompanyName + "(领用人:" + track.Owner + ");";
+                //        hascompany = true;
+                //    }
+                //}
                
             }
             if(hascompany)
