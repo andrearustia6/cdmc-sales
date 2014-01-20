@@ -30,7 +30,7 @@
             c.Bound(item => item.TargetOf3rdWeek).Width(100);
             c.Bound(item => item.TargetOf4thWeek).Width(100);
             c.Bound(item => item.TargetOf5thWeek).Width(100);
-            c.Bound(item => item.IsAdminConfirm).Width(100);
+            //c.Bound(item => item.IsAdminConfirm).Width(100);
             c.Bound(item => item.IsConfirm).Width(100);
 
             c.Command(commands =>
@@ -63,7 +63,7 @@
         e.data = $.extend(e.data, { filterId: filter, projectId: project });
     }
     function rowDataBound(e) {
-        if ((e.dataItem.IsConfirm == "是" || e.dataItem.IsAdminConfirm == "否")) {
+        if (e.dataItem.IsAdminConfirm == "是" && e.dataItem.IsConfirm == "是") {
             $(e.row).find('a.t-grid-edit').remove();
         }
     }

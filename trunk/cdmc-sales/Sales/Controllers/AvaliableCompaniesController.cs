@@ -315,15 +315,15 @@ namespace Sales.Controllers
         public ActionResult CheckCompanyNameENExist(string name, int projectid)
         {
             var exist = from c in CH.DB.CompanyRelationships select c;
-            var chcount = exist.Count(c => c.Company.Name_CH == name && c.ProjectID == projectid && c.Deleted == false);
+            var chcount = exist.Count(c => c.Company.Name_EN == name && c.ProjectID == projectid && c.Deleted == false);
             if (chcount > 0)
             {
                 return Json(new { flag = 0, Content = "本项目中已经存在同名英文公司，不能重复录入！" });
             }
-            var ex = exist.Any(c => c.Company.Name_CH == name && c.ProjectID != projectid && c.Company.Deleted == false);
+            var ex = exist.Any(c => c.Company.Name_EN == name && c.ProjectID != projectid && c.Company.Deleted == false);
             if (ex)
             {
-                return Json(new { flag = 1, crmid = exist.Where(c => c.Company.Name_CH == name && c.ProjectID != projectid && c.Company.Deleted == false).FirstOrDefault().ID, Content = "已经存在同名英文公司，是否领用?" });
+                return Json(new { flag = 1, crmid = exist.Where(c => c.Company.Name_EN == name && c.ProjectID != projectid && c.Company.Deleted == false).FirstOrDefault().ID, Content = "已经存在同名英文公司，是否领用?" });
             }
 
             return Json(new { flag = 2, Content = "" });
@@ -1041,7 +1041,7 @@ namespace Sales.Controllers
             if (d > 300)
                 return Content("从公海领用的，公司数超过300的不能领用！");
 
-            Member member = CH.DB.Members.Where(m => m.Name == Employee.CurrentUserName).FirstOrDefault();
+            Member member = CH.DB.Members.Where(m => m.Name == Employee.CurrentUserName && m.ProjectID == companyRelationship.ProjectID).FirstOrDefault();
             companyRelationship.Members.Add(member);
             CH.Edit(companyRelationship);
 
@@ -1087,7 +1087,7 @@ namespace Sales.Controllers
             for (int i = 0; i < crmid.Count; i++)
             {
                 CompanyRelationship companyRelationship = CH.GetDataById<CompanyRelationship>(crmid[i]);
-                Member member = CH.DB.Members.Where(m => m.Name == Employee.CurrentUserName).FirstOrDefault();
+                Member member = CH.DB.Members.Where(m => m.Name == Employee.CurrentUserName && m.ProjectID == companyRelationship.ProjectID).FirstOrDefault();
                 companyRelationship.Members.Add(member);
                 CH.Edit(companyRelationship);
                 doCrmTrack(crmid[i], true);
@@ -1106,7 +1106,7 @@ namespace Sales.Controllers
 
             CompanyRelationship companyRelationship = CH.GetDataById<CompanyRelationship>(crmid);
 
-            Member member = companyRelationship.Members.Where(m => m.Name == Employee.CurrentUserName).FirstOrDefault();
+            Member member = companyRelationship.Members.Where(m => m.Name == Employee.CurrentUserName && m.ProjectID == companyRelationship.ProjectID).FirstOrDefault();
 
             companyRelationship.Members.Remove(member);
             CH.Edit(companyRelationship);
@@ -1508,8 +1508,19 @@ namespace Sales.Controllers
 
         public ActionResult _SalesFilter(int ProjectId)
         {
-            var selSales = CH.DB.Members.Where(s => s.ProjectID == ProjectId && s.IsActivated==true).Select(s => s.Name);
-            return Json(selSales);
+            var teamleaders = CH.GetDataById<Project>(ProjectId).TeamLeader.Trim().Split(new string[] { ";", "；" }, StringSplitOptions.RemoveEmptyEntries);
+            if (Employee.CurrentRole.Level==100 && teamleaders.Contains(Employee.CurrentUserName))
+            {
+                var selSales = CH.DB.Members.Where(s => s.ProjectID == ProjectId && s.IsActivated == true).Select(s => s.Name);
+                return Json(selSales);
+            }
+            else if (Employee.CurrentRole.Level > 100 || Employee.CurrentRole.Level == 5)
+            {
+                var selSales = CH.DB.Members.Where(s => s.ProjectID == ProjectId && s.IsActivated == true).Select(s => s.Name);
+                return Json(selSales);
+            }
+            else
+                return Json(new List<Member>());
         }
 
         public ActionResult GetQuickAddDeal(int? projectId, int? CRMId)
