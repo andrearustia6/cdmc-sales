@@ -75,7 +75,7 @@
             @if ((Employee.CurrentRole.Level >= 100) || (Employee.CurrentRole.Level == 5))
             {
                 
-                <td style="width: 15%;">
+                <td style="width: 15%;" id="saleslisttd">
                     销售筛选:<br />
                     <select id="saleslist" style="width: 200px; vertical-align: middle; width: 80%" onchange="search()">
                         <option value="">全部</option>
@@ -1804,17 +1804,22 @@
 
 //        });
         $.post('_SalesFilter', { ProjectId: e.value }, function (result) {
-            $("#saleslist").empty();
-            $("#saleslist").append("<option value=''>全部</option>");
+            if (result.length > 0) {
+                $("#saleslisttd").show();
+                $("#saleslist").empty();
+                $("#saleslist").append("<option value=''>全部</option>");
 
-            for (var i = 0; i < result.length; i++) {
-                if (typeof (result[i]) != "undefined") {
-                    if (($("#indexhiderole").val() == 100 || $("#indexhiderole").val() == 5 )  && result[i] == $("#indexhideuser").val())
-                        $("#saleslist").append("<option value=" + result[i] + " selected=selected>" + result[i] + "</option>");
-                    else
-                        $("#saleslist").append("<option value=" + result[i] + ">" + result[i] + "</option>");
+                for (var i = 0; i < result.length; i++) {
+                    if (typeof (result[i]) != "undefined") {
+                        if (($("#indexhiderole").val() == 100 || $("#indexhiderole").val() == 5) && result[i] == $("#indexhideuser").val())
+                            $("#saleslist").append("<option value=" + result[i] + " selected=selected>" + result[i] + "</option>");
+                        else
+                            $("#saleslist").append("<option value=" + result[i] + ">" + result[i] + "</option>");
+                    }
                 }
             }
+            else
+                $("#saleslisttd").hide();
             search();
         });
     }
@@ -1823,16 +1828,21 @@
         var projectid = $("#projectid").data("tDropDownList");
         var id = projectid.value();
         $.post('_SalesFilter', { ProjectId: id }, function (result) {
-            $("#saleslist").empty();
-            $("#saleslist").append("<option value=''>全部</option>");
-            for (var j = 0; j < result.length; j++) {
-                if (typeof (result[j]) != "undefined") {
-                    if (($("#indexhiderole").val() == 100 || $("#indexhiderole").val() == 5) && result[j] == $("#indexhideuser").val())
-                        $("#saleslist").append("<option value=" + result[j] + " selected=selected>" + result[j] + "</option>");
-                    else
-                        $("#saleslist").append("<option value=" + result[j] + ">" + result[j] + "</option>");
+            if (result.length > 0) {
+                $("#saleslisttd").show();
+                $("#saleslist").empty();
+                $("#saleslist").append("<option value=''>全部</option>");
+                for (var j = 0; j < result.length; j++) {
+                    if (typeof (result[j]) != "undefined") {
+                        if (($("#indexhiderole").val() == 100 || $("#indexhiderole").val() == 5) && result[j] == $("#indexhideuser").val())
+                            $("#saleslist").append("<option value=" + result[j] + " selected=selected>" + result[j] + "</option>");
+                        else
+                            $("#saleslist").append("<option value=" + result[j] + ">" + result[j] + "</option>");
+                    }
                 }
             }
+            else
+                $("#saleslisttd").hide();
             search();
         })
         

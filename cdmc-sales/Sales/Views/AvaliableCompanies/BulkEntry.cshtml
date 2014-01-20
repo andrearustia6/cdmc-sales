@@ -232,3 +232,68 @@
         color: Red;
     }
 </style>
+<script>
+    $(function () {
+        $("#Name_CN").change(function () {
+            if ($("#Name_CN").val() != '') {
+                $.post('CheckCompanyNameCNExist', { name: $("#Name_CN").val(), projectid: $("#ProjectId").val() }, function (result) {
+                    if (result.flag == 0)
+                        alert(result.Content);
+                    else if (result.flag == 1) {
+                        if (confirm(result.Content)) {
+                            $.post('PickUpDirect', { crmid: result.crmid, projectid: $('#projectid').val() }, function (result) {
+                                if (result.companyRelationshipId != null) {
+                                    alert('领用成功');
+                                    crmid = result.companyRelationshipId;
+                                    var currentProjectId = $('#projectid').val();
+                                    RefreshCrmTree(currentProjectId, result.companyRelationshipId, result.processid, result.corelvlid);
+                                }
+                                else {
+                                    if (result != "") {
+                                        alert('领用失败:' + result);
+                                    }
+                                    else {
+                                        alert('领用失败');
+                                    }
+                                }
+                                CancelBulkEntry();
+                            });
+
+                        }
+                    }
+
+                });
+            }
+        })
+        $("#Name_EN").change(function () {
+            if ($("#Name_EN").val() != '') {
+                $.post('CheckCompanyNameENExist', { name: $("#Name_EN").val(), projectid: $("#ProjectId").val() }, function (result) {
+                    if (result.flag == 0)
+                        alert(result.Content);
+                    else if (result.flag == 1) {
+                        if (confirm(result.Content)) {
+                            $.post('PickUpDirect', { crmid: result.crmid, projectid: $('#projectid').val() }, function (result) {
+                                if (result.companyRelationshipId != null) {
+                                    alert('领用成功');
+                                    crmid = result.companyRelationshipId;
+                                    var currentProjectId = $('#projectid').val();
+                                    RefreshCrmTree(currentProjectId, result.companyRelationshipId, result.processid, result.corelvlid);
+                                }
+                                else {
+                                    if (result != "") {
+                                        alert('领用失败:' + result);
+                                    }
+                                    else {
+                                        alert('领用失败');
+                                    }
+                                }
+                                CancelBulkEntry();
+                            });
+
+                        }
+                    }
+                });
+            }
+        })
+    })
+</script>

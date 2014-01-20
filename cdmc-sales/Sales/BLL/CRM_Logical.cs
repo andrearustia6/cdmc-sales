@@ -2507,6 +2507,54 @@ namespace BLL
             {
                 ps = GetSalesInvolveProject();
             }
+            
+            if (lvl >= 1000 && lvl < 99999)
+            {
+                ps = GetDirectorInvolveProject();
+            }
+            if (lvl >= 500 && lvl < 1000)
+            {
+                ps = GetManagerInvolveProject();
+            }
+            if (lvl == 99999)
+            {
+                ps = GetAdminInvolveProject();
+            }
+            ps = ps.Where(w => w.Test == null || w.Test == false).ToList();//不反回测试项目
+            return ps;
+        }
+        //和上面方法不同是对100的判断。因为上面方法用的地方太多，所以重新做了一个
+        public static List<Project> GetUserInvolveProjectForLeader()
+        {
+            List<Project> ps = new List<Project>(); ;
+            var lvl = Employee.CurrentRole.Level;
+            if (lvl == 5)
+            {
+                ps = GetProductInvolveProject();
+            }
+
+            if (lvl == 1)
+            {
+                ps = GetMarketInvolveProject();
+            }
+
+            if (lvl == 3)
+            {
+                ps = GetConferenceInvolveProject();
+            }
+            if (lvl == 4)
+            {
+                ps = GetFinanceInvolveProject();
+            }
+
+            if (lvl >= 10 && lvl < 100)
+            {
+                ps = GetSalesInvolveProject();
+            }
+            if (lvl == 100)
+            {
+                ps = GetSalesLeaderInvolveProject();
+            }
             if (lvl >= 1000 && lvl < 99999)
             {
                 ps = GetDirectorInvolveProject();
@@ -2547,7 +2595,31 @@ namespace BLL
             }
             return data;
         }
+        /// <summary>
+        /// 取得salesleader正在参与的，已经激活，并且当前时间在项目周期内的项目
+        /// </summary>
+        /// <returns></returns>
+        public static List<Project> GetSalesLeaderInvolveProject()
+        {
+            var name = Employee.CurrentUserName;
+            var now = DateTime.Now;
+            var projects = CH.GetAllData<Project>();
 
+            List<Project> data = new List<Project>();
+            foreach (var c in CH.GetAllData<Project>())
+            {
+                if (!string.IsNullOrEmpty(c.TeamLeader))
+                {
+                    var names = c.TeamLeader.Trim().Split(new string[] { ";", "；" }, StringSplitOptions.RemoveEmptyEntries);
+                    if (names.Contains(name))
+                    {
+                        if (!data.Contains(c))
+                            data.Add(c);
+                    }
+                }
+            }
+            return data;
+        }
         public static List<Project> GetManagerInvolveProject()
         {
             var name = Employee.CurrentUserName;

@@ -34,7 +34,7 @@
                         <div style=" float: left;">
                             <span>
                                 <label style="margin:8px 0px 0px 5px;">项目:</label>
-                                @Html.DropDownList("projectFilter", SelectHelper.ProjectSelectList(EditRight.DealsEdit.ToString(), (int?)ViewBag.ProjectID))
+                                @Html.DropDownList("projectFilter", SelectHelper.ProjectSelectListForLeader(EditRight.DealsEdit.ToString(), (int?)ViewBag.ProjectID))
                             </span>
                             <span>
                                 <label style="margin:8px 0px 0px 5px;">销售:</label>

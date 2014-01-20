@@ -316,6 +316,8 @@ namespace Sales.Controllers
             var item = CH.GetDataById<TargetOfMonth>(id);
             item.Confirmor = Employee.CurrentUserName;
             item.IsConfirm = true;
+            item.AdminConfirmor = Employee.CurrentUserName;
+            item.IsAdminConfirm = true;
             CH.Edit<TargetOfMonth>(item);
             return View(new GridModel(getData()));
         }
