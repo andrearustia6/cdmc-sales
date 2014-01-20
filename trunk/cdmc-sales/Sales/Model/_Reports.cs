@@ -1325,6 +1325,8 @@ namespace Model
     public class AjaxMember
     {
         public string Name { get; set; }
+        public int ID { get; set; }
+        public int? ProjectID { get; set; }
     }
 
     public class AjaxProjectPerformance

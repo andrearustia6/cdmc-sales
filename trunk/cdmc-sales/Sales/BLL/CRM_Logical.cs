@@ -2234,7 +2234,7 @@ namespace BLL
                                        CrmCreateDate = c.CreatedDate,
                                        CRMID = c.ID,
                                        CompanyCategories = c.Categorys,
-                                       Members = c.Members,
+                                       Members = (from m in c.Members select new AjaxMember{  ID = m.ID, Name = m.Name, ProjectID = m.ProjectID  }),
                                        CompanyNameEN = string.IsNullOrEmpty(c.Company.Name_EN) ? "" : c.Company.Name_EN,
                                        CompanyNameCH = string.IsNullOrEmpty(c.Company.Name_CH) ? "" : c.Company.Name_CH,
                                        CompanyContact = string.IsNullOrEmpty(c.Company.Contact) ? "" : c.Company.Contact,
