@@ -155,7 +155,7 @@ namespace Sales.Controllers
         [HttpPost]
         public ActionResult AppointSales(int[] checkedRecords, int companyrelationshipid)
         {
-            var c = CH.GetAllData<CompanyRelationship>(i => i.ID == companyrelationshipid, "Members").FirstOrDefault();
+            var c = CH.GetDataById<CompanyRelationship>(companyrelationshipid);
 
             if (c != null)
             {
@@ -634,7 +634,7 @@ namespace Sales.Controllers
                 }
                 else//指定公司
                 {
-                    p.CRMs = p.CRMs.Where(c => c.MembersIds.ToList().Contains( memberId)).ToList();
+                    p.CRMs = p.CRMs.Where(c => c.Members.Select(s => s.ID).Contains(memberId)).ToList();
                 }
             }
             if (!String.IsNullOrEmpty(prefixFilter))

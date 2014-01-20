@@ -5,6 +5,7 @@ using System.Web;
 using Entity;
 using System.ComponentModel.DataAnnotations;
 using Utl;
+using Model;
 
 namespace Sales.Model
 {
@@ -298,6 +299,13 @@ namespace Sales.Model
         public DateTime? CreatedDate { get; set; }
     }
 
+    //public class AjaxMember
+    //{
+    //    public int ID { get; set; }
+    //    public int? ProjectID { get; set; }
+    //    public string Name { get; set; }
+    //}
+
     public class AjaxCRM
     {
 
@@ -366,7 +374,7 @@ namespace Sales.Model
         #endregion
 
         #region company
-        public List<Member> Members { set; private get; }
+        public IEnumerable<AjaxMember> Members { set;  get; }
         [Display(Name = "公司类型")]
         public string CompanyType { get; set; }
         [Required(ErrorMessage = " ")]
