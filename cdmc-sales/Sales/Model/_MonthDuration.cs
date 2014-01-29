@@ -89,20 +89,36 @@ namespace Sales.Model
             d.MonthEndDate = d.MonthStartDate.EndOfMonth();
 
             d.StartDate1 = d.MonthStartDate;
-            if (d.StartDate1.DayOfWeek == DayOfWeek.Saturday || d.StartDate1.DayOfWeek == DayOfWeek.Sunday)
-            {
-                while (d.StartDate1.DayOfWeek != DayOfWeek.Monday)
-                {
-                    d.StartDate1 = d.StartDate1.AddDays(1);
-                }
-            }
-            else
+
+            //if (d.StartDate1.DayOfWeek == DayOfWeek.Saturday || d.StartDate1.DayOfWeek == DayOfWeek.Sunday)
+            //{
+            //    while (d.StartDate1.DayOfWeek != DayOfWeek.Monday)
+            //    {
+            //        d.StartDate1 = d.StartDate1.AddDays(1);
+            //    }
+            //}
+            //else
+            //{
+            //    while (d.StartDate1.DayOfWeek != DayOfWeek.Monday)
+            //    {
+            //        d.StartDate1 = d.StartDate1.AddDays(-1);
+            //    }
+            //}
+
+            if (d.StartDate1.DayOfWeek != DayOfWeek.Monday)
             {
                 while (d.StartDate1.DayOfWeek != DayOfWeek.Monday)
                 {
                     d.StartDate1 = d.StartDate1.AddDays(-1);
                 }
             }
+            //else
+            //{
+            //    while (d.StartDate1.DayOfWeek != DayOfWeek.Monday)
+            //    {
+            //        d.StartDate1 = d.StartDate1.AddDays(-1);
+            //    }
+            //}
 
             d.EndDate1 = d.StartDate1.AddDays(7);
             d.DurationStrings.Add(d.StartDate1.ToShortMonthString() + "~" + d.EndDate1.ToShortMonthString());
