@@ -41,10 +41,11 @@
                     c.Bound(item => item.TicketDescription).Width(200);
                 }
     )
-.Resizable(resizing => resizing.Columns(true))
+.Resizable(resizing => resizing.Columns(true)).Filterable().Sortable()
 
 .Pageable(p => p.Style(GridPagerStyles.Status).PageOnScroll(true).PageSize(100))
-.Scrollable(scrolling => scrolling.Height(450))
+.Scrollable(scrolling => scrolling.Height(450)
+)
 )
 </fieldset>   
 }
