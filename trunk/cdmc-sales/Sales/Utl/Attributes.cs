@@ -345,6 +345,34 @@ public sealed class DealViewerRequired : RoleRequired
         get { return LVL; }
     }
 }
+
+public sealed class ProjectManagerRequired : RoleRequired
+{
+    public const int LVL = 500;
+    public override int Level
+    {
+        get { return LVL; }
+    }
+}
+
+public sealed class SalesManagerRequired : RoleRequired
+{
+    public const int LVL = 200;
+    public override int Level
+    {
+        get { return LVL; }
+    }
+}
+
+public sealed class ChinaTLRequired : RoleRequired
+{
+    public const int LVL = 80;
+    public override int Level
+    {
+        get { return LVL; }
+    }
+}
+
 public class RoleLevel
 {
     public static int SuperManager = 800;
@@ -359,6 +387,9 @@ public class RoleLevel
     public static int PoliticsInterface = 2;
     public static int MarketInterface = 1;
     public static int DealViewer = 600;
+    public static int ProjectManager = 500;
+    public static int SalesManager = 200;
+    public static int ChinaTL  = 80;
 }
 
 

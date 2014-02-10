@@ -110,10 +110,28 @@
         @Html.LabelFor(model => model.Manager)
     </div>
     <div class="editor-field">
-
-         @Html.Telerik().ComboBoxFor(model => model.Manager).BindTo(new SelectList(Employee.GetEmplyeeByLVL(ManagerRequired.LVL,SuperManagerRequired.LVL)))
+        @Html.Telerik().AutoCompleteFor(model => model.Manager).AutoFill(true).Multiple(multi => { multi.Separator("; ").Enabled(true); }).BindTo(Employee.GetEmplyeeByLVL(ManagerRequired.LVL))
         @Html.ValidationMessageFor(model => model.Manager)
     </div>
+        <div class="editor-label">
+        @Html.LabelFor(model => model.ProjectManager) 
+    </div>
+    <div class="editor-field">
+      
+        @Html.Telerik().AutoCompleteFor(model => model.ProjectManager).AutoFill(true).Multiple(multi => { multi.Separator("; ").Enabled(true); }).BindTo(Employee.GetEmplyeeByLVL(ProjectManagerRequired.LVL))
+        
+        @Html.ValidationMessageFor(model => model.ProjectManager)
+    </div>
+        <div class="editor-label">
+        @Html.LabelFor(model => model.SalesManager) 
+    </div>
+    <div class="editor-field">
+      
+        @Html.Telerik().AutoCompleteFor(model => model.SalesManager).AutoFill(true).Multiple(multi => { multi.Separator("; ").Enabled(true); }).BindTo(Employee.GetEmplyeeByLVL(SalesManagerRequired.LVL))
+        
+        @Html.ValidationMessageFor(model => model.SalesManager)
+    </div>
+        
     <div class="editor-label">
         @Html.LabelFor(model => model.TeamLeader)
     </div>
@@ -122,6 +140,15 @@
         @*@Html.Telerik().ComboBoxFor(model => model.TeamLeader).BindTo(new SelectList(Employee.GetEmplyeeByLVL(LeaderRequired.LVL,ManagerRequired.LVL)))*@
         @Html.Telerik().AutoCompleteFor(model => model.TeamLeader).AutoFill(true).Multiple(multi => { multi.Separator("; ").Enabled(true); }).BindTo(Employee.GetEmplyeeByLVL(LeaderRequired.LVL))
         @Html.ValidationMessageFor(model => model.TeamLeader)
+    </div>
+        <div class="editor-label">
+        @Html.LabelFor(model => model.ChinaTL) 
+    </div>
+    <div class="editor-field">
+      
+        @Html.Telerik().AutoCompleteFor(model => model.ChinaTL).AutoFill(true).Multiple(multi => { multi.Separator("; ").Enabled(true); }).BindTo(Employee.GetEmplyeeByLVL(ChinaTLRequired.LVL))
+        
+        @Html.ValidationMessageFor(model => model.ChinaTL)
     </div>
       <div class="editor-label">
         @Html.LabelFor(model => model.Market)
@@ -154,6 +181,9 @@
         @Html.ValidationMessageFor(model => model.Conference)
     </div>
 
+     
+    
+     
     <div class="editor-label">
         @Html.LabelFor(model => model.Target)
     </div>
@@ -180,10 +210,10 @@
     </div>
     <div class="editor-field">
      @{if (Model != null)
-          {
+       {
             @Html.HiddenFor(m => m.SalesBriefUrl)
             @Html.DisplayFor(model => model.SalesBriefUrl)
-          }
+       }
         }
         @Html.Telerik().Upload().Async(a => a.AutoUpload(true)).Name("attachments").Multiple(false)
     </div>

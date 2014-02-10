@@ -158,7 +158,7 @@ namespace Entity
 
         public virtual List<ProjectRight> ProjectRights { get; set; }
 
-        [Display(Name = "版块负责人")]
+        [Display(Name = "事业部负责人")]
         public string Manager { get; set; }
 
         [Display(Name = "项目编号"), Required]
@@ -193,7 +193,7 @@ namespace Entity
         [Display(Name = "销售目标"), Required, DisplayFormat(DataFormatString = "{0:c}")]
         public decimal Target { get; set; }
 
-        [Display(Name = "团队负责人")]
+        [Display(Name = "团队负责人(TL)")]
         public string TeamLeader { get; set; }
 
         public virtual List<Template> Templates { get; set; }
@@ -256,6 +256,19 @@ namespace Entity
         public virtual Area Area { get; set; }
         [Display(Name = "默认行业"), Required]
         public int? AreaID { get; set; }
+
+
+        public string InternalManager { get; set; }
+
+
+        [Display(Name = "项目经理")]
+        public string ProjectManager { get; set; }
+        [Display(Name = "销售经理")]
+        public string SalesManager { get; set; }
+        [Display(Name = "国内TL")]
+        public string ChinaTL { get; set; }
+        
+        
     }
 
     [JsonIgnoreAttribute("CompanyRelationships")]
@@ -745,6 +758,9 @@ namespace Entity
 
         [Display(Name = "删除")]
         public bool? Deleted { get; set; }
+
+        [Display(Name = "出单类型")]
+        public string DealType { get; set; }
     }
 
     public class Progress : EntityBase

@@ -424,7 +424,7 @@ namespace BLL
                 if (dealscount >= 3)
                     return 80;
                 else
-                    return 105;
+                    return 70;
             }
             #endregion
 
@@ -2520,6 +2520,14 @@ namespace BLL
             {
                 ps = GetAdminInvolveProject();
             }
+            if (lvl == 200)
+            {
+                ps = GetSalesManagerInvolveProject();
+            }
+            if (lvl == 80)
+            {
+                ps = GetChinaTLInvolveProject();
+            }
             ps = ps.Where(w => w.Test == null || w.Test == false).ToList();//不反回测试项目
             return ps;
         }
@@ -2566,6 +2574,14 @@ namespace BLL
             if (lvl == 99999)
             {
                 ps = GetAdminInvolveProject();
+            }
+            if (lvl == 200)
+            {
+                ps = GetSalesManagerInvolveProject();
+            }
+            if (lvl == 80)
+            {
+                ps = GetChinaTLInvolveProject();
             }
             ps = ps.Where(w => w.Test == null || w.Test == false).ToList();//不反回测试项目
             return ps;
@@ -2620,16 +2636,87 @@ namespace BLL
             }
             return data;
         }
-        public static List<Project> GetManagerInvolveProject()
+
+        public static List<Project> GetChinaTLInvolveProject()
         {
             var name = Employee.CurrentUserName;
             var now = DateTime.Now;
-            var projects = CH.GetAllData<Project>(p => p.Manager == name);
+            var projects = CH.GetAllData<Project>();
 
-            var data = projects.FindAll(p => p.IsActived == true);
+            List<Project> data = new List<Project>();
+
+            data = projects.FindAll(p => p.Members.Any(m => m.Name == name && m.IsActivated == true) && p.IsActived == true);
+            foreach (var c in CH.GetAllData<Project>())
+            {
+                if (!string.IsNullOrEmpty(c.ChinaTL))
+                {
+                    var names = c.ChinaTL.Trim().Split(new string[] { ";", "；" }, StringSplitOptions.RemoveEmptyEntries);
+                    if (names.Contains(name))
+                    {
+                        if (!data.Contains(c))
+                            data.Add(c);
+                    }
+                }
+            }
             return data;
         }
 
+        public static List<Project> GetManagerInvolveProject()
+        {
+            var name = Employee.CurrentUserName;
+            var projects = CH.GetAllData<Project>();
+
+            List<Project> data = new List<Project>();
+            
+            data = projects.FindAll(p => p.Members.Any(m => m.Name == name && m.IsActivated == true) && p.IsActived == true);
+            foreach (var c in projects.FindAll(p => p.IsActived == true))
+            {
+                if (!string.IsNullOrEmpty(c.Manager))
+                {
+
+                    var names = c.Manager.Trim().Split(new string[] { ";", "；" }, StringSplitOptions.RemoveEmptyEntries);
+                    if (names.Contains(name))
+                    {
+                        if (!data.Contains(c))
+                            data.Add(c);
+                    }
+                }
+                if (!string.IsNullOrEmpty(c.ProjectManager))
+                {
+
+                    var names1 = c.ProjectManager.Trim().Split(new string[] { ";", "；" }, StringSplitOptions.RemoveEmptyEntries);
+                    if (names1.Contains(name))
+                    {
+                        if(!data.Contains(c))
+                            data.Add(c);
+                    }
+                }
+            }
+            return data;
+        }
+        public static List<Project> GetSalesManagerInvolveProject()
+        {
+            var name = Employee.CurrentUserName;
+            var now = DateTime.Now;
+            var projects = CH.GetAllData<Project>();
+
+            List<Project> data = new List<Project>();
+            data = projects.FindAll(p => p.Members.Any(m => m.Name == name && m.IsActivated == true) && p.IsActived == true);
+            foreach (var c in CH.GetAllData<Project>())
+            {
+                if (!string.IsNullOrEmpty(c.SalesManager))
+                {
+                    var names = c.SalesManager.Trim().Split(new string[] { ";", "；" }, StringSplitOptions.RemoveEmptyEntries);
+                    if (names.Contains(name))
+                    {
+                        if (!data.Contains(c))
+                            data.Add(c);
+                    }
+                }
+            }
+            return data;
+        }
+        
         public static List<Project> GetDirectorInvolveProject()
         {
             var name = Employee.CurrentUserName;

@@ -90,17 +90,28 @@
                   }
                 }
 
-                @*@if (Utl.Employee.CurrentRole.Level != ProductInterfaceRequired.LVL)
-                {*@
-                    @if (@Model._members.Where(m => m.Name == Utl.Employee.CurrentUserName).Count() > 0)
+                @if (Utl.Employee.CurrentRole.Level != LeaderRequired.LVL || Utl.Employee.CurrentRole.Level != ManagerRequired.LVL)
+                {
+                    if (@Model._members.Where(m => m.Name == Utl.Employee.CurrentUserName).Count() > 0)
                     {
-                <p id='ProgressIDdiv'>
-                    成熟程度: @(Html.DropDownListFor(model => model.ProgressID, Utl.SelectHelper.ProgressSelectList(null), "请选择", new { style = "width:70%" }))</p>
-                <p>
-                    是否核心: @(Html.DropDownListFor(model => model.CoreLVLID, Utl.SelectHelper.CoreLVLSelectList(null), "请选择", new { style = "width:70%" }))
-                </p>
+                        <p id='ProgressIDdiv'>
+                        成熟程度: @(Html.DropDownListFor(model => model.ProgressID, Utl.SelectHelper.ProgressSelectList(null), "请选择", new { style = "width:70%" }))</p>
+                    
+                        @*if(Utl.Employee.CurrentRole.Level != SalesRequired.LVL)
+                        {
+                            <p>
+                                是否核心: @(Html.DropDownListFor(model => model.CoreLVLID, Utl.SelectHelper.CoreLVLSelectList(null), "请选择", new { style = "width:70%" }))
+                            </p>
+                        }*@
                     }
-                @*}*@
+                }
+                @if (Utl.Employee.CurrentRole.Level == LeaderRequired.LVL || Utl.Employee.CurrentRole.Level == ManagerRequired.LVL )
+                {
+                    <p>
+                        是否核心: @(Html.DropDownListFor(model => model.CoreLVLID, Utl.SelectHelper.CoreLVLSelectList(null), "请选择", new { style = "width:70%" }))
+                    </p>
+                }
+                
                    
 
             </div>
@@ -115,7 +126,7 @@
                         <a class="PickUp" href="#" onclick="onPickUp()">
                             <img src="../images/pickup.png" alt="领用" title="领用" /></a>
                 @*}*@
-                @if (Utl.Employee.CurrentRole.Level != ManagerRequired.LVL )
+                @if (Utl.Employee.CurrentRole.Level != ManagerRequired.LVL)
                 {
                     if (@Model._members.Where(m => m.Name == Utl.Employee.CurrentUserName).Count() > 0)
                     {
@@ -125,7 +136,7 @@
                         <img src="../images/quickdeal.png" alt="出单" title="出单" /></a>
                     }
                 }
-                @if (Utl.Employee.CurrentRole.Level == ManagerRequired.LVL )
+                @if (Utl.Employee.CurrentRole.Level == ManagerRequired.LVL)
                 {
                     
                     <a class="UnPickUp" href="#" onclick="onGetAssignCompany()">
@@ -175,7 +186,7 @@
                                     <img src="../images/quan-13.jpg" width="20" height="18" alt="wenhao" /></a>
 
                                     }
-                                    else if (Utl.Employee.CurrentRole.Level==ManagerRequired.LVL || Utl.Employee.CurrentRole.Level==LeaderRequired.LVL)
+                                    else if (Utl.Employee.CurrentRole.Level == ManagerRequired.LVL || Utl.Employee.CurrentRole.Level == LeaderRequired.LVL)
                                     {
                                         <a href="#" onclick="onDescription(@(Model.ID))">
                                     <img src="../images/quan-13.jpg" width="20" height="18" alt="wenhao" /></a>
@@ -451,7 +462,7 @@
                     <div>
                         <a id='allsales' class="onMember" href="#" onclick="onMember('')">所有销售</a>
                         
-                        @foreach (var member in @Model._LeadCalls.Select(w=>w.MemberName).Distinct())
+                        @foreach (var member in @Model._LeadCalls.Select(w => w.MemberName).Distinct())
                         {
                             <span>| </span> <a id='sales@(member)' class="onMember" href="#" onclick="onMember('@(member)')">
                                 @member</a>
@@ -598,52 +609,52 @@
                                     <dt>
                                         @{
                                                                                                       var calls = @Model._LeadCalls.Where(c => c.LeadID == lead.ID).OrderByDescending(c => c.CallDate).FirstOrDefault();
-                                                                                                      
-                                                                                                          if (@Model._members.Where(m => m.Name == Utl.Employee.CurrentUserName).Count() > 0)
-                                                                                                          {
 
-                                                                                                              if (calls == null)
-                                                                                                              {
+                                                                                                      if (@Model._members.Where(m => m.Name == Utl.Employee.CurrentUserName).Count() > 0)
+                                                                                                      {
+
+                                                                                                          if (calls == null)
+                                                                                                          {
                                                         <img onclick="onLeadEdit(@(lead.ID))" src="../images/quan-01.png" width="15" height="15" alt="yuan" title="没联系" />
-                                                                                                              }
-                                                                                                              else
-                                                                                                              {
-                                                                                                                  if (calls.LeadCallTypeID == 2 || calls.LeadCallTypeID == 3)
-                                                                                                                  {
-                                                        <img onclick="onLeadEdit(@(lead.ID))"  src="../images/quan-09.png" width="15" height="15" alt="yuan" title="Blowed和Not Piteched" />}
-                                                                                                                  else if (calls.LeadCallTypeID == 4 || calls.LeadCallTypeID == 5 || calls.LeadCallTypeID == 6)
-                                                                                                                  {
-                                                        <img  onclick="onLeadEdit(@(lead.ID))" src="../images/quan-10.png" width="15" height="15" alt="yuan" title="Pitched和Full Pitched和Call Backed" />}
-                                                                                                                  else if (calls.LeadCallTypeID == 7 || calls.LeadCallTypeID == 8)
-                                                                                                                  {
-                                                            <img  onclick="onLeadEdit(@(lead.ID))" src="../images/55.png" width="15" height="15" alt="yuan" title="Qualified Decision和Waiting for Approval" />}
-                                                                                                                  else if (calls.LeadCallTypeID == 9)
-                                                                                                                  {
-                                                        <img  onclick="onLeadEdit(@(lead.ID))" src="../images/quan-08.png" width="15" height="15" alt="yuan" title="Closed" />}
-                                                                                                              }
                                                                                                           }
                                                                                                           else
                                                                                                           {
-                                                                                                              if (calls == null)
+                                                                                                              if (calls.LeadCallTypeID == 2 || calls.LeadCallTypeID == 3)
                                                                                                               {
-                                                        <img  src="../images/quan-01.png" width="15" height="15" alt="yuan" title="没联系" />
-                                                                                                              }
-                                                                                                              else
+                                                        <img onclick="onLeadEdit(@(lead.ID))"  src="../images/quan-09.png" width="15" height="15" alt="yuan" title="Blowed和Not Piteched" />}
+                                                                                                              else if (calls.LeadCallTypeID == 4 || calls.LeadCallTypeID == 5 || calls.LeadCallTypeID == 6)
                                                                                                               {
-                                                                                                                  if (calls.LeadCallTypeID == 2 || calls.LeadCallTypeID == 3)
-                                                                                                                  {
-                                                            <img   src="../images/quan-09.png" width="15" height="15" alt="yuan" title="Blowed和Not Piteched" />}
-                                                                                                                  else if (calls.LeadCallTypeID == 4 || calls.LeadCallTypeID == 5 || calls.LeadCallTypeID == 6)
-                                                                                                                  {
-                                                            <img   src="../images/quan-10.png" width="15" height="15" alt="yuan" title="Pitched和Full Pitched和Call Backed" />}
-                                                                                                                  else if (calls.LeadCallTypeID == 7 || calls.LeadCallTypeID == 8)
-                                                                                                                  {
-                                                            <img   src="../images/55.png" width="15" height="15" alt="yuan" title="Qualified Decision和Waiting for Approval" />}
-                                                                                                                  else if (calls.LeadCallTypeID == 9)
-                                                                                                                  {
-                                                            <img   src="../images/quan-08.png" width="15" height="15" alt="yuan" title="Closed" />}
-                                                                                                              }
+                                                        <img  onclick="onLeadEdit(@(lead.ID))" src="../images/quan-10.png" width="15" height="15" alt="yuan" title="Pitched和Full Pitched和Call Backed" />}
+                                                                                                              else if (calls.LeadCallTypeID == 7 || calls.LeadCallTypeID == 8)
+                                                                                                              {
+                                                            <img  onclick="onLeadEdit(@(lead.ID))" src="../images/55.png" width="15" height="15" alt="yuan" title="Qualified Decision和Waiting for Approval" />}
+                                                                                                              else if (calls.LeadCallTypeID == 9)
+                                                                                                              {
+                                                        <img  onclick="onLeadEdit(@(lead.ID))" src="../images/quan-08.png" width="15" height="15" alt="yuan" title="Closed" />}
                                                                                                           }
+                                                                                                      }
+                                                                                                      else
+                                                                                                      {
+                                                                                                          if (calls == null)
+                                                                                                          {
+                                                        <img  src="../images/quan-01.png" width="15" height="15" alt="yuan" title="没联系" />
+                                                                                                          }
+                                                                                                          else
+                                                                                                          {
+                                                                                                              if (calls.LeadCallTypeID == 2 || calls.LeadCallTypeID == 3)
+                                                                                                              {
+                                                            <img   src="../images/quan-09.png" width="15" height="15" alt="yuan" title="Blowed和Not Piteched" />}
+                                                                                                              else if (calls.LeadCallTypeID == 4 || calls.LeadCallTypeID == 5 || calls.LeadCallTypeID == 6)
+                                                                                                              {
+                                                            <img   src="../images/quan-10.png" width="15" height="15" alt="yuan" title="Pitched和Full Pitched和Call Backed" />}
+                                                                                                              else if (calls.LeadCallTypeID == 7 || calls.LeadCallTypeID == 8)
+                                                                                                              {
+                                                            <img   src="../images/55.png" width="15" height="15" alt="yuan" title="Qualified Decision和Waiting for Approval" />}
+                                                                                                              else if (calls.LeadCallTypeID == 9)
+                                                                                                              {
+                                                            <img   src="../images/quan-08.png" width="15" height="15" alt="yuan" title="Closed" />}
+                                                                                                          }
+                                                                                                      }
                                                                                                      @* }
                                                                                                       else
                                                                                                       {
