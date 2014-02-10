@@ -29,6 +29,19 @@ namespace Sales.Controllers
             var md = MonthDuration.GetMonthInstance(month);
 
             var users = Query.AliveMemberNames();
+            List<string> saleslist = new List<string>();
+            foreach (var d in CH.GetAllData<EmployeeRole>())
+            {
+                if (d.RoleID == 12)
+                    saleslist.Add(d.AccountName);
+            }
+
+            if (Employee.CurrentRole.Level == ChinaTLRequired.LVL)
+            {
+                List<string> namelist = CRM_Logical.GetUserInvolveProject().SelectMany(w=>w.Members).Select(f=>f.Name).ToList();
+                users = users.Where(w => saleslist.Contains(w) && namelist.Contains(w));
+            }
+
             //权限控制
             var mems = CRM_Logical.GetUserInvolveProject().Select(s => s.Members.Where(w => w.IsActivated));
 
@@ -111,24 +124,52 @@ namespace Sales.Controllers
                     leads = leads.Where(d => d.CreatedDate >= starttime);
                 if (endtime != null)
                     leads = leads.Where(d => d.CreatedDate <= endtime);
-
-                details = from l in leads
-                          select new _UserResearchDetail()
-                          {
-                              LeadNameEN = l.Name_EN,
-                              LeadNameCH = l.Name_CH,
-                              CompanyNameCH = l.Company.Name_EN,
-                              CompanyNameEN = l.Company.Name_CH,
-                              CompanyContact = l.Company.Contact,
-                              CompanyDesicription = l.Company.Description,
-                              Email = l.EMail,
-                              LeadContact = l.Contact,
-                              LeadMobile = l.Mobile,
-                              LeadTitle = l.Title,
-                              Creator = l.Creator,
-                              CreateDate = l.CreatedDate,
-                             // Categoris = c.CategoryString
-                          };
+                if (Employee.CurrentRole.Level == ChinaTLRequired.LVL)
+                {
+                    List<string> saleslist = new List<string>();
+                    foreach (var d in CH.GetAllData<EmployeeRole>())
+                    {
+                        if (d.RoleID == 12)
+                            saleslist.Add(d.AccountName);
+                    }
+                    details = from l in leads.Where(w => saleslist.Contains(w.Creator))
+                              select new _UserResearchDetail()
+                              {
+                                  LeadNameEN = l.Name_EN,
+                                  LeadNameCH = l.Name_CH,
+                                  CompanyNameCH = l.Company.Name_EN,
+                                  CompanyNameEN = l.Company.Name_CH,
+                                  CompanyContact = l.Company.Contact,
+                                  CompanyDesicription = l.Company.Description,
+                                  Email = l.EMail,
+                                  LeadContact = l.Contact,
+                                  LeadMobile = l.Mobile,
+                                  LeadTitle = l.Title,
+                                  Creator = l.Creator,
+                                  CreateDate = l.CreatedDate,
+                                  // Categoris = c.CategoryString
+                              };
+                }
+                else
+                {
+                    details = from l in leads
+                              select new _UserResearchDetail()
+                              {
+                                  LeadNameEN = l.Name_EN,
+                                  LeadNameCH = l.Name_CH,
+                                  CompanyNameCH = l.Company.Name_EN,
+                                  CompanyNameEN = l.Company.Name_CH,
+                                  CompanyContact = l.Company.Contact,
+                                  CompanyDesicription = l.Company.Description,
+                                  Email = l.EMail,
+                                  LeadContact = l.Contact,
+                                  LeadMobile = l.Mobile,
+                                  LeadTitle = l.Title,
+                                  Creator = l.Creator,
+                                  CreateDate = l.CreatedDate,
+                                  // Categoris = c.CategoryString
+                              };
+                }
             }
             if (type == "user")
             {
@@ -494,15 +535,32 @@ namespace Sales.Controllers
         [HttpPost]
         public JsonResult MemberInPorject(int? projectId)
         {
+            List<string> saleslist = new List<string>();
+            foreach (var d in CH.GetAllData<EmployeeRole>())
+            {
+                if (d.RoleID == 12)
+                    saleslist.Add(d.AccountName);
+            }
             List<SelectListItem> selectList = new List<SelectListItem>();
             SelectListItem selectListItemNone = new SelectListItem() { Text = "请选择", Value = "" };
             selectList.Add(selectListItemNone);
             if (projectId != null)
             {
-                foreach (Member m in CH.GetAllData<Member>(c => c.ProjectID == projectId && c.IsActivated == true))
+                if (Employee.CurrentRole.Level == ChinaTLRequired.LVL)
                 {
-                    SelectListItem selectListItem = new SelectListItem { Text = m.Name, Value = m.ID.ToString() };
-                    selectList.Add(selectListItem);
+                    foreach (Member m in CH.GetAllData<Member>(c => c.ProjectID == projectId && c.IsActivated == true && saleslist.Contains(c.Name)))
+                    {
+                        SelectListItem selectListItem = new SelectListItem { Text = m.Name, Value = m.ID.ToString() };
+                        selectList.Add(selectListItem);
+                    }
+                }
+                else
+                {
+                    foreach (Member m in CH.GetAllData<Member>(c => c.ProjectID == projectId && c.IsActivated == true))
+                    {
+                        SelectListItem selectListItem = new SelectListItem { Text = m.Name, Value = m.ID.ToString() };
+                        selectList.Add(selectListItem);
+                    }
                 }
             }
             return this.Json(selectList);

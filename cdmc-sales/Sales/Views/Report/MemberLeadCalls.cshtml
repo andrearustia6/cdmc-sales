@@ -35,9 +35,28 @@
 @*     @Html.DropDownList("member",new SelectList(CH.GetAllData<Member>(m=>m.ProjectID==p.ID),"ID","Name"),"-请选择-")*@
     <fieldset>
         <legend>项目名称：@p.Name</legend>
+       
+@{
+                List<string> saleslist = new List<string>();
+                foreach (var d in CH.GetAllData<EmployeeRole>())
+                {
+                    if (d.RoleID == 12)
+                    {
+                        saleslist.Add(d.AccountName);
+                    }
+                }
+                var members = CH.DB.Members.Where(m => m.ProjectID == p.ID && m.IsActivated == true);
+                if (Employee.CurrentRole.Level == ChinaTLRequired.LVL)
+                {
+                    members = members.Where(w => saleslist.Contains(w.Name));
+                }
+                
+                    
+                    
+            }
         @(Html.Telerik().Grid<AjaxViewCallListData>().Name("Grid" + p.ID)
         .ToolBar(commands => commands.Template(
-         @<text>员工筛选： @Html.DropDownList("memberselect", new SelectList(CH.GetAllData<Member>(m => m.ProjectID == p.ID && m.IsActivated==true), "Name", "Name"), "所有销售", new { gridid = "Grid" + p.ID, @class = "memberselect" })
+         @<text>员工筛选： @Html.DropDownList("memberselect", new SelectList(members, "Name", "Name"), "所有销售", new { gridid = "Grid" + p.ID, @class = "memberselect" })
          致电类型： @Html.DropDownList("typeselect", new SelectList(CH.GetAllData<LeadCallType>(), "Name", "Name"), "所有类型", new { gridid = "Grid" + p.ID, @class = "typeselect" })
          </text>
             //.ToHtmlString();

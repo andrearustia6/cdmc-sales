@@ -152,11 +152,29 @@ namespace BLL
                 {
                     rolelvl = DirectorRequired.LVL;
                 }
-                if (rolelvl >= LeaderRequired.LVL)
+                if (rolelvl >= LeaderRequired.LVL || rolelvl == ChinaTLRequired.LVL)
                 {
                     var leadStr = CH.DB.Projects.Where(w => w.IsActived == true && !string.IsNullOrEmpty(w.TeamLeader)).Select(s => s.TeamLeader).Distinct();
                     List<string> leadList = new List<string>();
                     foreach (string l in leadStr)
+                    {
+                        var temp = l.Trim().Split(new string[] { ";", "；" }, StringSplitOptions.RemoveEmptyEntries);
+                        foreach (string m in temp)
+                        {
+                            leadList.Add(m);
+                        }
+                    }
+                    var chinatlstr = CH.DB.Projects.Where(w => w.IsActived == true && !string.IsNullOrEmpty(w.ChinaTL)).Select(s => s.ChinaTL).Distinct();
+                    foreach (string l in chinatlstr)
+                    {
+                        var temp = l.Trim().Split(new string[] { ";", "；" }, StringSplitOptions.RemoveEmptyEntries);
+                        foreach (string m in temp)
+                        {
+                            leadList.Add(m);
+                        }
+                    }
+                    var smstr = CH.DB.Projects.Where(w => w.IsActived == true && !string.IsNullOrEmpty(w.SalesManager)).Select(s => s.SalesManager).Distinct();
+                    foreach (string l in smstr)
                     {
                         var temp = l.Trim().Split(new string[] { ";", "；" }, StringSplitOptions.RemoveEmptyEntries);
                         foreach (string m in temp)
@@ -184,6 +202,24 @@ namespace BLL
                                 leadList1.Add(m);
                             }
                         }
+                        var chinatlstr1 = from p in CH.DB.Projects.Where(w => w.Manager == user && w.IsActived == true && w.ChinaTL != null) select p.ChinaTL;
+                        foreach (string l in chinatlstr1)
+                        {
+                            var temp = l.Trim().Split(new string[] { ";", "；" }, StringSplitOptions.RemoveEmptyEntries);
+                            foreach (string m in temp)
+                            {
+                                leadList1.Add(m);
+                            }
+                        }
+                        var smstr1 = from p in CH.DB.Projects.Where(w => w.Manager == user && w.IsActived == true && w.SalesManager != null) select p.SalesManager;
+                        foreach (string l in smstr1)
+                        {
+                            var temp = l.Trim().Split(new string[] { ";", "；" }, StringSplitOptions.RemoveEmptyEntries);
+                            foreach (string m in temp)
+                            {
+                                leadList1.Add(m);
+                            }
+                        }
                         leads = leadList1.Distinct().ToList();
                     }
                     else 
@@ -191,7 +227,11 @@ namespace BLL
                     {
                         leads = leads.Where(w => w== user).ToList();
                     }
-
+                    else
+                        if (rolelvl == 80)
+                        {
+                            leads = leads.Where(w => w == user).ToList();
+                        }
 
                     var deals = CRM_Logical.GetDeals().Where(w => w.ActualPaymentDate.Value != null && w.ActualPaymentDate.Value.Month == month && w.ActualPaymentDate.Value.Year == year);
                     var calls = from l in CH.DB.LeadCalls.Where(w => w.LeadCallTypeID != null && w.LeadCallType.Code >= 40) select l;
@@ -290,7 +330,31 @@ namespace BLL
                     {
                         sales = mems.Select(s => s.Name).Distinct();
                     }
+                    else if (rolelvl == ChinaTLRequired.LVL)
+                    {
+                        var projects = CH.GetAllData<Project>();
+                        List<int> idlist = new List<int>();
+                        foreach (var c in CH.GetAllData<Project>())
+                        {
+                            if (!string.IsNullOrEmpty(c.ChinaTL))
+                            {
+                                var names = c.ChinaTL.Trim().Split(new string[] { ";", "；" }, StringSplitOptions.RemoveEmptyEntries);
+                                if (names.Contains(user))
+                                {
+                                    if (!idlist.Contains(c.ID))
+                                        idlist.Add(c.ID);
+                                }
+                            }
+                        }
 
+                        List<string> accountnamelist = new List<string>();
+                        foreach (var d in CH.GetAllData<EmployeeRole>())
+                        {
+                            if (d.RoleID == 12)
+                                accountnamelist.Add(d.AccountName);
+                        }
+                        sales = mems.Where(w => idlist.Contains((int)w.ProjectID) && accountnamelist.Contains(w.Name)).Select(s => s.Name).Distinct();
+                    }
                     if (sales != null)
                     {
 
@@ -371,6 +435,31 @@ namespace BLL
                     else if (rolelvl >= SuperManagerRequired.LVL)
                     {
                         sales = mems.Select(s => s.Name).Distinct();
+                    }
+                    else if (rolelvl == ChinaTLRequired.LVL)
+                    {
+                        var projects = CH.GetAllData<Project>();
+                        List<int> idlist = new List<int>();
+                        foreach (var c in CH.GetAllData<Project>())
+                        {
+                            if (!string.IsNullOrEmpty(c.ChinaTL))
+                            {
+                                var names = c.ChinaTL.Trim().Split(new string[] { ";", "；" }, StringSplitOptions.RemoveEmptyEntries);
+                                if (names.Contains(user))
+                                {
+                                    if (!idlist.Contains(c.ID))
+                                        idlist.Add(c.ID);
+                                }
+                            }
+                        }
+
+                        List<string> accountnamelist = new List<string>();
+                        foreach (var d in CH.GetAllData<EmployeeRole>())
+                        {
+                            if(d.RoleID==12)
+                                accountnamelist.Add(d.AccountName);
+                        }
+                        sales = mems.Where(w => idlist.Contains((int)w.ProjectID) && accountnamelist.Contains(w.Name)).Select(s => s.Name).Distinct();
                     }
                     sales = sales.Where(w => CH.DB.EmployeeRoles.Any(e => e.AccountName == w && (e.Role.Level == ManagerRequired.LVL || e.Role.Level == LeaderRequired.LVL || e.Role.Level == MarketInterfaceRequired.LVL)) == false);
                     if (sales != null)

@@ -28,19 +28,43 @@ namespace Sales.Controllers
         {
             startdate = startdate == null ? new DateTime(1, 1, 1) : startdate;
             enddate = enddate == null ? new DateTime(9999, 1, 1) : startdate;
-
+            List<string> saleslist = new List<string>();
+            foreach (var d in CH.GetAllData<EmployeeRole>())
+            {
+                if (d.RoleID == 12)
+                    saleslist.Add(d.AccountName);
+            }
             if (selectedprojects != null)
             {
-                var ts = from t in CH.DB.TargetOfMonthForMembers
-                         where selectedprojects.Any(sp => sp == t.ProjectID)
-                         select t;
-                return View(ts.OrderByDescending(t => t.CreatedDate).ToList());
+                if (Employee.CurrentRole.Level == ChinaTLRequired.LVL)
+                {
+                    var ts = from t in CH.DB.TargetOfMonthForMembers.Where(w => saleslist.Contains(w.Member.Name))
+                             where selectedprojects.Any(sp => sp == t.ProjectID)
+                             select t;
+                    return View(ts.OrderByDescending(t => t.CreatedDate).ToList());
+                }
+                else
+                {
+                    var ts = from t in CH.DB.TargetOfMonthForMembers
+                             where selectedprojects.Any(sp => sp == t.ProjectID)
+                             select t;
+                    return View(ts.OrderByDescending(t => t.CreatedDate).ToList());
+                }
             }
             else
             {
-                var ps = CRM_Logical.GetUserInvolveProject();
-                var rs = CH.GetAllData<TargetOfMonthForMember>(r => ps.Any(sp => sp.ID == r.ProjectID) && r.CreatedDate >= startdate && r.CreatedDate <= enddate);
-                return View(rs);
+                if (Employee.CurrentRole.Level == ChinaTLRequired.LVL)
+                {
+                    var ps = CRM_Logical.GetUserInvolveProject();
+                    var rs = CH.GetAllData<TargetOfMonthForMember>(r => ps.Any(sp => sp.ID == r.ProjectID) && r.CreatedDate >= startdate && r.CreatedDate <= enddate && saleslist.Contains(r.Member.Name));
+                    return View(rs);
+                }
+                else
+                {
+                    var ps = CRM_Logical.GetUserInvolveProject();
+                    var rs = CH.GetAllData<TargetOfMonthForMember>(r => ps.Any(sp => sp.ID == r.ProjectID) && r.CreatedDate >= startdate && r.CreatedDate <= enddate);
+                    return View(rs);
+                }
             }
 
         }
