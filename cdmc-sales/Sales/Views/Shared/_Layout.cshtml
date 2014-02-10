@@ -123,7 +123,7 @@
                                 {
                                     item.Add().Url("~/Performance/Index").Text("考核表 2.0");
                                 }
-
+                                
                                 if (score > SalesRequired.LVL)
                                 {
 
@@ -144,7 +144,7 @@
 
                                     item.Add().Url("~/Performance/Index").Text("考核表 2.0");
                                 }
-                                if (score == 500 || score == 100 || score == 10)
+                                if ( score == 10)
                                 {
                                     item.Add().Url("~/ProtectedCompanys/CompanyIndex").Text("被保护的公司");
                                     item.Add().Url("~/salesReport/MemberLeadCallsChart").Text("已打Lead比较");
@@ -199,7 +199,8 @@
                                     // item.Add().Url("~/Lead/index").Text("客户").ImageUrl("~/Content/Common/Icons/Docking.gif");
                                 });
                             }
-                            if (score == LeaderRequired.LVL)
+                           
+                            if (score == SalesManagerRequired.LVL)
                             {
                                 menu.Add().Text("管理菜单").ImageUrl("~/Content/Common/Icons/Chart.gif").Items(item =>
                                 {
@@ -262,6 +263,23 @@
                                   
                                 });
                             }
+
+                            if (score == SalesManagerRequired.LVL | score == ChinaTLRequired.LVL)
+                            {
+
+                                menu.Add().Text("日常工作").ImageUrl("~/Content/Common/Icons/editor.png").Items(item =>
+                                {
+                                    item.Add().Url("~/Sales/mypage").Text("我的主页");
+                                    item.Add().Text("可打公司 V3.0").Url("~/AvaliableCompanies/index");
+                                    item.Add().Url("~/Sales/ContectedLeads").Text("Call List");
+                                    item.Add().Url("~/Sales/MyDealIndex").Text("我的出单");
+                                    item.Add().Url("~/Sales/PhoneSaleSupport").Text("话术支持");
+                                    item.Add().Url("~/Sales/MyMessageIndex").Text("留言求助");
+                                    item.Add().Url("~/TargetOfMonthForMember/MyTargetIndexEx").Text("我的月目标");
+
+                                });
+                            }
+                            
                             if (score == MarketInterfaceRequired.LVL)
                             {
                                 menu.Add().Text("客户信息").ImageUrl("~/Content/Common/Icons/GridView.gif").Items(item =>

@@ -45,6 +45,21 @@
         </tr>
         <tr>
             <td style="width: 85px;">
+               
+            </td>
+            <td>
+                
+            </td>
+            <td style="width: 85px;">
+                @Html.LabelFor(model => model.DealType)
+            </td>
+            <td>
+                @Html.DropDownListFor(m => m.DealType, SelectHelper.DealTypeSelectList(), "-请选择-", new { style = "width:300px;" })
+                @Html.ValidationMessageFor(model => model.DealType)
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 85px;">
             </td>
             <td>
             </td>
@@ -70,6 +85,7 @@
             </td>
             <td style="width: 85px;">
                 @Html.LabelFor(model => model.ExpectedPaymentDate)
+
             </td>
             <td>
                 @Html.Telerik().DatePickerFor(model => model.ExpectedPaymentDate)

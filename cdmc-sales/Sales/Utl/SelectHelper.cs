@@ -627,5 +627,13 @@ namespace Utl
             selectList.Add(new SelectListItem() { Text = "未删除", Value = "0" });
             return selectList;
         }
+
+        public static IEnumerable<SelectListItem> DealTypeSelectList()
+        {
+            List<SelectListItem> selectList = new List<SelectListItem>();
+            selectList.Add(new SelectListItem() { Text = "Events", Value = "Events" });
+            selectList.Add(new SelectListItem() { Text = "培训", Value = "培训" });
+            return selectList;
+        }
     }
 }

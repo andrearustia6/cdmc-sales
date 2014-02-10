@@ -34,6 +34,17 @@
             </tr>
              <tr>
                 <td>
+                    <span>项目经理：@Model.ProjectManager</span>
+                </td>
+                <td>
+                    <span>销售经理：@Model.SalesManager</span>
+                </td>
+                <td>
+                    <span>国内TL：@Model.ChinaTL</span>
+                </td>
+            </tr>
+             <tr>
+                <td>
                     <span>产品部接口人：@Model.Product</span>
                 </td>
                 <td>
@@ -43,6 +54,7 @@
                     <span>会议地点：@Model.Location</span>
                 </td>
             </tr>
+
             <tr>
                 <td >
                     <span>@Html.ActionLink("项目简介", "OpenProjectSalesBrief", new { projectid=Model.ID}, new { target = "_blank" })</span>

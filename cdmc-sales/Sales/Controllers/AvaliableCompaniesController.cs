@@ -1038,8 +1038,8 @@ namespace Sales.Controllers
             //var p = companyRelationship.Project.CompanyRelationships.Count(w => w.Members.Where(m => m.Name == Employee.CurrentUserName).Any() == true);
             //var d = CH.DB.Members.Where(w => w.Name == Employee.CurrentUserName && w.CompanyRelationships.Where(c=>c.ProjectID == companyRelationship.ProjectID).Any() == true).Count();
             var d = CH.DB.CompanyRelationships.Where(w =>w.Deleted==false && w.Members.Where(m => m.Name == Employee.CurrentUserName).Any() == true && w.ProjectID == companyRelationship.ProjectID).Count();
-            if (d > 300)
-                return Content("从公海领用的，公司数超过300的不能领用！");
+            if (d >= 150)
+                return Content("从公海领用的，公司数超过150的不能领用！");
 
             Member member = CH.DB.Members.Where(m => m.Name == Employee.CurrentUserName && m.ProjectID == companyRelationship.ProjectID).FirstOrDefault();
             companyRelationship.Members.Add(member);
@@ -1055,8 +1055,8 @@ namespace Sales.Controllers
         {
             CompanyRelationship companyRelationship = CH.GetDataById<CompanyRelationship>(crmid);
             var d = CH.DB.CompanyRelationships.Where(w => w.Deleted == false && w.Members.Where(m => m.Name == Employee.CurrentUserName).Count() > 0 && w.ProjectID == projectid).Count();
-            if (d > 300)
-                return Content("从公海领用的，公司数超过300的不能领用！");
+            if (d >= 150)
+                return Content("从公海领用的，公司数超过150的不能领用！");
 
             Member member = CH.DB.Members.Where(m => m.Name == Employee.CurrentUserName && m.ProjectID==projectid).FirstOrDefault();
             companyRelationship.ProjectID = projectid;
@@ -1077,8 +1077,8 @@ namespace Sales.Controllers
             CompanyRelationship companyRelationship1 = CH.GetDataById<CompanyRelationship>(id);
             //var p = companyRelationship1.Project.CompanyRelationships.Count(w => w.Members.Where(m => m.Name == Employee.CurrentUserName).Any() == true);
             var d = CH.DB.CompanyRelationships.Where(w => w.Deleted == false && w.Members.Where(m => m.Name == Employee.CurrentUserName).Any() == true && w.ProjectID == companyRelationship1.ProjectID).Count();
-            if (d + crmid.Count> 300)
-                return Content("从公海领用的，公司数超过300的不能领用！");
+            if (d + crmid.Count>= 150)
+                return Content("从公海领用的，公司数超过150的不能领用！");
             int companyRelationshipId=0;
             int companyId = 0;
             int projectId = 0;
@@ -1508,16 +1508,34 @@ namespace Sales.Controllers
 
         public ActionResult _SalesFilter(int ProjectId)
         {
-            var teamleaders = CH.GetDataById<Project>(ProjectId).TeamLeader.Trim().Split(new string[] { ";", "；" }, StringSplitOptions.RemoveEmptyEntries);
+            var teamleaders = CH.GetDataById<Project>(ProjectId).TeamLeader!=null?CH.GetDataById<Project>(ProjectId).TeamLeader.Trim().Split(new string[] { ";", "；" }, StringSplitOptions.RemoveEmptyEntries):new string[]{""};
+            if(CH.DB.Projects.Any(w=>w.ID==ProjectId && (w.Manager.Contains(Employee.CurrentUserName) 
+                || w.TeamLeader.Contains(Employee.CurrentUserName)
+                || w.ProjectManager.Contains(Employee.CurrentUserName)
+                || w.SalesManager.Contains(Employee.CurrentUserName)
+                || w.ChinaTL.Contains(Employee.CurrentUserName)
+                || w.Market.Contains(Employee.CurrentUserName)
+                //|| w.Product.Contains(Employee.CurrentUserName)|| w.Conference.Contains(Employee.CurrentUserName) 
+                ))==false)
+            {
+                return Json(new List<Member>());
+            }
             if (Employee.CurrentRole.Level==100 && teamleaders.Contains(Employee.CurrentUserName))
             {
                 var selSales = CH.DB.Members.Where(s => s.ProjectID == ProjectId && s.IsActivated == true).Select(s => s.Name);
                 return Json(selSales);
             }
-            else if (Employee.CurrentRole.Level > 100 || Employee.CurrentRole.Level == 5)
+            else if (Employee.CurrentRole.Level > 100 || Employee.CurrentRole.Level == 5 )
             {
                 var selSales = CH.DB.Members.Where(s => s.ProjectID == ProjectId && s.IsActivated == true).Select(s => s.Name);
                 return Json(selSales);
+            }
+            else if (Employee.CurrentRole.Level == 80)
+            {
+                var selSales = CH.DB.Members.Where(s => s.ProjectID == ProjectId && s.IsActivated == true).Select(s => s.Name);
+                //只能看到国内销售
+                var sales = CH.DB.EmployeeRoles.Where(w => selSales.Contains(w.AccountName) && w.RoleID == 12).Select(w => w.AccountName);
+                return Json(sales);
             }
             else
                 return Json(new List<Member>());
@@ -1576,6 +1594,7 @@ namespace Sales.Controllers
                 item.PaymentDetail = string.IsNullOrEmpty(item.PaymentDetail) ? "" : item.PaymentDetail.Trim();
                 item.Sales = item.Sales.Trim();
                 item.Deleted = false;
+                item.DealType = item.DealType;
                 CH.Create<Deal>(item);
                 if (item.ID > 0)
                 {
