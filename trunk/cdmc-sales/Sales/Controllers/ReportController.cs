@@ -254,7 +254,7 @@ namespace Sales.Controllers
            {
                vl.Add(new ViewLeadCallAmountInProject() { LeadCallAmounts = p.GetProjectMemberLeadCalls(cs, startdate, enddate), project = p });
            });
-
+            
             result.ViewLeadCallAmountInProjects = vl;
 
             //get all record
@@ -301,6 +301,7 @@ namespace Sales.Controllers
             if (worst.Count() > 10)
                 worst = worst.Take(10).ToList();
             result.WorstCallers = worst;
+            
             return View(result);
         }
 
@@ -351,7 +352,12 @@ namespace Sales.Controllers
                      selectedcallTypes.Add(Int32.Parse(s));
                  }
             }
-
+            List<string> saleslist = new List<string>();
+            foreach (var d in CH.GetAllData<EmployeeRole>())
+            {
+                if (d.RoleID == 12)
+                    saleslist.Add(d.AccountName);
+            }
             var lcs = from l in CH.DB.LeadCalls
                       where l.ProjectID == projectid && l.CallDate>= startdate && l.CallDate<= enddate
                       && selectedcallTypes.Any(a=>a==l.LeadCallTypeID) && l.Deleted==false
@@ -374,7 +380,8 @@ namespace Sales.Controllers
                           Member = l.Member.Name,
                           Result = l.Result
                       };
-
+            if (Employee.CurrentRole.Level == ChinaTLRequired.LVL)
+                lcs = lcs.Where(w => saleslist.Contains(w.Member));
             var  data = lcs.OrderByDescending(o=>o.CallDate).ToList();
 
             return View(new GridModel<AjaxViewCallListData> { Data = data});

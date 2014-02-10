@@ -78,37 +78,78 @@ namespace Sales.Controllers
                 deals = deals.Where(d => d.Income > 0);
             else if (paytype == 2)
                 deals = deals.Where(d => d.Income <= 0);
-
-            var ds = from d in deals
-                     where selectedprojects.Contains(d.ProjectID.Value) && d.Abandoned == false
-                     select new AjaxViewDeal
-                     {
-                         CompanyNameEN = d.CompanyRelationship.Company.Name_EN,
-                         CompanyNameCH = d.CompanyRelationship.Company.Name_CH,
-                         DealCode = d.DealCode,
-                         Abandoned = d.Abandoned,
-                         AbandonReason = d.AbandonReason,
-                         ActualPaymentDate = d.ActualPaymentDate,
-                         Committer = d.Committer,
-                         CommitterContect = d.Committer,
-                         CommitterEmail = d.CommitterEmail,
-                         ExpectedPaymentDate = d.ExpectedPaymentDate,
-                         ID = d.ID,
-                         Income = d.Income,
-                         IsClosed = d.IsClosed,
-                         PackageNameCH = d.Package.Name_CH,
-                         PackageNameEN = d.Package.Name_EN,
-                         Payment = d.Payment,
-                         Currency = d.Currencytype.Name,
-                         PaymentDetail = d.PaymentDetail,
-                         Sales = d.Sales,
-                         ProjectCode = d.Project.ProjectCode,
-                         SignDate = d.SignDate,
-                         TicketDescription = d.TicketDescription,
-                         IsConfirm = (d.IsConfirm == true ? "是" : "否")
-                     };
-            var list = ds.OrderBy(o => o.SignDate).ToList();
-            return View(new GridModel<AjaxViewDeal> { Data = list });
+            if (Employee.CurrentRole.Level == ChinaTLRequired.LVL)
+            {
+                List<string> saleslist = new List<string>();
+                foreach (var d in CH.GetAllData<EmployeeRole>())
+                {
+                    if (d.RoleID == 12)
+                        saleslist.Add(d.AccountName);
+                }
+                var ds = from d in deals.Where(w=> saleslist.Contains(w.Sales))
+                         where selectedprojects.Contains(d.ProjectID.Value) && d.Abandoned == false
+                         select new AjaxViewDeal
+                         {
+                             CompanyNameEN = d.CompanyRelationship.Company.Name_EN,
+                             CompanyNameCH = d.CompanyRelationship.Company.Name_CH,
+                             DealCode = d.DealCode,
+                             Abandoned = d.Abandoned,
+                             AbandonReason = d.AbandonReason,
+                             ActualPaymentDate = d.ActualPaymentDate,
+                             Committer = d.Committer,
+                             CommitterContect = d.Committer,
+                             CommitterEmail = d.CommitterEmail,
+                             ExpectedPaymentDate = d.ExpectedPaymentDate,
+                             ID = d.ID,
+                             Income = d.Income,
+                             IsClosed = d.IsClosed,
+                             PackageNameCH = d.Package.Name_CH,
+                             PackageNameEN = d.Package.Name_EN,
+                             Payment = d.Payment,
+                             Currency = d.Currencytype.Name,
+                             PaymentDetail = d.PaymentDetail,
+                             Sales = d.Sales,
+                             ProjectCode = d.Project.ProjectCode,
+                             SignDate = d.SignDate,
+                             TicketDescription = d.TicketDescription,
+                             IsConfirm = (d.IsConfirm == true ? "是" : "否")
+                         };
+                var list = ds.OrderBy(o => o.SignDate).ToList();
+                return View(new GridModel<AjaxViewDeal> { Data = list });
+            }
+            else
+            {
+                var ds = from d in deals
+                         where selectedprojects.Contains(d.ProjectID.Value) && d.Abandoned == false
+                         select new AjaxViewDeal
+                         {
+                             CompanyNameEN = d.CompanyRelationship.Company.Name_EN,
+                             CompanyNameCH = d.CompanyRelationship.Company.Name_CH,
+                             DealCode = d.DealCode,
+                             Abandoned = d.Abandoned,
+                             AbandonReason = d.AbandonReason,
+                             ActualPaymentDate = d.ActualPaymentDate,
+                             Committer = d.Committer,
+                             CommitterContect = d.Committer,
+                             CommitterEmail = d.CommitterEmail,
+                             ExpectedPaymentDate = d.ExpectedPaymentDate,
+                             ID = d.ID,
+                             Income = d.Income,
+                             IsClosed = d.IsClosed,
+                             PackageNameCH = d.Package.Name_CH,
+                             PackageNameEN = d.Package.Name_EN,
+                             Payment = d.Payment,
+                             Currency = d.Currencytype.Name,
+                             PaymentDetail = d.PaymentDetail,
+                             Sales = d.Sales,
+                             ProjectCode = d.Project.ProjectCode,
+                             SignDate = d.SignDate,
+                             TicketDescription = d.TicketDescription,
+                             IsConfirm = (d.IsConfirm == true ? "是" : "否")
+                         };
+                var list = ds.OrderBy(o => o.SignDate).ToList();
+                return View(new GridModel<AjaxViewDeal> { Data = list });
+            }
         }
 
         public ViewResult AllIndex()

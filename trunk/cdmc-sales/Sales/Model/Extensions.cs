@@ -577,13 +577,27 @@ namespace Entity
 
         public static List<ViewLeadCallAmount> GetProjectMemberLeadCalls(this Project item, List<ViewPhoneInfo> cs, DateTime? startdate = null, DateTime? enddate = null)
         {
+            List<string> saleslist = new List<string>();
+            foreach (var d in CH.GetAllData<EmployeeRole>())
+            {
+                if (d.RoleID == 12)
+                    saleslist.Add(d.AccountName);
+            }
             var list = new List<ViewLeadCallAmount>();
             if (item.Members != null)
             {
                 item.Members.ForEach(m =>
                 {
-                    if (m.IsActivated == true)
-                        list.Add(m.CallAmount(cs, startdate, enddate));
+                    if (Employee.CurrentRole.Level == ChinaTLRequired.LVL)
+                    {
+                        if (m.IsActivated == true && saleslist.Contains(m.Name))
+                            list.Add(m.CallAmount(cs, startdate, enddate));
+                    }
+                    else
+                    {
+                        if (m.IsActivated == true)
+                            list.Add(m.CallAmount(cs, startdate, enddate));
+                    }
                 });
             }
             return list;
