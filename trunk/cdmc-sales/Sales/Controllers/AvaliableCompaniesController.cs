@@ -1534,7 +1534,8 @@ namespace Sales.Controllers
             {
                 var selSales = CH.DB.Members.Where(s => s.ProjectID == ProjectId && s.IsActivated == true).Select(s => s.Name);
                 //只能看到国内销售
-                var sales = CH.DB.EmployeeRoles.Where(w => selSales.Contains(w.AccountName) && w.RoleID == 12).Select(w => w.AccountName);
+                var sales = CH.DB.EmployeeRoles.Where(w => selSales.Contains(w.AccountName) &&( w.Role.Name == "国内销售" || w.Role.Level==80)  ).Select(w => w.AccountName);
+                
                 return Json(sales);
             }
             else

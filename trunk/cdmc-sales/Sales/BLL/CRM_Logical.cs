@@ -232,7 +232,11 @@ namespace BLL
                         {
                             leads = leads.Where(w => w == user).ToList();
                         }
-
+                        else
+                            if (rolelvl == 200)
+                            {
+                                leads = leads.Where(w => w == user).ToList();
+                            }
                     var deals = CRM_Logical.GetDeals().Where(w => w.ActualPaymentDate.Value != null && w.ActualPaymentDate.Value.Month == month && w.ActualPaymentDate.Value.Year == year);
                     var calls = from l in CH.DB.LeadCalls.Where(w => w.LeadCallTypeID != null && w.LeadCallType.Code >= 40) select l;
                     // calls =from c in calls group c by c.LeadID into g select g.FirstOrDefault();//分组并选择第一个
@@ -355,6 +359,25 @@ namespace BLL
                         }
                         sales = mems.Where(w => idlist.Contains((int)w.ProjectID) && accountnamelist.Contains(w.Name)).Select(s => s.Name).Distinct();
                     }
+                    else if (rolelvl == SalesManagerRequired.LVL)
+                    {
+                        var projects = CH.GetAllData<Project>();
+                        List<int> idlist = new List<int>();
+                        foreach (var c in CH.GetAllData<Project>())
+                        {
+                            if (!string.IsNullOrEmpty(c.SalesManager))
+                            {
+                                var names = c.SalesManager.Trim().Split(new string[] { ";", "；" }, StringSplitOptions.RemoveEmptyEntries);
+                                if (names.Contains(user))
+                                {
+                                    if (!idlist.Contains(c.ID))
+                                        idlist.Add(c.ID);
+                                }
+                            }
+                        }
+
+                        sales = mems.Where(w => idlist.Contains((int)w.ProjectID) ).Select(s => s.Name).Distinct();
+                    }
                     if (sales != null)
                     {
 
@@ -460,6 +483,25 @@ namespace BLL
                                 accountnamelist.Add(d.AccountName);
                         }
                         sales = mems.Where(w => idlist.Contains((int)w.ProjectID) && accountnamelist.Contains(w.Name)).Select(s => s.Name).Distinct();
+                    }
+                    else if (rolelvl == SalesManagerRequired.LVL)
+                    {
+                        var projects = CH.GetAllData<Project>();
+                        List<int> idlist = new List<int>();
+                        foreach (var c in CH.GetAllData<Project>())
+                        {
+                            if (!string.IsNullOrEmpty(c.SalesManager))
+                            {
+                                var names = c.SalesManager.Trim().Split(new string[] { ";", "；" }, StringSplitOptions.RemoveEmptyEntries);
+                                if (names.Contains(user))
+                                {
+                                    if (!idlist.Contains(c.ID))
+                                        idlist.Add(c.ID);
+                                }
+                            }
+                        }
+
+                        sales = mems.Where(w => idlist.Contains((int)w.ProjectID)).Select(s => s.Name).Distinct();
                     }
                     sales = sales.Where(w => CH.DB.EmployeeRoles.Any(e => e.AccountName == w && (e.Role.Level == ManagerRequired.LVL || e.Role.Level == LeaderRequired.LVL || e.Role.Level == MarketInterfaceRequired.LVL)) == false);
                     if (sales != null)
