@@ -90,27 +90,54 @@
                   }
                 }
 
-                @if (Utl.Employee.CurrentRole.Level != LeaderRequired.LVL || Utl.Employee.CurrentRole.Level != ManagerRequired.LVL)
+                @if (Utl.Employee.CurrentRole.Level != LeaderRequired.LVL && Utl.Employee.CurrentRole.Level != ManagerRequired.LVL && Utl.Employee.CurrentRole.Level != ProjectManagerRequired.LVL)
                 {
                     if (@Model._members.Where(m => m.Name == Utl.Employee.CurrentUserName).Count() > 0)
                     {
                         <p id='ProgressIDdiv'>
                         成熟程度: @(Html.DropDownListFor(model => model.ProgressID, Utl.SelectHelper.ProgressSelectList(null), "请选择", new { style = "width:70%" }))</p>
                     
-                        @*if(Utl.Employee.CurrentRole.Level != SalesRequired.LVL)
-                        {
+                       
                             <p>
                                 是否核心: @(Html.DropDownListFor(model => model.CoreLVLID, Utl.SelectHelper.CoreLVLSelectList(null), "请选择", new { style = "width:70%" }))
                             </p>
-                        }*@
+                        
                     }
                 }
-                @if (Utl.Employee.CurrentRole.Level == LeaderRequired.LVL || Utl.Employee.CurrentRole.Level == ManagerRequired.LVL )
+                @if (Utl.Employee.CurrentRole.Level == LeaderRequired.LVL )
                 {
+                    if (@Model._members.Where(m => m.Name == Utl.Employee.CurrentUserName).Count() > 0)
+                    {
+                     <p id='ProgressIDdiv'>
+                        成熟程度: @(Html.DropDownListFor(model => model.ProgressID, Utl.SelectHelper.ProgressSelectList(null), "请选择", new { style = "width:70%" }))</p>
+                    
                     <p>
                         是否核心: @(Html.DropDownListFor(model => model.CoreLVLID, Utl.SelectHelper.CoreLVLSelectList(null), "请选择", new { style = "width:70%" }))
                     </p>
+                    }
                 }
+                @if (Utl.Employee.CurrentRole.Level == ProjectManagerRequired.LVL)
+                {
+                    if (@Model._members.Where(m => m.Name == Utl.Employee.CurrentUserName).Count() > 0)
+                    {
+                     <p id='ProgressIDdiv'>
+                        成熟程度: @(Html.DropDownListFor(model => model.ProgressID, Utl.SelectHelper.ProgressSelectList(null), "请选择", new { style = "width:70%" }))</p>
+                    
+                    <p>
+                        是否核心: @(Html.DropDownListFor(model => model.CoreLVLID, Utl.SelectHelper.CoreLVLSelectList(null), "请选择", new { style = "width:70%" }))
+                    </p>
+                    }
+                }
+                
+                @*@if ( Utl.Employee.CurrentRole.Level == ManagerRequired.LVL )
+                {
+                     <p id='ProgressIDdiv'>
+                        成熟程度: @(Html.DropDownListFor(model => model.ProgressID, Utl.SelectHelper.ProgressSelectList(null), "请选择", new { style = "width:70%" }))</p>
+                    
+                    <p>
+                        是否核心: @(Html.DropDownListFor(model => model.CoreLVLID, Utl.SelectHelper.CoreLVLSelectList(null), "请选择", new { style = "width:70%" }))
+                    </p>
+                }*@
                 
                    
 
@@ -135,6 +162,7 @@
                     <a class="QuickAddDeal" href="#" onclick="onQuickAddDeal();">
                         <img src="../images/quickdeal.png" alt="出单" title="出单" /></a>
                     }
+
                 }
                 @if (Utl.Employee.CurrentRole.Level == ManagerRequired.LVL)
                 {

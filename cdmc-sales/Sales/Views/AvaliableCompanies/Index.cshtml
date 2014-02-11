@@ -1815,7 +1815,7 @@
 
                 for (var i = 0; i < result.length; i++) {
                     if (typeof (result[i]) != "undefined") {
-                        if (($("#indexhiderole").val() == 100 || $("#indexhiderole").val() == 5) && result[i] == $("#indexhideuser").val())
+                        if (($("#indexhiderole").val() == 100 || $("#indexhiderole").val() == 5 || $("#indexhiderole").val() == 80 || $("#indexhiderole").val() == 200) && result[i] == $("#indexhideuser").val())
                             $("#saleslist").append("<option value=" + result[i] + " selected=selected>" + result[i] + "</option>");
                         else
                             $("#saleslist").append("<option value=" + result[i] + ">" + result[i] + "</option>");
@@ -1838,7 +1838,7 @@
                 $("#saleslist").append("<option value=''>全部</option>");
                 for (var j = 0; j < result.length; j++) {
                     if (typeof (result[j]) != "undefined") {
-                        if (($("#indexhiderole").val() == 100 || $("#indexhiderole").val() == 5) && result[j] == $("#indexhideuser").val())
+                        if (($("#indexhiderole").val() == 100 || $("#indexhiderole").val() == 5 || $("#indexhiderole").val() == 80 || $("#indexhiderole").val() == 200) && result[j] == $("#indexhideuser").val())
                             $("#saleslist").append("<option value=" + result[j] + " selected=selected>" + result[j] + "</option>");
                         else
                             $("#saleslist").append("<option value=" + result[j] + ">" + result[j] + "</option>");
