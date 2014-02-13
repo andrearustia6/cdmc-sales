@@ -45,7 +45,7 @@
                         saleslist.Add(d.AccountName);
                     }
                 }
-                var members = CH.DB.Members.Where(m => m.ProjectID == p.ID && m.IsActivated == true);
+                var members =  CH.GetAllData<Member>().Where(m => m.ProjectID == p.ID && m.IsActivated == true);
                 if (Employee.CurrentRole.Level == ChinaTLRequired.LVL)
                 {
                     members = members.Where(w => saleslist.Contains(w.Name));
