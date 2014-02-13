@@ -1515,7 +1515,8 @@ namespace Sales.Controllers
                 || w.SalesManager.Contains(Employee.CurrentUserName)
                 || w.ChinaTL.Contains(Employee.CurrentUserName)
                 || w.Market.Contains(Employee.CurrentUserName)
-                //|| w.Product.Contains(Employee.CurrentUserName)|| w.Conference.Contains(Employee.CurrentUserName) 
+                || w.Product.Contains(Employee.CurrentUserName)
+                //|| w.Conference.Contains(Employee.CurrentUserName) 
                 ))==false)
             {
                 return Json(new List<Member>());

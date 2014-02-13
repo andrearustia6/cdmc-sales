@@ -72,7 +72,7 @@
                 }
                 是否点评: <br />@Html.Telerik().DropDownList().Name("commentlist").BindTo(new SelectList(commentlist, "Value", "Text", "")).DropDownHtmlAttributes(new { style = string.Format("width:{0}px", 200) }).HtmlAttributes(new { style = string.Format("vertical-align:middle;width:{0}%", 80) }).ClientEvents(events => events.OnChange("oncommentlistChange"))
             </td>
-            @if ((Employee.CurrentRole.Level >= 100) || (Employee.CurrentRole.Level == 5) || (Employee.CurrentRole.Level == 80))
+            @if ((Employee.CurrentRole.Level >= 100) || (Employee.CurrentRole.Level == 5) || (Employee.CurrentRole.Level == 80) ||  (Employee.CurrentRole.Level == 1))
             {
                 
                 <td style="width: 15%;" id="saleslisttd">
