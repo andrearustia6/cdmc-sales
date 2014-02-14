@@ -278,7 +278,7 @@ namespace BLL
                                   RoleLevel = rolelvl,
                                   ID = scores.Where(w => w.TargetName == l).Select(s => s.ID).FirstOrDefault() == null ? 0 : scores.Where(w => w.TargetName == l).Select(s => s.ID).FirstOrDefault(),
                                   Target = CH.DB.TargetOfMonths.Where(t => t.Project.TeamLeader == l && t.Project.IsActived == true && t.StartDate.Month == month && t.StartDate.Year==year).Sum(s => (decimal?)s.CheckIn),
-                                  CheckIn = deals.ToList().Where(d => d.Project.TeamLeader.Split(new string[] { ";", "；" }, StringSplitOptions.RemoveEmptyEntries).Contains(l)).Sum(s => (decimal?)s.Income),
+                                  CheckIn = deals.Where(w=>w.Income!=null).ToList().Where(d => d.Project.TeamLeader.Split(new string[] { ";", "；" }, StringSplitOptions.RemoveEmptyEntries).Contains(l)).Sum(s => (decimal?)s.Income),
                                   Name = l,
                                   User = user,
                                   Rate = scores.Where(w => w.TargetName == l).Count() == 0 ? 1 : scores.Where(w => w.TargetName == l).Select(s => s.Rate).FirstOrDefault(), //rates.Where(w => w.TargetName == l).Average(s => s.Rate) == null ? 1 : scores.Where(w => w.TargetName == l).Average(s => s.Score),
