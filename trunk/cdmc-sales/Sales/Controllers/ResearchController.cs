@@ -279,10 +279,10 @@ namespace Sales.Controllers
             {
                 case 1:
                     //selCompany = selCompany.Where(s => s.IsValid == false);
-                    crms.Where(w => w.Company.IsValid == false);
+                    crms=crms.Where(w => w.Company.IsValid == false);
                     break;
                 case 2:
-                    crms.Where(w => !string.IsNullOrEmpty(w.Company.CompanyReviews));
+                    crms = crms.Where(w => !string.IsNullOrEmpty(w.Company.CompanyReviews));
                     //selCompany = selCompany.Where(s => !string.IsNullOrEmpty(s.CompanyReviews));
                     break;
                 default:
@@ -292,13 +292,13 @@ namespace Sales.Controllers
             if (startTime != null)
             {
                 //selCompany = selCompany.Where(s => s.CreatedDate >= startTime);
-                crms.Where(w => w.Company.CreatedDate >= startTime);
+                crms = crms.Where(w => w.Company.CreatedDate >= startTime);
             }
 
             if (endTime != null)
             {
                 //selCompany = selCompany.Where(s => s.CreatedDate <= endTime);
-                crms.Where(w => w.Company.CreatedDate >= endTime);
+                crms = crms.Where(w => w.Company.CreatedDate <= endTime);
             }
 
             var findata = from c in crms
