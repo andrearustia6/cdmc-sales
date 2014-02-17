@@ -11,6 +11,7 @@ using System.Data;
 using System.Data.OleDb;
 using System.Web.Security;
 using System.Collections;
+using System.Data.Objects;
 
 namespace Entity
 {
@@ -372,7 +373,8 @@ namespace Entity
             result.Qualified_Decision = calls.OrderBy(o => o.CallDate).GroupBy(g => g.LeadID).Select(s => s.FirstOrDefault()).Where(w => w.CallDate >= startdate && w.CallDate <= enddate && w.MemberID == item.ID && w.LeadCallType.Code == 80).Count();
 
             result.New_DMs = calls.OrderBy(o => o.CallDate).GroupBy(g => g.LeadID).Select(s => s.FirstOrDefault()).Where(w => w.CallDate >= startdate && w.CallDate <= enddate && w.MemberID == item.ID).Count();
-
+            result.FaxOut = calls.Where(w => w.Member != null && EntityFunctions.Equals(w.Member.Name, item.Name) && w.CreatedDate >= startdate && w.CreatedDate < enddate
+                                                                       && calls.Any(a => a.CallDate < startdate && a.LeadID == w.LeadID && EntityFunctions.Equals(a.Member.Name, item.Name) && a.ProjectID == w.ProjectID) == false).GroupBy(g => g.LeadID).Count();
 
             //lcs.FindAll(lc => lc.CallDate > startdate && lc.CallDate < enddate).ForEach(l =>
             //{
