@@ -373,6 +373,7 @@ namespace Model
         public int CallListAmount { get; set; }
         public int DMs { get; set; }
         public int New_DMs { get; set; }
+        public int FaxOut { get; set; }
         public TimeSpan Duration { get; set; }
         public DateTime? startdate { get; set; }
         public DateTime? enddate { get; set; }
