@@ -38,10 +38,21 @@ namespace BLL
                 if (rolelvl >= SuperManagerRequired.LVL || user == "ray")
                 {
                     var md = MonthDuration.GetMonthInstanceByYearMonth(year,month);
-                    var managers = CH.DB.Projects.Where(w => w.IsActived == true && !string.IsNullOrEmpty(w.Manager)).Select(s => s.Manager).Distinct();
+                    var managerlist = CH.DB.Projects.Where(w => w.IsActived == true && !string.IsNullOrEmpty(w.Manager)).Select(s => s.Manager).Distinct();
+                    List<string> managers=new List<string>();
+                    foreach(string m in managerlist)
+                    {
+                        var temp = m.Trim().Split(new string[] { ";", "；" }, StringSplitOptions.RemoveEmptyEntries);
+                        foreach (string l in temp)
+                        {
+                            if(!managers.Contains(l))
+                                managers.Add(l);
+                        }
+                    }
                     if (Employee.CurrentRole.Level == ManagerRequired.LVL)
                     {
-                        managers = CH.DB.Projects.Where(w => w.IsActived == true && !string.IsNullOrEmpty(w.Manager) && w.Manager==user).Select(s => s.Manager).Distinct();
+                        managers.Clear();
+                        managers.Add(user);
                     }
                     //每个成员的call，也就是所有leader和sales的call
                     //var callgroupbymanger = from l in CH.DB.LeadCalls
@@ -99,10 +110,8 @@ namespace BLL
                    
                     //获取登录者（考核人）打分的记录
                     var scores = from r in CH.DB.ManagerScores.Where(w => w.Month == month && w.Year == year) select r;
-                    managers = from m in managers
-                                      where !(new String[] { "Doris", "Michael","Theresa","Dorothy", "Eric", "Olivia"}).Contains(m)
-                                      select m;
-                    managers = managers.Distinct();
+                    managers = managers.Where(w => !(new String[] { "Doris", "Michael", "Theresa", "Dorothy", "Eric", "Olivia" }).Contains(w)).ToList();
+                    managers = managers.Distinct().ToList();
                     var lps = from l in managers
                               join sc in scores on l equals sc.TargetName into Joinedscores
                               from aa in Joinedscores.DefaultIfEmpty()
@@ -122,14 +131,14 @@ namespace BLL
                                   PitchPaper = aa != null ? aa.PitchPaper : 5,//aa.Item7Score.HasValue == false ? 5 : aa.Item7Score,
                                   WeeklyMeeting = aa != null ? aa.WeeklyMeeting : 5,//aa.Item8Score.HasValue == false ? 5 : aa.Item8Score,
                                   MonthlyMeeting = aa != null ? aa.MonthlyMeeting : 10,//aa.Item9Score.HasValue == false ? 10 : aa.Item9Score,
-                                  leadcallcount = memberscall.Where(c => c.Manager == l).Count(c => c.activate == true && c.saletypename.Contains("销售")),
-                                  salescallcount = memberscall.Where(c => c.Manager == l).Count(c =>c.activate==true && c.saletypename.Contains("销售")),
-                                  leadscount = memberscall.Where(c => c.Manager == l && c.salestypeid == 2).Select(s=>s.member).Distinct().Count(),
-                                  salescount = memberscall.Where(c => c.Manager == l && c.salestypeid == 1).Select(s => s.member).Distinct().Count(),
-                                  leadnewlead = memberslead.Where(c => c.manager == l).Count(c => c.salestypeid == 2),
-                                  salesnewlead = memberslead.Where(c => c.manager == l).Count(c => c.salestypeid == 1),
-                                  target = CH.DB.TargetOfMonths.Where(t => t.Project.Manager == l && t.Project.IsActived == true && t.StartDate.Month == month && t.StartDate.Year == year).Sum(s => s.CheckIn),
-                                  checkinreal = deals.Where(d => d.Project.Manager == l && d.Income!=null).Sum(s => s.Income),
+                                  leadcallcount = memberscall.ToList().Where(c => c.Manager.Split(new string[] { ";", "；" }, StringSplitOptions.RemoveEmptyEntries).Contains(l)).Count(c => c.activate == true && c.saletypename.Contains("销售")),
+                                  salescallcount = memberscall.ToList().Where(c => c.Manager.Split(new string[] { ";", "；" }, StringSplitOptions.RemoveEmptyEntries).Contains(l)).Count(c => c.activate == true && c.saletypename.Contains("销售")),
+                                  leadscount = memberscall.ToList().Where(c => c.Manager.Split(new string[] { ";", "；" }, StringSplitOptions.RemoveEmptyEntries).Contains(l) && c.salestypeid == 2).Select(s => s.member).Distinct().Count(),
+                                  salescount = memberscall.ToList().Where(c => c.Manager.Split(new string[] { ";", "；" }, StringSplitOptions.RemoveEmptyEntries).Contains(l) && c.salestypeid == 1).Select(s => s.member).Distinct().Count(),
+                                  leadnewlead = memberslead.ToList().Where(c => c.manager.Split(new string[] { ";", "；" }, StringSplitOptions.RemoveEmptyEntries).Contains(l)).Count(c => c.salestypeid == 2),
+                                  salesnewlead = memberslead.ToList().Where(c => c.manager.Split(new string[] { ";", "；" }, StringSplitOptions.RemoveEmptyEntries).Contains(l)).Count(c => c.salestypeid == 1),
+                                  target = CH.DB.TargetOfMonths.Where(t=>t.Project.IsActived == true && t.StartDate.Month == month && t.StartDate.Year == year).ToList().Where(t => t.Project.Manager.Split(new string[] { ";", "；" }, StringSplitOptions.RemoveEmptyEntries).Contains(l)).Sum(s =>(decimal ?) s.CheckIn),
+                                  checkinreal = deals.Where(d => d.Project.Manager == l && d.Income != null).Sum(s => (decimal?)s.Income),
                                   Confirmed = aa != null ? aa.Confirmed == true ? "是" : "否" : "否",
                                   Rate = aa != null ? aa.Rate==null?0:aa.Rate:1,
                                   Month = aa != null ? aa.Month :month,
@@ -192,7 +201,7 @@ namespace BLL
                     //}
                     if (Employee.EqualToManager())//版块负责人只能看到自己项目所属的lead
                     {
-                        var leadinsameprojects = from p in CH.DB.Projects.Where(w => w.Manager == user && w.IsActived == true && w.TeamLeader !=null) select p.TeamLeader;
+                        var leadinsameprojects = from p in CH.DB.Projects.Where(w=> w.IsActived == true && w.TeamLeader != null && w.Manager!=null).ToList().Where(w => w.Manager.Split(new string[] { ";", "；" }, StringSplitOptions.RemoveEmptyEntries).Contains(user) ) select p.TeamLeader;
                         List<string> leadList1 = new List<string>();
                         foreach (string l in leadinsameprojects)
                         {
@@ -202,7 +211,7 @@ namespace BLL
                                 leadList1.Add(m);
                             }
                         }
-                        var chinatlstr1 = from p in CH.DB.Projects.Where(w => w.Manager == user && w.IsActived == true && w.ChinaTL != null) select p.ChinaTL;
+                        var chinatlstr1 = from p in CH.DB.Projects.Where(w => w.IsActived == true && w.ChinaTL != null && w.Manager != null).ToList().Where(w => w.Manager.Split(new string[] { ";", "；" }, StringSplitOptions.RemoveEmptyEntries).Contains(user)) select p.ChinaTL;
                         foreach (string l in chinatlstr1)
                         {
                             var temp = l.Trim().Split(new string[] { ";", "；" }, StringSplitOptions.RemoveEmptyEntries);
@@ -211,7 +220,7 @@ namespace BLL
                                 leadList1.Add(m);
                             }
                         }
-                        var smstr1 = from p in CH.DB.Projects.Where(w => w.Manager == user && w.IsActived == true && w.SalesManager != null) select p.SalesManager;
+                        var smstr1 = from p in CH.DB.Projects.Where(w => w.IsActived == true && w.SalesManager != null && w.Manager != null).ToList().Where(w => w.Manager.Split(new string[] { ";", "；" }, StringSplitOptions.RemoveEmptyEntries).Contains(user)) select p.SalesManager;
                         foreach (string l in smstr1)
                         {
                             var temp = l.Trim().Split(new string[] { ";", "；" }, StringSplitOptions.RemoveEmptyEntries);
@@ -278,7 +287,7 @@ namespace BLL
                                   RoleLevel = rolelvl,
                                   ID = scores.Where(w => w.TargetName == l).Select(s => s.ID).FirstOrDefault() == null ? 0 : scores.Where(w => w.TargetName == l).Select(s => s.ID).FirstOrDefault(),
                                   Target = CH.DB.TargetOfMonths.Where(t => t.Project.TeamLeader == l && t.Project.IsActived == true && t.StartDate.Month == month && t.StartDate.Year==year).Sum(s => (decimal?)s.CheckIn),
-                                  CheckIn = deals.Where(w=>w.Income!=null).ToList().Where(d => d.Project.TeamLeader.Split(new string[] { ";", "；" }, StringSplitOptions.RemoveEmptyEntries).Contains(l)).Sum(s => (decimal?)s.Income),
+                                  CheckIn = deals.Where(w=>w.Income!=null && w.Project.TeamLeader!=null).ToList().Where(d => d.Project.TeamLeader.Split(new string[] { ";", "；" }, StringSplitOptions.RemoveEmptyEntries).Contains(l)).Sum(s => (decimal?)s.Income),
                                   Name = l,
                                   User = user,
                                   Rate = scores.Where(w => w.TargetName == l).Count() == 0 ? 1 : scores.Where(w => w.TargetName == l).Select(s => s.Rate).FirstOrDefault(), //rates.Where(w => w.TargetName == l).Average(s => s.Rate) == null ? 1 : scores.Where(w => w.TargetName == l).Average(s => s.Score),
@@ -323,8 +332,17 @@ namespace BLL
                     var mems = CH.DB.Members.Where(w => w.IsActivated == true && w.Project.IsActived == true && !w.SalesType.Name.Contains("其他") && w.SalesType.Name != "市场" && w.SalesType.Name != "研发");
                     if (Employee.EqualToLeader() || Employee.EqualToManager())//版块或者lead查看
                     {
-                        sales =mems.Where(w=>w.Project.Manager == user || w.Project.TeamLeader == user).Select(s => s.Name).Distinct();
-
+                        if (Employee.EqualToLeader())
+                        {
+                            List<int> idlist = CH.DB.Projects.Where(w => w.IsActived == true && w.TeamLeader!=null).ToList().Where(w => w.TeamLeader.Split(new string[] { ";", "；" }, StringSplitOptions.RemoveEmptyEntries).Contains(user)).Select(w => w.ID).ToList();
+                            sales = mems.Where(w => idlist.Contains((int)w.ProjectID)).Select(s => s.Name).Distinct();
+                        }
+                        else
+                        {
+                            List<int> idlist = CH.DB.Projects.Where(w => w.IsActived == true && w.Manager!=null).ToList().Where(w => w.Manager.Split(new string[] { ";", "；" }, StringSplitOptions.RemoveEmptyEntries).Contains(user)).Select(w => w.ID).ToList();
+                            sales = mems.Where(w => idlist.Contains((int)w.ProjectID)).Select(s => s.Name).Distinct();
+                        }
+                       
                     }
                     else if (Employee.EqualToSales())//销售查看
                     {
