@@ -378,7 +378,7 @@ namespace Sales.Controllers
                              TicketDescription = d.TicketDescription,
                              IsConfirm = (d.IsConfirm == true ? "是" : "否"),
                              ModifiedDate = d.ModifiedDate,
-                             Role = emprole.Where(w=>w.AccountName==d.Sales).FirstOrDefault().Role.Name
+                             Role = emprole.Where(w => w.AccountName == d.Sales).FirstOrDefault() == null ? "" : emprole.Where(w => w.AccountName == d.Sales).FirstOrDefault().Role.Name
                          };
                 return ds.OrderByDescending(o => o.SignDate);
             }
