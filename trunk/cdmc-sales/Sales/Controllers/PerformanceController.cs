@@ -227,7 +227,8 @@ namespace Sales.Controllers
                     writer.Write("考核系数,");
                     writer.Write("考核总分数,");
                     writer.Write("FaxOut详细,");
-                    writer.Write("调研详细");
+                    writer.Write("调研详细,");
+                    writer.Write("是否实习");
 
                     writer.WriteLine();
 
@@ -276,8 +277,11 @@ namespace Sales.Controllers
                         writer.Write(item.FaxOutCountString.Replace(",", ";"));
                         writer.Write("\"");
                         writer.Write(",");
+                        writer.Write("\"");
                         writer.Write(item.LeadAddCountString.Replace(",", ";"));
-
+                        writer.Write("\"");
+                        writer.Write(",");
+                        writer.Write(CH.DB.EmployeeRoles.Where(w=>w.AccountName==item.Name).FirstOrDefault().IsTrainee==true?"是":"否");
                         writer.WriteLine();
 
                     }
