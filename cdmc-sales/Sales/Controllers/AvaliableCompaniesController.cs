@@ -1446,7 +1446,7 @@ namespace Sales.Controllers
                           
                           PickUpTime = l.CrmTracks.OrderByDescending(ct => ct.GetDate).FirstOrDefault() != null ? l.CrmTracks.OrderByDescending(ct => ct.GetDate).FirstOrDefault().GetDate : null,
                           LeadCalledCount = l.LeadCalls.Where(lc => lc.Deleted == false && lc.CreatedDate.Value.Year==DateTime.Now.Year ).GroupBy(lc => lc.LeadID).Count(),
-                          Calls = from c in l.LeadCalls.Where(lc => lc.Deleted == false && lc.CallDate>=l.CreatedDate)
+                          Calls = from c in l.LeadCalls.Where(lc => lc.Deleted == false && lc.CallDate >= l.CreatedDate && lc.CreatedDate.Value.Year == DateTime.Now.Year)
                                   select new _LeadCall()
                                   {
                                       MemberName = c.Member.Name,
