@@ -71,7 +71,7 @@
                     c.Bound(item => item.Member.SalesType.Name).Width(80);
                     c.Bound(item => item.Duration).Template(@<text>@Math.Round(item.Duration.TotalHours, 1)</text>).Title("通话时间").Width(80);
                     c.Bound(item => item.FaxOut).Width(90).Aggregate(item => item.Sum()).FooterTemplate(@<text>@item.Sum</text>);
-                    c.Bound(item => item.Cold_Calls).Width(90).Aggregate(item => item.Sum()).FooterTemplate(@<text>@item.Sum</text>);
+                    @*c.Bound(item => item.Cold_Calls).Width(90).Aggregate(item => item.Sum()).FooterTemplate(@<text>@item.Sum</text>);
                     c.Bound(item => item.DMs).Width(65).Aggregate(item => item.Sum()).FooterTemplate(@<text>@item.Sum</text>);
                     c.Bound(item => item.New_DMs).Width(95).Aggregate(item => item.Sum()).FooterTemplate(@<text>@item.Sum</text>);
                     c.Bound(item => item.Pitched).Width(70).Aggregate(item => item.Sum()).FooterTemplate(@<text>@item.Sum</text>);
@@ -79,7 +79,7 @@
                     c.Bound(item => item.Call_Backed).Width(100).Aggregate(item => item.Sum()).FooterTemplate(@<text>@item.Sum</text>);
                     c.Bound(item => item.Waiting_For_Approval).Width(155).Aggregate(item => item.Sum()).FooterTemplate(@<text>@item.Sum</text>);
                     c.Bound(item => item.Qualified_Decision).Width(160).Aggregate(item => item.Sum()).FooterTemplate(@<text>@item.Sum</text>);
-                    c.Bound(item => item.Closed).Width(70).Aggregate(item => item.Sum());
+                    c.Bound(item => item.Closed).Width(70).Aggregate(item => item.Sum());*@
                     c.Bound(item => item.DealInAmount).Width(100).Aggregate(item => item.Sum()).FooterTemplate(@<text>@item.Sum</text>);
                     c.Bound(item => item.CheckInAmount).Width(100).Aggregate(item => item.Sum()).FooterTemplate(@<text>@item.Sum</text>); ;
                 }).Resizable(resizing => resizing.Columns(true))
