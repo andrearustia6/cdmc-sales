@@ -2595,7 +2595,7 @@ namespace BLL
                 calls = calls.Where(l => projectids.Contains(l.ProjectID.Value));
             }
             var list = calls.OrderBy(o => o.CallDate).ToList();
-            list = list.Distinct(new LeadCallLeadDistinct()).Where(w => w.CallDate >= startdate && w.CallDate < enddate).ToList();
+            list = list.Distinct(new LeadCallLeadDistinct()).Where(w => w.CallDate >= startdate && w.CallDate < enddate && list.Any(a => a.CallDate < startdate && a.LeadID == w.LeadID && a.ProjectID == w.ProjectID) == false).ToList();
 
             return list;
         }
