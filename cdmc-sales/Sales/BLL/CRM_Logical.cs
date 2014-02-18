@@ -329,7 +329,8 @@ namespace BLL
                     IQueryable<string> sales = null;
                     var user = Employee.CurrentUserName;
                     //var mems  = CH.DB.Members.Where(w => w.IsActivated == true && w.Project.IsActived == true && !w.SalesType.Name.Contains("其他"));
-                    var mems = CH.DB.Members.Where(w => w.IsActivated == true && w.Project.IsActived == true && !w.SalesType.Name.Contains("其他") && w.SalesType.Name != "市场" && w.SalesType.Name != "研发");
+                    //var mems = CH.DB.Members.Where(w => w.IsActivated == true && w.Project.IsActived == true && !w.SalesType.Name.Contains("其他") && w.SalesType.Name != "市场" && w.SalesType.Name != "研发");
+                    var mems = CH.DB.Members.Where(w => w.IsActivated == true && w.Project.IsActived == true && (CH.DB.EmployeeRoles.Any(f => f.AccountName == w.Name && f.Role.Name == "国内销售") == true || CH.DB.EmployeeRoles.Any(f => f.AccountName == w.Name && f.Role.Name == "海外销售") == true));
                     if (Employee.EqualToLeader() || Employee.EqualToManager())//版块或者lead查看
                     {
                         if (Employee.EqualToLeader())
@@ -427,7 +428,7 @@ namespace BLL
                                       RoleLevel = rolelvl,
                                       ID = scores.Where(w => w.TargetName == l).Count() == 0 ? 0 : scores.Where(w => w.TargetName == l).Select(s => s.ID).FirstOrDefault(),
                                       Rate = scores.Where(w => w.TargetName == l).Count() == 0 ? 1 : scores.Where(w => w.TargetName == l).Select(s => s.Rate).FirstOrDefault(),//scores.Where(w => w.TargetName == l).Select(s => s.Rate).FirstOrDefault()==null?1:scores.Where(w => w.TargetName == l).Select(s => s.Rate).FirstOrDefault(),
-                                      AssignedScore = scores.Where(w => w.TargetName == l).Count() == 0 ? 10 : scores.Where(w => w.TargetName == l).Select(s => s.Score).FirstOrDefault(),//scores.Where(w => w.TargetName == l).Select(s => s.Score).FirstOrDefault(),//scores.Where(w => w.TargetName == l).Average(s => s.Score) == null ? 0 : scores.Where(w => w.TargetName == l).Average(s => s.Score),
+                                      AssignedScore = scores.Where(w => w.TargetName == l).Count() == 0 ? 0 : scores.Where(w => w.TargetName == l).Select(s => s.Score).FirstOrDefault(),//scores.Where(w => w.TargetName == l).Select(s => s.Score).FirstOrDefault(),//scores.Where(w => w.TargetName == l).Average(s => s.Score) == null ? 0 : scores.Where(w => w.TargetName == l).Average(s => s.Score),
                                       Target = targets.Where(t => t.Member.Name == l && t.StartDate.Month == month).Sum(s => (decimal?)s.CheckIn),
                                       CheckIn = deals.Where(w => w.Sales == l && w.ActualPaymentDate.Value != null && w.ActualPaymentDate.Value.Month == month && w.ActualPaymentDate.Value.Year == year).Sum(s => (decimal?)s.Income),
                                       Name = l,
