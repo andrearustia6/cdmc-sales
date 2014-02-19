@@ -30,7 +30,8 @@ namespace Sales.Controllers
             }
             if (pj == null)
             {
-                pj = CH.GetAllData<Project>().Where(p => p.Market == Employee.CurrentUserName).OrderBy(p=>p.ID).FirstOrDefault();
+                //pj = CH.GetAllData<Project>().Where(p => p.Market == Employee.CurrentUserName).OrderBy(p=>p.ID).FirstOrDefault();
+                pj = CH.DB.Projects.Where(w=>w.IsActived==true && w.Market!=null).ToList().Where(p => p.Market.Split(new string[] { ";", "；" }, StringSplitOptions.RemoveEmptyEntries).Contains(Employee.CurrentUserName)).OrderBy(p => p.ID).FirstOrDefault();
                 if (pj == null)
                     return View();
             }
@@ -69,13 +70,13 @@ namespace Sales.Controllers
             ViewBag.Categories = categories;
             ViewBag.DealCondition = dealcondition;
             ViewBag.DistinctNumber = distinctnumber;
-            if (ModelState.IsValid)
-            {
+            //if (ModelState.IsValid)
+            //{
                 var ls = pj.ProjectLeads(dealcondition, distinctnumber, categories);
                 return View(ls);
-            }
-            else
-                return View();
+            //}
+            //else
+            //    return View();
             
         }
 
@@ -94,8 +95,8 @@ namespace Sales.Controllers
             var ls = pj.ProjectLeadsEmail(dealcondition, distinctnumber, categories);
 
             this.AddErrorStateIfCreatorIsTheLoginUserIsNotTheMarketInterface(pj);
-            if (ModelState.IsValid)
-            {
+            //if (ModelState.IsValid)
+            //{
                 MemoryStream output = new MemoryStream();
                 //StreamWriter writer = new StreamWriter(output, Encoding.UTF8);
                 StreamWriter writer = new StreamWriter(output, System.Text.Encoding.Default);
@@ -108,9 +109,9 @@ namespace Sales.Controllers
                 writer.Flush();
                 output.Position = 0;
                 return File(output, "text/comma-separated-values", "Emails.csv");
-            }
-            else
-                return RedirectToAction("MarketIndex", new { projectid = projectid });
+            //}
+            //else
+            //    return RedirectToAction("MarketIndex", new { projectid = projectid });
 
           
            
