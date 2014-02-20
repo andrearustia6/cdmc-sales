@@ -2589,13 +2589,14 @@ namespace BLL
                 enddate = new DateTime(9999, 1, 1);
             }
 
-            var calls = from l in CH.DB.LeadCalls where l.LeadCallType.Code >= 40 select l;
+            var calls = from l in CH.DB.LeadCalls where l.LeadCallType.Code >= 40 && l.LeadCallType.Code<=80 select l;
             if (projectids.Count > 0)
             {
                 calls = calls.Where(l => projectids.Contains(l.ProjectID.Value));
             }
             var list = calls.OrderBy(o => o.CallDate).ToList();
-            list = list.Distinct(new LeadCallLeadDistinct()).Where(w => w.CallDate >= startdate && w.CallDate < enddate && list.Any(a => a.CallDate < startdate && a.LeadID == w.LeadID && a.ProjectID == w.ProjectID) == false).ToList();
+            //list = list.Distinct(new LeadCallLeadDistinct()).Where(w => w.CallDate >= startdate && w.CallDate < enddate && list.Any(a => a.CallDate < startdate && a.LeadID == w.LeadID && a.ProjectID == w.ProjectID) == false).ToList();
+            list = list.Where(w => w.CallDate >= startdate && w.CallDate < enddate && EntityFunctions.Equals(w.Member.Name, Employee.CurrentUserName) && list.Any(a => a.CallDate < startdate && EntityFunctions.Equals(a.Member.Name, Employee.CurrentUserName) && a.LeadID == w.LeadID && a.ProjectID == w.ProjectID) == false).Distinct(new LeadCallLeadDistinct()).ToList();
 
             return list;
         }

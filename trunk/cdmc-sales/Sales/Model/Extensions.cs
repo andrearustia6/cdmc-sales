@@ -357,7 +357,7 @@ namespace Entity
             //result.Not_Pitched = lcs.Count(w => w.LeadCallType.Code == 30);
             //result.Closed = lcs.Count(w => w.LeadCallType.Code == 90);
             //result.DMs = lcs.Count(w => w.LeadCallType.Code >= 40);
-            var calls = from l in CH.DB.LeadCalls.Where(w => w.LeadCallTypeID != null && w.LeadCallType.Code >= 40 && w.LeadCallType.Code <= 80 && w.Project.IsActived == true) select l;
+            var calls = from l in CH.DB.LeadCalls.Where(w => w.ProjectID == item.ProjectID && w.LeadCallTypeID != null && w.LeadCallType.Code >= 40 && w.LeadCallType.Code <= 80 && w.Project.IsActived == true) select l;
             //result.Pitched = calls.OrderBy(o => o.CallDate).GroupBy(g => g.LeadID).Select(s => s.FirstOrDefault()).Where(w => w.CallDate >= startdate && w.CallDate <= enddate && w.MemberID == item.ID && w.LeadCallType.Code == 40).Count();
             //result.Full_Pitched = calls.OrderBy(o => o.CallDate).GroupBy(g => g.LeadID).Select(s => s.FirstOrDefault()).Where(w => w.CallDate >= startdate && w.CallDate <= enddate && w.MemberID == item.ID && w.LeadCallType.Code == 50).Count();
             //result.Call_Backed = calls.OrderBy(o => o.CallDate).GroupBy(g => g.LeadID).Select(s => s.FirstOrDefault()).Where(w => w.CallDate >= startdate && w.CallDate <= enddate && w.MemberID == item.ID && w.LeadCallType.Code == 60).Count();

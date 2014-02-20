@@ -431,7 +431,17 @@ namespace Sales.Controllers
             }
             else//板块修改deal
             {
-                dllist = deals.Where(d => CH.DB.Projects.Where(p => p.Manager == Employee.CurrentUserName).Any(p => p.ID == d.ProjectID)).ToList();
+                List<int> idlist = new List<int>();
+                foreach (var p in CH.DB.Projects.Where(w => w.IsActived == true && w.Manager != null))
+                {
+                    var names = p.Manager.Trim().Split(new string[] { ";", "；" }, StringSplitOptions.RemoveEmptyEntries);
+                    if (names.Contains(Employee.CurrentUserName))
+                    {
+                        if (!idlist.Contains(p.ID))
+                            idlist.Add(p.ID);
+                    }
+                }
+                dllist = deals.Where(d => idlist.Contains((int)d.ProjectID)).ToList();
                 var ds = from d in dllist
                          select new AjaxViewDeal
                          {
