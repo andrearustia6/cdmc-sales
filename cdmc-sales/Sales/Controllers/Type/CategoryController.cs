@@ -89,7 +89,10 @@ namespace Sales.Controllers
             var item = CH.GetDataById<Category>(id);
             var pid = item.ProjectID;
             CH.Delete<Category>(id);
-            return RedirectToAction("management", "project", new { id = item.ProjectID, tabindex = 0 });
+            if(item.ProjectID!=null)
+                return RedirectToAction("management", "project", new { id = item.ProjectID, tabindex = 0 });
+            else
+                return RedirectToAction("index", "project");
         }
     }
     [ProjectInformationAccess]
