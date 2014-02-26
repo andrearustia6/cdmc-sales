@@ -375,7 +375,7 @@
     columns.Bound(p => p.Score).Width(80).HtmlAttributes(new { style = "text-align:right" }).ClientTemplate("<p><#= $.telerik.formatString('{0:p0}', Score/100) #></p>");
     columns.Bound(p => p.FaxOutCountString).Width(80).HtmlAttributes(new { style = "text-align:right" });
     columns.Bound(p => p.LeadAddCountString).Width(80).HtmlAttributes(new { style = "text-align:right" });
-    if (ViewBag.RoleLevel == LeaderRequired.LVL || Utl.Employee.CurrentUserName == "admin" || ViewBag.RoleLevel == ChinaTLRequired.LVL)
+    if (ViewBag.RoleLevel == LeaderRequired.LVL || Utl.Employee.CurrentUserName == "admin" || ViewBag.RoleLevel == ChinaTLRequired.LVL || ViewBag.RoleLevel==SalesManagerRequired.LVL)
     {
         columns.Command(commands =>
         {
@@ -722,7 +722,7 @@
             rowButton[0].innerText = "修改系数";
             return;
         }
-        else if ((e.dataItem.RoleLevel == "100") || (e.dataItem.RoleLevel == "80")) {
+        else if ((e.dataItem.RoleLevel == "100") || (e.dataItem.RoleLevel == "80") || (e.dataItem.RoleLevel == "200")) {
             rowButton[0].innerText = "打分";
             return;
         }
