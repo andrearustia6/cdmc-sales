@@ -225,8 +225,9 @@
                     c.Bound(item => item).Template(@<text>@item.EmployeeDuration()</text>).Title("在职时间(月)");
                     c.Bound(item => item.SalesType.Name);
                     c.Bound(item => item.ID).Title("操作").Width(120).Template(@<span> <a href=@Url.Content("~/Member/Edit/" + item.ID) >
-                        编辑</a> | <a href=@Url.Content("~/Member/Details/" + item.ID)>详细</a> | <a href=@Url.Content("~/Member/delete/" + item.ID) >
-                            删除</a> </span>);
+                        编辑</a> | <a href=@Url.Content("~/Member/Details/" + item.ID)>详细</a>  
+                        @*<a href=@Url.Content("~/Member/delete/" + item.ID) >删除</a> *@
+                        </span>);
                 }).Resizable(resizing => resizing.Columns(true)).Scrollable(scrolling => scrolling.Height(350))
                                             )
 }
