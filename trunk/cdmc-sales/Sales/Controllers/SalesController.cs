@@ -311,7 +311,7 @@ namespace Sales.Controllers
             ViewBag.ProjectID = projectid;
             var data = CH.GetAllData<Deal>();
             ViewBag.ProjectID = projectid;
-            return View(data.FindAll(d => d.Sales == Employee.CurrentUserName && d.ProjectID == projectid).OrderByDescending(m => m.CreatedDate).ToList());
+            return View(data.FindAll(d => d.Sales == Employee.CurrentUserName && d.ProjectID == projectid && d.Abandoned==false).OrderByDescending(m => m.CreatedDate).ToList());
         }
 
         public ViewResult DisplayDeal(int? id, int? projectid)
