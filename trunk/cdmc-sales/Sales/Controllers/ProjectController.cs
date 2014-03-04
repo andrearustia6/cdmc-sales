@@ -412,8 +412,9 @@ namespace Sales.Controllers
                     var exists = c.Members.Any(a => a.ID == memberID);
                     if (exists == true)
                     {
-                        c.Members.Remove(c.Members.Where(w => w.ID == memberID).FirstOrDefault());
-
+                        //c.Members.Remove(c.Members.Where(w => w.ID == memberID ).FirstOrDefault());
+                        Member member = c.Members.Where(m => m.ID==memberID && m.ProjectID == c.ProjectID).FirstOrDefault();
+                        c.Members.Remove(member);
                     }
                 }
 
