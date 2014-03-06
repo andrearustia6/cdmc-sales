@@ -83,8 +83,10 @@
     c.Bound(item => item.ActualPaymentDate).Format("{0:d}");//实际付款日期
     c.Bound(item => item.Income).Format("{0:c0}");//实际入账
     c.Bound(item => item.ModifiedDate);
-    c.Bound(item => item.TicketDescription).Width(200);
-
+    if (Utl.Employee.CurrentRole.Level != FinancialInterfaceRequired.LVL && Utl.Employee.CurrentRole.Level != DealViewerRequired.LVL)
+    {
+        c.Bound(item => item.TicketDescription).Width(200);
+    }
     //c.Bound(item => item.IsClosed).Width(70);
     //c.Bound(item => item.CommitterContect).Width(100);
     //c.Bound(item => item.Abandoned).Width(70);

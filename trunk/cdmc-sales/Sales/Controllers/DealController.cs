@@ -371,6 +371,7 @@ namespace Sales.Controllers
                              Currency = d.Currencytype.Name,
                              PaymentDetail = d.PaymentDetail,
                              Sales = d.Sales,
+                             DealType = d.DealType,
                              ParticipantTypeName=d.Package.ParticipantType.Name_EN,
                              Poll=d.Poll,
                              ProjectCode = d.Project.ProjectCode,
