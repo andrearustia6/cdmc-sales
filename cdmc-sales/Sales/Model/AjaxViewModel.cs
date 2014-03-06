@@ -193,6 +193,10 @@ namespace Model
         [Display(Name = "参会类型")]
         public string ParticipantTypeName { get; set; }
 
+        
+        [Display(Name = "类型")]
+        public string DealType { get; set; }
+
         [Display(Name = "Poll")]
         public int? Poll{ get; set; }
 
@@ -207,13 +211,22 @@ namespace Model
                     {
                         if (Poll == null)
                             Poll = 0;
-                        return "Delegate(" + Poll.ToString() + ")";
+                        if (!string.IsNullOrEmpty(DealType) && (Employee.CurrentRole.Level==FinancialInterfaceRequired.LVL || Employee.CurrentRole.Level==DealViewerRequired.LVL))
+                            return DealType + " Delegate(" + Poll.ToString() + ")";
+                        else
+                            return " Delegate(" + Poll.ToString() + ")";
                     }
                     else
-                        return "Sponsor";
+                        if (!string.IsNullOrEmpty(DealType) && (Employee.CurrentRole.Level == FinancialInterfaceRequired.LVL || Employee.CurrentRole.Level == DealViewerRequired.LVL))
+                            return DealType + " Sponsor";
+                        else
+                            return "Sponsor";
                 }
                 else
-                    return "";
+                    if (!string.IsNullOrEmpty(DealType) && (Employee.CurrentRole.Level == FinancialInterfaceRequired.LVL || Employee.CurrentRole.Level == DealViewerRequired.LVL))
+                        return DealType;
+                    else
+                        return "";
             }
 
         }
