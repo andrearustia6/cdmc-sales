@@ -193,6 +193,9 @@ namespace Sales.Controllers
                          TicketDescription = d.TicketDescription,
                          IsConfirm = (d.IsConfirm == true ? "是" : "否"),
                          ModifiedDate = d.ModifiedDate,
+                         ParticipantTypeName = d.Package.ParticipantType.Name_EN,
+                         DealType = d.DealType,
+                         Poll = d.Poll
                      };
             var list = ds.OrderBy(o => o.SignDate).ToList();
             return View(new GridModel<AjaxViewDeal> { Data = list });
