@@ -18,11 +18,22 @@
 <div>
   <center>
         <p>
-            <input type="submit" value=@SR.Save />
+            <input type="submit"  onclick="checkpoll();" value=@SR.Save />
             
             @*<input type="button" onclick="this.form.submit();" value=@SR.Save />*@
         </p>
    </center>
 </div>
 }
+<script>
+    function checkpoll() {
 
+        if ($("#Polldiv").is(":visible")) {
+            if ($("#Poll").val() <= 0) {
+                alert('请输入票数。')
+                return false;
+            }
+            
+        }
+    }
+</script>
