@@ -1818,6 +1818,7 @@
     <Content Include="Views\CompanyMerge\LeadCheck.cshtml" />
     <Content Include="Views\CompanyMerge\MergeLead.cshtml" />
     <Content Include="Views\Deal\AllIndex.cshtml" />
+    <Content Include="Views\AvaliableCompanies\CoreCoveragePublic.cshtml" />
     <None Include="Views\SalesEx\EditCompany.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\SimulatorConfig.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\AjaxTargetOfMonthForMember.cshtml" />

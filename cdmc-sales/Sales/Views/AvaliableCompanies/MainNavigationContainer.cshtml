@@ -257,8 +257,11 @@
     }
     //公海公司选择
     function onIndexSelectPublic(e) {
+        var nv = $('#publicCompanies').data('tTreeView');
         if ($(e.item).parents(".t-item").length == 0) {
-            $('#crmdetailscontainer').html('');
+            $.post('GetCoreCoveragePublic', { projectid: $("#projectid").data("tDropDownList").value(), coreid: nv.getItemValue(e.item) }, function (result) {
+                $('#crmdetailscontainer').html(result);
+            });
             return;
         }
         if ($(e.item).parents(".t-item").length != 1)
