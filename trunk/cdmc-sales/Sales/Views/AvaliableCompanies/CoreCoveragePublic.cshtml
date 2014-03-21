@@ -29,7 +29,7 @@
 @(Html.Telerik().Grid<_CoreCoverage>().Name("CoreCoverage")
      .DataBinding(dataBinding =>
      {
-         dataBinding.Ajax().Select("_CoreCoverage", "AvaliableCompanies", new { projectid = projectid, coreid = coreid, ismembercompany = 1 });
+         dataBinding.Ajax().Select("_CoreCoverage", "AvaliableCompanies", new { projectid = projectid, coreid = coreid, ismembercompany = 2 });
      })
               .ClientEvents(events => events.OnDataBinding("dataBinding").OnRowDataBound("onRowDataBound"))
         .Columns(columns =>

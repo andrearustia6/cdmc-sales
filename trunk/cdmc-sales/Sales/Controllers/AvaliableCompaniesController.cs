@@ -1433,13 +1433,29 @@ namespace Sales.Controllers
             //return PartialView(@"~\views\AvaliableCompanies\CoreCoverage.cshtml", ccs);
             return PartialView(@"~\views\AvaliableCompanies\CoreCoverage.cshtml");
         }
-        [GridAction]
-        public ActionResult _CoreCoverage(int projectid, int coreid,int? typeid)
+        public PartialViewResult GetCoreCoveragePublic(int projectid, int coreid)
         {
-            var crms = CH.DB.CompanyRelationships.Where(cr => cr.ProjectID == projectid && cr.CoreLVLID == coreid && cr.Members.Count > 0 && cr.Deleted==false);
-            if (Employee.CurrentRole.Level == SalesRequired.LVL || Employee.CurrentRole.Level == LeaderRequired.LVL)
+            
+            ViewBag.projectid = projectid;
+            ViewBag.coreid = coreid;
+            //return PartialView(@"~\views\AvaliableCompanies\CoreCoverage.cshtml", ccs);
+            return PartialView(@"~\views\AvaliableCompanies\CoreCoveragePublic.cshtml");
+        }
+        [GridAction]
+        public ActionResult _CoreCoverage(int projectid, int coreid,int? typeid,int? ismembercompany)
+        {
+            var crms = CH.DB.CompanyRelationships.Where(cr => cr.ProjectID == projectid && cr.CoreLVLID == coreid && cr.Deleted == false);
+            if (ismembercompany == 1)
             {
-                crms = crms.Where(cr => cr.Members.Any(m => m.Name == Employee.CurrentUserName));
+                crms = crms.Where(cr => cr.Members.Count > 0);
+                if (Employee.CurrentRole.Level == SalesRequired.LVL || Employee.CurrentRole.Level == LeaderRequired.LVL)
+                {
+                    crms = crms.Where(cr => cr.Members.Any(m => m.Name == Employee.CurrentUserName));
+                }
+            }
+            else
+            {
+                crms = crms.Where(x => x.Members.Count == 0);
             }
 
             var ccs = from l in crms
