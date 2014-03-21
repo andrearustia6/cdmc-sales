@@ -100,7 +100,7 @@ namespace Sales.Controllers
 
          public ActionResult GetParticipantTypeName(int id)
          {
-             return Json(CH.GetDataById<Package>(id).ParticipantType.Name);
+             return Json(CH.GetDataById<Package>(id).ParticipantType.Name_EN);
              
          }
     }
