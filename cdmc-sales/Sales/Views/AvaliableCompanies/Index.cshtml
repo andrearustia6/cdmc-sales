@@ -794,7 +794,13 @@
         $('.dialogue-quickdeal form select').removeClass('fieldError');
 
         String.prototype.isEmpty = function () { return /^\s*$/.test(this); }
-
+        if ($('.dialogue-quickdeal form #Polldiv').is(":visible")) {
+            if ($('.dialogue-quickdeal form #Poll').val() <= 0) {
+                alert('请输入票数。')
+                return false;
+            }
+        }
+        
         // validation for deal
         if ($('.dialogue-quickdeal form #PackageID').val().isEmpty()) {
             $('.dialogue-quickdeal form #PackageID').addClass('fieldError');
