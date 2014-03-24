@@ -288,7 +288,7 @@
                     alert("获取参会类型失败，请重试。");
                 },
                 success: function (result) {
-                    if (result.indexOf("Delegate") >= 0){
+                    if (result.indexOf("Delegate") >= 0) {
                         $("#Polldiv").show();
                         $("#Polldivlabel").show();
                         $("#Poll").attr("value", ''); //填充内容
@@ -300,6 +300,11 @@
                     }
                 }
             });
+        });
+
+        $("#PaymentDetail").change(function () {
+            if ($("#PaymentDetail").val() != '')
+                $("#PaymentDetail").removeClass('fieldError');
         });
     });
     //点击radiobutton后给CurrencyTypeID赋值
