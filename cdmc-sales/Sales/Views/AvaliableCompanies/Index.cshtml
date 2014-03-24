@@ -796,8 +796,8 @@
         String.prototype.isEmpty = function () { return /^\s*$/.test(this); }
         if ($('.dialogue-quickdeal form #Polldiv').is(":visible")) {
             if ($('.dialogue-quickdeal form #Poll').val() <= 0) {
-                alert('请输入票数。')
-                return false;
+                $('.dialogue-quickdeal form #Poll').addClass('fieldError');
+                hasError = true;
             }
         }
         
