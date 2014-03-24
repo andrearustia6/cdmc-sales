@@ -123,7 +123,7 @@
                     @Html.LabelFor(model => model.ActualPaymentDate)
                 </td>
                 <td style="width: 23%">
-                    @Html.Telerik().DatePickerFor(model => model.ActualPaymentDate).Value(Model.ID == 0 ? DateTime.Now: Model.ActualPaymentDate)
+                    @Html.Telerik().DatePickerFor(model => model.ActualPaymentDate).Value(Model.ActualPaymentDate == null ? DateTime.Now : Model.ActualPaymentDate)
                     @Html.ValidationMessageFor(model => model.ActualPaymentDate)
                 </td>
                 <td style="width: 10%">
