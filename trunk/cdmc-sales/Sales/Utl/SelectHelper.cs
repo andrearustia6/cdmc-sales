@@ -548,7 +548,9 @@ namespace Utl
             int? companyid = CH.GetDataById<CompanyRelationship>(crmid).CompanyID;
             //var ls = from l in CH.DB.Leads where l.CompanyID == companyid select new { Text = l.Name_CH + " | " + l.Name_EN, Value = l.ID };
             List<SelectListItem> selectList = new List<SelectListItem>();
-            var leads = CH.GetAllData<Lead>().Where(l => l.CompanyID == companyid);
+            var leads = from c in CH.DB.Leads where c.CompanyID == companyid select c;
+                        
+                        //CH.GetAllData<Lead>().Where(l => l.CompanyID == companyid);
             foreach (Lead lead in leads)
             {
                 SelectListItem selectListItem = new SelectListItem { Text = lead.Name, Value = lead.ID.ToString() };
