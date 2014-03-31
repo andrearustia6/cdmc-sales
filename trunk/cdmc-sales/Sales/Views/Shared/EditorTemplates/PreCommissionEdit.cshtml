@@ -450,14 +450,14 @@
         ￥@Html.TextBoxFor(model => model.ActualCommission, new { READONLY = "readonly", style = "border:none;width:50%" })
         </td>
     </tr>
-    <tr>
+    @*<tr>
     <td colspan="8" style="color:Red">
     国内每月提成预发总额 = sponsor出单总额* 提成率(5%)+delegate人均三千以下出单总额*提成率(5%) +(delegate人均3000以上出单总额-3000*人数)*大于3000提成率(15%)
     </td>
-    </tr>
+    </tr>*@
     <tr>
     <td colspan="8" style="color:Red">
-    国外每月提成预发总额 = sponsor出单总额* 提成率(5%)+delegate出单总额*提成率(5%)
+    海外每月提成预发总额 = sponsor出单总额* 提成率(5%)+delegate出单总额*提成率(5%)
     </td>
     </tr>
 </table>
