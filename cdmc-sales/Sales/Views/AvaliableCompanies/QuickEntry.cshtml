@@ -108,7 +108,7 @@
             <tr>
                 <td colspan="4">
                     @Html.LabelFor(model => model.Desc)
-                    @Html.TextAreaFor(model => model.Desc)
+                    @Html.Telerik().EditorFor(model => model.Desc).Tools(tooles => tooles.Clear().FontColor().FontSize()).HtmlAttributes(new { style = "width: 900px; height: 450px;" }) 
                 </td>
             </tr>
 

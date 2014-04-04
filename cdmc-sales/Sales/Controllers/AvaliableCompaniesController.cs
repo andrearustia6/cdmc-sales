@@ -16,6 +16,7 @@ using Telerik.Web.Mvc;
 using BLL;
 using Telerik.Web.Mvc.UI;
 using System.Collections;
+using System.Text.RegularExpressions;
 namespace Sales.Controllers
 {
     public class AvaliableCompaniesController : Controller
@@ -118,7 +119,8 @@ namespace Sales.Controllers
                 QQ = string.IsNullOrEmpty(ajaxViewLead.QQ) ? "" : ajaxViewLead.QQ.Trim(),
                 Twitter = string.IsNullOrEmpty(ajaxViewLead.Twitter) ? "" : ajaxViewLead.Twitter.Trim(),
                 Branch = string.IsNullOrEmpty(ajaxViewLead.Branch) ? "" : ajaxViewLead.Branch.Trim(),
-                ZIP = string.IsNullOrEmpty(ajaxViewLead.Zip) ? "" : ajaxViewLead.Zip.Trim()
+                ZIP = string.IsNullOrEmpty(ajaxViewLead.Zip) ? "" : ajaxViewLead.Zip.Trim(),
+                Sequence = ajaxViewLead.Sequence,
             };
             if (leadRole != null)
             {
@@ -165,7 +167,8 @@ namespace Sales.Controllers
                 LeadRoles = lead.LeadRoles == null ? string.Empty : lead.LeadRoles,
                 QQ = lead.QQ,
                 Twitter = lead.Twitter,
-                Branch = lead.Branch
+                Branch = lead.Branch,
+                Sequence=lead.Sequence
             };
             return PartialView("EditLead", ajaxViewLead);
         }
@@ -205,6 +208,7 @@ namespace Sales.Controllers
             lead.Branch = ajaxViewLead.Branch;
             lead.ZIP = ajaxViewLead.Zip;
             lead.LeadRoles = string.Empty;
+            lead.Sequence = ajaxViewLead.Sequence;
             if (leadRole != null)
             {
                 foreach (string leadrole in leadRole)
@@ -342,6 +346,10 @@ namespace Sales.Controllers
         [ValidateInput(false)]
         public ActionResult EditCompany(AjaxViewSaleCompany ajaxViewSaleCompany)
         {
+            if (string.IsNullOrEmpty(ajaxViewSaleCompany.Desc))
+                ajaxViewSaleCompany.Desc = "";
+            Regex rgEx = new Regex("</?div[^>]*>", RegexOptions.IgnoreCase);
+            ajaxViewSaleCompany.Desc = rgEx.Replace(ajaxViewSaleCompany.Desc, ""); 
             var companyRelationship = CH.DB.CompanyRelationships.FirstOrDefault(c => c.CompanyID == ajaxViewSaleCompany.CompanyId);
             companyRelationship.Company.Address = ajaxViewSaleCompany.Address;
             companyRelationship.Company.AreaID = ajaxViewSaleCompany.IndustryId;
@@ -357,7 +365,7 @@ namespace Sales.Controllers
             companyRelationship.Company.AnnualSales = ajaxViewSaleCompany.AnnualSales;
             companyRelationship.Company.MainProduct = ajaxViewSaleCompany.MainProduct;
             companyRelationship.Company.MainClient = ajaxViewSaleCompany.MainClient;
-            companyRelationship.Company.Description = ajaxViewSaleCompany.Desc;
+            companyRelationship.Company.Description = HttpUtility.HtmlDecode(ajaxViewSaleCompany.Desc);
             companyRelationship.Company.DistrictNumberID = ajaxViewSaleCompany.DistrictNumberId;
             companyRelationship.Company.Fax = ajaxViewSaleCompany.Fax;
             companyRelationship.Company.Name_CH = ajaxViewSaleCompany.Name_CN;
@@ -369,7 +377,7 @@ namespace Sales.Controllers
             companyRelationship.Company.IsVIP = ajaxViewSaleCompany.IsVIP;
             companyRelationship.Company.Info = ajaxViewSaleCompany.Info;
             companyRelationship.Company.InfoRemark = ajaxViewSaleCompany.InfoRemark;
-            companyRelationship.Description = ajaxViewSaleCompany.Desc;
+            companyRelationship.Description = HttpUtility.HtmlDecode(ajaxViewSaleCompany.Desc);
             companyRelationship.ProgressID = ajaxViewSaleCompany.ProgressId;
             companyRelationship.CoreLVLID = ajaxViewSaleCompany.CoreLVLID;
             companyRelationship.ModifiedDate = DateTime.Now;
@@ -403,6 +411,11 @@ namespace Sales.Controllers
         [ValidateInput(false)]
         public ActionResult AddCompany(AjaxViewSaleCompany ajaxViewSaleCompany)
         {
+            if (string.IsNullOrEmpty(ajaxViewSaleCompany.Desc))
+                ajaxViewSaleCompany.Desc = "";
+            Regex rgEx = new Regex("</?div[^>]*>", RegexOptions.IgnoreCase);
+            ajaxViewSaleCompany.Desc = rgEx.Replace(ajaxViewSaleCompany.Desc, "");  
+
             CompanyRelationship companyRelationship = new CompanyRelationship();
             companyRelationship.Company = new Company();
             companyRelationship.Company.Address = string.IsNullOrEmpty(ajaxViewSaleCompany.Address) ? "" : ajaxViewSaleCompany.Address.Trim();
@@ -410,7 +423,7 @@ namespace Sales.Controllers
             companyRelationship.Company.Business = string.IsNullOrEmpty(ajaxViewSaleCompany.Business) ? "" : ajaxViewSaleCompany.Business.Trim();
             companyRelationship.Company.CompanyTypeID = ajaxViewSaleCompany.TypeId;
             companyRelationship.Company.Contact = string.IsNullOrEmpty(ajaxViewSaleCompany.Phone) ? "" : ajaxViewSaleCompany.Phone.Trim();
-            companyRelationship.Company.Description = string.IsNullOrEmpty(ajaxViewSaleCompany.Desc) ? "" : ajaxViewSaleCompany.Desc.Trim();
+            companyRelationship.Company.Description = string.IsNullOrEmpty(ajaxViewSaleCompany.Desc) ? "" : HttpUtility.HtmlDecode(ajaxViewSaleCompany.Desc);
             companyRelationship.Company.DistrictNumberID = ajaxViewSaleCompany.DistrictNumberId;
             companyRelationship.Company.Fax = string.IsNullOrEmpty(ajaxViewSaleCompany.Fax) ? "" : ajaxViewSaleCompany.Fax.Trim();
             companyRelationship.Company.Name_CH = string.IsNullOrEmpty(ajaxViewSaleCompany.Name_CN) ? "" : ajaxViewSaleCompany.Name_CN.Trim();
@@ -434,7 +447,7 @@ namespace Sales.Controllers
             companyRelationship.Company.Info = ajaxViewSaleCompany.Info;
             companyRelationship.Company.InfoRemark = ajaxViewSaleCompany.InfoRemark;
             companyRelationship.Company.Deleted = false;
-            companyRelationship.Description = string.IsNullOrEmpty(ajaxViewSaleCompany.Desc) ? "" : ajaxViewSaleCompany.Desc.Trim();
+            companyRelationship.Description = string.IsNullOrEmpty(ajaxViewSaleCompany.Desc) ? "" : HttpUtility.HtmlDecode(ajaxViewSaleCompany.Desc);
             companyRelationship.ProgressID = ajaxViewSaleCompany.ProgressId;
             companyRelationship.CoreLVLID = ajaxViewSaleCompany.CoreLVLID;
             companyRelationship.Members = new List<Member>() { };
@@ -569,12 +582,17 @@ namespace Sales.Controllers
         [HttpPost]
         public ActionResult QuickEntry(QuickEntry quickEntry)
         {
+            if (string.IsNullOrEmpty(quickEntry.Desc))
+                quickEntry.Desc = "";
+            Regex rgEx = new Regex("</?div[^>]*>", RegexOptions.IgnoreCase);
+            quickEntry.Desc = rgEx.Replace(quickEntry.Desc, ""); 
+
             CompanyRelationship companyRelationship = new CompanyRelationship();
             companyRelationship.Company = new Company();
             companyRelationship.Company.AreaID = quickEntry.IndustryId;
             companyRelationship.Company.CompanyTypeID = quickEntry.TypeId;
             companyRelationship.Company.Contact = string.IsNullOrEmpty(quickEntry.Phone) ? "" : quickEntry.Phone.Trim();
-            companyRelationship.Company.Description = string.IsNullOrEmpty(quickEntry.Desc) ? "" : quickEntry.Desc.Trim();
+            companyRelationship.Company.Description = string.IsNullOrEmpty(quickEntry.Desc) ? "" : HttpUtility.HtmlDecode(quickEntry.Desc); 
             companyRelationship.Company.DistrictNumberID = quickEntry.DistrictNumberId;
             companyRelationship.Company.Name_CH = string.IsNullOrEmpty(quickEntry.Name_CN) ? "" : quickEntry.Name_CN.Trim();
             companyRelationship.Company.Name_EN = string.IsNullOrEmpty(quickEntry.Name_EN) ? "" : quickEntry.Name_EN.Trim();
@@ -594,7 +612,7 @@ namespace Sales.Controllers
             companyRelationship.CreatedDate = DateTime.Now;
             companyRelationship.ModifiedDate = DateTime.Now;
             companyRelationship.PitchedPoint = string.IsNullOrEmpty(quickEntry.PitchedPoint) ? "" : quickEntry.PitchedPoint.Trim();
-            companyRelationship.Description = string.IsNullOrEmpty(quickEntry.Desc) ? "" : quickEntry.Desc.Trim();
+            companyRelationship.Description = string.IsNullOrEmpty(quickEntry.Desc) ? "" : HttpUtility.HtmlDecode(quickEntry.Desc);
             companyRelationship.Deleted = false;
             if (quickEntry.Categories != null)
             {
@@ -676,6 +694,11 @@ namespace Sales.Controllers
         [HttpPost]
         public ActionResult BulkEntry(BulkEntry bulkEntry, FormCollection collection)
         {
+            if (string.IsNullOrEmpty(bulkEntry.Description))
+                bulkEntry.Description = "";
+            Regex rgEx = new Regex("</?div[^>]*>", RegexOptions.IgnoreCase);
+            bulkEntry.Description = rgEx.Replace(bulkEntry.Description, ""); 
+
             CompanyRelationship companyRelationship = new CompanyRelationship();
             companyRelationship.Company = new Company();
             companyRelationship.Company.AreaID = bulkEntry.IndustryId;
@@ -684,7 +707,7 @@ namespace Sales.Controllers
             companyRelationship.Company.DistrictNumberID = bulkEntry.DistrictNumberId;
             companyRelationship.Company.Name_CH = string.IsNullOrEmpty(bulkEntry.Name_CN) ? "" : bulkEntry.Name_CN.Trim();
             companyRelationship.Company.Name_EN = string.IsNullOrEmpty(bulkEntry.Name_EN) ? "" : bulkEntry.Name_EN.Trim();
-            companyRelationship.Company.Description = bulkEntry.Description;
+            companyRelationship.Company.Description = HttpUtility.HtmlDecode(bulkEntry.Description);
             companyRelationship.Company.CreatedDate = DateTime.Now;
             companyRelationship.Company.Creator = Employee.CurrentUserName;
             companyRelationship.Company.ModifiedDate = DateTime.Now;
@@ -701,7 +724,7 @@ namespace Sales.Controllers
             companyRelationship.CreatedDate = DateTime.Now;
             companyRelationship.ModifiedDate = DateTime.Now;
             companyRelationship.Deleted = false;
-            companyRelationship.Description =  string.IsNullOrEmpty(bulkEntry.Description) ? string.Empty : bulkEntry.Description.Trim();
+            companyRelationship.Description = string.IsNullOrEmpty(bulkEntry.Description) ? string.Empty : HttpUtility.HtmlDecode(bulkEntry.Description); ;
             companyRelationship.PitchedPoint = string.IsNullOrEmpty(bulkEntry.PitchedPoint) ? "" : bulkEntry.PitchedPoint.Trim();
             if (bulkEntry.Categories != null)
             {
@@ -1311,8 +1334,12 @@ namespace Sales.Controllers
         {
             int id = int.Parse(c["crmid"]);
             string pp = c["pp"];
+            if (string.IsNullOrEmpty(pp))
+                pp = "";
+            Regex rgEx = new Regex("</?div[^>]*>", RegexOptions.IgnoreCase);
+            pp = rgEx.Replace(pp, ""); 
             var cr = CH.DB.CompanyRelationships.Find(id);
-            cr.Company.Description = pp;
+            cr.Company.Description = HttpUtility.HtmlDecode(pp);
             CH.Edit<CompanyRelationship>(cr);
 
             return Json("");
@@ -1473,7 +1500,8 @@ namespace Sales.Controllers
                                   },
                           ProcessName = l.Progress.Name,
                           DealCount = l.Deals.Count(),
-                          Members = l.Members
+                          Members = l.Members,
+                          CategoryString = l.CategoryString,
                       };
             CH.DB.Configuration.ProxyCreationEnabled = false;
             if (typeid == 0)
@@ -1485,8 +1513,14 @@ namespace Sales.Controllers
             else if (typeid == 3)
                 ccs = ccs.Where(w => w.LeadCalledCount >= 3);
             ccs = ccs.OrderByDescending(w => w.DealCount).ThenBy(w=>w.CompanyName);
-
-            return View(new GridModel(ccs.ToList()));
+            var _Coverage = ccs.ToList();
+            foreach (var crm in _Coverage)
+            {
+                var g = crm.Calls.GroupBy(lc => lc.LeadID).Select(lc => lc.Key.Value).ToList();
+                var leads = CH.DB.Leads.Where(x => g.Contains(x.ID)).Select(x=>x.Title).Where(x=>!string.IsNullOrEmpty(x)).ToArray();
+                crm.LeadTitles = string.Join(",", leads);
+            }
+            return View(new GridModel(_Coverage));
         }
         [GridAction]
         public ActionResult _PickUpList(int projectid, int coreid)

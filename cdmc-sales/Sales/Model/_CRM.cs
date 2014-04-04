@@ -60,7 +60,7 @@ namespace Sales.Model
         public string Gender { get; set; }
         public bool OwnLeader { get; set; }
         public int? LastCallTypeID { get; set; }
-
+        
     }
 
     /// <summary>
@@ -418,7 +418,8 @@ namespace Sales.Model
             }
         }
 
-        
+        public string CategoryString { get; set; }
+        public string LeadTitles { get; set; }
     }
 
 

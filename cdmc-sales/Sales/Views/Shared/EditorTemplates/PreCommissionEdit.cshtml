@@ -216,10 +216,15 @@
             $("#DelegateMoreCommission").val(DelegateMoreCommission.toFixed(0));
             $("#SponsorCommission").val(SponsorCommission.toFixed(0));
             $("#DelegateCommission").val(DelegateCommission.toFixed(0));
-
-            $("#Commission").val((DelegateLessCommission + DelegateMoreCommission + SponsorCommission + DelegateCommission).toFixed(0));
-            $("#TotalCommission").val($("#Commission").val());
-            $("#ActualCommission").val($("#Commission").val());
+            var commission = (DelegateLessCommission + DelegateMoreCommission + SponsorCommission + DelegateCommission).toFixed(0);
+            $("#Commission").val(commission);
+            var tax = 0;
+            if (commission > 3500) {
+                tax = ((commission - 3500) * 0.07).toFixed(0);
+                $("#Tax").val(tax);
+            }
+            $("#TotalCommission").val(commission - tax);
+            $("#ActualCommission").val(commission - tax);
 
             if (result.InOut == "国内") {
                 $("#Delegatetr").hide();
@@ -268,7 +273,8 @@
         </td>
         <td  style="width:10%">
             <div id="enddate1">
-                @Html.Telerik().DatePickerFor(model => model.EndDate).Value(Model.ID == 0 ? DateTime.Now.AddMonths(-1).EndOfMonth() : Model.EndDate)
+                @Html.Telerik().DatePickerFor(model => model.EndDate).Value(Model.ID == 0 ? DateTime.Now.AddMonths(-1).EndOfMonth() : Model.EndDate).Enable(false).ShowButton(false).InputHtmlAttributes(new { style = "background-color:#f1f1f1" })
+
                 @Html.ValidationMessageFor(model => model.EndDate)
             </div>
             <div id="enddate2">
@@ -428,7 +434,8 @@
          @Html.LabelFor(model => model.Tax)
         </td>
         <td>
-        @Html.Telerik().CurrencyTextBoxFor(model => model.Tax).ClientEvents(e => e.OnChange("OnTaxChange")).InputHtmlAttributes(new { style = "width:100%" })
+        @Html.TextBoxFor(model => model.Tax, new { style = "width:90%" })
+        
         </td>
         <td>
             @Html.LabelFor(model => model.Bonus)
@@ -457,7 +464,7 @@
     </tr>*@
     <tr>
     <td colspan="8" style="color:Red">
-    海外每月提成预发总额 = sponsor出单总额* 提成率(5%)+delegate出单总额*提成率(5%)
+    每月提成预发总额 = sponsor出单总额* 提成率(5%)+delegate出单总额*提成率(5%)
     </td>
     </tr>
 </table>
@@ -581,6 +588,9 @@
             calc();
         });
         $("#DelegateRate").change(function () {
+            calc();
+        });
+        $("#Tax").change(function () {
             calc();
         });
     });

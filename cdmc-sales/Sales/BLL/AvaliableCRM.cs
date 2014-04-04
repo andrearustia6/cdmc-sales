@@ -7,6 +7,9 @@ using Utl;
 using Entity;
 using BLL;
 using System.Data.Common;
+using System.Text.RegularExpressions;
+using System.Collections;
+using System.Text;
 namespace Sales.BLL
 {
 
@@ -285,7 +288,7 @@ namespace Sales.BLL
                 Description = data.Company.Description,
                 Competitor = data.Company.Competitor,
                 PitchPoint = data.PitchedPoint,
-                _Leads = (from leads in data.Company.Leads.Where(f => f.Deleted == false)
+                _Leads = (from leads in data.Company.Leads.Where(f => f.Deleted == false).OrderByDescending(x=>x.Sequence)
                           select new _Lead()
                           {
                               ID = leads.ID,
@@ -300,7 +303,8 @@ namespace Sales.BLL
                               Gender = !string.IsNullOrEmpty(leads.Gender) ? leads.Gender : "",
                               
                               LastCallTypeID = data.LeadCalls.Where(c => c.LeadID == leads.ID && c.Deleted==false).OrderByDescending(c => c.CallDate).FirstOrDefault() == null ? 0 : data.LeadCalls.Where(c => c.LeadID == leads.ID && c.Deleted==false).OrderByDescending(c => c.CallDate).FirstOrDefault().LeadCallTypeID,
-                              OwnLeader = data.Members.Where(w=>w.Name==Employee.CurrentUserName).Any()
+                              OwnLeader = data.Members.Where(w=>w.Name==Employee.CurrentUserName).Any(),
+                              Sequence = leads.Sequence
                           }),
                 _LeadCalls = (from leadcalls in data.LeadCalls.Where(f => f.Deleted == false && f.ProjectID==data.ProjectID).OrderByDescending(m => m.CallDate)
                               select new _LeadCall()
@@ -330,7 +334,15 @@ namespace Sales.BLL
                               }),
                 _ProgressTrack = CH.DB.ProgressTrack.Where(pt => pt.CompanyRelationshipID == crmid).OrderByDescending(pt => pt.ChangeDate)
             };
-            crm._Leads = crm._Leads.OrderByDescending(l => l.LastCallTypeID).ThenBy(l => l.Name);
+            crm._Leads = crm._Leads.OrderByDescending(l => l.Sequence).ThenBy(l => l.Name);
+            //Regex regex = new Regex(@"<[^>]+>|</[^>]+>");
+            //crm.Description = regex.Replace(crm.Description, "");
+            //crm.Description = crm.Description.Replace("&nbsp;", "");
+            if (!string.IsNullOrEmpty(crm.Description))
+            {
+                if (crm.Description.Length > 200)
+                    crm.Description = SubstringToHTML(crm.Description, 200, "...");
+            }
             return crm;
         }
         public static _CRM _CRMGetAvaliableCrmDetailByCrmIDLeadID(int crmid, int leadid)
@@ -410,7 +422,8 @@ namespace Sales.BLL
                               Email = leads.EMail,
                               Gender = !string.IsNullOrEmpty(leads.Gender) ? leads.Gender : "",
                               LastCallTypeID = data.LeadCalls.Where(c => c.LeadID == leads.ID && c.Deleted==false).OrderByDescending(c => c.CallDate).FirstOrDefault() == null ? 0 : data.LeadCalls.Where(c => c.LeadID == leads.ID && c.Deleted==false).OrderByDescending(c => c.CallDate).FirstOrDefault().LeadCallTypeID,
-                              OwnLeader = data.Members.Where(w => w.Name == Employee.CurrentUserName).Any()
+                              OwnLeader = data.Members.Where(w => w.Name == Employee.CurrentUserName).Any(),
+                              Sequence = leads.Sequence
                           }),
                 _LeadCalls = (from leadcalls in data.LeadCalls.Where(f => f.Deleted == false).OrderByDescending(m => m.CallDate)
                               select new _LeadCall()
@@ -428,7 +441,12 @@ namespace Sales.BLL
                 _ProgressTrack = CH.DB.ProgressTrack.Where(pt => pt.CompanyRelationshipID == crmid).OrderByDescending(pt => pt.ChangeDate)
 
             };
-            crm._Leads = crm._Leads.OrderByDescending(l => l.LastCallTypeID);
+            crm._Leads = crm._Leads.OrderByDescending(l => l.Sequence);
+            if (!string.IsNullOrEmpty(crm.Description))
+            {
+                if (crm.Description.Length > 200)
+                    crm.Description = SubstringToHTML(crm.Description, 200, "...");
+            }
             return crm;
         }
         public static _CRM _CRMGetAvaliableCrmDetailByCrmIDMember(int crmid, string membername)
@@ -508,7 +526,8 @@ namespace Sales.BLL
                               Email = leads.EMail,
                               Gender = !string.IsNullOrEmpty(leads.Gender) ? leads.Gender : "",
                               LastCallTypeID = data.LeadCalls.Where(c => c.LeadID == leads.ID && c.Deleted==false).OrderByDescending(c => c.CallDate).FirstOrDefault() == null ? 0 : data.LeadCalls.Where(c => c.LeadID == leads.ID && c.Deleted==false).OrderByDescending(c => c.CallDate).FirstOrDefault().LeadCallTypeID,
-                              OwnLeader = data.Members.Where(w => w.Name == Employee.CurrentUserName).Any()
+                              OwnLeader = data.Members.Where(w => w.Name == Employee.CurrentUserName).Any(),
+                              Sequence = leads.Sequence
                           }),
                 _LeadCalls = (from leadcalls in data.LeadCalls.Where(f => f.Deleted == false).OrderByDescending(m => m.CallDate)
                               select new _LeadCall()
@@ -526,7 +545,12 @@ namespace Sales.BLL
                 _ProgressTrack = CH.DB.ProgressTrack.Where(pt => pt.CompanyRelationshipID == crmid).OrderByDescending(pt => pt.ChangeDate)
 
             };
-            crm._Leads = crm._Leads.OrderByDescending(l => l.LastCallTypeID);
+            crm._Leads = crm._Leads.OrderByDescending(l => l.Sequence);
+            if (!string.IsNullOrEmpty(crm.Description))
+            {
+                if (crm.Description.Length > 200)
+                    crm.Description = SubstringToHTML(crm.Description, 200, "...");
+            }
             return crm;
         }
         /// <summary>
@@ -569,6 +593,83 @@ namespace Sales.BLL
              };
 
             return corecrms;
+        }
+        /// <summary>
+        /// 按字节长度截取字符串(支持截取带HTML代码样式的字符串)
+        /// </summary>
+        /// <param name="param">将要截取的字符串参数</param>
+        /// <param name="length">截取的字节长度</param>
+        /// <param name="end">字符串末尾补上的字符串</param>
+        /// <returns>返回截取后的字符串</returns>
+        public static string SubstringToHTML(string param, int length, string end)
+        {
+            string Pattern = null;
+            MatchCollection m = null;
+            StringBuilder result = new StringBuilder();
+            int n = 0;
+            char temp;
+            bool isCode = false; //是不是HTML代码
+            bool isHTML = false; //是不是HTML特殊字符,如&nbsp;
+            char[] pchar = param.ToCharArray();
+            for (int i = 0; i < pchar.Length; i++)
+            {
+                temp = pchar[i];
+                if (temp == '<')
+                {
+                    isCode = true;
+                }
+                else if (temp == '&')
+                {
+                    isHTML = true;
+                }
+                else if (temp == '>' && isCode)
+                {
+                    n = n - 1;
+                    isCode = false;
+                }
+                else if (temp == ';' && isHTML)
+                {
+                    isHTML = false;
+                }
+                if (!isCode && !isHTML)
+                {
+                    n = n + 1;
+                    //UNICODE码字符占两个字节
+                    if (System.Text.Encoding.Default.GetBytes(temp + "").Length > 1)
+                    {
+                        n = n + 1;
+                    }
+                }
+                result.Append(temp);
+                if (n >= length)
+                {
+                    break;
+                }
+            }
+            result.Append(end);
+            //取出截取字符串中的HTML标记
+            string temp_result = result.ToString().Replace("(>)[^<>]*(<?)", "$1$2");
+            //去掉不需要结素标记的HTML标记
+            temp_result = temp_result.Replace(@"</?(AREA|BASE|BASEFONT|BODY|BR|COL|COLGROUP|DD|DT|FRAME|HEAD|HR|HTML|IMG|INPUT|ISINDEX|LI|LINK|META|OPTION|P|PARAM|TBODY|TD|TFOOT|TH|THEAD|TR|area|base|basefont|body|br|col|colgroup|dd|dt|frame|head|hr|html|img|input|isindex|li|link|meta|option|p|param|tbody|td|tfoot|th|thead|tr)[^<>]*/?>",
+             "");
+            //去掉成对的HTML标记
+            temp_result = temp_result.Replace(@"<([a-zA-Z]+)[^<>]*>(.*?)</\1>", "$2");
+            //用正则表达式取出标记
+            Pattern = ("<([a-zA-Z]+)[^<>]*>");
+            m = Regex.Matches(temp_result, Pattern);
+            ArrayList endHTML = new ArrayList();
+            foreach (Match mt in m)
+            {
+                endHTML.Add(mt.Result("$1"));
+            }
+            //补全不成对的HTML标记
+            for (int i = endHTML.Count - 1; i >= 0; i--)
+            {
+                result.Append("</");
+                result.Append(endHTML[i]);
+                result.Append(">");
+            }
+            return result.ToString();
         }
     }
 }

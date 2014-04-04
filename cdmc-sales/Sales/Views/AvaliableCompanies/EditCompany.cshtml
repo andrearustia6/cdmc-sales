@@ -147,7 +147,9 @@
                     .Text("更多...")
                     .Content(@<text>
                         @Html.LabelFor(model => model.Desc)
-                        @Html.TextAreaFor(model => model.Desc)
+                        
+                        @Html.Telerik().EditorFor(model => model.Desc).Tools(tooles => tooles.Clear().FontColor().FontSize()).HtmlAttributes(new { style = "width: 900px; height: 450px;" }) 
+                        
                       @*  公司主要客户
                         @Html.TextAreaFor(model => model.Customers)*@
                         主要竞争对手
