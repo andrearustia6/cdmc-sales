@@ -245,7 +245,7 @@ namespace Sales.Controllers
         [GridAction]
         public ActionResult PrecommissionIndex(int? month)
         {
-            if (month == null) month = DateTime.Now.Month;
+            if (month == null) month = DateTime.Now.AddMonths(-1).Month;
             // if (month == null) month = 5;
             var list = Finance_Logical._PreCommissionBLL.GetPreCommission(month.Value);
             var data = list.OrderBy(p => p.TargetNameEN).ToList();
@@ -307,7 +307,7 @@ namespace Sales.Controllers
         {
             PreCommission newmodel = new PreCommission();
             newmodel.StartDate = model.StartDate;
-            newmodel.EndDate = model.EndDate;
+            newmodel.EndDate = model.StartDate.AddMonths(1).AddDays(-1);
             newmodel.TargetNameEN = model.TargetNameEN;
             newmodel.TargetNameCN = model.TargetNameCN;
             newmodel.ProjectID = model.ProjectID;

@@ -253,7 +253,7 @@
     .Width(1000).Height(540).Draggable(true).Modal(true).Visible(false)
 )
 @(Html.Telerik().Window().Title("公司介绍")
-        .Name("Description")
+        .Name("Description1")
     .Content(@<text><div class="dialogue-Description">
         <div class="Description-wrapper">
         </div>
@@ -455,16 +455,19 @@
     }
 
     function saveDescription() {
-        $.ajax({
-            url: "/AvaliableCompanies/EditDescription",
-            type: "post",
-            data: { crmid: crmid, pp: $("textarea[name=Description]").val() },
-            dataType: "json",
-            success: function (data, status) {
-                refreshdetail();
-            }
-        });
-        $('#Description').data('tWindow').close();
+        
+        if ($("textarea[id=Company_Description-value]").val() != undefined) {
+            $.ajax({
+                url: "/AvaliableCompanies/EditDescription",
+                type: "post",
+                data: { crmid: crmid, pp: $("textarea[id=Company_Description-value]").val() },
+                dataType: "json",
+                success: function (data, status) {
+                    refreshdetail();
+                }
+            });
+        }
+        $('#Description1').data('tWindow').close();
     }
     function saveCompetitor() {
         $.ajax({
@@ -1204,7 +1207,7 @@
     function onDescription(currentCompanyId) {
         $.post('GetDescription', { crmid: currentCompanyId }, function (result) {
             $('.Description-wrapper').html(result);
-            var window = $('#Description').data('tWindow');
+            var window = $('#Description1').data('tWindow');
             window.center().open();
 
             while ($('.dialogue-Description form').length > 1) {

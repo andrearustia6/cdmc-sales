@@ -104,7 +104,7 @@
                         
                     }
                 }
-                @if (Utl.Employee.CurrentRole.Level == LeaderRequired.LVL )
+                @if (Utl.Employee.CurrentRole.Level == LeaderRequired.LVL)
                 {
                     if (@Model._members.Where(m => m.Name == Utl.Employee.CurrentUserName).Count() > 0)
                     {
@@ -223,7 +223,8 @@
                             </h2>
                             @if (!string.IsNullOrWhiteSpace(Model.Description))
                             {
-                                if (Model.Description.Length > 200)
+                               <div style="word-break:break-all;">@Html.Raw(Model.Description)</div>
+                                @*if (Model.Description.Length > 200)
                                 {
                                 <p>@Model.Description.Substring(0, 200) ...</p>
                                 
@@ -232,8 +233,7 @@
                                 {
                                 @Model.Description
                                
-                                }
-
+                                }*@
                             }
                             else
                             {

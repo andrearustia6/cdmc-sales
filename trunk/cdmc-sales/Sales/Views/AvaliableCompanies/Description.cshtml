@@ -4,20 +4,26 @@
 <ul>
     <li>
        
+       
           @if (@Model.Members.Where(m => m.Name == Utl.Employee.CurrentUserName).Count() > 0)
           {
-            <textarea style="border:1px solid black;width:100%;height:440px;" name="Description">@Model.Company.Description</textarea>
+              @Html.Telerik().EditorFor(model => model.Company.Description).Encode(false).Tools(tooles => tooles.Clear().FontColor().FontSize()).HtmlAttributes(new { style = "width: 590px; height: 450px;" }) 
+            @*<textarea style="border:1px solid black;width:100%;height:440px;" name="Description">@Model.Company.Description</textarea>*@
           }
           else
           {
               if (Utl.Employee.CurrentRole.Level == ManagerRequired.LVL || Utl.Employee.CurrentRole.Level == LeaderRequired.LVL)
               {
-                <textarea style="border:1px solid black;width:100%;height:440px;" name="Description" readonly="readonly">@Model.Company.Description</textarea>
+                @*<textarea style="border:1px solid black;width:100%;height:440px;" name="Description" readonly="readonly">@Model.Company.Description</textarea>*@
+              
+              //@Html.DisplayFor(model => model.Company.Description)
+              @Html.Raw(@Model.Company.Description)
               }
               else
               {
-                  <textarea style="border:1px solid black;width:100%;height:440px;" name="Description">@Model.Company.Description</textarea>
-                }
+                  @*<textarea style="border:1px solid black;width:100%;height:440px;" name="Description">@Model.Company.Description</textarea>*@
+              @Html.Telerik().EditorFor(model => model.Company.Description).Encode(false).Tools(tooles => tooles.Clear().FontColor().FontSize()).HtmlAttributes(new { style = "width: 590px; height: 450px;" }) 
+              }
           }
     </li>
 </ul>

@@ -865,6 +865,9 @@ namespace Model
         public string Twitter { get; set; }
         [Display(Name = "分支机构")]
         public string Branch { get; set; }
+
+        [Display(Name = "排序")]
+        public int? Sequence { get; set; }
     }
 
     public class AjaxViewLeadCall
