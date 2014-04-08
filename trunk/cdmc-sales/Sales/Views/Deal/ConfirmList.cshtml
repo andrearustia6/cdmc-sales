@@ -4,6 +4,10 @@
     {
         ViewBag.Title = "出单到账确认";
     }
+    else if (Utl.Employee.CurrentRole.Level == ManagerRequired.LVL)
+    {
+        ViewBag.Title = "板块出单确认";
+    }
     else
     {
         ViewBag.Title = "会务出单确认";

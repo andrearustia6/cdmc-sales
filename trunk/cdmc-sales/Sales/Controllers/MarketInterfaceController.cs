@@ -100,7 +100,6 @@ namespace Sales.Controllers
                 MemoryStream output = new MemoryStream();
                 //StreamWriter writer = new StreamWriter(output, Encoding.UTF8);
                 StreamWriter writer = new StreamWriter(output, System.Text.Encoding.Default);
-                writer.WriteLine();
                 foreach (var lead in ls)
                 {
                     writer.Write(lead);

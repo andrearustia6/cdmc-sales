@@ -1235,7 +1235,7 @@ namespace Sales.Controllers
              IQueryable<int?> cs= from c in CH.DB.CompanyRelationships
                                   where c.Members.Select(s => s.Name).Any(a => a == user) && c.ProjectID == projectid
                                   select c.CompanyID;
-             IQueryable<Lead> leads = from l in CH.DB.Leads where cs.Any(a=>a==l.CompanyID) select l;
+             IQueryable<Lead> leads = from l in CH.DB.Leads where cs.Any(a=>a==l.CompanyID) && l.IsExportEmail==true select l;
           
             MemoryStream output = new MemoryStream();
             StreamWriter writer = new StreamWriter(output, Encoding.UTF8);

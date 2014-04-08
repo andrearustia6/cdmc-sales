@@ -81,6 +81,7 @@ namespace Sales.Controllers
         public ActionResult GetAddLead(int companyId)
         {
             AjaxViewLead ajaxViewLead = new AjaxViewLead() { CompanyId = companyId };
+            ajaxViewLead.IsExportEmail = true;
             return PartialView("AddLead", ajaxViewLead);
         }
 
@@ -121,6 +122,7 @@ namespace Sales.Controllers
                 Branch = string.IsNullOrEmpty(ajaxViewLead.Branch) ? "" : ajaxViewLead.Branch.Trim(),
                 ZIP = string.IsNullOrEmpty(ajaxViewLead.Zip) ? "" : ajaxViewLead.Zip.Trim(),
                 Sequence = ajaxViewLead.Sequence,
+                IsExportEmail = ajaxViewLead.IsExportEmail,
             };
             if (leadRole != null)
             {
@@ -168,7 +170,9 @@ namespace Sales.Controllers
                 QQ = lead.QQ,
                 Twitter = lead.Twitter,
                 Branch = lead.Branch,
-                Sequence=lead.Sequence
+                Sequence=lead.Sequence,
+                IsExportEmail = lead.IsExportEmail==null?false:(bool)lead.IsExportEmail,
+
             };
             return PartialView("EditLead", ajaxViewLead);
         }
@@ -209,6 +213,7 @@ namespace Sales.Controllers
             lead.ZIP = ajaxViewLead.Zip;
             lead.LeadRoles = string.Empty;
             lead.Sequence = ajaxViewLead.Sequence;
+            lead.IsExportEmail = ajaxViewLead.IsExportEmail;
             if (leadRole != null)
             {
                 foreach (string leadrole in leadRole)

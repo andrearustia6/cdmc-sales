@@ -662,7 +662,7 @@ namespace Entity
 
             var leads = query.Select(s => s.Company).SelectMany(s => s.Leads);
 
-            return leads.Where(w => w.EMail != null && w.EMail != "");
+            return leads.Where(w => w.EMail != null && w.EMail != "" && w.IsExportEmail==true);
         }
         public static List<string> ProjectLeadsEmail(this Project item, int? dealcondition, int? distinctnumber, string categories = "")
         {
@@ -720,10 +720,10 @@ namespace Entity
             }
 
             //query = query.Where(q => q.Company.Leads.All(l => l.EMail != null && l.EMail != ""));
-
+            
             var leads = query.Select(s => s.Company).SelectMany(s => s.Leads);
 
-            return leads.Where(w => w.EMail != null && w.EMail != "").Select(w => w.EMail).ToList();
+            return leads.Where(w => w.EMail != null && w.EMail != "" && w.IsExportEmail==true).Select(w => w.EMail).ToList();
         }
         public static RoleInProject RoleInProject(this Project item)
         {
