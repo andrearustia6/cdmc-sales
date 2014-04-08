@@ -43,7 +43,10 @@
            
             <td>
                 @Html.LabelFor(model => model.WorkingEmail)
-                @Html.TextBoxFor(model => model.WorkingEmail)
+                @Html.TextBoxFor(model => model.WorkingEmail, new { style = "width:40%" })
+                
+                @Html.CheckBoxFor(model => model.IsExportEmail)
+                导出
             </td>
         </tr>
         <tr>

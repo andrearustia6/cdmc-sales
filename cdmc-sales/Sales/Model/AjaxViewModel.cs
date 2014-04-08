@@ -868,6 +868,9 @@ namespace Model
 
         [Display(Name = "排序")]
         public int? Sequence { get; set; }
+
+        [Display(Name = "导出")]
+        public bool IsExportEmail { get; set; }
     }
 
     public class AjaxViewLeadCall

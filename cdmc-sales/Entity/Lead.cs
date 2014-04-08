@@ -274,6 +274,9 @@ namespace Entity
 
         [Display(Name = "删除")]
         public bool? Deleted { get; set; }
+
+        [Display(Name = "导出")]
+        public bool? IsExportEmail { get; set; }
     }
 
     /// <summary>
