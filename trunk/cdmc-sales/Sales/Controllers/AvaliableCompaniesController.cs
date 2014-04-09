@@ -354,7 +354,10 @@ namespace Sales.Controllers
             if (string.IsNullOrEmpty(ajaxViewSaleCompany.Desc))
                 ajaxViewSaleCompany.Desc = "";
             Regex rgEx = new Regex("</?div[^>]*>", RegexOptions.IgnoreCase);
-            ajaxViewSaleCompany.Desc = rgEx.Replace(ajaxViewSaleCompany.Desc, ""); 
+            
+            ajaxViewSaleCompany.Desc = rgEx.Replace(ajaxViewSaleCompany.Desc, "");
+            if (ExecRepaceHTML(HttpUtility.HtmlDecode(ajaxViewSaleCompany.Desc)) == "")
+                ajaxViewSaleCompany.Desc = "";
             var companyRelationship = CH.DB.CompanyRelationships.FirstOrDefault(c => c.CompanyID == ajaxViewSaleCompany.CompanyId);
             companyRelationship.Company.Address = ajaxViewSaleCompany.Address;
             companyRelationship.Company.AreaID = ajaxViewSaleCompany.IndustryId;
@@ -419,8 +422,9 @@ namespace Sales.Controllers
             if (string.IsNullOrEmpty(ajaxViewSaleCompany.Desc))
                 ajaxViewSaleCompany.Desc = "";
             Regex rgEx = new Regex("</?div[^>]*>", RegexOptions.IgnoreCase);
-            ajaxViewSaleCompany.Desc = rgEx.Replace(ajaxViewSaleCompany.Desc, "");  
-
+            ajaxViewSaleCompany.Desc = rgEx.Replace(ajaxViewSaleCompany.Desc, "");
+            if (ExecRepaceHTML(HttpUtility.HtmlDecode(ajaxViewSaleCompany.Desc)) == "")
+                ajaxViewSaleCompany.Desc = "";
             CompanyRelationship companyRelationship = new CompanyRelationship();
             companyRelationship.Company = new Company();
             companyRelationship.Company.Address = string.IsNullOrEmpty(ajaxViewSaleCompany.Address) ? "" : ajaxViewSaleCompany.Address.Trim();
@@ -1339,10 +1343,13 @@ namespace Sales.Controllers
         {
             int id = int.Parse(c["crmid"]);
             string pp = c["pp"];
+
             if (string.IsNullOrEmpty(pp))
                 pp = "";
             Regex rgEx = new Regex("</?div[^>]*>", RegexOptions.IgnoreCase);
-            pp = rgEx.Replace(pp, ""); 
+            pp = rgEx.Replace(pp, "");
+            if (ExecRepaceHTML(HttpUtility.HtmlDecode(pp)) == "")
+                pp = "";
             var cr = CH.DB.CompanyRelationships.Find(id);
             cr.Company.Description = HttpUtility.HtmlDecode(pp);
             CH.Edit<CompanyRelationship>(cr);
@@ -1703,5 +1710,13 @@ namespace Sales.Controllers
             }
             return Json(new { dealId = item.ID, dealCode = item.DealCode, companyRelationshipId = item.CompanyRelationshipID });
         }
+
+        public static string ExecRepaceHTML(string Htmlstring)   
+        {
+            string stroutput = Htmlstring;
+            Regex regex = new Regex(@"<[^>]+>|</[^>]+>");
+            stroutput = regex.Replace(stroutput, "");
+            return stroutput.Trim();
+        } 
     }
 }
