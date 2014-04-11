@@ -24,6 +24,7 @@
     lists.Add(listitem);
 }
 <div>
+
 已打 @Html.DropDownList("list", lists, "请选择", new { onchange = "onListChange();" })
 </div>
 @(Html.Telerik().Grid<_CoreCoverage>().Name("CoreCoverage")
@@ -54,7 +55,7 @@
      .DataBinding(dataBinding =>
      {
          dataBinding.Ajax().Select("_PickUpList", "AvaliableCompanies", new { projectid = projectid, coreid = coreid });
-     })
+     }) .ClientEvents(events => events.OnRowDataBound("onPickUpRowDataBound"))
         .Columns(columns =>
         {
             columns.Bound(p => p.Sales).Title("姓名").Width(80).HtmlAttributes(new { style = "text-align:left" });
@@ -67,6 +68,17 @@
                .PageOnScroll(true).PageSize(25))
                    .Scrollable(scrolling => scrolling.Height(600)).Sortable().Resizable(r => r.Columns(true)).Filterable()
                        )
+@(Html.Telerik().Window().Title("详细")
+    .Name("pickupdetail")
+    .Content(@<text><div class="dialogue-pickupdetail">
+        <div class="pickupdetail-wrapper">
+        </div>
+        
+    </div></text>)
+        .Width(1000)
+        .Height(520)
+                .Modal(true).Visible(false).Draggable(true)
+    )
     <script>
         var clicked = false;
         function dataBinding(e) {
@@ -92,5 +104,23 @@
             if (dataItem.DealCount > 0)
                 row.cells[0].innerHTML = "<div width='100%' style='background-color:lightgreen'>" + dataItem.CompanyName + "</div>";
             row.cells[5].innerHTML = "<div width='100%' style='word-wrap:break-word;' >" + dataItem.LeadTitles + "</div>";
+        }
+        function onPickUpRowDataBound(e) {
+            var row = e.row;
+            var dataItem = e.dataItem;
+            var sales = "'" + dataItem.Sales + "'";
+            row.cells[1].innerHTML = "<div width='100%' style='word-wrap:break-word;cursor:pointer' onclick=showdetail(" + sales + "," + dataItem.coreid + ",1)>" + dataItem.FirstWeekCount + "</div>";
+            row.cells[2].innerHTML = "<div width='100%' style='word-wrap:break-word;cursor:pointer' onclick=showdetail(" + sales + "," + dataItem.coreid + ",2)>" + dataItem.SecondWeekCount + "</div>";
+            row.cells[3].innerHTML = "<div width='100%' style='word-wrap:break-word;cursor:pointer' onclick=showdetail(" + sales + "," + dataItem.coreid + ",3)>" + dataItem.ThirdWeekCount + "</div>";
+            row.cells[4].innerHTML = "<div width='100%' style='word-wrap:break-word;cursor:pointer' onclick=showdetail(" + sales + "," + dataItem.coreid + ",4)>" + dataItem.FourthWeekCount + "</div>";
+        }
+        function showdetail(sales,coreid,index) {
+            var currentProjectId = $('#projectid').val();
+            $.post('GetPickUpDetail', { projectId: currentProjectId,coreid:coreid,sales:sales,index:index }, function (result) {
+                $('.pickupdetail-wrapper').html(result);
+                var window = $('#pickupdetail').data('tWindow');
+                window.center().open();
+            });
+           
         }
     </script>

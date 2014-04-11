@@ -1,0 +1,224 @@
+﻿@using Entity
+@using Sales.Model
+@model _CRM
+<style>
+    .fieldblock
+    {
+    }
+    .fieldname div
+    {
+        padding: 2px;
+        min-width: 100px;
+        background-color: #FFDEAD;
+        border-bottom-color: #FF8C00;
+        border: 1px solid #CCC;
+        display: inline-block;
+        margin-left: 8px;
+        margin-bottom: 8px;
+    }
+    .fieldname div font
+    {
+        font-size: 12px;
+        color: Green;
+    }
+    
+    .selections span
+    {
+    }
+    .fieldError
+    {
+        border: 1px solid red !important;
+    }
+    .text-overflow
+    {
+        display: inline-block;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+</style>
+<div class="memberCompanies">
+    @*<div class="quan">
+        <div class="quan_1">
+            <a class="PickUp" href="#" onclick="onPickUp()">领用</a>
+            <div class="quan_2">
+                6.12<p>
+                    <img src="../images/quan-01.jpg" width="19" height="20" alt="yuan" /></p>
+            </div>
+            <div class="quan_3">
+                -2</div>
+            <div class="quan_2">
+                6.12<p>
+                    <img src="../images/quan-03.jpg" width="19" height="20" alt="yuan" /></p>
+            </div>
+            <div class="quan_3">
+                -2</div>
+            <div class="quan_2">
+                6.12<p>
+                    <img src="../images/quan-04.jpg" width="19" height="20" alt="yuan" /></p>
+            </div>
+            <div class="quan_3">
+                -2</div>
+            <div class="quan_2">
+                6.12<p>
+                    <img src="../images/quan-05.jpg" width="19" height="20" alt="yuan" /></p>
+            </div>
+            
+        </div>
+    </div>*@
+    <div class="quan_4">
+        @{
+            string leadhide = "";
+            string memberhide = "";
+        }
+        @Html.Telerik().Splitter().Name("dsppickup").HtmlAttributes(new { style = "overflow:auto;height:600px;" }).Orientation(SplitterOrientation.Horizontal).Panes(p =>
+   {
+       @*p.Add().Size("50%").Content(@<text>
+        <div class="left" style="width: 98%;">
+            <div class="left_1">
+                <p>@Model.CompanyName</p>
+                @{if (Model.Contact != null)
+                  {
+                    <p>
+                        T:+ @Model.Contact</p>
+                  }
+                }
+                @{if (Model.Fax != null)
+                  {
+                    <p>
+                        F:+ @Model.Fax</p>
+                  }
+                }
+
+            </div>
+            
+            <div class="left_3">
+                <div class="left_4">
+                    决策人状态统计
+                </div>
+                <div class="left_5">
+                    <img src="../images/quan-01.png" width="15" height="15" alt="yuan" title="没联系" />@Model.NoCallCount
+                    <img src="../images/quan-09.png" width="15" height="15" alt="yuan" title="Blowed和Not Piteched" />@Model.NoPitchBlowedCount
+                    <img src="../images/quan-10.png" width="15" height="15" alt="yuan" title="Pitched和Full Pitched和Call Backed" />@Model.TotalPitchCount
+                    <img src="../images/55.png" width="15" height="15" alt="yuan" title="Qualified Decision和Waiting for Approval" />@Model.QualifiedWaitForCount
+                    <img src="../images/quan-08.png" width="15" height="15" alt="yuan" title="Closed" />@Model.CloseDealCount
+                </div>
+            </div>
+        </div>   
+        
+        </text>);*@
+       p.Add().Content(@<text>
+        <div class="right" style="width: 100%;">
+            
+            @if (Model._LeadCalls != null)
+            {
+                var leadcalls = @Model._LeadCalls;
+                List<int> lcIdList = new List<int>();
+
+                if (leadcalls != null && leadcalls.Count() > 0)
+                {
+                    <h4 style="margin-left:5px;">致电列表</h4>
+                    foreach (var call in leadcalls)
+                    {
+                        <div class="right_2 leadcall@(call.LeadID) call@(call.MemberName)">
+                            <h2>@call.LeadName 
+                            @if (string.IsNullOrEmpty(@call.LeadTitle))
+                            { }
+                            else
+                            {
+                                <span> | </span> @call.LeadTitle
+                            }
+                            </h2>
+                            <p>
+                                @if (call.LeadCallTypeID == null)
+                                {                                         
+                                    <span style="color: #A8A8A8">@call.CallType</span>
+                                }
+                                else if (call.LeadCallTypeID == 2 || call.LeadCallTypeID == 3)
+                                {
+                                    <span style="color: #FD0100">@call.CallType</span>
+                                }
+                                else if (call.LeadCallTypeID == 4 || call.LeadCallTypeID == 5 || call.LeadCallTypeID == 6)
+                                {
+                                    <span style="color: #00AFF0">@call.CallType</span>
+                                }
+                                else if (call.LeadCallTypeID == 7 || call.LeadCallTypeID == 8)
+                                {
+                                    <span style="color: #FFC22E">@call.CallType</span>
+                                }
+                                else if (call.LeadCallTypeID == 9)
+                                {
+                                    <span style="color: #7EFF42">@call.CallType</span>
+                                }
+                            </p>
+                            <p>
+                                <span>@call.CallResult</span></p>
+                            <p>@call.CallDate.ToLongDateString() @call.CallDate.ToShortTimeString() @call.MemberName</p>
+                        </div>
+                    }
+                }
+            }
+            @if (Model._HistoryCalls != null)
+            {
+                var historycalls = @Model._HistoryCalls;
+                List<int> lcIdList = new List<int>();
+
+                if (historycalls != null && historycalls.Count() > 0)
+                {
+                    <h4 style="margin-left:5px;">历史致电列表</h4>
+                    foreach (var call in historycalls)
+                    {
+                        <div class="right_2 leadcall@(call.LeadID) call@(call.MemberName)">
+                            <h2>@call.LeadName 
+                            @if (string.IsNullOrEmpty(@call.LeadTitle))
+                            { }
+                            else
+                            {
+                                <span> | </span> @call.LeadTitle
+                            }
+                            </h2>
+                            <p>
+                                @if (call.LeadCallTypeID == null)
+                                {                                         
+                                    <span style="color: #A8A8A8">@call.CallType</span>
+                                }
+                                else if (call.LeadCallTypeID == 2 || call.LeadCallTypeID == 3)
+                                {
+                                    <span style="color: #FD0100">@call.CallType</span>
+                                }
+                                else if (call.LeadCallTypeID == 4 || call.LeadCallTypeID == 5 || call.LeadCallTypeID == 6)
+                                {
+                                    <span style="color: #00AFF0">@call.CallType</span>
+                                }
+                                else if (call.LeadCallTypeID == 7 || call.LeadCallTypeID == 8)
+                                {
+                                    <span style="color: #FFC22E">@call.CallType</span>
+                                }
+                                else if (call.LeadCallTypeID == 9)
+                                {
+                                    <span style="color: #7EFF42">@call.CallType</span>
+                                }
+                            </p>
+                            <p>
+                                <span>@call.CallResult</span></p>
+                            <p>@call.CallDate.ToLongDateString() @call.CallDate.ToShortTimeString() @call.MemberName</p>
+                        </div>
+                    }
+                }
+            }
+            @if (Model._HistoryCalls != null && Model._LeadCalls != null)
+            {
+                <p><span>没有致电列表</span></p>
+            }
+        </div>
+        </text>);
+   })
+    </div>
+</div>
+<style>
+    .centera *
+    {
+        font-size: 12px;
+    }
+</style>
+

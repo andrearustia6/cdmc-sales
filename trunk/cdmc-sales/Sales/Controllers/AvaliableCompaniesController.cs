@@ -46,6 +46,12 @@ namespace Sales.Controllers
             var data = AvaliableCRM._CRMGetAvaliableCrmDetail(int.Parse(crmid));
             return PartialView(@"~\views\AvaliableCompanies\DetailContainer.cshtml", data);
         }
+        public PartialViewResult _PickUpSelectedCRMNode(string crmid)
+        {
+            ViewBag.leadid = 0;
+            var data = AvaliableCRM._CRMGetAvaliableCrmDetail(int.Parse(crmid));
+            return PartialView(@"~\views\AvaliableCompanies\PickUpDetailContainer.cshtml", data);
+        }
         public PartialViewResult GetCRMByCrmIDLeadID(int crmid, int leadid)
         {
             ViewBag.leadid = leadid;
@@ -313,10 +319,10 @@ namespace Sales.Controllers
             {
                 return Json(new { flag = 0, Content = "本项目中已经存在同名中文公司，不能重复录入！"});
             }
-            var ex = exist.Any(c=> c.Members.Select(s => s.Name).Contains(Employee.CurrentUserName) && c.Company.Name_CH == name && c.ProjectID!=projectid && c.Company.Deleted==false);
+            var ex = exist.Any(c=> c.Company.Name_CH == name && c.ProjectID!=projectid && c.Company.Deleted==false);
             if (ex)
             {
-                return Json(new { flag = 1, crmid = exist.Where(c => c.Members.Select(s => s.Name).Contains(Employee.CurrentUserName) && c.Company.Name_CH == name && c.ProjectID != projectid && c.Company.Deleted == false).FirstOrDefault().ID, Content = "已经存在同名中文公司，是否领用?" });
+                return Json(new { flag = 1, crmid = exist.Where(c => c.Company.Name_CH == name && c.ProjectID != projectid && c.Company.Deleted == false).FirstOrDefault().ID, Content = "已经存在同名中文公司，是否领用?" });
             }
 
             return Json(new { flag = 2, Content = "" });
@@ -329,7 +335,7 @@ namespace Sales.Controllers
             {
                 return Json(new { flag = 0, Content = "本项目中已经存在同名英文公司，不能重复录入！" });
             }
-            var ex = exist.Any(c => c.Members.Select(s => s.Name).Contains(Employee.CurrentUserName) && c.Company.Name_EN == name && c.ProjectID != projectid && c.Company.Deleted == false);
+            var ex = exist.Any(c => c.Company.Name_EN == name && c.ProjectID != projectid && c.Company.Deleted == false);
             if (ex)
             {
                 return Json(new { flag = 1, crmid = exist.Where(c => c.Members.Select(s => s.Name).Contains(Employee.CurrentUserName) && c.Company.Name_EN == name && c.ProjectID != projectid && c.Company.Deleted == false).FirstOrDefault().ID, Content = "已经存在同名英文公司，是否领用?" });
@@ -1551,6 +1557,7 @@ namespace Sales.Controllers
             var pickuplist = from s in saleslist
                              select new _PickUpList()
                              {
+                                 coreid = coreid,
                                  Sales = s.Name,
                                  FirstWeekCount = crmtrack.Where(w=> w.Owner == s.Name && w.CreatedDate>=firstweekstart && w.CreatedDate<=firstweekend).Count(),
                                  SecondWeekCount = crmtrack.Where(w => w.Owner == s.Name && w.CreatedDate >= secondweekstart && w.CreatedDate < secondweekend).Count(),
@@ -1711,6 +1718,70 @@ namespace Sales.Controllers
             return Json(new { dealId = item.ID, dealCode = item.DealCode, companyRelationshipId = item.CompanyRelationshipID });
         }
 
+
+        public ActionResult GetPickUpDetail(int projectid,int coreid, string sales,int index)
+        {
+            var date = DateTime.Now;
+            var firstweekstart = date.AddDays(-7);
+            var firstweekend = date;
+            var secondweekstart = firstweekstart.AddDays(-7);
+            var secondweekend = firstweekstart;
+            var thirdweekstart = secondweekstart.AddDays(-7);
+            var thirdweekend = secondweekstart;
+            var fourthweekend = thirdweekstart;
+            var crmtrack = CH.DB.CrmTracks.Where(w => w.CompanyRelationship.ProjectID == projectid && w.Type == "领用" && w.CompanyRelationship.CoreLVLID == coreid && w.Owner==sales);
+            
+            if(index==1)
+                crmtrack = crmtrack.Where(w => w.CreatedDate >= firstweekstart && w.CreatedDate <= firstweekend);
+            else if(index==2)
+                crmtrack = crmtrack.Where(w => w.CreatedDate >= secondweekstart && w.CreatedDate < secondweekend);
+            else if (index==3)
+                crmtrack = crmtrack.Where(w => w.CreatedDate >= thirdweekstart && w.CreatedDate < thirdweekend);
+            else if(index==4)
+                crmtrack = crmtrack.Where(w => w.CreatedDate < fourthweekend);
+            List<int> crmids = crmtrack.Select(x =>(int) x.CompanyRelationshipID).ToList();
+            var crms = from c in CH.DB.CompanyRelationships where crmids.Contains(c.ID) select c;
+            var data = from c in CH.DB.CoreLVLs
+                       select new _CoreLVL()
+                       {
+                           CoreName = c.CoreLVLName,
+                           ID = c.ID,
+                           CrmCount = crms.Where(cr => cr.CoreLVLID == c.CoreLVLCode).Count(),
+                           _Maturitys = (from m in crms.Where(cr => cr.CoreLVLID == c.CoreLVLCode)
+                                         group m by new { m.ProgressID, m.Progress.Name } into grp
+                                         select new _Maturity()
+                                         {
+                                             Name = grp.Key.Name,
+                                             ID = grp.Key.ProgressID.Value,
+                                             Count = crms.Where(co => co.ProgressID == grp.Key.ProgressID && co.CoreLVLID == c.CoreLVLCode).Count(),
+                                             _CRMs = (from crm in grp.Select(s => s)
+                                                      select new _CRM
+                                                      {
+                                                          ID = crm.ID,
+                                                          CompanyNameCH = crm.Company.Name_CH,
+                                                          CompanyNameEN = crm.Company.Name_EN,
+                                                          CoreCompany = c.CoreLVLName == "核心公司" ? true : false,
+                                                          //ContectedLeadCount = CH.DB.Leads.Where(l => l.CompanyID == crm.CompanyID && l.Deleted == false && crm.LeadCalls.Any(w => w.LeadID == l.ID)).Count(),
+                                                          //LeadCount = CH.DB.Leads.Where(l => l.CompanyID == crm.CompanyID && l.Deleted==false).Count(),
+                                                          CrmCommentStateID = crm.CrmCommentStateID,
+                                                          CrmCommentStateIDOrder = (crm.CrmCommentStateID == 1 || crm.CrmCommentStateID == 2 || crm.CrmCommentStateID == 3) ? "a" : "b",
+                                                          _Comments = (from co in crm.Comments.OrderByDescending(m => m.CommentDate)
+                                                                       select new _Comment()
+                                                                       {
+                                                                           Submitter = co.Submitter,
+                                                                           CommentDate = co.CommentDate,
+                                                                           CRMID = co.CompanyRelationshipID,
+                                                                           Contents = co.Contents
+                                                                       })
+                                                      }).OrderBy(cr => cr.CrmCommentStateIDOrder).ThenBy(cr => cr.CompanyNameEN).ThenBy(cr => cr.CompanyNameCH)
+                                         })
+                       };
+
+            data = data.Take(2);//修复数据异常
+            var data1 = new _AvaliableCompanies();
+            data1.MemberCompanies = data;
+            return PartialView("PickUpIndex", data1);
+        }
         public static string ExecRepaceHTML(string Htmlstring)   
         {
             string stroutput = Htmlstring;
@@ -1718,5 +1789,7 @@ namespace Sales.Controllers
             stroutput = regex.Replace(stroutput, "");
             return stroutput.Trim();
         } 
+
+
     }
 }

@@ -148,6 +148,7 @@
 </div>
 <script type="text/javascript">
     var curNode;
+    var coreid;
     function onStdTreeDataBinding(e) {
         var treeview = $('#publicCompanies').data('tTreeView');
         var jsonObject;
@@ -220,6 +221,7 @@
     //公司选择
     function onIndexSelect(e) {
         var nv = $('#memberCompanies').data('tTreeView');
+        coreid = nv.getItemValue(e.item);
         if ($(e.item).parents(".t-item").length == 0) {
             $.post('GetCoreCoverage', { projectid: $("#projectid").data("tDropDownList").value(), coreid: nv.getItemValue(e.item) }, function (result) {
                 $('#crmdetailscontainer').html(result);
