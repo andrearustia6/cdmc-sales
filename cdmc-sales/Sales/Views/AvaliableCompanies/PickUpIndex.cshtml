@@ -1,0 +1,319 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+@using Entity
+@using Sales.Model
+@using Utl
+@model _AvaliableCompanies
+
+<style>
+    .fieldblock
+    {
+    }
+    .fieldname div
+    {
+        padding: 2px;
+        min-width: 100px;
+        background-color: #FFDEAD;
+        border-bottom-color: #FF8C00;
+        border: 1px solid #CCC;
+        display: inline-block;
+        margin-left: 8px;
+        margin-bottom: 8px;
+    }
+    .fieldname div font
+    {
+        font-size: 12px;
+        color: Green;
+    }
+    
+    .selections span
+    {
+    }
+    .fieldError
+    {
+        border: 1px solid red !important;
+    }
+</style>
+@{var aa = new _CRM();}
+<table style="width:100%">
+<tr>
+<td style="width:20%; vertical-align:top;" >
+<div id="mainnavigationcontainer1">
+        @Html.Partial("pickupmainnavigation", Model)
+    </div>
+</td>
+<td style="vertical-align:top;">
+<div id="crmdetailscontainer1" style="height: 500px;">
+    </div>
+</td>
+</tr>
+</table>
+
+
+<script>
+
+    function onCompanyChanging(crmid, processid, corelvlid) {
+
+        var treeview = $("#memberCompanies").data("tTreeView");
+        var item1 = $("#memberCompanies").find(".t-input[name='itemValue'][value='" + corelvlid + "']").closest("li");
+        if (item1.parents(".t-item").length == 0) 
+            treeview.expand(item1);
+        var item2 = item1.find(".t-input[name='itemValue'][value='" + processid + "']").closest("li");
+        treeview.expand(item2);
+        $(".t-state-selected").removeClass('t-state-selected');
+        // Get the node based upon what part of the breadcrumb was selected.
+        var findString = ".t-input[name='itemValue'][value='" + crmid + "']";
+        var item3 = item2.find(findString).closest("li");
+        // Programmatically "click" the desired node.
+        item3.find(".t-in:first").trigger("click");
+        $(".t-state-selected").addClass('t-state-selected');
+
+
+        return true;
+
+    }
+
+    function onPublicCompanyChanging(crmid, corelvlid) {
+        var treeview = $("#publicCompanies").data("tTreeView");
+        var item1 = $("#publicCompanies").find(".t-input[name='itemValue'][value='" + corelvlid + "']").closest("li");
+        treeview.expand(item1);
+        $(".t-state-selected").removeClass('t-state-selected');
+        // Get the node based upon what part of the breadcrumb was selected.
+        var findString = ".t-input[name='itemValue'][value='" + crmid + "']";
+        var item3 = item1.find(findString).closest("li");
+        // Programmatically "click" the desired node.
+        item3.find(".t-in:first").trigger("click");
+        $(".t-state-selected").addClass('t-state-selected');
+        return true;
+
+    }
+
+    function onLeadSelect(leadid) {
+        if (leadid == undefined || leadid == "")
+            leadid = gleadid;
+        if (leadid == "" || leadid == undefined)
+            return;
+        $.post('GetCRMByCrmIDLeadID', { crmid: crmid, leadid: leadid }, function (result) {
+            $('#crmdetailscontainer').html(result);
+
+            var leaddiv = $('#lead' + leadid);
+
+            //            leaddiv.removeClass('center_2');
+            //            leaddiv.addClass('center_1');
+
+            //showLeadBtn(leadid);
+
+            $("#filterbtn").show();
+
+            if (clickpublic) {
+                jQuery(".hide").hide();
+                jQuery(".click").removeAttr("onclick");
+            }
+            else {
+                jQuery(".PickUp").hide();
+            }
+        });
+    }
+    
+    
+    function RefreshCrm() {
+        if (gleadid == "" || gleadid == undefined) {
+            $.post('_SelectedCRMNode', { crmid: crmid }, function (result) {
+                $('#crmdetailscontainer').html(result);
+                if (clickpublic) {
+                    $(".UnPickUp").hide();
+                    jQuery(".hide").hide();
+                    jQuery(".click").removeAttr("onclick");
+                    $('#ProgressIDdiv').hide();
+                }
+                else {
+                    $(".PickUp").hide();
+                }
+
+            });
+        }
+        else {
+            $.post('GetCRMByCrmIDLeadID', { crmid: crmid, leadid: gleadid }, function (result) {
+                $('#crmdetailscontainer').html(result);
+                var leaddiv = $('#lead' + gleadid);
+                //                leaddiv.removeClass('center_2');
+                //                leaddiv.addClass('center_1');
+                if (clickpublic) {
+                    $(".UnPickUp").hide();
+                    jQuery(".hide").hide();
+                    jQuery(".click").removeAttr("onclick");
+                    $('#ProgressIDdiv').hide();
+                }
+                else {
+                    $(".PickUp").hide();
+                }
+
+            });
+        }
+
+    }
+
+    
+    function showLeadBtn(id) {
+        $("#leadbtn" + id).show();
+    }
+
+    function hideLeadBtn(id) {
+        $("#leadbtn" + id).hide();
+    }
+
+    function search() {
+        var f = GetFilters();
+        $.post('_RefreshCrmTree', f, function (result) {
+            $('#mainnavigationcontainer').html(result);
+            $('#crmdetailscontainer').html("");
+            //if ($("#indexhiderole").val() == '10') {
+                $.post('_PickUpByOtherSales', f, function (result) {
+                    if (result.msg != "")
+                        alert(result.msg);
+                });
+            //}
+        });
+    }
+
+
+    function onLeadSelectJS(leadid) {
+        filterCallList($("#SelectedMemberHidden").val());
+        if ($("#filterbtn" + leadid).val() != null) {
+            $("#filterbtn" + leadid).show();
+        }
+        $("#filterbtn").show();
+        var leadids = "";
+        if ($("#LeadIdHidden")) {
+            leadids = $("#LeadIdHidden").val();
+        }
+        if (leadids != "undefined") {
+            var leadcallfind = false;
+            var arrids = leadids.split(',');
+            for (var i = 0; i < arrids.length; i++) {
+                if (arrids[i] == leadid) {
+                    leadcallfind = true;
+                    //if (!$(".leadcall" + leadid).is(":hidden")) {
+                    $(".leadcall" + leadid).show();
+                    //}
+                } else {
+                    $(".leadcall" + arrids[i]).hide();
+                }
+            }
+            if (!leadcallfind) {
+                if (($("#filterbtn" + leadid).val() == null) && ($("#filterbtn").val() == null)) {
+                    $(".right").append('<div style=" float:right; margin-top:10px; margin-right:10px;" id="filterbtn"><input type="button" value="取消筛选" onclick="RefreshCrm();" style="border: none; width: 67px; height: 21px;"/></div>');
+                } else if ($("#filterbtn").val() != null) {
+                    $("#filterbtn").show();
+                }
+            } else {
+                //$("#filterbtn").hide();
+            }
+
+        }
+    }
+
+    
+    function onMember(name) {
+        if (name == '') {
+
+            $.post('_SelectedCRMNode', { crmid: crmid }, function (result) {
+                $('#crmdetailscontainer').html(result);
+                $("#comments").hide();
+                $("#statistics").show();
+                jQuery("input[name=ComContent][value=Statistics]").attr("checked", true);
+                $("#allsales").css("color", '#1997ca');
+                filterCallList(name);
+                $("#SelectedMemberHidden").val(name);
+                if (clickpublic) {
+                    $(".UnPickUp").hide();
+                    jQuery(".hide").hide();
+                    jQuery(".click").removeAttr("onclick");
+                    $('#ProgressIDdiv').hide();
+                }
+                else {
+                    $(".PickUp").hide();
+                }
+                $("#filterbtn").show();
+            });
+        }
+        else {
+
+            $.post('GetCRMByCrmIDMember', { crmid: crmid, membername: name }, function (result) {
+                $('#crmdetailscontainer').html(result);
+                $("#comments").hide();
+                $("#statistics").show();
+                jQuery("input[name=ComContent][value=Statistics]").attr("checked", true);
+                $("#sales" + name).css("color", '#1997ca');
+                filterCallList(name);
+                $("#SelectedMemberHidden").val(name);
+                if (clickpublic) {
+                    $(".UnPickUp").hide();
+                    jQuery(".hide").hide();
+                    jQuery(".click").removeAttr("onclick");
+                    $('#ProgressIDdiv').hide();
+                }
+                else {
+                    $(".PickUp").hide();
+                }
+                $("#filterbtn").show();
+            });
+        }
+    }
+    function filterCallList(name) {
+        var names = "";
+        if ($("#MemberHidden")) {
+            names = $("#MemberHidden").val();
+        }
+        var arrids = names.split(',');
+        if (name != '') {
+            if (names != "undefined") {
+
+                for (var i = 0; i < arrids.length; i++) {
+                    if (arrids[i] == name) {
+                        $(".call" + name).show();
+                    } else {
+                        $(".call" + arrids[i]).hide();
+                    }
+                }
+            }
+        } else {
+            for (var i = 0; i < arrids.length; i++) {
+                $(".call" + arrids[i]).show();
+            }
+        }
+    }
+    function refreshdetail() {
+        $.post('_SelectedCRMNode', { crmid: crmid }, function (result) {
+            $('#crmdetailscontainer').html(result);
+            if ($("#HideRoleLevel").val() == '10') {
+                $("#comments").show();
+                $("#statistics").hide();
+                jQuery("input[name=ComContent][value=comments]").attr("checked", true);
+            }
+            else if ($("#MemberHidden").val().indexOf($("#HideCurrentUserName").val()) != -1 && $("#HideRoleLevel").val() == '100') {
+                $("#comments").show();
+                $("#statistics").hide();
+                jQuery("input[name=ComContent][value=comments]").attr("checked", true);
+            }
+            else {
+                $("#comments").hide();
+                $("#statistics").show();
+                jQuery("input[name=ComContent][value=Statistics]").attr("checked", true);
+            }
+
+            $("#allsales").css("color", '#1997ca');
+            $("#SelectedMemberHidden").val(name);
+            if (clickpublic) {
+                $(".UnPickUp").hide();
+                jQuery(".hide").hide();
+                jQuery(".click").removeAttr("onclick");
+                $('#ProgressIDdiv').hide();
+            }
+            else {
+                $(".PickUp").hide();
+            }
+        });
+    }
+</script>

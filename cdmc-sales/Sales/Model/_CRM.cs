@@ -452,6 +452,7 @@ namespace Sales.Model
     public class _PickUpList : EntityBase
     {
         public string Sales { get; set; }
+        public int coreid { get; set; }
         public int FirstWeekCount { get; set; }
         public int SecondWeekCount { get; set; }
         public int ThirdWeekCount { get; set; }

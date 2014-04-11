@@ -216,13 +216,18 @@ namespace Sales.BLL
         public static _CRM _CRMGetAvaliableCrmDetail(int? crmid)
         {
             var data = CH.GetDataById<CompanyRelationship>(crmid);
+            var projectenddata = data.Project.EndDate == null ? DateTime.Now : data.Project.EndDate;
+            var projectcreatedata = data.Project.CreatedDate == null ? DateTime.Now : data.Project.CreatedDate;
+            var othersaleslead = data.Company.Leads.Where(x => x.Creator != Employee.CurrentUserName && x.CreatedDate >= projectcreatedata && x.CreatedDate <= projectenddata);
             bool hasvalue = false;
             var callsgrp = data.LeadCalls.Where(w=>w.Deleted==false).OrderByDescending(c => c.CallDate).GroupBy(c => c.LeadID).Where(g => g.Count() >= 1).Select(g => g.ElementAt(0));
             //覆盖率 = 以打lead数/总数 *１００％
             // 不同时差数，是ｌｅａｄ所在ｌｅａｄｄｉｓｃｔｉｎｃｔｉｄ有几个不同
             //  个人类型数量是个ｌｉｓｔ
             // 各个ｃａｌｌｔｙｐｅ的数量
-            var leadids = data.Company.Leads.Where(w=>w.Deleted==false).Select(s=>s.ID).ToList();
+            
+            var leadids = data.Company.Leads.Where(w=>w.Deleted==false ).Except(othersaleslead).Select(s=>s.ID).ToList();
+
             var hiscall = from c in CH.DB.LeadCalls where leadids.Contains((int)c.LeadID) && c.ProjectID != data.ProjectID && c.Deleted==false
                           orderby c.CallDate descending
                           select c;
@@ -288,7 +293,7 @@ namespace Sales.BLL
                 Description = data.Company.Description,
                 Competitor = data.Company.Competitor,
                 PitchPoint = data.PitchedPoint,
-                _Leads = (from leads in data.Company.Leads.Where(f => f.Deleted == false).OrderByDescending(x=>x.Sequence)
+                _Leads = (from leads in data.Company.Leads.Where(f => f.Deleted == false && leadids.Contains(f.ID)).OrderByDescending(x => x.Sequence)
                           select new _Lead()
                           {
                               ID = leads.ID,
@@ -306,7 +311,7 @@ namespace Sales.BLL
                               OwnLeader = data.Members.Where(w=>w.Name==Employee.CurrentUserName).Any(),
                               Sequence = leads.Sequence
                           }),
-                _LeadCalls = (from leadcalls in data.LeadCalls.Where(f => f.Deleted == false && f.ProjectID==data.ProjectID).OrderByDescending(m => m.CallDate)
+                _LeadCalls = (from leadcalls in data.LeadCalls.Where(f => f.Deleted == false && f.ProjectID == data.ProjectID && leadids.Contains((int)f.LeadID)).OrderByDescending(m => m.CallDate)
                               select new _LeadCall()
                               {
                                   LeadID = leadcalls.LeadID,
@@ -348,6 +353,10 @@ namespace Sales.BLL
         public static _CRM _CRMGetAvaliableCrmDetailByCrmIDLeadID(int crmid, int leadid)
         {
             var data = CH.GetDataById<CompanyRelationship>(crmid);
+            var projectenddata = data.Project.EndDate == null ? DateTime.Now : data.Project.EndDate;
+            var projectcreatedata = data.Project.CreatedDate == null ? DateTime.Now : data.Project.CreatedDate;
+            var othersaleslead = data.Company.Leads.Where(x => x.Creator != Employee.CurrentUserName && x.CreatedDate >= projectcreatedata && x.CreatedDate <= projectenddata);
+            var leadids = data.Company.Leads.Where(w => w.Deleted == false).Except(othersaleslead).Select(s => s.ID).ToList();
             var callsgrp = data.LeadCalls.Where(f => f.Deleted == false).OrderByDescending(c => c.CallDate).GroupBy(c => c.LeadID)
                                 .Where(g => g.Count() >= 1)
                                 .Select(g => g.ElementAt(0));
@@ -409,7 +418,7 @@ namespace Sales.BLL
                 Description = data.Company.Description,
                 Competitor = data.Company.Competitor,
                 PitchPoint = data.PitchedPoint,
-                _Leads = (from leads in data.Company.Leads.Where(f => f.Deleted == false)
+                _Leads = (from leads in data.Company.Leads.Where(f => f.Deleted == false && leadids.Contains(f.ID))
                           select new _Lead()
                           {
                               ID = leads.ID,
@@ -425,7 +434,7 @@ namespace Sales.BLL
                               OwnLeader = data.Members.Where(w => w.Name == Employee.CurrentUserName).Any(),
                               Sequence = leads.Sequence
                           }),
-                _LeadCalls = (from leadcalls in data.LeadCalls.Where(f => f.Deleted == false).OrderByDescending(m => m.CallDate)
+                _LeadCalls = (from leadcalls in data.LeadCalls.Where(f => f.Deleted == false && leadids.Contains((int)f.LeadID)).OrderByDescending(m => m.CallDate)
                               select new _LeadCall()
                               {
                                   LeadID = leadcalls.LeadID,
@@ -452,6 +461,10 @@ namespace Sales.BLL
         public static _CRM _CRMGetAvaliableCrmDetailByCrmIDMember(int crmid, string membername)
         {
             var data = CH.GetDataById<CompanyRelationship>(crmid);
+            var projectenddata = data.Project.EndDate == null ? DateTime.Now : data.Project.EndDate;
+            var projectcreatedata = data.Project.CreatedDate == null ? DateTime.Now : data.Project.CreatedDate;
+            var othersaleslead = data.Company.Leads.Where(x => x.Creator != Employee.CurrentUserName && x.CreatedDate >= projectcreatedata && x.CreatedDate <= projectenddata);
+            var leadids = data.Company.Leads.Where(w => w.Deleted == false).Except(othersaleslead).Select(s => s.ID).ToList();
             var callsgrp = data.LeadCalls.Where(f => f.Deleted == false).OrderByDescending(c => c.CallDate).GroupBy(c => c.LeadID)
                                 .Where(g => g.Count() >= 1)
                                 .Select(g => g.ElementAt(0));
@@ -513,7 +526,7 @@ namespace Sales.BLL
                 Description = data.Company.Description,
                 Competitor = data.Company.Competitor,
                 PitchPoint = data.PitchedPoint,
-                _Leads = (from leads in data.Company.Leads.Where(f => f.Deleted == false)
+                _Leads = (from leads in data.Company.Leads.Where(f => f.Deleted == false && leadids.Contains(f.ID))
                           select new _Lead()
                           {
                               ID = leads.ID,
@@ -529,7 +542,7 @@ namespace Sales.BLL
                               OwnLeader = data.Members.Where(w => w.Name == Employee.CurrentUserName).Any(),
                               Sequence = leads.Sequence
                           }),
-                _LeadCalls = (from leadcalls in data.LeadCalls.Where(f => f.Deleted == false).OrderByDescending(m => m.CallDate)
+                _LeadCalls = (from leadcalls in data.LeadCalls.Where(f => f.Deleted == false && leadids.Contains((int)f.LeadID)).OrderByDescending(m => m.CallDate)
                               select new _LeadCall()
                               {
                                   LeadID = leadcalls.LeadID,

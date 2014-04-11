@@ -1,0 +1,121 @@
+﻿@using Entity
+@using Sales.Model
+@model _AvaliableCompanies
+
+<script>
+    //var count=0
+    //公司选择
+    function onIndexSelect1(e) {
+        var nv = $('#memberCompanies1').data('tTreeView');
+        
+        if ($(e.item).parents(".t-item").length == 0) {
+
+            return;
+        }
+        if ($(e.item).parents(".t-item").length != 2)
+            return;
+
+        var clickedvalue = nv.getItemValue(e.item);
+        $(".t-state-selected").removeClass('t-state-selected');
+        $.post('_PickUpSelectedCRMNode', { crmid: clickedvalue }, function (result) {
+            $('#crmdetailscontainer1').html(result);
+        });
+
+
+
+    }
+
+    function OnmemberLoad1() {
+        var treeView = $("#memberCompanies1").data("tTreeView");
+        var item = $("> ul > li", treeView.element);
+        treeView.expand(item);
+    }
+    
+</script>
+<div class="memberCompanies1" >
+
+@{
+    if(Model.MemberCompanies!=null)
+    {
+    
+        @(Html.Telerik().TreeView().Name("memberCompanies1")
+        .HtmlAttributes(new { style = "" })
+        .ClientEvents(e => e.OnSelect("onIndexSelect1"))
+        .ClientEvents(e => e.OnLoad("OnmemberLoad1"))
+        .BindTo(Model.MemberCompanies, mappings =>
+        {
+            mappings.For<_CoreLVL>(binding => binding
+            .ItemDataBound((item, core) =>
+            {
+                item.Text = core.CoreNameDisplayText;
+                item.Value = core.ID.ToString();
+                
+            })
+            .Children(core => core.DispMaturitys));
+
+            mappings.For<_Maturity>(binding => binding
+            .ItemDataBound((item, maturity) =>
+            {
+                item.Text = maturity.DisplayName;
+                item.Value = maturity.ID.ToString();
+            })
+            .Children(maturity => maturity._CRMs));
+
+            mappings.For<_CRM>(binding => binding
+            .ItemDataBound((item, crm) =>
+            {
+                //item.Text = crm.DisplayName; // + "-CH:" + crm.CompanyNameCH + "-EN:" + crm.CompanyNameEN + "-Order:" + crm.CrmCommentStateIDOrder;
+                item.Text = crm.CompanyName;
+                item.Value = crm.ID.ToString();
+                if (Utl.Employee.CurrentRole.Level == ManagerRequired.LVL)
+                {
+                    var comment  = crm._Comments.FirstOrDefault();
+                    if (crm.CrmCommentStateID == 4 || crm.CrmCommentStateID == null)
+                    {
+                        item.ImageUrl = "";
+                    }
+                    else
+                    {
+                        if (comment != null)
+                        {
+                            if (Utl.Employee.CurrentUserName == comment.Submitter)
+                            {
+                                item.ImageUrl = "../images/gantaihao.jpg";
+                            }
+                            else
+                            {
+                                item.ImageUrl = "../images/wenhao-2.jpg";
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    var comment = crm._Comments.FirstOrDefault();
+                    if (crm.CrmCommentStateID == 4 || crm.CrmCommentStateID == null)
+                    {
+                        item.ImageUrl = "";
+                    }
+                    else
+                    {
+                        if (comment != null)
+                        {
+                            if (Utl.Employee.CurrentUserName == comment.Submitter)
+                            {
+                                item.ImageUrl = "../images/gantaihao.jpg";
+                            }
+                            else
+                            {
+                                item.ImageUrl = "../images/wenhao-2.jpg";
+                            }
+                        }
+                    }
+                }
+            }));
+        })
+
+) 
+    }
+}
+    
+</div>

@@ -174,7 +174,10 @@ namespace Sales.Controllers
                 int leadid = lead.ID;
                 lead.CompanyID = crm.Company.ID;
                 lead.Deleted = false;
-                CH.Create<Lead>(lead);
+                CH.DB.Set<Lead>().Add(lead);
+                CH.DB.SaveChanges();
+               
+                //CH.Create<Lead>(lead);
                 newleadids.Add(lead.ID);
                 List<LeadCall> othercalls = CH.DB.LeadCalls.Where(w => w.LeadID == leadid ).ToList();
                 foreach(LeadCall call in othercalls)

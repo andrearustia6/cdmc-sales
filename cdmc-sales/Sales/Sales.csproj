@@ -1819,6 +1819,9 @@
     <Content Include="Views\CompanyMerge\MergeLead.cshtml" />
     <Content Include="Views\Deal\AllIndex.cshtml" />
     <Content Include="Views\AvaliableCompanies\CoreCoveragePublic.cshtml" />
+    <Content Include="Views\AvaliableCompanies\PickUpIndex.cshtml" />
+    <Content Include="Views\AvaliableCompanies\PickUpMainNavigation.cshtml" />
+    <Content Include="Views\AvaliableCompanies\PickUpDetailContainer.cshtml" />
     <None Include="Views\SalesEx\EditCompany.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\SimulatorConfig.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\AjaxTargetOfMonthForMember.cshtml" />
