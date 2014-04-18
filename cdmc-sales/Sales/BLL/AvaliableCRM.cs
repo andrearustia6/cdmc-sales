@@ -226,7 +226,8 @@ namespace Sales.BLL
             //  个人类型数量是个ｌｉｓｔ
             // 各个ｃａｌｌｔｙｐｅ的数量
             
-            var leadids = data.Company.Leads.Where(w=>w.Deleted==false ).Except(othersaleslead).Select(s=>s.ID).ToList();
+            //var leadids = data.Company.Leads.Where(w=>w.Deleted==false ).Except(othersaleslead).Select(s=>s.ID).ToList();
+            var leadids = data.Company.Leads.Where(w => w.Deleted == false).Select(s => s.ID).ToList();
 
             var hiscall = from c in CH.DB.LeadCalls where leadids.Contains((int)c.LeadID) && c.ProjectID != data.ProjectID && c.Deleted==false
                           orderby c.CallDate descending
@@ -356,7 +357,8 @@ namespace Sales.BLL
             var projectenddata = data.Project.EndDate == null ? DateTime.Now : data.Project.EndDate;
             var projectcreatedata = data.Project.CreatedDate == null ? DateTime.Now : data.Project.CreatedDate;
             var othersaleslead = data.Company.Leads.Where(x => x.Creator != Employee.CurrentUserName && x.CreatedDate >= projectcreatedata && x.CreatedDate <= projectenddata);
-            var leadids = data.Company.Leads.Where(w => w.Deleted == false).Except(othersaleslead).Select(s => s.ID).ToList();
+            //var leadids = data.Company.Leads.Where(w => w.Deleted == false).Except(othersaleslead).Select(s => s.ID).ToList();
+            var leadids = data.Company.Leads.Where(w => w.Deleted == false).Select(s => s.ID).ToList();
             var callsgrp = data.LeadCalls.Where(f => f.Deleted == false).OrderByDescending(c => c.CallDate).GroupBy(c => c.LeadID)
                                 .Where(g => g.Count() >= 1)
                                 .Select(g => g.ElementAt(0));
@@ -464,7 +466,8 @@ namespace Sales.BLL
             var projectenddata = data.Project.EndDate == null ? DateTime.Now : data.Project.EndDate;
             var projectcreatedata = data.Project.CreatedDate == null ? DateTime.Now : data.Project.CreatedDate;
             var othersaleslead = data.Company.Leads.Where(x => x.Creator != Employee.CurrentUserName && x.CreatedDate >= projectcreatedata && x.CreatedDate <= projectenddata);
-            var leadids = data.Company.Leads.Where(w => w.Deleted == false).Except(othersaleslead).Select(s => s.ID).ToList();
+            //var leadids = data.Company.Leads.Where(w => w.Deleted == false).Except(othersaleslead).Select(s => s.ID).ToList();
+            var leadids = data.Company.Leads.Where(w => w.Deleted == false).Select(s => s.ID).ToList();
             var callsgrp = data.LeadCalls.Where(f => f.Deleted == false).OrderByDescending(c => c.CallDate).GroupBy(c => c.LeadID)
                                 .Where(g => g.Count() >= 1)
                                 .Select(g => g.ElementAt(0));
