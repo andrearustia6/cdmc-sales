@@ -169,6 +169,8 @@
                     
                     <a class="UnPickUp" href="#" onclick="onGetAssignCompany()">
                         <img src="../images/unpickup.png" alt="分配公司" title="分配公司" /></a>
+                    <a class="QuickAddDeal" href="#" onclick="onQuickAddDeal();">
+                        <img src="../images/quickdeal.png" alt="出单" title="出单" /></a>
                 }
                 
                     @if (@Model._members.Where(m => m.Name == Utl.Employee.CurrentUserName).Count() > 0)
