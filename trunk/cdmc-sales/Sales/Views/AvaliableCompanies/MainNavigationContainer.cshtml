@@ -247,6 +247,9 @@
             $.post('_SelectedCRMNode', { crmid: crmid }, function (result) {
                 $('#crmdetailscontainer').html(result);
                 jQuery(".PickUp").hide();
+                if ($('#indexhiderole').val() == 500 && $('#indexhideuser').val() != $('#saleslist').val()) {
+                    jQuery(".QuickAddDeal").hide();
+                }
             });
         }
         else {
@@ -285,6 +288,8 @@
                 $('#crmdetailscontainer').html(result);
                 hidebtn();
                 jQuery(".UnPickUp").hide();
+                jQuery(".QuickAddDeal").hide();
+                
             });
         }
         else {
