@@ -338,8 +338,13 @@ namespace Sales.Controllers
                         c.Members.Add(mem);
                     }
                 }
+                if (memberIDs.Count() > 0)
+                {
+                    c.CrmCommentStateID = 2;
+                }
                 var data = CH.DB.Entry(c);
                 data.State = EntityState.Modified;
+                
                 copys.Add(data);
 
 

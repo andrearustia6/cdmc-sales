@@ -1400,6 +1400,11 @@ namespace Sales.Controllers
                         doCrmTrack(id, true);
                     }
                 }
+                if (idlist.Count > 0)
+                {
+                    cr.CrmCommentStateID = 2;
+
+                }
                 //减少
                 foreach (var x in crids)
                 {
