@@ -63,7 +63,11 @@
                 else
                 {
                     var comment = crm._Comments.FirstOrDefault();
-                    if (crm.CrmCommentStateID == 4 || crm.CrmCommentStateID == null)
+                    if (crm.CrmCommentStateID == 2)
+                    {
+                        item.ImageUrl = "../images/wenhao-2.jpg";
+                    }
+                    else if (crm.CrmCommentStateID == 4 || crm.CrmCommentStateID == null)
                     {
                         item.ImageUrl = "";
                     }
