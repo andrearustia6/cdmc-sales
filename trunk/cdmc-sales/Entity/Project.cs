@@ -110,6 +110,9 @@ namespace Entity
     {
         [Display(Name = "部门名称"), Required]
         public String Name { get; set; }
+
+        [Display(Name = "是否激活")]
+        public bool IsActivated { get; set; }
     }
 
     /// <summary>
