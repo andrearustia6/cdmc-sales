@@ -1,6 +1,7 @@
 ﻿@model Entity.Department
            @using Utl
 <fieldset>
+asdfasdf
     <legend>@SR.Form</legend>
     <div class="editor-label">
         @Html.LabelFor(model => model.Name)
@@ -8,5 +9,13 @@
     <div class="editor-field">
         @Html.EditorFor(model => model.Name)
         @Html.ValidationMessageFor(model => model.Name)
+    </div>
+
+    <div class="editor-label">
+        @Html.LabelFor(model => model.IsActivated)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.IsActivated)
+        @Html.ValidationMessageFor(model => model.IsActivated)
     </div>
 </fieldset>

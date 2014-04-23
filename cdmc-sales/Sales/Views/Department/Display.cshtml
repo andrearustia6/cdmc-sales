@@ -3,8 +3,14 @@
 <fieldset>
     <legend>@SR.Form</legend>
     <div class="display-label">
-        Name</div>
+        @Html.LabelFor(model => model.Name)</div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Name)
+    </div>
+
+     <div class="display-label">
+        @Html.LabelFor(model => model.IsActivated)</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.IsActivated)
     </div>
 </fieldset>
