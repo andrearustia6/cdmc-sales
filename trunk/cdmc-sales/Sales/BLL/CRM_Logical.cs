@@ -2748,7 +2748,7 @@ namespace BLL
             var projects = CH.GetAllData<Project>();
 
             var data = projects.FindAll(p => p.Members.Any(m => m.Name == name && m.IsActivated==true) && p.IsActived == true );
-            foreach (var c in CH.GetAllData<Project>())
+            foreach (var c in CH.GetAllData<Project>().Where(x=>x.IsActived==true).ToList())
             {
                 if (!string.IsNullOrEmpty(c.TeamLeader))
                 {
