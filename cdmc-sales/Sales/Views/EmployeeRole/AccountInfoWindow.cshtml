@@ -72,7 +72,7 @@
                     @Html.LabelFor(model => model.DepartmentName)
                 </td>
                 <td>
-                    @Html.DropDownListFor(model => model.DepartmentID, new SelectList(CH.GetAllData<Department>(), "ID", "Name"), "-请选择-", new { style = "width:150px" })<br />
+                    @Html.DropDownListFor(model => model.DepartmentID, new SelectList(CH.GetAllData<Department>().Where(x => x.IsActivated == true).ToList(), "ID", "Name"), "-请选择-", new { style = "width:150px" })<br />
                     @Html.ValidationMessageFor(model => model.DepartmentID)
                 </td>
             </tr>
