@@ -878,8 +878,13 @@ namespace Sales.Controllers
             {
                 CH.Delete<PreCommission>(precommission.ID);
             }
-            CH.Create<PreCommission>(lps);
-
+            lps.Creator = "system";
+            lps.CreatedDate = DateTime.Now;
+            //CH.Create<PreCommission>(lps);
+            CH.DB.Set<PreCommission>().Add(lps);
+            CH.DB.SaveChanges();
+            //DB.Set<PreCommission>().Add(lps);
+            //DB.SaveChanges();
         }
     }
 }
