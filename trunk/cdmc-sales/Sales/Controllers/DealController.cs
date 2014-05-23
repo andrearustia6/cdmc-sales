@@ -519,7 +519,9 @@ namespace Sales.Controllers
                              ParticipantTypeName = s.ParticipantType.Name,
                              ParticipantTypeID = s.ParticipantTypeID,
                              DealID = s.DealID,
-                             ProjectID = s.ProjectID
+                             ProjectID = s.ProjectID,
+                             CancelAttended = s.CancelAttended,
+
                          }).ToList();
             }
             Session["pList"] = pList;
@@ -557,7 +559,7 @@ namespace Sales.Controllers
                             s.Contact = string.IsNullOrEmpty(p.Contact) ? "" : p.Contact.Trim();
                             s.Email = string.IsNullOrEmpty(p.Email) ? "" : p.Email.Trim();
                             s.ParticipantTypeID = partType.ID;
-
+                            s.CancelAttended = p.CancelAttended;
                             s.ProjectID = Convert.ToInt32(Session["ProjectID"].ToString());
                             s.DealID = Convert.ToInt32(Session["DealID"].ToString());
 
@@ -601,7 +603,7 @@ namespace Sales.Controllers
                         a.ParticipantTypeID = p.ParticipantTypeID;
                         a.ProjectID = p.ProjectID;
                         a.DealID = p.DealID;
-
+                        a.CancelAttended = p.CancelAttended;
                         Participant sp = CH.GetDataById<Participant>(p.ID);
                         sp.Name = string.IsNullOrEmpty(p.Name) ? "" : p.Name.Trim();
                         sp.Title = string.IsNullOrEmpty(p.Title) ? "" : p.Title.Trim();
@@ -612,6 +614,7 @@ namespace Sales.Controllers
                         sp.ParticipantTypeID = partType.ID;
                         sp.ProjectID = p.ProjectID;
                         sp.DealID = p.DealID;
+                        sp.CancelAttended = p.CancelAttended;
                         CH.Edit<Participant>(sp);
                     }
                 }
@@ -619,7 +622,99 @@ namespace Sales.Controllers
             return View(new GridModel(pList));
         }
 
+        [AcceptVerbs(HttpVerbs.Post)]
+        [GridAction]
+        public ActionResult _UpdateAjaxParticipantNew([Bind(Prefix = "inserted")]IEnumerable<AjaxParticipant> insertedP,
+            [Bind(Prefix = "updated")]IEnumerable<AjaxParticipant> updatedP,
+            [Bind(Prefix = "deleted")]IEnumerable<AjaxParticipant> deletedP)
+        {
+            List<AjaxParticipant> pList = new List<AjaxParticipant>();
+            if (Session["pList"] != null)
+            {
+                pList = Session["pList"] as List<AjaxParticipant>;
+            }
+            if (ModelState.IsValid)
+            {
+                if (insertedP != null)
+                {
+                    foreach (var p in insertedP)
+                    {
+                        if (p.ParticipantTypeID != null)
+                        {
+                            //var partType = CH.GetAllData<ParticipantType>().Where(pt => pt.Name == p.ParticipantTypeName).FirstOrDefault();
 
+                            pList.Add(p);
+
+                            Participant s = new Participant();
+                            s.Name = string.IsNullOrEmpty(p.Name) ? "" : p.Name.Trim();
+                            s.Title = string.IsNullOrEmpty(p.Title) ? "" : p.Title.Trim();
+                            s.Gender = string.IsNullOrEmpty(p.Gender) ? "" : p.Gender.Trim();
+                            s.Mobile = string.IsNullOrEmpty(p.Mobile) ? "" : p.Mobile.Trim();
+                            s.Contact = string.IsNullOrEmpty(p.Contact) ? "" : p.Contact.Trim();
+                            s.Email = string.IsNullOrEmpty(p.Email) ? "" : p.Email.Trim();
+                            s.ParticipantTypeID = p.ParticipantTypeID;
+                            s.CancelAttended = p.CancelAttended;
+                            s.ProjectID = Convert.ToInt32(Session["ProjectID"].ToString());
+                            s.DealID = Convert.ToInt32(Session["DealID"].ToString());
+
+
+                            //s.ProjectID = p.ProjectID;
+                            //s.DealID = p.DealID;
+                            if (s.ID == 0)
+                            {
+                                CH.Create<Participant>(s);
+                            }
+                        }
+                    }
+                }
+
+                if (deletedP != null)
+                {
+                    foreach (var p in deletedP)
+                    {
+                        int index = pList.FindIndex(ap => ap.Name == p.Name && ap.ParticipantTypeName == p.ParticipantTypeName);
+                        if (index != -1)
+                        {
+                            pList.RemoveAt(index);
+                            CH.Delete<Participant>(p.ID);
+                        }
+                    }
+                }
+
+                if (updatedP != null)
+                {
+                    foreach (var p in updatedP)
+                    {
+                        //var partType = CH.GetAllData<ParticipantType>().Where(pt => pt.Name == p.ParticipantTypeName).FirstOrDefault();
+                        AjaxParticipant a = pList.Find(s => s.ID == p.ID);
+                        a.Name = string.IsNullOrEmpty(p.Name) ? "" : p.Name.Trim();
+                        a.Title = string.IsNullOrEmpty(p.Title) ? "" : p.Title.Trim();
+                        a.Gender = string.IsNullOrEmpty(p.Gender) ? "" : p.Gender.Trim();
+                        a.Mobile = string.IsNullOrEmpty(p.Mobile) ? "" : p.Mobile.Trim();
+                        a.Contact = string.IsNullOrEmpty(p.Contact) ? "" : p.Contact.Trim();
+                        a.Email = string.IsNullOrEmpty(p.Email) ? "" : p.Email.Trim();
+                        //a.ParticipantTypeName = p.ParticipantTypeName;
+                        a.ParticipantTypeID = p.ParticipantTypeID;
+                        a.ProjectID = p.ProjectID;
+                        a.DealID = p.DealID;
+                        a.CancelAttended = p.CancelAttended;
+                        Participant sp = CH.GetDataById<Participant>(p.ID);
+                        sp.Name = string.IsNullOrEmpty(p.Name) ? "" : p.Name.Trim();
+                        sp.Title = string.IsNullOrEmpty(p.Title) ? "" : p.Title.Trim();
+                        sp.Gender = string.IsNullOrEmpty(p.Gender) ? "" : p.Gender.Trim();
+                        sp.Mobile = string.IsNullOrEmpty(p.Mobile) ? "" : p.Mobile.Trim();
+                        sp.Contact = string.IsNullOrEmpty(p.Contact) ? "" : p.Contact.Trim();
+                        sp.Email = string.IsNullOrEmpty(p.Email) ? "" : p.Email.Trim();
+                        sp.ParticipantTypeID = p.ParticipantTypeID;
+                        sp.ProjectID = p.ProjectID;
+                        sp.DealID = p.DealID;
+                        sp.CancelAttended = p.CancelAttended;
+                        CH.Edit<Participant>(sp);
+                    }
+                }
+            }
+            return View(new GridModel(pList));
+        }
         public ActionResult PostID(int? id)
         {
             Deal d = CH.GetDataById<Deal>(id);
@@ -666,6 +761,8 @@ namespace Sales.Controllers
                 item.AbandonReason = newData.AbandonReason;
                 item.Remark = newData.Remark;
                 CH.Edit<Deal>(item);
+                PreCommByProSales((DateTime)item.ActualPaymentDate, item.Sales,(int) item.ProjectID);
+
             }
             else if (Employee.CurrentRole.Level == 3)
             {
@@ -698,6 +795,91 @@ namespace Sales.Controllers
                 CH.Edit<Deal>(item);
             }
             return Json(new { dealName = newData.DealCode });
+        }
+        private void PreCommByProSales(DateTime ActualPaymentDate, string sale, int projectid)
+        {
+            var year = ActualPaymentDate.Year;
+            var month = ActualPaymentDate.Month;
+            var startdate = new DateTime(year, month, 1);
+            var enddate = startdate.AddMonths(1).AddDays(-1);
+            var deals = from d in CH.DB.Deals.Where(o => o.ProjectID == projectid && o.Abandoned == false && o.Income > 0 &&
+                o.ActualPaymentDate.Value.Month == ActualPaymentDate.Month && o.ActualPaymentDate.Value.Year == year && o.Sales == sale)
+                        select d;
+            var username = sale;
+            var emps = CH.DB.EmployeeRoles.Where(w => w.AccountName == username);
+            var displayname = emps.Select(s => s.AccountNameCN).FirstOrDefault();
+            var roleid = emps.Select(s => s.RoleID).FirstOrDefault();
+            var projects = from p in deals
+                           group p by new { p.Project.ProjectCode } into grp
+                           select new { projectcode = grp.Key.ProjectCode };
+            var proname = "";
+            foreach (var name in projects)
+            {
+                proname = proname + name.projectcode + ",";
+            }
+            proname = proname.TrimEnd(',');
+            string inout = "海外";
+            if (roleid != null)
+            {
+                var name = CH.GetDataById<Role>(roleid).Name;
+                if (name.Contains("国内"))
+                    inout = "国内";
+            }
+            decimal standard = 3000;
+            var sponsorrate = 5;
+            var delegaterate = 5;
+            var lps = new PreCommission()
+            {
+                ProjectID = projectid,
+                Income = deals.Sum(s => (decimal?)s.Income),
+                TargetNameEN = sale,
+                TargetNameCN = displayname,
+                InOut = inout,
+                SponsorIncome = deals.Where(w => w.Poll == 0).Sum(s => (decimal?)s.Income),
+                DelegateIncome = inout == "海外" ? deals.Where(w => w.Poll > 0).Sum(s => (decimal?)s.Income) : 0,
+                SponsorRate=sponsorrate,
+                SponsorCommission = deals.Where(w => w.Poll == 0).Sum(s => (decimal?)s.Income) * sponsorrate / 100,
+                DelegateRate=delegaterate,
+                DelegateCommission = (inout == "海外" ? deals.Where(w => w.Poll > 0).Sum(s => (decimal?)s.Income) : 0) * delegaterate / 100,
+
+            };
+            if(lps.SponsorIncome==null)
+                lps.SponsorIncome=0;
+            else
+                lps.SponsorIncome=(decimal)Math.Round((decimal)lps.SponsorIncome);
+            if (lps.DelegateIncome == null)
+                lps.DelegateIncome = 0;
+            else
+                lps.DelegateIncome = (decimal)Math.Round((decimal)lps.DelegateIncome);
+            if (lps.SponsorCommission == null)
+                lps.SponsorCommission = 0;
+            else
+                lps.SponsorCommission = (decimal)Math.Round((decimal)lps.SponsorCommission);
+            if (lps.DelegateCommission == null)
+                lps.DelegateCommission = 0;
+            else
+                lps.DelegateCommission = (decimal)Math.Round((decimal)lps.DelegateCommission);
+            lps.Income = lps.DelegateIncome + lps.SponsorIncome;
+            lps.Commission = lps.SponsorCommission + lps.DelegateCommission;
+            if (lps.Commission > 3500)
+            {
+                lps.Tax = (decimal)Math.Round((((double)lps.Commission - 3500) * 0.07));
+            }
+            else
+                lps.Tax = 0;
+            lps.TotalCommission = lps.ActualCommission = lps.Commission - lps.Tax;
+            var procode = CH.GetDataById<Project>(projectid).ProjectCode;
+            var CommID = sale + year.ToString() + ActualPaymentDate.Month.ToString().PadLeft(2, '0');
+            lps.CommID = CommID;
+            lps.StartDate = startdate;
+            lps.EndDate = enddate;
+            var precommission = CH.DB.PreCommissions.Where(x => x.CommID == CommID && x.ProjectID==projectid).FirstOrDefault();
+            if (precommission != null)
+            {
+                CH.Delete<PreCommission>(precommission.ID);
+            }
+            CH.Create<PreCommission>(lps);
+
         }
     }
 }

@@ -13,9 +13,10 @@ namespace Sales.Controllers
 {
     public class FinanceController : Controller
     {
-        public ActionResult Index(int? month, string btnExport)
+        public ActionResult Index(int? year,int? month, string btnExport)
         {
             ViewBag.Month = month;
+            ViewBag.Year = year;
             var rolelvl = Employee.CurrentRole.Level;
             if (rolelvl == PoliticsInterfaceRequired.LVL)
             {
@@ -33,11 +34,11 @@ namespace Sales.Controllers
                 StreamWriter writer = new StreamWriter(output, System.Text.Encoding.Default);
 
                 if (month == null) month = DateTime.Now.Month;
-
+                if (year == null) year = DateTime.Now.Year;
                 writer.Write(month + "月");
                 writer.WriteLine();
 
-                var PreCommissionList = Finance_Logical._PreCommissionBLL.GetPreCommission(month.Value).ToList();
+                var PreCommissionList = Finance_Logical._PreCommissionBLL.GetPreCommission(year.Value,month.Value).ToList();
 
                 if (PreCommissionList.Count() > 0)
                 {
@@ -243,11 +244,12 @@ namespace Sales.Controllers
             //return View(data);
         }
         [GridAction]
-        public ActionResult PrecommissionIndex(int? month)
+        public ActionResult PrecommissionIndex(int? year,int? month)
         {
             if (month == null) month = DateTime.Now.AddMonths(-1).Month;
+            if (year == null) year = DateTime.Now.Year;
             // if (month == null) month = 5;
-            var list = Finance_Logical._PreCommissionBLL.GetPreCommission(month.Value);
+            var list = Finance_Logical._PreCommissionBLL.GetPreCommission(year.Value,month.Value);
             var data = list.OrderBy(p => p.TargetNameEN).ToList();
             return View(new GridModel(data));
         }
@@ -286,13 +288,20 @@ namespace Sales.Controllers
             //var data = list.Where(p => p.TargetNameEN==sale).ToList();
             return Json(list);
         }
-
         public ActionResult GetSales(int month)
         {
             // if (month == null) month = 5;
             var list = Finance_Logical._PreCommissionBLL.GetSalesDDL(month);
             list = list.OrderBy(o=>o.sales);
             
+            return Json(list);
+        }
+        public ActionResult GetSalesForEdit(int month)
+        {
+            // if (month == null) month = 5;
+            var list = Finance_Logical._PreCommissionBLL.GetSalesDDLForEdit(month);
+            list = list.OrderBy(o => o.sales);
+
             return Json(list);
         }
         public ActionResult GetSalesByProject(int projectid)
@@ -339,7 +348,7 @@ namespace Sales.Controllers
 
             newmodel.CommID = model.TargetNameEN + model.StartDate.Year.ToString() + model.StartDate.Month.ToString().PadLeft(2, '0');
             CH.Create<PreCommission>(newmodel);
-            var list = Finance_Logical._PreCommissionBLL.GetPreCommission(model.StartDate.Month);
+            var list = Finance_Logical._PreCommissionBLL.GetPreCommission(model.StartDate.Year,model.StartDate.Month);
             var data = list.OrderBy(p => p.TargetNameEN).ToList();
             return View(new GridModel(data));
 
@@ -350,8 +359,8 @@ namespace Sales.Controllers
         {
             PreCommission newmodel = new PreCommission();
             newmodel = CH.GetDataById<PreCommission>(model.ID);
-            newmodel.StartDate = model.StartDate;
-            newmodel.EndDate = model.EndDate;
+            //newmodel.StartDate = model.StartDate;
+            //newmodel.EndDate = model.EndDate;
             newmodel.TargetNameEN = model.TargetNameEN;
             newmodel.TargetNameCN = model.TargetNameCN;
             newmodel.ProjectID = model.ProjectID;
@@ -382,7 +391,7 @@ namespace Sales.Controllers
             newmodel.DelegateCommission = model.DelegateCommission;
 
             CH.Edit<PreCommission>(newmodel);
-            var list = Finance_Logical._PreCommissionBLL.GetPreCommission(model.StartDate.Month);
+            var list = Finance_Logical._PreCommissionBLL.GetPreCommission(model.StartDate.Year,model.StartDate.Month);
             var data = list.OrderBy(p => p.TargetNameEN).ToList();
             return View(new GridModel(data));
         }
@@ -392,7 +401,7 @@ namespace Sales.Controllers
         {
             int month = model.StartDate.Month;
             CH.Delete<PreCommission>(model.ID);
-            var list = Finance_Logical._PreCommissionBLL.GetPreCommission(month);
+            var list = Finance_Logical._PreCommissionBLL.GetPreCommission(model.StartDate.Year,month);
             var data = list.OrderBy(p => p.TargetNameEN).ToList();
             return View(new GridModel(data));
 

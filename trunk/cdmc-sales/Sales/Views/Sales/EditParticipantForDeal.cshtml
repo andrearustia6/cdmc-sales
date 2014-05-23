@@ -1,0 +1,84 @@
+@model AjaxParticipantForDeal
+@using Entity
+@using Utl
+@using (Html.BeginForm())
+{
+    <fieldset>
+     <legend>参会人信息</legend>
+     @Html.HiddenFor(model => model.ID)
+        <table>
+            <tr>
+                <td>@Html.LabelFor(model => model.Name)</td>
+                <td>
+                    
+                    @Html.TextBoxFor(model => model.Name)
+                    @Html.ValidationMessageFor(model => model.Name)
+                </td>
+                <td>@Html.LabelFor(model => model.Title)</td>
+                <td>
+                    
+                    @Html.TextBoxFor(model => model.Title)
+                    @Html.ValidationMessageFor(model => model.Title)
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.Gender)</td>
+                <td>
+                    
+                    @Html.DropDownListFor(model => model.Gender, SelectHelper.GenderSelectList(null), "-请选择-")
+                    @Html.ValidationMessageFor(model => model.Gender)
+                </td>
+                <td>@Html.LabelFor(model => model.Mobile)</td>
+                <td>
+                    
+                    @Html.TextBoxFor(model => model.Mobile)
+                    @Html.ValidationMessageFor(model => model.Mobile)
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.Contact)</td>
+                <td>
+                     
+                    @Html.TextBoxFor(model => model.Contact)
+                    @Html.ValidationMessageFor(model => model.Contact)
+                </td>
+                <td>@Html.LabelFor(model => model.Email)</td>
+                <td>
+                    
+                    @Html.TextBoxFor(model => model.Email)
+                    @Html.ValidationMessageFor(model => model.Email)
+                </td>
+            </tr>
+            <tr id="zipadd">
+                
+            <td>@Html.LabelFor(model => model.ZIP)</td>
+            <td>
+                
+                @Html.TextBoxFor(model => model.ZIP)
+            </td>
+            <td>@Html.LabelFor(model => model.Address)</td>
+            <td>
+            
+                @Html.TextBoxFor(model => model.Address)
+            </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.ParticipantTypeID)</td>
+                <td>
+                    @Html.DropDownListFor(model => model.ParticipantTypeID, new SelectList(CH.GetAllData<ParticipantType>(), "ID", "Name"), "-请选择-")<br />
+                    @Html.ValidationMessageFor(model => model.ParticipantTypeID)
+                </td>
+                <td>
+                   
+                </td>
+                <td>
+                 
+                    @*@Html.DropDownList("CompanyLeadID", SelectHelper.LeadSelectListByCRMID((int)ViewBag.CompanyRelationshipID), "- 请选择 -", new { onchange = "onLeadQuickSelected(this.value)" })*@
+                </td>
+            </tr>
+        </table>
+      
+            
+    </fieldset>
+}
+

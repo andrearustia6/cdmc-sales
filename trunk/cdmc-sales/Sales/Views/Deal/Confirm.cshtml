@@ -271,14 +271,19 @@
                 c.Bound(p => p.Mobile).Title("移动电话").Width(100);
                 c.Bound(p => p.Contact).Title("客户直线").Width(100);
                 c.Bound(p => p.Email).Title("电子邮箱").Width(120);
-                c.Bound(p => p.ParticipantTypeName).Title("参会类型").Width(100);
+                c.ForeignKey(p => p.ParticipantTypeID, SelectHelper.ParticipantTypeSelectList(), "Value", "Text");
+                //c.Bound(p => p.ParticipantTypeID).Title("参会类型").ClientTemplate(
+                //    Html.DropDownList("p", SelectHelper.InfoSelectList()).ToHtmlString()
+                //    //new SelectList(CH.GetAllData<ParticipantType>(), "ID", "Name").to.ToHtmlString()
+                //    ).Width(100);
+                c.Bound(p => p.CancelAttended).Title("是否毁约").Width(100);
                 c.Command(commands => commands.Delete()).Title("删除").Width(80);
             })
             .DataBinding(dataBinding =>
             {
                 dataBinding.Ajax()
                     .Select("_SelectAjaxParticipant", "Deal", new { id = Model.ID })
-                    .Update("_UpdateAjaxParticipant", "Deal");
+                    .Update("_UpdateAjaxParticipantNew", "Deal");
             })
             .Editable(editing => editing.Mode(GridEditMode.InCell).DefaultDataItem(new AjaxParticipant { })).Scrollable(scrolling => scrolling.Height(90)))
         }
@@ -292,6 +297,7 @@
             })
             .ToolBar(commands =>
             {
+                commands.Insert();
                 commands.SubmitChanges();
             })
             .Columns(c =>
@@ -302,14 +308,19 @@
                 c.Bound(p => p.Mobile).Title("移动电话").Width(100);
                 c.Bound(p => p.Contact).Title("客户直线").Width(100);
                 c.Bound(p => p.Email).Title("电子邮箱").Width(120);
-                c.Bound(p => p.ParticipantTypeName).Title("参会类型").Width(100);
+                c.ForeignKey(p => p.ParticipantTypeID, SelectHelper.ParticipantTypeSelectList(), "Value", "Text");
+                //c.Bound(p => p.ParticipantTypeID).Title("参会类型").ClientTemplate(
+                //    Html.DropDownList("p", SelectHelper.InfoSelectList()).ToHtmlString()
+                //    //new SelectList(CH.GetAllData<ParticipantType>(), "ID", "Name").to.ToHtmlString()
+                //    ).Width(100);
+                c.Bound(p => p.CancelAttended).Title("是否毁约").Width(100);
 
             })
             .DataBinding(dataBinding =>
             {
                 dataBinding.Ajax()
                     .Select("_SelectAjaxParticipant", "Deal", new { id = Model.ID })
-                    .Update("_UpdateAjaxParticipant", "Deal");
+                    .Update("_UpdateAjaxParticipantNew", "Deal");
             })
             .Editable(editing => editing.Mode(GridEditMode.InCell).DefaultDataItem(new AjaxParticipant { })).Scrollable(scrolling => scrolling.Height(90)))
         }

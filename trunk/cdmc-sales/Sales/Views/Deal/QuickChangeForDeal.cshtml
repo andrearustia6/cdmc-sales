@@ -77,11 +77,23 @@
                 @Html.LabelFor(model => model.CompanyRelationshipID, "公司")
             </td>
             <td>
-                @{
+               @* @{
                     var CRM = CH.GetDataById<CompanyRelationship>((int)ViewBag.CompanyRelationshipID);
                 }
                 @Html.TextBox("CompanyRelationshipName", CRM.CompanyName, new { @readOnly = "true", style = "width:200px;border-style: none" })
-                @Html.Hidden("CompanyRelationshipID", (int)ViewBag.CompanyRelationshipID)
+                @Html.Hidden("CompanyRelationshipID", (int)ViewBag.CompanyRelationshipID)*@
+                @{
+            IQueryable<CompanyRelationship> data = null;
+            var lvl = Employee.CurrentRole.Level;
+            int? projectid = Model == null ? ViewBag.ProjectID as int? : Model.ProjectID;
+            if (lvl <= 100 && lvl >= 10)
+            {
+                data = CRM_Logical.GetUserCallingCRM(projectid);
+            }
+           
+            @Html.DropDownListFor(m => m.CompanyRelationshipID, new SelectList(data.OrderBy(o=>o.Company.Name_CH).ThenBy(o => o.Company.Name_EN), "ID", "CompanyName"), "-请选择-")
+            @Html.ValidationMessageFor(model => model.CompanyRelationshipID)
+        }
             </td>
             <td style="width: 85px;">
                 @Html.LabelFor(model => model.ExpectedPaymentDate)
@@ -187,7 +199,7 @@
     </table>
     <fieldset style="margin: 5px 0px 0px 0px;">
         <legend>请填入参会人信息</legend>
-        @(Html.Telerik().Grid<AjaxParticipant>().Name("pList").BindTo(ViewData["pList"] as IEnumerable<AjaxParticipant>)
+        @(Html.Telerik().Grid<AjaxParticipantForDeal>().Name("pList").BindTo(ViewData["pList"] as IEnumerable<AjaxParticipantForDeal>)
             .DataKeys(keys =>
             {
                 keys.Add(s => s.ID);
@@ -227,7 +239,7 @@
                     .Delete("_DeleteAjaxParticipant", "SalesEx");
             })
             .ClientEvents(events => events.OnSave("onSave"))
-            .Editable(editing => editing.Mode(GridEditMode.PopUp).DefaultDataItem(new AjaxParticipant { }))
+                    .Editable(editing => editing.Mode(GridEditMode.PopUp).DefaultDataItem(new AjaxParticipantForDeal { }))
             .Scrollable(scrolling => scrolling.Height(90))
             .ClientEvents(events => events.OnEdit("PopupLocation"))
         )

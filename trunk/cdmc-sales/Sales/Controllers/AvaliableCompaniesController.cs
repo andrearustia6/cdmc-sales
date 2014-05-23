@@ -1715,7 +1715,19 @@ namespace Sales.Controllers
                             p.ModifiedUser = Employee.CurrentUser.UserName;
                             p.ModifiedDate = DateTime.Now;
                             if (p.ID == 0)
+                            {
+                                string prefix1 = CH.GetDataById<Project>(p.ProjectID).ProjectCode;
+                                var records1 = CH.GetAllData<Participant>().Where(s => s.PID != null && s.PID.StartsWith(prefix1));
+                                if (records1 != null && records1.Count() > 0)
+                                {
+                                    p.PID = prefix1 + string.Format("{0:D4}", Convert.ToInt32(records1.OrderByDescending(s => s.PID).First().PID.Substring(prefix1.Length)) + 1);
+                                }
+                                else
+                                {
+                                    p.PID = prefix1 + "0001";
+                                }
                                 CH.Create<Participant>(p);
+                            }
                         }
                     }
                 }

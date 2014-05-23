@@ -12,7 +12,7 @@
 @using (Html.BeginForm())
 {
     var project = CH.GetDataById<Project>((int)ViewBag.ProjectID);
-    ViewBag.AvaibleCRM = project.GetCRM();
+    //ViewBag.AvaibleCRM = project.GetCRM();
     @Html.Hidden("ProjectID", (int)ViewBag.ProjectID)
    @* @Html.Hidden("CompanyRelationshipID", (int)ViewBag.CompanyRelationshipID)*@
     @Html.HiddenFor(m => m.ID)
