@@ -284,8 +284,10 @@
             英文名
         </td>
         <td  style="width:10%">
-            @Html.DropDownListFor(model => model.TargetNameEN, new SelectList(new List<string>() { "请选择" }))
-            @Html.ValidationMessageFor(model => model.TargetNameEN)
+       
+               @Html.DropDownListFor(model => model.TargetNameEN, new SelectList(new List<string>() { "请选择" }))
+                @Html.ValidationMessageFor(model => model.TargetNameEN)
+           
             <div id="salediv"></div>
         </td>
         <td  style="width:15%">
@@ -605,30 +607,57 @@
         datestr = yy + '-' + mm + '-' + dd;
         $("#EndDate").val(datestr);
        
-        var month = StartDate.getMonth() + 1;
+        var month = StartDate.getMonth() ;
         $.ajax({
-            url: "/Finance/GetSales",
+            url: "/Finance/GetSalesForEdit",
             type: "post",
             dataType: "json",
-            data: { month: month},
+            data: { month: month },
             error: function (a, b, c) {
                 alert("获取数据失败，请重试。");
             },
             success: function (result) {
-//                if ($("#TargetNameEN").val() != 0) {
-//                    $("#TargetNameEN option[value!='']").remove();
-//                }
-//                if ($("#ProjectID").val() != 0) {
-//                    $("#ProjectID option[value!='']").remove();
+                //                if ($("#TargetNameEN").val() != 0) {
+                //                    $("#TargetNameEN option[value!='']").remove();
+                //                }
+                //                if ($("#ProjectID").val() != 0) {
+                //                    $("#ProjectID option[value!='']").remove();
                 //                }
 
                 $("#TargetNameEN").empty();
                 $("#ProjectID").empty();
                 $("#TargetNameEN").append("<option value='" + "" + "'>" + "请选择" + "</option>");
                 for (var i = 0; i < result.length; i++) {
-                    $("#TargetNameEN").append("<option value='" + result[i].salesid + "'>" + result[i].sales + "</option>");
+                    if (result[i].sales == $("#salediv").html())
+                        $("#TargetNameEN").append("<option selected='selected' value='" + result[i].salesid + "'>" + result[i].sales + "</option>");
+                    else
+                        $("#TargetNameEN").append("<option value='" + result[i].salesid + "'>" + result[i].sales + "</option>");
                 }
+                $.ajax({
+                    url: "/Finance/GetProjects",
+                    type: "post",
+                    dataType: "json",
+                    data: { month: month, sale: $("#salediv").html() },
+                    error: function (a, b, c) {
+                        alert("获取数据失败，请重试。");
+                    },
+                    success: function (result) {
+                        $("#ProjectID").empty();
+                        //if ($("#ProjectID").val() != 0) {
+                        //$("#ProjectID option[value!='']").remove();
+                        //}
+                        $("#ProjectID").append("<option value='" + "" + "'>" + "请选择" + "</option>");
+                        for (var i = 0; i < result.length; i++) {
+                            if (result[i].ProjectCode == $("#projectdiv").html())
+                                $("#ProjectID").append("<option selected='selected' value='" + result[i].ID + "'>" + result[i].ProjectCode + "</option>");
+                            else
+                                $("#ProjectID").append("<option value='" + result[i].ID + "'>" + result[i].ProjectCode + "</option>");
+                        }
+                    }
+                });
             }
         });
-    
+
+
+        
 </script>

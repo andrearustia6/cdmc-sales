@@ -530,7 +530,8 @@ namespace Utl
         {
             List<SelectListItem> selectList = new List<SelectListItem>();
             //var query = from c in CH.DB.CompanyRelationships.Where(w => w.Project.ID == projectid && w.Company.ID == companyid) select c.Company.Leads;
-            var leads = CH.GetAllData<Lead>().Where(l => l.CompanyID == companyid);
+            //var leads = CH.GetAllData<Lead>().Where(l => l.CompanyID == companyid);
+            var leads = CH.GetDataById<Company>(companyid).Leads;
             foreach (Lead lead in leads)
             {
                 SelectListItem selectListItem = new SelectListItem { Text = lead.Name, Value =lead.ID.ToString() };
@@ -635,6 +636,17 @@ namespace Utl
             List<SelectListItem> selectList = new List<SelectListItem>();
             selectList.Add(new SelectListItem() { Text = "Events", Value = "Events" });
             selectList.Add(new SelectListItem() { Text = "培训", Value = "培训" });
+            return selectList;
+        }
+
+        public static IEnumerable<SelectListItem> ParticipantTypeSelectList()
+        {
+            List<SelectListItem> selectList = new List<SelectListItem>();
+            var types = CH.GetAllData<ParticipantType>();
+            foreach (ParticipantType type in types)
+            {
+                selectList.Add(new SelectListItem() { Text = type.Name, Value = type.ID.ToString() });
+            }
             return selectList;
         }
     }

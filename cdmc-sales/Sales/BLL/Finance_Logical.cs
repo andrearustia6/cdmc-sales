@@ -16,9 +16,9 @@ namespace BLL
     {
         public static class _PreCommissionBLL
         {
-            public static IEnumerable<_PreCommission> GetPreCommission(int month, string fuzzyInput = "")
+            public static IEnumerable<_PreCommission> GetPreCommission(int year,int month, string fuzzyInput = "")
             {
-                var lps = CH.DB.PreCommissions.Where(p => p.StartDate.Month == month);
+                var lps = CH.DB.PreCommissions.Where(p => p.StartDate.Month == month && p.StartDate.Year==year);
                 var ps = from pre in lps
                          join p in CH.DB.Projects on pre.ProjectID equals  p.ID
                         select new _PreCommission
@@ -202,6 +202,32 @@ namespace BLL
                                 salesid = p,
                                 sales = p
                             };
+                return ret;
+            }
+            public static IEnumerable<_CommissionSales> GetSalesDDLForEdit(int month)
+            {
+
+                var startdate = new DateTime(DateTime.Now.Year, month, 1);
+                var enddate = startdate.EndOfMonth();
+                var enddateacutal = enddate.AddDays(1);
+                var deals = CH.DB.Deals.Where(w => w.Abandoned == false && w.Income > 0
+                    && w.ActualPaymentDate >= startdate && w.ActualPaymentDate < enddateacutal);
+                var mems = from m in deals
+                           select new
+                           {
+                               proid = m.ProjectID,
+                               sales = m.Sales
+                           };
+
+                var targets = mems.Select(s => s.sales).Distinct();
+                // var mems = CH.DB.Members.Where(w => w.IsActivated == true && w.Project.IsActived == true).Select(w=>w.Name).Distinct();
+                var ret = from p in targets
+
+                          select new _CommissionSales
+                          {
+                              salesid = p,
+                              sales = p
+                          };
                 return ret;
             }
             public static IEnumerable<_CommissionSales> GetSalesByProDDL(int projectid)

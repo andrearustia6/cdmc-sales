@@ -1,31 +1,52 @@
-﻿@model Entity.Deal
+﻿@{
+    Layout = null;
+}
+
+@model Deal
+
+
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+
 @{
     ViewBag.Title = "出单编辑";
 }
 @using Entity
 @using Utl
 @using BLL
-<script>
+@{
+    var dealid = Model.ID;
+    
+}
+@*<script>
     function onSave(e) {
-//        var haserror = false;
-//        if ($("#HideDistrictNumberID").val() == '0') {
-//            if ($("#ZIP").val() == '') {
-//                alert('请输入国内邮编');
-//                haserror = true;
-//            } else if ($("#Address").val() == '') {
-//                alert('请输入国内地址');
-//                haserror = true;
-//            }
-//        }
-//        if (haserror)
-//        { e.preventDefault(); }
+        var haserror = false;
+        if ($("#HideDistrictNumberID").val() == '0') {
+            if ($("#ZIP").val() == '') {
+                alert('请输入国内邮编');
+                haserror = true;
+            } else if ($("#Address").val() == '') {
+                alert('请输入国内地址');
+                haserror = true;
+            }
+        }
+        if (haserror)
+        { e.preventDefault(); }
         //        if ($(".t-button.t-grid-update").attr("disabled") == "disabled") {
         //            e.preventDefault();
         //        }
         //        $(".t-button.t-grid-update").attr("disabled", "disabled");
     }
-</script>
+</script>*@
+@using (Html.BeginForm())
+{
 <fieldset>
+@Html.HiddenFor(model => model.ID)
+@Html.HiddenFor(model => model.ProjectID)
+@Html.HiddenFor(model => model.IsClosed)
+@Html.HiddenFor(model => model.IsConfirm)
+@Html.HiddenFor(model => model.Confirmor)
+@Html.HiddenFor(model => model.CreatedDate)
     <legend>请填入出单信息</legend>
     <table id="quickTable" cellpadding="0" cellspacing="0" align="center" style="width: 100%;">
         <tr>
@@ -77,11 +98,23 @@
                 @Html.LabelFor(model => model.CompanyRelationshipID, "公司")
             </td>
             <td>
-                @{
+               @* @{
                     var CRM = CH.GetDataById<CompanyRelationship>((int)ViewBag.CompanyRelationshipID);
                 }
                 @Html.TextBox("CompanyRelationshipName", CRM.CompanyName, new { @readOnly = "true", style = "width:200px;border-style: none" })
-                @Html.Hidden("CompanyRelationshipID", (int)ViewBag.CompanyRelationshipID)
+                @Html.Hidden("CompanyRelationshipID", (int)ViewBag.CompanyRelationshipID)*@
+                @{
+           IQueryable<CompanyRelationship> data = null;
+           var lvl = Employee.CurrentRole.Level;
+           int? projectid = Model == null ? ViewBag.ProjectID as int? : Model.ProjectID;
+           if (lvl <= 100 && lvl >= 10)
+           {
+               data = CRM_Logical.GetUserCallingCRM(projectid);
+           }
+           
+            @Html.DropDownListFor(m => m.CompanyRelationshipID, new SelectList(data.OrderBy(o => o.Company.Name_EN), "ID", "CompanyName"), "-请选择-")
+            @Html.ValidationMessageFor(model => model.CompanyRelationshipID)
+        }
             </td>
             <td style="width: 85px;">
                 @Html.LabelFor(model => model.ExpectedPaymentDate)
@@ -143,7 +176,7 @@
             </td>
             <td>
                 @{
-                    var name = Model == null ? Employee.CurrentUserName : Model.Sales;
+           var name = Model == null ? Employee.CurrentUserName : Model.Sales;
                     <input name ="Sales" value="@name" />
                 }
                 @Html.ValidationMessageFor(model => model.Sales)
@@ -185,54 +218,9 @@
             }
         }*@
     </table>
-    <fieldset style="margin: 5px 0px 0px 0px;">
-        <legend>请填入参会人信息</legend>
-        @(Html.Telerik().Grid<AjaxParticipant>().Name("pList").BindTo(ViewData["pList"] as IEnumerable<AjaxParticipant>)
-            .DataKeys(keys =>
-            {
-                keys.Add(s => s.ID);
-            })
-            .ToolBar(commands =>
-            {
-                commands.Insert();
-            })
-            @*.ToolBar(toolbar  =>
-            {
-                toolbar.Template(
-                    @<text>
-                        <a href="#" class="t-grid-action t-button t-state-default t-grid-add">Add new record</a>
-
-                    </text>
-                    );
-            })*@
-            .Columns(c =>
-            {
-                c.Bound(p => p.Name).Title("客户名称").Width(80);
-                c.Bound(p => p.Title).Title("客户职位").Width(80);
-                c.Bound(p => p.Gender).Title("客户性别").Width(70);
-                c.Bound(p => p.Mobile).Title("移动电话").Width(80);
-                c.Bound(p => p.Contact).Title("客户直线").Width(80);
-                c.Bound(p => p.Email).Title("电子邮箱").Width(80);
-                c.Bound(p => p.ZIP).Title("国内邮编").Width(70);
-                c.Bound(p => p.Address).Title("国内地址");
-                c.Bound(p => p.ParticipantTypeName).Title("参会类型").Width(160);
-
-                c.Command(commands => commands.Delete()).Title("删除").Width(80);
-            })
-            .DataBinding(dataBinding =>
-            {
-                dataBinding.Ajax()
-                    .Select("_SelectAjaxParticipant", "SalesEx")
-                    .Insert("_InsertAjaxParticipant", "SalesEx")
-                    .Delete("_DeleteAjaxParticipant", "SalesEx");
-            })
-            .ClientEvents(events => events.OnSave("onSave"))
-            .Editable(editing => editing.Mode(GridEditMode.PopUp).DefaultDataItem(new AjaxParticipant { }))
-            .Scrollable(scrolling => scrolling.Height(90))
-            .ClientEvents(events => events.OnEdit("PopupLocation"))
-        )
-    </fieldset>
+    
 </fieldset>
+}
 <style>
     #quickTable
     {
@@ -322,3 +310,4 @@
     }
    
 </script>
+

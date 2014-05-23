@@ -1822,6 +1822,7 @@
     <Content Include="Views\AvaliableCompanies\PickUpIndex.cshtml" />
     <Content Include="Views\AvaliableCompanies\PickUpMainNavigation.cshtml" />
     <Content Include="Views\AvaliableCompanies\PickUpDetailContainer.cshtml" />
+    <Content Include="Views\Deal\QuickChangeForDeal.cshtml" />
     <None Include="Views\SalesEx\EditCompany.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\SimulatorConfig.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\AjaxTargetOfMonthForMember.cshtml" />
@@ -1867,6 +1868,11 @@
     </Content>
     <Content Include="Views\CompanyMerge\MergeCompany.cshtml" />
     <Content Include="Views\CompanyMerge\Index.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\AjaxParticipantForDeal.cshtml" />
+    <Content Include="Views\Sales\QuickAddDeal.cshtml" />
+    <Content Include="Views\Sales\EditQuickDeal.cshtml" />
+    <Content Include="Views\Sales\EditParticipantForDeal.cshtml" />
+    <Content Include="Views\Sales\AddParticipantForDeal.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\TargetOfMonthForMember\Confirm.cshtml" />

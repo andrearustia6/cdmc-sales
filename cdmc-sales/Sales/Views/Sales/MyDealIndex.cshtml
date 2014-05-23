@@ -1,85 +1,542 @@
 ﻿@{
     ViewBag.Title = "我的出单";
 }
-@using Entity
-@model List<Deal>
+<style>
+    .fieldblock
+    {
+    }
+    .fieldname div
+    {
+        padding: 2px;
+        min-width: 100px;
+        background-color: #FFDEAD;
+        border-bottom-color: #FF8C00;
+        border: 1px solid #CCC;
+        display: inline-block;
+        margin-left: 8px;
+        margin-bottom: 8px;
+    }
+    .fieldname div font
+    {
+        font-size: 12px;
+        color: Green;
+    }
+    
+    .selections span
+    {
+    }
+    .fieldError
+    {
+        border: 1px solid red !important;
+    }
+</style>
+
+<script>
+function EditDeal(dealid) {
+        alert(dealid);
+    }
+    </script>
+@using Model
 @Html.Partial("contenttitle", "我的出单")
 @Html.Partial("projectselector")
-@(Html.Telerik().Grid<Deal>(Model).Name("Deal").ToolBar(commands => commands.Custom().Text("添加出单").Action("AddDeal", "Sales", new { projectid = ViewBag.ProjectID as int? }))
-        .DataKeys(keys =>
-        {
-            keys.Add(s => s.ID);
-        })
-        .Columns(c =>
-        {
-            c.Bound(item => item.CompanyRelationship.Company.Name).Title("客户名称").Width(200);
-            c.Bound(item => item.DealCode).Title("出单号").Width(100);
-            c.Bound(item => item.Package.Name).Title("Package名称").Width(200);
 
-            c.Bound(item => item.RMBPayment).Title("RMB出单总额").Width(100).Format("{0:￥#,##0}").Aggregate(aggregates => aggregates.Sum()).FooterTemplate(@<text>@if (item.Sum != null)
+@{
+    var projectid = ViewBag.ProjectID as int?;
+  
+}
+@(Html.Telerik().Grid<AjaxViewDeal>().Name("Deal").ToolBar(toolBar => toolBar.Template(
+        @<text>  <a class="t-button t-grid-add" onclick="onQuickAddDeal();">新增出单</a>
+</text>
+        ))
+            .DataKeys(keys =>
+            {
+                keys.Add(s => s.ID);
+            })
+            .DataBinding(dataBinding =>
+            {
+                dataBinding.Ajax().Select("_MyDealIndex", "Sales", new { projectid = projectid });
+            })
+                 .ClientEvents(e => e.OnRowDataBound("ChangeButtonForDeal"))
+            .Columns(c =>
+            {
+                c.Bound(item => item.CompanyName).Title("客户名称").Width(200);
+                c.Bound(item => item.DealCode).Title("出单号").Width(100);
+                c.Bound(item => item.PackageName).Title("Package名称").Width(200);
+
+                c.Bound(item => item.RMBPayment).Title("RMB出单总额").Width(100).Format("{0:￥#,##0}").Aggregate(aggregates => aggregates.Sum()).FooterTemplate(@<text>@if (item.Sum != null)
                                                                                                                                                               {<p>
                                                                                                                                                                   RMB出单总额: @item.Sum.Format("{0:￥#,##0}")</p>}</text>).GroupFooterTemplate(@<text>@if (item.Sum != null)
                                                                                                                                                                                                                                                   {<p>
                                                                                                                                                                                                                                                   RMB出单总额: @item.Sum.Format("{0:￥#,##0}")</p>}</text>).Width(100);
-            c.Bound(item => item.USDPayment).Title("USD出单总额").Width(100).Format("{0:$#,##0}").Aggregate(aggregates => aggregates.Sum()).FooterTemplate(@<text>@if (item.Sum != null)
+                c.Bound(item => item.USDPayment).Title("USD出单总额").Width(100).Format("{0:$#,##0}").Aggregate(aggregates => aggregates.Sum()).FooterTemplate(@<text>@if (item.Sum != null)
                                                                                                                                                               {<p>
                                                                                                                                                                   USD出单总额: @item.Sum.Format("{0:$#,##0}")</p>}</text>).GroupFooterTemplate(@<text>@if (item.Sum != null)
                                                                                                                                                                                                                                                   {<p>
                                                                                                                                                                                                                                 USD出单总额: @item.Sum.Format("{0:$#,##0}")</p>}</text>).Width(100);
 
-            c.Bound(item => item.Income).Title("入账总额").Width(90).Format("{0:￥#,##0}").Aggregate(aggregates => aggregates.Sum()).FooterTemplate(@<text>@if (item.Sum != null)
+                c.Bound(item => item.Income).Title("入账总额").Width(90).Format("{0:￥#,##0}").Aggregate(aggregates => aggregates.Sum()).FooterTemplate(@<text>@if (item.Sum != null)
                                                                                                                                                       {<p>
                                                                                                                                                           入账总额: @item.Sum.Format("{0:￥#,##0}")</p>}</text>).GroupFooterTemplate(@<text>@if (item.Sum != null)
                                                                                                                                                                                                                                        {<p>
                                                                                                                                                                                                                                       入账总额: @item.Sum.Format("{0:￥#,##0}")</p>}</text>).Width(100); ;
-            //c.Bound(item => item.IsClosed).Width(70);
-            c.Bound(item => item.Committer).Width(100);
-            c.Bound(item => item.CommitterContect).Width(100);
-            c.Bound(item => item.Abandoned).Width(70);
-            c.Bound(item => item.TicketDescription).Width(200);
-            c.Bound(item => item.SignDate).Format("{0:d}").Width(90);
-            c.Bound(item => item.ExpectedPaymentDate).Format("{0:d}").Width(90);
-            c.Bound(item => item.ActualPaymentDate).Format("{0:d}").Width(100);
-            c.Template(item => item.IsConfirm == true ? "是" : "否").Width(100).Title("是否确认");
-            c.Bound(item => item.ID).Title("操作").Width(160).Template(
-                @<span> <a href=@Url.Content("~/sales/DisplayDeal/?id=" + item.ID + "&projectid=" + item.ProjectID)>
-                    详细</a>
-                    @{if (item.IsConfirm != true)
-                      {
-                        <span>| </span><a href=@Url.Content("~/sales/ModifyParticipant/?dealid=" + item.ID + "&projectid=" + item.ProjectID + "&crmid=" + item.CompanyRelationshipID + "&companyid=" + item.CompanyRelationship.Company.ID) >
-                            参会客户编辑</a>
-                        <span>| </span> <a href=@Url.Content("~/sales/EditDeal/?id=" + item.ID + "&projectid=" + item.ProjectID) >
-                            编辑</a> 
-                      }}
-                </span>);
-        })
-        .DetailView(e => e.Template(
-            @<text>
-@RenderGrid(item)
+                //c.Bound(item => item.IsClosed).Width(70);
+                c.Bound(item => item.Committer).Width(100);
+                c.Bound(item => item.CommitterContect).Width(100);
+                c.Bound(item => item.Abandoned).Width(70);
+                c.Bound(item => item.TicketDescription).Width(200);
+                c.Bound(item => item.SignDate).Format("{0:d}").Width(90);
+                c.Bound(item => item.ExpectedPaymentDate).Format("{0:d}").Width(90);
+                c.Bound(item => item.ActualPaymentDate).Format("{0:d}").Width(100);
+                c.Bound(item => item.IsConfirm).Width(100).Title("是否确认");
+                
+                c.Bound(item => item.ID).Title("操作").Width(160).ClientTemplate(
+                "<a id='editdeal<#= ID #>' style='cursor:pointer' onclick='EditDeal(<#= ID #>)'>编辑</a>"
+                       );
+            })
+                                                                                                                                                                                      .DetailView(e => e.ClientTemplate(
+                                                                                                                                                                              Html.Telerik().Grid<AjaxViewParticipant>().Name("Participants_<#= ID #>")
+                                                                                                                                                                              .ToolBar(toolBar => toolBar.Template(
+                                                                                                                                                                      @<text>  <a class="t-button t-grid-add" onclick="getAddParticipant(<#= ID #>);">新增参会人员</a>
 </text>
-        ))
-        .Resizable(resizing => resizing.Columns(true))
-        .Filterable().Sortable().Groupable()
-        .Pageable(p => p.PageSize(20))
-        .Scrollable(scrolling => scrolling.Height(350))
+                                                                                                                                                                      ))
+                                                                                                                                                                                                         .DataKeys(keys => { keys.Add(item => item.ID); })
+                                                                                                                                                                                                                                     .DataBinding(dataBinding =>
+                                                                                                                                                                                                                                     {
+                                                                                                                                                                                                                                         dataBinding.Ajax()
+                                                                                                                                                                                                                                             .Select("_SelectIndexParticipants", "Sales", new { dealid = "<#= ID #>" });
+                                                                                                                                                                                                                                     }).ClientEvents(f => f.OnRowDataBound("ChangeButtonForP"))
+                                                                                                                                                                                                                                         .Columns(c =>
+                                                                                                                                                                                                                                         {
+                                                                                                                                                                                                                                             c.Bound(o => o.Name);
+                                                                                                                                                                                                                                             c.Bound(o => o.Email);
+                                                                                                                                                                                                                                             c.Bound(o => o.Contact);
+                                                                                                                                                                                                                                             c.Bound(o => o.Mobile);
+                                                                                                                                                                                                                                             c.Bound(o => o.Title);
+                                                                                                                                                                                                                                             c.Bound(o => o.ParticipantTypeName).Title("参会类型");
+                                                                                                                                                                                                                                             //c.Bound(o => o.PID).Title("唯一ID");
+                                                                                                                                                                                                                                             c.Bound(item => item.ID).Title("操作").Width(160).ClientTemplate(
+                                                                                                                                                                                                                                                     "<div id='editp<#= ID #>'><a id='editp<#= ID #>' style='cursor:pointer' onclick='onEditParticipant(<#= ID #>)'>编辑</a> | <a style='cursor:pointer' onclick='DeleteParticipant(<#= ID #>)'>删除</a></div>");
+                                                                                                                                                                                                                                         })
+                                                                                                                                                                                                                                         .Resizable(resizing => resizing.Columns(true))
+                                                                                                                                                                                                                                         .Pageable(p => p.PageSize(20))
+                                                                                                                                                                                                                                         .Sortable().ToHtmlString()
 
+                                                                                                                                                                                                                 ))
+                                                                                                                                                                                                                 .Resizable(resizing => resizing.Columns(true))
+                                                                                                                                                                                                                 .Filterable().Sortable().Groupable()
+                                                                                                                                                                                                                                                                                                    .Pageable(p => p.PageSize(20))
+                                                                                                                                                                                                                                                                                                    .Scrollable(scrolling => scrolling.Height(350))
+
+                                                                                                                                                                                                                                                                                            )
+
+@(Html.Telerik().Window().Title("出单")
+    .Name("QuickAddDeal")
+    .Content(@<text><div class="dialogue-quickdeal">
+        <div class="quickdeal-wrapper">
+        </div>
+        <div class="dialogue-buttons" style="float:right;">
+            <input type="button" class="btn-queding" onclick="QuickDeal1()" />
+            <input type="button" class="btn-quxiao" onclick="CancelQuickDeal()" />
+        </div>
+    </div></text>)
+    .Width(1000).Height(620).Draggable(true).Modal(true).Visible(false)
 )
-@helper RenderGrid(Deal deal)
-    {
-    @(Html.Telerik()
-        .Grid(deal.Participants).Name("Participants" + deal.ID)
-        .Columns(c =>
-        {
-            c.Bound(o => o.Name);
-            c.Bound(o => o.Email);
-            c.Bound(o => o.Contact);
-            c.Bound(o => o.Mobile);
-            c.Bound(o => o.Title);
-            c.Bound(o => o.ParticipantType.Name).Title("参会类型");
+@(Html.Telerik().Window().Title("编辑出单")
+    .Name("EditDeal")
+    .Content(@<text><div class="dialogue-editdeal">
+        <div class="EditDeal-wrapper">
+        </div>
+        <div class="dialogue-buttons" style="float:right;">
+            <input type="button" class="btn-queding" onclick="SaveDeal()" />
+            <input type="button" class="btn-quxiao" onclick="CancelEditDeal()" />
+        </div>
+    </div></text>)
+    .Width(1000).Height(420).Draggable(true).Modal(true).Visible(false)
+)
+@(Html.Telerik().Window().Title("编辑参会人员")
+        .Name("EditParticipant")
+    .Content(@<text><div class="dialogue-editparticipant">
+        <div class="EditParticipant-wrapper">
+        </div>
+        <div class="dialogue-buttons" style="float:right;">
+            <input type="button" class="btn-queding" onclick="SaveParticipant()" />
+            <input type="button" class="btn-quxiao" onclick="CancelSaveParticipant()" />
+        </div>
+    </div></text>)
+    .Width(600).Height(300).Draggable(true).Modal(true).Visible(false)
+)
+@(Html.Telerik().Window().Title("添加参会人员")
+        .Name("AddParticipant")
+    .Content(@<text><div class="dialogue-addparticipant">
+        <div class="AddParticipant-wrapper">
+        </div>
+        <div class="dialogue-buttons" style="float:right;">
+            <input type="button" class="btn-queding" onclick="AddParticipant()" />
+            <input type="button" class="btn-quxiao" onclick="CancelAddParticipant()" />
+        </div>
+    </div></text>)
+    .Width(600).Height(300).Draggable(true).Modal(true).Visible(false)
+)
+<script>
+    var crmid = null;
+function onQuickAddDeal() {
+        $.post('GetQuickAddDeal', { projectId: $('#ProjectID').val(), CRMId: crmid }, function (result) {
+            $('.quickdeal-wrapper').html(result);
+            var window = $('#QuickAddDeal').data('tWindow');
+            window.center().open();
+        });
+    }
 
-        })
-        .Resizable(resizing => resizing.Columns(true))
-        .Pageable(p => p.PageSize(20))
-        .Sortable()
-    )
-}
+    function QuickDeal1() {
+        
+        var hasError = false;
+        $('.dialogue-quickdeal form input').removeClass('fieldError');
+        $('.dialogue-quickdeal form select').removeClass('fieldError');
+
+        String.prototype.isEmpty = function () { return /^\s*$/.test(this); }
+        if ($('.dialogue-quickdeal form #Polldiv').is(":visible")) {
+            if ($('.dialogue-quickdeal form #Poll').val() <= 0) {
+                $('.dialogue-quickdeal form #Poll').addClass('fieldError');
+                hasError = true;
+            }
+        }
+        
+        // validation for deal
+        if ($('.dialogue-quickdeal form #PackageID').val().isEmpty()) {
+            $('.dialogue-quickdeal form #PackageID').addClass('fieldError');
+            hasError = true;
+        }
+        if ($('.dialogue-quickdeal form #CompanyRelationshipID').val().isEmpty()) {
+            $('.dialogue-quickdeal form #CompanyRelationshipID').addClass('fieldError');
+            hasError = true;
+        }
+        if ($('.dialogue-quickdeal form #DealType').val().isEmpty()) {
+            $('.dialogue-quickdeal form #DealType').addClass('fieldError');
+            hasError = true;
+        }
+        if ($('.dialogue-quickdeal form #ExpectedPaymentDate').val().isEmpty()) {
+            $('.dialogue-quickdeal form #ExpectedPaymentDate').addClass('fieldError');
+            hasError = true;
+        }
+        if ($('.dialogue-quickdeal form #Payment').val().isEmpty() || $('.dialogue-quickdeal form #Payment').val() <= 0) {
+            $('.dialogue-quickdeal form #Payment').addClass('fieldError');
+            hasError = true;
+        }
+        if ($('.dialogue-quickdeal form #Committer').val().isEmpty()) {
+            $('.dialogue-quickdeal form #Committer').addClass('fieldError');
+            hasError = true;
+        }
+        var contact = $('.dialogue-quickdeal form #CommitterContect');
+        if (contact.val().length != 0 && !IsTelephone(contact.val())) {
+            contact.addClass('fieldError');
+            hasError = true;
+        }
+        var commiterEmail = $('.dialogue-quickdeal form #CommitterEmail');
+        if (commiterEmail.val().isEmpty()) {
+            commiterEmail.addClass('fieldError');
+            hasError = true;
+        } else {
+            if (!validateEmail(commiterEmail.val())) {
+                commiterEmail.addClass('fieldError');
+                hasError = true;
+            }
+        }
+        if ($('.dialogue-quickdeal form #PaymentDetail').val().isEmpty()) {
+            $('.dialogue-quickdeal form #PaymentDetail').addClass('fieldError');
+            hasError = true;
+        }
+        // end validation for deal
+
+        // validation for participant
+        //if ($('.dialogue-quickdeal form #Name').val().isEmpty()) {
+        //    $('.dialogue-quickdeal form #Name').addClass('fieldError');
+        //    hasError = true;
+        //}
+        //if ($('.dialogue-quickdeal form #ParticipantTypeID').val().isEmpty()) {
+        //    $('.dialogue-quickdeal form #ParticipantTypeID').addClass('fieldError');
+        //    hasError = true;
+        //}
+        // end validation for participant
+
+        if (hasError) {
+            return;
+        }
+
+        if ($('.quickdeal-wrapper form').valid()) {
+            var query = $('.quickdeal-wrapper form').serializeArray();
+
+            var grid = $('.quickdeal-wrapper form #pList').data('tGrid');
+            var data = grid.data;
+            if (data.length <= 0) {
+                if (confirm("您尚未填写参会人信息，请确认是否要提交？")) {
+                    $.post('QuickAddDeal', query, function (result) {
+                        if ((result.dealId != null) && (result.companyRelationshipId != null) && (result.dealCode != null)) {
+                            alert("您已经顺利提交出单，出单号为:" + result.dealCode)
+                            $('#QuickAddDeal').data('tWindow').close();
+                            refreshGrid();
+                        } else {
+                            alert('快捷出单失败')
+                        }
+                    });
+                } else {
+                    return;
+                }
+            } else {
+                $.post('QuickAddDeal', query, function (result) {
+                    if ((result.dealId != null) && (result.companyRelationshipId != null) && (result.dealCode != null)) {
+                        alert("您已经顺利提交出单，出单号为:" + result.dealCode)
+                        $('#QuickAddDeal').data('tWindow').close();
+                        refreshGrid();
+                    } else {
+                        alert('快捷出单失败')
+                    }
+                });
+            }
+        }
+    }
+
+    function CancelQuickDeal() {
+        var window = $('#QuickAddDeal').data('tWindow');
+        window.close();
+    }
+    function EditDeal(dealid) {
+        $.post('GetQuickEditDeal', { dealid: dealid }, function (result) {
+            $('.EditDeal-wrapper').html(result);
+            var window = $('#EditDeal').data('tWindow');
+            window.center().open();
+        });
+    }
+    function SaveDeal() {
+
+        var hasError = false;
+        $('.dialogue-editdeal form input').removeClass('fieldError');
+        $('.dialogue-editdeal form select').removeClass('fieldError');
+
+        String.prototype.isEmpty = function () { return /^\s*$/.test(this); }
+        if ($('.dialogue-editdeal form #Polldiv').is(":visible")) {
+            if ($('.dialogue-editdeal form #Poll').val() <= 0) {
+                $('.dialogue-editdeal form #Poll').addClass('fieldError');
+                hasError = true;
+            }
+        }
+        // validation for deal
+        if ($('.dialogue-editdeal form #PackageID').val().isEmpty()) {
+            $('.dialogue-editdeal form #PackageID').addClass('fieldError');
+            hasError = true;
+        }
+
+        if ($('.dialogue-editdeal form #CompanyRelationshipID').val().isEmpty()) {
+            $('.dialogue-editdeal form #CompanyRelationshipID').addClass('fieldError');
+            hasError = true;
+        }
+        if ($('.dialogue-editdeal form #DealType').val().isEmpty()) {
+            $('.dialogue-editdeal form #DealType').addClass('fieldError');
+            hasError = true;
+        }
+        if ($('.dialogue-editdeal form #ExpectedPaymentDate').val().isEmpty()) {
+            $('.dialogue-editdeal form #ExpectedPaymentDate').addClass('fieldError');
+            hasError = true;
+        }
+        if ($('.dialogue-editdeal form #Payment').val().isEmpty() || $('.dialogue-editdeal form #Payment').val() <= 0) {
+            $('.dialogue-editdeal form #Payment').addClass('fieldError');
+            hasError = true;
+        }
+        if ($('.dialogue-editdeal form #Committer').val().isEmpty()) {
+            $('.dialogue-editdeal form #Committer').addClass('fieldError');
+            hasError = true;
+        }
+        var contact = $('.dialogue-editdeal form #CommitterContect');
+        if (contact.val().length != 0 && !IsTelephone(contact.val())) {
+            contact.addClass('fieldError');
+            hasError = true;
+        }
+        var commiterEmail = $('.dialogue-editdeal form #CommitterEmail');
+        if (commiterEmail.val().isEmpty()) {
+            commiterEmail.addClass('fieldError');
+            hasError = true;
+        } else {
+            if (!validateEmail(commiterEmail.val())) {
+                commiterEmail.addClass('fieldError');
+                hasError = true;
+            }
+        }
+        if ($('.dialogue-editdeal form #PaymentDetail').val().isEmpty()) {
+            $('.dialogue-editdeal form #PaymentDetail').addClass('fieldError');
+            hasError = true;
+        }
+        // end validation for deal
+
+        // validation for participant
+        //if ($('.dialogue-editdeal form #Name').val().isEmpty()) {
+        //    $('.dialogue-editdeal form #Name').addClass('fieldError');
+        //    hasError = true;
+        //}
+        //if ($('.dialogue-editdeal form #ParticipantTypeID').val().isEmpty()) {
+        //    $('.dialogue-editdeal form #ParticipantTypeID').addClass('fieldError');
+        //    hasError = true;
+        //}
+        // end validation for participant
+
+        if (hasError) {
+            return;
+        }
+        if ($('.EditDeal-wrapper form').valid()) {
+            var query = $('.EditDeal-wrapper form').serializeArray();
+            $.post('SaveDeal', query, function (result) {
+                if ((result.dealId != null)) {
+                    alert("您已经顺利提交出单")
+                    $('#EditDeal').data('tWindow').close();
+                    refreshGrid();
+                } else {
+                    alert('快捷出单失败')
+                }
+            });
+
+//            var grid = $('.EditDeal-wrapper form #pList').data('tGrid');
+//            var data = grid.data;
+//            if (data.length <= 0) {
+//                if (confirm("您尚未填写参会人信息，请确认是否要提交？")) {
+//                    $.post('SaveDeal', { item: query, pLists: data }, function (result) {
+//                        if ((result.dealId != null) && (result.companyRelationshipId != null) && (result.dealCode != null)) {
+//                            alert("您已经顺利提交出单，出单号为:" + result.dealCode)
+//                            $('#EditDeal').data('tWindow').close();
+//                        } else {
+//                            alert('快捷出单失败')
+//                        }
+//                    });
+//                } else {
+//                    return;
+//                }
+//            } else {
+//               
+//            }
+        }
+    }
+    function CancelEditDeal() {
+        var window = $('#EditDeal').data('tWindow');
+        window.close();
+    }
+
+    function onEditParticipant(id) {
+        $.post('GetEditParticipant', { id:id }, function (result) {
+            $('.EditParticipant-wrapper').html(result);
+            var window = $('#EditParticipant').data('tWindow');
+            window.center().open();
+        });
+    }
+    function SaveParticipant() {
+        var hasError = false;
+        $('.dialogue-editparticipant form input').removeClass('fieldError');
+        $('.dialogue-editparticipant form select').removeClass('fieldError');
+
+        String.prototype.isEmpty = function () { return /^\s*$/.test(this); }
+
+        if ($('.dialogue-editparticipant form #ParticipantTypeID').val().isEmpty()) {
+            $('.dialogue-editparticipant form #ParticipantTypeID').addClass('fieldError');
+            hasError = true;
+        }
+        if (hasError) {
+            return;
+        }
+        
+        if ($('.EditParticipant-wrapper form').valid()) {
+            var query = $('.EditParticipant-wrapper form').serializeArray();
+            $.post('SaveParticipant', query, function (result) {
+                if ((result.id != null)) {
+                    alert("修改参会人员成功")
+                    $('#EditParticipant').data('tWindow').close();
+                    refreshGrid();
+                } else {
+                    alert('修改参会人员失败')
+                }
+            });
+
+        }
+    }
+    function CancelSaveParticipant() {
+        var window = $('#EditParticipant').data('tWindow');
+        window.close();
+    }
+    function DeleteParticipant(id) {
+
+        if (confirm("是否将此信息删除?")) {
+            $.post('DeleteAjaxParticipant', { id: id }, function (result) {
+                if ((result.id != null)) {
+                    alert("删除参会人员成功")
+                    refreshGrid();
+                } else {
+                    alert('删除参会人员失败')
+                }
+            });
+        }
+    }
+    function AddParticipant() {
+        var hasError = false;
+        $('.dialogue-addparticipant form input').removeClass('fieldError');
+        $('.dialogue-addparticipant form select').removeClass('fieldError');
+
+        String.prototype.isEmpty = function () { return /^\s*$/.test(this); }
+
+        if ($('.dialogue-addparticipant form #ParticipantTypeID').val().isEmpty()) {
+            $('.dialogue-addparticipant form #ParticipantTypeID').addClass('fieldError');
+            hasError = true;
+        }
+        if ($('.dialogue-addparticipant form #CompanyLeadID').val().isEmpty()) {
+            $('.dialogue-addparticipant form #CompanyLeadID').addClass('fieldError');
+            hasError = true;
+        }
+        if (hasError) {
+            return;
+        }
+        if ($('.AddParticipant-wrapper form').valid()) {
+            var query = $('.AddParticipant-wrapper form').serializeArray();
+            $.post('AddParticipant', query, function (result) {
+                if ((result.id != null)) {
+                    alert("添加参会人员成功")
+                    $('#AddParticipant').data('tWindow').close();
+                    refreshGrid();
+                } else {
+                    alert('添加参会人员失败')
+                }
+
+            });
+
+        }
+    }
+    function CancelAddParticipant() {
+        var window = $('#AddParticipant').data('tWindow');
+        window.close();
+    }
+    function getAddParticipant(dealid) {
+        $.post('GetAddParticipant', { dealid: dealid }, function (result) {
+            $('.AddParticipant-wrapper').html(result);
+            var window = $('#AddParticipant').data('tWindow');
+            window.center().open();
+        });
+    }
+    function refreshGrid() {
+        $("#Deal").data("tGrid").rebind();
+
+    }
+
+    function ChangeButtonForDeal(e) {
+        var $row = $(e.row);
+        
+        if ((e.dataItem.IsConfirm == "是")) {
+            $("#editdeal" + e.dataItem.ID).hide();
+            return;
+        }
+
+
+    }
+    function ChangeButtonForP(e) {
+        var $row = $(e.row);
+
+        if ((e.dataItem.isconfirmed == "是")) {
+            $("#editp" + e.dataItem.ID).hide();
+            return;
+        }
+
+
+    }
+    </script>

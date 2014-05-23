@@ -1,0 +1,234 @@
+@model AjaxParticipantForDeal
+@using Entity
+@using Utl
+@using (Html.BeginForm())
+{
+    <fieldset>
+    @Html.HiddenFor(model=>model.DealID)
+     <legend>参会人信息</legend>
+        <table>
+            <tr>
+                <td>@Html.LabelFor(model => model.Name)</td>
+                <td>
+                    <div id="dispName"></div>
+                    @Html.HiddenFor(model => model.Name)
+                    @Html.ValidationMessageFor(model => model.Name)
+                </td>
+                <td>@Html.LabelFor(model => model.Title)</td>
+                <td>
+                    <div id="dispTitle"></div>
+                    @Html.HiddenFor(model => model.Title)
+                    @Html.ValidationMessageFor(model => model.Title)
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.Gender)</td>
+                <td>
+                    <div id="dispGender"></div>
+                    @Html.HiddenFor(model => model.Gender)
+                    @Html.ValidationMessageFor(model => model.Gender)
+                </td>
+                <td>@Html.LabelFor(model => model.Mobile)</td>
+                <td>
+                    <div id="dispMobile"></div>
+                    @Html.HiddenFor(model => model.Mobile)
+                    @Html.ValidationMessageFor(model => model.Mobile)
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.Contact)</td>
+                <td>
+                     <div id="dispContact"></div>
+                    @Html.HiddenFor(model => model.Contact)
+                    @Html.ValidationMessageFor(model => model.Contact)
+                </td>
+                <td>@Html.LabelFor(model => model.Email)</td>
+                <td>
+                    <div id="dispEmail"></div>
+                    @Html.HiddenFor(model => model.Email)
+                    @Html.ValidationMessageFor(model => model.Email)
+                </td>
+            </tr>
+            <tr id="zipadd">
+                
+            <td>@Html.LabelFor(model => model.ZIP)</td>
+            <td>
+                <select id="ZIPsel" name="ZIPsel" /> 
+                @Html.HiddenFor(model=>model.ZIP)
+            </td>
+            <td>@Html.LabelFor(model => model.Address)</td>
+            <td>
+            <select id="Addresssel" name="Addresssel" /> 
+                @Html.HiddenFor(model => model.Address)
+            </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.ParticipantTypeID)</td>
+                <td>
+                    @Html.DropDownListFor(model => model.ParticipantTypeID, new SelectList(CH.GetAllData<ParticipantType>(), "ID", "Name"), "-请选择-")<br />
+                    @Html.ValidationMessageFor(model => model.ParticipantTypeID)
+                </td>
+                <td>
+                    公司Lead
+                </td>
+                <td>
+                <select id="CompanyLeadID" name="CompanyLeadID" /> 
+                 
+                    @*@Html.DropDownList("CompanyLeadID", SelectHelper.LeadSelectListByCRMID((int)ViewBag.CompanyRelationshipID), "- 请选择 -", new { onchange = "onLeadQuickSelected(this.value)" })*@
+                </td>
+            </tr>
+        </table>
+        @if (ViewBag.DistrictNumberID == 1)
+        {
+            @Html.Hidden("HideDistrictNumberID", "1")
+        }
+        else
+        {
+            @Html.Hidden("HideDistrictNumberID", "0")
+        }
+            
+    </fieldset>
+}
+    <script type="text/javascript" language="javascript">
+        $(document).ready(function () {
+            $('#ZIPsel').change(function () {
+                $("#ZIP").val($(this).children('option:selected').val());
+            });
+            $('#Addresssel').change(function () {
+                $("#Address").val($(this).children('option:selected').val());
+            });
+            $('#CompanyLeadID').change(function () {
+                onLeadQuickSelected($("#CompanyLeadID").val());
+                
+            });
+
+
+            $.ajax({
+                url: "/Sales/GetLeadIdByDealID",
+                type: "post",
+                dataType: "json",
+                data: { id: $("#DealID").val() },
+                error: function (a, b, c) {
+                    alert("获取数据失败，请重试。");
+                },
+                success: function (result) {
+                    var options = '';
+                    options += "<option value=''>请选择</option>";
+                    for (var i = 0; i < result.length; i++) {
+                        options += "<option value=" + result[i].ID + ">" + result[i].Name_CH + "</option>";
+                    }
+                    $("#CompanyLeadID").html(options);
+                }
+            });
+        })
+        function onLeadQuickSelected(leadid) {
+            if (leadid != null && leadid != "") {
+                $.ajax({
+                    url: "/Sales/GetLeadById",
+                    type: "post",
+                    data: { id: leadid },
+                    error: function () {
+                        alert("获取Lead信息失败");
+                    },
+                    success: function (data) {
+                        var leadstring = data;
+                        var lead = new Array();
+                        lead = leadstring.split(",");
+
+                        $("#Name").val(lead[0]);
+                        $("#Title").val(lead[1]);
+                        $("#Gender").val(lead[2]);
+                        $("#Mobile").val(lead[3]);
+                        $("#Contact").val(lead[4]);
+                        $("#Email").val(lead[5]);
+
+                        //$("#ZIP").val(lead[6]);
+                        //$("#Address").val(lead[7]);
+
+                        $("#dispName").html(lead[0]);
+                        $("#dispTitle").html(lead[1]);
+                        $("#dispGender").html(lead[2]);
+                        $("#dispMobile").html(lead[3]);
+                        $("#dispContact").html(lead[4]);
+                        $("#dispEmail").html(lead[5]);
+                        //$("#dispZIP").html(lead[6]);
+                        //$("#dispAddress").html(lead[7]);
+
+                        getZip(leadid);
+                        getAddress(leadid);
+                    }
+                });
+            } else {
+                $("#Name").val(lead[0]);
+                $("#dispName").val(lead[0]);
+                $("#Title").val();
+                $("#Gender").val();
+                $("#Mobile").val();
+                $("#Contact").val();
+                $("#Email").val();
+                $("#ZIP").val();
+                $("#Address").val();
+
+                $("#dispName").html();
+                $("#dispTitle").html();
+                $("#dispGender").html();
+                $("#dispMobile").html();
+                $("#dispContact").html();
+                $("#dispEmail").html();
+                $("#dispZIP").html();
+                $("#dispAddress").html();
+            }
+        }
+        if ($("#HideDistrictNumberID").val() == '1') {
+            $("#zipadd").hide();
+        }
+        function getZip(leadid) {
+            $.ajax({
+                url: "/Sales/GetZipByLeadId",
+                type: "post",
+                dataType: "json",
+                data: { id: leadid },
+                error: function (a, b, c) {
+                    alert("获取数据失败，请重试。");
+                },
+                success: function (result) {
+                    var options = '';
+                    options += "<option value=''>请选择</option>";
+                    for (var i = 0; i < result.length; i++) {
+                        if (i == 0) {
+                            options += "<option value=" + result[i] + " selected = \"selected\">" + result[i] + "</option>";
+                            $("#ZIP").val(result[i]);
+                        }
+                        else
+                            options += "<option value=" + result[i] + ">" + result[i] + "</option>";
+
+                    }
+                    $("#ZIPsel").html(options);
+                }
+            });
+        }
+        function getAddress(leadid) {
+            $.ajax({
+                url: "/Sales/GetAddressByLeadId",
+                type: "post",
+                dataType: "json",
+                data: { id: leadid },
+                error: function (a, b, c) {
+                    alert("获取数据失败，请重试。");
+                },
+                success: function (result) {
+                    var options = '';
+                    options += "<option value=''>请选择</option>";
+                    for (var i = 0; i < result.length; i++) {
+                        if (i == 0) {
+                            options += "<option value=" + result[i] + " selected = \"selected\">" + result[i] + "</option>";
+                            $("#Address").val(result[i]);
+                        }
+                        else
+                            options += "<option value=" + result[i] + ">" + result[i] + "</option>";
+                    }
+                    $("#Addresssel").html(options);
+                }
+            });
+        }
+    </script>

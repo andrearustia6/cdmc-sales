@@ -13,12 +13,15 @@
     var InOut = "";
 </script>
 <fieldset>
-    <legend>月份</legend>
+    <legend>年月</legend>
     @{
         using (Html.BeginForm())
         {
             var m = ViewBag.Month as int?;
+            var y = ViewBag.Year as int?;
             m = m == null ? DateTime.Now.AddMonths(-1).Month : m;
+            y = y == null ? DateTime.Now.Year : y;
+        @Html.DropDownList("year", new SelectList(new List<int>() { 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020 }, y), new { onchange = "setexport('0');this.form.submit();" })
         @Html.DropDownList("month", new SelectList(new List<int>() { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 }, m), new { onchange = "setexport('0');this.form.submit();" })
             @Html.Hidden("btnExport");
         <button value="export" id="export" type="button" name="Export" onclick="setexport('1');this.form.submit();"
@@ -31,6 +34,7 @@
 </fieldset>
 @{
     var month = ViewBag.Month as int?;
+    var year = ViewBag.Year as int?;
     var query = ViewBag.fuzzyInput as string;
     var rolelvl = ViewBag.RoleLevel as int?;
 }
@@ -46,10 +50,10 @@
             })
             .DataBinding(dataBinding =>
             {
-                dataBinding.Ajax().Select("PrecommissionIndex", "Finance", new { month = month })
+                dataBinding.Ajax().Select("PrecommissionIndex", "Finance", new {year=year, month = month })
                     .Update("Save", "Finance")
                     .Insert("Insert", "Finance")
-                    .Delete("Delete","Finance");
+                    .Delete("Delete", "Finance");
             })
         .Columns(columns =>
         {
@@ -71,13 +75,13 @@
             {
                 commands.Edit().ButtonType(GridButtonType.Text);
                 commands.Delete().ButtonType(GridButtonType.Text);
-            }).Title("编辑").Width(100);
+            }).Title("编辑").Width(150);
         })
          .Editable(editing => editing.Mode(GridEditMode.PopUp).TemplateName("PreCommissionEdit"))
                  .ClientEvents(events => events.OnEdit("ChangePopup"))
                                  .ClientEvents(events => events.OnCommand("SetParams").OnComplete("onComplete"))
                   .Pageable(p => p.Style(GridPagerStyles.Status).PageOnScroll(true)
-               .PageSize(25)).Scrollable(scrolling => scrolling.Height(350)).Sortable().Resizable(r => r.Columns(true))
+                       .PageSize(25)).Scrollable(scrolling => scrolling.Height(350)).Sortable().Resizable(r => r.Columns(true)).Filterable()
                            )
     </fieldset>
   

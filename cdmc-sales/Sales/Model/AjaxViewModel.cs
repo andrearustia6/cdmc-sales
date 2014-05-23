@@ -31,6 +31,9 @@ namespace Model
         [Display(Name = "工作邮箱")]
         public string Email { get; set; }
 
+        [Display(Name = "参会类型"), Required]
+        public int? ParticipantTypeID { get; set; }
+
         [Display(Name = "参会类型")]
         public string ParticipantTypeName { get { return Utl.Utl.GetFullName(ParticipantTypeNameCH, ParticipantTypeNameEN); } }
         public string ParticipantTypeNameCH { get; set; }
@@ -38,6 +41,8 @@ namespace Model
 
         public string ProjectCode { get; set; }
         public int? ProjectID { get; set; }
+
+        public string isconfirmed { get; set; }
     }
 
     public class AjaxViewLeadInProject
