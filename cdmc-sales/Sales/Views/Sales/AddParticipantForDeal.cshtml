@@ -6,10 +6,10 @@
     <fieldset>
     @Html.HiddenFor(model=>model.DealID)
      <legend>参会人信息</legend>
-        <table>
+        <table style=" width:100%;">
             <tr>
                 <td>@Html.LabelFor(model => model.Name)</td>
-                <td>
+                <td style="width:20%;">
                     <div id="dispName"></div>
                     @Html.HiddenFor(model => model.Name)
                     @Html.ValidationMessageFor(model => model.Name)
@@ -65,7 +65,7 @@
             <tr>
                 <td>@Html.LabelFor(model => model.ParticipantTypeID)</td>
                 <td>
-                    @Html.DropDownListFor(model => model.ParticipantTypeID, new SelectList(CH.GetAllData<ParticipantType>(), "ID", "Name"), "-请选择-")<br />
+                    @Html.DropDownListFor(model => model.ParticipantTypeID, new SelectList(CH.GetAllData<ParticipantType>(), "ID", "Name"), "-请选择-")
                     @Html.ValidationMessageFor(model => model.ParticipantTypeID)
                 </td>
                 <td>
