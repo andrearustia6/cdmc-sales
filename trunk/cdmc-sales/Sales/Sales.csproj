@@ -1823,6 +1823,7 @@
     <Content Include="Views\AvaliableCompanies\PickUpMainNavigation.cshtml" />
     <Content Include="Views\AvaliableCompanies\PickUpDetailContainer.cshtml" />
     <Content Include="Views\Deal\QuickChangeForDeal.cshtml" />
+    <Content Include="Views\AvaliableCompanies\AjaxParticipantForDeal.cshtml" />
     <None Include="Views\SalesEx\EditCompany.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\SimulatorConfig.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\AjaxTargetOfMonthForMember.cshtml" />

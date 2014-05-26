@@ -115,7 +115,7 @@ function EditDeal(dealid) {
                                                                                                                                                                                                                                              c.Bound(o => o.ParticipantTypeName).Title("参会类型");
                                                                                                                                                                                                                                              //c.Bound(o => o.PID).Title("唯一ID");
                                                                                                                                                                                                                                              c.Bound(item => item.ID).Title("操作").Width(160).ClientTemplate(
-                                                                                                                                                                                                                                                     "<div id='editp<#= ID #>'><a id='editp<#= ID #>' style='cursor:pointer' onclick='onEditParticipant(<#= ID #>)'>编辑</a> | <a style='cursor:pointer' onclick='DeleteParticipant(<#= ID #>)'>删除</a></div>");
+                                                                                                                                                                                                                                                     "<div id='editp<#= ID #>'><a id='editp<#= ID #>' style='cursor:pointer' onclick='onEditParticipant(<#= ID #>)'>编辑</a> </div>");
                                                                                                                                                                                                                                          })
                                                                                                                                                                                                                                          .Resizable(resizing => resizing.Columns(true))
                                                                                                                                                                                                                                          .Pageable(p => p.PageSize(20))
@@ -532,10 +532,10 @@ function onQuickAddDeal() {
     function ChangeButtonForP(e) {
         var $row = $(e.row);
 
-        if ((e.dataItem.isconfirmed == "是")) {
-            $("#editp" + e.dataItem.ID).hide();
-            return;
-        }
+//        if ((e.dataItem.isconfirmed == "是")) {
+//            $("#editp" + e.dataItem.ID).hide();
+//            return;
+//        }
 
 
     }
