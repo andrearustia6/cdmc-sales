@@ -41,7 +41,7 @@
                 </td>
                 <td>@Html.LabelFor(model => model.Email)</td>
                 <td>
-                    <div id="dispEmail"></div>
+                    <div id="dispEmail"  style="width:120px;word-wrap:break-word ;overflow:hidden;"></div>
                     @Html.HiddenFor(model => model.Email)
                     @Html.ValidationMessageFor(model => model.Email)
                 </td>

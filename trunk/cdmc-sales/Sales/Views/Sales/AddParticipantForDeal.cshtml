@@ -8,14 +8,14 @@
      <legend>参会人信息</legend>
         <table style=" width:100%;">
             <tr>
-                <td>@Html.LabelFor(model => model.Name)</td>
-                <td style="width:20%;">
+                <td style="width:20%;">@Html.LabelFor(model => model.Name)</td>
+                <td style="width:30%;">
                     <div id="dispName"></div>
                     @Html.HiddenFor(model => model.Name)
                     @Html.ValidationMessageFor(model => model.Name)
                 </td>
-                <td>@Html.LabelFor(model => model.Title)</td>
-                <td>
+                <td style="width:20%;">@Html.LabelFor(model => model.Title)</td>
+                <td style="width:30%;">
                     <div id="dispTitle"></div>
                     @Html.HiddenFor(model => model.Title)
                     @Html.ValidationMessageFor(model => model.Title)
@@ -44,7 +44,7 @@
                 </td>
                 <td>@Html.LabelFor(model => model.Email)</td>
                 <td>
-                    <div id="dispEmail"></div>
+                    <div id="dispEmail" style="width:120px;word-wrap:break-word ;overflow:hidden;"></div>
                     @Html.HiddenFor(model => model.Email)
                     @Html.ValidationMessageFor(model => model.Email)
                 </td>
