@@ -1,0 +1,63 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+@using Entity
+@using Utl
+
+@(Html.Telerik().TabStrip().Name("ParticipantTab").SelectedIndex(0).Items(child => {
+    child.Add().Text("参会嘉宾").Content((@<text>
+    @Participants()
+    </text>));
+}
+))
+
+@helper Participants()
+{
+    var ps =  BLL.CRM_Logical.GetUserInvolveProject().Where(w=>w.IsActived==true).Select(s=>s.ProjectCode);
+    <label>项目筛选</label>@Html.DropDownList("projectcode", new SelectList(ps),"-请选择-")
+      @(Html.Telerik().Grid<AjaxParticipant>().Name("AjaxViewParticipant")
+    .DataKeys(keys => { keys.Add(item => item.ID); })
+            .ClientEvents(events => events.OnDataBinding("onParticipantBinding"))
+    .DataBinding(dataBinding =>
+    {
+        dataBinding.Ajax()
+            .Select("_SelectParticipantAjaxIndex", "Mastersheet")
+            .Update("_SaveParticipantAjaxEditing", "Mastersheet")
+            .Insert("_InsertParticipantAjaxEditing", "Mastersheet");
+    })
+    .Columns(columns =>
+    {
+        columns.Bound(item => item.Name);
+        columns.Bound(item => item.Company);
+        columns.Bound(item => item.Mobile).Width(100);
+        columns.Bound(item => item.Contact).Width(150);
+        columns.Bound(item => item.Title).Width(100);
+        columns.Bound(item => item.Gender).Width(50);
+        columns.Bound(item => item.ParticipantTypeName).Width(200);
+        columns.Bound(item => item.ProjectCode).Width(100);
+        columns.Command(c => c.Edit()).Width(100);
+    })
+    .Editable(editing => editing.Mode(GridEditMode.PopUp))
+    .Pageable(paging => paging.Style(GridPagerStyles.Status).PageOnScroll(true))
+    .Scrollable(c => c.Height("666px"))
+    .Sortable()
+    .Resizable(resizing => resizing.Columns(true)))
+}
+
+<script type="text/javascript">
+
+    function onParticipantBinding(e) {
+//        var conferenceid = $("#hidProject").val();
+//        var member = $("#hidMember").val();
+//        var taskName = $("#hidTaskName").val();
+//        if (member == "-请选择-") {
+//            member = "";
+//        }
+//        e.data = {
+//            conferenceid: conferenceid,
+//            member: member,
+//            taskName: taskName
+//        };
+    }
+
+</script>

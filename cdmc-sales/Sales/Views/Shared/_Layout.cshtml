@@ -67,6 +67,16 @@
                                 });
                             }
 
+
+                            if (score >= DirectorRequired.LVL)
+                            {
+                                menu.Add().Text("MasterSheet").ImageUrl("~/Content/Common/Icons/editor.png").Items(item =>
+                                {
+                                    item.Add().Url("~/MasterSheet/index").Text("MasterSheet");
+                                  
+                                });
+                            }
+
                             if (score == ConferenceInterfaceRequired.LVL)
                             {
                                 menu.Add().Text("日常工作").ImageUrl("~/Content/Common/Icons/editor.png").Items(item =>
@@ -101,7 +111,7 @@
                                     item.Add().Text("配置项目权限").Url("~/projectright/index");
                                 });
                             }
-
+                           
                             menu.Add().Text("查看").ImageUrl("~/Content/Common/Icons/mvc.png").Items(item =>
                             {
 
