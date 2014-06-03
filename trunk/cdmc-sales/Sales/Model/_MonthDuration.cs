@@ -105,13 +105,14 @@ namespace Sales.Model
             //    }
             //}
 
-            if (d.StartDate1.DayOfWeek != DayOfWeek.Monday)
+            if (d.StartDate1.DayOfWeek != DayOfWeek.Monday && d.StartDate1.DayOfWeek != DayOfWeek.Sunday)
             {
                 while (d.StartDate1.DayOfWeek != DayOfWeek.Monday)
                 {
                     d.StartDate1 = d.StartDate1.AddDays(-1);
                 }
             }
+            
             //else
             //{
             //    while (d.StartDate1.DayOfWeek != DayOfWeek.Monday)
