@@ -172,6 +172,16 @@ namespace Entity
         [Display(Name = "职位")]
         public string Title { get; set; }
 
+
+        [Display(Name = "公司")]
+        public string Company { get; set; }
+
+        [Display(Name = "项目编号")]
+        public string ProjectCode { get; set; }
+
+        [Display(Name = "出单编号")]
+        public string DealCode { get; set; }
+
         //[UIHint("Gender"), Display(Name = "性别")]
         [Required, Display(Name = "性别")]
         public string Gender { get; set; }

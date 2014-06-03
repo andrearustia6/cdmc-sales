@@ -70,7 +70,7 @@
                 </td>
                 <td>
                     @*@Html.DropDownList("p", SelectHelper.LeadSelectListByCRMID((int)ViewBag.CompanyRelationshipID))*@
-                    @Html.DropDownList("CompanyLeadID", SelectHelper.LeadSelectListByCRMID((int)ViewBag.CompanyRelationshipID), "- «Î—°‘Ò -", new { onchange = "onLeadQuickSelected(this.value)" })
+                    @Html.DropDownList("CompanyLeadID", SelectHelper.LeadSelectListByCRMID((int?)ViewBag.CompanyRelationshipID), "- «Î—°‘Ò -", new { onchange = "onLeadQuickSelected(this.value)" })
                 </td>
             </tr>
         </table>

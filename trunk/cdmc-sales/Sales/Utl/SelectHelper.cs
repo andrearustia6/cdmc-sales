@@ -546,6 +546,9 @@ namespace Utl
 
         public static List<SelectListItem> LeadSelectListByCRMID(int? crmid, int? selectVal = null)
         {
+            if (crmid == null)
+                return new List<SelectListItem>();
+
             int? companyid = CH.GetDataById<CompanyRelationship>(crmid).CompanyID;
             //var ls = from l in CH.DB.Leads where l.CompanyID == companyid select new { Text = l.Name_CH + " | " + l.Name_EN, Value = l.ID };
             List<SelectListItem> selectList = new List<SelectListItem>();
