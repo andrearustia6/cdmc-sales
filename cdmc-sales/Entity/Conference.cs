@@ -98,20 +98,20 @@ namespace Entity
     /// <summary>
     /// 会议管理
     /// </summary>
-    public class Conference : EntityBase
-    {
-        [Display(Name = "会议名称"), Required]
-        public string Name { get; set; }
+    //public class Conference : EntityBase
+    //{
+    //    [Display(Name = "会议名称"), Required]
+    //    public string Name { get; set; }
 
-        [Display(Name = "会议内容"), Required]
-        public string Content { get; set; }
+    //    [Display(Name = "会议内容"), Required]
+    //    public string Content { get; set; }
 
-        public virtual  List<Package> Packages { get; set; }
+    //    public virtual  List<Package> Packages { get; set; }
 
-        public ParticipantType ParticipantType { get; set; }
-        [Display(Name = "参会类型"), Required]
-        public int? ParticipantTypeID { get; set; }
-    }
+    //    public ParticipantType ParticipantType { get; set; }
+    //    [Display(Name = "参会类型"), Required]
+    //    public int? ParticipantTypeID { get; set; }
+    //}
 
     public class Participant : EntityBase
     {

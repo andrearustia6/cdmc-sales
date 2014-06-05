@@ -607,7 +607,7 @@
         datestr = yy + '-' + mm + '-' + dd;
         $("#EndDate").val(datestr);
        
-        var month = StartDate.getMonth() ;
+        var month = StartDate.getMonth()+1 ;
         $.ajax({
             url: "/Finance/GetSalesForEdit",
             type: "post",

@@ -240,6 +240,7 @@
     <Compile Include="Controllers\DirectorReportController.cs" />
     <Compile Include="Controllers\EmployeeRoleController.cs" />
     <Compile Include="Controllers\FinanceController.cs" />
+    <Compile Include="Controllers\MasterSheetController.cs" />
     <Compile Include="Controllers\PerformanceController.cs" />
     <Compile Include="Controllers\AvaliableCompaniesController.cs" />
     <Compile Include="Controllers\ProjectReviewController.cs" />
@@ -1824,6 +1825,8 @@
     <Content Include="Views\AvaliableCompanies\PickUpDetailContainer.cshtml" />
     <Content Include="Views\Deal\QuickChangeForDeal.cshtml" />
     <Content Include="Views\AvaliableCompanies\AjaxParticipantForDeal.cshtml" />
+    <Content Include="Views\MasterSheet\Index.cshtml" />
+    <Content Include="Views\MasterSheet\EditParticipant.cshtml" />
     <None Include="Views\SalesEx\EditCompany.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\SimulatorConfig.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\AjaxTargetOfMonthForMember.cshtml" />

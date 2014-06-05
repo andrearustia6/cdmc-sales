@@ -172,7 +172,7 @@ namespace BLL
                     DelegateMoreCount = inout ==  "海外" ? 0 : deals.Where(w => w.Poll > 0 && w.Income / w.Poll > standard).Sum(s => (int?)s.Poll),
                     DelegateMoreIncome = inout == "海外" ? 0 : deals.Where(w => w.Poll > 0 && w.Income / w.Poll >= standard).Sum(s => (decimal?)s.Income),
                     SponsorIncome = deals.Where(w => w.Poll == 0).Sum(s => (decimal?)s.Income),
-                    DelegateIncome = inout == "海外" ? deals.Where(w => w.Poll > 0).Sum(s => (decimal?)s.Income) : 0
+                    DelegateIncome =  deals.Where(w => w.Poll > 0).Sum(s => (decimal?)s.Income) 
                 };
                 return lps;
             }
