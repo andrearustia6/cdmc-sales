@@ -348,4 +348,24 @@ namespace Utl
     }
 
 
+    public class PMDB : DbContext
+    {
+        public DbSet<Organization> Organizations { set; get; }
+        public DbSet<Speaker> Speakers { set; get; }
+        public PMDB(string connection = null)
+        {
+            // Database.SetInitializer<DB>(new DBInitializer());
+            Database.SetInitializer<PMDB>(null);
+            //if (!string.IsNullOrEmpty(connection))
+            //    this.Database.Connection.ConnectionString = connection;
+
+            this.Configuration.LazyLoadingEnabled = true;
+            this.Configuration.ValidateOnSaveEnabled = false;
+        }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
+        }
+    }
 }

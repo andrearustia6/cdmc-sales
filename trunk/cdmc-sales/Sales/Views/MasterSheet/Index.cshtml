@@ -4,24 +4,31 @@
 @using Entity
 @using Utl
 
-@(Html.Telerik().TabStrip().Name("ParticipantTab").SelectedIndex(0).Items(child => {
+
+@(Html.Telerik().TabStrip().Name("ParticipantTab").SelectedIndex(0).Items(child =>
+{
     child.Add().Text("参会嘉宾").Content((@<text>
     @Participants()
+    </text>));
+    child.Add().Text("演讲嘉宾").Content((@<text>
+    @Speakers()
     </text>));
 }
 ))
 
 @helper Participants()
-{
-    var ps =  BLL.CRM_Logical.GetUserInvolveProject().Where(w=>w.IsActived==true).Select(s=>s.ProjectCode);
-    <label>项目筛选</label>@Html.DropDownList("projectcode", new SelectList(ps),"-请选择-")
+    {
+    var ps = BLL.CRM_Logical.GetUserInvolveProject().Where(w => w.IsActived == true);
+    var projectid = ViewBag.ProjectID as int?;
+    <label>项目筛选</label>@Html.DropDownList("projectid", new SelectList(ps, "ID", "ProjectCode", projectid), "-请选择-", new { onchange = "onProjectChange();" })
+    <label>Deal筛选</label> <select id="dealid" name="dealid" onchange = "onDealChange();" ><option value="">-请选择-</option> </select>
       @(Html.Telerik().Grid<AjaxParticipant>().Name("AjaxViewParticipant")
     .DataKeys(keys => { keys.Add(item => item.ID); })
             .ClientEvents(events => events.OnDataBinding("onParticipantBinding"))
     .DataBinding(dataBinding =>
     {
         dataBinding.Ajax()
-            .Select("_SelectParticipantAjaxIndex", "Mastersheet")
+            .Select("_SelectParticipantAjaxIndex", "Mastersheet", new { projectid = projectid })
             .Update("_SaveParticipantAjaxEditing", "Mastersheet")
             .Insert("_InsertParticipantAjaxEditing", "Mastersheet");
     })
@@ -35,29 +42,141 @@
         columns.Bound(item => item.Gender).Width(50);
         columns.Bound(item => item.ParticipantTypeName).Width(200);
         columns.Bound(item => item.ProjectCode).Width(100);
-        columns.Command(c => c.Edit()).Width(100);
+        columns.Bound(item => item.ID).Title("操作").Width(100).ClientTemplate(
+               "<a id='editdeal<#= ID #>' style='cursor:pointer' onclick='onEditParticipant(<#= ID #>)'>编辑</a>"
+                      );
     })
     .Editable(editing => editing.Mode(GridEditMode.PopUp))
-    .Pageable(paging => paging.Style(GridPagerStyles.Status).PageOnScroll(true))
+    .Pageable(paging => paging.Style(GridPagerStyles.Status).PageOnScroll(true).PageSize(50))
     .Scrollable(c => c.Height("666px"))
     .Sortable()
     .Resizable(resizing => resizing.Columns(true)))
 }
-
+@helper Speakers()
+    {
+    var ps = BLL.CRM_Logical.GetUserInvolveProject().Where(w => w.IsActived == true);
+    var projectid = ViewBag.ProjectID as int?;
+    <label>项目筛选</label>@Html.DropDownList("projectid", new SelectList(ps, "ID", "ProjectCode", projectid), "-请选择-", new { onchange = "onProjectChange();" })
+    <label>Deal筛选</label> <select id="dealid" name="dealid" onchange = "onDealChange();" ><option value="">-请选择-</option> </select>
+      @(Html.Telerik().Grid<AjaxParticipant>().Name("AjaxViewParticipant")
+    .DataKeys(keys => { keys.Add(item => item.ID); })
+            .ClientEvents(events => events.OnDataBinding("onParticipantBinding"))
+    .DataBinding(dataBinding =>
+    {
+        dataBinding.Ajax()
+            .Select("_SelectParticipantAjaxIndex", "Mastersheet", new { projectid = projectid })
+            .Update("_SaveParticipantAjaxEditing", "Mastersheet")
+            .Insert("_InsertParticipantAjaxEditing", "Mastersheet");
+    })
+    .Columns(columns =>
+    {
+        columns.Bound(item => item.Name);
+        columns.Bound(item => item.Company);
+        columns.Bound(item => item.Mobile).Width(100);
+        columns.Bound(item => item.Contact).Width(150);
+        columns.Bound(item => item.Title).Width(100);
+        columns.Bound(item => item.Gender).Width(50);
+        columns.Bound(item => item.ParticipantTypeName).Width(200);
+        columns.Bound(item => item.ProjectCode).Width(100);
+        columns.Bound(item => item.ID).Title("操作").Width(100).ClientTemplate(
+               "<a id='editdeal<#= ID #>' style='cursor:pointer' onclick='onEditParticipant(<#= ID #>)'>编辑</a>"
+                      );
+    })
+    .Editable(editing => editing.Mode(GridEditMode.PopUp))
+    .Pageable(paging => paging.Style(GridPagerStyles.Status).PageOnScroll(true).PageSize(50))
+    .Scrollable(c => c.Height("666px"))
+    .Sortable()
+    .Resizable(resizing => resizing.Columns(true)))
+}
+@(Html.Telerik().Window().Title("编辑参会人员")
+        .Name("EditParticipant")
+    .Content(@<text><div class="dialogue-editparticipant">
+        <div class="EditParticipant-wrapper">
+        </div>
+        <div class="dialogue-buttons" style="float:right;">
+            <input type="button" class="btn-queding" onclick="SaveParticipant()" />
+            <input type="button" class="btn-quxiao" onclick="CancelSaveParticipant()" />
+        </div>
+    </div></text>)
+    .Width(600).Height(300).Draggable(true).Modal(true).Visible(false)
+)
 <script type="text/javascript">
 
     function onParticipantBinding(e) {
-//        var conferenceid = $("#hidProject").val();
-//        var member = $("#hidMember").val();
-//        var taskName = $("#hidTaskName").val();
-//        if (member == "-请选择-") {
-//            member = "";
-//        }
-//        e.data = {
-//            conferenceid: conferenceid,
-//            member: member,
-//            taskName: taskName
-//        };
+        var projectid = $('#projectid').val();
+        var dealid = $('#dealid').val();
+        e.data = $.extend(e.data, { projectid: projectid,dealid:dealid });
+    }
+    function refreshAjaxParticipant() {
+        $("#AjaxViewParticipant").data("tGrid").rebind();
+
+    }
+    function onProjectChange() {
+        var projectid = $('#projectid').val();
+        if (projectid > 0) {
+            $.ajax({
+                url: "/MasterSheet/GetDealId",
+                type: "post",
+                dataType: "json",
+                data: { id: $("#projectid").val() },
+                error: function (a, b, c) {
+                    alert("获取数据失败，请重试。");
+                },
+                success: function (result) {
+
+                    var options = '';
+                    options += "<option value=''>请选择</option>";
+                    for (var i = 0; i < result.length; i++) {
+                        options += "<option value=" + result[i].ID + ">" + result[i].DealCode + "</option>";
+                    }
+                    $("#dealid").html(options);
+                }
+            });
+        }
+        refreshAjaxParticipant();
+    }
+    function onDealChange() {
+        refreshAjaxParticipant();
     }
 
+    function onEditParticipant(id) {
+        $.post('GetEditParticipant', { id: id }, function (result) {
+            $('.EditParticipant-wrapper').html(result);
+            var window = $('#EditParticipant').data('tWindow');
+            window.center().open();
+        });
+    }
+    function SaveParticipant() {
+        var hasError = false;
+        $('.dialogue-editparticipant form input').removeClass('fieldError');
+        $('.dialogue-editparticipant form select').removeClass('fieldError');
+
+        String.prototype.isEmpty = function () { return /^\s*$/.test(this); }
+
+        if ($('.dialogue-editparticipant form #ParticipantTypeID').val().isEmpty()) {
+            $('.dialogue-editparticipant form #ParticipantTypeID').addClass('fieldError');
+            hasError = true;
+        }
+        if (hasError) {
+            return;
+        }
+
+        if ($('.EditParticipant-wrapper form').valid()) {
+            var query = $('.EditParticipant-wrapper form').serializeArray();
+            $.post('SaveParticipant', query, function (result) {
+                if ((result.id != null)) {
+                    alert("修改参会人员成功")
+                    $('#EditParticipant').data('tWindow').close();
+                    refreshAjaxParticipant();
+                } else {
+                    alert('修改参会人员失败')
+                }
+            });
+
+        }
+    }
+    function CancelSaveParticipant() {
+        var window = $('#EditParticipant').data('tWindow');
+        window.close();
+    }
 </script>

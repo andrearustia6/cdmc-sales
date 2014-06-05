@@ -6,7 +6,7 @@
     {
     }
     .fieldname div
-    {
+    {m
         padding: 2px;
         min-width: 100px;
         background-color: #FFDEAD;
@@ -63,22 +63,10 @@ function EditDeal(dealid) {
                 c.Bound(item => item.DealCode).Title("出单号").Width(100);
                 c.Bound(item => item.PackageName).Title("Package名称").Width(200);
 
-                c.Bound(item => item.RMBPayment).Title("RMB出单总额").Width(100).Format("{0:￥#,##0}").Aggregate(aggregates => aggregates.Sum()).FooterTemplate(@<text>@if (item.Sum != null)
-                                                                                                                                                              {<p>
-                                                                                                                                                                  RMB出单总额: @item.Sum.Format("{0:￥#,##0}")</p>}</text>).GroupFooterTemplate(@<text>@if (item.Sum != null)
-                                                                                                                                                                                                                                                  {<p>
-                                                                                                                                                                                                                                                  RMB出单总额: @item.Sum.Format("{0:￥#,##0}")</p>}</text>).Width(100);
-                c.Bound(item => item.USDPayment).Title("USD出单总额").Width(100).Format("{0:$#,##0}").Aggregate(aggregates => aggregates.Sum()).FooterTemplate(@<text>@if (item.Sum != null)
-                                                                                                                                                              {<p>
-                                                                                                                                                                  USD出单总额: @item.Sum.Format("{0:$#,##0}")</p>}</text>).GroupFooterTemplate(@<text>@if (item.Sum != null)
-                                                                                                                                                                                                                                                  {<p>
-                                                                                                                                                                                                                                USD出单总额: @item.Sum.Format("{0:$#,##0}")</p>}</text>).Width(100);
+                c.Bound(item => item.RMBPayment).Title("RMB出单总额").Width(100).Format("{0:￥#,##0}").Aggregate(aggregates => aggregates.Sum()).ClientFooterTemplate("<p>RMB出单总额: ￥<#= $.telerik.formatString('{0:n0}', Sum) #></p>").ClientGroupFooterTemplate("<p>RMB出单总额: ￥<#= $.telerik.formatString('{0:n0}', Sum) #></p>");
+                c.Bound(item => item.USDPayment).Title("USD出单总额").Width(100).Format("{0:$#,##0}").Aggregate(aggregates => aggregates.Sum()).ClientFooterTemplate("<p>USD出单总额: ￥<#= $.telerik.formatString('{0:n0}', Sum) #></p>").ClientGroupFooterTemplate("<p>USD出单总额: $<#= $.telerik.formatString('{0:n0}', Sum) #></p>");
 
-                c.Bound(item => item.Income).Title("入账总额").Width(90).Format("{0:￥#,##0}").Aggregate(aggregates => aggregates.Sum()).FooterTemplate(@<text>@if (item.Sum != null)
-                                                                                                                                                      {<p>
-                                                                                                                                                          入账总额: @item.Sum.Format("{0:￥#,##0}")</p>}</text>).GroupFooterTemplate(@<text>@if (item.Sum != null)
-                                                                                                                                                                                                                                       {<p>
-                                                                                                                                                                                                                                      入账总额: @item.Sum.Format("{0:￥#,##0}")</p>}</text>).Width(100); ;
+                c.Bound(item => item.Income).Title("入账总额").Width(90).Format("{0:￥#,##0}").Aggregate(aggregates => aggregates.Sum()).ClientFooterTemplate("<p>入账总额: ￥<#= $.telerik.formatString('{0:n0}', Sum) #></p>").ClientGroupFooterTemplate("<p>入账总额: <#= $.telerik.formatString('{0:n0}', Sum) #></p>");
                 //c.Bound(item => item.IsClosed).Width(70);
                 c.Bound(item => item.Committer).Width(100);
                 c.Bound(item => item.CommitterContect).Width(100);
@@ -88,7 +76,7 @@ function EditDeal(dealid) {
                 c.Bound(item => item.ExpectedPaymentDate).Format("{0:d}").Width(90);
                 c.Bound(item => item.ActualPaymentDate).Format("{0:d}").Width(100);
                 c.Bound(item => item.IsConfirm).Width(100).Title("是否确认");
-                
+
                 c.Bound(item => item.ID).Title("操作").Width(160).ClientTemplate(
                 "<a id='editdeal<#= ID #>' style='cursor:pointer' onclick='EditDeal(<#= ID #>)'>编辑</a>"
                        );

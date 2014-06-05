@@ -819,12 +819,12 @@ namespace Sales.Controllers
             }
             proname = proname.TrimEnd(',');
             string inout = "海外";
-            if (roleid != null)
-            {
-                var name = CH.GetDataById<Role>(roleid).Name;
-                if (name.Contains("国内"))
-                    inout = "国内";
-            }
+            //if (roleid != null)
+            //{
+            //    var name = CH.GetDataById<Role>(roleid).Name;
+            //    if (name.Contains("国内"))
+            //        inout = "国内";
+            //}
             decimal standard = 3000;
             var sponsorrate = 5;
             var delegaterate = 5;
@@ -836,11 +836,11 @@ namespace Sales.Controllers
                 TargetNameCN = displayname,
                 InOut = inout,
                 SponsorIncome = deals.Where(w => w.Poll == 0).Sum(s => (decimal?)s.Income),
-                DelegateIncome = inout == "海外" ? deals.Where(w => w.Poll > 0).Sum(s => (decimal?)s.Income) : 0,
+                DelegateIncome = deals.Where(w => w.Poll > 0).Sum(s => (decimal?)s.Income),
                 SponsorRate=sponsorrate,
                 SponsorCommission = deals.Where(w => w.Poll == 0).Sum(s => (decimal?)s.Income) * sponsorrate / 100,
                 DelegateRate=delegaterate,
-                DelegateCommission = (inout == "海外" ? deals.Where(w => w.Poll > 0).Sum(s => (decimal?)s.Income) : 0) * delegaterate / 100,
+                DelegateCommission = deals.Where(w => w.Poll > 0).Sum(s => (decimal?)s.Income) * delegaterate / 100,
 
             };
             if(lps.SponsorIncome==null)
