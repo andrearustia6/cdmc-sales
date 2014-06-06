@@ -71,27 +71,27 @@ namespace Entity
         public virtual List<Lead> Leads { get; set; }
 
         [Display(Name = "可打时间")]
-        public string Available 
-        { 
-            get 
+        public string Available
+        {
+            get
             {
                 if (DistrictNumber == null) return string.Empty;
-                var dt1 = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DBSR.WorkTimeStart,0,0);
+                var dt1 = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DBSR.WorkTimeStart, 0, 0);
                 var dt2 = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DBSR.WorkTimeEnd, 0, 0);
-                return dt1.AddHours(-DistrictNumber.TimeDifference).ToShortTimeString()+"~"+dt2.AddHours(-DistrictNumber.TimeDifference).ToShortTimeString();
-            } 
+                return dt1.AddHours(-DistrictNumber.TimeDifference).ToShortTimeString() + "~" + dt2.AddHours(-DistrictNumber.TimeDifference).ToShortTimeString();
+            }
         }
 
-        
+
         public virtual CompanyType CompanyType { get; set; }
         [Display(Name = "公司类型")]
         public int? CompanyTypeID { get; set; }
- 
+
         public virtual DistrictNumber DistrictNumber { get; set; }
         [Display(Name = "区号/时差")]
         public int? DistrictNumberID { get; set; }
 
-        
+
         public virtual Area Area { get; set; }
         [Display(Name = "行业类型")]
         public int? AreaID { get; set; }
@@ -107,7 +107,7 @@ namespace Entity
         public double DomesticAssetPercentage { get { return 100 - ForeignAssetPercentage; } }
 
         [Display(Name = "上传员工")]
-        public string  Cerator { get; set; }
+        public string Cerator { get; set; }
 
         [Display(Name = "来源部门")]
         public string From { get; set; }
@@ -125,7 +125,7 @@ namespace Entity
         public string City { get; set; }
 
         [Display(Name = "公司规模")]
-        public string Scale { get; set; }   
+        public string Scale { get; set; }
 
         [Display(Name = "年销售额")]
         public string AnnualSales { get; set; }
@@ -174,15 +174,15 @@ namespace Entity
     /// <summary>
     /// 
     /// </summary>
-    [JsonIgnoreAttribute("ModifiedTime","Company","Image")]
-    public class Lead :NameEntity
+    [JsonIgnoreAttribute("ModifiedTime", "Company", "Image")]
+    public class Lead : NameEntity
     {
         public virtual DistrictNumber DistrictNumber { get; set; }
         [Display(Name = "区号/时差")]
         public int? DistrictNumberID { get; set; }
 
         public virtual SubCompany SubCompany { get; set; }
-        [Display(Name="所在分公司")]
+        [Display(Name = "所在分公司")]
         public int? SubCompanyID { get; set; }
 
         [Display(Name = "个人邮箱")]
@@ -218,7 +218,7 @@ namespace Entity
         [Display(Name = "联系邮编")]
         public string ZIP { get; set; }
 
-        [DataType( DataType.PhoneNumber)]
+        [DataType(DataType.PhoneNumber)]
         [Display(Name = "移动电话")]
         public string Mobile { get; set; }
 
@@ -238,7 +238,7 @@ namespace Entity
         public string Blog { get; set; }
 
         public virtual Company Company { get; set; }
-        [Display(Name = "所属公司"),Required]
+        [Display(Name = "所属公司"), Required]
         public int? CompanyID { get; set; }
 
         [Display(Name = "私人电话")]
@@ -265,7 +265,7 @@ namespace Entity
 
 
         public virtual Image Image { get; set; }
-        public int?  ImageID { get; set; }
+        public int? ImageID { get; set; }
         [Display(Name = "逻辑删除"), Required]
         public bool? MarkForDelete { get; set; }
 
@@ -277,6 +277,9 @@ namespace Entity
 
         [Display(Name = "导出")]
         public bool? IsExportEmail { get; set; }
+
+        [Display(Name = "能说中文")]
+        public bool? IsSpeakChinese { get; set; }
     }
 
     /// <summary>
@@ -305,13 +308,13 @@ namespace Entity
     /// <summary>
     /// 电话结果管理
     /// </summary>
-      [JsonIgnoreAttribute("CompanyRelationship")]
+    [JsonIgnoreAttribute("CompanyRelationship")]
     public class LeadCall : CompanyRelationshipChildItem
     {
-          public override string ToString()
-          {
-              return "客户：" + Lead.Name + "  致电结果：" + LeadCallType.Name + "  致电人：" + Member.Name + "  致电时间：" + CallDate + "  录入时间：" + CreatedDate+"  项目："+Project.ProjectCode;
-          }
+        public override string ToString()
+        {
+            return "客户：" + Lead.Name + "  致电结果：" + LeadCallType.Name + "  致电人：" + Member.Name + "  致电时间：" + CallDate + "  录入时间：" + CreatedDate + "  项目：" + Project.ProjectCode;
+        }
         public int? ProjectID { get; set; }
         public virtual Project Project { get; set; }
 
@@ -328,10 +331,10 @@ namespace Entity
         public int? LeadCallTypeID { get; set; }
 
         public virtual Member Member { get; set; }
-        [Required,Display( Name="拨打人")]
+        [Required, Display(Name = "拨打人")]
         public int? MemberID { get; set; }
 
-       
+
         [Required, Display(Name = "致电时间")]
         public DateTime CallDate { get; set; }
 

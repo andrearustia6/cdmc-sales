@@ -876,6 +876,9 @@ namespace Model
 
         [Display(Name = "导出")]
         public bool IsExportEmail { get; set; }
+
+        [Display(Name = "能说中文")]
+        public bool? IsSpeakChinese { get; set; }
     }
 
     public class AjaxViewLeadCall
