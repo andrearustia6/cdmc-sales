@@ -129,6 +129,7 @@ namespace Sales.Controllers
                 ZIP = string.IsNullOrEmpty(ajaxViewLead.Zip) ? "" : ajaxViewLead.Zip.Trim(),
                 Sequence = ajaxViewLead.Sequence,
                 IsExportEmail = ajaxViewLead.IsExportEmail,
+                IsSpeakChinese = ajaxViewLead.IsSpeakChinese
             };
             if (leadRole != null)
             {
@@ -176,8 +177,9 @@ namespace Sales.Controllers
                 QQ = lead.QQ,
                 Twitter = lead.Twitter,
                 Branch = lead.Branch,
-                Sequence=lead.Sequence,
-                IsExportEmail = lead.IsExportEmail==null?false:(bool)lead.IsExportEmail,
+                Sequence = lead.Sequence,
+                IsExportEmail = lead.IsExportEmail == null ? false : (bool)lead.IsExportEmail,
+                IsSpeakChinese = lead.IsSpeakChinese
 
             };
             return PartialView("EditLead", ajaxViewLead);
@@ -220,6 +222,7 @@ namespace Sales.Controllers
             lead.LeadRoles = string.Empty;
             lead.Sequence = ajaxViewLead.Sequence;
             lead.IsExportEmail = ajaxViewLead.IsExportEmail;
+            lead.IsSpeakChinese = ajaxViewLead.IsSpeakChinese;
             if (leadRole != null)
             {
                 foreach (string leadrole in leadRole)
@@ -297,13 +300,13 @@ namespace Sales.Controllers
         public ActionResult CheckCompanyExist(int? projectid, string beforeUpdateCN, string afterUpdateCN, string beforeUpdateEN, string afterUpdateEN)
         {
             var exist = from c in CH.DB.CompanyRelationships.Where(w => w.ProjectID == projectid) select c;
-            var chcount = exist.Count((c => !string.IsNullOrEmpty(afterUpdateCN) & c.Company.Name_CH == afterUpdateCN && c.Company.Name_CH != beforeUpdateCN && c.Company.Deleted==false));
+            var chcount = exist.Count((c => !string.IsNullOrEmpty(afterUpdateCN) & c.Company.Name_CH == afterUpdateCN && c.Company.Name_CH != beforeUpdateCN && c.Company.Deleted == false));
             if (chcount > 0)
             {
                 return Content("同名中文公司名字已存在！");
             }
 
-            var encount = exist.Count(c => !string.IsNullOrEmpty(afterUpdateEN) & c.Company.Name_EN == afterUpdateEN && c.Company.Name_EN != beforeUpdateEN && c.Company.Deleted==false);
+            var encount = exist.Count(c => !string.IsNullOrEmpty(afterUpdateEN) & c.Company.Name_EN == afterUpdateEN && c.Company.Name_EN != beforeUpdateEN && c.Company.Deleted == false);
             if (encount > 0)
             {
                 return Content("同名英文公司名字已存在！");
@@ -311,15 +314,15 @@ namespace Sales.Controllers
 
             return Content("");
         }
-        public ActionResult CheckCompanyNameCNExist(string name,int projectid)
+        public ActionResult CheckCompanyNameCNExist(string name, int projectid)
         {
             var exist = from c in CH.DB.CompanyRelationships select c;
-            var chcount = exist.Count(c => c.Company.Name_CH == name && c.ProjectID==projectid && c.Deleted==false );
+            var chcount = exist.Count(c => c.Company.Name_CH == name && c.ProjectID == projectid && c.Deleted == false);
             if (chcount > 0)
             {
-                return Json(new { flag = 0, Content = "本项目中已经存在同名中文公司，不能重复录入！"});
+                return Json(new { flag = 0, Content = "本项目中已经存在同名中文公司，不能重复录入！" });
             }
-            var ex = exist.Any(c=> c.Company.Name_CH == name && c.ProjectID!=projectid && c.Company.Deleted==false);
+            var ex = exist.Any(c => c.Company.Name_CH == name && c.ProjectID != projectid && c.Company.Deleted == false);
             if (ex)
             {
                 return Json(new { flag = 1, crmid = exist.Where(c => c.Company.Name_CH == name && c.ProjectID != projectid && c.Company.Deleted == false).FirstOrDefault().ID, Content = "已经存在同名中文公司，是否领用?" });
@@ -360,7 +363,7 @@ namespace Sales.Controllers
             if (string.IsNullOrEmpty(ajaxViewSaleCompany.Desc))
                 ajaxViewSaleCompany.Desc = "";
             Regex rgEx = new Regex("</?div[^>]*>", RegexOptions.IgnoreCase);
-            
+
             ajaxViewSaleCompany.Desc = rgEx.Replace(ajaxViewSaleCompany.Desc, "");
             if (ExecRepaceHTML(HttpUtility.HtmlDecode(ajaxViewSaleCompany.Desc)) == "")
                 ajaxViewSaleCompany.Desc = "";
@@ -600,14 +603,14 @@ namespace Sales.Controllers
             if (string.IsNullOrEmpty(quickEntry.Desc))
                 quickEntry.Desc = "";
             Regex rgEx = new Regex("</?div[^>]*>", RegexOptions.IgnoreCase);
-            quickEntry.Desc = rgEx.Replace(quickEntry.Desc, ""); 
+            quickEntry.Desc = rgEx.Replace(quickEntry.Desc, "");
 
             CompanyRelationship companyRelationship = new CompanyRelationship();
             companyRelationship.Company = new Company();
             companyRelationship.Company.AreaID = quickEntry.IndustryId;
             companyRelationship.Company.CompanyTypeID = quickEntry.TypeId;
             companyRelationship.Company.Contact = string.IsNullOrEmpty(quickEntry.Phone) ? "" : quickEntry.Phone.Trim();
-            companyRelationship.Company.Description = string.IsNullOrEmpty(quickEntry.Desc) ? "" : HttpUtility.HtmlDecode(quickEntry.Desc); 
+            companyRelationship.Company.Description = string.IsNullOrEmpty(quickEntry.Desc) ? "" : HttpUtility.HtmlDecode(quickEntry.Desc);
             companyRelationship.Company.DistrictNumberID = quickEntry.DistrictNumberId;
             companyRelationship.Company.Name_CH = string.IsNullOrEmpty(quickEntry.Name_CN) ? "" : quickEntry.Name_CN.Trim();
             companyRelationship.Company.Name_EN = string.IsNullOrEmpty(quickEntry.Name_EN) ? "" : quickEntry.Name_EN.Trim();
@@ -663,7 +666,7 @@ namespace Sales.Controllers
                     MarkForDelete = false,
                     CreatedDate = DateTime.Now,
                     ModifiedDate = DateTime.Now,
-                    Deleted=false,
+                    Deleted = false,
                 };
 
                 CH.Create<Lead>(lead);
@@ -684,7 +687,7 @@ namespace Sales.Controllers
                         ProjectID = quickEntry.ProjectId,
                         Result = string.IsNullOrEmpty(quickEntry.Result) ? "" : quickEntry.Result.Trim(),
                         MarkForDelete = false,
-                        Deleted=false,
+                        Deleted = false,
                     };
                     CH.Create<LeadCall>(leadCall);
                 }
@@ -712,7 +715,7 @@ namespace Sales.Controllers
             if (string.IsNullOrEmpty(bulkEntry.Description))
                 bulkEntry.Description = "";
             Regex rgEx = new Regex("</?div[^>]*>", RegexOptions.IgnoreCase);
-            bulkEntry.Description = rgEx.Replace(bulkEntry.Description, ""); 
+            bulkEntry.Description = rgEx.Replace(bulkEntry.Description, "");
 
             CompanyRelationship companyRelationship = new CompanyRelationship();
             companyRelationship.Company = new Company();
@@ -805,7 +808,7 @@ namespace Sales.Controllers
                                 MarkForDelete = false,
                                 CreatedDate = DateTime.Now,
                                 ModifiedDate = DateTime.Now,
-                                Deleted=false,
+                                Deleted = false,
                             };
                             CH.Create<Lead>(lead);
                         }
@@ -821,7 +824,7 @@ namespace Sales.Controllers
         public PartialViewResult _RefreshCrmTree(CRMFilters f)
         {
             var data = AvaliableCRM.GetAvaliableCompanies(f);
-            
+
             return PartialView(@"~\views\AvaliableCompanies\MainNavigationContainer.cshtml", data);
         }
         [ValidateInput(false)]
@@ -830,28 +833,28 @@ namespace Sales.Controllers
         {
             if (string.IsNullOrWhiteSpace(filters.FuzzyQuery))
                 return Json(new { msg = "" });
-            var owncrms = from c in CH.DB.CompanyRelationships where c.ProjectID == filters.ProjectId && c.Deleted==false select c;
-            if (Employee.CurrentRole.Level == SalesRequired.LVL || Employee.CurrentRole.Level == MarketInterfaceRequired.LVL )
+            var owncrms = from c in CH.DB.CompanyRelationships where c.ProjectID == filters.ProjectId && c.Deleted == false select c;
+            if (Employee.CurrentRole.Level == SalesRequired.LVL || Employee.CurrentRole.Level == MarketInterfaceRequired.LVL)
                 owncrms = owncrms.Where(w => w.Members.Count > 0 && w.Members.Any(m => m.Name == Employee.CurrentUserName)).OrderBy(w => w.ID);
             else if (Employee.CurrentRole.Level == ManagerRequired.LVL || Employee.CurrentRole.Level == LeaderRequired.LVL || Employee.CurrentRole.Level == ProductInterfaceRequired.LVL)
                 owncrms = owncrms.Where(w => w.Members.Count > 0).OrderBy(w => w.ID);
-            
+
             //模糊搜索
             if (filters != null && !string.IsNullOrWhiteSpace(filters.FuzzyQuery))
             {
-                owncrms = owncrms.Where(q => q.Company.Leads.Any(l =>  
-                    l.Deleted==false &&
+                owncrms = owncrms.Where(q => q.Company.Leads.Any(l =>
+                    l.Deleted == false &&
                     (
-                        l.Name_CH.Contains(filters.FuzzyQuery) || 
-                        l.Name_EN.Contains(filters.FuzzyQuery) || 
-                        l.EMail.Contains(filters.FuzzyQuery) || 
+                        l.Name_CH.Contains(filters.FuzzyQuery) ||
+                        l.Name_EN.Contains(filters.FuzzyQuery) ||
+                        l.EMail.Contains(filters.FuzzyQuery) ||
                         l.PersonalEmailAddress.Contains(filters.FuzzyQuery)
-                       )) || 
-                       (q.Company.Deleted==false &&
-                        (q.Company.Name_CH.Contains(filters.FuzzyQuery) || 
-                        q.Company.Name_EN.Contains(filters.FuzzyQuery) || 
+                       )) ||
+                       (q.Company.Deleted == false &&
+                        (q.Company.Name_CH.Contains(filters.FuzzyQuery) ||
+                        q.Company.Name_EN.Contains(filters.FuzzyQuery) ||
                         q.Company.Contact.Contains(filters.FuzzyQuery)))
-                    
+
                     );
             }
             //行业
@@ -908,11 +911,11 @@ namespace Sales.Controllers
             {
                 publiccrms = publiccrms.Where(q => q.Comments.Count == 0);
             }
-            if(owncrms.Count()>0 || publiccrms.Count()>0)
+            if (owncrms.Count() > 0 || publiccrms.Count() > 0)
                 return Json(new { msg = "" });
 
             var crms = from c in CH.DB.CompanyRelationships where c.ProjectID == filters.ProjectId && c.Deleted == false select c;
-            crms = crms.Where(w => w.Members.Count > 0 && w.Members.Any(m => m.Name == Employee.CurrentUserName)==false).OrderBy(w => w.ID);
+            crms = crms.Where(w => w.Members.Count > 0 && w.Members.Any(m => m.Name == Employee.CurrentUserName) == false).OrderBy(w => w.ID);
             //模糊搜索
             if (filters != null && !string.IsNullOrWhiteSpace(filters.FuzzyQuery))
             {
@@ -951,7 +954,7 @@ namespace Sales.Controllers
                 crms = crms.Where(q => q.Comments.Count == 0);
             }
 
-            
+
             string ret = "符合条件的公司有:";
             bool hascompany = false;
 
@@ -961,7 +964,7 @@ namespace Sales.Controllers
                 var members = crm.Members;
                 if (crm.Members != null)
                 {
-                    ret += crm.CompanyName + "(领用人:" + string.Join(",",crm.Members.Select(w=>w.Name).ToArray()) + ");";
+                    ret += crm.CompanyName + "(领用人:" + string.Join(",", crm.Members.Select(w => w.Name).ToArray()) + ");";
                     hascompany = true;
                 }
                 //if (track != null)
@@ -972,9 +975,9 @@ namespace Sales.Controllers
                 //        hascompany = true;
                 //    }
                 //}
-               
+
             }
-            if(hascompany)
+            if (hascompany)
                 return Json(new { msg = ret });
             else
                 return Json(new { msg = "" });
@@ -983,14 +986,14 @@ namespace Sales.Controllers
         public ActionResult _AjaxTreeViewLoadingCore(CRMFilters filters)
         {
             if (filters.ProjectId == null) filters.ProjectId = 26;
-            var crms = from c in CH.DB.CompanyRelationships where c.ProjectID == filters.ProjectId && c.Deleted==false select c;
+            var crms = from c in CH.DB.CompanyRelationships where c.ProjectID == filters.ProjectId && c.Deleted == false select c;
 
             crms = crms.Where(w => w.Members.Count == 0);
 
             //模糊搜索
             if (filters != null && !string.IsNullOrWhiteSpace(filters.FuzzyQuery))
             {
-                crms = crms.Where(q => q.Company.Leads.Any(l =>l.Deleted==false &&( l.Name_CH.Contains(filters.FuzzyQuery) || l.Name_EN.Contains(filters.FuzzyQuery) || l.EMail.Contains(filters.FuzzyQuery) || l.PersonalEmailAddress.Contains(filters.FuzzyQuery)) || q.Company.Name_CH.Contains(filters.FuzzyQuery) || q.Company.Name_EN.Contains(filters.FuzzyQuery) || q.Company.Contact.Contains(filters.FuzzyQuery)));
+                crms = crms.Where(q => q.Company.Leads.Any(l => l.Deleted == false && (l.Name_CH.Contains(filters.FuzzyQuery) || l.Name_EN.Contains(filters.FuzzyQuery) || l.EMail.Contains(filters.FuzzyQuery) || l.PersonalEmailAddress.Contains(filters.FuzzyQuery)) || q.Company.Name_CH.Contains(filters.FuzzyQuery) || q.Company.Name_EN.Contains(filters.FuzzyQuery) || q.Company.Contact.Contains(filters.FuzzyQuery)));
             }
             //行业
             if (filters != null && filters.CategoryId.HasValue)
@@ -1012,27 +1015,27 @@ namespace Sales.Controllers
                 crms = crms.Where(q => q.Comments.Count == 0);
             }
             var data = from c in CH.DB.CoreLVLs
-                      select new Sales.Model.TreeViewItemModel
-                       {
-                           Value = c.ID,
-                           NameCH = c.CoreLVLName,
-                           NameEN="",
-                           LoadOnDemand=true,
-                           Enabled=true,
-                           CrmCount = crms.Where(cr => cr.CoreLVLID == c.CoreLVLCode).Count()
-                       };
-            return Json ( data );
+                       select new Sales.Model.TreeViewItemModel
+                        {
+                            Value = c.ID,
+                            NameCH = c.CoreLVLName,
+                            NameEN = "",
+                            LoadOnDemand = true,
+                            Enabled = true,
+                            CrmCount = crms.Where(cr => cr.CoreLVLID == c.CoreLVLCode).Count()
+                        };
+            return Json(data);
         }
         [HttpPost]
         public ActionResult _AjaxTreeViewLoading(CRMFilters filters)
         {
-            var crms = from c in CH.DB.CompanyRelationships where c.ProjectID == filters.ProjectId && c.Deleted==false select c;
+            var crms = from c in CH.DB.CompanyRelationships where c.ProjectID == filters.ProjectId && c.Deleted == false select c;
 
             crms = crms.Where(w => w.Members.Count == 0);
             //模糊搜索
             if (filters != null && !string.IsNullOrWhiteSpace(filters.FuzzyQuery))
             {
-                crms = crms.Where(q => q.Company.Leads.Any(l =>l.Deleted==false &&( l.Name_CH.Contains(filters.FuzzyQuery) || l.Name_EN.Contains(filters.FuzzyQuery) || l.EMail.Contains(filters.FuzzyQuery) || l.PersonalEmailAddress.Contains(filters.FuzzyQuery)) || q.Company.Name_CH.Contains(filters.FuzzyQuery) || q.Company.Name_EN.Contains(filters.FuzzyQuery) || q.Company.Contact.Contains(filters.FuzzyQuery)));
+                crms = crms.Where(q => q.Company.Leads.Any(l => l.Deleted == false && (l.Name_CH.Contains(filters.FuzzyQuery) || l.Name_EN.Contains(filters.FuzzyQuery) || l.EMail.Contains(filters.FuzzyQuery) || l.PersonalEmailAddress.Contains(filters.FuzzyQuery)) || q.Company.Name_CH.Contains(filters.FuzzyQuery) || q.Company.Name_EN.Contains(filters.FuzzyQuery) || q.Company.Contact.Contains(filters.FuzzyQuery)));
             }
             //行业
             if (filters != null && filters.CategoryId.HasValue)
@@ -1053,19 +1056,19 @@ namespace Sales.Controllers
             {
                 crms = crms.Where(q => q.Comments.Count == 0);
             }
-            IEnumerable nodes = from crm in crms.OrderBy(w=>w.Company.Name_EN).ThenBy(w=>w.Company.Name_CH)
+            IEnumerable nodes = from crm in crms.OrderBy(w => w.Company.Name_EN).ThenBy(w => w.Company.Name_CH)
                                 where crm.CoreLVLID == filters.CoreId
-                       select new Sales.Model.TreeViewItemModel
-                       {
-                           Checkable=true,
-                           Value = crm.ID,
-                           NameEN = crm.Company.Name_EN,
-                           NameCH = crm.Company.Name_CH,
-                           LoadOnDemand=false,
-                           Enabled=true,
-                           CrmCount=-1,
-                       };
-            
+                                select new Sales.Model.TreeViewItemModel
+                                {
+                                    Checkable = true,
+                                    Value = crm.ID,
+                                    NameEN = crm.Company.Name_EN,
+                                    NameCH = crm.Company.Name_CH,
+                                    LoadOnDemand = false,
+                                    Enabled = true,
+                                    CrmCount = -1,
+                                };
+
             return new JsonResult { Data = nodes };
         }
         [ValidateInput(false)]
@@ -1075,7 +1078,7 @@ namespace Sales.Controllers
             CompanyRelationship companyRelationship = CH.GetDataById<CompanyRelationship>(crmid);
             //var p = companyRelationship.Project.CompanyRelationships.Count(w => w.Members.Where(m => m.Name == Employee.CurrentUserName).Any() == true);
             //var d = CH.DB.Members.Where(w => w.Name == Employee.CurrentUserName && w.CompanyRelationships.Where(c=>c.ProjectID == companyRelationship.ProjectID).Any() == true).Count();
-            var d = CH.DB.CompanyRelationships.Where(w =>w.Deleted==false && w.Members.Where(m => m.Name == Employee.CurrentUserName).Any() == true && w.ProjectID == companyRelationship.ProjectID).Count();
+            var d = CH.DB.CompanyRelationships.Where(w => w.Deleted == false && w.Members.Where(m => m.Name == Employee.CurrentUserName).Any() == true && w.ProjectID == companyRelationship.ProjectID).Count();
             if (d >= 150)
                 return Content("从公海领用的，公司数超过150的不能领用！");
 
@@ -1089,7 +1092,7 @@ namespace Sales.Controllers
         }
         [ValidateInput(false)]
         [HttpPost]
-        public ActionResult PickUpDirect(int? crmid,int projectid)
+        public ActionResult PickUpDirect(int? crmid, int projectid)
         {
             CompanyRelationship companyRelationship = CH.GetDataById<CompanyRelationship>(crmid);
             var d = CH.DB.CompanyRelationships.Where(w => w.Deleted == false && w.Members.Where(m => m.Name == Employee.CurrentUserName).Count() > 0 && w.ProjectID == projectid).Count();
@@ -1102,8 +1105,8 @@ namespace Sales.Controllers
             Member member = CH.DB.Members.Where(m => m.Name == Employee.CurrentUserName && m.ProjectID == projectid).FirstOrDefault();
             companyRelationship.ProjectID = projectid;
             companyRelationship.Members.Add(member);
-            
-            int id =CH.Create<CompanyRelationship>(companyRelationship);
+
+            int id = CH.Create<CompanyRelationship>(companyRelationship);
 
             doCrmTrack(companyRelationship.ID, true);
 
@@ -1118,13 +1121,13 @@ namespace Sales.Controllers
             CompanyRelationship companyRelationship1 = CH.GetDataById<CompanyRelationship>(id);
             //var p = companyRelationship1.Project.CompanyRelationships.Count(w => w.Members.Where(m => m.Name == Employee.CurrentUserName).Any() == true);
             var d = CH.DB.CompanyRelationships.Where(w => w.Deleted == false && w.Members.Where(m => m.Name == Employee.CurrentUserName).Any() == true && w.ProjectID == companyRelationship1.ProjectID).Count();
-            if (d + crmid.Count>= 150)
+            if (d + crmid.Count >= 150)
                 return Content("从公海领用的，公司数超过150的不能领用！");
-            int companyRelationshipId=0;
+            int companyRelationshipId = 0;
             int companyId = 0;
             int projectId = 0;
             int processid = 0;
-            int corelvlid = 0; 
+            int corelvlid = 0;
             for (int i = 0; i < crmid.Count; i++)
             {
                 CompanyRelationship companyRelationship = CH.GetDataById<CompanyRelationship>(crmid[i]);
@@ -1132,7 +1135,7 @@ namespace Sales.Controllers
                 companyRelationship.Members.Add(member);
                 CH.Edit(companyRelationship);
                 doCrmTrack(crmid[i], true);
-                companyRelationshipId =(int) companyRelationship.ID;
+                companyRelationshipId = (int)companyRelationship.ID;
                 companyId = (int)companyRelationship.CompanyID;
                 projectId = (int)companyRelationship.ProjectID;
                 processid = (int)companyRelationship.ProgressID;
@@ -1239,7 +1242,7 @@ namespace Sales.Controllers
         public bool SendEmail(string toEmail, string toName, string subject, string content)
         {
             //UserInfoModel currUser =  Employee.GetUserByName(Employee.CurrentUserName);
-            var  currUsers = from c in CH.DB.EmployeeRoles where c.AccountName == Employee.CurrentUserName select c;
+            var currUsers = from c in CH.DB.EmployeeRoles where c.AccountName == Employee.CurrentUserName select c;
             EmployeeRole currUser = currUsers.FirstOrDefault();
             if ((currUser == null) || (String.IsNullOrEmpty(currUser.Email)) || string.IsNullOrEmpty(currUser.EmailPassword))
                 return false;
@@ -1377,7 +1380,7 @@ namespace Sales.Controllers
         [HttpPost]
         public PartialViewResult GetAssignCompany(int crmid, int projectid)
         {
-            var result = CH.DB.CompanyRelationships.Find(crmid).Members.Where(s => s.IsActivated && s.ProjectID == projectid).Select(s=>s.ID);
+            var result = CH.DB.CompanyRelationships.Find(crmid).Members.Where(s => s.IsActivated && s.ProjectID == projectid).Select(s => s.ID);
             ViewBag.project = CH.GetDataById<Project>(projectid);
             return PartialView("AssignCompany", result);
         }
@@ -1485,14 +1488,14 @@ namespace Sales.Controllers
         }
         public PartialViewResult GetCoreCoveragePublic(int projectid, int coreid)
         {
-            
+
             ViewBag.projectid = projectid;
             ViewBag.coreid = coreid;
             //return PartialView(@"~\views\AvaliableCompanies\CoreCoverage.cshtml", ccs);
             return PartialView(@"~\views\AvaliableCompanies\CoreCoveragePublic.cshtml");
         }
         [GridAction]
-        public ActionResult _CoreCoverage(int projectid, int coreid,int? typeid,int? ismembercompany)
+        public ActionResult _CoreCoverage(int projectid, int coreid, int? typeid, int? ismembercompany)
         {
             var crms = CH.DB.CompanyRelationships.Where(cr => cr.ProjectID == projectid && cr.CoreLVLID == coreid && cr.Deleted == false);
             if (ismembercompany == 1)
@@ -1512,9 +1515,9 @@ namespace Sales.Controllers
                       select new _CoreCoverage()
                       {
                           CompanyName = l.Company.Name_EN.Length > 0 ? l.Company.Name_EN : l.Company.Name_CH,
-                          
+
                           PickUpTime = l.CrmTracks.OrderByDescending(ct => ct.GetDate).FirstOrDefault() != null ? l.CrmTracks.OrderByDescending(ct => ct.GetDate).FirstOrDefault().GetDate : null,
-                          LeadCalledCount = l.LeadCalls.Where(lc => lc.Deleted == false && lc.CreatedDate.Value.Year==DateTime.Now.Year ).GroupBy(lc => lc.LeadID).Count(),
+                          LeadCalledCount = l.LeadCalls.Where(lc => lc.Deleted == false && lc.CreatedDate.Value.Year == DateTime.Now.Year).GroupBy(lc => lc.LeadID).Count(),
                           Calls = from c in l.LeadCalls.Where(lc => lc.Deleted == false && lc.CreatedDate.Value.Year == DateTime.Now.Year)
                                   select new _LeadCall()
                                   {
@@ -1535,12 +1538,12 @@ namespace Sales.Controllers
                 ccs = ccs.Where(w => w.LeadCalledCount == 2);
             else if (typeid == 3)
                 ccs = ccs.Where(w => w.LeadCalledCount >= 3);
-            ccs = ccs.OrderByDescending(w => w.DealCount).ThenBy(w=>w.CompanyName);
+            ccs = ccs.OrderByDescending(w => w.DealCount).ThenBy(w => w.CompanyName);
             var _Coverage = ccs.ToList();
             foreach (var crm in _Coverage)
             {
                 var g = crm.Calls.GroupBy(lc => lc.LeadID).Select(lc => lc.Key.Value).ToList();
-                var leads = CH.DB.Leads.Where(x => g.Contains(x.ID)).Select(x=>x.Title).Where(x=>!string.IsNullOrEmpty(x)).ToArray();
+                var leads = CH.DB.Leads.Where(x => g.Contains(x.ID)).Select(x => x.Title).Where(x => !string.IsNullOrEmpty(x)).ToArray();
                 crm.LeadTitles = string.Join(",", leads);
             }
             return View(new GridModel(_Coverage));
@@ -1564,7 +1567,7 @@ namespace Sales.Controllers
                              {
                                  coreid = coreid,
                                  Sales = s.Name,
-                                 FirstWeekCount = crmtrack.Where(w=> w.Owner == s.Name && w.CreatedDate>=firstweekstart && w.CreatedDate<=firstweekend).Count(),
+                                 FirstWeekCount = crmtrack.Where(w => w.Owner == s.Name && w.CreatedDate >= firstweekstart && w.CreatedDate <= firstweekend).Count(),
                                  SecondWeekCount = crmtrack.Where(w => w.Owner == s.Name && w.CreatedDate >= secondweekstart && w.CreatedDate < secondweekend).Count(),
                                  ThirdWeekCount = crmtrack.Where(w => w.Owner == s.Name && w.CreatedDate >= thirdweekstart && w.CreatedDate < thirdweekend).Count(),
                                  FourthWeekCount = crmtrack.Where(w => w.Owner == s.Name && w.CreatedDate < fourthweekend).Count(),
@@ -1585,8 +1588,8 @@ namespace Sales.Controllers
 
         public ActionResult _SalesFilter(int ProjectId)
         {
-            var teamleaders = CH.GetDataById<Project>(ProjectId).TeamLeader!=null?CH.GetDataById<Project>(ProjectId).TeamLeader.Trim().Split(new string[] { ";", "；" }, StringSplitOptions.RemoveEmptyEntries):new string[]{""};
-            if(CH.DB.Projects.Any(w=>w.ID==ProjectId && (w.Manager.Contains(Employee.CurrentUserName) 
+            var teamleaders = CH.GetDataById<Project>(ProjectId).TeamLeader != null ? CH.GetDataById<Project>(ProjectId).TeamLeader.Trim().Split(new string[] { ";", "；" }, StringSplitOptions.RemoveEmptyEntries) : new string[] { "" };
+            if (CH.DB.Projects.Any(w => w.ID == ProjectId && (w.Manager.Contains(Employee.CurrentUserName)
                 || w.TeamLeader.Contains(Employee.CurrentUserName)
                 || w.ProjectManager.Contains(Employee.CurrentUserName)
                 || w.SalesManager.Contains(Employee.CurrentUserName)
@@ -1594,16 +1597,16 @@ namespace Sales.Controllers
                 || w.Market.Contains(Employee.CurrentUserName)
                 || w.Product.Contains(Employee.CurrentUserName)
                 //|| w.Conference.Contains(Employee.CurrentUserName) 
-                ))==false)
+                )) == false)
             {
                 return Json(new List<Member>());
             }
-            if (Employee.CurrentRole.Level==100 && teamleaders.Contains(Employee.CurrentUserName))
+            if (Employee.CurrentRole.Level == 100 && teamleaders.Contains(Employee.CurrentUserName))
             {
                 var selSales = CH.DB.Members.Where(s => s.ProjectID == ProjectId && s.IsActivated == true).Select(s => s.Name);
                 return Json(selSales);
             }
-            else if (Employee.CurrentRole.Level > 100 || Employee.CurrentRole.Level == 5 )
+            else if (Employee.CurrentRole.Level > 100 || Employee.CurrentRole.Level == 5)
             {
                 var selSales = CH.DB.Members.Where(s => s.ProjectID == ProjectId && s.IsActivated == true).Select(s => s.Name);
                 return Json(selSales);
@@ -1612,8 +1615,8 @@ namespace Sales.Controllers
             {
                 var selSales = CH.DB.Members.Where(s => s.ProjectID == ProjectId && s.IsActivated == true).Select(s => s.Name);
                 //只能看到国内销售
-                var sales = CH.DB.EmployeeRoles.Where(w => selSales.Contains(w.AccountName) &&( w.Role.Name == "国内销售" || w.Role.Level==80)  ).Select(w => w.AccountName);
-                
+                var sales = CH.DB.EmployeeRoles.Where(w => selSales.Contains(w.AccountName) && (w.Role.Name == "国内销售" || w.Role.Level == 80)).Select(w => w.AccountName);
+
                 return Json(sales);
             }
             else
@@ -1736,7 +1739,7 @@ namespace Sales.Controllers
         }
 
 
-        public ActionResult GetPickUpDetail(int projectid,int coreid, string sales,int index)
+        public ActionResult GetPickUpDetail(int projectid, int coreid, string sales, int index)
         {
             var date = DateTime.Now;
             var firstweekstart = date.AddDays(-7);
@@ -1746,17 +1749,17 @@ namespace Sales.Controllers
             var thirdweekstart = secondweekstart.AddDays(-7);
             var thirdweekend = secondweekstart;
             var fourthweekend = thirdweekstart;
-            var crmtrack = CH.DB.CrmTracks.Where(w => w.CompanyRelationship.ProjectID == projectid && w.Type == "领用" && w.CompanyRelationship.CoreLVLID == coreid && w.Owner==sales);
-            
-            if(index==1)
+            var crmtrack = CH.DB.CrmTracks.Where(w => w.CompanyRelationship.ProjectID == projectid && w.Type == "领用" && w.CompanyRelationship.CoreLVLID == coreid && w.Owner == sales);
+
+            if (index == 1)
                 crmtrack = crmtrack.Where(w => w.CreatedDate >= firstweekstart && w.CreatedDate <= firstweekend);
-            else if(index==2)
+            else if (index == 2)
                 crmtrack = crmtrack.Where(w => w.CreatedDate >= secondweekstart && w.CreatedDate < secondweekend);
-            else if (index==3)
+            else if (index == 3)
                 crmtrack = crmtrack.Where(w => w.CreatedDate >= thirdweekstart && w.CreatedDate < thirdweekend);
-            else if(index==4)
+            else if (index == 4)
                 crmtrack = crmtrack.Where(w => w.CreatedDate < fourthweekend);
-            List<int> crmids = crmtrack.Select(x =>(int) x.CompanyRelationshipID).ToList();
+            List<int> crmids = crmtrack.Select(x => (int)x.CompanyRelationshipID).ToList();
             var crms = from c in CH.DB.CompanyRelationships where crmids.Contains(c.ID) select c;
             var data = from c in CH.DB.CoreLVLs
                        select new _CoreLVL()
@@ -1799,13 +1802,13 @@ namespace Sales.Controllers
             data1.MemberCompanies = data;
             return PartialView("PickUpIndex", data1);
         }
-        public static string ExecRepaceHTML(string Htmlstring)   
+        public static string ExecRepaceHTML(string Htmlstring)
         {
             string stroutput = Htmlstring;
             Regex regex = new Regex(@"<[^>]+>|</[^>]+>");
             stroutput = regex.Replace(stroutput, "");
             return stroutput.Trim();
-        } 
+        }
 
 
     }
