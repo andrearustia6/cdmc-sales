@@ -1833,6 +1833,7 @@
     <Content Include="Views\MasterSheet\Index.cshtml" />
     <Content Include="Views\MasterSheet\EditParticipant.cshtml" />
     <Content Include="Views\MasterSheet\EditorTemplates\_Speaker.cshtml" />
+    <Content Include="Views\MasterSheet\EditorTemplates\_Organization.cshtml" />
     <None Include="Views\SalesEx\EditCompany.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\SimulatorConfig.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\AjaxTargetOfMonthForMember.cshtml" />
