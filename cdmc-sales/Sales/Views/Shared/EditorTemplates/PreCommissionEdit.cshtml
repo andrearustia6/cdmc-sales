@@ -173,7 +173,7 @@
         $("#SponsorCommission").val(SponsorCommission.toFixed(0));
         $("#DelegateCommission").val(DelegateCommission.toFixed(0));
 
-        $("#Commission").val((DelegateLessCommission + DelegateMoreCommission + SponsorCommission + DelegateCommission).toFixed(0));
+        $("#Commission").val(( SponsorCommission + DelegateCommission).toFixed(0));
         var commission = $("#Commission").val();
         var bonus = $("#Bonus").val();
         var tax = $("#Tax").val();
@@ -216,7 +216,7 @@
             $("#DelegateMoreCommission").val(DelegateMoreCommission.toFixed(0));
             $("#SponsorCommission").val(SponsorCommission.toFixed(0));
             $("#DelegateCommission").val(DelegateCommission.toFixed(0));
-            var commission = (DelegateLessCommission + DelegateMoreCommission + SponsorCommission + DelegateCommission).toFixed(0);
+            var commission = ( SponsorCommission + DelegateCommission).toFixed(0);
             $("#Commission").val(commission);
             var tax = 0;
             if (commission > 3500) {

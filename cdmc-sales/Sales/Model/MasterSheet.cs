@@ -90,4 +90,36 @@ namespace Sales.Model
         [Display(Name = "类型")]
         public int? ClientDurationTypeID { get; set; }
     }
+    public class _Organization : EntityBase
+    {
+        public int? ConferenceID { get; set; }
+        public virtual Conference Conference { get; set; }
+
+        [Display(Name = "机构名称")]
+        public string OrgName { get; set; }
+
+        [Display(Name = "联系人")]
+        public string ContactPerson { get; set; }
+
+        [Display(Name = "电话")]
+        public string Contact { get; set; }
+
+        [Display(Name = "手机")]
+        public string Mobile { get; set; }
+
+        [Display(Name = "邮箱")]
+        public string Email { get; set; }
+
+        [Display(Name = "机构类型")]
+        public string OrgType { get; set; }
+
+        [Display(Name = "合作形式")]
+        public string OrgForm { get; set; }
+
+        [Display(Name = "负责洽谈人")]
+        public string Owner { get; set; }
+
+        [Display(Name = "Logo")]
+        public string ImgPath { get; set; }
+    }
 }

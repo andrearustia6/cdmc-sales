@@ -251,5 +251,67 @@ namespace Sales.Controllers
             }
             return Json(new { ConferenceID = item.ConferenceID });
         }
+
+        [GridAction]
+        public ActionResult _SelectOrganizationIndex(int? conferenceid)
+        {
+            return View(new GridModel(GetOrganizations(conferenceid)));
+        }
+
+        public static IQueryable<_Organization> GetOrganizations(int? conferenceid = null)
+        {
+            var data = from c in CH.PDDB.Organizations
+                       select new _Organization
+                       {
+                           CreatedDate = c.CreatedDate,
+                           Creator = c.Creator,
+                           Description = c.Description,
+                           ID = c.ID,
+                           ModifiedDate = c.ModifiedDate,
+                           ModifiedUser = c.ModifiedUser,
+                           Sequence = c.Sequence,
+                           ConferenceID = c.ConferenceID,
+
+                           OrgName = c.OrgName,
+                           Contact = c.Contact,
+                           ContactPerson = c.ContactPerson,
+                           Email = c.Email,
+                           OrgType = c.OrgType,
+                           Owner = c.Owner,
+                           OrgForm = c.OrgForm,
+                           ImgPath = c.ImgPath,
+                           Mobile = c.Mobile
+                       };
+            if (conferenceid != null)
+                data = data.Where(w => w.ConferenceID == conferenceid).OrderByDescending(s => s.Sequence);
+            return data;
+
+        }
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        
+        public ActionResult _InsertOrganizationAjaxEditing()
+        {
+            var item = new Organization();
+
+            if (TryUpdateModel(item))
+            {
+                
+                CH.PDCreate<Organization>(item);
+            }
+            return Json(new { ConferenceID = item.ConferenceID });
+        }
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult _SaveOrganizationAjaxEditing(int id)
+        {
+            var item = CH.GetPDDataById<Organization>(id);
+            if (TryUpdateModel(item))
+            {
+                
+                CH.PDEdit<Organization>(item);
+            }
+            return Json(new { ConferenceID = item.ConferenceID });
+        }
     }
 }

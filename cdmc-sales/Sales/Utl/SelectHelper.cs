@@ -700,5 +700,26 @@ namespace Utl
             selectList.Add(new SelectListItem() { Text = "已确认", Value = "已确认" });
             return selectList;
         }
+        public static IEnumerable<SelectListItem> OrgTypeSelectList()
+        {
+            List<SelectListItem> selectList = new List<SelectListItem>();
+            selectList.Add(new SelectListItem() { Text = "公司" });
+            selectList.Add(new SelectListItem() { Text = "协会" });
+            selectList.Add(new SelectListItem() { Text = "政府" });
+            selectList.Add(new SelectListItem() { Text = "媒体" });
+            selectList.Add(new SelectListItem() { Text = "其他" });
+            return selectList;
+        }
+        public static IEnumerable<SelectListItem> OrgFormSelectList()
+        {
+            List<SelectListItem> selectList = new List<SelectListItem>();
+            selectList.Add(new SelectListItem() { Text = "官方合作单位" });
+            selectList.Add(new SelectListItem() { Text = "联合主办单位" });
+            selectList.Add(new SelectListItem() { Text = "协办单位" });
+            selectList.Add(new SelectListItem() { Text = "战略合作单位" });
+            selectList.Add(new SelectListItem() { Text = "支持机构" });
+            selectList.Add(new SelectListItem() { Text = "授权机构" });
+            return selectList;
+        }
     }
 }
