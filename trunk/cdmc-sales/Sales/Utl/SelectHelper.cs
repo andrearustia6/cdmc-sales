@@ -652,5 +652,53 @@ namespace Utl
             }
             return selectList;
         }
+
+        public static IEnumerable<SelectListItem> ConferenceSelectList()
+        {
+            List<SelectListItem> selectList = new List<SelectListItem>();
+            var types = CH.PDDB.Conferences.Where(x => 1 == 1);
+            foreach (Conference type in types)
+            {
+                selectList.Add(new SelectListItem() { Text = type.ConferenceName, Value = type.ID.ToString() });
+            }
+            return selectList;
+        }
+
+        public static IEnumerable<SelectListItem> GetInstitutionalNatureSelectList()
+        {
+            List<SelectListItem> selectList = new List<SelectListItem>();
+            selectList.Add(new SelectListItem() { Text = "Gov", Value = "Gov" });
+            selectList.Add(new SelectListItem() { Text = "Asso", Value = "Asso" });
+            selectList.Add(new SelectListItem() { Text = "Research", Value = "Research" });
+            selectList.Add(new SelectListItem() { Text = "Primary", Value = "Primary" });
+            selectList.Add(new SelectListItem() { Text = "Sponsor", Value = "Sponsor" });
+            return selectList;
+        }
+
+        public static IEnumerable<SelectListItem> ResourceSelectList()
+        {
+            List<SelectListItem> selectList = new List<SelectListItem>();
+            foreach (var item in CH.PDDB.ClientDurationTypes)
+            {
+                selectList.Add(new SelectListItem() { Text = item.Name, Value = item.ID.ToString() });
+            }
+            return selectList;
+        }
+        public static IEnumerable<SelectListItem> GetCommunicationRecordSelectList()
+        {
+            List<SelectListItem> selectList = new List<SelectListItem>();
+            selectList.Add(new SelectListItem() { Text = "Email", Value = "Email" });
+            selectList.Add(new SelectListItem() { Text = "Fax", Value = "Fax" });
+            return selectList;
+        }
+        public static IEnumerable<SelectListItem> GetImportanceSelectList()
+        {
+            List<SelectListItem> selectList = new List<SelectListItem>();
+            selectList.Add(new SelectListItem() { Text = "可选", Value = "可选" });
+            selectList.Add(new SelectListItem() { Text = "重点", Value = "重点" });
+            selectList.Add(new SelectListItem() { Text = "必邀", Value = "必邀" });
+            selectList.Add(new SelectListItem() { Text = "已确认", Value = "已确认" });
+            return selectList;
+        }
     }
 }

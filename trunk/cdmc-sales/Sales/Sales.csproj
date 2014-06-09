@@ -306,6 +306,7 @@
     <Compile Include="Model\AjaxProgress.cs" />
     <Compile Include="Model\AjaxViewModel.cs" />
     <Compile Include="Model\CompanyMerge.cs" />
+    <Compile Include="Model\MasterSheet.cs" />
     <Compile Include="Model\Extensions.cs" />
     <Compile Include="Model\Validations.cs" />
     <Compile Include="Model\ViewModels.cs" />
@@ -432,6 +433,8 @@
     <Content Include="images\yuanjiao_4.gif" />
     <Content Include="images\zuoji.png" />
     <Content Include="images\文字.gif" />
+    <Content Include="Scripts\jquery.form.min.js" />
+    <Content Include="Scripts\jquery_form.js" />
     <Content Include="Scripts\jquery-1.8.2.min.js" />
     <Content Include="Scripts\jquery-ui-1.8.23.custom.min.js" />
     <Content Include="Scripts\jquery.jeegoocontext.min.js" />
@@ -836,6 +839,7 @@
     <Content Include="App_GlobalResources\GridLocalization.bg-BG.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>GridLocalization.bg-BG.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
   <ItemGroup>
@@ -849,6 +853,7 @@
     <Content Include="App_GlobalResources\GridLocalization.en-US.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>GridLocalization.en-US.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
   <ItemGroup>
@@ -1827,6 +1832,7 @@
     <Content Include="Views\AvaliableCompanies\AjaxParticipantForDeal.cshtml" />
     <Content Include="Views\MasterSheet\Index.cshtml" />
     <Content Include="Views\MasterSheet\EditParticipant.cshtml" />
+    <Content Include="Views\MasterSheet\EditorTemplates\_Speaker.cshtml" />
     <None Include="Views\SalesEx\EditCompany.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\SimulatorConfig.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\AjaxTargetOfMonthForMember.cshtml" />

@@ -266,7 +266,7 @@ namespace Sales.Controllers
             // if (month == null) month = 5;
             var list = Finance_Logical._PreCommissionBLL.GetIncome(month, sale, projectid);
             //var data = list.Where(p => p.TargetNameEN==sale).ToList();
-            list.InOut = "海外";
+            //list.InOut = "海外";
             return Json(list);
         }
         /// <summary>

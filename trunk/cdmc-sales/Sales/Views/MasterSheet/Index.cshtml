@@ -54,39 +54,38 @@
 }
 @helper Speakers()
     {
-    var ps = BLL.CRM_Logical.GetUserInvolveProject().Where(w => w.IsActived == true);
-    var projectid = ViewBag.ProjectID as int?;
-    <label>项目筛选</label>@Html.DropDownList("projectid", new SelectList(ps, "ID", "ProjectCode", projectid), "-请选择-", new { onchange = "onProjectChange();" })
-    <label>Deal筛选</label> <select id="dealid" name="dealid" onchange = "onDealChange();" ><option value="">-请选择-</option> </select>
-      @(Html.Telerik().Grid<AjaxParticipant>().Name("AjaxViewParticipant")
-    .DataKeys(keys => { keys.Add(item => item.ID); })
-            .ClientEvents(events => events.OnDataBinding("onParticipantBinding"))
-    .DataBinding(dataBinding =>
-    {
-        dataBinding.Ajax()
-            .Select("_SelectParticipantAjaxIndex", "Mastersheet", new { projectid = projectid })
-            .Update("_SaveParticipantAjaxEditing", "Mastersheet")
-            .Insert("_InsertParticipantAjaxEditing", "Mastersheet");
-    })
-    .Columns(columns =>
-    {
-        columns.Bound(item => item.Name);
-        columns.Bound(item => item.Company);
-        columns.Bound(item => item.Mobile).Width(100);
-        columns.Bound(item => item.Contact).Width(150);
-        columns.Bound(item => item.Title).Width(100);
-        columns.Bound(item => item.Gender).Width(50);
-        columns.Bound(item => item.ParticipantTypeName).Width(200);
-        columns.Bound(item => item.ProjectCode).Width(100);
-        columns.Bound(item => item.ID).Title("操作").Width(100).ClientTemplate(
-               "<a id='editdeal<#= ID #>' style='cursor:pointer' onclick='onEditParticipant(<#= ID #>)'>编辑</a>"
-                      );
-    })
-    .Editable(editing => editing.Mode(GridEditMode.PopUp))
-    .Pageable(paging => paging.Style(GridPagerStyles.Status).PageOnScroll(true).PageSize(50))
-    .Scrollable(c => c.Height("666px"))
-    .Sortable()
-    .Resizable(resizing => resizing.Columns(true)))
+        
+        
+    <label>会议筛选</label>@Html.DropDownList("selconferenceid", SelectHelper.ConferenceSelectList(), "-请选择-", new { onchange = "onConferenceChange();" })
+    @(Html.Telerik().Grid<Sales.Model._Speaker>().Name("Speaker").HtmlAttributes(new { controlname = "Mastersheet", conferenceid = "<#= ID #>" })
+                                        .ClientEvents(events => events.OnDataBinding("onSpeakerBinding").OnEdit("onEditListData").OnSave("onSaveListData"))
+                                    .DataKeys(keys => { keys.Add(item => item.ID); })
+                                    .Editable(editing => editing.Mode(GridEditMode.PopUp)).ToolBar(tb => tb.Insert())
+                                    .DataBinding(dataBinding =>
+                                    {
+                                        dataBinding.Ajax()
+                                            .Select("_SelectSpeakerIndex", "Mastersheet" )
+                                            .Insert("_InsertSpeakerAjaxEditing", "Mastersheet")
+                                            .Update("_SaveSpeakerAjaxEditing", "Mastersheet")
+                                            ;
+                                    })
+                                    .Columns(
+                                             columns =>
+                                             {
+                                                 columns.Bound(c => c.Name);
+                                                 columns.Bound(c => c.Company);
+                                                 columns.Bound(c => c.Title);
+                                                 columns.Bound(c => c.ConfirmedAttend);
+                                                 //columns.Bound(c => c.ImgPath).ClientTemplate("<img  width='100px' height='60px'  src='<#= ImgPath #>' />");
+                                                 columns.Command(commands =>
+                                                 {
+                                                     commands.Edit();
+
+                                                 }).Title("操作").Width(120);
+                                                 //columns.Bound(c => c.ID).Title("公司类型").ClientTemplate("<span><button name='Categorieslistselect' onclick='onCategoriesSelect(<#= ID #>,1)' class='t-button'>选择</button></span>").Width(150);
+                                             }
+                                             ).Pageable(item => item.Style(GridPagerStyles.Status).PageSize(30).PageOnScroll(true)).Scrollable(s
+        => s.Height(400)).Sortable().Filterable().Resizable(resizing => resizing.Columns(true)))  
 }
 @(Html.Telerik().Window().Title("编辑参会人员")
         .Name("EditParticipant")
@@ -179,4 +178,75 @@
         var window = $('#EditParticipant').data('tWindow');
         window.close();
     }
+    function onConferenceChange() {
+        refreshAjaxSpeaker();
+    }
+    function onSpeakerBinding(e) {
+        var conferenceid = $('#selconferenceid').val();
+
+        e.data = $.extend(e.data, { conferenceid: conferenceid});
+    }
+    function refreshAjaxSpeaker() {
+        $("#Speaker").data("tGrid").rebind();
+
+    }
+    function onEditListData(e) {
+        var mode = e.mode;
+        var form = e.form;
+        var formid = e.form.id;
+        var listid = e.form.id.replace('form', '');
+        var controlname = $('div[id|="' + listid + '"]').attr('controlname');
+        
+        
+        if (mode == 'insert') {
+            var conferenceid = $('#ConferenceID').val();
+            $("#" + e.form.id).submit(function (e) {
+                var options = { url: '/' + controlname + '/_InsertSpeakerAjaxEditing',
+                    contentType: 'multipart/form-data',
+                    type: 'POST',
+                    success: function (result) {
+                        $('#selconferenceid').val(result.ConferenceID);
+                        refreshAjaxSpeaker();
+                    }
+                };
+                if ($("#" + formid).valid()) {
+                    $(this).ajaxSubmit(options);
+                }
+                return false;
+            });
+        }
+
+        if (mode == 'edit') {
+
+            var id = $("#ID").val();
+            
+            // var id = $("#ItemImgPath").attr("src", $('#ImgPath').val());
+
+            $("#" + e.form.id).submit(function (e) {
+                var options = { url: '/' + controlname + '/_SaveSpeakerAjaxEditing/?id=' + id,
+                    contentType: 'multipart/form-data',
+                    type: 'POST',
+                    success: function (result) {
+                        $('#selconferenceid').val(result.ConferenceID);
+                        refreshAjaxSpeaker();
+                    }
+                };
+                if ($("#" + formid).valid()) {
+                    $(this).ajaxSubmit(options);
+                }
+                return false;
+            });
+
+        }
+    };
+
+    function onSaveListData(e) {
+
+        e.preventDefault();
+        var fromid = "#" + e.form.id;
+        var winid = fromid.replace('form', '');
+
+        //        $(fromid).submit();
+        $(winid + "PopUp").data('tWindow').close();
+    };
 </script>

@@ -87,6 +87,8 @@ namespace Entity
         [Display(Name = "重要程度"), Required]
         public string Importance { get; set; }
 
+        [Display(Name = "类型")]
+        public int? ClientDurationTypeID { get; set; }
     }
     /// <summary>
     /// 合作机构
@@ -94,7 +96,7 @@ namespace Entity
     public class Organization : EntityBase
     {
         public int? ConferenceID { get; set; }
-        public virtual Conference Conference { get; set; }
+        public virtual Conference Conference{ get; set; }
 
         [Display(Name = "机构名称")]
         public string OrgName { get; set; }
@@ -377,5 +379,10 @@ namespace Entity
         public string ConferenceSubtitleCH { get; set; }
 
 
+    }
+    public class ClientDurationType : EntityBase
+    {
+        [Display(Name = "名称")]
+        public string Name { get; set; }
     }
 }
