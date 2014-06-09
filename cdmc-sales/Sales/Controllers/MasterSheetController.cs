@@ -6,6 +6,8 @@ using System.Web.Mvc;
 using Telerik.Web.Mvc;
 using Utl;
 using Entity;
+using System.IO;
+using Sales.Model;
 
 namespace Sales.Controllers
 {
@@ -128,6 +130,126 @@ namespace Sales.Controllers
             p.ParticipantTypeID = item.ParticipantTypeID;
             CH.Edit<Participant>(p);
             return Json(new { id = p.ID });
+        }
+
+        
+        [GridAction]
+        public ActionResult _SelectSpeakerIndex(int? conferenceid)
+        {
+            var data = GetSpeakers(conferenceid);
+            return View(new GridModel(data));
+        }
+
+        public static IQueryable<_Speaker> GetSpeakers(int? conferenceid = null)
+        {
+            var data = from c in CH.PDDB.Speakers
+                       select new _Speaker
+                       {
+                           CreatedDate = c.CreatedDate,
+                           Creator = c.Creator,
+                           Description = c.Description,
+                           ID = c.ID,
+                           ModifiedDate = c.ModifiedDate,
+                           ModifiedUser = c.ModifiedUser,
+                           Name = c.Name,
+                           Sequence = c.Sequence,
+                           Title = c.Title,
+                           Company = c.Company,
+                           ConferenceID = c.ConferenceID,
+                           Content = c.Content,
+                           ContentDescription = c.ContentDescription,
+                           Profile = c.Profile,
+                           ImgPath = c.ImgPath,
+                           ClientDurationTypeID = c.ClientDurationTypeID,
+                           CategoryID = c.CategoryID,
+                           IsVIP = c.IsVIP,
+                           ConfirmedAttend = c.ConfirmedAttend,
+                           CommunicationRecord = c.CommunicationRecord,
+                           DraftCase = c.DraftCase,
+                           Email = c.Email,
+                           Fax = c.Fax,
+                           Importance = c.Importance,
+                           InstitutionalNature = c.InstitutionalNature,
+                           Mobile = c.Mobile,
+                           NewsWebSite = c.NewsWebSite,
+                           NoteInformation = c.NoteInformation,
+                           Phone = c.Phone,
+                           RoyaltiesReference = c.RoyaltiesReference,
+                           WebSite = c.WebSite,
+                           Address = c.Address,
+                           Assistant = c.Assistant
+                       };
+            if (conferenceid != null)
+                data = data.Where(w => w.ConferenceID == conferenceid).OrderByDescending(s => s.Sequence);
+            return data;
+
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
+        [GridAction]
+        public ActionResult _InsertSpeakerAjaxEditing()
+        {
+            var item = new Speaker();
+
+            if (TryUpdateModel(item))
+            {
+                //HttpPostedFileBase file = Request.Files["UploadPhoto"];
+                //int i = ImageController.SaveImage(file, item.UploadPhotoID);
+                //if (i != 0)
+                //{
+                //    item.UploadPhotoID = i;
+                //}
+
+                //HttpPostedFileBase file = Request.Files["UploadPhoto"];
+                //if (file != null)
+                //{
+                //    var fileName = Path.GetFileName(file.FileName);
+                //    var code = CH.GetDataById<Conferences>(item.ConferenceID).ProjectCode;
+                //    string serverpath = "/Uploads/Conferences/" + code;
+                //    string path = Server.MapPath(serverpath);
+                //    if (!Directory.Exists(path))
+                //    {
+                //        Directory.CreateDirectory(path);
+                //    }
+                //    var physicalPath = Path.Combine(path, fileName);
+                //    file.SaveAs(physicalPath);
+                //    item.ImgPath = serverpath + "/" + fileName;
+                //}
+                CH.PDCreate<Speaker>(item);
+            }
+            return Json(new { ConferenceID = item.ConferenceID});
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
+        
+        public ActionResult _SaveSpeakerAjaxEditing(int id)
+        {
+            var item = CH.GetPDDataById<Speaker>(id);
+            if (TryUpdateModel(item))
+            {
+                //HttpPostedFileBase file = Request.Files["UploadPhoto"];
+                //int i = ImageController.SaveImage(file, item.UploadPhotoID);
+                //if (i != 0)
+                //{
+                //    item.UploadPhotoID = i;
+                //}
+
+                //HttpPostedFileBase file = Request.Files["UploadPhoto"];
+                //if (file != null)
+                //{
+                //    var fileName = Path.GetFileName(file.FileName);
+                //    string serverpath = "/Uploads/Conferences/" + item.Conferences.ProjectCode;
+                //    string path = Server.MapPath(serverpath);
+                //    if (!Directory.Exists(path))
+                //    {
+                //        Directory.CreateDirectory(path);
+                //    }
+                //    var physicalPath = Path.Combine(path, fileName);
+                //    file.SaveAs(physicalPath);
+                //    item.ImgPath = serverpath + "/" + fileName;
+                //}
+                CH.PDEdit<Speaker>(item);
+                
+            }
+            return Json(new { ConferenceID = item.ConferenceID });
         }
     }
 }

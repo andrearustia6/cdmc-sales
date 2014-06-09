@@ -819,12 +819,12 @@ namespace Sales.Controllers
             }
             proname = proname.TrimEnd(',');
             string inout = "海外";
-            //if (roleid != null)
-            //{
-            //    var name = CH.GetDataById<Role>(roleid).Name;
-            //    if (name.Contains("国内"))
-            //        inout = "国内";
-            //}
+            if (roleid != null)
+            {
+                var name = CH.GetDataById<Role>(roleid).Name;
+                if (name.Contains("国内"))
+                    inout = "国内";
+            }
             decimal standard = 3000;
             var sponsorrate = 5;
             var delegaterate = 5;

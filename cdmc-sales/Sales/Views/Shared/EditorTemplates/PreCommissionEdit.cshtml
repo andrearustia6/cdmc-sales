@@ -81,18 +81,18 @@
         $("#startdate2").html(dateTostr(StartDate));
         $("#enddate1").hide();
         $("#enddate2").html(dateTostr(EndDate));
-        if (InOut == "国内") {
-            $("#Delegatetr").hide();
-            $("#DelegateLesstr").show();
-            $("#DelegateMoretr").show();
-            $("#Sponsortr").show();
-        }
-        else {
+//        if (InOut == "国内") {
+//            $("#Delegatetr").hide();
+//            $("#DelegateLesstr").show();
+//            $("#DelegateMoretr").show();
+//            $("#Sponsortr").show();
+//        }
+//        else {
             $("#DelegateLesstr").hide();
             $("#DelegateMoretr").hide();
             $("#Delegatetr").show();
             $("#Sponsortr").show();
-        }
+//        }
     }
     else {
         $("#DelegateLessRate").val(5);
@@ -226,18 +226,18 @@
             $("#TotalCommission").val(commission - tax);
             $("#ActualCommission").val(commission - tax);
 
-            if (result.InOut == "国内") {
-                $("#Delegatetr").hide();
-                $("#DelegateLesstr").show();
-                $("#DelegateMoretr").show();
-                $("#Sponsortr").show();
-            }
-            else {
+//            if (result.InOut == "国内") {
+//                $("#Delegatetr").hide();
+//                $("#DelegateLesstr").show();
+//                $("#DelegateMoretr").show();
+//                $("#Sponsortr").show();
+//            }
+//            else {
                 $("#DelegateLesstr").hide();
                 $("#DelegateMoretr").hide();
                 $("#Delegatetr").show();
                 $("#Sponsortr").show();
-            }
+//            }
         }
         else
             alert("没有获取到入账数据。");

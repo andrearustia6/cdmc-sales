@@ -348,24 +348,26 @@ namespace Utl
     }
 
 
-    public class PMDB : DbContext
+    public class PDDB : DbContext
     {
         public DbSet<Organization> Organizations { set; get; }
         public DbSet<Speaker> Speakers { set; get; }
-        public PMDB(string connection = null)
+        public DbSet<Conference> Conferences { set; get; }
+        public DbSet<ClientDurationType> ClientDurationTypes { set; get; }
+        public PDDB(string connection = null)
         {
-            // Database.SetInitializer<DB>(new DBInitializer());
-            Database.SetInitializer<PMDB>(null);
-            //if (!string.IsNullOrEmpty(connection))
-            //    this.Database.Connection.ConnectionString = connection;
+            Database.SetInitializer<PDDB>(null);
+            if (!string.IsNullOrEmpty(connection))
+                this.Database.Connection.ConnectionString = connection;
 
             this.Configuration.LazyLoadingEnabled = true;
             this.Configuration.ValidateOnSaveEnabled = false;
         }
 
-        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+       
+        public void Detach(object entity)
         {
-            modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
+            ((IObjectContextAdapter)this).ObjectContext.Detach(entity);
         }
     }
 }

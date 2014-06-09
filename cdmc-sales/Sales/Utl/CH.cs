@@ -56,7 +56,29 @@ namespace Utl
                     HttpContext.Current.Items["DB"] = value;
             }
         }
+        public static PDDB PDDB
+        {
+            get
+            {
+                if (HttpContext.Current != null && HttpContext.Current.Items["PDDB"] == null)
+                {
+                    HttpContext.Current.Items["PDDB"] = new PDDB();
+                }
+                if (HttpContext.Current == null)//为测试情况
+                {
+                    var entityConnectionStringBuilder = new EntityConnectionStringBuilder();
 
+                    return PDDB;
+
+                }
+                return HttpContext.Current.Items["PDDB"] as PDDB;
+            }
+            set
+            {
+                if (HttpContext.Current != null)
+                    HttpContext.Current.Items["PDDB"] = value;
+            }
+        }
         static DbSet<T> GetAllRowData<T>()
             where T : class
         {
@@ -253,6 +275,90 @@ namespace Utl
                 DB.Set<T>().Remove(e);
             }
             return DB.SaveChanges();
+        }
+
+        public static T GetPDDataById<T>(int? id)
+            where T : class
+        {
+            return CH.PDDB.Set<T>().Find(id);
+            //return GetAllRowData<T>().Find(id);
+        }
+
+        public static int PDEdit<T>(T entity, params string[] properties)
+             where T : class
+        {
+            AddModifiedStamp(entity);
+            foreach (var p in properties)
+            {
+                string propertyname = string.Empty;
+                List<string> childpropertynames = new List<string>();
+                PropertyInfo property = null;
+                if (!p.Contains('.'))
+                    property = entity.GetType().GetProperty(p);
+                else
+                {
+                    childpropertynames.AddRange(p.Split('.'));
+                    childpropertynames.RemoveAt(0);
+                }
+                var pv = property.GetValue(entity, null);
+                List<int> IDS = new List<int>();// 保存新数据的id
+                var pvs = pv as IEnumerable;
+                if (pvs != null)
+                {
+                    DbSet origindata = null;
+                    foreach (var item in pvs)
+                    {
+                        if (origindata == null)
+                            origindata = PDDB.Set(item.GetType());
+
+                        var id = GetID(item);
+                        if (id == 0)//新数据
+                        {
+
+                            var result = PDDB.Set(item.GetType()).Add(item);
+
+                            IDS.Add(GetID(item));
+                        }
+                        else//老数据更新
+                        {
+                            PDDB.Entry(item).State = EntityState.Modified;
+                            IDS.Add(GetID(item));
+                        }
+                    }
+
+                    var oq = origindata.AsQueryable();
+                    foreach (var item in oq)
+                    {
+                        var id = GetID(item);
+                        var result = IDS.Find(i => i == id);
+                        if (result == 0)
+                        {
+                            origindata.Remove(item);
+                        }
+                    }
+
+                    PDDB.SaveChanges();
+                }
+                else
+                {
+                    PDDB.Entry(pv).State = EntityState.Modified;
+                }
+                PDDB.SaveChanges();//保存以产生id
+            }
+            var c = PDDB.Entry(entity);
+            c.State = EntityState.Modified;
+
+            var re = PDDB.SaveChanges();
+            return re;
+        }
+
+        public static int PDCreate<T>(T entity)
+            where T : class
+        {
+            AddCreatedStamp(entity);
+            PDDB.Set<T>().Add(entity);
+            var re = PDDB.SaveChanges();
+            return re;
         }
     }
 }

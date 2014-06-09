@@ -14,6 +14,7 @@
     <script type="text/javascript" src=@Url.Content(@"/scripts/jquery.contextMenu.js")></script>@*确保在页面能引用到jquery*@
     <script type="text/javascript" src=@Url.Content(@"/scripts/jquery.validate.min.js")></script>@*确保在页面能引用到jquery*@
     <script type="text/javascript" src=@Url.Content(@"/scripts/jquery.validate.unobtrusive.min.js")></script>@*确保在页面能引用到jquery*@
+    <script type="text/javascript" src=@Url.Content(@"/scripts/jquery.form.min.js")></script>@*确保在页面能引用到jquery*@
     @*    <script type="text/javascript" src=@Url.Content(@"/scripts/screen.js")></script>@*确保在页面能引用到jquery*@
     @*  <script type="text/javascript" src=@Url.Content(@"/scripts/prettify.js")></script>@*确保在页面能引用到jquery*@
     @(Html.Telerik().StyleSheetRegistrar().DefaultGroup(group => group.Add("telerik.common.css").Add("telerik.telerik.css").Combined(true).Compress(true)))
@@ -352,7 +353,7 @@
                    .Add(@"jquery.validate.min.js")
                .Add(@"jquery-ui-1.8.23.custom.min.js")
                    .Add(@"jquery.validate.unobtrusive.min.js")
-    //.Add(@"jquery-1.8.2.min.js")
+        .Add(@"jquery.form.min.js")
                .Add(@"jquery-1.6.4.min.js")
                 .Add(@"json2.js")
                 .Add(@"jquery.jeegoocontext.min.js")
