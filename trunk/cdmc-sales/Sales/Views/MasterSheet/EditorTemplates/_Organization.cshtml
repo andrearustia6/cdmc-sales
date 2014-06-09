@@ -1,0 +1,108 @@
+﻿
+@model Sales.Model._Organization
+<div>
+    @Html.HiddenFor(m => m.ID)
+    @Html.HiddenFor(m => m.ImgPath)
+    <fieldset style="margin: 10px;">
+        <legend>基本信息</legend>@*@Html.HiddenFor(model=>model.ConferenceID)*@
+        <table style="padding: 10px; margin: 10px">
+            <tr>
+                <td style="width: 60px">
+                    @Html.LabelFor(model => model.OrgName)
+                </td>
+                <td>
+                    @Html.TextBoxFor(model => model.OrgName, new { style = "width:150px" })<br />
+                    @Html.ValidationMessageFor(model => model.OrgName)
+                </td>
+                @*<td>
+                    @Html.LabelFor(model => model.ClientDurationTypeID)
+                </td>
+                <td>
+                    @Html.DropDownListFor(model => model.ClientDurationTypeID, ProgramDesigner.Utl.SelectHelper.ResourceSelectList(), "请选择", new { style = "width:150px" })<br />
+                    @Html.ValidationMessageFor(model => model.ClientDurationTypeID)
+                </td>*@
+                <td>
+                    @Html.LabelFor(model => model.ContactPerson)
+                </td>
+                <td>
+                    @Html.TextBoxFor(model => model.ContactPerson, new { style = "width:150px" })<br />
+                    @Html.ValidationMessageFor(model => model.ContactPerson)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.OrgType)
+                </td>
+                <td>
+                    @Html.DropDownListFor(model => model.OrgType, Utl.SelectHelper.OrgTypeSelectList(), new { style = "width:150px" })<br />
+                    @Html.ValidationMessageFor(model => model.OrgType)
+                </td>
+                <td>
+                    @Html.LabelFor(model => model.Owner)
+                </td>
+                <td>
+                    @Html.TextBoxFor(model => model.Owner, new { style = "width:150px" })<br />
+                    @Html.ValidationMessageFor(model => model.Owner)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.OrgForm)
+                </td>
+                <td>
+                    @Html.DropDownListFor(model => model.OrgForm, Utl.SelectHelper.OrgFormSelectList(), new { style = "width:150px" })<br />
+                    @Html.ValidationMessageFor(model => model.OrgForm)
+                </td>
+                <td>
+                    @Html.LabelFor(model => model.Contact)
+                </td>
+                <td>
+                    @Html.TextBoxFor(model => model.Contact, new { style = "width:150px" })<br />
+                    @Html.ValidationMessageFor(model => model.Contact)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.Mobile)
+                </td>
+                <td>
+                    @Html.TextBoxFor(model => model.Mobile, new { style = "width:150px" })<br />
+                    @Html.ValidationMessageFor(model => model.Mobile)
+                </td>
+                <td>
+                    @Html.LabelFor(model => model.Email)
+                </td>
+                <td>
+                    @Html.TextBoxFor(model => model.Email, new { style = "width:150px" })<br />
+                    @Html.ValidationMessageFor(model => model.Email)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.Sequence)
+                </td>
+                <td>
+                    @Html.Telerik().IntegerTextBoxFor(model => model.Sequence).InputHtmlAttributes(new { style = "width:150px" })<br />
+                    @Html.ValidationMessageFor(model => model.Sequence)
+                </td>
+            </tr>
+            @*<tr>
+                <td>
+                    Logo
+                </td>
+                <td>
+                    @Html.Telerik().Upload().Async(a => a.AutoUpload(true)).Name("attachments").Multiple(false)
+                </td>
+            </tr>*@
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.Description)
+                </td>
+                <td colspan="4">
+                    @Html.TextAreaFor(model => model.Description, new { style = "width:100%" })<br />
+                    @Html.ValidationMessageFor(model => model.Description)
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+</div>

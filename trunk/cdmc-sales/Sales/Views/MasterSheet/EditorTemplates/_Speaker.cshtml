@@ -1,0 +1,214 @@
+﻿@using Model
+@model Sales.Model._Speaker
+<div>
+    @Html.HiddenFor(m => m.ID)
+    @Html.HiddenFor(m => m.ImgPath)
+    <fieldset style="margin: 10px;">
+        <legend>基本信息</legend>
+        <table style="padding: 10px; margin: 10px">
+            <tr>
+                <td style="width: 80px">
+                    @Html.LabelFor(model => model.ConferenceID)
+                </td>
+                <td>
+                    @Html.DropDownListFor(model => model.ConferenceID, Utl.SelectHelper.ConferenceSelectList(), "请选择", new { style = "width:150px" })<br />
+                    @Html.ValidationMessageFor(model => model.ConferenceID)
+                </td>
+                <td style="width: 80px">
+                    确认出席
+                </td>
+                <td>
+                    @Html.EditorFor(m => m.ConfirmedAttend)
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 80px">
+                    @Html.LabelFor(model => model.Name)
+                </td>
+                <td>
+                    @Html.TextBoxFor(model => model.Name, new { style = "width:150px" })<br />
+                    @Html.ValidationMessageFor(model => model.Name)
+                </td>
+                <td style="width: 80px">
+                    @Html.LabelFor(model => model.Title)
+                </td>
+                <td>
+                    @Html.TextBoxFor(model => model.Title, new { style = "width:150px" })<br />
+                    @Html.ValidationMessageFor(model => model.Title)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.Company)
+                </td>
+                <td>
+                    @Html.TextBoxFor(model => model.Company, new { style = "width:150px" })<br />
+                    @Html.ValidationMessageFor(model => model.Company)
+                </td>
+                <td style="width: 80px">
+                    @Html.LabelFor(model => model.ContentDescription)
+                </td>
+                <td>
+                    @Html.TextBoxFor(model => model.ContentDescription, new { style = "width:150px" })<br />
+                    @Html.ValidationMessageFor(model => model.ContentDescription)
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 80px">
+                    @Html.LabelFor(model => model.Sequence)
+                </td>
+                <td>
+                    @Html.Telerik().IntegerTextBoxFor(model => model.Sequence).InputHtmlAttributes(new { style = "width:150px" })<br />
+                    @Html.ValidationMessageFor(model => model.Sequence)
+                </td>
+                <td>
+                    @Html.LabelFor(model => model.ClientDurationTypeID)
+                </td>
+                <td>
+                    @Html.DropDownListFor(model => model.ClientDurationTypeID, Utl.SelectHelper.ResourceSelectList(), "请选择", new { style = "width:150px" })<br />
+                    @Html.ValidationMessageFor(model => model.ClientDurationTypeID)
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 80px">
+                    @Html.LabelFor(model => model.InstitutionalNature)
+                </td>
+                <td>
+                    @Html.DropDownListFor(model => model.InstitutionalNature, Utl.SelectHelper.GetInstitutionalNatureSelectList(), "请选择", new { style = "width:150px" })<br />
+                    @Html.ValidationMessageFor(model => model.InstitutionalNature)
+                </td>
+                <td>
+                    @Html.LabelFor(model => model.Assistant)
+                </td>
+                <td>
+                    @Html.TextBoxFor(model => model.Assistant, new { style = "width:150px" })<br />
+                    @Html.ValidationMessageFor(model => model.Assistant)
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 80px">
+                    @Html.LabelFor(model => model.Phone)
+                </td>
+                <td>
+                    @Html.TextBoxFor(model => model.Phone, new { style = "width:150px" })<br />
+                    @Html.ValidationMessageFor(model => model.Phone)
+                </td>
+                <td>
+                    @Html.LabelFor(model => model.Mobile)
+                </td>
+                <td>
+                    @Html.TextBoxFor(model => model.Mobile, new { style = "width:150px" })<br />
+                    @Html.ValidationMessageFor(model => model.Mobile)
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 80px">
+                    @Html.LabelFor(model => model.Email)
+                </td>
+                <td>
+                    @Html.TextBoxFor(model => model.Email, new { style = "width:150px" })<br />
+                    @Html.ValidationMessageFor(model => model.Email)
+                </td>
+                <td>
+                    @Html.LabelFor(model => model.Fax)
+                </td>
+                <td>
+                    @Html.TextBoxFor(model => model.Fax, new { style = "width:150px" })<br />
+                    @Html.ValidationMessageFor(model => model.Fax)
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 80px">
+                    @Html.LabelFor(model => model.CommunicationRecord)
+                </td>
+                <td>
+                    @Html.DropDownListFor(model => model.CommunicationRecord, Utl.SelectHelper.GetCommunicationRecordSelectList(), "请选择", new { style = "width:150px" })
+                    @Html.ValidationMessageFor(model => model.CommunicationRecord)
+                </td>
+                <td>
+                    @Html.LabelFor(model => model.NoteInformation)
+                </td>
+                <td>
+                    @Html.TextBoxFor(model => model.NoteInformation, new { style = "width:150px" })<br />
+                    @Html.ValidationMessageFor(model => model.NoteInformation)
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 80px">
+                    @Html.LabelFor(model => model.WebSite)
+                </td>
+                <td>
+                    @Html.TextBoxFor(model => model.WebSite, new { style = "width:150px" })<br />
+                    @Html.ValidationMessageFor(model => model.WebSite)
+                </td>
+                <td>
+                    @Html.LabelFor(model => model.NewsWebSite)
+                </td>
+                <td>
+                    @Html.TextBoxFor(model => model.NewsWebSite, new { style = "width:150px" })<br />
+                    @Html.ValidationMessageFor(model => model.NewsWebSite)
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 80px">
+                    @Html.LabelFor(model => model.Address)
+                </td>
+                <td>
+                    @Html.TextBoxFor(model => model.Address, new { style = "width:150px" })<br />
+                    @Html.ValidationMessageFor(model => model.Address)
+                </td>
+                <td>
+                    @Html.LabelFor(model => model.RoyaltiesReference)
+                </td>
+                <td>
+                    @Html.TextBoxFor(model => model.RoyaltiesReference, new { style = "width:150px" })<br />
+                    @Html.ValidationMessageFor(model => model.RoyaltiesReference)
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 80px">
+                    @Html.LabelFor(model => model.DraftCase)
+                </td>
+                <td>
+                    @Html.TextBoxFor(model => model.DraftCase, new { style = "width:150px" })<br />
+                    @Html.ValidationMessageFor(model => model.DraftCase)
+                </td>
+                <td>
+                    @Html.LabelFor(model => model.Importance)
+                </td>
+                <td>
+                    @Html.DropDownListFor(model => model.Importance, Utl.SelectHelper.GetImportanceSelectList(), new { style = "width:150px" })
+                    @Html.ValidationMessageFor(model => model.Importance)
+                </td>
+            </tr>
+            
+            <tr>
+                <td style="width: 80px">
+                    @Html.LabelFor(model => model.Content)
+                </td>
+                <td colspan="3">
+                    @Html.TextAreaFor(model => model.Content, new { style = "width:100%" })<br />
+                    @Html.ValidationMessageFor(model => model.Content)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.Profile)
+                </td>
+                <td colspan="3">
+                    @Html.TextAreaFor(model => model.Profile, new { style = "width:100%" })<br />
+                    @Html.ValidationMessageFor(model => model.Profile)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.Description)
+                </td>
+                <td colspan="3">
+                    @Html.TextAreaFor(model => model.Description, new { style = "width:100%" })<br />
+                    @Html.ValidationMessageFor(model => model.Description)
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+</div>
