@@ -3,8 +3,11 @@
 }
 @using Entity
 @using Utl
-
-
+@{
+ var ps = BLL.CRM_Logical.GetUserInvolveProject().Where(w => w.IsActived == true);
+        var projectid = ViewBag.ProjectID as int?;
+}
+<label>项目筛选</label>@Html.DropDownList("projectid", new SelectList(ps, "ID", "ProjectCode", projectid), "-请选择-", new { onchange = "onProjectChange();" })
 @(Html.Telerik().TabStrip().Name("ParticipantTab").SelectedIndex(0).Items(child =>
 {
     child.Add().Text("参会嘉宾").Content((@<text>
@@ -21,9 +24,8 @@
 
 @helper Participants()
     {
-        var ps = BLL.CRM_Logical.GetUserInvolveProject().Where(w => w.IsActived == true);
-        var projectid = ViewBag.ProjectID as int?;
-    <label>项目筛选</label>@Html.DropDownList("projectid", new SelectList(ps, "ID", "ProjectCode", projectid), "-请选择-", new { onchange = "onProjectChange();" })
+       
+    
     <label>Deal筛选</label> <select id="dealid" name="dealid" onchange = "onDealChange();" ><option value="">-请选择-</option> </select>
       @(Html.Telerik().Grid<AjaxParticipant>().Name("AjaxViewParticipant")
     .DataKeys(keys => { keys.Add(item => item.ID); })
@@ -31,7 +33,7 @@
     .DataBinding(dataBinding =>
     {
         dataBinding.Ajax()
-            .Select("_SelectParticipantAjaxIndex", "Mastersheet", new { projectid = projectid })
+            .Select("_SelectParticipantAjaxIndex", "Mastersheet")
             .Update("_SaveParticipantAjaxEditing", "Mastersheet")
             .Insert("_InsertParticipantAjaxEditing", "Mastersheet");
     })
@@ -40,6 +42,7 @@
         columns.Bound(item => item.Name);
         columns.Bound(item => item.Company);
         columns.Bound(item => item.Mobile).Width(100);
+        columns.Bound(item => item.Email).Width(100);
         columns.Bound(item => item.Contact).Width(150);
         columns.Bound(item => item.Title).Width(100);
         columns.Bound(item => item.Gender).Width(50);
@@ -59,11 +62,10 @@
     {
         
         
-    <label>会议筛选</label>@Html.DropDownList("selconferenceid", SelectHelper.ConferenceSelectList(), "-请选择-", new { onchange = "onConferenceChange();" })
     @(Html.Telerik().Grid<Sales.Model._Speaker>().Name("Speaker").HtmlAttributes(new { controlname = "Mastersheet", conferenceid = "<#= ID #>" })
                                         .ClientEvents(events => events.OnDataBinding("onSpeakerBinding").OnEdit("onEditListData").OnSave("onSaveListData"))
                                     .DataKeys(keys => { keys.Add(item => item.ID); })
-                                    .Editable(editing => editing.Mode(GridEditMode.PopUp)).ToolBar(tb => tb.Insert())
+                                    .Editable(editing => editing.Mode(GridEditMode.PopUp))//.ToolBar(tb => tb.Insert())
                                     .DataBinding(dataBinding =>
                                     {
                                         dataBinding.Ajax()
@@ -78,6 +80,9 @@
                                                  columns.Bound(c => c.Name);
                                                  columns.Bound(c => c.Company);
                                                  columns.Bound(c => c.Title);
+                                                 columns.Bound(c => c.Email);
+                                                 columns.Bound(c => c.Mobile);
+                                                 columns.Bound(c => c.Address);
                                                  columns.Bound(c => c.ConfirmedAttend);
                                                  //columns.Bound(c => c.ImgPath).ClientTemplate("<img  width='100px' height='60px'  src='<#= ImgPath #>' />");
                                                  columns.Command(commands =>
@@ -94,11 +99,10 @@
     {
         
         
-    <label>会议筛选</label>@Html.DropDownList("selectconferenceid", SelectHelper.ConferenceSelectList(), "-请选择-", new { onchange = "onSelectConferenceChange();" })
     @(Html.Telerik().Grid<Sales.Model._Organization>().Name("Organization").HtmlAttributes(new { controlname = "Mastersheet", conferenceid = "<#= ID #>" })
                                                                 .ClientEvents(events => events.OnDataBinding("onOrganizationBinding").OnEdit("onEditOrganizationData").OnSave("onSaveOrganizationListData"))
                                     .DataKeys(keys => { keys.Add(item => item.ID); })
-                                    .Editable(editing => editing.Mode(GridEditMode.PopUp)).ToolBar(tb => tb.Insert())
+                                    .Editable(editing => editing.Mode(GridEditMode.PopUp))//.ToolBar(tb => tb.Insert())
                                     .DataBinding(dataBinding =>
                                     {
                                         dataBinding.Ajax()
