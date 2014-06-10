@@ -104,8 +104,11 @@ namespace Sales.Model
             //        d.StartDate1 = d.StartDate1.AddDays(-1);
             //    }
             //}
-
-            if (d.StartDate1.DayOfWeek != DayOfWeek.Monday && d.StartDate1.DayOfWeek != DayOfWeek.Sunday)
+            if (d.StartDate1.DayOfWeek == DayOfWeek.Sunday && d.StartDate1.Day == 1)
+            {
+                d.StartDate1 = d.StartDate1.AddDays(1);
+            }
+            else
             {
                 while (d.StartDate1.DayOfWeek != DayOfWeek.Monday)
                 {
