@@ -2086,6 +2086,8 @@ namespace Sales.Controllers
             deal.Sales = item.Sales.Trim();
             deal.Deleted = false;
             deal.DealType = item.DealType;
+            deal.Payment = item.Payment;
+            deal.CurrencyTypeID = item.CurrencyTypeID;
             CH.Edit<Deal>(deal);
             
             return Json(new { dealId = item.ID });

@@ -141,7 +141,7 @@
                 @Html.ValidationMessageFor(model => model.Payment)
                 @foreach (var p in CH.GetAllData<CurrencyType>())
                 {
-                    @Html.RadioButton("currencytyperb", p.ID, p.Name == "RMB" ? true : false, new { onchange = "setcurrencytypeid(" + p.ID + ")" })
+                    @Html.RadioButton("currencytyperb", p.ID, p.ID == Model.CurrencyTypeID ? true : false, new { onchange = "setcurrencytypeid(" + p.ID + ")" })
                     @p.Name
                 }
                 @Html.TextBoxFor(model => model.CurrencyTypeID, new { @style = "display:none" })
