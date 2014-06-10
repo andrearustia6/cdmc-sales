@@ -2088,6 +2088,9 @@ namespace Sales.Controllers
             deal.DealType = item.DealType;
             deal.Payment = item.Payment;
             deal.CurrencyTypeID = item.CurrencyTypeID;
+            deal.ExpectedPaymentDate = item.ExpectedPaymentDate;
+            deal.PackageID = item.PackageID;
+            deal.SignDate = item.SignDate;
             CH.Edit<Deal>(deal);
             
             return Json(new { dealId = item.ID });
