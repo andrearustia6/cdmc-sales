@@ -178,6 +178,8 @@
             });
         }
         refreshAjaxParticipant();
+        refreshAjaxSpeaker();
+        refreshAjaxOrganization();
     }
     function onDealChange() {
         refreshAjaxParticipant();
@@ -227,9 +229,9 @@
         refreshAjaxSpeaker();
     }
     function onSpeakerBinding(e) {
-        var conferenceid = $('#selconferenceid').val();
+        var projectid = $('#projectid').val();
 
-        e.data = $.extend(e.data, { conferenceid: conferenceid});
+        e.data = $.extend(e.data, { projectid: projectid });
     }
     function refreshAjaxSpeaker() {
         $("#Speaker").data("tGrid").rebind();
@@ -302,9 +304,9 @@
 
     }
     function onOrganizationBinding(e) {
-        var conferenceid = $('#selectconferenceid').val();
+        var projectid = $('#projectid').val();
 
-        e.data = $.extend(e.data, { conferenceid: conferenceid });
+        e.data = $.extend(e.data, { projectid: projectid });
     }
 
     function onEditOrganizationData(e) {

@@ -51,7 +51,7 @@ namespace Sales.Controllers
                            ProjectCode = p.Project.ProjectCode,
                            DealCode = p.Deal.DealCode,
                            Mobile=p.Mobile,
-                           ParticipantTypeName = p.ParticipantType.Name_CH + " | " + p.ParticipantType.Name_EN,
+                           ParticipantTypeName = p.ParticipantType.Name_CH ,
                        };
 
             return ret;
@@ -134,13 +134,13 @@ namespace Sales.Controllers
 
         
         [GridAction]
-        public ActionResult _SelectSpeakerIndex(int? conferenceid)
+        public ActionResult _SelectSpeakerIndex(int? projectid)
         {
-            var data = GetSpeakers(conferenceid);
+            var data = GetSpeakers(projectid);
             return View(new GridModel(data));
         }
 
-        public static IQueryable<_Speaker> GetSpeakers(int? conferenceid = null)
+        public static IQueryable<_Speaker> GetSpeakers(int? projectid = null)
         {
             var data = from c in CH.PDDB.Speakers
                        select new _Speaker
@@ -179,8 +179,14 @@ namespace Sales.Controllers
                            Address = c.Address,
                            Assistant = c.Assistant
                        };
-            if (conferenceid != null)
-                data = data.Where(w => w.ConferenceID == conferenceid).OrderByDescending(s => s.Sequence);
+            if (projectid != null)
+            {
+                var projectcode = CH.GetDataById<Project>(projectid).ProjectCode;
+                var conference = CH.PDDB.Conferences.Where(x => x.ProjectCode == projectcode).FirstOrDefault();
+                if(conference!=null)
+                    data = data.Where(w => w.ConferenceID == conference.ID).OrderByDescending(s => s.Sequence);
+            }
+            
             return data;
 
         }
@@ -253,13 +259,14 @@ namespace Sales.Controllers
         }
 
         [GridAction]
-        public ActionResult _SelectOrganizationIndex(int? conferenceid)
+        public ActionResult _SelectOrganizationIndex(int? projectid)
         {
-            return View(new GridModel(GetOrganizations(conferenceid)));
+            return View(new GridModel(GetOrganizations(projectid)));
         }
 
-        public static IQueryable<_Organization> GetOrganizations(int? conferenceid = null)
+        public static IQueryable<_Organization> GetOrganizations(int? projectid = null)
         {
+            
             var data = from c in CH.PDDB.Organizations
                        select new _Organization
                        {
@@ -282,8 +289,13 @@ namespace Sales.Controllers
                            ImgPath = c.ImgPath,
                            Mobile = c.Mobile
                        };
-            if (conferenceid != null)
-                data = data.Where(w => w.ConferenceID == conferenceid).OrderByDescending(s => s.Sequence);
+            if (projectid != null)
+            {
+                var projectcode = CH.GetDataById<Project>(projectid).ProjectCode;
+                var conference = CH.PDDB.Conferences.Where(x => x.ProjectCode == projectcode).FirstOrDefault();
+                if (conference != null)
+                    data = data.Where(w => w.ConferenceID == conference.ID).OrderByDescending(s => s.Sequence);
+            }
             return data;
 
         }
