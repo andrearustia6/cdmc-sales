@@ -4,10 +4,13 @@
 @using Entity
 @using Utl
 @{
- var ps = BLL.CRM_Logical.GetUserInvolveProject().Where(w => w.IsActived == true);
+    var ps = BLL.CRM_Logical.GetUserInvolveProject().Where(w => w.IsActived == true).OrderBy(x => x.ProjectCode);
         var projectid = ViewBag.ProjectID as int?;
 }
+<fieldset>
+
 <label>项目筛选</label>@Html.DropDownList("projectid", new SelectList(ps, "ID", "ProjectCode", projectid), "-请选择-", new { onchange = "onProjectChange();" })
+</fieldset>
 @(Html.Telerik().TabStrip().Name("ParticipantTab").SelectedIndex(0).Items(child =>
 {
     child.Add().Text("参会嘉宾").Content((@<text>
