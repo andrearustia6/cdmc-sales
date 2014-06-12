@@ -185,6 +185,8 @@ namespace Sales.Controllers
                 var conference = CH.PDDB.Conferences.Where(x => x.ProjectCode == projectcode).FirstOrDefault();
                 if(conference!=null)
                     data = data.Where(w => w.ConferenceID == conference.ID).OrderByDescending(s => s.Sequence);
+                else
+                    data = data.Where(w => 1 == 2);
             }
             
             return data;
@@ -295,6 +297,8 @@ namespace Sales.Controllers
                 var conference = CH.PDDB.Conferences.Where(x => x.ProjectCode == projectcode).FirstOrDefault();
                 if (conference != null)
                     data = data.Where(w => w.ConferenceID == conference.ID).OrderByDescending(s => s.Sequence);
+                else
+                    data = data.Where(w => 1 == 2);
             }
             return data;
 

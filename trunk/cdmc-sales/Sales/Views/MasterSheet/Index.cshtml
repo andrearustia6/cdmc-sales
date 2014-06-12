@@ -5,7 +5,7 @@
 @using Utl
 @{
     var ps = BLL.CRM_Logical.GetUserInvolveProject().Where(w => w.IsActived == true).OrderBy(x => x.ProjectCode);
-        var projectid = ViewBag.ProjectID as int?;
+    var projectid = ViewBag.ProjectID as int?;
 }
 <fieldset>
 
@@ -28,8 +28,11 @@
 @helper Participants()
     {
        
+    <fieldset>
+
+<label>Deal筛选</label> <select id="dealid" name="dealid" onchange = "onDealChange();" ><option value="">-请选择-</option> </select>
+</fieldset>
     
-    <label>Deal筛选</label> <select id="dealid" name="dealid" onchange = "onDealChange();" ><option value="">-请选择-</option> </select>
       @(Html.Telerik().Grid<AjaxParticipant>().Name("AjaxViewParticipant")
     .DataKeys(keys => { keys.Add(item => item.ID); })
             .ClientEvents(events => events.OnDataBinding("onParticipantBinding"))
