@@ -296,7 +296,7 @@ namespace Utl
             List<SelectListItem> selectList = new List<SelectListItem>();
 
             var user = Employee.CurrentUserName;
-            var projects = CRM_Logical.GetUserInvolveProject();
+            var projects = CRM_Logical.GetUserInvolveProject().Where(x=>x.IsActived==true);
 
             foreach (Project project in projects)
             {
