@@ -188,7 +188,8 @@ namespace Sales.Controllers
                 else
                     data = data.Where(w => 1 == 2);
             }
-            
+            else
+                data = data.Where(w => 1 == 2);
             return data;
 
         }
@@ -233,29 +234,9 @@ namespace Sales.Controllers
             var item = CH.GetPDDataById<Speaker>(id);
             if (TryUpdateModel(item))
             {
-                //HttpPostedFileBase file = Request.Files["UploadPhoto"];
-                //int i = ImageController.SaveImage(file, item.UploadPhotoID);
-                //if (i != 0)
-                //{
-                //    item.UploadPhotoID = i;
-                //}
 
-                //HttpPostedFileBase file = Request.Files["UploadPhoto"];
-                //if (file != null)
-                //{
-                //    var fileName = Path.GetFileName(file.FileName);
-                //    string serverpath = "/Uploads/Conferences/" + item.Conferences.ProjectCode;
-                //    string path = Server.MapPath(serverpath);
-                //    if (!Directory.Exists(path))
-                //    {
-                //        Directory.CreateDirectory(path);
-                //    }
-                //    var physicalPath = Path.Combine(path, fileName);
-                //    file.SaveAs(physicalPath);
-                //    item.ImgPath = serverpath + "/" + fileName;
-                //}
                 CH.PDEdit<Speaker>(item);
-                
+
             }
             return Json(new { ConferenceID = item.ConferenceID });
         }
@@ -300,6 +281,8 @@ namespace Sales.Controllers
                 else
                     data = data.Where(w => 1 == 2);
             }
+            else
+                data = data.Where(w => 1 == 2);
             return data;
 
         }
@@ -324,10 +307,100 @@ namespace Sales.Controllers
             var item = CH.GetPDDataById<Organization>(id);
             if (TryUpdateModel(item))
             {
-                
+
                 CH.PDEdit<Organization>(item);
+            }
+            else
+            {
+                return Json(ModelState);
             }
             return Json(new { ConferenceID = item.ConferenceID });
         }
+
+
+        public PartialViewResult GetEditSpeaker(int? id)
+        {
+            var c = CH.GetPDDataById<Speaker>(id);
+            var ret = new _Speaker();
+            ret.CreatedDate = c.CreatedDate;
+            ret.Creator = c.Creator;
+            ret.Description = c.Description;
+            ret.ID = c.ID;
+            ret.ModifiedDate = c.ModifiedDate;
+            ret.ModifiedUser = c.ModifiedUser;
+            ret.Name = c.Name;
+            ret.Sequence = c.Sequence;
+            ret.Title = c.Title;
+            ret.Company = c.Company;
+            ret.ConferenceID = c.ConferenceID;
+            ret.Content = c.Content;
+            ret.ContentDescription = c.ContentDescription;
+            ret.Profile = c.Profile;
+            ret.ImgPath = c.ImgPath;
+            ret.ClientDurationTypeID = c.ClientDurationTypeID;
+            ret.CategoryID = c.CategoryID;
+            ret.IsVIP = c.IsVIP;
+            ret.ConfirmedAttend = c.ConfirmedAttend;
+            ret.CommunicationRecord = c.CommunicationRecord;
+            ret.DraftCase = c.DraftCase;
+            ret.Email = c.Email;
+            ret.Fax = c.Fax;
+            ret.Importance = c.Importance;
+            ret.InstitutionalNature = c.InstitutionalNature;
+            ret.Mobile = c.Mobile;
+            ret.NewsWebSite = c.NewsWebSite;
+            ret.NoteInformation = c.NoteInformation;
+            ret.Phone = c.Phone;
+            ret.RoyaltiesReference = c.RoyaltiesReference;
+            ret.WebSite = c.WebSite;
+            ret.Address = c.Address;
+            ret.Assistant = c.Assistant;
+            return PartialView("_Speaker", ret);
+        }
+        [HttpPost]
+        public ActionResult SaveSpeaker(_Speaker c)
+        {
+            //int dealid = 1;
+            Speaker ret = CH.GetPDDataById<Speaker>(c.ID);
+            ret.CreatedDate = c.CreatedDate;
+            ret.Creator = c.Creator;
+            ret.Description = c.Description;
+            ret.ID = c.ID;
+            ret.ModifiedDate = c.ModifiedDate;
+            ret.ModifiedUser = c.ModifiedUser;
+            ret.Name = c.Name;
+            ret.Sequence = c.Sequence;
+            ret.Title = c.Title;
+            ret.Company = c.Company;
+            ret.ConferenceID = c.ConferenceID;
+            ret.Content = c.Content;
+            ret.ContentDescription = c.ContentDescription;
+            ret.Profile = c.Profile;
+            ret.ImgPath = c.ImgPath;
+            ret.ClientDurationTypeID = c.ClientDurationTypeID;
+            ret.CategoryID = c.CategoryID;
+            ret.IsVIP = c.IsVIP;
+            ret.ConfirmedAttend = c.ConfirmedAttend;
+            ret.CommunicationRecord = c.CommunicationRecord;
+            ret.DraftCase = c.DraftCase;
+            ret.Email = c.Email;
+            ret.Fax = c.Fax;
+            ret.Importance = c.Importance;
+            ret.InstitutionalNature = c.InstitutionalNature;
+            ret.Mobile = c.Mobile;
+            ret.NewsWebSite = c.NewsWebSite;
+            ret.NoteInformation = c.NoteInformation;
+            ret.Phone = c.Phone;
+            ret.RoyaltiesReference = c.RoyaltiesReference;
+            ret.WebSite = c.WebSite;
+            ret.Address = c.Address;
+            ret.Assistant = c.Assistant;
+            CH.PDEdit<Speaker>(ret);
+            return Json(new { id = ret.ID });
+        }
+
     }
+
+
+
 }
