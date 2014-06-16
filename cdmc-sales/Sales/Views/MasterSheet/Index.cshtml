@@ -61,7 +61,7 @@
     .Editable(editing => editing.Mode(GridEditMode.PopUp))
     .Pageable(paging => paging.Style(GridPagerStyles.Status).PageOnScroll(true).PageSize(50))
     .Scrollable(c => c.Height("666px"))
-    .Sortable()
+    .Sortable().Filterable()
     .Resizable(resizing => resizing.Columns(true)))
 }
 @helper Speakers()
