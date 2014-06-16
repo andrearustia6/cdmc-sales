@@ -155,6 +155,7 @@
     function onParticipantBinding(e) {
         var projectid = $('#projectid').val();
         var dealid = $('#dealid').val();
+        if (projectid > 0)
         e.data = $.extend(e.data, { projectid: projectid,dealid:dealid });
     }
     function refreshAjaxParticipant() {
@@ -236,7 +237,7 @@
     }
     function onSpeakerBinding(e) {
         var projectid = $('#projectid').val();
-
+        if (projectid > 0)
         e.data = $.extend(e.data, { projectid: projectid });
     }
     function refreshAjaxSpeaker() {
@@ -255,7 +256,7 @@
             var conferenceid = $('#ConferenceID').val();
             $("#" + e.form.id).submit(function (e) {
                 var options = { url: '/' + controlname + '/_InsertSpeakerAjaxEditing',
-                    contentType: 'multipart/form-data',
+                    contentType: 'application/x-www-form-urlencoded',
                     type: 'POST',
                     success: function (result) {
                         $('#selconferenceid').val(result.ConferenceID);
@@ -277,7 +278,7 @@
 
             $("#" + e.form.id).submit(function (e) {
                 var options = { url: '/' + controlname + '/_SaveSpeakerAjaxEditing/?id=' + id,
-                    contentType: 'multipart/form-data',
+                    contentType: 'application/x-www-form-urlencoded',
                     type: 'POST',
                     success: function (result) {
                         $('#selconferenceid').val(result.ConferenceID);
@@ -311,7 +312,7 @@
     }
     function onOrganizationBinding(e) {
         var projectid = $('#projectid').val();
-
+        if(projectid>0)
         e.data = $.extend(e.data, { projectid: projectid });
     }
 
@@ -327,7 +328,7 @@
             var conferenceid = $('#ConferenceID').val();
             $("#" + e.form.id).submit(function (e) {
                 var options = { url: '/' + controlname + '/_InsertOrganizationAjaxEditing',
-                    contentType: 'multipart/form-data',
+                    contentType: 'application/x-www-form-urlencoded',
                     type: 'POST',
                     success: function (result) {
                         $('#selectconferenceid').val(result.ConferenceID);
@@ -349,7 +350,7 @@
 
             $("#" + e.form.id).submit(function (e) {
                 var options = { url: '/' + controlname + '/_SaveOrganizationAjaxEditing/?id=' + id,
-                    contentType: 'multipart/form-data',
+                    contentType: 'application/x-www-form-urlencoded',
                     type: 'POST',
                     success: function (result) {
                         $('#selectconferenceid').val(result.ConferenceID);

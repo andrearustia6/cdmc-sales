@@ -9,31 +9,24 @@ namespace Sales.Model
 {
     public class _Speaker : EntityBase
     {
-        [Display(Name = "会议"), Required]
         public int? ConferenceID { get; set; }
-       
-
+        public virtual Conference Conference { get; set; }
 
         [Display(Name = "发言人"), Required]
         public string Name { get; set; }
-
         [Display(Name = "职位"), Required]
         public string Title { get; set; }
+        [Display(Name = "发言单位"), Required]
+        public string Company { get; set; }
+        [Display(Name = "嘉宾重要性")]
+        public string Content { get; set; }
+        [Display(Name = "嘉宾背景")]
+        public string Profile { get; set; }
+        [Display(Name = "嘉宾演讲议题")]
+        public string ContentDescription { get; set; }
 
         [Display(Name = "确认出席")]
         public bool? ConfirmedAttend { get; set; }
-
-        [Display(Name = "发言单位"), Required]
-        public string Company { get; set; }
-
-        [Display(Name = "嘉宾重要性")]
-        public string Content { get; set; }
-
-        [Display(Name = "嘉宾背景")]
-        public string Profile { get; set; }
-
-        [Display(Name = "嘉宾演讲议题")]
-        public string ContentDescription { get; set; }
 
         [Display(Name = "照片")]
         public string ImgPath { get; set; }
@@ -41,6 +34,14 @@ namespace Sales.Model
         [Display(Name = "公司类型")]
         public int? CategoryID { get; set; }
         public virtual Category Category { get; set; }
+
+        public virtual string SpeakerContent
+        {
+            get
+            {
+                return Name + "-" + Title + "-" + Company;
+            }
+        }
 
         [Display(Name = "是否VIP")]
         public bool IsVIP { get; set; }
@@ -89,6 +90,7 @@ namespace Sales.Model
 
         [Display(Name = "类型")]
         public int? ClientDurationTypeID { get; set; }
+        
     }
     public class _Organization : EntityBase
     {
